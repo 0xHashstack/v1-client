@@ -1,0 +1,34 @@
+[
+    {
+        "inputs": [
+            {
+                "name": "key",
+                "type": "felt"
+            },
+            {
+                "name": "aggregation_mode",
+                "type": "felt"
+            }
+        ],
+        "name": "get_value",
+        "outputs": [
+            {
+                "name": "value",
+                "type": "felt"
+            },
+            {
+                "name": "decimals",
+                "type": "felt"
+            },
+            {
+                "name": "last_updated_timestamp",
+                "type": "felt"
+            },
+            {
+                "name": "num_sources_aggregated",
+                "type": "felt"
+            }
+        ],
+        "type": "function"
+    }
+]

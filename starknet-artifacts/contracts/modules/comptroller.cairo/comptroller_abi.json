@@ -1,0 +1,983 @@
+[
+    {
+        "members": [
+            {
+                "name": "market",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "apr_changes",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "created_at",
+                "offset": 2,
+                "type": "felt"
+            }
+        ],
+        "name": "APR",
+        "size": 3,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "low",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "high",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "Uint256",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "address",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "is_supported",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "min_amount",
+                "offset": 2,
+                "type": "Uint256"
+            },
+            {
+                "name": "stork_key",
+                "offset": 4,
+                "type": "felt"
+            },
+            {
+                "name": "pontis_key",
+                "offset": 5,
+                "type": "felt"
+            }
+        ],
+        "name": "Market",
+        "size": 6,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "apr",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "created_at",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "SavingsApr",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "data": [
+            {
+                "name": "previousOwner",
+                "type": "felt"
+            },
+            {
+                "name": "newOwner",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Paused",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Unpaused",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            },
+            {
+                "name": "_apr",
+                "type": "felt"
+            }
+        ],
+        "name": "set_apr",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "name": "get_apr",
+        "outputs": [
+            {
+                "name": "res",
+                "type": "APR"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            },
+            {
+                "name": "index",
+                "type": "felt"
+            }
+        ],
+        "name": "get_apr_ind",
+        "outputs": [
+            {
+                "name": "res",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            },
+            {
+                "name": "index",
+                "type": "felt"
+            }
+        ],
+        "name": "get_apr_time",
+        "outputs": [
+            {
+                "name": "res",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "name": "get_apr_last_time",
+        "outputs": [
+            {
+                "name": "res",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "name": "get_apr_time_length",
+        "outputs": [
+            {
+                "name": "len",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            },
+            {
+                "name": "min_amount",
+                "type": "Uint256"
+            },
+            {
+                "name": "stork_key",
+                "type": "felt"
+            },
+            {
+                "name": "pontis_key",
+                "type": "felt"
+            }
+        ],
+        "name": "add_market_support",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "supported_market",
+        "outputs": [
+            {
+                "name": "market",
+                "type": "Market"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            },
+            {
+                "name": "apr",
+                "type": "felt"
+            }
+        ],
+        "name": "set_savings_apr",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "name": "get_savings_apr",
+        "outputs": [
+            {
+                "name": "res",
+                "type": "SavingsApr"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            },
+            {
+                "name": "index",
+                "type": "felt"
+            }
+        ],
+        "name": "get_savings_apr_ind",
+        "outputs": [
+            {
+                "name": "res",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            },
+            {
+                "name": "index",
+                "type": "felt"
+            }
+        ],
+        "name": "get_savings_apr_time",
+        "outputs": [
+            {
+                "name": "res",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "name": "get_savings_apr_last_time",
+        "outputs": [
+            {
+                "name": "res",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "name": "get_savings_apr_time_length",
+        "outputs": [
+            {
+                "name": "len",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "factor",
+                "type": "felt"
+            }
+        ],
+        "name": "set_reserve_factor",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_reserve_factor",
+        "outputs": [
+            {
+                "name": "factor",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "factor",
+                "type": "felt"
+            }
+        ],
+        "name": "set_collateral_factor",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_collateral_factor",
+        "outputs": [
+            {
+                "name": "factor",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "factor",
+                "type": "felt"
+            }
+        ],
+        "name": "set_interest_correlation_factor",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_interest_correlation_factor",
+        "outputs": [
+            {
+                "name": "factor",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "offset",
+                "type": "felt"
+            }
+        ],
+        "name": "set_interest_offset",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_interest_offset",
+        "outputs": [
+            {
+                "name": "offset",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "validity",
+                "type": "felt"
+            }
+        ],
+        "name": "set_commitment_timelock",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_commitment_timelock",
+        "outputs": [
+            {
+                "name": "validity",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "set_pontis_proxy",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_pontis_proxy",
+        "outputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "set_stork_proxy",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_stork_proxy",
+        "outputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "set_jedi_swap_router",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_jedi_swap_router",
+        "outputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "num_seconds",
+                "type": "felt"
+            }
+        ],
+        "name": "set_deposit_commitments",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "num_seconds",
+                "type": "felt"
+            }
+        ],
+        "name": "set_loan_commitments",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "min",
+                "type": "felt"
+            },
+            {
+                "name": "max",
+                "type": "felt"
+            }
+        ],
+        "name": "set_min_max_borrow_apr",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "min",
+                "type": "felt"
+            },
+            {
+                "name": "max",
+                "type": "felt"
+            }
+        ],
+        "name": "set_min_max_savings_apr",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "num_seconds",
+                "type": "felt"
+            }
+        ],
+        "name": "set_loan_commitment",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "deposit_or_borrow",
+                "type": "felt"
+            },
+            {
+                "name": "index",
+                "type": "felt"
+            }
+        ],
+        "name": "get_commitment",
+        "outputs": [
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "time",
+                "type": "felt"
+            }
+        ],
+        "name": "set_timelock_validity_deposit",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_timelock_validity_deposit",
+        "outputs": [
+            {
+                "name": "timelock_validity",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "name": "set_loan_issuance_fees",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_loan_issuance_fee",
+        "outputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "name": "set_loan_closure_fee",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_loan_closure_fee",
+        "outputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "name": "set_loan_pre_closure_fee",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_loan_pre_closure_fee",
+        "outputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "name": "set_collateral_pre_closure_fee",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_collateral_pre_closure_fee",
+        "outputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "name": "set_deposit_pre_closure_fee",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_deposit_pre_closure_fee",
+        "outputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "name": "set_withdrawal_fee",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_withdrawal_fee",
+        "outputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "name": "set_collateral_release_fee",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_collateral_release_fee",
+        "outputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "name": "set_yield_conversion_fee",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_yield_conversion_fee",
+        "outputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "name": "set_market_swap_fee",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_market_swap_fee",
+        "outputs": [
+            {
+                "name": "fee",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "factor",
+                "type": "felt"
+            },
+            {
+                "name": "block_limit",
+                "type": "felt"
+            }
+        ],
+        "name": "set_max_withdrawal",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_max_withdrawal",
+        "outputs": [
+            {
+                "name": "factor",
+                "type": "felt"
+            },
+            {
+                "name": "block_limit",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pause_comptroller",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unpause_comptroller",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "is_paused_comptroller",
+        "outputs": [
+            {
+                "name": "is_pause",
+                "type": "felt"
+            }
+        ],
+        "type": "function"
+    }
+]

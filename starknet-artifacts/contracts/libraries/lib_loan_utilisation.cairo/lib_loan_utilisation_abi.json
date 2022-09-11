@@ -1,0 +1,227 @@
+[
+    {
+        "members": [
+            {
+                "name": "address",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "is_supported",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "min_amount",
+                "offset": 2,
+                "type": "Uint256"
+            },
+            {
+                "name": "stork_key",
+                "offset": 4,
+                "type": "felt"
+            },
+            {
+                "name": "pontis_key",
+                "offset": 5,
+                "type": "felt"
+            }
+        ],
+        "name": "Market",
+        "size": 6,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "low",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "high",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "Uint256",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "id",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "owner",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "market",
+                "offset": 2,
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "offset": 3,
+                "type": "felt"
+            },
+            {
+                "name": "amount",
+                "offset": 4,
+                "type": "Uint256"
+            },
+            {
+                "name": "current_market",
+                "offset": 6,
+                "type": "felt"
+            },
+            {
+                "name": "current_amount",
+                "offset": 7,
+                "type": "Uint256"
+            },
+            {
+                "name": "debt_category",
+                "offset": 9,
+                "type": "felt"
+            },
+            {
+                "name": "state",
+                "offset": 10,
+                "type": "felt"
+            },
+            {
+                "name": "created_at",
+                "offset": 11,
+                "type": "felt"
+            }
+        ],
+        "name": "Loan",
+        "size": 12,
+        "type": "struct"
+    },
+    {
+        "data": [
+            {
+                "name": "previousOwner",
+                "type": "felt"
+            },
+            {
+                "name": "newOwner",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Paused",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Unpaused",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset_record",
+                "type": "Market"
+            }
+        ],
+        "name": "asset_price",
+        "outputs": [
+            {
+                "name": "price",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset",
+                "type": "felt"
+            }
+        ],
+        "name": "get_value_from_stork",
+        "outputs": [
+            {
+                "name": "price",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset",
+                "type": "felt"
+            }
+        ],
+        "name": "get_value_from_pontis",
+        "outputs": [
+            {
+                "name": "price",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pause_price_feed",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unpause_price_feed",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "data": [
+            {
+                "name": "old_loan_record",
+                "type": "Loan"
+            },
+            {
+                "name": "new_loan_record",
+                "type": "Loan"
+            },
+            {
+                "name": "timestamp",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "loan_swap",
+        "type": "event"
+    }
+]
