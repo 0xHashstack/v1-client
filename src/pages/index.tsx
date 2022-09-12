@@ -1,77 +1,77 @@
-import { supportsSessions } from "@argent/x-sessions"
-import type { NextPage } from "next"
-import Head from "next/head"
-import { useEffect, useState } from "react"
-import { AccountInterface } from "starknet"
+import { supportsSessions } from "@argent/x-sessions";
+import type { NextPage } from "next";
+import Head from "next/head";
+import { useEffect, useState } from "react";
+import { AccountInterface } from "starknet";
 
-import { TokenDapp } from "../components/TokenDapp"
-import { truncateAddress } from "../services/address.service"
+import { TokenDapp } from "../components/TokenDapp";
+import { truncateAddress } from "../services/address.service";
 import {
   addWalletChangeListener,
   chainId,
   connectWallet,
   removeWalletChangeListener,
   silentConnectWallet,
-} from "../services/wallet.service"
-import styles from "../styles/Home.module.css"
+} from "../services/wallet.service";
+import styles from "../styles/Home.module.css";
 
 const Home: NextPage = () => {
-  const [address, setAddress] = useState<string>()
-  const [supportSessions, setSupportsSessions] = useState<boolean | null>(null)
-  const [chain, setChain] = useState(chainId())
-  const [isConnected, setConnected] = useState(false)
-  const [account, setAccount] = useState<AccountInterface | null>(null)
+  const [address, setAddress] = useState<string>();
+  const [supportSessions, setSupportsSessions] = useState<boolean | null>(null);
+  const [chain, setChain] = useState(chainId());
+  const [isConnected, setConnected] = useState(false);
+  const [account, setAccount] = useState<AccountInterface | null>(null);
 
   useEffect(() => {
     const handler = async () => {
-      const wallet = await silentConnectWallet()
-      setAddress(wallet?.selectedAddress)
-      setChain(chainId())
-      setConnected(!!wallet?.isConnected)
+      const wallet = await silentConnectWallet();
+      setAddress(wallet?.selectedAddress);
+      setChain(chainId());
+      setConnected(!!wallet?.isConnected);
       if (wallet?.account) {
-        setAccount(wallet.account)
+        setAccount(wallet.account);
       }
-      setSupportsSessions(null)
+      setSupportsSessions(null);
       if (wallet?.selectedAddress) {
         try {
           const sessionSupport = await supportsSessions(
             wallet.selectedAddress,
-            wallet.provider,
-          )
-          setSupportsSessions(sessionSupport)
+            wallet.provider
+          );
+          setSupportsSessions(sessionSupport);
         } catch {
-          setSupportsSessions(false)
+          setSupportsSessions(false);
         }
       }
-    }
+    };
 
-    ;(async () => {
-      await handler()
-      addWalletChangeListener(handler)
-    })()
+    (async () => {
+      await handler();
+      addWalletChangeListener(handler);
+    })();
 
     return () => {
-      removeWalletChangeListener(handler)
-    }
-  }, [])
+      removeWalletChangeListener(handler);
+    };
+  }, []);
 
   const handleConnectClick = async () => {
-    const wallet = await connectWallet()
-    setAddress(wallet?.selectedAddress)
-    setChain(chainId())
-    setConnected(!!wallet?.isConnected)
+    const wallet = await connectWallet();
+    setAddress(wallet?.selectedAddress);
+    setChain(chainId());
+    setConnected(!!wallet?.isConnected);
     if (wallet?.account) {
-      setAccount(wallet.account)
+      setAccount(wallet.account);
     }
-    setSupportsSessions(null)
+    setSupportsSessions(null);
     if (wallet?.selectedAddress) {
       const sessionSupport = await supportsSessions(
         wallet.selectedAddress,
-        wallet.provider,
-      )
-      setSupportsSessions(sessionSupport)
+        wallet.provider
+      );
+      setSupportsSessions(sessionSupport);
     }
-  }
+  };
 
   return (
     <div className={styles.container}>
@@ -106,7 +106,7 @@ const Home: NextPage = () => {
         )}
       </main>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;
