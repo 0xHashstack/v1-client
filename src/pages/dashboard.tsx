@@ -3833,7 +3833,7 @@ const Dashboard = () => {
                         className="table-responsive"
                         style={{ paddingTop: "12px" }}
                       >
-                        <Table className="table table-nowrap align-middle mb-0">
+                        <Table className="table table-nowrap  mb-0">
                           <thead>
                             <tr style={{ borderStyle: "hidden" }}>
                               <th scope="col">Markets</th>
