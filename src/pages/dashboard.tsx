@@ -49,6 +49,7 @@ const PassbookTBody = loadable(() => import("../components/passbook-body"));
 const DashboardTBody = loadable(() => import("../components/dashboard-body"));
 const TxHistoryTable = loadable(() => import("../components/tx-history-table"));
 import { BigNumber } from "ethers";
+import Layout from "../components/layout";
 
 // toast.configure({
 //   autoClose: 4000,
@@ -3546,6 +3547,7 @@ const Dashboard = () => {
 
   return (
     <React.Fragment>
+      {/* <Layout> */}
       <div className="page-content" style={{ marginTop: "0px" }}>
         <MetaTags>
           <title>Hashstack Finance</title>
@@ -3765,7 +3767,10 @@ const Dashboard = () => {
                             <>
                               <NavItem>
                                 <NavLink
-                                  style={{ cursor: "pointer", color: "white" }}
+                                  style={{
+                                    cursor: "pointer",
+                                    color: "white",
+                                  }}
                                   className={classnames({
                                     active: customActiveTabs === "1",
                                   })}
@@ -3780,7 +3785,10 @@ const Dashboard = () => {
                               </NavItem>
                               <NavItem>
                                 <NavLink
-                                  style={{ cursor: "pointer", color: "white" }}
+                                  style={{
+                                    cursor: "pointer",
+                                    color: "white",
+                                  }}
                                   className={classnames({
                                     active: customActiveTabs === "2",
                                   })}
@@ -3795,7 +3803,10 @@ const Dashboard = () => {
                               </NavItem>
                               <NavItem>
                                 <NavLink
-                                  style={{ cursor: "pointer", color: "white" }}
+                                  style={{
+                                    cursor: "pointer",
+                                    color: "white",
+                                  }}
                                   className={classnames({
                                     active: customActiveTabs === "3",
                                   })}
@@ -4015,6 +4026,7 @@ const Dashboard = () => {
         {/* <Analytics></Analytics>
             {props.children} */}
       </div>
+      {/* </Layout> */}
     </React.Fragment>
   );
 };

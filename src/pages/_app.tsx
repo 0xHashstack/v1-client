@@ -4,10 +4,27 @@ import type { AppProps } from "next/app";
 import loadable from "@loadable/component";
 
 import "../assets/scss/theme.scss";
+import "../components/layout/footer.scss";
+import "../components/layout/index.scss";
+import Layout from "../components/layout";
+import { ToastContainer } from "react-toastify";
+import { Provider } from "react-redux";
+import store from "../store";
 // import "../assets/fonts/AvenirNextLTPro-Regular.otf";
 
 function MyApp({ Component, pageProps }: AppProps) {
-  return <Component {...pageProps} />;
+  return (
+    // <Layout>
+    <>
+      <Provider store={store}>
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+        <ToastContainer />
+      </Provider>
+    </>
+    // </Layout>
+  );
 }
 
 export default MyApp;
