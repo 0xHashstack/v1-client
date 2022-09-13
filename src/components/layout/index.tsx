@@ -16,14 +16,18 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 //components
-import loadable from "@loadable/component";
-const Header = loadable(() => import("./header"));
-const Footer = loadable(() => import("./footer"));
+// import loadable from "@loadable/component";
+// const Header = loadable(() => import("./header"));
+// const Footer = loadable(() => import("./footer"));
+
+import Footer from "./footer";
+import Header from "./header";
 
 // import { Web3ModalContext } from "../../contexts/Web3ModalProvider";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./index.module.scss";
 
 // toast.configure();
 
@@ -36,7 +40,7 @@ const Layout = (props: any) => {
   const disconnect = () => {
     return 1;
   };
-  const account = "0x0";
+  const account = "0x123";
 
   const [isTransactionDone, setIsTransactionDone] = useState(false);
 

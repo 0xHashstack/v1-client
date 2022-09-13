@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, Row, Col } from "reactstrap";
+import "./footer.module.scss";
 const Footer = () => {
   return (
     <React.Fragment>
@@ -19,6 +20,7 @@ const Footer = () => {
                     src="./images/Twitter-Icon-Fill.svg"
                     loading="lazy"
                     alt=""
+                    className="icon-image"
                   />
                 </a>
                 <a

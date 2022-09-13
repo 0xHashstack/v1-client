@@ -27,6 +27,7 @@ import {
   CardSubtitle,
 } from "reactstrap";
 import classnames from "classnames";
+import "react-toastify/dist/ReactToastify.css";
 // import { Web3ModalContext } from "../contexts/Web3ModalProvider";
 // import { Web3WrapperContext } from "../contexts/Web3WrapperProvider";
 // import {
@@ -45,9 +46,11 @@ import "react-toastify/dist/ReactToastify.css";
 // import { txHistory } from "./passbook-history";
 
 import loadable from "@loadable/component";
-const PassbookTBody = loadable(() => import("../components/passbook-body"));
-const DashboardTBody = loadable(() => import("../components/dashboard-body"));
+// const PassbookTBody = loadable(() => import("../components/passbook-body"));
+// const DashboardTBody = loadable(() => import("../components/dashboard-body"));
 const TxHistoryTable = loadable(() => import("../components/tx-history-table"));
+import PassbookTBody from "../components/passbook-body";
+import DashboardTBody from "../components/dashboard-body";
 import { BigNumber } from "ethers";
 import Layout from "../components/layout";
 
@@ -3242,112 +3245,10 @@ const Dashboard = () => {
                                   <CardSubtitle
                                     className=" text-muted"
                                     tag="h6"
-                                  >
-                                    {/* <span style={{ fontSize: "14px" }}>
-                                      &nbsp; &nbsp;&nbsp;{" "}
-                                      {BNtoNum(Number(asset.currentLoanAmount))}
-                                    </span>
-                                    &nbsp; &nbsp;
-                                    {!asset.isSwapped && (
-                                      <img
-                                        src="https://img.icons8.com/cotton/64/000000/synchronize--v3.png"
-                                        // width="18%"
-                                        height="12px"
-                                      />
-                                    )} */}
-                                  </CardSubtitle>
+                                  ></CardSubtitle>
                                 </CardBody>
                               </Card>
                             </Col>
-                            {/* 
-                            <Col className="mr-4 ">
-                              <Card
-                                className="mb-1"
-                                style={{ marginTop: "20px" }}
-                              >
-                                <CardBody>
-                                  <div>
-                                    <div
-                                      className="mr-6"
-                                      style={{
-                                        display: "inline-block",
-                                        fontSize: "18px",
-                                      }}
-                                      align="right"
-                                    >
-                                      {parseFloat(
-                                        BNtoNum(Number(asset.loanInterest))
-                                      ).toFixed(6)}
-                                      &nbsp;
-                                      {EventMap[asset.loanMarket.toUpperCase()]}
-                                    </div>
-                                  </div>
-                                  <CardTitle tag="h5"></CardTitle>
-
-                                  <CardSubtitle
-                                    className=" text-muted"
-                                    tag="h6"
-                                  >
-                                    <span style={{ fontSize: "14px" }}>
-                                      &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
-                                      &nbsp;{asset.interestRate}%APR
-                                    </span>
-                                    &nbsp; &nbsp;
-                                  </CardSubtitle>
-                                </CardBody>
-                              </Card>
-                            </Col> */}
-                            {/* <Col className="mr-4 ">
-                              <Card
-                                className="mb-1"
-                                style={{ marginTop: "20px" }}
-                              >
-                                <CardBody>
-                                  <div>
-                                    <img
-                                      src={
-                                        CoinClassNames[
-                                          EventMap[
-                                            asset.collateralMarket.toUpperCase()
-                                          ]
-                                        ] ||
-                                        asset.collateralMarket.toUpperCase()
-                                      }
-                                      height="18px"
-                                    />
-
-                                    <div
-                                      className="mr-6"
-                                      style={{
-                                        display: "inline-block",
-                                        fontSize: "18px",
-                                      }}
-                                      align="right"
-                                    >
-                                      &nbsp; &nbsp;
-                                      {
-                                        EventMap[
-                                          asset.collateralMarket.toUpperCase()
-                                        ]
-                                      }
-                                    </div>
-                                  </div>
-                                  <CardTitle tag="h5"></CardTitle>
-                                  <CardSubtitle
-                                    className=" text-muted"
-                                    tag="h6"
-                                  >
-                                    <span style={{ fontSize: "14px" }}>
-                                      &nbsp; &nbsp;&nbsp;{" "}
-                                      {parseFloat(
-                                        BNtoNum(Number(asset.collateralAmount))
-                                      ).toFixed(6)}
-                                    </span>
-                                    &nbsp; &nbsp;
-                                  </CardSubtitle>
-                                </CardBody>
-                              </Card>
-                            </Col> */}
 
                             <Col className="mr-4 ">
                               <Card

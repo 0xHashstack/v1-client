@@ -1,4 +1,4 @@
-.footer-socials {
+.footer-socials-s {
   grid-column-gap: 24px;
   grid-row-gap: 24px;
   -ms-grid-columns: 1.5fr 1.5fr 1fr 1fr 1fr 1fr;
@@ -8,9 +8,10 @@
   background-color: transparent;
   color: #fff;
   white-space: normal;
+  margin-top: 20px;
 }
 
-.w-layout-grid {
+.w-layout-grid-s {
   display: block;
   grid-auto-columns: 1fr;
   -ms-grid-columns: 1fr 1fr;
@@ -19,19 +20,17 @@
   grid-template-rows: auto auto;
   grid-row-gap: 16px;
   grid-column-gap: 16px;
-  text-align: right !important;
-  align-items: right !important;
 }
 
-.w-inline-block {
+.w-inline-block-s {
   max-width: 100%;
   display: inline-block;
   margin-left: 5px;
   margin-right: 10px;
 }
 
-img {
-  max-width: 100%;
-  vertical-align: middle;
-  display: inline-block;
-}
+// img {
+//   max-width: 100%;
+//   vertical-align: middle;
+//   display: inline-block;
+// }
