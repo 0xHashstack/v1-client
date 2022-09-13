@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { Button, Container, Row, Col, Spinner } from "reactstrap";
+import "./index.module.scss";
 
 //actions
 import {
@@ -135,8 +136,7 @@ const Layout = (props: any) => {
       );
     } else if (account) {
       return (
-        // <div id="layout-wrapper">
-        <div>
+        <div id="layout-wrapper">
           <Header />
           <div className="main-content">{props.children}</div>
           <Footer />

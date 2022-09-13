@@ -3,9 +3,12 @@ import { Spinner } from "reactstrap";
 // import { DepositInterestRates, BorrowInterestRates
 // } from '../blockchain/constants';
 
-import loadable from "@loadable/component";
-const Borrow = loadable(() => import("./borrow"));
-const Deposit = loadable(() => import("./deposit"));
+// import loadable from "@loadable/component";
+// const Borrow = loadable(() => import("./borrow"));
+// const Deposit = loadable(() => import("./deposit"));
+
+import Borrow from "../borrow";
+import Deposit from "../deposit";
 
 let DashboardTBody = (props: any) => {
   if (props.isloading) {
