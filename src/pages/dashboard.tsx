@@ -1,31 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 // import MetaTags from "react-meta-tags";
 import axios from "axios";
-import {
-  Container,
-  Row,
-  Col,
-  Card,
-  CardBody,
-  Button,
-  Form,
-  Input,
-  Table,
-  Modal,
-  Nav,
-  NavItem,
-  NavLink,
-  TabContent,
-  TabPane,
-  Label,
-  Spinner,
-  AccordionItem,
-  AccordionHeader,
-  AccordionBody,
-  UncontrolledAccordion,
-  CardTitle,
-  CardSubtitle,
-} from "reactstrap";
+import { Container, Row, Col, Card, CardBody, TabContent } from "reactstrap";
 import classnames from "classnames";
 import "react-toastify/dist/ReactToastify.css";
 // import { Web3ModalContext } from "../contexts/Web3ModalProvider";

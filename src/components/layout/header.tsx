@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback } from "react";
+import React, { useState, useContext, useCallback, useEffect } from "react";
 // import { Link } from "react-router-dom";
 import Link from "next/link";
 import { Col, Modal, Button, Form, Spinner } from "reactstrap";
@@ -7,6 +7,13 @@ import { Col, Modal, Button, Form, Spinner } from "reactstrap";
 // import { GetErrorText, BNtoNum } from "../../blockchain/utils";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  useStarknetCall,
+  useStarknet,
+  useConnectors,
+  useStarknetInvoke,
+} from "@starknet-react/core";
+import { ConnectWallet } from "../wallet";
 
 // toast.configure({ autoClose: 4000 });
 
@@ -15,24 +22,32 @@ const Header = () => {
   const [isTransactionDone, setIsTransactionDone] = useState(false);
   const [currentProcessingToken, setCurrentProcessingToken] = useState(null);
 
-  const connect = () => {
-    return 1;
-  };
-  const disconnect = () => {
-    return 1;
-  };
-  const account = "0x1234";
-  //   const { connect, disconnect, account } = useContext(Web3ModalContext);
-  //   const { web3Wrapper: wrapper } = useContext(Web3WrapperContext);
+  const { available, connect, disconnect } = useConnectors();
+  // const [available, setAvailabe] = useState<any>();
+  // const [connect, setConnect] = useState<any>();
+  // const [disconnect, setDisconnect] = useState<any>();
+  const { account } = useStarknet();
 
-  const handleConnectWallet = useCallback(() => {
-    connect();
-  }, [connect]);
+  // useEffect(() => {
+  //   setAvailabe(available);
+  //   setConnect(connect);
+  //   setDisconnect(disconnect);
+  // }, []);
+
+  // const handleConnectWallet = useCallback(() => {
+  //   connect();
+  // }, [connect]);
 
   const handleDisconnectWallet = useCallback(() => {
     disconnect();
   }, [disconnect]);
 
+  const handleConnectWallet = async (connector: any) => {
+    if (connector) {
+      console.log(connector);
+      connect(connector);
+    }
+  };
   async function handleGetToken(event: any) {
     // try {
     //   setIsTransactionDone(true);
@@ -76,6 +91,7 @@ const Header = () => {
     removeBodyCss();
   }
 
+  console.log(available);
   return (
     <React.Fragment>
       <header id="page-topbar">
@@ -227,23 +243,11 @@ const Header = () => {
                 </Button>
               </>
             ) : (
-              <div>
-                <Button
-                  color="dark"
-                  outline
-                  className="btn-outline"
-                  onClick={handleConnectWallet}
-                >
-                  <i className="fas fa-wallet font-size-16 align-middle me-2"></i>{" "}
-                  Connect
-                </Button>
-              </div>
+              <ConnectWallet
+                available={available}
+                handleConnectWallet={handleConnectWallet}
+              />
             )}
-
-            {/* <div className="form-check form-switch" style={{ margin: "0" }}>
-              <input className="form-check-input" type="checkbox" id="flexSwitchCheckChecked" checked />
-              <label className="form-check-label">Dark</label>
-            </div> */}
           </div>
         </div>
       </header>
