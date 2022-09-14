@@ -2,6 +2,7 @@ import React, { useEffect, useState, useContext, useCallback } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
 import { Button, Container, Row, Col, Spinner } from "reactstrap";
+import "./index.module.scss";
 
 //actions
 import {
@@ -16,39 +17,47 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 //components
-import loadable from "@loadable/component";
-const Header = loadable(() => import("./header"));
-const Footer = loadable(() => import("./footer"));
+// import loadable from "@loadable/component";
+// const Header = loadable(() => import("./header"));
+// const Footer = loadable(() => import("./footer"));
+
+import Footer from "./footer";
+import Header from "./header";
 
 // import { Web3ModalContext } from "../../contexts/Web3ModalProvider";
 
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import "./index.module.scss";
+import { Connector, useConnectors, useStarknet } from "@starknet-react/core";
+import { ConnectWallet } from "../wallet";
+import useAbstractedWalletConnect from "../../hooks";
+import { Networks } from "../../constants/networks";
 
 // toast.configure();
 
 const Layout = (props: any) => {
   const dispatch = useDispatch();
   // const { connect, disconnect, account } = useContext(Web3ModalContext);
-  const connect = () => {
-    return 1;
-  };
-  const disconnect = () => {
-    return 1;
-  };
-  const account = "0x0";
+
+  const { available, connect, disconnect } = useConnectors();
+  const { account } = useStarknet();
+  // const { connect, disconnect, account, available } =
+  //   useAbstractedWalletConnect(Networks.starknet);
 
   const [isTransactionDone, setIsTransactionDone] = useState(false);
 
-  const handleConnectWallet = useCallback(() => {
-    setIsTransactionDone(true);
-    connect();
-    setIsTransactionDone(false);
-  }, [connect]);
+  const handleDisconnectWallet = () => {
+    disconnect();
+  };
 
-  const handleDisconnectWallet = useCallback(() => {
-    // disconnect();
-  }, [disconnect]);
+  const handleConnectWallet = (connector: Connector) => {
+    if (connector) {
+      console.log(connector);
+      console.log(connect);
+      connect(connector);
+    }
+  };
 
   //   const { topbarTheme, layoutWidth, isPreloader } = useSelector(
   //     (state: any) => ({
@@ -109,13 +118,13 @@ const Layout = (props: any) => {
                 <h4 className="font-weight-medium">
                   Welcome to Hashstack&apos;s public testnet !!
                 </h4>
-                <div className="mt-5 text-center">
+                {/* <div className="mt-5 text-center">
                   <Button
                     color="dark"
                     outline
                     className="btn-outline"
                     disabled={isTransactionDone}
-                    onClick={handleConnectWallet}
+                    onClick={(e) => handleConnectWallet}
                   >
                     {!isTransactionDone ? (
                       "Connect Wallet"
@@ -123,7 +132,12 @@ const Layout = (props: any) => {
                       <Spinner>Loading...</Spinner>
                     )}
                   </Button>
-                </div>
+                </div> */}
+
+                <ConnectWallet
+                  available={available}
+                  handleConnectWallet={handleConnectWallet}
+                />
               </div>
             </Col>
           </Row>
@@ -131,9 +145,11 @@ const Layout = (props: any) => {
       );
     } else if (account) {
       return (
-        // <div id="layout-wrapper">
-        <div>
-          <Header />
+        <div id="layout-wrapper">
+          <Header
+            handleConnectWallet={handleConnectWallet}
+            handleDisconnectWallet={handleDisconnectWallet}
+          />
           <div className="main-content">{props.children}</div>
           <Footer />
         </div>

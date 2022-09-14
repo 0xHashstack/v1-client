@@ -1,7 +1,7 @@
 import React from "react";
 
-function PassbookBody() {
+function PassbookTBody() {
   return <div>PassbookBody</div>;
 }
 
-export default PassbookBody;
+export default PassbookTBody;

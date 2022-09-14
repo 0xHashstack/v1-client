@@ -3,16 +3,25 @@ import { Spinner } from "reactstrap";
 // import { DepositInterestRates, BorrowInterestRates
 // } from '../blockchain/constants';
 
-import loadable from '@loadable/component';
-const Borrow = loadable(() => import('./borrow'));
-const Deposit = loadable(() => import('./deposit'));
+// import loadable from "@loadable/component";
+// const Borrow = loadable(() => import("./borrow"));
+// const Deposit = loadable(() => import("./deposit"));
 
-let DashboardTBody = (props) => {
+import Borrow from "../borrow";
+import Deposit from "../deposit";
 
-    if (props.isloading) {
-      return (<tr align="center"><td colSpan={6}><Spinner>Loading...</Spinner></td></tr>)
-    } else {
-      return (<>
+let DashboardTBody = (props: any) => {
+  if (props.isloading) {
+    return (
+      <tr align="center">
+        <td colSpan={6}>
+          <Spinner>Loading...</Spinner>
+        </td>
+      </tr>
+    );
+  } else {
+    return (
+      <>
         <tr key={0}>
           <th scope="row">
             <div className="d-flex align-items-center">
@@ -35,7 +44,7 @@ let DashboardTBody = (props) => {
           <td>
             <div className="text-muted">
               {/* {DepositInterestRates[props.depositInterestChange]} */}
-              </div>
+            </div>
           </td>
           <td>
             <div className="text-muted">
@@ -46,7 +55,7 @@ let DashboardTBody = (props) => {
             <Deposit asset={"USDT"} />
           </td>
           <td style={{ width: "120px" }}>
-            <Borrow assetID={"USDT"} title={'USDT'} />
+            <Borrow assetID={"USDT"} title={"USDT"} />
           </td>
         </tr>
         <tr key={1}>
@@ -71,7 +80,7 @@ let DashboardTBody = (props) => {
           <td>
             <div className="text-muted">
               {/* {DepositInterestRates[props.depositInterestChange]} */}
-              </div>
+            </div>
           </td>
           <td>
             <div className="text-muted">
@@ -79,10 +88,10 @@ let DashboardTBody = (props) => {
             </div>
           </td>
           <td style={{ width: "120px" }}>
-          <Deposit asset={"USDC"} />
+            <Deposit asset={"USDC"} />
           </td>
           <td style={{ width: "120px" }}>
-            <Borrow assetID={"USDC"} title={'USDC'} />
+            <Borrow assetID={"USDC"} title={"USDC"} />
           </td>
         </tr>
         <tr key={2}>
@@ -107,7 +116,7 @@ let DashboardTBody = (props) => {
           <td>
             <div className="text-muted">
               {/* {DepositInterestRates[props.depositInterestChange]} */}
-              </div>
+            </div>
           </td>
           <td>
             <div className="text-muted">
@@ -115,10 +124,10 @@ let DashboardTBody = (props) => {
             </div>
           </td>
           <td style={{ width: "120px" }}>
-          <Deposit asset={"BTC"} />
+            <Deposit asset={"BTC"} />
           </td>
           <td style={{ width: "120px" }}>
-            <Borrow assetID={"BTC"} title={'BTC'} />
+            <Borrow assetID={"BTC"} title={"BTC"} />
           </td>
         </tr>
         <tr key={3}>
@@ -143,7 +152,7 @@ let DashboardTBody = (props) => {
           <td>
             <div className="text-muted">
               {/* {DepositInterestRates[props.depositInterestChange]} */}
-              </div>
+            </div>
           </td>
           <td>
             <div className="text-muted">
@@ -151,14 +160,15 @@ let DashboardTBody = (props) => {
             </div>
           </td>
           <td style={{ width: "120px" }}>
-          <Deposit asset={"BNB"} />
+            <Deposit asset={"BNB"} />
           </td>
           <td style={{ width: "120px" }}>
-            <Borrow assetID={"BNB"} title={'BNB'} />
+            <Borrow assetID={"BNB"} title={"BNB"} />
           </td>
         </tr>
-      </>)
-    }
+      </>
+    );
   }
+};
 
-  export default DashboardTBody = React.memo(DashboardTBody);
+export default DashboardTBody = React.memo(DashboardTBody);
