@@ -31,6 +31,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "./index.module.scss";
 import { Connector, useConnectors, useStarknet } from "@starknet-react/core";
 import { ConnectWallet } from "../wallet";
+import useAbstractedWalletConnect from "../../hooks";
+import { Networks } from "../../constants/networks";
 
 // toast.configure();
 
@@ -40,6 +42,8 @@ const Layout = (props: any) => {
 
   const { available, connect, disconnect } = useConnectors();
   const { account } = useStarknet();
+  // const { connect, disconnect, account, available } =
+  //   useAbstractedWalletConnect(Networks.starknet);
 
   const [isTransactionDone, setIsTransactionDone] = useState(false);
 
