@@ -1,3 +1,4 @@
+import { Connector } from "@starknet-react/core";
 import React from "react";
 import { Button } from "reactstrap";
 
@@ -11,13 +12,13 @@ const ConnectWallet = ({
   return (
     <div>
       {available &&
-        available.map((connector: any) => {
+        available.map((connector: Connector) => {
           return (
             <Button
               color="dark"
               outline
               className="btn-outline"
-              onClick={() => handleConnectWallet(connector)}
+              onClick={(e) => handleConnectWallet(connector)}
               key={connector.id()}
             >
               <i className="fas fa-wallet font-size-16 align-middle me-2"></i>{" "}

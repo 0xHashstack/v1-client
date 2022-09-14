@@ -29,31 +29,31 @@ import Header from "./header";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./index.module.scss";
+import { Connector, useConnectors, useStarknet } from "@starknet-react/core";
+import { ConnectWallet } from "../wallet";
 
 // toast.configure();
 
 const Layout = (props: any) => {
   const dispatch = useDispatch();
   // const { connect, disconnect, account } = useContext(Web3ModalContext);
-  const connect = () => {
-    return 1;
-  };
-  const disconnect = () => {
-    return 1;
-  };
-  const account = "0x123";
+
+  const { available, connect, disconnect } = useConnectors();
+  const { account } = useStarknet();
 
   const [isTransactionDone, setIsTransactionDone] = useState(false);
 
-  const handleConnectWallet = useCallback(() => {
-    setIsTransactionDone(true);
-    connect();
-    setIsTransactionDone(false);
-  }, [connect]);
+  const handleDisconnectWallet = () => {
+    disconnect();
+  };
 
-  const handleDisconnectWallet = useCallback(() => {
-    // disconnect();
-  }, [disconnect]);
+  const handleConnectWallet = (connector: Connector) => {
+    if (connector) {
+      console.log(connector);
+      console.log(connect);
+      connect(connector);
+    }
+  };
 
   //   const { topbarTheme, layoutWidth, isPreloader } = useSelector(
   //     (state: any) => ({
@@ -114,13 +114,13 @@ const Layout = (props: any) => {
                 <h4 className="font-weight-medium">
                   Welcome to Hashstack&apos;s public testnet !!
                 </h4>
-                <div className="mt-5 text-center">
+                {/* <div className="mt-5 text-center">
                   <Button
                     color="dark"
                     outline
                     className="btn-outline"
                     disabled={isTransactionDone}
-                    onClick={handleConnectWallet}
+                    onClick={(e) => handleConnectWallet}
                   >
                     {!isTransactionDone ? (
                       "Connect Wallet"
@@ -128,7 +128,12 @@ const Layout = (props: any) => {
                       <Spinner>Loading...</Spinner>
                     )}
                   </Button>
-                </div>
+                </div> */}
+
+                <ConnectWallet
+                  available={available}
+                  handleConnectWallet={handleConnectWallet}
+                />
               </div>
             </Col>
           </Row>
@@ -137,7 +142,10 @@ const Layout = (props: any) => {
     } else if (account) {
       return (
         <div id="layout-wrapper">
-          <Header />
+          <Header
+            handleConnectWallet={handleConnectWallet}
+            handleDisconnectWallet={handleDisconnectWallet}
+          />
           <div className="main-content">{props.children}</div>
           <Footer />
         </div>

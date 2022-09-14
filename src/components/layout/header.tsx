@@ -17,15 +17,18 @@ import { ConnectWallet } from "../wallet";
 
 // toast.configure({ autoClose: 4000 });
 
-const Header = () => {
+const Header = ({
+  handleDisconnectWallet,
+  handleConnectWallet,
+}: {
+  handleDisconnectWallet: () => void;
+  handleConnectWallet: (connector: any) => void;
+}) => {
   const [get_token, setGet_token] = useState(false);
   const [isTransactionDone, setIsTransactionDone] = useState(false);
   const [currentProcessingToken, setCurrentProcessingToken] = useState(null);
 
   const { available, connect, disconnect } = useConnectors();
-  // const [available, setAvailabe] = useState<any>();
-  // const [connect, setConnect] = useState<any>();
-  // const [disconnect, setDisconnect] = useState<any>();
   const { account } = useStarknet();
 
   // useEffect(() => {
@@ -38,16 +41,6 @@ const Header = () => {
   //   connect();
   // }, [connect]);
 
-  const handleDisconnectWallet = useCallback(() => {
-    disconnect();
-  }, [disconnect]);
-
-  const handleConnectWallet = async (connector: any) => {
-    if (connector) {
-      console.log(connector);
-      connect(connector);
-    }
-  };
   async function handleGetToken(event: any) {
     // try {
     //   setIsTransactionDone(true);
