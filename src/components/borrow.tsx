@@ -18,6 +18,7 @@ import {
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React from "react";
+import "react-toastify/dist/ReactToastify.css";
 import { GetErrorText } from "../blockchain/utils";
 import { BorrowInterestRates, MinimumAmount } from "../blockchain/constants";
 import { useConnectors, useStarknet } from "@starknet-react/core";
