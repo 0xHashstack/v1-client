@@ -1,10 +1,6 @@
 import React, { useState, useContext, useCallback, useEffect } from "react";
-// import { Link } from "react-router-dom";
 import Link from "next/link";
 import { Col, Modal, Button, Form, Spinner } from "reactstrap";
-// import { Web3ModalContext } from "../../contexts/Web3ModalProvider";
-// import { Web3WrapperContext } from "../../contexts/Web3WrapperProvider";
-// import { GetErrorText, BNtoNum } from "../../blockchain/utils";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import {
@@ -92,42 +88,66 @@ const Header = ({
 
   async function handleGetToken(token: string) {
     let val;
-    switch (token) {
-      case "BTC":
-        val = await BTC();
-        console.log(val);
-        return;
-      case "BNB":
-        val = await BNB();
-        console.log(val);
-        return;
-      case "USDC":
-        val = await USDC();
-        console.log(val);
-        return;
-      case "USDT":
-        val = await USDT();
-        console.log(val);
-        return;
-      default:
-        console.log("invalid");
+    if (token === "BTC") {
+      val = await BTC();
     }
+    if (token === "BNB") {
+      val = await BNB();
+    }
+    if (token === "USDC") {
+      val = await USDC();
+    }
+    if (token === "USDT") {
+      val = await USDT();
+    }
+    console.log(val);
   }
 
-  const onSuccessCallback = (data: any, tokenName: any) => {
-    // setIsTransactionDone(false);
-    // setCurrentProcessingToken(null);
-    // let _amount;
-    // data.forEach((e) => {
-    //   if (e.event == "TokensIssued") {
-    //     _amount = e.args.amount.toBigInt();
-    //   }
-    // });
-    // const amount = BNtoNum(_amount, 8);
-    // toast.success(`${amount} ${tokenName} tokens Received Successfully.`, {
-    //   position: toast.POSITION.BOTTOM_RIGHT,
-    //   closeOnClick: true,
-    // });
+  const returnTransactionParameters = (token: string) => {
+    let data, loading, reset, error;
+    if (token === "BTC") {
+      [data, loading, reset, error] = [dataBTC, loadingBTC, resetBTC, errorBTC];
+    }
+    if (token === "BNB") {
+      [data, loading, reset, error] = [dataBNB, loadingBNB, resetBNB, errorBNB];
+    }
+    if (token === "USDC") {
+      [data, loading, reset, error] = [
+        dataUSDC,
+        loadingUSDC,
+        resetUSDC,
+        errorUSDC,
+      ];
+    }
+    if (token === "USDT") {
+      [data, loading, reset, error] = [
+        dataUSDT,
+        loadingUSDT,
+        resetUSDT,
+        errorUSDT,
+      ];
+    }
+    return { data, loading, reset, error };
+  };
+
+  const handleClickToken = async (
+    token: string,
+    loading: boolean,
+    error: any
+  ) => {
+    const val = await handleGetToken(token);
+    if (!loading && !error) {
+      toast.success(`${token} received!`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+    }
+    if (error) {
+      toast.error(`${token} transfer unsucessful`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+    }
   };
 
   function removeBodyCss() {
@@ -212,23 +232,23 @@ const Header = ({
                   <hr />
                   <div className="row mb-4">
                     {Tokens.map((token, idx) => {
+                      const { data, loading, reset, error } =
+                        returnTransactionParameters(token);
                       return (
                         <Col sm={3} key={idx}>
                           <Button
                             className="btn-block btn-lg"
                             color="light"
                             outline
-                            onClick={async () => {
-                              const val = await handleGetToken(token);
-                              console.log(val);
-                            }}
+                            onClick={async () =>
+                              await handleClickToken(
+                                token,
+                                loading as boolean,
+                                error
+                              )
+                            }
                           >
-                            {isTransactionDone &&
-                            currentProcessingToken === "BTC" ? (
-                              <Spinner>Loading...</Spinner>
-                            ) : (
-                              token
-                            )}
+                            {loading ? <Spinner>Loading...</Spinner> : token}
                           </Button>
                         </Col>
                       );
