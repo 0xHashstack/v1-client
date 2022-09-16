@@ -286,3 +286,11 @@ export const MinimumAmount: IMinimumAmount = {
   BTC: 1,
   BNB: 2.5,
 };
+
+interface IAddress {
+  [keys: string]: number;
+}
+
+export const starknetMarketAddress : IAddress = {
+  
+}

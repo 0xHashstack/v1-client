@@ -135,8 +135,8 @@ const Layout = (props: any) => {
                 </div> */}
 
                 <ConnectWallet
-                  available={available}
-                  handleConnectWallet={handleConnectWallet}
+                  // available={available}
+                  // handleConnectWallet={handleConnectWallet}
                 />
               </div>
             </Col>
