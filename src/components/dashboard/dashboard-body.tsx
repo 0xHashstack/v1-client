@@ -10,10 +10,11 @@ import { Spinner } from "reactstrap";
 import Borrow from "../borrow";
 import Deposit from "../deposit";
 
-let DashboardTBody = (props: any) => {
+let DashboardTBody: any = (props: any) => {
   if (props.isloading) {
     return (
-      <tr align="center">
+      // <tr align="center">
+      <tr>
         <td colSpan={6}>
           <Spinner>Loading...</Spinner>
         </td>

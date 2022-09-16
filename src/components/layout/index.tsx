@@ -48,6 +48,7 @@ const Layout = (props: any) => {
   const [isTransactionDone, setIsTransactionDone] = useState(false);
 
   const handleDisconnectWallet = () => {
+    console.log(`should disconnect wallet`);
     disconnect();
   };
 
@@ -135,8 +136,8 @@ const Layout = (props: any) => {
                 </div> */}
 
                 <ConnectWallet
-                  // available={available}
-                  // handleConnectWallet={handleConnectWallet}
+                // available={available}
+                // handleConnectWallet={handleConnectWallet}
                 />
               </div>
             </Col>
@@ -148,7 +149,7 @@ const Layout = (props: any) => {
         <div id="layout-wrapper">
           <Header
             handleConnectWallet={handleConnectWallet}
-            handleDisconnectWallet={handleDisconnectWallet}
+            handleDisconnectWallet={() => disconnect()}
           />
           <div className="main-content">{props.children}</div>
           <Footer />
