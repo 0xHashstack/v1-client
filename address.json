@@ -1,0 +1,44 @@
+{
+	"hardhat": {
+		"DIAMOND_ADDRESS": "0x04a9502dc6b32a99bfb3d7f8e4427d7e445cd7d069e4e1c16fa99d5f724ea825",
+		"DEPLOYER_ADDRESS": "0x0316513e95e163b1738927dc7f9d4e8bf6eb6c284df81b118107ab5020ed2d77",
+		"DEPLOYER_ADDRESS_PK": "0x25ca3dd1d80923ed8dc5e8ea4cc46572afdfd108538c8a23a852b7dbedd56bc",
+		"TOKENS": [
+			{
+				"name": "BTC",
+				"symbol": "BTC",
+				"decimals": 18,
+				"address": "0x00206f648775912ce15dbef04b228c18b7a6c83d99668ac88f401b1a41c1980c",
+				"CEXSymbol": "BTC/USDT"
+			},
+			{
+				"name": "USDC",
+				"symbol": "USDC",
+				"decimals": 18,
+				"address": "0x0233432860c6ee512f2d95d0c8532de4e243817f15a8a8170186131484bc61fa",
+				"CEXSymbol": "USDC/USDT"
+			},
+			{
+				"name": "USDT",
+				"symbol": "USDT",
+				"decimals": 18,
+				"address": "0x07892f578aca914cc45000a72ca037b08657d1d8bbcc94477bdc25d8565dd731",
+				"CEXSymbol": "USDT/USDT"
+			},
+			{
+				"name": "BNB",
+				"symbol": "BNB",
+				"decimals": 18,
+				"address": "0x00fbde6b1ae3005987168bce5f1d67a781cea84092e9a6d958cea8d23b4db220",
+				"CEXSymbol": "BNB/USDT"
+			}
+		],
+		"PONTIS_PROXY_ADDRESS": "0x06ad3e8c3895b31826d8a6ca119af62d96eb8a527afa19b9345ec686fcb83767",
+		"STORK_PROXY_ADDRESS": "0x02873adfd00404c2115697c52c13f2e9fee7f64090fa5b97a49caaddf63a1927",
+		"SWAP_ROUTER_ADDRESS": "0x07be693dadcb25ae51e261802bfbc4285946b61c0f48d0e2afb4a5115a5aa11a",
+		"TEST_DATA": {
+			"SECONDARY_ADDRESS": "0x07a35ec0e936957f2b960ced442667b53040b145e658a10e30ff712769ee245b",
+			"SECONDARY_ADDRESS_PK": "0x27da0527e5bf4927b161ac8ee6eb762d11947948ed2f3b9aae6011cab807059"
+		}
+	}
+}

@@ -1,4 +1,4 @@
-import { connect, getStarknet } from "@argent/get-starknet"
+import { connect, getStarknet } from "get-starknet"
 import { constants, shortString } from "starknet"
 
 import { Network } from "./token.service"
