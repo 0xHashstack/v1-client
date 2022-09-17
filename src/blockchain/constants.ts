@@ -1,4 +1,17 @@
 export const defaultChainId = 3;
+interface IEventMap {
+  [key: string]: string;
+}
+interface ICoinClassNames {
+  [key: string]: string | undefined;
+}
+interface IMinimumAmount {
+  [keys: string]: number;
+}
+
+interface IAddress {
+  [keys: string]: number;
+}
 
 export const rpcUrls = {
   56: "https://bsc-dataseed.binance.org/",
@@ -224,7 +237,7 @@ export const pancakeSwapTokenAddress = {
     "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c", //BNB
 };
 
-export const EventMap = {
+export const EventMap: IEventMap = {
   GET_TOKEN: "",
   NEW_DEPOSIT: "NewDeposit",
   DEPOSIT_ADDED: "DepositAdded",
@@ -261,7 +274,8 @@ export const EventMap = {
   comit_THREEMONTHS: "Three Months",
 };
 //
-export const CoinClassNames = {
+
+export const CoinClassNames: ICoinClassNames = {
   USDT: "./usdt.svg",
   USDC: "./usdc.svg",
   BTC: "./btc.svg",
@@ -276,10 +290,6 @@ export const CoinClassNames = {
   SXP: "./sxp.svg",
 };
 
-interface IMinimumAmount {
-  [keys: string]: number;
-}
-
 export const MinimumAmount: IMinimumAmount = {
   USDT: 2500,
   USDC: 2500,
@@ -287,10 +297,4 @@ export const MinimumAmount: IMinimumAmount = {
   BNB: 2.5,
 };
 
-interface IAddress {
-  [keys: string]: number;
-}
-
-export const starknetMarketAddress : IAddress = {
-  
-}
+export const starknetMarketAddress: IAddress = {};

@@ -40,18 +40,47 @@ import PassbookMenu from "../components/passbook/passbook-menu";
 import Liquidation from "../components/liquidation/liquidation";
 import LoanBorrowCommitment from "../components/dashboard/loanborrow-commitment";
 import OffchainAPI from "../services/offchainapi.service";
-import { getCommitmentNameFromIndex, getTokenFromAddress } from "../blockchain/stark-constants";
+import {
+  getCommitmentNameFromIndex,
+  getTokenFromAddress,
+} from "../blockchain/stark-constants";
 import BigNumber from "bignumber.js";
 
 // toast.configure({
 //   autoClose: 4000,
 // });
+interface IDeposit {
+  amount: string;
+  account: string;
+  commitment: string | null;
+  market: string | undefined;
+  acquiredYield: number;
+  interestRate: number;
+}
+
+interface ILoans {
+  loanMarket: string | undefined;
+  loanAmount: number;
+  commitment: string | null;
+  collateralMarket: string | undefined;
+  collateralAmount: number;
+  loanInterest: number;
+  interestRate: number;
+  account: string;
+  cdr: number;
+  debtCategory: number | undefined;
+  loanId: number;
+  isSwapped: boolean;
+  state: number;
+  currentLoanMarket: string | undefined;
+  currentLoanAmount: number;
+}
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [activeDepositsData, setActiveDepositsData] = useState([]);
-  const [activeLoansData, setActiveLoansData] = useState([]);
-  const [repaidLoansData, setRepaidLoansData] = useState([]);
+  const [activeDepositsData, setActiveDepositsData] = useState<IDeposit[]>([]);
+  const [activeLoansData, setActiveLoansData] = useState<ILoans[]>([]);
+  const [repaidLoansData, setRepaidLoansData] = useState<ILoans[]>([]);
   const [activeLiquidationsData, setActiveLiquidationsData] = useState([]);
   const [isTransactionDone, setIsTransactionDone] = useState(false);
 
@@ -120,7 +149,8 @@ const Dashboard = () => {
 
   //   const { connect, disconnect, account, chainId } =
   //     useContext(Web3ModalContext);
-  const account = "0x7ca42502c30d06ff8e62ec3dc37e02f62a7d1b5c22de65114f9ba45ccb9e7ef";
+  const account =
+    "0x7ca42502c30d06ff8e62ec3dc37e02f62a7d1b5c22de65114f9ba45ccb9e7ef";
   const [index, setIndex] = useState("1");
 
   const [uf, setUf] = useState(null);
@@ -172,20 +202,20 @@ const Dashboard = () => {
   //   const { web3Wrapper: wrapper } = useContext(Web3WrapperContext);
 
   const onLoansData = async (loansData: any[]) => {
-    console.log("Data: ", loansData)
-    const loans = []
-    for(let i=0; i<loansData.length; ++i) {
-      let loanData = loansData[i]
-      const cdr = (new BigNumber(loanData.collateralAmount))
-      .div(new BigNumber(loanData.loanAmount))
-      .toNumber()
+    console.log("Data: ", loansData);
+    const loans: ILoans[] = [];
+    for (let i = 0; i < loansData.length; ++i) {
+      let loanData = loansData[i];
+      const cdr = new BigNumber(loanData.collateralAmount)
+        .div(new BigNumber(loanData.loanAmount))
+        .toNumber();
       let debtCategory;
       if (cdr >= 1) {
-        debtCategory = 1
+        debtCategory = 1;
       } else if (cdr >= 0.5 && cdr < 1) {
-        debtCategory = 2
+        debtCategory = 2;
       } else if (cdr >= 0.333 && cdr < 0.5) {
-        debtCategory = 3
+        debtCategory = 3;
       }
       loans.push({
         loanMarket: getTokenFromAddress(loanData.loanMarket)?.name,
@@ -200,24 +230,27 @@ const Dashboard = () => {
         cdr,
         debtCategory,
         loanId: loanData.loanId,
-        isSwapped: loanData.state == 'SWAPPED', // Swap status
-        state: (loanData.state == 'REPAID' || loanData.state == 'LIQUIDATED') ? 1 : 0, // Repay status
-        currentLoanMarket: getTokenFromAddress(loanData.currentMarket || loanData.loanMarket)?.name, // Borrow market(current)
+        isSwapped: loanData.state == "SWAPPED", // Swap status
+        state:
+          loanData.state == "REPAID" || loanData.state == "LIQUIDATED" ? 1 : 0, // Repay status
+        currentLoanMarket: getTokenFromAddress(
+          loanData.currentMarket || loanData.loanMarket
+        )?.name, // Borrow market(current)
         currentLoanAmount: Number(loanData.currentAmount), // Borrow amount(current)
         //get apr is for loans apr
-      })
+      });
 
       setActiveLoansData(
-        loans.filter(asset => {
-          return asset.state === 0
+        loans.filter((asset) => {
+          return asset.state === 0;
         })
-      )
+      );
       setRepaidLoansData(
-        loans.filter(asset => {
-          console.log(asset,"testasset")
-          return asset.state === 1
+        loans.filter((asset) => {
+          console.log(asset, "testasset");
+          return asset.state === 1;
         })
-      )
+      );
     }
     // for (let index = 0; index < loansData.loanAmount.length; index++) {
     //   let debtCategory, cdr, interest, interestAPR
@@ -261,27 +294,26 @@ const Dashboard = () => {
     //     //get apr is for loans apr
     //   })
     // }
-  }
+  };
 
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
     }, 100);
-    console.log('useEffect', isTransactionDone, account)
+    console.log("useEffect", isTransactionDone, account);
     !isTransactionDone &&
       account &&
-      OffchainAPI.getLoans(account)
-        .then(
-          (loans) => {
-            onLoansData(loans);
-            setIsLoading(false);
-          },
-          (err) => {
-            setIsLoading(false);
-            setActiveLoansData([]);
-            console.log(err);
-          }
-        );
+      OffchainAPI.getLoans(account).then(
+        (loans) => {
+          onLoansData(loans);
+          setIsLoading(false);
+        },
+        (err) => {
+          setIsLoading(false);
+          setActiveLoansData([]);
+          console.log(err);
+        }
+      );
   }, [
     // account,
     passbookStatus,
@@ -291,9 +323,9 @@ const Dashboard = () => {
   ]);
 
   const onDepositData = async (depositsData: any[]) => {
-    const deposits = []
+    const deposits: IDeposit[] = [];
     for (let i = 0; i < depositsData.length; i++) {
-      let deposit = depositsData[i]
+      let deposit: IDeposit = depositsData[i];
       // let interest = await wrapper
       //   ?.getDepositInstance()
       //   .getDepositInterest(account, i + 1)
@@ -303,38 +335,36 @@ const Dashboard = () => {
       deposits.push({
         amount: deposit.amount.toString(),
         account,
-        commitment: getCommitmentNameFromIndex(deposit.commitment),
-        market: getTokenFromAddress(deposit.market)?.name,
+        commitment: getCommitmentNameFromIndex(deposit.commitment as string),
+        market: getTokenFromAddress(deposit.market as string)?.name,
         acquiredYield: Number(0), // deposit interest
         interestRate: 0,
         // interest market is same as deposit market
         // call getsavingsapr
         // balance add amount and interest directly for deposit
-      })
+      });
     }
     let nonZeroDeposits = deposits.filter(function (el) {
-      console.log(el.amount, "deposits123")
-      return el.amount !== "0"
-    }
-    );
-    setActiveDepositsData(nonZeroDeposits)
-  }
+      console.log(el.amount, "deposits123");
+      return el.amount !== "0";
+    });
+    setActiveDepositsData(nonZeroDeposits);
+  };
 
   useEffect(() => {
     !isTransactionDone &&
       account &&
-      OffchainAPI.getActiveDeposits(account)
-        .then(
-          (deposits) => {
-            onDepositData(deposits);
-            setIsLoading(false);
-          },
-          (err) => {
-            setIsLoading(false);
-            setActiveDepositsData([]);
-            console.log(err);
-          }
-        );
+      OffchainAPI.getActiveDeposits(account).then(
+        (deposits) => {
+          onDepositData(deposits);
+          setIsLoading(false);
+        },
+        (err) => {
+          setIsLoading(false);
+          setActiveDepositsData([]);
+          console.log(err);
+        }
+      );
   }, [
     // account,
     passbookStatus,
@@ -546,19 +576,39 @@ const Dashboard = () => {
         break;
 
       case "2": //
-        return <ActiveLoansTab activeLoansData={activeLoansData} customActiveTabs={activeLoansData} 
-        loanActionTab={loanActionTab} collateral_active_loan={collateral_active_loan} 
-        repay_active_loan={repay_active_loan} withdraw_active_loan={withdraw_active_loan}
-        swap_active_loan={swap_active_loan} swap_to_active_loan={swap_to_active_loan}
-        isTransactionDone={isTransactionDone} depositRequestSel={depositRequestSel} inputVal1={inputVal1}/>;
+        return (
+          <ActiveLoansTab
+            activeLoansData={activeLoansData}
+            customActiveTabs={activeLoansData}
+            loanActionTab={loanActionTab}
+            collateral_active_loan={collateral_active_loan}
+            repay_active_loan={repay_active_loan}
+            withdraw_active_loan={withdraw_active_loan}
+            swap_active_loan={swap_active_loan}
+            swap_to_active_loan={swap_to_active_loan}
+            isTransactionDone={isTransactionDone}
+            depositRequestSel={depositRequestSel}
+            inputVal1={inputVal1}
+          />
+        );
         break;
 
       case "3":
-        return <RepaidLoansTab repaidLoansData={repaidLoansData} customActiveTabs={activeLoansData} 
-        loanActionTab={loanActionTab} collateral_active_loan={collateral_active_loan} 
-        repay_active_loan={repay_active_loan} withdraw_active_loan={withdraw_active_loan}
-        swap_active_loan={swap_active_loan} swap_to_active_loan={swap_to_active_loan}
-        isTransactionDone={isTransactionDone} depositRequestSel={depositRequestSel} inputVal1={inputVal1}/>;
+        return (
+          <RepaidLoansTab
+            repaidLoansData={repaidLoansData}
+            customActiveTabs={activeLoansData}
+            loanActionTab={loanActionTab}
+            collateral_active_loan={collateral_active_loan}
+            repay_active_loan={repay_active_loan}
+            withdraw_active_loan={withdraw_active_loan}
+            swap_active_loan={swap_active_loan}
+            swap_to_active_loan={swap_to_active_loan}
+            isTransactionDone={isTransactionDone}
+            depositRequestSel={depositRequestSel}
+            inputVal1={inputVal1}
+          />
+        );
         break;
       default:
         return null;
