@@ -20,8 +20,25 @@ import {
   CardTitle,
   CardSubtitle,
 } from "reactstrap";
+import { CoinClassNames, EventMap } from "../../../blockchain/constants";
+import { BNtoNum } from "../../../blockchain/utils";
+import TxHistoryTable from "../../dashboard/tx-history-table";
 
-const RepaidLoansTab = ({ repaidLoansData }: { repaidLoansData: any }) => {
+const RepaidLoansTab = ({ repaidLoansData, customActiveTabs, 
+  loanActionTab, collateral_active_loan, repay_active_loan,
+  withdraw_active_loan, swap_active_loan, swap_to_active_loan,
+  isTransactionDone, depositRequestSel, inputVal1 }: { 
+    repaidLoansData: any,
+    customActiveTabs: any, 
+    loanActionTab: any,
+    collateral_active_loan: any,
+    repay_active_loan: any,
+    withdraw_active_loan: any,
+    swap_active_loan: any,
+    swap_to_active_loan: any,
+    isTransactionDone: any,
+    depositRequestSel: any,
+    inputVal1: any }) => {
   return (
     <div className="table-responsive  mt-3">
       <Table className="table table-nowrap align-middle mb-0">

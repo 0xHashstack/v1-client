@@ -21,3 +21,18 @@ export const tokenAddressMap: ItokenAddressMap = {
       ? DeployDetails.devnet.TOKENS[3].address
       : process.env.NEXT_PUBLIC_T_BNB,
 };
+
+export const getTokenFromAddress = (address: string) => {
+  if(process.env.NODE_ENV === "development") {
+    let index = DeployDetails.devnet.TOKENS.map(item => item.address).indexOf(address)
+    return DeployDetails.devnet.TOKENS[index]
+  }
+  return null
+}
+
+export const getCommitmentNameFromIndex = (index: string) => {
+  if(index == '0') {
+    return 'None'
+  }
+  return null
+}

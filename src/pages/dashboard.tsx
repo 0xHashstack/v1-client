@@ -39,6 +39,9 @@ import DashboardMenu from "../components/dashboard/dashboard-menu";
 import PassbookMenu from "../components/passbook/passbook-menu";
 import Liquidation from "../components/liquidation/liquidation";
 import LoanBorrowCommitment from "../components/dashboard/loanborrow-commitment";
+import OffchainAPI from "../services/offchainapi.service";
+import { getCommitmentNameFromIndex, getTokenFromAddress } from "../blockchain/stark-constants";
+import BigNumber from "bignumber.js";
 
 // toast.configure({
 //   autoClose: 4000,
@@ -117,7 +120,7 @@ const Dashboard = () => {
 
   //   const { connect, disconnect, account, chainId } =
   //     useContext(Web3ModalContext);
-  const account = "0x01234";
+  const account = "0x7ca42502c30d06ff8e62ec3dc37e02f62a7d1b5c22de65114f9ba45ccb9e7ef";
   const [index, setIndex] = useState("1");
 
   const [uf, setUf] = useState(null);
@@ -168,26 +171,117 @@ const Dashboard = () => {
 
   //   const { web3Wrapper: wrapper } = useContext(Web3WrapperContext);
 
+  const onLoansData = async (loansData: any[]) => {
+    console.log("Data: ", loansData)
+    const loans = []
+    for(let i=0; i<loansData.length; ++i) {
+      let loanData = loansData[i]
+      const cdr = (new BigNumber(loanData.collateralAmount))
+      .div(new BigNumber(loanData.loanAmount))
+      .toNumber()
+      let debtCategory;
+      if (cdr >= 1) {
+        debtCategory = 1
+      } else if (cdr >= 0.5 && cdr < 1) {
+        debtCategory = 2
+      } else if (cdr >= 0.333 && cdr < 0.5) {
+        debtCategory = 3
+      }
+      loans.push({
+        loanMarket: getTokenFromAddress(loanData.loanMarket)?.name,
+        loanAmount: Number(loanData.loanAmount), // 2 Amount
+        commitment: getCommitmentNameFromIndex(loanData.commitment), // 3  Commitment
+        collateralMarket: getTokenFromAddress(loanData.collateralMarket)?.name, // 4 Collateral Market
+        collateralAmount: Number(loanData.collateralAmount), // 5 Collateral Amount
+        loanInterest: Number(loanData.interest), //loan interest
+        interestRate: 0,
+        //interest market will always be same as loan market
+        account,
+        cdr,
+        debtCategory,
+        loanId: loanData.loanId,
+        isSwapped: loanData.state == 'SWAPPED', // Swap status
+        state: (loanData.state == 'REPAID' || loanData.state == 'LIQUIDATED') ? 1 : 0, // Repay status
+        currentLoanMarket: getTokenFromAddress(loanData.currentMarket || loanData.loanMarket)?.name, // Borrow market(current)
+        currentLoanAmount: Number(loanData.currentAmount), // Borrow amount(current)
+        //get apr is for loans apr
+      })
+
+      setActiveLoansData(
+        loans.filter(asset => {
+          return asset.state === 0
+        })
+      )
+      setRepaidLoansData(
+        loans.filter(asset => {
+          console.log(asset,"testasset")
+          return asset.state === 1
+        })
+      )
+    }
+    // for (let index = 0; index < loansData.loanAmount.length; index++) {
+    //   let debtCategory, cdr, interest, interestAPR
+    //   if (loansData.state[index] == 0)
+    //     interest = await wrapper
+    //       ?.getLoanInstance()
+    //       .getLoanInterest(account, index + 1)
+    //   interestAPR = await wrapper
+    //     ?.getComptrollerInstance()
+    //     .getAPR(loansData.loanMarket[index], loansData.loanCommitment[index])
+    //   try {
+    //     cdr = BigNumber.from(loansData.collateralAmount[index])
+    //       .div(BigNumber.from(loansData.loanAmount[index]))
+    //       .toNumber()
+    //     if (cdr >= 1) {
+    //       debtCategory = 1
+    //     } else if (cdr >= 0.5 && cdr < 1) {
+    //       debtCategory = 2
+    //     } else if (cdr >= 0.333 && cdr < 0.5) {
+    //       debtCategory = 3
+    //     }
+    //   } catch { }
+    //   //here all data of loans
+    //   loans.push({
+    //     loanMarket: bytesToString(loansData.loanMarket[index]), // 1 Loan Market
+    //     loanAmount: Number(loansData.loanAmount[index]), // 2 Amount
+    //     commitment: CommitMapReverse[loansData.loanCommitment[index]], // 3  Commitment
+    //     collateralMarket: bytesToString(loansData.collateralMarket[index]), // 4 Collateral Market
+    //     collateralAmount: Number(loansData.collateralAmount[index]), // 5 Collateral Amount
+    //     loanInterest: Number(interest), //loan interest
+    //     interestRate: interestAPR.toNumber() / 100,
+    //     //interest market will always be same as loan market
+    //     account,
+    //     cdr,
+    //     debtCategory,
+    //     loanId: index + 1,
+    //     isSwapped: loansData.isSwapped[index], // Swap status
+    //     state: loansData.state[index], // Repay status
+    //     currentLoanMarket: bytesToString(loansData.loanCurrentMarket[index]), // Borrow market(current)
+    //     currentLoanAmount: Number(loansData.loanCurrentAmount[index]), // Borrow amount(current)
+    //     //get apr is for loans apr
+    //   })
+    // }
+  }
+
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
     }, 100);
-    // !isTransactionDone &&
-    //   account &&
-    //   wrapper
-    //     ?.getLoanInstance()
-    //     .getLoans(account)
-    //     .then(
-    //       (loans) => {
-    //         onLoansData(loans);
-    //         setIsLoading(false);
-    //       },
-    //       (err) => {
-    //         setIsLoading(false);
-    //         setActiveLoansData([]);
-    //         console.log(err);
-    //       }
-    //     );
+    console.log('useEffect', isTransactionDone, account)
+    !isTransactionDone &&
+      account &&
+      OffchainAPI.getLoans(account)
+        .then(
+          (loans) => {
+            onLoansData(loans);
+            setIsLoading(false);
+          },
+          (err) => {
+            setIsLoading(false);
+            setActiveLoansData([]);
+            console.log(err);
+          }
+        );
   }, [
     // account,
     passbookStatus,
@@ -196,23 +290,51 @@ const Dashboard = () => {
     activeLiquidationsData,
   ]);
 
+  const onDepositData = async (depositsData: any[]) => {
+    const deposits = []
+    for (let i = 0; i < depositsData.length; i++) {
+      let deposit = depositsData[i]
+      // let interest = await wrapper
+      //   ?.getDepositInstance()
+      //   .getDepositInterest(account, i + 1)
+      // let interestAPR = await wrapper
+      //   ?.getComptrollerInstance()
+      //   .getsavingsAPR(depositsData.market[i], depositsData.commitment[i])
+      deposits.push({
+        amount: deposit.amount.toString(),
+        account,
+        commitment: getCommitmentNameFromIndex(deposit.commitment),
+        market: getTokenFromAddress(deposit.market)?.name,
+        acquiredYield: Number(0), // deposit interest
+        interestRate: 0,
+        // interest market is same as deposit market
+        // call getsavingsapr
+        // balance add amount and interest directly for deposit
+      })
+    }
+    let nonZeroDeposits = deposits.filter(function (el) {
+      console.log(el.amount, "deposits123")
+      return el.amount !== "0"
+    }
+    );
+    setActiveDepositsData(nonZeroDeposits)
+  }
+
   useEffect(() => {
-    // !isTransactionDone &&
-    //   account &&
-    //   wrapper
-    //     ?.getDepositInstance()
-    //     .getDeposits(account)
-    //     .then(
-    //       (deposits) => {
-    //         onDepositData(deposits);
-    //         setIsLoading(false);
-    //       },
-    //       (err) => {
-    //         setIsLoading(false);
-    //         setActiveDepositsData([]);
-    //         console.log(err);
-    //       }
-    //     );
+    !isTransactionDone &&
+      account &&
+      OffchainAPI.getActiveDeposits(account)
+        .then(
+          (deposits) => {
+            onDepositData(deposits);
+            setIsLoading(false);
+          },
+          (err) => {
+            setIsLoading(false);
+            setActiveDepositsData([]);
+            console.log(err);
+          }
+        );
   }, [
     // account,
     passbookStatus,
@@ -424,11 +546,19 @@ const Dashboard = () => {
         break;
 
       case "2": //
-        return <ActiveLoansTab activeLoansData={activeLoansData} />;
+        return <ActiveLoansTab activeLoansData={activeLoansData} customActiveTabs={activeLoansData} 
+        loanActionTab={loanActionTab} collateral_active_loan={collateral_active_loan} 
+        repay_active_loan={repay_active_loan} withdraw_active_loan={withdraw_active_loan}
+        swap_active_loan={swap_active_loan} swap_to_active_loan={swap_to_active_loan}
+        isTransactionDone={isTransactionDone} depositRequestSel={depositRequestSel} inputVal1={inputVal1}/>;
         break;
 
       case "3":
-        return <RepaidLoansTab repaidLoansData={repaidLoansData} />;
+        return <RepaidLoansTab repaidLoansData={repaidLoansData} customActiveTabs={activeLoansData} 
+        loanActionTab={loanActionTab} collateral_active_loan={collateral_active_loan} 
+        repay_active_loan={repay_active_loan} withdraw_active_loan={withdraw_active_loan}
+        swap_active_loan={swap_active_loan} swap_to_active_loan={swap_to_active_loan}
+        isTransactionDone={isTransactionDone} depositRequestSel={depositRequestSel} inputVal1={inputVal1}/>;
         break;
       default:
         return null;
