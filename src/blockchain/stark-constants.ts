@@ -1,4 +1,5 @@
 import * as DeployDetails from "../../../zkOpen/contract_addresses.json";
+import ERC20Abi from "../../starknet-artifacts/contracts/mockups/erc20.cairo/erc20_abi.json";
 interface ItokenAddressMap {
   [key: string]: string | undefined;
 }
@@ -22,17 +23,22 @@ export const tokenAddressMap: ItokenAddressMap = {
       : process.env.NEXT_PUBLIC_T_BNB,
 };
 
+export const diamondAddress: string = DeployDetails.devnet.DIAMOND_ADDRESS;
+
 export const getTokenFromAddress = (address: string) => {
-  if(process.env.NODE_ENV === "development") {
-    let index = DeployDetails.devnet.TOKENS.map(item => item.address).indexOf(address)
-    return DeployDetails.devnet.TOKENS[index]
+  if (process.env.NODE_ENV === "development") {
+    let index = DeployDetails.devnet.TOKENS.map((item) => item.address).indexOf(
+      address
+    );
+    return DeployDetails.devnet.TOKENS[index];
   }
-  return null
-}
+  return null;
+};
 
 export const getCommitmentNameFromIndex = (index: string) => {
-  if(index == '0') {
-    return 'None'
+  if (index == "0") {
+    return "None";
   }
-  return null
-}
+  return null;
+};
+export { ERC20Abi };

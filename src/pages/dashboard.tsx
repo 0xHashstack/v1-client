@@ -1,29 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
-// import MetaTags from "react-meta-tags";
 import axios from "axios";
 import { Container, Row, Col, Card, CardBody, TabContent } from "reactstrap";
 import classnames from "classnames";
 import "react-toastify/dist/ReactToastify.css";
-// import { Web3ModalContext } from "../contexts/Web3ModalProvider";
-// import { Web3WrapperContext } from "../contexts/Web3WrapperProvider";
-// import {
-//   EventMap,
-//   CoinClassNames,
-//   MinimumAmount,
-//   SymbolsMap,
-//   DecimalsMap,
-//   CommitMap,
-//   CommitMapReverse,
-// } from "../blockchain/constants";
-// import { BNtoNum, GetErrorText, bytesToString } from "../blockchain/utils";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-// import { main } from "./data-analytics";
-// import { txHistory } from "./passbook-history";
 
 import loadable from "@loadable/component";
-// const PassbookTBody = loadable(() => import("../components/passbook-body"));
-// const DashboardTBody = loadable(() => import("../components/dashboard-body"));
 const TxHistoryTable = loadable(
   () => import("../components/dashboard/tx-history-table")
 );
@@ -252,48 +235,6 @@ const Dashboard = () => {
         })
       );
     }
-    // for (let index = 0; index < loansData.loanAmount.length; index++) {
-    //   let debtCategory, cdr, interest, interestAPR
-    //   if (loansData.state[index] == 0)
-    //     interest = await wrapper
-    //       ?.getLoanInstance()
-    //       .getLoanInterest(account, index + 1)
-    //   interestAPR = await wrapper
-    //     ?.getComptrollerInstance()
-    //     .getAPR(loansData.loanMarket[index], loansData.loanCommitment[index])
-    //   try {
-    //     cdr = BigNumber.from(loansData.collateralAmount[index])
-    //       .div(BigNumber.from(loansData.loanAmount[index]))
-    //       .toNumber()
-    //     if (cdr >= 1) {
-    //       debtCategory = 1
-    //     } else if (cdr >= 0.5 && cdr < 1) {
-    //       debtCategory = 2
-    //     } else if (cdr >= 0.333 && cdr < 0.5) {
-    //       debtCategory = 3
-    //     }
-    //   } catch { }
-    //   //here all data of loans
-    //   loans.push({
-    //     loanMarket: bytesToString(loansData.loanMarket[index]), // 1 Loan Market
-    //     loanAmount: Number(loansData.loanAmount[index]), // 2 Amount
-    //     commitment: CommitMapReverse[loansData.loanCommitment[index]], // 3  Commitment
-    //     collateralMarket: bytesToString(loansData.collateralMarket[index]), // 4 Collateral Market
-    //     collateralAmount: Number(loansData.collateralAmount[index]), // 5 Collateral Amount
-    //     loanInterest: Number(interest), //loan interest
-    //     interestRate: interestAPR.toNumber() / 100,
-    //     //interest market will always be same as loan market
-    //     account,
-    //     cdr,
-    //     debtCategory,
-    //     loanId: index + 1,
-    //     isSwapped: loansData.isSwapped[index], // Swap status
-    //     state: loansData.state[index], // Repay status
-    //     currentLoanMarket: bytesToString(loansData.loanCurrentMarket[index]), // Borrow market(current)
-    //     currentLoanAmount: Number(loansData.loanCurrentAmount[index]), // Borrow amount(current)
-    //     //get apr is for loans apr
-    //   })
-    // }
   };
 
   useEffect(() => {

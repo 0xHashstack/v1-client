@@ -42,19 +42,17 @@ export const NumToBN = (value: number, decimal: number = 8) => {
 };
 
 export const GetErrorText = (err: any) => {
-  // if(err.code === Logger.errors.CALL_EXCEPTION)
-  //   return `Transaction failed! \n ${err.transactionHash}`;
-  // if(err.data){
-  //   console.log(1);
-  //   return err.data.message;
-  // }
-  // else if(err.message){
-  //   console.log("Erro: ", err.message);
-  //   return err.message;
-  // }
-  // else if (typeof err == "string") {
-  //   return err
-  // } else return "Oops! Something went wrong."
+  if (err.code === Logger.errors.CALL_EXCEPTION)
+    return `Transaction failed! \n ${err.transactionHash}`;
+  if (err.data) {
+    console.log(1);
+    return err.data.message;
+  } else if (err.message) {
+    console.log("Erro: ", err.message);
+    return err.message;
+  } else if (typeof err == "string") {
+    return err;
+  } else return "Oops! Something went wrong.";
 };
 
 export const toFixed = (num: number, digit: number) => {

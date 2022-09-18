@@ -11,47 +11,189 @@ import {
   FormText,
 } from "reactstrap";
 
-import {
-  SymbolsMap,
-  marketDataOnChain,
-  DepositInterestRates,
-  CommitMap,
-  VariableDepositInterestRates,
-  MinimumAmount,
-} from "../blockchain/constants";
+import { MinimumAmount } from "../blockchain/constants";
 
-import { tokenAddressMap } from "../blockchain/stark-constants";
-// import { Web3ModalContext } from "../contexts/Web3ModalProvider"
-// import { Web3WrapperContext } from "../contexts/Web3WrapperProvider"
+import {
+  diamondAddress,
+  ERC20Abi,
+  tokenAddressMap,
+} from "../blockchain/stark-constants";
 import { BNtoNum, GetErrorText, NumToBN } from "../blockchain/utils";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React from "react";
 
 import {
-  useConnectors,
+  useContract,
   useStarknet,
-  useStarknetInvoke,
   useStarknetCall,
+  useStarknetExecute,
+  useStarknetInvoke,
 } from "@starknet-react/core";
-import {
-  useDepositContract,
-  useERC20Contract,
-} from "../hooks/starknet-react/starks";
-
-// toast.configure({
-//   autoClose: 4000,
-// })
+import { Abi, Contract } from "starknet";
+import { uint256ToBN } from "starknet/dist/utils/uint256";
 
 let Deposit: any = ({ asset }: { asset: string }) => {
-  const [commitPeriod, setCommitPeriod] = useState();
   const [modal_deposit, setmodal_deposit] = useState(false);
-  const [inputVal, setInputVal] = useState(0);
-  const [isTransactionDone, setIsTransactionDone] = useState(false);
-  const [balance, setBalance] = useState(null);
 
-  const { available, connect, disconnect } = useConnectors();
+  const [depositAmount, setDepositAmount] = useState(0);
+  const [commitPeriod, setCommitPeriod] = useState(0);
+
   const { account } = useStarknet();
+  // Get Balance
+  // const {
+  //   data: dataBalance,
+  //   loading: loadingBalance,
+  //   error: errorBalance,
+  //   reset: resetBalance,
+  //   execute: executeBalance,
+  // } = useStarknetExecute({
+  //   calls: {
+  //     contractAddress: tokenAddressMap[asset] as string,
+  //     entrypoint: "balanceOf",
+  //     calldata: [account],
+  //   },
+  // });
+
+  const { contract } = useContract({
+    abi: ERC20Abi as Abi,
+    address: tokenAddressMap[asset] as string,
+  });
+  const {
+    data: dataBalance,
+    loading: loadingBalance,
+    error: errorBalance,
+    refresh: refreshBalance,
+  } = useStarknetCall({
+    contract: contract,
+    method: "balanceOf",
+    args: [account],
+    options: {
+      watch: true,
+    },
+  });
+
+  // Approve
+  const {
+    data: dataUSDC,
+    loading: loadingUSDC,
+    error: errorUSDC,
+    reset: resetUSDC,
+    execute: USDC,
+  } = useStarknetExecute({
+    calls: {
+      contractAddress: tokenAddressMap[asset] as string,
+      entrypoint: "approve",
+      calldata: [diamondAddress, depositAmount, 0],
+    },
+  });
+
+  const {
+    data: dataUSDT,
+    loading: loadingUSDT,
+    error: errorUSDT,
+    reset: resetUSDT,
+    execute: USDT,
+  } = useStarknetExecute({
+    calls: {
+      contractAddress: tokenAddressMap[asset] as string,
+      entrypoint: "approve",
+      calldata: [diamondAddress, depositAmount, 0],
+    },
+  });
+
+  const {
+    data: dataBNB,
+    loading: loadingBNB,
+    error: errorBNB,
+    reset: resetBNB,
+    execute: BNB,
+  } = useStarknetExecute({
+    calls: {
+      contractAddress: tokenAddressMap[asset] as string,
+      entrypoint: "approve",
+      calldata: [diamondAddress, depositAmount, 0],
+    },
+  });
+
+  const {
+    data: dataBTC,
+    loading: loadingBTC,
+    error: errorBTC,
+    reset: resetBTC,
+    execute: BTC,
+  } = useStarknetExecute({
+    calls: {
+      contractAddress: tokenAddressMap[asset] as string,
+      entrypoint: "approve",
+      calldata: [diamondAddress, depositAmount, 0],
+    },
+  });
+
+  // Deposit Hook
+  const {
+    data: dataDeposit,
+    loading: loadingDeposit,
+    error: errorDeposit,
+    reset: resetDeposit,
+    execute: executeDeposit,
+  } = useStarknetExecute({
+    calls: {
+      contractAddress: diamondAddress,
+      entrypoint: "deposit_request",
+      calldata: [tokenAddressMap[asset], commitPeriod, depositAmount, 0],
+    },
+  });
+
+  const returnTransactionParameters = () => {
+    let data, loading, reset, error;
+    if (asset === "BTC") {
+      [data, loading, reset, error] = [dataBTC, loadingBTC, resetBTC, errorBTC];
+    }
+    if (asset === "BNB") {
+      [data, loading, reset, error] = [dataBNB, loadingBNB, resetBNB, errorBNB];
+    }
+    if (asset === "USDC") {
+      [data, loading, reset, error] = [
+        dataUSDC,
+        loadingUSDC,
+        resetUSDC,
+        errorUSDC,
+      ];
+    }
+    if (asset === "USDT") {
+      [data, loading, reset, error] = [
+        dataUSDT,
+        loadingUSDT,
+        resetUSDT,
+        errorUSDT,
+      ];
+    }
+    return { data, loading, reset, error };
+  };
+
+  const handleApprove = async () => {
+    let val;
+    if (asset === "BTC") {
+      val = await BTC();
+    }
+    if (asset === "BNB") {
+      val = await BNB();
+    }
+    if (asset === "USDC") {
+      val = await USDC();
+    }
+    if (asset == "USDT") {
+      val = await USDT();
+    }
+  };
+
+  const {
+    data: dataApprove,
+    loading: loadingApprove,
+    reset: resetApprove,
+    error: errorApprove,
+  } = returnTransactionParameters();
 
   const tog_center = async () => {
     setmodal_deposit(!modal_deposit);
@@ -62,98 +204,56 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     // setBalance(BNtoNum(Number(getCurrentBalnce)));
   };
 
-  const handleDepositChange = (e: any) => {
+  const handleCommitChange = (e: any) => {
     setCommitPeriod(e.target.value);
   };
 
-  const handleInputChange = (e: any) => {
-    setInputVal(Number(e.target.value));
+  const handleDepositAmountChange = (e: any) => {
+    setDepositAmount(Number(e.target.value));
+  };
+
+  const handleMax = async () => {
+    await refreshBalance();
+    console.log(dataBalance);
+    // await executeBalance();
+    // console.log(dataBalance);
+    // if (balance) {
+    //   setDepositAmount(balance);
+    // }
   };
 
   function removeBodyCss() {
     document.body.classList.add("no_padding");
   }
 
-  const handleMax = () => {
-    if (balance) {
-      setInputVal(balance);
-    }
-  };
-
-  const { contract: deposit } = useDepositContract();
-  const { contract: erc20 } = useERC20Contract(tokenAddressMap[asset]);
-
-  const { invoke: requestDeposit } = useStarknetInvoke({
-    contract: deposit,
-    method: "deposit_request",
-  });
-  const { invoke: _approve } = useStarknetInvoke({
-    contract: erc20,
-    method: "approve",
-  });
-
-  const handleDeposit = async () => {
-    try {
-      // const amountIn = inputVal * 10 ** 18;
-      const amountIn = inputVal;
-
-      await _approve({
-        args: [process.env.NEXT_PUBLIC_DAIMOND_ADDRESS, inputVal, 0],
-      });
-      console.log("approving");
-
-      await requestDeposit({
-        args: [tokenAddressMap[asset], commitPeriod, inputVal, 0],
-      });
-      console.log("requesting deposit");
-    } catch (err) {
-      setIsTransactionDone(false);
-      toast.error(`${GetErrorText(err)}`, {
+  const handleDeposit = async (asset: string) => {
+    // approve the transfer
+    if (depositAmount === 0) {
+      toast.error(`${GetErrorText(`Can't deposit 0 of ${asset}`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
       });
+      return;
     }
+    await handleApprove();
+    if (errorApprove) {
+      toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
+    }
+    // run deposit function
 
-    // try {
-    //   setIsTransactionDone(true)
-    //   const approveTransactionHash = await wrapper
-    //     ?.getMockBep20Instance() //SymbolsMap[the market name from dropdown]
-    //     .approve(SymbolsMap[props.asset], inputVal, marketDataOnChain[chainId].DecimalsMap[props.asset])
-    //   await approveTransactionHash.wait()
-    //   console.log("Approve Transaction sent: ", approveTransactionHash)
-    //   const _commitPeriod: string | undefined = commitPeriod
-    //   const tx1 = await wrapper
-    //     ?.getDepositInstance()
-    //     .depositRequest(
-    //       SymbolsMap[props.asset],
-    //       CommitMap[_commitPeriod],
-    //       inputVal,
-    //       marketDataOnChain[chainId].DecimalsMap[props.asset]
-    //     )
-    //   const tx = await tx1.wait()
-    //   onDeposit(tx.events)
-    // } catch (err) {
-    //   setIsTransactionDone(false)
-    //   toast.error(`${GetErrorText(err)}`, { position: toast.POSITION.BOTTOM_RIGHT, closeOnClick: true, })
-    // }
+    await executeDeposit();
+    if (errorDeposit) {
+      toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
+    }
   };
-
-  //   const onDeposit = data => {
-  //     let eventName
-  //     let _amount
-  //     data.forEach(e => {
-  //       if (e.event == "DepositAdded" || e.event == "NewDeposit") {
-  //         eventName = e.event
-  //         _amount = e.args.amount.toBigInt()
-  //       }
-  //     })
-  //     setIsTransactionDone(false)
-  //     let amount = BNtoNum(_amount, 8)
-  //     toast.success(`Deposited amount: ${amount}`, {
-  //       position: toast.POSITION.BOTTOM_RIGHT,
-  //       closeOnClick: true,
-  //     })
-  //   }
 
   return (
     <>
@@ -179,7 +279,12 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                   <h5> {asset}</h5>
                 </Col>
                 <Col sm={4}>
-                  <div>Balance : {balance ? balance : " Loading"}</div>
+                  <div>
+                    Balance :{" "}
+                    {dataBalance
+                      ? uint256ToBN(dataBalance[0]).toString()
+                      : " Loading"}
+                  </div>
                 </Col>
               </div>
               <FormGroup>
@@ -188,7 +293,8 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     <InputGroup
                       style={{
                         border:
-                          inputVal == 0 || inputVal >= MinimumAmount[asset]
+                          depositAmount == 0 ||
+                          depositAmount >= MinimumAmount[asset]
                             ? "1px solid #556EE6"
                             : "",
                       }}
@@ -198,14 +304,15 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                         className="form-control"
                         id="amount"
                         placeholder={`Minimum amount = ${MinimumAmount[asset]}`}
-                        onChange={handleInputChange}
+                        onChange={handleDepositAmountChange}
                         value={
-                          inputVal !== 0
-                            ? inputVal
+                          depositAmount !== 0
+                            ? depositAmount
                             : `Minimum amount = ${MinimumAmount[asset]}`
                         }
                         invalid={
-                          inputVal !== 0 && inputVal < MinimumAmount[asset]
+                          depositAmount !== 0 &&
+                          depositAmount < MinimumAmount[asset]
                             ? true
                             : false
                         }
@@ -217,7 +324,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                           type="button"
                           className="btn btn-md w-xs"
                           onClick={handleMax}
-                          disabled={balance ? false : true}
+                          // disabled={balance ? false : true}
                           style={{ background: "#2e3444", border: "#2e3444" }}
                         >
                           <span style={{ borderBottom: "2px dotted #fff" }}>
@@ -226,11 +333,12 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                         </Button>
                       }
                     </InputGroup>
-                    {inputVal != 0 && inputVal < MinimumAmount[asset] && (
-                      <FormText>
-                        {`Please enter amount more than minimum amount = ${MinimumAmount[asset]}`}
-                      </FormText>
-                    )}
+                    {depositAmount != 0 &&
+                      depositAmount < MinimumAmount[asset] && (
+                        <FormText>
+                          {`Please enter amount more than minimum amount = ${MinimumAmount[asset]}`}
+                        </FormText>
+                      )}
                   </Col>
                 </div>
               </FormGroup>
@@ -239,7 +347,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                   <select
                     className="form-select"
                     placeholder="Commitment"
-                    onChange={handleDepositChange}
+                    onChange={handleCommitChange}
                   >
                     <option hidden>Commitment</option>
                     <option value={0}>None</option>
@@ -255,12 +363,13 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                   className="w-md"
                   disabled={
                     commitPeriod === undefined ||
-                    isTransactionDone ||
-                    inputVal < MinimumAmount[asset]
+                    loadingApprove ||
+                    loadingDeposit ||
+                    depositAmount < MinimumAmount[asset]
                   }
-                  onClick={handleDeposit}
+                  onClick={(e) => handleDeposit(asset)}
                 >
-                  {!isTransactionDone ? (
+                  {!(loadingApprove || loadingDeposit) ? (
                     "Deposit"
                   ) : (
                     <Spinner>Loading...</Spinner>
