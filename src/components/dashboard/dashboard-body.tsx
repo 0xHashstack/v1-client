@@ -56,7 +56,7 @@ let DashboardTBody: any = (props: any) => {
             <Deposit asset={"USDT"} />
           </td>
           <td style={{ width: "120px" }}>
-            <Borrow assetID={"USDT"} title={"USDT"} />
+            <Borrow asset={"USDT"} title={"USDT"} />
           </td>
         </tr>
         <tr key={1}>
@@ -92,7 +92,7 @@ let DashboardTBody: any = (props: any) => {
             <Deposit asset={"USDC"} />
           </td>
           <td style={{ width: "120px" }}>
-            <Borrow assetID={"USDC"} title={"USDC"} />
+            <Borrow asset={"USDC"} title={"USDC"} />
           </td>
         </tr>
         <tr key={2}>
@@ -128,7 +128,7 @@ let DashboardTBody: any = (props: any) => {
             <Deposit asset={"BTC"} />
           </td>
           <td style={{ width: "120px" }}>
-            <Borrow assetID={"BTC"} title={"BTC"} />
+            <Borrow asset={"BTC"} title={"BTC"} />
           </td>
         </tr>
         <tr key={3}>
@@ -164,7 +164,7 @@ let DashboardTBody: any = (props: any) => {
             <Deposit asset={"BNB"} />
           </td>
           <td style={{ width: "120px" }}>
-            <Borrow assetID={"BNB"} title={"BNB"} />
+            <Borrow asset={"BNB"} title={"BNB"} />
           </td>
         </tr>
       </>

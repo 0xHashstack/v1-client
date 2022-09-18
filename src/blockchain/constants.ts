@@ -171,7 +171,10 @@ export const VariableDepositInterestRates = {
   THREEMONTHS: "Upto 6%",
 };
 
-export const BorrowInterestRates = {
+interface IBorrowInterestRates {
+  [key: string]: string;
+}
+export const BorrowInterestRates: IBorrowInterestRates = {
   NONE: "18%",
   ONEMONTH: "15%",
 };

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import {
   Col,
   Button,
@@ -40,20 +40,6 @@ let Deposit: any = ({ asset }: { asset: string }) => {
   const [commitPeriod, setCommitPeriod] = useState(0);
 
   const { account } = useStarknet();
-  // Get Balance
-  // const {
-  //   data: dataBalance,
-  //   loading: loadingBalance,
-  //   error: errorBalance,
-  //   reset: resetBalance,
-  //   execute: executeBalance,
-  // } = useStarknetExecute({
-  //   calls: {
-  //     contractAddress: tokenAddressMap[asset] as string,
-  //     entrypoint: "balanceOf",
-  //     calldata: [account],
-  //   },
-  // });
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
@@ -213,13 +199,8 @@ let Deposit: any = ({ asset }: { asset: string }) => {
   };
 
   const handleMax = async () => {
-    await refreshBalance();
-    console.log(dataBalance);
-    // await executeBalance();
-    // console.log(dataBalance);
-    // if (balance) {
-    //   setDepositAmount(balance);
-    // }
+    // await refreshBalance();
+    // console.log(uint256ToBN(dataBalance![0]).toNumber());
   };
 
   function removeBodyCss() {
@@ -280,7 +261,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                 </Col>
                 <Col sm={4}>
                   <div>
-                    Balance :{" "}
+                    Balance {asset}:{" "}
                     {dataBalance
                       ? uint256ToBN(dataBalance[0]).toString()
                       : " Loading"}
@@ -310,6 +291,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                             ? depositAmount
                             : `Minimum amount = ${MinimumAmount[asset]}`
                         }
+                        // value={depositAmount}
                         invalid={
                           depositAmount !== 0 &&
                           depositAmount < MinimumAmount[asset]
