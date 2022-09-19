@@ -36,8 +36,11 @@ export const getTokenFromAddress = (address: string) => {
 };
 
 export const getCommitmentNameFromIndex = (index: string) => {
+  console.log('get commitment', index)
   if (index == "0") {
-    return "None";
+    return "NONE";
+  } else if(index == '1') {
+    return 'TWOWEEKS'
   }
   return null;
 };
