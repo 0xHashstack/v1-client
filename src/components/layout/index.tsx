@@ -151,7 +151,7 @@ const Layout = (props: any) => {
             handleConnectWallet={handleConnectWallet}
             handleDisconnectWallet={() => disconnect()}
           />
-          <div className="main-content">{props.children}</div>
+          <div style={{marginLeft: "200px", marginRight : "200px"}} className="main-content">{props.children}</div>
           <Footer />
         </div>
       );
