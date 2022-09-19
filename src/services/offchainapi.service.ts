@@ -2,7 +2,7 @@ import axios from "axios";
 
 export default class OffchainAPI {
   // static ENDPOINT = 'http://52.77.185.41:3000'
-  static ENDPOINT = "http://localhost:3000";
+  static ENDPOINT = "http://localhost:3010";
 
   static async httpGet(route: string) {
     try {

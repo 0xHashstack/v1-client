@@ -1,5 +1,6 @@
 import React from "react";
 import { Spinner } from "reactstrap";
+import { BorrowInterestRates, DepositInterestRates } from "../../blockchain/constants";
 // import { DepositInterestRates, BorrowInterestRates
 // } from '../blockchain/constants';
 
@@ -44,12 +45,12 @@ let DashboardTBody: any = (props: any) => {
           </th>
           <td>
             <div className="text-muted">
-              {/* {DepositInterestRates[props.depositInterestChange]} */}
+              {DepositInterestRates[props.depositInterestChange]}
             </div>
           </td>
           <td>
             <div className="text-muted">
-              {/* {BorrowInterestRates[props.borrowInterestChange]} */}
+              {BorrowInterestRates[props.borrowInterestChange]}
             </div>
           </td>
           <td style={{ width: "120px" }}>
@@ -80,12 +81,12 @@ let DashboardTBody: any = (props: any) => {
           </th>
           <td>
             <div className="text-muted">
-              {/* {DepositInterestRates[props.depositInterestChange]} */}
+              {DepositInterestRates[props.depositInterestChange]}
             </div>
           </td>
           <td>
             <div className="text-muted">
-              {/* {BorrowInterestRates[props.borrowInterestChange]} */}
+              {BorrowInterestRates[props.borrowInterestChange]}
             </div>
           </td>
           <td style={{ width: "120px" }}>
@@ -116,12 +117,12 @@ let DashboardTBody: any = (props: any) => {
           </th>
           <td>
             <div className="text-muted">
-              {/* {DepositInterestRates[props.depositInterestChange]} */}
+              {DepositInterestRates[props.depositInterestChange]}
             </div>
           </td>
           <td>
             <div className="text-muted">
-              {/* {BorrowInterestRates[props.borrowInterestChange]} */}
+              {BorrowInterestRates[props.borrowInterestChange]}
             </div>
           </td>
           <td style={{ width: "120px" }}>
@@ -152,12 +153,12 @@ let DashboardTBody: any = (props: any) => {
           </th>
           <td>
             <div className="text-muted">
-              {/* {DepositInterestRates[props.depositInterestChange]} */}
+              {DepositInterestRates[props.depositInterestChange]}
             </div>
           </td>
           <td>
             <div className="text-muted">
-              {/* {BorrowInterestRates[props.borrowInterestChange]} */}
+              {BorrowInterestRates[props.borrowInterestChange]}
             </div>
           </td>
           <td style={{ width: "120px" }}>
