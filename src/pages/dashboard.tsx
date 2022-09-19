@@ -30,6 +30,7 @@ import {
 import BigNumber from "bignumber.js";
 import { useStarknet } from "@starknet-react/core";
 import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
+import { remove } from "lodash";
 
 // toast.configure({
 //   autoClose: 4000,
@@ -69,38 +70,21 @@ const Dashboard = () => {
   const [activeLiquidationsData, setActiveLiquidationsData] = useState([]);
   const [isTransactionDone, setIsTransactionDone] = useState(false);
 
-  const [
-    handleWithdrawCollateralTransactionDone,
-    setHandleWithdrawCollateralTransactionDone,
-  ] = useState(false);
   const [handleDepositTransactionDone, setHandleDepositTransactionDone] =
     useState(false);
   const [withdrawDepositTransactionDone, setWithdrawDepositTransactionDone] =
     useState(false);
-  const [handleCollateralTransactionDone, setHandleCollateralTransactionDone] =
-    useState(false);
-  const [handleRepayTransactionDone, setHandleRepayTransactionDone] =
-    useState(false);
-  const [
-    handleWithdrawLoanTransactionDone,
-    setHandleWithdrawLoanTransactionDone,
-  ] = useState(false);
-  const [handleSwapTransactionDone, setHandleSwapTransactionDone] =
-    useState(false);
-  const [handleSwapToLoanTransactionDone, setHandleSwapToLoanTransactionDone] =
-    useState(false);
 
   const [customActiveTab, setCustomActiveTab] = useState("1");
-  const [customActiveTabs, setCustomActiveTabs] = useState("1");
+  // const [customActiveTabs, setCustomActiveTabs] = useState("1");
   const [loanActionTab, setLoanActionTab] = useState("0");
-  const [mainTab, setMainTab] = useState("1");
   const [passbookStatus, setPassbookStatus] = useState("ActiveDeposit");
 
   const [modal_repay_loan, setmodal_repay_loan] = useState(false);
   const [modal_withdraw_loan, setmodal_withdraw_loan] = useState(false);
   const [modal_swap_loan, setmodal_swap_loan] = useState(false);
   const [modal_swap_to_loan, setmodal_swap_to_loan] = useState(false);
-  const [modal_add_collateral, setmodal_add_collateral] = useState(false);
+  // const [modal_add_collateral, setmodal_add_collateral] = useState(false);
   const [modal_withdraw_collateral, setmodal_withdraw_collateral] =
     useState(false);
   const [modal_add_active_deposit, setmodal_add_active_deposit] =
@@ -128,6 +112,7 @@ const Dashboard = () => {
     useState(false);
   const [withdrawCollateralTooltipOpen, setWithdrawCollateralTooltipOpen] =
     useState(false);
+  const [customActiveTabs, setCustomActiveTabs] = useState("1");
 
   const [inputVal1, setInputVal1] = useState(0);
   const [liquidationIndex, setLiquidationIndex] = useState(0);
@@ -375,10 +360,10 @@ const Dashboard = () => {
     setmodal_swap_to_loan(!modal_swap_to_loan);
     removeBodyCss();
   }
-  function tog_add_collateral() {
-    setmodal_add_collateral(!modal_add_collateral);
-    removeBodyCss();
-  }
+  // function tog_add_collateral() {
+  //   setmodal_add_collateral(!modal_add_collateral);
+  //   removeBodyCss();
+  // }
   function tog_withdraw_collateral() {
     setmodal_withdraw_collateral(!modal_withdraw_collateral);
     removeBodyCss();
@@ -395,72 +380,72 @@ const Dashboard = () => {
     removeBodyCss();
   }
 
-  function tog_collateral_active_loan() {
-    setCollateralActiveLoan(true);
-    setReapyActiveLoan(false);
-    setWithdrawActiveLoan(false);
-    setSwapToActiveLoan(false);
-    setSwapActiveLoan(false);
-    //setmodal_add_active_deposit(false)
-    removeBodyCss();
-  }
+  // function tog_collateral_active_loan() {
+  //   setCollateralActiveLoan(true);
+  //   setReapyActiveLoan(false);
+  //   setWithdrawActiveLoan(false);
+  //   setSwapToActiveLoan(false);
+  //   setSwapActiveLoan(false);
+  //   //setmodal_add_active_deposit(false)
+  //   removeBodyCss();
+  // }
 
-  function tog_repay_active_loan() {
-    setCollateralActiveLoan(false);
-    setReapyActiveLoan(true);
-    setWithdrawActiveLoan(false);
-    setSwapToActiveLoan(false);
-    setSwapActiveLoan(false);
-    //setmodal_add_active_deposit(false)
-    removeBodyCss();
-  }
+  // function tog_repay_active_loan() {
+  //   setCollateralActiveLoan(false);
+  //   setReapyActiveLoan(true);
+  //   setWithdrawActiveLoan(false);
+  //   setSwapToActiveLoan(false);
+  //   setSwapActiveLoan(false);
+  //   //setmodal_add_active_deposit(false)
+  //   removeBodyCss();
+  // }
 
-  function tog_withdraw_active_loan() {
-    setCollateralActiveLoan(false);
-    setReapyActiveLoan(false);
-    setWithdrawActiveLoan(true);
-    setSwapToActiveLoan(false);
-    setSwapActiveLoan(false);
-    //setmodal_add_active_deposit(false)
-    removeBodyCss();
-  }
+  // function tog_withdraw_active_loan() {
+  //   setCollateralActiveLoan(false);
+  //   setReapyActiveLoan(false);
+  //   setWithdrawActiveLoan(true);
+  //   setSwapToActiveLoan(false);
+  //   setSwapActiveLoan(false);
+  //   //setmodal_add_active_deposit(false)
+  //   removeBodyCss();
+  // }
 
-  function tog_swap_active_loan() {
-    setCollateralActiveLoan(false);
-    setReapyActiveLoan(false);
-    setWithdrawActiveLoan(true);
-    setSwapToActiveLoan(false);
+  // function tog_swap_active_loan() {
+  //   setCollateralActiveLoan(false);
+  //   setReapyActiveLoan(false);
+  //   setWithdrawActiveLoan(true);
+  //   setSwapToActiveLoan(false);
 
-    setSwapActiveLoan(true);
-    //setmodal_add_active_deposit(false)
-    removeBodyCss();
-  }
+  //   setSwapActiveLoan(true);
+  //   //setmodal_add_active_deposit(false)
+  //   removeBodyCss();
+  // }
 
-  function tog_swap_to_active_loan() {
-    setCollateralActiveLoan(false);
-    setReapyActiveLoan(false);
-    setWithdrawActiveLoan(false);
-    setSwapToActiveLoan(true);
-    setSwapActiveLoan(false);
-    //setmodal_add_active_deposit(false)
-    removeBodyCss();
-  }
+  // function tog_swap_to_active_loan() {
+  //   setCollateralActiveLoan(false);
+  //   setReapyActiveLoan(false);
+  //   setWithdrawActiveLoan(false);
+  //   setSwapToActiveLoan(true);
+  //   setSwapActiveLoan(false);
+  //   //setmodal_add_active_deposit(false)
+  //   removeBodyCss();
+  // }
 
-  const handleLoanOptionChange = (e: any) => {
-    setLoanOption(e.target.value);
-  };
+  // const handleLoanOptionChange = (e: any) => {
+  //   setLoanOption(e.target.value);
+  // };
 
-  const handleLoanCommitementChange = (e: any) => {
-    setLoanCommitement(e.target.value);
-  };
+  // const handleLoanCommitementChange = (e: any) => {
+  //   setLoanCommitement(e.target.value);
+  // };
 
-  const handleSwapOptionChange = (e: any) => {
-    setSwapOption(e.target.value);
-  };
+  // const handleSwapOptionChange = (e: any) => {
+  //   setSwapOption(e.target.value);
+  // };
 
-  const handleCollateralOptionChange = (e: any) => {
-    setCollateralOption(e.target.value);
-  };
+  // const handleCollateralOptionChange = (e: any) => {
+  //   setCollateralOption(e.target.value);
+  // };
 
   const handleDepositInterestChange = (e: any) => {
     setDepositInterestChange(e.target.value);
@@ -470,19 +455,19 @@ const Dashboard = () => {
     setBorrowInterestChange(e.target.value);
   };
 
-  const handleDepositRequestSelect = (e: any) => {
-    setDepositRequestSel(e.target.value);
-  };
-  const handleWithdrawDepositSelect = (e: any) => {
-    setWithdrawDepositSel(e.target.value);
-  };
+  // const handleDepositRequestSelect = (e: any) => {
+  //   setDepositRequestSel(e.target.value);
+  // };
+  // const handleWithdrawDepositSelect = (e: any) => {
+  //   setWithdrawDepositSel(e.target.value);
+  // };
 
-  const handleDepositRequestTime = (e: any) => {
-    setDepositRequestVal(e.target.value);
-  };
-  const handleWithdrawDepositTime = (e: any) => {
-    setWithdrawDepositVal(e.target.value);
-  };
+  // const handleDepositRequestTime = (e: any) => {
+  //   setDepositRequestVal(e.target.value);
+  // };
+  // const handleWithdrawDepositTime = (e: any) => {
+  //   setWithdrawDepositVal(e.target.value);
+  // };
 
   const navigateLoansToLiquidate = async (liquidationIndex: any) => {
     //   !isTransactionDone &&
@@ -525,6 +510,7 @@ const Dashboard = () => {
 
   const getActionTabs = (customActiveTab: string) => {
     console.log("blockchain activedepoist", activeDepositsData);
+    // console.log("customActiveTabs: ", customActiveTabs);
     switch (customActiveTab) {
       case "1":
         return (
@@ -548,16 +534,12 @@ const Dashboard = () => {
         return (
           <ActiveLoansTab
             activeLoansData={activeLoansData}
-            customActiveTabs={activeLoansData}
-            loanActionTab={loanActionTab}
-            collateral_active_loan={collateral_active_loan}
-            repay_active_loan={repay_active_loan}
-            withdraw_active_loan={withdraw_active_loan}
-            swap_active_loan={swap_active_loan}
-            swap_to_active_loan={swap_to_active_loan}
+            customActiveTabs={customActiveTabs}
             isTransactionDone={isTransactionDone}
             depositRequestSel={depositRequestSel}
-            inputVal1={inputVal1}
+            // inputVal1={inputVal1}
+            removeBodyCss={removeBodyCss}
+            setCustomActiveTabs={setCustomActiveTabs}
           />
         );
         break;

@@ -1,6 +1,7 @@
-import React from "react";
+import { useStarknet } from "@starknet-react/core";
+import classNames from "classnames";
+import React, { useState } from "react";
 import {
-  Container,
   Row,
   Col,
   Card,
@@ -20,35 +21,140 @@ import {
   CardTitle,
   CardSubtitle,
 } from "reactstrap";
-import { CoinClassNames, EventMap } from "../../../blockchain/constants";
+import {
+  CoinClassNames,
+  EventMap,
+  MinimumAmount,
+} from "../../../blockchain/constants";
 import { BNtoNum } from "../../../blockchain/utils";
 import TxHistoryTable from "../../dashboard/tx-history-table";
 
 const ActiveLoansTab = ({
   activeLoansData,
   customActiveTabs,
-  loanActionTab,
-  collateral_active_loan,
-  repay_active_loan,
-  withdraw_active_loan,
-  swap_active_loan,
-  swap_to_active_loan,
   isTransactionDone,
   depositRequestSel,
-  inputVal1,
+  // inputVal1,
+  removeBodyCss,
+  setCustomActiveTabs,
 }: {
   activeLoansData: any;
   customActiveTabs: any;
-  loanActionTab: any;
-  collateral_active_loan: any;
-  repay_active_loan: any;
-  withdraw_active_loan: any;
-  swap_active_loan: any;
-  swap_to_active_loan: any;
   isTransactionDone: any;
   depositRequestSel: any;
-  inputVal1: any;
+  // inputVal1: any;
+  removeBodyCss: () => void;
+  setCustomActiveTabs: any;
 }) => {
+  const [loanActionTab, setLoanActionTab] = useState("0");
+  const { account } = useStarknet();
+
+  const [handleRepayTransactionDone, setHandleRepayTransactionDone] =
+    useState(false);
+  const [
+    handleWithdrawLoanTransactionDone,
+    setHandleWithdrawLoanTransactionDone,
+  ] = useState(false);
+  const [swapOption, setSwapOption] = useState();
+  const [handleSwapTransactionDone, setHandleSwapTransactionDone] =
+    useState(false);
+  const [handleSwapToLoanTransactionDone, setHandleSwapToLoanTransactionDone] =
+    useState(false);
+  const [modal_add_collateral, setmodal_add_collateral] = useState(false);
+
+  const [collateral_active_loan, setCollateralActiveLoan] = useState(true);
+  const [withdraw_active_loan, setWithdrawActiveLoan] = useState(false);
+  const [repay_active_loan, setReapyActiveLoan] = useState(false);
+  const [swap_to_active_loan, setSwapToActiveLoan] = useState(false);
+  const [swap_active_loan, setSwapActiveLoan] = useState(true);
+  const [inputVal1, setInputVal1] = useState(0);
+
+  const toggleLoanAction = (tab: string) => {
+    if (loanActionTab !== tab) {
+      setLoanActionTab(tab);
+    }
+  };
+
+  const toggleCustoms = (tab: string) => {
+    if (customActiveTabs !== tab) {
+      setCustomActiveTabs(tab);
+    }
+  };
+  function tog_repay_active_loan() {
+    setCollateralActiveLoan(false);
+    setReapyActiveLoan(true);
+    setWithdrawActiveLoan(false);
+    setSwapToActiveLoan(false);
+    setSwapActiveLoan(false);
+    removeBodyCss();
+  }
+
+  function tog_add_collateral() {
+    setmodal_add_collateral(!modal_add_collateral);
+    removeBodyCss();
+  }
+  function tog_collateral_active_loan() {
+    setCollateralActiveLoan(true);
+    setReapyActiveLoan(false);
+    setWithdrawActiveLoan(false);
+    setSwapToActiveLoan(false);
+    setSwapActiveLoan(false);
+    //setmodal_add_active_deposit(false)
+    removeBodyCss();
+  }
+
+  function tog_withdraw_active_loan() {
+    setCollateralActiveLoan(false);
+    setReapyActiveLoan(false);
+    setWithdrawActiveLoan(true);
+    setSwapToActiveLoan(false);
+    setSwapActiveLoan(false);
+    //setmodal_add_active_deposit(false)
+    removeBodyCss();
+  }
+
+  function tog_swap_active_loan() {
+    setCollateralActiveLoan(false);
+    setReapyActiveLoan(false);
+    setWithdrawActiveLoan(true);
+    setSwapToActiveLoan(false);
+
+    setSwapActiveLoan(true);
+    //setmodal_add_active_deposit(false)
+    removeBodyCss();
+  }
+  function tog_swap_to_active_loan() {
+    setCollateralActiveLoan(false);
+    setReapyActiveLoan(false);
+    setWithdrawActiveLoan(false);
+    setSwapToActiveLoan(true);
+    setSwapActiveLoan(false);
+    //setmodal_add_active_deposit(false)
+    removeBodyCss();
+  }
+  const handleSwapOptionChange = (e: any) => {
+    setSwapOption(e.target.value);
+  };
+
+  const handleCollateral = (
+    loanMarket: string,
+    commitment: string,
+    collateralMarket: string
+  ) => {};
+
+  const handleRepay = (loanMarket: string, commitment: string) => {};
+
+  // asset.loanMarket,
+  // asset.commitment
+  const handleSwap = (loanMarket: string, commitment: string) => {};
+
+  // asset.loanMarket,
+  // asset.commitment
+  const handleWithdrawLoan = (loanMarket: string, commitment: string) => {};
+
+  // asset.loanMarket,
+  // asset.commitment
+  const handleSwapToLoan = (loanMarket: string, commitment: string) => {};
   return (
     <div className="table-responsive  mt-3">
       <Table className="table table-nowrap align-middle mb-0">
@@ -291,7 +397,7 @@ const ActiveLoansTab = ({
                                                       : "none",
                                                 }}
                                                 onClick={() => {
-                                                  // toggleCustoms("0")
+                                                  // toggleCustoms("0");
                                                   toggleLoanAction("0");
                                                 }}
                                               >
@@ -301,35 +407,36 @@ const ActiveLoansTab = ({
                                               </NavLink>
                                             </NavItem>
                                             {account ? (
-                                              <>
-                                                <NavItem>
-                                                  <NavLink
-                                                    style={{
-                                                      background:
-                                                        loanActionTab === "1"
-                                                          ? "#2a3042"
-                                                          : "none",
-                                                      borderColor:
-                                                        loanActionTab === "1"
-                                                          ? "#3a425a #3a425a #2a3042"
-                                                          : "none",
-                                                      cursor: "pointer",
-                                                      color: "white",
-                                                    }}
-                                                    // className={classnames({
-                                                    //   active: customActiveTabs === "1",
-                                                    // })}
-                                                    onClick={() => {
-                                                      toggleLoanAction("1");
-                                                    }}
-                                                  >
-                                                    <span className="d-none d-sm-block">
-                                                      Swap
-                                                    </span>
-                                                  </NavLink>
-                                                </NavItem>
-                                              </>
-                                            ) : null}
+                                              // <>
+                                              <NavItem>
+                                                <NavLink
+                                                  style={{
+                                                    background:
+                                                      loanActionTab === "1"
+                                                        ? "#2a3042"
+                                                        : "none",
+                                                    borderColor:
+                                                      loanActionTab === "1"
+                                                        ? "#3a425a #3a425a #2a3042"
+                                                        : "none",
+                                                    cursor: "pointer",
+                                                    color: "white",
+                                                  }}
+                                                  // className={classnames({
+                                                  //   active: customActiveTabs === "1",
+                                                  // })}
+                                                  onClick={() => {
+                                                    // toggleCustoms("1");
+                                                    toggleLoanAction("1");
+                                                  }}
+                                                >
+                                                  <span className="d-none d-sm-block">
+                                                    Swap
+                                                  </span>
+                                                </NavLink>
+                                              </NavItem>
+                                            ) : // </>
+                                            null}
                                           </Nav>
                                         )}
                                       </Col>
