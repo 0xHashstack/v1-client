@@ -72,7 +72,7 @@ const ProtocolStats = ({ tvl }: { tvl: any }) => {
 						</div>
 						<CardTitle tag='h5'></CardTitle>
 						<CardSubtitle className='mb-2 text-muted' tag='h2' align='right'>
-							0.63%
+							0.63
 							{/* {uf ? uf : "..."} */}
 						</CardSubtitle>
 					</CardBody>
