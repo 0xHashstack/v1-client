@@ -30,6 +30,7 @@ import {
 import BigNumber from "bignumber.js";
 import { useStarknet } from "@starknet-react/core";
 import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
+import { number } from "starknet";
 
 // toast.configure({
 //   autoClose: 4000,
@@ -137,7 +138,12 @@ const Dashboard = () => {
   // const account =
   //   "0x7ca42502c30d06ff8e62ec3dc37e02f62a7d1b5c22de65114f9ba45ccb9e7ef";
   const [index, setIndex] = useState("1");
-  const { account } = useStarknet();
+  const { account:_account } = useStarknet();
+  const [account, setAccount] = useState<string>('')
+
+  useEffect(() => {
+    setAccount(number.toHex(number.toBN(number.toFelt(_account || ''))))
+  }, [_account])
 
   const [uf, setUf] = useState(null);
   const [tvl, setTvl] = useState(null);
@@ -245,13 +251,13 @@ const Dashboard = () => {
       setIsLoading(false);
     }, 100);
     console.log("useEffect", isTransactionDone, account);
-    let acc = account?.substring(4);
-    console.log(acc);
-    acc = "0x" + acc;
-    console.log(acc);
+    // let acc = account?.substring(4);
+    // console.log(acc);
+    // acc = "0x" + acc;
+    // console.log(acc);
     !isTransactionDone &&
       account &&
-      OffchainAPI.getLoans(acc).then(
+      OffchainAPI.getLoans(account).then(
         (loans) => {
           console.log("loans:", loans);
           onLoansData(loans);
@@ -301,13 +307,9 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    let acc = account?.substring(4);
-    console.log(acc);
-    acc = "0x" + acc;
-    console.log(acc);
     !isTransactionDone &&
       account &&
-      OffchainAPI.getActiveDeposits(acc).then(
+      OffchainAPI.getActiveDeposits(account).then(
         (deposits) => {
           console.log(deposits);
           onDepositData(deposits);
