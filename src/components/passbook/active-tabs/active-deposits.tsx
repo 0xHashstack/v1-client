@@ -78,6 +78,7 @@ const ActiveDepositsTab = ({
 
       {Array.isArray(activeDepositsData) && activeDepositsData.length > 0 ? (
         activeDepositsData.map((asset, key) => {
+          console.log(asset);
           return (
             <div key={key}>
               <UncontrolledAccordion defaultOpen="0" open="false">

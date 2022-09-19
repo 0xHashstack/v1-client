@@ -275,6 +275,7 @@ const Dashboard = () => {
     const deposits: IDeposit[] = [];
     for (let i = 0; i < depositsData.length; i++) {
       let deposit: IDeposit = depositsData[i];
+      console.log(deposit);
       // let interest = await wrapper
       //   ?.getDepositInstance()
       //   .getDepositInterest(account, i + 1)
