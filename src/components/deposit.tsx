@@ -70,7 +70,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     calls: {
       contractAddress: tokenAddressMap[asset] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, depositAmount, 0],
+      calldata: [diamondAddress, depositAmount * 10 ** 8, 0],
     },
   });
 
@@ -84,7 +84,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     calls: {
       contractAddress: tokenAddressMap[asset] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, depositAmount, 0],
+      calldata: [diamondAddress, depositAmount * 10 ** 8, 0],
     },
   });
 
@@ -98,7 +98,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     calls: {
       contractAddress: tokenAddressMap[asset] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, depositAmount, 0],
+      calldata: [diamondAddress, depositAmount * 10 ** 8, 0],
     },
   });
 
@@ -112,7 +112,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     calls: {
       contractAddress: tokenAddressMap[asset] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, depositAmount, 0],
+      calldata: [diamondAddress, depositAmount * 10 ** 8, 0],
     },
   });
 
@@ -127,7 +127,12 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "deposit_request",
-      calldata: [tokenAddressMap[asset], commitPeriod, depositAmount, 0],
+      calldata: [
+        tokenAddressMap[asset],
+        commitPeriod,
+        depositAmount * 10 ** 8,
+        0,
+      ],
     },
   });
 

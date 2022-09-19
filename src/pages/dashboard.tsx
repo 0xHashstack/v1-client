@@ -28,13 +28,15 @@ import {
   getTokenFromAddress,
 } from "../blockchain/stark-constants";
 import BigNumber from "bignumber.js";
+import { useStarknet } from "@starknet-react/core";
+import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
 
 // toast.configure({
 //   autoClose: 4000,
 // });
 interface IDeposit {
   amount: string;
-  account: string;
+  account: string | undefined;
   commitment: string | null;
   market: string | undefined;
   acquiredYield: number;
@@ -49,7 +51,7 @@ interface ILoans {
   collateralAmount: number;
   loanInterest: number;
   interestRate: number;
-  account: string;
+  account: string | undefined;
   cdr: number;
   debtCategory: number | undefined;
   loanId: number;
@@ -132,9 +134,10 @@ const Dashboard = () => {
 
   //   const { connect, disconnect, account, chainId } =
   //     useContext(Web3ModalContext);
-  const account =
-    "0x7ca42502c30d06ff8e62ec3dc37e02f62a7d1b5c22de65114f9ba45ccb9e7ef";
+  // const account =
+  //   "0x7ca42502c30d06ff8e62ec3dc37e02f62a7d1b5c22de65114f9ba45ccb9e7ef";
   const [index, setIndex] = useState("1");
+  const { account } = useStarknet();
 
   const [uf, setUf] = useState(null);
   const [tvl, setTvl] = useState(null);
@@ -242,11 +245,15 @@ const Dashboard = () => {
       setIsLoading(false);
     }, 100);
     console.log("useEffect", isTransactionDone, account);
+    let acc = account?.substring(4);
+    console.log(acc);
+    acc = "0x" + acc;
+    console.log(acc);
     !isTransactionDone &&
       account &&
-      OffchainAPI.getLoans(account).then(
+      OffchainAPI.getLoans(acc).then(
         (loans) => {
-          console.log(loans);
+          console.log("loans:", loans);
           onLoansData(loans);
           setIsLoading(false);
         },
@@ -294,10 +301,15 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    let acc = account?.substring(4);
+    console.log(acc);
+    acc = "0x" + acc;
+    console.log(acc);
     !isTransactionDone &&
       account &&
-      OffchainAPI.getActiveDeposits(account).then(
+      OffchainAPI.getActiveDeposits(acc).then(
         (deposits) => {
+          console.log(deposits);
           onDepositData(deposits);
           setIsLoading(false);
         },
@@ -493,7 +505,7 @@ const Dashboard = () => {
   const getPassbookTable = (passbookStatus: string) => {
     switch (passbookStatus) {
       case "ActiveDeposit":
-        <ActiveDepositsTab activeDepositsData={activeDepositsData} />;
+        <ActiveDepositTable activeDepositsData={activeDepositsData} />;
         break;
 
       case "ActiveLoan": //
@@ -514,7 +526,21 @@ const Dashboard = () => {
     console.log("blockchain activedepoist", activeDepositsData);
     switch (customActiveTab) {
       case "1":
-        return <ActiveDepositsTab activeDepositsData={activeDepositsData} />;
+        return (
+          <ActiveDepositsTab
+            activeDepositsData={activeDepositsData}
+            modal_add_active_deposit={modal_add_active_deposit}
+            tog_add_active_deposit={tog_add_active_deposit}
+            modal_withdraw_active_deposit={modal_withdraw_active_deposit}
+            tog_withdraw_active_deposit={tog_withdraw_active_deposit}
+            depositRequestSel={depositRequestSel}
+            setInputVal1={setInputVal1}
+            handleDepositTransactionDone={handleDepositTransactionDone}
+            withdrawDepositTransactionDone={withdrawDepositTransactionDone}
+            isTransactionDone={isTransactionDone}
+            inputVal1={inputVal1}
+          />
+        );
         break;
 
       case "2": //
@@ -577,14 +603,14 @@ const Dashboard = () => {
                     <DashboardMenu
                       customActiveTab={customActiveTab}
                       toggleCustom={toggleCustom}
-                      account={account}
+                      account={account as string}
                     />
 
                     {/* ----------------- PASSBOOK MENU TOGGLES -------------------- */}
                     <Col xl="5">
                       {customActiveTab === "2" && (
                         <PassbookMenu
-                          account={account}
+                          account={account as string}
                           customActiveTabs={customActiveTabs}
                           toggleCustoms={toggleCustoms}
                         />

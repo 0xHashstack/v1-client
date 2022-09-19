@@ -1,5 +1,7 @@
 import React from "react";
 import { Table } from "reactstrap";
+import { CoinClassNames, EventMap } from "../../../blockchain/constants";
+import { BNtoNum } from "../../../blockchain/utils";
 
 const ActiveDepositTable = ({
   activeDepositsData,
@@ -51,7 +53,9 @@ const ActiveDepositTable = ({
               </tr>
             ))
           ) : (
-            <tr align="center">
+            <tr
+            // align="center"
+            >
               <td colSpan={5}>No Records Found.</td>
             </tr>
           )}

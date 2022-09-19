@@ -17,11 +17,39 @@ import {
   CardTitle,
   CardSubtitle,
 } from "reactstrap";
+import {
+  CoinClassNames,
+  EventMap,
+  MinimumAmount,
+} from "../../../blockchain/constants";
+import { BNtoNum } from "../../../blockchain/utils";
+import TxHistoryTable from "../../dashboard/tx-history-table";
 
 const ActiveDepositsTab = ({
   activeDepositsData,
+  modal_add_active_deposit,
+  tog_add_active_deposit,
+  modal_withdraw_active_deposit,
+  tog_withdraw_active_deposit,
+  depositRequestSel,
+  setInputVal1,
+  handleDepositTransactionDone,
+  withdrawDepositTransactionDone,
+  isTransactionDone,
+
+  inputVal1,
 }: {
   activeDepositsData: any;
+  modal_add_active_deposit: any;
+  tog_add_active_deposit: any;
+  modal_withdraw_active_deposit: any;
+  tog_withdraw_active_deposit: any;
+  depositRequestSel: any;
+  setInputVal1: any;
+  handleDepositTransactionDone: any;
+  withdrawDepositTransactionDone: any;
+  isTransactionDone: any;
+  inputVal1: any;
 }) => {
   return (
     // Active Deposits
@@ -75,7 +103,7 @@ const ActiveDepositsTab = ({
                                   display: "inline-block",
                                   fontSize: "18px",
                                 }}
-                                align="right"
+                                // align="right"
                               >
                                 &nbsp; &nbsp;
                                 {EventMap[asset.market.toUpperCase()]}
@@ -86,7 +114,7 @@ const ActiveDepositsTab = ({
                             <CardSubtitle className=" text-muted" tag="h6">
                               <span style={{ fontSize: "14px" }}>
                                 &nbsp; &nbsp;&nbsp;{" "}
-                                {BNtoNum(Number(asset.amount))}
+                                {/* {BNtoNum(Number(asset.amount))} */}
                               </span>
                             </CardSubtitle>
                           </CardBody>
@@ -103,7 +131,7 @@ const ActiveDepositsTab = ({
                                   display: "inline-block",
                                   fontSize: "18px",
                                 }}
-                                align="right"
+                                // align="right"
                               >
                                 {parseFloat(
                                   BNtoNum(Number(asset.acquiredYield))
@@ -142,7 +170,7 @@ const ActiveDepositsTab = ({
                                   display: "inline-block",
                                   fontSize: "18px",
                                 }}
-                                align="right"
+                                // align="right"
                               >
                                 &nbsp; &nbsp;
                                 {EventMap[asset.market.toUpperCase()]}
@@ -174,7 +202,7 @@ const ActiveDepositsTab = ({
                                 display: "inline-block",
                                 fontSize: "14px",
                               }}
-                              align="right"
+                              // align="right"
                             >
                               &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
                               {EventMap[asset.commitment]}
@@ -263,20 +291,20 @@ const ActiveDepositsTab = ({
                                           <Button
                                             // color="primary"
                                             className="w-md"
-                                            disabled={
-                                              handleDepositTransactionDone ||
-                                              inputVal1 <= 0 // different for different coins
-                                            }
-                                            onClick={() => {
-                                              handleDepositRequest(
-                                                EventMap[
-                                                  asset.market.toUpperCase()
-                                                ],
-                                                EventMap[
-                                                  asset.commitment.toUpperCase()
-                                                ]
-                                              );
-                                            }}
+                                            // disabled={
+                                            //   handleDepositTransactionDone ||
+                                            //   inputVal1 <= 0 // different for different coins
+                                            // }
+                                            // onClick={() => {
+                                            //   handleDepositRequest(
+                                            //     EventMap[
+                                            //       asset.market.toUpperCase()
+                                            //     ],
+                                            //     EventMap[
+                                            //       asset.commitment.toUpperCase()
+                                            //     ]
+                                            //   );
+                                            // }}
                                           >
                                             {!handleDepositTransactionDone ? (
                                               "Add to Deposit"
@@ -313,16 +341,16 @@ const ActiveDepositsTab = ({
                                               withdrawDepositTransactionDone ||
                                               inputVal1 <= 0 //
                                             }
-                                            onClick={() => {
-                                              handleWithdrawDeposit(
-                                                EventMap[
-                                                  asset.market.toUpperCase()
-                                                ],
-                                                EventMap[
-                                                  asset.commitment.toUpperCase()
-                                                ]
-                                              );
-                                            }}
+                                            // onClick={() => {
+                                            //   handleWithdrawDeposit(
+                                            //     EventMap[
+                                            //       asset.market.toUpperCase()
+                                            //     ],
+                                            //     EventMap[
+                                            //       asset.commitment.toUpperCase()
+                                            //     ]
+                                            //   );
+                                            // }}
                                             style={{
                                               color: "#4B41E5",
                                             }}

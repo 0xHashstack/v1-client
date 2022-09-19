@@ -258,12 +258,6 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
   const tog_borrow = async () => {
     setmodal_borrow(!modal_borrow);
     removeBodyCss();
-
-    // const getCurrentBalnce = await wrapper
-    //   ?.getMockBep20Instance()
-    //   .balanceOf(SymbolsMap[collateralMarket], account)
-
-    // setBalance(BNtoNum(Number(getCurrentBalnce)));
   };
 
   const handleMax = async () => {

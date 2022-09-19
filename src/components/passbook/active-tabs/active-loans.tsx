@@ -24,21 +24,30 @@ import { CoinClassNames, EventMap } from "../../../blockchain/constants";
 import { BNtoNum } from "../../../blockchain/utils";
 import TxHistoryTable from "../../dashboard/tx-history-table";
 
-const ActiveLoansTab = ({ activeLoansData, customActiveTabs, 
-  loanActionTab, collateral_active_loan, repay_active_loan,
-  withdraw_active_loan, swap_active_loan, swap_to_active_loan,
-  isTransactionDone, depositRequestSel, inputVal1 }: { 
-  activeLoansData: any, 
-  customActiveTabs: any, 
-  loanActionTab: any,
-  collateral_active_loan: any,
-  repay_active_loan: any,
-  withdraw_active_loan: any,
-  swap_active_loan: any,
-  swap_to_active_loan: any,
-  isTransactionDone: any,
-  depositRequestSel: any,
-  inputVal1: any
+const ActiveLoansTab = ({
+  activeLoansData,
+  customActiveTabs,
+  loanActionTab,
+  collateral_active_loan,
+  repay_active_loan,
+  withdraw_active_loan,
+  swap_active_loan,
+  swap_to_active_loan,
+  isTransactionDone,
+  depositRequestSel,
+  inputVal1,
+}: {
+  activeLoansData: any;
+  customActiveTabs: any;
+  loanActionTab: any;
+  collateral_active_loan: any;
+  repay_active_loan: any;
+  withdraw_active_loan: any;
+  swap_active_loan: any;
+  swap_to_active_loan: any;
+  isTransactionDone: any;
+  depositRequestSel: any;
+  inputVal1: any;
 }) => {
   return (
     <div className="table-responsive  mt-3">
@@ -81,7 +90,7 @@ const ActiveLoansTab = ({ activeLoansData, customActiveTabs,
                                   display: "inline-block",
                                   fontSize: "18px",
                                 }}
-                                align="right"
+                                // align="right"
                               >
                                 &nbsp; &nbsp;
                                 {EventMap[asset.loanMarket.toUpperCase()]}
@@ -118,7 +127,7 @@ const ActiveLoansTab = ({ activeLoansData, customActiveTabs,
                                   display: "inline-block",
                                   fontSize: "18px",
                                 }}
-                                align="right"
+                                // align="right"
                               >
                                 {parseFloat(
                                   BNtoNum(Number(asset.loanInterest))
@@ -160,7 +169,7 @@ const ActiveLoansTab = ({ activeLoansData, customActiveTabs,
                                   display: "inline-block",
                                   fontSize: "18px",
                                 }}
-                                align="right"
+                                // align="right"
                               >
                                 &nbsp; &nbsp;
                                 {EventMap[asset.collateralMarket.toUpperCase()]}
@@ -201,7 +210,7 @@ const ActiveLoansTab = ({ activeLoansData, customActiveTabs,
                                   display: "inline-block",
                                   fontSize: "18px",
                                 }}
-                                align="right"
+                                // align="right"
                               >
                                 &nbsp; &nbsp;
                                 {
@@ -235,7 +244,7 @@ const ActiveLoansTab = ({ activeLoansData, customActiveTabs,
                                 display: "inline-block",
                                 fontSize: "14px",
                               }}
-                              align="right"
+                              // align="right"
                             >
                               &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{" "}
                               {EventMap[asset.commitment]}
