@@ -189,7 +189,7 @@ const Dashboard = () => {
       } else if (cdr >= 0.333 && cdr < 0.5) {
         debtCategory = 3;
       }
-      loans.push({
+      let temp_len = {
         loanMarket: getTokenFromAddress(loanData.loanMarket)?.name,
         loanMarketAddress: loanData.loanMarket,
         loanAmount: Number(loanData.loanAmount), // 2 Amount
@@ -212,7 +212,8 @@ const Dashboard = () => {
         )?.name, // Borrow market(current)
         currentLoanAmount: Number(loanData.currentAmount), // Borrow amount(current)
         //get apr is for loans apr
-      });
+      };
+      loans.push(JSON.parse(JSON.stringify(temp_len)));
 
       setActiveLoansData(
         loans.filter((asset) => {
