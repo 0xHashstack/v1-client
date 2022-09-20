@@ -31,7 +31,6 @@ import {
 import BigNumber from "bignumber.js";
 import { useStarknet } from "@starknet-react/core";
 import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
-import { remove } from "lodash";
 import { number } from "starknet";
 
 interface IDeposit {
@@ -119,7 +118,12 @@ const Dashboard = () => {
   const [liquidationIndex, setLiquidationIndex] = useState(0);
 
   const [index, setIndex] = useState("1");
-  const { account } = useStarknet();
+  const { account: _account } = useStarknet();
+  const [account, setAccount] = useState<string>("");
+
+  useEffect(() => {
+    setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
+  }, [_account]);
 
   const [uf, setUf] = useState(null);
   const [tvl, setTvl] = useState(null);
@@ -233,11 +237,9 @@ const Dashboard = () => {
     // console.log(acc);
     // acc = "0x" + acc;
     // console.log(acc);
-
-    let acc = number.toHex(number.toBN(number.toFelt(account || "")));
     !isTransactionDone &&
       account &&
-      OffchainAPI.getLoans(acc).then(
+      OffchainAPI.getLoans(account).then(
         (loans) => {
           console.log("loans:", loans);
           onLoansData(loans);
@@ -258,7 +260,7 @@ const Dashboard = () => {
   ]);
 
   const onDepositData = async (depositsData: any[]) => {
-    const deposits: IDeposit[] = [];
+    let deposits: any[] = [];
     for (let i = 0; i < depositsData.length; i++) {
       let deposit: IDeposit = depositsData[i];
       console.log(deposit);
@@ -268,7 +270,7 @@ const Dashboard = () => {
       // let interestAPR = await wrapper
       //   ?.getComptrollerInstance()
       //   .getsavingsAPR(depositsData.market[i], depositsData.commitment[i])
-      deposits.push({
+      let myDep = {
         amount: deposit.amount.toString(),
         account,
         commitment: getCommitmentNameFromIndex(deposit.commitment as string),
@@ -278,21 +280,25 @@ const Dashboard = () => {
         // interest market is same as deposit market
         // call getsavingsapr
         // balance add amount and interest directly for deposit
-      });
+      };
+
+      // VT: had to stringify and append due to a weird bug that was updating data randomly after append
+      let myDepString = JSON.stringify(myDep);
+      console.log("on deposit", i, myDepString);
+      deposits.push(JSON.parse(myDepString));
     }
     let nonZeroDeposits = deposits.filter(function (el) {
       console.log(el.amount, "deposits123");
       return el.amount !== "0";
     });
+    console.log({ nonZeroDeposits });
     setActiveDepositsData(nonZeroDeposits);
   };
 
   useEffect(() => {
-    let acc = number.toHex(number.toBN(number.toFelt(account || "")));
-    console.log(acc);
     !isTransactionDone &&
       account &&
-      OffchainAPI.getActiveDeposits(acc).then(
+      OffchainAPI.getActiveDeposits(account).then(
         (deposits) => {
           console.log(deposits);
           onDepositData(deposits);
@@ -387,23 +393,64 @@ const Dashboard = () => {
     setBorrowInterestChange(e.target.value);
   };
 
+  const handleDepositRequestSelect = (e: any) => {
+    setDepositRequestSel(e.target.value);
+  };
+  const handleWithdrawDepositSelect = (e: any) => {
+    setWithdrawDepositSel(e.target.value);
+  };
+
+  const handleDepositRequestTime = (e: any) => {
+    setDepositRequestVal(e.target.value);
+  };
+  const handleWithdrawDepositTime = (e: any) => {
+    setWithdrawDepositVal(e.target.value);
+  };
+
+  const onLiquidationsData = async (liquidationsData: any[]) => {
+    console.log("onLiquidationsData in", liquidationsData);
+    const liquidations: any[] = [];
+    for (let i = 0; i < liquidationsData.length; i++) {
+      let loan = liquidationsData[i];
+      liquidations.push({
+        loanOwner: loan.account,
+        loanMarket: getTokenFromAddress(loan.loanMarket)?.name,
+        commitment: getCommitmentNameFromIndex(loan.commitment),
+        loanAmount: loan.loanAmount,
+        collateralMarket: getTokenFromAddress(loan.collateralMarket)?.name,
+        collateralAmount: loan.collateralAmount,
+        isLiquidationDone: false,
+        id: loan.loanId,
+      });
+    }
+
+    // getting the unique liquidable loans by filtering laonMarket and Commitment
+    const uniqueLiquidableLoans = liquidations.filter(
+      (loan, index, self) =>
+        index ===
+        self.findIndex(
+          (t) =>
+            t.loanMarket === loan.loanMarket && t.commitment === loan.commitment
+        )
+    );
+
+    setActiveLiquidationsData(uniqueLiquidableLoans);
+  };
+
   const navigateLoansToLiquidate = async (liquidationIndex: any) => {
-    //   !isTransactionDone &&
-    //     account &&
-    //     wrapper
-    //       ?.getLiquidatorInstance()
-    //       .liquidableLoans(liquidationIndex)
-    //       .then(
-    //         (loans) => {
-    //           onLiquidationsData(loans);
-    //           setIsLoading(false);
-    //         },
-    //         (err) => {
-    //           setIsLoading(false);
-    //           setActiveLiquidationsData([]);
-    //           console.log(err);
-    //         }
-    //       );
+    !isTransactionDone &&
+      account &&
+      OffchainAPI.getLiquidableLoans(account).then(
+        (loans) => {
+          onLiquidationsData(loans);
+          setIsLoading(false);
+        },
+        (err) => {
+          setIsLoading(false);
+          setActiveLiquidationsData([]);
+          console.log(err);
+        }
+      );
   };
 
   const getPassbookTable = (passbookStatus: string) => {
@@ -545,6 +592,7 @@ const Dashboard = () => {
                     {/* -------------------------------------- LIQUIDATION ----------------------------- */}
                     <Liquidation
                       activeLiquidationsData={activeLiquidationsData}
+                      isTransactionDone={isTransactionDone}
                     />
                   </TabContent>
                 </CardBody>

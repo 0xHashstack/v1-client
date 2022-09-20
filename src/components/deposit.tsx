@@ -59,6 +59,12 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     },
   });
 
+  useEffect(() => {
+    console.log('balance', {
+      dataBalance, loadingBalance, errorBalance, refreshBalance, contract, account
+    })
+  }, [dataBalance, loadingBalance, errorBalance, refreshBalance])
+
   // Approve
   const {
     data: dataUSDC,

@@ -41,9 +41,22 @@ export const getTokenFromAddress = (address: string) => {
 //   return 1;
 // };
 
+export const getTokenFromName = (name: string) => {
+  if (process.env.NODE_ENV === "development") {
+    let index = DeployDetails.devnet.TOKENS.map((item) => item.name).indexOf(
+      name
+    );
+    return DeployDetails.devnet.TOKENS[index];
+  }
+  return null;
+};
+
 export const getCommitmentNameFromIndex = (index: string) => {
+  console.log('get commitment', index)
   if (index == "0") {
-    return "None";
+    return "NONE";
+  } else if(index == '1') {
+    return 'TWOWEEKS'
   }
   return null;
 };
