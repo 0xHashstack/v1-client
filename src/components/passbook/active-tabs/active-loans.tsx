@@ -1,6 +1,7 @@
-import { useStarknet } from "@starknet-react/core";
+import { useStarknet, useStarknetExecute } from "@starknet-react/core";
 import classNames from "classnames";
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import {
   Row,
   Col,
@@ -26,7 +27,11 @@ import {
   EventMap,
   MinimumAmount,
 } from "../../../blockchain/constants";
-import { BNtoNum } from "../../../blockchain/utils";
+import {
+  diamondAddress,
+  tokenAddressMap,
+} from "../../../blockchain/stark-constants";
+import { BNtoNum, GetErrorText } from "../../../blockchain/utils";
 import TxHistoryTable from "../../dashboard/tx-history-table";
 
 const ActiveLoansTab = ({
@@ -67,6 +72,8 @@ const ActiveLoansTab = ({
   const [repay_active_loan, setReapyActiveLoan] = useState(false);
   const [swap_to_active_loan, setSwapToActiveLoan] = useState(false);
   const [swap_active_loan, setSwapActiveLoan] = useState(true);
+
+  /* =================== add collateral states ======================= */
   const [inputVal1, setInputVal1] = useState(0);
 
   const toggleLoanAction = (tab: string) => {
@@ -136,13 +143,191 @@ const ActiveLoansTab = ({
     setSwapOption(e.target.value);
   };
 
-  const handleCollateral = (
+  const [marketToAddCollateral, setMarketToAddCollateral] = useState("");
+  const [loanId, setLoanId] = useState<number>();
+
+  // repay
+  const [loanMarket, setLoanMarket] = useState("");
+  const [commitmentPeriod, setCommitmentPeriod] = useState();
+  /* ============================== Add Colateral ============================ */
+  // Approve amount
+  const {
+    data: dataApprove,
+    loading: loadingApprove,
+    error: errorApprove,
+    reset: resetApprove,
+    execute: approve,
+  } = useStarknetExecute({
+    calls: {
+      contractAddress: tokenAddressMap[marketToAddCollateral] as string,
+      entrypoint: "approve",
+      calldata: [diamondAddress, (inputVal1 as number) * 10 ** 8, 0],
+    },
+  });
+  // Adding collateral
+  const {
+    data: dataAddCollateral,
+    loading: loadingAddCollateral,
+    error: errorAddCollateral,
+    reset: resetAddCollateral,
+    execute: executeAddCollateral,
+  } = useStarknetExecute({
+    calls: {
+      contractAddress: diamondAddress,
+      entrypoint: "add_collateral",
+      calldata: [loanId, (inputVal1 as number) * 10 ** 8, 0],
+    },
+  });
+
+  /* ============================== Repay Loan ============================ */
+  const {
+    data: dataRepayApprove,
+    loading: loadingRepayApprove,
+    error: errorRepayApprove,
+    reset: resetRepayApprove,
+    execute: approveRepay,
+  } = useStarknetExecute({
+    calls: {
+      contractAddress: loanMarket,
+      entrypoint: "approve",
+      calldata: [diamondAddress, (inputVal1 as number) * 10 ** 8, 0],
+    },
+  });
+  // Adding collateral
+  const {
+    data: dataRepay,
+    loading: loadingRepay,
+    error: errorRepay,
+    reset: resetRepay,
+    execute: executeRepay,
+  } = useStarknetExecute({
+    calls: {
+      contractAddress: diamondAddress,
+      entrypoint: "loan_repay",
+      calldata: [
+        loanMarket,
+        commitmentPeriod,
+        (inputVal1 as number) * 10 ** 8,
+        0,
+      ],
+    },
+  });
+
+  /* ============================== Withdraw Loan ============================ */
+  // const {
+  //   data: dataWithdrawApprove,
+  //   loading: loadingWithdrawApprove,
+  //   error: errorWithdrawApprove,
+  //   reset: resetWithdrawApprove,
+  //   execute: approveWithdraw,
+  // } = useStarknetExecute({
+  //   calls: {
+  //     contractAddress: tokenAddressMap[marketToAddCollateral] as string,
+  //     entrypoint: "approve",
+  //     calldata: [diamondAddress, (inputVal1 as number) * 10 ** 8, 0],
+  //   },
+  // });
+  // Adding collateral
+  const {
+    data: dataWithdraw,
+    loading: loadingWithdraw,
+    error: errorWithdraw,
+    reset: resetWithdraw,
+    execute: executeWithdraw,
+  } = useStarknetExecute({
+    calls: {
+      contractAddress: diamondAddress,
+      entrypoint: "withdraw_partial_loan",
+      calldata: [loanId, (inputVal1 as number) * 10 ** 8, 0],
+    },
+  });
+
+  const handleCollateral = async (
     loanMarket: string,
     commitment: string,
     collateralMarket: string
-  ) => {};
+  ) => {
+    console.log("marketToAddCollateral: ", marketToAddCollateral);
+    console.log("activeLoansData.loanId: ", loanId);
+    console.log("inputVal1: ", inputVal1);
+    console.log(
+      "tokenAddressMap[marketToAddCollateral]: ",
+      tokenAddressMap[marketToAddCollateral]
+    );
+    if (!inputVal1 && loanId! && !marketToAddCollateral) {
+      console.log("error");
+      return;
+    }
 
-  const handleRepay = (loanMarket: string, commitment: string) => {};
+    await approve();
+    if (errorApprove) {
+      toast.error(
+        `${GetErrorText(`Approve for token ${collateralMarket} failed`)}`,
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          closeOnClick: true,
+        }
+      );
+      return;
+    }
+    await executeAddCollateral();
+    if (errorAddCollateral) {
+      toast.error(
+        `${GetErrorText(`Collateral adding for ${collateralMarket} failed`)}`,
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          closeOnClick: true,
+        }
+      );
+    }
+  };
+
+  const handleRepay = async () => {
+    console.log("trying to repay: ", loanMarket);
+    console.log(approveRepay);
+    if (!inputVal1 && loanId! && !diamondAddress) {
+      console.log("error");
+      return;
+    }
+
+    await approveRepay();
+    if (errorApprove) {
+      toast.error(
+        `${GetErrorText(
+          `Approve for token ${tokenAddressMap[loanMarket]} failed`
+        )}`,
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          closeOnClick: true,
+        }
+      );
+      return;
+    }
+
+    await executeRepay();
+    if (errorRepay) {
+      toast.error(`${GetErrorText(`Repay for ${loanMarket} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+    }
+  };
+
+  const handleWithdrawLoan = async (loanMarket: string, commitment: string) => {
+    if (!inputVal1 && !loanId && !diamondAddress) {
+      console.log("error");
+      return;
+    }
+    console.log(diamondAddress, loanId, inputVal1);
+
+    await executeWithdraw();
+    if (errorWithdraw) {
+      toast.error(`${GetErrorText(`Withdraw ${loanMarket} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+    }
+  };
 
   // asset.loanMarket,
   // asset.commitment
@@ -150,11 +335,11 @@ const ActiveLoansTab = ({
 
   // asset.loanMarket,
   // asset.commitment
-  const handleWithdrawLoan = (loanMarket: string, commitment: string) => {};
 
   // asset.loanMarket,
   // asset.commitment
   const handleSwapToLoan = (loanMarket: string, commitment: string) => {};
+
   return (
     <div className="table-responsive  mt-3">
       <Table className="table table-nowrap align-middle mb-0">
@@ -545,6 +730,11 @@ const ActiveLoansTab = ({
                                                   setInputVal1(
                                                     Number(event.target.value)
                                                   );
+
+                                                  setMarketToAddCollateral(
+                                                    asset.collateralMarket
+                                                  );
+                                                  setLoanId(asset.loanId);
                                                 }}
                                               />
                                             </Col>
@@ -586,6 +776,12 @@ const ActiveLoansTab = ({
                                                 id="horizontal-password-Input"
                                                 placeholder="Amount"
                                                 onChange={(event) => {
+                                                  setCommitmentPeriod(
+                                                    asset.commitmentIndex
+                                                  );
+                                                  setLoanMarket(
+                                                    asset.loanMarketAddress
+                                                  );
                                                   setInputVal1(
                                                     Number(event.target.value)
                                                   );
@@ -602,10 +798,7 @@ const ActiveLoansTab = ({
                                                 inputVal1 < 0
                                               }
                                               onClick={() => {
-                                                handleRepay(
-                                                  asset.loanMarket,
-                                                  asset.commitment
-                                                );
+                                                handleRepay();
                                               }}
                                               style={{
                                                 color: "#4B41E5",
@@ -635,6 +828,7 @@ const ActiveLoansTab = ({
                                                   setInputVal1(
                                                     Number(event.target.value)
                                                   );
+                                                  setLoanId(asset.loanId);
                                                 }}
                                               />
                                             </Col>

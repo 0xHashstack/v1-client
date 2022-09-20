@@ -34,11 +34,32 @@ export const getTokenFromAddress = (address: string) => {
   }
   return null;
 };
+// export const getCommitmentNameFromIndex = (index: string) => {
+//   if (index == "0") {
+//     return 0;
+//   }
+//   return 1;
+// };
 
 export const getCommitmentNameFromIndex = (index: string) => {
   if (index == "0") {
     return "None";
   }
   return null;
+};
+
+export const getCommitmentIndex = (index: string) => {
+  if (index === "0") {
+    return 0;
+  }
+  if (index === "1") {
+    return 1;
+  }
+  if (index === "2") {
+    return 2;
+  }
+  if (index === "3") {
+    return 3;
+  }
 };
 export { ERC20Abi };
