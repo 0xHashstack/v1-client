@@ -69,7 +69,11 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
         borrowParams.collateralMarket as string
       ] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, borrowParams.collateralAmount, 0],
+      calldata: [
+        diamondAddress,
+        (borrowParams.collateralAmount as number) * 10 ** 8,
+        0,
+      ],
     },
   });
 
@@ -85,7 +89,11 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
         borrowParams.collateralMarket as string
       ] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, borrowParams.collateralAmount, 0],
+      calldata: [
+        diamondAddress,
+        (borrowParams.collateralAmount as number) * 10 ** 8,
+        0,
+      ],
     },
   });
 
@@ -101,7 +109,11 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
         borrowParams.collateralMarket as string
       ] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, borrowParams.collateralAmount, 0],
+      calldata: [
+        diamondAddress,
+        (borrowParams.collateralAmount as number) * 10 ** 8,
+        0,
+      ],
     },
   });
 
@@ -117,7 +129,11 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
         borrowParams.collateralMarket as string
       ] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, borrowParams.collateralAmount, 0],
+      calldata: [
+        diamondAddress,
+        (borrowParams.collateralAmount as number) * 10 ** 8,
+        0,
+      ],
     },
   });
 
@@ -135,11 +151,11 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
       entrypoint: "loan_request",
       calldata: [
         tokenAddressMap[asset],
-        borrowParams.loanAmount,
+        (borrowParams.loanAmount as number) * 10 ** 8,
         0,
         borrowParams.commitBorrowPeriod === 0 ? 0 : 1,
         tokenAddressMap[borrowParams.collateralMarket as string],
-        borrowParams.collateralAmount,
+        (borrowParams.collateralAmount as number) * 10 ** 8,
         0,
       ],
     },

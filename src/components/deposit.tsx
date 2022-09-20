@@ -195,10 +195,6 @@ let Deposit: any = ({ asset }: { asset: string }) => {
   const tog_center = async () => {
     setmodal_deposit(!modal_deposit);
     removeBodyCss();
-    // const getCurrentBalnce = await wrapper
-    //   ?.getMockBep20Instance()
-    //   .balanceOf(SymbolsMap[props.asset], account);
-    // setBalance(BNtoNum(Number(getCurrentBalnce)));
   };
 
   const handleCommitChange = (e: any) => {
@@ -219,14 +215,27 @@ let Deposit: any = ({ asset }: { asset: string }) => {
   }
 
   const handleDeposit = async (asset: string) => {
-    // approve the transfer
+    if (
+      !tokenAddressMap[asset] &&
+      !depositAmount &&
+      !diamondAddress &&
+      !commitPeriod
+    ) {
+      toast.error(`${GetErrorText(`Invalid request`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
+    }
     if (depositAmount === 0) {
+      // approve the transfer
       toast.error(`${GetErrorText(`Can't deposit 0 of ${asset}`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
       });
       return;
     }
+    console.log(diamondAddress, depositAmount);
     await handleApprove();
     if (errorApprove) {
       toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
