@@ -143,12 +143,16 @@ const ActiveLoansTab = ({
     setSwapOption(e.target.value);
   };
 
+  // add collateral
   const [marketToAddCollateral, setMarketToAddCollateral] = useState("");
   const [loanId, setLoanId] = useState<number>();
 
   // repay
   const [loanMarket, setLoanMarket] = useState("");
   const [commitmentPeriod, setCommitmentPeriod] = useState();
+
+  // swap to market
+  const [swapMarket, setSwapMarket] = useState("");
   /* ============================== Add Colateral ============================ */
   // Approve amount
   const {
@@ -214,20 +218,6 @@ const ActiveLoansTab = ({
   });
 
   /* ============================== Withdraw Loan ============================ */
-  // const {
-  //   data: dataWithdrawApprove,
-  //   loading: loadingWithdrawApprove,
-  //   error: errorWithdrawApprove,
-  //   reset: resetWithdrawApprove,
-  //   execute: approveWithdraw,
-  // } = useStarknetExecute({
-  //   calls: {
-  //     contractAddress: tokenAddressMap[marketToAddCollateral] as string,
-  //     entrypoint: "approve",
-  //     calldata: [diamondAddress, (inputVal1 as number) * 10 ** 8, 0],
-  //   },
-  // });
-  // Adding collateral
   const {
     data: dataWithdraw,
     loading: loadingWithdraw,
@@ -241,6 +231,36 @@ const ActiveLoansTab = ({
       calldata: [loanId, (inputVal1 as number) * 10 ** 8, 0],
     },
   });
+  /* ============================== Swap To Secondary Market ============================ */
+  const {
+    data: dataSwapToMarket,
+    loading: loadingSwapToMarket,
+    error: errorSwapToMarket,
+    reset: resetSwapToMarket,
+    execute: executeSwapToMarket,
+  } = useStarknetExecute({
+    calls: {
+      contractAddress: diamondAddress,
+      entrypoint: "swap_loan_market_to_secondary",
+      calldata: [loanId, swapMarket],
+    },
+  });
+
+  /* ============================== Swap Back To Loan ============================ */
+  const {
+    data: dataSwapToLoan,
+    loading: loadingSwapToLoan,
+    error: errorSwapToLoan,
+    reset: resetSwapToLoan,
+    execute: executeSwapToLoan,
+  } = useStarknetExecute({
+    calls: {
+      contractAddress: diamondAddress,
+      entrypoint: "swap_secondary_market_to_loan",
+      calldata: [loanId],
+    },
+  });
+  /* ============================== handle Functions ============================ */
 
   const handleCollateral = async (
     loanMarket: string,
@@ -329,16 +349,38 @@ const ActiveLoansTab = ({
     }
   };
 
-  // asset.loanMarket,
-  // asset.commitment
-  const handleSwap = (loanMarket: string, commitment: string) => {};
+  const handleSwap = async () => {
+    console.log(swapMarket, " ", loanId, " ", diamondAddress);
+    if (!swapMarket && !loanId && !diamondAddress) {
+      console.log("error");
+      return;
+    }
 
-  // asset.loanMarket,
-  // asset.commitment
+    await executeSwapToMarket();
+    if (errorSwapToMarket) {
+      console.log(errorSwapToMarket);
+      toast.error(`${GetErrorText(`Swap to ${swapMarket} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+    }
+  };
 
-  // asset.loanMarket,
-  // asset.commitment
-  const handleSwapToLoan = (loanMarket: string, commitment: string) => {};
+  const handleSwapToLoan = async () => {
+    console.log(loanId, " ", diamondAddress);
+    if (!loanId && !diamondAddress) {
+      console.log("error");
+      return;
+    }
+    await executeSwapToLoan();
+    if (errorSwapToLoan) {
+      console.log(errorSwapToMarket);
+      toast.error(`${GetErrorText(`Swap to loan failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+    }
+  };
 
   return (
     <div className="table-responsive  mt-3">
@@ -869,18 +911,26 @@ const ActiveLoansTab = ({
                                             <Col md="12" className="mb-3">
                                               <select
                                                 className="form-select"
-                                                onChange={
-                                                  handleSwapOptionChange
-                                                }
+                                                onChange={(e) => {
+                                                  setSwapMarket(
+                                                    tokenAddressMap[
+                                                      e.target.value as string
+                                                    ] as string
+                                                  );
+                                                  setLoanId(asset.loanId);
+                                                }}
                                               >
                                                 <option hidden>
                                                   Swap Market
                                                 </option>
-                                                <option value={"SXP"}>
-                                                  SXP
+                                                <option value={"BTC"}>
+                                                  BTC
                                                 </option>
-                                                <option value={"CAKE"}>
-                                                  CAKE
+                                                <option value={"BNB"}>
+                                                  BNB
+                                                </option>
+                                                <option value={"USDC"}>
+                                                  USDC
                                                 </option>
                                               </select>
                                             </Col>
@@ -894,10 +944,7 @@ const ActiveLoansTab = ({
                                               handleSwapTransactionDone
                                             }
                                             onClick={() => {
-                                              handleSwap(
-                                                asset.loanMarket,
-                                                asset.commitment
-                                              );
+                                              handleSwap();
                                             }}
                                             style={{
                                               color: "#4B41E5",
@@ -921,15 +968,13 @@ const ActiveLoansTab = ({
                                               // color="primary"
 
                                               className="w-md mr-2"
-                                              disabled={
-                                                !asset.isSwapped ||
-                                                handleSwapToLoanTransactionDone
-                                              }
+                                              // disabled={
+                                              //   !asset.isSwapped ||
+                                              //   handleSwapToLoanTransactionDone
+                                              // }
                                               onClick={() => {
-                                                handleSwapToLoan(
-                                                  asset.loanMarket,
-                                                  asset.commitment
-                                                );
+                                                setLoanId(asset.loanId);
+                                                handleSwapToLoan();
                                               }}
                                               style={{
                                                 color: "#4B41E5",
