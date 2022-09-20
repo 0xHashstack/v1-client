@@ -275,7 +275,9 @@ const Dashboard = () => {
         amount: deposit.amount.toString(),
         account,
         commitment: getCommitmentNameFromIndex(deposit.commitment as string),
+        commitmentIndex: Number(deposit.commitment),
         market: getTokenFromAddress(deposit.market as string)?.name,
+        marketAddress: deposit.market as string,
         acquiredYield: Number(0), // deposit interest
         interestRate: 0,
         // interest market is same as deposit market

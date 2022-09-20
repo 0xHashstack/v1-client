@@ -3,11 +3,21 @@ import {
   useStarknet,
   useStarknetExecute,
 } from "@starknet-react/core";
+import { useEffect, useState } from "react";
+import { number } from "starknet";
 import { tokenAddressMap } from "../stark-constants";
 
 const useGetToken = ({ token }: { token: string }) => {
   const { available, connect, disconnect } = useConnectors();
+
   const { account } = useStarknet();
+
+  const [_account, setAccount] = useState<string>("");
+
+  // useEffect(() => {
+  //   console.log(number.toHex(number.toBN(number.toFelt(_account || ""))));
+  //   setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
+  // }, [account]);
 
   const {
     data: dataUSDC,
