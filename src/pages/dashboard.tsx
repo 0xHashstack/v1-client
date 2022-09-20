@@ -32,6 +32,7 @@ import BigNumber from "bignumber.js";
 import { useStarknet } from "@starknet-react/core";
 import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
 import { number } from "starknet";
+import { assert } from "console";
 
 interface IDeposit {
   amount: string;
@@ -263,7 +264,7 @@ const Dashboard = () => {
   const onDepositData = async (depositsData: any[]) => {
     let deposits: any[] = [];
     for (let i = 0; i < depositsData.length; i++) {
-      let deposit: IDeposit = depositsData[i];
+      let deposit: any = depositsData[i];
       console.log(deposit);
       // let interest = await wrapper
       //   ?.getDepositInstance()
@@ -280,6 +281,7 @@ const Dashboard = () => {
         marketAddress: deposit.market as string,
         acquiredYield: Number(0), // deposit interest
         interestRate: 0,
+        depositId: deposit.depositId,
         // interest market is same as deposit market
         // call getsavingsapr
         // balance add amount and interest directly for deposit

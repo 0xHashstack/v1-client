@@ -23,9 +23,11 @@ import {
   MinimumAmount,
 } from "../../../blockchain/constants";
 import useAddDeposit from "../../../blockchain/hooks/active-deposits/useAddDeposit";
+import useWithdrawDeposit from "../../../blockchain/hooks/active-deposits/useWithdrawDeposit";
 import { diamondAddress } from "../../../blockchain/stark-constants";
 import { BNtoNum } from "../../../blockchain/utils";
 import TxHistoryTable from "../../dashboard/tx-history-table";
+import deposit from "../../deposit";
 
 const ActiveDepositsTab = ({
   activeDepositsData,
@@ -64,7 +66,9 @@ const ActiveDepositsTab = ({
 
     await DepositAmount();
   };
-  const handleWithdrawDeposit = () => {};
+  const handleWithdrawDeposit = async (withdrawDeposit: any) => {
+    await withdrawDeposit();
+  };
   return (
     // Active Deposits
     <div className="table-responsive mt-3" style={{ overflow: "hidden" }}>
@@ -100,6 +104,13 @@ const ActiveDepositsTab = ({
             setDepositCommit,
             setDepositMarket,
           } = useAddDeposit(asset, diamondAddress);
+
+          // console.log("here:  ", asset.depositId);
+          const {
+            withdrawDeposit,
+            depositAmount,
+            setDepositAmount: setWithdrawDepositAmount,
+          } = useWithdrawDeposit(asset, diamondAddress, asset.depositId);
           return (
             <div key={key}>
               <UncontrolledAccordion defaultOpen="0" open="false">
@@ -357,7 +368,7 @@ const ActiveDepositsTab = ({
                                               id="horizontal-password-Input"
                                               placeholder="Amount"
                                               onChange={(event) => {
-                                                setInputVal1(
+                                                setWithdrawDepositAmount(
                                                   Number(event.target.value)
                                                 );
                                               }}
@@ -370,11 +381,12 @@ const ActiveDepositsTab = ({
                                             // color="primary"
                                             className="w-md"
                                             disabled={
-                                              withdrawDepositTransactionDone ||
-                                              inputVal1 <= 0 //
+                                              (depositAmount as number) <= 0
                                             }
                                             onClick={() => {
-                                              handleWithdrawDeposit();
+                                              handleWithdrawDeposit(
+                                                withdrawDeposit
+                                              );
                                               // EventMap[
                                               //   asset.market.toUpperCase()
                                               // ],
