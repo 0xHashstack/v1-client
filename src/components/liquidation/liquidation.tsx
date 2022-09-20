@@ -1,8 +1,10 @@
-import { useStarknetExecute } from '@starknet-react/core';
-import React, { useEffect } from 'react';
+import { useContract, useStarknet, useStarknetCall, useStarknetExecute } from '@starknet-react/core';
+import React, { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import { Button, Table, Spinner, TabPane } from 'reactstrap';
+import { Abi, number, uint256 } from 'starknet';
 import { CoinClassNames, EventMap } from '../../blockchain/constants';
-import { diamondAddress } from '../../blockchain/stark-constants';
+import { diamondAddress, ERC20Abi, getTokenFromName } from '../../blockchain/stark-constants';
 import { BNtoNum } from '../../blockchain/utils';
 
 const LiquidationButton = ({
@@ -12,6 +14,52 @@ const LiquidationButton = ({
 	loan: any,
 	isTransactionDone: any
 }) => {
+
+	const [shouldApprove, setShouldApprove] = useState(false)
+	const [loadingMsg, setLoadingMsg] = useState("Loading...")
+	const [canLiquidate, setCanLiquidate] = useState(false)
+	const [allowance, setAllowance] = useState<string>('')
+	const { account:_account } = useStarknet();
+	const [account, setAccount] = useState<string>('')
+	
+	let loanTokenAddress = getTokenFromName(loan.loanMarket)?.address || ''
+	useEffect(() => {
+	  setAccount(number.toHex(number.toBN(number.toFelt(_account || ''))))
+	}, [_account])
+
+	const { contract: erc20Contract } = useContract({
+		abi: ERC20Abi as Abi,
+		address: loanTokenAddress,
+	  });
+
+	const {
+		data: dataAllowance,
+		loading: loadingAllowance,
+		error: errorAllowance,
+		refresh: refreshAllowance,
+	  } = useStarknetCall({
+		contract: erc20Contract,
+		method: "allowance",
+		args: [account, diamondAddress],
+		options: {
+		  watch: true,
+		},
+	});
+
+	 // Approve
+	 const {
+		data: dataToken,
+		loading: loadingToken,
+		error: errorToken,
+		reset: resetToken,
+		execute: approveToken,
+	} = useStarknetExecute({
+		calls: {
+		  contractAddress: loanTokenAddress,
+		  entrypoint: "approve",
+		  calldata: [diamondAddress, loan.loanAmount, 0],
+		},
+	});
 
 	const {
 		data: dataLiquidate,
@@ -27,30 +75,127 @@ const LiquidationButton = ({
 		},
 	});
 
+	function handleToast(isError: boolean, tag: string, msg: string) {
+		if (!isError) {
+			toast.success(`${tag}: ${msg}`, {
+			  position: toast.POSITION.BOTTOM_RIGHT,
+			  closeOnClick: true,
+			});
+		} else {
+			toast.error(`${tag} Error: ${msg}`, {
+			  position: toast.POSITION.BOTTOM_RIGHT,
+			  closeOnClick: true,
+			});
+		}
+	}
+
+	// check allowance
+	useEffect(() => {
+		console.log('check allownace', {
+			dataAllowance, loadingAllowance, errorAllowance, refreshAllowance	
+		})
+		if(!loadingAllowance) {
+			if(dataAllowance) {
+				let data: any = dataAllowance
+				let _allowance = uint256.uint256ToBN(data.remaining)
+				console.log({_allowance: _allowance.toString(), loanAmount: loan.loanAmount})
+				if(_allowance.gte(number.toBN(loan.loanAmount))) {
+					setCanLiquidate(true)
+					setLoadingMsg('')
+					setShouldApprove(false)
+				} else {
+					setShouldApprove(true)
+					setCanLiquidate(false)
+					setLoadingMsg('')
+				}
+			} else if(errorAllowance) {
+				handleToast(true, "Check allowance", errorAllowance)
+			}
+		}
+	}, [dataAllowance, loadingAllowance, errorAllowance, refreshAllowance])
+
+	useEffect(() => {
+		console.log('check token approve', {
+			dataToken, loadingToken, errorToken,
+			loanId: loan
+
+		})
+		if(!loadingToken) {
+			if(dataToken) {
+				refreshAllowance()
+				handleToast(false, "Approve", "Successful")
+				setLoadingMsg("Loading...")
+			} else if(errorToken) {
+				setShouldApprove(true)
+				handleToast(true, "Approve", errorToken)
+			}
+		} else {
+			setLoadingMsg("Approving...")
+			setShouldApprove(false)
+		}
+	}, [dataToken, loadingToken, errorToken])
+
 	useEffect(() => {
 		console.log('handleLiquidation', {
 			dataLiquidate, liquidate, errorLiquidate, reset,
 			loanId: loan
 
 		})
-	}, [dataLiquidate, liquidate, errorLiquidate, reset, liquidate])
+		if(!liquidating) {
+			if(loadingMsg == "Liquidating...") {
+				if(dataLiquidate) {
+					setLoadingMsg("Liquidated")
+				} else if(errorLiquidate) {
+					handleToast(true, "Liquidation", errorLiquidate)
+					setCanLiquidate(true)
+					setLoadingMsg("")
+				}
+			}
+		} else {
+			setCanLiquidate(false)
+			setLoadingMsg("Liquidating...")
+		}
+	}, [dataLiquidate, liquidate, errorLiquidate])
 
 
-	return <Button
-		className='text-muted'
-		color='light'
-		outline
-		onClick={() => {
-			// reset()
-			liquidate()
-		}}
-	>
-		{isTransactionDone && loan.isLiquidationDone ? (
-			<Spinner>Loading...</Spinner>
-		) : (
-			<>Liquidate</>
-		)}
-	</Button>
+	return <>
+
+			{loadingMsg ? <>{loadingMsg}</> : <></>}
+			{
+				shouldApprove ? 
+				(<Button
+					className='text-muted'
+					color='light'
+					outline
+					onClick={() => {
+						// reset()
+						approveToken()
+					}}
+				>
+					{isTransactionDone && loan.isLiquidationDone ? (
+						<Spinner>Loading...</Spinner>
+					) : (
+						<>Approve</>
+					)}
+				</Button> ) : <></>}
+			{	canLiquidate ? <Button
+					className='text-muted'
+					color='light'
+					outline
+					onClick={() => {
+						// reset()
+						liquidate()
+					}}
+				>
+					{isTransactionDone && loan.isLiquidationDone ? (
+						<Spinner>Loading...</Spinner>
+					) : (
+						<>Liquidate</>
+					)}
+				</Button>  : <></>
+			}
+
+		</>
 }
 
 const Liquidation = ({
