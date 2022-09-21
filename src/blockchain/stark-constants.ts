@@ -52,11 +52,11 @@ export const getTokenFromName = (name: string) => {
 };
 
 export const getCommitmentNameFromIndex = (index: string) => {
-  console.log('get commitment', index)
+  console.log("get commitment", index);
   if (index == "0") {
     return "NONE";
-  } else if(index == '1') {
-    return 'TWOWEEKS'
+  } else if (index == "1") {
+    return "TWOWEEKS";
   }
   return null;
 };

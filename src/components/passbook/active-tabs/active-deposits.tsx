@@ -22,10 +22,10 @@ import {
   EventMap,
   MinimumAmount,
 } from "../../../blockchain/constants";
+import { BNtoNum } from "../../../blockchain/utils";
 import useAddDeposit from "../../../blockchain/hooks/active-deposits/useAddDeposit";
 import useWithdrawDeposit from "../../../blockchain/hooks/active-deposits/useWithdrawDeposit";
 import { diamondAddress } from "../../../blockchain/stark-constants";
-import { BNtoNum } from "../../../blockchain/utils";
 import TxHistoryTable from "../../dashboard/tx-history-table";
 import deposit from "../../deposit";
 
@@ -248,7 +248,7 @@ const ActiveDepositsTab = ({
                     <AccordionBody accordionId="1">
                       <div style={{ borderWidth: 1 }}>
                         <CardBody>
-                          <form>
+                          <div>
                             <div className="mb-4 ">
                               <Row>
                                 <Col lg="4 mb-3">
@@ -421,7 +421,7 @@ const ActiveDepositsTab = ({
                                 </Col>
                               </Row>
                             </div>
-                          </form>
+                          </div>
                         </CardBody>
                       </div>
                     </AccordionBody>

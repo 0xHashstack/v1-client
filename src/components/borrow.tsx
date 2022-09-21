@@ -13,7 +13,6 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React from "react";
 import "react-toastify/dist/ReactToastify.css";
-import { GetErrorText } from "../blockchain/utils";
 import { BorrowInterestRates, MinimumAmount } from "../blockchain/constants";
 import {
   useConnectors,
@@ -27,8 +26,9 @@ import {
   ERC20Abi,
   tokenAddressMap,
 } from "../blockchain/stark-constants";
+import { BNtoNum, GetErrorText, NumToBN } from "../blockchain/utils";
+
 import { Abi } from "starknet";
-import { uint256ToBN } from "starknet/dist/utils/uint256";
 
 interface IBorrowParams {
   loanAmount: number | null;
@@ -71,7 +71,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
       entrypoint: "approve",
       calldata: [
         diamondAddress,
-        (borrowParams.collateralAmount as number) * 10 ** 8,
+        NumToBN(borrowParams.collateralAmount as number, 1),
         0,
       ],
     },
@@ -91,7 +91,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
       entrypoint: "approve",
       calldata: [
         diamondAddress,
-        (borrowParams.collateralAmount as number) * 10 ** 8,
+        NumToBN(borrowParams.collateralAmount as number, 18),
         0,
       ],
     },
@@ -111,7 +111,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
       entrypoint: "approve",
       calldata: [
         diamondAddress,
-        (borrowParams.collateralAmount as number) * 10 ** 8,
+        NumToBN(borrowParams.collateralAmount as number, 18),
         0,
       ],
     },
@@ -131,7 +131,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
       entrypoint: "approve",
       calldata: [
         diamondAddress,
-        (borrowParams.collateralAmount as number) * 10 ** 8,
+        NumToBN(borrowParams.collateralAmount as number, 18),
         0,
       ],
     },
@@ -151,11 +151,11 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
       entrypoint: "loan_request",
       calldata: [
         tokenAddressMap[asset],
-        (borrowParams.loanAmount as number) * 10 ** 8,
+        NumToBN(borrowParams.loanAmount as number, 18),
         0,
         borrowParams.commitBorrowPeriod === 0 ? 0 : 1,
         tokenAddressMap[borrowParams.collateralMarket as string],
-        (borrowParams.collateralAmount as number) * 10 ** 8,
+        NumToBN(borrowParams.collateralAmount as number, 18),
         0,
       ],
     },
@@ -374,7 +374,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       {" "}
                       Balance :{" "}
                       {dataBalance
-                        ? uint256ToBN(dataBalance[0]).toString()
+                        ? BNtoNum(dataBalance[0].low, 18).toString()
                         : " Loading"}
                     </div>
                   )}

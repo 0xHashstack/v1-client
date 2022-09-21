@@ -1,28 +1,28 @@
-import React from "react";
+import React from 'react';
 import {
-  Container,
-  Row,
-  Col,
-  Card,
-  CardBody,
-  Button,
-  Form,
-  Input,
-  Table,
-  Nav,
-  NavItem,
-  NavLink,
-  Spinner,
-  AccordionItem,
-  AccordionHeader,
-  AccordionBody,
-  UncontrolledAccordion,
-  CardTitle,
-  CardSubtitle,
-} from "reactstrap";
+	Container,
+	Row,
+	Col,
+	Card,
+	CardBody,
+	Button,
+	Form,
+	Input,
+	Table,
+	Nav,
+	NavItem,
+	NavLink,
+	Spinner,
+	AccordionItem,
+	AccordionHeader,
+	AccordionBody,
+	UncontrolledAccordion,
+	CardTitle,
+	CardSubtitle,
+} from 'reactstrap';
 
 const ProtocolStats = ({ tvl }: { tvl: any }) => {
-  return (
+	return (
 		<Row>
 			<Col xl={3}>
 				<Card
@@ -45,7 +45,7 @@ const ProtocolStats = ({ tvl }: { tvl: any }) => {
 						</div>
 						<CardTitle tag='h5'></CardTitle>
 						<CardSubtitle className='mb-2 text-muted' tag='h2' align='right'>
-							{tvl ? tvl : '$214,000,000'}
+							{tvl ? tvl : '$356,000,000'}
 						</CardSubtitle>
 					</CardBody>
 				</Card>

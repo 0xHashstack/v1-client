@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import { number } from "starknet";
 import deposit from "../../../components/deposit";
 import { tokenAddressMap } from "../../stark-constants";
-import { GetErrorText } from "../../utils";
+import { GetErrorText, NumToBN } from "../../utils";
 
 const useWithdrawDeposit = (
   _token: any,
@@ -39,7 +39,7 @@ const useWithdrawDeposit = (
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "withdraw_deposit",
-      calldata: [depositId, depositAmount, 0],
+      calldata: [depositId, NumToBN(depositAmount as number, 18), 0],
     },
   });
 

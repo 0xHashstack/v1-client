@@ -12,12 +12,14 @@ import {
 } from "reactstrap";
 
 import { MinimumAmount } from "../blockchain/constants";
+import BigNumber from "ethers";
 
 import {
   diamondAddress,
   ERC20Abi,
   tokenAddressMap,
 } from "../blockchain/stark-constants";
+
 import { BNtoNum, GetErrorText, NumToBN } from "../blockchain/utils";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -31,7 +33,6 @@ import {
   useStarknetInvoke,
 } from "@starknet-react/core";
 import { Abi, Contract } from "starknet";
-import { uint256ToBN } from "starknet/dist/utils/uint256";
 
 let Deposit: any = ({ asset }: { asset: string }) => {
   const [modal_deposit, setmodal_deposit] = useState(false);
@@ -76,7 +77,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     calls: {
       contractAddress: tokenAddressMap[asset] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, depositAmount * 10 ** 8, 0],
+      calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
     },
   });
 
@@ -90,7 +91,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     calls: {
       contractAddress: tokenAddressMap[asset] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, depositAmount * 10 ** 8, 0],
+      calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
     },
   });
 
@@ -104,7 +105,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     calls: {
       contractAddress: tokenAddressMap[asset] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, depositAmount * 10 ** 8, 0],
+      calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
     },
   });
 
@@ -118,7 +119,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     calls: {
       contractAddress: tokenAddressMap[asset] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, depositAmount * 10 ** 8, 0],
+      calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
     },
   });
 
@@ -136,7 +137,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
       calldata: [
         tokenAddressMap[asset],
         commitPeriod,
-        depositAmount * 10 ** 8,
+        NumToBN(depositAmount, 18),
         0,
       ],
     },
@@ -283,7 +284,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                   <div>
                     Balance {asset}:{" "}
                     {dataBalance
-                      ? uint256ToBN(dataBalance[0]).toString()
+                      ? BNtoNum(dataBalance[0].low, 18).toString()
                       : " Loading"}
                   </div>
                 </Col>
