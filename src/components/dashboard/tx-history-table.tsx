@@ -4,29 +4,16 @@ import "react-toastify/dist/ReactToastify.css";
 // import { txHistory } from "./passbook-history";
 import { BNtoNum } from "../../blockchain/utils";
 import BigNumber from "bignumber.js";
+import OffchainAPI from "../../services/offchainapi.service";
+import { useStarknet } from "@starknet-react/core";
+import { number } from "starknet";
 
 interface IHistoryData {
-  txnId: string;
-  timestamp: number;
-  amount: string;
-  action: string;
+  txnHash: string;
+  actionType: string;
+  date: string;
+  value: string;
 }
-
-const historyData: IHistoryData[] = [
-  {
-    txnId: "0x2ab8028daf987d7c385270ae2dabd15b0cf77786260444d0300aae1add0284d",
-    timestamp: 20,
-    amount: "10000",
-    action: "Withdraw",
-  },
-
-  {
-    txnId: "0x07Ab78DF9a821343632a47Dea7a46f8D040f7a3Ac2f1bd6CA71cba1aC27c8425",
-    timestamp: 5023423,
-    amount: "20000",
-    action: "NewDeposit",
-  },
-];
 
 const TxHistoryTable = ({
   asset,
@@ -41,8 +28,15 @@ const TxHistoryTable = ({
 }) => {
   const { account, commitment } = asset;
   const [txHistoryData, setTxHistoryData] = useState<IHistoryData[]>([]);
+
   useEffect(() => {
-    setTxHistoryData(historyData);
+    // const _account = ;
+    OffchainAPI.getTransactionEvents(
+      number.toHex(number.toBN(number.toFelt(account || "")))
+    ).then((events) => {
+      setTxHistoryData(events);
+    });
+
     // txHistory(type, account, market, `comit_${commitment}`).then((res) => {
     //   setTxHistoryData(res);
     // });
@@ -52,9 +46,11 @@ const TxHistoryTable = ({
     return (
       txHistoryData &&
       txHistoryData.map((row, index) => {
-        const { txnId, timestamp, amount, action } = row;
-        let myDate = new Date(timestamp * 1000);
-        var formattedDate = myDate.toLocaleString();
+        const { txnHash, actionType, date, value } = row;
+        let myDate = new Date(date);
+        let formattedDate = myDate.toLocaleString();
+
+        let formattedValue = new BigNumber(value);
 
         return (
           <tr
@@ -63,13 +59,13 @@ const TxHistoryTable = ({
             style={{ cursor: "pointer" }}
           >
             <td>
-              {txnId.substring(0, 10) +
+              {txnHash.substring(0, 10) +
                 "..............." +
-                txnId.substring(txnId.length - 11)}
+                txnHash.substring(txnHash.length - 11)}
             </td>
-            <td>{action}</td>
+            <td>{actionType}</td>
             <td>{formattedDate}</td>
-            <td>{parseFloat(BNtoNum(Number(amount))).toFixed(6)}</td>
+            <td>{BNtoNum(formattedValue.toNumber(), 18)}</td>
           </tr>
         );
       })

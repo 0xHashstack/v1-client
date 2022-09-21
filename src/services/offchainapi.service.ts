@@ -35,4 +35,40 @@ export default class OffchainAPI {
     let url = `/api/get-liquidable-loans`;
     return OffchainAPI.httpGet(url);
   }
+
+  static async getTransactionEvents(address: string) {
+    try {
+      let route = `/api/transactions-by-events/${address}`;
+      let url = `${this.ENDPOINT}${route}`;
+      let data = JSON.stringify({
+        events: ["NewDeposit", "AddDeposit", "NewLoan"],
+      });
+
+      let res = await axios({
+        method: "post",
+        url,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data,
+      });
+      let retData = res.data.map((event: any) => {
+        return {
+          txnHash: event.txHash,
+          actionType: event.event,
+          date: event.createdon,
+          value: JSON.parse(event.eventInfo).amount,
+        };
+      });
+      // let retData = {
+      //   txnHash: res.data.txnHash,
+      //   actionType: res.data.event,
+      //   date: res.data.createdon,
+      //   value: JSON.parse(res.data.eventInfo).amount,
+      // };
+      return retData;
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
