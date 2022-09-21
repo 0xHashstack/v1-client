@@ -68,7 +68,7 @@ const Dashboard = () => {
   const [activeDepositsData, setActiveDepositsData] = useState<IDeposit[]>([]);
   const [activeLoansData, setActiveLoansData] = useState<ILoans[]>([]);
   const [repaidLoansData, setRepaidLoansData] = useState<ILoans[]>([]);
-  const [activeLiquidationsData, setActiveLiquidationsData] = useState([]);
+  const [activeLiquidationsData, setActiveLiquidationsData] = useState<any>([]);
   const [isTransactionDone, setIsTransactionDone] = useState(false);
 
   const [handleDepositTransactionDone, setHandleDepositTransactionDone] =
@@ -106,13 +106,6 @@ const Dashboard = () => {
   const [depositRequestVal, setDepositRequestVal] = useState();
   const [withdrawDepositVal, setWithdrawDepositVal] = useState();
 
-  const [repayLoanTooltipOpen, setRepayLoanTooltipOpen] = useState(false);
-  const [swapLoanTooltipOpen, setSwapLoanTooltipOpen] = useState(false);
-  const [swapToLoanTooltipOpen, setSwapToLoanTooltipOpen] = useState(false);
-  const [addCollateralTooltipOpen, setAddCollateralTooltipOpen] =
-    useState(false);
-  const [withdrawCollateralTooltipOpen, setWithdrawCollateralTooltipOpen] =
-    useState(false);
   const [customActiveTabs, setCustomActiveTabs] = useState("1");
 
   const [inputVal1, setInputVal1] = useState(0);

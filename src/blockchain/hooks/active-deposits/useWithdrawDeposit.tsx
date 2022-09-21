@@ -16,18 +16,16 @@ const useWithdrawDeposit = (
   _diamondAddress: string,
   _depositId: number
 ) => {
-  const { available, connect, disconnect } = useConnectors();
-
-  const { account } = useStarknet();
+  const [token, setToken] = useState("");
+  const [diamondAddress, setDiamondAddress] = useState("");
+  const [depositAmount, setDepositAmount] = useState<number>();
+  const [depositId, setDepositId] = useState<number>();
   useEffect(() => {
     setToken(_token.market);
     setDiamondAddress(_diamondAddress);
     setDepositId(_depositId);
   });
-  const [token, setToken] = useState("");
-  const [diamondAddress, setDiamondAddress] = useState("");
-  const [depositAmount, setDepositAmount] = useState<number>();
-  const [depositId, setDepositId] = useState<number>();
+  const initWithdrawDeposit = () => {};
 
   const {
     data: dataDeposit,
