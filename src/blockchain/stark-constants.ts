@@ -7,30 +7,30 @@ interface ItokenAddressMap {
 export const tokenAddressMap: ItokenAddressMap = {
   BTC:
     process.env.NODE_ENV === "development"
-      ? DeployDetails.hardhat.TOKENS[0].address
+      ? DeployDetails.devnet.TOKENS[0].address
       : process.env.NEXT_PUBLIC_T_BTC,
   USDT:
     process.env.NODE_ENV === "development"
-      ? DeployDetails.hardhat.TOKENS[2].address
+      ? DeployDetails.devnet.TOKENS[2].address
       : process.env.NEXT_PUBLIC_T_USDT,
   USDC:
     process.env.NODE_ENV === "development"
-      ? DeployDetails.hardhat.TOKENS[1].address
+      ? DeployDetails.devnet.TOKENS[1].address
       : process.env.NEXT_PUBLIC_T_USDC,
   BNB:
     process.env.NODE_ENV === "development"
-      ? DeployDetails.hardhat.TOKENS[3].address
+      ? DeployDetails.devnet.TOKENS[3].address
       : process.env.NEXT_PUBLIC_T_BNB,
 };
 
-export const diamondAddress: string = DeployDetails.hardhat.DIAMOND_ADDRESS;
+export const diamondAddress: string = DeployDetails.devnet.DIAMOND_ADDRESS;
 
 export const getTokenFromAddress = (address: string) => {
   if (process.env.NODE_ENV === "development") {
-    let index = DeployDetails.hardhat.TOKENS.map((item) => item.address).indexOf(
+    let index = DeployDetails.devnet.TOKENS.map((item) => item.address).indexOf(
       address
     );
-    return DeployDetails.hardhat.TOKENS[index];
+    return DeployDetails.devnet.TOKENS[index];
   }
   return null;
 };
@@ -43,20 +43,20 @@ export const getTokenFromAddress = (address: string) => {
 
 export const getTokenFromName = (name: string) => {
   if (process.env.NODE_ENV === "development") {
-    let index = DeployDetails.hardhat.TOKENS.map((item) => item.name).indexOf(
+    let index = DeployDetails.devnet.TOKENS.map((item) => item.name).indexOf(
       name
     );
-    return DeployDetails.hardhat.TOKENS[index];
+    return DeployDetails.devnet.TOKENS[index];
   }
   return null;
 };
 
 export const getCommitmentNameFromIndex = (index: string) => {
-  console.log('get commitment', index)
+  console.log("get commitment", index);
   if (index == "0") {
     return "NONE";
-  } else if(index == '1') {
-    return 'TWOWEEKS'
+  } else if (index == "1") {
+    return "TWOWEEKS";
   }
   return null;
 };

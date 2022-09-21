@@ -31,7 +31,7 @@ import {
   diamondAddress,
   tokenAddressMap,
 } from "../../../blockchain/stark-constants";
-import { BNtoNum, GetErrorText } from "../../../blockchain/utils";
+import { BNtoNum, GetErrorText, NumToBN } from "../../../blockchain/utils";
 import TxHistoryTable from "../../dashboard/tx-history-table";
 
 const ActiveLoansTab = ({
@@ -165,7 +165,7 @@ const ActiveLoansTab = ({
     calls: {
       contractAddress: tokenAddressMap[marketToAddCollateral] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, (inputVal1 as number) * 10 ** 8, 0],
+      calldata: [diamondAddress, NumToBN(inputVal1 as number, 18), 0],
     },
   });
   // Adding collateral
@@ -179,7 +179,7 @@ const ActiveLoansTab = ({
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "add_collateral",
-      calldata: [loanId, (inputVal1 as number) * 10 ** 8, 0],
+      calldata: [loanId, NumToBN(inputVal1 as number, 18), 0],
     },
   });
 
@@ -194,7 +194,7 @@ const ActiveLoansTab = ({
     calls: {
       contractAddress: loanMarket,
       entrypoint: "approve",
-      calldata: [diamondAddress, (inputVal1 as number) * 10 ** 8, 0],
+      calldata: [diamondAddress, NumToBN(inputVal1 as number, 18), 0],
     },
   });
   // Adding collateral
@@ -211,7 +211,7 @@ const ActiveLoansTab = ({
       calldata: [
         loanMarket,
         commitmentPeriod,
-        (inputVal1 as number) * 10 ** 8,
+        NumToBN(inputVal1 as number, 18),
         0,
       ],
     },
@@ -228,7 +228,7 @@ const ActiveLoansTab = ({
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "withdraw_partial_loan",
-      calldata: [loanId, (inputVal1 as number) * 10 ** 8, 0],
+      calldata: [loanId, NumToBN(inputVal1 as number, 18), 0],
     },
   });
   /* ============================== Swap To Secondary Market ============================ */
@@ -590,7 +590,8 @@ const ActiveLoansTab = ({
                     <AccordionBody accordionId="1">
                       <div style={{ borderWidth: 1 }}>
                         <CardBody>
-                          <form>
+                          {/* <form> */}
+                          <div>
                             <div className="mb-4 ">
                               <Row>
                                 <Col lg="4 mb-3">
@@ -1003,7 +1004,8 @@ const ActiveLoansTab = ({
                                 </Col>
                               </Row>
                             </div>
-                          </form>
+                          </div>
+                          {/* </form> */}
                         </CardBody>
                       </div>
                     </AccordionBody>

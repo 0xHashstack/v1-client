@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 import { number } from "starknet";
 import deposit from "../../../components/deposit";
 import { tokenAddressMap } from "../../stark-constants";
-import { GetErrorText } from "../../utils";
+import { GetErrorText, NumToBN } from "../../utils";
 
 const useAddDeposit = (_token: any, _diamondAddress: string) => {
   const { available, connect, disconnect } = useConnectors();
@@ -36,7 +36,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
     calls: {
       contractAddress: depositMarket as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, (depositAmount as number) * 10 ** 8, 0],
+      calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
     },
   });
 
@@ -50,7 +50,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
     calls: {
       contractAddress: depositMarket as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, (depositAmount as number) * 10 ** 8, 0],
+      calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
     },
   });
 
@@ -64,7 +64,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
     calls: {
       contractAddress: depositMarket as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, (depositAmount as number) * 10 ** 8, 0],
+      calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
     },
   });
 
@@ -78,7 +78,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
     calls: {
       contractAddress: depositMarket as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, (depositAmount as number) * 10 ** 8, 0],
+      calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
     },
   });
 
@@ -95,7 +95,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
       calldata: [
         tokenAddressMap[token],
         depositCommit,
-        (depositAmount as number) * 10 ** 8,
+        NumToBN(depositAmount as number, 18),
         0,
       ],
     },
