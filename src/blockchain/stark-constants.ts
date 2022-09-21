@@ -53,11 +53,16 @@ export const getTokenFromName = (name: string) => {
 
 export const getCommitmentNameFromIndex = (index: string) => {
   console.log("get commitment", index);
-  if (index == "0") {
+  if (index === "0") {
     return "NONE";
-  } else if (index == "1") {
-    return "TWOWEEKS";
+  } else if (index === "1209600") {
+    return "TWO WEEKS";
+  } else if (index === "2592000") {
+    return "ONE MONTH";
+  } else if (index === "7776000") {
+    return "THREE MONTHS";
   }
+
   return null;
 };
 

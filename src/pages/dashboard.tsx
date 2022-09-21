@@ -168,7 +168,7 @@ const Dashboard = () => {
   //   const { web3Wrapper: wrapper } = useContext(Web3WrapperContext);
 
   const onLoansData = async (loansData: any[]) => {
-    console.log("Data: ", loansData);
+    console.log("Loans: ", loansData);
     const loans: ILoans[] = [];
     for (let i = 0; i < loansData.length; ++i) {
       let loanData = loansData[i];
@@ -473,6 +473,7 @@ const Dashboard = () => {
 
   const getActionTabs = (customActiveTab: string) => {
     console.log("blockchain activedepoist", activeDepositsData);
+    console.log("blockchain activeloans", activeLoansData);
     // console.log("customActiveTabs: ", customActiveTabs);
     switch (customActiveTab) {
       case "1":

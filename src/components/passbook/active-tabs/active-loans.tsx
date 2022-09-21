@@ -580,7 +580,7 @@ const ActiveLoansTab = ({
                               // align="right"
                             >
                               &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{" "}
-                              {EventMap[asset.commitment]}
+                              {asset.commitment}
                             </div>
                             <CardTitle tag="h5"></CardTitle>
                           </CardBody>
