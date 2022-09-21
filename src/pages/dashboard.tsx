@@ -24,6 +24,7 @@ import Liquidation from "../components/liquidation/liquidation";
 import LoanBorrowCommitment from "../components/dashboard/loanborrow-commitment";
 import OffchainAPI from "../services/offchainapi.service";
 import {
+  getCommitmentIndex,
   getCommitmentNameFromIndex,
   getTokenFromAddress,
 } from "../blockchain/stark-constants";
@@ -31,10 +32,8 @@ import BigNumber from "bignumber.js";
 import { useStarknet } from "@starknet-react/core";
 import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
 import { number } from "starknet";
+import { assert } from "console";
 
-// toast.configure({
-//   autoClose: 4000,
-// });
 interface IDeposit {
   amount: string;
   account: string | undefined;
@@ -46,8 +45,10 @@ interface IDeposit {
 
 interface ILoans {
   loanMarket: string | undefined;
+  loanMarketAddress: string | undefined;
   loanAmount: number;
   commitment: string | null;
+  commitmentIndex: number | null;
   collateralMarket: string | undefined;
   collateralAmount: number;
   loanInterest: number;
@@ -70,38 +71,21 @@ const Dashboard = () => {
   const [activeLiquidationsData, setActiveLiquidationsData] = useState([]);
   const [isTransactionDone, setIsTransactionDone] = useState(false);
 
-  const [
-    handleWithdrawCollateralTransactionDone,
-    setHandleWithdrawCollateralTransactionDone,
-  ] = useState(false);
   const [handleDepositTransactionDone, setHandleDepositTransactionDone] =
     useState(false);
   const [withdrawDepositTransactionDone, setWithdrawDepositTransactionDone] =
     useState(false);
-  const [handleCollateralTransactionDone, setHandleCollateralTransactionDone] =
-    useState(false);
-  const [handleRepayTransactionDone, setHandleRepayTransactionDone] =
-    useState(false);
-  const [
-    handleWithdrawLoanTransactionDone,
-    setHandleWithdrawLoanTransactionDone,
-  ] = useState(false);
-  const [handleSwapTransactionDone, setHandleSwapTransactionDone] =
-    useState(false);
-  const [handleSwapToLoanTransactionDone, setHandleSwapToLoanTransactionDone] =
-    useState(false);
 
   const [customActiveTab, setCustomActiveTab] = useState("1");
-  const [customActiveTabs, setCustomActiveTabs] = useState("1");
+  // const [customActiveTabs, setCustomActiveTabs] = useState("1");
   const [loanActionTab, setLoanActionTab] = useState("0");
-  const [mainTab, setMainTab] = useState("1");
   const [passbookStatus, setPassbookStatus] = useState("ActiveDeposit");
 
   const [modal_repay_loan, setmodal_repay_loan] = useState(false);
   const [modal_withdraw_loan, setmodal_withdraw_loan] = useState(false);
   const [modal_swap_loan, setmodal_swap_loan] = useState(false);
   const [modal_swap_to_loan, setmodal_swap_to_loan] = useState(false);
-  const [modal_add_collateral, setmodal_add_collateral] = useState(false);
+  // const [modal_add_collateral, setmodal_add_collateral] = useState(false);
   const [modal_withdraw_collateral, setmodal_withdraw_collateral] =
     useState(false);
   const [modal_add_active_deposit, setmodal_add_active_deposit] =
@@ -129,21 +113,18 @@ const Dashboard = () => {
     useState(false);
   const [withdrawCollateralTooltipOpen, setWithdrawCollateralTooltipOpen] =
     useState(false);
+  const [customActiveTabs, setCustomActiveTabs] = useState("1");
 
   const [inputVal1, setInputVal1] = useState(0);
   const [liquidationIndex, setLiquidationIndex] = useState(0);
 
-  //   const { connect, disconnect, account, chainId } =
-  //     useContext(Web3ModalContext);
-  // const account =
-  //   "0x7ca42502c30d06ff8e62ec3dc37e02f62a7d1b5c22de65114f9ba45ccb9e7ef";
   const [index, setIndex] = useState("1");
-  const { account:_account } = useStarknet();
-  const [account, setAccount] = useState<string>('')
+  const { account: _account } = useStarknet();
+  const [account, setAccount] = useState<string>("");
 
   useEffect(() => {
-    setAccount(number.toHex(number.toBN(number.toFelt(_account || ''))))
-  }, [_account])
+    setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
+  }, [_account]);
 
   const [uf, setUf] = useState(null);
   const [tvl, setTvl] = useState(null);
@@ -209,10 +190,12 @@ const Dashboard = () => {
       } else if (cdr >= 0.333 && cdr < 0.5) {
         debtCategory = 3;
       }
-      loans.push({
+      let temp_len = {
         loanMarket: getTokenFromAddress(loanData.loanMarket)?.name,
+        loanMarketAddress: loanData.loanMarket,
         loanAmount: Number(loanData.loanAmount), // 2 Amount
         commitment: getCommitmentNameFromIndex(loanData.commitment), // 3  Commitment
+        commitmentIndex: getCommitmentIndex(loanData.commitment) as number,
         collateralMarket: getTokenFromAddress(loanData.collateralMarket)?.name, // 4 Collateral Market
         collateralAmount: Number(loanData.collateralAmount), // 5 Collateral Amount
         loanInterest: Number(loanData.interest), //loan interest
@@ -230,7 +213,8 @@ const Dashboard = () => {
         )?.name, // Borrow market(current)
         currentLoanAmount: Number(loanData.currentAmount), // Borrow amount(current)
         //get apr is for loans apr
-      });
+      };
+      loans.push(JSON.parse(JSON.stringify(temp_len)));
 
       setActiveLoansData(
         loans.filter((asset) => {
@@ -280,7 +264,8 @@ const Dashboard = () => {
   const onDepositData = async (depositsData: any[]) => {
     let deposits: any[] = [];
     for (let i = 0; i < depositsData.length; i++) {
-      let deposit = depositsData[i];
+      let deposit: any = depositsData[i];
+      console.log(deposit);
       // let interest = await wrapper
       //   ?.getDepositInstance()
       //   .getDepositInterest(account, i + 1)
@@ -291,24 +276,27 @@ const Dashboard = () => {
         amount: deposit.amount.toString(),
         account,
         commitment: getCommitmentNameFromIndex(deposit.commitment as string),
+        commitmentIndex: Number(deposit.commitment),
         market: getTokenFromAddress(deposit.market as string)?.name,
+        marketAddress: deposit.market as string,
         acquiredYield: Number(0), // deposit interest
         interestRate: 0,
+        depositId: deposit.depositId,
         // interest market is same as deposit market
         // call getsavingsapr
         // balance add amount and interest directly for deposit
-      }
+      };
 
       // VT: had to stringify and append due to a weird bug that was updating data randomly after append
-      let myDepString= JSON.stringify(myDep)
-      console.log('on deposit', i, myDepString)
+      let myDepString = JSON.stringify(myDep);
+      console.log("on deposit", i, myDepString);
       deposits.push(JSON.parse(myDepString));
     }
     let nonZeroDeposits = deposits.filter(function (el) {
       console.log(el.amount, "deposits123");
       return el.amount !== "0";
     });
-    console.log({nonZeroDeposits})
+    console.log({ nonZeroDeposits });
     setActiveDepositsData(nonZeroDeposits);
   };
 
@@ -382,10 +370,10 @@ const Dashboard = () => {
     setmodal_swap_to_loan(!modal_swap_to_loan);
     removeBodyCss();
   }
-  function tog_add_collateral() {
-    setmodal_add_collateral(!modal_add_collateral);
-    removeBodyCss();
-  }
+  // function tog_add_collateral() {
+  //   setmodal_add_collateral(!modal_add_collateral);
+  //   removeBodyCss();
+  // }
   function tog_withdraw_collateral() {
     setmodal_withdraw_collateral(!modal_withdraw_collateral);
     removeBodyCss();
@@ -401,73 +389,6 @@ const Dashboard = () => {
     setmodal_add_active_deposit(false);
     removeBodyCss();
   }
-
-  function tog_collateral_active_loan() {
-    setCollateralActiveLoan(true);
-    setReapyActiveLoan(false);
-    setWithdrawActiveLoan(false);
-    setSwapToActiveLoan(false);
-    setSwapActiveLoan(false);
-    //setmodal_add_active_deposit(false)
-    removeBodyCss();
-  }
-
-  function tog_repay_active_loan() {
-    setCollateralActiveLoan(false);
-    setReapyActiveLoan(true);
-    setWithdrawActiveLoan(false);
-    setSwapToActiveLoan(false);
-    setSwapActiveLoan(false);
-    //setmodal_add_active_deposit(false)
-    removeBodyCss();
-  }
-
-  function tog_withdraw_active_loan() {
-    setCollateralActiveLoan(false);
-    setReapyActiveLoan(false);
-    setWithdrawActiveLoan(true);
-    setSwapToActiveLoan(false);
-    setSwapActiveLoan(false);
-    //setmodal_add_active_deposit(false)
-    removeBodyCss();
-  }
-
-  function tog_swap_active_loan() {
-    setCollateralActiveLoan(false);
-    setReapyActiveLoan(false);
-    setWithdrawActiveLoan(true);
-    setSwapToActiveLoan(false);
-
-    setSwapActiveLoan(true);
-    //setmodal_add_active_deposit(false)
-    removeBodyCss();
-  }
-
-  function tog_swap_to_active_loan() {
-    setCollateralActiveLoan(false);
-    setReapyActiveLoan(false);
-    setWithdrawActiveLoan(false);
-    setSwapToActiveLoan(true);
-    setSwapActiveLoan(false);
-    //setmodal_add_active_deposit(false)
-    removeBodyCss();
-  }
-
-  const handleLoanOptionChange = (e: any) => {
-    setLoanOption(e.target.value);
-  };
-
-  const handleLoanCommitementChange = (e: any) => {
-    setLoanCommitement(e.target.value);
-  };
-
-  const handleSwapOptionChange = (e: any) => {
-    setSwapOption(e.target.value);
-  };
-
-  const handleCollateralOptionChange = (e: any) => {
-    setCollateralOption(e.target.value);
-  };
 
   const handleDepositInterestChange = (e: any) => {
     setDepositInterestChange(e.target.value);
@@ -492,10 +413,10 @@ const Dashboard = () => {
   };
 
   const onLiquidationsData = async (liquidationsData: any[]) => {
-    console.log('onLiquidationsData in', liquidationsData)
-    const liquidations: any[] = []
+    console.log("onLiquidationsData in", liquidationsData);
+    const liquidations: any[] = [];
     for (let i = 0; i < liquidationsData.length; i++) {
-      let loan = liquidationsData[i]
+      let loan = liquidationsData[i];
       liquidations.push({
         loanOwner: loan.account,
         loanMarket: getTokenFromAddress(loan.loanMarket)?.name,
@@ -504,35 +425,37 @@ const Dashboard = () => {
         collateralMarket: getTokenFromAddress(loan.collateralMarket)?.name,
         collateralAmount: loan.collateralAmount,
         isLiquidationDone: false,
-        id: loan.loanId
-      })
+        id: loan.loanId,
+      });
     }
 
     // getting the unique liquidable loans by filtering laonMarket and Commitment
-    const uniqueLiquidableLoans = liquidations.filter((loan, index, self) =>
-      index === self.findIndex((t) => (
-        t.loanMarket === loan.loanMarket && t.commitment === loan.commitment
-      ))
-    )
+    const uniqueLiquidableLoans = liquidations.filter(
+      (loan, index, self) =>
+        index ===
+        self.findIndex(
+          (t) =>
+            t.loanMarket === loan.loanMarket && t.commitment === loan.commitment
+        )
+    );
 
-    setActiveLiquidationsData(uniqueLiquidableLoans)
-  }
+    setActiveLiquidationsData(uniqueLiquidableLoans);
+  };
 
   const navigateLoansToLiquidate = async (liquidationIndex: any) => {
-      !isTransactionDone &&
-        account &&
-        OffchainAPI.getLiquidableLoans(account)
-          .then(
-            (loans) => {
-              onLiquidationsData(loans);
-              setIsLoading(false);
-            },
-            (err) => {
-              setIsLoading(false);
-              setActiveLiquidationsData([]);
-              console.log(err);
-            }
-          );
+    !isTransactionDone &&
+      account &&
+      OffchainAPI.getLiquidableLoans(account).then(
+        (loans) => {
+          onLiquidationsData(loans);
+          setIsLoading(false);
+        },
+        (err) => {
+          setIsLoading(false);
+          setActiveLiquidationsData([]);
+          console.log(err);
+        }
+      );
   };
 
   const getPassbookTable = (passbookStatus: string) => {
@@ -557,6 +480,7 @@ const Dashboard = () => {
 
   const getActionTabs = (customActiveTab: string) => {
     console.log("blockchain activedepoist", activeDepositsData);
+    // console.log("customActiveTabs: ", customActiveTabs);
     switch (customActiveTab) {
       case "1":
         return (
@@ -580,16 +504,12 @@ const Dashboard = () => {
         return (
           <ActiveLoansTab
             activeLoansData={activeLoansData}
-            customActiveTabs={activeLoansData}
-            loanActionTab={loanActionTab}
-            collateral_active_loan={collateral_active_loan}
-            repay_active_loan={repay_active_loan}
-            withdraw_active_loan={withdraw_active_loan}
-            swap_active_loan={swap_active_loan}
-            swap_to_active_loan={swap_to_active_loan}
+            customActiveTabs={customActiveTabs}
             isTransactionDone={isTransactionDone}
             depositRequestSel={depositRequestSel}
-            inputVal1={inputVal1}
+            // inputVal1={inputVal1}
+            removeBodyCss={removeBodyCss}
+            setCustomActiveTabs={setCustomActiveTabs}
           />
         );
         break;

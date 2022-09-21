@@ -22,8 +22,12 @@ import {
   EventMap,
   MinimumAmount,
 } from "../../../blockchain/constants";
+import useAddDeposit from "../../../blockchain/hooks/active-deposits/useAddDeposit";
+import useWithdrawDeposit from "../../../blockchain/hooks/active-deposits/useWithdrawDeposit";
+import { diamondAddress } from "../../../blockchain/stark-constants";
 import { BNtoNum } from "../../../blockchain/utils";
 import TxHistoryTable from "../../dashboard/tx-history-table";
+import deposit from "../../deposit";
 
 const ActiveDepositsTab = ({
   activeDepositsData,
@@ -51,6 +55,20 @@ const ActiveDepositsTab = ({
   isTransactionDone: any;
   inputVal1: any;
 }) => {
+  const handleDepositRequest = async (
+    approveToken: any,
+    returnTransactionParameters: any,
+    DepositAmount: any,
+    market: string
+  ) => {
+    console.log("approving token");
+    await approveToken(market);
+
+    await DepositAmount();
+  };
+  const handleWithdrawDeposit = async (withdrawDeposit: any) => {
+    await withdrawDeposit();
+  };
   return (
     // Active Deposits
     <div className="table-responsive mt-3" style={{ overflow: "hidden" }}>
@@ -78,6 +96,21 @@ const ActiveDepositsTab = ({
 
       {Array.isArray(activeDepositsData) && activeDepositsData.length > 0 ? (
         activeDepositsData.map((asset, key) => {
+          const {
+            approveToken,
+            returnTransactionParameters,
+            DepositAmount,
+            setDepositAmount,
+            setDepositCommit,
+            setDepositMarket,
+          } = useAddDeposit(asset, diamondAddress);
+
+          // console.log("here:  ", asset.depositId);
+          const {
+            withdrawDeposit,
+            depositAmount,
+            setDepositAmount: setWithdrawDepositAmount,
+          } = useWithdrawDeposit(asset, diamondAddress, asset.depositId);
           return (
             <div key={key}>
               <UncontrolledAccordion defaultOpen="0" open="false">
@@ -279,8 +312,14 @@ const ActiveDepositsTab = ({
                                                   : "Amount"
                                               }
                                               onChange={(event) => {
-                                                setInputVal1(
+                                                setDepositAmount(
                                                   Number(event.target.value)
+                                                );
+                                                setDepositCommit(
+                                                  asset.commitmentIndex
+                                                );
+                                                setDepositMarket(
+                                                  asset.marketAddress
                                                 );
                                               }}
                                             />
@@ -295,16 +334,20 @@ const ActiveDepositsTab = ({
                                             //   handleDepositTransactionDone ||
                                             //   inputVal1 <= 0 // different for different coins
                                             // }
-                                            // onClick={() => {
-                                            //   handleDepositRequest(
-                                            //     EventMap[
-                                            //       asset.market.toUpperCase()
-                                            //     ],
-                                            //     EventMap[
-                                            //       asset.commitment.toUpperCase()
-                                            //     ]
-                                            //   );
-                                            // }}
+                                            onClick={() => {
+                                              handleDepositRequest(
+                                                approveToken,
+                                                returnTransactionParameters,
+                                                DepositAmount,
+                                                asset.market
+                                              );
+                                              // EventMap[
+                                              //   asset.market.toUpperCase()
+                                              // ],
+                                              // EventMap[
+                                              //   asset.commitment.toUpperCase()
+                                              // ]
+                                            }}
                                           >
                                             {!handleDepositTransactionDone ? (
                                               "Add to Deposit"
@@ -325,7 +368,7 @@ const ActiveDepositsTab = ({
                                               id="horizontal-password-Input"
                                               placeholder="Amount"
                                               onChange={(event) => {
-                                                setInputVal1(
+                                                setWithdrawDepositAmount(
                                                   Number(event.target.value)
                                                 );
                                               }}
@@ -338,19 +381,19 @@ const ActiveDepositsTab = ({
                                             // color="primary"
                                             className="w-md"
                                             disabled={
-                                              withdrawDepositTransactionDone ||
-                                              inputVal1 <= 0 //
+                                              (depositAmount as number) <= 0
                                             }
-                                            // onClick={() => {
-                                            //   handleWithdrawDeposit(
-                                            //     EventMap[
-                                            //       asset.market.toUpperCase()
-                                            //     ],
-                                            //     EventMap[
-                                            //       asset.commitment.toUpperCase()
-                                            //     ]
-                                            //   );
-                                            // }}
+                                            onClick={() => {
+                                              handleWithdrawDeposit(
+                                                withdrawDeposit
+                                              );
+                                              // EventMap[
+                                              //   asset.market.toUpperCase()
+                                              // ],
+                                              // EventMap[
+                                              //   asset.commitment.toUpperCase()
+                                              // ]
+                                            }}
                                             style={{
                                               color: "#4B41E5",
                                             }}
@@ -389,7 +432,9 @@ const ActiveDepositsTab = ({
           );
         })
       ) : (
-        <div>No records found</div>
+        <tr>
+          <td colSpan={5}>No Records Found.</td>
+        </tr>
       )}
     </div>
   );

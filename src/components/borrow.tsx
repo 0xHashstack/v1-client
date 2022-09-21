@@ -57,6 +57,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 
 	const { account } = useStarknet();
 
+
 	/* ======================= Approve ================================= */
 	const {
 		data: dataUSDC,
@@ -122,7 +123,9 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 		},
 	});
 
+
 	/* ========================== Borrow Request ============================ */
+
 
 	const {
 		data: dataBorrow,
@@ -145,6 +148,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 			],
 		},
 	});
+
 
 	/* ========================= Balance ================================*/
 

@@ -61,16 +61,13 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 		},
 	});
 
-	useEffect(() => {
-		console.log('balance', {
-			dataBalance,
-			loadingBalance,
-			errorBalance,
-			refreshBalance,
-			contract,
-			account,
-		});
-	}, [dataBalance, loadingBalance, errorBalance, refreshBalance]);
+
+  useEffect(() => {
+    // console.log('balance', {
+    //   dataBalance, loadingBalance, errorBalance, refreshBalance, contract, account
+    // })
+  }, [dataBalance, loadingBalance, errorBalance, refreshBalance]);
+
 
 	// Approve
 	const {
@@ -199,14 +196,11 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 		error: errorApprove,
 	} = returnTransactionParameters();
 
-	const tog_center = async () => {
-		setmodal_deposit(!modal_deposit);
-		removeBodyCss();
-		// const getCurrentBalnce = await wrapper
-		//   ?.getMockBep20Instance()
-		//   .balanceOf(SymbolsMap[props.asset], account);
-		// setBalance(BNtoNum(Number(getCurrentBalnce)));
-	};
+
+  const tog_center = async () => {
+    setmodal_deposit(!modal_deposit);
+    removeBodyCss();
+  };
 
 	const handleCommitChange = (e: any) => {
 		setCommitPeriod(e.target.value);
@@ -225,24 +219,39 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 		document.body.classList.add('no_padding');
 	}
 
-	const handleDeposit = async (asset: string) => {
-		// approve the transfer
-		if (depositAmount === 0) {
-			toast.error(`${GetErrorText(`Can't deposit 0 of ${asset}`)}`, {
-				position: toast.POSITION.BOTTOM_RIGHT,
-				closeOnClick: true,
-			});
-			return;
-		}
-		await handleApprove();
-		if (errorApprove) {
-			toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
-				position: toast.POSITION.BOTTOM_RIGHT,
-				closeOnClick: true,
-			});
-			return;
-		}
-		// run deposit function
+
+  const handleDeposit = async (asset: string) => {
+    if (
+      !tokenAddressMap[asset] &&
+      !depositAmount &&
+      !diamondAddress &&
+      !commitPeriod
+    ) {
+      toast.error(`${GetErrorText(`Invalid request`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
+    }
+    if (depositAmount === 0) {
+      // approve the transfer
+      toast.error(`${GetErrorText(`Can't deposit 0 of ${asset}`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
+    }
+    console.log(diamondAddress, depositAmount);
+    await handleApprove();
+    if (errorApprove) {
+      toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
+    }
+    // run deposit function
+
 
 		await executeDeposit();
 		if (errorDeposit) {
