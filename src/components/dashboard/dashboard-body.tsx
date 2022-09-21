@@ -1,12 +1,9 @@
 import React from "react";
 import { Spinner } from "reactstrap";
-import { BorrowInterestRates, DepositInterestRates } from "../../blockchain/constants";
-// import { DepositInterestRates, BorrowInterestRates
-// } from '../blockchain/constants';
-
-// import loadable from "@loadable/component";
-// const Borrow = loadable(() => import("./borrow"));
-// const Deposit = loadable(() => import("./deposit"));
+import {
+  BorrowInterestRates,
+  DepositInterestRates,
+} from "../../blockchain/constants";
 
 import Borrow from "../borrow";
 import Deposit from "../deposit";

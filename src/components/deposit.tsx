@@ -354,9 +354,9 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                   >
                     <option hidden>Commitment</option>
                     <option value={0}>None</option>
-                    <option value={1209600}>Two Weeks</option>
-                    <option value={2592000}>One Month</option>
-                    <option value={7776000}>Three Months</option>
+                    <option value={1}>Two Weeks</option>
+                    <option value={2}>One Month</option>
+                    <option value={3}>Three Months</option>
                   </select>
                 </Col>
               </div>
