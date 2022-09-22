@@ -27,6 +27,13 @@ const useWithdrawCollateral = (_diamondAddress: string, _loanId: number) => {
   });
 
   const withdrawCollateral = async () => {
+    if (loanId === undefined && !diamondAddress) {
+      toast.error(`${GetErrorText(`Some inputs missing`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
+    }
     console.log(`${loanId} ${diamondAddress}`);
     await executeWithdrawCollateral();
     if (error) {

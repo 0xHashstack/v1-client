@@ -282,6 +282,13 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
   };
 
   const handleBorrow = async () => {
+    if (
+      !tokenAddressMap[asset] ||
+      !borrowParams.loanAmount ||
+      (!borrowParams.commitBorrowPeriod && !diamondAddress)
+    ) {
+      return;
+    }
     if (borrowParams.collateralAmount === 0) {
       toast.error(`${GetErrorText(`Can't use collateral 0 of ${asset}`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
