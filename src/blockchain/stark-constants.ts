@@ -1,5 +1,6 @@
 import * as DeployDetails from "../../../zkOpen/contract_addresses.json";
 import ERC20Abi from "../../starknet-artifacts/contracts/mockups/erc20.cairo/erc20_abi.json";
+import ComptrollerAbi from "../../../zkOpen/starknet-artifacts/contracts/modules/comptroller.cairo/comptroller_abi.json";
 interface ItokenAddressMap {
   [key: string]: string | undefined;
 }
@@ -52,7 +53,6 @@ export const getTokenFromName = (name: string) => {
 };
 
 export const getCommitmentNameFromIndex = (index: string) => {
-  console.log("get commitment", index);
   if (index === "0") {
     return "NONE";
   } else if (index === "1") {
@@ -80,4 +80,4 @@ export const getCommitmentIndex = (index: string) => {
     return 3;
   }
 };
-export { ERC20Abi };
+export { ERC20Abi, ComptrollerAbi };

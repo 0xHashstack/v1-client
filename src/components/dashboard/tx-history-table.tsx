@@ -32,20 +32,24 @@ const TxHistoryTable = ({
     console.log(type);
     if (type === "deposits") {
       OffchainAPI.getTransactionEventsActiveDeposits(
-        number.toHex(number.toBN(number.toFelt(account || "")))
+        number.toHex(number.toBN(number.toFelt(account || ""))),
+        market
       ).then((events) => {
         setTxHistoryData(events);
       });
     } else if (type === "loans") {
       OffchainAPI.getTransactionEventsActiveLoans(
-        number.toHex(number.toBN(number.toFelt(account || "")))
+        number.toHex(number.toBN(number.toFelt(account || ""))),
+        market
       ).then((events) => {
         setTxHistoryData(events);
       });
     } else if (type === "repaid") {
       OffchainAPI.getTransactionEventsRepaid(
-        number.toHex(number.toBN(number.toFelt(account || "")))
+        number.toHex(number.toBN(number.toFelt(account || ""))),
+        market
       ).then((events) => {
+        console.log(events);
         setTxHistoryData(events);
       });
     }
