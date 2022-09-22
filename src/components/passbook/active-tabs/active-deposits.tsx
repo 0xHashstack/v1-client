@@ -413,7 +413,6 @@ const ActiveDepositsTab = ({
                                       asset={asset}
                                       type="deposits"
                                       market={asset.market}
-                                      isTrasactionDone={isTransactionDone}
                                     />
                                   }
                                 </Col>

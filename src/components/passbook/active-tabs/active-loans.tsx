@@ -998,7 +998,6 @@ const ActiveLoansTab = ({
                                       asset={asset}
                                       type="loans"
                                       market={asset.loanMarket}
-                                      isTrasactionDone={isTransactionDone}
                                     />
                                   }
                                 </Col>

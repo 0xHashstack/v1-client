@@ -332,6 +332,7 @@ const Dashboard = () => {
 
   const toggleCustoms = (tab: any) => {
     if (customActiveTabs !== tab) {
+      console.log("toggle Customs: ", tab);
       setCustomActiveTabs(tab);
     }
   };
@@ -512,16 +513,7 @@ const Dashboard = () => {
         return (
           <RepaidLoansTab
             repaidLoansData={repaidLoansData}
-            customActiveTabs={activeLoansData}
-            loanActionTab={loanActionTab}
-            collateral_active_loan={collateral_active_loan}
-            repay_active_loan={repay_active_loan}
-            withdraw_active_loan={withdraw_active_loan}
-            swap_active_loan={swap_active_loan}
-            swap_to_active_loan={swap_to_active_loan}
-            isTransactionDone={isTransactionDone}
-            depositRequestSel={depositRequestSel}
-            inputVal1={inputVal1}
+            customActiveTabs={customActiveTab}
           />
         );
         break;

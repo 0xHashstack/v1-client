@@ -19,27 +19,36 @@ const TxHistoryTable = ({
   asset,
   type,
   market,
-  isTrasactionDone,
 }: {
   asset: any;
   type: string;
   market: string;
-  isTrasactionDone: boolean;
 }) => {
   const { account, commitment } = asset;
   const [txHistoryData, setTxHistoryData] = useState<IHistoryData[]>([]);
 
   useEffect(() => {
     // const _account = ;
-    OffchainAPI.getTransactionEvents(
-      number.toHex(number.toBN(number.toFelt(account || "")))
-    ).then((events) => {
-      setTxHistoryData(events);
-    });
-
-    // txHistory(type, account, market, `comit_${commitment}`).then((res) => {
-    //   setTxHistoryData(res);
-    // });
+    console.log(type);
+    if (type === "deposits") {
+      OffchainAPI.getTransactionEventsActiveDeposits(
+        number.toHex(number.toBN(number.toFelt(account || "")))
+      ).then((events) => {
+        setTxHistoryData(events);
+      });
+    } else if (type === "loans") {
+      OffchainAPI.getTransactionEventsActiveLoans(
+        number.toHex(number.toBN(number.toFelt(account || "")))
+      ).then((events) => {
+        setTxHistoryData(events);
+      });
+    } else if (type === "repaid") {
+      OffchainAPI.getTransactionEventsRepaid(
+        number.toHex(number.toBN(number.toFelt(account || "")))
+      ).then((events) => {
+        setTxHistoryData(events);
+      });
+    }
   }, [type, account, market]);
 
   const renderTableData = () => {

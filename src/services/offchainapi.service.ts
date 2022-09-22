@@ -16,6 +16,49 @@ export default class OffchainAPI {
     }
   }
 
+  static async httpPost(route: string, data: any, type: string) {
+    try {
+      let url = `${this.ENDPOINT}${route}`;
+      let res = await axios({
+        method: "post",
+        url,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data,
+      });
+      let retData = res.data.map((event: any) => {
+        if (type === "deposits") {
+          return {
+            txnHash: event.txHash,
+            actionType: event.event,
+            date: event.createdon,
+            value: JSON.parse(event.eventInfo).amount,
+          };
+        } else if (type === "loans") {
+          return {
+            txnHash: event.txHash,
+            actionType: event.event,
+            date: event.createdon,
+            value: JSON.parse(event.eventInfo).loanAmount,
+          };
+        } else if (type === "repaid") {
+          return {
+            txnHash: event.txHash,
+            actionType: event.event,
+            date: event.createdon,
+            value: JSON.parse(event.eventInfo).amount,
+          };
+        }
+      });
+      console.log(data, res.data);
+      return retData;
+    } catch (err) {
+      console.error("httpPost", route, err);
+      return [];
+    }
+  }
+
   static getLoans(address: string) {
     let url = `/api/loans/${address}`;
     return OffchainAPI.httpGet(url);
@@ -36,39 +79,40 @@ export default class OffchainAPI {
     return OffchainAPI.httpGet(url);
   }
 
-  static async getTransactionEvents(address: string) {
-    try {
-      let route = `/api/transactions-by-events/${address}`;
-      let url = `${this.ENDPOINT}${route}`;
-      let data = JSON.stringify({
-        events: ["NewDeposit", "AddDeposit", "NewLoan"],
-      });
+  static async getTransactionEventsActiveDeposits(address: string) {
+    let route = `/api/transactions-by-events/${address}`;
+    let data = JSON.stringify({
+      events: ["NewDeposit", "AddDeposit", "WithdrawDeposit"],
+    });
+    return OffchainAPI.httpPost(route, data, "deposits");
+  }
 
-      let res = await axios({
-        method: "post",
-        url,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data,
-      });
-      let retData = res.data.map((event: any) => {
-        return {
-          txnHash: event.txHash,
-          actionType: event.event,
-          date: event.createdon,
-          value: JSON.parse(event.eventInfo).amount,
-        };
-      });
-      // let retData = {
-      //   txnHash: res.data.txnHash,
-      //   actionType: res.data.event,
-      //   date: res.data.createdon,
-      //   value: JSON.parse(res.data.eventInfo).amount,
-      // };
-      return retData;
-    } catch (err) {
-      console.log(err);
-    }
+  static async getTransactionEventsActiveLoans(address: string) {
+    let route = `/api/transactions-by-events/${address}`;
+    let data = JSON.stringify({
+      events: [
+        "NewLoan",
+        "WithdrawPartial",
+        "AddCollateral",
+        "SushiSwapped",
+        "RevertSushiSwapped",
+      ],
+    });
+    return OffchainAPI.httpPost(route, data, "loans");
+  }
+  static async getTransactionEventsRepaid(address: string) {
+    let route = `/api/transactions-by-events/${address}`;
+    let data = JSON.stringify({
+      events: [
+        "NewLoan",
+        "LoanRepaid ",
+        "WithdrawPartial",
+        "AddCollateral",
+        "WithdrawCollateral",
+        "SushiSwapped",
+        "RevertSushiSwapped",
+      ],
+    });
+    return OffchainAPI.httpPost(route, data, "repaid");
   }
 }

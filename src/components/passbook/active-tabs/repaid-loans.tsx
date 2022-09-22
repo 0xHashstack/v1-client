@@ -21,69 +21,26 @@ import {
   CardSubtitle,
 } from "reactstrap";
 import { CoinClassNames, EventMap } from "../../../blockchain/constants";
+import useWithdrawCollateral from "../../../blockchain/hooks/repaid-loans/useWithdrawCollateral";
+import { diamondAddress } from "../../../blockchain/stark-constants";
 import { BNtoNum } from "../../../blockchain/utils";
 import TxHistoryTable from "../../dashboard/tx-history-table";
 
 const RepaidLoansTab = ({
   repaidLoansData,
   customActiveTabs,
-  loanActionTab,
-  collateral_active_loan,
-  repay_active_loan,
-  withdraw_active_loan,
-  swap_active_loan,
-  swap_to_active_loan,
-  isTransactionDone,
-  depositRequestSel,
-  inputVal1,
 }: {
   repaidLoansData: any;
   customActiveTabs: any;
-  loanActionTab: any;
-  collateral_active_loan: any;
-  repay_active_loan: any;
-  withdraw_active_loan: any;
-  swap_active_loan: any;
-  swap_to_active_loan: any;
-  isTransactionDone: any;
-  depositRequestSel: any;
-  inputVal1: any;
 }) => {
   const [
     handleWithdrawCollateralTransactionDone,
     setHandleWithdrawCollateralTransactionDone,
   ] = useState(false);
+  console.log("inside repay: ", customActiveTabs);
 
-  const handleRepay = async (loanMarket: string, commitment: string) => {
-    // try {
-    //   setIsTransactionDone(true);
-    //   setHandleRepayTransactionDone(true);
-    //   const _loanOption: string | undefined = loanOption;
-    //   const market = SymbolsMap[loanMarket];
-    //   const decimal = DecimalsMap[loanMarket];
-    //   const _commit: string | undefined = commitment.replace(/\s/g, "");
-    //   const approveTransactionHash = await wrapper
-    //     ?.getMockBep20Instance()
-    //     .approve(market, inputVal1, decimal);
-    //   await approveTransactionHash.wait();
-    //   const tx1 = await wrapper
-    //     ?.getLoanInstance()
-    //     .repayLoan(market, CommitMap[_commit], inputVal1, decimal);
-    //   const tx = await tx1.wait();
-    //   SuccessCallback(
-    //     tx.events,
-    //     "LoanRepaid",
-    //     "Loan Repaid Successfully",
-    //     inputVal1
-    //   );
-    // } catch (err) {
-    //   setIsTransactionDone(false);
-    //   setHandleRepayTransactionDone(false);
-    //   toast.error(`${GetErrorText(err)}`, {
-    //     position: toast.POSITION.BOTTOM_RIGHT,
-    //     closeOnClick: true,
-    //   });
-    // }
+  const handleWithdrawCollateral = async (handleWithdrawCollateral: any) => {
+    await handleWithdrawCollateral();
   };
 
   return (
@@ -102,6 +59,10 @@ const RepaidLoansTab = ({
       {Array.isArray(repaidLoansData) && repaidLoansData.length > 0 ? (
         repaidLoansData.map((asset, key) => {
           console.log(asset);
+          const { withdrawCollateral } = useWithdrawCollateral(
+            diamondAddress,
+            asset.loanId
+          );
           return (
             <div key={key}>
               <UncontrolledAccordion defaultOpen="0" open="1">
@@ -196,7 +157,7 @@ const RepaidLoansTab = ({
                               // align="right"
                             >
                               &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{" "}
-                              {EventMap[asset.commitment]}
+                              {asset.commitment}
                             </div>
                             <CardTitle tag="h5"></CardTitle>
                           </CardBody>
@@ -222,20 +183,16 @@ const RepaidLoansTab = ({
                                         <div className="d-grid gap-2">
                                           <Button
                                             className="w-md"
-                                            disabled={
-                                              handleWithdrawCollateralTransactionDone
-                                            }
                                             onClick={() => {
-                                              handleRepay(
-                                                asset.loanMarket,
-                                                asset.commitment
+                                              handleWithdrawCollateral(
+                                                withdrawCollateral
                                               );
                                             }}
                                             style={{
                                               color: "#4B41E5",
                                             }}
                                           >
-                                            {!handleWithdrawCollateralTransactionDone ? (
+                                            {true ? (
                                               "Withdraw Collateral"
                                             ) : (
                                               <Spinner>Loading...</Spinner>
@@ -251,9 +208,8 @@ const RepaidLoansTab = ({
                                   {
                                     <TxHistoryTable
                                       asset={asset}
-                                      type="loans"
+                                      type="repaid"
                                       market={asset.loanMarket}
-                                      isTrasactionDone={isTransactionDone}
                                     />
                                   }
                                 </Col>
@@ -272,13 +228,6 @@ const RepaidLoansTab = ({
       ) : (
         <div>No records found</div>
       )}
-      {/* <tbody>
-                <PassbookTBody
-                  isloading={isLoading}
-                  assets={repaidLoansData}
-                ></PassbookTBody>
-              </tbody>
-            </Table> */}
     </div>
   );
 };
