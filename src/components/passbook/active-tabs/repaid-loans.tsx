@@ -7,11 +7,7 @@ import {
   CardBody,
   Button,
   Form,
-  Input,
   Table,
-  Nav,
-  NavItem,
-  NavLink,
   Spinner,
   AccordionItem,
   AccordionHeader,
@@ -167,55 +163,53 @@ const RepaidLoansTab = ({
                     <AccordionBody accordionId="1">
                       <div style={{ borderWidth: 1 }}>
                         <CardBody>
-                          <form>
-                            <div className="mb-4 ">
-                              <Row>
-                                <Col lg="4 mb-3">
-                                  <div
-                                    className="block-example border"
-                                    style={{
-                                      padding: "15px",
-                                      borderRadius: "5px",
-                                    }}
-                                  >
-                                    {customActiveTabs === "3" && ( //here repaid
-                                      <Form>
-                                        <div className="d-grid gap-2">
-                                          <Button
-                                            className="w-md"
-                                            onClick={() => {
-                                              handleWithdrawCollateral(
-                                                withdrawCollateral
-                                              );
-                                            }}
-                                            style={{
-                                              color: "#4B41E5",
-                                            }}
-                                          >
-                                            {true ? (
-                                              "Withdraw Collateral"
-                                            ) : (
-                                              <Spinner>Loading...</Spinner>
-                                            )}
-                                          </Button>
-                                        </div>
-                                      </Form>
-                                    )}
-                                  </div>
-                                </Col>
+                          <div className="mb-4 ">
+                            <Row>
+                              <Col lg="4 mb-3">
+                                <div
+                                  className="block-example border"
+                                  style={{
+                                    padding: "15px",
+                                    borderRadius: "5px",
+                                  }}
+                                >
+                                  {customActiveTabs === "3" && ( //here repaid
+                                    <Form>
+                                      <div className="d-grid gap-2">
+                                        <Button
+                                          className="w-md"
+                                          onClick={() => {
+                                            handleWithdrawCollateral(
+                                              withdrawCollateral
+                                            );
+                                          }}
+                                          style={{
+                                            color: "#4B41E5",
+                                          }}
+                                        >
+                                          {true ? (
+                                            "Withdraw Collateral"
+                                          ) : (
+                                            <Spinner>Loading...</Spinner>
+                                          )}
+                                        </Button>
+                                      </div>
+                                    </Form>
+                                  )}
+                                </div>
+                              </Col>
 
-                                <Col lg="8">
-                                  {
-                                    <TxHistoryTable
-                                      asset={asset}
-                                      type="repaid"
-                                      market={asset.loanMarket}
-                                    />
-                                  }
-                                </Col>
-                              </Row>
-                            </div>
-                          </form>
+                              <Col lg="8">
+                                {
+                                  <TxHistoryTable
+                                    asset={asset}
+                                    type="repaid"
+                                    market={asset.loanMarket}
+                                  />
+                                }
+                              </Col>
+                            </Row>
+                          </div>
                         </CardBody>
                       </div>
                     </AccordionBody>

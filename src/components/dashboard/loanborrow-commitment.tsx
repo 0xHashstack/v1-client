@@ -1,20 +1,18 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Table, TabPane } from "reactstrap";
+import { getCommitmentIndexStringFromName } from "../../blockchain/stark-constants";
 import DashboardTBody from "./dashboard-body";
 
-const LoanBorrowCommitment = ({
-  handleDepositInterestChange,
-  handleBorrowInterestChange,
-  depositInterestChange,
-  borrowInterestChange,
-  isLoading,
-}: {
-  handleDepositInterestChange: (e: any) => void;
-  handleBorrowInterestChange: (e: any) => void;
-  depositInterestChange: string;
-  borrowInterestChange: string;
-  isLoading: boolean;
-}) => {
+const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
+  const [depositCommitment, setDepositCommitment] = useState<string>("");
+  const [borrowCommitment, setBorrowCommitment] = useState<string>("");
+
+  useEffect(() => {
+    setDepositCommitment(getCommitmentIndexStringFromName("NONE") as string);
+    setBorrowCommitment(getCommitmentIndexStringFromName("NONE") as string);
+  }, []);
+  console.log(depositCommitment, borrowCommitment);
+
   return (
     <TabPane tabId="1">
       <div className="table-responsive" style={{ paddingTop: "12px" }}>
@@ -34,10 +32,14 @@ const LoanBorrowCommitment = ({
               <th scope="col">
                 <select
                   className="form-select form-select-sm"
-                  onChange={handleDepositInterestChange}
+                  onChange={(e) => {
+                    setDepositCommitment(
+                      getCommitmentIndexStringFromName(e.target.value) as string
+                    );
+                  }}
                   defaultValue={"NONE"}
                 >
-                  <option hidden>Commitment</option>
+                  {/* <option hidden>Commitment</option> */}
                   <option value={"NONE"}>None</option>
                   <option value={"TWOWEEKS"}>Two Weeks</option>
                   <option value={"ONEMONTH"}>One Month</option>
@@ -47,7 +49,11 @@ const LoanBorrowCommitment = ({
               <th scope="col">
                 <select
                   className="form-select form-select-sm"
-                  onChange={handleBorrowInterestChange}
+                  onChange={(e) => {
+                    setBorrowCommitment(
+                      getCommitmentIndexStringFromName(e.target.value) as string
+                    );
+                  }}
                   defaultValue={"NONE"}
                 >
                   <option hidden>Commitment</option>
@@ -60,8 +66,8 @@ const LoanBorrowCommitment = ({
           <tbody>
             <DashboardTBody
               isloading={isLoading}
-              depositInterestChange={depositInterestChange}
-              borrowInterestChange={borrowInterestChange}
+              borrowCommitment={borrowCommitment}
+              depositCommitment={depositCommitment}
             ></DashboardTBody>
           </tbody>
         </Table>

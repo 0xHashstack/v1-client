@@ -204,7 +204,11 @@ const Dashboard = () => {
         currentLoanMarket: getTokenFromAddress(
           loanData.currentMarket || loanData.loanMarket
         )?.name, // Borrow market(current)
-        currentLoanAmount: Number(loanData.currentAmount), // Borrow amount(current)
+        currentLoanAmount: Number(
+          loanData.currentAmount != "0"
+            ? loanData.currentAmount
+            : loanData.openLoanAmount
+        ), // Borrow amount(current)
         //get apr is for loans apr
       };
       loans.push(JSON.parse(JSON.stringify(temp_len)));
@@ -332,7 +336,6 @@ const Dashboard = () => {
 
   const toggleCustoms = (tab: any) => {
     if (customActiveTabs !== tab) {
-      console.log("toggle Customs: ", tab);
       setCustomActiveTabs(tab);
     }
   };
@@ -570,13 +573,7 @@ const Dashboard = () => {
 
                   <TabContent activeTab={customActiveTab} className="p-1">
                     {/* ------------------------------------- DASHBOARD ----------------------------- */}
-                    <LoanBorrowCommitment
-                      handleDepositInterestChange={handleDepositInterestChange}
-                      handleBorrowInterestChange={handleBorrowInterestChange}
-                      depositInterestChange={depositInterestChange}
-                      borrowInterestChange={borrowInterestChange}
-                      isLoading={isLoading}
-                    />
+                    <LoanBorrowCommitment isLoading={isLoading} />
 
                     {/* -------------------------------------- PASSBOOK ----------------------------- */}
 

@@ -1,4 +1,5 @@
 import axios from "axios";
+import { tokenAddressMap } from "../blockchain/stark-constants";
 
 export default class OffchainAPI {
   // static ENDPOINT = 'http://52.77.185.41:3000'
@@ -16,7 +17,7 @@ export default class OffchainAPI {
     }
   }
 
-  static async httpPost(route: string, data: any, type: string) {
+  static async httpPost(route: string, data: any, type: string, token: string) {
     try {
       let url = `${this.ENDPOINT}${route}`;
       let res = await axios({
@@ -27,32 +28,57 @@ export default class OffchainAPI {
         },
         data,
       });
-      let retData = res.data.map((event: any) => {
-        if (type === "deposits") {
-          return {
-            txnHash: event.txHash,
-            actionType: event.event,
-            date: event.createdon,
-            value: JSON.parse(event.eventInfo).amount,
-          };
-        } else if (type === "loans") {
-          return {
-            txnHash: event.txHash,
-            actionType: event.event,
-            date: event.createdon,
-            value: JSON.parse(event.eventInfo).loanAmount,
-          };
-        } else if (type === "repaid") {
-          return {
-            txnHash: event.txHash,
-            actionType: event.event,
-            date: event.createdon,
-            value: JSON.parse(event.eventInfo).amount,
-          };
-        }
-      });
+      let displayEvents = res.data
+        .filter((event: any) => {
+          if (type === "deposits") {
+            return (
+              tokenAddressMap[token] === JSON.parse(event.eventInfo).market
+            );
+          }
+          if (type === "loans") {
+            console.log(event.event);
+            if (event.event === "RevertSushiSwapped") {
+              return true;
+            }
+            return (
+              tokenAddressMap[token] === JSON.parse(event.eventInfo).loanMarket
+            );
+          }
+          if (type === "repaid") {
+            return (
+              tokenAddressMap[token] === JSON.parse(event.eventInfo).market ||
+              tokenAddressMap[token] === JSON.parse(event.eventInfo).loanMarket
+            );
+          }
+        })
+        .map((event: any) => {
+          if (type === "deposits") {
+            return {
+              txnHash: event.txHash,
+              actionType: event.event,
+              date: event.createdon,
+              value: JSON.parse(event.eventInfo).amount,
+            };
+          } else if (type === "loans") {
+            return {
+              txnHash: event.txHash,
+              actionType: event.event,
+              date: event.createdon,
+              value: JSON.parse(event.eventInfo).loanAmount,
+            };
+          } else if (type === "repaid") {
+            return {
+              txnHash: event.txHash,
+              actionType: event.event,
+              date: event.createdon,
+              value: JSON.parse(event.eventInfo).amount
+                ? JSON.parse(event.eventInfo).amount
+                : JSON.parse(event.eventInfo).loanAmount,
+            };
+          }
+        });
       console.log(data, res.data);
-      return retData;
+      return displayEvents;
     } catch (err) {
       console.error("httpPost", route, err);
       return [];
@@ -79,15 +105,18 @@ export default class OffchainAPI {
     return OffchainAPI.httpGet(url);
   }
 
-  static async getTransactionEventsActiveDeposits(address: string) {
+  static async getTransactionEventsActiveDeposits(
+    address: string,
+    token: string
+  ) {
     let route = `/api/transactions-by-events/${address}`;
     let data = JSON.stringify({
       events: ["NewDeposit", "AddDeposit", "WithdrawDeposit"],
     });
-    return OffchainAPI.httpPost(route, data, "deposits");
+    return OffchainAPI.httpPost(route, data, "deposits", token);
   }
 
-  static async getTransactionEventsActiveLoans(address: string) {
+  static async getTransactionEventsActiveLoans(address: string, token: string) {
     let route = `/api/transactions-by-events/${address}`;
     let data = JSON.stringify({
       events: [
@@ -98,21 +127,21 @@ export default class OffchainAPI {
         "RevertSushiSwapped",
       ],
     });
-    return OffchainAPI.httpPost(route, data, "loans");
+    return OffchainAPI.httpPost(route, data, "loans", token);
   }
-  static async getTransactionEventsRepaid(address: string) {
+  static async getTransactionEventsRepaid(address: string, token: string) {
     let route = `/api/transactions-by-events/${address}`;
     let data = JSON.stringify({
       events: [
         "NewLoan",
-        "LoanRepaid ",
+        "LoanRepaid",
         "WithdrawPartial",
-        "AddCollateral",
-        "WithdrawCollateral",
-        "SushiSwapped",
-        "RevertSushiSwapped",
+        // "AddCollateral",
+        // "WithdrawCollateral",
+        // "SushiSwapped",
+        // "RevertSushiSwapped",
       ],
     });
-    return OffchainAPI.httpPost(route, data, "repaid");
+    return OffchainAPI.httpPost(route, data, "repaid", token);
   }
 }
