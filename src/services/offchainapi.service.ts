@@ -36,6 +36,10 @@ export default class OffchainAPI {
             );
           }
           if (type === "loans") {
+            console.log(event.event);
+            if (event.event === "RevertSushiSwapped") {
+              return true;
+            }
             return (
               tokenAddressMap[token] === JSON.parse(event.eventInfo).loanMarket
             );

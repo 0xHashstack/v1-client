@@ -49,7 +49,7 @@ let DashboardTBody: any = (props: any) => {
   } else {
     // return <div>sdlfksjdf</div>;
     return Coins.map((coin, idx) => {
-      return <DashboardTokens coin={coin} idx={idx} />;
+      return <DashboardTokens coin={coin} idx={idx} key={idx} />;
     });
     // return (
     //   <>

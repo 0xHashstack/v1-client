@@ -1,6 +1,6 @@
 import { useStarknet, useStarknetExecute } from "@starknet-react/core";
 import classNames from "classnames";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import {
   Row,
@@ -33,6 +33,7 @@ import {
 } from "../../../blockchain/stark-constants";
 import { BNtoNum, GetErrorText, NumToBN } from "../../../blockchain/utils";
 import TxHistoryTable from "../../dashboard/tx-history-table";
+import SwapToLoan from "./swaps/swap-to-loan";
 
 const ActiveLoansTab = ({
   activeLoansData,
@@ -153,6 +154,7 @@ const ActiveLoansTab = ({
 
   // swap to market
   const [swapMarket, setSwapMarket] = useState("");
+  const [swapIsSet, setSwapIsSet] = useState(false);
   /* ============================== Add Colateral ============================ */
   // Approve amount
   const {
@@ -197,7 +199,7 @@ const ActiveLoansTab = ({
       calldata: [diamondAddress, NumToBN(inputVal1 as number, 18), 0],
     },
   });
-  // Adding collateral
+  // Repay
   const {
     data: dataRepay,
     loading: loadingRepay,
@@ -247,19 +249,6 @@ const ActiveLoansTab = ({
   });
 
   /* ============================== Swap Back To Loan ============================ */
-  const {
-    data: dataSwapToLoan,
-    loading: loadingSwapToLoan,
-    error: errorSwapToLoan,
-    reset: resetSwapToLoan,
-    execute: executeSwapToLoan,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: diamondAddress,
-      entrypoint: "swap_secondary_market_to_loan",
-      calldata: [loanId],
-    },
-  });
   /* ============================== handle Functions ============================ */
 
   const handleCollateral = async (
@@ -360,22 +349,6 @@ const ActiveLoansTab = ({
     if (errorSwapToMarket) {
       console.log(errorSwapToMarket);
       toast.error(`${GetErrorText(`Swap to ${swapMarket} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-    }
-  };
-
-  const handleSwapToLoan = async () => {
-    console.log(loanId, " ", diamondAddress);
-    if (!loanId && !diamondAddress) {
-      console.log("error");
-      return;
-    }
-    await executeSwapToLoan();
-    if (errorSwapToLoan) {
-      console.log(errorSwapToMarket);
-      toast.error(`${GetErrorText(`Swap to loan failed`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
       });
@@ -963,32 +936,35 @@ const ActiveLoansTab = ({
 
                                     {swap_to_active_loan &&
                                       loanActionTab === "1" && (
-                                        <Form>
-                                          <div className="d-grid gap-2">
-                                            <Button
-                                              // color="primary"
+                                        <SwapToLoan loan={asset.loanId} />
+                                        // <Form>
+                                        //   <div className="d-grid gap-2">
+                                        //     <Button
+                                        //       // color="primary"
 
-                                              className="w-md mr-2"
-                                              // disabled={
-                                              //   !asset.isSwapped ||
-                                              //   handleSwapToLoanTransactionDone
-                                              // }
-                                              onClick={() => {
-                                                setLoanId(asset.loanId);
-                                                handleSwapToLoan();
-                                              }}
-                                              style={{
-                                                color: "#4B41E5",
-                                              }}
-                                            >
-                                              {!handleSwapToLoanTransactionDone ? (
-                                                "Swap To Loan"
-                                              ) : (
-                                                <Spinner>Loading...</Spinner>
-                                              )}
-                                            </Button>
-                                          </div>
-                                        </Form>
+                                        //       className="w-md mr-2"
+                                        //       // disabled={
+                                        //       //   !asset.isSwapped ||
+                                        //       //   handleSwapToLoanTransactionDone
+                                        //       // }
+                                        //       onClick={() => {
+                                        //         setLoanId(asset.loanId);
+                                        //         setSwapIsSet(true);
+
+                                        //         // handleSwapToLoan();
+                                        //       }}
+                                        //       style={{
+                                        //         color: "#4B41E5",
+                                        //       }}
+                                        //     >
+                                        //       {!handleSwapToLoanTransactionDone ? (
+                                        //         "Swap To Loan"
+                                        //       ) : (
+                                        //         <Spinner>Loading...</Spinner>
+                                        //       )}
+                                        //     </Button>
+                                        //   </div>
+                                        // </Form>
                                       )}
                                   </div>
                                 </Col>
