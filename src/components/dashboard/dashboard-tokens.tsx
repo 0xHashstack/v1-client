@@ -3,10 +3,7 @@ import useSavingsAPR from "../../blockchain/hooks/aprs/useSavingsAPR";
 import useDeposit from "../../blockchain/hooks/useDeposit";
 import Borrow from "../borrow";
 import Deposit from "../deposit";
-
-interface ICoin {
-  name: string;
-}
+import { ICoin } from "./dashboard-body";
 
 const DashboardTokens = ({ coin, idx }: { coin: ICoin; idx: number }) => {
   const { data, error, loading, refresh } = useBorrowAPR(coin.name);
@@ -25,7 +22,7 @@ const DashboardTokens = ({ coin, idx }: { coin: ICoin; idx: number }) => {
                 " font-size-18"
               }
             >
-              <i className={"mdi mdi-drag-variant"} />
+              <i className={`mdi ${coin.icon}`} />
             </span>
           </div>
           <span>{coin.name}</span>

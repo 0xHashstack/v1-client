@@ -10,21 +10,25 @@ import useSavingsAPR from "../../blockchain/hooks/aprs/useSavingsAPR";
 import Borrow from "../borrow";
 import Deposit from "../deposit";
 import DashboardTokens from "./dashboard-tokens";
-interface ICoin {
+export interface ICoin {
   name: string;
+  icon: string;
 }
 
 const Coins: ICoin[] = [
   {
     name: "USDT",
+    icon: "mdi-litecoin",
   },
   {
     name: "USDC",
+    icon: "mdi-ethereum",
   },
   {
     name: "BTC",
+    icon: "mdi-bitcoin",
   },
-  { name: "BNB" },
+  { name: "BNB", icon: "mdi-drag-variant" },
 ];
 
 let DashboardTBody: any = (props: any) => {
