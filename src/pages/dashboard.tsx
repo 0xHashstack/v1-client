@@ -573,13 +573,7 @@ const Dashboard = () => {
 
                   <TabContent activeTab={customActiveTab} className="p-1">
                     {/* ------------------------------------- DASHBOARD ----------------------------- */}
-                    <LoanBorrowCommitment
-                      handleDepositInterestChange={handleDepositInterestChange}
-                      handleBorrowInterestChange={handleBorrowInterestChange}
-                      depositInterestChange={depositInterestChange}
-                      borrowInterestChange={borrowInterestChange}
-                      isLoading={isLoading}
-                    />
+                    <LoanBorrowCommitment isLoading={isLoading} />
 
                     {/* -------------------------------------- PASSBOOK ----------------------------- */}
 

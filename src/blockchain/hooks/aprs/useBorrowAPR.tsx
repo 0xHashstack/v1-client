@@ -6,17 +6,17 @@ import {
   tokenAddressMap,
 } from "../../stark-constants";
 
-const useBorrowAPR = (token: string) => {
+const useBorrowAPR = (token: string, borrowCommitment: string) => {
   const { contract } = useContract({
     abi: ComptrollerAbi as Abi,
     address: diamondAddress,
   });
-  const { data, loading, error, refresh } = useStarknetCall({
+  const { data } = useStarknetCall({
     contract,
     method: "get_borrow_apr",
-    args: [tokenAddressMap[token], "1"],
+    args: [tokenAddressMap[token], borrowCommitment],
   });
 
-  return { data, loading, error, refresh };
+  return { data };
 };
 export default useBorrowAPR;

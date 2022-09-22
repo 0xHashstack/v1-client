@@ -5,9 +5,19 @@ import Borrow from "../borrow";
 import Deposit from "../deposit";
 import { ICoin } from "./dashboard-body";
 
-const DashboardTokens = ({ coin, idx }: { coin: ICoin; idx: number }) => {
-  const { data, error, loading, refresh } = useBorrowAPR(coin.name);
-  const { data: dataDeposit } = useSavingsAPR(coin.name);
+const DashboardTokens = ({
+  coin,
+  idx,
+  borrowCommitment,
+  depositCommitment,
+}: {
+  coin: ICoin;
+  idx: number;
+  borrowCommitment: string;
+  depositCommitment: string;
+}) => {
+  const { data: borrow } = useBorrowAPR(coin.name, borrowCommitment);
+  const { data: deposit } = useSavingsAPR(coin.name, depositCommitment);
   return (
     <tr key={idx}>
       <th scope="row">
@@ -31,13 +41,13 @@ const DashboardTokens = ({ coin, idx }: { coin: ICoin; idx: number }) => {
       <td>
         <div className="text-muted">
           {/* {DepositInterestRates[props.depositInterestChange]} */}
-          {dataDeposit ? dataDeposit[0].apr.toNumber() / 100 : "NaN"}%
+          {deposit ? deposit[0].apr.toNumber() / 100 : "NaN"}%
         </div>
       </td>
       <td>
         <div className="text-muted">
           {/* {BorrowInterestRates[props.borrowInterestChange]} */}
-          {data ? data[0].apr.toNumber() / 100 : "NaN"}%
+          {borrow ? borrow[0].apr.toNumber() / 100 : "NaN"}%
         </div>
       </td>
       <td style={{ width: "120px" }}>

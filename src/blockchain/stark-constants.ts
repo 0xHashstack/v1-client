@@ -65,6 +65,22 @@ export const getCommitmentNameFromIndex = (index: string) => {
 
   return null;
 };
+// <option value={"NONE"}>None</option>
+// <option value={"TWOWEEKS"}>Two Weeks</option>
+// <option value={"ONEMONTH"}>One Month</option>
+// <option value={"THREEMONTHS"}>Three Month</option>
+
+export const getCommitmentIndexStringFromName = (name: string) => {
+  if (name === "NONE") {
+    return "0";
+  } else if (name === "TWOWEEKS") {
+    return "1";
+  } else if (name === "ONEMONTH") {
+    return "2";
+  } else if (name === "THREEMONTHS") {
+    return "3";
+  }
+};
 
 export const getCommitmentIndex = (index: string) => {
   if (index === "0") {
