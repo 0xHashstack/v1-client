@@ -68,7 +68,7 @@ const Dashboard = () => {
   const [activeDepositsData, setActiveDepositsData] = useState<IDeposit[]>([]);
   const [activeLoansData, setActiveLoansData] = useState<ILoans[]>([]);
   const [repaidLoansData, setRepaidLoansData] = useState<ILoans[]>([]);
-  const [activeLiquidationsData, setActiveLiquidationsData] = useState([]);
+  const [activeLiquidationsData, setActiveLiquidationsData] = useState<any>([]);
   const [isTransactionDone, setIsTransactionDone] = useState(false);
 
   const [handleDepositTransactionDone, setHandleDepositTransactionDone] =
@@ -106,13 +106,6 @@ const Dashboard = () => {
   const [depositRequestVal, setDepositRequestVal] = useState();
   const [withdrawDepositVal, setWithdrawDepositVal] = useState();
 
-  const [repayLoanTooltipOpen, setRepayLoanTooltipOpen] = useState(false);
-  const [swapLoanTooltipOpen, setSwapLoanTooltipOpen] = useState(false);
-  const [swapToLoanTooltipOpen, setSwapToLoanTooltipOpen] = useState(false);
-  const [addCollateralTooltipOpen, setAddCollateralTooltipOpen] =
-    useState(false);
-  const [withdrawCollateralTooltipOpen, setWithdrawCollateralTooltipOpen] =
-    useState(false);
   const [customActiveTabs, setCustomActiveTabs] = useState("1");
 
   const [inputVal1, setInputVal1] = useState(0);
@@ -175,7 +168,7 @@ const Dashboard = () => {
   //   const { web3Wrapper: wrapper } = useContext(Web3WrapperContext);
 
   const onLoansData = async (loansData: any[]) => {
-    console.log("Data: ", loansData);
+    console.log("Loans: ", loansData);
     const loans: ILoans[] = [];
     for (let i = 0; i < loansData.length; ++i) {
       let loanData = loansData[i];
@@ -339,6 +332,7 @@ const Dashboard = () => {
 
   const toggleCustoms = (tab: any) => {
     if (customActiveTabs !== tab) {
+      console.log("toggle Customs: ", tab);
       setCustomActiveTabs(tab);
     }
   };
@@ -480,6 +474,7 @@ const Dashboard = () => {
 
   const getActionTabs = (customActiveTab: string) => {
     console.log("blockchain activedepoist", activeDepositsData);
+    console.log("blockchain activeloans", activeLoansData);
     // console.log("customActiveTabs: ", customActiveTabs);
     switch (customActiveTab) {
       case "1":
@@ -518,16 +513,7 @@ const Dashboard = () => {
         return (
           <RepaidLoansTab
             repaidLoansData={repaidLoansData}
-            customActiveTabs={activeLoansData}
-            loanActionTab={loanActionTab}
-            collateral_active_loan={collateral_active_loan}
-            repay_active_loan={repay_active_loan}
-            withdraw_active_loan={withdraw_active_loan}
-            swap_active_loan={swap_active_loan}
-            swap_to_active_loan={swap_to_active_loan}
-            isTransactionDone={isTransactionDone}
-            depositRequestSel={depositRequestSel}
-            inputVal1={inputVal1}
+            customActiveTabs={customActiveTab}
           />
         );
         break;

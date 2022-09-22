@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Container,
   Row,
   Col,
   Card,
@@ -23,11 +22,10 @@ import {
   MinimumAmount,
 } from "../../../blockchain/constants";
 import { BNtoNum } from "../../../blockchain/utils";
-import useAddDeposit from "../../../blockchain/hooks/active-deposits/useAddDeposit";
-import useWithdrawDeposit from "../../../blockchain/hooks/active-deposits/useWithdrawDeposit";
 import { diamondAddress } from "../../../blockchain/stark-constants";
 import TxHistoryTable from "../../dashboard/tx-history-table";
-import deposit from "../../deposit";
+import useAddDeposit from "../../../blockchain/hooks/active-deposits/useAddDeposit";
+import useWithdrawDeposit from "../../../blockchain/hooks/active-deposits/useWithdrawDeposit";
 
 const ActiveDepositsTab = ({
   activeDepositsData,
@@ -238,7 +236,7 @@ const ActiveDepositsTab = ({
                               // align="right"
                             >
                               &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-                              {EventMap[asset.commitment]}
+                              {asset.commitment}
                             </div>
                             <CardTitle tag="h5"></CardTitle>
                           </CardBody>
@@ -415,7 +413,6 @@ const ActiveDepositsTab = ({
                                       asset={asset}
                                       type="deposits"
                                       market={asset.market}
-                                      isTrasactionDone={isTransactionDone}
                                     />
                                   }
                                 </Col>

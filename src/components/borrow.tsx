@@ -71,7 +71,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
       entrypoint: "approve",
       calldata: [
         diamondAddress,
-        NumToBN(borrowParams.collateralAmount as number, 1),
+        NumToBN(borrowParams.collateralAmount as number, 18),
         0,
       ],
     },
@@ -153,7 +153,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
         tokenAddressMap[asset],
         NumToBN(borrowParams.loanAmount as number, 18),
         0,
-        borrowParams.commitBorrowPeriod === 0 ? 0 : 1,
+        borrowParams.commitBorrowPeriod,
         tokenAddressMap[borrowParams.collateralMarket as string],
         NumToBN(borrowParams.collateralAmount as number, 18),
         0,
@@ -359,7 +359,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                   >
                     <option hidden>Commitment</option>
                     <option value={0}>None</option>
-                    <option value={2592000}>One Month</option>
+                    <option value={1}>One Month</option>
                   </select>
                 </Col>
               </div>

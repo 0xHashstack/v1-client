@@ -12,19 +12,17 @@ import { tokenAddressMap } from "../../stark-constants";
 import { GetErrorText, NumToBN } from "../../utils";
 
 const useAddDeposit = (_token: any, _diamondAddress: string) => {
-  const { available, connect, disconnect } = useConnectors();
-
-  const { account } = useStarknet();
-  useEffect(() => {
-    setToken(_token.market);
-    setDiamondAddress(_diamondAddress);
-  });
   const [token, setToken] = useState("");
   const [diamondAddress, setDiamondAddress] = useState("");
 
   const [depositMarket, setDepositMarket] = useState<string>("");
   const [depositAmount, setDepositAmount] = useState<number>();
   const [depositCommit, setDepositCommit] = useState();
+
+  useEffect(() => {
+    setToken(_token.market);
+    setDiamondAddress(_diamondAddress);
+  });
 
   const {
     data: dataUSDC,
