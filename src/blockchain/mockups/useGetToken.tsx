@@ -30,7 +30,7 @@ const useGetToken = ({ token }: { token: string }) => {
 		calls: {
 			contractAddress: DeployDetails.hardhat.FAUCET_ADDRESS as string,
 			entrypoint: 'get_tokens',
-			calldata: [number.toFelt(0)],
+			calldata: [DeployDetails.hardhat.TOKENS[0].address],
 		},
 	});
 
@@ -44,7 +44,7 @@ const useGetToken = ({ token }: { token: string }) => {
 		calls: {
 			contractAddress: DeployDetails.hardhat.FAUCET_ADDRESS as string,
 			entrypoint: 'get_tokens',
-			calldata: [number.toFelt(1)],
+			calldata: [DeployDetails.hardhat.TOKENS[1].address],
 		},
 	});
 
@@ -58,7 +58,7 @@ const useGetToken = ({ token }: { token: string }) => {
 		calls: {
 			contractAddress: DeployDetails.hardhat.FAUCET_ADDRESS as string,
 			entrypoint: 'get_tokens',
-			calldata: [number.toFelt(2)],
+			calldata: [DeployDetails.hardhat.TOKENS[2].address],
 		},
 	});
 
@@ -72,7 +72,7 @@ const useGetToken = ({ token }: { token: string }) => {
 		calls: {
 			contractAddress: DeployDetails.hardhat.FAUCET_ADDRESS as string,
 			entrypoint: 'get_tokens',
-			calldata: [number.toFelt(3)],
+			calldata: [DeployDetails.hardhat.TOKENS[3].address],
 		},
 	});
 
