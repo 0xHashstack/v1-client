@@ -47,13 +47,6 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
     collateralMarket: null,
   });
 
-  useEffect(() => {
-    const refresh = async () => {
-      await refreshBalance();
-    };
-    refresh();
-  }, [borrowParams.collateralMarket]);
-
   const { account } = useStarknet();
 
   /* ======================= Approve ================================= */
@@ -180,6 +173,13 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
       watch: true,
     },
   });
+
+  useEffect(() => {
+    const refresh = async () => {
+      await refreshBalance();
+    };
+    refresh();
+  }, [borrowParams.collateralMarket, refreshBalance]);
 
   const returnTransactionParameters = () => {
     let data, loading, reset, error;

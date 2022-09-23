@@ -22,7 +22,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
   useEffect(() => {
     setToken(_token.market);
     setDiamondAddress(_diamondAddress);
-  });
+  }, [_diamondAddress, _token.market]);
 
   const {
     data: dataUSDC,

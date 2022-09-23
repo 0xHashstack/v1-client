@@ -28,6 +28,7 @@ export default class OffchainAPI {
         },
         data,
       });
+      console.log(res.data);
       let displayEvents = res.data
         .filter((event: any) => {
           if (type === "deposits") {

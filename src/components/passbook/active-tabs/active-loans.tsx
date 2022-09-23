@@ -937,34 +937,6 @@ const ActiveLoansTab = ({
                                     {swap_to_active_loan &&
                                       loanActionTab === "1" && (
                                         <SwapToLoan loan={asset.loanId} />
-                                        // <Form>
-                                        //   <div className="d-grid gap-2">
-                                        //     <Button
-                                        //       // color="primary"
-
-                                        //       className="w-md mr-2"
-                                        //       // disabled={
-                                        //       //   !asset.isSwapped ||
-                                        //       //   handleSwapToLoanTransactionDone
-                                        //       // }
-                                        //       onClick={() => {
-                                        //         setLoanId(asset.loanId);
-                                        //         setSwapIsSet(true);
-
-                                        //         // handleSwapToLoan();
-                                        //       }}
-                                        //       style={{
-                                        //         color: "#4B41E5",
-                                        //       }}
-                                        //     >
-                                        //       {!handleSwapToLoanTransactionDone ? (
-                                        //         "Swap To Loan"
-                                        //       ) : (
-                                        //         <Spinner>Loading...</Spinner>
-                                        //       )}
-                                        //     </Button>
-                                        //   </div>
-                                        // </Form>
                                       )}
                                   </div>
                                 </Col>
@@ -991,7 +963,13 @@ const ActiveLoansTab = ({
           );
         })
       ) : (
-        <div>No records found</div>
+        <Table>
+          <tbody>
+            <tr>
+              <td colSpan={5}>No Records Found.</td>
+            </tr>
+          </tbody>
+        </Table>
       )}
     </div>
   );

@@ -50,6 +50,7 @@ const ActiveDeposit = ({
   handleWithdrawDeposit: any;
   withdrawDepositTransactionDone: any;
 }) => {
+  console.log(asset);
   const {
     approveToken,
     returnTransactionParameters,
@@ -76,8 +77,11 @@ const ActiveDeposit = ({
                   <div>
                     <img
                       src={
-                        CoinClassNames[EventMap[asset.market.toUpperCase()]] ||
-                        asset.market.toUpperCase()
+                        asset
+                          ? CoinClassNames[
+                              EventMap[asset.market.toUpperCase()]
+                            ] || asset.market.toUpperCase()
+                          : null
                       }
                       height="18px"
                     />
