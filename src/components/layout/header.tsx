@@ -1,3 +1,19 @@
+import React, { useState, useContext, useCallback, useEffect } from 'react';
+import Link from 'next/link';
+import { Col, Modal, Button, Form, Spinner } from 'reactstrap';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import {
+	useStarknetCall,
+	useStarknet,
+	useConnectors,
+	useStarknetInvoke,
+	useStarknetExecute,
+} from '@starknet-react/core';
+import { ConnectWallet } from '../wallet';
+import { useERC20Contract } from '../../hooks/starknet-react/starks';
+import { tokenAddressMap } from '../../blockchain/stark-constants';
+import useGetToken from '../../blockchain/mockups/useGetToken';
 import React, { useState, useContext, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { Col, Modal, Button, Form, Spinner } from "reactstrap";
@@ -10,27 +26,50 @@ import GetTokenButton from "./get-token-button";
 // toast.configure({ autoClose: 4000 });
 
 const Header = ({
-  handleDisconnectWallet,
-  handleConnectWallet,
+	handleDisconnectWallet,
+	handleConnectWallet,
 }: {
-  handleDisconnectWallet: () => void;
-  handleConnectWallet: (connector: any) => void;
+	handleDisconnectWallet: () => void;
+	handleConnectWallet: (connector: any) => void;
 }) => {
-  const [get_token, setGet_token] = useState(false);
+	const [get_token, setGet_token] = useState(false);
+	const [isTransactionDone, setIsTransactionDone] = useState(false);
+	const [currentProcessingToken, setCurrentProcessingToken] = useState(null);
 
-  const { available, connect, disconnect } = useConnectors();
-  const { account } = useStarknet();
+	const { available, connect, disconnect } = useConnectors();
+	const { account } = useStarknet();
 
-  function removeBodyCss() {
-    document.body.classList.add("no_padding");
-  }
+	const handleClickToken = async (
+		token: string,
+		loading: boolean,
+		error: any,
+		handleGetToken: (token: string) => Promise<void>
+	) => {
+		const val = await handleGetToken(token);
+		if (!loading && !error) {
+			toast.success(`${token} received!`, {
+				position: toast.POSITION.BOTTOM_RIGHT,
+				closeOnClick: true,
+			});
+		}
+		if (error) {
+			toast.error(`${token} transfer unsucessful`, {
+				position: toast.POSITION.BOTTOM_RIGHT,
+				closeOnClick: true,
+			});
+		}
+	};
 
-  function tog_token() {
-    setGet_token(!get_token);
-    removeBodyCss();
-  }
+	function removeBodyCss() {
+		document.body.classList.add('no_padding');
+	}
 
-  console.log(available);
+	function tog_token() {
+		setGet_token(!get_token);
+		removeBodyCss();
+	}
+
+	console.log(available);
 
   const Tokens = ["USDT", "USDC", "BTC", "BNB"];
   return (

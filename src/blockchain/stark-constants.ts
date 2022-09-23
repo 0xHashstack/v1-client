@@ -4,8 +4,10 @@ import ERC20Abi from "../../starknet-artifacts/contracts/mockups/erc20.cairo/erc
 import ComptrollerAbi from "../../../zkOpen/starknet-artifacts/contracts/modules/comptroller.cairo/comptroller_abi.json";
 import { number } from "starknet";
 interface ItokenAddressMap {
-  [key: string]: string | undefined;
+	[key: string]: string | undefined;
 }
+
+
 
 export function processAddress(address: string) {
   return number.toHex(number.toBN(number.toFelt(address)));
@@ -46,6 +48,7 @@ export const tokenAddressMap: ItokenAddressMap = {
 //   BNB: DeployDetails.devnet.TOKENS[3].address,
 // };
 
+
 // export const tokenAddressMap: ItokenAddressMap = {
 //   BTC:
 //     process.env.NODE_ENV === "development"
@@ -83,43 +86,43 @@ export const getTokenFromAddress = (address: string) => {
 };
 
 export const getCommitmentNameFromIndex = (index: string) => {
-  if (index === "0") {
-    return "NONE";
-  } else if (index === "1") {
-    return "TWO WEEKS";
-  } else if (index === "2") {
-    return "ONE MONTH";
-  } else if (index === "3") {
-    return "THREE MONTHS";
-  }
+	if (index === '0') {
+		return 'NONE';
+	} else if (index === '1') {
+		return 'TWO WEEKS';
+	} else if (index === '2') {
+		return 'ONE MONTH';
+	} else if (index === '3') {
+		return 'THREE MONTHS';
+	}
 
-  return null;
+	return null;
 };
 
 export const getCommitmentIndexStringFromName = (name: string) => {
-  if (name === "NONE") {
-    return "0";
-  } else if (name === "TWOWEEKS") {
-    return "1";
-  } else if (name === "ONEMONTH") {
-    return "2";
-  } else if (name === "THREEMONTHS") {
-    return "3";
-  }
+	if (name === 'NONE') {
+		return '0';
+	} else if (name === 'TWOWEEKS') {
+		return '1';
+	} else if (name === 'ONEMONTH') {
+		return '2';
+	} else if (name === 'THREEMONTHS') {
+		return '3';
+	}
 };
 
 export const getCommitmentIndex = (index: string) => {
-  if (index === "0") {
-    return 0;
-  }
-  if (index === "1") {
-    return 1;
-  }
-  if (index === "2") {
-    return 2;
-  }
-  if (index === "3") {
-    return 3;
-  }
+	if (index === '0') {
+		return 0;
+	}
+	if (index === '1') {
+		return 1;
+	}
+	if (index === '2') {
+		return 2;
+	}
+	if (index === '3') {
+		return 3;
+	}
 };
 export { ERC20Abi, ComptrollerAbi };
