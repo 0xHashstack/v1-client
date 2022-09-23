@@ -9,8 +9,7 @@ const useWithdrawCollateral = (_diamondAddress: string, _loanId: number) => {
   useEffect(() => {
     setDiamondAddress(_diamondAddress);
     setLoanId(_loanId);
-  });
-  const initWithdrawDeposit = () => {};
+  }, [_diamondAddress, _loanId]);
 
   const {
     data,

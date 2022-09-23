@@ -1,56 +1,88 @@
-import * as DeployDetails from '../../../zkOpen/contract_addresses.json';
-import ERC20Abi from '../../starknet-artifacts/contracts/mockups/erc20.cairo/erc20_abi.json';
-import ComptrollerAbi from '../../../zkOpen/starknet-artifacts/contracts/modules/comptroller.cairo/comptroller_abi.json';
-
+// import * as DeployDetails from "../../contract_addresses.json";
+import * as DeployDetails from "../../../zkOpen/contract_addresses.json";
+import ERC20Abi from "../../starknet-artifacts/contracts/mockups/erc20.cairo/erc20_abi.json";
+import ComptrollerAbi from "../../../zkOpen/starknet-artifacts/contracts/modules/comptroller.cairo/comptroller_abi.json";
+import { number } from "starknet";
 interface ItokenAddressMap {
 	[key: string]: string | undefined;
 }
 
-export const tokenAddressMap: ItokenAddressMap = {
-	BTC:
-		process.env.NODE_ENV === 'development'
-			? DeployDetails.hardhat.TOKENS[0].address
-			: process.env.NEXT_PUBLIC_T_BTC,
-	USDT:
-		process.env.NODE_ENV === 'development'
-			? DeployDetails.hardhat.TOKENS[2].address
-			: process.env.NEXT_PUBLIC_T_USDT,
-	USDC:
-		process.env.NODE_ENV === 'development'
-			? DeployDetails.hardhat.TOKENS[1].address
-			: process.env.NEXT_PUBLIC_T_USDC,
-	BNB:
-		process.env.NODE_ENV === 'development'
-			? DeployDetails.hardhat.TOKENS[3].address
-			: process.env.NEXT_PUBLIC_T_BNB,
-};
 
-export const diamondAddress: string = DeployDetails.hardhat.DIAMOND_ADDRESS;
 
-export const getTokenFromAddress = (address: string) => {
-	if (process.env.NODE_ENV === 'development') {
-		let index = DeployDetails.hardhat.TOKENS.map(
-			(item) => item.address
-		).indexOf(address);
-		return DeployDetails.hardhat.TOKENS[index];
-	}
-	return null;
-};
-// export const getCommitmentNameFromIndex = (index: string) => {
-//   if (index == "0") {
-//     return 0;
-//   }
-//   return 1;
-// };
+export function processAddress(address: string) {
+  return number.toHex(number.toBN(number.toFelt(address)));
+}
+
+let contractsEnv = DeployDetails.devnet;
+contractsEnv.DIAMOND_ADDRESS = processAddress(contractsEnv.DIAMOND_ADDRESS);
+for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
+  contractsEnv.TOKENS[i].address = processAddress(
+    contractsEnv.TOKENS[i].address
+  );
+}
 
 export const getTokenFromName = (name: string) => {
-	if (process.env.NODE_ENV === 'development') {
-		let index = DeployDetails.hardhat.TOKENS.map((item) => item.name).indexOf(
-			name
-		);
-		return DeployDetails.hardhat.TOKENS[index];
-	}
-	return null;
+  let something = DeployDetails.devnet.TOKENS.map((item) => item.name);
+  console.log(something);
+  if (process.env.NODE_ENV === "development") {
+    let index = contractsEnv.TOKENS.map((item) => item.name).indexOf(name);
+    return contractsEnv.TOKENS[index];
+  } else {
+    let index = contractsEnv.TOKENS.map((item) => item.name).indexOf(name);
+    return contractsEnv.TOKENS[index];
+  }
+  return null;
+};
+
+export const tokenAddressMap: ItokenAddressMap = {
+  BTC: getTokenFromName("BTC")?.address,
+  USDT: getTokenFromName("USDT")?.address,
+  USDC: getTokenFromName("USDC")?.address,
+  BNB: getTokenFromName("BNB")?.address,
+};
+
+// export const tokenAddressMap: ItokenAddressMap = {
+//   BTC: DeployDetails.devnet.TOKENS[0].address,
+//   USDT: DeployDetails.devnet.TOKENS[2].address,
+//   USDC: DeployDetails.devnet.TOKENS[1].address,
+//   BNB: DeployDetails.devnet.TOKENS[3].address,
+// };
+
+
+// export const tokenAddressMap: ItokenAddressMap = {
+//   BTC:
+//     process.env.NODE_ENV === "development"
+//       ? DeployDetails.devnet.TOKENS[0].address
+//       : process.env.NEXT_PUBLIC_T_BTC,
+//   USDT:
+//     process.env.NODE_ENV === "development"
+//       ? DeployDetails.devnet.TOKENS[2].address
+//       : process.env.NEXT_PUBLIC_T_USDT,
+//   USDC:
+//     process.env.NODE_ENV === "development"
+//       ? DeployDetails.devnet.TOKENS[1].address
+//       : process.env.NEXT_PUBLIC_T_USDC,
+//   BNB:
+//     process.env.NODE_ENV === "development"
+//       ? DeployDetails.devnet.TOKENS[3].address
+//       : process.env.NEXT_PUBLIC_T_BNB,
+// };
+
+export const diamondAddress: string = DeployDetails.devnet.DIAMOND_ADDRESS;
+
+export const getTokenFromAddress = (address: string) => {
+  if (process.env.NODE_ENV === "development") {
+    let index = contractsEnv.TOKENS.map((item) => item.address).indexOf(
+      address
+    );
+    return contractsEnv.TOKENS[index];
+  } else {
+    let index = contractsEnv.TOKENS.map((item) => item.address).indexOf(
+      address
+    );
+    return contractsEnv.TOKENS[index];
+  }
+  return null;
 };
 
 export const getCommitmentNameFromIndex = (index: string) => {
@@ -66,10 +98,6 @@ export const getCommitmentNameFromIndex = (index: string) => {
 
 	return null;
 };
-// <option value={"NONE"}>None</option>
-// <option value={"TWOWEEKS"}>Two Weeks</option>
-// <option value={"ONEMONTH"}>One Month</option>
-// <option value={"THREEMONTHS"}>Three Month</option>
 
 export const getCommitmentIndexStringFromName = (name: string) => {
 	if (name === 'NONE') {

@@ -90,9 +90,13 @@ const ActiveDepositsTab = ({
           );
         })
       ) : (
-        <div>
-          <span>No Records Found.</span>
-        </div>
+        <Table>
+          <tbody>
+            <tr>
+              <td colSpan={5}>No Records Found.</td>
+            </tr>
+          </tbody>
+        </Table>
       )}
     </div>
   );

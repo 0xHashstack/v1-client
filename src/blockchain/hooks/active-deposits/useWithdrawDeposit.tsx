@@ -24,8 +24,7 @@ const useWithdrawDeposit = (
     setToken(_token.market);
     setDiamondAddress(_diamondAddress);
     setDepositId(_depositId);
-  });
-  const initWithdrawDeposit = () => {};
+  }, [_token.market, _diamondAddress, _depositId]);
 
   const {
     data: dataDeposit,
