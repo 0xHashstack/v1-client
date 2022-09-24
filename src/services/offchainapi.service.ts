@@ -3,7 +3,7 @@ import { tokenAddressMap } from "../blockchain/stark-constants";
 
 export default class OffchainAPI {
   // static ENDPOINT = 'http://52.77.185.41:3000'
-  static ENDPOINT = "http://localhost:3010";
+  static ENDPOINT = "http://18.143.25.43:3010";
 
   static async httpGet(route: string) {
     try {

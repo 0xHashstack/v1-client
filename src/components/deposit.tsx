@@ -81,48 +81,6 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     },
   });
 
-  const {
-    data: dataUSDT,
-    loading: loadingUSDT,
-    error: errorUSDT,
-    reset: resetUSDT,
-    execute: USDT,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: tokenAddressMap[asset] as string,
-      entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
-    },
-  });
-
-  const {
-    data: dataBNB,
-    loading: loadingBNB,
-    error: errorBNB,
-    reset: resetBNB,
-    execute: BNB,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: tokenAddressMap[asset] as string,
-      entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
-    },
-  });
-
-  const {
-    data: dataBTC,
-    loading: loadingBTC,
-    error: errorBTC,
-    reset: resetBTC,
-    execute: BTC,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: tokenAddressMap[asset] as string,
-      entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
-    },
-  });
-
   // Deposit Hook
   const {
     data: dataDeposit,
@@ -145,45 +103,31 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 
   const returnTransactionParameters = () => {
     let data, loading, reset, error;
-    if (asset === "BTC") {
-      [data, loading, reset, error] = [dataBTC, loadingBTC, resetBTC, errorBTC];
-    }
-    if (asset === "BNB") {
-      [data, loading, reset, error] = [dataBNB, loadingBNB, resetBNB, errorBNB];
-    }
-    if (asset === "USDC") {
       [data, loading, reset, error] = [
         dataUSDC,
         loadingUSDC,
         resetUSDC,
         errorUSDC,
       ];
-    }
-    if (asset === "USDT") {
-      [data, loading, reset, error] = [
-        dataUSDT,
-        loadingUSDT,
-        resetUSDT,
-        errorUSDT,
-      ];
-    }
     return { data, loading, reset, error };
   };
 
+  const {
+		data: dataAllowance,
+		loading: loadingAllowance,
+		error: errorAllowance,
+		refresh: refreshAllowance,
+	  } = useStarknetCall({
+		contract: contract,
+		method: "allowance",
+		args: [account, diamondAddress],
+		options: {
+		  watch: true,
+		},
+	});
+
   const handleApprove = async () => {
-    let val;
-    if (asset === "BTC") {
-      val = await BTC();
-    }
-    if (asset === "BNB") {
-      val = await BNB();
-    }
-    if (asset === "USDC") {
-      val = await USDC();
-    }
-    if (asset == "USDT") {
-      val = await USDT();
-    }
+      let val = await USDC();
   };
 
   const {
@@ -237,14 +181,14 @@ let Deposit: any = ({ asset }: { asset: string }) => {
       return;
     }
     console.log(diamondAddress, depositAmount);
-    await handleApprove();
-    if (errorApprove) {
-      toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
+    // await handleApprove();
+    // if (errorApprove) {
+    //   toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
+    //     position: toast.POSITION.BOTTOM_RIGHT,
+    //     closeOnClick: true,
+    //   });
+    //   return;
+    // }
     // run deposit function
 
     await executeDeposit();

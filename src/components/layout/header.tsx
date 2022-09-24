@@ -14,13 +14,7 @@ import { ConnectWallet } from '../wallet';
 import { useERC20Contract } from '../../hooks/starknet-react/starks';
 import { tokenAddressMap } from '../../blockchain/stark-constants';
 import useGetToken from '../../blockchain/mockups/useGetToken';
-import React, { useState, useContext, useCallback, useEffect } from "react";
-import Link from "next/link";
-import { Col, Modal, Button, Form, Spinner } from "reactstrap";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useStarknet, useConnectors } from "@starknet-react/core";
-import { ConnectWallet } from "../wallet";
 import GetTokenButton from "./get-token-button";
 
 // toast.configure({ autoClose: 4000 });

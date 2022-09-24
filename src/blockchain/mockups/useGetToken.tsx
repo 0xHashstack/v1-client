@@ -4,9 +4,7 @@ import {
 	useStarknetExecute,
 } from '@starknet-react/core';
 import { useEffect, useState } from 'react';
-import { number } from 'starknet';
-import { tokenAddressMap, diamondAddress } from '../stark-constants';
-import * as DeployDetails from '../../../../zkOpen/contract_addresses.json';
+import { tokenAddressMap, diamondAddress, contractsEnv, getTokenFromName } from '../stark-constants';
 
 const useGetToken = ({ token }: { token: string }) => {
 	const { available, connect, disconnect } = useConnectors();
@@ -28,9 +26,9 @@ const useGetToken = ({ token }: { token: string }) => {
 		execute: BTC,
 	} = useStarknetExecute({
 		calls: {
-			contractAddress: DeployDetails.hardhat.FAUCET_ADDRESS as string,
-			entrypoint: 'get_tokens',
-			calldata: [DeployDetails.hardhat.TOKENS[0].address],
+			contractAddress: getTokenFromName('BTC')?.address as string,
+			entrypoint: 'mint',
+			calldata: [account],
 		},
 	});
 
@@ -42,10 +40,10 @@ const useGetToken = ({ token }: { token: string }) => {
 		execute: USDC,
 	} = useStarknetExecute({
 		calls: {
-			contractAddress: DeployDetails.hardhat.FAUCET_ADDRESS as string,
-			entrypoint: 'get_tokens',
-			calldata: [DeployDetails.hardhat.TOKENS[1].address],
-		},
+			contractAddress: getTokenFromName('USDC')?.address as string,
+			entrypoint: 'mint',
+			calldata: [account],
+		}
 	});
 
 	const {
@@ -56,9 +54,9 @@ const useGetToken = ({ token }: { token: string }) => {
 		execute: USDT,
 	} = useStarknetExecute({
 		calls: {
-			contractAddress: DeployDetails.hardhat.FAUCET_ADDRESS as string,
-			entrypoint: 'get_tokens',
-			calldata: [DeployDetails.hardhat.TOKENS[2].address],
+			contractAddress: getTokenFromName('USDT')?.address as string,
+			entrypoint: 'mint',
+			calldata: [account],
 		},
 	});
 
@@ -70,9 +68,9 @@ const useGetToken = ({ token }: { token: string }) => {
 		execute: BNB,
 	} = useStarknetExecute({
 		calls: {
-			contractAddress: DeployDetails.hardhat.FAUCET_ADDRESS as string,
+			contractAddress: contractsEnv.FAUCET_ADDRESS as string,
 			entrypoint: 'get_tokens',
-			calldata: [DeployDetails.hardhat.TOKENS[3].address],
+			calldata: [contractsEnv.TOKENS[3].address],
 		},
 	});
 

@@ -1,5 +1,5 @@
-// import * as DeployDetails from "../../contract_addresses.json";
-import * as DeployDetails from "../../../zkOpen/contract_addresses.json";
+import * as DeployDetails from "../../contract_addresses.json";
+// import * as DeployDetails from "../../../zkOpen/contract_addresses.json";
 import ERC20Abi from "../../starknet-artifacts/contracts/mockups/erc20.cairo/erc20_abi.json";
 import ComptrollerAbi from "../../../zkOpen/starknet-artifacts/contracts/modules/comptroller.cairo/comptroller_abi.json";
 import { number } from "starknet";
@@ -8,12 +8,11 @@ interface ItokenAddressMap {
 }
 
 
-
 export function processAddress(address: string) {
   return number.toHex(number.toBN(number.toFelt(address)));
 }
 
-let contractsEnv = DeployDetails.devnet;
+let contractsEnv = DeployDetails.goerli;
 contractsEnv.DIAMOND_ADDRESS = processAddress(contractsEnv.DIAMOND_ADDRESS);
 for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
   contractsEnv.TOKENS[i].address = processAddress(
@@ -22,7 +21,7 @@ for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
 }
 
 export const getTokenFromName = (name: string) => {
-  let something = DeployDetails.devnet.TOKENS.map((item) => item.name);
+  let something = contractsEnv.TOKENS.map((item) => item.name);
   console.log(something);
   if (process.env.NODE_ENV === "development") {
     let index = contractsEnv.TOKENS.map((item) => item.name).indexOf(name);
@@ -68,7 +67,7 @@ export const tokenAddressMap: ItokenAddressMap = {
 //       : process.env.NEXT_PUBLIC_T_BNB,
 // };
 
-export const diamondAddress: string = DeployDetails.devnet.DIAMOND_ADDRESS;
+export const diamondAddress: string = contractsEnv.DIAMOND_ADDRESS;
 
 export const getTokenFromAddress = (address: string) => {
   if (process.env.NODE_ENV === "development") {
@@ -125,4 +124,4 @@ export const getCommitmentIndex = (index: string) => {
 		return 3;
 	}
 };
-export { ERC20Abi, ComptrollerAbi };
+export { ERC20Abi, ComptrollerAbi, contractsEnv };

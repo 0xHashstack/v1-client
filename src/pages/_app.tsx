@@ -23,7 +23,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 				connectors={connectors}
 				autoConnect
 				defaultProvider={
-					new SequencerProvider({ baseUrl: 'http://127.0.0.1:5050/' })
+					new SequencerProvider({ baseUrl: 'https://alpha4.starknet.io' })
 				}
 			>
 				<Provider store={store}>
