@@ -103,31 +103,31 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 
   const returnTransactionParameters = () => {
     let data, loading, reset, error;
-      [data, loading, reset, error] = [
-        dataUSDC,
-        loadingUSDC,
-        resetUSDC,
-        errorUSDC,
-      ];
+    [data, loading, reset, error] = [
+      dataUSDC,
+      loadingUSDC,
+      resetUSDC,
+      errorUSDC,
+    ];
     return { data, loading, reset, error };
   };
 
   const {
-		data: dataAllowance,
-		loading: loadingAllowance,
-		error: errorAllowance,
-		refresh: refreshAllowance,
-	  } = useStarknetCall({
-		contract: contract,
-		method: "allowance",
-		args: [account, diamondAddress],
-		options: {
-		  watch: true,
-		},
-	});
+    data: dataAllowance,
+    loading: loadingAllowance,
+    error: errorAllowance,
+    refresh: refreshAllowance,
+  } = useStarknetCall({
+    contract: contract,
+    method: "allowance",
+    args: [account, diamondAddress],
+    options: {
+      watch: true,
+    },
+  });
 
   const handleApprove = async () => {
-      let val = await USDC();
+    let val = await USDC();
   };
 
   const {
@@ -181,14 +181,14 @@ let Deposit: any = ({ asset }: { asset: string }) => {
       return;
     }
     console.log(diamondAddress, depositAmount);
-    // await handleApprove();
-    // if (errorApprove) {
-    //   toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
-    //     position: toast.POSITION.BOTTOM_RIGHT,
-    //     closeOnClick: true,
-    //   });
-    //   return;
-    // }
+    await handleApprove();
+    if (errorApprove) {
+      toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
+    }
     // run deposit function
 
     await executeDeposit();
