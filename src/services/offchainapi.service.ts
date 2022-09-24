@@ -61,6 +61,21 @@ export default class OffchainAPI {
               value: JSON.parse(event.eventInfo).amount,
             };
           } else if (type === "loans") {
+            if (event.event === "RevertSushiSwapped") {
+              return {
+                txnHash: event.txHash,
+                actionType: "SwappedToLoan",
+                date: event.createdon,
+                value: JSON.parse(event.eventInfo).loanAmount,
+              };
+            } else if (event.event === "SushiSwapped") {
+              return {
+                txnHash: event.txHash,
+                actionType: "SwappedToSecondary",
+                date: event.createdon,
+                value: JSON.parse(event.eventInfo).loanAmount,
+              };
+            }
             return {
               txnHash: event.txHash,
               actionType: event.event,
