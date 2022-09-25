@@ -33,6 +33,8 @@ import {
 } from "../../../blockchain/stark-constants";
 import { BNtoNum, GetErrorText, NumToBN } from "../../../blockchain/utils";
 import TxHistoryTable from "../../dashboard/tx-history-table";
+import AddToCollateral from "./active-loans/add-to-collateral";
+import Repay from "./active-loans/repay";
 import SwapToLoan from "./swaps/swap-to-loan";
 
 const ActiveLoansTab = ({
@@ -171,53 +173,40 @@ const ActiveLoansTab = ({
     },
   });
   // Adding collateral
-  const {
-    data: dataAddCollateral,
-    loading: loadingAddCollateral,
-    error: errorAddCollateral,
-    reset: resetAddCollateral,
-    execute: executeAddCollateral,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: diamondAddress,
-      entrypoint: "add_collateral",
-      calldata: [loanId, NumToBN(inputVal1 as number, 18), 0],
-    },
-  });
 
   /* ============================== Repay Loan ============================ */
-  const {
-    data: dataRepayApprove,
-    loading: loadingRepayApprove,
-    error: errorRepayApprove,
-    reset: resetRepayApprove,
-    execute: approveRepay,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: loanMarket,
-      entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(inputVal1 as number, 18), 0],
-    },
-  });
+  // const {
+  //   data: dataRepayApprove,
+  //   loading: loadingRepayApprove,
+  //   error: errorRepayApprove,
+  //   reset: resetRepayApprove,
+  //   execute: approveRepay,
+  // } = useStarknetExecute({
+  //   calls: {
+  //     contractAddress: loanMarket,
+  //     entrypoint: "approve",
+  //     calldata: [diamondAddress, NumToBN(inputVal1 as number, 18), 0],
+  //   },
+  // });
   // Repay
-  const {
-    data: dataRepay,
-    loading: loadingRepay,
-    error: errorRepay,
-    reset: resetRepay,
-    execute: executeRepay,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: diamondAddress,
-      entrypoint: "loan_repay",
-      calldata: [
-        loanMarket,
-        commitmentPeriod,
-        NumToBN(inputVal1 as number, 18),
-        0,
-      ],
-    },
-  });
+  // const {
+  //   data: dataRepay,
+  //   loading: loadingRepay,
+  //   error: errorRepay,
+  //   reset: resetRepay,
+  //   execute: executeRepay,
+  // } = useStarknetExecute({
+  //   calls: {
+  //     contractAddress: diamondAddress,
+  //     entrypoint: "loan_repay",
+  //     calldata: [
+  //       loanMarket,
+  //       commitmentPeriod,
+  //       NumToBN(inputVal1 as number, 18),
+  //       0,
+  //     ],
+  //   },
+  // });
 
   /* ============================== Withdraw Loan ============================ */
   const {
@@ -251,76 +240,36 @@ const ActiveLoansTab = ({
   /* ============================== Swap Back To Loan ============================ */
   /* ============================== handle Functions ============================ */
 
-  const handleCollateral = async (
-    loanMarket: string,
-    commitment: string,
-    collateralMarket: string
-  ) => {
-    console.log("marketToAddCollateral: ", marketToAddCollateral);
-    console.log("activeLoansData.loanId: ", loanId);
-    console.log("inputVal1: ", inputVal1);
-    console.log(
-      "tokenAddressMap[marketToAddCollateral]: ",
-      tokenAddressMap[marketToAddCollateral]
-    );
-    if (!inputVal1 && loanId! && !marketToAddCollateral) {
-      console.log("error");
-      return;
-    }
+  // const handleRepay = async () => {
+  //   console.log("trying to repay: ", loanMarket);
+  //   console.log(approveRepay);
+  //   if (!inputVal1 && loanId! && !diamondAddress) {
+  //     console.log("error");
+  //     return;
+  //   }
 
-    await approve();
-    if (errorApprove) {
-      toast.error(
-        `${GetErrorText(`Approve for token ${collateralMarket} failed`)}`,
-        {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          closeOnClick: true,
-        }
-      );
-      return;
-    }
-    await executeAddCollateral();
-    if (errorAddCollateral) {
-      toast.error(
-        `${GetErrorText(`Collateral adding for ${collateralMarket} failed`)}`,
-        {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          closeOnClick: true,
-        }
-      );
-    }
-  };
+  //   await approveRepay();
+  //   if (errorApprove) {
+  //     toast.error(
+  //       `${GetErrorText(
+  //         `Approve for token ${tokenAddressMap[loanMarket]} failed`
+  //       )}`,
+  //       {
+  //         position: toast.POSITION.BOTTOM_RIGHT,
+  //         closeOnClick: true,
+  //       }
+  //     );
+  //     return;
+  //   }
 
-  const handleRepay = async () => {
-    console.log("trying to repay: ", loanMarket);
-    console.log(approveRepay);
-    if (!inputVal1 && loanId! && !diamondAddress) {
-      console.log("error");
-      return;
-    }
-
-    await approveRepay();
-    if (errorApprove) {
-      toast.error(
-        `${GetErrorText(
-          `Approve for token ${tokenAddressMap[loanMarket]} failed`
-        )}`,
-        {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          closeOnClick: true,
-        }
-      );
-      return;
-    }
-
-    await executeRepay();
-    if (errorRepay) {
-      toast.error(`${GetErrorText(`Repay for ${loanMarket} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-    }
-  };
+  //   await executeRepay();
+  //   if (errorRepay) {
+  //     toast.error(`${GetErrorText(`Repay for ${loanMarket} failed`)}`, {
+  //       position: toast.POSITION.BOTTOM_RIGHT,
+  //       closeOnClick: true,
+  //     });
+  //   }
+  // };
 
   const handleWithdrawLoan = async (loanMarket: string, commitment: string) => {
     if (!inputVal1 && !loanId && !diamondAddress) {
@@ -730,104 +679,18 @@ const ActiveLoansTab = ({
 
                                     {collateral_active_loan &&
                                       loanActionTab === "0" && (
-                                        <Form>
-                                          <div className="row mb-3">
-                                            <Col sm={12}>
-                                              <Input
-                                                type="text"
-                                                className="form-control"
-                                                id="horizontal-password-Input"
-                                                placeholder={
-                                                  depositRequestSel
-                                                    ? `Minimum amount =  ${MinimumAmount[depositRequestSel]}`
-                                                    : "Amount"
-                                                }
-                                                onChange={(event) => {
-                                                  setInputVal1(
-                                                    Number(event.target.value)
-                                                  );
-
-                                                  setMarketToAddCollateral(
-                                                    asset.collateralMarket
-                                                  );
-                                                  setLoanId(asset.loanId);
-                                                }}
-                                              />
-                                            </Col>
-                                          </div>
-
-                                          <div className="d-grid gap-2">
-                                            <Button
-                                              className="w-md"
-                                              disabled={
-                                                isTransactionDone ||
-                                                inputVal1 <= 0
-                                              }
-                                              onClick={() => {
-                                                handleCollateral(
-                                                  asset.loanMarket,
-                                                  asset.commitment,
-                                                  asset.collateralMarket
-                                                );
-                                              }}
-                                            >
-                                              {!isTransactionDone ? (
-                                                "Add to Collateral"
-                                              ) : (
-                                                <Spinner>Loading...</Spinner>
-                                              )}
-                                            </Button>
-                                          </div>
-                                        </Form>
+                                        <AddToCollateral
+                                          asset={asset}
+                                          depositRequestSel={depositRequestSel}
+                                        />
                                       )}
 
                                     {repay_active_loan &&
                                       loanActionTab === "0" && (
-                                        <Form>
-                                          <div className="row mb-3">
-                                            <Col sm={12}>
-                                              <Input
-                                                type="text"
-                                                className="form-control"
-                                                id="horizontal-password-Input"
-                                                placeholder="Amount"
-                                                onChange={(event) => {
-                                                  setCommitmentPeriod(
-                                                    asset.commitmentIndex
-                                                  );
-                                                  setLoanMarket(
-                                                    asset.loanMarketAddress
-                                                  );
-                                                  setInputVal1(
-                                                    Number(event.target.value)
-                                                  );
-                                                }}
-                                              />
-                                            </Col>
-                                          </div>
-
-                                          <div className="d-grid gap-2">
-                                            <Button
-                                              className="w-md"
-                                              disabled={
-                                                handleRepayTransactionDone ||
-                                                inputVal1 < 0
-                                              }
-                                              onClick={() => {
-                                                handleRepay();
-                                              }}
-                                              style={{
-                                                color: "#4B41E5",
-                                              }}
-                                            >
-                                              {!handleRepayTransactionDone ? (
-                                                "Repay Loan"
-                                              ) : (
-                                                <Spinner>Loading...</Spinner>
-                                              )}
-                                            </Button>
-                                          </div>
-                                        </Form>
+                                        <Repay
+                                          depositRequestSel={depositRequestSel}
+                                          asset={asset}
+                                        />
                                       )}
 
                                     {withdraw_active_loan &&

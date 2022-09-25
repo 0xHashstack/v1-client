@@ -164,48 +164,6 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
       });
       return;
     }
-
-    // if (
-    //   Number(BNtoNum(dataAllowance[0]?.low, 18)) < (depositAmount as number)
-    // ) {
-    //   // handleApprove();
-    //   console.log("loadingApprove", loadingApprove);
-    //   if (errorApprove) {
-    //     toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
-    //       position: toast.POSITION.BOTTOM_RIGHT,
-    //       closeOnClick: true,
-    //     });
-    //     return;
-    //   }
-    //   let counter = 1;
-
-    //   setApproveStatus(transactions[0]?.status);
-    //   // run deposit function
-    //   if (approveStatus === "ACCEPTED_ON_L2") {
-    //     executeDeposit();
-    //     if (errorDeposit) {
-    //       toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
-    //         position: toast.POSITION.BOTTOM_RIGHT,
-    //         closeOnClick: true,
-    //       });
-    //       return;
-    //     }
-    //   } else {
-    //     console.log("waiting.....", counter);
-    //     counter = counter + 1;
-    //   }
-    // } else {
-    //   // run deposit function
-    //   await executeDeposit();
-    //   if (errorDeposit) {
-    //     toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
-    //       position: toast.POSITION.BOTTOM_RIGHT,
-    //       closeOnClick: true,
-    //     });
-    //     return;
-    //   }
-    //   await refreshAllowance();
-    // }
   };
 
   return {
