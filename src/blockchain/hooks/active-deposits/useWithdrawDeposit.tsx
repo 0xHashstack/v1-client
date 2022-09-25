@@ -18,7 +18,7 @@ const useWithdrawDeposit = (
 ) => {
   const [token, setToken] = useState("");
   const [diamondAddress, setDiamondAddress] = useState("");
-  const [depositAmount, setDepositAmount] = useState<number>();
+  const [withdrawAmount, setWithdrawAmount] = useState<number>();
   const [depositId, setDepositId] = useState<number>();
   useEffect(() => {
     setToken(_token.market);
@@ -36,12 +36,12 @@ const useWithdrawDeposit = (
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "withdraw_deposit",
-      calldata: [depositId, NumToBN(depositAmount as number, 18), 0],
+      calldata: [depositId, NumToBN(withdrawAmount as number, 18), 0],
     },
   });
 
   const withdrawDeposit = async () => {
-    console.log(`${depositAmount} ${depositId} ${diamondAddress}`);
+    console.log(`${withdrawAmount} ${depositId} ${diamondAddress}`);
     await executeDeposit();
     if (errorDeposit) {
       toast.error(`${GetErrorText(`Couldn't add Deposit to ${token}`)}`, {
@@ -58,8 +58,8 @@ const useWithdrawDeposit = (
 
   return {
     withdrawDeposit,
-    setDepositAmount,
-    depositAmount,
+    setWithdrawAmount,
+    withdrawAmount,
   };
 };
 

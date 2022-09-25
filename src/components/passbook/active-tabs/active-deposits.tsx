@@ -32,20 +32,6 @@ const ActiveDepositsTab = ({
   isTransactionDone: any;
   inputVal1: any;
 }) => {
-  const handleDepositRequest = async (
-    approveToken: any,
-    returnTransactionParameters: any,
-    DepositAmount: any,
-    market: string
-  ) => {
-    console.log("approving token");
-    await approveToken(market);
-
-    await DepositAmount();
-  };
-  const handleWithdrawDeposit = async (withdrawDeposit: any) => {
-    await withdrawDeposit();
-  };
   return (
     // Active Deposits
     <div className="table-responsive mt-3" style={{ overflow: "hidden" }}>
@@ -82,9 +68,6 @@ const ActiveDepositsTab = ({
               modal_withdraw_active_deposit={modal_withdraw_active_deposit}
               tog_withdraw_active_deposit={tog_withdraw_active_deposit}
               depositRequestSel={depositRequestSel}
-              handleDepositRequest={handleDepositRequest}
-              handleDepositTransactionDone={handleDepositTransactionDone}
-              handleWithdrawDeposit={handleWithdrawDeposit}
               withdrawDepositTransactionDone={withdrawDepositTransactionDone}
             />
           );

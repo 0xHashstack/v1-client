@@ -1,15 +1,18 @@
 import {
   useConnectors,
+  useContract,
   useStarknet,
+  useStarknetCall,
   useStarknetExecute,
+  useStarknetTransactionManager,
 } from "@starknet-react/core";
 import { exec } from "child_process";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { number } from "starknet";
+import { Abi, number, uint256 } from "starknet";
 import deposit from "../../../components/deposit";
-import { tokenAddressMap } from "../../stark-constants";
-import { GetErrorText, NumToBN } from "../../utils";
+import { ERC20Abi, tokenAddressMap } from "../../stark-constants";
+import { BNtoNum, GetErrorText, NumToBN } from "../../utils";
 
 const useAddDeposit = (_token: any, _diamondAddress: string) => {
   const [token, setToken] = useState("");
@@ -19,59 +22,73 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
   const [depositAmount, setDepositAmount] = useState<number>();
   const [depositCommit, setDepositCommit] = useState();
 
+  const [approveStatus, setApproveStatus] = useState("");
+  const [isAllowed, setAllowed] = useState(false);
+  const [shouldApprove, setShouldApprove] = useState(false);
+  const [allowanceVal, setAllowance] = useState(0);
+
+  const { account } = useStarknet();
+  const { transactions } = useStarknetTransactionManager();
+
   useEffect(() => {
     setToken(_token.market);
     setDiamondAddress(_diamondAddress);
   }, [_diamondAddress, _token.market]);
 
-  const {
-    data: dataUSDC,
-    loading: loadingUSDC,
-    error: errorUSDC,
-    reset: resetUSDC,
-    execute: USDC,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: depositMarket as string,
-      entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
-    },
+  const { contract } = useContract({
+    abi: ERC20Abi as Abi,
+    address: tokenAddressMap[token] as string,
   });
 
   const {
-    data: dataUSDT,
-    loading: loadingUSDT,
-    error: errorUSDT,
-    reset: resetUSDT,
-    execute: USDT,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: depositMarket as string,
-      entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
+    data: dataAllowance,
+    loading: loadingAllowance,
+    error: errorAllowance,
+    refresh: refreshAllowance,
+  } = useStarknetCall({
+    contract: contract,
+    method: "allowance",
+    args: [account, diamondAddress],
+    options: {
+      watch: true,
     },
   });
 
-  const {
-    data: dataBNB,
-    loading: loadingBNB,
-    error: errorBNB,
-    reset: resetBNB,
-    execute: BNB,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: depositMarket as string,
-      entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
-    },
-  });
+  useEffect(() => {
+    console.log("check allownace", {
+      dataAllowance,
+      errorAllowance,
+      refreshAllowance,
+      loadingAllowance,
+    });
+    if (dataAllowance) {
+      console.log("yo", Number(BNtoNum(dataAllowance[0]?.low, 18)));
+    }
+    if (!loadingAllowance) {
+      if (dataAllowance) {
+        let data: any = dataAllowance;
+        let _allowance = uint256.uint256ToBN(data.remaining);
+        // console.log({ _allowance: _allowance.toString(), depositAmount });
+        setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
+        if (allowanceVal > (depositAmount as number)) {
+          setAllowed(true);
+          setShouldApprove(false);
+        } else {
+          setShouldApprove(true);
+          setAllowed(false);
+        }
+      } else if (errorAllowance) {
+        // handleToast(true, "Check allowance", errorAllowance)
+      }
+    }
+  }, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
 
   const {
-    data: dataBTC,
-    loading: loadingBTC,
-    error: errorBTC,
-    reset: resetBTC,
-    execute: BTC,
+    data: dataApprove,
+    loading: loadingApprove,
+    error: errorApprove,
+    reset: resetApprove,
+    execute: executeApprove,
   } = useStarknetExecute({
     calls: {
       contractAddress: depositMarket as string,
@@ -99,83 +116,68 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
     },
   });
 
-  const approveToken = async (token: string) => {
-    console.log(
-      `${depositAmount} ${depositCommit} ${depositMarket} ${
-        tokenAddressMap[depositMarket as string] as string
-      }`
-    );
-    let val;
-    if (token === "BTC") {
-      val = await BTC();
-    }
-    if (token === "BNB") {
-      val = await BNB();
-    }
-    if (token === "USDC") {
-      val = await USDC();
-    }
-    if (token === "USDT") {
-      val = await USDT();
-    }
-  };
-
-  // contractAddress: diamondAddress,
-  // entrypoint: "deposit_request",
-  // calldata: [
-  //   tokenAddressMap[token],
-  //   depositCommit,
-  //   (depositAmount as number) * 10 ** 8,
-  //   0,
-  const DepositAmount = async () => {
-    console.log(`${depositAmount} ${depositCommit} ${depositMarket}`);
-    await executeDeposit();
-    if (errorDeposit) {
-      toast.error(`${GetErrorText(`Couldn't add Deposit to ${token}`)}`, {
+  const handleApprove = async (asset: string) => {
+    let val = await executeApprove();
+    if (errorApprove) {
+      toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
       });
       return;
     }
-    toast.success(`${token} Deposited!`, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      closeOnClick: true,
-    });
   };
 
-  const returnTransactionParameters = (token: string) => {
-    let data, loading, reset, error;
-    if (token === "BTC") {
-      [data, loading, reset, error] = [dataBTC, loadingBTC, resetBTC, errorBTC];
+  const DepositAmount = async (asset: string) => {
+    if (
+      !tokenAddressMap[asset] &&
+      !depositAmount &&
+      !diamondAddress &&
+      !depositCommit
+    ) {
+      toast.error(`${GetErrorText(`Invalid request`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
     }
-    if (token === "BNB") {
-      [data, loading, reset, error] = [dataBNB, loadingBNB, resetBNB, errorBNB];
+    if (depositAmount === 0) {
+      // approve the transfer
+      toast.error(`${GetErrorText(`Can't deposit 0 of ${asset}`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
     }
-    if (token === "USDC") {
-      [data, loading, reset, error] = [
-        dataUSDC,
-        loadingUSDC,
-        resetUSDC,
-        errorUSDC,
-      ];
+    console.log(diamondAddress, depositAmount);
+    // await handleApprove();
+    // run deposit function
+
+    console.log("allowance", BNtoNum(dataAllowance[0]?.low, 18).toString());
+    console.log("amountin -: ", depositAmount);
+
+    setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
+    await executeDeposit();
+    if (errorDeposit) {
+      toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
     }
-    if (token === "USDT") {
-      [data, loading, reset, error] = [
-        dataUSDT,
-        loadingUSDT,
-        resetUSDT,
-        errorUSDT,
-      ];
-    }
-    return { data, loading, reset, error };
   };
+
   return {
-    approveToken,
-    returnTransactionParameters,
     DepositAmount,
+    handleApprove,
     setDepositAmount,
     setDepositCommit,
     setDepositMarket,
+    allowanceVal,
+    depositAmount,
+    depositCommit,
+    loadingApprove,
+    loadingDeposit,
+    transactions,
   };
 };
 
