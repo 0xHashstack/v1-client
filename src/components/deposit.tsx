@@ -276,7 +276,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
         // handleToast(true, "Check allowance", errorAllowance)
       }
     }
-  }, [, dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
+  }, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
 
   return (
     <>

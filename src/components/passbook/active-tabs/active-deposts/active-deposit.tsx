@@ -34,9 +34,6 @@ const ActiveDeposit = ({
   modal_withdraw_active_deposit,
   tog_withdraw_active_deposit,
   depositRequestSel,
-  handleDepositRequest,
-  handleDepositTransactionDone,
-  handleWithdrawDeposit,
   withdrawDepositTransactionDone,
 }: {
   asset: any;
@@ -45,27 +42,30 @@ const ActiveDeposit = ({
   modal_withdraw_active_deposit: any;
   tog_withdraw_active_deposit: any;
   depositRequestSel: any;
-  handleDepositRequest: any;
-  handleDepositTransactionDone: any;
-  handleWithdrawDeposit: any;
   withdrawDepositTransactionDone: any;
 }) => {
   console.log(asset);
   const {
-    approveToken,
-    returnTransactionParameters,
     DepositAmount,
     setDepositAmount,
     setDepositCommit,
     setDepositMarket,
+    allowanceVal,
+    depositAmount,
+    depositCommit,
+    loadingApprove,
+    loadingDeposit,
+    transactions,
   } = useAddDeposit(asset, diamondAddress);
 
   // console.log("here:  ", asset.depositId);
-  const {
-    withdrawDeposit,
-    depositAmount,
-    setDepositAmount: setWithdrawDepositAmount,
-  } = useWithdrawDeposit(asset, diamondAddress, asset.depositId);
+  const { withdrawDeposit, withdrawAmount, setWithdrawAmount } =
+    useWithdrawDeposit(asset, diamondAddress, asset.depositId);
+
+  const handleWithdrawDeposit = async (withdrawDeposit: any) => {
+    await withdrawDeposit();
+  };
+
   return (
     <UncontrolledAccordion defaultOpen="0" open="false">
       <Row>
@@ -267,26 +267,28 @@ const ActiveDeposit = ({
                               </div>
 
                               <div className="d-grid gap-2">
-                                <Button
+                                {/* <Button
                                   // color="primary"
                                   className="w-md"
                                   // disabled={
                                   //   handleDepositTransactionDone ||
                                   //   inputVal1 <= 0 // different for different coins
                                   // }
-                                  onClick={() => {
-                                    handleDepositRequest(
-                                      approveToken,
-                                      returnTransactionParameters,
-                                      DepositAmount,
-                                      asset.market
-                                    );
+                                  onClick={async () => {
+                                    // handleDepositRequest(
+                                    //   approveToken,
+                                    //   // returnTransactionParameters,
+                                    //   DepositAmount,
+                                    //   asset.market
+                                    // );
                                     // EventMap[
                                     //   asset.market.toUpperCase()
                                     // ],
                                     // EventMap[
                                     //   asset.commitment.toUpperCase()
                                     // ]
+
+                                    await DepositAmount();
                                   }}
                                 >
                                   {!handleDepositTransactionDone ? (
@@ -294,7 +296,58 @@ const ActiveDeposit = ({
                                   ) : (
                                     <Spinner>Loading...</Spinner>
                                   )}
-                                </Button>
+                                </Button> */}
+
+                                {allowanceVal < (depositAmount as number) ? (
+                                  <Button
+                                    color="primary"
+                                    className="w-md"
+                                    disabled={
+                                      depositCommit === undefined ||
+                                      loadingApprove ||
+                                      loadingDeposit ||
+                                      (depositAmount as number) <
+                                        MinimumAmount[asset]
+                                    }
+                                    onClick={(e) => DepositAmount(asset)}
+                                  >
+                                    {/* setApproveStatus(transactions[0]?.status); */}
+                                    {!(
+                                      loadingApprove ||
+                                      (transactions.length > 0 &&
+                                        transactions[0]?.status !==
+                                          "ACCEPTED_ON_L2")
+                                    ) ? (
+                                      "Approve"
+                                    ) : (
+                                      <Spinner>Loading...</Spinner>
+                                    )}
+                                  </Button>
+                                ) : (
+                                  <Button
+                                    color="primary"
+                                    className="w-md"
+                                    disabled={
+                                      depositCommit === undefined ||
+                                      loadingApprove ||
+                                      loadingDeposit ||
+                                      (depositAmount as number) <
+                                        MinimumAmount[asset]
+                                    }
+                                    onClick={(e) => DepositAmount(asset)}
+                                  >
+                                    {!(
+                                      loadingApprove ||
+                                      (transactions.length > 0 &&
+                                        transactions[0]?.status !==
+                                          "ACCEPTED_ON_L2")
+                                    ) ? (
+                                      "Deposit"
+                                    ) : (
+                                      <Spinner>Loading...</Spinner>
+                                    )}
+                                  </Button>
+                                )}
                               </div>
                             </Form>
                           )}
@@ -308,7 +361,7 @@ const ActiveDeposit = ({
                                     id="horizontal-password-Input"
                                     placeholder="Amount"
                                     onChange={(event) => {
-                                      setWithdrawDepositAmount(
+                                      setWithdrawAmount(
                                         Number(event.target.value)
                                       );
                                     }}
