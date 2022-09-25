@@ -47,6 +47,7 @@ const ActiveDeposit = ({
   console.log(asset);
   const {
     DepositAmount,
+    handleApprove,
     setDepositAmount,
     setDepositCommit,
     setDepositMarket,
@@ -309,7 +310,7 @@ const ActiveDeposit = ({
                                       (depositAmount as number) <
                                         MinimumAmount[asset]
                                     }
-                                    onClick={(e) => DepositAmount(asset)}
+                                    onClick={(e) => handleApprove(asset)}
                                   >
                                     {/* setApproveStatus(transactions[0]?.status); */}
                                     {!(

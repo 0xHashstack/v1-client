@@ -61,6 +61,9 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
       refreshAllowance,
       loadingAllowance,
     });
+    if (dataAllowance) {
+      console.log("yo", Number(BNtoNum(dataAllowance[0]?.low, 18)));
+    }
     if (!loadingAllowance) {
       if (dataAllowance) {
         let data: any = dataAllowance;
@@ -113,8 +116,15 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
     },
   });
 
-  const handleApprove = async () => {
+  const handleApprove = async (asset: string) => {
     let val = await executeApprove();
+    if (errorApprove) {
+      toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
+    }
   };
 
   const DepositAmount = async (asset: string) => {
@@ -139,92 +149,68 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
       return;
     }
     console.log(diamondAddress, depositAmount);
-    await handleApprove();
-    if (errorApprove) {
-      toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
+    // await handleApprove();
     // run deposit function
 
     console.log("allowance", BNtoNum(dataAllowance[0]?.low, 18).toString());
     console.log("amountin -: ", depositAmount);
 
     setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
-
-    if (
-      Number(BNtoNum(dataAllowance[0]?.low, 18)) < (depositAmount as number)
-    ) {
-      handleApprove();
-      console.log("loadingApprove", loadingApprove);
-      if (errorApprove) {
-        toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          closeOnClick: true,
-        });
-        return;
-      }
-      let counter = 1;
-
-      setApproveStatus(transactions[0]?.status);
-      // run deposit function
-      if (approveStatus === "ACCEPTED_ON_L2") {
-        executeDeposit();
-        if (errorDeposit) {
-          toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            closeOnClick: true,
-          });
-          return;
-        }
-      } else {
-        console.log("waiting.....", counter);
-        counter = counter + 1;
-      }
-    } else {
-      // run deposit function
-      await executeDeposit();
-      if (errorDeposit) {
-        toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          closeOnClick: true,
-        });
-        return;
-      }
-      await refreshAllowance();
+    await executeDeposit();
+    if (errorDeposit) {
+      toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
     }
+
+    // if (
+    //   Number(BNtoNum(dataAllowance[0]?.low, 18)) < (depositAmount as number)
+    // ) {
+    //   // handleApprove();
+    //   console.log("loadingApprove", loadingApprove);
+    //   if (errorApprove) {
+    //     toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
+    //       position: toast.POSITION.BOTTOM_RIGHT,
+    //       closeOnClick: true,
+    //     });
+    //     return;
+    //   }
+    //   let counter = 1;
+
+    //   setApproveStatus(transactions[0]?.status);
+    //   // run deposit function
+    //   if (approveStatus === "ACCEPTED_ON_L2") {
+    //     executeDeposit();
+    //     if (errorDeposit) {
+    //       toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
+    //         position: toast.POSITION.BOTTOM_RIGHT,
+    //         closeOnClick: true,
+    //       });
+    //       return;
+    //     }
+    //   } else {
+    //     console.log("waiting.....", counter);
+    //     counter = counter + 1;
+    //   }
+    // } else {
+    //   // run deposit function
+    //   await executeDeposit();
+    //   if (errorDeposit) {
+    //     toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
+    //       position: toast.POSITION.BOTTOM_RIGHT,
+    //       closeOnClick: true,
+    //     });
+    //     return;
+    //   }
+    //   await refreshAllowance();
+    // }
   };
 
-  // const returnTransactionParameters = (token: string) => {
-  //   let data, loading, reset, error;
-  //   if (token === "BTC") {
-  //     [data, loading, reset, error] = [dataBTC, loadingBTC, resetBTC, errorBTC];
-  //   }
-  //   if (token === "BNB") {
-  //     [data, loading, reset, error] = [dataBNB, loadingBNB, resetBNB, errorBNB];
-  //   }
-  //   if (token === "USDC") {
-  //     [data, loading, reset, error] = [
-  //       dataUSDC,
-  //       loadingUSDC,
-  //       resetUSDC,
-  //       errorUSDC,
-  //     ];
-  //   }
-  //   if (token === "USDT") {
-  //     [data, loading, reset, error] = [
-  //       dataUSDT,
-  //       loadingUSDT,
-  //       resetUSDT,
-  //       errorUSDT,
-  //     ];
-  //   }
-  //   return { data, loading, reset, error };
-  // };
   return {
     DepositAmount,
+    handleApprove,
     setDepositAmount,
     setDepositCommit,
     setDepositMarket,
