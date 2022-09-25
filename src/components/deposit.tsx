@@ -68,10 +68,18 @@ let Deposit: any = ({ asset }: { asset: string }) => {
   });
 
   useEffect(() => {
-    // console.log('balance', {
-    //   dataBalance, loadingBalance, errorBalance, refreshBalance, contract, account
-    // })
-  }, [dataBalance, loadingBalance, errorBalance, refreshBalance]);
+    console.log(
+      loadingApprove ||
+        (transactions.length > 0 &&
+          transactions[0]?.status !== "ACCEPTED_ON_L2")
+    );
+    // console.log(loadingApprove, );
+  }, []);
+  // useEffect(() => {
+  //   // console.log('balance', {
+  //   //   dataBalance, loadingBalance, errorBalance, refreshBalance, contract, account
+  //   // })
+  // }, [dataBalance, loadingBalance, errorBalance, refreshBalance]);
 
   // Approve
   const {
@@ -188,6 +196,15 @@ let Deposit: any = ({ asset }: { asset: string }) => {
       return;
     }
     console.log(diamondAddress, depositAmount);
+    await handleApprove();
+    if (errorApprove) {
+      toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
+    }
+    // run deposit function
 
     console.log("allowance", BNtoNum(dataAllowance[0]?.low, 18).toString());
     console.log("amountin -: ", depositAmount);
@@ -246,7 +263,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
       if (dataAllowance) {
         let data: any = dataAllowance;
         let _allowance = uint256.uint256ToBN(data.remaining);
-        console.log({ _allowance: _allowance.toString(), depositAmount });
+        // console.log({ _allowance: _allowance.toString(), depositAmount });
         setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
         if (allowanceVal > depositAmount) {
           setAllowed(true);
@@ -260,8 +277,6 @@ let Deposit: any = ({ asset }: { asset: string }) => {
       }
     }
   }, [, dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
-
-  console.log(transactions[0]?.status);
 
   return (
     <>
@@ -382,7 +397,8 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     {/* setApproveStatus(transactions[0]?.status); */}
                     {!(
                       loadingApprove ||
-                      transactions[0]?.status !== "ACCEPTED_ON_L2"
+                      (transactions.length > 0 &&
+                        transactions[0]?.status !== "ACCEPTED_ON_L2")
                     ) ? (
                       "Approve"
                     ) : (
@@ -402,8 +418,9 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     onClick={(e) => handleDeposit(asset)}
                   >
                     {!(
-                      loadingDeposit ||
-                      transactions[0]?.status !== "ACCEPTED_ON_L2"
+                      loadingApprove ||
+                      (transactions.length > 0 &&
+                        transactions[0]?.status !== "ACCEPTED_ON_L2")
                     ) ? (
                       "Deposit"
                     ) : (
