@@ -174,6 +174,24 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
     },
   });
 
+  const { contract: loanMarketContract } = useContract({
+    abi: ERC20Abi as Abi,
+    address: tokenAddressMap[asset as string] as string,
+  });
+  const {
+    data: loanAssetBalance,
+    loading: loadingAssetBalance,
+    error: errorAssetBalance,
+    refresh: refreshAssetBalance,
+  } = useStarknetCall({
+    contract: loanMarketContract,
+    method: "balanceOf",
+    args: [account],
+    options: {
+      watch: true,
+    },
+  });
+
   useEffect(() => {
     const refresh = async () => {
       await refreshBalance();
@@ -343,8 +361,25 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
         <div className="modal-body">
           {account ? (
             <Form>
-              <div className="row mb-4">
+              {/* <div className="row mb-4">
                 <h6>{title}</h6>
+              </div> */}
+              <div className="row mb-4">
+                <Col sm={8}>
+                  <h6>{title}</h6>
+                </Col>
+                <Col sm={4}>
+                  {borrowParams.collateralMarket && (
+                    // <div align="right">
+                    <div>
+                      {" "}
+                      Balance :{" "}
+                      {loanAssetBalance
+                        ? BNtoNum(loanAssetBalance[0].low, 18).toString()
+                        : " Loading"}
+                    </div>
+                  )}
+                </Col>
               </div>
               <div className="row mb-4">
                 <Col sm={12}>
