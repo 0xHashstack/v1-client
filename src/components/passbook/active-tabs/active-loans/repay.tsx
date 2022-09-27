@@ -154,10 +154,10 @@ const Repay = ({
     // await handleApprove();
     // run deposit function
 
-    console.log("allowance", BNtoNum(dataAllowance[0]?.low, 18).toString());
-    console.log("amountin -: ", inputVal);
+    // console.log("allowance", BNtoNum(dataAllowance[0]?.low, 18).toString());
+    // console.log("amountin -: ", inputVal);
 
-    setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
+    // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
     await executeRepay();
     if (errorRepay) {
       toast.error(`${GetErrorText(`Deposit for ${asset.loanMarket} failed`)}`, {

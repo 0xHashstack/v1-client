@@ -143,10 +143,10 @@ const AddToCollateral = ({
     // await handleApprove();
     // run deposit function
 
-    console.log("allowance", BNtoNum(dataAllowance[0]?.low, 18).toString());
-    console.log("amountin -: ", inputVal);
+    // console.log("allowance", BNtoNum(dataAllowance[0]?.low, 18).toString());
+    // console.log("amountin -: ", inputVal);
 
-    setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
+    // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
     await executeAddCollateral();
     if (errorAddCollateral) {
       toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {

@@ -152,10 +152,10 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
     // await handleApprove();
     // run deposit function
 
-    console.log("allowance", BNtoNum(dataAllowance[0]?.low, 18).toString());
-    console.log("amountin -: ", depositAmount);
+    // console.log("allowance", BNtoNum(dataAllowance[0]?.low, 18).toString());
+    // console.log("amountin -: ", depositAmount);
 
-    setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
+    // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
     await executeDeposit();
     if (errorDeposit) {
       toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
