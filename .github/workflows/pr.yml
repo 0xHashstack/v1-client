@@ -2,8 +2,7 @@ name: Build
 
 on:
   pull_request:
-    branches:
-      - production
+    branches: ["production"]
 
 jobs:
   deploy:
