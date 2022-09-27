@@ -1,0 +1,310 @@
+[
+    {
+        "members": [
+            {
+                "name": "id",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "owner",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "user_record_index",
+                "offset": 2,
+                "type": "felt"
+            },
+            {
+                "name": "market",
+                "offset": 3,
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "offset": 4,
+                "type": "felt"
+            },
+            {
+                "name": "amount",
+                "offset": 5,
+                "type": "Uint256"
+            },
+            {
+                "name": "created_at",
+                "offset": 7,
+                "type": "felt"
+            },
+            {
+                "name": "is_timelock_applicable",
+                "offset": 8,
+                "type": "felt"
+            },
+            {
+                "name": "is_timelock_activated",
+                "offset": 9,
+                "type": "felt"
+            },
+            {
+                "name": "timelock_validity",
+                "offset": 10,
+                "type": "felt"
+            },
+            {
+                "name": "activation_time",
+                "offset": 11,
+                "type": "felt"
+            }
+        ],
+        "name": "Deposit",
+        "size": 12,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "low",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "high",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "Uint256",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "data": [
+            {
+                "name": "deposit_record",
+                "type": "Deposit"
+            },
+            {
+                "name": "timestamp",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "new_deposit",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "deposit_record",
+                "type": "Deposit"
+            },
+            {
+                "name": "amount_added",
+                "type": "Uint256"
+            },
+            {
+                "name": "timestamp",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "deposit_added",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "deposit_record",
+                "type": "Deposit"
+            },
+            {
+                "name": "amount_withdrawn",
+                "type": "Uint256"
+            },
+            {
+                "name": "fee_deducted",
+                "type": "Uint256"
+            },
+            {
+                "name": "timestamp",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "deposit_withdrawal",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "deposit_record",
+                "type": "Deposit"
+            },
+            {
+                "name": "accrued_reward",
+                "type": "Uint256"
+            },
+            {
+                "name": "timestamp",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "deposit_apr_accrued",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "previousOwner",
+                "type": "felt"
+            },
+            {
+                "name": "newOwner",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Paused",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Unpaused",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            },
+            {
+                "name": "amount",
+                "type": "Uint256"
+            }
+        ],
+        "name": "deposit_request",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "deposit_id",
+                "type": "felt"
+            },
+            {
+                "name": "amount",
+                "type": "Uint256"
+            }
+        ],
+        "name": "withdraw_deposit",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "deposit_id",
+                "type": "felt"
+            }
+        ],
+        "name": "get_deposit",
+        "outputs": [
+            {
+                "name": "deposit_record",
+                "type": "Deposit"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user",
+                "type": "felt"
+            },
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "name": "get_user_deposit",
+        "outputs": [
+            {
+                "name": "deposit_id",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            }
+        ],
+        "name": "get_deposit_reserves",
+        "outputs": [
+            {
+                "name": "reserve",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "deposit_id",
+                "type": "felt"
+            }
+        ],
+        "name": "accrue_deposit_yield",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pause_deposit",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unpause_deposit",
+        "outputs": [],
+        "type": "function"
+    }
+]
