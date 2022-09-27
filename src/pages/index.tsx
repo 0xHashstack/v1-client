@@ -5,6 +5,7 @@ import classnames from "classnames";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Head from 'next/head'
 
 import loadable from "@loadable/component";
 const TxHistoryTable = loadable(
@@ -497,6 +498,10 @@ const Dashboard = () => {
 
   return (
     <React.Fragment>
+      <Head>
+          <title>Hashstack | Starknet testnet</title>
+          <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <div className="page-content" style={{ marginTop: "0px" }}>
         {/* <MetaTags>
           <title>Hashstack Finance</title>
