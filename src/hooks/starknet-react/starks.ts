@@ -1,8 +1,8 @@
 import { useContract } from '@starknet-react/core';
 import { Abi } from 'starknet';
 
-import DepositAbi from '../../../starknet-artifacts/contracts/modules/deposit.cairo/deposit_abi.json';
-import ERC20Abi from '../../../starknet-artifacts/contracts/mockups/erc20.cairo/erc20_abi.json';
+import DepositAbi from '../../../ABIs/deposit_abi.json';
+import ERC20Abi from '../../../ABIs/erc20_abi.json';
 
 
 export function useDepositContract() {

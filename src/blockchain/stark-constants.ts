@@ -1,7 +1,7 @@
 import * as DeployDetails from "../../contract_addresses.json";
 // import * as DeployDetails from "../../../zkOpen/contract_addresses.json";
-import ERC20Abi from "../../starknet-artifacts/contracts/mockups/erc20.cairo/erc20_abi.json";
-import ComptrollerAbi from "../../../zkOpen/starknet-artifacts/contracts/modules/comptroller.cairo/comptroller_abi.json";
+import ERC20Abi from "../../ABIs/erc20_abi.json";
+import ComptrollerAbi from "../../ABIs/comptroller_abi.json";
 import { number } from "starknet";
 interface ItokenAddressMap {
 	[key: string]: string | undefined;
