@@ -9,7 +9,7 @@ export interface ICoin {
 const Coins: ICoin[] = [
   {
     name: "USDT",
-    icon: "mdi-litecoin",
+    icon: "mdi-bitcoin",
   },
   {
     name: "USDC",
