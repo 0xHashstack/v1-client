@@ -4,7 +4,12 @@ import {
 	useStarknetExecute,
 } from '@starknet-react/core';
 import { useEffect, useState } from 'react';
-import { tokenAddressMap, diamondAddress, contractsEnv, getTokenFromName } from '../stark-constants';
+import {
+	tokenAddressMap,
+	diamondAddress,
+	contractsEnv,
+	getTokenFromName,
+} from '../stark-constants';
 
 const useGetToken = ({ token }: { token: string }) => {
 	const { available, connect, disconnect } = useConnectors();
@@ -26,9 +31,9 @@ const useGetToken = ({ token }: { token: string }) => {
 		execute: BTC,
 	} = useStarknetExecute({
 		calls: {
-			contractAddress: getTokenFromName('BTC')?.address as string,
-			entrypoint: 'mint',
-			calldata: [account],
+			contractAddress: contractsEnv.FAUCET_ADDRESS as string,
+			entrypoint: 'get_tokens',
+			calldata: [contractsEnv.TOKENS[0].address],
 		},
 	});
 
@@ -40,10 +45,10 @@ const useGetToken = ({ token }: { token: string }) => {
 		execute: USDC,
 	} = useStarknetExecute({
 		calls: {
-			contractAddress: getTokenFromName('USDC')?.address as string,
-			entrypoint: 'mint',
-			calldata: [account],
-		}
+			contractAddress: contractsEnv.FAUCET_ADDRESS as string,
+			entrypoint: 'get_tokens',
+			calldata: [contractsEnv.TOKENS[1].address],
+		},
 	});
 
 	const {
@@ -54,9 +59,9 @@ const useGetToken = ({ token }: { token: string }) => {
 		execute: USDT,
 	} = useStarknetExecute({
 		calls: {
-			contractAddress: getTokenFromName('USDT')?.address as string,
-			entrypoint: 'mint',
-			calldata: [account],
+			contractAddress: contractsEnv.FAUCET_ADDRESS as string,
+			entrypoint: 'get_tokens',
+			calldata: [contractsEnv.TOKENS[2].address],
 		},
 	});
 

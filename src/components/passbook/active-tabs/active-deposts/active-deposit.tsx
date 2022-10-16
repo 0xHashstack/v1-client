@@ -316,7 +316,7 @@ const ActiveDeposit = ({
                                     {!(
                                       loadingApprove ||
                                       (transactions.length > 0 &&
-                                        transactions[0]?.status !==
+                                        transactions[transactions.length - 1]?.status !==
                                           "ACCEPTED_ON_L2")
                                     ) ? (
                                       "Approve"
@@ -340,7 +340,7 @@ const ActiveDeposit = ({
                                     {!(
                                       loadingApprove ||
                                       (transactions.length > 0 &&
-                                        transactions[0]?.status !==
+                                        transactions[transactions.length-1]?.status !==
                                           "ACCEPTED_ON_L2")
                                     ) ? (
                                       "Deposit"

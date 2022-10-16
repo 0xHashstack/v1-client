@@ -1,414 +1,413 @@
-import { useState, useContext, useEffect, useCallback } from "react";
+import { useState, useContext, useEffect, useCallback } from 'react';
 import {
-  Col,
-  Button,
-  Form,
-  Input,
-  Modal,
-  Spinner,
-  InputGroup,
-  FormGroup,
-  FormText,
-} from "reactstrap";
+	Col,
+	Button,
+	Form,
+	Input,
+	Modal,
+	Spinner,
+	InputGroup,
+	FormGroup,
+	FormText,
+} from 'reactstrap';
 
-import { MinimumAmount } from "../blockchain/constants";
-import BigNumber from "ethers";
-
-import {
-  diamondAddress,
-  ERC20Abi,
-  tokenAddressMap,
-} from "../blockchain/stark-constants";
-
-import { BNtoNum, GetErrorText, NumToBN } from "../blockchain/utils";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import React from "react";
+import { MinimumAmount } from '../blockchain/constants';
+import BigNumber from 'ethers';
 
 import {
-  useContract,
-  useStarknet,
-  useStarknetCall,
-  useStarknetExecute,
-  useStarknetInvoke,
-  useStarknetTransactionManager,
-} from "@starknet-react/core";
-import { Abi, Contract, uint256, number } from "starknet";
+	diamondAddress,
+	ERC20Abi,
+	tokenAddressMap,
+} from '../blockchain/stark-constants';
+
+import { BNtoNum, GetErrorText, NumToBN } from '../blockchain/utils';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import React from 'react';
+
+import {
+	useContract,
+	useStarknet,
+	useStarknetCall,
+	useStarknetExecute,
+	useStarknetInvoke,
+	useStarknetTransactionManager,
+} from '@starknet-react/core';
+import { Abi, Contract, uint256, number } from 'starknet';
 
 let Deposit: any = ({ asset }: { asset: string }) => {
-  const [modal_deposit, setmodal_deposit] = useState(false);
+	const [modal_deposit, setmodal_deposit] = useState(false);
 
-  const [depositAmount, setDepositAmount] = useState(0);
-  const [commitPeriod, setCommitPeriod] = useState(0);
+	const [depositAmount, setDepositAmount] = useState(0);
+	const [commitPeriod, setCommitPeriod] = useState(0);
 
-  const [approveStatus, setApproveStatus] = useState("");
-  const [isAllowed, setAllowed] = useState(false);
-  const [shouldApprove, setShouldApprove] = useState(false);
-  const [allowanceVal, setAllowance] = useState(0);
+	const [isLoading, setLoading] = useState(false);
 
-  const { account } = useStarknet();
-  const { transactions } = useStarknetTransactionManager();
+	const [allowanceVal, setAllowance] = useState(0);
 
-  const { contract } = useContract({
-    abi: ERC20Abi as Abi,
-    address: tokenAddressMap[asset] as string,
-  });
-  const {
-    data: dataBalance,
-    loading: loadingBalance,
-    error: errorBalance,
-    refresh: refreshBalance,
-  } = useStarknetCall({
-    contract: contract,
-    method: "balanceOf",
-    args: [account],
-    options: {
-      watch: true,
-    },
-  });
+	const { account } = useStarknet();
+	const { transactions } = useStarknetTransactionManager();
 
-  useEffect(() => {
-    console.log(
-      loadingApprove ||
-        (transactions.length > 0 &&
-          transactions[0]?.status !== "ACCEPTED_ON_L2")
-    );
-    // console.log(loadingApprove, );
-  }, []);
-  // useEffect(() => {
-  //   // console.log('balance', {
-  //   //   dataBalance, loadingBalance, errorBalance, refreshBalance, contract, account
-  //   // })
-  // }, [dataBalance, loadingBalance, errorBalance, refreshBalance]);
+	const { contract } = useContract({
+		abi: ERC20Abi as Abi,
+		address: tokenAddressMap[asset] as string,
+	});
+	const {
+		data: dataBalance,
+		loading: loadingBalance,
+		error: errorBalance,
+		refresh: refreshBalance,
+	} = useStarknetCall({
+		contract: contract,
+		method: 'balanceOf',
+		args: [account],
+		options: {
+			watch: true,
+		},
+	});
 
-  // Approve
-  const {
-    data: dataUSDC,
-    loading: loadingUSDC,
-    error: errorUSDC,
-    reset: resetUSDC,
-    execute: USDC,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: tokenAddressMap[asset] as string,
-      entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
-    },
-  });
+	useEffect(() => {
+		console.log(
+			loadingApprove ||
+				(transactions.length > 0 &&
+					transactions[0]?.status !== 'ACCEPTED_ON_L2')
+		);
+		// console.log(loadingApprove, );
+	}, []);
+	// useEffect(() => {
+	//   // console.log('balance', {
+	//   //   dataBalance, loadingBalance, errorBalance, refreshBalance, contract, account
+	//   // })
+	// }, [dataBalance, loadingBalance, errorBalance, refreshBalance]);
 
-  // Deposit Hook
-  const {
-    data: dataDeposit,
-    loading: loadingDeposit,
-    error: errorDeposit,
-    reset: resetDeposit,
-    execute: executeDeposit,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: diamondAddress,
-      entrypoint: "deposit_request",
-      calldata: [
-        tokenAddressMap[asset],
-        commitPeriod,
-        NumToBN(depositAmount, 18),
-        0,
-      ],
-    },
-  });
+	// Approve
+	const {
+		data: dataUSDC,
+		loading: loadingUSDC,
+		error: errorUSDC,
+		reset: resetUSDC,
+		execute: USDC,
+	} = useStarknetExecute({
+		calls: {
+			contractAddress: tokenAddressMap[asset] as string,
+			entrypoint: 'approve',
+			calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
+		},
+	});
 
-  const returnTransactionParameters = () => {
-    let data, loading, reset, error;
-    [data, loading, reset, error] = [
-      dataUSDC,
-      loadingUSDC,
-      resetUSDC,
-      errorUSDC,
-    ];
-    return { data, loading, reset, error };
-  };
+	// Deposit Hook
+	const {
+		data: dataDeposit,
+		loading: loadingDeposit,
+		error: errorDeposit,
+		reset: resetDeposit,
+		execute: executeDeposit,
+	} = useStarknetExecute({
+		calls: {
+			contractAddress: diamondAddress,
+			entrypoint: 'deposit_request',
+			calldata: [
+				tokenAddressMap[asset],
+				commitPeriod,
+				NumToBN(depositAmount, 18),
+				0,
+			],
+		},
+	});
 
-  const {
-    data: dataAllowance,
-    loading: loadingAllowance,
-    error: errorAllowance,
-    refresh: refreshAllowance,
-  } = useStarknetCall({
-    contract: contract,
-    method: "allowance",
-    args: [account, diamondAddress],
-    options: {
-      watch: true,
-    },
-  });
+	const returnTransactionParameters = () => {
+		let data, loading, reset, error;
+		[data, loading, reset, error] = [
+			dataUSDC,
+			loadingUSDC,
+			resetUSDC,
+			errorUSDC,
+		];
+		return { data, loading, reset, error };
+	};
 
-  // const handleApprove = async () => {
-  //   let val = await USDC();
-  // };
+	const {
+		data: dataAllowance,
+		loading: loadingAllowance,
+		error: errorAllowance,
+		refresh: refreshAllowance,
+	} = useStarknetCall({
+		contract: contract,
+		method: 'allowance',
+		args: [account, diamondAddress],
+		options: {
+			watch: true,
+		},
+	});
 
-  const {
-    data: dataApprove,
-    loading: loadingApprove,
-    reset: resetApprove,
-    error: errorApprove,
-  } = returnTransactionParameters();
+	// const handleApprove = async () => {
+	//   let val = await USDC();
+	// };
 
-  const tog_center = async () => {
-    setmodal_deposit(!modal_deposit);
-    removeBodyCss();
-  };
+	const {
+		data: dataApprove,
+		loading: loadingApprove,
+		reset: resetApprove,
+		error: errorApprove,
+	} = returnTransactionParameters();
 
-  const handleCommitChange = (e: any) => {
-    setCommitPeriod(e.target.value);
-  };
+	const tog_center = async () => {
+		setmodal_deposit(!modal_deposit);
+		removeBodyCss();
+	};
 
-  const handleDepositAmountChange = (e: any) => {
-    setDepositAmount(Number(e.target.value));
-  };
+	const handleCommitChange = (e: any) => {
+		setCommitPeriod(e.target.value);
+	};
 
-  const handleMax = async () => {
-    // await refreshBalance();
-    // console.log(uint256ToBN(dataBalance![0]).toNumber());
-  };
+	const handleDepositAmountChange = (e: any) => {
+		setDepositAmount(Number(e.target.value));
+	};
 
-  function removeBodyCss() {
-    document.body.classList.add("no_padding");
-  }
+	const handleMax = async () => {
+		// await refreshBalance();
+		// console.log(uint256ToBN(dataBalance![0]).toNumber());
+	};
 
-  const handleApprove = async (asset: string) => {
-    let val = await USDC();
-    if (errorApprove) {
-      toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
-  };
+	function removeBodyCss() {
+		document.body.classList.add('no_padding');
+	}
 
-  const handleDeposit = async (asset: string) => {
-    if (
-      !tokenAddressMap[asset] &&
-      !depositAmount &&
-      !diamondAddress &&
-      !commitPeriod
-    ) {
-      toast.error(`${GetErrorText(`Invalid request`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
-    if (depositAmount === 0) {
-      // approve the transfer
-      toast.error(`${GetErrorText(`Can't deposit 0 of ${asset}`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
-    console.log(diamondAddress, depositAmount);
-    // await handleApprove();
-    // run deposit function
+	const handleApprove = async (asset: string) => {
+		let val = await USDC();
+		if (errorApprove) {
+			toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
+				position: toast.POSITION.BOTTOM_RIGHT,
+				closeOnClick: true,
+			});
+			return;
+		}
+	};
 
-    // console.log('allowance', BNtoNum(dataAllowance[0]?.low, 18).toString());
-    // console.log('amountin -: ', depositAmount);
+	const handleDeposit = async (asset: string) => {
+		if (
+			!tokenAddressMap[asset] &&
+			!depositAmount &&
+			!diamondAddress &&
+			!commitPeriod
+		) {
+			toast.error(`${GetErrorText(`Invalid request`)}`, {
+				position: toast.POSITION.BOTTOM_RIGHT,
+				closeOnClick: true,
+			});
+			return;
+		}
+		if (depositAmount === 0) {
+			// approve the transfer
+			toast.error(`${GetErrorText(`Can't deposit 0 of ${asset}`)}`, {
+				position: toast.POSITION.BOTTOM_RIGHT,
+				closeOnClick: true,
+			});
+			return;
+		}
+		console.log(diamondAddress, depositAmount);
+		// await handleApprove();
+		// run deposit function
 
-    // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
-    await executeDeposit();
-    if (errorDeposit) {
-      toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
-  };
+		// console.log('allowance', BNtoNum(dataAllowance[0]?.low, 18).toString());
+		// console.log('amountin -: ', depositAmount);
 
-  useEffect(() => {
-    console.log("check allownace", {
-      dataAllowance,
-      errorAllowance,
-      refreshAllowance,
-      loadingAllowance,
-    });
-    if (!loadingAllowance) {
-      if (dataAllowance) {
-        let data: any = dataAllowance;
-        let _allowance = uint256.uint256ToBN(data.remaining);
-        // console.log({ _allowance: _allowance.toString(), depositAmount });
-        setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
-        if (allowanceVal > depositAmount) {
-          setAllowed(true);
-          setShouldApprove(false);
-        } else {
-          setShouldApprove(true);
-          setAllowed(false);
-        }
-      } else if (errorAllowance) {
-        // handleToast(true, "Check allowance", errorAllowance)
-      }
-    }
-  }, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
+		// setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
+		await executeDeposit();
+		if (errorDeposit) {
+			toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
+				position: toast.POSITION.BOTTOM_RIGHT,
+				closeOnClick: true,
+			});
+			return;
+		}
+	};
 
-  return (
-    <>
-      <button
-        type="button"
-        className="btn btn-dark btn-sm w-xs"
-        onClick={tog_center}
-      >
-        Deposit
-      </button>
-      <Modal
-        isOpen={modal_deposit}
-        toggle={() => {
-          tog_center();
-        }}
-        centered
-      >
-        <div className="modal-body">
-          {account ? (
-            <Form>
-              <div className="row mb-4">
-                <Col sm={8}>
-                  <h5> {asset}</h5>
-                </Col>
-                <Col sm={4}>
-                  <div>
-                    Balance {asset}:{" "}
-                    {dataBalance
-                      ? BNtoNum(dataBalance[0].low, 18).toString()
-                      : " Loading"}
-                  </div>
-                </Col>
-              </div>
-              <FormGroup>
-                <div className="row mb-4">
-                  <Col sm={12}>
-                    <InputGroup
-                      style={{
-                        border:
-                          depositAmount == 0 ||
-                          depositAmount >= MinimumAmount[asset]
-                            ? "1px solid #556EE6"
-                            : "",
-                      }}
-                    >
-                      <Input
-                        type="number"
-                        className="form-control"
-                        id="amount"
-                        placeholder={`Minimum amount = ${MinimumAmount[asset]}`}
-                        onChange={handleDepositAmountChange}
-                        value={
-                          depositAmount !== 0
-                            ? depositAmount
-                            : `Minimum amount = ${MinimumAmount[asset]}`
-                        }
-                        // value={depositAmount}
-                        invalid={
-                          depositAmount !== 0 &&
-                          depositAmount < MinimumAmount[asset]
-                            ? true
-                            : false
-                        }
-                      />
+	useEffect(() => {
+		console.log('check allownace', {
+			dataAllowance,
+			errorAllowance,
+			refreshAllowance,
+			loadingAllowance,
+		});
+		if (!loadingAllowance) {
+			if (dataAllowance) {
+				let data: any = dataAllowance;
+				let _allowance = uint256.uint256ToBN(data.remaining);
 
-                      {
-                        <Button
-                          outline
-                          type="button"
-                          className="btn btn-md w-xs"
-                          onClick={handleMax}
-                          // disabled={balance ? false : true}
-                          style={{ background: "#2e3444", border: "#2e3444" }}
-                        >
-                          <span style={{ borderBottom: "2px dotted #fff" }}>
-                            Max
-                          </span>
-                        </Button>
-                      }
-                    </InputGroup>
-                    {depositAmount != 0 &&
-                      depositAmount < MinimumAmount[asset] && (
-                        <FormText>
-                          {`Please enter amount more than minimum amount = ${MinimumAmount[asset]}`}
-                        </FormText>
-                      )}
-                  </Col>
-                </div>
-              </FormGroup>
-              <div className="row mb-4">
-                <Col sm={12}>
-                  <select
-                    className="form-select"
-                    placeholder="Commitment"
-                    onChange={handleCommitChange}
-                  >
-                    <option hidden>Commitment</option>
-                    <option value={0}>None</option>
-                    <option value={1}>Two Weeks</option>
-                    <option value={2}>One Month</option>
-                    <option value={3}>Three Months</option>
-                  </select>
-                </Col>
-              </div>
-              <div className="d-grid gap-2">
-                {allowanceVal < (depositAmount as number) ? (
-                  <Button
-                    color="primary"
-                    className="w-md"
-                    disabled={
-                      commitPeriod === undefined ||
-                      loadingApprove ||
-                      loadingDeposit ||
-                      depositAmount < MinimumAmount[asset]
-                    }
-                    onClick={(e) => handleApprove(asset)}
-                  >
-                    {/* setApproveStatus(transactions[0]?.status); */}
-                    {!(
-                      loadingApprove ||
-                      (transactions.length > 0 &&
-                        transactions[0]?.status !== "ACCEPTED_ON_L2")
-                    ) ? (
-                      "Approve"
-                    ) : (
-                      <Spinner>Loading...</Spinner>
-                    )}
-                  </Button>
-                ) : (
-                  <Button
-                    color="primary"
-                    className="w-md"
-                    disabled={
-                      commitPeriod === undefined ||
-                      loadingApprove ||
-                      loadingDeposit ||
-                      depositAmount < MinimumAmount[asset]
-                    }
-                    onClick={(e) => handleDeposit(asset)}
-                  >
-                    {!(
-                      loadingApprove ||
-                      (transactions.length > 0 &&
-                        transactions[0]?.status !== "ACCEPTED_ON_L2")
-                    ) ? (
-                      "Deposit"
-                    ) : (
-                      <Spinner>Loading...</Spinner>
-                    )}
-                  </Button>
-                )}
-              </div>
-            </Form>
-          ) : (
-            <h2>Please connect your wallet</h2>
-          )}
-        </div>
-      </Modal>
-    </>
-  );
+				setAllowance(Number(uint256.uint256ToBN(dataAllowance[0])) / 10 ** 18);
+			
+			} else if (errorAllowance) {
+				// handleToast(true, "Check allowance", errorAllowance)
+			}
+		}
+	}, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
+
+	return (
+		<>
+			<button
+				type='button'
+				className='btn btn-dark btn-sm w-xs'
+				onClick={tog_center}
+			>
+				Deposit
+			</button>
+			<Modal
+				isOpen={modal_deposit}
+				toggle={() => {
+					tog_center();
+				}}
+				centered
+			>
+				<div className='modal-body'>
+					{account ? (
+						<Form>
+							<div className='row mb-4'>
+								<Col sm={8}>
+									<h5> {asset}</h5>
+								</Col>
+								<Col sm={4}>
+									<div>
+										Balance {asset}:{' '}
+										{dataBalance
+											?
+                      (Number(uint256.uint256ToBN(dataBalance[0])) / 10 ** 18).toString()
+											: ' Loading'}
+									</div>
+								</Col>
+							</div>
+							<FormGroup>
+								<div className='row mb-4'>
+									<Col sm={12}>
+										<InputGroup
+											style={{
+												border:
+													depositAmount == 0 ||
+													depositAmount >= MinimumAmount[asset]
+														? '1px solid #556EE6'
+														: '',
+											}}
+										>
+											<Input
+												type='number'
+												className='form-control'
+												id='amount'
+												placeholder={`Minimum amount = ${MinimumAmount[asset]}`}
+												onChange={handleDepositAmountChange}
+												value={
+													depositAmount !== 0
+														? depositAmount
+														: `Minimum amount = ${MinimumAmount[asset]}`
+												}
+												// value={depositAmount}
+												invalid={
+													depositAmount !== 0 &&
+													depositAmount < MinimumAmount[asset]
+														? true
+														: false
+												}
+											/>
+
+											{
+												<Button
+													outline
+													type='button'
+													className='btn btn-md w-xs'
+													onClick={handleMax}
+													// disabled={balance ? false : true}
+													style={{ background: '#2e3444', border: '#2e3444' }}
+												>
+													<span style={{ borderBottom: '2px dotted #fff' }}>
+														Max
+													</span>
+												</Button>
+											}
+										</InputGroup>
+										{depositAmount != 0 &&
+											depositAmount < MinimumAmount[asset] && (
+												<FormText>
+													{`Please enter amount more than minimum amount = ${MinimumAmount[asset]}`}
+												</FormText>
+											)}
+									</Col>
+								</div>
+							</FormGroup>
+							<div className='row mb-4'>
+								<Col sm={12}>
+									<select
+										className='form-select'
+										placeholder='Commitment'
+										onChange={handleCommitChange}
+									>
+										<option hidden>Commitment</option>
+										<option value={0}>None</option>
+										<option value={1}>Two Weeks</option>
+										<option value={2}>One Month</option>
+										<option value={3}>Three Months</option>
+									</select>
+								</Col>
+							</div>
+							<div className='d-grid gap-2'>
+								{allowanceVal < (depositAmount as number) ? (
+									<Button
+										color='primary'
+										className='w-md'
+										disabled={
+											commitPeriod === undefined ||
+											loadingApprove ||
+											loadingDeposit ||
+											depositAmount < MinimumAmount[asset]
+                      
+										}
+										onClick={(e) => handleApprove(asset)}
+									>
+										{/* setApproveStatus(transactions[0]?.status); */}
+										{!(
+											loadingApprove ||
+											(transactions.length > 0 &&
+												transactions[transactions.length - 1]?.status !==
+													'ACCEPTED_ON_L2')
+										) ? (
+											'Approve'
+										) : (
+											<Spinner>Loading...</Spinner>
+										)}
+									</Button>
+								) : (
+									<Button
+										color='primary'
+										className='w-md'
+										disabled={
+											commitPeriod === undefined ||
+											loadingApprove ||
+											loadingDeposit ||
+											depositAmount < MinimumAmount[asset]
+										}
+										onClick={(e) => {
+											handleDeposit(asset);
+										}}
+									>
+										{!(
+											loadingApprove ||
+											(transactions.length > 0 &&
+												transactions[transactions.length - 1]?.status !==
+													'ACCEPTED_ON_L2')
+										) ? (
+											'Deposit'
+										) : (
+											<Spinner>Loading...</Spinner>
+										)}
+									</Button>
+								)}
+							</div>
+						</Form>
+					) : (
+						<h2>Please connect your wallet</h2>
+					)}
+				</div>
+			</Modal>
+		</>
+	);
 };
 
 export default Deposit = React.memo(Deposit);
