@@ -41,12 +41,24 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 	const [depositAmount, setDepositAmount] = useState(0);
 	const [commitPeriod, setCommitPeriod] = useState(0);
 
-	const [isLoading, setLoading] = useState(false);
+	const [isLoadingApprove, setLoadingApprove] = useState(false);
+	const [isLoadingDeposit, setLoadingDeposit] = useState(false);
 
 	const [allowanceVal, setAllowance] = useState(0);
 
 	const { account } = useStarknet();
 	const { transactions } = useStarknetTransactionManager();
+
+	console.log("transactions------", transactions)
+
+	const ActiveAsset = {
+		USDT : false,
+		USDC : false,
+		BNB  : false,
+		BTC  : false
+	}
+
+	ActiveAsset[asset] = true
 
 	const { contract } = useContract({
 		abi: ERC20Abi as Abi,
@@ -67,10 +79,10 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 	});
 
 	useEffect(() => {
-		console.log(
+		console.log("transactions :::::",
 			loadingApprove ||
 				(transactions.length > 0 &&
-					transactions[0]?.status !== 'ACCEPTED_ON_L2')
+					transactions[transactions.length -1]?.status !== 'ACCEPTED_ON_L2')
 		);
 		// console.log(loadingApprove, );
 	}, []);
@@ -151,6 +163,25 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 		error: errorApprove,
 	} = returnTransactionParameters();
 
+	const [transApprove, setTransApprove] = useState('');
+	const [transDeposit, setTransDeposit] = useState('');
+
+	useEffect(() => {
+		console.log('approeve info', dataApprove, loadingApprove, resetApprove, errorApprove)
+
+		if(dataApprove){
+			setTransApprove(dataApprove)
+		}
+		if(dataDeposit){
+			setTransDeposit(dataDeposit)
+		}
+
+	
+		
+	}, [dataApprove, loadingApprove, resetApprove, errorApprove, dataDeposit])
+
+	
+
 	const tog_center = async () => {
 		setmodal_deposit(!modal_deposit);
 		removeBodyCss();
@@ -175,6 +206,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 
 	const handleApprove = async (asset: string) => {
 		let val = await USDC();
+		console.log('valll', val)
 		if (errorApprove) {
 			toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
 				position: toast.POSITION.BOTTOM_RIGHT,
@@ -364,7 +396,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 										{/* setApproveStatus(transactions[0]?.status); */}
 										{!(
 											loadingApprove ||
-											(transactions.length > 0 &&
+											(transApprove === transactions[transactions.length - 1]?.transactionHash  &&
 												transactions[transactions.length - 1]?.status !==
 													'ACCEPTED_ON_L2')
 										) ? (
@@ -389,7 +421,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 									>
 										{!(
 											loadingApprove ||
-											(transactions.length > 0 &&
+											(transDeposit === transactions[transactions.length - 1]?.transactionHash  &&
 												transactions[transactions.length - 1]?.status !==
 													'ACCEPTED_ON_L2')
 										) ? (
