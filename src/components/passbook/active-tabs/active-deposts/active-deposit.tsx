@@ -104,7 +104,7 @@ const ActiveDeposit = ({
                   <CardSubtitle className=" text-muted" tag="h6">
                     <span style={{ fontSize: "14px" }}>
                       &nbsp; &nbsp;&nbsp;{" "}
-                      {/* {BNtoNum(Number(asset.amount))} */}
+                      {BNtoNum(Number(asset.amount))}
                     </span>
                   </CardSubtitle>
                 </CardBody>
