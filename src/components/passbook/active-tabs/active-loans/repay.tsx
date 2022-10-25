@@ -168,6 +168,24 @@ const Repay = ({
     }
   };
 
+  const [transApprove, setTransApprove] = useState('');
+	const [transRepay, setTransRepay] = useState('');
+
+	useEffect(() => {
+		console.log(
+			'approeve info',
+			dataApprove,
+	  	dataRepay
+		);
+
+		if (dataApprove) {
+			setTransApprove(dataApprove);
+		}
+		if (dataRepay) {
+			setTransRepay(dataRepay);
+		}
+	}, [dataApprove,  dataRepay]);
+
   return (
     <Form>
       <div className="row mb-3">
@@ -205,9 +223,12 @@ const Repay = ({
             {/* setApproveStatus(transactions[0]?.status); */}
             {!(
               loadingApprove ||
-              (transactions.length > 0 &&
-                transactions[0]?.status !== "ACCEPTED_ON_L2")
-            ) ? (
+              (transApprove ===
+												transactions[transactions.length - 1]
+													?.transactionHash &&
+												transactions[transactions.length - 1]?.status !==
+													'ACCEPTED_ON_L2')
+										) ? (
               "Approve"
             ) : (
               <Spinner>Loading...</Spinner>
@@ -227,9 +248,12 @@ const Repay = ({
           >
             {!(
               loadingApprove ||
-              (transactions.length > 0 &&
-                transactions[0]?.status !== "ACCEPTED_ON_L2")
-            ) ? (
+              (transRepay ===
+												transactions[transactions.length - 1]
+													?.transactionHash &&
+												transactions[transactions.length - 1]?.status !==
+													'ACCEPTED_ON_L2')
+										) ? (
               "Repay"
             ) : (
               <Spinner>Loading...</Spinner>

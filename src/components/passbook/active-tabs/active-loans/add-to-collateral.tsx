@@ -157,6 +157,24 @@ const AddToCollateral = ({
     }
   };
 
+  const [transApprove, setTransApprove] = useState('');
+	const [transBorrow, setTransAddCollateral] = useState('');
+
+	useEffect(() => {
+		console.log(
+			'approeve info',
+			dataApprove,
+	  	dataAddCollateral
+		);
+
+		if (dataApprove) {
+			setTransApprove(dataApprove);
+		}
+		if (dataAddCollateral) {
+			setTransAddCollateral(dataAddCollateral);
+		}
+	}, [dataApprove,  dataAddCollateral]);
+
   return (
     <Form>
       <div className="row mb-3">
@@ -196,9 +214,12 @@ const AddToCollateral = ({
             {/* setApproveStatus(transactions[0]?.status); */}
             {!(
               loadingApprove ||
-              (transactions.length > 0 &&
-                transactions[0]?.status !== "ACCEPTED_ON_L2")
-            ) ? (
+              (transApprove ===
+												transactions[transactions.length - 1]
+													?.transactionHash &&
+												transactions[transactions.length - 1]?.status !==
+													'ACCEPTED_ON_L2')
+										) ? (
               "Approve"
             ) : (
               <Spinner>Loading...</Spinner>
@@ -218,9 +239,12 @@ const AddToCollateral = ({
           >
             {!(
               loadingApprove ||
-              (transactions.length > 0 &&
-                transactions[0]?.status !== "ACCEPTED_ON_L2")
-            ) ? (
+              (transBorrow ===
+												transactions[transactions.length - 1]
+													?.transactionHash &&
+												transactions[transactions.length - 1]?.status !==
+													'ACCEPTED_ON_L2')
+										) ? (
               "Add Collateral"
             ) : (
               <Spinner>Loading...</Spinner>
