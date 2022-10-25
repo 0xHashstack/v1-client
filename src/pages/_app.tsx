@@ -9,6 +9,8 @@ import { Provider } from 'react-redux';
 import { DetailsProvider } from '../hooks/contextHooks/recordContext';
 import store from '../store';
 import '../assets/scss/theme.scss';
+import "./scrollbar.css"
+
 import {
 	getInstalledInjectedConnectors,
 	StarknetProvider,
