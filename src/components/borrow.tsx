@@ -309,8 +309,10 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 	};
 
 	const handleMax = async () => {
-		// await refreshBalance();
-		// console.log(uint256ToBN(dataBalance![0]).toNumber());
+		setBorrowParams({
+			...borrowParams,
+			collateralAmount: Number(uint256.uint256ToBN(dataBalance[0])) /10 ** 18,
+		});
 	};
 
 	const handleBorrow = async (asset: string) => {
