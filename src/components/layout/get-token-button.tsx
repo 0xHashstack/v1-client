@@ -13,7 +13,6 @@ const GetTokenButton = ({ token, idx }: { token: string; idx: number }) => {
 
   const { data, loading, reset, error } = returnTransactionParameters(token);
 
-  console.log("transactions:::::::::", transactions)
 
   const handleClickToken = async (
     token: string,
@@ -22,7 +21,7 @@ const GetTokenButton = ({ token, idx }: { token: string; idx: number }) => {
     handleGetToken: (token: string) => Promise<void>
   ) => {
     const val = await handleGetToken(token);
-    if (!loading && !error) {
+    if (transactions[transactions.length -1]?.status === 'RECIEVED') {
       toast.success(`${token} requested!`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
