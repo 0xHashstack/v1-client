@@ -387,12 +387,15 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 										onClick={(e) => handleApprove(asset)}
 									>
 										{/* setApproveStatus(transactions[0]?.status); */}
-										{!(
+										{
+										!(
 											loadingApprove ||
-											(transApprove ===
-												transactions[transactions.length - 1]
-													?.transactionHash &&
-												transactions[transactions.length - 1]?.status !==
+											(
+												transactions.map(tx => tx.transactionHash).includes(transApprove)
+												 &&
+												transactions.filter(tx => {
+													tx.transactionHash === transApprove
+												}).status !==
 													'ACCEPTED_ON_L2')
 										) ? (
 											'Approve'
@@ -416,10 +419,12 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 									>
 										{!(
 											loadingApprove ||
-											(transDeposit ===
-												transactions[transactions.length - 1]
-													?.transactionHash &&
-												transactions[transactions.length - 1]?.status !==
+											(
+												transactions.map(tx => tx.transactionHash).includes(transDeposit)
+												 &&
+												transactions.filter(tx => {
+													tx.transactionHash === transDeposit
+												}).status !==
 													'ACCEPTED_ON_L2')
 										) ? (
 											'Deposit'

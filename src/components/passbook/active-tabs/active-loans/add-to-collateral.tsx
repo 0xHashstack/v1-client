@@ -214,10 +214,12 @@ const AddToCollateral = ({
             {/* setApproveStatus(transactions[0]?.status); */}
             {!(
               loadingApprove ||
-              (transApprove ===
-												transactions[transactions.length - 1]
-													?.transactionHash &&
-												transactions[transactions.length - 1]?.status !==
+             (
+												transactions.map(tx => tx.transactionHash).includes(transApprove)
+												 &&
+												transactions.filter(tx => {
+													tx.transactionHash === transApprove
+												}).status !==
 													'ACCEPTED_ON_L2')
 										) ? (
               "Approve"
@@ -239,10 +241,12 @@ const AddToCollateral = ({
           >
             {!(
               loadingApprove ||
-              (transBorrow ===
-												transactions[transactions.length - 1]
-													?.transactionHash &&
-												transactions[transactions.length - 1]?.status !==
+              (
+												transactions.map(tx => tx.transactionHash).includes(transBorrow)
+												 &&
+												transactions.filter(tx => {
+													tx.transactionHash === transBorrow
+												}).status !==
 													'ACCEPTED_ON_L2')
 										) ? (
               "Add Collateral"

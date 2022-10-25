@@ -223,10 +223,12 @@ const Repay = ({
             {/* setApproveStatus(transactions[0]?.status); */}
             {!(
               loadingApprove ||
-              (transApprove ===
-												transactions[transactions.length - 1]
-													?.transactionHash &&
-												transactions[transactions.length - 1]?.status !==
+              (
+												transactions.map(tx => tx.transactionHash).includes(transApprove)
+												 &&
+												transactions.filter(tx => {
+													tx.transactionHash === transApprove
+												}).status !==
 													'ACCEPTED_ON_L2')
 										) ? (
               "Approve"
@@ -248,10 +250,12 @@ const Repay = ({
           >
             {!(
               loadingApprove ||
-              (transRepay ===
-												transactions[transactions.length - 1]
-													?.transactionHash &&
-												transactions[transactions.length - 1]?.status !==
+              (
+												transactions.map(tx => tx.transactionHash).includes(transRepay)
+												 &&
+												transactions.filter(tx => {
+													tx.transactionHash === transRepay
+												}).status !==
 													'ACCEPTED_ON_L2')
 										) ? (
               "Repay"
