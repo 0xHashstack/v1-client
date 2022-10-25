@@ -51,19 +51,11 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 
 	console.log("transactions------", transactions)
 
-	const ActiveAsset = {
-		USDT : false,
-		USDC : false,
-		BNB  : false,
-		BTC  : false
-	}
-
-	ActiveAsset[asset] = true
-
 	const { contract } = useContract({
 		abi: ERC20Abi as Abi,
 		address: tokenAddressMap[asset] as string,
 	});
+	
 	const {
 		data: dataBalance,
 		loading: loadingBalance,
