@@ -1,406 +1,428 @@
-import { useState, useContext, MemoExoticComponent, useEffect } from "react";
+import { useState, useContext, MemoExoticComponent, useEffect } from 'react';
 
 import {
-  Col,
-  Button,
-  Form,
-  Input,
-  Modal,
-  Spinner,
-  InputGroup,
-} from "reactstrap";
-import { toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import React from "react";
-import "react-toastify/dist/ReactToastify.css";
-import { BorrowInterestRates, MinimumAmount } from "../blockchain/constants";
+	Col,
+	Button,
+	Form,
+	Input,
+	Modal,
+	Spinner,
+	InputGroup,
+} from 'reactstrap';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import React from 'react';
+import 'react-toastify/dist/ReactToastify.css';
+import { BorrowInterestRates, MinimumAmount } from '../blockchain/constants';
 import {
-  useConnectors,
-  useContract,
-  useStarknet,
-  useStarknetCall,
-  useStarknetExecute,
-  useStarknetTransactionManager,
-} from "@starknet-react/core";
+	useConnectors,
+	useContract,
+	useStarknet,
+	useStarknetCall,
+	useStarknetExecute,
+	useStarknetTransactionManager,
+} from '@starknet-react/core';
 import {
-  diamondAddress,
-  ERC20Abi,
-  tokenAddressMap,
-} from "../blockchain/stark-constants";
-import { BNtoNum, GetErrorText, NumToBN } from "../blockchain/utils";
+	diamondAddress,
+	ERC20Abi,
+	tokenAddressMap,
+} from '../blockchain/stark-constants';
+import { BNtoNum, GetErrorText, NumToBN } from '../blockchain/utils';
 
-import { Abi, uint256 } from "starknet";
+import { Abi, uint256 } from 'starknet';
 
 interface IBorrowParams {
-  loanAmount: number | null;
-  collateralAmount: number;
-  commitBorrowPeriod: number | null;
-  collateralMarket: string | null;
+	loanAmount: number | null;
+	collateralAmount: number | null;
+	commitBorrowPeriod: number | null;
+	collateralMarket: string | null;
 }
 
 let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
-  const [modal_borrow, setmodal_borrow] = useState(false);
-  const [allowanceVal, setAllowance] = useState(0);
-  const [collateralAmount, setcollateralAmount] = useState(0);
-  const [isAllowed, setAllowed] = useState(false);
-  const [shouldApprove, setShouldApprove] = useState(false);
+	const [modal_borrow, setmodal_borrow] = useState(false);
+	const [allowanceVal, setAllowance] = useState(0);
+	const [collateralAmount, setcollateralAmount] = useState(0);
+	const [isAllowed, setAllowed] = useState(false);
+	const [shouldApprove, setShouldApprove] = useState(false);
 
-  const [borrowParams, setBorrowParams] = useState<IBorrowParams>({
-    loanAmount: 0,
-    collateralAmount: 0,
-    commitBorrowPeriod: null,
-    collateralMarket: null,
-  });
+	const [borrowParams, setBorrowParams] = useState<IBorrowParams>({
+		loanAmount: 0,
+		collateralAmount: 0,
+		commitBorrowPeriod: null,
+		collateralMarket: null,
+	});
 
-  const { account } = useStarknet();
-  const { transactions } = useStarknetTransactionManager();
+	const { account } = useStarknet();
+	const { transactions } = useStarknetTransactionManager();
 
-  /* ======================= Approve ================================= */
-  const {
-    data: dataUSDC,
-    loading: loadingUSDC,
-    error: errorUSDC,
-    reset: resetUSDC,
-    execute: USDC,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: tokenAddressMap[
-        borrowParams.collateralMarket as string
-      ] as string,
-      entrypoint: "approve",
-      calldata: [
-        diamondAddress,
-        NumToBN(borrowParams.collateralAmount as number, 18),
-        0,
-      ],
-    },
-  });
+	/* ======================= Approve ================================= */
+	const {
+		data: dataUSDC,
+		loading: loadingUSDC,
+		error: errorUSDC,
+		reset: resetUSDC,
+		execute: USDC,
+	} = useStarknetExecute({
+		calls: {
+			contractAddress: tokenAddressMap[
+				borrowParams.collateralMarket as string
+			] as string,
+			entrypoint: 'approve',
+			calldata: [
+				diamondAddress,
+				NumToBN(borrowParams.collateralAmount as number, 18),
+				0,
+			],
+		},
+	});
 
-  const {
-    data: dataUSDT,
-    loading: loadingUSDT,
-    error: errorUSDT,
-    reset: resetUSDT,
-    execute: USDT,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: tokenAddressMap[
-        borrowParams.collateralMarket as string
-      ] as string,
-      entrypoint: "approve",
-      calldata: [
-        diamondAddress,
-        NumToBN(borrowParams.collateralAmount as number, 18),
-        0,
-      ],
-    },
-  });
+	const {
+		data: dataUSDT,
+		loading: loadingUSDT,
+		error: errorUSDT,
+		reset: resetUSDT,
+		execute: USDT,
+	} = useStarknetExecute({
+		calls: {
+			contractAddress: tokenAddressMap[
+				borrowParams.collateralMarket as string
+			] as string,
+			entrypoint: 'approve',
+			calldata: [
+				diamondAddress,
+				NumToBN(borrowParams.collateralAmount as number, 18),
+				0,
+			],
+		},
+	});
 
-  const {
-    data: dataBNB,
-    loading: loadingBNB,
-    error: errorBNB,
-    reset: resetBNB,
-    execute: BNB,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: tokenAddressMap[
-        borrowParams.collateralMarket as string
-      ] as string,
-      entrypoint: "approve",
-      calldata: [
-        diamondAddress,
-        NumToBN(borrowParams.collateralAmount as number, 18),
-        0,
-      ],
-    },
-  });
+	const {
+		data: dataBNB,
+		loading: loadingBNB,
+		error: errorBNB,
+		reset: resetBNB,
+		execute: BNB,
+	} = useStarknetExecute({
+		calls: {
+			contractAddress: tokenAddressMap[
+				borrowParams.collateralMarket as string
+			] as string,
+			entrypoint: 'approve',
+			calldata: [
+				diamondAddress,
+				NumToBN(borrowParams.collateralAmount as number, 18),
+				0,
+			],
+		},
+	});
 
-  const {
-    data: dataBTC,
-    loading: loadingBTC,
-    error: errorBTC,
-    reset: resetBTC,
-    execute: BTC,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: tokenAddressMap[
-        borrowParams.collateralMarket as string
-      ] as string,
-      entrypoint: "approve",
-      calldata: [
-        diamondAddress,
-        NumToBN(borrowParams.collateralAmount as number, 18),
-        0,
-      ],
-    },
-  });
+	const {
+		data: dataBTC,
+		loading: loadingBTC,
+		error: errorBTC,
+		reset: resetBTC,
+		execute: BTC,
+	} = useStarknetExecute({
+		calls: {
+			contractAddress: tokenAddressMap[
+				borrowParams.collateralMarket as string
+			] as string,
+			entrypoint: 'approve',
+			calldata: [
+				diamondAddress,
+				NumToBN(borrowParams.collateralAmount as number, 18),
+				0,
+			],
+		},
+	});
 
-  /* ========================== Borrow Request ============================ */
+	/* ========================== Borrow Request ============================ */
 
-  const {
-    data: dataBorrow,
-    loading: loadingBorrow,
-    error: errorBorrow,
-    reset: resetBorrow,
-    execute: executeBorrow,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: diamondAddress,
-      entrypoint: "loan_request",
-      calldata: [
-        tokenAddressMap[asset],
-        NumToBN(borrowParams.loanAmount as number, 18),
-        0,
-        borrowParams.commitBorrowPeriod,
-        tokenAddressMap[borrowParams.collateralMarket as string],
-        NumToBN(borrowParams.collateralAmount as number, 18),
-        0,
-      ],
-    },
-  });
+	const {
+		data: dataBorrow,
+		loading: loadingBorrow,
+		error: errorBorrow,
+		reset: resetBorrow,
+		execute: executeBorrow,
+	} = useStarknetExecute({
+		calls: {
+			contractAddress: diamondAddress,
+			entrypoint: 'loan_request',
+			calldata: [
+				tokenAddressMap[asset],
+				NumToBN(borrowParams.loanAmount as number, 18),
+				0,
+				borrowParams.commitBorrowPeriod,
+				tokenAddressMap[borrowParams.collateralMarket as string],
+				NumToBN(borrowParams.collateralAmount as number, 18),
+				0,
+			],
+		},
+	});
 
-  /* ========================= Balance ================================*/
+	/* ========================= Balance ================================*/
 
-  const { contract } = useContract({
-    abi: ERC20Abi as Abi,
-    address: tokenAddressMap[borrowParams.collateralMarket as string] as string,
-  });
-  const {
-    data: dataBalance,
-    loading: loadingBalance,
-    error: errorBalance,
-    refresh: refreshBalance,
-  } = useStarknetCall({
-    contract: contract,
-    method: "balanceOf",
-    args: [account],
-    options: {
-      watch: true,
-    },
-  });
+	const { contract } = useContract({
+		abi: ERC20Abi as Abi,
+		address: tokenAddressMap[borrowParams.collateralMarket as string] as string,
+	});
+	const {
+		data: dataBalance,
+		loading: loadingBalance,
+		error: errorBalance,
+		refresh: refreshBalance,
+	} = useStarknetCall({
+		contract: contract,
+		method: 'balanceOf',
+		args: [account],
+		options: {
+			watch: true,
+		},
+	});
 
-  const { contract: loanMarketContract } = useContract({
-    abi: ERC20Abi as Abi,
-    address: tokenAddressMap[asset as string] as string,
-  });
-  const {
-    data: loanAssetBalance,
-    loading: loadingAssetBalance,
-    error: errorAssetBalance,
-    refresh: refreshAssetBalance,
-  } = useStarknetCall({
-    contract: loanMarketContract,
-    method: "balanceOf",
-    args: [account],
-    options: {
-      watch: true,
-    },
-  });
+	const { contract: loanMarketContract } = useContract({
+		abi: ERC20Abi as Abi,
+		address: tokenAddressMap[asset as string] as string,
+	});
+	const {
+		data: loanAssetBalance,
+		loading: loadingAssetBalance,
+		error: errorAssetBalance,
+		refresh: refreshAssetBalance,
+	} = useStarknetCall({
+		contract: loanMarketContract,
+		method: 'balanceOf',
+		args: [account],
+		options: {
+			watch: true,
+		},
+	});
 
-  useEffect(() => {
-    const refresh = async () => {
-      await refreshBalance();
-    };
-    refresh();
-  }, [borrowParams.collateralMarket, refreshBalance]);
+	useEffect(() => {
+		const refresh = async () => {
+			await refreshBalance();
+		};
+		refresh();
+	}, [borrowParams.collateralMarket, refreshBalance]);
 
-  const returnTransactionParameters = () => {
-    let data, loading, reset, error;
-    if (asset === "BTC") {
-      [data, loading, reset, error] = [dataBTC, loadingBTC, resetBTC, errorBTC];
-    }
-    if (asset === "BNB") {
-      [data, loading, reset, error] = [dataBNB, loadingBNB, resetBNB, errorBNB];
-    }
-    if (asset === "USDC") {
-      [data, loading, reset, error] = [
-        dataUSDC,
-        loadingUSDC,
-        resetUSDC,
-        errorUSDC,
-      ];
-    }
-    if (asset === "USDT") {
-      [data, loading, reset, error] = [
-        dataUSDT,
-        loadingUSDT,
-        resetUSDT,
-        errorUSDT,
-      ];
-    }
-    return { data, loading, reset, error };
-  };
+	const returnTransactionParameters = () => {
+		let data, loading, reset, error;
+		if (asset === 'BTC') {
+			[data, loading, reset, error] = [dataBTC, loadingBTC, resetBTC, errorBTC];
+		}
+		if (asset === 'BNB') {
+			[data, loading, reset, error] = [dataBNB, loadingBNB, resetBNB, errorBNB];
+		}
+		if (asset === 'USDC') {
+			[data, loading, reset, error] = [
+				dataUSDC,
+				loadingUSDC,
+				resetUSDC,
+				errorUSDC,
+			];
+		}
+		if (asset === 'USDT') {
+			[data, loading, reset, error] = [
+				dataUSDT,
+				loadingUSDT,
+				resetUSDT,
+				errorUSDT,
+			];
+		}
+		return { data, loading, reset, error };
+	};
 
-  const handleApprove = async (asset: string) => {
-    let val;
-    if (asset === "BTC") {
-      val = await BTC();
-    }
-    if (asset === "BNB") {
-      val = await BNB();
-    }
-    if (asset === "USDC") {
-      val = await USDC();
-    }
-    if (asset == "USDT") {
-      val = await USDT();
-    }
+	const handleApprove = async (asset: string) => {
+		let val;
+		if (asset === 'BTC') {
+			val = await BTC();
+		}
+		if (asset === 'BNB') {
+			val = await BNB();
+		}
+		if (asset === 'USDC') {
+			val = await USDC();
+		}
+		if (asset == 'USDT') {
+			val = await USDT();
+		}
 
-    if (errorApprove) {
-      toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
-  };
+		if (errorApprove) {
+			toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
+				position: toast.POSITION.BOTTOM_RIGHT,
+				closeOnClick: true,
+			});
+			return;
+		}
+	};
 
-  const {
-    data: dataApprove,
-    loading: loadingApprove,
-    reset: resetApprove,
-    error: errorApprove,
-  } = returnTransactionParameters();
+	const {
+		data: dataApprove,
+		loading: loadingApprove,
+		reset: resetApprove,
+		error: errorApprove,
+	} = returnTransactionParameters();
 
-  const handleCommitmentChange = (e: any) => {
-    console.log(e.target.value);
-    setBorrowParams({
-      ...borrowParams,
-      commitBorrowPeriod: e.target.value,
-    });
-  };
+	const handleCommitmentChange = (e: any) => {
+		console.log(e.target.value);
+		setBorrowParams({
+			...borrowParams,
+			commitBorrowPeriod: e.target.value,
+		});
+	};
 
-  const handleCollateralChange = async (e: any) => {
-    // setCollateralMarket(e.target.value)
-    // const getCurrentBalnce = await wrapper
-    //   ?.getMockBep20Instance()
-    //   .balanceOf(SymbolsMap[e.target.value], account)
-    // setBalance(BNtoNum(Number(getCurrentBalnce)));
-    console.log(`setting collateral market to ${e.target.value}`);
-    setBorrowParams({
-      ...borrowParams,
-      collateralMarket: e.target.value,
-    });
-    await refreshBalance();
-  };
+	const handleCollateralChange = async (e: any) => {
+		// setCollateralMarket(e.target.value)
+		// const getCurrentBalnce = await wrapper
+		//   ?.getMockBep20Instance()
+		//   .balanceOf(SymbolsMap[e.target.value], account)
+		// setBalance(BNtoNum(Number(getCurrentBalnce)));
+		console.log(`setting collateral market to ${e.target.value}`);
+		setBorrowParams({
+			...borrowParams,
+			collateralMarket: e.target.value,
+		});
+		await refreshBalance();
+	};
 
-  const handleLoanInputChange = (e: any) => {
-    setBorrowParams({
-      ...borrowParams,
-      loanAmount: Number(e.target.value),
-    });
-  };
+	const handleLoanInputChange = (e: any) => {
+		setBorrowParams({
+			...borrowParams,
+			loanAmount: Number(e.target.value),
+		});
+	};
 
-  const handleCollateralInputChange = (e: any) => {
-    setBorrowParams({
-      ...borrowParams,
-      collateralAmount: Number(e.target.value),
-    });
-  };
+	const handleCollateralInputChange = (e: any) => {
+		setBorrowParams({
+			...borrowParams,
+			collateralAmount: Number(e.target.value),
+		});
+	};
 
-  function removeBodyCss() {
-    document.body.classList.add("no_padding");
-  }
+	function removeBodyCss() {
+		document.body.classList.add('no_padding');
+	}
 
-  const tog_borrow = async () => {
-    setmodal_borrow(!modal_borrow);
-    removeBodyCss();
-  };
+	const tog_borrow = async () => {
+		setmodal_borrow(!modal_borrow);
+		removeBodyCss();
+	};
 
-  const handleMax = async () => {
-    // await refreshBalance();
-    // console.log(uint256ToBN(dataBalance![0]).toNumber());
-  };
+	const handleMax = async () => {
+		setBorrowParams({
+			...borrowParams,
+			collateralAmount: Number(uint256.uint256ToBN(dataBalance[0] || 0)) / 10 ** 18,
+		});
+	};
 
-  const handleBorrow = async (asset: string) => {
-    if (
-      !tokenAddressMap[asset] ||
-      !borrowParams.loanAmount ||
-      (!borrowParams.commitBorrowPeriod && !diamondAddress)
-    ) {
-      toast.error(`${GetErrorText(`Invalid request`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
-    if (borrowParams.collateralAmount === 0) {
-      toast.error(`${GetErrorText(`Can't use collateral 0 of ${asset}`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-    }
-    try {
-      // approve collateral spending
-      // await handleApprove();
-      // if (errorApprove) {
-      // 	toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
-      // 		position: toast.POSITION.BOTTOM_RIGHT,
-      // 		closeOnClick: true,
-      // 	});
-      // 	return;
-      // }
+	const handleBorrow = async (asset: string) => {
+		if (
+			!tokenAddressMap[asset] ||
+			!borrowParams.loanAmount ||
+			(!borrowParams.commitBorrowPeriod && !diamondAddress)
+		) {
+			toast.error(`${GetErrorText(`Invalid request`)}`, {
+				position: toast.POSITION.BOTTOM_RIGHT,
+				closeOnClick: true,
+			});
+			return;
+		}
+		if (borrowParams.collateralAmount === 0) {
+			toast.error(`${GetErrorText(`Can't use collateral 0 of ${asset}`)}`, {
+				position: toast.POSITION.BOTTOM_RIGHT,
+				closeOnClick: true,
+			});
+		}
+		try {
+			// approve collateral spending
+			// await handleApprove();
+			// if (errorApprove) {
+			// 	toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
+			// 		position: toast.POSITION.BOTTOM_RIGHT,
+			// 		closeOnClick: true,
+			// 	});
+			// 	return;
+			// }
 
-      // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
-      await executeBorrow();
-      if (errorBorrow) {
-        toast.error(`${GetErrorText(`Borrow request for ${asset} failed`)}`, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          closeOnClick: true,
-        });
-        return;
-      }
-    } catch (err) {
-      toast.error(`${GetErrorText(err)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-    }
-  };
+			// setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
+			await executeBorrow();
+			if (errorBorrow) {
+				toast.error(`${GetErrorText(`Borrow request for ${asset} failed`)}`, {
+					position: toast.POSITION.BOTTOM_RIGHT,
+					closeOnClick: true,
+				});
+				return;
+			}
+		} catch (err) {
+			toast.error(`${GetErrorText(err)}`, {
+				position: toast.POSITION.BOTTOM_RIGHT,
+				closeOnClick: true,
+			});
+		}
+	};
 
-  const {
-    data: dataAllowance,
-    loading: loadingAllowance,
-    error: errorAllowance,
-    refresh: refreshAllowance,
-  } = useStarknetCall({
-    contract: contract,
-    method: "allowance",
-    args: [account, diamondAddress],
-    options: {
-      watch: true,
-    },
-  });
+	const {
+		data: dataAllowance,
+		loading: loadingAllowance,
+		error: errorAllowance,
+		refresh: refreshAllowance,
+	} = useStarknetCall({
+		contract: contract,
+		method: 'allowance',
+		args: [account, diamondAddress],
+		options: {
+			watch: true,
+		},
+	});
 
-  useEffect(() => {
-    console.log("check allownace", {
-      dataAllowance,
-      errorAllowance,
-      refreshAllowance,
-      loadingAllowance,
-    });
-    if (!loadingAllowance) {
-      if (dataAllowance) {
-        let data: any = dataAllowance;
-        let _allowance = uint256.uint256ToBN(data.remaining);
-        // console.log({ _allowance: _allowance.toString(), depositAmount });
-        setAllowance(Number(uint256.uint256ToBN(dataAllowance[0])) / 10 ** 18);
+	const [transApprove, setTransApprove] = useState('');
+	const [transBorrow, setTransBorrow] = useState('');
 
-        if (allowanceVal > borrowParams?.collateralAmount) {
-          setAllowed(true);
-          setShouldApprove(false);
-        } else {
-          setShouldApprove(true);
-          setAllowed(false);
-        }
-      } else if (errorAllowance) {
-        // handleToast(true, "Check allowance", errorAllowance)
-      }
-    }
-  }, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
+	useEffect(() => {
+		console.log(
+			'approeve info',
+			dataApprove,
+			loadingApprove,
+			resetApprove,
+			errorApprove
+		);
 
-  return (
+		if (dataApprove) {
+			setTransApprove(dataApprove);
+		}
+		if (dataBorrow) {
+			setTransBorrow(dataBorrow);
+		}
+	}, [dataApprove, loadingApprove, resetApprove, errorApprove, dataBorrow]);
+
+	useEffect(() => {
+		console.log('check allownace', {
+			dataAllowance,
+			errorAllowance,
+			refreshAllowance,
+			loadingAllowance,
+		});
+		if (!loadingAllowance) {
+			if (dataAllowance) {
+				let data: any = dataAllowance;
+				let _allowance = uint256.uint256ToBN(data.remaining);
+				// console.log({ _allowance: _allowance.toString(), depositAmount });
+				setAllowance(Number(uint256.uint256ToBN(dataAllowance[0])) / 10 ** 18);
+
+				if (allowanceVal > borrowParams?.collateralAmount) {
+					setAllowed(true);
+					setShouldApprove(false);
+				} else {
+					setShouldApprove(true);
+					setAllowed(false);
+				}
+			} else if (errorAllowance) {
+				// handleToast(true, "Check allowance", errorAllowance)
+			}
+		}
+	}, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
+
+	return (
 		<>
 			<button
 				type='button'
@@ -435,8 +457,10 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 											{' '}
 											Balance :{' '}
 											{loanAssetBalance
-												? 
-                        (Number(uint256.uint256ToBN(loanAssetBalance[0])) / 10 ** 18).toString()
+												? (
+														Number(uint256.uint256ToBN(loanAssetBalance[0])) /
+														10 ** 18
+												  ).toString()
 												: ' Loading'}
 										</div>
 									)}
@@ -477,7 +501,10 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 											{' '}
 											Balance :{' '}
 											{dataBalance
-												? (Number(uint256.uint256ToBN(dataBalance[0])) / 10 ** 18).toString()
+												? (
+														Number(uint256.uint256ToBN(dataBalance[0])) /
+														10 ** 18
+												  ).toString()
 												: ' Loading'}
 										</div>
 									)}
@@ -561,9 +588,12 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 									>
 										{!(
 											loadingApprove ||
-											(transactions.length > 0 &&
-												transactions[transactions.length - 1]?.status !==
-													'ACCEPTED_ON_L2')
+											(transactions
+												.map((tx) => tx.transactionHash)
+												.includes(transApprove) &&
+												transactions.filter((tx) => {
+													tx.transactionHash === transApprove;
+												})[0]?.status !== 'ACCEPTED_ON_L2')
 										) ? (
 											'Approve'
 										) : (
@@ -582,10 +612,13 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 										onClick={(e) => handleBorrow(asset)}
 									>
 										{!(
-											loadingBorrow ||
-											(transactions.length > 0 &&
-												transactions[transactions.length - 1]?.status !==
-													'ACCEPTED_ON_L2')
+											loadingApprove ||
+											(transactions
+												.map((tx) => tx.transactionHash)
+												.includes(transBorrow) &&
+												transactions.filter((tx) => {
+													tx.transactionHash === transBorrow;
+												})[0]?.status !== 'ACCEPTED_ON_L2')
 										) ? (
 											'Request Loan'
 										) : (
