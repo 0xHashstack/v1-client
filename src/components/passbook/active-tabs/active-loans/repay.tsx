@@ -228,7 +228,7 @@ const Repay = ({
 												 &&
 												transactions.filter(tx => {
 													tx.transactionHash === transApprove
-												}).status !==
+												})[0]?.status !==
 													'ACCEPTED_ON_L2')
 										) ? (
               "Approve"
@@ -255,7 +255,7 @@ const Repay = ({
 												 &&
 												transactions.filter(tx => {
 													tx.transactionHash === transRepay
-												}).status !==
+												})[0]?.status !==
 													'ACCEPTED_ON_L2')
 										) ? (
               "Repay"

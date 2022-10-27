@@ -334,12 +334,13 @@ const ActiveDeposit = ({
 																		{/* setApproveStatus(transactions[0]?.status); */}
 																		{!(
 																			loadingApprove ||
-																			(transApprove ===
-										                		transactions[transactions.length - 1]
-										                			?.transactionHash &&
-										                		transactions[transactions.length - 1]?.status !==
-										                			'ACCEPTED_ON_L2')
-										                ) ? (
+																			(transactions
+																				.map((tx) => tx.transactionHash)
+																				.includes(transApprove) &&
+																				transactions.filter((tx) => {
+																					tx.transactionHash === transApprove;
+																				})[0]?.status !== 'ACCEPTED_ON_L2')
+																		) ? (
 																			'Approve'
 																		) : (
 																			<Spinner>Loading...</Spinner>
@@ -360,12 +361,13 @@ const ActiveDeposit = ({
 																	>
 																		{!(
 																			loadingApprove ||
-																			(transDeposit ===
-										                		transactions[transactions.length - 1]
-										                			?.transactionHash &&
-										                		transactions[transactions.length - 1]?.status !==
-										                			'ACCEPTED_ON_L2')
-										                ) ? (
+																			(transactions
+																				.map((tx) => tx.transactionHash)
+																				.includes(transDeposit) &&
+																				transactions.filter((tx) => {
+																					tx.transactionHash === transDeposit;
+																				})[0]?.status !== 'ACCEPTED_ON_L2')
+																		) ? (
 																			'Deposit'
 																		) : (
 																			<Spinner>Loading...</Spinner>

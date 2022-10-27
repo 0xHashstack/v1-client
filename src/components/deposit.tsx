@@ -190,7 +190,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 	};
 
 	const handleMax = async () => {
-		setDepositAmount(Number(uint256.uint256ToBN(dataBalance[0])) / 10 ** 18);
+		setDepositAmount(Number(uint256.uint256ToBN(dataBalance[0] || 0)) / 10 ** 18);
 	};
 
 	function removeBodyCss() {
@@ -387,16 +387,14 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 										onClick={(e) => handleApprove(asset)}
 									>
 										{/* setApproveStatus(transactions[0]?.status); */}
-										{
-										!(
+										{!(
 											loadingApprove ||
-											(
-												transactions.map(tx => tx.transactionHash).includes(transApprove)
-												 &&
-												transactions.filter(tx => {
-													tx.transactionHash === transApprove
-												}).status !==
-													'ACCEPTED_ON_L2')
+											(transactions
+												.map((tx) => tx.transactionHash)
+												.includes(transApprove) &&
+												transactions.filter((tx) => {
+													tx.transactionHash === transApprove;
+												})[0]?.status !== 'ACCEPTED_ON_L2')
 										) ? (
 											'Approve'
 										) : (
@@ -419,13 +417,12 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 									>
 										{!(
 											loadingApprove ||
-											(
-												transactions.map(tx => tx.transactionHash).includes(transDeposit)
-												 &&
-												transactions.filter(tx => {
-													tx.transactionHash === transDeposit
-												}).status !==
-													'ACCEPTED_ON_L2')
+											(transactions
+												.map((tx) => tx.transactionHash)
+												.includes(transDeposit) &&
+												transactions.filter((tx) => {
+													tx.transactionHash === transDeposit;
+												})[0]?.status !== 'ACCEPTED_ON_L2')
 										) ? (
 											'Deposit'
 										) : (

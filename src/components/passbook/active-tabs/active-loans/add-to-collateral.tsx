@@ -219,7 +219,7 @@ const AddToCollateral = ({
 												 &&
 												transactions.filter(tx => {
 													tx.transactionHash === transApprove
-												}).status !==
+												})[0]?.status !==
 													'ACCEPTED_ON_L2')
 										) ? (
               "Approve"
@@ -246,7 +246,7 @@ const AddToCollateral = ({
 												 &&
 												transactions.filter(tx => {
 													tx.transactionHash === transBorrow
-												}).status !==
+												})[0]?.status !==
 													'ACCEPTED_ON_L2')
 										) ? (
               "Add Collateral"

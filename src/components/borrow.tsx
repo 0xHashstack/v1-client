@@ -33,7 +33,7 @@ import { Abi, uint256 } from 'starknet';
 
 interface IBorrowParams {
 	loanAmount: number | null;
-	collateralAmount: number;
+	collateralAmount: number | null;
 	commitBorrowPeriod: number | null;
 	collateralMarket: string | null;
 }
@@ -311,7 +311,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 	const handleMax = async () => {
 		setBorrowParams({
 			...borrowParams,
-			collateralAmount: Number(uint256.uint256ToBN(dataBalance[0])) /10 ** 18,
+			collateralAmount: Number(uint256.uint256ToBN(dataBalance[0] || 0)) / 10 ** 18,
 		});
 	};
 
@@ -588,14 +588,13 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 									>
 										{!(
 											loadingApprove ||
-											(
-												transactions.map(tx => tx.transactionHash).includes(transApprove)
-												 &&
-												transactions.filter(tx => {
-													tx.transactionHash === transApprove
-												}).status !==
-													'ACCEPTED_ON_L2')
-										)  ? (
+											(transactions
+												.map((tx) => tx.transactionHash)
+												.includes(transApprove) &&
+												transactions.filter((tx) => {
+													tx.transactionHash === transApprove;
+												})[0]?.status !== 'ACCEPTED_ON_L2')
+										) ? (
 											'Approve'
 										) : (
 											<Spinner>Loading...</Spinner>
@@ -614,14 +613,13 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 									>
 										{!(
 											loadingApprove ||
-											(
-												transactions.map(tx => tx.transactionHash).includes(transBorrow)
-												 &&
-												transactions.filter(tx => {
-													tx.transactionHash === transBorrow
-												}).status !==
-													'ACCEPTED_ON_L2')
-										)  ? (
+											(transactions
+												.map((tx) => tx.transactionHash)
+												.includes(transBorrow) &&
+												transactions.filter((tx) => {
+													tx.transactionHash === transBorrow;
+												})[0]?.status !== 'ACCEPTED_ON_L2')
+										) ? (
 											'Request Loan'
 										) : (
 											<Spinner>Loading...</Spinner>
