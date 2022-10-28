@@ -1,0 +1,9 @@
+{
+	"l3Id": "7",
+	"loanOwner": "0x36c6ed06eb7f390782a37917734772b9f9ffb4f53605c4596a67246be57336",
+	"loanMarket": "0x7ac56b3078e4428fdb3cc9cd257ce9cb77cc20f3ae0ed466c35f73e75ed42c8",
+	"commitment": "0",
+	"hash": "0x2733ce2640b752ab281db2ee823bb1c5c20f1f54e4782f8ecfc7494b6c076de",
+	"eventName": "SushiSwapped",
+	"timestamp": 1666863495
+}

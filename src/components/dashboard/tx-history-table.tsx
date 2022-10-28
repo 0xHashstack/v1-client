@@ -43,6 +43,7 @@ const TxHistoryTable = ({
         market
       ).then((events) => {
         setTxHistoryData(events);
+        console.log("loan events::", events)
       });
     } else if (type === "repaid") {
       OffchainAPI.getTransactionEventsRepaid(
@@ -78,7 +79,7 @@ const TxHistoryTable = ({
             </td>
             <td>{actionType}</td>
             <td>{formattedDate}</td>
-            <td>{BNtoNum(formattedValue.toNumber(), 18)}</td>
+            <td>{value=='all' ? '100%' : BNtoNum(formattedValue.toNumber(), 18)}</td>
           </tr>
         );
       })
