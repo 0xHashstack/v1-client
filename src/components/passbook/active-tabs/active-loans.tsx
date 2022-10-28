@@ -305,7 +305,7 @@ const ActiveLoansTab = ({
   };
 
   return (
-    <div className="table-responsive  mt-3">
+    <div className="table-responsive  mt-3" style={{ overflow : "hidden"}}>
       <Table className="table table-nowrap align-middle mb-0">
         <thead>
           <tr>
