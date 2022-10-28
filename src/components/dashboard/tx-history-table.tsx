@@ -68,7 +68,7 @@ const TxHistoryTable = ({
         return (
           <tr
             key={index}
-            // onClick={() => window.open(`https://testnet.bscscan.com/tx/${tsx}`)}
+            onClick={() => window.open(`https://testnet.starkscan.co/tx/${txnHash}`)}
             style={{ cursor: "pointer" }}
           >
             <td>
