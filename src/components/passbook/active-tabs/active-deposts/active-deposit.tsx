@@ -88,9 +88,10 @@ const ActiveDeposit = ({
 	}, [dataApprove,  dataDeposit]);
 
 	return (
-		<UncontrolledAccordion defaultOpen='0' open='false'>
+		<div style={{ borderTop : "5px"}}>
+		<UncontrolledAccordion defaultOpen='0' open='false' style={{  margin : "20px"}}>
 			<Row>
-				<AccordionItem style={{ border: '2px' }}>
+				<AccordionItem style={{ padding: '20px' }}>
 					<AccordionHeader targetId='1'>
 						<Col className='mr-4 '>
 							<Card className='mb-1' style={{ marginTop: '20px' }}>
@@ -442,6 +443,7 @@ const ActiveDeposit = ({
 				</AccordionItem>
 			</Row>
 		</UncontrolledAccordion>
+		</div>
 	);
 };
 export default ActiveDeposit;

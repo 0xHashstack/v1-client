@@ -321,10 +321,10 @@ const ActiveLoansTab = ({
       {Array.isArray(activeLoansData) && activeLoansData.length > 0 ? (
         activeLoansData.map((asset, key) => {
           return (
-            <div key={key}>
-              <UncontrolledAccordion defaultOpen="0" open="1">
+            <div key={key} style={{ borderTop : "5px"}}>
+              <UncontrolledAccordion defaultOpen="0" open="1" style={{margin : "20px"}}>
                 <Row>
-                  <AccordionItem style={{ border: "2px" }}>
+                  <AccordionItem  style={{padding : "20px"}}>
                     <AccordionHeader targetId="1">
                       <Col className="mr-4 ">
                         <Card className="mb-1" style={{ marginTop: "20px" }}>
