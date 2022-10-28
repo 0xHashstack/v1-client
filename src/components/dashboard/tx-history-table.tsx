@@ -43,6 +43,7 @@ const TxHistoryTable = ({
         market
       ).then((events) => {
         setTxHistoryData(events);
+        console.log("loan events::", events)
       });
     } else if (type === "repaid") {
       OffchainAPI.getTransactionEventsRepaid(
@@ -68,7 +69,7 @@ const TxHistoryTable = ({
         return (
           <tr
             key={index}
-            // onClick={() => window.open(`https://testnet.bscscan.com/tx/${tsx}`)}
+            onClick={() => window.open(`https://testnet.starkscan.co/tx/${txnHash}`)}
             style={{ cursor: "pointer" }}
           >
             <td>
@@ -78,7 +79,7 @@ const TxHistoryTable = ({
             </td>
             <td>{actionType}</td>
             <td>{formattedDate}</td>
-            <td>{BNtoNum(formattedValue.toNumber(), 18)}</td>
+            <td>{value=='all' ? '100%' : BNtoNum(formattedValue.toNumber(), 18)}</td>
           </tr>
         );
       })
