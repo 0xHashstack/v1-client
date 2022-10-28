@@ -513,7 +513,9 @@ const Dashboard = () => {
 					<ProtocolStats tvl={tvl} />
 					<Row>
 						<Col xl={'12'}>
+
 							<Card style={{ height: '35rem', overflowY: 'scroll' }}>
+
 								<CardBody>
 									<Row>
 										{/* Dashboard Menu Panes */}
