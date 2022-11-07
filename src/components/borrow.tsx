@@ -315,6 +315,13 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 		});
 	};
 
+	const handleMin = async () => {
+		setBorrowParams({
+			...borrowParams,
+			collateralAmount: borrowParams.loanAmount / 3,
+		});
+	};
+
 	const handleBorrow = async (asset: string) => {
 		if (
 			!tokenAddressMap[asset] ||
@@ -473,6 +480,12 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 										className='form-control'
 										id='horizontal-password-Input'
 										placeholder={`Minimum amount = ${MinimumAmount[asset]}`}
+										invalid={
+													borrowParams.loanAmount !== 0 &&
+													borrowParams?.loanAmount < MinimumAmount[asset]
+														? true
+														: false
+												}
 										onChange={handleLoanInputChange}
 									/>
 								</Col>
@@ -540,6 +553,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 											}
 										/>
 										{borrowParams.collateralMarket && (
+											<>
 											<Button
 												outline
 												type='button'
@@ -552,6 +566,20 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 													Max
 												</span>
 											</Button>
+
+											<Button
+												outline
+												type='button'
+												className='btn btn-md w-xs'
+												onClick={handleMin}
+												disabled={dataBalance ? false : true}
+												style={{ background: '#2e3444', border: '#2e3444' }}
+											>
+												<span style={{ borderBottom: '2px dotted #fff' }}>
+													Min
+												</span>
+											</Button>
+											</>
 										)}
 									</InputGroup>
 								</Col>

@@ -268,6 +268,10 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 			}
 		}
 
+		
+	}, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
+
+	useEffect(()=>{
 		if(asset==='BTC')
 			setDepositAmount(0.25)
 		if(asset==='USDC')
@@ -275,8 +279,8 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 		if(asset==='USDT')
 			setDepositAmount(2500)
 		if(asset==='BNB')
-			setDepositAmount(2500)
-	}, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
+			setDepositAmount(2.5)
+	},[])
 
 	return (
 		<>
