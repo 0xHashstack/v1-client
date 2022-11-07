@@ -190,7 +190,9 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 	};
 
 	const handleMax = async () => {
-		setDepositAmount(Number(uint256.uint256ToBN(dataBalance[0] || 0)) / 10 ** 18);
+		setDepositAmount(
+			Number(uint256.uint256ToBN(dataBalance[0] || 0)) / 10 ** 18
+		);
 	};
 
 	function removeBodyCss() {
@@ -265,6 +267,15 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 				// handleToast(true, "Check allowance", errorAllowance)
 			}
 		}
+
+		if(asset==='BTC')
+			setDepositAmount(0.25)
+		if(asset==='USDC')
+			setDepositAmount(2500)
+		if(asset==='USDT')
+			setDepositAmount(2500)
+		if(asset==='BNB')
+			setDepositAmount(2500)
 	}, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
 
 	return (

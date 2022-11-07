@@ -69,7 +69,7 @@ const Header = ({
   useEffect(()=>{
     if( transactions.length > 0 &&
 					transactions[transactions.length -1]?.status === 'ACCEPTED_ON_L2'){
-              toast.success(`${token} received!`, {
+              toast.success(`Token received!`, {
 			      	position: toast.POSITION.BOTTOM_RIGHT,
 			      	closeOnClick: true,
 			      });
