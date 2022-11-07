@@ -145,8 +145,27 @@ const Header = ({
                     {Tokens.map((token, idx) => {
                       return (
                         <GetTokenButton token={token} idx={idx} key={idx} />
-                      );
-                    })}
+                        
+                        );
+                      })}
+                
+                    <Button
+                      color="light"
+                      outline
+                      className="btn-outline"
+                      style={{ 
+                        margin: "18px",
+                        width: "90%"
+                       }}
+                      disabled={account === null}
+                      onClick={() => {
+                        window.open(
+                          "https://faucet.goerli.starknet.io/"
+                        );
+                      }}
+                    >
+                      Get ETH for gas fee
+                    </Button>
                   </div>
                 </Form>
               </div>
