@@ -118,7 +118,6 @@ const Dashboard = () => {
 	}, [_account]);
 
 	const [uf, setUf] = useState(null);
-	const [tvl, setTvl] = useState(null);
 	const [txHistoryData, setTxHistoryData] = useState(null);
 	const [totalUsers, setTotalUsers] = useState(null);
 	const [dominantMarket, setDominantMarket] = useState('');
@@ -510,7 +509,7 @@ const Dashboard = () => {
 				{/* <Banner /> */}
 				<Container fluid>
 					{/* Protocol Stats */}
-					<ProtocolStats tvl={tvl} />
+					<ProtocolStats/>
 					<Row>
 						<Col xl={'12'}>
 
