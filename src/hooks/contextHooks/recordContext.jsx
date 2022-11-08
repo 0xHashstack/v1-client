@@ -7,13 +7,16 @@ export function useDetails() {
 }
 
 export function DetailsProvider({ children }) {
-	const [disableWithdraw, setDisableWithdraw] = useState(false);
+	const [txData, setTxData] = useState({
+		disableWithdraw : false,
+		loanId : 0,
+	});
 
 	return (
 		<DetailsContext.Provider
 			value={{
-				disableWithdraw,
-				setDisableWithdraw,
+				txData,
+				setTxData,
 			}}
 		>
 			{children}

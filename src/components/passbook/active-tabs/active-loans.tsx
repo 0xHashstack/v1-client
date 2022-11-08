@@ -39,7 +39,6 @@ import Repay from './active-loans/repay';
 import SwapToLoan from './swaps/swap-to-loan';
 import { getPrice } from '../../../blockchain/priceFeed';
 
-import {useDetails} from "../../../hooks/contextHooks/recordContext";
 
 
 const ActiveLoansTab = ({
@@ -152,9 +151,7 @@ const ActiveLoansTab = ({
 	};
 
 	
-	const {disableWithdraw, setDisableWithdraw} = useDetails()
 
-	const [txData, setTxData] = useState([]);
 
 
 	// add collateral
@@ -282,17 +279,15 @@ const ActiveLoansTab = ({
 	//   }
 	// };
 
-	const handleWithdrawLoan = async (loanMarket: string) => {
+	const handleWithdrawLoan = async (asset : any) => {
 
-		if (disableWithdraw) {
+		if (asset.isSwapped  ) {
 			toast.error(`${GetErrorText(`Cannot withdraw swapped loan`)}`, {
 				position: toast.POSITION.BOTTOM_RIGHT,
 				closeOnClick: true,
 			});
 			return;
 		}
-
-	
 
 		if (!inputVal1 && !loanId && !diamondAddress) {
 			console.log('error');
@@ -302,7 +297,7 @@ const ActiveLoansTab = ({
 
 		await executeWithdraw();
 		if (errorWithdraw) {
-			toast.error(`${GetErrorText(`Withdraw ${loanMarket} failed`)}`, {
+			toast.error(`${GetErrorText(`Withdraw ${asset.loanMarket} failed`)}`, {
 				position: toast.POSITION.BOTTOM_RIGHT,
 				closeOnClick: true,
 			});
@@ -804,7 +799,7 @@ const ActiveLoansTab = ({
 																							}
 																							onClick={() => {
 																								handleWithdrawLoan(
-																									asset.loanMarket
+																									asset
 																								);
 																							}}
 																							style={{
