@@ -67,7 +67,7 @@ const ProtocolStats = () => {
 						</div>
 						<CardTitle tag='h5'></CardTitle>
 						<CardSubtitle className='mb-2 text-muted' tag='h2' align='right'>
-							{tvl ? tvl : 'Loading.....'}
+							{tvl ? `$ ${Math.trunc(tvl)}`  : 'Loading.....'}
 						</CardSubtitle>
 					</CardBody>
 				</Card>
