@@ -30,6 +30,7 @@ import {
 import { BNtoNum, GetErrorText, NumToBN } from '../blockchain/utils';
 
 import { Abi, uint256 } from 'starknet';
+import { getPrice } from '../blockchain/priceFeed';
 
 interface IBorrowParams {
 	loanAmount: number | null;
@@ -316,9 +317,25 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 	};
 
 	const handleMin = async () => {
+		const loanPrice = await getPrice(asset)
+		const collateralPrice = await getPrice(borrowParams?.collateralMarket)
+
+		const totalLoanPriceUSD = borrowParams?.loanAmount * loanPrice;
+		// const totalCollateralPrice = borrowParams.collateralAmount * collateralPrcie;
+
+		const minCollateralAmountUSD = totalLoanPriceUSD / 3;
+
+		const minCollateral = minCollateralAmountUSD/collateralPrice;
+
+		console.log("loanPrice", loanPrice)
+		console.log("collateralPrice", collateralPrice)
+		console.log("totalLoanPriceUSD", totalLoanPriceUSD)
+		console.log("minCollateralAmountUSD", minCollateralAmountUSD)
+		console.log("minCollateral", minCollateral)
+
 		setBorrowParams({
 			...borrowParams,
-			collateralAmount: borrowParams.loanAmount / 3,
+			collateralAmount: minCollateral,
 		});
 	};
 
