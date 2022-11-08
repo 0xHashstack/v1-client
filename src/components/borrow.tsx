@@ -327,12 +327,6 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 
 		const minCollateral = minCollateralAmountUSD/collateralPrice;
 
-		console.log("loanPrice", loanPrice)
-		console.log("collateralPrice", collateralPrice)
-		console.log("totalLoanPriceUSD", totalLoanPriceUSD)
-		console.log("minCollateralAmountUSD", minCollateralAmountUSD)
-		console.log("minCollateral", minCollateral)
-
 		setBorrowParams({
 			...borrowParams,
 			collateralAmount: minCollateral,
