@@ -7,6 +7,7 @@ import BigNumber from "bignumber.js";
 import OffchainAPI from "../../services/offchainapi.service";
 import { useStarknet } from "@starknet-react/core";
 import { number } from "starknet";
+import {useDetails} from "../../hooks/contextHooks/recordContext";
 
 interface IHistoryData {
   txnHash: string;
@@ -26,6 +27,7 @@ const TxHistoryTable = ({
 }) => {
   const { account, commitment } = asset;
   const [txHistoryData, setTxHistoryData] = useState<IHistoryData[]>([]);
+  const {disableWithdraw, setDisableWithdraw} = useDetails()
 
   useEffect(() => {
     // const _account = ;
@@ -43,6 +45,7 @@ const TxHistoryTable = ({
         market
       ).then((events) => {
         setTxHistoryData(events);
+        setDisableWithdraw(true)
         console.log("loan events::", events)
       });
     } else if (type === "repaid") {

@@ -7,13 +7,13 @@ export function useDetails() {
 }
 
 export function DetailsProvider({ children }) {
-	const [isLoading, setIsLoading] = useState(false);
+	const [disableWithdraw, setDisableWithdraw] = useState(false);
 
 	return (
 		<DetailsContext.Provider
 			value={{
-				isLoading,
-				setIsLoading,
+				disableWithdraw,
+				setDisableWithdraw,
 			}}
 		>
 			{children}
