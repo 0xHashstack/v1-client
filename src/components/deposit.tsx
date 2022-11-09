@@ -41,17 +41,21 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 	const [depositAmount, setDepositAmount] = useState(0);
 	const [commitPeriod, setCommitPeriod] = useState(0);
 
-	const [isLoading, setLoading] = useState(false);
+	const [isLoadingApprove, setLoadingApprove] = useState(false);
+	const [isLoadingDeposit, setLoadingDeposit] = useState(false);
 
 	const [allowanceVal, setAllowance] = useState(0);
 
 	const { account } = useStarknet();
 	const { transactions } = useStarknetTransactionManager();
 
+	console.log('transactions------', transactions);
+
 	const { contract } = useContract({
 		abi: ERC20Abi as Abi,
 		address: tokenAddressMap[asset] as string,
 	});
+
 	const {
 		data: dataBalance,
 		loading: loadingBalance,
@@ -68,9 +72,10 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 
 	useEffect(() => {
 		console.log(
+			'transactions :::::',
 			loadingApprove ||
 				(transactions.length > 0 &&
-					transactions[0]?.status !== 'ACCEPTED_ON_L2')
+					transactions[transactions.length - 1]?.status !== 'ACCEPTED_ON_L2')
 		);
 		// console.log(loadingApprove, );
 	}, []);
@@ -151,6 +156,26 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 		error: errorApprove,
 	} = returnTransactionParameters();
 
+	const [transApprove, setTransApprove] = useState('');
+	const [transDeposit, setTransDeposit] = useState('');
+
+	useEffect(() => {
+		console.log(
+			'approeve info',
+			dataApprove,
+			loadingApprove,
+			resetApprove,
+			errorApprove
+		);
+
+		if (dataApprove) {
+			setTransApprove(dataApprove);
+		}
+		if (dataDeposit) {
+			setTransDeposit(dataDeposit);
+		}
+	}, [dataApprove, loadingApprove, resetApprove, errorApprove, dataDeposit]);
+
 	const tog_center = async () => {
 		setmodal_deposit(!modal_deposit);
 		removeBodyCss();
@@ -165,8 +190,9 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 	};
 
 	const handleMax = async () => {
-		// await refreshBalance();
-		// console.log(uint256ToBN(dataBalance![0]).toNumber());
+		setDepositAmount(
+			Number(uint256.uint256ToBN(dataBalance[0] || 0)) / 10 ** 18
+		);
 	};
 
 	function removeBodyCss() {
@@ -175,6 +201,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 
 	const handleApprove = async (asset: string) => {
 		let val = await USDC();
+		console.log('valll', val);
 		if (errorApprove) {
 			toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
 				position: toast.POSITION.BOTTOM_RIGHT,
@@ -236,12 +263,24 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 				let _allowance = uint256.uint256ToBN(data.remaining);
 
 				setAllowance(Number(uint256.uint256ToBN(dataAllowance[0])) / 10 ** 18);
-			
 			} else if (errorAllowance) {
 				// handleToast(true, "Check allowance", errorAllowance)
 			}
 		}
+
+		
 	}, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
+
+	useEffect(()=>{
+		if(asset==='BTC')
+			setDepositAmount(0.25)
+		if(asset==='USDC')
+			setDepositAmount(2500)
+		if(asset==='USDT')
+			setDepositAmount(2500)
+		if(asset==='BNB')
+			setDepositAmount(2.5)
+	},[])
 
 	return (
 		<>
@@ -270,8 +309,10 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 									<div>
 										Balance {asset}:{' '}
 										{dataBalance
-											?
-                      (Number(uint256.uint256ToBN(dataBalance[0])) / 10 ** 18).toString()
+											? (
+													Number(uint256.uint256ToBN(dataBalance[0])) /
+													10 ** 18
+											  ).toString()
 											: ' Loading'}
 									</div>
 								</Col>
@@ -357,16 +398,18 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 											loadingApprove ||
 											loadingDeposit ||
 											depositAmount < MinimumAmount[asset]
-                      
 										}
 										onClick={(e) => handleApprove(asset)}
 									>
 										{/* setApproveStatus(transactions[0]?.status); */}
 										{!(
 											loadingApprove ||
-											(transactions.length > 0 &&
-												transactions[transactions.length - 1]?.status !==
-													'ACCEPTED_ON_L2')
+											(transactions
+												.map((tx) => tx.transactionHash)
+												.includes(transApprove) &&
+												transactions.filter((tx) => {
+													tx.transactionHash === transApprove;
+												})[0]?.status !== 'ACCEPTED_ON_L2')
 										) ? (
 											'Approve'
 										) : (
@@ -389,9 +432,12 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 									>
 										{!(
 											loadingApprove ||
-											(transactions.length > 0 &&
-												transactions[transactions.length - 1]?.status !==
-													'ACCEPTED_ON_L2')
+											(transactions
+												.map((tx) => tx.transactionHash)
+												.includes(transDeposit) &&
+												transactions.filter((tx) => {
+													tx.transactionHash === transDeposit;
+												})[0]?.status !== 'ACCEPTED_ON_L2')
 										) ? (
 											'Deposit'
 										) : (

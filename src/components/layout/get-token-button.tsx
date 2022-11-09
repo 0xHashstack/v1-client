@@ -1,14 +1,18 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { toast } from "react-toastify";
 import { Button, Col, Spinner } from "reactstrap";
 import useGetToken from "../../blockchain/mockups/useGetToken";
+import {useStarknetTransactionManager} from '@starknet-react/core';
 
 const GetTokenButton = ({ token, idx }: { token: string; idx: number }) => {
   const { handleGetToken, returnTransactionParameters } = useGetToken({
     token,
   });
 
+  const {transactions} = useStarknetTransactionManager()
+
   const { data, loading, reset, error } = returnTransactionParameters(token);
+
 
   const handleClickToken = async (
     token: string,
@@ -17,8 +21,8 @@ const GetTokenButton = ({ token, idx }: { token: string; idx: number }) => {
     handleGetToken: (token: string) => Promise<void>
   ) => {
     const val = await handleGetToken(token);
-    if (!loading && !error) {
-      toast.success(`${token} received!`, {
+    if (transactions[transactions.length -1]?.status === 'RECIEVED') {
+      toast.success(`${token} requested!`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
       });
@@ -30,6 +34,9 @@ const GetTokenButton = ({ token, idx }: { token: string; idx: number }) => {
       });
     }
   };
+
+
+
   return (
     <Col sm={3} key={idx}>
       <Button

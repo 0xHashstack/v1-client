@@ -9,6 +9,7 @@ import {
 	useConnectors,
 	useStarknetInvoke,
 	useStarknetExecute,
+  useStarknetTransactionManager
 } from '@starknet-react/core';
 import { ConnectWallet } from '../wallet';
 import { useERC20Contract } from '../../hooks/starknet-react/starks';
@@ -31,6 +32,8 @@ const Header = ({
 	const [currentProcessingToken, setCurrentProcessingToken] = useState(null);
 
 	const { available, connect, disconnect } = useConnectors();
+  const { transactions } = useStarknetTransactionManager();
+
 	const { account } = useStarknet();
 
 	const handleClickToken = async (
@@ -62,6 +65,19 @@ const Header = ({
 		setGet_token(!get_token);
 		removeBodyCss();
 	}
+
+  useEffect(()=>{
+    if( transactions.length > 0 &&
+					transactions[transactions.length -1]?.status === 'ACCEPTED_ON_L2'){
+              toast.success(`Token received!`, {
+			      	position: toast.POSITION.BOTTOM_RIGHT,
+			      	closeOnClick: true,
+			      });
+          }
+
+  console.log("transactions:::::::::", transactions)
+		
+  }, [transactions])
 
 	console.log(available);
 
@@ -129,8 +145,27 @@ const Header = ({
                     {Tokens.map((token, idx) => {
                       return (
                         <GetTokenButton token={token} idx={idx} key={idx} />
-                      );
-                    })}
+                        
+                        );
+                      })}
+                
+                    <Button
+                      color="light"
+                      outline
+                      className="btn-outline"
+                      style={{ 
+                        margin: "18px",
+                        width: "90%"
+                       }}
+                      disabled={account === null}
+                      onClick={() => {
+                        window.open(
+                          "https://faucet.goerli.starknet.io/"
+                        );
+                      }}
+                    >
+                      Get ETH for gas fee
+                    </Button>
                   </div>
                 </Form>
               </div>

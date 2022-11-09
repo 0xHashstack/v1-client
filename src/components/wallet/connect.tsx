@@ -19,6 +19,9 @@ const ConnectWallet = () => {
               color="dark"
               outline
               className="btn-outline"
+              style={{
+                margin: '18px'
+              }}
               onClick={(e) => connect(connector)}
               key={connector.id()}
             >
@@ -32,20 +35,25 @@ const ConnectWallet = () => {
           color="dark"
           outline
           className="btn-outline"
-          onClick={(e) => {
-            toast.error(
-              `${GetErrorText(
-                `Please install a compatible wallet such as ArgentX, Braavos. Try again`
-              )}`,
-              {
-                position: toast.POSITION.BOTTOM_RIGHT,
-                closeOnClick: true,
-              }
-            );
-          }}
+          onClick={() => {
+                      window.open(
+                        "https://braavos.app/download/"
+                      );
+                    }}
+          // onClick={(e) => {
+          //   toast.error(
+          //     `${GetErrorText(
+          //       `Please install a compatible wallet such as ArgentX, Braavos. Try again`
+          //     )}`,
+          //     {
+          //       position: toast.POSITION.BOTTOM_RIGHT,
+          //       closeOnClick: true,
+          //     }
+          //   );
+          // }}
         >
           <i className="fas fa-wallet font-size-16 align-middle me-2"></i>{" "}
-          Connect Wallet
+          Download Braavos Wallet
         </Button>
       )}
     </div>
