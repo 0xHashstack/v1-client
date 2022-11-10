@@ -195,6 +195,17 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 		);
 	};
 
+	const handleMin = async () => {
+		if(asset==='BTC')
+			setDepositAmount(0.25)
+		if(asset==='USDC')
+			setDepositAmount(2500)
+		if(asset==='USDT')
+			setDepositAmount(2500)
+		if(asset==='BNB')
+			setDepositAmount(2.5)
+	};
+
 	function removeBodyCss() {
 		document.body.classList.add('no_padding');
 	}
@@ -271,16 +282,6 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 		
 	}, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
 
-	useEffect(()=>{
-		if(asset==='BTC')
-			setDepositAmount(0.25)
-		if(asset==='USDC')
-			setDepositAmount(2500)
-		if(asset==='USDT')
-			setDepositAmount(2500)
-		if(asset==='BNB')
-			setDepositAmount(2.5)
-	},[])
 
 	return (
 		<>
@@ -349,7 +350,20 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 												}
 											/>
 
-											{
+											{ <>
+												<Button
+													outline
+													type='button'
+													className='btn btn-md w-xs'
+													onClick={handleMin}
+													// disabled={balance ? false : true}
+													style={{ background: '#2e3444', border: '#2e3444' }}
+												>
+													<span style={{ borderBottom: '2px dotted #fff' }}>
+														Min
+													</span>
+												</Button>
+
 												<Button
 													outline
 													type='button'
@@ -362,6 +376,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 														Max
 													</span>
 												</Button>
+												</>
 											}
 										</InputGroup>
 										{depositAmount != 0 &&
