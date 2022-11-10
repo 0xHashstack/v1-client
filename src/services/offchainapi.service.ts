@@ -17,6 +17,7 @@ export default class OffchainAPI {
 		}
 	}
 
+
 	static async httpPost(route: string, data: any, type: string, token: string) {
 		try {
 			let url = `${this.ENDPOINT}${route}`;
@@ -100,6 +101,7 @@ export default class OffchainAPI {
 			return [];
 		}
 	}
+
 
 	static getLoans(address: string) {
 		let url = `/api/loans/${address}`;

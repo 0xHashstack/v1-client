@@ -56,6 +56,7 @@ const ActiveLoansTab = ({
 	removeBodyCss: () => void;
 	setCustomActiveTabs: any;
 }) => {
+
 	const [loanActionTab, setLoanActionTab] = useState('0');
 	const { account } = useStarknet();
 
@@ -914,6 +915,7 @@ const ActiveLoansTab = ({
 			)}
 		</div>
 	);
+
 };
 
 export default ActiveLoansTab;
