@@ -39,8 +39,6 @@ import Repay from './active-loans/repay';
 import SwapToLoan from './swaps/swap-to-loan';
 import { getPrice } from '../../../blockchain/priceFeed';
 
-
-
 const ActiveLoansTab = ({
 	activeLoansData,
 	customActiveTabs,
@@ -82,6 +80,7 @@ const ActiveLoansTab = ({
 
 	/* =================== add collateral states ======================= */
 	const [inputVal1, setInputVal1] = useState(0);
+	const [isLoading, setLoading] = useState(false);
 
 	const toggleLoanAction = (tab: string) => {
 		if (loanActionTab !== tab) {
@@ -149,10 +148,6 @@ const ActiveLoansTab = ({
 	const handleSwapOptionChange = (e: any) => {
 		setSwapOption(e.target.value);
 	};
-
-	
-
-
 
 	// add collateral
 	const [marketToAddCollateral, setMarketToAddCollateral] = useState('');
@@ -279,9 +274,8 @@ const ActiveLoansTab = ({
 	//   }
 	// };
 
-	const handleWithdrawLoan = async (asset : any) => {
-
-		if (asset.isSwapped  ) {
+	const handleWithdrawLoan = async (asset: any) => {
+		if (asset.isSwapped) {
 			toast.error(`${GetErrorText(`Cannot withdraw swapped loan`)}`, {
 				position: toast.POSITION.BOTTOM_RIGHT,
 				closeOnClick: true,
@@ -327,6 +321,7 @@ const ActiveLoansTab = ({
 		loanMarket: any,
 		collateralMarket: string
 	) => {
+		setLoading(true)
 		const collateralAmount: any = parseFloat(
 			BNtoNum(Number(_collateralAmount))
 		).toFixed(6);
@@ -342,8 +337,8 @@ const ActiveLoansTab = ({
 
 		setInputVal1(maxPermisableWithdrawal);
 		console.log('max loan withdrawal', maxPermisableWithdrawal);
+		setLoading(false)
 	};
-
 
 	return (
 		<div className='table-responsive  mt-3' style={{ overflow: 'hidden' }}>
@@ -782,7 +777,17 @@ const ActiveLoansTab = ({
 																												'2px dotted #fff',
 																										}}
 																									>
-																										Max
+																										{
+																											isLoading ? 
+																										
+																										<Spinner style={{
+																										height: '14px', 
+																										width: "14px"
+																										}}>
+																											Loading...
+																									</Spinner> :
+																										'Max'
+																									}
 																									</span>
 																								</Button>
 																							</InputGroup>
@@ -798,9 +803,7 @@ const ActiveLoansTab = ({
 																								inputVal1 <= 0
 																							}
 																							onClick={() => {
-																								handleWithdrawLoan(
-																									asset
-																								);
+																								handleWithdrawLoan(asset);
 																							}}
 																							style={{
 																								color: '#4B41E5',
