@@ -229,8 +229,8 @@ const Header = ({
 
               <DropdownMenu>
                 
-                <DropdownItem onClick = {()=> handleChange(options[0])}>{options[0]}</DropdownItem>
-                <DropdownItem onClick = {()=> handleChange(options[1])}>{options[1]}</DropdownItem>
+                <DropdownItem disabled onClick = {()=> handleChange(options[0])}>{options[0]}</DropdownItem>
+                <DropdownItem disabled onClick = {()=> handleChange(options[1])}>{options[1]}</DropdownItem>
                 <DropdownItem onClick = {()=> handleChange(options[2])}>{options[2]}</DropdownItem>
                 
               </DropdownMenu>
