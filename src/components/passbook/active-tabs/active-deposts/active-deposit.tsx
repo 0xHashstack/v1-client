@@ -16,6 +16,7 @@ import {
 	CardTitle,
 	CardSubtitle,
 } from 'reactstrap';
+import RangeSlider from 'react-bootstrap-range-slider';
 import {
 	CoinClassNames,
 	EventMap,
@@ -69,8 +70,9 @@ const ActiveDeposit = ({
 		await withdrawDeposit();
 	};
 
-  const [transApprove, setTransApprove] = useState('');
+  	const [transApprove, setTransApprove] = useState('');
 	const [transDeposit, setTransDeposit] = useState('');
+	const [ value, setValue ] = useState(0); 
 
 	useEffect(() => {
 		console.log(
@@ -86,6 +88,15 @@ const ActiveDeposit = ({
 			setTransDeposit(dataDeposit);
 		}
 	}, [dataApprove,  dataDeposit]);
+
+	useEffect(()=>{
+		const currentBalance = parseFloat(BNtoNum(Number(asset.amount))) +
+		parseFloat(BNtoNum(Number(asset.acquiredYield)))
+		console.log("currentBalance",  (value/100) *  currentBalance)
+		setWithdrawAmount(
+		Number((value/100) *  currentBalance)
+		)
+	},[value])
 
 	return (
 
@@ -394,8 +405,25 @@ const ActiveDeposit = ({
 																				Number(event.target.value)
 																			);
 																		}}
+																		value={withdrawAmount}
 																	/>
+																<RangeSlider
+    															  	value={value}
+																	step={25}
+																	tooltip='on'
+																	tooltipLabel={(v) => `${v} %`}    																onChange={changeEvent => setValue(changeEvent.target.value)}
+																	style={{
+																		width : "100%",
+																		marginTop : "12px",
+																	}}
+																	onChange={changeEvent => {
+																		
+																		setValue(changeEvent.target.value)
+																	}}	
+
+    															/>
 																</Col>
+
 															</div>
 
 															<div className='d-grid gap-2'>
