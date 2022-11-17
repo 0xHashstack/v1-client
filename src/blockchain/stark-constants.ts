@@ -12,7 +12,7 @@ export function processAddress(address: string) {
   return number.toHex(number.toBN(number.toFelt(address)));
 }
 
-let contractsEnv = DeployDetails.goerli;
+let contractsEnv = DeployDetails.goerli_2;
 contractsEnv.DIAMOND_ADDRESS = processAddress(contractsEnv.DIAMOND_ADDRESS);
 for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
   contractsEnv.TOKENS[i].address = processAddress(

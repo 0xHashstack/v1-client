@@ -160,7 +160,8 @@ const Header = ({
                       disabled={account === null}
                       onClick={() => {
                         window.open(
-                          "https://faucet.goerli.starknet.io/"
+                          // "https://faucet.goerli.starknet.io/"
+                          "https://goerli2-bridge.hashstack.finance"
                         );
                       }}
                     >
@@ -193,7 +194,7 @@ const Header = ({
                   onClick={handleDisconnectWallet}
                 >
                   <i className="fas fa-wallet font-size-16 align-middle me-2"></i>{" "}
-                  Disconnect
+                  {`${account.substring(0, 3)}...${account.substring(account.length-3, account.length)}`} | Disconnect
                 </Button>
               </>
             ) : (

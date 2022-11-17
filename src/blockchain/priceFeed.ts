@@ -52,6 +52,7 @@ const aggregatorV3InterfaceABI = [
 	},
 ];
 
+// ETH chainlink addresses
 const eth_goerli_address: any = {
 	BTC: '0xF4030086522a5bEEa4988F8cA5B36dbC97BeE88c',
 	BNB: '0x14e613AC84a31f709eadbdF89C6CC390fDc9540A',

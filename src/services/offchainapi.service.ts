@@ -2,8 +2,8 @@ import axios from 'axios';
 import { tokenAddressMap } from '../blockchain/stark-constants';
 
 export default class OffchainAPI {
-	// static ENDPOINT = 'http://52.77.185.41:3000'
-	static ENDPOINT = 'https://offchainapi.testnet.starknet.hashstack.finance';
+	static ENDPOINT = 'http://localhost:3010'
+	// static ENDPOINT = 'https://offchainapi.testnet.starknet.hashstack.finance';
 
 	static async httpGet(route: string) {
 		try {
@@ -20,6 +20,9 @@ export default class OffchainAPI {
 
 	static async httpPost(route: string, data: any, type: string, token: string) {
 		try {
+      if(!token) {
+        console.warn('no incoming token', route, data, type, token)
+      }
 			let url = `${this.ENDPOINT}${route}`;
 			let res = await axios({
 				method: 'post',

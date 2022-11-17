@@ -1,18 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
+import { getTokenFromAddress } from '../../blockchain/stark-constants';
 import OffchainAPI from '../../services/offchainapi.service';
 
 const ProtocolStats = () => {
-  const [tvl, setTvl] = useState();
+  const [tvl, setTvl] = useState(0);
   const [totalUsers, setTotalUsers] = useState();
-  const [domianatMarket, setDominantMarket] = useState();
-
-  const tokenMap = {
-    "0x921f2737b52742c68c8d56f265c777988cbfeb60495ca2940663cf67ea4008" : "BTC",
-    "0x7ac56b3078e4428fdb3cc9cd257ce9cb77cc20f3ae0ed466c35f73e75ed42c8" : 'USDC',
-    "0x5d41add963bc6de5ba86cb1bec147f739df42a55c5d995b782da4534b2152ad" : "USDT",
-    "0x66212ade7afb8a9be4b085d90baa7b6ceb05bf3524d79fcdd8d7aae3885aa3d" : "BNB"
-  }
+  const [domianatMarket, setDominantMarket] = useState('');
 
 	useEffect(() => {
 		OffchainAPI.getDashboardStats().then(
@@ -33,8 +27,8 @@ const ProtocolStats = () => {
         for (const property in stats.tvlByToken) {
           console.log(`${property}: ${stats.tvlByToken[property].tvl}`);
           if(stats.tvlByToken[property].tvl === dominantAmount){
-            console.log("dominant market", tokenMap[stats.tvlByToken[property].address]);
-            setDominantMarket(tokenMap[stats.tvlByToken[property].address])
+            console.log("dominant market", getTokenFromAddress(stats.tvlByToken[property].address)?.name);
+            setDominantMarket(getTokenFromAddress(stats.tvlByToken[property].address)?.name || 'NA')
           }
         }
 			},
@@ -67,7 +61,7 @@ const ProtocolStats = () => {
 						</div>
 						<CardTitle tag='h5'></CardTitle>
 						<CardSubtitle className='mb-2 text-muted' tag='h2' align='right'>
-							{tvl ? `$ ${Math.trunc(tvl)}`  : 'Loading.....'}
+							{tvl ? `$ ${Math.trunc(tvl).toLocaleString()}`  : '...'}
 						</CardSubtitle>
 					</CardBody>
 				</Card>
@@ -124,7 +118,7 @@ const ProtocolStats = () => {
 						</div>
 						<CardTitle tag='h5'></CardTitle>
 						<CardSubtitle className='mb-2 text-muted' tag='h2' align='right'>
-							{domianatMarket ? domianatMarket : 'Loading....'}
+							{domianatMarket ? domianatMarket : '...'}
 						</CardSubtitle>
 					</CardBody>
 				</Card>
@@ -151,7 +145,7 @@ const ProtocolStats = () => {
 						</div>
 						<CardTitle tag='h5'></CardTitle>
 						<CardSubtitle className='mb-2 text-muted' tag='h2' align='right'>
-							{totalUsers ? totalUsers : 'Loading.....'}
+							{totalUsers ? totalUsers : '...'}
 						</CardSubtitle>
 					</CardBody>
 				</Card>

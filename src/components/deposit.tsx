@@ -96,7 +96,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 		calls: {
 			contractAddress: tokenAddressMap[asset] as string,
 			entrypoint: 'approve',
-			calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
+			calldata: [diamondAddress, uint256.UINT_128_MAX.toString(), 0],
 		},
 	});
 
