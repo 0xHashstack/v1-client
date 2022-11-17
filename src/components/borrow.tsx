@@ -45,6 +45,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 	const [collateralAmount, setcollateralAmount] = useState(0);
 	const [isAllowed, setAllowed] = useState(false);
 	const [shouldApprove, setShouldApprove] = useState(false);
+	const [isLoading, setLoading] = useState(false);
 
 	const [borrowParams, setBorrowParams] = useState<IBorrowParams>({
 		loanAmount: 0,
@@ -317,6 +318,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 	};
 
 	const handleMin = async () => {
+		setLoading(true);
 		const loanPrice = await getPrice(asset)
 		const collateralPrice = await getPrice(borrowParams?.collateralMarket)
 
@@ -331,7 +333,32 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 			...borrowParams,
 			collateralAmount: minCollateral,
 		});
+		setLoading(false);
+
 	};
+
+	const handleMinLoan = (asset : string) => {
+		if(asset==='BTC')
+			setBorrowParams({
+			...borrowParams,
+			loanAmount: 0.25,
+		});
+		if(asset==='USDC')
+			setBorrowParams({
+			...borrowParams,
+			loanAmount: 2500,
+		});
+		if(asset==='USDT')
+			setBorrowParams({
+			...borrowParams,
+			loanAmount: 2500,
+		});
+		if(asset==='BNB')
+			setBorrowParams({
+			...borrowParams,
+			loanAmount: 2.5,
+		});
+	}
 
 	const handleBorrow = async (asset: string) => {
 		if (
@@ -486,19 +513,36 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 							</div>
 							<div className='row mb-4'>
 								<Col sm={12}>
-									<Input
-										type='text'
-										className='form-control'
-										id='horizontal-password-Input'
-										placeholder={`Minimum amount = ${MinimumAmount[asset]}`}
-										invalid={
-													borrowParams.loanAmount !== 0 &&
-													borrowParams?.loanAmount < MinimumAmount[asset]
-														? true
-														: false
-												}
-										onChange={handleLoanInputChange}
-									/>
+									<InputGroup>
+										<Input
+											type='text'
+											className='form-control'
+											id='horizontal-password-Input'
+											placeholder={`Minimum amount = ${MinimumAmount[asset]}`}
+											invalid={
+														borrowParams.loanAmount !== 0 &&
+														borrowParams?.loanAmount < MinimumAmount[asset]
+															? true
+															: false
+													}
+											value = {borrowParams.loanAmount}
+											onChange={handleLoanInputChange}
+										/>
+										{<>
+											<Button
+												outline
+												type='button'
+												className='btn btn-md w-xs'
+												onClick={()=> handleMinLoan(asset)}
+												style={{ background: '#2e3444', border: '#2e3444' }}
+											>
+											
+												Min
+											</Button>
+										</>
+										}
+									</InputGroup>
+
 								</Col>
 							</div>
 							<div className='row mb-4'>
@@ -569,6 +613,27 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 												outline
 												type='button'
 												className='btn btn-md w-xs'
+												onClick={handleMin}
+												// disabled={dataBalance ? false : true}
+												style={{ background: '#2e3444', border: '#2e3444' }}
+											>
+												<span style={{ borderBottom: '2px dotted #fff' }}>
+													{ isLoading ?  
+														<Spinner style={{
+															height: '14px', 
+															width: "14px"
+															}}>
+																Loading...
+														</Spinner> : 
+														'Min'  
+													}
+												</span>
+											</Button>
+
+											<Button
+												outline
+												type='button'
+												className='btn btn-md w-xs'
 												onClick={handleMax}
 												disabled={dataBalance ? false : true}
 												style={{ background: '#2e3444', border: '#2e3444' }}
@@ -578,18 +643,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 												</span>
 											</Button>
 
-											<Button
-												outline
-												type='button'
-												className='btn btn-md w-xs'
-												onClick={handleMin}
-												disabled={dataBalance ? false : true}
-												style={{ background: '#2e3444', border: '#2e3444' }}
-											>
-												<span style={{ borderBottom: '2px dotted #fff' }}>
-													Min
-												</span>
-											</Button>
+											
 											</>
 										)}
 									</InputGroup>

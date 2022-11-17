@@ -1,6 +1,6 @@
 import React, { useState, useContext, useCallback, useEffect } from 'react';
 import Link from 'next/link';
-import { Col, Modal, Button, Form, Spinner } from 'reactstrap';
+import { Col, Modal, Button, Form, Spinner,  Dropdown, DropdownToggle, DropdownMenu, DropdownItem } from 'reactstrap';
 import { toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {
@@ -11,6 +11,7 @@ import {
 	useStarknetExecute,
   useStarknetTransactionManager
 } from '@starknet-react/core';
+
 import { ConnectWallet } from '../wallet';
 import { useERC20Contract } from '../../hooks/starknet-react/starks';
 import { tokenAddressMap } from '../../blockchain/stark-constants';
@@ -82,10 +83,28 @@ const Header = ({
 	console.log(available);
 
   const Tokens = ["USDT", "USDC", "BTC", "BNB"];
+  const options = [
+  'mainnet', 'Goerli-1', 'Goerli-2'
+  ];
+  // const defaultOption = options[1];
+
+  const [selected, setSelected] = useState(options[1]);
+  const [dropDownOpen, setdropDownOpen] = useState(false)
+
+  const handleChange = (network) => {
+    setSelected(network);
+    console.log("network selected --> ", network);
+  };
+
+  const toggleDropdown = () => {
+    setdropDownOpen(!dropDownOpen)
+  }
+
+
   return (
     <React.Fragment>
       <header id="page-topbar">
-        <div className="navbar-header" style={{ paddingRight: "2%" }}>
+        <div className="navbar-header" style={{ marginRight: "15%" }}>
           <div className="d-flex">
             <div className="navbar-brand-box">
               <Link href="/">
@@ -185,6 +204,9 @@ const Header = ({
             >
               Join Discord
             </Button>
+            
+          
+
             {account ? (
               <>
                 <Button
@@ -200,6 +222,20 @@ const Header = ({
             ) : (
               <ConnectWallet />
             )}
+
+            <Dropdown isOpen={dropDownOpen} toggle={toggleDropdown}>
+              <DropdownToggle caret>
+                {selected}
+              </DropdownToggle>
+
+              <DropdownMenu>
+                
+                <DropdownItem disabled onClick = {()=> handleChange(options[0])}>{options[0]}</DropdownItem>
+                <DropdownItem disabled onClick = {()=> handleChange(options[1])}>{options[1]}</DropdownItem>
+                <DropdownItem onClick = {()=> handleChange(options[2])}>{options[2]}</DropdownItem>
+                
+              </DropdownMenu>
+            </Dropdown>
           </div>
         </div>
       </header>
