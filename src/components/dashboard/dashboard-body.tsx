@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Spinner } from "reactstrap";
+import OffchainAPI from "../../services/offchainapi.service";
 import DashboardTokens from "./dashboard-tokens";
 export interface ICoin {
   name: string;
@@ -31,6 +32,15 @@ let DashboardTBody: any = ({
   borrowCommitment: string;
   depositCommitment: string;
 }) => {
+  const [depositLoanRates, setDepositLoanRates] = useState();
+  useEffect(() => {
+    OffchainAPI.getProtocolDepositLoanRates().then((val) => {
+      // console.log(`%c Protocol deposit`, "background: #222; color: #bada55");
+      console.log(val);
+      setDepositLoanRates(val);
+    });
+  }, []);
+
   if (isloading) {
     return (
       // <tr align="center">
@@ -50,6 +60,7 @@ let DashboardTBody: any = ({
           key={idx}
           borrowCommitment={borrowCommitment}
           depositCommitment={depositCommitment}
+          depositLoanRates={depositLoanRates}
         />
       );
     });

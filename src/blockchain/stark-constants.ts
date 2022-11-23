@@ -16,11 +16,11 @@ export function processAddress(address: string) {
   return number.toHex(number.toBN(number.toFelt(address)));
 }
 
-let contractsEnv =
-  process.env.NODE_ENV === "development"
-    ? DeployDetailsDev.devnet
-    : DeployDetailsProd.goerli_2;
-// let contractsEnv = DeployDetails.goerli;
+// let contractsEnv =
+//   process.env.NODE_ENV === "development"
+//     ? DeployDetailsDev.devnet
+//     : DeployDetailsProd.goerli_2;
+let contractsEnv = DeployDetailsProd.goerli_2;
 contractsEnv.DIAMOND_ADDRESS = processAddress(contractsEnv.DIAMOND_ADDRESS);
 for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
   contractsEnv.TOKENS[i].address = processAddress(
@@ -105,7 +105,7 @@ export const getCommitmentNameFromIndex = (index: string) => {
   return null;
 };
 
-export const getCommitmentIndexStringFromName = (name: string) => {
+export const getCommitmentIndexStringFromNameDeposit = (name: string) => {
   if (name === "NONE") {
     return "0";
   } else if (name === "TWOWEEKS") {
@@ -117,18 +117,15 @@ export const getCommitmentIndexStringFromName = (name: string) => {
   }
 };
 
+export const getCommitmentIndexStringFromNameLoan = (name: string) => {
+  if (name === "NONE") {
+    return "0";
+  } else if (name === "ONEMONTH") {
+    return "1";
+  }
+};
+
 export const getCommitmentIndex = (index: string) => {
-  if (index === "0") {
-    return 0;
-  }
-  if (index === "1") {
-    return 1;
-  }
-  if (index === "2") {
-    return 2;
-  }
-  if (index === "3") {
-    return 3;
-  }
+  return parseInt(index);
 };
 export { ERC20Abi, ComptrollerAbi, contractsEnv };
