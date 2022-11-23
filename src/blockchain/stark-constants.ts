@@ -15,7 +15,7 @@ export function processAddress(address: string) {
 let contractsEnv =
   process.env.NODE_ENV === "development"
     ? DeployDetailsDev.devnet
-    : DeployDetailsProd.goerli;
+    : DeployDetailsProd.goerli_2;
 // let contractsEnv = DeployDetails.goerli;
 contractsEnv.DIAMOND_ADDRESS = processAddress(contractsEnv.DIAMOND_ADDRESS);
 for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
