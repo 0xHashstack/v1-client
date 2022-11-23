@@ -13,6 +13,7 @@ import {
   Alert,
   Row,
   Container,
+  Navbar,
 } from "reactstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -125,8 +126,9 @@ const Header = ({
     // <div className="container">
     <Container>
       <Row>
-        <Col id="" className="d-flex flex-column justify-content-center">
-          <div className="navbar-header" style={{ marginRight: "15%" }}>
+        <Col className="d-flex flex-column justify-content-between">
+          {/* <div className="navbar"> */}
+          <Navbar>
             <div className="d-flex">
               <div className="navbar-brand-box">
                 <Link href="/">
@@ -261,7 +263,8 @@ const Header = ({
                 </DropdownMenu>
               </Dropdown>
             </div>
-          </div>
+            {/* </div> */}
+          </Navbar>
           <Container>
             <Row>
               <Alert

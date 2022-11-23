@@ -501,7 +501,7 @@ const Dashboard = () => {
         <title>Hashstack | Starknet testnet</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <div className="page-content" style={{ marginTop: "0px" }}>
+      <div className="">
         {/* <MetaTags>
           <title>Hashstack Finance</title>
         </MetaTags> */}
