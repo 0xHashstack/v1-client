@@ -9,7 +9,8 @@ import {
 	useConnectors,
 	useStarknetInvoke,
 	useStarknetExecute,
-  useStarknetTransactionManager
+  useTransactionManager,
+  useAccount
 } from '@starknet-react/core';
 
 import { ConnectWallet } from '../wallet';
@@ -33,9 +34,9 @@ const Header = ({
 	const [currentProcessingToken, setCurrentProcessingToken] = useState(null);
 
 	const { available, connect, disconnect } = useConnectors();
-  const { transactions } = useStarknetTransactionManager();
+  const { transactions } = useTransactionManager();
 
-	const { account } = useStarknet();
+	const { address: account } = useAccount();
 
 	const handleClickToken = async (
 		token: string,
@@ -84,11 +85,12 @@ const Header = ({
 
   const Tokens = ["USDT", "USDC", "BTC", "BNB"];
   const options = [
-  'mainnet', 'Goerli-1', 'Goerli-2'
+  // 'mainnet', 'Goerli-1', 
+  'Goerli-2'
   ];
   // const defaultOption = options[1];
 
-  const [selected, setSelected] = useState(options[1]);
+  const [selected, setSelected] = useState(options[0]);
   const [dropDownOpen, setdropDownOpen] = useState(false)
 
   const handleChange = (network) => {
@@ -230,9 +232,7 @@ const Header = ({
 
               <DropdownMenu>
                 
-                <DropdownItem disabled onClick = {()=> handleChange(options[0])}>{options[0]}</DropdownItem>
-                <DropdownItem disabled onClick = {()=> handleChange(options[1])}>{options[1]}</DropdownItem>
-                <DropdownItem onClick = {()=> handleChange(options[2])}>{options[2]}</DropdownItem>
+                {options.map(option => <DropdownItem key={option} disabled onClick = {()=> handleChange(option)}>{option}</DropdownItem>)}
                 
               </DropdownMenu>
             </Dropdown>

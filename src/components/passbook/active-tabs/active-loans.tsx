@@ -1,4 +1,4 @@
-import { useStarknet, useStarknetExecute } from '@starknet-react/core';
+import { useAccount, useStarknet, useStarknetExecute } from '@starknet-react/core';
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -58,7 +58,7 @@ const ActiveLoansTab = ({
 }) => {
 
 	const [loanActionTab, setLoanActionTab] = useState('0');
-	const { account } = useStarknet();
+	const { address: account } = useAccount();
 
 	const [handleRepayTransactionDone, setHandleRepayTransactionDone] =
 		useState(false);

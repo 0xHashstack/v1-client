@@ -12,11 +12,14 @@ import {
 } from 'reactstrap';
 
 import { MinimumAmount } from '../blockchain/constants';
-import BigNumber from 'ethers';
+import BigNumber, { ethers } from 'ethers';
 
 import {
 	diamondAddress,
 	ERC20Abi,
+	getTokenFromAddress,
+	getTokenFromName,
+	isTransactionLoading,
 	tokenAddressMap,
 } from '../blockchain/stark-constants';
 
@@ -26,16 +29,23 @@ import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
 
 import {
+	useAccount,
 	useContract,
 	useStarknet,
 	useStarknetCall,
 	useStarknetExecute,
 	useStarknetInvoke,
-	useStarknetTransactionManager,
+	useTransactionManager,
+	useTransactionReceipt,
+	useTransactions
 } from '@starknet-react/core';
 import { Abi, Contract, uint256, number } from 'starknet';
+import { TxToastManager } from '../blockchain/txToastManager';
+import MySpinner from './mySpinner';
 
 let Deposit: any = ({ asset }: { asset: string }) => {
+	const [token, setToken] = useState(getTokenFromName(asset));
+
 	const [modal_deposit, setmodal_deposit] = useState(false);
 
 	const [depositAmount, setDepositAmount] = useState(0);
@@ -46,10 +56,26 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 
 	const [allowanceVal, setAllowance] = useState(0);
 
-	const { account } = useStarknet();
-	const { transactions } = useStarknetTransactionManager();
+	const { address: account } = useAccount();
+	const [transApprove, setTransApprove] = useState('');
+	const [transDeposit, setTransDeposit] = useState('');
 
-	console.log('transactions------', transactions);
+	const approveTransactionReceipt = useTransactionReceipt({hash: transApprove, watch: true})
+	const requestDepositTransactionReceipt = useTransactionReceipt({hash: transDeposit, watch: true})
+
+	useEffect(() => {
+		setToken(getTokenFromName(asset));
+	}, [asset]);
+
+	useEffect(() => {
+		console.log('approve tx receipt', approveTransactionReceipt.data?.transaction_hash, approveTransactionReceipt);
+		TxToastManager.handleTxToast(approveTransactionReceipt, `Deposit: Approve ${token?.name}`)
+	}, [approveTransactionReceipt])
+
+	useEffect(() => {
+		console.log('deposit tx receipt', requestDepositTransactionReceipt.data?.transaction_hash, requestDepositTransactionReceipt);
+		TxToastManager.handleTxToast(requestDepositTransactionReceipt, `Deposit ${token?.name}`)
+	}, [requestDepositTransactionReceipt])
 
 	const { contract } = useContract({
 		abi: ERC20Abi as Abi,
@@ -70,15 +96,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 		},
 	});
 
-	useEffect(() => {
-		console.log(
-			'transactions :::::',
-			loadingApprove ||
-				(transactions.length > 0 &&
-					transactions[transactions.length - 1]?.status !== 'ACCEPTED_ON_L2')
-		);
-		// console.log(loadingApprove, );
-	}, []);
+
 	// useEffect(() => {
 	//   // console.log('balance', {
 	//   //   dataBalance, loadingBalance, errorBalance, refreshBalance, contract, account
@@ -96,7 +114,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 		calls: {
 			contractAddress: tokenAddressMap[asset] as string,
 			entrypoint: 'approve',
-			calldata: [diamondAddress, uint256.UINT_128_MAX.toString(), 0],
+			calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
 		},
 	});
 
@@ -156,8 +174,6 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 		error: errorApprove,
 	} = returnTransactionParameters();
 
-	const [transApprove, setTransApprove] = useState('');
-	const [transDeposit, setTransDeposit] = useState('');
 
 	useEffect(() => {
 		console.log(
@@ -169,10 +185,10 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 		);
 
 		if (dataApprove) {
-			setTransApprove(dataApprove);
+			setTransApprove(dataApprove?.transaction_hash);
 		}
 		if (dataDeposit) {
-			setTransDeposit(dataDeposit);
+			setTransDeposit(dataDeposit?.transaction_hash);
 		}
 	}, [dataApprove, loadingApprove, resetApprove, errorApprove, dataDeposit]);
 
@@ -186,7 +202,10 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 	};
 
 	const handleDepositAmountChange = (e: any) => {
-		setDepositAmount(Number(e.target.value));
+		if(e.target.value)
+			setDepositAmount(Number(e.target.value));
+		else
+			setDepositAmount('')
 	};
 
 	const handleMax = async () => {
@@ -212,14 +231,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 
 	const handleApprove = async (asset: string) => {
 		let val = await USDC();
-		console.log('valll', val);
-		if (errorApprove) {
-			toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
-				position: toast.POSITION.BOTTOM_RIGHT,
-				closeOnClick: true,
-			});
-			return;
-		}
+		console.log('valll', val.transaction_hash);
 	};
 
 	const handleDeposit = async (asset: string) => {
@@ -262,8 +274,9 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 	};
 
 	useEffect(() => {
-		console.log('check allownace', {
+		console.log('check deposit allownace', token?.name, {
 			dataAllowance,
+			remaining: (dataAllowance ? uint256.uint256ToBN(dataAllowance[0]).toString() : '0'),
 			errorAllowance,
 			refreshAllowance,
 			loadingAllowance,
@@ -271,9 +284,10 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 		if (!loadingAllowance) {
 			if (dataAllowance) {
 				let data: any = dataAllowance;
-				let _allowance = uint256.uint256ToBN(data.remaining);
-
-				setAllowance(Number(uint256.uint256ToBN(dataAllowance[0])) / 10 ** 18);
+				let _allowanceBN = uint256.uint256ToBN(data.remaining);
+				const _allowance = ethers.utils.formatEther(_allowanceBN.toString());
+				console.log('deposit allowance', token?.name, _allowance, depositAmount)
+				setAllowance(Number(_allowance));
 			} else if (errorAllowance) {
 				// handleToast(true, "Check allowance", errorAllowance)
 			}
@@ -334,20 +348,10 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 												type='number'
 												className='form-control'
 												id='amount'
+												min={MinimumAmount[asset]}
 												placeholder={`Minimum amount = ${MinimumAmount[asset]}`}
 												onChange={handleDepositAmountChange}
-												value={
-													depositAmount !== 0
-														? depositAmount
-														: `Minimum amount = ${MinimumAmount[asset]}`
-												}
-												// value={depositAmount}
-												invalid={
-													depositAmount !== 0 &&
-													depositAmount < MinimumAmount[asset]
-														? true
-														: false
-												}
+												value={depositAmount}
 											/>
 
 											{ <>
@@ -382,7 +386,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 										{depositAmount != 0 &&
 											depositAmount < MinimumAmount[asset] && (
 												<FormText>
-													{`Please enter amount more than minimum amount = ${MinimumAmount[asset]}`}
+													{`Please enter amount more than minimum amount = ${MinimumAmount[asset]} ${asset}`}
 												</FormText>
 											)}
 									</Col>
@@ -416,19 +420,13 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 										}
 										onClick={(e) => handleApprove(asset)}
 									>
-										{/* setApproveStatus(transactions[0]?.status); */}
 										{!(
 											loadingApprove ||
-											(transactions
-												.map((tx) => tx.transactionHash)
-												.includes(transApprove) &&
-												transactions.filter((tx) => {
-													tx.transactionHash === transApprove;
-												})[0]?.status !== 'ACCEPTED_ON_L2')
+											(isTransactionLoading(approveTransactionReceipt))
 										) ? (
 											'Approve'
 										) : (
-											<Spinner>Loading...</Spinner>
+											<div><MySpinner text='Approving token'/></div>
 										)}
 									</Button>
 								) : (
@@ -447,16 +445,11 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 									>
 										{!(
 											loadingApprove ||
-											(transactions
-												.map((tx) => tx.transactionHash)
-												.includes(transDeposit) &&
-												transactions.filter((tx) => {
-													tx.transactionHash === transDeposit;
-												})[0]?.status !== 'ACCEPTED_ON_L2')
+											isTransactionLoading(requestDepositTransactionReceipt)
 										) ? (
 											'Deposit'
 										) : (
-											<Spinner>Loading...</Spinner>
+											<MySpinner text='Depositing token'/>
 										)}
 									</Button>
 								)}

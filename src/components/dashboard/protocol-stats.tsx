@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Row, Col, Card, CardBody, CardTitle, CardSubtitle } from 'reactstrap';
 import { getTokenFromAddress } from '../../blockchain/stark-constants';
 import OffchainAPI from '../../services/offchainapi.service';
+import MySpinner from '../mySpinner';
 
 const ProtocolStats = () => {
   const [tvl, setTvl] = useState(0);
@@ -61,7 +62,7 @@ const ProtocolStats = () => {
 						</div>
 						<CardTitle tag='h5'></CardTitle>
 						<CardSubtitle className='mb-2 text-muted' tag='h2' align='right'>
-							{tvl ? `$ ${Math.trunc(tvl).toLocaleString()}`  : '...'}
+							{tvl ? `$ ${Math.trunc(tvl).toLocaleString()}`  : <MySpinner text=''/>}
 						</CardSubtitle>
 					</CardBody>
 				</Card>
@@ -118,7 +119,7 @@ const ProtocolStats = () => {
 						</div>
 						<CardTitle tag='h5'></CardTitle>
 						<CardSubtitle className='mb-2 text-muted' tag='h2' align='right'>
-							{domianatMarket ? domianatMarket : '...'}
+							{domianatMarket ? domianatMarket : <MySpinner text=''/>}
 						</CardSubtitle>
 					</CardBody>
 				</Card>
@@ -145,7 +146,7 @@ const ProtocolStats = () => {
 						</div>
 						<CardTitle tag='h5'></CardTitle>
 						<CardSubtitle className='mb-2 text-muted' tag='h2' align='right'>
-							{totalUsers ? totalUsers : '...'}
+							{totalUsers ? totalUsers :  <MySpinner size='lg' text=''/>}
 						</CardSubtitle>
 					</CardBody>
 				</Card>

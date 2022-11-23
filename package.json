@@ -12,7 +12,7 @@
 	"dependencies": {
 		"@argent/x-sessions": "^4.8.0",
 		"@loadable/component": "^5.15.2",
-		"@starknet-react/core": "^0.13.0",
+		"@starknet-react/core": "0.14.6",
 		"@types/loadable__component": "^5.13.4",
 		"@zeit/next-sass": "^1.0.1",
 		"axios": "^0.24.0",
@@ -50,7 +50,7 @@
 		"react-script": "2.0.5",
 		"react-scripts": "^4.0.3",
 		"react-select": "4.3.1",
-		"react-toastify": "^9.0.8",
+		"react-toastify": "9.1.1",
 		"reactstrap": "^9.1.4",
 		"redux": "^4.1.2",
 		"redux-saga": "1.1.3",

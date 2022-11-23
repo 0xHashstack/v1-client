@@ -1,41 +1,38 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import { toast } from "react-toastify";
 import { Button, Col, Spinner } from "reactstrap";
 import useGetToken from "../../blockchain/mockups/useGetToken";
-import {useStarknetTransactionManager} from '@starknet-react/core';
+import {useTransactionManager, useTransactionReceipt} from '@starknet-react/core';
+import { InvokeFunctionResponse } from "starknet";
+import { TxToastManager } from "../../blockchain/txToastManager";
+import { getTokenFromName, isTransactionLoading } from "../../blockchain/stark-constants";
+import MySpinner from "../mySpinner";
 
 const GetTokenButton = ({ token, idx }: { token: string; idx: number }) => {
+  let tokenInfo = getTokenFromName(token);
   const { handleGetToken, returnTransactionParameters } = useGetToken({
-    token,
+    token: tokenInfo?.address || '',
   });
 
-  const {transactions} = useStarknetTransactionManager()
-
-  const { data, loading, reset, error } = returnTransactionParameters(token);
+  const { data, loading, reset, error } = returnTransactionParameters();
+	const [transaction, setTransaction] = useState('');
+	const transactionReceipt = useTransactionReceipt({hash: transaction, watch: true})
 
 
   const handleClickToken = async (
     token: string,
     loading: boolean,
     error: any,
-    handleGetToken: (token: string) => Promise<void>
+    handleGetToken: () => Promise<InvokeFunctionResponse>
   ) => {
-    const val = await handleGetToken(token);
-    if (transactions[transactions.length -1]?.status === 'RECIEVED') {
-      toast.success(`${token} requested!`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-    }
-    if (error) {
-      toast.error(`${token} transfer unsucessful`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-    }
+    
+    const val = await handleGetToken();
+    setTransaction(val.transaction_hash)
   };
 
-
+  useEffect(() => {
+		TxToastManager.handleTxToast(transactionReceipt, `Mint Testnet tokens: ${token}`);
+	}, [transactionReceipt])
 
   return (
     <Col sm={3} key={idx}>
@@ -52,7 +49,7 @@ const GetTokenButton = ({ token, idx }: { token: string; idx: number }) => {
           )
         }
       >
-        {loading ? <Spinner>Loading...</Spinner> : token}
+        {isTransactionLoading(transactionReceipt) ? <MySpinner text={token}/> : token}
       </Button>
     </Col>
   );

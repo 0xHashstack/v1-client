@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
-import { Container, Row, Col, Card, CardBody, TabContent } from 'reactstrap';
+import { Container, Row, Col, Card, CardBody, TabContent, Alert, Modal, ModalHeader, ModalBody, ModalFooter } from 'reactstrap';
 import classnames from 'classnames';
 import 'react-toastify/dist/ReactToastify.css';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Head from 'next/head';
+import { Icon } from 'semantic-ui-react'
 
 import loadable from '@loadable/component';
 const TxHistoryTable = loadable(
@@ -27,7 +28,7 @@ import {
 	getTokenFromAddress,
 } from '../blockchain/stark-constants';
 import BigNumber from 'bignumber.js';
-import { useStarknet } from '@starknet-react/core';
+import { useAccount, useStarknet } from '@starknet-react/core';
 import ActiveDepositTable from '../components/passbook/passbook-table/active-deposit-table';
 import { number } from 'starknet';
 import { assert } from 'console';
@@ -110,7 +111,7 @@ const Dashboard = () => {
 	const [liquidationIndex, setLiquidationIndex] = useState(0);
 
 	const [index, setIndex] = useState('1');
-	const { account: _account } = useStarknet();
+	const { account: starknetAccount, address: _account } = useAccount();
 	const [account, setAccount] = useState<string>('');
 
 	useEffect(() => {
@@ -495,6 +496,85 @@ const Dashboard = () => {
 		}
 	};
 
+	function incorrectChain() {
+		return <div style={{
+			padding: '20px',
+			textAlign: 'center',
+		}}>
+			<p style={{
+			color: '#efb90b',
+			fontSize: '25px'}}>
+				Please switch to Goerli 2 network and refresh</p>
+			Currently connected to: {starknetAccount?.baseUrl}. The base url should be `https://alpha4-2.starknet.io` in your wallet for Goerli 2 network. 
+		</div>
+	}
+
+	function dashboardUI() {
+		return <Container fluid>
+					
+		{/* Protocol Stats */}
+		<ProtocolStats/>
+		<Row>
+			<Col xl={'12'}>
+
+				<Card style={{ height: '35rem', overflowY: 'scroll' }}>
+
+					<CardBody>
+						<Row>
+							{/* Dashboard Menu Panes */}
+							<DashboardMenu
+								customActiveTab={customActiveTab}
+								toggleCustom={toggleCustom}
+								account={account as string}
+							/>
+
+							{/* ----------------- PASSBOOK MENU TOGGLES -------------------- */}
+							<Col xl='5'>
+								{customActiveTab === '2' && (
+									<PassbookMenu
+										account={account as string}
+										customActiveTabs={customActiveTabs}
+										toggleCustoms={toggleCustoms}
+									/>
+								)}
+							</Col>
+						</Row>
+
+						{/* ----------------- PASSBOOK BODY -------------------- */}
+						<Row>
+							<div>
+								<Col lg={12}>
+									{customActiveTab === '2' &&
+										getActionTabs(customActiveTabs)}
+									{/* {getPassbookTable(passbookStatus)} */}
+								</Col>
+							</div>
+						</Row>
+
+						<TabContent activeTab={customActiveTab} className='p-1'>
+							{/* ------------------------------------- DASHBOARD ----------------------------- */}
+							<LoanBorrowCommitment isLoading={isLoading} />
+
+							{/* -------------------------------------- PASSBOOK ----------------------------- */}
+
+							{/* -------------------------------------- LIQUIDATION ----------------------------- */}
+							<Liquidation
+								activeLiquidationsData={activeLiquidationsData}
+								isTransactionDone={isTransactionDone}
+							/>
+						</TabContent>
+					</CardBody>
+				</Card>
+			</Col>
+		</Row>
+	</Container>
+	}
+
+	function isCorrectNetwork() {
+		return starknetAccount?.baseUrl.includes('alpha4-2.starknet.io') || starknetAccount?.baseUrl.includes('localhost')
+	}
+	
+
 	return (
 		<React.Fragment>
 			<Head>
@@ -507,63 +587,10 @@ const Dashboard = () => {
         </MetaTags> */}
 
 				{/* <Banner /> */}
-				<Container fluid>
-					{/* Protocol Stats */}
-					<ProtocolStats/>
-					<Row>
-						<Col xl={'12'}>
-
-							<Card style={{ height: '35rem', overflowY: 'scroll' }}>
-
-								<CardBody>
-									<Row>
-										{/* Dashboard Menu Panes */}
-										<DashboardMenu
-											customActiveTab={customActiveTab}
-											toggleCustom={toggleCustom}
-											account={account as string}
-										/>
-
-										{/* ----------------- PASSBOOK MENU TOGGLES -------------------- */}
-										<Col xl='5'>
-											{customActiveTab === '2' && (
-												<PassbookMenu
-													account={account as string}
-													customActiveTabs={customActiveTabs}
-													toggleCustoms={toggleCustoms}
-												/>
-											)}
-										</Col>
-									</Row>
-
-									{/* ----------------- PASSBOOK BODY -------------------- */}
-									<Row>
-										<div>
-											<Col lg={12}>
-												{customActiveTab === '2' &&
-													getActionTabs(customActiveTabs)}
-												{/* {getPassbookTable(passbookStatus)} */}
-											</Col>
-										</div>
-									</Row>
-
-									<TabContent activeTab={customActiveTab} className='p-1'>
-										{/* ------------------------------------- DASHBOARD ----------------------------- */}
-										<LoanBorrowCommitment isLoading={isLoading} />
-
-										{/* -------------------------------------- PASSBOOK ----------------------------- */}
-
-										{/* -------------------------------------- LIQUIDATION ----------------------------- */}
-										<Liquidation
-											activeLiquidationsData={activeLiquidationsData}
-											isTransactionDone={isTransactionDone}
-										/>
-									</TabContent>
-								</CardBody>
-							</Card>
-						</Col>
-					</Row>
-				</Container>
+				{!starknetAccount ? 
+					<h3>Loading...</h3> : 
+					(!isCorrectNetwork() ? incorrectChain() : dashboardUI())
+				}
 
 				{/* <Analytics></Analytics>
             {props.children} */}

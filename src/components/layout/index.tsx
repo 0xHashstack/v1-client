@@ -10,14 +10,14 @@ import Header from "./header";
 
 import "react-toastify/dist/ReactToastify.css";
 import "./index.module.scss";
-import { Connector, useConnectors, useStarknet } from "@starknet-react/core";
+import { Connector, useAccount, useConnectors, useStarknet } from "@starknet-react/core";
 import { ConnectWallet } from "../wallet";
 
 const Layout = (props: any) => {
   const dispatch = useDispatch();
 
   const { available, connect, disconnect } = useConnectors();
-  const { account } = useStarknet();
+  const { address: account } = useAccount();
 
   const [isTransactionDone, setIsTransactionDone] = useState(false);
 
