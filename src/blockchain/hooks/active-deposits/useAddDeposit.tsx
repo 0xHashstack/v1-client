@@ -1,10 +1,12 @@
 import {
+	useAccount,
 	useConnectors,
 	useContract,
 	useStarknet,
 	useStarknetCall,
 	useStarknetExecute,
-	useStarknetTransactionManager,
+	useTransactionManager,
+	useTransactionReceipt,
 } from '@starknet-react/core';
 import { exec } from 'child_process';
 import { useEffect, useState } from 'react';
@@ -27,8 +29,10 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 	const [shouldApprove, setShouldApprove] = useState(false);
 	const [allowanceVal, setAllowance] = useState(0);
 
-	const { account } = useStarknet();
-	const { transactions } = useStarknetTransactionManager();
+	const { address: account } = useAccount();
+	const [transApprove, setTransApprove] = useState('');
+	const [transDeposit, setTransBorrow] = useState('');
+
 
 	useEffect(() => {
 		setToken(_token.market);
@@ -118,13 +122,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 
 	const handleApprove = async (asset: string) => {
 		let val = await executeApprove();
-		if (errorApprove) {
-			toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
-				position: toast.POSITION.BOTTOM_RIGHT,
-				closeOnClick: true,
-			});
-			return;
-		}
+		setTransApprove(val.transaction_hash)
 	};
 
 	const DepositAmount = async (asset: string) => {
@@ -156,14 +154,8 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 		// console.log("amountin -: ", depositAmount);
 
 		// setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
-		await executeDeposit();
-		if (errorDeposit) {
-			toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
-				position: toast.POSITION.BOTTOM_RIGHT,
-				closeOnClick: true,
-			});
-			return;
-		}
+		let tx = await executeDeposit();
+		setTransBorrow(tx.transaction_hash);
 	};
 
 	return {
@@ -175,9 +167,10 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 		allowanceVal,
 		depositAmount,
 		depositCommit,
+		transApprove,
+		transDeposit,
 		loadingApprove,
 		loadingDeposit,
-		transactions,
 		dataApprove,
     dataDeposit
 

@@ -1,4 +1,5 @@
 import {
+  useAccount,
   useConnectors,
   useStarknet,
   useStarknetExecute,
@@ -12,10 +13,7 @@ import {
 } from "../stark-constants";
 
 const useGetToken = ({ token }: { token: string }) => {
-  const { available, connect, disconnect } = useConnectors();
-
-  const { account } = useStarknet();
-
+  console.log("get token", token);
   const [_account, setAccount] = useState<string>("");
 
   // useEffect(() => {
@@ -24,103 +22,31 @@ const useGetToken = ({ token }: { token: string }) => {
   // }, [account]);
 
   const {
-    data: dataBTC,
-    loading: loadingBTC,
-    error: errorBTC,
-    reset: resetBTC,
-    execute: BTC,
+    data: dataToken,
+    loading: loadingToken,
+    error: errorToken,
+    reset: resetToken,
+    execute: Token,
   } = useStarknetExecute({
     calls: {
       contractAddress: contractsEnv.FAUCET_ADDRESS as string,
       entrypoint: "get_tokens",
-      calldata: [contractsEnv.TOKENS[0].address],
+      calldata: [token],
     },
   });
 
-  const {
-    data: dataUSDC,
-    loading: loadingUSDC,
-    error: errorUSDC,
-    reset: resetUSDC,
-    execute: USDC,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: contractsEnv.FAUCET_ADDRESS as string,
-      entrypoint: "get_tokens",
-      calldata: [contractsEnv.TOKENS[1].address],
-    },
-  });
-
-  const {
-    data: dataUSDT,
-    loading: loadingUSDT,
-    error: errorUSDT,
-    reset: resetUSDT,
-    execute: USDT,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: contractsEnv.FAUCET_ADDRESS as string,
-      entrypoint: "get_tokens",
-      calldata: [contractsEnv.TOKENS[2].address],
-    },
-  });
-
-  const {
-    data: dataBNB,
-    loading: loadingBNB,
-    error: errorBNB,
-    reset: resetBNB,
-    execute: BNB,
-  } = useStarknetExecute({
-    calls: {
-      contractAddress: contractsEnv.FAUCET_ADDRESS as string,
-      entrypoint: "get_tokens",
-      calldata: [contractsEnv.TOKENS[3].address],
-    },
-  });
-
-  const handleGetToken = async (token: string) => {
-    let val;
-    if (token === "BTC") {
-      console.log([contractsEnv.TOKENS[0].address]);
-      val = await BTC();
-    }
-    if (token === "BNB") {
-      val = await BNB();
-    }
-    if (token === "USDC") {
-      val = await USDC();
-    }
-    if (token === "USDT") {
-      val = await USDT();
-    }
+  const handleGetToken = async () => {
+    let val = await Token();
+    return val;
   };
 
-  const returnTransactionParameters = (token: string) => {
-    let data, loading, reset, error;
-    if (token === "BTC") {
-      [data, loading, reset, error] = [dataBTC, loadingBTC, resetBTC, errorBTC];
-    }
-    if (token === "BNB") {
-      [data, loading, reset, error] = [dataBNB, loadingBNB, resetBNB, errorBNB];
-    }
-    if (token === "USDC") {
-      [data, loading, reset, error] = [
-        dataUSDC,
-        loadingUSDC,
-        resetUSDC,
-        errorUSDC,
-      ];
-    }
-    if (token === "USDT") {
-      [data, loading, reset, error] = [
-        dataUSDT,
-        loadingUSDT,
-        resetUSDT,
-        errorUSDT,
-      ];
-    }
-    return { data, loading, reset, error };
+  const returnTransactionParameters = () => {
+    return {
+      data: dataToken,
+      loading: loadingToken,
+      reset: resetToken,
+      error: errorToken,
+    };
   };
   return { handleGetToken, returnTransactionParameters };
 };

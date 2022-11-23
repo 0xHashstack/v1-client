@@ -1,4 +1,4 @@
-import { useContract, useStarknet, useStarknetCall, useStarknetExecute } from '@starknet-react/core';
+import { useAccount, useContract, useStarknet, useStarknetCall, useStarknetExecute } from '@starknet-react/core';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Button, Table, Spinner, TabPane } from 'reactstrap';
@@ -19,7 +19,7 @@ const LiquidationButton = ({
 	const [loadingMsg, setLoadingMsg] = useState("Loading...")
 	const [canLiquidate, setCanLiquidate] = useState(false)
 	const [allowance, setAllowance] = useState<string>('')
-	const { account:_account } = useStarknet();
+	const { address : _account } = useAccount();
 	const [account, setAccount] = useState<string>('')
 	
 	let loanTokenAddress = getTokenFromName(loan.loanMarket)?.address || ''

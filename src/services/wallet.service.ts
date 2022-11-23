@@ -68,7 +68,7 @@ export const getExplorerBaseUrl = (): string | undefined => {
   if (network === "mainnet-alpha") {
     return "https://voyager.online"
   } else if (network === "goerli-alpha") {
-    return "https://goerli.voyager.online"
+    return "https://goerli-2.voyager.online"
   }
 }
 

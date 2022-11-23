@@ -1,9 +1,10 @@
 import {
+  useAccount,
   useContract,
   useStarknet,
   useStarknetCall,
   useStarknetExecute,
-  useStarknetTransactionManager,
+  useTransactionManager,
 } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -33,8 +34,8 @@ const Repay = ({
   const [isAllowed, setAllowed] = useState(false);
   const [shouldApprove, setShouldApprove] = useState(false);
 
-  const { account } = useStarknet();
-  const { transactions } = useStarknetTransactionManager();
+  const { address: account } = useAccount();
+  const { transactions } = useTransactionManager();
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,

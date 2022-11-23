@@ -4,6 +4,10 @@ import * as DeployDetailsProd from "../../contracts_addresses_prod_goerli2.json"
 import ERC20Abi from "../../ABIs/erc20_abi.json";
 import ComptrollerAbi from "../../ABIs/comptroller_abi.json";
 import { number } from "starknet";
+import {
+  UseTransactionReceiptResult,
+  UseTransactionResult,
+} from "@starknet-react/core";
 interface ItokenAddressMap {
   [key: string]: string | undefined;
 }
@@ -45,21 +49,46 @@ export const tokenAddressMap: ItokenAddressMap = {
   BNB: getTokenFromName("BNB")?.address,
 };
 
+export function isTransactionLoading(receipt: UseTransactionReceiptResult) {
+  // if(receipt.loading)
+  // 	return true
+  if (receipt.data?.status == "RECEIVED") return true;
+}
+
+export function handleTransactionToast(receipt: UseTransactionReceiptResult) {}
+// export const tokenAddressMap: ItokenAddressMap = {
+//   BTC: DeployDetails.devnet.TOKENS[0].address,
+//   USDT: DeployDetails.devnet.TOKENS[2].address,
+//   USDC: DeployDetails.devnet.TOKENS[1].address,
+//   BNB: DeployDetails.devnet.TOKENS[3].address,
+// };
+
+// export const tokenAddressMap: ItokenAddressMap = {
+//   BTC:
+//     process.env.NODE_ENV === "development"
+//       ? DeployDetails.devnet.TOKENS[0].address
+//       : process.env.NEXT_PUBLIC_T_BTC,
+//   USDT:
+//     process.env.NODE_ENV === "development"
+//       ? DeployDetails.devnet.TOKENS[2].address
+//       : process.env.NEXT_PUBLIC_T_USDT,
+//   USDC:
+//     process.env.NODE_ENV === "development"
+//       ? DeployDetails.devnet.TOKENS[1].address
+//       : process.env.NEXT_PUBLIC_T_USDC,
+//   BNB:
+//     process.env.NODE_ENV === "development"
+//       ? DeployDetails.devnet.TOKENS[3].address
+//       : process.env.NEXT_PUBLIC_T_BNB,
+// };
+
 export const diamondAddress: string = contractsEnv.DIAMOND_ADDRESS;
 
 export const getTokenFromAddress = (address: string) => {
-  if (process.env.NODE_ENV === "development") {
-    let index = contractsEnv.TOKENS.map((item) => item.address).indexOf(
-      address
-    );
-    return contractsEnv.TOKENS[index];
-  } else {
-    let index = contractsEnv.TOKENS.map((item) => item.address).indexOf(
-      address
-    );
-    return contractsEnv.TOKENS[index];
-  }
-  return null;
+  let index = contractsEnv.TOKENS.map((item) => item.address).indexOf(address);
+  let token = contractsEnv.TOKENS[index];
+  console.log("getTokenFromAddress", address, token);
+  return token;
 };
 
 export const getCommitmentNameFromIndex = (index: string) => {

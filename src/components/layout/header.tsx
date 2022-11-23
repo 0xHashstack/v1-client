@@ -23,7 +23,8 @@ import {
   useConnectors,
   useStarknetInvoke,
   useStarknetExecute,
-  useStarknetTransactionManager,
+  useTransactionManager,
+  useAccount,
 } from "@starknet-react/core";
 
 import { ConnectWallet } from "../wallet";
@@ -43,13 +44,15 @@ const Header = ({
   handleDisconnectWallet: () => void;
   handleConnectWallet: (connector: any) => void;
 }) => {
-  const [get_token, setGet_token] = useState(false);
   const [offchainCurrentBlock, setOffchainCurrentBlock] = useState("");
+  const [get_token, setGet_token] = useState(false);
+  const [isTransactionDone, setIsTransactionDone] = useState(false);
+  const [currentProcessingToken, setCurrentProcessingToken] = useState(null);
 
   const { available, connect, disconnect } = useConnectors();
-  const { transactions } = useStarknetTransactionManager();
+  const { transactions } = useTransactionManager();
 
-  const { account } = useStarknet();
+  const { address: account } = useAccount();
 
   const handleClickToken = async (
     token: string,
@@ -107,10 +110,13 @@ const Header = ({
   console.log(available);
 
   const Tokens = ["USDT", "USDC", "BTC", "BNB"];
-  const options = ["mainnet", "Goerli-1", "Goerli-2"];
+  const options = [
+    // 'mainnet', 'Goerli-1',
+    "Goerli-2",
+  ];
   // const defaultOption = options[1];
 
-  const [selected, setSelected] = useState(options[1]);
+  const [selected, setSelected] = useState(options[0]);
   const [dropDownOpen, setdropDownOpen] = useState(false);
 
   const handleChange = (network: any) => {
@@ -201,7 +207,10 @@ const Header = ({
                         }}
                         disabled={account === null}
                         onClick={() => {
-                          window.open("https://faucet.goerli.starknet.io/");
+                          window.open(
+                            // "https://faucet.goerli.starknet.io/"
+                            "https://goerli2-bridge.hashstack.finance"
+                          );
                         }}
                       >
                         Get ETH for gas fee
@@ -234,6 +243,26 @@ const Header = ({
                     onClick={handleDisconnectWallet}
                   >
                     <i className="fas fa-wallet font-size-16 align-middle me-2"></i>{" "}
+                    {`${account.substring(0, 3)}...${account.substring(
+                      account.length - 3,
+                      account.length
+                    )}`}{" "}
+                    | Disconnect
+                  </Button>
+                </>
+              ) : (
+                <ConnectWallet />
+              )}
+
+              {account ? (
+                <>
+                  <Button
+                    color="success"
+                    outline
+                    className="btn-outline"
+                    onClick={handleDisconnectWallet}
+                  >
+                    <i className="fas fa-wallet font-size-16 align-middle me-2"></i>{" "}
                     Disconnect
                   </Button>
                 </>
@@ -241,29 +270,18 @@ const Header = ({
                 <ConnectWallet />
               )}
 
-              <Dropdown isOpen={dropDownOpen} toggle={toggleDropdown}>
-                <DropdownToggle caret>{selected}</DropdownToggle>
-
-                <DropdownMenu>
+              <DropdownMenu>
+                {options.map((option) => (
                   <DropdownItem
+                    key={option}
                     disabled
-                    onClick={() => handleChange(options[0])}
+                    onClick={() => handleChange(option)}
                   >
-                    {options[0]}
+                    {option}
                   </DropdownItem>
-                  <DropdownItem
-                    disabled
-                    onClick={() => handleChange(options[1])}
-                  >
-                    {options[1]}
-                  </DropdownItem>
-                  <DropdownItem onClick={() => handleChange(options[2])}>
-                    {options[2]}
-                  </DropdownItem>
-                </DropdownMenu>
-              </Dropdown>
+                ))}
+              </DropdownMenu>
             </div>
-            {/* </div> */}
           </Navbar>
           <Container>
             <Row>
@@ -279,7 +297,6 @@ const Header = ({
         </Col>
       </Row>
     </Container>
-    // </div>
   );
 };
 

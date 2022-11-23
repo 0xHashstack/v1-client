@@ -24,9 +24,12 @@ import {
 } from '../../../../blockchain/constants';
 import useAddDeposit from '../../../../blockchain/hooks/active-deposits/useAddDeposit';
 import useWithdrawDeposit from '../../../../blockchain/hooks/active-deposits/useWithdrawDeposit';
-import { diamondAddress } from '../../../../blockchain/stark-constants';
+import { diamondAddress, isTransactionLoading } from '../../../../blockchain/stark-constants';
 import { BNtoNum } from '../../../../blockchain/utils';
 import TxHistoryTable from '../../../dashboard/tx-history-table';
+import { useTransactionReceipt } from '@starknet-react/core';
+import MySpinner from '../../../mySpinner';
+import { TxToastManager } from '../../../../blockchain/txToastManager';
 
 const ActiveDeposit = ({
 	asset,
@@ -57,10 +60,25 @@ const ActiveDeposit = ({
 		depositCommit,
 		loadingApprove,
 		loadingDeposit,
-		transactions,
-    dataDeposit,
-    dataApprove
+		transApprove,
+		transDeposit,
+		dataDeposit,
+		dataApprove
 	} = useAddDeposit(asset, diamondAddress);
+
+	const approveTransactionReceipt = useTransactionReceipt({hash: transApprove, watch: true})
+	const addDepositTransactionReceipt = useTransactionReceipt({hash: transDeposit, watch: true})
+
+	useEffect(() => {
+		console.log('approve tx receipt', approveTransactionReceipt.data?.transaction_hash, approveTransactionReceipt);
+		TxToastManager.handleTxToast(approveTransactionReceipt, `Add Deposit: Approve ${depositAmount?.toFixed(4)} ${asset.market}`)
+	}, [approveTransactionReceipt])
+
+	useEffect(() => {
+		console.log('borrow tx receipt', addDepositTransactionReceipt.data?.transaction_hash, addDepositTransactionReceipt);
+		TxToastManager.handleTxToast(addDepositTransactionReceipt, `Deposit ${depositAmount?.toFixed(4)} ${asset.market}`)
+	}, [addDepositTransactionReceipt])
+
 
 	// console.log("here:  ", asset.depositId);
 	const { withdrawDeposit, withdrawAmount, setWithdrawAmount } =
@@ -70,24 +88,8 @@ const ActiveDeposit = ({
 		await withdrawDeposit();
 	};
 
-  	const [transApprove, setTransApprove] = useState('');
-	const [transDeposit, setTransDeposit] = useState('');
 	const [ value, setValue ] = useState(0); 
 
-	useEffect(() => {
-		console.log(
-			'approeve info',
-			dataApprove,
-			dataDeposit
-		);
-
-		if (dataApprove) {
-			setTransApprove(dataApprove);
-		}
-		if (dataDeposit) {
-			setTransDeposit(dataDeposit);
-		}
-	}, [dataApprove,  dataDeposit]);
 
 	useEffect(()=>{
 		const currentBalance = parseFloat(BNtoNum(Number(asset.amount))) +
@@ -348,16 +350,11 @@ const ActiveDeposit = ({
 																		{/* setApproveStatus(transactions[0]?.status); */}
 																		{!(
 																			loadingApprove ||
-																			(transactions
-																				.map((tx) => tx.transactionHash)
-																				.includes(transApprove) &&
-																				transactions.filter((tx) => {
-																					tx.transactionHash === transApprove;
-																				})[0]?.status !== 'ACCEPTED_ON_L2')
+																			isTransactionLoading(approveTransactionReceipt)
 																		) ? (
 																			'Approve'
 																		) : (
-																			<Spinner>Loading...</Spinner>
+																			<MySpinner text='Approvin token'/>
 																		)}
 																	</Button>
 																) : (
@@ -375,16 +372,11 @@ const ActiveDeposit = ({
 																	>
 																		{!(
 																			loadingApprove ||
-																			(transactions
-																				.map((tx) => tx.transactionHash)
-																				.includes(transDeposit) &&
-																				transactions.filter((tx) => {
-																					tx.transactionHash === transDeposit;
-																				})[0]?.status !== 'ACCEPTED_ON_L2')
+																			isTransactionLoading(addDepositTransactionReceipt)
 																		) ? (
 																			'Deposit'
 																		) : (
-																			<Spinner>Loading...</Spinner>
+																			<MySpinner text='Adding Deposit'/>
 																		)}
 																	</Button>
 																)}
@@ -447,7 +439,7 @@ const ActiveDeposit = ({
 																	{!withdrawDepositTransactionDone ? (
 																		'Withdraw Deposit'
 																	) : (
-																		<Spinner>Loading...</Spinner>
+																		<MySpinner text='Withdrawing Deposit'/>
 																	)}
 																</Button>
 															</div>
