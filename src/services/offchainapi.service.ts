@@ -179,4 +179,14 @@ export default class OffchainAPI {
     let route = `/api/recent-aprs`;
     return OffchainAPI.httpGet(route);
   }
+
+  static async getHistoricalDepositRates() {
+    let route = `/api/deposit-aprs`;
+    return OffchainAPI.httpGet(route);
+  }
+
+  static async getHistoricalBorrowRates() {
+    let route = `/api/borrow-aprs`;
+    return OffchainAPI.httpGet(route);
+  }
 }

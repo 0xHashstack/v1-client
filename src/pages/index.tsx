@@ -265,6 +265,7 @@ const Dashboard = () => {
         acquiredYield: Number(0), // deposit interest
         interestRate: 0,
         depositId: deposit.depositId,
+        timestamp: deposit.createdAtOnChain,
       };
 
       // VT: had to stringify and append due to a weird bug that was updating data randomly after append
