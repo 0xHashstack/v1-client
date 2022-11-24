@@ -8,7 +8,7 @@ import { Status } from "starknet/types";
 export class TxToastManager {
     static txToastMap: {[tx: string]: {id: Id, stage: Status}} = {}
 
-    static handleTxToast(receipt: UseTransactionReceiptResult, purpose: string) {
+    static handleTxToast(receipt: UseTransactionReceiptResult, purpose: string, onlyL2Confirm=true) {
         const hash = receipt.data?.transaction_hash
         if(!hash)
             return;
@@ -23,7 +23,7 @@ export class TxToastManager {
                 {purpose}
                 </p>)
             this._showToast(hash, hasToast, msg, 'default', receipt.data?.status, 0)
-        } else if(receipt.data?.status == 'PENDING') {
+        } else if(receipt.data?.status == 'PENDING' && !onlyL2Confirm) {
             // Read: https://community.starknet.io/t/cairo-v0-6-2-api-change-pending-block/195
 
             // let msg = (<p style={{margin: 0}}>

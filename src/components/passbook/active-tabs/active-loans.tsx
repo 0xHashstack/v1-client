@@ -1,53 +1,25 @@
 import {
   useAccount,
-  useStarknet,
   useStarknetExecute,
+  useTransactionReceipt,
+  UseTransactionReceiptResult,
 } from "@starknet-react/core";
-import classNames from "classnames";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import {
-  Row,
-  Col,
-  Card,
-  CardBody,
-  Button,
-  Form,
-  Input,
-  Table,
-  Nav,
-  NavItem,
-  NavLink,
-  Spinner,
-  AccordionItem,
-  AccordionHeader,
-  AccordionBody,
-  UncontrolledAccordion,
-  CardTitle,
-  CardSubtitle,
-  InputGroup,
-} from "reactstrap";
-import {
-  CoinClassNames,
-  EventMap,
-  MinimumAmount,
-} from "../../../blockchain/constants";
+import { Table } from "reactstrap";
 import {
   diamondAddress,
+  isTransactionLoading,
   tokenAddressMap,
 } from "../../../blockchain/stark-constants";
-import {
-  BNtoNum,
-  borrowInterestAccrued,
-  GetErrorText,
-  NumToBN,
-} from "../../../blockchain/utils";
+import { BNtoNum, GetErrorText, NumToBN } from "../../../blockchain/utils";
 import TxHistoryTable from "../../dashboard/tx-history-table";
 import AddToCollateral from "./active-loans/add-to-collateral";
 import Repay from "./active-loans/repay";
 import SwapToLoan from "./swaps/swap-to-loan";
 import { getPrice } from "../../../blockchain/priceFeed";
-import OffchainAPI from "../../../services/offchainapi.service";
+import MySpinner from "../../mySpinner";
+import { TxToastManager } from "../../../blockchain/txToastManager";
 import ActiveLoan from "./active-loans/active-loan";
 
 const ActiveLoansTab = ({
@@ -89,15 +61,73 @@ const ActiveLoansTab = ({
   const [swap_to_active_loan, setSwapToActiveLoan] = useState(false);
   const [swap_active_loan, setSwapActiveLoan] = useState(true);
 
+  const [addCollateralTransactionReceipt, setAddCollateralTransactionReceipt] =
+    useState<UseTransactionReceiptResult>({
+      loading: false,
+      refresh: () => {},
+    });
+  const [repayTransactionReceipt, setRepayTransactionReceipt] =
+    useState<UseTransactionReceiptResult>({
+      loading: false,
+      refresh: () => {},
+    });
+  const [revertSwapTransactionReceipt, setRevertSwapTransactionReceipt] =
+    useState<UseTransactionReceiptResult>({
+      loading: false,
+      refresh: () => {},
+    });
+
+  /* =================== add collateral states ======================= */
+
+  const [transWithdrawLoan, setTransWithdrawLoan] = useState("");
+  const [transSwapLoanToSecondary, setTransSwapLoanToSecondary] = useState("");
+
+  const withdrawLoanTransactionReceipt = useTransactionReceipt({
+    hash: transWithdrawLoan,
+    watch: true,
+  });
+  const swapLoanToSecondaryTransactionReceipt = useTransactionReceipt({
+    hash: transSwapLoanToSecondary,
+    watch: true,
+  });
+
+  function getLoan(loanId: any) {
+    for (let i = 0; i < activeLoansData.length; ++i) {
+      if (loanId == activeLoansData[i].loanId) {
+        return activeLoansData[i];
+      }
+    }
+    return {
+      loanMarket: "NA",
+    };
+  }
+  useEffect(() => {
+    // console.log(
+    //   "withdraw tx receipt",
+    //   withdrawLoanTransactionReceipt.data?.transaction_hash,
+    //   withdrawLoanTransactionReceipt
+    // );
+    TxToastManager.handleTxToast(
+      withdrawLoanTransactionReceipt,
+      `Withdraw partial ${getLoan(loanId).loanMarket} loan`
+    );
+  }, [withdrawLoanTransactionReceipt]);
+
+  useEffect(() => {
+    // console.log(
+    //   "swap loan tx receipt",
+    //   swapLoanToSecondaryTransactionReceipt.data?.transaction_hash,
+    //   swapLoanToSecondaryTransactionReceipt
+    // );
+    TxToastManager.handleTxToast(
+      swapLoanToSecondaryTransactionReceipt,
+      `Swap ${getLoan(loanId).loanMarket} Loan`
+    );
+  }, [swapLoanToSecondaryTransactionReceipt]);
+
   /* =================== add collateral states ======================= */
   const [inputVal1, setInputVal1] = useState(0);
   const [isLoading, setLoading] = useState(false);
-
-  const toggleLoanAction = (tab: string) => {
-    if (loanActionTab !== tab) {
-      setLoanActionTab(tab);
-    }
-  };
 
   const toggleCustoms = (tab: string) => {
     if (customActiveTabs !== tab) {
@@ -136,6 +166,11 @@ const ActiveLoansTab = ({
     //setmodal_add_active_deposit(false)
     removeBodyCss();
   }
+  const toggleLoanAction = (tab: string) => {
+    if (loanActionTab !== tab) {
+      setLoanActionTab(tab);
+    }
+  };
 
   function tog_swap_active_loan() {
     setCollateralActiveLoan(false);
@@ -279,7 +314,7 @@ const ActiveLoansTab = ({
     const maxPermisableWithdrawal = maxPermisableUSD / loanPrice;
 
     setInputVal1(maxPermisableWithdrawal);
-    console.log("max loan withdrawal", maxPermisableWithdrawal);
+    // console.log("max loan withdrawal", maxPermisableWithdrawal);
     setLoading(false);
   };
 
@@ -330,6 +365,18 @@ const ActiveLoansTab = ({
               setSwapMarket={setSwapMarket}
               handleSwapTransactionDone={handleSwapTransactionDone}
               handleSwap={handleSwap}
+              setAddCollateralTransactionReceipt={
+                setAddCollateralTransactionReceipt
+              }
+              setRepayTransactionReceipt={setRepayTransactionReceipt}
+              withdrawLoanTransactionReceipt={withdrawLoanTransactionReceipt}
+              swapLoanToSecondaryTransactionReceipt={
+                swapLoanToSecondaryTransactionReceipt
+              }
+              setRevertSwapTransactionReceipt={setRevertSwapTransactionReceipt}
+              repayTransactionReceipt={repayTransactionReceipt}
+              addCollateralTransactionReceipt={addCollateralTransactionReceipt}
+              revertSwapTransactionReceipt={revertSwapTransactionReceipt}
             />
           );
         })

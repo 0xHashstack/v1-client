@@ -21,7 +21,6 @@ import {
 	useStarknet,
 	useStarknetCall,
 	useStarknetExecute,
-	useTransactionManager,
 	useTransactionReceipt,
 } from '@starknet-react/core';
 import {
@@ -76,7 +75,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 
 	useEffect(() => {
 		console.log('approve tx receipt', approveTransactionReceipt.data?.transaction_hash, approveTransactionReceipt);
-		TxToastManager.handleTxToast(approveTransactionReceipt, `Borrow: Approve ${borrowParams.collateralAmount?.toFixed(4)} ${borrowParams.collateralMarket}`)
+		TxToastManager.handleTxToast(approveTransactionReceipt, `Borrow: Approve ${borrowParams.collateralAmount?.toFixed(4)} ${borrowParams.collateralMarket}`, true)
 	}, [approveTransactionReceipt])
 
 	useEffect(() => {

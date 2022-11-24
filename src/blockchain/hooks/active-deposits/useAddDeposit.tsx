@@ -5,8 +5,6 @@ import {
 	useStarknet,
 	useStarknetCall,
 	useStarknetExecute,
-	useTransactionManager,
-	useTransactionReceipt,
 } from '@starknet-react/core';
 import { exec } from 'child_process';
 import { useEffect, useState } from 'react';

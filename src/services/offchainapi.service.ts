@@ -146,35 +146,6 @@ export default class OffchainAPI {
     return OffchainAPI.httpPost(route, data, "deposits", token);
   }
 
-  static async getTransactionEventsActiveLoans(address: string, token: string) {
-    let route = `/api/transactions-by-events/${address}`;
-    let data = JSON.stringify({
-      events: [
-        "NewLoan",
-        "WithdrawPartial",
-        "AddCollateral",
-        "SushiSwapped",
-        "RevertSushiSwapped",
-      ],
-    });
-    return OffchainAPI.httpPost(route, data, "loans", token);
-  }
-  static async getTransactionEventsRepaid(address: string, token: string) {
-    let route = `/api/transactions-by-events/${address}`;
-    let data = JSON.stringify({
-      events: [
-        "NewLoan",
-        "LoanRepaid",
-        "WithdrawPartial",
-        // "AddCollateral",
-        // "WithdrawCollateral",
-        // "SushiSwapped",
-        // "RevertSushiSwapped",
-      ],
-    });
-    return OffchainAPI.httpPost(route, data, "repaid", token);
-  }
-
   static async getProtocolDepositLoanRates() {
     let route = `/api/recent-aprs`;
     return OffchainAPI.httpGet(route);
@@ -188,5 +159,34 @@ export default class OffchainAPI {
   static async getHistoricalBorrowRates() {
     let route = `/api/borrow-aprs`;
     return OffchainAPI.httpGet(route);
+  }
+  static async getTransactionEventsActiveLoans(address: string, token: string) {
+    let route = `/api/transactions-by-events/${address}`;
+    let data = JSON.stringify({
+      events: [
+        "NewLoan",
+        "WithdrawPartial",
+        "AddCollateral",
+        "SushiSwapped",
+        "RevertSushiSwapped",
+        "LoanRepaid",
+      ],
+    });
+    return OffchainAPI.httpPost(route, data, "loans", token);
+  }
+  static async getTransactionEventsRepaid(address: string, token: string) {
+    let route = `/api/transactions-by-events/${address}`;
+    let data = JSON.stringify({
+      events: [
+        "NewLoan",
+        "LoanRepaid",
+        "WithdrawPartial",
+        "AddCollateral",
+        // "WithdrawCollateral",
+        "SushiSwapped",
+        "RevertSushiSwapped",
+      ],
+    });
+    return OffchainAPI.httpPost(route, data, "repaid", token);
   }
 }

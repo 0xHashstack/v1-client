@@ -12,13 +12,16 @@ import '../assets/scss/theme.scss';
 import "./scrollbar.css"
 
 import {
-	getInstalledInjectedConnectors,
+	InjectedConnector,
 	StarknetProvider,
 } from '@starknet-react/core';
 import { SequencerProvider } from 'starknet';
 
 function MyApp({ Component, pageProps }: AppProps) {
-	const connectors = getInstalledInjectedConnectors();
+	const connectors = [
+		new InjectedConnector({ options: { id: 'braavos' }}),
+		new InjectedConnector({ options: { id: 'argentX' }}),
+	]
 	return (
 		<>
 			<StarknetProvider

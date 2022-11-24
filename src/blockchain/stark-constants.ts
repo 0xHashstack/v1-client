@@ -52,7 +52,8 @@ export const tokenAddressMap: ItokenAddressMap = {
 export function isTransactionLoading(receipt: UseTransactionReceiptResult) {
   // if(receipt.loading)
   // 	return true
-  if (receipt.data?.status == "RECEIVED") return true;
+  if (receipt.data?.status == "RECEIVED" || receipt.data?.status == "PENDING")
+    return true;
 }
 
 export function handleTransactionToast(receipt: UseTransactionReceiptResult) {}

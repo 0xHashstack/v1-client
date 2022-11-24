@@ -150,7 +150,6 @@ const Dashboard = () => {
   }
 
   let utilizationFactor;
-  useEffect(() => {}, []);
 
   const onLoansData = async (loansData: any[]) => {
     console.log("Loans: ", loansData);

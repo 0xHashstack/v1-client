@@ -28,12 +28,11 @@ import {
   diamondAddress,
   isTransactionLoading,
 } from "../../../../blockchain/stark-constants";
-import { BNtoNum, depositInterestAccrued } from "../../../../blockchain/utils";
+import { BNtoNum } from "../../../../blockchain/utils";
 import TxHistoryTable from "../../../dashboard/tx-history-table";
 import { useTransactionReceipt } from "@starknet-react/core";
 import MySpinner from "../../../mySpinner";
 import { TxToastManager } from "../../../../blockchain/txToastManager";
-import OffchainAPI from "../../../../services/offchainapi.service";
 
 const ActiveDeposit = ({
   asset,
@@ -70,12 +69,19 @@ const ActiveDeposit = ({
     dataApprove,
   } = useAddDeposit(asset, diamondAddress);
 
+  const { withdrawDeposit, withdrawAmount, setWithdrawAmount, transWithdraw } =
+    useWithdrawDeposit(asset, diamondAddress, asset.depositId);
+
   const approveTransactionReceipt = useTransactionReceipt({
     hash: transApprove,
     watch: true,
   });
   const addDepositTransactionReceipt = useTransactionReceipt({
     hash: transDeposit,
+    watch: true,
+  });
+  const withdrawTransactionReceipt = useTransactionReceipt({
+    hash: transWithdraw,
     watch: true,
   });
 
@@ -87,7 +93,8 @@ const ActiveDeposit = ({
     );
     TxToastManager.handleTxToast(
       approveTransactionReceipt,
-      `Add Deposit: Approve ${depositAmount?.toFixed(4)} ${asset.market}`
+      `Add Deposit: Approve ${depositAmount?.toFixed(4)} ${asset.market}`,
+      true
     );
   }, [approveTransactionReceipt]);
 
@@ -103,16 +110,23 @@ const ActiveDeposit = ({
     );
   }, [addDepositTransactionReceipt]);
 
-  // console.log("here:  ", asset.depositId);
-  const { withdrawDeposit, withdrawAmount, setWithdrawAmount } =
-    useWithdrawDeposit(asset, diamondAddress, asset.depositId);
+  useEffect(() => {
+    console.log(
+      "borrow tx receipt",
+      withdrawTransactionReceipt.data?.transaction_hash,
+      withdrawTransactionReceipt
+    );
+    TxToastManager.handleTxToast(
+      withdrawTransactionReceipt,
+      `Withdraw ${withdrawAmount?.toFixed(4)} ${asset.market}`
+    );
+  }, [withdrawTransactionReceipt]);
 
   const handleWithdrawDeposit = async (withdrawDeposit: any) => {
     await withdrawDeposit();
   };
 
-  const [value, setValue] = useState(0);
-  const [depositInterest, setDepositInterest] = useState<string>();
+  const [value, setValue] = useState(50);
 
   useEffect(() => {
     const currentBalance =
@@ -120,10 +134,6 @@ const ActiveDeposit = ({
       parseFloat(BNtoNum(Number(asset.acquiredYield)));
     console.log("currentBalance", (value / 100) * currentBalance);
     setWithdrawAmount(Number((value / 100) * currentBalance));
-
-    OffchainAPI.getHistoricalDepositRates().then((data) => {
-      setDepositInterest(depositInterestAccrued(asset, data));
-    });
   }, [value]);
 
   return (
@@ -184,8 +194,11 @@ const ActiveDeposit = ({
                           display: "inline-block",
                           fontSize: "18px",
                         }}
+                        // align="right"
                       >
-                        {depositInterest}
+                        {parseFloat(
+                          BNtoNum(Number(asset.acquiredYield))
+                        ).toFixed(6)}
                         &nbsp;
                         {EventMap[asset.market.toUpperCase()]}
                       </div>
@@ -342,6 +355,7 @@ const ActiveDeposit = ({
                                       }
                                       onClick={(e) => handleApprove(asset)}
                                     >
+                                      {/* setApproveStatus(transactions[0]?.status); */}
                                       {!(
                                         loadingApprove ||
                                         isTransactionLoading(
@@ -404,7 +418,7 @@ const ActiveDeposit = ({
                                       tooltipLabel={(v) => `${v} %`}
                                       onChange={(changeEvent) =>
                                         setValue(
-                                          parseInt(changeEvent.target.value)
+                                          parseFloat(changeEvent.target.value)
                                         )
                                       }
                                       style={{
@@ -426,7 +440,9 @@ const ActiveDeposit = ({
                                       color: "#4B41E5",
                                     }}
                                   >
-                                    {!withdrawDepositTransactionDone ? (
+                                    {!isTransactionLoading(
+                                      withdrawTransactionReceipt
+                                    ) ? (
                                       "Withdraw Deposit"
                                     ) : (
                                       <MySpinner text="Withdrawing Deposit" />
@@ -443,6 +459,10 @@ const ActiveDeposit = ({
                               asset={asset}
                               type="deposits"
                               market={asset.market}
+                              observables={[
+                                withdrawTransactionReceipt,
+                                addDepositTransactionReceipt,
+                              ]}
                             />
                           }
                         </Col>

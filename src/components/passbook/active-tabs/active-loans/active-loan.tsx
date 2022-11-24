@@ -1,3 +1,7 @@
+import {
+  useTransactionReceipt,
+  UseTransactionReceiptResult,
+} from "@starknet-react/core";
 import BigNumber from "bignumber.js";
 import React, { useEffect, useState } from "react";
 import {
@@ -21,10 +25,16 @@ import {
   UncontrolledAccordion,
 } from "reactstrap";
 import { CoinClassNames, EventMap } from "../../../../blockchain/constants";
-import { tokenAddressMap } from "../../../../blockchain/stark-constants";
+import {
+  diamondAddress,
+  isTransactionLoading,
+  tokenAddressMap,
+} from "../../../../blockchain/stark-constants";
+import { TxToastManager } from "../../../../blockchain/txToastManager";
 import { BNtoNum, borrowInterestAccrued } from "../../../../blockchain/utils";
 import OffchainAPI from "../../../../services/offchainapi.service";
 import TxHistoryTable from "../../../dashboard/tx-history-table";
+import MySpinner from "../../../mySpinner";
 import SwapToLoan from "../swaps/swap-to-loan";
 import AddToCollateral from "./add-to-collateral";
 import Repay from "./repay";
@@ -57,6 +67,14 @@ const ActiveLoan = ({
   setSwapMarket,
   handleSwapTransactionDone,
   handleSwap,
+  setAddCollateralTransactionReceipt,
+  setRepayTransactionReceipt,
+  withdrawLoanTransactionReceipt,
+  swapLoanToSecondaryTransactionReceipt,
+  setRevertSwapTransactionReceipt,
+  repayTransactionReceipt,
+  addCollateralTransactionReceipt,
+  revertSwapTransactionReceipt,
 }: {
   asset: any;
   key: any;
@@ -85,11 +103,20 @@ const ActiveLoan = ({
   setSwapMarket: any;
   handleSwapTransactionDone: any;
   handleSwap: any;
+  setAddCollateralTransactionReceipt: any;
+  setRepayTransactionReceipt: any;
+  withdrawLoanTransactionReceipt: any;
+  swapLoanToSecondaryTransactionReceipt: any;
+  setRevertSwapTransactionReceipt: any;
+  repayTransactionReceipt: any;
+  addCollateralTransactionReceipt: any;
+  revertSwapTransactionReceipt: any;
 }) => {
   const [borrowInterest, setBorrowInterest] = useState<string>();
   useEffect(() => {
     setBorrowInterest(borrowInterestAccrued(asset));
-  });
+  }, []);
+
   return (
     <div key={key} style={{ borderTop: "5px" }}>
       <UncontrolledAccordion
@@ -158,7 +185,9 @@ const ActiveLoan = ({
                         }}
                         // align="right"
                       >
-                        {borrowInterest}
+                        {parseFloat(
+                          BNtoNum(Number(asset.loanInterest))
+                        ).toFixed(6)}
                         &nbsp;
                         {EventMap[asset.loanMarket.toUpperCase()]}
                       </div>
@@ -364,13 +393,6 @@ const ActiveLoan = ({
                                       ? "light"
                                       : "outline-light"
                                   }
-                                  // className={`btn-block btn-md ${classnames(
-                                  //   {
-                                  //     active:
-                                  //       modal_add_collateral ===
-                                  //       true,
-                                  //   }
-                                  // )}`}
                                 >
                                   Add Collateral
                                 </Button>
@@ -443,6 +465,9 @@ const ActiveLoan = ({
                                 <AddToCollateral
                                   asset={asset}
                                   depositRequestSel={depositRequestSel}
+                                  setAddCollateralTransactionReceipt={
+                                    setAddCollateralTransactionReceipt
+                                  }
                                 />
                               )}
 
@@ -450,6 +475,9 @@ const ActiveLoan = ({
                               <Repay
                                 depositRequestSel={depositRequestSel}
                                 asset={asset}
+                                setRepayTransactionReceipt={
+                                  setRepayTransactionReceipt
+                                }
                               />
                             )}
 
@@ -528,10 +556,12 @@ const ActiveLoan = ({
                                       color: "#4B41E5",
                                     }}
                                   >
-                                    {!handleWithdrawLoanTransactionDone ? (
+                                    {!isTransactionLoading(
+                                      withdrawLoanTransactionReceipt
+                                    ) ? (
                                       "Withdraw Loan"
                                     ) : (
-                                      <Spinner>Loading...</Spinner>
+                                      <MySpinner text="Withdrawing loan" />
                                     )}
                                   </Button>
                                 </div>
@@ -576,10 +606,12 @@ const ActiveLoan = ({
                                       color: "#4B41E5",
                                     }}
                                   >
-                                    {!handleSwapTransactionDone ? (
+                                    {!isTransactionLoading(
+                                      swapLoanToSecondaryTransactionReceipt
+                                    ) ? (
                                       "Swap Loan"
                                     ) : (
-                                      <Spinner>Loading...</Spinner>
+                                      <MySpinner text="Swapping loan" />
                                     )}
                                   </Button>
                                 </div>
@@ -587,7 +619,12 @@ const ActiveLoan = ({
                             )}
 
                             {swap_to_active_loan && loanActionTab === "1" && (
-                              <SwapToLoan loan={asset.loanId} />
+                              <SwapToLoan
+                                asset={asset}
+                                setRevertSwapTransactionReceipt={
+                                  setRevertSwapTransactionReceipt
+                                }
+                              />
                             )}
                           </div>
                         </Col>
@@ -597,6 +634,13 @@ const ActiveLoan = ({
                               asset={asset}
                               type="loans"
                               market={asset.loanMarket}
+                              observables={[
+                                repayTransactionReceipt,
+                                addCollateralTransactionReceipt,
+                                withdrawLoanTransactionReceipt,
+                                swapLoanToSecondaryTransactionReceipt,
+                                revertSwapTransactionReceipt,
+                              ]}
                             />
                           }
                         </Col>
