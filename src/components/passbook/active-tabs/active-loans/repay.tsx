@@ -4,7 +4,7 @@ import {
   useStarknet,
   useStarknetCall,
   useStarknetExecute,
-  useTransactionManager,
+  useTransactionReceipt,
 } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -14,16 +14,22 @@ import { MinimumAmount } from "../../../../blockchain/constants";
 import {
   diamondAddress,
   ERC20Abi,
+  getTokenFromAddress,
+  isTransactionLoading,
   tokenAddressMap,
 } from "../../../../blockchain/stark-constants";
+import { TxToastManager } from "../../../../blockchain/txToastManager";
 import { BNtoNum, GetErrorText, NumToBN } from "../../../../blockchain/utils";
+import MySpinner from "../../../mySpinner";
 
 const Repay = ({
   depositRequestSel,
   asset,
+  setRepayTransactionReceipt
 }: {
   depositRequestSel: any;
   asset: any;
+  setRepayTransactionReceipt: any
 }) => {
   //   const [loanMarket, setLoanMarket] = useState<string>("");
   const [inputVal, setInputVal] = useState<number>(0);
@@ -35,7 +41,22 @@ const Repay = ({
   const [shouldApprove, setShouldApprove] = useState(false);
 
   const { address: account } = useAccount();
-  const { transactions } = useTransactionManager();
+  const [transApprove, setTransApprove] = useState('');
+	const [transRepay, setTransRepay] = useState('');
+
+	const approveTransactionReceipt = useTransactionReceipt({hash: transApprove, watch: true})
+	const repayTransactionReceipt = useTransactionReceipt({hash: transRepay, watch: true})
+
+  useEffect(() => {
+		console.log('approve tx receipt', approveTransactionReceipt.data?.transaction_hash, approveTransactionReceipt);
+		TxToastManager.handleTxToast(approveTransactionReceipt, `Repay: Approve ${asset.loanMarket}`, true)
+	}, [approveTransactionReceipt])
+
+	useEffect(() => {
+		console.log('repay tx receipt', repayTransactionReceipt.data?.transaction_hash, repayTransactionReceipt);
+		TxToastManager.handleTxToast(repayTransactionReceipt, `Repay ${asset.loanMarket} Loan`)
+    setRepayTransactionReceipt(repayTransactionReceipt)
+	}, [repayTransactionReceipt])
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
@@ -120,13 +141,7 @@ const Repay = ({
 
   const handleApprove = async (asset: string) => {
     let val = await executeApprove();
-    if (errorApprove) {
-      toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
+    setTransApprove(val.transaction_hash)
   };
 
   const handleRepay = async () => {
@@ -143,9 +158,9 @@ const Repay = ({
       });
       return;
     }
-    if (inputVal === 0) {
+    if (inputVal < 0) {
       // approve the transfer
-      toast.error(`${GetErrorText(`Can't deposit 0 of ${asset.loanMarket}`)}`, {
+      toast.error(`${GetErrorText(`Can't deposit < 0 of ${asset.loanMarket}`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
       });
@@ -159,33 +174,9 @@ const Repay = ({
     // console.log("amountin -: ", inputVal);
 
     // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
-    await executeRepay();
-    if (errorRepay) {
-      toast.error(`${GetErrorText(`Deposit for ${asset.loanMarket} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
+    const val = await executeRepay();
+    setTransRepay(val.transaction_hash)
   };
-
-  const [transApprove, setTransApprove] = useState('');
-	const [transRepay, setTransRepay] = useState('');
-
-	useEffect(() => {
-		console.log(
-			'approeve info',
-			dataApprove,
-	  	dataRepay
-		);
-
-		if (dataApprove) {
-			setTransApprove(dataApprove);
-		}
-		if (dataRepay) {
-			setTransRepay(dataRepay);
-		}
-	}, [dataApprove,  dataRepay]);
 
   return (
     <Form>
@@ -195,11 +186,8 @@ const Repay = ({
             type="text"
             className="form-control"
             id="horizontal-password-Input"
-            placeholder={
-              depositRequestSel
-                ? `Minimum amount =  ${MinimumAmount[depositRequestSel]}`
-                : "Amount"
-            }
+            min={0}
+            placeholder={"Loan amount to pay separately"}
             onChange={(event) => {
               setInputVal(Number(event.target.value));
               setLoanId(asset.loanId);
@@ -217,24 +205,18 @@ const Repay = ({
               loanId == null ||
               loadingApprove ||
               loadingRepay ||
-              (inputVal as number) === 0
+              (inputVal as number) < 0
             }
             onClick={(e) => handleApprove(asset.loanMarket)}
           >
             {/* setApproveStatus(transactions[0]?.status); */}
             {!(
               loadingApprove ||
-              (
-												transactions.map(tx => tx.transactionHash).includes(transApprove)
-												 &&
-												transactions.filter(tx => {
-													tx.transactionHash === transApprove
-												})[0]?.status !==
-													'ACCEPTED_ON_L2')
+              isTransactionLoading(approveTransactionReceipt)
 										) ? (
               "Approve"
             ) : (
-              <Spinner>Loading...</Spinner>
+              <MySpinner text="Approving token"/>
             )}
           </Button>
         ) : (
@@ -245,23 +227,17 @@ const Repay = ({
               loanId == null ||
               loadingApprove ||
               loadingRepay ||
-              (inputVal as number) == 0
+              (inputVal as number) < 0
             }
             onClick={(e) => handleRepay()}
           >
             {!(
               loadingApprove ||
-              (
-												transactions.map(tx => tx.transactionHash).includes(transRepay)
-												 &&
-												transactions.filter(tx => {
-													tx.transactionHash === transRepay
-												})[0]?.status !==
-													'ACCEPTED_ON_L2')
+              isTransactionLoading(repayTransactionReceipt)
 										) ? (
               "Repay"
             ) : (
-              <Spinner>Loading...</Spinner>
+              <MySpinner text="Repaying Loan"/>
             )}
           </Button>
         )}

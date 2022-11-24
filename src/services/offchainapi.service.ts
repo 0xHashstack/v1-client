@@ -2,8 +2,8 @@ import axios from 'axios';
 import { tokenAddressMap } from '../blockchain/stark-constants';
 
 export default class OffchainAPI {
-	// static ENDPOINT = 'http://localhost:3010'
-	static ENDPOINT = 'https://8992-106-51-78-197.in.ngrok.io'
+	static ENDPOINT = 'http://localhost:3010'
+	// static ENDPOINT = 'https://8992-106-51-78-197.in.ngrok.io'
 	// static ENDPOINT = 'https://offchainapi.testnet.starknet.hashstack.finance';
 
 	static async httpGet(route: string) {
@@ -152,6 +152,7 @@ export default class OffchainAPI {
 				'AddCollateral',
 				'SushiSwapped',
 				'RevertSushiSwapped',
+				'LoanRepaid',
 			],
 		});
 		return OffchainAPI.httpPost(route, data, 'loans', token);
@@ -163,10 +164,10 @@ export default class OffchainAPI {
 				'NewLoan',
 				'LoanRepaid',
 				'WithdrawPartial',
-				// "AddCollateral",
+				"AddCollateral",
 				// "WithdrawCollateral",
-				// "SushiSwapped",
-				// "RevertSushiSwapped",
+				"SushiSwapped",
+				"RevertSushiSwapped",
 			],
 		});
 		return OffchainAPI.httpPost(route, data, 'repaid', token);

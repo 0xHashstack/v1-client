@@ -26,6 +26,8 @@ const useWithdrawDeposit = (
     setDepositId(_depositId);
   }, [_token.market, _diamondAddress, _depositId]);
 
+  const [transWithdraw, setTransWithdraw] = useState('');
+
   const {
     data: dataDeposit,
     loading: loadingDeposit,
@@ -42,24 +44,15 @@ const useWithdrawDeposit = (
 
   const withdrawDeposit = async () => {
     console.log(`${withdrawAmount} ${depositId} ${diamondAddress}`);
-    await executeDeposit();
-    if (errorDeposit) {
-      toast.error(`${GetErrorText(`Couldn't add Deposit to ${token}`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
-    toast.success(`${token} Withdrawn!`, {
-      position: toast.POSITION.BOTTOM_RIGHT,
-      closeOnClick: true,
-    });
+    const val = await executeDeposit();
+    setTransWithdraw(val.transaction_hash);
   };
 
   return {
     withdrawDeposit,
     setWithdrawAmount,
     withdrawAmount,
+    transWithdraw
   };
 };
 

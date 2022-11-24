@@ -1,4 +1,4 @@
-import { useAccount, useStarknet, useStarknetExecute } from '@starknet-react/core';
+import { useAccount, useStarknet, useStarknetExecute, useTransactionReceipt, UseTransactionReceiptResult } from '@starknet-react/core';
 import classNames from 'classnames';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
@@ -30,6 +30,7 @@ import {
 } from '../../../blockchain/constants';
 import {
 	diamondAddress,
+	isTransactionLoading,
 	tokenAddressMap,
 } from '../../../blockchain/stark-constants';
 import { BNtoNum, GetErrorText, NumToBN } from '../../../blockchain/utils';
@@ -38,6 +39,8 @@ import AddToCollateral from './active-loans/add-to-collateral';
 import Repay from './active-loans/repay';
 import SwapToLoan from './swaps/swap-to-loan';
 import { getPrice } from '../../../blockchain/priceFeed';
+import MySpinner from '../../mySpinner';
+import { TxToastManager } from '../../../blockchain/txToastManager';
 
 const ActiveLoansTab = ({
 	activeLoansData,
@@ -78,6 +81,37 @@ const ActiveLoansTab = ({
 	const [repay_active_loan, setReapyActiveLoan] = useState(false);
 	const [swap_to_active_loan, setSwapToActiveLoan] = useState(false);
 	const [swap_active_loan, setSwapActiveLoan] = useState(true);
+
+	const [repayTransactionReceipt, setRepayTransactionReceipt] = useState<UseTransactionReceiptResult>({loading: false, refresh: () => {}})
+	const [addCollateralTransactionReceipt, setAddCollateralTransactionReceipt] = useState<UseTransactionReceiptResult>({loading: false, refresh: () => {}})
+	const [revertSwapTransactionReceipt, setRevertSwapTransactionReceipt] = useState<UseTransactionReceiptResult>({loading: false, refresh: () => {}})
+
+
+	const [transWithdrawLoan, setTransWithdrawLoan] = useState('');
+	const [transSwapLoanToSecondary, setTransSwapLoanToSecondary] = useState('');
+
+	const withdrawLoanTransactionReceipt = useTransactionReceipt({hash: transWithdrawLoan, watch: true})
+	const swapLoanToSecondaryTransactionReceipt = useTransactionReceipt({hash: transSwapLoanToSecondary, watch: true})
+
+	function getLoan(loanId: any) {
+		for(let i=0; i<activeLoansData.length; ++i) {
+			if(loanId == activeLoansData[i].loanId) {
+				return activeLoansData[i]
+			}
+		}
+		return {
+			loanMarket: 'NA'
+		}
+	}
+	useEffect(() => {
+		console.log('withdraw tx receipt', withdrawLoanTransactionReceipt.data?.transaction_hash, withdrawLoanTransactionReceipt);
+		TxToastManager.handleTxToast(withdrawLoanTransactionReceipt, `Withdraw partial ${getLoan(loanId).loanMarket} loan`)
+	}, [withdrawLoanTransactionReceipt])
+
+	useEffect(() => {
+		console.log('swap loan tx receipt', swapLoanToSecondaryTransactionReceipt.data?.transaction_hash, swapLoanToSecondaryTransactionReceipt);
+		TxToastManager.handleTxToast(swapLoanToSecondaryTransactionReceipt, `Swap ${getLoan(loanId).loanMarket} Loan`)
+	}, [swapLoanToSecondaryTransactionReceipt])
 
 	/* =================== add collateral states ======================= */
 	const [inputVal1, setInputVal1] = useState(0);
@@ -161,56 +195,6 @@ const ActiveLoansTab = ({
 	// swap to market
 	const [swapMarket, setSwapMarket] = useState('');
 	const [swapIsSet, setSwapIsSet] = useState(false);
-	/* ============================== Add Colateral ============================ */
-	// Approve amount
-	const {
-		data: dataApprove,
-		loading: loadingApprove,
-		error: errorApprove,
-		reset: resetApprove,
-		execute: approve,
-	} = useStarknetExecute({
-		calls: {
-			contractAddress: tokenAddressMap[marketToAddCollateral] as string,
-			entrypoint: 'approve',
-			calldata: [diamondAddress, NumToBN(inputVal1 as number, 18), 0],
-		},
-	});
-	// Adding collateral
-
-	/* ============================== Repay Loan ============================ */
-	// const {
-	//   data: dataRepayApprove,
-	//   loading: loadingRepayApprove,
-	//   error: errorRepayApprove,
-	//   reset: resetRepayApprove,
-	//   execute: approveRepay,
-	// } = useStarknetExecute({
-	//   calls: {
-	//     contractAddress: loanMarket,
-	//     entrypoint: "approve",
-	//     calldata: [diamondAddress, NumToBN(inputVal1 as number, 18), 0],
-	//   },
-	// });
-	// Repay
-	// const {
-	//   data: dataRepay,
-	//   loading: loadingRepay,
-	//   error: errorRepay,
-	//   reset: resetRepay,
-	//   execute: executeRepay,
-	// } = useStarknetExecute({
-	//   calls: {
-	//     contractAddress: diamondAddress,
-	//     entrypoint: "loan_repay",
-	//     calldata: [
-	//       loanMarket,
-	//       commitmentPeriod,
-	//       NumToBN(inputVal1 as number, 18),
-	//       0,
-	//     ],
-	//   },
-	// });
 
 	/* ============================== Withdraw Loan ============================ */
 	const {
@@ -290,12 +274,11 @@ const ActiveLoansTab = ({
 		}
 		console.log(diamondAddress, loanId, inputVal1);
 
-		await executeWithdraw();
-		if (errorWithdraw) {
-			toast.error(`${GetErrorText(`Withdraw ${asset.loanMarket} failed`)}`, {
-				position: toast.POSITION.BOTTOM_RIGHT,
-				closeOnClick: true,
-			});
+		try {
+			const val = await executeWithdraw();
+			setTransWithdrawLoan(val.transaction_hash)
+		} catch(err: any) {
+			console.error(err)
 		}
 	};
 
@@ -306,14 +289,8 @@ const ActiveLoansTab = ({
 			return;
 		}
 
-		await executeSwapToMarket();
-		if (errorSwapToMarket) {
-			console.log(errorSwapToMarket);
-			toast.error(`${GetErrorText(`Swap to ${swapMarket} failed`)}`, {
-				position: toast.POSITION.BOTTOM_RIGHT,
-				closeOnClick: true,
-			});
-		}
+		const val = await executeSwapToMarket();
+		setTransSwapLoanToSecondary(val.transaction_hash)
 	};
 
 	const handleMax = async (
@@ -723,6 +700,7 @@ const ActiveLoansTab = ({
 																				<AddToCollateral
 																					asset={asset}
 																					depositRequestSel={depositRequestSel}
+																					setAddCollateralTransactionReceipt={setAddCollateralTransactionReceipt}
 																				/>
 																			)}
 
@@ -731,6 +709,7 @@ const ActiveLoansTab = ({
 																				<Repay
 																					depositRequestSel={depositRequestSel}
 																					asset={asset}
+																					setRepayTransactionReceipt={setRepayTransactionReceipt}
 																				/>
 																			)}
 
@@ -810,10 +789,10 @@ const ActiveLoansTab = ({
 																								color: '#4B41E5',
 																							}}
 																						>
-																							{!handleWithdrawLoanTransactionDone ? (
+																							{!isTransactionLoading(withdrawLoanTransactionReceipt) ? (
 																								'Withdraw Loan'
 																							) : (
-																								<Spinner>Loading...</Spinner>
+																								<MySpinner text="Withdrawing loan"/>
 																							)}
 																						</Button>
 																					</div>
@@ -866,10 +845,10 @@ const ActiveLoansTab = ({
 																							color: '#4B41E5',
 																						}}
 																					>
-																						{!handleSwapTransactionDone ? (
+																						{!isTransactionLoading(swapLoanToSecondaryTransactionReceipt) ? (
 																							'Swap Loan'
 																						) : (
-																							<Spinner>Loading...</Spinner>
+																							<MySpinner text="Swapping loan"/>
 																						)}
 																					</Button>
 																				</div>
@@ -878,7 +857,10 @@ const ActiveLoansTab = ({
 
 																		{swap_to_active_loan &&
 																			loanActionTab === '1' && (
-																				<SwapToLoan loan={asset.loanId} />
+																				<SwapToLoan 
+																					asset={asset} 
+																					setRevertSwapTransactionReceipt={setRevertSwapTransactionReceipt}
+																					/>
 																			)}
 																	</div>
 																</Col>
@@ -888,6 +870,11 @@ const ActiveLoansTab = ({
 																			asset={asset}
 																			type='loans'
 																			market={asset.loanMarket}
+																			observables={[repayTransactionReceipt,
+																				addCollateralTransactionReceipt, 
+																				withdrawLoanTransactionReceipt, 
+																				swapLoanToSecondaryTransactionReceipt,
+																				revertSwapTransactionReceipt]}
 																		/>
 																	}
 																</Col>

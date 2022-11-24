@@ -66,12 +66,16 @@ const ActiveDeposit = ({
 		dataApprove
 	} = useAddDeposit(asset, diamondAddress);
 
+	const { withdrawDeposit, withdrawAmount, setWithdrawAmount, transWithdraw } =
+		useWithdrawDeposit(asset, diamondAddress, asset.depositId);
+
 	const approveTransactionReceipt = useTransactionReceipt({hash: transApprove, watch: true})
 	const addDepositTransactionReceipt = useTransactionReceipt({hash: transDeposit, watch: true})
+	const withdrawTransactionReceipt = useTransactionReceipt({hash: transWithdraw, watch: true})
 
 	useEffect(() => {
 		console.log('approve tx receipt', approveTransactionReceipt.data?.transaction_hash, approveTransactionReceipt);
-		TxToastManager.handleTxToast(approveTransactionReceipt, `Add Deposit: Approve ${depositAmount?.toFixed(4)} ${asset.market}`)
+		TxToastManager.handleTxToast(approveTransactionReceipt, `Add Deposit: Approve ${depositAmount?.toFixed(4)} ${asset.market}`, true)
 	}, [approveTransactionReceipt])
 
 	useEffect(() => {
@@ -79,16 +83,17 @@ const ActiveDeposit = ({
 		TxToastManager.handleTxToast(addDepositTransactionReceipt, `Deposit ${depositAmount?.toFixed(4)} ${asset.market}`)
 	}, [addDepositTransactionReceipt])
 
+	useEffect(() => {
+		console.log('borrow tx receipt', withdrawTransactionReceipt.data?.transaction_hash, withdrawTransactionReceipt);
+		TxToastManager.handleTxToast(withdrawTransactionReceipt, `Withdraw ${withdrawAmount?.toFixed(4)} ${asset.market}`)
+	}, [withdrawTransactionReceipt])
 
-	// console.log("here:  ", asset.depositId);
-	const { withdrawDeposit, withdrawAmount, setWithdrawAmount } =
-		useWithdrawDeposit(asset, diamondAddress, asset.depositId);
 
 	const handleWithdrawDeposit = async (withdrawDeposit: any) => {
 		await withdrawDeposit();
 	};
 
-	const [ value, setValue ] = useState(0); 
+	const [ value, setValue ] = useState(50); 
 
 
 	useEffect(()=>{
@@ -436,7 +441,7 @@ const ActiveDeposit = ({
 																		color: '#4B41E5',
 																	}}
 																>
-																	{!withdrawDepositTransactionDone ? (
+																	{!isTransactionLoading(withdrawTransactionReceipt) ? (
 																		'Withdraw Deposit'
 																	) : (
 																		<MySpinner text='Withdrawing Deposit'/>
@@ -453,6 +458,7 @@ const ActiveDeposit = ({
 														asset={asset}
 														type='deposits'
 														market={asset.market}
+														observables={[withdrawTransactionReceipt, addDepositTransactionReceipt]}
 													/>
 												}
 											</Col>

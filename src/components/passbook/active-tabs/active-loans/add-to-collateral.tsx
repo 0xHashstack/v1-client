@@ -4,7 +4,7 @@ import {
   useStarknet,
   useStarknetCall,
   useStarknetExecute,
-  useTransactionManager,
+  useTransactionReceipt,
 } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -14,16 +14,21 @@ import { MinimumAmount } from "../../../../blockchain/constants";
 import {
   diamondAddress,
   ERC20Abi,
+  isTransactionLoading,
   tokenAddressMap,
 } from "../../../../blockchain/stark-constants";
+import { TxToastManager } from "../../../../blockchain/txToastManager";
 import { BNtoNum, GetErrorText, NumToBN } from "../../../../blockchain/utils";
+import MySpinner from "../../../mySpinner";
 
 const AddToCollateral = ({
   asset,
   depositRequestSel,
+  setAddCollateralTransactionReceipt
 }: {
   asset: any;
   depositRequestSel: any;
+  setAddCollateralTransactionReceipt: any;
 }) => {
   const [marketToAddCollateral, setMarketToAddCollateral] =
     useState<string>("");
@@ -35,7 +40,24 @@ const AddToCollateral = ({
   const [shouldApprove, setShouldApprove] = useState(false);
 
   const { address: account } = useAccount();
-  const { transactions } = useTransactionManager();
+
+  const [transApprove, setTransApprove] = useState('');
+	const [transAddcollateral, setTransAddcollateral] = useState('');
+
+	const approveTransactionReceipt = useTransactionReceipt({hash: transApprove, watch: true})
+	const addCollateralTransactionReceipt = useTransactionReceipt({hash: transAddcollateral, watch: true})
+
+  useEffect(() => {
+		console.log('approve tx receipt', approveTransactionReceipt.data?.transaction_hash, approveTransactionReceipt);
+		TxToastManager.handleTxToast(approveTransactionReceipt, `Add Collateral: Approve ${asset.collateralMarket}`, true)
+	}, [approveTransactionReceipt])
+
+	useEffect(() => {
+		console.log('add col tx receipt', addCollateralTransactionReceipt.data?.transaction_hash, addCollateralTransactionReceipt);
+		TxToastManager.handleTxToast(addCollateralTransactionReceipt, `Add ${asset.collateralMarket} Collateral to Loan`)
+    setAddCollateralTransactionReceipt(addCollateralTransactionReceipt)
+	}, [addCollateralTransactionReceipt])
+
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
@@ -115,13 +137,7 @@ const AddToCollateral = ({
 
   const handleApprove = async (asset: string) => {
     let val = await executeApprove();
-    if (errorApprove) {
-      toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
+    setTransApprove(val.transaction_hash)
   };
 
   const handleAddCollateral = async (asset: string) => {
@@ -148,33 +164,9 @@ const AddToCollateral = ({
     // console.log("amountin -: ", inputVal);
 
     // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
-    await executeAddCollateral();
-    if (errorAddCollateral) {
-      toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
+    const val = await executeAddCollateral();
+    setTransAddcollateral(val.transaction_hash)
   };
-
-  const [transApprove, setTransApprove] = useState('');
-	const [transBorrow, setTransAddCollateral] = useState('');
-
-	useEffect(() => {
-		console.log(
-			'approeve info',
-			dataApprove,
-	  	dataAddCollateral
-		);
-
-		if (dataApprove) {
-			setTransApprove(dataApprove);
-		}
-		if (dataAddCollateral) {
-			setTransAddCollateral(dataAddCollateral);
-		}
-	}, [dataApprove,  dataAddCollateral]);
 
   return (
     <Form>
@@ -215,17 +207,11 @@ const AddToCollateral = ({
             {/* setApproveStatus(transactions[0]?.status); */}
             {!(
               loadingApprove ||
-             (
-												transactions.map(tx => tx.transactionHash).includes(transApprove)
-												 &&
-												transactions.filter(tx => {
-													tx.transactionHash === transApprove
-												})[0]?.status !==
-													'ACCEPTED_ON_L2')
+              isTransactionLoading(approveTransactionReceipt)
 										) ? (
               "Approve"
             ) : (
-              <Spinner>Loading...</Spinner>
+              <MySpinner text="Approving Token"/>
             )}
           </Button>
         ) : (
@@ -242,17 +228,11 @@ const AddToCollateral = ({
           >
             {!(
               loadingApprove ||
-              (
-												transactions.map(tx => tx.transactionHash).includes(transBorrow)
-												 &&
-												transactions.filter(tx => {
-													tx.transactionHash === transBorrow
-												})[0]?.status !==
-													'ACCEPTED_ON_L2')
+              isTransactionLoading(addCollateralTransactionReceipt)
 										) ? (
               "Add Collateral"
             ) : (
-              <Spinner>Loading...</Spinner>
+              <MySpinner text="Adding Collateral"/>
             )}
           </Button>
         )}

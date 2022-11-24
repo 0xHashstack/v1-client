@@ -2,7 +2,7 @@ import React, {useEffect, useState} from "react";
 import { toast } from "react-toastify";
 import { Button, Col, Spinner } from "reactstrap";
 import useGetToken from "../../blockchain/mockups/useGetToken";
-import {useTransactionManager, useTransactionReceipt} from '@starknet-react/core';
+import { useTransactionReceipt } from '@starknet-react/core';
 import { InvokeFunctionResponse } from "starknet";
 import { TxToastManager } from "../../blockchain/txToastManager";
 import { getTokenFromName, isTransactionLoading } from "../../blockchain/stark-constants";

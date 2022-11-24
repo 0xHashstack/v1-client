@@ -35,7 +35,6 @@ import {
 	useStarknetCall,
 	useStarknetExecute,
 	useStarknetInvoke,
-	useTransactionManager,
 	useTransactionReceipt,
 	useTransactions
 } from '@starknet-react/core';
@@ -69,7 +68,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 
 	useEffect(() => {
 		console.log('approve tx receipt', approveTransactionReceipt.data?.transaction_hash, approveTransactionReceipt);
-		TxToastManager.handleTxToast(approveTransactionReceipt, `Deposit: Approve ${token?.name}`)
+		TxToastManager.handleTxToast(approveTransactionReceipt, `Deposit: Approve ${token?.name}`, true)
 	}, [approveTransactionReceipt])
 
 	useEffect(() => {

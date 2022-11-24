@@ -62,7 +62,7 @@ const ProtocolStats = () => {
 						</div>
 						<CardTitle tag='h5'></CardTitle>
 						<CardSubtitle className='mb-2 text-muted' tag='h2' align='right'>
-							{tvl ? `$ ${Math.trunc(tvl).toLocaleString()}`  : <MySpinner text=''/>}
+							{tvl ? `$ ${Math.trunc(tvl).toLocaleString()}`  : <MySpinner size='lg' text=''/>}
 						</CardSubtitle>
 					</CardBody>
 				</Card>
@@ -119,7 +119,7 @@ const ProtocolStats = () => {
 						</div>
 						<CardTitle tag='h5'></CardTitle>
 						<CardSubtitle className='mb-2 text-muted' tag='h2' align='right'>
-							{domianatMarket ? domianatMarket : <MySpinner text=''/>}
+							{domianatMarket ? domianatMarket : <MySpinner size='lg' text=''/>}
 						</CardSubtitle>
 					</CardBody>
 				</Card>
