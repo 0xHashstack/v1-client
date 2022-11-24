@@ -8,6 +8,7 @@ import { Logger } from "ethers/lib/utils";
 import OffchainAPI from "../services/offchainapi.service";
 import { intersection } from "lodash";
 import { time } from "console";
+import { getTokenFromAddress, getTokenFromName } from "./stark-constants";
 
 export const fixedSpecial = (num: number, n: number) => {
   var str = num.toPrecision();
@@ -86,8 +87,6 @@ export const depositInterestAccrued = (asset: any, historicalData: any[]) => {
     .sort(compare);
 
   let currentTime = Date.now() / 1000;
-  console.log("timestamp", marketCommitmentSpecificData[0].timestamp);
-  console.log("currentTime", currentTime);
   const secondsInYear_bn = new BigNumber(31536000);
 
   const result_bn: BigNumber = marketCommitmentSpecificData.reduce(
@@ -102,14 +101,10 @@ export const depositInterestAccrued = (asset: any, historicalData: any[]) => {
           marketCommitmentSpecificData[index - 1].timestamp - entry.timestamp;
       }
       // amount * difference/seconds in year * rate/100
-      //   let rate = new BigNumber(parseFloat(entry.apr100x) / 100);
-      let rate = new BigNumber(parseFloat("200") / 100);
+      let rate = new BigNumber(parseFloat(entry.apr100x) / 100);
+      //   let rate = new BigNumber(parseFloat("200") / 100);
       let timeDifference_bn = new BigNumber(timeDifference);
       let amount_bn = new BigNumber(asset.amount);
-      console.log(rate.toFixed(6));
-      console.log(timeDifference.toFixed(6));
-      console.log(amount_bn.toFixed(6));
-      console.log(secondsInYear_bn.toFixed(6));
 
       const result_bn: BigNumber = timeDifference_bn
         .multipliedBy(amount_bn)
@@ -124,59 +119,7 @@ export const depositInterestAccrued = (asset: any, historicalData: any[]) => {
   return result_bn.dividedBy(10e18).toFixed(6);
 };
 
-export const borrowInterestAccrued = (asset: any, historicalData: any[]) => {
-  const compare = (entryA: any, entryB: any) => {
-    if (entryA.timestamp > entryB.timestamp) {
-      return -1;
-    } else if (entryA < entryB) {
-      return 1;
-    }
-    return 0;
-  };
-  console.log(historicalData);
-  console.log(asset);
-  let marketCommitmentSpecificData = historicalData
-    .filter((entry) => {
-      return (
-        entry["market"] === asset.loanMarketAddress &&
-        parseInt(entry["commitment"]) === asset.commitmentIndex
-      );
-    })
-    .sort(compare);
-
-  let currentTime = Date.now();
-  const secondsInYear_bn = new BigNumber(31536000);
-
-  const result_bn: BigNumber = marketCommitmentSpecificData.reduce(
-    (accumulator, entry, index) => {
-      let interest = 0;
-      let timeDifference = 0;
-      // let rate = parseInt(entry.apr100x) / 100;
-      if (index === 0) {
-        timeDifference = currentTime - entry.timestamp;
-      } else {
-        timeDifference =
-          marketCommitmentSpecificData[index - 1].timestamp - entry.timestamp;
-      }
-      // amount * difference/seconds in year * rate/100
-      let rate = new BigNumber(parseInt(entry.apr100x) / 100);
-      let timeDifference_bn = new BigNumber(timeDifference);
-      let amount_bn = new BigNumber(asset.amount);
-      console.log(parseFloat(entry.apr100x) / 100);
-      console.log(rate.toFixed(6));
-      console.log(timeDifference.toFixed(6));
-      console.log(amount_bn.toFixed(6));
-      console.log(secondsInYear_bn.toFixed(6));
-
-      const result_bn: BigNumber = timeDifference_bn
-        .multipliedBy(amount_bn)
-        .multipliedBy(rate)
-        .dividedBy(secondsInYear_bn)
-        .dividedBy(100);
-      return result_bn.plus(accumulator);
-    },
-    new BigNumber(0)
-  );
-
-  return result_bn.toFixed(6);
+export const borrowInterestAccrued = (asset: any) => {
+  return BigNumber(asset.loanInterest).dividedBy(BigNumber(1e18)).toFixed(6);
+  //   return new BigNumber(0).toFixed(6);
 };

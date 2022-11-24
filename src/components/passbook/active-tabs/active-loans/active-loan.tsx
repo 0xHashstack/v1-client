@@ -1,3 +1,4 @@
+import BigNumber from "bignumber.js";
 import React, { useEffect, useState } from "react";
 import {
   AccordionBody,
@@ -87,9 +88,7 @@ const ActiveLoan = ({
 }) => {
   const [borrowInterest, setBorrowInterest] = useState<string>();
   useEffect(() => {
-    OffchainAPI.getHistoricalBorrowRates().then((data) => {
-      setBorrowInterest(borrowInterestAccrued(asset, data));
-    });
+    setBorrowInterest(borrowInterestAccrued(asset));
   });
   return (
     <div key={key} style={{ borderTop: "5px" }}>

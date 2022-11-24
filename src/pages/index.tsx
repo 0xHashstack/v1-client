@@ -194,6 +194,7 @@ const Dashboard = () => {
             ? loanData.currentAmount
             : loanData.openLoanAmount
         ), // Borrow amount(current)
+        timestamp: loanData.time,
         //get apr is for loans apr
       };
       loans.push(JSON.parse(JSON.stringify(temp_len)));
