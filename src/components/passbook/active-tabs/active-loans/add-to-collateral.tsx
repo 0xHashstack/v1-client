@@ -14,6 +14,7 @@ import { MinimumAmount } from "../../../../blockchain/constants";
 import {
   diamondAddress,
   ERC20Abi,
+  getTokenFromName,
   isTransactionLoading,
   tokenAddressMap,
 } from "../../../../blockchain/stark-constants";
@@ -24,7 +25,7 @@ import MySpinner from "../../../mySpinner";
 const AddToCollateral = ({
   asset,
   depositRequestSel,
-  setAddCollateralTransactionReceipt
+  setAddCollateralTransactionReceipt,
 }: {
   asset: any;
   depositRequestSel: any;
@@ -41,23 +42,43 @@ const AddToCollateral = ({
 
   const { address: account } = useAccount();
 
-  const [transApprove, setTransApprove] = useState('');
-	const [transAddcollateral, setTransAddcollateral] = useState('');
+  const [transApprove, setTransApprove] = useState("");
+  const [transAddcollateral, setTransAddcollateral] = useState("");
 
-	const approveTransactionReceipt = useTransactionReceipt({hash: transApprove, watch: true})
-	const addCollateralTransactionReceipt = useTransactionReceipt({hash: transAddcollateral, watch: true})
+  const approveTransactionReceipt = useTransactionReceipt({
+    hash: transApprove,
+    watch: true,
+  });
+  const addCollateralTransactionReceipt = useTransactionReceipt({
+    hash: transAddcollateral,
+    watch: true,
+  });
 
   useEffect(() => {
-		console.log('approve tx receipt', approveTransactionReceipt.data?.transaction_hash, approveTransactionReceipt);
-		TxToastManager.handleTxToast(approveTransactionReceipt, `Add Collateral: Approve ${asset.collateralMarket}`, true)
-	}, [approveTransactionReceipt])
+    // console.log(
+    //   "approve tx receipt",
+    //   approveTransactionReceipt.data?.transaction_hash,
+    //   approveTransactionReceipt
+    // );
+    TxToastManager.handleTxToast(
+      approveTransactionReceipt,
+      `Add Collateral: Approve ${asset.collateralMarket}`,
+      true
+    );
+  }, [approveTransactionReceipt]);
 
-	useEffect(() => {
-		console.log('add col tx receipt', addCollateralTransactionReceipt.data?.transaction_hash, addCollateralTransactionReceipt);
-		TxToastManager.handleTxToast(addCollateralTransactionReceipt, `Add ${asset.collateralMarket} Collateral to Loan`)
-    setAddCollateralTransactionReceipt(addCollateralTransactionReceipt)
-	}, [addCollateralTransactionReceipt])
-
+  useEffect(() => {
+    // console.log(
+    //   "add col tx receipt",
+    //   addCollateralTransactionReceipt.data?.transaction_hash,
+    //   addCollateralTransactionReceipt
+    // );
+    TxToastManager.handleTxToast(
+      addCollateralTransactionReceipt,
+      `Add ${asset.collateralMarket} Collateral to Loan`
+    );
+    setAddCollateralTransactionReceipt(addCollateralTransactionReceipt);
+  }, [addCollateralTransactionReceipt]);
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
@@ -107,20 +128,20 @@ const AddToCollateral = ({
   });
 
   useEffect(() => {
-    console.log("check allownace", {
-      dataAllowance,
-      errorAllowance,
-      refreshAllowance,
-      loadingAllowance,
-    });
+    // console.log("check allownace", {
+    //   dataAllowance,
+    //   errorAllowance,
+    //   refreshAllowance,
+    //   loadingAllowance,
+    // });
     if (dataAllowance) {
-      console.log("yo", Number(BNtoNum(dataAllowance[0]?.low, 18)));
+      console.log("yo", Number(BNtoNum(dataAllowance[0]?.low, 18)), inputVal);
     }
     if (!loadingAllowance) {
       if (dataAllowance) {
         let data: any = dataAllowance;
         let _allowance = uint256.uint256ToBN(data.remaining);
-        // console.log({ _allowance: _allowance.toString(), depositAmount });
+        console.log(Number(BNtoNum(dataAllowance[0]?.low, 18)));
         setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
         if (allowanceVal > (inputVal as number)) {
           setAllowed(true);
@@ -137,7 +158,7 @@ const AddToCollateral = ({
 
   const handleApprove = async (asset: string) => {
     let val = await executeApprove();
-    setTransApprove(val.transaction_hash)
+    setTransApprove(val.transaction_hash);
   };
 
   const handleAddCollateral = async (asset: string) => {
@@ -156,7 +177,7 @@ const AddToCollateral = ({
       });
       return;
     }
-    console.log(diamondAddress, inputVal);
+    // console.log(diamondAddress, inputVal);
     // await handleApprove();
     // run deposit function
 
@@ -165,7 +186,7 @@ const AddToCollateral = ({
 
     // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
     const val = await executeAddCollateral();
-    setTransAddcollateral(val.transaction_hash)
+    setTransAddcollateral(val.transaction_hash);
   };
 
   return (
@@ -182,9 +203,13 @@ const AddToCollateral = ({
                 : "Amount"
             }
             onChange={(event) => {
-              setInputVal(Number(event.target.value));
+              setInputVal(parseFloat(event.target.value));
+              console.log(parseFloat(event.target.value));
+              console.log(allowanceVal);
 
-              setMarketToAddCollateral(asset.collateralMarket);
+              setMarketToAddCollateral(
+                getTokenFromName(asset.collateralMarket as string).address
+              );
               setLoanId(asset.loanId);
             }}
           />
@@ -192,7 +217,8 @@ const AddToCollateral = ({
       </div>
 
       <div className="d-grid gap-2">
-        {allowanceVal < (inputVal as number) ? (
+        {dataAllowance &&
+        Number(BNtoNum(dataAllowance[0]?.low, 18)) < (inputVal as number) ? (
           <Button
             color="primary"
             className="w-md"
@@ -206,12 +232,11 @@ const AddToCollateral = ({
           >
             {/* setApproveStatus(transactions[0]?.status); */}
             {!(
-              loadingApprove ||
-              isTransactionLoading(approveTransactionReceipt)
-										) ? (
+              loadingApprove || isTransactionLoading(approveTransactionReceipt)
+            ) ? (
               "Approve"
             ) : (
-              <MySpinner text="Approving Token"/>
+              <MySpinner text="Approving Token" />
             )}
           </Button>
         ) : (
@@ -229,10 +254,10 @@ const AddToCollateral = ({
             {!(
               loadingApprove ||
               isTransactionLoading(addCollateralTransactionReceipt)
-										) ? (
+            ) ? (
               "Add Collateral"
             ) : (
-              <MySpinner text="Adding Collateral"/>
+              <MySpinner text="Adding Collateral" />
             )}
           </Button>
         )}

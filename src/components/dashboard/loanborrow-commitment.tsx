@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Table, TabPane } from "reactstrap";
-import { getCommitmentIndexStringFromName } from "../../blockchain/stark-constants";
+import {
+  getCommitmentIndexStringFromNameDeposit,
+  getCommitmentIndexStringFromNameLoan,
+} from "../../blockchain/stark-constants";
 import DashboardTBody from "./dashboard-body";
 
 const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
@@ -8,8 +11,10 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
   const [borrowCommitment, setBorrowCommitment] = useState<string>("");
 
   useEffect(() => {
-    setDepositCommitment(getCommitmentIndexStringFromName("NONE") as string);
-    setBorrowCommitment(getCommitmentIndexStringFromName("NONE") as string);
+    setDepositCommitment(
+      getCommitmentIndexStringFromNameDeposit("NONE") as string
+    );
+    setBorrowCommitment(getCommitmentIndexStringFromNameLoan("NONE") as string);
   }, []);
   console.log(depositCommitment, borrowCommitment);
 
@@ -34,7 +39,9 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
                   className="form-select form-select-sm"
                   onChange={(e) => {
                     setDepositCommitment(
-                      getCommitmentIndexStringFromName(e.target.value) as string
+                      getCommitmentIndexStringFromNameDeposit(
+                        e.target.value
+                      ) as string
                     );
                   }}
                   defaultValue={"NONE"}
@@ -51,7 +58,9 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
                   className="form-select form-select-sm"
                   onChange={(e) => {
                     setBorrowCommitment(
-                      getCommitmentIndexStringFromName(e.target.value) as string
+                      getCommitmentIndexStringFromNameLoan(
+                        e.target.value
+                      ) as string
                     );
                   }}
                   defaultValue={"NONE"}

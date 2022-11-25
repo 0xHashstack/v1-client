@@ -1,23 +1,28 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Button, Col, Spinner } from "reactstrap";
 import useGetToken from "../../blockchain/mockups/useGetToken";
-import { useTransactionReceipt } from '@starknet-react/core';
+import { useTransactionReceipt } from "@starknet-react/core";
 import { InvokeFunctionResponse } from "starknet";
 import { TxToastManager } from "../../blockchain/txToastManager";
-import { getTokenFromName, isTransactionLoading } from "../../blockchain/stark-constants";
+import {
+  getTokenFromName,
+  isTransactionLoading,
+} from "../../blockchain/stark-constants";
 import MySpinner from "../mySpinner";
 
 const GetTokenButton = ({ token, idx }: { token: string; idx: number }) => {
   let tokenInfo = getTokenFromName(token);
   const { handleGetToken, returnTransactionParameters } = useGetToken({
-    token: tokenInfo?.address || '',
+    token: tokenInfo?.address || "",
   });
 
   const { data, loading, reset, error } = returnTransactionParameters();
-	const [transaction, setTransaction] = useState('');
-	const transactionReceipt = useTransactionReceipt({hash: transaction, watch: true})
-
+  const [transaction, setTransaction] = useState("");
+  const transactionReceipt = useTransactionReceipt({
+    hash: transaction,
+    watch: true,
+  });
 
   const handleClickToken = async (
     token: string,
@@ -25,14 +30,16 @@ const GetTokenButton = ({ token, idx }: { token: string; idx: number }) => {
     error: any,
     handleGetToken: () => Promise<InvokeFunctionResponse>
   ) => {
-    
     const val = await handleGetToken();
-    setTransaction(val.transaction_hash)
+    setTransaction(val.transaction_hash);
   };
 
   useEffect(() => {
-		TxToastManager.handleTxToast(transactionReceipt, `Mint Testnet tokens: ${token}`);
-	}, [transactionReceipt])
+    TxToastManager.handleTxToast(
+      transactionReceipt,
+      `Mint Testnet tokens: ${token}`
+    );
+  }, [transactionReceipt]);
 
   return (
     <Col sm={3} key={idx}>
@@ -49,7 +56,11 @@ const GetTokenButton = ({ token, idx }: { token: string; idx: number }) => {
           )
         }
       >
-        {isTransactionLoading(transactionReceipt) ? <MySpinner text={token}/> : token}
+        {isTransactionLoading(transactionReceipt) ? (
+          <MySpinner text={token} />
+        ) : (
+          token
+        )}
       </Button>
     </Col>
   );

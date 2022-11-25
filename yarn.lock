@@ -2539,7 +2539,7 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@starknet-react/core@^0.14.6":
+"@starknet-react/core@0.14.6":
   version "0.14.6"
   resolved "https://registry.yarnpkg.com/@starknet-react/core/-/core-0.14.6.tgz#77c9e3e57babe197e05bc6aef11931697b1c29f3"
   integrity sha512-3fXCyFxaNoBlXCv6hzRSw9y8r2O+jeAjVVxIRg7klgC22CTP/3bYq5+u9CeUxYwVtIl1SniOtCVTxuKsaY5BHA==
@@ -14072,7 +14072,7 @@ react-test-renderer@^16.0.0-0:
     react-is "^16.8.6"
     scheduler "^0.19.1"
 
-react-toastify@^9.1.1:
+react-toastify@9.1.1:
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-9.1.1.tgz#9280caea4a13dc1739c350d90660a630807bf10b"
   integrity sha512-pkFCla1z3ve045qvjEmn2xOJOy4ZciwRXm1oMPULVkELi5aJdHCN/FHnuqXq8IwGDLB7PPk2/J6uP9D8ejuiRw==

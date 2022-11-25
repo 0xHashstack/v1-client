@@ -1,0 +1,125 @@
+{
+  "goerli": {
+    "DIAMOND_ADDRESS": "0x14a8a2fd9202a7599d7233deedeb6da97ee667199ea41f225fa6210b99dcc81",
+    "TOKENS": [
+      {
+        "name": "BTC",
+        "symbol": "BTC",
+        "decimals": 18,
+        "address": "0x0921f2737b52742c68c8d56f265c777988cbfeb60495ca2940663cf67ea4008",
+        "CEXSymbol": "BTCUSDT",
+        "pontis_key": "27712517064455012"
+      },
+      {
+        "name": "USDC",
+        "symbol": "USDC",
+        "decimals": 18,
+        "address": "0x7ac56b3078e4428fdb3cc9cd257ce9cb77cc20f3ae0ed466c35f73e75ed42c8",
+        "CEXSymbol": "BUSDUSDT",
+        "pontis_key": "8463218501920060260"
+      },
+      {
+        "name": "USDT",
+        "symbol": "USDT",
+        "decimals": 18,
+        "address": "0x5d41add963bc6de5ba86cb1bec147f739df42a55c5d995b782da4534b2152ad",
+        "CEXSymbol": null,
+        "pontis_key": "8463218574934504292"
+      },
+      {
+        "name": "BNB",
+        "symbol": "BNB",
+        "decimals": 18,
+        "address": "0x66212ade7afb8a9be4b085d90baa7b6ceb05bf3524d79fcdd8d7aae3885aa3d",
+        "CEXSymbol": "BNBUSDT",
+        "pontis_key": "27705915699721060"
+      }
+    ],
+    "PONTIS_PROXY_ADDRESS": "0x15b00d1cd2b0166b188625451c140dd4113c29510ded371f18123118001e283",
+    "STORK_PROXY_ADDRESS": "0x3c1714c6bc31a4c3cb2a62c326fc430a61c707d37faa18e533a366c9d50b99a",
+    "SWAP_ROUTER_ADDRESS": "0x64a14a870b1b337dff0ddd4eb4b5d93c6e242c70461105aded55cb2ab42070a",
+    "FAUCET_ADDRESS": "0x09e574d0a11f2b1d2bd395e4edfe4205a563ba704482f03be1259d4200dc9ab"
+  },
+  "goerli_2": {
+    "DIAMOND_ADDRESS": "0x5ad65a92e83d652175aa914e922afd2917f6a9520047eaa0da0684749163fc4",
+    "TOKENS": [
+      {
+        "name": "BTC",
+        "symbol": "BTC",
+        "decimals": 18,
+        "address": "0x24de0d8d82d5eb77990766ae3db64ff4169e02d8e10252cf009a4ffb9d9df7d",
+        "CEXSymbol": "BTCUSDT",
+        "pontis_key": "18669995996566340"
+      },
+      {
+        "name": "USDC",
+        "symbol": "USDC",
+        "decimals": 18,
+        "address": "0x645be7c7f11c20033e2c182274db7ad9e9977ca3c5855797365801dd9f18c32",
+        "CEXSymbol": "BUSDUSDT",
+        "pontis_key": "6148332971638477636"
+      },
+      {
+        "name": "USDT",
+        "symbol": "USDT",
+        "decimals": 18,
+        "address": "0x3e590241775f3b6b9e0579526eb4103d372b7832521160321eb9a767816199a",
+        "CEXSymbol": null,
+        "pontis_key": "6148333044652921668"
+      },
+      {
+        "name": "BNB",
+        "symbol": "BNB",
+        "decimals": 18,
+        "address": "0x500d61ecf16158a186d660cc069f5d66fa34fead533e2cdf386a410b0d9c10c",
+        "CEXSymbol": "BNBUSDT",
+        "pontis_key": "18663394631832388"
+      }
+    ],
+    "PONTIS_PROXY_ADDRESS": "0x251c00bbf87550f3db28c4e26dce3b98c69429fe5bfe5634e978a1f9d779aea",
+    "STORK_PROXY_ADDRESS": "0x31aa38c41826f6461daa9dc063f23518af2043e0b2d6e5543923bad346f0477",
+    "SWAP_ROUTER_ADDRESS": "0x3831382cccc3816a926392ae6f44241526b043bdabe8e6755286c50ae6c2e10",
+    "FAUCET_ADDRESS": "0x62a569cd978d181d4c56aad2a9dcedae3f1d52183a4ec18fa0da2a87f617b79"
+  },
+  "devnet": {
+    "DIAMOND_ADDRESS": "0x39bf786fc4dd65e2f87220aa3d5c8afe504e6c8985c0eea34cb9e27100dcc11",
+    "TOKENS": [
+      {
+        "name": "BTC",
+        "symbol": "BTC",
+        "decimals": 18,
+        "address": "0x09abb9f1c5a42471ed2f351dd96f6b905befce025ee9bd63fa3d3bac1b3310b",
+        "CEXSymbol": "BTCUSDT",
+        "pontis_key": "18669995996566340"
+      },
+      {
+        "name": "USDC",
+        "symbol": "USDC",
+        "decimals": 18,
+        "address": "0x567a813767f551a880710c0d1581c31aac847e408c4e66f896ed293cb2dbdc4",
+        "CEXSymbol": "BUSDUSDT",
+        "pontis_key": "6148332971638477636"
+      },
+      {
+        "name": "USDT",
+        "symbol": "USDT",
+        "decimals": 18,
+        "address": "0x21f8de5a56091a98c922ff655e7f8a6856738003caa9ab6367402c42a959007",
+        "CEXSymbol": null,
+        "pontis_key": "6148333044652921668"
+      },
+      {
+        "name": "BNB",
+        "symbol": "BNB",
+        "decimals": 18,
+        "address": "0x773540f5a62e75fa9fbc1f45cba95fbd0e12ee9157b80c2615e2cbf41eaf4be",
+        "CEXSymbol": "BNBUSDT",
+        "pontis_key": "18663394631832388"
+      }
+    ],
+    "PONTIS_PROXY_ADDRESS": "0x037f669a16ecd84672736f4354f6029a93ab72fe93887cc6c08d1c80c83a466",
+    "STORK_PROXY_ADDRESS": "0x56e92604f6491f26a8af991b636f70f4c9fc07503d881202657b1926a06a318",
+    "SWAP_ROUTER_ADDRESS": "0x33daf84f0aad8d07f298d30e41ab549e2d2aa4f6145a25c668020b00093900f",
+    "FAUCET_ADDRESS": "0x0d6bcd5bd11de9611ea907d8413bcd95b120b521e65a7b4424a26f4abe43b90"
+  }
+}

@@ -3,82 +3,88 @@ import { Container, Row, Col } from "reactstrap";
 import "./footer.module.scss";
 const Footer = () => {
   return (
-    <React.Fragment>
-      <footer className="footer" style={{ marginRight: "180px" }}>
-        <Container fluid={true}>
-          <Row>
-            <Col md={6}>{new Date().getFullYear()} © Hashstack.</Col>
-            <Col md={6}>
-              <div className="text-sm-end w-layout-grid footer-socials">
-                <a
-                  href="https://twitter.com/0xhashstack"
-                  rel="noreferrer"
-                  target="_blank"
-                  className="w-inline-block"
-                  style={{ margin: "1px" }}
-                >
-                  <img
-                    src="./images/Twitter-Icon-Fill.svg"
-                    loading="lazy"
-                    alt=""
-                    className="icon-image"
-                  />
-                </a>
-                <a
-                  href="https://in.linkedin.com/company/0xhashstack"
-                  rel="noreferrer"
-                  target="_blank"
-                  className="w-inline-block"
-                  style={{ margin: "1px" }}
-                >
-                  <img
-                    src="./images/Linkedin-Icon-Fill.svg"
-                    loading="lazy"
-                    alt=""
-                  />
-                </a>
-                <a
-                  href="https://github.com/0xHashstack"
-                  rel="noreferrer"
-                  target="_blank"
-                  className="w-inline-block"
-                  style={{ margin: "3px" }}
-                >
-                  <img src="./images/github.svg" loading="lazy" alt="" />
-                </a>
-                <a
-                  href="http://hashstack.community"
-                  rel="noreferrer"
-                  target="_blank"
-                  className="w-inline-block"
-                  style={{ margin: "3px" }}
-                >
-                  <img src="./images/discord.svg" loading="lazy" alt="" />
-                </a>
-                <a
-                  href="https://hashstack.medium.com/"
-                  rel="noreferrer"
-                  target="_blank"
-                  className="w-inline-block"
-                  style={{ margin: "3px" }}
-                >
-                  <img src="./images/medium.svg" loading="lazy" alt="" />
-                </a>
-                <a
-                  href="https://www.reddit.com/r/0xHashstack/"
-                  rel="noreferrer"
-                  target="_blank"
-                  className="w-inline-block"
-                  style={{ margin: "3px" }}
-                >
-                  <img src="./images/reddit.svg" loading="lazy" alt="" />
-                </a>
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      </footer>
-    </React.Fragment>
+    <Container>
+      <Row>
+        <Col className="d-flex flex-column justify-content-between">
+          {/* <footer className="footer"> */}
+          <div>
+            <Container fluid={true}>
+              <Row>
+                <Col md={6}>{new Date().getFullYear()} © Hashstack.</Col>
+                <Col md={6}>
+                  <div className="text-sm-end w-layout-grid footer-socials">
+                    <a
+                      href="https://twitter.com/0xhashstack"
+                      rel="noreferrer"
+                      target="_blank"
+                      className="w-inline-block"
+                      style={{ margin: "1px" }}
+                    >
+                      <img
+                        src="./images/Twitter-Icon-Fill.svg"
+                        loading="lazy"
+                        alt=""
+                        className="icon-image"
+                      />
+                    </a>
+                    <a
+                      href="https://in.linkedin.com/company/0xhashstack"
+                      rel="noreferrer"
+                      target="_blank"
+                      className="w-inline-block"
+                      style={{ margin: "1px" }}
+                    >
+                      <img
+                        src="./images/Linkedin-Icon-Fill.svg"
+                        loading="lazy"
+                        alt=""
+                      />
+                    </a>
+                    <a
+                      href="https://github.com/0xHashstack"
+                      rel="noreferrer"
+                      target="_blank"
+                      className="w-inline-block"
+                      style={{ margin: "3px" }}
+                    >
+                      <img src="./images/github.svg" loading="lazy" alt="" />
+                    </a>
+                    <a
+                      href="http://hashstack.community"
+                      rel="noreferrer"
+                      target="_blank"
+                      className="w-inline-block"
+                      style={{ margin: "3px" }}
+                    >
+                      <img src="./images/discord.svg" loading="lazy" alt="" />
+                    </a>
+                    <a
+                      href="https://hashstack.medium.com/"
+                      rel="noreferrer"
+                      target="_blank"
+                      className="w-inline-block"
+                      style={{ margin: "3px" }}
+                    >
+                      <img src="./images/medium.svg" loading="lazy" alt="" />
+                    </a>
+                    <a
+                      href="https://www.reddit.com/r/0xHashstack/"
+                      rel="noreferrer"
+                      target="_blank"
+                      className="w-inline-block"
+                      style={{ margin: "3px" }}
+                    >
+                      <img src="./images/reddit.svg" loading="lazy" alt="" />
+                    </a>
+                  </div>
+                </Col>
+              </Row>
+            </Container>
+          </div>
+          {/* </footer> */}
+        </Col>
+      </Row>
+    </Container>
   );
 };
 

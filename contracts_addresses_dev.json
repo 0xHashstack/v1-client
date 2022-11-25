@@ -1,0 +1,83 @@
+{
+  "devnet": {
+    "DIAMOND_ADDRESS": "0x2c9206cfc335d29ff1d01e50a8160a059f174d177a57d9d86b35a322715aa77",
+    "DEPLOYER_ADDRESS": "0x15decb28d5be23a299b7bd0507a11e417943db4d2c5c9f17666a83723d9f0de",
+    "DEPLOYER_ADDRESS_PK": "0x4e3d57d09d427e093e424a16a0923ffd",
+    "TOKENS": [
+      {
+        "name": "BTC",
+        "symbol": "BTC",
+        "decimals": 18,
+        "address": "0x213213b970386a108a13a20a917634932667e38304b32afcbad51cf836bbfca",
+        "CEXSymbol": "BTCUSDT",
+        "pontis_key": "18669995996566340"
+      },
+      {
+        "name": "USDC",
+        "symbol": "USDC",
+        "decimals": 18,
+        "address": "0x2281d4363647bdf49cfeb256f72a6f63cd4304da008b1b645d1383ccc74c5f7",
+        "CEXSymbol": "BUSDUSDT",
+        "pontis_key": "6148332971638477636"
+      },
+      {
+        "name": "USDT",
+        "symbol": "USDT",
+        "decimals": 18,
+        "address": "0x2da5f0a392e109f9488663eb2e41ec7b28825510f912651c93faa620b80207d",
+        "CEXSymbol": null,
+        "pontis_key": "6148333044652921668"
+      },
+      {
+        "name": "BNB",
+        "symbol": "BNB",
+        "decimals": 18,
+        "address": "0x727307723a7be5d6e9233682d0c576fd02fa0028057d7493687b91c8b3a9e5e",
+        "CEXSymbol": "BNBUSDT",
+        "pontis_key": "18663394631832388"
+      }
+    ],
+    "PONTIS_PROXY_ADDRESS": "0x1215569ec27d2822fad8041be7cf94d432a4544063ea28f9bb54f1c664febe7",
+    "STORK_PROXY_ADDRESS": "0x41467801981395cab54e2b4b00542c41ceb19f5d3bd31caa5816fb8ebd8e20b",
+    "SWAP_ROUTER_ADDRESS": "0x42d492b660b74528a3b8ed9662131d239a7b2e4c1ff6fe02138462e87945fed",
+    "FAUCET_ADDRESS": "0x453e9b98b024f04325a86ec7c3a49de51ab65a6a81446f88cf1b3f6fd840a59",
+    "TEST_DATA": {
+      "SECONDARY_ADDRESS": "0x2087563ffba4351f58d56d13a4c6a0da7f2c161312e9f086343b9f634a3452e",
+      "SECONDARY_ADDRESS_PK": "0xec1cd296aec194225dafa31152f33eec"
+    },
+    "PRE_DEPLOYED_ACCOUNTS": [
+      {
+        "ADDRESS": "0x3691a5857572f30a63f55bac78f75c96f84c7854cfedfd325081782e2f484b8",
+        "ADDRESS_PK": "0x8e40ab9127040484392403b5ddb01ff4"
+      },
+      {
+        "ADDRESS": "0x434c81e7a223d7dfd53ced9e521f4febe6038037a88c06387c32826abeb942",
+        "ADDRESS_PK": "0x6cca72e914c2762fde4a7e9b1246dcf1"
+      },
+      {
+        "ADDRESS": "0x149680a67660434f6674d1590be9f4a209d643d494d1682f39d2c731d766754",
+        "ADDRESS_PK": "0x96e9d2fc524bb3c37b85aa55a981bfa3"
+      },
+      {
+        "ADDRESS": "0x3e55a20b54a0381a86138e610bfef41e9d165ac369a66998553000379797e2",
+        "ADDRESS_PK": "0xaacb7da54bc8bccdd4a421399fd41cb"
+      },
+      {
+        "ADDRESS": "0x32e2c3ca6a41302f2d35bf88ab04a785965b9c1597b3aec44a4dd708c372294",
+        "ADDRESS_PK": "0x95653e1e721f20f764447f62184908cd"
+      },
+      {
+        "ADDRESS": "0x530a85d960c68fbdd94f67f3d2bb14c92c302455a0a59114c6fbec9b4cb9596",
+        "ADDRESS_PK": "0x372e13b57da551c1b24dc8dd8c39f2d1"
+      },
+      {
+        "ADDRESS": "0x8b8e63c9c9ac4bbf0cc36c3f23be7fca2311838f5ce73bc5a1b4e6a04f6ebf",
+        "ADDRESS_PK": "0x63650f75e56dcc836ded0199bb8d000d"
+      },
+      {
+        "ADDRESS": "0x612521f6123b73122f72bfc37607ee00fd82d82ecc09a30af9ff1fee7e161e0",
+        "ADDRESS_PK": "0x56b80b9d4cb5021df44202e36ee01fc1"
+      }
+    ]
+  }
+}
