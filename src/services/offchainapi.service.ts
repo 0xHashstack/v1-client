@@ -3,10 +3,11 @@ import { tokenAddressMap } from "../blockchain/stark-constants";
 
 export default class OffchainAPI {
   // static ENDPOINT = 'http://52.77.185.41:3000'
-  static ENDPOINT = 'http://localhost:3010'
+//   static ENDPOINT = 'http://localhost:3010'
   // static ENDPOINT = 'https://8992-106-51-78-197.in.ngrok.io'
   // static ENDPOINT = 'https://offchainapi.testnet.starknet.hashstack.finance';
-//   static ENDPOINT =
+	static ENDPOINT = 'https://1a48-106-51-78-197.in.ngrok.io'
+  //   static ENDPOINT =
 //     process.env.NODE_ENV === "development"
 //       ? "http://localhost:3010"
 //       : "https://offchainapi.testnet.starknet.hashstack.finance";
