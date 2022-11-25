@@ -33,6 +33,9 @@ jobs:
         run: yarn build
       - name: Export
         run: yarn export
+
+        # Deploys to 
+        # http://starknet.dev.hashstack.finance.s3-website-ap-southeast-1.amazonaws.com
       - name: Deploy
         run: aws s3 sync ./out s3://starknet.dev.hashstack.finance
         
