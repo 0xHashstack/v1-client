@@ -16,6 +16,7 @@ import {
 	StarknetProvider,
 } from '@starknet-react/core';
 import { SequencerProvider } from 'starknet';
+import ErrorBoundary from '../components/ErrorComponent';
 
 function MyApp({ Component, pageProps }: AppProps) {
 	const connectors = [
@@ -24,6 +25,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 	]
 	return (
 		<>
+			<ErrorBoundary>
 			<StarknetProvider
 				connectors={connectors}
 				autoConnect
@@ -40,6 +42,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 					</DetailsProvider>
 				</Provider>
 			</StarknetProvider>
+			</ErrorBoundary>
 		</>
 	);
 }

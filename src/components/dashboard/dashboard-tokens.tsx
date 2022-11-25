@@ -52,26 +52,24 @@ const DashboardTokens = ({
         <div className="text-muted">
           {/* {deposit ? deposit[0].apr.toNumber() / 100 : "NaN"}% */}
           {depositLoanRates && parseInt(depositCommitment) < 4
-            ? parseFloat(
+            ? `${parseFloat(
                 depositLoanRates[
                   `${getTokenFromName(coin.name).address}__${depositCommitment}`
                 ].depositAPR.apr100x
-              ) / 100
+              ) / 100} %`
             : <MySpinner/>}
-          %
         </div>
       </td>
       <td>
         <div className="text-muted">
           {/* {borrow ? borrow[0].apr.toNumber() / 100 : "NaN"}% */}
           {depositLoanRates && parseInt(borrowCommitment) < 2
-            ? parseFloat(
+            ? `${parseFloat(
                 depositLoanRates[
                   `${getTokenFromName(coin.name).address}__${borrowCommitment}`
                 ]?.borrowAPR.apr100x
-              ) / 100
+              ) / 100} %`
             :  <MySpinner/>}
-          %
         </div>
       </td>
       <td style={{ width: "120px" }}>
