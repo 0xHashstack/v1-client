@@ -229,8 +229,12 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 	}
 
 	const handleApprove = async (asset: string) => {
-		let val = await USDC();
-		console.log('valll', val.transaction_hash);
+		try {
+			const val = await USDC();
+			console.log('valll', val.transaction_hash);
+		} catch(err) {
+			console.log(err, 'err approve token deposit')
+		}
 	};
 
 	const handleDeposit = async (asset: string) => {

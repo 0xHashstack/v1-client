@@ -43,8 +43,13 @@ const SwapToLoan = ({ asset, setRevertSwapTransactionReceipt }: { asset: any, se
       console.log("error");
       return;
     }
-    const val = await executeSwapToLoan();
-    setTransRevertSwap(val.transaction_hash)
+    
+    try {
+      const val = await executeSwapToLoan();
+      setTransRevertSwap(val.transaction_hash)
+    } catch(err) {
+      console.log(err, 'err swap loan')
+    }
   };
   useEffect(() => {});
   return (

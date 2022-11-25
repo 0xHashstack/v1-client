@@ -30,8 +30,13 @@ const GetTokenButton = ({ token, idx }: { token: string; idx: number }) => {
     error: any,
     handleGetToken: () => Promise<InvokeFunctionResponse>
   ) => {
-    const val = await handleGetToken();
-    setTransaction(val.transaction_hash);
+    try {
+      const val = await handleGetToken();
+      setTransaction(val.transaction_hash);
+    } catch(err) {
+      console.log(err, 'err get tokens')
+    }
+    
   };
 
   useEffect(() => {

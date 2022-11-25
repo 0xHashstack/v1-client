@@ -119,8 +119,12 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 	});
 
 	const handleApprove = async (asset: string) => {
-		let val = await executeApprove();
-		setTransApprove(val.transaction_hash)
+		try {
+			const val = await executeApprove();
+			setTransApprove(val.transaction_hash)
+		} catch(err) {
+			console.log(err, 'err approve for add deposit')
+		}
 	};
 
 	const DepositAmount = async (asset: string) => {

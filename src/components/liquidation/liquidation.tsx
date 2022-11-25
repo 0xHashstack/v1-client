@@ -187,8 +187,13 @@ const LiquidationButton = ({
 					outline
 					onClick={async () => {
 						// reset()
-						const val = await approveToken()
-						setTransApprove(val.transaction_hash)
+						try {
+							const val = await approveToken()
+							setTransApprove(val.transaction_hash)
+						} catch(err) {
+							console.log(err, 'err approve for liquidation')
+						}
+						
 					}}
 				>
 					{isTransactionLoading(approveTransactionReceipt) ? (
@@ -203,8 +208,13 @@ const LiquidationButton = ({
 					outline
 					onClick={async () => {
 						// reset()
-						const val = await liquidate()
-						setTransLiquidate(val.transaction_hash)
+						try {
+							const val = await liquidate()
+							setTransLiquidate(val.transaction_hash)
+						} catch(err) {
+							console.log(err, 'err liquidation')
+						}
+						
 					}}
 				>
 					{isTransactionLoading(liquidateTransactionReceipt) ? (

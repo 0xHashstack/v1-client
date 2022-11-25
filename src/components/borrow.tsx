@@ -176,8 +176,12 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 	};
 
 	const handleApprove = async (asset: string) => {
-		let val = await ApproveToken();
-		setTransApprove(val.transaction_hash);
+		try {
+			const val = await ApproveToken();
+			setTransApprove(val.transaction_hash);
+		} catch(err) {
+			console.log(err, 'err approve token borrow')
+		}
 	};
 
 	const {

@@ -140,8 +140,12 @@ const Repay = ({
   }, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
 
   const handleApprove = async (asset: string) => {
-    let val = await executeApprove();
-    setTransApprove(val.transaction_hash)
+    try {
+      const val = await executeApprove();
+      setTransApprove(val.transaction_hash)
+		} catch(err) {
+			console.log(err, 'err approve token repay')
+		}
   };
 
   const handleRepay = async () => {
@@ -174,8 +178,13 @@ const Repay = ({
     // console.log("amountin -: ", inputVal);
 
     // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
-    const val = await executeRepay();
-    setTransRepay(val.transaction_hash)
+    
+    try {
+      const val = await executeRepay();
+      setTransRepay(val.transaction_hash)
+    } catch(err) {
+      console.log(err, 'err repay')
+    }
   };
 
   return (

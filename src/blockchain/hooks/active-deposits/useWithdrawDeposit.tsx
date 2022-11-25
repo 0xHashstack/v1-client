@@ -44,8 +44,12 @@ const useWithdrawDeposit = (
 
   const withdrawDeposit = async () => {
     console.log(`${withdrawAmount} ${depositId} ${diamondAddress}`);
-    const val = await executeDeposit();
-    setTransWithdraw(val.transaction_hash);
+    try {
+      const val = await executeDeposit();
+      setTransWithdraw(val.transaction_hash);
+    } catch(err) {
+      console.log(err, 'withdraw deposit')
+    }
   };
 
   return {

@@ -25,6 +25,8 @@ import {
   useStarknetExecute,
   useTransactionManager,
   useAccount,
+  useStarknetBlock,
+  useBlock,
 } from "@starknet-react/core";
 
 import { ConnectWallet } from "../wallet";
@@ -34,7 +36,7 @@ import useGetToken from "../../blockchain/mockups/useGetToken";
 import "react-toastify/dist/ReactToastify.css";
 import GetTokenButton from "./get-token-button";
 import OffchainAPI from "../../services/offchainapi.service";
-
+import "./header.module.scss";
 // toast.configure({ autoClose: 4000 });
 
 const Header = ({
@@ -49,31 +51,12 @@ const Header = ({
   const [isTransactionDone, setIsTransactionDone] = useState(false);
   const [currentProcessingToken, setCurrentProcessingToken] = useState(null);
 
+  const { data: blockInfo } = useBlock()
   const { available, connect, disconnect } = useConnectors();
   const { transactions } = useTransactionManager();
 
   const { address: account } = useAccount();
 
-  const handleClickToken = async (
-    token: string,
-    loading: boolean,
-    error: any,
-    handleGetToken: (token: string) => Promise<void>
-  ) => {
-    const val = await handleGetToken(token);
-    if (!loading && !error) {
-      toast.success(`${token} received!`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-    }
-    if (error) {
-      toast.error(`${token} transfer unsucessful`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-    }
-  };
 
   function removeBodyCss() {
     document.body.classList.add("no_padding");
@@ -131,6 +114,13 @@ const Header = ({
   return (
     // <div className="container">
     <Container>
+      <Row style={{marginTop: '5px', position: 'fixed', bottom: 0, left: '15px'}}>
+        <div className="d-flex flex-wrap gap-2 block-status">
+          <div style={{color: 'rgb(255 255 255 / 50%)'}}>Latest synced block: </div>
+          <div className="sc-chPdSV hxkAVa css-x9zcw6" style={{"opacity": 0.6}}>{offchainCurrentBlock}</div>
+          <div className="green-circle"></div>
+        </div>
+      </Row>
       <Row>
         <Col className="d-flex flex-column justify-content-between">
           {/* <div className="navbar"> */}
@@ -234,6 +224,17 @@ const Header = ({
                 Join Discord
               </Button>
 
+              <Dropdown isOpen={dropDownOpen} toggle={toggleDropdown}>
+                <DropdownToggle caret>
+                  {selected}
+                </DropdownToggle>
+
+                <DropdownMenu>
+                  
+                  {options.map(option => <DropdownItem key={option} disabled onClick = {()=> handleChange(option)}>{option}</DropdownItem>)}
+                  
+                </DropdownMenu>
+              </Dropdown>
               {account ? (
                 <>
                   <Button
@@ -254,46 +255,20 @@ const Header = ({
                 <ConnectWallet />
               )}
 
-              {account ? (
-                <>
-                  <Button
-                    color="success"
-                    outline
-                    className="btn-outline"
-                    onClick={handleDisconnectWallet}
-                  >
-                    <i className="fas fa-wallet font-size-16 align-middle me-2"></i>{" "}
-                    Disconnect
-                  </Button>
-                </>
-              ) : (
-                <ConnectWallet />
-              )}
-
-              <DropdownMenu>
-                {options.map((option) => (
-                  <DropdownItem
-                    key={option}
-                    disabled
-                    onClick={() => handleChange(option)}
-                  >
-                    {option}
-                  </DropdownItem>
-                ))}
-              </DropdownMenu>
+       
             </div>
           </Navbar>
-          <Container>
+          {((blockInfo?.block_number || 0) - Number(offchainCurrentBlock)) > 3 ? <Container>
             <Row>
               <Alert
-                color="warning"
-                style={{ marginRight: "15%" }}
+                color="info"
+                style={{ marginTop: "10px", fontWeight: 'bold' }}
                 className="text-center"
               >
-                Offchain block processed {offchainCurrentBlock}
+                ⚠️ Delay in syncing blocks. Not all data may be upto date. Current network block: {blockInfo?.block_number} ({((blockInfo?.block_number || 0) - offchainCurrentBlock)} blocks to sync)
               </Alert>
             </Row>
-          </Container>
+          </Container> : <></>}
         </Col>
       </Row>
     </Container>

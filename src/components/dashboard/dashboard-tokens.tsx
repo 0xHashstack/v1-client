@@ -10,6 +10,7 @@ import {
 import OffchainAPI from "../../services/offchainapi.service";
 import Borrow from "../borrow";
 import Deposit from "../deposit";
+import MySpinner from "../mySpinner";
 import { ICoin } from "./dashboard-body";
 
 const DashboardTokens = ({
@@ -56,7 +57,7 @@ const DashboardTokens = ({
                   `${getTokenFromName(coin.name).address}__${depositCommitment}`
                 ].depositAPR.apr100x
               ) / 100
-            : "NaN"}
+            : <MySpinner/>}
           %
         </div>
       </td>
@@ -69,7 +70,7 @@ const DashboardTokens = ({
                   `${getTokenFromName(coin.name).address}__${borrowCommitment}`
                 ]?.borrowAPR.apr100x
               ) / 100
-            : "NaN"}
+            :  <MySpinner/>}
           %
         </div>
       </td>

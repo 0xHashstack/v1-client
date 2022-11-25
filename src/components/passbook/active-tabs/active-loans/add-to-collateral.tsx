@@ -157,8 +157,12 @@ const AddToCollateral = ({
   }, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
 
   const handleApprove = async (asset: string) => {
-    let val = await executeApprove();
-    setTransApprove(val.transaction_hash);
+    try {
+			const val = await executeApprove();
+      setTransApprove(val.transaction_hash);
+		} catch(err) {
+			console.log(err, 'err approve token add collateral')
+		}
   };
 
   const handleAddCollateral = async (asset: string) => {
@@ -185,8 +189,13 @@ const AddToCollateral = ({
     // console.log("amountin -: ", inputVal);
 
     // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
-    const val = await executeAddCollateral();
-    setTransAddcollateral(val.transaction_hash);
+    try {
+      const val = await executeAddCollateral();
+      setTransAddcollateral(val.transaction_hash);
+    } catch(err) {
+      console.log(err, 'err add collateral')
+    }
+    
   };
 
   return (

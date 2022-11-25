@@ -36,8 +36,12 @@ const useGetToken = ({ token }: { token: string }) => {
   });
 
   const handleGetToken = async () => {
-    let val = await Token();
-    return val;
+	try {
+		const val = await Token();
+    	return val;
+	} catch(err) {
+		console.log(err, 'err get token')
+	}
   };
 
   const returnTransactionParameters = () => {
