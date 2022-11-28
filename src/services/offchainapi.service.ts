@@ -5,7 +5,8 @@ export default class OffchainAPI {
   // static ENDPOINT = 'http://52.77.185.41:3000'
 //   static ENDPOINT = 'http://localhost:3010'
   // static ENDPOINT = 'https://8992-106-51-78-197.in.ngrok.io'
-  static ENDPOINT = 'https://offchainapi.testnet.starknet.hashstack.finance';
+  static ENDPOINT = process.env.NEXT_PUBLIC_APP_ENV=='production' ? 
+  	'https://offchainapi.testnet.starknet.hashstack.finance' : 'http://localhost:3010'
 	// static ENDPOINT = 'https://77dc-106-51-78-197.in.ngrok.io'
     // static ENDPOINT =
 //     process.env.NODE_ENV === "development"
