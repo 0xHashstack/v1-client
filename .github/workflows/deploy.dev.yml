@@ -17,6 +17,8 @@ jobs:
           path: node_modules
           key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
           restore-keys: ${{ runner.os }}-yarn-
+
+      # IAM User: starknet_codedeploy
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
@@ -35,7 +37,16 @@ jobs:
         run: yarn export
 
         # Deploys to 
-        # http://starknet.dev.hashstack.finance.s3-website-ap-southeast-1.amazonaws.com
+        # http://starknetdev.hashstack.finance
       - name: Deploy
         run: aws s3 sync ./out s3://starknet.dev.hashstack.finance
+
+      - name: Invalidate CloudFront
+        uses: chetan/invalidate-cloudfront-action@v2
+        env:
+          DISTRIBUTION: E36IWP7XJSSB3Z
+          PATHS: "/*"
+          AWS_REGION: "us-east-1"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         

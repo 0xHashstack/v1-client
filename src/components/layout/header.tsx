@@ -88,7 +88,7 @@ const Header = ({
     );
 
     console.log("transactions:::::::::", transactions);
-  }, [transactions]);
+  }, [transactions, blockInfo]);
 
   console.log(available);
 
