@@ -130,26 +130,12 @@ const Header = ({
                 <Link href="/">
                   <div>
                     <img
-                      src="./main_logo.png"
+                      src="https://common-static-assets.s3.ap-southeast-1.amazonaws.com/1111-44.png"
                       alt=""
                       style={{
-                        width: "30px",
-                        height: "30px",
-                        marginRight: "0.5rem",
-                        marginBottom: "0.5rem",
+                        height: "40px",
                       }}
                     ></img>
-                    <span className="logo-sm">
-                      <strong
-                        style={{
-                          color: "white",
-                          fontSize: "22px",
-                          fontWeight: "600",
-                        }}
-                      >
-                        Hashstack
-                      </strong>
-                    </span>
                   </div>
                 </Link>
                 {/* className="logo logo-light" */}
