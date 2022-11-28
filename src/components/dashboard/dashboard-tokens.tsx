@@ -55,7 +55,7 @@ const DashboardTokens = ({
             ? `${parseFloat(
                 depositLoanRates[
                   `${getTokenFromName(coin.name).address}__${depositCommitment}`
-                ].depositAPR.apr100x
+                ]?.depositAPR.apr100x
               ) / 100} %`
             : <MySpinner/>}
         </div>

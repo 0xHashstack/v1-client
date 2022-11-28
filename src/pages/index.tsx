@@ -598,6 +598,27 @@ const Dashboard = () => {
     );
   }
 
+  function maintenance() {
+    return (
+		<div
+		  style={{
+			padding: "20px",
+			textAlign: "center",
+		  }}
+		>
+		  <p
+			style={{
+			  color: "#efb90b",
+			  fontSize: "25px",
+			}}
+		  >
+			Maintenance
+		  </p>
+		  We are currently under maintenance and should be back in couple of hours
+		</div>
+	  );
+  }
+
   return (
     <React.Fragment>
       <Head>
@@ -608,6 +629,7 @@ const Dashboard = () => {
         {/* <MetaTags>
           <title>Hashstack Finance</title>
         </MetaTags> */}
+		{/* {maintenance()} */}
 
         {/* <Banner /> */}
         {!starknetAccount ? (
