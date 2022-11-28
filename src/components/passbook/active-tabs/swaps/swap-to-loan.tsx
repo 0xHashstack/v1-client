@@ -1,15 +1,17 @@
-import { useStarknetExecute } from "@starknet-react/core";
+import { useStarknetExecute, useTransactionReceipt } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Button, Form } from "reactstrap";
-import { diamondAddress } from "../../../../blockchain/stark-constants";
+import { diamondAddress, isTransactionLoading } from "../../../../blockchain/stark-constants";
+import { TxToastManager } from "../../../../blockchain/txToastManager";
 import { GetErrorText } from "../../../../blockchain/utils";
+import MySpinner from "../../../mySpinner";
 
-const SwapToLoan = ({ loan }: { loan: any }) => {
+const SwapToLoan = ({ asset, setRevertSwapTransactionReceipt }: { asset: any, setRevertSwapTransactionReceipt: any }) => {
   const [loanId, setLoanId] = useState("");
   useEffect(() => {
-    setLoanId(loan);
-  }, []);
+    setLoanId(asset.loanId);
+  }, [asset]);
 
   const {
     data: dataSwapToLoan,
@@ -25,19 +27,28 @@ const SwapToLoan = ({ loan }: { loan: any }) => {
     },
   });
 
+  const [transRevertSwap, setTransRevertSwap] = useState('');
+
+	const revertSwapTransactionReceipt = useTransactionReceipt({hash: transRevertSwap, watch: true})
+
+	useEffect(() => {
+		console.log('revert swap tx receipt', revertSwapTransactionReceipt.data?.transaction_hash, revertSwapTransactionReceipt);
+		TxToastManager.handleTxToast(revertSwapTransactionReceipt, `Revert Loan to ${asset.loanMarket}`)
+    setRevertSwapTransactionReceipt(revertSwapTransactionReceipt)
+	}, [revertSwapTransactionReceipt])
+
   const handleSwapToLoan = async () => {
     console.log(loanId, " ", diamondAddress);
     if (!loanId && !diamondAddress) {
       console.log("error");
       return;
     }
-    await executeSwapToLoan();
-    if (errorSwapToLoan) {
-      console.log(errorSwapToLoan);
-      toast.error(`${GetErrorText(`Swap to loan failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
+    
+    try {
+      const val = await executeSwapToLoan();
+      setTransRevertSwap(val.transaction_hash)
+    } catch(err) {
+      console.log(err, 'err swap loan')
     }
   };
   useEffect(() => {});
@@ -60,7 +71,8 @@ const SwapToLoan = ({ loan }: { loan: any }) => {
             color: "#4B41E5",
           }}
         >
-          Swap To Loan
+          {!isTransactionLoading(revertSwapTransactionReceipt) ?
+            "Swap To Loan" : <MySpinner text="Reverting loan"/>}
         </Button>
       </div>
     </Form>

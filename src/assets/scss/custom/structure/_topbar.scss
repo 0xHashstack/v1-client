@@ -298,3 +298,27 @@ body[data-layout="horizontal"] {
     }
   }
 }
+
+
+.green-circle {
+  width: 8px;
+  height: 8px;
+  min-height: 8px;
+  min-width: 8px;
+  margin-left: 0.4rem;
+  margin-top: 4px;
+  border-radius: 50%;
+  position: relative;
+  background-color: rgb(39, 174, 96);
+}
+
+.block-status {
+  margin-right: 1rem;
+  border-radius: 4px;
+  width: auto;
+  padding: 4px;
+  background-color: rgb(44, 47, 54);
+  transition: opacity 0.25s ease 0s;
+  color: rgb(39, 174, 96);
+  z-index: 9999;
+}

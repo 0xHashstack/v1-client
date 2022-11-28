@@ -1,34 +1,15 @@
-import { useStarknet, useStarknetExecute } from "@starknet-react/core";
-import classNames from "classnames";
+import {
+  useAccount,
+  useStarknetExecute,
+  useTransactionReceipt,
+  UseTransactionReceiptResult,
+} from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import {
-  Row,
-  Col,
-  Card,
-  CardBody,
-  Button,
-  Form,
-  Input,
-  Table,
-  Nav,
-  NavItem,
-  NavLink,
-  Spinner,
-  AccordionItem,
-  AccordionHeader,
-  AccordionBody,
-  UncontrolledAccordion,
-  CardTitle,
-  CardSubtitle,
-} from "reactstrap";
-import {
-  CoinClassNames,
-  EventMap,
-  MinimumAmount,
-} from "../../../blockchain/constants";
+import { Table } from "reactstrap";
 import {
   diamondAddress,
+  isTransactionLoading,
   tokenAddressMap,
 } from "../../../blockchain/stark-constants";
 import { BNtoNum, GetErrorText, NumToBN } from "../../../blockchain/utils";
@@ -36,6 +17,10 @@ import TxHistoryTable from "../../dashboard/tx-history-table";
 import AddToCollateral from "./active-loans/add-to-collateral";
 import Repay from "./active-loans/repay";
 import SwapToLoan from "./swaps/swap-to-loan";
+import { getPrice } from "../../../blockchain/priceFeed";
+import MySpinner from "../../mySpinner";
+import { TxToastManager } from "../../../blockchain/txToastManager";
+import ActiveLoan from "./active-loans/active-loan";
 
 const ActiveLoansTab = ({
   activeLoansData,
@@ -55,7 +40,7 @@ const ActiveLoansTab = ({
   setCustomActiveTabs: any;
 }) => {
   const [loanActionTab, setLoanActionTab] = useState("0");
-  const { account } = useStarknet();
+  const { address: account } = useAccount();
 
   const [handleRepayTransactionDone, setHandleRepayTransactionDone] =
     useState(false);
@@ -76,14 +61,73 @@ const ActiveLoansTab = ({
   const [swap_to_active_loan, setSwapToActiveLoan] = useState(false);
   const [swap_active_loan, setSwapActiveLoan] = useState(true);
 
+  const [addCollateralTransactionReceipt, setAddCollateralTransactionReceipt] =
+    useState<UseTransactionReceiptResult>({
+      loading: false,
+      refresh: () => {},
+    });
+  const [repayTransactionReceipt, setRepayTransactionReceipt] =
+    useState<UseTransactionReceiptResult>({
+      loading: false,
+      refresh: () => {},
+    });
+  const [revertSwapTransactionReceipt, setRevertSwapTransactionReceipt] =
+    useState<UseTransactionReceiptResult>({
+      loading: false,
+      refresh: () => {},
+    });
+
+  /* =================== add collateral states ======================= */
+
+  const [transWithdrawLoan, setTransWithdrawLoan] = useState("");
+  const [transSwapLoanToSecondary, setTransSwapLoanToSecondary] = useState("");
+
+  const withdrawLoanTransactionReceipt = useTransactionReceipt({
+    hash: transWithdrawLoan,
+    watch: true,
+  });
+  const swapLoanToSecondaryTransactionReceipt = useTransactionReceipt({
+    hash: transSwapLoanToSecondary,
+    watch: true,
+  });
+
+  function getLoan(loanId: any) {
+    for (let i = 0; i < activeLoansData.length; ++i) {
+      if (loanId == activeLoansData[i].loanId) {
+        return activeLoansData[i];
+      }
+    }
+    return {
+      loanMarket: "NA",
+    };
+  }
+  useEffect(() => {
+    // console.log(
+    //   "withdraw tx receipt",
+    //   withdrawLoanTransactionReceipt.data?.transaction_hash,
+    //   withdrawLoanTransactionReceipt
+    // );
+    TxToastManager.handleTxToast(
+      withdrawLoanTransactionReceipt,
+      `Withdraw partial ${getLoan(loanId).loanMarket} loan`
+    );
+  }, [withdrawLoanTransactionReceipt]);
+
+  useEffect(() => {
+    // console.log(
+    //   "swap loan tx receipt",
+    //   swapLoanToSecondaryTransactionReceipt.data?.transaction_hash,
+    //   swapLoanToSecondaryTransactionReceipt
+    // );
+    TxToastManager.handleTxToast(
+      swapLoanToSecondaryTransactionReceipt,
+      `Swap ${getLoan(loanId).loanMarket} Loan`
+    );
+  }, [swapLoanToSecondaryTransactionReceipt]);
+
   /* =================== add collateral states ======================= */
   const [inputVal1, setInputVal1] = useState(0);
-
-  const toggleLoanAction = (tab: string) => {
-    if (loanActionTab !== tab) {
-      setLoanActionTab(tab);
-    }
-  };
+  const [isLoading, setLoading] = useState(false);
 
   const toggleCustoms = (tab: string) => {
     if (customActiveTabs !== tab) {
@@ -122,6 +166,11 @@ const ActiveLoansTab = ({
     //setmodal_add_active_deposit(false)
     removeBodyCss();
   }
+  const toggleLoanAction = (tab: string) => {
+    if (loanActionTab !== tab) {
+      setLoanActionTab(tab);
+    }
+  };
 
   function tog_swap_active_loan() {
     setCollateralActiveLoan(false);
@@ -174,40 +223,6 @@ const ActiveLoansTab = ({
   });
   // Adding collateral
 
-  /* ============================== Repay Loan ============================ */
-  // const {
-  //   data: dataRepayApprove,
-  //   loading: loadingRepayApprove,
-  //   error: errorRepayApprove,
-  //   reset: resetRepayApprove,
-  //   execute: approveRepay,
-  // } = useStarknetExecute({
-  //   calls: {
-  //     contractAddress: loanMarket,
-  //     entrypoint: "approve",
-  //     calldata: [diamondAddress, NumToBN(inputVal1 as number, 18), 0],
-  //   },
-  // });
-  // Repay
-  // const {
-  //   data: dataRepay,
-  //   loading: loadingRepay,
-  //   error: errorRepay,
-  //   reset: resetRepay,
-  //   execute: executeRepay,
-  // } = useStarknetExecute({
-  //   calls: {
-  //     contractAddress: diamondAddress,
-  //     entrypoint: "loan_repay",
-  //     calldata: [
-  //       loanMarket,
-  //       commitmentPeriod,
-  //       NumToBN(inputVal1 as number, 18),
-  //       0,
-  //     ],
-  //   },
-  // });
-
   /* ============================== Withdraw Loan ============================ */
   const {
     data: dataWithdraw,
@@ -237,41 +252,15 @@ const ActiveLoansTab = ({
     },
   });
 
-  /* ============================== Swap Back To Loan ============================ */
-  /* ============================== handle Functions ============================ */
+  const handleWithdrawLoan = async (asset: any) => {
+    if (asset.isSwapped) {
+      toast.error(`${GetErrorText(`Cannot withdraw swapped loan`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
+    }
 
-  // const handleRepay = async () => {
-  //   console.log("trying to repay: ", loanMarket);
-  //   console.log(approveRepay);
-  //   if (!inputVal1 && loanId! && !diamondAddress) {
-  //     console.log("error");
-  //     return;
-  //   }
-
-  //   await approveRepay();
-  //   if (errorApprove) {
-  //     toast.error(
-  //       `${GetErrorText(
-  //         `Approve for token ${tokenAddressMap[loanMarket]} failed`
-  //       )}`,
-  //       {
-  //         position: toast.POSITION.BOTTOM_RIGHT,
-  //         closeOnClick: true,
-  //       }
-  //     );
-  //     return;
-  //   }
-
-  //   await executeRepay();
-  //   if (errorRepay) {
-  //     toast.error(`${GetErrorText(`Repay for ${loanMarket} failed`)}`, {
-  //       position: toast.POSITION.BOTTOM_RIGHT,
-  //       closeOnClick: true,
-  //     });
-  //   }
-  // };
-
-  const handleWithdrawLoan = async (loanMarket: string, commitment: string) => {
     if (!inputVal1 && !loanId && !diamondAddress) {
       console.log("error");
       return;
@@ -280,7 +269,7 @@ const ActiveLoansTab = ({
 
     await executeWithdraw();
     if (errorWithdraw) {
-      toast.error(`${GetErrorText(`Withdraw ${loanMarket} failed`)}`, {
+      toast.error(`${GetErrorText(`Withdraw ${asset.loanMarket} failed`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
       });
@@ -304,8 +293,33 @@ const ActiveLoansTab = ({
     }
   };
 
+  const handleMax = async (
+    _collateralAmount: any,
+    _loanAmount: any,
+    loanMarket: any,
+    collateralMarket: string
+  ) => {
+    setLoading(true);
+    const collateralAmount: any = parseFloat(
+      BNtoNum(Number(_collateralAmount))
+    ).toFixed(6);
+    const loanAmount: any = parseFloat(BNtoNum(Number(_loanAmount))).toFixed(6);
+
+    const loanPrice = await getPrice(loanMarket);
+    const collateralPrice = await getPrice(collateralMarket);
+
+    const totalLoanPriceUSD = loanAmount * loanPrice;
+    const totalCollateralPrice = collateralAmount * collateralPrice;
+    const maxPermisableUSD = (70 / 100) * totalCollateralPrice;
+    const maxPermisableWithdrawal = maxPermisableUSD / loanPrice;
+
+    setInputVal1(maxPermisableWithdrawal);
+    // console.log("max loan withdrawal", maxPermisableWithdrawal);
+    setLoading(false);
+  };
+
   return (
-    <div className="table-responsive  mt-3" style={{ overflow : "hidden"}}>
+    <div className="table-responsive  mt-3" style={{ overflow: "hidden" }}>
       <Table className="table table-nowrap align-middle mb-0">
         <thead>
           <tr>
@@ -321,508 +335,49 @@ const ActiveLoansTab = ({
       {Array.isArray(activeLoansData) && activeLoansData.length > 0 ? (
         activeLoansData.map((asset, key) => {
           return (
-            <div key={key} style={{ borderTop : "5px"}}>
-              <UncontrolledAccordion defaultOpen="0" open="1" style={{margin : "20px"}}>
-                <Row>
-                  <AccordionItem  style={{padding : "20px"}}>
-                    <AccordionHeader targetId="1">
-                      <Col className="mr-4 ">
-                        <Card className="mb-1" style={{ marginTop: "20px" }}>
-                          <CardBody>
-                            <div>
-                              <img
-                                src={
-                                  CoinClassNames[
-                                    EventMap[asset.loanMarket.toUpperCase()]
-                                  ] || asset.loanMarket.toUpperCase()
-                                }
-                                height="18px"
-                              />
-
-                              <div
-                                className="mr-6"
-                                style={{
-                                  display: "inline-block",
-                                  fontSize: "18px",
-                                }}
-                                // align="right"
-                              >
-                                &nbsp; &nbsp;
-                                {EventMap[asset.loanMarket.toUpperCase()]}
-                              </div>
-                            </div>
-                            <CardTitle tag="h5"></CardTitle>
-                            <CardSubtitle className=" text-muted" tag="h6">
-                              <span style={{ fontSize: "14px" }}>
-                                &nbsp; &nbsp;&nbsp;{" "}
-                                {parseFloat(
-                                  BNtoNum(Number(asset.loanAmount))
-                                ).toFixed(6)}
-                              </span>
-                              &nbsp; &nbsp;
-                              {!asset.isSwapped && (
-                                <img
-                                  src="https://img.icons8.com/cotton/64/000000/synchronize--v3.png"
-                                  // width="18%"
-                                  height="12px"
-                                />
-                              )}
-                            </CardSubtitle>
-                          </CardBody>
-                        </Card>
-                      </Col>
-
-                      <Col className="mr-4 ">
-                        <Card className="mb-1" style={{ marginTop: "20px" }}>
-                          <CardBody>
-                            <div>
-                              <div
-                                className="mr-6"
-                                style={{
-                                  display: "inline-block",
-                                  fontSize: "18px",
-                                }}
-                                // align="right"
-                              >
-                                {parseFloat(
-                                  BNtoNum(Number(asset.loanInterest))
-                                ).toFixed(6)}
-                                &nbsp;
-                                {EventMap[asset.loanMarket.toUpperCase()]}
-                              </div>
-                            </div>
-                            <CardTitle tag="h5"></CardTitle>
-
-                            <CardSubtitle className=" text-muted" tag="h6">
-                              <span style={{ fontSize: "14px" }}>
-                                &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
-                                {asset.interestRate}%APR
-                              </span>
-                              &nbsp; &nbsp;
-                            </CardSubtitle>
-                          </CardBody>
-                        </Card>
-                      </Col>
-                      <Col className="mr-4 ">
-                        <Card className="mb-1" style={{ marginTop: "20px" }}>
-                          <CardBody>
-                            <div>
-                              <img
-                                src={
-                                  CoinClassNames[
-                                    EventMap[
-                                      asset.collateralMarket.toUpperCase()
-                                    ]
-                                  ] || asset.collateralMarket.toUpperCase()
-                                }
-                                height="18px"
-                              />
-
-                              <div
-                                className="mr-6"
-                                style={{
-                                  display: "inline-block",
-                                  fontSize: "18px",
-                                }}
-                                // align="right"
-                              >
-                                &nbsp; &nbsp;
-                                {EventMap[asset.collateralMarket.toUpperCase()]}
-                              </div>
-                            </div>
-                            <CardTitle tag="h5"></CardTitle>
-                            <CardSubtitle className=" text-muted" tag="h6">
-                              <span style={{ fontSize: "14px" }}>
-                                &nbsp; &nbsp;&nbsp;{" "}
-                                {parseFloat(
-                                  BNtoNum(Number(asset.collateralAmount))
-                                ).toFixed(6)}
-                              </span>
-                              &nbsp; &nbsp;
-                            </CardSubtitle>
-                          </CardBody>
-                        </Card>
-                      </Col>
-
-                      <Col className="mr-4 ">
-                        <Card className="mb-1" style={{ marginTop: "20px" }}>
-                          <CardBody>
-                            <div>
-                              <img
-                                src={
-                                  CoinClassNames[
-                                    EventMap[
-                                      asset.currentLoanMarket.toUpperCase()
-                                    ]
-                                  ] || asset.currentLoanMarket.toUpperCase()
-                                }
-                                height="18px"
-                              />
-
-                              <div
-                                className="mr-6"
-                                style={{
-                                  display: "inline-block",
-                                  fontSize: "18px",
-                                }}
-                                // align="right"
-                              >
-                                &nbsp; &nbsp;
-                                {
-                                  EventMap[
-                                    asset.currentLoanMarket.toUpperCase()
-                                  ]
-                                }
-                              </div>
-                            </div>
-                            <CardTitle tag="h5"></CardTitle>
-
-                            <CardSubtitle className=" text-muted" tag="h6">
-                              <span style={{ fontSize: "14px" }}>
-                                &nbsp; &nbsp;&nbsp;{" "}
-                                {parseFloat(
-                                  BNtoNum(Number(asset.currentLoanAmount))
-                                ).toFixed(6)}
-                              </span>
-                              &nbsp; &nbsp;
-                            </CardSubtitle>
-                          </CardBody>
-                        </Card>
-                      </Col>
-
-                      <Col className="mr-4 ">
-                        <Card className="mb-1" style={{ marginTop: "20px" }}>
-                          <CardBody>
-                            <div
-                              className="mr-6"
-                              style={{
-                                display: "inline-block",
-                                fontSize: "14px",
-                              }}
-                              // align="right"
-                            >
-                              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;{" "}
-                              {asset.commitment}
-                            </div>
-                            <CardTitle tag="h5"></CardTitle>
-                          </CardBody>
-                        </Card>
-                      </Col>
-                    </AccordionHeader>
-                    <AccordionBody accordionId="1">
-                      <div style={{ borderWidth: 1 }}>
-                        <CardBody>
-                          {/* <form> */}
-                          <div>
-                            <div className="mb-4 ">
-                              <Row>
-                                <Col lg="4 mb-3">
-                                  <div
-                                    className="block-example border"
-                                    style={{
-                                      padding: "15px",
-                                      borderRadius: "5px",
-                                    }}
-                                  >
-                                    <Row className="mb-3">
-                                      <Col>
-                                        {customActiveTabs === "2" && (
-                                          <Nav
-                                            tabs
-                                            className="nav-tabs-custom mb-1"
-                                          >
-                                            <NavItem>
-                                              <NavLink
-                                                style={{
-                                                  background:
-                                                    loanActionTab === "0"
-                                                      ? "#2a3042"
-                                                      : "none",
-
-                                                  cursor: "pointer",
-                                                  color: "white",
-                                                  borderColor:
-                                                    loanActionTab === "0"
-                                                      ? "#3a425a #3a425a #2a3042"
-                                                      : "none",
-                                                }}
-                                                onClick={() => {
-                                                  // toggleCustoms("0");
-                                                  toggleLoanAction("0");
-                                                }}
-                                              >
-                                                <span className="d-none d-sm-block">
-                                                  Loan Actions{" "}
-                                                </span>
-                                              </NavLink>
-                                            </NavItem>
-                                            {account ? (
-                                              // <>
-                                              <NavItem>
-                                                <NavLink
-                                                  style={{
-                                                    background:
-                                                      loanActionTab === "1"
-                                                        ? "#2a3042"
-                                                        : "none",
-                                                    borderColor:
-                                                      loanActionTab === "1"
-                                                        ? "#3a425a #3a425a #2a3042"
-                                                        : "none",
-                                                    cursor: "pointer",
-                                                    color: "white",
-                                                  }}
-                                                  // className={classnames({
-                                                  //   active: customActiveTabs === "1",
-                                                  // })}
-                                                  onClick={() => {
-                                                    // toggleCustoms("1");
-                                                    toggleLoanAction("1");
-                                                  }}
-                                                >
-                                                  <span className="d-none d-sm-block">
-                                                    Swap
-                                                  </span>
-                                                </NavLink>
-                                              </NavItem>
-                                            ) : // </>
-                                            null}
-                                          </Nav>
-                                        )}
-                                      </Col>
-                                    </Row>
-
-                                    {loanActionTab === "0" && (
-                                      <div className="mb-3">
-                                        <Button
-                                          onClick={() => {
-                                            tog_collateral_active_loan();
-                                          }}
-                                          color={
-                                            collateral_active_loan === true
-                                              ? "light"
-                                              : "outline-light"
-                                          }
-                                          // className={`btn-block btn-md ${classnames(
-                                          //   {
-                                          //     active:
-                                          //       modal_add_collateral ===
-                                          //       true,
-                                          //   }
-                                          // )}`}
-                                        >
-                                          Add Collateral
-                                        </Button>
-                                        &nbsp; &nbsp;
-                                        <Button
-                                          color={
-                                            repay_active_loan === true
-                                              ? "light"
-                                              : "outline-light"
-                                          }
-                                          className="btn-block btn-md"
-                                          onClick={() => {
-                                            tog_repay_active_loan();
-                                          }}
-                                        >
-                                          Repay
-                                        </Button>
-                                        &nbsp; &nbsp;
-                                        <Button
-                                          color={
-                                            withdraw_active_loan === true
-                                              ? "light"
-                                              : "outline-light"
-                                          }
-                                          className="btn-block btn-md"
-                                          onClick={() => {
-                                            tog_withdraw_active_loan();
-                                          }}
-                                        >
-                                          Withdraw
-                                        </Button>
-                                      </div>
-                                    )}
-
-                                    {loanActionTab === "1" && (
-                                      <div className="mb-3">
-                                        <Button
-                                          className="btn-block btn-md"
-                                          color={
-                                            swap_active_loan === true
-                                              ? "light"
-                                              : "outline-light"
-                                          }
-                                          onClick={() => {
-                                            tog_swap_active_loan();
-                                          }}
-                                        >
-                                          Swap Loan
-                                        </Button>
-                                        &nbsp; &nbsp;
-                                        {"  "}
-                                        <Button
-                                          className="btn-block btn-md"
-                                          color={
-                                            swap_to_active_loan === true
-                                              ? "light"
-                                              : "outline-light"
-                                          }
-                                          onClick={() => {
-                                            tog_swap_to_active_loan();
-                                          }}
-                                        >
-                                          Swap To Loan
-                                        </Button>
-                                      </div>
-                                    )}
-
-                                    {collateral_active_loan &&
-                                      loanActionTab === "0" && (
-                                        <AddToCollateral
-                                          asset={asset}
-                                          depositRequestSel={depositRequestSel}
-                                        />
-                                      )}
-
-                                    {repay_active_loan &&
-                                      loanActionTab === "0" && (
-                                        <Repay
-                                          depositRequestSel={depositRequestSel}
-                                          asset={asset}
-                                        />
-                                      )}
-
-                                    {withdraw_active_loan &&
-                                      loanActionTab === "0" && (
-                                        <Form>
-                                          <div className="row mb-3">
-                                            <Col sm={12}>
-                                              <Input
-                                                type="text"
-                                                className="form-control"
-                                                id="horizontal-password-Input"
-                                                placeholder="Amount"
-                                                onChange={(event) => {
-                                                  setInputVal1(
-                                                    Number(event.target.value)
-                                                  );
-                                                  setLoanId(asset.loanId);
-                                                }}
-                                              />
-                                            </Col>
-                                          </div>
-
-                                          <div className="d-grid gap-2">
-                                            <Button
-                                              // color="primary"
-                                              className="w-md"
-                                              disabled={
-                                                handleWithdrawLoanTransactionDone ||
-                                                inputVal1 <= 0
-                                              }
-                                              onClick={() => {
-                                                handleWithdrawLoan(
-                                                  asset.loanMarket,
-                                                  asset.commitment
-                                                );
-                                              }}
-                                              style={{
-                                                color: "#4B41E5",
-                                              }}
-                                            >
-                                              {!handleWithdrawLoanTransactionDone ? (
-                                                "Withdraw Loan"
-                                              ) : (
-                                                <Spinner>Loading...</Spinner>
-                                              )}
-                                            </Button>
-                                          </div>
-                                        </Form>
-                                      )}
-
-                                    {swap_active_loan && loanActionTab === "1" && (
-                                      <Form>
-                                        <div className="d-grid ">
-                                          <Row>
-                                            <Col md="12" className="mb-3">
-                                              <select
-                                                className="form-select"
-                                                onChange={(e) => {
-                                                  setSwapMarket(
-                                                    tokenAddressMap[
-                                                      e.target.value as string
-                                                    ] as string
-                                                  );
-                                                  setLoanId(asset.loanId);
-                                                }}
-                                              >
-                                                <option hidden>
-                                                  Swap Market
-                                                </option>
-                                                <option value={"BTC"}>
-                                                  BTC
-                                                </option>
-                                                <option value={"BNB"}>
-                                                  BNB
-                                                </option>
-                                                <option value={"USDC"}>
-                                                  USDC
-                                                </option>
-                                              </select>
-                                            </Col>
-                                          </Row>
-
-                                          <Button
-                                            // color="primary"
-                                            className="w-md"
-                                            disabled={
-                                              asset.isSwapped ||
-                                              handleSwapTransactionDone
-                                            }
-                                            onClick={() => {
-                                              handleSwap();
-                                            }}
-                                            style={{
-                                              color: "#4B41E5",
-                                            }}
-                                          >
-                                            {!handleSwapTransactionDone ? (
-                                              "Swap Loan"
-                                            ) : (
-                                              <Spinner>Loading...</Spinner>
-                                            )}
-                                          </Button>
-                                        </div>
-                                      </Form>
-                                    )}
-
-                                    {swap_to_active_loan &&
-                                      loanActionTab === "1" && (
-                                        <SwapToLoan loan={asset.loanId} />
-                                      )}
-                                  </div>
-                                </Col>
-                                <Col lg="8">
-                                  {
-                                    <TxHistoryTable
-                                      asset={asset}
-                                      type="loans"
-                                      market={asset.loanMarket}
-                                    />
-                                  }
-                                </Col>
-                              </Row>
-                            </div>
-                          </div>
-                          {/* </form> */}
-                        </CardBody>
-                      </div>
-                    </AccordionBody>
-                  </AccordionItem>
-                </Row>
-              </UncontrolledAccordion>
-            </div>
+            <ActiveLoan
+              asset={asset}
+              key={key}
+              customActiveTabs={customActiveTabs}
+              loanActionTab={loanActionTab}
+              toggleLoanAction={toggleLoanAction}
+              account={account}
+              tog_collateral_active_loan={tog_collateral_active_loan}
+              collateral_active_loan={collateral_active_loan}
+              repay_active_loan={repay_active_loan}
+              tog_repay_active_loan={tog_repay_active_loan}
+              withdraw_active_loan={withdraw_active_loan}
+              tog_withdraw_active_loan={tog_withdraw_active_loan}
+              swap_active_loan={swap_active_loan}
+              tog_swap_active_loan={tog_swap_active_loan}
+              swap_to_active_loan={swap_to_active_loan}
+              tog_swap_to_active_loan={tog_swap_to_active_loan}
+              depositRequestSel={depositRequestSel}
+              inputVal1={inputVal1}
+              setInputVal1={setInputVal1}
+              setLoanId={setLoanId}
+              handleMax={handleMax}
+              isLoading={isLoading}
+              handleWithdrawLoanTransactionDone={
+                handleWithdrawLoanTransactionDone
+              }
+              handleWithdrawLoan={handleWithdrawLoan}
+              setSwapMarket={setSwapMarket}
+              handleSwapTransactionDone={handleSwapTransactionDone}
+              handleSwap={handleSwap}
+              setAddCollateralTransactionReceipt={
+                setAddCollateralTransactionReceipt
+              }
+              setRepayTransactionReceipt={setRepayTransactionReceipt}
+              withdrawLoanTransactionReceipt={withdrawLoanTransactionReceipt}
+              swapLoanToSecondaryTransactionReceipt={
+                swapLoanToSecondaryTransactionReceipt
+              }
+              setRevertSwapTransactionReceipt={setRevertSwapTransactionReceipt}
+              repayTransactionReceipt={repayTransactionReceipt}
+              addCollateralTransactionReceipt={addCollateralTransactionReceipt}
+              revertSwapTransactionReceipt={revertSwapTransactionReceipt}
+            />
           );
         })
       ) : (

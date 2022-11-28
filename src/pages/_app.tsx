@@ -12,20 +12,25 @@ import '../assets/scss/theme.scss';
 import "./scrollbar.css"
 
 import {
-	getInstalledInjectedConnectors,
+	InjectedConnector,
 	StarknetProvider,
 } from '@starknet-react/core';
 import { SequencerProvider } from 'starknet';
+import ErrorBoundary from '../components/ErrorComponent';
 
 function MyApp({ Component, pageProps }: AppProps) {
-	const connectors = getInstalledInjectedConnectors();
+	const connectors = [
+		new InjectedConnector({ options: { id: 'braavos' }}),
+		new InjectedConnector({ options: { id: 'argentX' }}),
+	]
 	return (
 		<>
+			<ErrorBoundary>
 			<StarknetProvider
 				connectors={connectors}
 				autoConnect
 				defaultProvider={
-					new SequencerProvider({ baseUrl: 'https://alpha4.starknet.io' })
+					new SequencerProvider({ baseUrl: 'https://alpha4-2.starknet.io' })
 				}
 			>
 				<Provider store={store}>
@@ -37,6 +42,7 @@ function MyApp({ Component, pageProps }: AppProps) {
 					</DetailsProvider>
 				</Provider>
 			</StarknetProvider>
+			</ErrorBoundary>
 		</>
 	);
 }

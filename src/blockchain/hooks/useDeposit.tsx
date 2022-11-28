@@ -1,6 +1,7 @@
 import {
   useConnectors,
   useStarknet,
+  useAccount,
   useStarknetExecute,
 } from "@starknet-react/core";
 import { useState } from "react";
@@ -21,7 +22,7 @@ const useDeposit = ({
   //   const [commitPeriod, setCommitPeriod] = useState(0);
 
   const { available, connect, disconnect } = useConnectors();
-  const { account } = useStarknet();
+  const { address: account } = useAccount();
 
   const { data, loading, error, reset, execute } = useStarknetExecute({
     calls: {

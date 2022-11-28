@@ -3,7 +3,14 @@ import { tokenAddressMap } from "../blockchain/stark-constants";
 
 export default class OffchainAPI {
   // static ENDPOINT = 'http://52.77.185.41:3000'
-  static ENDPOINT = "https://offchainapi.testnet.starknet.hashstack.finance";
+//   static ENDPOINT = 'http://localhost:3010'
+  // static ENDPOINT = 'https://8992-106-51-78-197.in.ngrok.io'
+  static ENDPOINT = 'https://offchainapi.testnet.starknet.hashstack.finance';
+	// static ENDPOINT = 'https://77dc-106-51-78-197.in.ngrok.io'
+    // static ENDPOINT =
+//     process.env.NODE_ENV === "development"
+//       ? "http://localhost:3010"
+//       : "https://offchainapi.testnet.starknet.hashstack.finance";
 
   static async httpGet(route: string) {
     try {
@@ -19,6 +26,9 @@ export default class OffchainAPI {
 
   static async httpPost(route: string, data: any, type: string, token: string) {
     try {
+      if (!token) {
+        console.warn("no incoming token", route, data, type, token);
+      }
       let url = `${this.ENDPOINT}${route}`;
       let res = await axios({
         method: "post",
@@ -66,14 +76,14 @@ export default class OffchainAPI {
                 txnHash: event.txHash,
                 actionType: "SwappedToLoan",
                 date: event.createdon,
-                value: 'all',
+                value: "all",
               };
             } else if (event.event === "SushiSwapped") {
               return {
                 txnHash: event.txHash,
                 actionType: "SwappedToSecondary",
                 date: event.createdon,
-                value: 'all',
+                value: "all",
               };
             }
             return {
@@ -121,6 +131,11 @@ export default class OffchainAPI {
     return OffchainAPI.httpGet(url);
   }
 
+  static getDashboardStats() {
+    let url = `/dashboard-stats`;
+    return OffchainAPI.httpGet(url);
+  }
+
   static async getTransactionEventsActiveDeposits(
     address: string,
     token: string
@@ -132,6 +147,20 @@ export default class OffchainAPI {
     return OffchainAPI.httpPost(route, data, "deposits", token);
   }
 
+  static async getProtocolDepositLoanRates() {
+    let route = `/api/recent-aprs`;
+    return OffchainAPI.httpGet(route);
+  }
+
+  static async getHistoricalDepositRates() {
+    let route = `/api/deposit-aprs`;
+    return OffchainAPI.httpGet(route);
+  }
+
+  static async getHistoricalBorrowRates() {
+    let route = `/api/borrow-aprs`;
+    return OffchainAPI.httpGet(route);
+  }
   static async getTransactionEventsActiveLoans(address: string, token: string) {
     let route = `/api/transactions-by-events/${address}`;
     let data = JSON.stringify({
@@ -141,6 +170,7 @@ export default class OffchainAPI {
         "AddCollateral",
         "SushiSwapped",
         "RevertSushiSwapped",
+        "LoanRepaid",
       ],
     });
     return OffchainAPI.httpPost(route, data, "loans", token);
@@ -152,10 +182,10 @@ export default class OffchainAPI {
         "NewLoan",
         "LoanRepaid",
         "WithdrawPartial",
-        // "AddCollateral",
+        "AddCollateral",
         // "WithdrawCollateral",
-        // "SushiSwapped",
-        // "RevertSushiSwapped",
+        "SushiSwapped",
+        "RevertSushiSwapped",
       ],
     });
     return OffchainAPI.httpPost(route, data, "repaid", token);

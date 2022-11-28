@@ -1,11 +1,13 @@
-import { useContract, useStarknet, useStarknetCall, useStarknetExecute } from '@starknet-react/core';
+import { useAccount, useContract, useStarknet, useStarknetCall, useStarknetExecute, useTransactionReceipt } from '@starknet-react/core';
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Button, Table, Spinner, TabPane } from 'reactstrap';
 import { Abi, number, uint256 } from 'starknet';
 import { CoinClassNames, EventMap } from '../../blockchain/constants';
-import { diamondAddress, ERC20Abi, getTokenFromName } from '../../blockchain/stark-constants';
+import { diamondAddress, ERC20Abi, getTokenFromName, isTransactionLoading } from '../../blockchain/stark-constants';
+import { TxToastManager } from '../../blockchain/txToastManager';
 import { BNtoNum } from '../../blockchain/utils';
+import MySpinner from '../mySpinner';
 
 const LiquidationButton = ({
 	loan,
@@ -19,8 +21,24 @@ const LiquidationButton = ({
 	const [loadingMsg, setLoadingMsg] = useState("Loading...")
 	const [canLiquidate, setCanLiquidate] = useState(false)
 	const [allowance, setAllowance] = useState<string>('')
-	const { account:_account } = useStarknet();
+	const { address : _account } = useAccount();
 	const [account, setAccount] = useState<string>('')
+
+	const [transApprove, setTransApprove] = useState('');
+	const [transLiquidate, setTransLiquidate] = useState('');
+
+	const approveTransactionReceipt = useTransactionReceipt({hash: transApprove, watch: true})
+	const liquidateTransactionReceipt = useTransactionReceipt({hash: transLiquidate, watch: true})
+
+	useEffect(() => {
+		console.log('approve tx receipt', approveTransactionReceipt.data?.transaction_hash, approveTransactionReceipt);
+		TxToastManager.handleTxToast(approveTransactionReceipt, `Liquidate: Approve ${loan.loanMarket}`, true)
+	}, [approveTransactionReceipt])
+
+	useEffect(() => {
+		console.log('liquidate tx receipt', liquidateTransactionReceipt.data?.transaction_hash, liquidateTransactionReceipt);
+		TxToastManager.handleTxToast(liquidateTransactionReceipt, `Liquidate loan`)
+	}, [liquidateTransactionReceipt])
 	
 	let loanTokenAddress = getTokenFromName(loan.loanMarket)?.address || ''
 	useEffect(() => {
@@ -167,13 +185,19 @@ const LiquidationButton = ({
 					className='text-muted'
 					color='light'
 					outline
-					onClick={() => {
+					onClick={async () => {
 						// reset()
-						approveToken()
+						try {
+							const val = await approveToken()
+							setTransApprove(val.transaction_hash)
+						} catch(err) {
+							console.log(err, 'err approve for liquidation')
+						}
+						
 					}}
 				>
-					{isTransactionDone && loan.isLiquidationDone ? (
-						<Spinner>Loading...</Spinner>
+					{isTransactionLoading(approveTransactionReceipt) ? (
+						<MySpinner text='Approving token'/>
 					) : (
 						<>Approve</>
 					)}
@@ -182,13 +206,19 @@ const LiquidationButton = ({
 					className='text-muted'
 					color='light'
 					outline
-					onClick={() => {
+					onClick={async () => {
 						// reset()
-						liquidate()
+						try {
+							const val = await liquidate()
+							setTransLiquidate(val.transaction_hash)
+						} catch(err) {
+							console.log(err, 'err liquidation')
+						}
+						
 					}}
 				>
-					{isTransactionDone && loan.isLiquidationDone ? (
-						<Spinner>Loading...</Spinner>
+					{isTransactionLoading(liquidateTransactionReceipt) ? (
+						<MySpinner text='Liquidating'/>
 					) : (
 						<>Liquidate</>
 					)}
