@@ -629,16 +629,16 @@ const Dashboard = () => {
         {/* <MetaTags>
           <title>Hashstack Finance</title>
         </MetaTags> */}
-		{maintenance()}
+		{/* {maintenance()} */}
 
         {/* <Banner /> */}
-        {/* {!starknetAccount ? (
+        {!starknetAccount ? (
           <h3>Loading...</h3>
         ) : !isCorrectNetwork() ? (
           incorrectChain()
         ) : (
           dashboardUI()
-        )} */}
+        )}
 
         {/* <Analytics></Analytics>
             {props.children} */}
