@@ -3,7 +3,7 @@
 	"version": "4.8.0",
 	"private": true,
 	"scripts": {
-		"dev": "next dev",
+		"dev": "next dev --port 4100",
 		"build": "next build",
 		"start": "next start",
 		"export": "next export",

@@ -80,7 +80,7 @@ const Header = ({
 
     OffchainAPI.getDashboardStats().then(
       (stats) => {
-        setOffchainCurrentBlock(stats.lastProcessedBlock.blockNumber);
+        setOffchainCurrentBlock(stats.lastProcessedBlock?.blockNumber);
       },
       (err) => {
         console.error(err);
