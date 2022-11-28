@@ -3,7 +3,7 @@ import { tokenAddressMap } from "../blockchain/stark-constants";
 
 export default class OffchainAPI {
   // static ENDPOINT = 'http://52.77.185.41:3000'
-//   static ENDPOINT = 'http://localhost:3010'
+  //   static ENDPOINT = 'http://localhost:3010'
   // static ENDPOINT = 'https://8992-106-51-78-197.in.ngrok.io'
   static ENDPOINT = process.env.NEXT_PUBLIC_APP_ENV=='production' ? 
   	'https://offchainapi.testnet.starknet.hashstack.finance' : 'http://localhost:3010'
@@ -16,11 +16,11 @@ export default class OffchainAPI {
   static async httpGet(route: string) {
     try {
       let url = `${OffchainAPI.ENDPOINT}${route}`;
-      console.log("offchain url", url);
+      // console.log("offchain url", url);
       let data = await axios.get(url);
       return data.data;
     } catch (err) {
-      console.error("httpGet", route, err);
+      // console.error("httpGet", route, err);
       return [];
     }
   }
@@ -70,6 +70,7 @@ export default class OffchainAPI {
               actionType: event.event,
               date: event.createdon,
               value: JSON.parse(event.eventInfo).amount,
+              id: JSON.parse(event.eventInfo).loanId,
             };
           } else if (type === "loans") {
             if (event.event === "RevertSushiSwapped") {
@@ -78,6 +79,7 @@ export default class OffchainAPI {
                 actionType: "SwappedToLoan",
                 date: event.createdon,
                 value: "all",
+                id: JSON.parse(event.eventInfo).loanId,
               };
             } else if (event.event === "SushiSwapped") {
               return {
@@ -85,6 +87,7 @@ export default class OffchainAPI {
                 actionType: "SwappedToSecondary",
                 date: event.createdon,
                 value: "all",
+                id: JSON.parse(event.eventInfo).loanId,
               };
             }
             return {
@@ -92,6 +95,7 @@ export default class OffchainAPI {
               actionType: event.event,
               date: event.createdon,
               value: JSON.parse(event.eventInfo).loanAmount,
+              id: JSON.parse(event.eventInfo).loanId,
             };
           } else if (type === "repaid") {
             return {
@@ -101,6 +105,7 @@ export default class OffchainAPI {
               value: JSON.parse(event.eventInfo).amount
                 ? JSON.parse(event.eventInfo).amount
                 : JSON.parse(event.eventInfo).loanAmount,
+              id: JSON.parse(event.eventInfo).loanId,
             };
           }
         });
