@@ -214,14 +214,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 	};
 
 	const handleMin = async () => {
-		if(asset==='BTC')
-			setDepositAmount(0.25)
-		if(asset==='USDC')
-			setDepositAmount(2500)
-		if(asset==='USDT')
-			setDepositAmount(2500)
-		if(asset==='BNB')
-			setDepositAmount(2.5)
+		setDepositAmount(MinimumAmount[asset])
 	};
 
 	function removeBodyCss() {

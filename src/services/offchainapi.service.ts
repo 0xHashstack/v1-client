@@ -70,7 +70,7 @@ export default class OffchainAPI {
               actionType: event.event,
               date: event.createdon,
               value: JSON.parse(event.eventInfo).amount,
-              id: JSON.parse(event.eventInfo).loanId,
+              id: event.loanId,
             };
           } else if (type === "loans") {
             if (event.event === "RevertSushiSwapped") {
@@ -79,7 +79,7 @@ export default class OffchainAPI {
                 actionType: "SwappedToLoan",
                 date: event.createdon,
                 value: "all",
-                id: JSON.parse(event.eventInfo).loanId,
+                id: event.loanId,
               };
             } else if (event.event === "SushiSwapped") {
               return {
@@ -87,7 +87,7 @@ export default class OffchainAPI {
                 actionType: "SwappedToSecondary",
                 date: event.createdon,
                 value: "all",
-                id: JSON.parse(event.eventInfo).loanId,
+                id: event.loanId,
               };
             }
             return {
@@ -95,17 +95,15 @@ export default class OffchainAPI {
               actionType: event.event,
               date: event.createdon,
               value: JSON.parse(event.eventInfo).loanAmount,
-              id: JSON.parse(event.eventInfo).loanId,
+              id: event.loanId,
             };
           } else if (type === "repaid") {
             return {
               txnHash: event.txHash,
               actionType: event.event,
               date: event.createdon,
-              value: JSON.parse(event.eventInfo).amount
-                ? JSON.parse(event.eventInfo).amount
-                : JSON.parse(event.eventInfo).loanAmount,
-              id: JSON.parse(event.eventInfo).loanId,
+              value: 0,
+              id: event.loanId,
             };
           }
         });
@@ -189,7 +187,7 @@ export default class OffchainAPI {
         "LoanRepaid",
         "WithdrawPartial",
         "AddCollateral",
-        // "WithdrawCollateral",
+        "WithdrawCollateral",
         "SushiSwapped",
         "RevertSushiSwapped",
       ],

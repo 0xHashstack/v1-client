@@ -347,25 +347,9 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
   };
 
   const handleMinLoan = (asset: string) => {
-    if (asset === "BTC")
       setBorrowParams({
         ...borrowParams,
-        loanAmount: 0.25,
-      });
-    if (asset === "USDC")
-      setBorrowParams({
-        ...borrowParams,
-        loanAmount: 2500,
-      });
-    if (asset === "USDT")
-      setBorrowParams({
-        ...borrowParams,
-        loanAmount: 2500,
-      });
-    if (asset === "BNB")
-      setBorrowParams({
-        ...borrowParams,
-        loanAmount: 2.5,
+        loanAmount: MinimumAmount[asset],
       });
   };
 
