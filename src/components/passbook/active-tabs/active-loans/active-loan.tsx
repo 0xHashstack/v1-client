@@ -31,7 +31,11 @@ import {
   tokenAddressMap,
 } from "../../../../blockchain/stark-constants";
 import { TxToastManager } from "../../../../blockchain/txToastManager";
-import { BNtoNum, borrowInterestAccrued } from "../../../../blockchain/utils";
+import {
+  BNtoNum,
+  borrowInterestAccrued,
+  currentBorrowInterestRate,
+} from "../../../../blockchain/utils";
 import OffchainAPI from "../../../../services/offchainapi.service";
 import TxHistoryTable from "../../../dashboard/tx-history-table";
 import MySpinner from "../../../mySpinner";
@@ -41,6 +45,7 @@ import Repay from "./repay";
 
 const ActiveLoan = ({
   asset,
+  historicalAPRs,
   key,
   customActiveTabs,
   loanActionTab,
@@ -77,6 +82,7 @@ const ActiveLoan = ({
   revertSwapTransactionReceipt,
 }: {
   asset: any;
+  historicalAPRs: any;
   key: any;
   customActiveTabs: any;
   loanActionTab: any;
@@ -112,10 +118,16 @@ const ActiveLoan = ({
   addCollateralTransactionReceipt: any;
   revertSwapTransactionReceipt: any;
 }) => {
-  const [borrowInterest, setBorrowInterest] = useState<string>();
+  const [borrowInterest, setBorrowInterest] = useState<string>("");
+  const [currentBorrowInterest, setCurrentBorrowInterest] = useState<string>();
   useEffect(() => {
     setBorrowInterest(borrowInterestAccrued(asset));
-  }, []);
+    if (asset && historicalAPRs) {
+      setCurrentBorrowInterest(
+        currentBorrowInterestRate(asset, historicalAPRs)
+      );
+    }
+  }, [asset, historicalAPRs]);
 
   return (
     <div key={key} style={{ borderTop: "5px" }}>
@@ -197,7 +209,11 @@ const ActiveLoan = ({
                     <CardSubtitle className=" text-muted" tag="h6">
                       <span style={{ fontSize: "14px" }}>
                         &nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;
-                        {asset.interestRate}%APR
+                        {/* {asset.interestRate}%APR */}
+                        {/* {asset &&
+                          historicalAPRs &&
+                          currentBorrowInterestRate(asset, historicalAPRs)} */}
+                        {currentBorrowInterest}%
                       </span>
                       &nbsp; &nbsp;
                     </CardSubtitle>

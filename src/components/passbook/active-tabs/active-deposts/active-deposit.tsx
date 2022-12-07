@@ -28,7 +28,11 @@ import {
   diamondAddress,
   isTransactionLoading,
 } from "../../../../blockchain/stark-constants";
-import { BNtoNum } from "../../../../blockchain/utils";
+import {
+  BNtoNum,
+  currentDepositInterestRate,
+  depositInterestAccrued,
+} from "../../../../blockchain/utils";
 import TxHistoryTable from "../../../dashboard/tx-history-table";
 import { useTransactionReceipt } from "@starknet-react/core";
 import MySpinner from "../../../mySpinner";
@@ -42,6 +46,7 @@ const ActiveDeposit = ({
   tog_withdraw_active_deposit,
   depositRequestSel,
   withdrawDepositTransactionDone,
+  historicalAPRs,
 }: {
   asset: any;
   modal_add_active_deposit: any;
@@ -50,6 +55,7 @@ const ActiveDeposit = ({
   tog_withdraw_active_deposit: any;
   depositRequestSel: any;
   withdrawDepositTransactionDone: any;
+  historicalAPRs: any;
 }) => {
   console.log(asset);
   const {
@@ -65,8 +71,6 @@ const ActiveDeposit = ({
     loadingDeposit,
     transApprove,
     transDeposit,
-    dataDeposit,
-    dataApprove,
   } = useAddDeposit(asset, diamondAddress);
 
   const { withdrawDeposit, withdrawAmount, setWithdrawAmount, transWithdraw } =
@@ -196,9 +200,9 @@ const ActiveDeposit = ({
                         }}
                         // align="right"
                       >
-                        {parseFloat(
-                          BNtoNum(Number(asset.acquiredYield))
-                        ).toFixed(6)}
+                        {asset &&
+                          historicalAPRs &&
+                          depositInterestAccrued(asset, historicalAPRs)}
                         &nbsp;
                         {EventMap[asset.market.toUpperCase()]}
                       </div>
@@ -207,7 +211,10 @@ const ActiveDeposit = ({
 
                     <CardSubtitle className=" text-muted" tag="h6">
                       <span style={{ fontSize: "14px" }}>
-                        {asset.interestRate}%APR
+                        {asset &&
+                          historicalAPRs &&
+                          currentDepositInterestRate(asset, historicalAPRs)}
+                        %APR
                       </span>
                       &nbsp; &nbsp;
                     </CardSubtitle>
