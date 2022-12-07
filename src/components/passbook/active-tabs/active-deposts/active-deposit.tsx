@@ -200,7 +200,9 @@ const ActiveDeposit = ({
                         }}
                         // align="right"
                       >
-                        {depositInterestAccrued(asset, historicalAPRs)}
+                        {asset &&
+                          historicalAPRs &&
+                          depositInterestAccrued(asset, historicalAPRs)}
                         &nbsp;
                         {EventMap[asset.market.toUpperCase()]}
                       </div>
@@ -209,7 +211,10 @@ const ActiveDeposit = ({
 
                     <CardSubtitle className=" text-muted" tag="h6">
                       <span style={{ fontSize: "14px" }}>
-                        {currentDepositInterestRate(asset, historicalAPRs)}%APR
+                        {asset &&
+                          historicalAPRs &&
+                          currentDepositInterestRate(asset, historicalAPRs)}
+                        %APR
                       </span>
                       &nbsp; &nbsp;
                     </CardSubtitle>

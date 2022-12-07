@@ -37,7 +37,6 @@ const ActiveDepositsTab = ({
   useEffect(() => {
     OffchainAPI.getHistoricalDepositRates().then((val) => {
       setHistoricalAPRs(val);
-      console.log(val);
     });
   }, []);
   return (

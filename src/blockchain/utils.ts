@@ -8,7 +8,11 @@ import { Logger } from "ethers/lib/utils";
 import OffchainAPI from "../services/offchainapi.service";
 import { intersection } from "lodash";
 import { time } from "console";
-import { getTokenFromAddress, getTokenFromName } from "./stark-constants";
+import {
+  getCommitmentIndexStringFromNameDeposit,
+  getTokenFromAddress,
+  getTokenFromName,
+} from "./stark-constants";
 
 export const fixedSpecial = (num: number, n: number) => {
   var str = num.toPrecision();
@@ -126,8 +130,29 @@ export const borrowInterestAccrued = (asset: any) => {
 
 export const currentDepositInterestRate = (asset: any, historicalAPRs: any) => {
   const marketHistoricalAPRs = historicalAPRs.filter((aprRecords: any) => {
-    return aprRecords.market === asset.marketAddress;
+    // console.log(aprRecords, asset);
+    return (
+      aprRecords.market === asset.marketAddress &&
+      parseInt(aprRecords.commitment) === asset.commitmentIndex
+    );
   });
+  const aprWithMultiplier =
+    marketHistoricalAPRs[marketHistoricalAPRs.length - 1].apr100x;
+  const multiplier = new BigNumber("100");
+  const aprWithMultiplierBigNumber = new BigNumber(aprWithMultiplier);
+  const aprBigNumber = aprWithMultiplierBigNumber.dividedBy(multiplier);
+  return aprBigNumber.toFixed(6);
+};
+
+export const currentBorrowInterestRate = (asset: any, historicalAPRs: any) => {
+  console.log(historicalAPRs, asset);
+  const marketHistoricalAPRs = historicalAPRs.filter((aprRecords: any) => {
+    return (
+      aprRecords.market === asset.loanMarketAddress &&
+      parseInt(aprRecords.commitment) === asset.commitmentIndex
+    );
+  });
+  console.log(marketHistoricalAPRs);
   const aprWithMultiplier =
     marketHistoricalAPRs[marketHistoricalAPRs.length - 1].apr100x;
   const multiplier = new BigNumber("100");
