@@ -28,7 +28,11 @@ import {
   diamondAddress,
   isTransactionLoading,
 } from "../../../../blockchain/stark-constants";
-import { BNtoNum, depositInterestAccrued } from "../../../../blockchain/utils";
+import {
+  BNtoNum,
+  currentDepositInterestRate,
+  depositInterestAccrued,
+} from "../../../../blockchain/utils";
 import TxHistoryTable from "../../../dashboard/tx-history-table";
 import { useTransactionReceipt } from "@starknet-react/core";
 import MySpinner from "../../../mySpinner";
@@ -196,9 +200,7 @@ const ActiveDeposit = ({
                         }}
                         // align="right"
                       >
-                        {parseFloat(
-                          BNtoNum(Number(asset.acquiredYield))
-                        ).toFixed(6)}
+                        {depositInterestAccrued(asset, historicalAPRs)}
                         &nbsp;
                         {EventMap[asset.market.toUpperCase()]}
                       </div>
@@ -207,7 +209,7 @@ const ActiveDeposit = ({
 
                     <CardSubtitle className=" text-muted" tag="h6">
                       <span style={{ fontSize: "14px" }}>
-                        {depositInterestAccrued(asset, historicalAPRs)}%APR
+                        {currentDepositInterestRate(asset, historicalAPRs)}%APR
                       </span>
                       &nbsp; &nbsp;
                     </CardSubtitle>

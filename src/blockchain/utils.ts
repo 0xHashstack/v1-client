@@ -125,5 +125,13 @@ export const borrowInterestAccrued = (asset: any) => {
 };
 
 export const currentDepositInterestRate = (asset: any, historicalAPRs: any) => {
-  return 0;
+  const marketHistoricalAPRs = historicalAPRs.filter((aprRecords: any) => {
+    return aprRecords.market === asset.marketAddress;
+  });
+  const aprWithMultiplier =
+    marketHistoricalAPRs[marketHistoricalAPRs.length - 1].apr100x;
+  const multiplier = new BigNumber("100");
+  const aprWithMultiplierBigNumber = new BigNumber(aprWithMultiplier);
+  const aprBigNumber = aprWithMultiplierBigNumber.dividedBy(multiplier);
+  return aprBigNumber.toFixed(6);
 };
