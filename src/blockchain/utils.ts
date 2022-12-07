@@ -123,3 +123,7 @@ export const borrowInterestAccrued = (asset: any) => {
   return BigNumber(asset.loanInterest).dividedBy(BigNumber(1e18)).toFixed(6);
   //   return new BigNumber(0).toFixed(6);
 };
+
+export const currentDepositInterestRate = (asset: any, historicalAPRs: any) => {
+  return 0;
+};
