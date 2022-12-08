@@ -45,6 +45,7 @@ const TxHistoryTable = ({
           number.toHex(number.toBN(number.toFelt(account || ""))),
           market
         );
+        console.log("tx history:", events);
       } else if (type === "loans") {
         events = await OffchainAPI.getTransactionEventsActiveLoans(
           number.toHex(number.toBN(number.toFelt(account || ""))),
@@ -127,11 +128,19 @@ const TxHistoryTable = ({
   }, [txHistoryData]);
 
   const renderTableData = () => {
+    console.log("renderTableDat:", txHistoryData);
     return (
       txHistoryData &&
       txHistoryData
         .filter((txEntry) => {
-          return txEntry.id === asset.loanId;
+          console.log(txEntry, asset, txEntry.id === asset.loanId, txEntry);
+          if (type === "deposits") {
+            return txEntry.id === asset.depositId;
+          } else if (type === "loans") {
+            return txEntry.id === asset.loanId;
+          } else {
+            return txEntry.id === asset.loanId;
+          }
         })
         .map((row, index) => {
           const { txnHash, actionType, date, value } = row;
