@@ -102,25 +102,25 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
   useEffect(() => {
     setToken(getTokenFromName(asset));
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
-      console.log(val);
+      // console.log(val);
       //   console.log(parseFloat(
       //                         depositLoanRates[
       //                           `${getTokenFromName(asset as string).address}__${
       //                             borrowParams.commitBorrowPeriod
       //                           }`
       //                         ]?.depositAPR?.apr100x as string));
-      console.log(
-        depositLoanRates[
-          `${getTokenFromName(asset as string).address}__${
-            borrowParams.commitBorrowPeriod
-          }`
-        ]
-      );
-      console.log(
-        `${getTokenFromName(asset as string).address}__${
-          borrowParams.commitBorrowPeriod
-        }`
-      );
+      // console.log(
+      //   depositLoanRates[
+      //     `${getTokenFromName(asset as string).address}__${
+      //       borrowParams.commitBorrowPeriod
+      //     }`
+      //   ]
+      // );
+      // console.log(
+      //   `${getTokenFromName(asset as string).address}__${
+      //     borrowParams.commitBorrowPeriod
+      //   }`
+      // );
       setDepositLoanRates(val);
     });
   }, [asset]);
@@ -347,10 +347,10 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
   };
 
   const handleMinLoan = (asset: string) => {
-      setBorrowParams({
-        ...borrowParams,
-        loanAmount: MinimumAmount[asset],
-      });
+    setBorrowParams({
+      ...borrowParams,
+      loanAmount: MinimumAmount[asset],
+    });
   };
 
   const handleBorrow = async (asset: string) => {
