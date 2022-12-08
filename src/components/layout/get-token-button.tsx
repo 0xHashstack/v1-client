@@ -32,11 +32,13 @@ const GetTokenButton = ({ token, idx }: { token: string; idx: number }) => {
   ) => {
     try {
       const val = await handleGetToken();
-      setTransaction(val.transaction_hash);
-    } catch(err) {
-      console.log(err, 'err get tokens')
+      if (val) {
+        setTransaction(val.transaction_hash);
+      } else {
+      }
+    } catch (err) {
+      console.log(err, "err get tokens");
     }
-    
   };
 
   useEffect(() => {

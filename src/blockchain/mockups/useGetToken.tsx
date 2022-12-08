@@ -10,7 +10,9 @@ import {
   diamondAddress,
   contractsEnv,
   getTokenFromName,
+  getTokenFromAddress,
 } from "../stark-constants";
+import { TxToastManager } from "../txToastManager";
 
 const useGetToken = ({ token }: { token: string }) => {
   console.log("get token", token);
@@ -35,13 +37,23 @@ const useGetToken = ({ token }: { token: string }) => {
     },
   });
 
+  // useEffect(() => {
+  //   // TxToastManager.handleTxToast(`Mint Testnet tokens: ${token}`);
+  //   console.log(errorToken);
+  // }, [errorToken]);
+
   const handleGetToken = async () => {
-	try {
-		const val = await Token();
-    	return val;
-	} catch(err) {
-		console.log(err, 'err get token')
-	}
+    try {
+      const val = await Token();
+      return val;
+    } catch (err) {
+      TxToastManager.nonTransactionToast(
+        `Failed to mint Testnet token: ${getTokenFromAddress(token).name}`,
+        "error",
+        "REJECTED"
+      );
+      console.log(err, "err get token");
+    }
   };
 
   const returnTransactionParameters = () => {
