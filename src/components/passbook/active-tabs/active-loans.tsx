@@ -271,13 +271,19 @@ const ActiveLoansTab = ({
     }
     console.log(diamondAddress, loanId, inputVal1);
 
-    await executeWithdraw();
-    if (errorWithdraw) {
-      toast.error(`${GetErrorText(`Withdraw ${asset.loanMarket} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
+    try {
+      await executeWithdraw();
+    } catch (err) {
+      toast.error(
+        `${GetErrorText(`Withdraw Loan ${asset.loanMarket} failed`)}`,
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          closeOnClick: true,
+        }
+      );
     }
+    // if (errorWithdraw) {
+    // }
   };
 
   const handleSwap = async () => {
