@@ -142,6 +142,11 @@ const TxHistoryTable = ({
             return txEntry.id === asset.loanId;
           }
         })
+        .sort((a: IHistoryData, b: IHistoryData) => {
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+          return dateA - dateB;
+        })
         .map((row, index) => {
           const { txnHash, actionType, date, value } = row;
           let myDate = new Date(date);
