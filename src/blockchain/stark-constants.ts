@@ -92,7 +92,7 @@ export const getTokenFromAddress = (address: string) => {
   return token;
 };
 
-export const getCommitmentNameFromIndex = (index: string) => {
+export const getCommitmentNameFromIndexDeposit = (index: string) => {
   if (index === "0") {
     return "NONE";
   } else if (index === "1") {
@@ -103,6 +103,15 @@ export const getCommitmentNameFromIndex = (index: string) => {
     return "THREE MONTHS";
   }
 
+  return null;
+};
+
+export const getCommitmentNameFromIndexLoan = (index: string) => {
+  if (index === "0") {
+    return "NONE";
+  } else if (index === "1") {
+    return "ONE MONTH";
+  }
   return null;
 };
 
