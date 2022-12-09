@@ -36,7 +36,8 @@ import LoanBorrowCommitment from "../components/dashboard/loanborrow-commitment"
 import OffchainAPI from "../services/offchainapi.service";
 import {
   getCommitmentIndex,
-  getCommitmentNameFromIndex,
+  getCommitmentNameFromIndexDeposit,
+  getCommitmentNameFromIndexLoan,
   getTokenFromAddress,
 } from "../blockchain/stark-constants";
 import BigNumber from "bignumber.js";
@@ -171,7 +172,7 @@ const Dashboard = () => {
         loanMarket: getTokenFromAddress(loanData.loanMarket)?.name,
         loanMarketAddress: loanData.loanMarket,
         loanAmount: Number(loanData.loanAmount), // 2 Amount
-        commitment: getCommitmentNameFromIndex(loanData.commitment), // 3  Commitment
+        commitment: getCommitmentNameFromIndexLoan(loanData.commitment), // 3  Commitment
         commitmentIndex: getCommitmentIndex(loanData.commitment) as number,
         collateralMarket: getTokenFromAddress(loanData.collateralMarket)?.name, // 4 Collateral Market
         collateralAmount: Number(loanData.collateralAmount), // 5 Collateral Amount
@@ -258,7 +259,9 @@ const Dashboard = () => {
       let myDep = {
         amount: deposit.amount.toString(),
         account,
-        commitment: getCommitmentNameFromIndex(deposit.commitment as string),
+        commitment: getCommitmentNameFromIndexDeposit(
+          deposit.commitment as string
+        ),
         commitmentIndex: Number(deposit.commitment),
         market: getTokenFromAddress(deposit.market as string)?.name,
         marketAddress: deposit.market as string,
@@ -401,7 +404,7 @@ const Dashboard = () => {
       liquidations.push({
         loanOwner: loan.account,
         loanMarket: getTokenFromAddress(loan.loanMarket)?.name,
-        commitment: getCommitmentNameFromIndex(loan.commitment),
+        commitment: getCommitmentNameFromIndexDeposit(loan.commitment),
         loanAmount: loan.loanAmount,
         collateralMarket: getTokenFromAddress(loan.collateralMarket)?.name,
         collateralAmount: loan.collateralAmount,
@@ -600,23 +603,23 @@ const Dashboard = () => {
 
   function maintenance() {
     return (
-		<div
-		  style={{
-			padding: "20px",
-			textAlign: "center",
-		  }}
-		>
-		  <p
-			style={{
-			  color: "#efb90b",
-			  fontSize: "25px",
-			}}
-		  >
-			Maintenance
-		  </p>
-		  We are currently under maintenance and should be back in couple of hours
-		</div>
-	  );
+      <div
+        style={{
+          padding: "20px",
+          textAlign: "center",
+        }}
+      >
+        <p
+          style={{
+            color: "#efb90b",
+            fontSize: "25px",
+          }}
+        >
+          Maintenance
+        </p>
+        We are currently under maintenance and should be back in couple of hours
+      </div>
+    );
   }
 
   return (
@@ -629,7 +632,7 @@ const Dashboard = () => {
         {/* <MetaTags>
           <title>Hashstack Finance</title>
         </MetaTags> */}
-		{/* {maintenance()} */}
+        {/* {maintenance()} */}
 
         {/* <Banner /> */}
         {!starknetAccount ? (

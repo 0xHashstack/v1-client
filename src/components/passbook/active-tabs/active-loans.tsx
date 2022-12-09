@@ -9,18 +9,13 @@ import { toast } from "react-toastify";
 import { Table } from "reactstrap";
 import {
   diamondAddress,
-  isTransactionLoading,
   tokenAddressMap,
 } from "../../../blockchain/stark-constants";
 import { BNtoNum, GetErrorText, NumToBN } from "../../../blockchain/utils";
-import TxHistoryTable from "../../dashboard/tx-history-table";
-import AddToCollateral from "./active-loans/add-to-collateral";
-import Repay from "./active-loans/repay";
-import SwapToLoan from "./swaps/swap-to-loan";
 import { getPrice } from "../../../blockchain/priceFeed";
-import MySpinner from "../../mySpinner";
 import { TxToastManager } from "../../../blockchain/txToastManager";
 import ActiveLoan from "./active-loans/active-loan";
+import OffchainAPI from "../../../services/offchainapi.service";
 
 const ActiveLoansTab = ({
   activeLoansData,
@@ -124,6 +119,15 @@ const ActiveLoansTab = ({
       `Swap ${getLoan(loanId).loanMarket} Loan`
     );
   }, [swapLoanToSecondaryTransactionReceipt]);
+
+  const [historicalAPRs, setHistoricalAPRs] = useState();
+
+  useEffect(() => {
+    OffchainAPI.getHistoricalBorrowRates().then((val) => {
+      setHistoricalAPRs(val);
+      console.log(val);
+    });
+  }, []);
 
   /* =================== add collateral states ======================= */
   const [inputVal1, setInputVal1] = useState(0);
@@ -267,13 +271,19 @@ const ActiveLoansTab = ({
     }
     console.log(diamondAddress, loanId, inputVal1);
 
-    await executeWithdraw();
-    if (errorWithdraw) {
-      toast.error(`${GetErrorText(`Withdraw ${asset.loanMarket} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
+    try {
+      await executeWithdraw();
+    } catch (err) {
+      toast.error(
+        `${GetErrorText(`Withdraw Loan ${asset.loanMarket} failed`)}`,
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          closeOnClick: true,
+        }
+      );
     }
+    // if (errorWithdraw) {
+    // }
   };
 
   const handleSwap = async () => {
@@ -337,6 +347,7 @@ const ActiveLoansTab = ({
           return (
             <ActiveLoan
               asset={asset}
+              historicalAPRs={historicalAPRs}
               key={key}
               customActiveTabs={customActiveTabs}
               loanActionTab={loanActionTab}

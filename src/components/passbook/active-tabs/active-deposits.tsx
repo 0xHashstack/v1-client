@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Table } from "reactstrap";
 import { diamondAddress } from "../../../blockchain/stark-constants";
 import TxHistoryTable from "../../dashboard/tx-history-table";
 import useAddDeposit from "../../../blockchain/hooks/active-deposits/useAddDeposit";
 import useWithdrawDeposit from "../../../blockchain/hooks/active-deposits/useWithdrawDeposit";
 import ActiveDeposit from "./active-deposts/active-deposit";
+import OffchainAPI from "../../../services/offchainapi.service";
 
 const ActiveDepositsTab = ({
   activeDepositsData,
@@ -32,6 +33,12 @@ const ActiveDepositsTab = ({
   isTransactionDone: any;
   inputVal1: any;
 }) => {
+  const [historicalAPRs, setHistoricalAPRs] = useState();
+  useEffect(() => {
+    OffchainAPI.getHistoricalDepositRates().then((val) => {
+      setHistoricalAPRs(val);
+    });
+  }, []);
   return (
     // Active Deposits
     <div className="table-responsive mt-3" style={{ overflow: "hidden" }}>
@@ -69,6 +76,7 @@ const ActiveDepositsTab = ({
               tog_withdraw_active_deposit={tog_withdraw_active_deposit}
               depositRequestSel={depositRequestSel}
               withdrawDepositTransactionDone={withdrawDepositTransactionDone}
+              historicalAPRs={historicalAPRs}
             />
           );
         })

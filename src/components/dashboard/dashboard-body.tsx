@@ -35,7 +35,6 @@ let DashboardTBody: any = ({
   const [depositLoanRates, setDepositLoanRates] = useState();
   useEffect(() => {
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
-      // console.log(`%c Protocol deposit`, "background: #222; color: #bada55");
       console.log(val);
       setDepositLoanRates(val);
     });

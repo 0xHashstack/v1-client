@@ -113,7 +113,7 @@ const Header = ({
 
   return (
     // <div className="container">
-    <Container>
+    <Container className="headerContainer">
       <Row style={{marginTop: '5px', position: 'fixed', bottom: 0, left: '15px'}}>
         <div className="d-flex flex-wrap gap-2 block-status">
           <div style={{color: 'rgb(255 255 255 / 50%)'}}>Latest synced block: </div>
@@ -122,11 +122,11 @@ const Header = ({
         </div>
       </Row>
       <Row>
-        <Col className="d-flex flex-column justify-content-between">
+        <Col className="d-flex flex-column justify-content-between" style={{padding: '0 20px'}}>
           {/* <div className="navbar"> */}
           <Navbar>
             <div className="d-flex">
-              <div className="navbar-brand-box">
+              <div>
                 <Link href="/">
                   <div>
                     <img
