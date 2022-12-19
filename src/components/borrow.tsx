@@ -8,6 +8,10 @@ import {
   Modal,
   Spinner,
   InputGroup,
+  FormGroup,
+  Label,
+  FormText,
+  FormFeedback,
 } from "reactstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -35,6 +39,7 @@ import { getPrice } from "../blockchain/priceFeed";
 import { TxToastManager } from "../blockchain/txToastManager";
 import MySpinner from "./mySpinner";
 import OffchainAPI from "../services/offchainapi.service";
+import { ceil, round } from "../services/utils.service";
 
 interface IBorrowParams {
   loanAmount: number;
@@ -68,7 +73,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
   const [borrowParams, setBorrowParams] = useState<IBorrowParams>({
     loanAmount: 0,
     collateralAmount: 0,
-    commitBorrowPeriod: null,
+    commitBorrowPeriod: 0,
     collateralMarket: null,
   });
 
@@ -127,10 +132,11 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
       requestBorrowTransactionReceipt.data?.transaction_hash,
       requestBorrowTransactionReceipt
     );
-    TxToastManager.handleTxToast(
-      requestBorrowTransactionReceipt,
-      `Borrow ${borrowParams.loanAmount?.toFixed(4)} ${token?.name}`
-    );
+    if(borrowParams.loanAmount)
+      TxToastManager.handleTxToast(
+        requestBorrowTransactionReceipt,
+        `Borrow ${borrowParams.loanAmount?.toFixed(4)} ${token?.name}`
+      );
   }, [requestBorrowTransactionReceipt]);
 
   /* ======================= Approve ================================= */
@@ -162,19 +168,31 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
     reset: resetBorrow,
     execute: executeBorrow,
   } = useStarknetExecute({
-    calls: {
-      contractAddress: diamondAddress,
-      entrypoint: "loan_request",
-      calldata: [
-        tokenAddressMap[asset],
-        NumToBN(borrowParams.loanAmount as number, 18),
-        0,
-        borrowParams.commitBorrowPeriod,
-        tokenAddressMap[borrowParams.collateralMarket as string],
-        NumToBN(borrowParams.collateralAmount as number, 18),
-        0,
-      ],
-    },
+    calls: [
+      {
+        contractAddress:
+        tokenAddressMap[borrowParams.collateralMarket || ""] || "",
+        entrypoint: "approve",
+        calldata: [
+          diamondAddress,
+          NumToBN(borrowParams.collateralAmount as number, 18),
+          0,
+        ]
+      }, 
+      {
+        contractAddress: diamondAddress,
+        entrypoint: "loan_request",
+        calldata: [
+          tokenAddressMap[asset],
+          NumToBN(borrowParams.loanAmount as number, 18),
+          0,
+          borrowParams.commitBorrowPeriod,
+          tokenAddressMap[borrowParams.collateralMarket as string],
+          NumToBN(borrowParams.collateralAmount as number, 18),
+          0,
+        ],
+      }
+    ],
   });
 
   /* ========================= Balance ================================*/
@@ -266,6 +284,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
       ...borrowParams,
       collateralMarket: e.target.value,
     });
+    await refreshAllowance()
     await refreshBalance();
   };
 
@@ -273,21 +292,22 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
     if (e.target.value)
       setBorrowParams({
         ...borrowParams,
-        loanAmount: Number(e.target.value),
+        loanAmount: Number(e.target.value)
       });
     else {
       setBorrowParams({
         ...borrowParams,
-        loanAmount: 0,
+        loanAmount: "",
       });
     }
   };
 
-  const handleCollateralInputChange = (e: any) => {
+  const handleCollateralInputChange = async (e: any) => {
     setBorrowParams({
       ...borrowParams,
       collateralAmount: Number(e.target.value),
     });
+    await refreshAllowance()
   };
 
   function removeBodyCss() {
@@ -306,6 +326,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
         Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
         10 ** 18,
     });
+    await refreshAllowance()
   };
 
   const handleMin = async () => {
@@ -327,11 +348,12 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
     setLoading(false);
   };
 
-  const handleMinLoan = (asset: string) => {
+  const handleMinLoan = async (asset: string) => {
     setBorrowParams({
       ...borrowParams,
       loanAmount: MinimumAmount[asset],
     });
+    await refreshAllowance()
   };
 
   const handleBorrow = async (asset: string) => {
@@ -364,7 +386,12 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
       // }
 
       // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
-      await executeBorrow();
+      try {
+        let val = await executeBorrow();
+        setTransBorrow(val.transaction_hash)
+      } catch(err) {
+        console.log(err, 'err borrow')
+      }
       if (errorBorrow) {
         toast.error(`${GetErrorText(`Borrow request for ${asset} failed`)}`, {
           position: toast.POSITION.BOTTOM_RIGHT,
@@ -394,22 +421,6 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
     },
   });
 
-  useEffect(() => {
-    console.log(
-      "approeve info",
-      dataApprove,
-      loadingApprove,
-      resetApprove,
-      errorApprove
-    );
-
-    if (dataApprove) {
-      setTransApprove(dataApprove?.transaction_hash);
-    }
-    if (dataBorrow) {
-      setTransBorrow(dataBorrow?.transaction_hash);
-    }
-  }, [dataApprove, loadingApprove, resetApprove, errorApprove, dataBorrow]);
 
   useEffect(() => {
     console.log(
@@ -430,7 +441,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
       if (dataAllowance) {
         let data: any = dataAllowance;
         let _allowance = uint256.uint256ToBN(data.remaining);
-        console.log("borrow allowance", token?.name, _allowance, borrowParams);
+        console.log("borrow allowance", token?.name, _allowance.toString(), borrowParams);
         setAllowance(Number(uint256.uint256ToBN(dataAllowance[0])) / 10 ** 18);
 
         // if (allowanceVal > (borrowParams?.collateralAmount as number)) {
@@ -445,6 +456,24 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
       }
     }
   }, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
+
+  function isValidColleteralAmount() {
+    if(!borrowParams.collateralAmount)
+      return false
+    return Number(borrowParams.collateralAmount) < Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+    10 ** 18
+  }
+
+  function isLoanAmountValid() {
+    if(!borrowParams.loanAmount)
+      return false
+    return borrowParams.loanAmount >= MinimumAmount[asset]
+  }
+  // function isValidLoanAmount
+  function isValid() {
+    
+    return isValidColleteralAmount() && isLoanAmountValid()
+  }
 
   return (
     <>
@@ -468,35 +497,36 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
           {account ? (
             <Form>
               <div className="row mb-4">
-                <Col sm={8}>
-                  <h6>{title}</h6>
-                </Col>
                 <Col sm={4}>
-                  {borrowParams.collateralMarket && (
-                    <div>
-                      {" "}
-                      Balance :{" "}
-                      {loanAssetBalance
-                        ? (
-                            Number(uint256.uint256ToBN(loanAssetBalance[0])) /
-                            10 ** 18
-                          ).toString()
-                        : " Loading"}
-                    </div>
-                  )}
+                  <h6>Borrow {title}</h6>
+                </Col>
+                <Col sm={8}>
+                  <div style={{float: 'right'}}>
+                    {" "}
+                    Wallet Balance :{" "}
+                    {loanAssetBalance
+                      ? (
+                          Number(uint256.uint256ToBN(loanAssetBalance[0])) /
+                          10 ** 18
+                        ).toString()
+                      : <MySpinner/>}
+                  </div>
                 </Col>
               </div>
+              <FormGroup floating>
               <div className="row mb-4">
                 <Col sm={12}>
+                  <Label for="loan-amount">Loan amount</Label>
                   <InputGroup>
                     <Input
+                      id="loan-amount"
                       type="text"
                       className="form-control"
-                      id="horizontal-password-Input"
                       placeholder={`Minimum amount = ${MinimumAmount[asset]}`}
                       min={MinimumAmount[asset]}
                       value={borrowParams.loanAmount as number}
                       onChange={handleLoanInputChange}
+                      valid={isLoanAmountValid()}
                     />
                     {
                       <>
@@ -512,29 +542,85 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       </>
                     }
                   </InputGroup>
+                  {!isLoanAmountValid() ? <FormText>Loan amount should be {">="} {MinimumAmount[asset]} {asset}</FormText> : <></>}
                 </Col>
               </div>
-              <div className="row mb-4">
+              </FormGroup>
+              <FormGroup floating>
+                <div className="row mb-4">
+                  <Col sm={12}>
+                    <Label for="commitment">Commitment</Label>
+                    <select
+                      id="commitment"
+                      className="form-select"
+                      placeholder="Commitment"
+                      onChange={(e) => handleCommitmentChange(e)}
+                    >
+                      <option value={0}>Flexible</option>
+                      <option value={1}>One Month</option>
+                    </select>
+                  </Col>
+                </div>
+              </FormGroup>
+              <div className="row mb-12">
                 <Col sm={12}>
-                  <select
-                    className="form-select"
-                    placeholder="Commitment"
-                    onChange={(e) => handleCommitmentChange(e)}
-                  >
-                    <option hidden>Commitment</option>
-                    <option value={0}>None</option>
-                    <option value={1}>One Month</option>
-                  </select>
+                  <p>
+                    Borrow APR:{" "}
+                    <strong>
+                      {/* {BorrowInterestRates[
+                        borrowParams.commitBorrowPeriod || "NONE"
+                      ] || "15%"} */}
+                      {depositLoanRates &&
+                      borrowParams.commitBorrowPeriod != null &&
+                      (borrowParams.commitBorrowPeriod as number) < 4
+                       ? (
+                        `${
+                          parseFloat(
+                            depositLoanRates[
+                              `${getTokenFromName(asset as string).address}__${
+                                borrowParams.commitBorrowPeriod
+                              }`
+                            ]?.borrowAPR?.apr100x as string
+                          ) / 100
+                        } %`
+                      ) : (
+                        <MySpinner />
+                      )}
+                    </strong>
+                  </p>
                 </Col>
+                {/* <Col sm={6}>
+                  <p style={{ float: "right" }}>
+                    Collateral APY{" "}
+                    <strong>
+                      {depositLoanRates &&
+                      (borrowParams.commitBorrowPeriod as number) < 4 &&
+                      borrowParams.commitBorrowPeriod ? (
+                        `${
+                          parseFloat(
+                            depositLoanRates[
+                              `${getTokenFromName(asset as string).address}__${
+                                borrowParams.commitBorrowPeriod
+                              }`
+                            ]?.depositAPR?.apr100x as string
+                          ) / 100
+                        } %`
+                      ) : (
+                        <MySpinner />
+                      )}
+                    </strong>
+                  </p>
+                </Col> */}
               </div>
+              <hr/>
               <div className="row mb-4">
-                <Col sm={8}>
+                <Col sm={4}>
                   <h6>Collateral</h6>
                 </Col>
-                <Col sm={4}>
+                <Col sm={8}>
                   {borrowParams.collateralMarket && (
                     // <div align="right">
-                    <div>
+                    <div style={{float: 'right'}}>
                       {" "}
                       Balance :{" "}
                       {dataBalance
@@ -547,9 +633,12 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                   )}
                 </Col>
               </div>
+              <FormGroup floating>
               <div className="row mb-4">
                 <Col sm={12}>
+                  <Label for="collateral-market">Collateral Market</Label>
                   <select
+                    id="collteral-market"
                     className="form-select"
                     onChange={handleCollateralChange}
                   >
@@ -561,8 +650,10 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                   </select>
                 </Col>
               </div>
+              </FormGroup>
               <div className="row mb-4">
                 <Col sm={12}>
+                  <Label for="amount">Collateral Amount</Label>
                   <InputGroup>
                     <Input
                       type="number"
@@ -573,8 +664,9 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       value={
                         borrowParams.collateralAmount
                           ? (borrowParams.collateralAmount as number)
-                          : "Amount"
+                          : 0
                       }
+                      valid={isValidColleteralAmount()}
                     />
                     {borrowParams.collateralMarket && (
                       <>
@@ -606,71 +698,28 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       </>
                     )}
                   </InputGroup>
+                  {!isValidColleteralAmount() ? <FormText color="#e97272">
+                    Collateral amount must be non-zero and {"<="} your balance
+                  </FormText> : <></>}
                 </Col>
               </div>
-              <div className="row mb-4">
-                <Col sm={6}>
-                  <p>
-                    Borrow APR{" "}
-                    <strong>
-                      {/* {BorrowInterestRates[
-                        borrowParams.commitBorrowPeriod || "NONE"
-                      ] || "15%"} */}
-                      {depositLoanRates &&
-                      (borrowParams.commitBorrowPeriod as number) < 4 &&
-                      borrowParams.commitBorrowPeriod ? (
-                        `${
-                          parseFloat(
-                            depositLoanRates[
-                              `${getTokenFromName(asset as string).address}__${
-                                borrowParams.commitBorrowPeriod
-                              }`
-                            ]?.borrowAPR?.apr100x as string
-                          ) / 100
-                        } %`
-                      ) : (
-                        <MySpinner />
-                      )}
-                    </strong>
-                  </p>
-                </Col>
-                <Col sm={6}>
-                  <p style={{ float: "right" }}>
-                    Collateral APY{" "}
-                    <strong>
-                      {depositLoanRates &&
-                      (borrowParams.commitBorrowPeriod as number) < 4 &&
-                      borrowParams.commitBorrowPeriod ? (
-                        `${
-                          parseFloat(
-                            depositLoanRates[
-                              `${getTokenFromName(asset as string).address}__${
-                                borrowParams.commitBorrowPeriod
-                              }`
-                            ]?.depositAPR?.apr100x as string
-                          ) / 100
-                        } %`
-                      ) : (
-                        <MySpinner />
-                      )}
-                    </strong>
-                  </p>
-                </Col>
-              </div>
+            
 
               <div className="d-grid gap-2">
-                {allowanceVal < (borrowParams.collateralAmount as number) ? (
+                {/* {allowanceVal < (borrowParams.collateralAmount as number) ? (
                   <Button
                     color="primary"
                     className="w-md"
                     disabled={
                       borrowParams.commitBorrowPeriod === undefined ||
                       loadingApprove ||
-                      loadingBorrow
+                      loadingBorrow || 
+                      loadingAllowance
                     }
                     onClick={(e) => handleApprove(asset)}
                   >
                     {!(
+                      
                       loadingApprove ||
                       isTransactionLoading(approveTransactionReceipt)
                     ) ? (
@@ -679,14 +728,16 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       <MySpinner text="Approving token" />
                     )}
                   </Button>
-                ) : (
+                ) :  */}
+                {/* ( */}
                   <Button
                     color="primary"
                     className="w-md"
                     disabled={
                       borrowParams.commitBorrowPeriod === undefined ||
                       loadingApprove ||
-                      loadingBorrow
+                      loadingBorrow ||
+                      !isValid()
                     }
                     onClick={(e) => handleBorrow(asset)}
                   >
@@ -699,7 +750,8 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       <MySpinner text="Borrowing token" />
                     )}
                   </Button>
-                )}
+                {/* ) */}
+                {/* } */}
               </div>
             </Form>
           ) : (

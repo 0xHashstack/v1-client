@@ -20,7 +20,7 @@ export default class OffchainAPI {
       let data = await axios.get(url);
       return data.data;
     } catch (err) {
-      // console.error("httpGet", route, err);
+      console.error("httpGet", route, err);
       return [];
     }
   }
@@ -100,7 +100,7 @@ export default class OffchainAPI {
     let data = JSON.stringify({
       events: [
         "NewLoan",
-        "WithdrawPartial",
+        "WithdrawPartialLoan",
         "AddCollateral",
         "SushiSwapped",
         "RevertSushiSwapped",
@@ -114,33 +114,25 @@ export default class OffchainAPI {
         if (event.event === "RevertSushiSwapped") {
           return true;
         }
+        if (event.event === "WithdrawPartialLoan") {
+          return (
+            tokenAddressMap[token] === JSON.parse(event.eventInfo).market
+          );
+        }
         return (
           tokenAddressMap[token] === JSON.parse(event.eventInfo).loanMarket
         );
       })
       .map((event: any) => {
-        if (event.event === "RevertSushiSwapped") {
-          return {
-            txnHash: event.txHash,
-            actionType: "SwappedToLoan",
-            date: event.createdon,
-            value: "all",
-            id: event.loanId,
-          };
-        } else if (event.event === "SushiSwapped") {
-          return {
-            txnHash: event.txHash,
-            actionType: "SwappedToSecondary",
-            date: event.createdon,
-            value: "all",
-            id: event.loanId,
-          };
+        let value = JSON.parse(event.eventInfo).loanAmount
+        if (event.event === "RevertSushiSwapped" || event.event == 'SushiSwapped') {
+          value = 'all'
         }
         return {
           txnHash: event.txHash,
           actionType: event.event,
           date: event.createdon,
-          value: JSON.parse(event.eventInfo).loanAmount,
+          value,
           id: event.loanId,
         };
       });

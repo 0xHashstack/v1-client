@@ -272,7 +272,10 @@ const ActiveLoansTab = ({
     console.log(diamondAddress, loanId, inputVal1);
 
     try {
-      await executeWithdraw();
+      const val = await executeWithdraw();
+      if(val) {
+        setTransWithdrawLoan(val.transaction_hash)
+      }
     } catch (err) {
       toast.error(
         `${GetErrorText(`Withdraw Loan ${asset.loanMarket} failed`)}`,
@@ -293,7 +296,14 @@ const ActiveLoansTab = ({
       return;
     }
 
-    await executeSwapToMarket();
+    const val = await executeSwapToMarket();
+    if(val) {
+      try {
+        setTransSwapLoanToSecondary(val.transaction_hash)
+      } catch(err) {
+        console.error('error trans swap to secondary', err)
+      }
+    }
     if (errorSwapToMarket) {
       console.log(errorSwapToMarket);
       toast.error(`${GetErrorText(`Swap to ${swapMarket} failed`)}`, {

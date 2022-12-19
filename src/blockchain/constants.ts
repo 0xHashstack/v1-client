@@ -267,11 +267,11 @@ export const EventMap: IEventMap = {
 	CAKE: 'CAKE',
 	SXP: 'SXP',
 
-	NONE: 'None',
+	NONE: 'Flexible',
 	TWOWEEKS: 'Two Weeks',
 	ONEMONTH: 'One Month',
 	THREEMONTHS: 'Three Months',
-	comit_NONE: 'None',
+	comit_NONE: 'Flexible',
 	comit_TWOWEEKS: 'Two Weeks',
 	comit_ONEMONTH: 'One Month',
 	comit_THREEMONTHS: 'Three Months',

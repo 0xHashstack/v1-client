@@ -47,7 +47,7 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
                   defaultValue={"NONE"}
                 >
                   {/* <option hidden>Commitment</option> */}
-                  <option value={"NONE"}>None</option>
+                  <option value={"NONE"}>Flexible</option>
                   <option value={"TWOWEEKS"}>Two Weeks</option>
                   <option value={"ONEMONTH"}>One Month</option>
                   <option value={"THREEMONTHS"}>Three Month</option>
@@ -66,7 +66,7 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
                   defaultValue={"NONE"}
                 >
                   <option hidden>Commitment</option>
-                  <option value={"NONE"}>None</option>
+                  <option value={"NONE"}>Flexible</option>
                   <option value={"ONEMONTH"}>One Month</option>
                 </select>
               </th>
