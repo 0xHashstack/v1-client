@@ -15,7 +15,7 @@ export class TxToastManager {
     const hash = receipt.data?.transaction_hash;
     if (!hash) return;
     let hasToast = this.txToastMap[hash];
-    console.log("handleTxToast", {
+    console.log("handleTxToast", hash, {
       hash,
       hasToast,
       data: receipt.data,
@@ -108,10 +108,16 @@ export class TxToastManager {
       toast.update(hash, {
         render: message,
         ...options,
-        autoClose: false,
+        autoClose: timeout == 0 ? false : timeout,
         closeButton: true,
         hideProgressBar: false,
       });
+
+      // if(timeout) // had to add bcz above logic wasnt auto dismissing
+      //   setTimeout(() => {
+      //     console.log('dismising toast', hash, existingId.id)
+      //     toast.dismiss(hash)
+      //   }, timeout)
       this.txToastMap[hash].stage = status;
     }
   }

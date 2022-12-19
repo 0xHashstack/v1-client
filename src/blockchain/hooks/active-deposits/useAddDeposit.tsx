@@ -156,8 +156,12 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 		// console.log("amountin -: ", depositAmount);
 
 		// setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
-		let tx = await executeDeposit();
-		setTransBorrow(tx.transaction_hash);
+		try {
+			let tx = await executeDeposit();
+			setTransBorrow(tx.transaction_hash);
+		} catch(err) {
+			console.log(err, 'err add deposit')
+		}
 	};
 
 	return {

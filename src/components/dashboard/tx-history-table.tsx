@@ -169,7 +169,7 @@ const TxHistoryTable = ({
               </td>
               <td>{actionType}</td>
               <td>{formattedDate}</td>
-              <td>
+              <td style={{ textAlign: "center" }}>
                 {value == "all"
                   ? "100%"
                   : BNtoNum(formattedValue.toNumber(), 18)}
@@ -190,7 +190,7 @@ const TxHistoryTable = ({
             <th>Transaction Hash</th>
             <th>Action Type</th>
             <th>Date</th>
-            <th>Value</th>
+            <th>Amount In Protocol</th>
           </tr>
         </thead>
         <tbody>{renderTableData()}</tbody>
