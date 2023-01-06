@@ -16,6 +16,9 @@ interface IHistoryData {
   actionType: string;
   date: string;
   value: string;
+  isNegative: boolean;
+  showSign: boolean;
+  tokenName: string;
   id: number;
 }
 
@@ -129,6 +132,15 @@ const TxHistoryTable = ({
 
   const renderTableData = () => {
     console.log("renderTableDat:", txHistoryData);
+    function getTokenName(tokenName: string) {
+      return tokenName ? tokenName : ''
+    }
+    function getSign(isNegative: boolean, showSign: boolean) {
+      if (showSign) {
+        return isNegative ? "-" : "+";
+      }
+      return ''
+    }
     return (
       txHistoryData &&
       txHistoryData
@@ -148,7 +160,7 @@ const TxHistoryTable = ({
           return dateA - dateB;
         })
         .map((row, index) => {
-          const { txnHash, actionType, date, value } = row;
+          const { txnHash, actionType, date, value, tokenName, isNegative, showSign } = row;
           let myDate = new Date(date);
           let formattedDate = myDate.toLocaleString();
 
@@ -167,12 +179,12 @@ const TxHistoryTable = ({
                   "..............." +
                   txnHash.substring(txnHash.length - 11)}
               </td>
-              <td>{actionType}</td>
+              <td>{actionType?.replace(/([a-z])([A-Z])/g, '$1 $2')}</td>
               <td>{formattedDate}</td>
               <td style={{ textAlign: "center" }}>
                 {value == "all"
                   ? "100%"
-                  : BNtoNum(formattedValue.toNumber(), 18)}
+                  : getSign(isNegative, showSign) + parseFloat(BNtoNum(formattedValue.toNumber(), 18)).toFixed(4) + " " + getTokenName(tokenName) }
               </td>
             </tr>
           );

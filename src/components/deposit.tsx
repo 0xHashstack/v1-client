@@ -8,6 +8,7 @@ import {
   Spinner,
   InputGroup,
   FormGroup,
+  UncontrolledAlert,
   FormText,
   FormFeedback,
   Label,
@@ -428,6 +429,9 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                   </Col>
                 </div>
               </FormGroup>
+              <UncontrolledAlert color="primary">
+                <b>Note:</b> You need not make a deposit to borrow. Collateral will be taken from you when you borrow.
+              </UncontrolledAlert>
               <div className="d-grid gap-2">
                 {/* {allowanceVal < (depositAmount as number) ? (
                   <Button

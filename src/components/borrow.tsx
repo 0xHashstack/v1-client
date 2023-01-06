@@ -12,6 +12,8 @@ import {
   Label,
   FormText,
   FormFeedback,
+  Alert,
+  UncontrolledAlert,
 } from "reactstrap";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -704,7 +706,9 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                 </Col>
               </div>
             
-
+              <UncontrolledAlert color="primary">
+                <b>Note:</b> You need not make a deposit to borrow. Collateral will be taken in this transaction as specified above.
+              </UncontrolledAlert>
               <div className="d-grid gap-2">
                 {/* {allowanceVal < (borrowParams.collateralAmount as number) ? (
                   <Button
@@ -745,7 +749,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       loadingApprove ||
                       isTransactionLoading(requestBorrowTransactionReceipt)
                     ) ? (
-                      "Request Loan"
+                      "Transfer collateral & Request Loan"
                     ) : (
                       <MySpinner text="Borrowing token" />
                     )}

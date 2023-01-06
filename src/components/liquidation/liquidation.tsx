@@ -86,11 +86,17 @@ const LiquidationButton = ({
 		reset: reset,
 		execute: liquidate,
 	} = useStarknetExecute({
-		calls: {
-		  contractAddress: diamondAddress,
-		  entrypoint: "liquidate",
-		  calldata: [loan.id],
-		},
+		calls: [
+			{
+				contractAddress: loanTokenAddress,
+				entrypoint: "approve",
+				calldata: [diamondAddress, loan.loanAmount, 0],
+			}, {
+				contractAddress: diamondAddress,
+				entrypoint: "liquidate",
+				calldata: [loan.id],
+			},
+		]
 	});
 
 	function handleToast(isError: boolean, tag: string, msg: string) {
@@ -179,7 +185,7 @@ const LiquidationButton = ({
 	return <>
 
 			{loadingMsg ? <>{loadingMsg}</> : <></>}
-			{
+			{/* {
 				shouldApprove ? 
 				(<Button
 					className='text-muted'
@@ -201,8 +207,9 @@ const LiquidationButton = ({
 					) : (
 						<>Approve</>
 					)}
-				</Button> ) : <></>}
-			{	canLiquidate ? <Button
+				</Button> ) : <></>} */}
+			{/* {	canLiquidate ?  */}
+			<Button
 					className='text-muted'
 					color='light'
 					outline
@@ -220,10 +227,11 @@ const LiquidationButton = ({
 					{isTransactionLoading(liquidateTransactionReceipt) ? (
 						<MySpinner text='Liquidating'/>
 					) : (
-						<>Liquidate</>
+						<>Approve & Liquidate</>
 					)}
-				</Button>  : <></>
-			}
+				</Button>
+				  {/* : <></> */}
+			{/* } */}
 
 		</>
 }

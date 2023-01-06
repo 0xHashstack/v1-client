@@ -8,7 +8,7 @@ import {
 } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { Col, Button, Form, Input, Spinner } from "reactstrap";
+import { Col, Button, Form, Input, Spinner, UncontrolledTooltip } from "reactstrap";
 import { Abi, uint256 } from "starknet";
 import { MinimumAmount } from "../../../../blockchain/constants";
 import {
@@ -34,7 +34,7 @@ const Repay = ({
   //   const [loanMarket, setLoanMarket] = useState<string>("");
   const [inputVal, setInputVal] = useState<number>(0);
   const [commitmentPeriod, setCommitmentPeriod] = useState();
-  const [loanId, setLoanId] = useState<number>();
+  const [loanId, setLoanId] = useState<number>(asset.loanId);
 
   const [allowanceVal, setAllowance] = useState(0);
   const [isAllowed, setAllowed] = useState(false);
@@ -98,16 +98,34 @@ const Repay = ({
     reset: resetRepay,
     execute: executeRepay,
   } = useStarknetExecute({
-    calls: {
-      contractAddress: diamondAddress,
-      entrypoint: "loan_repay",
-      calldata: [
-        tokenAddressMap[asset.loanMarket],
-        asset.commitmentIndex,
-        NumToBN(inputVal as number, 18),
-        0,
-      ],
-    },
+    calls: NumToBN(inputVal as number, 18) != '0' ? [
+      {
+        contractAddress: tokenAddressMap[asset.loanMarket] as string,
+        entrypoint: "approve",
+        calldata: [diamondAddress, NumToBN(inputVal as number, 18), 0],
+      },
+      {
+        contractAddress: diamondAddress,
+        entrypoint: "loan_repay",
+        calldata: [
+          tokenAddressMap[asset.loanMarket],
+          asset.commitmentIndex,
+          NumToBN(inputVal as number, 18),
+          0,
+        ],
+      }
+    ] : [
+      {
+        contractAddress: diamondAddress,
+        entrypoint: "loan_repay",
+        calldata: [
+          tokenAddressMap[asset.loanMarket],
+          asset.commitmentIndex,
+          NumToBN(inputVal as number, 18),
+          0,
+        ],
+      }
+    ],
   });
 
   useEffect(() => {
@@ -191,22 +209,41 @@ const Repay = ({
     <Form>
       <div className="row mb-3">
         <Col sm={12}>
+          <label>Amount to pay to avoid collateral liquidation:</label>
           <Input
             type="text"
             className="form-control"
             id="horizontal-password-Input"
             min={0}
-            placeholder={"Loan amount to pay separately"}
+            value = {0}
+            placeholder={""}
             onChange={(event) => {
               setInputVal(Number(event.target.value));
               setLoanId(asset.loanId);
             }}
           />
+          <small>
+            <span
+              id="RepayTooltip"
+              style={{
+                color: '#babe76',
+                textDecoration: 'underline'
+              }}
+            >
+              Learn more
+            </span>
+          </small>
+          <UncontrolledTooltip
+            placement="right"
+            target="RepayTooltip"
+          >
+            This is additional amount that will be transfered from your wallet to Hashstack protocol to clear the loan. This is only needed if your current loan amount is less than original loan amount. Having insufficient current loan amount will lead to liquidation of some collateral.
+          </UncontrolledTooltip>
         </Col>
       </div>
 
       <div className="d-grid gap-2">
-        {allowanceVal < (inputVal as number) ? (
+        {/* {allowanceVal < (inputVal as number) ? (
           <Button
             color="primary"
             className="w-md"
@@ -218,7 +255,7 @@ const Repay = ({
             }
             onClick={(e) => handleApprove(asset.loanMarket)}
           >
-            {/* setApproveStatus(transactions[0]?.status); */}
+            {/* setApproveStatus(transactions[0]?.status); *}
             {!(
               loadingApprove ||
               isTransactionLoading(approveTransactionReceipt)
@@ -228,13 +265,12 @@ const Repay = ({
               <MySpinner text="Approving token"/>
             )}
           </Button>
-        ) : (
+        ) : ( */}
           <Button
             color="primary"
             className="w-md"
             disabled={
               loanId == null ||
-              loadingApprove ||
               loadingRepay ||
               (inputVal as number) < 0
             }
@@ -244,12 +280,12 @@ const Repay = ({
               loadingApprove ||
               isTransactionLoading(repayTransactionReceipt)
 										) ? (
-              "Repay"
+              NumToBN(inputVal as number, 18) != '0' ? "Approve && Full Repay" : "Full Repay"
             ) : (
               <MySpinner text="Repaying Loan"/>
             )}
           </Button>
-        )}
+        {/* )} */}
       </div>
     </Form>
   );

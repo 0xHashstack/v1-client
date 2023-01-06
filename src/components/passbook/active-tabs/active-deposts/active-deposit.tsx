@@ -349,7 +349,7 @@ const ActiveDeposit = ({
                                 </div>
 
                                 <div className="d-grid gap-2">
-                                  {allowanceVal < (depositAmount as number) ? (
+                                  {/* {allowanceVal < (depositAmount as number) ? (
                                     <Button
                                       color="primary"
                                       className="w-md"
@@ -362,7 +362,7 @@ const ActiveDeposit = ({
                                       }
                                       onClick={(e) => handleApprove(asset)}
                                     >
-                                      {/* setApproveStatus(transactions[0]?.status); */}
+                                      {/* setApproveStatus(transactions[0]?.status); *}
                                       {!(
                                         loadingApprove ||
                                         isTransactionLoading(
@@ -374,7 +374,7 @@ const ActiveDeposit = ({
                                         <MySpinner text="Approvin token" />
                                       )}
                                     </Button>
-                                  ) : (
+                                  ) : ( */}
                                     <Button
                                       color="primary"
                                       className="w-md"
@@ -393,12 +393,12 @@ const ActiveDeposit = ({
                                           addDepositTransactionReceipt
                                         )
                                       ) ? (
-                                        "Deposit"
+                                        "Approve & Deposit"
                                       ) : (
                                         <MySpinner text="Adding Deposit" />
                                       )}
                                     </Button>
-                                  )}
+                                  {/* )} */}
                                 </div>
                               </Form>
                             )}
