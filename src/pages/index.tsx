@@ -630,6 +630,23 @@ const Dashboard = () => {
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
+      {/* Google analytics */}
+      <Script id="google-analytics-zk" strategy="afterInteractive">
+        {`
+          <!-- Google tag (gtag.js) -->
+          <script async src="https://www.googletagmanager.com/gtag/js?id=G-KVDQT1MBVW"></script>
+          <script>
+            if (window.location.host.includes('zk.hashstack.finance')) {
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+            
+              gtag('config', 'G-KVDQT1MBVW');
+            }
+          </script>
+        `}
+      </Script>
+
       {/* testnet.hashstack.finance */}
       <Script id="microsoft-clarity-testnet" strategy="afterInteractive">
           {`
