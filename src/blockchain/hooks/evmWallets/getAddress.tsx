@@ -3,29 +3,24 @@ import { useAccount } from "wagmi";
 import { getBraavosAddress } from "../braavosWallet/getAddress";
 import { useAccount as useAccountStarknet } from "@starknet-react/core";
 
-const GetAccount = () => {
-  const [userAddress, setUserAddress] = React.useState("");
-  const { address, isConnecting, isDisconnected } = useAccount();
-  const meta = address;
+function useMyAccount(): string {
+  console.log('GetAccount')
+  const [state, setState] = React.useState("");
+  const { address: evmAddress, isConnecting, isDisconnected } = useAccount();
+  const { address: starknetAddress } = useAccountStarknet();
 
-  // const braavos = getBraavosAddress();
-  const starknetAccount = useAccountStarknet();
+  // console.log("Hello from GetAccountt", evmAddress, starknetAddress, {final: evmAddress || starknetAddress || ""});
+  const refreshState = React.useCallback(async () => {
+    console.log("Hello from GetAccountt", evmAddress, starknetAddress, {final: state});
+    const address = evmAddress || starknetAddress || "";
+    setState(address);
+  }, [setState, evmAddress, starknetAddress])
 
   React.useEffect(() => {
-    console.log("starknetaccount", starknetAccount);
-  }, [starknetAccount]);
-  // React.useEffect(() => {
-  //   console.log("Hello from GetAccount");
-  //   console.log(meta, braavos);
-  //   if (meta) {
-  //     setUserAddress(meta);
-  //   } else if (braavos) {
-  //     setUserAddress(braavos);
-  //   } else {
-  //     setUserAddress("");
-  //   }
-  // }, [meta, star]);
-  return userAddress;
+    refreshState()
+  }, [refreshState])
+
+  return state;
 };
 
-export default GetAccount;
+export default useMyAccount;

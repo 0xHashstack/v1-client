@@ -6,16 +6,15 @@ import React, { useEffect } from "react";
 import { Button } from "reactstrap";
 import { useContext } from "react";
 import { IdentifierContext } from "../../blockchain/hooks/context/identifierContext";
-import getAddress from "../../blockchain/hooks/evmWallets/getAddress";
+import useMyAccount from "../../blockchain/hooks/evmWallets/getAddress";
 import GetBalance from "../../blockchain/hooks/evmWallets/getBalance";
 
 const ConnectWallet = () => {
   let value = useContext(IdentifierContext);
-  // let address =
-  //   "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7";
-  let address = getAddress();
-  console.log("address", address);
-  let data = GetBalance(address);
+  let address =
+    "";
+  // let address = useMyAccount(2);
+  let data ={wallet: 0, balance: 0, token: 0};
 
   const handleWallet = async () => {
     if (value) {
@@ -30,9 +29,10 @@ const ConnectWallet = () => {
   const { available, connect } = useConnectors();
 
   useEffect(() => {
+    console.log("address", {address, data});
     console.log(available);
     handleWallet();
-  }, [data]);
+  }, [address]);
   return (
     <div>
       {available.length > 0 ? (

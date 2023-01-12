@@ -37,8 +37,8 @@ import "react-toastify/dist/ReactToastify.css";
 import GetTokenButton from "./get-token-button";
 import OffchainAPI from "../../services/offchainapi.service";
 import "./header.module.scss";
-import GetAccount from "../../blockchain/hooks/evmWallets/getAddress";
-import { useAccount as useAccountStarknet } from "@starknet-react/core";
+import useMyAccount from "../../blockchain/hooks/evmWallets/getAddress";
+import { IdentifierContext } from "../../blockchain/hooks/context/identifierContext";
 // toast.configure({ autoClose: 4000 });
 
 const Header = ({
@@ -58,12 +58,21 @@ const Header = ({
   const { transactions } = useTransactionManager();
 
   const { address: account } = useAccount();
-  // const _data = GetAccount();
-  const starknetAccount = useAccountStarknet();
+  const _address = useMyAccount();
 
-  React.useEffect(() => {
-    console.log("starknetaccount", starknetAccount);
-  }, [starknetAccount]);
+  let value = useContext(IdentifierContext);
+
+  useEffect(() => {
+    console.log("address", {_address});
+    if (value) {
+      value.setState({
+        walletName: `wa`,
+        address: `${_address}`,
+        balance: `--`,
+      });
+    }
+  }, [_address]);
+
   function removeBodyCss() {
     document.body.classList.add("no_padding");
   }
