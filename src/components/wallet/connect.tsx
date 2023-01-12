@@ -2,9 +2,8 @@
 import { useConnectors } from "@starknet-react/core";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import React, { useEffect } from "react";
-import { toast } from "react-toastify";
+
 import { Button } from "reactstrap";
-import { GetErrorText } from "../../blockchain/utils";
 import { useContext } from "react";
 import { IdentifierContext } from "../../blockchain/hooks/context/identifierContext";
 import getAddress from "../../blockchain/hooks/evmWallets/getAddress";
@@ -12,11 +11,11 @@ import GetBalance from "../../blockchain/hooks/evmWallets/getBalance";
 
 const ConnectWallet = () => {
   let value = useContext(IdentifierContext);
-  let address = "0x00000000000000000000000000";
-  let data = GetBalance(
-    "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
-    address
-  );
+  // let address =
+  //   "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7";
+  let address = getAddress();
+  console.log("address", address);
+  let data = GetBalance(address);
 
   const handleWallet = async () => {
     if (value) {
@@ -27,9 +26,6 @@ const ConnectWallet = () => {
       });
     }
   };
-
-  // console.log("address", address);
-  // console.log("data", data);
 
   const { available, connect } = useConnectors();
 

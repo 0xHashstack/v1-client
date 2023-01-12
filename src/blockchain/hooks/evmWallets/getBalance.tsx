@@ -13,7 +13,7 @@ import {
 import { Abi } from "starknet/types";
 import { uint256 } from "starknet";
 
-const GetBalance = (tokenAddress: string, account: any) => {
+const GetBalance = (account: any) => {
   const [balance, setBalance] = React.useState("");
   const [wallet, setWallet] = React.useState("");
   const [token, setToken] = React.useState("");
@@ -24,7 +24,7 @@ const GetBalance = (tokenAddress: string, account: any) => {
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
-    address: tokenAddress as string,
+    address: account as string,
   });
 
   const {
@@ -35,7 +35,7 @@ const GetBalance = (tokenAddress: string, account: any) => {
   } = useStarknetCall({
     contract: contract,
     method: "balanceOf",
-    args: [tokenAddress],
+    args: [account],
     options: {
       watch: true,
     },
