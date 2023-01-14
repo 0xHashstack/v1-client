@@ -8,26 +8,15 @@ export default function ConnectionDetails() {
   const addressData = useMyAccount();
   console.log("address", addressData.address);
 
-  let data = GetBalance(addressData.address);
-  // console.log(
-  //   "data -------------------------------------------------------------",
-  //   { data }
-  // );
+  let data = GetBalance(
+    "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+    "0xA0b86991c6218b36c1d19D4a2e9Eb0cE3606eB48",
+    addressData.address
+  );
 
   useEffect(() => {
     console.log("address", addressData.address);
     if (value) {
-      if (!addressData.address) {
-        value.setState({
-          walletName: `NA`,
-          address: `NA`,
-          balance: `NA`,
-        });
-        console.log(
-          "address----------------------------------------------------"
-        );
-        console.log(value);
-      }
       value.setState({
         walletName: `${addressData.walletName}`,
         address: `${addressData.address}`,

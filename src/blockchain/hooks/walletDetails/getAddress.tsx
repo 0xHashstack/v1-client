@@ -9,15 +9,14 @@ function useMyAccount() {
   const { address: starknetAddress } = useAccountStarknet();
 
   const refreshState = React.useCallback(async () => {
-    // console.log("Hello from GetAccountt", evmAddress, starknetAddress, {
-    //   final: state,
-    // });
     const address = evmAddress || starknetAddress || "NA";
     setState(address);
     if (evmAddress) {
       setWallet("MetaMask");
     } else if (starknetAddress) {
       setWallet("Braavos");
+    } else {
+      setWallet("NA");
     }
   }, [setState, evmAddress, starknetAddress]);
 
