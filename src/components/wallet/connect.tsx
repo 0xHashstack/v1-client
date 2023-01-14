@@ -1,38 +1,21 @@
 // import { Connector } from '@starknet-react/core';
 import { useConnectors } from "@starknet-react/core";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
-import React, { useEffect } from "react";
-
+import { useAccount, useDisconnect } from "wagmi";
+import React from "react";
 import { Button } from "reactstrap";
-import { useContext } from "react";
-import { IdentifierContext } from "../../blockchain/hooks/context/identifierContext";
-import useMyAccount from "../../blockchain/hooks/evmWallets/getAddress";
-import GetBalance from "../../blockchain/hooks/evmWallets/getBalance";
 
 const ConnectWallet = () => {
-  let value = useContext(IdentifierContext);
-  let address =
-    "";
-  // let address = useMyAccount(2);
-  let data ={wallet: 0, balance: 0, token: 0};
+  const { disconnect } = useDisconnect();
+  const { address: evmAddress } = useAccount();
 
-  const handleWallet = async () => {
-    if (value) {
-      value.setState({
-        walletName: `${data.wallet}`,
-        address: `${address}`,
-        balance: `${data.balance} ${data.token}`,
-      });
+  const disconnectEvent = () => {
+    if (evmAddress) {
+      disconnect();
     }
   };
 
   const { available, connect } = useConnectors();
-
-  useEffect(() => {
-    console.log("address", {address, data});
-    console.log(available);
-    handleWallet();
-  }, [address]);
   return (
     <div>
       {available.length > 0 ? (
@@ -47,7 +30,7 @@ const ConnectWallet = () => {
                   margin: "18px",
                 }}
                 onClick={(e) => {
-                  connect(connector);
+                  disconnectEvent(), connect(connector);
                 }}
                 key={connector.id()}
               >

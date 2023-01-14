@@ -18,7 +18,7 @@ const GetBalance = (account: any) => {
   const [wallet, setWallet] = React.useState("");
   const [token, setToken] = React.useState("");
 
-  const { data, isError, isLoading } = useBalance({
+  const { data } = useBalance({
     address: account,
   });
 
@@ -41,7 +41,14 @@ const GetBalance = (account: any) => {
     },
   });
 
+  console.log("account", account);
+  console.log("dataBalance", dataBalance);
+
   React.useEffect(() => {
+    console.log(
+      "drone-------------------------------------------------------",
+      data
+    );
     if (dataBalance) {
       const balanceData =
         Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
@@ -54,6 +61,8 @@ const GetBalance = (account: any) => {
       setToken(data.symbol);
       setWallet("MetaMask");
     } else {
+      setToken("NA");
+      setWallet("NA");
       setBalance("0");
     }
   }, [dataBalance, data]);
