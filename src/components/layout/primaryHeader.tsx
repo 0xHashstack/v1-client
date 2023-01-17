@@ -42,7 +42,7 @@ import { IdentifierContext } from "../../blockchain/hooks/context/identifierCont
 import GetBalance from "../../blockchain/hooks/walletDetails/getBalance";
 // toast.configure({ autoClose: 4000 });
 
-const Header = ({
+const PrimaryHeader = ({
   handleDisconnectWallet,
   handleConnectWallet,
 }: {
@@ -281,4 +281,4 @@ const Header = ({
   );
 };
 
-export default Header;
+export default PrimaryHeader;

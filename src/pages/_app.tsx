@@ -59,7 +59,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               >
                 <Provider store={store}>
                   <DetailsProvider>
-                    <ConnectionDetails />
+                    {/* <ConnectionDetails /> */}
 
                     <Layout>
                       <Component {...pageProps} />
