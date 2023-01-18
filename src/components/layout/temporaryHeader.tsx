@@ -7,6 +7,9 @@ import starknetLogo from "../../assets/images/starknetLogo.svg";
 import ethLogo from "../../assets/images/ethLogo.svg";
 import braavosWallet from "../../assets/images/braavosWallet.svg";
 import crossButton from "../../assets/images/crossButton.svg";
+import hashstackLogo from "../../assets/images/hashstackLogo.svg";
+import connectWalletArrowDown from "../../assets/images/connectWalletArrowDown.svg";
+import starknetLogoBordered from "../../assets/images/starknetLogoBordered.svg";
 import "react-toastify/dist/ReactToastify.css";
 import { useConnectors, useAccount } from "@starknet-react/core";
 import "react-toastify/dist/ReactToastify.css";
@@ -27,9 +30,14 @@ const SecondaryHeader = ({
   const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
   const [dropDownOpen, setdropDownOpen] = useState(false);
   const [networkSelected, setnetworkSelected] = useState({
+    network: "",
     starknet: false,
     walletName: "",
     walletLogo: {},
+  });
+  const [connectWalletArrowState, setConnectWalletArrowState] = useState({
+    bool: false,
+    direction: { connectWalletArrowDown },
   });
 
   const [network, setNetwork] = useState("Select Network");
@@ -45,6 +53,7 @@ const SecondaryHeader = ({
 
   function handleButtonConnectWallet() {
     setnetworkSelected({
+      network: "Etherium Goerli",
       starknet: false,
       walletName: "",
       walletLogo: braavosWallet,
@@ -71,6 +80,7 @@ const SecondaryHeader = ({
         ? available.map((connector) => {
             setNetwork("Starknet");
             setnetworkSelected({
+              network: "Etherium Goerli",
               starknet: true,
               walletName: "Braavos",
               walletLogo: braavosWallet,
@@ -83,18 +93,12 @@ const SecondaryHeader = ({
   return (
     <Container className="headerContainer">
       <Row>
-        <Navbar>
+        <Navbar style={{ backgroundColor: "#FFF" }}>
           <div className="d-flex">
             <div>
               <Link href="/">
                 <div>
-                  <img
-                    src="https://common-static-assets.s3.ap-southeast-1.amazonaws.com/1111-44.png"
-                    alt=""
-                    style={{
-                      height: "40px",
-                    }}
-                  ></img>
+                  <Image src={hashstackLogo} alt="Navbar Logo" />
                 </div>
               </Link>
             </div>
@@ -102,7 +106,7 @@ const SecondaryHeader = ({
 
           <div className="d-flex flex-wrap gap-4 ">
             <Modal
-              isOpen={connectWallet}
+              isOpen={connectWallet && !account}
               toggle={() => {
                 handleButtonConnectWallet();
               }}
@@ -307,37 +311,155 @@ const SecondaryHeader = ({
 
             {account ? (
               <>
-                <Button
-                  color="success"
-                  outline
-                  className="btn-outline"
-                  onClick={handleDisconnectWallet}
-                >
-                  <i className="fas fa-wallet font-size-16 align-middle me-2"></i>{" "}
-                  {`${account.substring(0, 3)}...${account.substring(
-                    account.length - 3,
-                    account.length
-                  )}`}{" "}
-                  | Disconnect
-                </Button>
-              </>
-            ) : (
-              <>
-                <Button
-                  color="success"
-                  outline
-                  className="btn-outline"
+                <label
+                  style={{
+                    backgroundColor: "#000",
+                    padding: "15px",
+                    fontSize: "12px",
+                    borderRadius: "5px",
+                    color: "#FFF",
+                    marginBottom: "0px",
+                  }}
+                  className="button"
                   onClick={() => {
                     handleButtonConnectWallet();
                   }}
                 >
-                  <i className="fas fa-wallet font-size-16 align-middle me-2"></i>{" "}
-                  Connect Wallet
-                </Button>
+                  <span
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    &nbsp;
+                    <Image
+                      onClick={() => {
+                        setConnectWallet(false);
+                      }}
+                      src={starknetLogoBordered}
+                      width="18px"
+                      height="18px"
+                      style={{ cursor: "pointer" }}
+                    />
+                    <div>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
+                      {`${account.substring(0, 3)}...${account.substring(
+                        account.length - 10,
+                        account.length
+                      )}`}{" "}
+                      &nbsp;&nbsp;&nbsp;
+                    </div>
+                    <Image
+                      onClick={() => {
+                        setConnectWallet(false);
+                        setConnectWalletArrowState({
+                          bool: !connectWalletArrowState.bool,
+                          direction: { connectWalletArrowDown },
+                        });
+                      }}
+                      src={connectWalletArrowDown}
+                      alt="Picture of the author"
+                      width="15px"
+                      height="15px"
+                      style={{ cursor: "pointer" }}
+                    />
+                  </span>
+                </label>{" "}
+              </>
+            ) : (
+              <>
+                <label
+                  style={{
+                    backgroundColor: "#000",
+                    padding: "15px",
+                    fontSize: "12px",
+                    borderRadius: "5px",
+                    color: "#FFF",
+                    cursor: "pointer",
+                  }}
+                  className="button"
+                  onClick={() => {
+                    handleButtonConnectWallet();
+                  }}
+                >
+                  <span
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    Connect Wallet&nbsp;&nbsp;&nbsp;
+                    <Image
+                      onClick={() => {
+                        setConnectWallet(false);
+                      }}
+                      src={connectWalletArrowDown}
+                      alt="Picture of the author"
+                      width="15px"
+                      height="15px"
+                      style={{ cursor: "pointer" }}
+                    />
+                  </span>
+                </label>{" "}
               </>
             )}
           </div>
         </Navbar>
+        {account && connectWalletArrowState.bool ? (
+          <div style={{ zIndex: "1000" }}>
+            <div
+              style={{
+                position: "absolute",
+                right: "0.4vw",
+                backgroundColor: "#E7E7E7",
+                width: "195px",
+                height: "110px",
+                borderRadius: "5px",
+                boxShadow: "0px 0px 10px #00000050",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "10px 12px",
+                  gap: "2px",
+                  fontSize: "10.5px",
+                }}
+              >
+                <button style={{ padding: "7px 6px", borderRadius: "5px" }}>
+                  Switch Wallet
+                </button>
+                <button
+                  style={{ padding: "7px 6px", borderRadius: "5px" }}
+                  onClick={handleDisconnectWallet}
+                >
+                  Disconnect
+                </button>
+              </div>
+              <hr style={{ margin: "0 10px" }} />
+              <div>
+                <div
+                  style={{
+                    position: "absolute",
+                    right: "0.7vw",
+                    bottom: "10px",
+                    color: "#636779",
+                    textAlign: "right",
+                  }}
+                >
+                  Network
+                  <br />
+                  <div style={{ color: "#000" }}>{networkSelected.network}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
       </Row>
     </Container>
   );

@@ -61,14 +61,20 @@ const Layout = (props: any) => {
   }, [isPreloader]);
 
   function switchScreens() {
-    if (!account) {
-      return (
-        <>
-          <SecondaryHeader
-            handleConnectWallet={handleConnectWallet}
-            handleDisconnectWallet={() => disconnect()}
-          />
-          <Container>
+    // if (account) {
+    return (
+      <>
+        <SecondaryHeader
+          handleConnectWallet={handleConnectWallet}
+          handleDisconnectWallet={() => disconnect()}
+        />
+        <div style={{ margin: "0 200px" }} className="main-content">
+          {props.children}
+        </div>
+
+        {/* <Footer /> */}
+
+        {/* <Container>
             <Row style={{ marginTop: "25ch" }}>
               <Col lg="12">
                 <div className="text-center mb-5">
@@ -79,28 +85,28 @@ const Layout = (props: any) => {
                 </div>
               </Col>
             </Row>
-          </Container>
-        </>
-      );
-    } else if (account) {
-      return (
-        <div id="layout-wrapper">
-          <PrimaryHeader
-            handleConnectWallet={handleConnectWallet}
-            handleDisconnectWallet={() => disconnect()}
-          />
-          <div
-            style={{ marginLeft: "200px", marginRight: "200px" }}
-            className="main-content"
-          >
-            {props.children}
-          </div>
-          <Footer />
-        </div>
-      );
-    } else {
-      return null;
-    }
+          </Container> */}
+      </>
+    );
+    // } else if (!account) {
+    //   return (
+    //     <div id="layout-wrapper">
+    //       <PrimaryHeader
+    //         handleConnectWallet={handleConnectWallet}
+    //         handleDisconnectWallet={() => disconnect()}
+    //       />
+    //   <div
+    //     style={{ marginLeft: "200px", marginRight: "200px" }}
+    //     className="main-content"
+    //   >
+    //     {props.children}
+    //   </div>
+    //   <Footer />
+    // </div>
+    //   );
+    // } else {
+    //   return null;
+    // }
   }
 
   return (
