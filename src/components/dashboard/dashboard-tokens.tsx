@@ -34,7 +34,7 @@ const DashboardTokens = ({
   });
 
   return (
-    <tr key={idx}>
+    <tr key={idx} style={{ backgroundColor: "white", color: "black" }}>
       <th scope="row">
         <div className="d-flex align-items-center">
           <div className="avatar-xs me-3">
@@ -51,25 +51,33 @@ const DashboardTokens = ({
       <td>
         <div className="text-muted">
           {/* {deposit ? deposit[0].apr.toNumber() / 100 : "NaN"}% */}
-          {depositLoanRates && parseInt(depositCommitment) < 4
-            ? `${parseFloat(
+          {depositLoanRates && parseInt(depositCommitment) < 4 ? (
+            `${
+              parseFloat(
                 depositLoanRates[
                   `${getTokenFromName(coin.name).address}__${depositCommitment}`
                 ]?.depositAPR.apr100x
-              ) / 100} %`
-            : <MySpinner/>}
+              ) / 100
+            } %`
+          ) : (
+            <MySpinner />
+          )}
         </div>
       </td>
       <td>
         <div className="text-muted">
           {/* {borrow ? borrow[0].apr.toNumber() / 100 : "NaN"}% */}
-          {depositLoanRates && parseInt(borrowCommitment) < 2
-            ? `${parseFloat(
+          {depositLoanRates && parseInt(borrowCommitment) < 2 ? (
+            `${
+              parseFloat(
                 depositLoanRates[
                   `${getTokenFromName(coin.name).address}__${borrowCommitment}`
                 ]?.borrowAPR.apr100x
-              ) / 100} %`
-            :  <MySpinner/>}
+              ) / 100
+            } %`
+          ) : (
+            <MySpinner />
+          )}
         </div>
       </td>
       <td style={{ width: "120px" }}>

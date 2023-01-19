@@ -45,7 +45,7 @@ import { useAccount, useStarknet } from "@starknet-react/core";
 import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
 import { number } from "starknet";
 import { assert } from "console";
-import Script from 'next/script'
+import Script from "next/script";
 
 interface IDeposit {
   amount: string;
@@ -537,13 +537,13 @@ const Dashboard = () => {
 
   function dashboardUI() {
     return (
-      <Container fluid>
+      <Container fluid style={{ backgroundColor: "white" }}>
         {/* Protocol Stats */}
-        <ProtocolStats />
-        <Row>
+        {/* <ProtocolStats /> */}
+        <Row style={{ backgroundColor: "white" }}>
           <Col xl={"12"}>
             <Card style={{ height: "35rem", overflowY: "scroll" }}>
-              <CardBody>
+              <CardBody style={{ backgroundColor: "white" }}>
                 <Row>
                   {/* Dashboard Menu Panes */}
                   <DashboardMenu
@@ -632,7 +632,7 @@ const Dashboard = () => {
 
       {/* testnet.hashstack.finance */}
       <Script id="microsoft-clarity-testnet" strategy="afterInteractive">
-          {`
+        {`
             (function(c,l,a,r,i,t,y){
               c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
               t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
@@ -643,7 +643,7 @@ const Dashboard = () => {
 
       {/* zk.hashstack.finance */}
       <Script id="microsoft-clarity-zk" strategy="afterInteractive">
-          {`
+        {`
             (function(c,l,a,r,i,t,y){
               c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
               t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
@@ -657,15 +657,15 @@ const Dashboard = () => {
           <title>Hashstack Finance</title>
         </MetaTags> */}
         {/* {maintenance()} */}
-
+        {dashboardUI()}
         {/* <Banner /> */}
-        {!starknetAccount ? (
+        {/* {!starknetAccount ? (
           <h3>Loading...</h3>
         ) : !isCorrectNetwork() ? (
           incorrectChain()
         ) : (
           dashboardUI()
-        )}
+        )} */}
 
         {/* <Analytics></Analytics>
             {props.children} */}

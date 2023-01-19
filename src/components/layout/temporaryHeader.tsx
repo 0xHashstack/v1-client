@@ -10,6 +10,10 @@ import crossButton from "../../assets/images/crossButton.svg";
 import hashstackLogo from "../../assets/images/hashstackLogo.svg";
 import connectWalletArrowDown from "../../assets/images/connectWalletArrowDown.svg";
 import starknetLogoBordered from "../../assets/images/starknetLogoBordered.svg";
+import transferDeposit from "../../assets/images/transferDeposit.svg";
+import spendLoans from "../../assets/images/spendLoans.svg";
+import settingIcon from "../../assets/images/settingIcon.svg";
+import moreIcon from "../../assets/images/moreIcon.svg";
 import "react-toastify/dist/ReactToastify.css";
 import { useConnectors, useAccount } from "@starknet-react/core";
 import "react-toastify/dist/ReactToastify.css";
@@ -32,8 +36,9 @@ const SecondaryHeader = ({
   const [networkSelected, setnetworkSelected] = useState({
     network: "",
     starknet: false,
-    walletName: "",
+    walletName: "Braavos",
     walletLogo: {},
+    redirectLink: "#",
   });
   const [connectWalletArrowState, setConnectWalletArrowState] = useState({
     bool: false,
@@ -52,12 +57,23 @@ const SecondaryHeader = ({
   }
 
   function handleButtonConnectWallet() {
-    setnetworkSelected({
-      network: "Etherium Goerli",
-      starknet: false,
-      walletName: "",
-      walletLogo: braavosWallet,
-    });
+    available.length > 0
+      ? available.map((connector) => {
+          setnetworkSelected({
+            network: "Etherium Goerli",
+            starknet: true,
+            walletName: "Braavos",
+            walletLogo: braavosWallet,
+            redirectLink: "/",
+          });
+        })
+      : setnetworkSelected({
+          network: "",
+          starknet: true,
+          walletName: "Download Braavos",
+          walletLogo: braavosWallet,
+          redirectLink: "https://braavos.app/",
+        });
     setNetwork("Select Network");
     setConnectWallet(!connectWallet);
     removeBodyCss();
@@ -66,6 +82,7 @@ const SecondaryHeader = ({
   const toggleDropdown = () => {
     setdropDownOpen(!dropDownOpen);
     setDropDownArrow(dropDownOpen ? arrowDown : arrowUp);
+    // disconnectEvent(), connect(connector);
   };
 
   const disconnectEvent = () => {
@@ -74,31 +91,40 @@ const SecondaryHeader = ({
     }
   };
 
-  const selectStarKnetNetwork = () => {
+  const handleConnectBraavosWallet = () => {
     {
       available.length > 0
         ? available.map((connector) => {
-            setNetwork("Starknet");
-            setnetworkSelected({
-              network: "Etherium Goerli",
-              starknet: true,
-              walletName: "Braavos",
-              walletLogo: braavosWallet,
-            });
-            disconnectEvent(), connect(connector);
+            if (network === "Starknet") {
+              disconnectEvent(), connect(connector);
+            }
           })
-        : null;
+        : window.open("https://braavos.app/", "_blank");
+    }
+  };
+
+  const selectStarKnetNetwork = () => {
+    {
+      setNetwork("Starknet");
+      setdropDownOpen(!dropDownOpen);
+      setDropDownArrow(dropDownOpen ? arrowDown : arrowUp);
     }
   };
   return (
-    <Container className="headerContainer">
+    // <Container className="headerContainer">
+    <div style={{ overflowX: "hidden" }}>
       <Row>
-        <Navbar style={{ backgroundColor: "#FFF" }}>
+        <Navbar style={{ backgroundColor: "#FFF", width: "100%" }}>
           <div className="d-flex">
             <div>
               <Link href="/">
                 <div>
-                  <Image src={hashstackLogo} alt="Navbar Logo" />
+                  <Image
+                    src={hashstackLogo}
+                    alt="Navbar Logo"
+                    style={{ marginLeft: "20px" }}
+                    height="40px"
+                  />
                 </div>
               </Link>
             </div>
@@ -223,53 +249,52 @@ const SecondaryHeader = ({
                         <></>
                       )}
                     </label>
-                    {networkSelected.starknet ? (
-                      <label
+
+                    {/* <a href={networkSelected.redirectLink} target=""> */}
+                    <label
+                      onClick={handleConnectBraavosWallet}
+                      style={{
+                        backgroundColor: "#000",
+                        width: "100%",
+                        marginBottom: "10px",
+                        padding: "15px 10px",
+                        fontSize: "18px",
+                        borderRadius: "5px",
+                        border: "2px solid #00000050",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <div
                         style={{
-                          backgroundColor: "#000",
-                          width: "100%",
-                          marginBottom: "10px",
-                          padding: "15px 10px",
-                          fontSize: "18px",
-                          borderRadius: "5px",
-                          border: "2px solid #00000050",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
                         }}
                       >
                         <div
                           style={{
-                            display: "flex",
-                            justifyContent: "space-between",
-                            alignItems: "center",
+                            fontSize: "15px",
+                            marginTop: "6px",
+                            color: "#FFF",
                           }}
                         >
-                          <div
-                            style={{
-                              fontSize: "15px",
-                              marginTop: "6px",
-                              color: "#FFF",
-                            }}
-                          >
-                            &nbsp;{networkSelected.walletName} Wallet
-                          </div>
-                          <div
-                            style={{ marginRight: "10px", marginTop: "2px" }}
-                          >
-                            <Image
-                              src={braavosWallet}
-                              alt="Picture of the author"
-                              width="25px"
-                              height="25px"
-                            />
-                          </div>
+                          &nbsp;{networkSelected.walletName} Wallet
                         </div>
-                      </label>
-                    ) : (
-                      <></>
-                    )}
+                        <div style={{ marginRight: "10px", marginTop: "2px" }}>
+                          <Image
+                            src={braavosWallet}
+                            alt="Picture of the author"
+                            width="25px"
+                            height="25px"
+                          />
+                        </div>
+                      </div>
+                    </label>
+                    {/* </a> */}
                     <EthWalletButton />
                   </div>
 
-                  <p>
+                  {/* <p>
                     Don’t have a supporting wallet.{" "}
                     <a
                       href="https://braavos.app/"
@@ -278,7 +303,7 @@ const SecondaryHeader = ({
                     >
                       Download Braavos from here
                     </a>
-                  </p>
+                  </p> */}
 
                   <p>
                     By connecting your wallet, you agree to Hashstack’s &nbsp;
@@ -309,159 +334,300 @@ const SecondaryHeader = ({
               </div>
             </Modal>
 
-            {account ? (
-              <>
-                <label
-                  style={{
-                    backgroundColor: "#000",
-                    padding: "15px",
-                    fontSize: "12px",
-                    borderRadius: "5px",
-                    color: "#FFF",
-                    marginBottom: "0px",
-                  }}
-                  className="button"
-                  onClick={() => {
-                    handleButtonConnectWallet();
-                  }}
-                >
-                  <span
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    &nbsp;
-                    <Image
-                      onClick={() => {
-                        setConnectWallet(false);
-                      }}
-                      src={starknetLogoBordered}
-                      width="18px"
-                      height="18px"
-                      style={{ cursor: "pointer" }}
-                    />
-                    <div>
-                      &nbsp;&nbsp;&nbsp;&nbsp;
-                      {`${account.substring(0, 3)}...${account.substring(
-                        account.length - 10,
-                        account.length
-                      )}`}{" "}
-                      &nbsp;&nbsp;&nbsp;
-                    </div>
-                    <Image
-                      onClick={() => {
-                        setConnectWallet(false);
-                        setConnectWalletArrowState({
-                          bool: !connectWalletArrowState.bool,
-                          direction: { connectWalletArrowDown },
-                        });
-                      }}
-                      src={connectWalletArrowDown}
-                      alt="Picture of the author"
-                      width="15px"
-                      height="15px"
-                      style={{ cursor: "pointer" }}
-                    />
-                  </span>
-                </label>{" "}
-              </>
-            ) : (
-              <>
-                <label
-                  style={{
-                    backgroundColor: "#000",
-                    padding: "15px",
-                    fontSize: "12px",
-                    borderRadius: "5px",
-                    color: "#FFF",
-                    cursor: "pointer",
-                  }}
-                  className="button"
-                  onClick={() => {
-                    handleButtonConnectWallet();
-                  }}
-                >
-                  <span
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    Connect Wallet&nbsp;&nbsp;&nbsp;
-                    <Image
-                      onClick={() => {
-                        setConnectWallet(false);
-                      }}
-                      src={connectWalletArrowDown}
-                      alt="Picture of the author"
-                      width="15px"
-                      height="15px"
-                      style={{ cursor: "pointer" }}
-                    />
-                  </span>
-                </label>{" "}
-              </>
-            )}
-          </div>
-        </Navbar>
-        {account && connectWalletArrowState.bool ? (
-          <div style={{ zIndex: "1000" }}>
-            <div
-              style={{
-                position: "absolute",
-                right: "0.4vw",
-                backgroundColor: "#E7E7E7",
-                width: "195px",
-                height: "110px",
-                borderRadius: "5px",
-                boxShadow: "0px 0px 10px #00000050",
-              }}
-            >
-              <div
+            <div style={{ display: "flex", gap: "20px" }}>
+              <label
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  padding: "10px 12px",
-                  gap: "2px",
-                  fontSize: "10.5px",
+                  padding: "15px",
+                  fontSize: "12px",
+                  borderRadius: "5px",
+                  color: "#000",
+                  cursor: "pointer",
+                  margin: "0",
+                }}
+                className="button"
+              >
+                <span
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  {" "}
+                  <Image
+                    src={moreIcon}
+                    alt="Picture of the author"
+                    width="15px"
+                    height="15px"
+                    style={{ cursor: "pointer" }}
+                  />
+                  &nbsp;&nbsp;Dashboard
+                </span>
+              </label>{" "}
+              <label
+                style={{
+                  padding: "15px",
+                  fontSize: "12px",
+                  borderRadius: "5px",
+                  color: "#000",
+                  cursor: "pointer",
+                  margin: "0",
+                }}
+                className="button"
+              >
+                <span
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  {" "}
+                  <Image
+                    src={moreIcon}
+                    alt="Picture of the author"
+                    width="15px"
+                    height="15px"
+                    style={{ cursor: "pointer" }}
+                  />
+                  &nbsp;&nbsp;Contribute-2-Earn
+                </span>
+              </label>{" "}
+              <label
+                style={{
+                  padding: "15px",
+                  fontSize: "12px",
+                  borderRadius: "5px",
+                  color: "#000",
+                  cursor: "pointer",
+                  margin: "0",
+                }}
+                className="button"
+              >
+                <span
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  {" "}
+                  <Image
+                    src={spendLoans}
+                    alt="Picture of the author"
+                    width="15px"
+                    height="15px"
+                    style={{ cursor: "pointer" }}
+                  />
+                  &nbsp;&nbsp;Spend Loan
+                </span>
+              </label>
+              <label
+                style={{
+                  padding: "15px",
+                  fontSize: "12px",
+                  borderRadius: "5px",
+                  color: "#000",
+                  cursor: "pointer",
+                  margin: "0",
+                }}
+                className="button"
+              >
+                <span
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  {" "}
+                  <Image
+                    src={moreIcon}
+                    alt="Picture of the author"
+                    width="15px"
+                    height="15px"
+                    style={{ cursor: "pointer" }}
+                  />
+                  &nbsp;&nbsp;More
+                </span>
+              </label>
+              <label
+                style={{
+                  backgroundColor: "#000",
+                  padding: "15px",
+                  fontSize: "12px",
+                  borderRadius: "5px",
+                  color: "#FFF",
+                  cursor: "pointer",
+                  margin: "0",
+                }}
+                className="button"
+              >
+                <span
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  {" "}
+                  <Image
+                    // onClick={() => {
+                    //   setConnectWallet(false);
+                    // }}
+                    src={transferDeposit}
+                    alt="Picture of the author"
+                    width="15px"
+                    height="15px"
+                    style={{ cursor: "pointer" }}
+                  />
+                  &nbsp;&nbsp;&nbsp;Transfer Deposit
+                </span>
+              </label>
+              <label
+                style={{
+                  backgroundColor: "#000",
+                  padding: "15px",
+                  fontSize: "12px",
+                  borderRadius: "5px",
+                  color: "#FFF",
+                  marginBottom: "0px",
+                  cursor: "pointer",
+                }}
+                className="button"
+                onClick={() => {
+                  handleButtonConnectWallet();
                 }}
               >
-                <button style={{ padding: "7px 6px", borderRadius: "5px" }}>
-                  Switch Wallet
-                </button>
-                <button
-                  style={{ padding: "7px 6px", borderRadius: "5px" }}
-                  onClick={handleDisconnectWallet}
-                >
-                  Disconnect
-                </button>
-              </div>
-              <hr style={{ margin: "0 10px" }} />
-              <div>
-                <div
+                <span
                   style={{
-                    position: "absolute",
-                    right: "0.7vw",
-                    bottom: "10px",
-                    color: "#636779",
-                    textAlign: "right",
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
                   }}
                 >
-                  Network
-                  <br />
-                  <div style={{ color: "#000" }}>{networkSelected.network}</div>
-                </div>
+                  {account ? (
+                    <>
+                      &nbsp;
+                      <Image
+                        onClick={() => {
+                          setConnectWallet(false);
+                        }}
+                        src={starknetLogoBordered}
+                        width="18px"
+                        height="18px"
+                        style={{ cursor: "pointer" }}
+                      />
+                      <div>
+                        &nbsp;&nbsp;&nbsp;&nbsp;
+                        {`${account.substring(0, 3)}...${account.substring(
+                          account.length - 10,
+                          account.length
+                        )}`}{" "}
+                        &nbsp;&nbsp;&nbsp;
+                      </div>
+                    </>
+                  ) : (
+                    <>
+                      {" "}
+                      <span
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        Connect Wallet&nbsp;&nbsp;&nbsp;
+                      </span>
+                    </>
+                  )}
+                  <Image
+                    onClick={() => {
+                      setConnectWallet(false);
+                      setConnectWalletArrowState({
+                        bool: !connectWalletArrowState.bool,
+                        direction: { connectWalletArrowDown },
+                      });
+                    }}
+                    src={connectWalletArrowDown}
+                    alt="Picture of the author"
+                    width="15px"
+                    height="15px"
+                    style={{ cursor: "pointer" }}
+                  />
+                </span>
+              </label>
+              <Image
+                src={settingIcon}
+                alt="Picture of the author"
+                width="35px"
+                height="35px"
+                style={{
+                  cursor: "pointer",
+                  // marginRight: "10px",
+                }}
+              />
+              <div></div>
+            </div>
+          </div>
+        </Navbar>
+      </Row>
+      {/* // </Container> */}
+      {account && connectWalletArrowState.bool ? (
+        <div style={{ zIndex: "1000" }}>
+          <div
+            style={{
+              position: "absolute",
+              right: "70px",
+              backgroundColor: "#E7E7E7",
+              width: "195px",
+              height: "110px",
+              borderRadius: "5px",
+              boxShadow: "0px 0px 10px #00000050",
+              zIndex: "1000",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                padding: "10px 12px",
+                gap: "2px",
+                fontSize: "10.5px",
+              }}
+            >
+              <button style={{ padding: "7px 6px", borderRadius: "5px" }}>
+                Switch Wallet
+              </button>
+              <button
+                style={{ padding: "7px 6px", borderRadius: "5px" }}
+                onClick={handleDisconnectWallet}
+              >
+                Disconnect
+              </button>
+            </div>
+            <hr style={{ margin: "0 10px" }} />
+            <div>
+              <div
+                style={{
+                  position: "absolute",
+                  right: "0.7vw",
+                  bottom: "10px",
+                  color: "#636779",
+                  textAlign: "right",
+                }}
+              >
+                Network
+                <br />
+                <div style={{ color: "#000" }}>{networkSelected.network}</div>
               </div>
             </div>
           </div>
-        ) : (
-          <></>
-        )}
-      </Row>
-    </Container>
+        </div>
+      ) : (
+        <></>
+      )}
+    </div>
   );
 };
 
