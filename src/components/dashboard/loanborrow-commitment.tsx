@@ -30,6 +30,7 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
                   color: "black",
                 }}
               >
+                <th style={{ width: "35px" }}></th>
                 <th
                   scope="col"
                   style={{

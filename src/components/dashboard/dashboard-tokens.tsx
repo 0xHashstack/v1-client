@@ -7,6 +7,8 @@ import {
   getTokenFromName,
   tokenAddressMap,
 } from "../../blockchain/stark-constants";
+import Image from "next/image";
+import tickMark from "../../assets/images/tickMark.svg";
 import OffchainAPI from "../../services/offchainapi.service";
 import Borrow from "../borrow";
 import Deposit from "../deposit";
@@ -43,6 +45,14 @@ const DashboardTokens = ({
         height: "80px",
       }}
     >
+      <th style={{ padding: "28px 2px" }}>
+        {" "}
+        {coin.name === "BTC" ? (
+          <Image src={tickMark} width="20px" height="20px" />
+        ) : (
+          <></>
+        )}
+      </th>
       <th scope="row" style={{ padding: "25px 5px" }}>
         <div className="d-flex align-items-center">
           <div className="avatar-xs me-3">

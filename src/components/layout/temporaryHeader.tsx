@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import { Modal, Button, Form, Row, Container, Navbar } from "reactstrap";
+import { Modal, Form, Row, Navbar } from "reactstrap";
 import arrowDown from "../../assets/images/arrowDown.svg";
 import arrowUp from "../../assets/images/arrowUp.svg";
 import starknetLogo from "../../assets/images/starknetLogo.svg";
@@ -11,10 +11,11 @@ import hashstackLogo from "../../assets/images/hashstackLogo.svg";
 import connectWalletArrowDown from "../../assets/images/connectWalletArrowDown.svg";
 import starknetLogoBordered from "../../assets/images/starknetLogoBordered.svg";
 import transferDeposit from "../../assets/images/transferDeposit.svg";
-import spendLoans from "../../assets/images/spendLoans.svg";
+import languageArrow from "../../assets/images/languageArrow.svg";
 import settingIcon from "../../assets/images/settingIcon.svg";
 import dashboardIcon from "../../assets/images/dashboardIcon.svg";
 import contributeEarnIcon from "../../assets/images/contributeEarnIcon.svg";
+import tickMark from "../../assets/images/tickMark.svg";
 import moreIcon from "../../assets/images/moreIcon.svg";
 import "react-toastify/dist/ReactToastify.css";
 import { useConnectors, useAccount } from "@starknet-react/core";
@@ -31,9 +32,58 @@ const SecondaryHeader = ({
   handleDisconnectWallet: () => void;
   handleConnectWallet: (connector: any) => void;
 }) => {
+  const languages = [
+    {
+      name: "English",
+      icon: require("../../assets/images/languages/unitedKingdom.svg"),
+      id: 1,
+    },
+    {
+      name: "हिंदी",
+      icon: require("../../assets/images/languages/india.svg"),
+      id: 2,
+    },
+    {
+      name: "русский [Coming soon]",
+      icon: require("../../assets/images/languages/russia.svg"),
+      id: 3,
+    },
+    {
+      name: "中國人 [Coming soon]",
+      icon: require("../../assets/images/languages/china.svg"),
+      id: 4,
+    },
+    {
+      name: "Türk [Coming soon]",
+      icon: require("../../assets/images/languages/turkey.svg"),
+      id: 5,
+    },
+    {
+      name: "日本 [Coming soon]",
+      icon: require("../../assets/images/languages/japan.svg"),
+      id: 6,
+    },
+    {
+      name: "한국어 [Coming soon]",
+      icon: require("../../assets/images/languages/southKorea.svg"),
+      id: 7,
+    },
+    {
+      name: "Indonesia [Coming soon]",
+      icon: require("../../assets/images/languages/indonesia.svg"),
+      id: 8,
+    },
+    {
+      name: "Tiếng-Việt [Coming soon]",
+      icon: require("../../assets/images/languages/vietnam.svg"),
+      id: 9,
+    },
+  ];
+  const [selectLanguage, setSelectLanguage] = useState(false);
   const [connectWallet, setConnectWallet] = useState(false);
   const { available, connect } = useConnectors();
   const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
+  const [languageChosen, setLanguageChosen] = React.useState("English");
   const [settingDropDown, setSettingDropDown] = useState(false);
   const [dropDownOpen, setdropDownOpen] = useState(false);
   const [networkSelected, setnetworkSelected] = useState({
@@ -347,6 +397,7 @@ const SecondaryHeader = ({
                   color: "#000",
                   cursor: "pointer",
                   margin: "0",
+                  backgroundColor: "#D9D9D970",
                 }}
                 className="button"
               >
@@ -397,7 +448,7 @@ const SecondaryHeader = ({
                   &nbsp;&nbsp;Contribute-2-Earn
                 </span>
               </label>{" "}
-              <label
+              {/* <label
                 style={{
                   padding: "15px",
                   fontSize: "12px",
@@ -425,7 +476,7 @@ const SecondaryHeader = ({
                   />
                   &nbsp;&nbsp;Spend Loan
                 </span>
-              </label>
+              </label> */}
               <label
                 style={{
                   padding: "15px",
@@ -433,7 +484,8 @@ const SecondaryHeader = ({
                   borderRadius: "5px",
                   color: "#000",
                   cursor: "pointer",
-                  margin: "0",
+                  marginRight: "100px",
+                  marginBottom: "0px",
                 }}
                 className="button"
               >
@@ -571,8 +623,8 @@ const SecondaryHeader = ({
                 }}
                 src={settingIcon}
                 alt="Picture of the author"
-                width="30px"
-                height="30px"
+                width="25px"
+                height="25px"
                 style={{
                   cursor: "pointer",
                   // marginRight: "10px",
@@ -607,11 +659,21 @@ const SecondaryHeader = ({
                 fontSize: "10.5px",
               }}
             >
-              <button style={{ padding: "7px 6px", borderRadius: "5px" }}>
+              <button
+                style={{
+                  padding: "7px 6px",
+                  borderRadius: "5px",
+                  backgroundColor: "#E7E7E7",
+                }}
+              >
                 Switch Wallet
               </button>
               <button
-                style={{ padding: "7px 6px", borderRadius: "5px" }}
+                style={{
+                  padding: "7px 6px",
+                  borderRadius: "5px",
+                  backgroundColor: "#E7E7E7",
+                }}
                 onClick={handleDisconnectWallet}
               >
                 Disconnect
@@ -639,59 +701,157 @@ const SecondaryHeader = ({
         <></>
       )}
 
-      {settingDropDown ? (
-        <>
-          <div style={{ zIndex: "1000" }}>
+      {settingDropDown && !selectLanguage ? (
+        <div style={{ zIndex: "1000" }}>
+          <div
+            style={{
+              position: "absolute",
+              right: "20px",
+              backgroundColor: "#F8F8F8",
+              width: "195px",
+              height: "100px",
+              borderRadius: "5px",
+              boxShadow: "0px 0px 10px #00000050",
+              zIndex: "1000",
+            }}
+          >
             <div
               style={{
-                position: "absolute",
-                right: "30px",
-                backgroundColor: "#E7E7E7",
-                width: "195px",
-                height: "110px",
-                borderRadius: "5px",
-                boxShadow: "0px 0px 10px #00000050",
-                zIndex: "1000",
+                display: "flex",
+                justifyContent: "space-between",
+                padding: "10px 12px",
+                gap: "2px",
+                fontSize: "10.5px",
               }}
             >
-              <div
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  padding: "10px 12px",
-                  gap: "2px",
-                  fontSize: "10.5px",
-                }}
-              >
-                <button style={{ padding: "7px 6px", borderRadius: "5px" }}>
-                  Switch Wallet
-                </button>
-                <button
-                  style={{ padding: "7px 6px", borderRadius: "5px" }}
-                  onClick={handleDisconnectWallet}
-                >
-                  Disconnect
-                </button>
-              </div>
-              <hr style={{ margin: "0 10px" }} />
-              <div>
+              <h6 style={{ color: "#636779" }}>General Settings</h6>
+            </div>
+            <div>
+              <div style={{ marginLeft: "11px", color: "black" }}>
+                Dark Mode
                 <div
                   style={{
-                    position: "absolute",
-                    right: "0.7vw",
-                    bottom: "10px",
-                    color: "#636779",
-                    textAlign: "right",
+                    marginTop: "10px",
+                    display: "flex",
+                    width: "100%",
                   }}
                 >
-                  Network
-                  <br />
-                  <div style={{ color: "#000" }}>{networkSelected.network}</div>
+                  Langauge
+                  <div
+                    style={{
+                      margin: " 0.5px 8px 0 30px",
+                      fontSize: "12px",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      // setLanguage("English");
+                      setSelectLanguage(true);
+                      setSettingDropDown(false);
+                    }}
+                  >
+                    {languageChosen}
+                  </div>
+                  <Image
+                    src={languageArrow}
+                    alt="Picture of the author"
+                    width="5px"
+                    height="5px"
+                    style={{
+                      cursor: "pointer",
+                    }}
+                  />
                 </div>
               </div>
             </div>
           </div>
-        </>
+        </div>
+      ) : (
+        <></>
+      )}
+      {selectLanguage ? (
+        <div style={{ zIndex: "1000" }}>
+          <div
+            style={{
+              position: "absolute",
+              right: "20px",
+              backgroundColor: "#F8F8F8",
+              width: "195px",
+              height: "300px",
+              borderRadius: "5px",
+              boxShadow: "0px 0px 10px #00000050",
+              zIndex: "1000",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                gap: "6px",
+                padding: "10px 12px",
+                fontSize: "12px",
+                color: "#636779",
+                cursor: "pointer",
+              }}
+              onClick={() => {
+                setSelectLanguage(false);
+                setSettingDropDown(true);
+              }}
+            >
+              {/* <h6 style={{ color: "#636779" }}>General Settings</h6> */}
+              <Image
+                src={languageArrow}
+                alt="Picture of the author"
+                width="6px"
+                height="6px"
+                style={{
+                  rotate: "180deg",
+                  cursor: "pointer",
+                }}
+              />
+              <div>Select Language</div>
+            </div>
+            <div
+              style={{ marginLeft: "10px", color: "black", fontSize: "12px" }}
+            >
+              {languages.map((language) => {
+                let str = language.name.split(" ");
+                return (
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "7px",
+                      marginBottom: "10px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Image
+                      src={language.icon}
+                      alt="Picture of the author"
+                      width="15px"
+                      height="15px"
+                      style={{ cursor: "pointer" }}
+                    />
+                    <div>{str[0]}</div>
+                    {str[0] == languageChosen ? (
+                      <div style={{ position: "absolute", right: "20px" }}>
+                        <Image src={tickMark} />
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                    {str.length > 1 ? (
+                      <div style={{ fontSize: "8px", color: "#ADB5BD" }}>
+                        {str[1]}&nbsp;
+                        {str[2]}
+                      </div>
+                    ) : (
+                      <></>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
       ) : (
         <></>
       )}
