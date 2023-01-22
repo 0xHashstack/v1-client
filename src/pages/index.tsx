@@ -46,6 +46,7 @@ import ActiveDepositTable from "../components/passbook/passbook-table/active-dep
 import { number } from "starknet";
 import { assert } from "console";
 import Script from "next/script";
+import StatsBoard from "../components/dashboard/stats";
 
 interface IDeposit {
   amount: string;
@@ -537,61 +538,68 @@ const Dashboard = () => {
 
   function dashboardUI() {
     return (
-      <Container fluid style={{ backgroundColor: "white" }}>
-        {/* Protocol Stats */}
-        {/* <ProtocolStats /> */}
-        <Row style={{ backgroundColor: "white" }}>
-          <Col xl={"12"}>
-            <Card style={{ height: "35rem", overflowY: "scroll" }}>
-              <CardBody style={{ backgroundColor: "white" }}>
-                <Row>
-                  {/* Dashboard Menu Panes */}
-                  <DashboardMenu
-                    customActiveTab={customActiveTab}
-                    toggleCustom={toggleCustom}
-                    account={account as string}
-                  />
+      <div>
+        <StatsBoard />
+        <Container fluid style={{ backgroundColor: "white" }}>
+          {/* Protocol Stats */}
+          {/* <ProtocolStats /> */}
 
-                  {/* ----------------- PASSBOOK MENU TOGGLES -------------------- */}
-                  <Col xl="5">
-                    {customActiveTab === "2" && (
-                      <PassbookMenu
-                        account={account as string}
-                        customActiveTabs={customActiveTabs}
-                        toggleCustoms={toggleCustoms}
-                      />
-                    )}
-                  </Col>
-                </Row>
+          <Row style={{ backgroundColor: "white" }}>
+            <Col xl={"12"}>
+              {/* <Card style={{ height: "35rem", overflowY: "scroll" }}> */}
+              <div style={{ margin: "1px 5px 30px 14px" }}>
+                <DashboardMenu
+                  customActiveTab={customActiveTab}
+                  toggleCustom={toggleCustom}
+                  account={account as string}
+                />
+              </div>
+              <Card style={{ height: "35rem" }}>
+                <CardBody style={{ backgroundColor: "white" }}>
+                  <Row style={{ marginTop: "-20px" }}>
+                    {/* Dashboard Menu Panes */}
 
-                {/* ----------------- PASSBOOK BODY -------------------- */}
-                <Row>
-                  <div>
-                    <Col lg={12}>
-                      {customActiveTab === "2" &&
-                        getActionTabs(customActiveTabs)}
-                      {/* {getPassbookTable(passbookStatus)} */}
+                    {/* ----------------- PASSBOOK MENU TOGGLES -------------------- */}
+                    <Col xl="5">
+                      {customActiveTab === "2" && (
+                        <PassbookMenu
+                          account={account as string}
+                          customActiveTabs={customActiveTabs}
+                          toggleCustoms={toggleCustoms}
+                        />
+                      )}
                     </Col>
-                  </div>
-                </Row>
+                  </Row>
 
-                <TabContent activeTab={customActiveTab} className="p-1">
-                  {/* ------------------------------------- DASHBOARD ----------------------------- */}
-                  <LoanBorrowCommitment isLoading={isLoading} />
+                  {/* ----------------- PASSBOOK BODY -------------------- */}
+                  <Row>
+                    <div>
+                      <Col lg={12}>
+                        {customActiveTab === "2" &&
+                          getActionTabs(customActiveTabs)}
+                        {/* {getPassbookTable(passbookStatus)} */}
+                      </Col>
+                    </div>
+                  </Row>
 
-                  {/* -------------------------------------- PASSBOOK ----------------------------- */}
+                  <TabContent activeTab={customActiveTab} className="p-1">
+                    {/* ------------------------------------- DASHBOARD ----------------------------- */}
+                    <LoanBorrowCommitment isLoading={isLoading} />
 
-                  {/* -------------------------------------- LIQUIDATION ----------------------------- */}
-                  <Liquidation
-                    activeLiquidationsData={activeLiquidationsData}
-                    isTransactionDone={isTransactionDone}
-                  />
-                </TabContent>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+                    {/* -------------------------------------- PASSBOOK ----------------------------- */}
+
+                    {/* -------------------------------------- LIQUIDATION ----------------------------- */}
+                    <Liquidation
+                      activeLiquidationsData={activeLiquidationsData}
+                      isTransactionDone={isTransactionDone}
+                    />
+                  </TabContent>
+                </CardBody>
+              </Card>
+            </Col>
+          </Row>
+        </Container>
+      </div>
     );
   }
 
@@ -624,7 +632,8 @@ const Dashboard = () => {
   }
 
   return (
-    <React.Fragment>
+    // <React.Fragment>
+    <>
       <Head>
         <title>Hashstack | Starknet testnet</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -652,7 +661,7 @@ const Dashboard = () => {
           `}
       </Script>
 
-      <div className="page-content" style={{ marginTop: "0px" }}>
+      <div className="page-content" style={{ marginTop: "0px", zIndex: "100" }}>
         {/* <MetaTags>
           <title>Hashstack Finance</title>
         </MetaTags> */}
@@ -670,7 +679,8 @@ const Dashboard = () => {
         {/* <Analytics></Analytics>
             {props.children} */}
       </div>
-    </React.Fragment>
+      {/* // </React.Fragment> */}
+    </>
   );
 };
 

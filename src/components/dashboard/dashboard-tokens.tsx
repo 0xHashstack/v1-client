@@ -34,8 +34,16 @@ const DashboardTokens = ({
   });
 
   return (
-    <tr key={idx} style={{ backgroundColor: "white", color: "black" }}>
-      <th scope="row">
+    <tr
+      key={idx}
+      style={{
+        backgroundColor: "white",
+        color: "black",
+        borderBottom: "2px solid #D6D6D650",
+        height: "80px",
+      }}
+    >
+      <th scope="row" style={{ padding: "25px 5px" }}>
         <div className="d-flex align-items-center">
           <div className="avatar-xs me-3">
             <img
@@ -48,8 +56,12 @@ const DashboardTokens = ({
           <span>{coin.name}</span>
         </div>
       </th>
-      <td>
-        <div className="text-muted">
+      <td style={{ padding: "31px" }}>0000</td>
+      <td style={{ padding: "31px" }}>0000</td>
+      <td style={{ padding: "31px" }}>00000</td>
+      <td style={{ padding: "31px" }}>0000</td>
+      <td style={{ padding: "31px", textAlign: "center" }}>
+        <div>
           {/* {deposit ? deposit[0].apr.toNumber() / 100 : "NaN"}% */}
           {depositLoanRates && parseInt(depositCommitment) < 4 ? (
             `${
@@ -64,8 +76,8 @@ const DashboardTokens = ({
           )}
         </div>
       </td>
-      <td>
-        <div className="text-muted">
+      <td style={{ padding: "31px", textAlign: "center" }}>
+        <div>
           {/* {borrow ? borrow[0].apr.toNumber() / 100 : "NaN"}% */}
           {depositLoanRates && parseInt(borrowCommitment) < 2 ? (
             `${
@@ -80,10 +92,10 @@ const DashboardTokens = ({
           )}
         </div>
       </td>
-      <td style={{ width: "120px" }}>
+      <td style={{ width: "120px", padding: "25px 20px" }}>
         <Deposit asset={coin.name} />
       </td>
-      <td style={{ width: "120px" }}>
+      <td style={{ width: "120px", padding: "25px 20px" }}>
         <Borrow asset={coin.name} title={coin.name} />
       </td>
     </tr>

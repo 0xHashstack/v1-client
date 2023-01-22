@@ -18,6 +18,7 @@ import {
 } from "@starknet-react/core";
 import { ConnectWallet } from "../wallet";
 import SecondaryHeader from "./temporaryHeader";
+import StatsBoard from "../dashboard/stats";
 
 const Layout = (props: any) => {
   const dispatch = useDispatch();
@@ -68,9 +69,7 @@ const Layout = (props: any) => {
           handleConnectWallet={handleConnectWallet}
           handleDisconnectWallet={() => disconnect()}
         />
-        <div style={{ margin: "0 200px" }} className="main-content">
-          {props.children}
-        </div>
+        <div className="main-content">{props.children}</div>
 
         {/* <Footer /> */}
 

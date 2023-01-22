@@ -13,6 +13,8 @@ import starknetLogoBordered from "../../assets/images/starknetLogoBordered.svg";
 import transferDeposit from "../../assets/images/transferDeposit.svg";
 import spendLoans from "../../assets/images/spendLoans.svg";
 import settingIcon from "../../assets/images/settingIcon.svg";
+import dashboardIcon from "../../assets/images/dashboardIcon.svg";
+import contributeEarnIcon from "../../assets/images/contributeEarnIcon.svg";
 import moreIcon from "../../assets/images/moreIcon.svg";
 import "react-toastify/dist/ReactToastify.css";
 import { useConnectors, useAccount } from "@starknet-react/core";
@@ -32,6 +34,7 @@ const SecondaryHeader = ({
   const [connectWallet, setConnectWallet] = useState(false);
   const { available, connect } = useConnectors();
   const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
+  const [settingDropDown, setSettingDropDown] = useState(false);
   const [dropDownOpen, setdropDownOpen] = useState(false);
   const [networkSelected, setnetworkSelected] = useState({
     network: "",
@@ -57,6 +60,7 @@ const SecondaryHeader = ({
   }
 
   function handleButtonConnectWallet() {
+    setSettingDropDown(false);
     available.length > 0
       ? available.map((connector) => {
           setnetworkSelected({
@@ -355,7 +359,7 @@ const SecondaryHeader = ({
                 >
                   {" "}
                   <Image
-                    src={moreIcon}
+                    src={dashboardIcon}
                     alt="Picture of the author"
                     width="15px"
                     height="15px"
@@ -384,7 +388,7 @@ const SecondaryHeader = ({
                 >
                   {" "}
                   <Image
-                    src={moreIcon}
+                    src={contributeEarnIcon}
                     alt="Picture of the author"
                     width="15px"
                     height="15px"
@@ -510,9 +514,9 @@ const SecondaryHeader = ({
                     <>
                       &nbsp;
                       <Image
-                        onClick={() => {
-                          setConnectWallet(false);
-                        }}
+                        // onClick={() => {
+                        //   setConnectWallet(false);
+                        // }}
                         src={starknetLogoBordered}
                         width="18px"
                         height="18px"
@@ -558,10 +562,17 @@ const SecondaryHeader = ({
                 </span>
               </label>
               <Image
+                onClick={() => {
+                  setSettingDropDown(!settingDropDown);
+                  setConnectWalletArrowState({
+                    bool: false,
+                    direction: { connectWalletArrowDown },
+                  });
+                }}
                 src={settingIcon}
                 alt="Picture of the author"
-                width="35px"
-                height="35px"
+                width="30px"
+                height="30px"
                 style={{
                   cursor: "pointer",
                   // marginRight: "10px",
@@ -578,7 +589,7 @@ const SecondaryHeader = ({
           <div
             style={{
               position: "absolute",
-              right: "70px",
+              right: "65px",
               backgroundColor: "#E7E7E7",
               width: "195px",
               height: "110px",
@@ -624,6 +635,63 @@ const SecondaryHeader = ({
             </div>
           </div>
         </div>
+      ) : (
+        <></>
+      )}
+
+      {settingDropDown ? (
+        <>
+          <div style={{ zIndex: "1000" }}>
+            <div
+              style={{
+                position: "absolute",
+                right: "30px",
+                backgroundColor: "#E7E7E7",
+                width: "195px",
+                height: "110px",
+                borderRadius: "5px",
+                boxShadow: "0px 0px 10px #00000050",
+                zIndex: "1000",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  padding: "10px 12px",
+                  gap: "2px",
+                  fontSize: "10.5px",
+                }}
+              >
+                <button style={{ padding: "7px 6px", borderRadius: "5px" }}>
+                  Switch Wallet
+                </button>
+                <button
+                  style={{ padding: "7px 6px", borderRadius: "5px" }}
+                  onClick={handleDisconnectWallet}
+                >
+                  Disconnect
+                </button>
+              </div>
+              <hr style={{ margin: "0 10px" }} />
+              <div>
+                <div
+                  style={{
+                    position: "absolute",
+                    right: "0.7vw",
+                    bottom: "10px",
+                    color: "#636779",
+                    textAlign: "right",
+                  }}
+                >
+                  Network
+                  <br />
+                  <div style={{ color: "#000" }}>{networkSelected.network}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </>
       ) : (
         <></>
       )}

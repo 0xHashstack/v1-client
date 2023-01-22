@@ -139,20 +139,23 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     reset: resetDeposit,
     execute: executeDeposit,
   } = useStarknetExecute({
-    calls: [{
-      contractAddress: tokenAddressMap[asset] as string,
-      entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
-    },{
-      contractAddress: diamondAddress,
-      entrypoint: "deposit_request",
-      calldata: [
-        tokenAddressMap[asset],
-        commitPeriod,
-        NumToBN(depositAmount, 18),
-        0,
-      ],
-    }],
+    calls: [
+      {
+        contractAddress: tokenAddressMap[asset] as string,
+        entrypoint: "approve",
+        calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
+      },
+      {
+        contractAddress: diamondAddress,
+        entrypoint: "deposit_request",
+        calldata: [
+          tokenAddressMap[asset],
+          commitPeriod,
+          NumToBN(depositAmount, 18),
+          0,
+        ],
+      },
+    ],
   });
 
   const returnTransactionParameters = () => {
@@ -259,9 +262,9 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
     try {
       let val = await executeDeposit();
-      setTransDeposit(val.transaction_hash)
-    } catch(err) {
-      console.log(err, 'err deposit')
+      setTransDeposit(val.transaction_hash);
+    } catch (err) {
+      console.log(err, "err deposit");
     }
     if (errorDeposit) {
       toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
@@ -294,18 +297,27 @@ let Deposit: any = ({ asset }: { asset: string }) => {
   }, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
 
   function isInvalid() {
-    return depositAmount < MinimumAmount[asset] || depositAmount > Number(uint256.uint256ToBN(dataBalance? dataBalance[0] : 0)) /
-                        10 ** 18
+    return (
+      depositAmount < MinimumAmount[asset] ||
+      depositAmount >
+        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
+    );
   }
 
   return (
     <>
       <button
         type="button"
-        className="btn btn-dark btn-sm w-xs"
+        // className="btn btn-dark btn-sm w-xs"
         onClick={tog_center}
+        style={{
+          backgroundColor: "white",
+          padding: "5px 12px",
+          borderRadius: "5px",
+          fontSize: "11px",
+        }}
       >
-        Deposit
+        Supply
       </button>
       <Modal
         isOpen={modal_deposit}
@@ -324,22 +336,21 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                 <Col sm={4}>
                   <div>
                     Balance {asset}:{" "}
-                    {dataBalance
-                      ? (
-                          Number(uint256.uint256ToBN(dataBalance[0])) /
-                          10 ** 18
-                        ).toString()
-                      : <MySpinner/>}
+                    {dataBalance ? (
+                      (
+                        Number(uint256.uint256ToBN(dataBalance[0])) /
+                        10 ** 18
+                      ).toString()
+                    ) : (
+                      <MySpinner />
+                    )}
                   </div>
                 </Col>
               </div>
               <FormGroup>
                 <div className="row mb-4">
                   <Col sm={12}>
-
-                    <Label for="amount">
-                      Amount
-                    </Label>
+                    <Label for="amount">Amount</Label>
                     <InputGroup
                       style={{
                         border:
@@ -392,28 +403,27 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     </InputGroup>
                     {depositAmount != 0 &&
                       depositAmount < MinimumAmount[asset] && (
-                        <FormText style={{color: '#e97272 !important'}}>
+                        <FormText style={{ color: "#e97272 !important" }}>
                           {`Please enter amount more than minimum amount = ${MinimumAmount[asset]} ${asset}`}
                         </FormText>
                       )}
                     {depositAmount != 0 &&
-                      depositAmount > (Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-                      10 ** 18) && (
-                        <FormText style={{color: '#e97272 !important'}}>
+                      depositAmount >
+                        Number(
+                          uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)
+                        ) /
+                          10 ** 18 && (
+                        <FormText style={{ color: "#e97272 !important" }}>
                           {`Amount is greater than your balance`}
                         </FormText>
                       )}
-
                   </Col>
                 </div>
               </FormGroup>
               <FormGroup floating>
                 <div className="row mb-4">
                   <Col sm={12}>
-
-                    <Label for="commitment">
-                      Commitment
-                    </Label>
+                    <Label for="commitment">Commitment</Label>
                     <select
                       id="commitment"
                       className="form-select"
@@ -453,28 +463,28 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     )}
                   </Button>
                 ) : ( */}
-                  <Button
-                    color="primary"
-                    className="w-md"
-                    disabled={
-                      commitPeriod === undefined ||
-                      loadingApprove ||
-                      loadingDeposit ||
-                      isInvalid()
-                    }
-                    onClick={(e) => {
-                      handleDeposit(asset);
-                    }}
-                  >
-                    {!(
-                      loadingApprove ||
-                      isTransactionLoading(requestDepositTransactionReceipt)
-                    ) ? (
-                      "Deposit"
-                    ) : (
-                      <MySpinner text="Depositing token" />
-                    )}
-                  </Button>
+                <Button
+                  color="primary"
+                  className="w-md"
+                  disabled={
+                    commitPeriod === undefined ||
+                    loadingApprove ||
+                    loadingDeposit ||
+                    isInvalid()
+                  }
+                  onClick={(e) => {
+                    handleDeposit(asset);
+                  }}
+                >
+                  {!(
+                    loadingApprove ||
+                    isTransactionLoading(requestDepositTransactionReceipt)
+                  ) ? (
+                    "Supply"
+                  ) : (
+                    <MySpinner text="Depositing token" />
+                  )}
+                </Button>
                 {/* )} */}
               </div>
             </Form>

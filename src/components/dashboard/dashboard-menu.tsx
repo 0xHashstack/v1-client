@@ -40,7 +40,12 @@ const DashboardMenu = ({
       >
         <NavItem>
           <NavLink
-            style={{ cursor: "pointer", color: "black" }}
+            style={{
+              cursor: "pointer",
+              color: "black",
+              border: "1px solid #000",
+              borderRadius: "5px",
+            }}
             className={classnames({
               active: customActiveTab === "1",
             })}
@@ -48,14 +53,21 @@ const DashboardMenu = ({
               toggleCustom("1");
             }}
           >
-            <span className="d-none d-sm-block">Market</span>
+            <span className="d-none d-sm-block" style={{ color: "white" }}>
+              Market
+            </span>
           </NavLink>
         </NavItem>
         {account ? (
           <>
             <NavItem>
               <NavLink
-                style={{ cursor: "pointer", color: "black" }}
+                style={{
+                  cursor: "pointer",
+                  color: "black",
+                  border: "1px solid #000",
+                  borderRadius: "5px",
+                }}
                 className={classnames({
                   active: customActiveTab === "2",
                 })}
@@ -68,7 +80,12 @@ const DashboardMenu = ({
             </NavItem>
             <NavItem>
               <NavLink
-                style={{ cursor: "pointer", color: "black" }}
+                style={{
+                  cursor: "pointer",
+                  color: "black",
+                  border: "1px solid #000",
+                  borderRadius: "5px",
+                }}
                 className={classnames({
                   active: customActiveTab === "3",
                 })}
@@ -81,7 +98,12 @@ const DashboardMenu = ({
             </NavItem>
             <NavItem>
               <NavLink
-                style={{ cursor: "pointer", color: "black" }}
+                style={{
+                  cursor: "pointer",
+                  color: "black",
+                  border: "1px solid #000",
+                  borderRadius: "5px",
+                }}
                 className={classnames({
                   active: customActiveTab === "4",
                 })}

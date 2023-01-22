@@ -19,20 +19,111 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
   console.log(depositCommitment, borrowCommitment);
 
   return (
-    <TabPane tabId="1">
-      <div className="table-responsive" style={{ paddingTop: "12px" }}>
-        <Table className="table table-nowrap  mb-0">
-          <thead>
-            <tr style={{ borderStyle: "hidden" }}>
-              <th scope="col">Markets</th>
-              <th scope="col">Savings Interest</th>
-              <th scope="col">Borrow Interest</th>
-              <th scope="col">Deposit</th>
-              <th scope="col" colSpan={2}>
-                Borrow
-              </th>
-            </tr>
-            <tr>
+    <div style={{}}>
+      <TabPane tabId="1">
+        <div className="table-responsive" style={{ paddingTop: "12px" }}>
+          <Table className="table table-nowrap  mb-0">
+            <thead>
+              <tr
+                style={{
+                  borderStyle: "hidden",
+                  color: "black",
+                }}
+              >
+                <th
+                  scope="col"
+                  style={{
+                    width: "100px",
+                    padding: "20px 10px",
+                  }}
+                >
+                  Markets
+                </th>
+                <th
+                  scope="col"
+                  style={{ width: "100px", padding: "20px 10px" }}
+                >
+                  Oracle Price
+                </th>
+                <th
+                  scope="col"
+                  style={{ width: "100px", padding: "20px 10px" }}
+                >
+                  Fair Price
+                </th>
+                <th
+                  scope="col"
+                  style={{ width: "100px", padding: "20px 10px" }}
+                >
+                  Total Supply
+                </th>
+                <th
+                  scope="col"
+                  style={{ width: "100px", padding: "20px 10px" }}
+                >
+                  Supply APR
+                </th>
+                <th scope="col" style={{ width: "155px" }}>
+                  <select
+                    className="form-select form-select-sm"
+                    onChange={(e) => {
+                      setDepositCommitment(
+                        getCommitmentIndexStringFromNameDeposit(
+                          e.target.value
+                        ) as string
+                      );
+                    }}
+                    defaultValue={"NONE"}
+                    style={{
+                      color: "white",
+                      padding: "8px 16px ",
+                      fontSize: "15px",
+                    }}
+                  >
+                    <option value={"NONE"}>Savings APR</option>
+                    <option value={"TWOWEEKS"}>Two Weeks</option>
+                    <option value={"ONEMONTH"}>One Month</option>
+                    <option value={"THREEMONTHS"}>Three Month</option>
+                  </select>
+                </th>
+                <th scope="col" style={{ width: "150px" }}>
+                  <select
+                    className="form-select form-select-sm"
+                    onChange={(e) => {
+                      setBorrowCommitment(
+                        getCommitmentIndexStringFromNameLoan(
+                          e.target.value
+                        ) as string
+                      );
+                    }}
+                    defaultValue={"NONE"}
+                    style={{
+                      color: "white",
+                      padding: "8px 16px",
+                      fontSize: "15px",
+                    }}
+                  >
+                    <option value={"NONE"}>Borrow APR</option>
+                    <option value={"ONEMONTH"}>One Month</option>
+                  </select>
+                </th>
+                {/* <th scope="col">Savings Interest</th> */}
+                {/* <th scope="col">Borrow Interest</th> */}
+                <th
+                  scope="col"
+                  style={{ width: "100px", padding: "20px 20px" }}
+                >
+                  Supply
+                </th>
+                <th
+                  scope="col"
+                  style={{ width: "100px", padding: "20px 20px" }}
+                  colSpan={2}
+                >
+                  Borrow
+                </th>
+              </tr>
+              {/* <tr>
               <th scope="col"></th>
               <th scope="col">
                 <select
@@ -46,7 +137,6 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
                   }}
                   defaultValue={"NONE"}
                 >
-                  {/* <option hidden>Commitment</option> */}
                   <option value={"NONE"}>Flexible</option>
                   <option value={"TWOWEEKS"}>Two Weeks</option>
                   <option value={"ONEMONTH"}>One Month</option>
@@ -70,18 +160,19 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
                   <option value={"ONEMONTH"}>One Month</option>
                 </select>
               </th>
-            </tr>
-          </thead>
-          <tbody>
-            <DashboardTBody
-              isloading={isLoading}
-              borrowCommitment={borrowCommitment}
-              depositCommitment={depositCommitment}
-            ></DashboardTBody>
-          </tbody>
-        </Table>
-      </div>
-    </TabPane>
+            </tr> */}
+            </thead>
+            <tbody>
+              <DashboardTBody
+                isloading={isLoading}
+                borrowCommitment={borrowCommitment}
+                depositCommitment={depositCommitment}
+              ></DashboardTBody>
+            </tbody>
+          </Table>
+        </div>
+      </TabPane>
+    </div>
   );
 };
 
