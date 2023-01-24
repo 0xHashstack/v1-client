@@ -22,7 +22,7 @@ const Coins: ICoin[] = [
   },
   { name: "BNB", icon: "mdi-drag-variant" },
 
-  // { name: "ETH", icon: "mdi-ethereum" },
+  { name: "ETH", icon: "mdi-ethereum" },
 ];
 
 let DashboardTBody: any = ({

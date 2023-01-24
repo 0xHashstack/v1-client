@@ -13,6 +13,11 @@ import {
   Label,
 } from "reactstrap";
 
+import Slider from "react-custom-slider";
+
+import RangeSlider from "react-bootstrap-range-slider";
+import arrowDown from "../assets/images/arrowDown.svg";
+import arrowUp from "../assets/images/arrowUp.svg";
 import { MinimumAmount } from "../blockchain/constants";
 import BigNumber, { ethers } from "ethers";
 
@@ -40,12 +45,49 @@ import {
   useTransactionReceipt,
   useTransactions,
 } from "@starknet-react/core";
+import dropDownArrow from "../public/drop-down-arrow.svg";
 import { Abi, Contract, uint256, number } from "starknet";
 import { TxToastManager } from "../blockchain/txToastManager";
 import MySpinner from "./mySpinner";
+import Image from "next/image";
+
+interface ICoin {
+  name: string;
+  icon: string;
+}
 
 let Deposit: any = ({ asset }: { asset: string }) => {
+  const coins: ICoin[] = [
+    {
+      name: "USDT",
+      icon: "mdi-bitcoin",
+    },
+    {
+      name: "USDC",
+      icon: "mdi-ethereum",
+    },
+    {
+      name: "BTC",
+      icon: "mdi-bitcoin",
+    },
+    { name: "BNB", icon: "mdi-drag-variant" },
+
+    { name: "ETH", icon: "mdi-ethereum" },
+
+    { name: "DAI", icon: "mdi-ethereum" },
+  ];
+
+  const [value, setValue] = useState(50);
+  const [tokenName, setTokenName] = useState(asset);
+  const [tokenIcon, setTokenIcon] = useState("mdi-bitcoin");
+
   const [token, setToken] = useState(getTokenFromName(asset));
+  const [dropDown, setDropDown] = useState(false);
+  const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
+
+  const [commitmentValue, setCommitmentValue] = useState("Flexible");
+  const [commitmentDropDown, setCommitmentDropDown] = useState(false);
+  const [commitmentArrow, setCommitmentArrow] = useState(arrowDown);
 
   const [modal_deposit, setmodal_deposit] = useState(false);
 
@@ -205,13 +247,15 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 
   const handleDepositAmountChange = (e: any) => {
     if (e.target.value) setDepositAmount(Number(e.target.value));
-    else setDepositAmount("");
+    else setDepositAmount(0);
   };
 
   const handleMax = async () => {
+    // if (dataBalance) {
     setDepositAmount(
       Number(uint256.uint256ToBN(dataBalance[0] || 0)) / 10 ** 18
     );
+    // }
   };
 
   const handleMin = async () => {
@@ -229,6 +273,12 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     } catch (err) {
       console.log(err, "err approve token deposit");
     }
+  };
+
+  const toggleDropdown = () => {
+    setDropDown(!dropDown);
+    setDropDownArrow(dropDown ? arrowDown : arrowUp);
+    // disconnectEvent(), connect(connector);
   };
 
   const handleDeposit = async (asset: string) => {
@@ -320,47 +370,267 @@ let Deposit: any = ({ asset }: { asset: string }) => {
         Supply
       </button>
       <Modal
+        style={{ width: "548px", height: "603px" }}
         isOpen={modal_deposit}
         toggle={() => {
           tog_center();
         }}
         centered
       >
-        <div className="modal-body">
+        <div
+          className="modal-body"
+          style={{
+            backgroundColor: "white",
+            color: "black",
+            padding: "40px",
+          }}
+        >
           {account ? (
             <Form>
               <div className="row mb-4">
                 <Col sm={8}>
-                  <h5> {asset}</h5>
+                  <h5 style={{ color: "black" }}>Supply</h5>
                 </Col>
-                <Col sm={4}>
-                  <div>
-                    Balance {asset}:{" "}
-                    {dataBalance ? (
-                      (
-                        Number(uint256.uint256ToBN(dataBalance[0])) /
-                        10 ** 18
-                      ).toString()
-                    ) : (
-                      <MySpinner />
-                    )}
+
+                <label
+                  style={{
+                    width: "420px",
+                    margin: "10px auto",
+                    marginBottom: "20px",
+                    padding: "5px 10px",
+                    fontSize: "18px",
+                    borderRadius: "5px",
+                    border: "2px solid #00000050",
+                    fontWeight: "200",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div>
+                      {" "}
+                      <img
+                        src={`./${tokenName}.svg`}
+                        width="30px"
+                        height="30px"
+                      ></img>
+                      &nbsp;&nbsp;{tokenName}
+                    </div>
+                    <div
+                      style={{
+                        marginRight: "20px",
+                        marginTop: "3px",
+                        marginBottom: "0",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <Image
+                        onClick={toggleDropdown}
+                        src={dropDownArrow}
+                        alt="Picture of the author"
+                        width="20px"
+                        height="20px"
+                      />
+                    </div>
                   </div>
-                </Col>
+                </label>
+
+                <div
+                  style={{
+                    fontSize: "10px",
+                    fontWeight: "600",
+                    marginBottom: "5px",
+                  }}
+                >
+                  Minimum Commitment Period
+                </div>
+
+                <label
+                  style={{
+                    width: "420px",
+                    margin: "0 auto",
+                    padding: "5px 10px",
+                    fontSize: "15px",
+                    borderRadius: "5px",
+                    border: "2px solid #00000050",
+                    fontWeight: "400",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      marginLeft: "10px",
+                    }}
+                  >
+                    <div>{commitmentValue}</div>
+                    <div
+                      style={{
+                        marginRight: "20px",
+                        marginTop: "3px",
+                        marginBottom: "0",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <Image
+                        onClick={() => {
+                          setCommitmentDropDown(!commitmentDropDown);
+                          setCommitmentArrow(
+                            commitmentDropDown ? arrowDown : arrowUp
+                          );
+                        }}
+                        src={commitmentArrow}
+                        alt="Picture of the author"
+                        width="20px"
+                        height="20px"
+                      />
+                    </div>
+                  </div>
+                </label>
+
+                {dropDown ? (
+                  <>
+                    <div
+                      style={{
+                        borderRadius: "5px",
+                        position: "absolute",
+                        zIndex: "100",
+                        top: "125px",
+                        left: "39px",
+                        // top: "-10px",
+
+                        width: "420px",
+                        margin: "0px auto",
+                        marginBottom: "20px",
+                        padding: "5px 10px",
+                        backgroundColor: "#F8F8F8",
+                        boxShadow: "0px 0px 10px #00000020",
+                      }}
+                    >
+                      {coins.map((coin, index) => {
+                        if (coin.name === tokenName) return <></>;
+                        return (
+                          <div
+                            style={{
+                              margin: "10px 0",
+                              cursor: "pointer",
+                              display: "flex",
+                              alignItems: "center",
+                              fontSize: "16px",
+                            }}
+                            onClick={() => {
+                              setTokenIcon(`${coin.icon}`);
+                              setTokenName(`${coin.name}`);
+                              setDropDown(false);
+                              setDropDownArrow(arrowDown);
+                            }}
+                          >
+                            <img
+                              src={`./${coin.name}.svg`}
+                              width="30px"
+                              height="30px"
+                            ></img>
+                            <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
+
+                {commitmentDropDown ? (
+                  <>
+                    <div
+                      style={{
+                        borderRadius: "5px",
+                        position: "absolute",
+                        zIndex: "100",
+                        top: "210px",
+                        left: "39px",
+                        // top: "-10px",
+
+                        width: "420px",
+                        margin: "0px auto",
+                        marginBottom: "20px",
+                        padding: "5px 10px",
+                        backgroundColor: "#F8F8F8",
+                        boxShadow: "0px 0px 10px #00000020",
+                      }}
+                    >
+                      <div
+                        style={{
+                          fontSize: "15px",
+                          margin: "10px 0",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => {
+                          setCommitmentValue("1 month");
+                          setCommitmentDropDown(false);
+                          setCommitmentArrow(arrowDown);
+                        }}
+                      >
+                        &nbsp;1 month
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "15px",
+                          margin: "10px 0",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => {
+                          setCommitmentValue("2 weeks");
+                          setCommitmentDropDown(false);
+                          setCommitmentArrow(arrowDown);
+                        }}
+                      >
+                        &nbsp;2 weeks
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "15px",
+                          margin: "10px 0",
+                          cursor: "pointer",
+                        }}
+                        onClick={() => {
+                          setCommitmentValue("Flexible");
+                          setCommitmentDropDown(false);
+                          setCommitmentArrow(arrowDown);
+                        }}
+                      >
+                        &nbsp;Flexible
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
               <FormGroup>
                 <div className="row mb-4">
                   <Col sm={12}>
-                    <Label for="amount">Amount</Label>
+                    {/* <Label for="amount">Amount</Label> */}
                     <InputGroup
-                      style={{
-                        border:
-                          depositAmount == 0 ||
-                          depositAmount >= MinimumAmount[asset]
-                            ? "1px solid #556EE6"
-                            : "",
-                      }}
+                    // style={{
+                    //   border:
+                    //     depositAmount == 0 ||
+                    //     depositAmount >= MinimumAmount[asset]
+                    //       ? "1px solid #556EE6"
+                    //       : "",
+                    // }}
+                    // placeholder="Amount"
                     >
                       <Input
+                        style={{
+                          backgroundColor: "white",
+                          borderRight: "1px solid #FFF",
+                        }}
                         type="number"
                         className="form-control"
                         id="amount"
@@ -373,7 +643,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 
                       {
                         <>
-                          <Button
+                          {/* <Button
                             outline
                             type="button"
                             className="btn btn-md w-xs"
@@ -384,7 +654,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                             <span style={{ borderBottom: "2px dotted #fff" }}>
                               Min
                             </span>
-                          </Button>
+                          </Button> */}
 
                           <Button
                             outline
@@ -392,7 +662,12 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                             className="btn btn-md w-xs"
                             onClick={handleMax}
                             // disabled={balance ? false : true}
-                            style={{ background: "#2e3444", border: "#2e3444" }}
+                            style={{
+                              background: "white",
+                              color: "black",
+                              border: "1px solid black",
+                              borderLeft: "none",
+                            }}
                           >
                             <span style={{ borderBottom: "2px dotted #fff" }}>
                               Max
@@ -401,12 +676,75 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                         </>
                       }
                     </InputGroup>
-                    {depositAmount != 0 &&
+                    {/* {depositAmount != 0 &&
                       depositAmount < MinimumAmount[asset] && (
                         <FormText style={{ color: "#e97272 !important" }}>
                           {`Please enter amount more than minimum amount = ${MinimumAmount[asset]} ${asset}`}
                         </FormText>
+                      )} */}
+                    <div
+                      style={{
+                        display: "flex",
+                        fontSize: "10px",
+                        justifyContent: "end",
+                        marginTop: "4px",
+                      }}
+                    >
+                      Available:&nbsp;
+                      {dataBalance ? (
+                        (
+                          Number(uint256.uint256ToBN(dataBalance[0])) /
+                          10 ** 18
+                        ).toString()
+                      ) : (
+                        <MySpinner />
                       )}
+                      <div style={{ color: "#76809D" }}>&nbsp;{asset} </div>
+                    </div>{" "}
+                    {/* 
+
+                    <RangeSlider
+                      value={value}
+                      step={20}
+                      tooltip="on"
+                      color="black"
+                      tooltipLabel={(v) => `${v} %`}
+                      onChange={(changeEvent) =>
+                        setValue(parseFloat(changeEvent.target.value))
+                      }
+                      style={{
+                        width: "100%",
+                        marginTop: "12px",
+                        color: "black",
+                        backgroundColor: "black",
+                      }}
+                    /> */}
+                    <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
+                      <Slider
+                        width="100%"
+                        value={value}
+                        trackColor="black"
+                        handlerShape="rounded"
+                        handlerColor="black"
+                        fillColor="black"
+                        trackLength={420}
+                        grabCursor={false}
+                        showMarkers="hidden"
+                        onChange={(value: any) => setValue(value)}
+                        valueRenderer={(value: any) => `${value}%`}
+                        showValue={false}
+                      />
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "10px",
+                        position: "absolute",
+                        right: "12px",
+                        top: "90px",
+                      }}
+                    >
+                      {value}%
+                    </div>
                     {depositAmount != 0 &&
                       depositAmount >
                         Number(
@@ -420,7 +758,8 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                   </Col>
                 </div>
               </FormGroup>
-              <FormGroup floating>
+
+              {/* <FormGroup floating>
                 <div className="row mb-4">
                   <Col sm={12}>
                     <Label for="commitment">Commitment</Label>
@@ -437,7 +776,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     </select>
                   </Col>
                 </div>
-              </FormGroup>
+              </FormGroup> */}
               <div className="d-grid gap-2">
                 {/* {allowanceVal < (depositAmount as number) ? (
                   <Button
@@ -463,6 +802,65 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     )}
                   </Button>
                 ) : ( */}
+
+                <div
+                  style={{
+                    marginBottom: "25px",
+                    fontSize: "11px",
+                    marginTop: "-10px",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>Gas Estimate</div>
+                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                      $ 0.50
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>Supply APR</div>
+                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                      7.75 %
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>
+                      Asset Utilization Rate
+                    </div>
+                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                      0.43
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>Supply Network</div>
+                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                      Starknet
+                    </div>
+                  </div>
+                </div>
                 <Button
                   color="primary"
                   className="w-md"
@@ -485,7 +883,6 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     <MySpinner text="Depositing token" />
                   )}
                 </Button>
-                {/* )} */}
               </div>
             </Form>
           ) : (

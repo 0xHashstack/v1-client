@@ -15389,6 +15389,13 @@ react-color@2.19.3:
     reactcss "^1.2.0"
     tinycolor2 "^1.4.1"
 
+react-custom-slider@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/react-custom-slider/-/react-custom-slider-1.0.9.tgz#3113dbebca37ad8dd88687cbb6701ec6490ae65d"
+  integrity sha512-UJGb+J8qtWmL0NY69Q6nxLt0bSA0fv+7j8QCJ+Y7gYgxoUV/JKYwY5PgSsqVvrOT7J2CDrpFA/DLt/5YhXJRlw==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-dev-utils@^11.0.3:
   version "11.0.4"
   resolved "https://registry.yarnpkg.com/react-dev-utils/-/react-dev-utils-11.0.4.tgz#a7ccb60257a1ca2e0efe7a83e38e6700d17aa37a"
