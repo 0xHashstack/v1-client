@@ -554,7 +554,7 @@ const Dashboard = () => {
                   account={account as string}
                 />
               </div>
-              <Card style={{ height: "35rem" }}>
+              <Card style={{ height: "30rem", overflowY: "scroll" }}>
                 <CardBody style={{ backgroundColor: "white" }}>
                   <Row style={{ marginTop: "-20px" }}>
                     {/* Dashboard Menu Panes */}

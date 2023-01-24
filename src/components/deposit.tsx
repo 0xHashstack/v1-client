@@ -91,7 +91,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 
   const [modal_deposit, setmodal_deposit] = useState(false);
 
-  const [depositAmount, setDepositAmount] = useState(0);
+  const [depositAmount, setDepositAmount] = useState<number>();
   const [commitPeriod, setCommitPeriod] = useState(0);
 
   const [isLoadingApprove, setLoadingApprove] = useState(false);
@@ -242,7 +242,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
   };
 
   const handleCommitChange = (e: any) => {
-    setCommitPeriod(e.target.value);
+    setCommitPeriod(e);
   };
 
   const handleDepositAmountChange = (e: any) => {
@@ -574,6 +574,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                           setCommitmentValue("1 month");
                           setCommitmentDropDown(false);
                           setCommitmentArrow(arrowDown);
+                          handleCommitChange(2);
                         }}
                       >
                         &nbsp;1 month
@@ -588,6 +589,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                           setCommitmentValue("2 weeks");
                           setCommitmentDropDown(false);
                           setCommitmentArrow(arrowDown);
+                          handleCommitChange(1);
                         }}
                       >
                         &nbsp;2 weeks
@@ -602,6 +604,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                           setCommitmentValue("Flexible");
                           setCommitmentDropDown(false);
                           setCommitmentArrow(arrowDown);
+                          handleCommitChange(0);
                         }}
                       >
                         &nbsp;Flexible
@@ -624,7 +627,6 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     //       ? "1px solid #556EE6"
                     //       : "",
                     // }}
-                    // placeholder="Amount"
                     >
                       <Input
                         style={{
@@ -635,7 +637,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                         className="form-control"
                         id="amount"
                         min={MinimumAmount[asset]}
-                        placeholder={`Minimum amount = ${MinimumAmount[asset]}`}
+                        placeholder={`Minimum ${MinimumAmount[asset]} ${asset}`}
                         onChange={handleDepositAmountChange}
                         value={depositAmount}
                         valid={!isInvalid()}
@@ -721,9 +723,8 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     /> */}
                     <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
                       <Slider
-                        width="100%"
                         value={value}
-                        trackColor="black"
+                        trackColor="#ADB5BD"
                         handlerShape="rounded"
                         handlerColor="black"
                         fillColor="black"
