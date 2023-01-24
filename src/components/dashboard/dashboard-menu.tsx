@@ -53,9 +53,7 @@ const DashboardMenu = ({
               toggleCustom("1");
             }}
           >
-            <span className="d-none d-sm-block" style={{ color: "white" }}>
-              Market
-            </span>
+            <span className="d-none d-sm-block">Market</span>
           </NavLink>
         </NavItem>
         {account ? (

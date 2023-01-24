@@ -723,6 +723,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     /> */}
                     <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
                       <Slider
+                        stepSize={10}
                         value={value}
                         trackColor="#ADB5BD"
                         handlerShape="rounded"
@@ -731,7 +732,15 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                         trackLength={420}
                         grabCursor={false}
                         showMarkers="hidden"
-                        onChange={(value: any) => setValue(value)}
+                        onChange={(value: any) => {
+                          setDepositAmount(
+                            (value *
+                              (Number(uint256.uint256ToBN(dataBalance[0])) /
+                                10 ** 18)) /
+                              100
+                          );
+                          setValue(value);
+                        }}
                         valueRenderer={(value: any) => `${value}%`}
                         showValue={false}
                       />

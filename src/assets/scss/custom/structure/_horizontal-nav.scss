@@ -43,7 +43,7 @@
 
     .nav-item {
       .nav-link.active {
-        color: $menu-item-active-color;
+        color: white;
       }
     }
 
@@ -344,4 +344,8 @@ body[data-layout="horizontal"][data-topbar="colored"] {
       }
     }
   }
+}
+
+a.active.nav-link {
+  color: white !important
 }
