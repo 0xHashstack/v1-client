@@ -702,27 +702,11 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                         <MySpinner />
                       )}
                       <div style={{ color: "#76809D" }}>&nbsp;{asset} </div>
-                    </div>{" "}
-                    {/* 
+                    </div>
 
-                    <RangeSlider
-                      value={value}
-                      step={20}
-                      tooltip="on"
-                      color="black"
-                      tooltipLabel={(v) => `${v} %`}
-                      onChange={(changeEvent) =>
-                        setValue(parseFloat(changeEvent.target.value))
-                      }
-                      style={{
-                        width: "100%",
-                        marginTop: "12px",
-                        color: "black",
-                        backgroundColor: "black",
-                      }}
-                    /> */}
                     <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
                       <Slider
+                        handlerActiveColor="black"
                         stepSize={10}
                         value={value}
                         trackColor="#ADB5BD"
@@ -827,7 +811,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                       margin: "3px 0",
                     }}
                   >
-                    <div style={{ color: "#6F6F6F" }}>Gas Estimate</div>
+                    <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
                     <div style={{ textAlign: "right", fontWeight: "600" }}>
                       $ 0.50
                     </div>
@@ -839,7 +823,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                       margin: "3px 0",
                     }}
                   >
-                    <div style={{ color: "#6F6F6F" }}>Supply APR</div>
+                    <div style={{ color: "#6F6F6F" }}>Supply APR:</div>
                     <div style={{ textAlign: "right", fontWeight: "600" }}>
                       7.75 %
                     </div>
@@ -852,7 +836,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>
-                      Asset Utilization Rate
+                      Asset Utilization Rate:
                     </div>
                     <div style={{ textAlign: "right", fontWeight: "600" }}>
                       0.43
@@ -865,7 +849,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                       margin: "3px 0",
                     }}
                   >
-                    <div style={{ color: "#6F6F6F" }}>Supply Network</div>
+                    <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
                     <div style={{ textAlign: "right", fontWeight: "600" }}>
                       Starknet
                     </div>

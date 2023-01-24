@@ -13,6 +13,9 @@ import {
   FormText,
   FormFeedback,
 } from "reactstrap";
+
+import Slider from "react-custom-slider";
+import starknetLogo from "../assets/images/starknetLogo.svg";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React from "react";
@@ -33,13 +36,16 @@ import {
   tokenAddressMap,
 } from "../blockchain/stark-constants";
 import { GetErrorText, NumToBN } from "../blockchain/utils";
-
+import Image from "next/image";
 import { Abi, uint256 } from "starknet";
 import { getPrice } from "../blockchain/priceFeed";
 import { TxToastManager } from "../blockchain/txToastManager";
 import MySpinner from "./mySpinner";
 import OffchainAPI from "../services/offchainapi.service";
 import { ceil, round } from "../services/utils.service";
+
+import arrowDown from "../assets/images/arrowDown.svg";
+import arrowUp from "../assets/images/arrowUp.svg";
 
 interface IBorrowParams {
   loanAmount: number;
@@ -62,6 +68,29 @@ interface IDepositLoanRates {
 }
 
 let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
+  const coins: ICoin[] = [
+    {
+      name: "USDT",
+      icon: "mdi-bitcoin",
+    },
+    {
+      name: "USDC",
+      icon: "mdi-ethereum",
+    },
+    {
+      name: "BTC",
+      icon: "mdi-bitcoin",
+    },
+    { name: "BNB", icon: "mdi-drag-variant" },
+
+    { name: "ETH", icon: "mdi-ethereum" },
+
+    { name: "DAI", icon: "mdi-ethereum" },
+  ];
+
+  const [value, setValue] = useState(0);
+
+  const [tokenName, setTokenName] = useState(asset);
   const [token, setToken] = useState(getTokenFromName(asset));
   const [modal_borrow, setmodal_borrow] = useState(false);
   const [allowanceVal, setAllowance] = useState(0);
@@ -103,6 +132,21 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
       },
     },
   });
+
+  const [commitPeriod, setCommitPeriod] = useState(0);
+
+  const [dropDown, setDropDown] = useState(false);
+  const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
+
+  const [commitmentValue, setCommitmentValue] = useState("Flexible");
+  const [commitmentDropDown, setCommitmentDropDown] = useState(false);
+  const [commitmentArrow, setCommitmentArrow] = useState(arrowDown);
+
+  const toggleDropdown = () => {
+    setDropDown(!dropDown);
+    setDropDownArrow(dropDown ? arrowDown : arrowUp);
+    // disconnectEvent(), connect(connector);
+  };
 
   useEffect(() => {
     setToken(getTokenFromName(asset));
@@ -274,15 +318,10 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
   };
 
   const handleCollateralChange = async (e: any) => {
-    // setCollateralMarket(e.target.value)
-    // const getCurrentBalnce = await wrapper
-    //   ?.getMockBep20Instance()
-    //   .balanceOf(SymbolsMap[e.target.value], account)
-    // setBalance(BNtoNum(Number(getCurrentBalnce)));
     console.log(`setting collateral market to ${e.target.value}`);
     setBorrowParams({
       ...borrowParams,
-      collateralMarket: e.target.value,
+      collateralMarket: tokenName,
     });
     await refreshAllowance();
     await refreshBalance();
@@ -327,6 +366,10 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
         10 ** 18,
     });
     await refreshAllowance();
+  };
+
+  const handleCommitChange = (e: any) => {
+    setCommitPeriod(e);
   };
 
   const handleMin = async () => {
@@ -482,7 +525,6 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
     <>
       <button
         type="button"
-        // className="btn btn-secondary btn-sm w-xs"
         onClick={() => {
           tog_borrow();
         }}
@@ -496,35 +538,307 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
         Borrow
       </button>
       <Modal
+        style={{ width: "548px", height: "945px" }}
         isOpen={modal_borrow}
         toggle={() => {
           tog_borrow();
         }}
         centered
       >
-        <div className="modal-body">
+        <div
+          className="modal-body"
+          style={{
+            backgroundColor: "white",
+            color: "black",
+            padding: "40px",
+          }}
+        >
           {account ? (
             <Form>
-              <div className="row mb-4">
-                <Col sm={4}>
-                  <h6>Borrow {title}</h6>
-                </Col>
-                <Col sm={8}>
-                  <div style={{ float: "right" }}>
-                    {" "}
-                    Wallet Balance :{" "}
-                    {loanAssetBalance ? (
-                      (
-                        Number(uint256.uint256ToBN(loanAssetBalance[0])) /
-                        10 ** 18
-                      ).toString()
-                    ) : (
-                      <MySpinner />
-                    )}
-                  </div>
-                </Col>
+              {/* <div className="row mb-4"> */}
+              <Col sm={8}>
+                <h3 style={{ color: "black" }}>Borrow</h3>
+              </Col>
+              <div style={{ fontSize: "8px", fontWeight: "600" }}>
+                Collateral Market
               </div>
-              <FormGroup floating>
+              <label
+                style={{
+                  width: "420px",
+                  margin: "5px auto",
+                  marginBottom: "20px",
+                  padding: "5px 10px",
+                  fontSize: "18px",
+                  borderRadius: "5px",
+                  border: "2px solid #00000050",
+                  fontWeight: "200",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <div>
+                    {" "}
+                    <img
+                      src={`./${tokenName}.svg`}
+                      width="30px"
+                      height="30px"
+                    ></img>
+                    &nbsp;&nbsp;{tokenName}
+                  </div>
+                  <div
+                    style={{
+                      marginRight: "20px",
+                      marginTop: "3px",
+                      marginBottom: "0",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <Image
+                      onClick={toggleDropdown}
+                      src={dropDownArrow}
+                      alt="Picture of the author"
+                      width="20px"
+                      height="20px"
+                    />
+                  </div>
+                </div>
+              </label>
+              <div
+                style={{
+                  fontSize: "8px",
+                  fontWeight: "600",
+                  margin: "5px 0",
+                }}
+              >
+                Collateral Amount
+              </div>
+              <InputGroup>
+                <Input
+                  style={{
+                    backgroundColor: "white",
+                    borderRight: "1px solid #FFF",
+                  }}
+                  type="number"
+                  className="form-control"
+                  id="amount"
+                  placeholder="Amount"
+                  onChange={handleCollateralInputChange}
+                  value={
+                    borrowParams.collateralAmount
+                      ? (borrowParams.collateralAmount as number)
+                      : 0
+                  }
+                  valid={isValidColleteralAmount()}
+                />
+
+                {
+                  <Button
+                    outline
+                    type="button"
+                    className="btn btn-md w-xs"
+                    onClick={handleMax}
+                    // disabled={balance ? false : true}
+                    style={{
+                      background: "white",
+                      color: "black",
+                      border: "1px solid black",
+                      borderLeft: "none",
+                    }}
+                  >
+                    <span style={{ borderBottom: "2px dotted #fff" }}>Max</span>
+                  </Button>
+                }
+              </InputGroup>
+              {/* {!isValidColleteralAmount() ? (
+                <FormText color="#e97272">
+                  Collateral amount must be non-zero and {"<="} your balance
+                </FormText>
+              ) : (
+                <></>
+              )} */}
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "end",
+                  fontSize: "10px",
+                  margin: "5px 0",
+                }}
+              >
+                {" "}
+                Reserves Available :{" "}
+                {loanAssetBalance ? (
+                  (
+                    Number(uint256.uint256ToBN(loanAssetBalance[0])) /
+                    10 ** 18
+                  ).toString()
+                ) : (
+                  <MySpinner />
+                )}
+              </div>
+              <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
+                <Slider
+                  handlerActiveColor="black"
+                  stepSize={5}
+                  value={value}
+                  trackColor="#ADB5BD"
+                  handlerShape="rounded"
+                  handlerColor="black"
+                  fillColor="black"
+                  trackLength={420}
+                  grabCursor={false}
+                  showMarkers="hidden"
+                  onChange={(value: any) => {
+                    setBorrowParams({
+                      ...borrowParams,
+                      collateralAmount:
+                        (value *
+                          (Number(uint256.uint256ToBN(loanAssetBalance[0])) /
+                            10 ** 18)) /
+                        100,
+                    });
+                    setValue(value);
+                  }}
+                  valueRenderer={(value: any) => `${value}%`}
+                  showValue={false}
+                />
+                {/* </div> */}
+              </div>{" "}
+              <div
+                style={{
+                  fontSize: "10px",
+                  position: "absolute",
+                  right: "38px",
+                  top: "275px",
+                }}
+              >
+                {value}%
+              </div>
+              {dropDown ? (
+                <>
+                  <div
+                    style={{
+                      borderRadius: "5px",
+                      position: "absolute",
+                      zIndex: "100",
+                      top: "140px",
+                      left: "39px",
+                      // top: "-10px",
+
+                      width: "420px",
+                      margin: "0px auto",
+                      marginBottom: "20px",
+                      padding: "5px 10px",
+                      backgroundColor: "#F8F8F8",
+                      boxShadow: "0px 0px 10px #00000020",
+                    }}
+                  >
+                    {coins.map((coin, index) => {
+                      if (coin.name === tokenName) return <></>;
+                      return (
+                        <div
+                          style={{
+                            margin: "10px 0",
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            fontSize: "16px",
+                          }}
+                          onClick={() => {
+                            setTokenIcon(`${coin.icon}`);
+                            setTokenName(`${coin.name}`);
+                            setDropDown(false);
+                            setDropDownArrow(arrowDown);
+                          }}
+                        >
+                          <img
+                            src={`./${coin.name}.svg`}
+                            width="30px"
+                            height="30px"
+                          ></img>
+                          <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+              {commitmentDropDown ? (
+                <>
+                  <div
+                    style={{
+                      borderRadius: "5px",
+                      position: "absolute",
+                      zIndex: "100",
+                      top: "350px",
+                      left: "39px",
+                      // top: "-10px",
+
+                      width: "420px",
+                      margin: "0px auto",
+                      marginBottom: "20px",
+                      padding: "5px 10px",
+                      backgroundColor: "#F8F8F8",
+                      boxShadow: "0px 0px 10px #00000020",
+                    }}
+                  >
+                    <div
+                      style={{
+                        fontSize: "15px",
+                        margin: "10px 0",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        setCommitmentValue("1 month");
+                        setCommitmentDropDown(false);
+                        setCommitmentArrow(arrowDown);
+                        handleCommitChange(2);
+                      }}
+                    >
+                      &nbsp;1 month
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "15px",
+                        margin: "10px 0",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        setCommitmentValue("2 weeks");
+                        setCommitmentDropDown(false);
+                        setCommitmentArrow(arrowDown);
+                        handleCommitChange(1);
+                      }}
+                    >
+                      &nbsp;2 weeks
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "15px",
+                        margin: "10px 0",
+                        cursor: "pointer",
+                      }}
+                      onClick={() => {
+                        setCommitmentValue("Flexible");
+                        setCommitmentDropDown(false);
+                        setCommitmentArrow(arrowDown);
+                        handleCommitChange(0);
+                      }}
+                    >
+                      &nbsp;Flexible
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+              {/* <FormGroup floating>
                 <div className="row mb-4">
                   <Col sm={12}>
                     <Label for="loan-amount">Loan amount</Label>
@@ -563,12 +877,106 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     )}
                   </Col>
                 </div>
-              </FormGroup>
+              </FormGroup> */}
+              <div style={{ fontSize: "8px", fontWeight: "600" }}>
+                Borrow Market
+              </div>
+              <label
+                style={{
+                  width: "420px",
+                  margin: "5px auto",
+                  marginBottom: "20px",
+                  padding: "5px 10px",
+                  fontSize: "18px",
+                  borderRadius: "5px",
+                  border: "2px solid #00000050",
+                  fontWeight: "200",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  <div>
+                    {" "}
+                    <img
+                      src={`./${tokenName}.svg`}
+                      width="30px"
+                      height="30px"
+                    ></img>
+                    &nbsp;&nbsp;{tokenName}
+                  </div>
+                  <div
+                    style={{
+                      marginRight: "20px",
+                      marginTop: "3px",
+                      marginBottom: "0",
+                      cursor: "pointer",
+                    }}
+                  >
+                    <Image
+                      onClick={toggleDropdown}
+                      src={dropDownArrow}
+                      alt="Picture of the author"
+                      width="20px"
+                      height="20px"
+                    />
+                  </div>
+                </div>
+              </label>
               <FormGroup floating>
                 <div className="row mb-4">
                   <Col sm={12}>
-                    <Label for="commitment">Commitment</Label>
-                    <select
+                    <div style={{ fontSize: "8px", fontWeight: "600" }}>
+                      Minimum Collateral Period
+                    </div>
+                    <label
+                      style={{
+                        width: "420px",
+                        margin: "5px auto",
+                        padding: "5px 10px",
+                        fontSize: "15px",
+                        borderRadius: "5px",
+                        border: "2px solid #00000050",
+                        fontWeight: "400",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginLeft: "10px",
+                        }}
+                      >
+                        <div>{commitmentValue}</div>
+                        <div
+                          style={{
+                            marginRight: "20px",
+                            marginTop: "3px",
+                            marginBottom: "0",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <Image
+                            onClick={() => {
+                              setCommitmentDropDown(!commitmentDropDown);
+                              setCommitmentArrow(
+                                commitmentDropDown ? arrowDown : arrowUp
+                              );
+                            }}
+                            src={commitmentArrow}
+                            alt="Picture of the author"
+                            width="20px"
+                            height="20px"
+                          />
+                        </div>
+                      </div>
+                    </label>
+                    {/* <select
                       id="commitment"
                       className="form-select"
                       placeholder="Commitment"
@@ -576,18 +984,15 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     >
                       <option value={0}>Flexible</option>
                       <option value={1}>One Month</option>
-                    </select>
+                    </select> */}
                   </Col>
                 </div>
               </FormGroup>
               <div className="row mb-12">
-                <Col sm={12}>
+                {/* <Col sm={12}>
                   <p>
                     Borrow APR:{" "}
                     <strong>
-                      {/* {BorrowInterestRates[
-                        borrowParams.commitBorrowPeriod || "NONE"
-                      ] || "15%"} */}
                       {depositLoanRates &&
                       borrowParams.commitBorrowPeriod != null &&
                       (borrowParams.commitBorrowPeriod as number) < 4 ? (
@@ -605,7 +1010,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       )}
                     </strong>
                   </p>
-                </Col>
+                </Col> */}
                 {/* <Col sm={6}>
                   <p style={{ float: "right" }}>
                     Collateral APY{" "}
@@ -668,7 +1073,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                   </Col>
                 </div>
               </FormGroup>
-              <div className="row mb-4">
+              {/* <div className="row mb-4">
                 <Col sm={12}>
                   <Label for="amount">Collateral Amount</Label>
                   <InputGroup>
@@ -723,8 +1128,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     <></>
                   )}
                 </Col>
-              </div>
-
+              </div> */}
               <div className="d-grid gap-2">
                 {/* {allowanceVal < (borrowParams.collateralAmount as number) ? (
                   <Button
@@ -750,6 +1154,166 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                   </Button>
                 ) :  */}
                 {/* ( */}
+
+                <div
+                  style={{
+                    marginBottom: "25px",
+                    fontSize: "11px",
+                    marginTop: "-10px",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>Spend loan on:</div>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        display: "flex",
+                        gap: "3px",
+                      }}
+                    >
+                      <Image
+                        src={starknetLogo}
+                        alt="Picture of the author"
+                        width="15px"
+                        height="15px"
+                      />{" "}
+                      <Image
+                        src={starknetLogo}
+                        alt="Picture of the author"
+                        width="15px"
+                        height="15px"
+                      />{" "}
+                      <Image
+                        src={starknetLogo}
+                        alt="Picture of the author"
+                        width="15px"
+                        height="15px"
+                      />{" "}
+                      <Image
+                        src={starknetLogo}
+                        alt="Picture of the author"
+                        width="15px"
+                        height="15px"
+                      />
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
+                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                      $ 10.91
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>Transaction fees:</div>
+                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                      $ 10.91
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>Fair price:</div>
+                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                      $ 10.91
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0 0 10px",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>i Collateral market:</div>
+                    <div style={{ textAlign: "right", fontWeight: "400" }}>
+                      $ 10.91
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0 0 10px",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>ii Borrow market:</div>
+                    <div style={{ textAlign: "right", fontWeight: "400" }}>
+                      $10.91
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>Risk premium:</div>
+                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                      0.6%
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>Debt category:</div>
+                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                      DC1/DC2/DC3
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>Borrow apr:</div>
+                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                      5.6%
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>Borrow network:</div>
+                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                      starknet
+                    </div>
+                  </div>
+                </div>
+
                 <Button
                   color="primary"
                   className="w-md"
@@ -759,13 +1323,14 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     loadingBorrow ||
                     !isValid()
                   }
+                  style={{ padding: "10px 0" }}
                   onClick={(e) => handleBorrow(asset)}
                 >
                   {!(
                     loadingApprove ||
                     isTransactionLoading(requestBorrowTransactionReceipt)
                   ) ? (
-                    "Request Loan"
+                    "Borrow"
                   ) : (
                     <MySpinner text="Borrowing token" />
                   )}
