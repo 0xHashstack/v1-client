@@ -524,7 +524,6 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                               fontSize: "16px",
                             }}
                             onClick={() => {
-                              setTokenIcon(`${coin.icon}`);
                               setTokenName(`${coin.name}`);
                               setDropDown(false);
                               setDropDownArrow(arrowDown);
@@ -651,7 +650,11 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                             className="btn btn-md w-xs"
                             onClick={handleMin}
                             // disabled={balance ? false : true}
-                            style={{ background: "#2e3444", border: "#2e3444" }}
+                            style={{
+                              background: "white",
+                              color: "black",
+                              border: "1px solid black",
+                            }}
                           >
                             <span style={{ borderBottom: "2px dotted #fff" }}>
                               Min
@@ -672,7 +675,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                             }}
                           >
                             <span style={{ borderBottom: "2px dotted #fff" }}>
-                              Max
+                              MAX
                             </span>
                           </Button>
                         </>

@@ -91,6 +91,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
   const [value, setValue] = useState(0);
 
   const [tokenName, setTokenName] = useState(asset);
+  const [borrowTokenName, setBorrowTokenName] = useState(asset);
   const [token, setToken] = useState(getTokenFromName(asset));
   const [modal_borrow, setmodal_borrow] = useState(false);
   const [allowanceVal, setAllowance] = useState(0);
@@ -142,9 +143,28 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
   const [commitmentDropDown, setCommitmentDropDown] = useState(false);
   const [commitmentArrow, setCommitmentArrow] = useState(arrowDown);
 
+  const [borrowDropDown, setBorrowDropDown] = useState(false);
+  const [borrowArrow, setBorrowArrow] = useState(arrowDown);
+
+  const [collateralMarketToken, setCollateralwMarketToken] = useState("USDT");
+
   const toggleDropdown = () => {
     setDropDown(!dropDown);
     setDropDownArrow(dropDown ? arrowDown : arrowUp);
+    setBorrowDropDown(false);
+    setBorrowArrow(arrowDown);
+    setCommitmentDropDown(false);
+    setCommitmentArrow(arrowDown);
+    // disconnectEvent(), connect(connector);
+  };
+
+  const toggleBorrowDropdown = () => {
+    setBorrowDropDown(!borrowDropDown);
+    setBorrowArrow(borrowDropDown ? arrowDown : arrowUp);
+    setDropDown(false);
+    setDropDownArrow(arrowDown);
+    setCommitmentDropDown(false);
+    setCommitmentArrow(arrowDown);
     // disconnectEvent(), connect(connector);
   };
 
@@ -317,26 +337,32 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
     });
   };
 
-  const handleCollateralChange = async (e: any) => {
-    console.log(`setting collateral market to ${e.target.value}`);
+  const handleCollateralChange = async (asset: any) => {
+    // console.log(`setting collateral market to ${e.target.value}`);
+    console.log(
+      "------------------------------------------------------------------collateralMarketToken",
+      collateralMarketToken
+    );
     setBorrowParams({
       ...borrowParams,
-      collateralMarket: tokenName,
+      collateralMarket: asset,
     });
+
     await refreshAllowance();
     await refreshBalance();
   };
 
-  const handleLoanInputChange = (e: any) => {
-    if (e.target.value)
+  const handleLoanInputChange = async (asset: any) => {
+    if (asset) {
       setBorrowParams({
         ...borrowParams,
-        loanAmount: Number(e.target.value),
+        loanAmount: Number(asset),
       });
-    else {
+      await handleMinLoan(asset);
+    } else {
       setBorrowParams({
         ...borrowParams,
-        loanAmount: "",
+        loanAmount: 0,
       });
     }
   };
@@ -362,6 +388,16 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
     setBorrowParams({
       ...borrowParams,
       collateralAmount:
+        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+        10 ** 18,
+    });
+    await refreshAllowance();
+  };
+
+  const handleMaxLoan = async () => {
+    setBorrowParams({
+      ...borrowParams,
+      loanAmount:
         Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
         10 ** 18,
     });
@@ -527,6 +563,8 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
         type="button"
         onClick={() => {
           tog_borrow();
+          setTokenName(asset);
+          handleCollateralChange(`${asset}`);
         }}
         style={{
           backgroundColor: "white",
@@ -612,7 +650,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                 style={{
                   fontSize: "8px",
                   fontWeight: "600",
-                  margin: "5px 0",
+                  margin: "-5px 0 5px 0",
                 }}
               >
                 Collateral Amount
@@ -635,23 +673,43 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                   }
                   valid={isValidColleteralAmount()}
                 />
-
                 {
-                  <Button
-                    outline
-                    type="button"
-                    className="btn btn-md w-xs"
-                    onClick={handleMax}
-                    // disabled={balance ? false : true}
-                    style={{
-                      background: "white",
-                      color: "black",
-                      border: "1px solid black",
-                      borderLeft: "none",
-                    }}
-                  >
-                    <span style={{ borderBottom: "2px dotted #fff" }}>Max</span>
-                  </Button>
+                  <>
+                    {/* <Button
+                      outline
+                      type="button"
+                      className="btn btn-md w-xs"
+                      onClick={handleMin}
+                      // disabled={balance ? false : true}
+                      style={{
+                        background: "white",
+                        color: "black",
+                        border: "1px solid black",
+                      }}
+                    >
+                      <span style={{ borderBottom: "2px dotted #fff" }}>
+                        Min
+                      </span>
+                    </Button> */}
+
+                    <Button
+                      outline
+                      type="button"
+                      className="btn btn-md w-xs"
+                      onClick={handleMax}
+                      // disabled={balance ? false : true}
+                      style={{
+                        background: "white",
+                        color: "black",
+                        border: "1px solid black",
+                        borderLeft: "none",
+                      }}
+                    >
+                      <span style={{ borderBottom: "2px dotted #fff" }}>
+                        MAX
+                      </span>
+                    </Button>
+                  </>
                 }
               </InputGroup>
               {/* {!isValidColleteralAmount() ? (
@@ -669,11 +727,10 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                   margin: "5px 0",
                 }}
               >
-                {" "}
-                Reserves Available :{" "}
-                {loanAssetBalance ? (
+                Wallet Balance :{" "}
+                {dataBalance ? (
                   (
-                    Number(uint256.uint256ToBN(loanAssetBalance[0])) /
+                    Number(uint256.uint256ToBN(dataBalance[0])) /
                     10 ** 18
                   ).toString()
                 ) : (
@@ -697,7 +754,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       ...borrowParams,
                       collateralAmount:
                         (value *
-                          (Number(uint256.uint256ToBN(loanAssetBalance[0])) /
+                          (Number(uint256.uint256ToBN(dataBalance[0])) /
                             10 ** 18)) /
                         100,
                     });
@@ -749,10 +806,62 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                             fontSize: "16px",
                           }}
                           onClick={() => {
-                            setTokenIcon(`${coin.icon}`);
                             setTokenName(`${coin.name}`);
                             setDropDown(false);
                             setDropDownArrow(arrowDown);
+                            handleCollateralChange(`${coin.name}`);
+                            // handleMinLoan(`${coin.name}`);
+                          }}
+                        >
+                          <img
+                            src={`./${coin.name}.svg`}
+                            width="30px"
+                            height="30px"
+                          ></img>
+                          <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : (
+                <></>
+              )}
+              {borrowDropDown ? (
+                <>
+                  <div
+                    style={{
+                      borderRadius: "5px",
+                      position: "absolute",
+                      zIndex: "100",
+                      top: "340px",
+                      left: "39px",
+                      // top: "-10px",
+
+                      width: "420px",
+                      margin: "0px auto",
+                      marginBottom: "20px",
+                      padding: "5px 10px",
+                      backgroundColor: "#F8F8F8",
+                      boxShadow: "0px 0px 10px #00000020",
+                    }}
+                  >
+                    {coins.map((coin, index) => {
+                      if (coin.name === borrowTokenName) return <></>;
+                      return (
+                        <div
+                          style={{
+                            margin: "10px 0",
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            fontSize: "16px",
+                          }}
+                          onClick={() => {
+                            setBorrowTokenName(`${coin.name}`);
+                            setBorrowDropDown(false);
+                            setBorrowArrow(arrowDown);
+                            handleLoanInputChange(`${coin.name}`);
                           }}
                         >
                           <img
@@ -776,7 +885,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       borderRadius: "5px",
                       position: "absolute",
                       zIndex: "100",
-                      top: "350px",
+                      top: "420px",
                       left: "39px",
                       // top: "-10px",
 
@@ -903,11 +1012,11 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                   <div>
                     {" "}
                     <img
-                      src={`./${tokenName}.svg`}
+                      src={`./${borrowTokenName}.svg`}
                       width="30px"
                       height="30px"
                     ></img>
-                    &nbsp;&nbsp;{tokenName}
+                    &nbsp;&nbsp;{borrowTokenName}
                   </div>
                   <div
                     style={{
@@ -918,8 +1027,8 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     }}
                   >
                     <Image
-                      onClick={toggleDropdown}
-                      src={dropDownArrow}
+                      onClick={toggleBorrowDropdown}
+                      src={borrowArrow}
                       alt="Picture of the author"
                       width="20px"
                       height="20px"
@@ -931,7 +1040,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                 <div className="row mb-4">
                   <Col sm={12}>
                     <div style={{ fontSize: "8px", fontWeight: "600" }}>
-                      Minimum Collateral Period
+                      Minimum Commitment Period
                     </div>
                     <label
                       style={{
@@ -987,6 +1096,71 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     </select> */}
                   </Col>
                 </div>
+                {/* <label style={{}}> */}
+                <div
+                  style={{
+                    fontSize: "8px",
+                    fontWeight: "600",
+                    margin: "-10px 0 5px 0",
+                  }}
+                >
+                  Borrow Amount
+                </div>
+                <InputGroup style={{ marginBottom: "30px" }}>
+                  <Input
+                    style={{
+                      backgroundColor: "white",
+                      borderRight: "1px solid #FFF",
+                    }}
+                    id="loan-amount"
+                    type="text"
+                    className="form-control"
+                    placeholder={`Minimum amount = ${MinimumAmount[asset]}`}
+                    min={MinimumAmount[asset]}
+                    value={borrowParams.loanAmount as number}
+                    onChange={handleLoanInputChange}
+                    valid={isLoanAmountValid()}
+                  />
+                  {
+                    <>
+                      {/* <Button
+                        outline
+                        type="button"
+                        className="btn btn-md w-xs"
+                        onClick={handleMin}
+                        // disabled={balance ? false : true}
+                        style={{
+                          background: "white",
+                          color: "black",
+                          border: "1px solid black",
+                        }}
+                      >
+                        <span style={{ borderBottom: "2px dotted #fff" }}>
+                          Min
+                        </span>
+                      </Button> */}
+
+                      <Button
+                        outline
+                        type="button"
+                        className="btn btn-md w-xs"
+                        onClick={handleMaxLoan}
+                        // disabled={balance ? false : true}
+                        style={{
+                          background: "white",
+                          color: "black",
+                          border: "1px solid black",
+                          borderLeft: "none",
+                        }}
+                      >
+                        <span style={{ borderBottom: "2px dotted #fff" }}>
+                          MAX
+                        </span>
+                      </Button>
+                    </>
+                  }
+                </InputGroup>
+                {/* </label> */}
               </FormGroup>
               <div className="row mb-12">
                 {/* <Col sm={12}>
@@ -1034,11 +1208,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                   </p>
                 </Col> */}
               </div>
-              <hr />
-              <div className="row mb-4">
-                <Col sm={4}>
-                  <h6>Collateral</h6>
-                </Col>
+              {/* <div className="row mb-4">
                 <Col sm={8}>
                   {borrowParams.collateralMarket && (
                     // <div align="right">
@@ -1054,8 +1224,8 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     </div>
                   )}
                 </Col>
-              </div>
-              <FormGroup floating>
+              </div> */}
+              {/* <FormGroup floating>
                 <div className="row mb-4">
                   <Col sm={12}>
                     <Label for="collateral-market">Collateral Market</Label>
@@ -1072,7 +1242,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     </select>
                   </Col>
                 </div>
-              </FormGroup>
+              </FormGroup> */}
               {/* <div className="row mb-4">
                 <Col sm={12}>
                   <Label for="amount">Collateral Amount</Label>
@@ -1335,8 +1505,6 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     <MySpinner text="Borrowing token" />
                   )}
                 </Button>
-                {/* ) */}
-                {/* } */}
               </div>
             </Form>
           ) : (
