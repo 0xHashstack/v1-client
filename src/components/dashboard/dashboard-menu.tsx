@@ -21,6 +21,9 @@ import {
   CardSubtitle,
 } from "reactstrap";
 import classnames from "classnames";
+import Image from "next/image";
+
+import arrowDown from "../../assets/images/arrowDown.svg";
 
 const DashboardMenu = ({
   customActiveTab,
@@ -53,7 +56,30 @@ const DashboardMenu = ({
               toggleCustom("1");
             }}
           >
-            <span className="d-none d-sm-block">Market</span>
+            {customActiveTab === "1" ? (
+              <span className="d-none d-sm-block">Market</span>
+            ) : (
+              <div
+                // className="d-none d-sm-block"x
+                style={{ display: "flex", alignItems: "center", gap: "5px" }}
+              >
+                {" "}
+                <Image
+                  // onClick={toggleBorrowDropdown}
+                  style={{
+                    rotate: "90deg",
+                    cursor: "pointer",
+                    // marginLeft: "-7px",
+                  }}
+                  src={arrowDown}
+                  alt="Picture of the author"
+                  width="18px"
+                  height="18px"
+                  // style={{ rotate: "90" }}
+                />
+                <div>Back</div>
+              </div>
+            )}
           </NavLink>
         </NavItem>
         {account ? (

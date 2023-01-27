@@ -339,10 +339,10 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 
   const handleCollateralChange = async (asset: any) => {
     // console.log(`setting collateral market to ${e.target.value}`);
-    console.log(
-      "------------------------------------------------------------------collateralMarketToken",
-      collateralMarketToken
-    );
+    // console.log(
+    //   "------------------------------------------------------------------collateralMarketToken",
+    //   collateralMarketToken
+    // );
     setBorrowParams({
       ...borrowParams,
       collateralMarket: asset,

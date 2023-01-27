@@ -48,6 +48,8 @@ import { assert } from "console";
 import Script from "next/script";
 import StatsBoard from "../components/dashboard/stats";
 
+import YourSupplyBody from "../components/dashboard/supply";
+
 interface IDeposit {
   amount: string;
   account: string | undefined;
@@ -539,7 +541,7 @@ const Dashboard = () => {
   function dashboardUI() {
     return (
       <div>
-        <StatsBoard />
+        {customActiveTab === "1" ? <StatsBoard /> : null}
         <Container fluid style={{ backgroundColor: "white" }}>
           {/* Protocol Stats */}
           {/* <ProtocolStats /> */}
@@ -560,13 +562,18 @@ const Dashboard = () => {
                     {/* Dashboard Menu Panes */}
 
                     {/* ----------------- PASSBOOK MENU TOGGLES -------------------- */}
-                    <Col xl="5">
+                    {/* <Col xl="5">
                       {customActiveTab === "2" && (
                         <PassbookMenu
                           account={account as string}
                           customActiveTabs={customActiveTabs}
                           toggleCustoms={toggleCustoms}
                         />
+                      )}
+                    </Col> */}
+                    <Col xl="5">
+                      {customActiveTab === "3" && (
+                        <YourSupplyBody isLoading={isLoading} />
                       )}
                     </Col>
                   </Row>
@@ -583,16 +590,19 @@ const Dashboard = () => {
                   </Row>
 
                   <TabContent activeTab={customActiveTab} className="p-1">
-                    {/* ------------------------------------- DASHBOARD ----------------------------- */}
-                    <LoanBorrowCommitment isLoading={isLoading} />
+                    {/* ------------------------------------- MARKET ----------------------------- */}
+                    {customActiveTab === "1" ? (
+                      <LoanBorrowCommitment isLoading={isLoading} />
+                    ) : null}
 
                     {/* -------------------------------------- PASSBOOK ----------------------------- */}
 
                     {/* -------------------------------------- LIQUIDATION ----------------------------- */}
-                    <Liquidation
+
+                    {/* <Liquidation
                       activeLiquidationsData={activeLiquidationsData}
                       isTransactionDone={isTransactionDone}
-                    />
+                    /> */}
                   </TabContent>
                 </CardBody>
               </Card>

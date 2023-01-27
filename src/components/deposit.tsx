@@ -250,6 +250,11 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     else setDepositAmount(0);
   };
 
+  const handleBalanceChange = async () => {
+    await refreshAllowance();
+    await refreshBalance();
+  };
+
   const handleMax = async () => {
     // if (dataBalance) {
     setDepositAmount(
@@ -527,6 +532,8 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                               setTokenName(`${coin.name}`);
                               setDropDown(false);
                               setDropDownArrow(arrowDown);
+                              handleBalanceChange();
+                              // handleDepositAmountChange(0);
                             }}
                           >
                             <img
@@ -618,15 +625,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                 <div className="row mb-4">
                   <Col sm={12}>
                     {/* <Label for="amount">Amount</Label> */}
-                    <InputGroup
-                    // style={{
-                    //   border:
-                    //     depositAmount == 0 ||
-                    //     depositAmount >= MinimumAmount[asset]
-                    //       ? "1px solid #556EE6"
-                    //       : "",
-                    // }}
-                    >
+                    <InputGroup>
                       <Input
                         style={{
                           backgroundColor: "white",
