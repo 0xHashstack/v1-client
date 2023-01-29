@@ -145,341 +145,350 @@ const ActiveDeposit = ({
       <UncontrolledAccordion
         defaultOpen="0"
         open="false"
-        style={{ margin: "20px" }}
+        style={{
+          margin: "10px",
+          color: "black",
+          // width: "85vw",
+          textAlign: "left",
+        }}
       >
         <Row>
-          <AccordionItem style={{ padding: "20px" }}>
-            <AccordionHeader targetId="1">
-              <Col className="mr-4 ">
-                <Card className="mb-1" style={{ marginTop: "20px" }}>
-                  <CardBody>
-                    <div>
-                      <img
-                        src={
-                          asset
-                            ? CoinClassNames[
-                                EventMap[asset.market.toUpperCase()]
-                              ] || asset.market.toUpperCase()
-                            : null
-                        }
-                        height="18px"
-                      />
+          {/* <AccordionItem style={{ padding: "20px" }}> */}
+          {/* <AccordionHeader targetId="1"> */}
+          <Col>ID123445</Col>
+          <Col className="mr-4 ">
+            <div>
+              <img
+                src={
+                  asset
+                    ? CoinClassNames[EventMap[asset.market.toUpperCase()]] ||
+                      asset.market.toUpperCase()
+                    : null
+                }
+                height="18px"
+              />
 
-                      <div
-                        className="mr-6"
-                        style={{
-                          display: "inline-block",
-                          fontSize: "18px",
-                        }}
-                        // align="right"
-                      >
-                        &nbsp; &nbsp;
-                        {EventMap[asset.market.toUpperCase()]}
-                      </div>
-                    </div>
-                    <CardTitle tag="h5"></CardTitle>
+              <div
+                className="mr-6"
+                style={{
+                  display: "inline-block",
+                  fontSize: "18px",
+                }}
+                // align="right"
+              >
+                &nbsp; &nbsp;
+                {EventMap[asset.market.toUpperCase()]}
+              </div>
+            </div>
+            <CardTitle tag="h5"></CardTitle>
 
-                    <CardSubtitle className=" text-muted" tag="h6">
-                      <span style={{ fontSize: "14px" }}>
-                        &nbsp; &nbsp;&nbsp; {BNtoNum(Number(asset.amount))}
-                      </span>
-                    </CardSubtitle>
-                  </CardBody>
-                </Card>
-              </Col>
+            {/* <CardSubtitle className=" text-muted" tag="h6">
+              <span style={{ fontSize: "14px" }}>
+                &nbsp; &nbsp;&nbsp; {BNtoNum(Number(asset.amount))}
+              </span>
+            </CardSubtitle> */}
+          </Col>
+          <Col>
+            <span style={{ fontSize: "14px", fontWeight: "600" }}>
+              {BNtoNum(Number(asset.amount))}
+            </span>
+            <div>
+              <img
+                src={
+                  asset
+                    ? CoinClassNames[EventMap[asset.market.toUpperCase()]] ||
+                      asset.market.toUpperCase()
+                    : null
+                }
+                height="18px"
+              />
 
-              <Col className="mr-4 ">
-                <Card className="mb-1" style={{ marginTop: "20px" }}>
-                  <CardBody>
-                    <div>
-                      <div
-                        className="mr-6"
-                        style={{
-                          display: "inline-block",
-                          fontSize: "18px",
-                        }}
-                        // align="right"
-                      >
-                        {asset &&
-                          historicalAPRs &&
-                          depositInterestAccrued(asset, historicalAPRs)}
-                        &nbsp;
-                        {EventMap[asset.market.toUpperCase()]}
-                      </div>
-                    </div>
-                    <CardTitle tag="h5"></CardTitle>
+              <div
+                className="mr-6"
+                style={{
+                  display: "inline-block",
+                  fontSize: "13px",
+                }}
+              >
+                &nbsp;
+                {EventMap[asset.market.toUpperCase()]}
+              </div>
+            </div>
+          </Col>
+          <Col className="mr-4 ">
+            <span style={{ fontSize: "14px", fontWeight: "600" }}>
+              {asset &&
+                historicalAPRs &&
+                depositInterestAccrued(asset, historicalAPRs)}
+              &nbsp;
+              {EventMap[asset.market.toUpperCase()]}
+            </span>
+            <div
+              className="mr-6"
+              style={{
+                display: "inline-block",
+                fontSize: "13px",
+              }}
+            >
+              <span style={{ fontSize: "14px" }}>
+                {asset &&
+                  historicalAPRs &&
+                  currentDepositInterestRate(asset, historicalAPRs)}
+                %APR
+              </span>
+            </div>
+          </Col>
+          <Col className="mr-4 ">
+            <div
+              className="mr-6"
+              style={{
+                display: "inline-block",
+                fontSize: "14px",
+              }}
+            >
+              {asset.commitment.toLowerCase()}
+            </div>
+            <CardTitle tag="h5"></CardTitle>
+          </Col>
+          <Col>Active deposit</Col>
+          {/* <Col className="mr-4 ">
+            <div>
+              <img
+                src={
+                  CoinClassNames[EventMap[asset.market.toUpperCase()]] ||
+                  asset.market.toUpperCase()
+                }
+                height="18px"
+              />
 
-                    <CardSubtitle className=" text-muted" tag="h6">
-                      <span style={{ fontSize: "14px" }}>
-                        {asset &&
-                          historicalAPRs &&
-                          currentDepositInterestRate(asset, historicalAPRs)}
-                        %APR
-                      </span>
-                      &nbsp; &nbsp;
-                    </CardSubtitle>
-                  </CardBody>
-                </Card>
-              </Col>
-              <Col className="mr-4 ">
-                <Card className="mb-1" style={{ marginTop: "20px" }}>
-                  <CardBody>
-                    <div>
-                      <img
-                        src={
-                          CoinClassNames[
-                            EventMap[asset.market.toUpperCase()]
-                          ] || asset.market.toUpperCase()
-                        }
-                        height="18px"
-                      />
+              <div
+                className="mr-6"
+                style={{
+                  display: "inline-block",
+                  fontSize: "18px",
+                }}
+                // align="right"
+              >
+                &nbsp; &nbsp;
+                {EventMap[asset.market.toUpperCase()]}
+              </div>
+            </div>
+            <CardTitle tag="h5"></CardTitle>
 
-                      <div
-                        className="mr-6"
-                        style={{
-                          display: "inline-block",
-                          fontSize: "18px",
-                        }}
-                        // align="right"
-                      >
-                        &nbsp; &nbsp;
-                        {EventMap[asset.market.toUpperCase()]}
-                      </div>
-                    </div>
-                    <CardTitle tag="h5"></CardTitle>
+            <CardSubtitle className=" text-muted" tag="h6">
+              <span style={{ fontSize: "14px" }}>
+                &nbsp; &nbsp;&nbsp;{" "}
+                {(
+                  parseFloat(BNtoNum(Number(asset.amount))) +
+                  parseFloat(BNtoNum(Number(asset.acquiredYield)))
+                ).toFixed(6)}
+              </span>
+              &nbsp; &nbsp;
+            </CardSubtitle>
+          </Col> */}
 
-                    <CardSubtitle className=" text-muted" tag="h6">
-                      <span style={{ fontSize: "14px" }}>
-                        &nbsp; &nbsp;&nbsp;{" "}
-                        {(
-                          parseFloat(BNtoNum(Number(asset.amount))) +
-                          parseFloat(BNtoNum(Number(asset.acquiredYield)))
-                        ).toFixed(6)}
-                      </span>
-                      &nbsp; &nbsp;
-                    </CardSubtitle>
-                  </CardBody>
-                </Card>
-              </Col>
-              <Col className="mr-4 ">
-                <Card className="mb-1" style={{ marginTop: "20px" }}>
-                  <CardBody>
-                    <div
-                      className="mr-6"
-                      style={{
-                        display: "inline-block",
-                        fontSize: "14px",
-                      }}
-                      // align="right"
-                    >
-                      &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
-                      {asset.commitment}
-                    </div>
-                    <CardTitle tag="h5"></CardTitle>
-                  </CardBody>
-                </Card>
-              </Col>
-            </AccordionHeader>
-            <AccordionBody accordionId="1">
-              <div style={{ borderWidth: 1 }}>
-                <CardBody>
-                  <div>
-                    <div className="mb-4 ">
-                      <Row>
-                        <Col lg="4 mb-3">
-                          <div
-                            className="block-example border"
-                            style={{
-                              padding: "15px",
-                              borderRadius: "5px",
-                            }}
-                          >
-                            <div className="mb-3">
-                              {/* <label className="card-radio-label mb-2"> */}
-                              <Button
-                                className="btn-block btn-md"
-                                color={
-                                  modal_add_active_deposit === true
-                                    ? "light"
-                                    : "outline-light"
-                                }
-                                onClick={() => {
-                                  tog_add_active_deposit();
-                                }}
-                              >
-                                Add to Deposit
-                              </Button>
-                              &nbsp; &nbsp;
-                              <Button
-                                className="btn-block btn-md"
-                                color={
-                                  modal_withdraw_active_deposit === true
-                                    ? "light"
-                                    : "outline-light"
-                                }
-                                onClick={() => {
-                                  tog_withdraw_active_deposit();
-                                }}
-                              >
-                                Withdraw Deposit
-                              </Button>
-                            </div>
-                            {modal_add_active_deposit && (
-                              <Form>
-                                <div className="row mb-4">
-                                  <Col sm={12}>
-                                    <Input
-                                      type="text"
-                                      className="form-control"
-                                      id="horizontal-password-Input"
-                                      placeholder={
-                                        depositRequestSel
-                                          ? `Minimum amount =  ${MinimumAmount[depositRequestSel]}`
-                                          : "Amount"
-                                      }
-                                      onChange={(event) => {
-                                        setDepositAmount(
-                                          Number(event.target.value)
-                                        );
-                                        setDepositCommit(asset.commitmentIndex);
-                                        setDepositMarket(asset.marketAddress);
-                                      }}
-                                    />
-                                  </Col>
-                                </div>
+          {/* </AccordionHeader> */}
+          <AccordionBody accordionId="1">
+            <div style={{ borderWidth: 1 }}>
+              <CardBody>
+                <div>
+                  <div className="mb-4 ">
+                    <Row>
+                      <Col lg="4 mb-3">
+                        <div
+                          className="block-example border"
+                          style={{
+                            padding: "15px",
+                            borderRadius: "5px",
+                          }}
+                        >
+                          <div className="mb-3">
+                            {/* <label className="card-radio-label mb-2"> */}
+                            <Button
+                              className="btn-block btn-md"
+                              color={
+                                modal_add_active_deposit === true
+                                  ? "light"
+                                  : "outline-light"
+                              }
+                              onClick={() => {
+                                tog_add_active_deposit();
+                              }}
+                            >
+                              Add to Deposit
+                            </Button>
+                            &nbsp; &nbsp;
+                            <Button
+                              className="btn-block btn-md"
+                              color={
+                                modal_withdraw_active_deposit === true
+                                  ? "light"
+                                  : "outline-light"
+                              }
+                              onClick={() => {
+                                tog_withdraw_active_deposit();
+                              }}
+                            >
+                              Withdraw Deposit
+                            </Button>
+                          </div>
+                          {modal_add_active_deposit && (
+                            <Form>
+                              <div className="row mb-4">
+                                <Col sm={12}>
+                                  <Input
+                                    type="text"
+                                    className="form-control"
+                                    id="horizontal-password-Input"
+                                    placeholder={
+                                      depositRequestSel
+                                        ? `Minimum amount =  ${MinimumAmount[depositRequestSel]}`
+                                        : "Amount"
+                                    }
+                                    onChange={(event) => {
+                                      setDepositAmount(
+                                        Number(event.target.value)
+                                      );
+                                      setDepositCommit(asset.commitmentIndex);
+                                      setDepositMarket(asset.marketAddress);
+                                    }}
+                                  />
+                                </Col>
+                              </div>
 
-                                <div className="d-grid gap-2">
-                                  {allowanceVal < (depositAmount as number) ? (
-                                    <Button
-                                      color="primary"
-                                      className="w-md"
-                                      disabled={
-                                        depositCommit === undefined ||
-                                        loadingApprove ||
-                                        loadingDeposit ||
-                                        (depositAmount as number) <
-                                          MinimumAmount[asset]
-                                      }
-                                      onClick={(e) => handleApprove(asset)}
-                                    >
-                                      {/* setApproveStatus(transactions[0]?.status); */}
-                                      {!(
-                                        loadingApprove ||
-                                        isTransactionLoading(
-                                          approveTransactionReceipt
-                                        )
-                                      ) ? (
-                                        "Approve"
-                                      ) : (
-                                        <MySpinner text="Approvin token" />
-                                      )}
-                                    </Button>
-                                  ) : (
-                                    <Button
-                                      color="primary"
-                                      className="w-md"
-                                      disabled={
-                                        depositCommit === undefined ||
-                                        loadingApprove ||
-                                        loadingDeposit ||
-                                        (depositAmount as number) <
-                                          MinimumAmount[asset]
-                                      }
-                                      onClick={(e) => DepositAmount(asset)}
-                                    >
-                                      {!(
-                                        loadingApprove ||
-                                        isTransactionLoading(
-                                          addDepositTransactionReceipt
-                                        )
-                                      ) ? (
-                                        "Deposit"
-                                      ) : (
-                                        <MySpinner text="Adding Deposit" />
-                                      )}
-                                    </Button>
-                                  )}
-                                </div>
-                              </Form>
-                            )}
-                            {modal_withdraw_active_deposit && (
-                              <Form>
-                                <div className="row mb-4">
-                                  <Col sm={12}>
-                                    <Input
-                                      type="text"
-                                      className="form-control"
-                                      id="horizontal-password-Input"
-                                      placeholder="Amount"
-                                      onChange={(event) => {
-                                        setWithdrawAmount(
-                                          Number(event.target.value)
-                                        );
-                                      }}
-                                      value={withdrawAmount}
-                                    />
-                                    <RangeSlider
-                                      value={value}
-                                      step={25}
-                                      tooltip="on"
-                                      tooltipLabel={(v) => `${v} %`}
-                                      onChange={(changeEvent) =>
-                                        setValue(
-                                          parseFloat(changeEvent.target.value)
-                                        )
-                                      }
-                                      style={{
-                                        width: "100%",
-                                        marginTop: "12px",
-                                      }}
-                                    />
-                                  </Col>
-                                </div>
-
-                                <div className="d-grid gap-2">
+                              <div className="d-grid gap-2">
+                                {allowanceVal < (depositAmount as number) ? (
                                   <Button
+                                    color="primary"
                                     className="w-md"
-                                    disabled={(depositAmount as number) <= 0}
-                                    onClick={() => {
-                                      handleWithdrawDeposit(withdrawDeposit);
-                                    }}
-                                    style={{
-                                      color: "#4B41E5",
-                                    }}
+                                    disabled={
+                                      depositCommit === undefined ||
+                                      loadingApprove ||
+                                      loadingDeposit ||
+                                      (depositAmount as number) <
+                                        MinimumAmount[asset]
+                                    }
+                                    onClick={(e) => handleApprove(asset)}
                                   >
-                                    {!isTransactionLoading(
-                                      withdrawTransactionReceipt
+                                    {/* setApproveStatus(transactions[0]?.status); */}
+                                    {!(
+                                      loadingApprove ||
+                                      isTransactionLoading(
+                                        approveTransactionReceipt
+                                      )
                                     ) ? (
-                                      "Withdraw Deposit"
+                                      "Approve"
                                     ) : (
-                                      <MySpinner text="Withdrawing Deposit" />
+                                      <MySpinner text="Approvin token" />
                                     )}
                                   </Button>
-                                </div>
-                              </Form>
-                            )}
-                          </div>
-                        </Col>
-                        <Col lg="8">
-                          {
-                            <TxHistoryTable
-                              asset={asset}
-                              type="deposits"
-                              market={asset.market}
-                              observables={[
-                                withdrawTransactionReceipt,
-                                addDepositTransactionReceipt,
-                              ]}
-                            />
-                          }
-                        </Col>
-                      </Row>
-                    </div>
+                                ) : (
+                                  <Button
+                                    color="primary"
+                                    className="w-md"
+                                    disabled={
+                                      depositCommit === undefined ||
+                                      loadingApprove ||
+                                      loadingDeposit ||
+                                      (depositAmount as number) <
+                                        MinimumAmount[asset]
+                                    }
+                                    onClick={(e) => DepositAmount(asset)}
+                                  >
+                                    {!(
+                                      loadingApprove ||
+                                      isTransactionLoading(
+                                        addDepositTransactionReceipt
+                                      )
+                                    ) ? (
+                                      "Deposit"
+                                    ) : (
+                                      <MySpinner text="Adding Deposit" />
+                                    )}
+                                  </Button>
+                                )}
+                              </div>
+                            </Form>
+                          )}
+                          {modal_withdraw_active_deposit && (
+                            <Form>
+                              <div className="row mb-4">
+                                <Col sm={12}>
+                                  <Input
+                                    type="text"
+                                    className="form-control"
+                                    id="horizontal-password-Input"
+                                    placeholder="Amount"
+                                    onChange={(event) => {
+                                      setWithdrawAmount(
+                                        Number(event.target.value)
+                                      );
+                                    }}
+                                    value={withdrawAmount}
+                                  />
+                                  <RangeSlider
+                                    value={value}
+                                    step={25}
+                                    tooltip="on"
+                                    tooltipLabel={(v) => `${v} %`}
+                                    onChange={(changeEvent) =>
+                                      setValue(
+                                        parseFloat(changeEvent.target.value)
+                                      )
+                                    }
+                                    style={{
+                                      width: "100%",
+                                      marginTop: "12px",
+                                    }}
+                                  />
+                                </Col>
+                              </div>
+
+                              <div className="d-grid gap-2">
+                                <Button
+                                  className="w-md"
+                                  disabled={(depositAmount as number) <= 0}
+                                  onClick={() => {
+                                    handleWithdrawDeposit(withdrawDeposit);
+                                  }}
+                                  style={{
+                                    color: "#4B41E5",
+                                  }}
+                                >
+                                  {!isTransactionLoading(
+                                    withdrawTransactionReceipt
+                                  ) ? (
+                                    "Withdraw Deposit"
+                                  ) : (
+                                    <MySpinner text="Withdrawing Deposit" />
+                                  )}
+                                </Button>
+                              </div>
+                            </Form>
+                          )}
+                        </div>
+                      </Col>
+                      <Col lg="8">
+                        {
+                          <TxHistoryTable
+                            asset={asset}
+                            type="deposits"
+                            market={asset.market}
+                            observables={[
+                              withdrawTransactionReceipt,
+                              addDepositTransactionReceipt,
+                            ]}
+                          />
+                        }
+                      </Col>
+                    </Row>
                   </div>
-                </CardBody>
-              </div>
-            </AccordionBody>
-          </AccordionItem>
+                </div>
+              </CardBody>
+            </div>
+          </AccordionBody>
+          {/* </AccordionItem> */}
+          <Col>Hello</Col>
         </Row>
       </UncontrolledAccordion>
     </div>

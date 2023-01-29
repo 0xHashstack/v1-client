@@ -571,18 +571,18 @@ const Dashboard = () => {
                         />
                       )}
                     </Col> */}
-                    <Col xl="5">
+                    {/* <Col xl="5">
                       {customActiveTab === "3" && (
                         <YourSupplyBody isLoading={isLoading} />
                       )}
-                    </Col>
+                    </Col> */}
                   </Row>
 
                   {/* ----------------- PASSBOOK BODY -------------------- */}
                   <Row>
                     <div>
                       <Col lg={12}>
-                        {customActiveTab === "2" &&
+                        {customActiveTab === "3" &&
                           getActionTabs(customActiveTabs)}
                         {/* {getPassbookTable(passbookStatus)} */}
                       </Col>

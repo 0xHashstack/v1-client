@@ -63,13 +63,13 @@ const DashboardTokens = ({
               style={{ marginTop: "5px" }}
             ></img>
           </div>
-          <span>{coin.name}</span>
+          <span style={{ marginLeft: "-15px" }}>{coin.name}</span>
         </div>
       </th>
-      <td style={{ padding: "31px" }}>0000</td>
-      <td style={{ padding: "31px" }}>0000</td>
-      <td style={{ padding: "31px" }}>00000</td>
-      <td style={{ padding: "31px" }}>0000</td>
+      <td style={{ padding: "31px 10px" }}>0000</td>
+      <td style={{ padding: "31px 10px" }}>0000</td>
+      <td style={{ padding: "31px 10px" }}>00000</td>
+      <td style={{ padding: "31px 10px" }}>0000</td>
       <td style={{ padding: "31px", textAlign: "center" }}>
         <div>
           {/* {deposit ? deposit[0].apr.toNumber() / 100 : "NaN"}% */}
