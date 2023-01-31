@@ -60,10 +60,8 @@ const DashboardMenu = ({
               <span className="d-none d-sm-block">Market</span>
             ) : (
               <div
-                // className="d-none d-sm-block"x
                 style={{ display: "flex", alignItems: "center", gap: "5px" }}
               >
-                {" "}
                 <Image
                   // onClick={toggleBorrowDropdown}
                   style={{

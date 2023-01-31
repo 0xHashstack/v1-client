@@ -168,7 +168,12 @@ const SecondaryHeader = ({
     // <Container className="headerContainer">
     <div style={{ overflowX: "hidden" }}>
       <Row>
-        <Navbar style={{ backgroundColor: "#FFF", width: "100%" }}>
+        <Navbar
+          style={{
+            backgroundColor: "#FFF",
+            width: "100%",
+          }}
+        >
           <div className="d-flex">
             <div>
               <Link href="/">

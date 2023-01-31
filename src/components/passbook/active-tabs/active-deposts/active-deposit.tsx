@@ -37,6 +37,7 @@ import TxHistoryTable from "../../../dashboard/tx-history-table";
 import { useTransactionReceipt } from "@starknet-react/core";
 import MySpinner from "../../../mySpinner";
 import { TxToastManager } from "../../../../blockchain/txToastManager";
+import Deposit from "../../../deposit";
 
 const ActiveDeposit = ({
   asset,
@@ -72,6 +73,8 @@ const ActiveDeposit = ({
     transApprove,
     transDeposit,
   } = useAddDeposit(asset, diamondAddress);
+
+  const [action, setAction] = useState(false);
 
   const { withdrawDeposit, withdrawAmount, setWithdrawAmount, transWithdraw } =
     useWithdrawDeposit(asset, diamondAddress, asset.depositId);
@@ -148,15 +151,21 @@ const ActiveDeposit = ({
         style={{
           margin: "10px",
           color: "black",
-          // width: "85vw",
           textAlign: "left",
         }}
       >
-        <Row>
+        <Row
+          style={{
+            margin: "15px 1px 15px 10px",
+            alignItems: "center",
+            gap: "50px",
+          }}
+        >
           {/* <AccordionItem style={{ padding: "20px" }}> */}
           {/* <AccordionHeader targetId="1"> */}
-          <Col>ID123445</Col>
-          <Col className="mr-4 ">
+          <Col style={{ marginLeft: "-10px" }}>ID123445</Col>
+
+          <Col style={{}}>
             <div>
               <img
                 src={
@@ -165,14 +174,13 @@ const ActiveDeposit = ({
                       asset.market.toUpperCase()
                     : null
                 }
-                height="18px"
+                height="24px"
               />
-
               <div
                 className="mr-6"
                 style={{
                   display: "inline-block",
-                  fontSize: "18px",
+                  fontSize: "13px",
                 }}
                 // align="right"
               >
@@ -181,13 +189,8 @@ const ActiveDeposit = ({
               </div>
             </div>
             <CardTitle tag="h5"></CardTitle>
-
-            {/* <CardSubtitle className=" text-muted" tag="h6">
-              <span style={{ fontSize: "14px" }}>
-                &nbsp; &nbsp;&nbsp; {BNtoNum(Number(asset.amount))}
-              </span>
-            </CardSubtitle> */}
           </Col>
+
           <Col>
             <span style={{ fontSize: "14px", fontWeight: "600" }}>
               {BNtoNum(Number(asset.amount))}
@@ -215,6 +218,7 @@ const ActiveDeposit = ({
               </div>
             </div>
           </Col>
+
           <Col className="mr-4 ">
             <span style={{ fontSize: "14px", fontWeight: "600" }}>
               {asset &&
@@ -238,6 +242,7 @@ const ActiveDeposit = ({
               </span>
             </div>
           </Col>
+
           <Col className="mr-4 ">
             <div
               className="mr-6"
@@ -250,7 +255,24 @@ const ActiveDeposit = ({
             </div>
             <CardTitle tag="h5"></CardTitle>
           </Col>
-          <Col>Active deposit</Col>
+
+          <Col>Active</Col>
+
+          <Col>
+            <button
+              style={{
+                backgroundColor: "white",
+                borderRadius: "5px",
+                padding: "8px 15px",
+              }}
+              onClick={() => {
+                setAction(!action);
+              }}
+            >
+              Actions
+            </button>
+          </Col>
+
           {/* <Col className="mr-4 ">
             <div>
               <img
@@ -286,9 +308,9 @@ const ActiveDeposit = ({
               &nbsp; &nbsp;
             </CardSubtitle>
           </Col> */}
-
           {/* </AccordionHeader> */}
-          <AccordionBody accordionId="1">
+          {/* <AccordionBody accordionId="1"> */}
+          {action ? (
             <div style={{ borderWidth: 1 }}>
               <CardBody>
                 <div>
@@ -486,10 +508,12 @@ const ActiveDeposit = ({
                 </div>
               </CardBody>
             </div>
-          </AccordionBody>
+          ) : null}
+
+          {/* </AccordionBody> */}
           {/* </AccordionItem> */}
-          <Col>Hello</Col>
         </Row>
+        <hr style={{ color: "#00000080" }} />
       </UncontrolledAccordion>
     </div>
   );
