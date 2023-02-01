@@ -218,8 +218,9 @@ const LiquidationButton = ({
       {loadingMsg ? <>{loadingMsg}</> : <></>}
       {shouldApprove ? (
         <Button
-          className="text-muted"
+          // className="text-muted"
           color="light"
+          style={{color:"black"}}
           outline
           onClick={async () => {
             // reset()
@@ -280,12 +281,17 @@ const Liquidation = ({
       <div className="table-responsive">
         <Table className="table table-nowrap align-middle mb-0">
           <thead>
-            <tr>
-              <th scope="col">Loan Market</th>
+            <tr style={{color:"black"}}>
+              <th scope="col">Debt Market</th>
               <th scope="col">Commitment</th>
-              <th scope="col">Loan Amount</th>
+              <th scope="col"> Amount</th>
               <th scope="col">Collateral Market</th>
-              <th scope="col">Collateral Amount</th>
+              <th scope="col">Collateral Balance</th>
+              <th scope="col">Risk Premium</th>
+              <th scope="col">Debt Converted</th>
+              <th scope="col">Converted Market </th>
+              <th scope="col">Amount</th>
+              <th scope="col">Current Discount</th>
               {/* <th scope="col" colSpan={2}>Interest Earned</th> */}
             </tr>
           </thead>
@@ -293,7 +299,7 @@ const Liquidation = ({
             {Array.isArray(activeLiquidationsData) &&
             activeLiquidationsData.length > 0 ? (
               activeLiquidationsData.map((asset, key) => (
-                <tr key={key}>
+                <tr key={key} style={{color:"black"}}>
                   <th scope="row">
                     <div className="d-flex align-items-center">
                       <div className="avatar-xs me-3">
@@ -309,12 +315,14 @@ const Liquidation = ({
                     </div>
                   </th>
                   <td>
-                    <div className="text-muted">
+                    <div >
                       {EventMap[asset.commitment]}
+                      {console.log(EventMap[asset.commitment])
+                      }
                     </div>
                   </td>
                   <td>
-                    <div className="text-muted">
+                    <div >
                       {BNtoNum(Number(asset.loanAmount))}
                     </div>
                   </td>
@@ -335,8 +343,55 @@ const Liquidation = ({
                     </div>
                   </th>
                   <td>
-                    <div className="text-muted">
+                    <div >
                       {BNtoNum(Number(asset.collateralAmount))}
+                    </div>
+                  </td>
+                  <td>
+                    <div style={{textAlign: "center"}} >
+                      {/* {EventMap[asset.commitment]}
+                      {console.log(EventMap[asset.commitment])
+                      } Risk Premium value */}
+                      N/A
+                    </div>
+                  </td>
+                  <td>
+                    <div style={{textAlign: "center"}} >
+                      {/* {EventMap[asset.commitment]}
+                      {console.log(EventMap[asset.commitment])
+                      } Debt Converted*/}
+                      YES
+                    </div>
+                  </td>
+                  <td>
+                    <div style={{textAlign: "center"}} >
+                      {/* {EventMap[asset.commitment]}
+                      {console.log(EventMap[asset.commitment])
+                      } Converted Market*/}
+                       <img
+                          src={
+                            CoinClassNames[
+                              EventMap[asset.collateralMarket.toUpperCase()]
+                            ] || asset.collateralMarket.toUpperCase()
+                          }
+                        />
+                        BTC
+                    </div>
+                  </td>
+                  <td>
+                    <div style={{textAlign: "center"}}>
+                      {/* {EventMap[asset.commitment]}
+                      {console.log(EventMap[asset.commitment])
+                      } Amount*/}
+                      10065.1515
+                    </div>
+                  </td>
+                  <td>
+                    <div style={{textAlign: "center"}} >
+                      {/* {EventMap[asset.commitment]}
+                      {console.log(EventMap[asset.commitment])
+                      } Amount*/}
+                      10%
                     </div>
                   </td>
                   <td>
@@ -358,6 +413,7 @@ const Liquidation = ({
           <Button
             className="d-flex align-items-center"
             color="light"
+            style={{color:"black",margin:"2px 0px"}}
             outline
             onClick={() => {
               // increaseLiquidationIndex;

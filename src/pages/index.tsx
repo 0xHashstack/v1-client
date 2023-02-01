@@ -50,6 +50,7 @@ import { assert } from "console";
 import Script from "next/script";
 import StatsBoard from "../components/dashboard/stats";
 import connectWalletArrowDown from "../assets/images/connectWalletArrowDown.svg";
+import SpendLoan from "../components/passbook/active-tabs/Spend-loans/SpendLoan";
 // import YourSupplyBody from "../components/dashboard/supply";
 
 interface IDeposit {
@@ -661,7 +662,10 @@ const Dashboard = () => {
                     <div>
                       <Col lg={12}>
                         {customActiveTab === "2" ? (
-                          <div style={{ color: "black" }}>Rahul</div>
+                          <div style={{ color: "black" }}><Liquidation
+                          activeLiquidationsData={activeLiquidationsData}
+                          isTransactionDone={isTransactionDone}
+                        /></div>
                         ) : null}
                         {/* {getPassbookTable(passbookStatus)} */}
                       </Col>
