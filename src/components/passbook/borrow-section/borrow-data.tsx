@@ -191,7 +191,11 @@ const BorrowData = ({
   } = useAddDeposit(asset, diamondAddress);
 
   const [tokenName, setTokenName] = useState("BTC");
-  // const [loanId, setLoanId] = useState("");
+  const [title, setTitle] = useState({
+    amount: "Borrowd",
+    label: "Starknet",
+  });
+  const [isSelfLiquidate, setIsSelfLiquidate] = useState(false);
   const [customActiveTab, setCustomActiveTab] = useState("1");
   const [modal_deposit, setmodal_deposit] = useState(false);
   const [dropDown, setDropDown] = useState(false);
@@ -199,6 +203,8 @@ const BorrowData = ({
 
   const [borrowInterest, setBorrowInterest] = useState<string>("");
   const [currentBorrowInterest, setCurrentBorrowInterest] = useState<string>();
+
+  const [selection, setSelection] = useState("Withdraw Partial Borrow");
 
   const [value, setValue] = useState(0);
   const [commitPeriod, setCommitPeriod] = useState(0);
@@ -343,6 +349,27 @@ const BorrowData = ({
         closeOnClick: true,
       });
       return;
+    }
+  };
+
+  const selectionAction = (value: string) => {
+    setSelection(value);
+    setDropDown(false);
+    setDropDownArrow(arrowDown);
+
+    if (value === "Self Liquidate") {
+      setTitle({
+        amount: "Repayment",
+        label: "Stake",
+      });
+      setIsSelfLiquidate(true);
+    }
+    if (value === "Withdraw Partial Borrow") {
+      setTitle({
+        amount: "Borrowed",
+        label: "Starknet",
+      });
+      setIsSelfLiquidate(false);
     }
   };
 
@@ -1024,7 +1051,7 @@ const BorrowData = ({
                 <label
                   style={{
                     width: "420px",
-                    margin: "10px auto",
+                    margin: "5px auto",
                     marginBottom: "20px",
                     padding: "5px 10px",
                     fontSize: "18px",
@@ -1039,9 +1066,10 @@ const BorrowData = ({
                       justifyContent: "space-between",
                       alignItems: "center",
                       fontSize: "14px",
+                      fontWeight: "400",
                     }}
                   >
-                    <div>&nbsp;&nbsp;Withdraw Partial Borrow</div>
+                    <div>&nbsp;&nbsp;{selection}</div>
                     <div
                       style={{
                         marginRight: "20px",
@@ -1061,11 +1089,12 @@ const BorrowData = ({
                   </div>
                 </label>
 
+                <br />
+
                 <label
                   style={{
                     width: "420px",
-                    margin: "10px auto",
-                    marginBottom: "20px",
+                    marginBottom: "25px",
                     padding: "5px 10px",
                     fontSize: "18px",
                     borderRadius: "5px",
@@ -1108,79 +1137,83 @@ const BorrowData = ({
                   </div>
                 </label>
 
-                {dropDown ? (
-                  <>
-                    <div
-                      style={{
-                        borderRadius: "5px",
-                        position: "absolute",
-                        zIndex: "100",
-                        top: "125px",
-                        left: "39px",
+                {isSelfLiquidate ? (
+                  <FormGroup>
+                    <div className="row mb-4" style={{ width: "445px" }}>
+                      <Col sm={12}>
+                        {/* <Label for="amount">Amount</Label> */}
 
-                        width: "420px",
-                        margin: "0px auto",
-                        marginBottom: "20px",
-                        padding: "5px 10px",
-                        backgroundColor: "#F8F8F8",
-                        boxShadow: "0px 0px 10px #00000020",
-                      }}
-                    >
-                      {coins.map((coin, index) => {
-                        if (coin.name === tokenName) return <></>;
-                        return (
-                          <div
+                        <div
+                          style={{
+                            display: "flex",
+                            fontSize: "10px",
+                          }}
+                        >
+                          Repayed Amount
+                        </div>
+                        <InputGroup>
+                          <Input
                             style={{
-                              margin: "10px 0",
-                              cursor: "pointer",
-                              display: "flex",
-                              alignItems: "center",
-                              fontSize: "16px",
+                              backgroundColor: "white",
+                              padding: "10px ",
                             }}
-                            onClick={() => {
-                              setTokenName(`${coin.name}`);
-                              setDropDown(false);
-                              setDropDownArrow(arrowDown);
-                              handleBalanceChange();
-                            }}
-                          >
-                            <img
-                              src={`./${coin.name}.svg`}
-                              width="30px"
-                              height="30px"
-                            ></img>
-                            <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                            type="number"
+                            className="form-control"
+                            id="amount"
+                            min={MinimumAmount[tokenName]}
+                            placeholder={`Minimum ${MinimumAmount[tokenName]} ${tokenName}`}
+                            onChange={handleDepositAmountChange}
+                            value={depositAmount}
+                            valid={!isInvalid()}
+                          />
+                        </InputGroup>
+                        <div
+                          style={{
+                            display: "flex",
+                            fontSize: "10px",
+                            justifyContent: "end",
+                            margin: "4px 0 10px 0",
+                          }}
+                        >
+                          Wallet Balance:&nbsp;
+                          {dataBalance ? (
+                            (
+                              Number(uint256.uint256ToBN(dataBalance[0])) /
+                              10 ** 18
+                            ).toString()
+                          ) : (
+                            <MySpinner />
+                          )}
+                          <div style={{ color: "#76809D" }}>
+                            &nbsp;{tokenName}{" "}
                           </div>
-                        );
-                      })}
-                    </div>
-                  </>
-                ) : (
-                  <></>
-                )}
-              </div>
-              <FormGroup>
-                <div className="row mb-4">
-                  <Col sm={12}>
-                    {/* <Label for="amount">Amount</Label> */}
-                    <InputGroup>
-                      <Input
-                        style={{
-                          backgroundColor: "white",
-                          padding: "10px ",
-                          borderRight: "1px solid #FFF",
-                        }}
-                        type="number"
-                        className="form-control"
-                        id="amount"
-                        min={MinimumAmount[tokenName]}
-                        placeholder={`Minimum ${MinimumAmount[tokenName]} ${tokenName}`}
-                        onChange={handleDepositAmountChange}
-                        value={depositAmount}
-                        valid={!isInvalid()}
-                      />
+                        </div>
 
-                      {
+                        <div
+                          style={{
+                            display: "flex",
+                            fontSize: "10px",
+                          }}
+                        >
+                          Borrow Spent(?)
+                        </div>
+                        <InputGroup>
+                          <Input
+                            style={{
+                              backgroundColor: "white",
+                              padding: "10px ",
+                            }}
+                            type="number"
+                            className="form-control"
+                            id="amount"
+                            min={MinimumAmount[tokenName]}
+                            placeholder={`No`}
+                            // onChange={handleDepositAmountChange}
+                            // value={depositAmount}
+                            // valid={!isInvalid()}
+                          />
+
+                          {/* {
                         <>
                           <Button
                             outline
@@ -1200,77 +1233,391 @@ const BorrowData = ({
                             </span>
                           </Button>
                         </>
-                      }
-                    </InputGroup>
+                      } */}
+                        </InputGroup>
 
+                        {!isSelfLiquidate ? (
+                          <>
+                            <div
+                              style={{ marginLeft: "-10px", marginTop: "15px" }}
+                            >
+                              <Slider
+                                handlerActiveColor="black"
+                                stepSize={10}
+                                value={value}
+                                trackColor="#ADB5BD"
+                                handlerShape="rounded"
+                                handlerColor="black"
+                                fillColor="black"
+                                trackLength={420}
+                                grabCursor={false}
+                                showMarkers="hidden"
+                                onChange={(value: any) => {
+                                  setDepositAmount(
+                                    (value *
+                                      (Number(
+                                        uint256.uint256ToBN(dataBalance[0])
+                                      ) /
+                                        10 ** 18)) /
+                                      100
+                                  );
+                                  setValue(value);
+                                }}
+                                valueRenderer={(value: any) => `${value}%`}
+                                showValue={false}
+                              />
+                            </div>
+                            <div
+                              style={{
+                                fontSize: "10px",
+                                position: "absolute",
+                                right: "12px",
+                                top: "180px",
+                              }}
+                            >
+                              {value}%
+                            </div>
+                          </>
+                        ) : null}
+
+                        {depositAmount != 0 &&
+                          depositAmount >
+                            Number(
+                              uint256.uint256ToBN(
+                                dataBalance ? dataBalance[0] : 0
+                              )
+                            ) /
+                              10 ** 18 && (
+                            <FormText style={{ color: "#e97272 !important" }}>
+                              {`Amount is greater than your balance`}
+                            </FormText>
+                          )}
+                      </Col>
+                    </div>
+                  </FormGroup>
+                ) : (
+                  <></>
+                )}
+
+                <div
+                  style={{
+                    display: "flex",
+                    justifyItems: "center",
+                    gap: "20px",
+                  }}
+                >
+                  <label
+                    style={{
+                      width: "100px",
+                      marginBottom: "20px",
+                      padding: "10px 10px",
+                      fontSize: "15px",
+                      borderRadius: "5px",
+                      border: "2px solid #00000050",
+                      fontWeight: "200",
+                    }}
+                  >
+                    <div style={{ textAlign: "center" }}>{title.label}</div>
+                  </label>
+
+                  <label
+                    style={{
+                      width: "300px",
+                      marginBottom: "20px",
+                      padding: "5px 10px",
+                      fontSize: "18px",
+                      borderRadius: "5px",
+                      border: "2px solid #00000050",
+                      fontWeight: "200",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                      }}
+                    >
+                      <div>
+                        &nbsp;&nbsp;
+                        <img
+                          src={`./yagilogo.svg`}
+                          width="60px"
+                          height="30px"
+                        ></img>
+                      </div>
+                      <div
+                        style={{
+                          marginRight: "20px",
+                          marginTop: "3px",
+                          marginBottom: "0",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <Image
+                          onClick={toggleDropdown}
+                          src={dropDownArrow}
+                          alt="Picture of the author"
+                          width="20px"
+                          height="20px"
+                        />
+                      </div>
+                    </div>
+                  </label>
+                </div>
+
+                {isSelfLiquidate ? (
+                  <>
                     <div
                       style={{
                         display: "flex",
                         fontSize: "10px",
-                        justifyContent: "end",
-                        marginTop: "4px",
+                        marginBottom: "5px",
                       }}
                     >
-                      Available:&nbsp;
-                      {dataBalance ? (
-                        (
-                          Number(uint256.uint256ToBN(dataBalance[0])) /
-                          10 ** 18
-                        ).toString()
-                      ) : (
-                        <MySpinner />
-                      )}
-                      <div style={{ color: "#76809D" }}>&nbsp;{tokenName} </div>
-                    </div>
-
-                    <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
-                      <Slider
-                        handlerActiveColor="black"
-                        stepSize={10}
-                        value={value}
-                        trackColor="#ADB5BD"
-                        handlerShape="rounded"
-                        handlerColor="black"
-                        fillColor="black"
-                        trackLength={420}
-                        grabCursor={false}
-                        showMarkers="hidden"
-                        onChange={(value: any) => {
-                          setDepositAmount(
-                            (value *
-                              (Number(uint256.uint256ToBN(dataBalance[0])) /
-                                10 ** 18)) /
-                              100
-                          );
-                          setValue(value);
-                        }}
-                        valueRenderer={(value: any) => `${value}%`}
-                        showValue={false}
-                      />
+                      Spent Market
                     </div>
                     <div
                       style={{
-                        fontSize: "10px",
-                        position: "absolute",
-                        right: "12px",
-                        top: "90px",
+                        width: "420px",
+                        marginBottom: "30px",
+                        border: "1px solid #000",
+                        borderRadius: "5px",
                       }}
                     >
-                      {value}%
+                      <div style={{ padding: "5px 10px", fontSize: "20px" }}>
+                        <img src={"./xrpLogo.svg"} height="19px" /> XRP
+                      </div>
+                      {/* <InputGroup>
+                      <Input
+                        style={{
+                          backgroundColor: "white",
+                          padding: "10px ",
+                        }}
+                        type="number"
+                        className="form-control"
+                        id="amount"
+                        min={MinimumAmount[tokenName]}
+                        placeholder={`XRP`}
+                      />
+                    </InputGroup> */}
                     </div>
-                    {depositAmount != 0 &&
-                      depositAmount >
-                        Number(
-                          uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)
-                        ) /
-                          10 ** 18 && (
-                        <FormText style={{ color: "#e97272 !important" }}>
-                          {`Amount is greater than your balance`}
-                        </FormText>
-                      )}
-                  </Col>
-                </div>
-              </FormGroup>
+                  </>
+                ) : null}
+
+                {dropDown ? (
+                  <>
+                    <div
+                      style={{
+                        borderRadius: "5px",
+                        position: "absolute",
+                        zIndex: "100",
+                        top: "175px",
+                        left: "40px",
+
+                        width: "420px",
+                        margin: "0px auto",
+                        marginBottom: "20px",
+                        padding: "5px 10px",
+                        backgroundColor: "#F8F8F8",
+                        boxShadow: "0px 0px 10px #00000020",
+                      }}
+                    >
+                      <div
+                        style={{
+                          margin: "10px 0",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          fontSize: "16px",
+                        }}
+                        // onClick={() => {
+                        //   setTokenName(`${coin.name}`);
+                        //   setDropDown(false);
+                        //   setDropDownArrow(arrowDown);
+                        //   handleBalanceChange();
+                        // }}
+                      >
+                        {selection === "Withdraw Partial Borrow" ? (
+                          <div
+                            onClick={() => {
+                              selectionAction("Self Liquidate");
+                            }}
+                          >
+                            &nbsp;Self Liquidate
+                          </div>
+                        ) : (
+                          <div
+                            onClick={() => {
+                              selectionAction("Withdraw Partial Borrow");
+                            }}
+                          >
+                            &nbsp;Withdraw Partial Borrow
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
+              </div>
+
+              {!isSelfLiquidate ? (
+                <FormGroup>
+                  <div className="row mb-4">
+                    <Col sm={12}>
+                      {/* <Label for="amount">Amount</Label> */}
+
+                      <div
+                        style={{
+                          display: "flex",
+                          fontSize: "10px",
+                        }}
+                      >
+                        Borrowed Amount
+                      </div>
+                      <InputGroup>
+                        <Input
+                          style={{
+                            backgroundColor: "white",
+                            padding: "10px ",
+                          }}
+                          type="number"
+                          className="form-control"
+                          id="amount"
+                          min={MinimumAmount[tokenName]}
+                          placeholder={`Minimum ${MinimumAmount[tokenName]} ${tokenName}`}
+                          onChange={handleDepositAmountChange}
+                          value={depositAmount}
+                          valid={!isInvalid()}
+                        />
+
+                        {/* {
+                        <>
+                          <Button
+                            outline
+                            type="button"
+                            className="btn btn-md w-xs"
+                            // onClick={handleMax}
+                            // disabled={balance ? false : true}
+                            style={{
+                              background: "white",
+                              color: "black",
+                              border: "1px solid black",
+                              borderLeft: "none",
+                            }}
+                          >
+                            <span style={{ borderBottom: "2px dotted #fff" }}>
+                              MAX
+                            </span>
+                          </Button>
+                        </>
+                      } */}
+                      </InputGroup>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          fontSize: "10px",
+                          marginTop: "15px",
+                        }}
+                      >
+                        Borrowed Amount
+                      </div>
+                      <InputGroup>
+                        <Input
+                          style={{
+                            backgroundColor: "white",
+                            padding: "10px ",
+                          }}
+                          type="number"
+                          className="form-control"
+                          id="amount"
+                          min={MinimumAmount[tokenName]}
+                          placeholder={`Minimum ${MinimumAmount[tokenName]} ${tokenName}`}
+                          onChange={handleDepositAmountChange}
+                          value={depositAmount}
+                          valid={!isInvalid()}
+                        />
+                      </InputGroup>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          fontSize: "10px",
+                          justifyContent: "end",
+                          marginTop: "4px",
+                        }}
+                      >
+                        Wallet Balance:&nbsp;
+                        {dataBalance ? (
+                          (
+                            Number(uint256.uint256ToBN(dataBalance[0])) /
+                            10 ** 18
+                          ).toString()
+                        ) : (
+                          <MySpinner />
+                        )}
+                        <div style={{ color: "#76809D" }}>
+                          &nbsp;{tokenName}{" "}
+                        </div>
+                      </div>
+
+                      <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
+                        <Slider
+                          handlerActiveColor="black"
+                          stepSize={10}
+                          value={value}
+                          trackColor="#ADB5BD"
+                          handlerShape="rounded"
+                          handlerColor="black"
+                          fillColor="black"
+                          trackLength={420}
+                          grabCursor={false}
+                          showMarkers="hidden"
+                          onChange={(value: any) => {
+                            setDepositAmount(
+                              (value *
+                                (Number(uint256.uint256ToBN(dataBalance[0])) /
+                                  10 ** 18)) /
+                                100
+                            );
+                            setValue(value);
+                          }}
+                          valueRenderer={(value: any) => `${value}%`}
+                          showValue={false}
+                        />
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "10px",
+                          position: "absolute",
+                          right: "12px",
+                          top: "180px",
+                        }}
+                      >
+                        {value}%
+                      </div>
+
+                      {depositAmount != 0 &&
+                        depositAmount >
+                          Number(
+                            uint256.uint256ToBN(
+                              dataBalance ? dataBalance[0] : 0
+                            )
+                          ) /
+                            10 ** 18 && (
+                          <FormText style={{ color: "#e97272 !important" }}>
+                            {`Amount is greater than your balance`}
+                          </FormText>
+                        )}
+                    </Col>
+                  </div>
+                </FormGroup>
+              ) : (
+                <></>
+              )}
 
               <div className="d-grid gap-2">
                 <div
@@ -1299,9 +1646,9 @@ const BorrowData = ({
                       margin: "3px 0",
                     }}
                   >
-                    <div style={{ color: "#6F6F6F" }}>Supply APR:</div>
+                    <div style={{ color: "#6F6F6F" }}>Debt Category:</div>
                     <div style={{ textAlign: "right", fontWeight: "600" }}>
-                      7.75 %
+                      DC1/DC2/DC3
                     </div>
                   </div>
                   <div
@@ -1312,10 +1659,10 @@ const BorrowData = ({
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>
-                      Asset Utilization Rate:
+                      Estimated collateral return:
                     </div>
                     <div style={{ textAlign: "right", fontWeight: "600" }}>
-                      0.43
+                      <img src={`./BTC.svg`} width="8px" /> 1
                     </div>
                   </div>
                   <div
@@ -1348,7 +1695,7 @@ const BorrowData = ({
                     loadingApprove ||
                     isTransactionLoading(requestDepositTransactionReceipt)
                   ) ? (
-                    "Supply"
+                    "Repay Borrow"
                   ) : (
                     <MySpinner text="Depositing token" />
                   )}
