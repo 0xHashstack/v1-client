@@ -175,9 +175,23 @@ const BorrowData = ({
     loadingDeposit,
     transApprove,
     transDeposit,
+  }: {
+    DepositAmount: any;
+    handleApprove: any;
+    setDepositAmount: any;
+    setDepositCommit: any;
+    setDepositMarket: any;
+    allowanceVal: any;
+    depositAmount: any;
+    depositCommit: any;
+    loadingApprove: any;
+    loadingDeposit: any;
+    transApprove: any;
+    transDeposit: any;
   } = useAddDeposit(asset, diamondAddress);
 
   const [tokenName, setTokenName] = useState("BTC");
+  // const [loanId, setLoanId] = useState("");
   const [customActiveTab, setCustomActiveTab] = useState("1");
   const [modal_deposit, setmodal_deposit] = useState(false);
   const [dropDown, setDropDown] = useState(false);
@@ -362,7 +376,7 @@ const BorrowData = ({
           {/* <AccordionItem style={{ padding: "20px" }}> */}
           {/* <AccordionHeader targetId="1"> */}
 
-          <Col style={{ marginLeft: "-10px" }}>XXXXX1234</Col>
+          <Col style={{ marginLeft: "-10px" }}>ID{asset.loanId}</Col>
 
           <Col style={{}}>
             <div>
@@ -1002,6 +1016,50 @@ const BorrowData = ({
                     </NavItem>
                   </Nav>
                 </Col>
+
+                <div style={{ fontSize: "12px", paddingTop: "10px" }}>
+                  Loan ID = {asset.loanId}
+                </div>
+
+                <label
+                  style={{
+                    width: "420px",
+                    margin: "10px auto",
+                    marginBottom: "20px",
+                    padding: "5px 10px",
+                    fontSize: "18px",
+                    borderRadius: "5px",
+                    border: "2px solid #00000050",
+                    fontWeight: "200",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      alignItems: "center",
+                      fontSize: "14px",
+                    }}
+                  >
+                    <div>&nbsp;&nbsp;Withdraw Partial Borrow</div>
+                    <div
+                      style={{
+                        marginRight: "20px",
+                        marginTop: "3px",
+                        marginBottom: "0",
+                        cursor: "pointer",
+                      }}
+                    >
+                      <Image
+                        onClick={toggleDropdown}
+                        src={dropDownArrow}
+                        alt="Picture of the author"
+                        width="20px"
+                        height="20px"
+                      />
+                    </div>
+                  </div>
+                </label>
 
                 <label
                   style={{

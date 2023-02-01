@@ -583,7 +583,9 @@ const Dashboard = () => {
                 />
               </div>
 
-              {customActiveTab === "3" || customActiveTab === "4" ? (
+              {customActiveTab === "3" ||
+              customActiveTab === "4" ||
+              customActiveTab === "2" ? (
                 <>
                   <div
                     style={{
@@ -654,6 +656,18 @@ const Dashboard = () => {
                   </Row>
 
                   {/* ----------------- PASSBOOK BODY -------------------- */}
+
+                  <Row>
+                    <div>
+                      <Col lg={12}>
+                        {customActiveTab === "2" ? (
+                          <div style={{ color: "black" }}>Rahul</div>
+                        ) : null}
+                        {/* {getPassbookTable(passbookStatus)} */}
+                      </Col>
+                    </div>
+                  </Row>
+
                   <Row>
                     <div>
                       <Col lg={12}>
