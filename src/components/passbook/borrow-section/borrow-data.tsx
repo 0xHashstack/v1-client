@@ -195,6 +195,7 @@ const BorrowData = ({
     amount: "Borrowd",
     label: "Starknet",
   });
+  const [isCollateralActions, setIsCollateralActions] = useState(false);
   const [isSelfLiquidate, setIsSelfLiquidate] = useState(false);
   const [customActiveTab, setCustomActiveTab] = useState("1");
   const [modal_deposit, setmodal_deposit] = useState(false);
@@ -205,6 +206,7 @@ const BorrowData = ({
   const [currentBorrowInterest, setCurrentBorrowInterest] = useState<string>();
 
   const [selection, setSelection] = useState("Withdraw Partial Borrow");
+  const [selectionTwo, setSelectionTwo] = useState("Add Collateral");
 
   const [value, setValue] = useState(0);
   const [commitPeriod, setCommitPeriod] = useState(0);
@@ -365,6 +367,20 @@ const BorrowData = ({
       setIsSelfLiquidate(true);
     }
     if (value === "Withdraw Partial Borrow") {
+      setTitle({
+        amount: "Borrowed",
+        label: "Starknet",
+      });
+      setIsSelfLiquidate(false);
+    }
+    if (value === "Add Collateral") {
+      setTitle({
+        amount: "Borrowed",
+        label: "Starknet",
+      });
+      setIsSelfLiquidate(false);
+    }
+    if (value === "Withdraw Collateral") {
       setTitle({
         amount: "Borrowed",
         label: "Starknet",
@@ -1014,6 +1030,8 @@ const BorrowData = ({
                         })}
                         onClick={() => {
                           setCustomActiveTab("1");
+                          setIsCollateralActions(false);
+                          setSelection("Withdrae Partial Borrow");
                         }}
                       >
                         <span className="d-none d-sm-block">
@@ -1034,6 +1052,8 @@ const BorrowData = ({
                         })}
                         onClick={() => {
                           setCustomActiveTab("2");
+                          setIsCollateralActions(true);
+                          setSelection("Add Collateral");
                         }}
                       >
                         <span className="d-none d-sm-block">
@@ -1048,94 +1068,139 @@ const BorrowData = ({
                   Loan ID = {asset.loanId}
                 </div>
 
-                <label
-                  style={{
-                    width: "420px",
-                    margin: "5px auto",
-                    marginBottom: "20px",
-                    padding: "5px 10px",
-                    fontSize: "18px",
-                    borderRadius: "5px",
-                    border: "2px solid #00000050",
-                    fontWeight: "200",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      fontSize: "14px",
-                      fontWeight: "400",
-                    }}
-                  >
-                    <div>&nbsp;&nbsp;{selection}</div>
-                    <div
+                {!isCollateralActions ? (
+                  <>
+                    <label
                       style={{
-                        marginRight: "20px",
-                        marginTop: "3px",
-                        marginBottom: "0",
-                        cursor: "pointer",
+                        width: "420px",
+                        margin: "5px auto",
+                        marginBottom: "20px",
+                        padding: "5px 10px",
+                        fontSize: "18px",
+                        borderRadius: "5px",
+                        border: "2px solid #00000050",
+                        fontWeight: "200",
                       }}
                     >
-                      <Image
-                        onClick={toggleDropdown}
-                        src={dropDownArrow}
-                        alt="Picture of the author"
-                        width="20px"
-                        height="20px"
-                      />
-                    </div>
-                  </div>
-                </label>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          fontSize: "14px",
+                          fontWeight: "400",
+                        }}
+                      >
+                        <div>&nbsp;&nbsp;{selection}</div>
+                        <div
+                          style={{
+                            marginRight: "20px",
+                            marginTop: "3px",
+                            marginBottom: "0",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <Image
+                            onClick={toggleDropdown}
+                            src={dropDownArrow}
+                            alt="Picture of the author"
+                            width="20px"
+                            height="20px"
+                          />
+                        </div>
+                      </div>
+                    </label>
 
-                <br />
+                    <br />
 
-                <label
-                  style={{
-                    width: "420px",
-                    marginBottom: "25px",
-                    padding: "5px 10px",
-                    fontSize: "18px",
-                    borderRadius: "5px",
-                    border: "2px solid #00000050",
-                    fontWeight: "200",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div>
-                      {" "}
-                      <img
-                        src={`./${tokenName}.svg`}
-                        width="30px"
-                        height="30px"
-                      ></img>
-                      &nbsp;&nbsp;{tokenName}
-                    </div>
-                    <div
+                    <label
                       style={{
-                        marginRight: "20px",
-                        marginTop: "3px",
-                        marginBottom: "0",
-                        cursor: "pointer",
+                        width: "420px",
+                        marginBottom: "25px",
+                        padding: "5px 10px",
+                        fontSize: "18px",
+                        borderRadius: "5px",
+                        border: "2px solid #00000050",
+                        fontWeight: "200",
                       }}
                     >
-                      <Image
-                        onClick={toggleDropdown}
-                        src={dropDownArrow}
-                        alt="Picture of the author"
-                        width="20px"
-                        height="20px"
-                      />
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div>
+                          {" "}
+                          <img
+                            src={`./${tokenName}.svg`}
+                            width="30px"
+                            height="30px"
+                          ></img>
+                          &nbsp;&nbsp;{tokenName}
+                        </div>
+                        <div
+                          style={{
+                            marginRight: "20px",
+                            marginTop: "3px",
+                            marginBottom: "0",
+                            cursor: "pointer",
+                          }}
+                        >
+                          {/* <Image
+        onClick={toggleDropdown}
+        src={dropDownArrow}
+        alt="Picture of the author"
+        width="20px"
+        height="20px"
+      /> */}
+                        </div>
+                      </div>
+                    </label>
+                  </>
+                ) : (
+                  <label
+                    style={{
+                      width: "420px",
+                      margin: "5px auto",
+                      marginBottom: "20px",
+                      padding: "5px 10px",
+                      fontSize: "18px",
+                      borderRadius: "5px",
+                      border: "2px solid #00000050",
+                      fontWeight: "200",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        fontSize: "14px",
+                        fontWeight: "400",
+                      }}
+                    >
+                      <div>&nbsp;&nbsp;{selection}</div>
+                      <div
+                        style={{
+                          marginRight: "20px",
+                          marginTop: "3px",
+                          marginBottom: "0",
+                          cursor: "pointer",
+                        }}
+                      >
+                        <Image
+                          onClick={toggleDropdown}
+                          src={dropDownArrow}
+                          alt="Picture of the author"
+                          width="20px"
+                          height="20px"
+                        />
+                      </div>
                     </div>
-                  </div>
-                </label>
+                  </label>
+                )}
 
                 {isSelfLiquidate ? (
                   <FormGroup>
@@ -1355,7 +1420,7 @@ const BorrowData = ({
                         }}
                       >
                         <Image
-                          onClick={toggleDropdown}
+                          // onClick={toggleDropdown}
                           src={dropDownArrow}
                           alt="Picture of the author"
                           width="20px"
@@ -1438,21 +1503,39 @@ const BorrowData = ({
                         //   handleBalanceChange();
                         // }}
                       >
-                        {selection === "Withdraw Partial Borrow" ? (
+                        {!isCollateralActions ? (
+                          selection === "Withdraw Partial Borrow" ? (
+                            <div
+                              onClick={() => {
+                                selectionAction("Self Liquidate");
+                              }}
+                            >
+                              &nbsp;Self Liquidate
+                            </div>
+                          ) : (
+                            <div
+                              onClick={() => {
+                                selectionAction("Withdraw Partial Borrow");
+                              }}
+                            >
+                              &nbsp;Withdraw Partial Borrow
+                            </div>
+                          )
+                        ) : selection === "Add Collateral" ? (
                           <div
                             onClick={() => {
-                              selectionAction("Self Liquidate");
+                              selectionAction("Withdraw Collateral");
                             }}
                           >
-                            &nbsp;Self Liquidate
+                            &nbsp;Withdraw Collateral
                           </div>
                         ) : (
                           <div
                             onClick={() => {
-                              selectionAction("Withdraw Partial Borrow");
+                              selectionAction("Add Collateral");
                             }}
                           >
-                            &nbsp;Withdraw Partial Borrow
+                            &nbsp;Add Collateral
                           </div>
                         )}
                       </div>
@@ -1467,8 +1550,6 @@ const BorrowData = ({
                 <FormGroup>
                   <div className="row mb-4">
                     <Col sm={12}>
-                      {/* <Label for="amount">Amount</Label> */}
-
                       <div
                         style={{
                           display: "flex",
@@ -1482,6 +1563,7 @@ const BorrowData = ({
                           style={{
                             backgroundColor: "white",
                             padding: "10px ",
+                            marginTop: "5px",
                           }}
                           type="number"
                           className="form-control"
@@ -1516,6 +1598,38 @@ const BorrowData = ({
                       } */}
                       </InputGroup>
 
+                      {selection === "Withdraw Collateral" ? (
+                        <>
+                          {" "}
+                          <div
+                            style={{
+                              display: "flex",
+                              fontSize: "10px",
+                              marginTop: "15px",
+                            }}
+                          >
+                            Borrow Status
+                          </div>
+                          <InputGroup>
+                            <Input
+                              style={{
+                                backgroundColor: "white",
+                                padding: "10px ",
+                                marginTop: "5px",
+                              }}
+                              type="number"
+                              className="form-control"
+                              id="amount"
+                              min={MinimumAmount[tokenName]}
+                              placeholder={`Repaid`}
+                              // onChange={handleDepositAmountChange}
+                              // value={depositAmount}
+                              // valid={!isInvalid()}
+                            />
+                          </InputGroup>
+                        </>
+                      ) : null}
+
                       <div
                         style={{
                           display: "flex",
@@ -1523,13 +1637,14 @@ const BorrowData = ({
                           marginTop: "15px",
                         }}
                       >
-                        Borrowed Amount
+                        Collateral Amount
                       </div>
                       <InputGroup>
                         <Input
                           style={{
                             backgroundColor: "white",
                             padding: "10px ",
+                            marginTop: "5px",
                           }}
                           type="number"
                           className="form-control"
@@ -1594,7 +1709,7 @@ const BorrowData = ({
                           fontSize: "10px",
                           position: "absolute",
                           right: "12px",
-                          top: "180px",
+                          top: "190px",
                         }}
                       >
                         {value}%
@@ -1695,7 +1810,7 @@ const BorrowData = ({
                     loadingApprove ||
                     isTransactionLoading(requestDepositTransactionReceipt)
                   ) ? (
-                    "Repay Borrow"
+                    <>{selection}</>
                   ) : (
                     <MySpinner text="Depositing token" />
                   )}
