@@ -94,6 +94,7 @@ const ActiveDepositsTab = ({
 
   const [historicalAPRs, setHistoricalAPRs] = useState();
   const [tokenName, setTokenName] = useState("BTC");
+  const [customActiveTab, setCustomActiveTab] = useState("1");
   const [modal_deposit, setmodal_deposit] = useState(false);
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
@@ -370,7 +371,7 @@ const ActiveDepositsTab = ({
                   setmodal_deposit(true);
                 }}
               >
-                Purchase or Supply assets.
+                <u>Purchase or Supply assets.</u>
               </div>
             </div>
 
@@ -390,7 +391,7 @@ const ActiveDepositsTab = ({
                   padding: "40px",
                 }}
               >
-                {account ? (
+                {!account ? (
                   <Form>
                     <div>
                       <Col sm={8}>
@@ -407,9 +408,12 @@ const ActiveDepositsTab = ({
                                 border: "1px solid #000",
                                 borderRadius: "5px",
                               }}
-                              // className={classnames({
-                              //   // active: customActiveTab === "1",
-                              // })}
+                              className={classnames({
+                                active: customActiveTab === "1",
+                              })}
+                              onClick={() => {
+                                setCustomActiveTab("1");
+                              }}
                             >
                               <span className="d-none d-sm-block">
                                 Add Supply
@@ -423,6 +427,12 @@ const ActiveDepositsTab = ({
                                 color: "black",
                                 border: "1px solid #000",
                                 borderRadius: "5px",
+                              }}
+                              className={classnames({
+                                active: customActiveTab === "2",
+                              })}
+                              onClick={() => {
+                                setCustomActiveTab("2");
                               }}
                             >
                               <span className="d-none d-sm-block">
@@ -539,6 +549,7 @@ const ActiveDepositsTab = ({
                             <Input
                               style={{
                                 backgroundColor: "white",
+                                padding: "10px ",
                                 borderRight: "1px solid #FFF",
                               }}
                               type="number"

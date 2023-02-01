@@ -73,6 +73,7 @@ const DashboardTokens = ({
       <td style={{ padding: "31px", textAlign: "center" }}>
         <div>
           {/* {deposit ? deposit[0].apr.toNumber() / 100 : "NaN"}% */}
+
           {depositLoanRates && parseInt(depositCommitment) < 4 ? (
             `${
               parseFloat(

@@ -46,6 +46,7 @@ import { ceil, round } from "../services/utils.service";
 
 import arrowDown from "../assets/images/arrowDown.svg";
 import arrowUp from "../assets/images/arrowUp.svg";
+import { ICoin } from "./dashboard/dashboard-body";
 
 interface IBorrowParams {
   loanAmount: number;
