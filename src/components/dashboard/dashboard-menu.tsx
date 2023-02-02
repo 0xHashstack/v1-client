@@ -97,7 +97,7 @@ const DashboardMenu = ({
                   toggleCustom("2");
                 }}
               >
-                <span className="d-none d-sm-block">Spend Loan</span>
+                <span className="d-none d-sm-block">Spend Borrow</span>
               </NavLink>
             </NavItem>
             <NavItem>

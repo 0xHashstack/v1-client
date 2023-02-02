@@ -12,6 +12,9 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  NavLink,
+  NavItem,
+  Nav,
 } from "reactstrap";
 import Image from "next/image";
 import classnames from "classnames";
@@ -50,7 +53,8 @@ import { assert } from "console";
 import Script from "next/script";
 import StatsBoard from "../components/dashboard/stats";
 import connectWalletArrowDown from "../assets/images/connectWalletArrowDown.svg";
-import SpendLoan from "../components/passbook/active-tabs/Spend-loans/SpendLoan";
+import SpendLoan from "../components/passbook/Spend-loans/spendLoan";
+import SpendLoanNav from "../components/passbook/Spend-loans/spendLoan-navbar";
 // import YourSupplyBody from "../components/dashboard/supply";
 
 interface IDeposit {
@@ -138,6 +142,8 @@ const Dashboard = () => {
   useEffect(() => {
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
   }, [_account]);
+
+  const dappsArray = ["1", "2", "3", "4", "5", "6", "7"];
 
   const [uf, setUf] = useState(null);
   const [txHistoryData, setTxHistoryData] = useState(null);
@@ -583,7 +589,6 @@ const Dashboard = () => {
                   account={account as string}
                 />
               </div>
-
               {customActiveTab === "3" ||
               customActiveTab === "4" ||
               customActiveTab === "2" ? (
@@ -639,13 +644,19 @@ const Dashboard = () => {
                   </div>
                 </>
               ) : null}
-              <Card style={{ height: "30rem", overflowY: "scroll" }}>
-                <CardBody style={{ backgroundColor: "white" }}>
-                  <Row style={{ marginTop: "-20px" }}>
-                    {/* Dashboard Menu Panes */}
 
-                    {/* ----------------- PASSBOOK MENU TOGGLES -------------------- */}
-                    {/* <Col xl="5">
+              {customActiveTab === "1" ||
+              customActiveTab === "3" ||
+              customActiveTab === "4" ? (
+                <Card style={{ height: "30rem", overflowY: "scroll" }}>
+                  <CardBody
+                    style={{ backgroundColor: "white", overflowX: "hidden" }}
+                  >
+                    <Row style={{ marginTop: "-20px" }}>
+                      {/* Dashboard Menu Panes */}
+
+                      {/* ----------------- PASSBOOK MENU TOGGLES -------------------- */}
+                      {/* <Col xl="5">
                       {customActiveTab === "2" && (
                         <PassbookMenu
                           account={account as string}
@@ -654,70 +665,188 @@ const Dashboard = () => {
                         />
                       )}
                     </Col> */}
-                  </Row>
+                    </Row>
 
-                  {/* ----------------- PASSBOOK BODY -------------------- */}
+                    {/* ----------------- PASSBOOK BODY -------------------- */}
 
-                  <Row>
-                    <div>
-                      <Col lg={12}>
-                        {customActiveTab === "2" ? (
-                          <div style={{ color: "black" }}><Liquidation
-                          activeLiquidationsData={activeLiquidationsData}
-                          isTransactionDone={isTransactionDone}
-                        /></div>
-                        ) : null}
-                        {/* {getPassbookTable(passbookStatus)} */}
-                      </Col>
-                    </div>
-                  </Row>
+                    <Row>
+                      <div>
+                        <Col lg={12}>
+                          {customActiveTab === "3"
+                            ? getActionTabs(customActiveTabs)
+                            : null}
+                          {/* {getPassbookTable(passbookStatus)} */}
+                        </Col>
+                      </div>
+                    </Row>
 
-                  <Row>
-                    <div>
-                      <Col lg={12}>
-                        {customActiveTab === "3"
-                          ? getActionTabs(customActiveTabs)
-                          : null}
-                        {/* {getPassbookTable(passbookStatus)} */}
-                      </Col>
-                    </div>
-                  </Row>
+                    <Row>
+                      <div>
+                        <Col lg={12}>
+                          {customActiveTab === "4" ? borrowActionTabs() : null}
+                          {/* {getPassbookTable(passbookStatus)} */}
+                        </Col>
+                      </div>
+                    </Row>
 
-                  <Row>
-                    <div>
-                      <Col lg={12}>
-                        {customActiveTab === "4" ? borrowActionTabs() : null}
-                        {/* {getPassbookTable(passbookStatus)} */}
-                      </Col>
-                    </div>
-                  </Row>
+                    <TabContent activeTab={customActiveTab} className="p-1">
+                      {/* ------------------------------------- MARKET ----------------------------- */}
+                      {customActiveTab === "1" ? (
+                        <LoanBorrowCommitment isLoading={isLoading} />
+                      ) : null}
 
-                  {/* <Row>
-                    <div>
-                      <Col lg={12}>
-                        {customActiveTab === "4" &&
-                          getBorrowTabs(customActiveTabs)}
-                      </Col>
-                    </div>
-                  </Row> */}
+                      {/* -------------------------------------- PASSBOOK ----------------------------- */}
 
-                  <TabContent activeTab={customActiveTab} className="p-1">
-                    {/* ------------------------------------- MARKET ----------------------------- */}
-                    {customActiveTab === "1" ? (
-                      <LoanBorrowCommitment isLoading={isLoading} />
-                    ) : null}
+                      {/* -------------------------------------- LIQUIDATION ----------------------------- */}
 
-                    {/* -------------------------------------- PASSBOOK ----------------------------- */}
-
-                    {/* -------------------------------------- LIQUIDATION ----------------------------- */}
-
-                    {/* <Liquidation
+                      {/* <Liquidation
                       activeLiquidationsData={activeLiquidationsData}
                       isTransactionDone={isTransactionDone}
                     /> */}
-                  </TabContent>
-                </CardBody>
-              </Card>
+                    </TabContent>
+                  </CardBody>
+                </Card>
+              ) : (
+                <>
+                  <Card
+                    style={{
+                      height: "15rem",
+                      overflowY: "scroll",
+                    }}
+                  >
+                    <CardBody
+                      style={{
+                        backgroundColor: "white",
+                        overflowX: "hidden",
+                        marginTop: "-20px",
+                      }}
+                    >
+                      <Row style={{ backgroundColor: "black", height: "40px" }}>
+                        {customActiveTab === "2" ? <SpendLoan /> : null}
+                      </Row>
+                    </CardBody>
+                  </Card>
+
+                  <div style={{ color: "black", margin: "10px 0" }}>
+                    &nbsp; &nbsp; Only unspent loans are displayed here. For
+                    comprehensive list of active loansgo to{" "}
+                    <u style={{ cursor: "pointer" }}>your borrow</u>
+                  </div>
+
+                  {/* <div style={{ margin: "40px 15px" }}>
+                    <Nav
+                      tabs
+                      className="nav-tabs-custom"
+                      style={{ borderBottom: "0px", gap: "10px" }}
+                    >
+                      <NavItem>
+                        <NavLink
+                          style={{
+                            cursor: "pointer",
+                            color: "black",
+                            border: "1px solid #000",
+                            borderRadius: "5px",
+                          }}
+                          // className={classnames({
+                          //   active: customActiveTab === "1",
+                          // })}
+                          // onClick={() => {
+                          //   toggleCustom("1");
+                          // }}
+                        >
+                          <span className="d-none d-sm-block">Stake</span>
+                        </NavLink>
+                      </NavItem>
+                      {account ? (
+                        <>
+                          <NavItem>
+                            <NavLink
+                              style={{
+                                cursor: "pointer",
+                                color: "black",
+                                border: "1px solid #000",
+                                borderRadius: "5px",
+                              }}
+                              // className={classnames({
+                              //   active: customActiveTab === "2",
+                              // })}
+                              // onClick={() => {
+                              //   toggleCustom("2");
+                              // }}
+                            >
+                              <span className="d-none d-sm-block">Swap</span>
+                            </NavLink>
+                          </NavItem>
+                          <NavItem>
+                            <NavLink
+                              style={{
+                                cursor: "pointer",
+                                color: "black",
+                                border: "1px solid #000",
+                                borderRadius: "5px",
+                              }}
+                              // className={classnames({
+                              //   active: customActiveTab === "3",
+                              // })}
+                              // onClick={() => {
+                              //   toggleCustom("3");
+                              // }}
+                            >
+                              <span className="d-none d-sm-block">Trade</span>
+                            </NavLink>
+                          </NavItem>
+                        </>
+                      ) : null}
+                    </Nav>
+                  </div> */}
+
+                  <SpendLoanNav />
+
+                  <div
+                    style={{
+                      fontSize: "16px",
+                      marginLeft: "15px",
+                      color: "black",
+                    }}
+                  >
+                    Select Dapp to begin with the spend
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-betwwen",
+                      gap: "120px",
+                      margin: "10px 15px",
+                    }}
+                  >
+                    {dappsArray.map((dapp, index) => {
+                      return (
+                        <div>
+                          <img src={`./dapps/${dapp}.svg`} height="90px" />
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-betwwen",
+                      gap: "120px",
+                      margin: "10px 15px",
+                    }}
+                  >
+                    {dappsArray.map((dapp, index) => {
+                      return (
+                        <div>
+                          <img src={`./dapps/${dapp}.svg`} height="90px" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              )}
             </Col>
           </Row>
         </Container>
