@@ -405,7 +405,7 @@ const SecondaryHeader = ({
                   color: "#000",
                   cursor: "pointer",
                   margin: "0",
-                  backgroundColor: customActiveTab === "1"|| customActiveTab === "2"|| customActiveTab === "3"|| customActiveTab === "4"?"#D3D3D3":"",
+                  backgroundColor: customActiveTab === "1"?"#D3D3D3":"",
                 }}
                
                 
