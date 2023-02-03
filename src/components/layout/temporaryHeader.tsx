@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useContext } from "react";
 import Link from "next/link";
 import { Modal, Form, Row, Navbar } from "reactstrap";
 import arrowDown from "../../assets/images/arrowDown.svg";
@@ -24,6 +24,7 @@ import "./header.module.scss";
 import Image from "next/image";
 import { useDisconnect } from "wagmi";
 import EthWalletButton from "./ethConnectWalletButton";
+import {TabContext} from "../../hooks/contextHooks/TabContext"
 
 const SecondaryHeader = ({
   handleDisconnectWallet,
@@ -97,6 +98,8 @@ const SecondaryHeader = ({
     bool: false,
     direction: { connectWalletArrowDown },
   });
+  // Context Hook For Tabcontex
+  const {customActiveTab,toggleCustom} = useContext(TabContext);
 
   const [network, setNetwork] = useState("Select Network");
 
@@ -499,6 +502,9 @@ const SecondaryHeader = ({
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
+                  }}
+                  onClick={() => {
+                    toggleCustom("6");
                   }}
                 >
                   {" "}
