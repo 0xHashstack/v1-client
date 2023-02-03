@@ -100,7 +100,7 @@ const SecondaryHeader = ({
   });
   // Context Hook For Tabcontex
   const {customActiveTab,toggleCustom} = useContext(TabContext);
-
+  
   const [network, setNetwork] = useState("Select Network");
 
   const { address: account } = useAccount();
@@ -405,8 +405,10 @@ const SecondaryHeader = ({
                   color: "#000",
                   cursor: "pointer",
                   margin: "0",
-                  backgroundColor: "#D9D9D970",
+                  backgroundColor: customActiveTab === "1"|| customActiveTab === "2"|| customActiveTab === "3"|| customActiveTab === "4"?"#D3D3D3":"",
                 }}
+               
+                
                 className="button"
               >
                 <span
@@ -414,7 +416,11 @@ const SecondaryHeader = ({
                     display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
+                    // backgroundColor:"grey"
                   }}
+                   onClick={()=>{
+                    toggleCustom("1")
+                   }}
                 >
                   {" "}
                   <Image
@@ -424,6 +430,7 @@ const SecondaryHeader = ({
                     height="15px"
                     style={{ cursor: "pointer" }}
                   />
+                  
                   &nbsp;&nbsp;Dashboard
                 </span>
               </label>{" "}
@@ -435,6 +442,7 @@ const SecondaryHeader = ({
                   color: "#000",
                   cursor: "pointer",
                   margin: "0",
+                  
                 }}
                 className="button"
               >
@@ -494,6 +502,7 @@ const SecondaryHeader = ({
                   cursor: "pointer",
                   marginRight: "100px",
                   marginBottom: "0px",
+                  backgroundColor:customActiveTab === "6"?"#D3D3D3":""
                 }}
                 className="button"
               >
