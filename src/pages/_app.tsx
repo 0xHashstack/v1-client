@@ -14,6 +14,7 @@ import { DetailsProvider } from "../hooks/contextHooks/recordContext";
 import store from "../store";
 import "../assets/scss/theme.scss";
 import "./scrollbar.css";
+import {TabsProvider} from "../hooks/contextHooks/TabContext";
 
 import { InjectedConnector, StarknetProvider } from "@starknet-react/core";
 import { SequencerProvider } from "starknet";
@@ -59,12 +60,14 @@ function MyApp({ Component, pageProps }: AppProps) {
               >
                 <Provider store={store}>
                   <DetailsProvider>
+                    <TabsProvider>
                     {/* <ConnectionDetails /> */}
 
                     <Layout>
                       <Component {...pageProps} />
                     </Layout>
                     <ToastContainer />
+                    </TabsProvider>
                   </DetailsProvider>
                 </Provider>
               </StarknetProvider>

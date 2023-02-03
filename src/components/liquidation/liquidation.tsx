@@ -283,7 +283,6 @@ const Liquidation = ({
           <thead>
             <tr style={{color:"black"}}>
               <th scope="col">Debt Market</th>
-              <th scope="col">Commitment</th>
               <th scope="col"> Amount</th>
               <th scope="col">Collateral Market</th>
               <th scope="col">Collateral Balance</th>
@@ -316,13 +315,6 @@ const Liquidation = ({
                   </th>
                   <td>
                     <div >
-                      {EventMap[asset.commitment]}
-                      {console.log(EventMap[asset.commitment])
-                      }
-                    </div>
-                  </td>
-                  <td>
-                    <div >
                       {BNtoNum(Number(asset.loanAmount))}
                     </div>
                   </td>
@@ -348,7 +340,7 @@ const Liquidation = ({
                     </div>
                   </td>
                   <td>
-                    <div style={{textAlign: "center"}} >
+                    <div  >
                       {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Risk Premium value */}
@@ -356,7 +348,7 @@ const Liquidation = ({
                     </div>
                   </td>
                   <td>
-                    <div style={{textAlign: "center"}} >
+                    <div  >
                       {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Debt Converted*/}
@@ -364,7 +356,7 @@ const Liquidation = ({
                     </div>
                   </td>
                   <td>
-                    <div style={{textAlign: "center"}} >
+                    <div  >
                       {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Converted Market*/}
@@ -379,7 +371,7 @@ const Liquidation = ({
                     </div>
                   </td>
                   <td>
-                    <div style={{textAlign: "center"}}>
+                    <div >
                       {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Amount*/}
@@ -387,7 +379,7 @@ const Liquidation = ({
                     </div>
                   </td>
                   <td>
-                    <div style={{textAlign: "center"}} >
+                    <div  >
                       {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Amount*/}
@@ -415,6 +407,7 @@ const Liquidation = ({
             color="light"
             style={{color:"black",margin:"2px 0px"}}
             outline
+            
             onClick={() => {
               // increaseLiquidationIndex;
             }}

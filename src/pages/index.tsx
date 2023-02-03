@@ -12,6 +12,9 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  Nav,
+  NavItem,
+  NavLink,
 } from "reactstrap";
 import Image from "next/image";
 import classnames from "classnames";
@@ -36,6 +39,8 @@ import PassbookMenu from "../components/passbook/passbook-menu";
 import Liquidation from "../components/liquidation/liquidation";
 import LoanBorrowCommitment from "../components/dashboard/loanborrow-commitment";
 import OffchainAPI from "../services/offchainapi.service";
+
+import arrowDown from "../assets/images/arrowDown.svg";
 import {
   getCommitmentIndex,
   getCommitmentNameFromIndexDeposit,
@@ -52,6 +57,8 @@ import StatsBoard from "../components/dashboard/stats";
 import connectWalletArrowDown from "../assets/images/connectWalletArrowDown.svg";
 import SpendLoan from "../components/passbook/active-tabs/Spend-loans/SpendLoan";
 // import YourSupplyBody from "../components/dashboard/supply";
+import { TabContext } from "../hooks/contextHooks/TabContext";
+import DashboardLiquid from "../components/dashboard/DashboardLiquid";
 
 interface IDeposit {
   amount: string;
@@ -96,7 +103,7 @@ const Dashboard = () => {
   const [withdrawDepositTransactionDone, setWithdrawDepositTransactionDone] =
     useState(false);
 
-  const [customActiveTab, setCustomActiveTab] = useState("1");
+  // const [customActiveTab, setCustomActiveTab] = useState("1");
   // const [customActiveTabs, setCustomActiveTabs] = useState("1");
   const [loanActionTab, setLoanActionTab] = useState("0");
   const [passbookStatus, setPassbookStatus] = useState("ActiveDeposit");
@@ -149,6 +156,8 @@ const Dashboard = () => {
   const [withdraw_active_loan, setWithdrawActiveLoan] = useState(false);
   const [swap_active_loan, setSwapActiveLoan] = useState(true);
   const [swap_to_active_loan, setSwapToActiveLoan] = useState(false);
+  // Context hook for the CustomTab
+  const { customActiveTab, toggleCustom } = useContext(TabContext);
 
   function toggle(newIndex: string) {
     if (newIndex === index) {
@@ -323,11 +332,11 @@ const Dashboard = () => {
     }
   }, [customActiveTab]); //only call this when custom active tab changes
 
-  const toggleCustom = (tab: any) => {
-    if (customActiveTab !== tab) {
-      setCustomActiveTab(tab);
-    }
-  };
+  // const toggleCustom = (tab: any) => {
+  //   if (customActiveTab !== tab) {
+  //     setCustomActiveTab(tab);
+  //   }
+  // };
 
   const toggleCustoms = (tab: any) => {
     if (customActiveTabs !== tab) {
@@ -576,14 +585,31 @@ const Dashboard = () => {
           <Row style={{ backgroundColor: "white" }}>
             <Col xl={"12"}>
               {/* <Card style={{ height: "35rem", overflowY: "scroll" }}> */}
-              <div style={{ margin: "1px 5px 30px 14px" }}>
-                <DashboardMenu
-                  customActiveTab={customActiveTab}
-                  toggleCustom={toggleCustom}
-                  account={account as string}
-                />
+              <div style={{ margin: "1px 5px 5px 14px" }}>
+                {customActiveTab === "1" ||
+                customActiveTab === "2" ||
+                customActiveTab === "3" ||
+                customActiveTab === "4" ? (
+                  <DashboardMenu
+                    customActiveTab={customActiveTab}
+                    toggleCustom={toggleCustom}
+                    account={account as string}
+                  />
+                ) : (
+                  <div></div>
+                )}
               </div>
-
+              <div style={{ margin: "1px 5px 10px 14px" }}>
+                {customActiveTab === "6" ? (
+                  <DashboardLiquid
+                    customActiveTab={customActiveTab}
+                    toggleCustom={toggleCustom}
+                    account={account as string}
+                  />
+                ) : (
+                  <div></div>
+                )}
+              </div>
               {customActiveTab === "3" ||
               customActiveTab === "4" ||
               customActiveTab === "2" ? (
@@ -658,19 +684,21 @@ const Dashboard = () => {
 
                   {/* ----------------- PASSBOOK BODY -------------------- */}
 
-                  <Row>
+                  {/* <Row>
                     <div>
                       <Col lg={12}>
                         {customActiveTab === "2" ? (
-                          <div style={{ color: "black" }}><Liquidation
+                          <div style={{ color: "black" }}>
+                            <Liquidation
                           activeLiquidationsData={activeLiquidationsData}
                           isTransactionDone={isTransactionDone}
-                        /></div>
+                        />
+                        </div>
                         ) : null}
                         {/* {getPassbookTable(passbookStatus)} */}
-                      </Col>
-                    </div>
-                  </Row>
+                  {/* </Col> */}
+                  {/* </div> */}
+                  {/* </Row> */}
 
                   <Row>
                     <div>
@@ -687,6 +715,22 @@ const Dashboard = () => {
                     <div>
                       <Col lg={12}>
                         {customActiveTab === "4" ? borrowActionTabs() : null}
+                        {/* {getPassbookTable(passbookStatus)} */}
+                      </Col>
+                    </div>
+                  </Row>
+
+                  <Row>
+                    <div>
+                      <Col lg={12}>
+                        {customActiveTab === "6" ? (
+                          <div style={{ color: "black" }}>
+                            <Liquidation
+                              activeLiquidationsData={activeLiquidationsData}
+                              isTransactionDone={isTransactionDone}
+                            />
+                          </div>
+                        ) : null}
                         {/* {getPassbookTable(passbookStatus)} */}
                       </Col>
                     </div>
