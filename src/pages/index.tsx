@@ -12,9 +12,9 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Nav,
-  NavItem,
   NavLink,
+  NavItem,
+  Nav,
 } from "reactstrap";
 import Image from "next/image";
 import classnames from "classnames";
@@ -55,7 +55,8 @@ import { assert } from "console";
 import Script from "next/script";
 import StatsBoard from "../components/dashboard/stats";
 import connectWalletArrowDown from "../assets/images/connectWalletArrowDown.svg";
-import SpendLoan from "../components/passbook/active-tabs/Spend-loans/SpendLoan";
+import SpendLoan from "../components/passbook/Spend-loans/spendLoan";
+import SpendLoanNav from "../components/passbook/Spend-loans/spendLoan-navbar";
 // import YourSupplyBody from "../components/dashboard/supply";
 import { TabContext } from "../hooks/contextHooks/TabContext";
 import DashboardLiquid from "../components/dashboard/DashboardLiquid";
@@ -145,6 +146,8 @@ const Dashboard = () => {
   useEffect(() => {
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
   }, [_account]);
+
+  const dappsArray = ["1", "2", "3", "4", "5", "6", "7"];
 
   const [uf, setUf] = useState(null);
   const [txHistoryData, setTxHistoryData] = useState(null);
@@ -665,103 +668,127 @@ const Dashboard = () => {
                   </div>
                 </>
               ) : null}
-              <Card style={{ height: "30rem", overflowY: "scroll" }}>
-                <CardBody style={{ backgroundColor: "white" }}>
-                  <Row style={{ marginTop: "-20px" }}>
-                    {/* Dashboard Menu Panes */}
 
-                    {/* ----------------- PASSBOOK MENU TOGGLES -------------------- */}
-                    {/* <Col xl="5">
-                      {customActiveTab === "2" && (
-                        <PassbookMenu
-                          account={account as string}
-                          customActiveTabs={customActiveTabs}
-                          toggleCustoms={toggleCustoms}
-                        />
-                      )}
-                    </Col> */}
-                  </Row>
-
-                  {/* ----------------- PASSBOOK BODY -------------------- */}
-
-                  {/* <Row>
-                    <div>
-                      <Col lg={12}>
-                        {customActiveTab === "2" ? (
-                          <div style={{ color: "black" }}>
-                            <Liquidation
-                          activeLiquidationsData={activeLiquidationsData}
-                          isTransactionDone={isTransactionDone}
-                        />
-                        </div>
-                        ) : null}
-                        {/* {getPassbookTable(passbookStatus)} */}
-                  {/* </Col> */}
-                  {/* </div> */}
-                  {/* </Row> */}
-
-                  <Row>
-                    <div>
-                      <Col lg={12}>
-                        {customActiveTab === "3"
-                          ? getActionTabs(customActiveTabs)
-                          : null}
-                        {/* {getPassbookTable(passbookStatus)} */}
-                      </Col>
-                    </div>
-                  </Row>
-
-                  <Row>
-                    <div>
-                      <Col lg={12}>
-                        {customActiveTab === "4" ? borrowActionTabs() : null}
-                        {/* {getPassbookTable(passbookStatus)} */}
-                      </Col>
-                    </div>
-                  </Row>
-
-                  <Row>
-                    <div>
-                      <Col lg={12}>
-                        {customActiveTab === "6" ? (
-                          <div style={{ color: "black" }}>
-                            <Liquidation
-                              activeLiquidationsData={activeLiquidationsData}
-                              isTransactionDone={isTransactionDone}
-                            />
-                          </div>
-                        ) : null}
-                        {/* {getPassbookTable(passbookStatus)} */}
-                      </Col>
-                    </div>
-                  </Row>
-
-                  {/* <Row>
-                    <div>
-                      <Col lg={12}>
-                        {customActiveTab === "4" &&
-                          getBorrowTabs(customActiveTabs)}
-                      </Col>
-                    </div>
-                  </Row> */}
-
-                  <TabContent activeTab={customActiveTab} className="p-1">
-                    {/* ------------------------------------- MARKET ----------------------------- */}
+              {customActiveTab === "1" ||
+              customActiveTab === "3" ||
+              customActiveTab === "4" ? (
+                <Card style={{ height: "30rem", overflowY: "scroll" }}>
+                  <CardBody
+                    style={{ backgroundColor: "white", overflowX: "hidden" }}
+                  >
+                    {" "}
                     {customActiveTab === "1" ? (
                       <LoanBorrowCommitment isLoading={isLoading} />
                     ) : null}
-
-                    {/* -------------------------------------- PASSBOOK ----------------------------- */}
-
-                    {/* -------------------------------------- LIQUIDATION ----------------------------- */}
-
-                    {/* <Liquidation
-                      activeLiquidationsData={activeLiquidationsData}
-                      isTransactionDone={isTransactionDone}
-                    /> */}
+                    <Row>
+                      <div>
+                        <Col lg={12}>
+                          {customActiveTab === "3"
+                            ? getActionTabs(customActiveTabs)
+                            : null}
+                        </Col>
+                      </div>
+                    </Row>
+                    <Row>
+                      <div>
+                        <Col lg={12}>
+                          {customActiveTab === "4" ? borrowActionTabs() : null}
+                        </Col>
+                      </div>
+                    </Row>
+                  </CardBody>
+                </Card>
+              ) : (
+                <>
+                  <TabContent activeTab={customActiveTab} className="p-1">
+                    <Row>
+                      <div>
+                        <Col lg={12}>
+                          {customActiveTab === "6" ? (
+                            <div style={{ color: "black" }}>
+                              <Liquidation
+                                activeLiquidationsData={activeLiquidationsData}
+                                isTransactionDone={isTransactionDone}
+                              />
+                            </div>
+                          ) : null}
+                        </Col>
+                      </div>
+                    </Row>
                   </TabContent>
-                </CardBody>
-              </Card>
+                </>
+              )}
+
+              {customActiveTab === "2" ? (
+                <>
+                  {" "}
+                  <Card
+                    style={{
+                      height: "15rem",
+                      overflowY: "scroll",
+                    }}
+                  >
+                    <CardBody
+                      style={{
+                        backgroundColor: "white",
+                        overflowX: "hidden",
+                        marginTop: "-20px",
+                      }}
+                    >
+                      <Row style={{ backgroundColor: "black", height: "40px" }}>
+                        {customActiveTab === "2" ? <SpendLoan /> : null}
+                      </Row>
+                    </CardBody>
+                  </Card>
+                  <div style={{ color: "black", margin: "10px 0" }}>
+                    &nbsp; &nbsp; Only unspent loans are displayed here. For
+                    comprehensive list of active loansgo to{" "}
+                    <u style={{ cursor: "pointer" }}>your borrow</u>
+                  </div>
+                  <SpendLoanNav />
+                  <div
+                    style={{
+                      fontSize: "16px",
+                      marginLeft: "15px",
+                      color: "black",
+                    }}
+                  >
+                    Select Dapp to begin with the spend
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-betwwen",
+                      gap: "120px",
+                      margin: "10px 15px",
+                    }}
+                  >
+                    {dappsArray.map((dapp, index) => {
+                      return (
+                        <div>
+                          <img src={`./dapps/${dapp}.svg`} height="90px" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-betwwen",
+                      gap: "120px",
+                      margin: "10px 15px",
+                    }}
+                  >
+                    {dappsArray.map((dapp, index) => {
+                      return (
+                        <div>
+                          <img src={`./dapps/${dapp}.svg`} height="90px" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : null}
             </Col>
           </Row>
         </Container>
