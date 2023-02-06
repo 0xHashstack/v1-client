@@ -12,6 +12,7 @@ import {
   Label,
   FormText,
   FormFeedback,
+  NavLink,
 } from "reactstrap";
 
 import Slider from "react-custom-slider";
@@ -560,7 +561,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
 
   return (
     <>
-      <button
+      <NavLink
         type="button"
         onClick={() => {
           tog_borrow();
@@ -568,14 +569,17 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
           handleCollateralChange(`${asset}`);
         }}
         style={{
-          backgroundColor: "white",
-          padding: "5px 12px",
+          backgroundColor: "#393D4F",
+          color: "white",
+          padding: "10px 18px",
           borderRadius: "5px",
+          border: "none",
           fontSize: "11px",
+          width: "75px",
         }}
       >
         Borrow
-      </button>
+      </NavLink>
       <Modal
         style={{ width: "548px", height: "945px" }}
         isOpen={modal_borrow}

@@ -39,7 +39,7 @@ const DashboardMenu = ({
       <Nav
         tabs
         className="nav-tabs-custom"
-        style={{ borderBottom: "0px", gap: "10px" }}
+        style={{ borderBottom: "0px", gap: "10px", margin: "20px 30px" }}
       >
         <NavItem>
           <NavLink

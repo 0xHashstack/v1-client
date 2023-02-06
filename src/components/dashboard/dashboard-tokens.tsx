@@ -39,8 +39,8 @@ const DashboardTokens = ({
     <tr
       key={idx}
       style={{
-        backgroundColor: "white",
-        color: "black",
+        backgroundColor: "#2A2E3F",
+        color: "white",
         borderBottom: "2px solid #D6D6D650",
         height: "80px",
       }}

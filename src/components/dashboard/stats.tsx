@@ -16,7 +16,7 @@ const StatsBoard = () => {
         className="stat-card"
         style={{
           width: "50%",
-          background: "black",
+          background: "#2A2E3F",
           display: "flex",
           justifyContent: "space-between",
           padding: "20px 40px",
@@ -52,7 +52,7 @@ const StatsBoard = () => {
         className="stat-card"
         style={{
           width: "50%",
-          background: "black",
+          background: "#2A2E3F",
           display: "flex",
           justifyContent: "space-between",
           padding: "20px 40px",

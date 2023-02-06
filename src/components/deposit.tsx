@@ -11,6 +11,7 @@ import {
   FormText,
   FormFeedback,
   Label,
+  NavLink,
 } from "reactstrap";
 
 import Slider from "react-custom-slider";
@@ -50,6 +51,7 @@ import { Abi, Contract, uint256, number } from "starknet";
 import { TxToastManager } from "../blockchain/txToastManager";
 import MySpinner from "./mySpinner";
 import Image from "next/image";
+import classnames from "classnames";
 
 interface ICoin {
   name: string;
@@ -159,6 +161,9 @@ let Deposit: any = ({ asset }: { asset: string }) => {
   // }, [dataBalance, loadingBalance, errorBalance, refreshBalance]);
 
   // Approve
+
+  const [customActiveTab, setCustomActiveTab] = useState("9");
+
   const {
     data: dataUSDC,
     loading: loadingUSDC,
@@ -361,19 +366,25 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 
   return (
     <>
-      <button
+      <NavLink
         type="button"
         // className="btn btn-dark btn-sm w-xs"
         onClick={tog_center}
         style={{
-          backgroundColor: "white",
-          padding: "5px 12px",
+          backgroundColor: "#393D4F",
+          color: "white",
+          padding: "10px 18px",
           borderRadius: "5px",
+          border: "none",
           fontSize: "11px",
+          width: "75px",
         }}
+        className={classnames({
+          active: customActiveTab === "2",
+        })}
       >
         Supply
-      </button>
+      </NavLink>
       <Modal
         style={{ width: "548px", height: "603px" }}
         isOpen={modal_deposit}

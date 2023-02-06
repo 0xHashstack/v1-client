@@ -581,11 +581,11 @@ const Dashboard = () => {
     return (
       <div>
         {customActiveTab === "1" ? <StatsBoard /> : null}
-        <Container fluid style={{ backgroundColor: "white" }}>
+        <Container fluid style={{ backgroundColor: "transparent" }}>
           {/* Protocol Stats */}
           {/* <ProtocolStats /> */}
 
-          <Row style={{ backgroundColor: "white" }}>
+          <Row>
             <Col xl={"12"}>
               {/* <Card style={{ height: "35rem", overflowY: "scroll" }}> */}
               <div style={{ margin: "1px 5px 5px 14px" }}>
@@ -672,9 +672,15 @@ const Dashboard = () => {
               {customActiveTab === "1" ||
               customActiveTab === "3" ||
               customActiveTab === "4" ? (
-                <Card style={{ height: "30rem", overflowY: "scroll" }}>
+                <Card style={{ height: "30rem" }}>
                   <CardBody
-                    style={{ backgroundColor: "white", overflowX: "hidden" }}
+                    style={{
+                      overflowX: "hidden",
+                      backgroundColor: "#2A2E3F",
+                      outline: "none",
+                      border: "none",
+                      boxShadow: "0px 0px 1px 1px #181728",
+                    }}
                   >
                     {" "}
                     {customActiveTab === "1" ? (
@@ -826,7 +832,11 @@ const Dashboard = () => {
 
   return (
     // <React.Fragment>
-    <>
+    <div
+      style={{
+        backgroundColor: "#1C202F",
+      }}
+    >
       <Head>
         <title>Hashstack | Starknet testnet</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -854,7 +864,14 @@ const Dashboard = () => {
           `}
       </Script>
 
-      <div className="page-content" style={{ marginTop: "0px", zIndex: "100" }}>
+      <div
+        className="page-content"
+        style={{
+          marginTop: "0px",
+          zIndex: "100",
+          backgroundColor: "#1C202F",
+        }}
+      >
         {/* <MetaTags>
           <title>Hashstack Finance</title>
         </MetaTags> */}
@@ -873,7 +890,7 @@ const Dashboard = () => {
             {props.children} */}
       </div>
       {/* // </React.Fragment> */}
-    </>
+    </div>
   );
 };
 

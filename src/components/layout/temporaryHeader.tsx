@@ -1,4 +1,4 @@
-import React, { useState,useContext } from "react";
+import React, { useState, useContext } from "react";
 import Link from "next/link";
 import { Modal, Form, Row, Navbar } from "reactstrap";
 import arrowDown from "../../assets/images/arrowDown.svg";
@@ -24,7 +24,7 @@ import "./header.module.scss";
 import Image from "next/image";
 import { useDisconnect } from "wagmi";
 import EthWalletButton from "./ethConnectWalletButton";
-import {TabContext} from "../../hooks/contextHooks/TabContext"
+import { TabContext } from "../../hooks/contextHooks/TabContext";
 
 const SecondaryHeader = ({
   handleDisconnectWallet,
@@ -98,9 +98,12 @@ const SecondaryHeader = ({
     bool: false,
     direction: { connectWalletArrowDown },
   });
+
+  const states = ["1", "2", "3", "4", "5"];
+
   // Context Hook For Tabcontex
-  const {customActiveTab,toggleCustom} = useContext(TabContext);
-  
+  const { customActiveTab, toggleCustom } = useContext(TabContext);
+
   const [network, setNetwork] = useState("Select Network");
 
   const { address: account } = useAccount();
@@ -173,23 +176,121 @@ const SecondaryHeader = ({
       <Row>
         <Navbar
           style={{
-            backgroundColor: "#FFF",
+            backgroundColor: "#1C202F",
             width: "100%",
+            color: "white",
           }}
         >
           <div className="d-flex">
-            <div>
+            <div style={{ display: "flex", alignItems: "center" }}>
               <Link href="/">
                 <div>
-                  <Image
-                    src={hashstackLogo}
-                    alt="Navbar Logo"
-                    style={{ marginLeft: "20px" }}
-                    height="40px"
-                  />
+                  <Image src={hashstackLogo} alt="Navbar Logo" height="40px" />
                 </div>
               </Link>
             </div>
+
+            <label
+              style={{
+                padding: "10px",
+                fontSize: "12px",
+                borderRadius: "5px",
+                color: "#FFF",
+                cursor: "pointer",
+                marginLeft: "40px",
+                backgroundColor: states.includes(customActiveTab)
+                  ? "#393D4F"
+                  : "",
+              }}
+              className="button"
+            >
+              <span
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  // backgroundColor:"grey"
+                }}
+                onClick={() => {
+                  toggleCustom("1");
+                }}
+              >
+                {" "}
+                <Image
+                  src={dashboardIcon}
+                  alt="Picture of the author"
+                  width="15px"
+                  height="15px"
+                  style={{ cursor: "pointer" }}
+                />
+                &nbsp;&nbsp;Dashboard
+              </span>
+            </label>
+
+            <label
+              style={{
+                padding: "10px",
+                fontSize: "12px",
+                borderRadius: "5px",
+                color: "#FFF",
+                cursor: "pointer",
+                margin: "0",
+              }}
+              className="button"
+            >
+              <span
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                {" "}
+                <Image
+                  src={contributeEarnIcon}
+                  alt="Picture of the author"
+                  width="15px"
+                  height="15px"
+                  style={{ cursor: "pointer" }}
+                />
+                &nbsp;&nbsp;Contribute-2-Earn
+              </span>
+            </label>
+
+            <label
+              style={{
+                padding: "10px",
+                fontSize: "12px",
+                borderRadius: "5px",
+                color: "#FFF",
+                cursor: "pointer",
+                marginRight: "100px",
+                marginBottom: "0px",
+                backgroundColor: customActiveTab === "6" ? "#393D4F" : "",
+              }}
+              className="button"
+            >
+              <span
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+                onClick={() => {
+                  toggleCustom("6");
+                }}
+              >
+                {" "}
+                <Image
+                  src={moreIcon}
+                  alt="Picture of the author"
+                  width="15px"
+                  height="15px"
+                  style={{ cursor: "pointer" }}
+                />
+                &nbsp;&nbsp;More
+              </span>
+            </label>
           </div>
 
           <div className="d-flex flex-wrap gap-4 ">
@@ -399,137 +500,7 @@ const SecondaryHeader = ({
             <div style={{ display: "flex", gap: "20px" }}>
               <label
                 style={{
-                  padding: "15px",
-                  fontSize: "12px",
-                  borderRadius: "5px",
-                  color: "#000",
-                  cursor: "pointer",
-                  margin: "0",
-                  backgroundColor: customActiveTab === "1"?"#D3D3D3":"",
-                }}
-               
-                
-                className="button"
-              >
-                <span
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    // backgroundColor:"grey"
-                  }}
-                   onClick={()=>{
-                    toggleCustom("1")
-                   }}
-                >
-                  {" "}
-                  <Image
-                    src={dashboardIcon}
-                    alt="Picture of the author"
-                    width="15px"
-                    height="15px"
-                    style={{ cursor: "pointer" }}
-                  />
-                  
-                  &nbsp;&nbsp;Dashboard
-                </span>
-              </label>{" "}
-              <label
-                style={{
-                  padding: "15px",
-                  fontSize: "12px",
-                  borderRadius: "5px",
-                  color: "#000",
-                  cursor: "pointer",
-                  margin: "0",
-                  
-                }}
-                className="button"
-              >
-                <span
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  {" "}
-                  <Image
-                    src={contributeEarnIcon}
-                    alt="Picture of the author"
-                    width="15px"
-                    height="15px"
-                    style={{ cursor: "pointer" }}
-                  />
-                  &nbsp;&nbsp;Contribute-2-Earn
-                </span>
-              </label>{" "}
-              {/* <label
-                style={{
-                  padding: "15px",
-                  fontSize: "12px",
-                  borderRadius: "5px",
-                  color: "#000",
-                  cursor: "pointer",
-                  margin: "0",
-                }}
-                className="button"
-              >
-                <span
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                >
-                  {" "}
-                  <Image
-                    src={spendLoans}
-                    alt="Picture of the author"
-                    width="15px"
-                    height="15px"
-                    style={{ cursor: "pointer" }}
-                  />
-                  &nbsp;&nbsp;Spend Loan
-                </span>
-              </label> */}
-              <label
-                style={{
-                  padding: "15px",
-                  fontSize: "12px",
-                  borderRadius: "5px",
-                  color: "#000",
-                  cursor: "pointer",
-                  marginRight: "100px",
-                  marginBottom: "0px",
-                  backgroundColor:customActiveTab === "6"?"#D3D3D3":""
-                }}
-                className="button"
-              >
-                <span
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                  }}
-                  onClick={() => {
-                    toggleCustom("6");
-                  }}
-                >
-                  {" "}
-                  <Image
-                    src={moreIcon}
-                    alt="Picture of the author"
-                    width="15px"
-                    height="15px"
-                    style={{ cursor: "pointer" }}
-                  />
-                  &nbsp;&nbsp;More
-                </span>
-              </label>
-              <label
-                style={{
-                  backgroundColor: "#000",
+                  backgroundColor: "#2A2E3F",
                   padding: "15px",
                   fontSize: "12px",
                   borderRadius: "5px",
@@ -560,9 +531,10 @@ const SecondaryHeader = ({
                   &nbsp;&nbsp;&nbsp;Transfer Deposit
                 </span>
               </label>
+
               <label
                 style={{
-                  backgroundColor: "#000",
+                  backgroundColor: "#2A2E3F",
                   padding: "15px",
                   fontSize: "12px",
                   borderRadius: "5px",
@@ -655,7 +627,7 @@ const SecondaryHeader = ({
           </div>
         </Navbar>
       </Row>
-      {/* // </Container> */}
+
       {account && connectWalletArrowState.bool ? (
         <div style={{ zIndex: "1000" }}>
           <div
@@ -788,6 +760,7 @@ const SecondaryHeader = ({
       ) : (
         <></>
       )}
+
       {selectLanguage ? (
         <div style={{ zIndex: "1000" }}>
           <div

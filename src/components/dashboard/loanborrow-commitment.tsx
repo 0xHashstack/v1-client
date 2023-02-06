@@ -27,7 +27,7 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
               <tr
                 style={{
                   borderStyle: "hidden",
-                  color: "black",
+                  color: "#8C8C8C",
                 }}
               >
                 <th style={{ width: "35px" }}></th>
@@ -35,36 +35,40 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
                   scope="col"
                   style={{
                     width: "100px",
-                    padding: "20px 10px",
+                    padding: "35px 10px",
                   }}
                 >
                   Markets
                 </th>
                 <th
                   scope="col"
-                  style={{ width: "100px", padding: "20px 10px" }}
+                  style={{ width: "100px", padding: "35px 10px" }}
                 >
                   Oracle Price
                 </th>
                 <th
                   scope="col"
-                  style={{ width: "100px", padding: "20px 10px" }}
+                  style={{ width: "100px", padding: "35px 10px" }}
                 >
                   Fair Price
                 </th>
                 <th
                   scope="col"
-                  style={{ width: "100px", padding: "20px 10px" }}
+                  style={{ width: "100px", padding: "35px 10px" }}
                 >
                   Total Supply
                 </th>
                 <th
                   scope="col"
-                  style={{ width: "100px", padding: "20px 10px" }}
+                  style={{ width: "100px", padding: "35px 10px" }}
                 >
                   Supply APR
                 </th>
                 <th scope="col" style={{ width: "155px" }}>
+                  <div style={{ textAlign: "center", margin: "8px auto" }}>
+                    {" "}
+                    Supply APR
+                  </div>
                   <select
                     className="form-select form-select-sm"
                     onChange={(e) => {
@@ -76,18 +80,24 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
                     }}
                     defaultValue={"NONE"}
                     style={{
-                      color: "white",
-                      padding: "8px 16px ",
-                      fontSize: "15px",
+                      margin: "0 auto",
+                      width: "120px",
+                      color: "#8C8C8C",
+                      padding: "4px 8px ",
+                      fontSize: "12px",
+                      backgroundColor: "#393D4F",
                     }}
                   >
-                    <option value={"NONE"}>Savings APR</option>
                     <option value={"TWOWEEKS"}>Two Weeks</option>
                     <option value={"ONEMONTH"}>One Month</option>
                     <option value={"THREEMONTHS"}>Three Month</option>
                   </select>
                 </th>
                 <th scope="col" style={{ width: "150px" }}>
+                  <div style={{ textAlign: "center", margin: "8px auto" }}>
+                    {" "}
+                    Borrow APR
+                  </div>
                   <select
                     className="form-select form-select-sm"
                     onChange={(e) => {
@@ -99,26 +109,30 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
                     }}
                     defaultValue={"NONE"}
                     style={{
-                      color: "white",
-                      padding: "8px 16px",
-                      fontSize: "15px",
+                      margin: "0 auto",
+                      width: "120px",
+                      color: "#8C8C8C",
+                      padding: "4px 8px",
+                      fontSize: "12px",
+                      backgroundColor: "#393D4F",
                     }}
                   >
-                    <option value={"NONE"}>Borrow APR</option>
+                    <option value={"TWOWEEKS"}>Two Weeks</option>
                     <option value={"ONEMONTH"}>One Month</option>
+                    <option value={"THREEMONTHS"}>Three Month</option>
                   </select>
                 </th>
                 {/* <th scope="col">Savings Interest</th> */}
                 {/* <th scope="col">Borrow Interest</th> */}
                 <th
                   scope="col"
-                  style={{ width: "100px", padding: "20px 20px" }}
+                  style={{ width: "100px", padding: "35px 20px" }}
                 >
                   Supply
                 </th>
                 <th
                   scope="col"
-                  style={{ width: "100px", padding: "20px 20px" }}
+                  style={{ width: "100px", padding: "35px 20px" }}
                   colSpan={2}
                 >
                   Borrow

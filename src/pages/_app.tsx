@@ -14,7 +14,7 @@ import { DetailsProvider } from "../hooks/contextHooks/recordContext";
 import store from "../store";
 import "../assets/scss/theme.scss";
 import "./scrollbar.css";
-import {TabsProvider} from "../hooks/contextHooks/TabContext";
+import { TabsProvider } from "../hooks/contextHooks/TabContext";
 
 import { InjectedConnector, StarknetProvider } from "@starknet-react/core";
 import { SequencerProvider } from "starknet";
@@ -44,7 +44,7 @@ function MyApp({ Component, pageProps }: AppProps) {
     new InjectedConnector({ options: { id: "argentX" } }),
   ];
   return (
-    <>
+    <div style={{ backgroundColor: "#1C202F", height: "100vh" }}>
       <ErrorBoundary>
         <IdentifierProvider>
           <WagmiConfig client={wagmiClient}>
@@ -61,12 +61,12 @@ function MyApp({ Component, pageProps }: AppProps) {
                 <Provider store={store}>
                   <DetailsProvider>
                     <TabsProvider>
-                    {/* <ConnectionDetails /> */}
+                      {/* <ConnectionDetails /> */}
 
-                    <Layout>
-                      <Component {...pageProps} />
-                    </Layout>
-                    <ToastContainer />
+                      <Layout>
+                        <Component {...pageProps} />
+                      </Layout>
+                      <ToastContainer />
                     </TabsProvider>
                   </DetailsProvider>
                 </Provider>
@@ -75,7 +75,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           </WagmiConfig>
         </IdentifierProvider>
       </ErrorBoundary>
-    </>
+    </div>
   );
 }
 
