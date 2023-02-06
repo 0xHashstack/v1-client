@@ -37,9 +37,12 @@ import "react-toastify/dist/ReactToastify.css";
 import GetTokenButton from "./get-token-button";
 import OffchainAPI from "../../services/offchainapi.service";
 import "./header.module.scss";
+import useMyAccount from "../../blockchain/hooks/walletDetails/getAddress";
+import { IdentifierContext } from "../../blockchain/hooks/context/identifierContext";
+import GetBalance from "../../blockchain/hooks/walletDetails/getBalance";
 // toast.configure({ autoClose: 4000 });
 
-const Header = ({
+const PrimaryHeader = ({
   handleDisconnectWallet,
   handleConnectWallet,
 }: {
@@ -51,12 +54,11 @@ const Header = ({
   const [isTransactionDone, setIsTransactionDone] = useState(false);
   const [currentProcessingToken, setCurrentProcessingToken] = useState(null);
 
-  const { data: blockInfo } = useBlock()
+  const { data: blockInfo } = useBlock();
   const { available, connect, disconnect } = useConnectors();
   const { transactions } = useTransactionManager();
 
   const { address: account } = useAccount();
-
 
   function removeBodyCss() {
     document.body.classList.add("no_padding");
@@ -114,15 +116,24 @@ const Header = ({
   return (
     // <div className="container">
     <Container className="headerContainer">
-      <Row style={{marginTop: '5px', position: 'fixed', bottom: 0, left: '15px'}}>
+      <Row
+        style={{ marginTop: "5px", position: "fixed", bottom: 0, left: "15px" }}
+      >
         <div className="d-flex flex-wrap gap-2 block-status">
-          <div style={{color: 'rgb(255 255 255 / 50%)'}}>Latest synced block: </div>
-          <div className="sc-chPdSV hxkAVa css-x9zcw6" style={{"opacity": 0.6}}>{offchainCurrentBlock}</div>
+          <div style={{ color: "rgb(255 255 255 / 50%)" }}>
+            Latest synced block:{" "}
+          </div>
+          <div className="sc-chPdSV hxkAVa css-x9zcw6" style={{ opacity: 0.6 }}>
+            {offchainCurrentBlock}
+          </div>
           <div className="green-circle"></div>
         </div>
       </Row>
       <Row>
-        <Col className="d-flex flex-column justify-content-between" style={{padding: '0 20px'}}>
+        <Col
+          className="d-flex flex-column justify-content-between"
+          style={{ padding: "0 20px" }}
+        >
           {/* <div className="navbar"> */}
           <Navbar>
             <div className="d-flex">
@@ -211,14 +222,18 @@ const Header = ({
               </Button>
 
               <Dropdown isOpen={dropDownOpen} toggle={toggleDropdown}>
-                <DropdownToggle caret>
-                  {selected}
-                </DropdownToggle>
+                <DropdownToggle caret>{selected}</DropdownToggle>
 
                 <DropdownMenu>
-                  
-                  {options.map(option => <DropdownItem key={option} disabled onClick = {()=> handleChange(option)}>{option}</DropdownItem>)}
-                  
+                  {options.map((option) => (
+                    <DropdownItem
+                      key={option}
+                      disabled
+                      onClick={() => handleChange(option)}
+                    >
+                      {option}
+                    </DropdownItem>
+                  ))}
                 </DropdownMenu>
               </Dropdown>
               {account ? (
@@ -240,25 +255,30 @@ const Header = ({
               ) : (
                 <ConnectWallet />
               )}
-
-       
             </div>
           </Navbar>
-          {((blockInfo?.block_number || 0) - Number(offchainCurrentBlock)) > 3 ? <Container>
-            <Row>
-              <Alert
-                color="info"
-                style={{ marginTop: "10px", fontWeight: 'bold' }}
-                className="text-center"
-              >
-                ⚠️ Delay in syncing blocks. Not all data may be upto date. Current network block: {blockInfo?.block_number} ({((blockInfo?.block_number || 0) - offchainCurrentBlock)} blocks to sync)
-              </Alert>
-            </Row>
-          </Container> : <></>}
+          {(blockInfo?.block_number || 0) - Number(offchainCurrentBlock) > 3 ? (
+            <Container>
+              <Row>
+                <Alert
+                  color="info"
+                  style={{ marginTop: "10px", fontWeight: "bold" }}
+                  className="text-center"
+                >
+                  ⚠️ Delay in syncing blocks. Not all data may be upto date.
+                  Current network block: {blockInfo?.block_number} (
+                  {(blockInfo?.block_number || 0) - offchainCurrentBlock} blocks
+                  to sync)
+                </Alert>
+              </Row>
+            </Container>
+          ) : (
+            <></>
+          )}
         </Col>
       </Row>
     </Container>
   );
 };
 
-export default Header;
+export default PrimaryHeader;

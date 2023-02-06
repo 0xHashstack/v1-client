@@ -43,7 +43,7 @@
 
     .nav-item {
       .nav-link.active {
-        color: $menu-item-active-color;
+        color: white;
       }
     }
 
@@ -344,4 +344,15 @@ body[data-layout="horizontal"][data-topbar="colored"] {
       }
     }
   }
+}
+
+a.nav-link {
+  background-color: #393D4F !important;
+  color: white !important;
+}
+
+a.active.nav-link {
+  background-color: #DADEE3 !important;
+  color: black !important;
+
 }

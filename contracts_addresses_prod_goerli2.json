@@ -33,6 +33,21 @@
         "address": "0x66212ade7afb8a9be4b085d90baa7b6ceb05bf3524d79fcdd8d7aae3885aa3d",
         "CEXSymbol": "BNBUSDT",
         "pontis_key": "27705915699721060"
+      },
+      {
+        "name": "ETH",
+        "symbol": "ETH",
+        "decimals": 18,
+        "address": "0x66212ade7afb8a9be4b085d90baa7b6ceb05bf3524d79fcdd8d7aae3885aa3d",
+        "CEXSymbol": "BNBUSDT",
+        "pontis_key": "27705915699721060"
+      },      {
+        "name": "DAI",
+        "symbol": "DAI",
+        "decimals": 18,
+        "address": "0x66212ade7afb8a9be4b085d90baa7b6ceb05bf3524d79fcdd8d7aae3885aa3d",
+        "CEXSymbol": "BNBUSDT",
+        "pontis_key": "27705915699721060"
       }
     ],
     "PONTIS_PROXY_ADDRESS": "0x15b00d1cd2b0166b188625451c140dd4113c29510ded371f18123118001e283",
@@ -74,6 +89,22 @@
         "address": "0x500d61ecf16158a186d660cc069f5d66fa34fead533e2cdf386a410b0d9c10c",
         "CEXSymbol": "BNBUSDT",
         "pontis_key": "18663394631832388"
+      },
+      {
+        "name": "ETH",
+        "symbol": "ETH",
+        "decimals": 18,
+        "address": "0x66212ade7afb8a9be4b085d90baa7b6ceb05bf3524d79fcdd8d7aae3885aa3d",
+        "CEXSymbol": "BNBUSDT",
+        "pontis_key": "27705915699721060"
+      },
+      {
+        "name": "DAI",
+        "symbol": "DAI",
+        "decimals": 18,
+        "address": "0x66212ade7afb8a9be4b085d90baa7b6ceb05bf3524d79fcdd8d7aae3885aa3d",
+        "CEXSymbol": "BNBUSDT",
+        "pontis_key": "27705915699721060"
       }
     ],
     "PONTIS_PROXY_ADDRESS": "0x251c00bbf87550f3db28c4e26dce3b98c69429fe5bfe5634e978a1f9d779aea",
@@ -111,6 +142,22 @@
       {
         "name": "BNB",
         "symbol": "BNB",
+        "decimals": 18,
+        "address": "0x773540f5a62e75fa9fbc1f45cba95fbd0e12ee9157b80c2615e2cbf41eaf4be",
+        "CEXSymbol": "BNBUSDT",
+        "pontis_key": "18663394631832388"
+      },
+      {
+        "name": "ETH",
+        "symbol": "ETH",
+        "decimals": 18,
+        "address": "0x773540f5a62e75fa9fbc1f45cba95fbd0e12ee9157b80c2615e2cbf41eaf4be",
+        "CEXSymbol": "BNBUSDT",
+        "pontis_key": "18663394631832388"
+      },
+      {
+        "name": "DAI",
+        "symbol": "DAI",
         "decimals": 18,
         "address": "0x773540f5a62e75fa9fbc1f45cba95fbd0e12ee9157b80c2615e2cbf41eaf4be",
         "CEXSymbol": "BNBUSDT",

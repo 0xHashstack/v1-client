@@ -12,7 +12,11 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  NavLink,
+  NavItem,
+  Nav,
 } from "reactstrap";
+import Image from "next/image";
 import classnames from "classnames";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -29,11 +33,14 @@ import ProtocolStats from "../components/dashboard/protocol-stats";
 import RepaidLoansTab from "../components/passbook/active-tabs/repaid-loans";
 import ActiveLoansTab from "../components/passbook/active-tabs/active-loans";
 import ActiveDepositsTab from "../components/passbook/active-tabs/active-deposits";
+import BorrowTab from "../components/passbook/borrow-section/borrow";
 import DashboardMenu from "../components/dashboard/dashboard-menu";
 import PassbookMenu from "../components/passbook/passbook-menu";
 import Liquidation from "../components/liquidation/liquidation";
 import LoanBorrowCommitment from "../components/dashboard/loanborrow-commitment";
 import OffchainAPI from "../services/offchainapi.service";
+
+import arrowDown from "../assets/images/arrowDown.svg";
 import {
   getCommitmentIndex,
   getCommitmentNameFromIndexDeposit,
@@ -45,7 +52,14 @@ import { useAccount, useStarknet } from "@starknet-react/core";
 import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
 import { number } from "starknet";
 import { assert } from "console";
-import Script from 'next/script'
+import Script from "next/script";
+import StatsBoard from "../components/dashboard/stats";
+import connectWalletArrowDown from "../assets/images/connectWalletArrowDown.svg";
+import SpendLoan from "../components/passbook/Spend-loans/spendLoan";
+import SpendLoanNav from "../components/passbook/Spend-loans/spendLoan-navbar";
+// import YourSupplyBody from "../components/dashboard/supply";
+import { TabContext } from "../hooks/contextHooks/TabContext";
+import DashboardLiquid from "../components/dashboard/DashboardLiquid";
 
 interface IDeposit {
   amount: string;
@@ -77,6 +91,7 @@ interface ILoans {
 }
 
 const Dashboard = () => {
+  const [dropDownArrow, setDropDownArrow] = useState(connectWalletArrowDown);
   const [isLoading, setIsLoading] = useState(true);
   const [activeDepositsData, setActiveDepositsData] = useState<IDeposit[]>([]);
   const [activeLoansData, setActiveLoansData] = useState<ILoans[]>([]);
@@ -89,7 +104,7 @@ const Dashboard = () => {
   const [withdrawDepositTransactionDone, setWithdrawDepositTransactionDone] =
     useState(false);
 
-  const [customActiveTab, setCustomActiveTab] = useState("1");
+  // const [customActiveTab, setCustomActiveTab] = useState("1");
   // const [customActiveTabs, setCustomActiveTabs] = useState("1");
   const [loanActionTab, setLoanActionTab] = useState("0");
   const [passbookStatus, setPassbookStatus] = useState("ActiveDeposit");
@@ -132,6 +147,8 @@ const Dashboard = () => {
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
   }, [_account]);
 
+  const dappsArray = ["1", "2", "3", "4", "5", "6", "7"];
+
   const [uf, setUf] = useState(null);
   const [txHistoryData, setTxHistoryData] = useState(null);
   const [totalUsers, setTotalUsers] = useState(null);
@@ -142,6 +159,8 @@ const Dashboard = () => {
   const [withdraw_active_loan, setWithdrawActiveLoan] = useState(false);
   const [swap_active_loan, setSwapActiveLoan] = useState(true);
   const [swap_to_active_loan, setSwapToActiveLoan] = useState(false);
+  // Context hook for the CustomTab
+  const { customActiveTab, toggleCustom } = useContext(TabContext);
 
   function toggle(newIndex: string) {
     if (newIndex === index) {
@@ -316,11 +335,11 @@ const Dashboard = () => {
     }
   }, [customActiveTab]); //only call this when custom active tab changes
 
-  const toggleCustom = (tab: any) => {
-    if (customActiveTab !== tab) {
-      setCustomActiveTab(tab);
-    }
-  };
+  // const toggleCustom = (tab: any) => {
+  //   if (customActiveTab !== tab) {
+  //     setCustomActiveTab(tab);
+  //   }
+  // };
 
   const toggleCustoms = (tab: any) => {
     if (customActiveTabs !== tab) {
@@ -466,7 +485,7 @@ const Dashboard = () => {
   const getActionTabs = (customActiveTab: string) => {
     console.log("blockchain activedepoist", activeDepositsData);
     console.log("blockchain activeloans", activeLoansData);
-    // console.log("customActiveTabs: ", customActiveTabs);
+    console.log("customActiveTab: ", customActiveTab);
     switch (customActiveTab) {
       case "1":
         return (
@@ -513,6 +532,29 @@ const Dashboard = () => {
     }
   };
 
+  const borrowActionTabs = () => {
+    return (
+      <BorrowTab
+        activeLoansData={activeLoansData}
+        customActiveTabs={customActiveTabs}
+        isTransactionDone={isTransactionDone}
+        depositRequestSel={depositRequestSel}
+        // inputVal1={inputVal1}
+        removeBodyCss={removeBodyCss}
+        setCustomActiveTabs={setCustomActiveTabs}
+      />
+      // <ActiveLoansTab
+      //   activeLoansData={activeLoansData}
+      //   customActiveTabs={customActiveTabs}
+      //   isTransactionDone={isTransactionDone}
+      //   depositRequestSel={depositRequestSel}
+      //   // inputVal1={inputVal1}
+      //   removeBodyCss={removeBodyCss}
+      //   setCustomActiveTabs={setCustomActiveTabs}
+      // />
+    );
+  };
+
   function incorrectChain() {
     return (
       <div
@@ -537,61 +579,226 @@ const Dashboard = () => {
 
   function dashboardUI() {
     return (
-      <Container fluid>
-        {/* Protocol Stats */}
-        <ProtocolStats />
-        <Row>
-          <Col xl={"12"}>
-            <Card style={{ height: "35rem", overflowY: "scroll" }}>
-              <CardBody>
-                <Row>
-                  {/* Dashboard Menu Panes */}
+      <div>
+        {customActiveTab === "1" ? <StatsBoard /> : null}
+        <Container fluid style={{ backgroundColor: "transparent" }}>
+          {/* Protocol Stats */}
+          {/* <ProtocolStats /> */}
+
+          <Row>
+            <Col xl={"12"}>
+              {/* <Card style={{ height: "35rem", overflowY: "scroll" }}> */}
+              <div style={{ margin: "1px 5px 5px 14px" }}>
+                {customActiveTab === "1" ||
+                customActiveTab === "2" ||
+                customActiveTab === "3" ||
+                customActiveTab === "4" ? (
                   <DashboardMenu
                     customActiveTab={customActiveTab}
                     toggleCustom={toggleCustom}
                     account={account as string}
                   />
-
-                  {/* ----------------- PASSBOOK MENU TOGGLES -------------------- */}
-                  <Col xl="5">
-                    {customActiveTab === "2" && (
-                      <PassbookMenu
-                        account={account as string}
-                        customActiveTabs={customActiveTabs}
-                        toggleCustoms={toggleCustoms}
-                      />
-                    )}
-                  </Col>
-                </Row>
-
-                {/* ----------------- PASSBOOK BODY -------------------- */}
-                <Row>
-                  <div>
-                    <Col lg={12}>
-                      {customActiveTab === "2" &&
-                        getActionTabs(customActiveTabs)}
-                      {/* {getPassbookTable(passbookStatus)} */}
-                    </Col>
-                  </div>
-                </Row>
-
-                <TabContent activeTab={customActiveTab} className="p-1">
-                  {/* ------------------------------------- DASHBOARD ----------------------------- */}
-                  <LoanBorrowCommitment isLoading={isLoading} />
-
-                  {/* -------------------------------------- PASSBOOK ----------------------------- */}
-
-                  {/* -------------------------------------- LIQUIDATION ----------------------------- */}
-                  <Liquidation
-                    activeLiquidationsData={activeLiquidationsData}
-                    isTransactionDone={isTransactionDone}
+                ) : (
+                  <div></div>
+                )}
+              </div>
+              <div style={{ margin: "1px 5px 10px 14px" }}>
+                {customActiveTab === "6" ? (
+                  <DashboardLiquid
+                    customActiveTab={customActiveTab}
+                    toggleCustom={toggleCustom}
+                    account={account as string}
                   />
-                </TabContent>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+                ) : (
+                  <div></div>
+                )}
+              </div>
+              {customActiveTab === "3" ||
+              customActiveTab === "4" ||
+              customActiveTab === "2" ? (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      margin: "10px 18px",
+                      color: "black",
+                      fontSize: "10px",
+                    }}
+                  >
+                    <div style={{ width: "7%" }}>
+                      Total Supply
+                      <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                        $8,932.14
+                      </div>
+                    </div>
+                    <div style={{ width: "7%" }}>
+                      {" "}
+                      APR Earned
+                      <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                        $8,932.14
+                      </div>
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      position: "absolute",
+                      zIndex: "500",
+                      right: "80px",
+                      top: "60px",
+                    }}
+                  >
+                    <button
+                      style={{
+                        color: "white",
+                        backgroundColor: "black",
+                        padding: "6px 16px",
+                        borderRadius: "5px",
+                        display: "flex",
+                        alignItems: "center",
+                      }}
+                    >
+                      Active&nbsp;&nbsp;&nbsp;
+                      <Image
+                        src={dropDownArrow}
+                        alt="Picture of the author"
+                        width="14px"
+                        height="14px"
+                      />
+                    </button>
+                  </div>
+                </>
+              ) : null}
+
+              {customActiveTab === "1" ||
+              customActiveTab === "3" ||
+              customActiveTab === "4" ? (
+                <Card style={{ height: "30rem" }}>
+                  <CardBody
+                    style={{
+                      overflowX: "hidden",
+                      backgroundColor: "#2A2E3F",
+                      outline: "none",
+                      border: "none",
+                      boxShadow: "0px 0px 1px 1px #181728",
+                    }}
+                  >
+                    {" "}
+                    {customActiveTab === "1" ? (
+                      <LoanBorrowCommitment isLoading={isLoading} />
+                    ) : null}
+                    <Row>
+                      <div>
+                        <Col lg={12}>
+                          {customActiveTab === "3"
+                            ? getActionTabs(customActiveTabs)
+                            : null}
+                        </Col>
+                      </div>
+                    </Row>
+                    <Row>
+                      <div>
+                        <Col lg={12}>
+                          {customActiveTab === "4" ? borrowActionTabs() : null}
+                        </Col>
+                      </div>
+                    </Row>
+                  </CardBody>
+                </Card>
+              ) : (
+                <>
+                  <TabContent activeTab={customActiveTab} className="p-1">
+                    <Row>
+                      <div>
+                        <Col lg={12}>
+                          {customActiveTab === "6" ? (
+                            <div style={{ color: "black" }}>
+                              <Liquidation
+                                activeLiquidationsData={activeLiquidationsData}
+                                isTransactionDone={isTransactionDone}
+                              />
+                            </div>
+                          ) : null}
+                        </Col>
+                      </div>
+                    </Row>
+                  </TabContent>
+                </>
+              )}
+
+              {customActiveTab === "2" ? (
+                <>
+                  {" "}
+                  <Card
+                    style={{
+                      height: "15rem",
+                      overflowY: "scroll",
+                    }}
+                  >
+                    <CardBody
+                      style={{
+                        backgroundColor: "white",
+                        overflowX: "hidden",
+                        marginTop: "-20px",
+                      }}
+                    >
+                      <Row style={{ backgroundColor: "black", height: "40px" }}>
+                        {customActiveTab === "2" ? <SpendLoan /> : null}
+                      </Row>
+                    </CardBody>
+                  </Card>
+                  <div style={{ color: "black", margin: "10px 0" }}>
+                    &nbsp; &nbsp; Only unspent loans are displayed here. For
+                    comprehensive list of active loansgo to{" "}
+                    <u style={{ cursor: "pointer" }}>your borrow</u>
+                  </div>
+                  <SpendLoanNav />
+                  <div
+                    style={{
+                      fontSize: "16px",
+                      marginLeft: "15px",
+                      color: "black",
+                    }}
+                  >
+                    Select Dapp to begin with the spend
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-betwwen",
+                      gap: "120px",
+                      margin: "10px 15px",
+                    }}
+                  >
+                    {dappsArray.map((dapp, index) => {
+                      return (
+                        <div>
+                          <img src={`./dapps/${dapp}.svg`} height="90px" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-betwwen",
+                      gap: "120px",
+                      margin: "10px 15px",
+                    }}
+                  >
+                    {dappsArray.map((dapp, index) => {
+                      return (
+                        <div>
+                          <img src={`./dapps/${dapp}.svg`} height="90px" />
+                        </div>
+                      );
+                    })}
+                  </div>
+                </>
+              ) : null}
+            </Col>
+          </Row>
+        </Container>
+      </div>
     );
   }
 
@@ -624,7 +831,12 @@ const Dashboard = () => {
   }
 
   return (
-    <React.Fragment>
+    // <React.Fragment>
+    <div
+      style={{
+        backgroundColor: "#1C202F",
+      }}
+    >
       <Head>
         <title>Hashstack | Starknet testnet</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
@@ -632,6 +844,7 @@ const Dashboard = () => {
 
       {/* testnet.hashstack.finance */}
       <Script id="microsoft-clarity-testnet" strategy="afterInteractive">
+<<<<<<< HEAD
           {`
             if (!window.location.host.includes('localhost')) {
               (function(c,l,a,r,i,t,y){
@@ -640,10 +853,19 @@ const Dashboard = () => {
                 y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
               })(window, document, "clarity", "script", "f0nuusees0");
             }
+=======
+        {`
+            (function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "f0nuusees0");
+>>>>>>> colorui-hs
           `}
       </Script>
 
       {/* zk.hashstack.finance */}
+<<<<<<< HEAD
       {/* <Script id="microsoft-clarity-zk" strategy="afterInteractive">
           {`
             if (!window.location.host.includes('localhost')) {
@@ -653,28 +875,45 @@ const Dashboard = () => {
                 y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
               })(window, document, "clarity", "script", "f0rc7ez2pl");
             }
+=======
+      <Script id="microsoft-clarity-zk" strategy="afterInteractive">
+        {`
+            (function(c,l,a,r,i,t,y){
+              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+            })(window, document, "clarity", "script", "f0rc7ez2pl");
+>>>>>>> colorui-hs
           `}
       </Script> */}
 
-      <div className="page-content" style={{ marginTop: "0px" }}>
+      <div
+        className="page-content"
+        style={{
+          marginTop: "0px",
+          zIndex: "100",
+          backgroundColor: "#1C202F",
+        }}
+      >
         {/* <MetaTags>
           <title>Hashstack Finance</title>
         </MetaTags> */}
         {/* {maintenance()} */}
-
+        {dashboardUI()}
         {/* <Banner /> */}
-        {!starknetAccount ? (
+        {/* {!starknetAccount ? (
           <h3>Loading...</h3>
         ) : !isCorrectNetwork() ? (
           incorrectChain()
         ) : (
           dashboardUI()
-        )}
+        )} */}
 
         {/* <Analytics></Analytics>
             {props.children} */}
       </div>
-    </React.Fragment>
+      {/* // </React.Fragment> */}
+    </div>
   );
 };
 

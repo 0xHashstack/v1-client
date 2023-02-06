@@ -6,12 +6,19 @@ import "./index.module.scss";
 import { useSelector, useDispatch } from "react-redux";
 
 import Footer from "./footer";
-import Header from "./header";
+import PrimaryHeader from "./primaryHeader";
 
 import "react-toastify/dist/ReactToastify.css";
 import "./index.module.scss";
-import { Connector, useAccount, useConnectors, useStarknet } from "@starknet-react/core";
+import {
+  Connector,
+  useAccount,
+  useConnectors,
+  useStarknet,
+} from "@starknet-react/core";
 import { ConnectWallet } from "../wallet";
+import SecondaryHeader from "./temporaryHeader";
+import StatsBoard from "../dashboard/stats";
 
 const Layout = (props: any) => {
   const dispatch = useDispatch();
@@ -55,40 +62,50 @@ const Layout = (props: any) => {
   }, [isPreloader]);
 
   function switchScreens() {
-    if (!account) {
-      return (
-        <Container>
-          <Row style={{ marginTop: "25ch" }}>
-            <Col lg="12">
-              <div className="text-center mb-5">
-                <h4 className="font-weight-medium">
-                  Welcome to Hashstack&apos;s public testnet !!
-                </h4>
-                <ConnectWallet />
-              </div>
-            </Col>
-          </Row>
-        </Container>
-      );
-    } else if (account) {
-      return (
-        <div id="layout-wrapper">
-          <Header
-            handleConnectWallet={handleConnectWallet}
-            handleDisconnectWallet={() => disconnect()}
-          />
-          <div
-            style={{ marginLeft: "200px", marginRight: "200px" }}
-            className="main-content"
-          >
-            {props.children}
-          </div>
-          <Footer />
-        </div>
-      );
-    } else {
-      return null;
-    }
+    // if (account) {
+    return (
+      <>
+        <SecondaryHeader
+          handleConnectWallet={handleConnectWallet}
+          handleDisconnectWallet={() => disconnect()}
+        />
+        <div className="main-content">{props.children}</div>
+
+        {/* <Footer /> */}
+
+        {/* <Container>
+            <Row style={{ marginTop: "25ch" }}>
+              <Col lg="12">
+                <div className="text-center mb-5">
+                  <h4 className="font-weight-medium">
+                    Welcome to Hashstack&apos;s public testnet !!
+                  </h4>
+                  <ConnectWallet />
+                </div>
+              </Col>
+            </Row>
+          </Container> */}
+      </>
+    );
+    // } else if (!account) {
+    //   return (
+    //     <div id="layout-wrapper">
+    //       <PrimaryHeader
+    //         handleConnectWallet={handleConnectWallet}
+    //         handleDisconnectWallet={() => disconnect()}
+    //       />
+    //   <div
+    //     style={{ marginLeft: "200px", marginRight: "200px" }}
+    //     className="main-content"
+    //   >
+    //     {props.children}
+    //   </div>
+    //   <Footer />
+    // </div>
+    //   );
+    // } else {
+    //   return null;
+    // }
   }
 
   return (

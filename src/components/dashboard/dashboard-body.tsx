@@ -21,6 +21,10 @@ const Coins: ICoin[] = [
     icon: "mdi-bitcoin",
   },
   { name: "BNB", icon: "mdi-drag-variant" },
+
+  { name: "ETH", icon: "mdi-ethereum" },
+
+  { name: "DAI", icon: "mdi-dai" },
 ];
 
 let DashboardTBody: any = ({
