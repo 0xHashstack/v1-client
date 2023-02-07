@@ -220,7 +220,7 @@ const LiquidationButton = ({
         <Button
           // className="text-muted"
           color="light"
-          style={{ color: "black" }}
+          style={{ color: "white",backgroundColor: "rgb(57, 61, 79)" }}
           outline
           onClick={async () => {
             // reset()
@@ -245,6 +245,7 @@ const LiquidationButton = ({
         <Button
           className="text-muted"
           color="light"
+          style={{backgroundColor: "rgb(57, 61, 79)" }}
           outline
           onClick={async () => {
             // reset()
@@ -278,10 +279,10 @@ const Liquidation = ({
 }) => {
   return (
     <TabPane tabId="3">
-      <div className="table-responsive">
+      <div className="table-responsive" style={{backgroundColor: "rgb(42, 46, 63)"}}>
         <Table className="table table-nowrap align-middle mb-0">
           <thead>
-            <tr style={{ color: "black" }}>
+            <tr style={{ color: "rgb(140, 140, 140)" }}>
               <th scope="col">Debt Market</th>
               <th scope="col"> Amount</th>
               <th scope="col">Collateral Market</th>
@@ -298,7 +299,7 @@ const Liquidation = ({
             {Array.isArray(activeLiquidationsData) &&
             activeLiquidationsData.length > 0 ? (
               activeLiquidationsData.map((asset, key) => (
-                <tr key={key} style={{ color: "black" }}>
+                <tr key={key} style={{ color: "white" }}>
                   <th scope="row">
                     <div className="d-flex align-items-center">
                       <div className="avatar-xs me-3">
@@ -314,7 +315,19 @@ const Liquidation = ({
                     </div>
                   </th>
                   <td>
-                    <div>{BNtoNum(Number(asset.loanAmount))}</div>
+                    <div >{BNtoNum(Number(asset.loanAmount))}
+                    <div >
+                    <img
+                       style={{scale:"0.7"}}
+                          src={
+                            CoinClassNames[
+                              EventMap[asset.collateralMarket.toUpperCase()]
+                            ] || asset.collateralMarket.toUpperCase()
+                          }
+                        />
+                        <span style={{scale:"0.7"}}>USDT</span>
+                    </div>
+                    </div>
                   </td>
                   <th scope="row">
                     <div className="d-flex align-items-center">
@@ -333,7 +346,8 @@ const Liquidation = ({
                     </div>
                   </th>
                   <td>
-                    <div>{BNtoNum(Number(asset.collateralAmount))}</div>
+                    <div>{BNtoNum(Number(asset.collateralAmount))}
+                    </div>
                   </td>
                   <td>
                     <div>
@@ -382,7 +396,7 @@ const Liquidation = ({
                       10%
                     </div>
                   </td>
-                  <td>
+                  <td >
                     <LiquidationButton
                       loan={asset}
                       isTransactionDone={isTransactionDone}
@@ -401,7 +415,7 @@ const Liquidation = ({
           <Button
             className="d-flex align-items-center"
             color="light"
-            style={{ color: "black", margin: "2px 0px" }}
+            style={{ color: "white", margin: "2px 0px",backgroundColor: "rgb(57, 61, 79)" }}
             outline
             onClick={() => {
               // increaseLiquidationIndex;

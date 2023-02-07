@@ -397,8 +397,8 @@ let Deposit: any = ({ asset }: { asset: string }) => {
         <div
           className="modal-body"
           style={{
-            backgroundColor: "white",
-            color: "black",
+            backgroundColor: "#1D2131",
+            color: "white",
             padding: "40px",
           }}
         >
@@ -406,7 +406,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
             <Form>
               <div className="row mb-4">
                 <Col sm={8}>
-                  <h5 style={{ color: "black" }}>Supply</h5>
+                  <h5 style={{ color: "white" }}>Supply</h5>
                 </Col>
 
                 <label
@@ -578,8 +578,9 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                         margin: "0px auto",
                         marginBottom: "20px",
                         padding: "5px 10px",
-                        backgroundColor: "#F8F8F8",
+                        backgroundColor: "rgb(42, 46, 63)",
                         boxShadow: "0px 0px 10px #00000020",
+
                       }}
                     >
                       <div
@@ -640,7 +641,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     <InputGroup>
                       <Input
                         style={{
-                          backgroundColor: "white",
+                          backgroundColor: "#1D2131",
                           borderRight: "1px solid #FFF",
                         }}
                         type="number"
@@ -679,9 +680,9 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                             onClick={handleMax}
                             // disabled={balance ? false : true}
                             style={{
-                              background: "white",
-                              color: "black",
-                              border: "1px solid black",
+                              background: "#1D2131",
+                              color: "rgb(111, 111, 111)",
+                              border: "1px solid rgb(57, 61, 79)",
                               borderLeft: "none",
                             }}
                           >
@@ -784,14 +785,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     </select>
                   </Col>
                 </div>
-<<<<<<< HEAD
-              </FormGroup>
-              <UncontrolledAlert color="primary">
-                <b>Note:</b> You need not make a deposit to borrow. Collateral will be taken from you when you borrow.
-              </UncontrolledAlert>
-=======
               </FormGroup> */}
->>>>>>> colorui-hs
               <div className="d-grid gap-2">
                 {/* {allowanceVal < (depositAmount as number) ? (
                   <Button
@@ -833,7 +827,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}>
                       $ 0.50
                     </div>
                   </div>
@@ -845,7 +839,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply APR:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600", color:"rgb(111, 111, 111)" }}>
                       7.75 %
                     </div>
                   </div>
@@ -859,7 +853,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     <div style={{ color: "#6F6F6F" }}>
                       Asset Utilization Rate:
                     </div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}>
                       0.43
                     </div>
                   </div>
@@ -871,13 +865,14 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}>
                       Starknet
                     </div>
                   </div>
                 </div>
                 <Button
-                  color="primary"
+                  color="white"
+                  style={{backgroundColor: "rgb(57, 61, 79)",color:"white"}}
                   className="w-md"
                   disabled={
                     commitPeriod === undefined ||

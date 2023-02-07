@@ -22,12 +22,12 @@ const SpendLoan = () => {
           style={{
             // width: "92.77vw",
 
-            color: "white",
+            color: "rgb(140, 140, 140)",
             fontWeight: "600",
             alignItems: "center",
             gap: "60px",
             fontSize: "11px",
-            backgroundColor: "black",
+            backgroundColor: "rgb(42, 46, 63)",
             textAlign: "left",
           }}
         >
@@ -57,7 +57,7 @@ const SpendLoan = () => {
         </Row>
         {/* </Table> */}
       </Table>
-
+      
       <SpendLoanData />
     </>
   );

@@ -405,7 +405,7 @@ const BorrowData = ({
         open="false"
         style={{
           margin: "10px",
-          color: "black",
+          color: "white",
           textAlign: "left",
         }}
       >
@@ -624,7 +624,9 @@ const BorrowData = ({
           <Col>
             <button
               style={{
-                backgroundColor: "white",
+                backgroundColor: "rgb(57, 61, 79)",
+                color:"white",
+                border:"none",
                 borderRadius: "5px",
                 padding: "8px 15px",
               }}
@@ -999,8 +1001,8 @@ const BorrowData = ({
         <div
           className="modal-body"
           style={{
-            backgroundColor: "white",
-            color: "black",
+            backgroundColor: "#1D2131",
+            color: "white",
             padding: "40px",
           }}
         >
@@ -1064,7 +1066,7 @@ const BorrowData = ({
                   </Nav>
                 </Col>
 
-                <div style={{ fontSize: "12px", paddingTop: "10px" }}>
+                <div style={{ fontSize: "12px", paddingTop: "10px",color:"rgb(111, 111, 111)" }}>
                   Loan ID = {asset.loanId}
                 </div>
 
@@ -1554,6 +1556,7 @@ const BorrowData = ({
                         style={{
                           display: "flex",
                           fontSize: "10px",
+                          color:"rgb(111, 111, 111)"
                         }}
                       >
                         Borrowed Amount
@@ -1561,7 +1564,7 @@ const BorrowData = ({
                       <InputGroup>
                         <Input
                           style={{
-                            backgroundColor: "white",
+                            backgroundColor: "#1D2131",
                             padding: "10px ",
                             marginTop: "5px",
                           }}
@@ -1635,6 +1638,7 @@ const BorrowData = ({
                           display: "flex",
                           fontSize: "10px",
                           marginTop: "15px",
+                          color:"rgb(111, 111, 111)"
                         }}
                       >
                         Collateral Amount
@@ -1642,7 +1646,7 @@ const BorrowData = ({
                       <InputGroup>
                         <Input
                           style={{
-                            backgroundColor: "white",
+                            backgroundColor: "#1D2131",
                             padding: "10px ",
                             marginTop: "5px",
                           }}
@@ -1750,7 +1754,7 @@ const BorrowData = ({
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
                       $ 0.50
                     </div>
                   </div>
@@ -1762,7 +1766,7 @@ const BorrowData = ({
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Debt Category:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
                       DC1/DC2/DC3
                     </div>
                   </div>
@@ -1776,7 +1780,7 @@ const BorrowData = ({
                     <div style={{ color: "#6F6F6F" }}>
                       Estimated collateral return:
                     </div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
                       <img src={`./BTC.svg`} width="8px" /> 1
                     </div>
                   </div>
@@ -1788,7 +1792,7 @@ const BorrowData = ({
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
                       Starknet
                     </div>
                   </div>
@@ -1796,6 +1800,8 @@ const BorrowData = ({
                 <Button
                   color="primary"
                   className="w-md"
+                  style={{backgroundColor:"rgb(57, 61, 79)",border:"none"}}
+
                   disabled={
                     commitPeriod === undefined ||
                     loadingApprove ||

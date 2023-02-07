@@ -358,7 +358,7 @@ const ActiveDeposit = ({
         open="false"
         style={{
           margin: "10px",
-          color: "black",
+          color: "white",
           textAlign: "left",
         }}
       >
@@ -469,9 +469,11 @@ const ActiveDeposit = ({
           <Col>
             <button
               style={{
-                backgroundColor: "white",
+                backgroundColor: "rgb(57, 61, 79)",
                 borderRadius: "5px",
                 padding: "8px 15px",
+                color:"white",
+                border:"none"
               }}
               onClick={() => {
                 // setAction(!action);
@@ -732,8 +734,8 @@ const ActiveDeposit = ({
         <div
           className="modal-body"
           style={{
-            backgroundColor: "white",
-            color: "black",
+            backgroundColor: "#1D2131",
+            color: "white",
             padding: "40px",
           }}
         >
@@ -892,7 +894,7 @@ const ActiveDeposit = ({
                     <InputGroup>
                       <Input
                         style={{
-                          backgroundColor: "white",
+                          backgroundColor: "#1D2131",
                           padding: "10px ",
                           borderRight: "1px solid #FFF",
                         }}
@@ -915,13 +917,13 @@ const ActiveDeposit = ({
                             // onClick={handleMax}
                             // disabled={balance ? false : true}
                             style={{
-                              background: "white",
-                              color: "black",
-                              border: "1px solid black",
+                              background: "#1D2131",
+                              color: "white",
+                              border: "1px solid rgb(57, 61, 79)",
                               borderLeft: "none",
                             }}
                           >
-                            <span style={{ borderBottom: "2px dotted #fff" }}>
+                            <span style={{ borderBottom: "2px dotted #fff",color:"rgb(111, 111, 111)" }}>
                               MAX
                             </span>
                           </Button>
@@ -935,6 +937,7 @@ const ActiveDeposit = ({
                         fontSize: "10px",
                         justifyContent: "end",
                         marginTop: "4px",
+                        // color:"rgb(111, 111, 111)"
                       }}
                     >
                       Available:&nbsp;
@@ -1014,7 +1017,7 @@ const ActiveDeposit = ({
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)"  }}>
                       $ 0.50
                     </div>
                   </div>
@@ -1026,7 +1029,7 @@ const ActiveDeposit = ({
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply APR:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)"  }}>
                       7.75 %
                     </div>
                   </div>
@@ -1040,7 +1043,7 @@ const ActiveDeposit = ({
                     <div style={{ color: "#6F6F6F" }}>
                       Asset Utilization Rate:
                     </div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600" ,color:"rgb(111, 111, 111)" }}>
                       0.43
                     </div>
                   </div>
@@ -1052,13 +1055,14 @@ const ActiveDeposit = ({
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600" ,color:"rgb(111, 111, 111)" }}>
                       Starknet
                     </div>
                   </div>
                 </div>
                 <Button
-                  color="primary"
+                  style={{backgroundColor:"rgb(57, 61, 79)",color:"white",border:"none",}}
+                  color="white"
                   className="w-md"
                   disabled={
                     commitPeriod === undefined ||

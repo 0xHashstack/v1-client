@@ -796,7 +796,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       marginBottom: "20px",
                       padding: "5px 10px",
                       backgroundColor: "#F8F8F8",
-                      boxShadow: "0px 0px 10px #00000020",
+                      boxShadow: "0px 0px 10px #0020",
                     }}
                   >
                     {coins.map((coin, index) => {
