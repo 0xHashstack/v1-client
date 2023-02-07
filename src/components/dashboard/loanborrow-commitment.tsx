@@ -138,44 +138,6 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
                   Borrow
                 </th>
               </tr>
-              {/* <tr>
-              <th scope="col"></th>
-              <th scope="col">
-                <select
-                  className="form-select form-select-sm"
-                  onChange={(e) => {
-                    setDepositCommitment(
-                      getCommitmentIndexStringFromNameDeposit(
-                        e.target.value
-                      ) as string
-                    );
-                  }}
-                  defaultValue={"NONE"}
-                >
-                  <option value={"NONE"}>Flexible</option>
-                  <option value={"TWOWEEKS"}>Two Weeks</option>
-                  <option value={"ONEMONTH"}>One Month</option>
-                  <option value={"THREEMONTHS"}>Three Month</option>
-                </select>
-              </th>
-              <th scope="col">
-                <select
-                  className="form-select form-select-sm"
-                  onChange={(e) => {
-                    setBorrowCommitment(
-                      getCommitmentIndexStringFromNameLoan(
-                        e.target.value
-                      ) as string
-                    );
-                  }}
-                  defaultValue={"NONE"}
-                >
-                  <option hidden>Commitment</option>
-                  <option value={"NONE"}>Flexible</option>
-                  <option value={"ONEMONTH"}>One Month</option>
-                </select>
-              </th>
-            </tr> */}
             </thead>
             <tbody>
               <DashboardTBody
