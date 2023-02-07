@@ -12,12 +12,7 @@ import {
   Label,
   FormText,
   FormFeedback,
-<<<<<<< HEAD
-  Alert,
-  UncontrolledAlert,
-=======
   NavLink,
->>>>>>> colorui-hs
 } from "reactstrap";
 
 import Slider from "react-custom-slider";
@@ -1308,15 +1303,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     <></>
                   )}
                 </Col>
-<<<<<<< HEAD
-              </div>
-            
-              <UncontrolledAlert color="primary">
-                <b>Note:</b> You need not make a deposit to borrow. Collateral will be taken in this transaction as specified above.
-              </UncontrolledAlert>
-=======
               </div> */}
->>>>>>> colorui-hs
               <div className="d-grid gap-2">
                 {/* {allowanceVal < (borrowParams.collateralAmount as number) ? (
                   <Button
@@ -1357,19 +1344,6 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       margin: "3px 0",
                     }}
                   >
-<<<<<<< HEAD
-                    {!(
-                      loadingApprove ||
-                      isTransactionLoading(requestBorrowTransactionReceipt)
-                    ) ? (
-                      "Transfer collateral & Request Loan"
-                    ) : (
-                      <MySpinner text="Borrowing token" />
-                    )}
-                  </Button>
-                {/* ) */}
-                {/* } */}
-=======
                     <div style={{ color: "#6F6F6F" }}>Spend loan on:</div>
                     <div
                       style={{
@@ -1536,7 +1510,6 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     <MySpinner text="Borrowing token" />
                   )}
                 </Button>
->>>>>>> colorui-hs
               </div>
             </Form>
           ) : (

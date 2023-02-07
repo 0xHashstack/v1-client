@@ -466,95 +466,6 @@ const ActiveDeposit = ({
 
           <Col>Active</Col>
 
-<<<<<<< HEAD
-                                <div className="d-grid gap-2">
-                                  {/* {allowanceVal < (depositAmount as number) ? (
-                                    <Button
-                                      color="primary"
-                                      className="w-md"
-                                      disabled={
-                                        depositCommit === undefined ||
-                                        loadingApprove ||
-                                        loadingDeposit ||
-                                        (depositAmount as number) <
-                                          MinimumAmount[asset]
-                                      }
-                                      onClick={(e) => handleApprove(asset)}
-                                    >
-                                      {/* setApproveStatus(transactions[0]?.status); *}
-                                      {!(
-                                        loadingApprove ||
-                                        isTransactionLoading(
-                                          approveTransactionReceipt
-                                        )
-                                      ) ? (
-                                        "Approve"
-                                      ) : (
-                                        <MySpinner text="Approvin token" />
-                                      )}
-                                    </Button>
-                                  ) : ( */}
-                                    <Button
-                                      color="primary"
-                                      className="w-md"
-                                      disabled={
-                                        depositCommit === undefined ||
-                                        loadingApprove ||
-                                        loadingDeposit ||
-                                        (depositAmount as number) <
-                                          MinimumAmount[asset]
-                                      }
-                                      onClick={(e) => DepositAmount(asset)}
-                                    >
-                                      {!(
-                                        loadingApprove ||
-                                        isTransactionLoading(
-                                          addDepositTransactionReceipt
-                                        )
-                                      ) ? (
-                                        "Approve & Deposit"
-                                      ) : (
-                                        <MySpinner text="Adding Deposit" />
-                                      )}
-                                    </Button>
-                                  {/* )} */}
-                                </div>
-                              </Form>
-                            )}
-                            {modal_withdraw_active_deposit && (
-                              <Form>
-                                <div className="row mb-4">
-                                  <Col sm={12}>
-                                    <Input
-                                      type="text"
-                                      className="form-control"
-                                      id="horizontal-password-Input"
-                                      placeholder="Amount"
-                                      onChange={(event) => {
-                                        setWithdrawAmount(
-                                          Number(event.target.value)
-                                        );
-                                      }}
-                                      value={withdrawAmount}
-                                    />
-                                    <RangeSlider
-                                      value={value}
-                                      step={25}
-                                      tooltip="on"
-                                      tooltipLabel={(v) => `${v} %`}
-                                      onChange={(changeEvent) =>
-                                        setValue(
-                                          parseFloat(changeEvent.target.value)
-                                        )
-                                      }
-                                      style={{
-                                        width: "100%",
-                                        marginTop: "12px",
-                                      }}
-                                    />
-                                  </Col>
-                                </div>
-=======
           <Col>
             <button
               style={{
@@ -570,7 +481,6 @@ const ActiveDeposit = ({
               Actions
             </button>
           </Col>
->>>>>>> colorui-hs
 
           {/* <Col className="mr-4 ">
             <div>

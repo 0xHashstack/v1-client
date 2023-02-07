@@ -108,27 +108,6 @@ const LiquidationButton = ({
     },
   });
 
-<<<<<<< HEAD
-	const {
-		data: dataLiquidate,
-		loading: liquidating,
-		error: errorLiquidate,
-		reset: reset,
-		execute: liquidate,
-	} = useStarknetExecute({
-		calls: [
-			{
-				contractAddress: loanTokenAddress,
-				entrypoint: "approve",
-				calldata: [diamondAddress, loan.loanAmount, 0],
-			}, {
-				contractAddress: diamondAddress,
-				entrypoint: "liquidate",
-				calldata: [loan.id],
-			},
-		]
-	});
-=======
   const {
     data: dataLiquidate,
     loading: liquidating,
@@ -142,7 +121,6 @@ const LiquidationButton = ({
       calldata: [loan.id],
     },
   });
->>>>>>> colorui-hs
 
   function handleToast(isError: boolean, tag: string, msg: string) {
     if (!isError) {
@@ -235,84 +213,6 @@ const LiquidationButton = ({
     }
   }, [dataLiquidate, liquidate, errorLiquidate]);
 
-<<<<<<< HEAD
-	useEffect(() => {
-		console.log('handleLiquidation', {
-			dataLiquidate, liquidate, errorLiquidate, reset,
-			loanId: loan
-
-		})
-		if(!liquidating) {
-			if(loadingMsg == "Liquidating...") {
-				if(dataLiquidate) {
-					setLoadingMsg("Liquidated")
-				} else if(errorLiquidate) {
-					handleToast(true, "Liquidation", errorLiquidate)
-					setCanLiquidate(true)
-					setLoadingMsg("")
-				}
-			}
-		} else {
-			setCanLiquidate(false)
-			setLoadingMsg("Liquidating...")
-		}
-	}, [dataLiquidate, liquidate, errorLiquidate])
-
-
-	return <>
-
-			{loadingMsg ? <>{loadingMsg}</> : <></>}
-			{/* {
-				shouldApprove ? 
-				(<Button
-					className='text-muted'
-					color='light'
-					outline
-					onClick={async () => {
-						// reset()
-						try {
-							const val = await approveToken()
-							setTransApprove(val.transaction_hash)
-						} catch(err) {
-							console.log(err, 'err approve for liquidation')
-						}
-						
-					}}
-				>
-					{isTransactionLoading(approveTransactionReceipt) ? (
-						<MySpinner text='Approving token'/>
-					) : (
-						<>Approve</>
-					)}
-				</Button> ) : <></>} */}
-			{/* {	canLiquidate ?  */}
-			<Button
-					className='text-muted'
-					color='light'
-					outline
-					onClick={async () => {
-						// reset()
-						try {
-							const val = await liquidate()
-							setTransLiquidate(val.transaction_hash)
-						} catch(err) {
-							console.log(err, 'err liquidation')
-						}
-						
-					}}
-				>
-					{isTransactionLoading(liquidateTransactionReceipt) ? (
-						<MySpinner text='Liquidating'/>
-					) : (
-						<>Approve & Liquidate</>
-					)}
-				</Button>
-				  {/* : <></> */}
-			{/* } */}
-
-		</>
-}
-=======
   return (
     <>
       {loadingMsg ? <>{loadingMsg}</> : <></>}
@@ -320,7 +220,7 @@ const LiquidationButton = ({
         <Button
           // className="text-muted"
           color="light"
-          style={{color:"black"}}
+          style={{ color: "black" }}
           outline
           onClick={async () => {
             // reset()
@@ -368,7 +268,6 @@ const LiquidationButton = ({
     </>
   );
 };
->>>>>>> colorui-hs
 
 const Liquidation = ({
   activeLiquidationsData,
@@ -382,7 +281,7 @@ const Liquidation = ({
       <div className="table-responsive">
         <Table className="table table-nowrap align-middle mb-0">
           <thead>
-            <tr style={{color:"black"}}>
+            <tr style={{ color: "black" }}>
               <th scope="col">Debt Market</th>
               <th scope="col"> Amount</th>
               <th scope="col">Collateral Market</th>
@@ -399,7 +298,7 @@ const Liquidation = ({
             {Array.isArray(activeLiquidationsData) &&
             activeLiquidationsData.length > 0 ? (
               activeLiquidationsData.map((asset, key) => (
-                <tr key={key} style={{color:"black"}}>
+                <tr key={key} style={{ color: "black" }}>
                   <th scope="row">
                     <div className="d-flex align-items-center">
                       <div className="avatar-xs me-3">
@@ -415,9 +314,7 @@ const Liquidation = ({
                     </div>
                   </th>
                   <td>
-                    <div >
-                      {BNtoNum(Number(asset.loanAmount))}
-                    </div>
+                    <div>{BNtoNum(Number(asset.loanAmount))}</div>
                   </td>
                   <th scope="row">
                     <div className="d-flex align-items-center">
@@ -436,12 +333,10 @@ const Liquidation = ({
                     </div>
                   </th>
                   <td>
-                    <div >
-                      {BNtoNum(Number(asset.collateralAmount))}
-                    </div>
+                    <div>{BNtoNum(Number(asset.collateralAmount))}</div>
                   </td>
                   <td>
-                    <div  >
+                    <div>
                       {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Risk Premium value */}
@@ -449,7 +344,7 @@ const Liquidation = ({
                     </div>
                   </td>
                   <td>
-                    <div  >
+                    <div>
                       {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Debt Converted*/}
@@ -457,22 +352,22 @@ const Liquidation = ({
                     </div>
                   </td>
                   <td>
-                    <div  >
+                    <div>
                       {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Converted Market*/}
-                       <img
-                          src={
-                            CoinClassNames[
-                              EventMap[asset.collateralMarket.toUpperCase()]
-                            ] || asset.collateralMarket.toUpperCase()
-                          }
-                        />
-                        BTC
+                      <img
+                        src={
+                          CoinClassNames[
+                            EventMap[asset.collateralMarket.toUpperCase()]
+                          ] || asset.collateralMarket.toUpperCase()
+                        }
+                      />
+                      BTC
                     </div>
                   </td>
                   <td>
-                    <div >
+                    <div>
                       {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Amount*/}
@@ -480,7 +375,7 @@ const Liquidation = ({
                     </div>
                   </td>
                   <td>
-                    <div  >
+                    <div>
                       {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Amount*/}
@@ -506,9 +401,8 @@ const Liquidation = ({
           <Button
             className="d-flex align-items-center"
             color="light"
-            style={{color:"black",margin:"2px 0px"}}
+            style={{ color: "black", margin: "2px 0px" }}
             outline
-            
             onClick={() => {
               // increaseLiquidationIndex;
             }}

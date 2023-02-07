@@ -844,8 +844,7 @@ const Dashboard = () => {
 
       {/* testnet.hashstack.finance */}
       <Script id="microsoft-clarity-testnet" strategy="afterInteractive">
-<<<<<<< HEAD
-          {`
+        {`
             if (!window.location.host.includes('localhost')) {
               (function(c,l,a,r,i,t,y){
                 c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -853,19 +852,10 @@ const Dashboard = () => {
                 y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
               })(window, document, "clarity", "script", "f0nuusees0");
             }
-=======
-        {`
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "f0nuusees0");
->>>>>>> colorui-hs
           `}
       </Script>
 
       {/* zk.hashstack.finance */}
-<<<<<<< HEAD
       {/* <Script id="microsoft-clarity-zk" strategy="afterInteractive">
           {`
             if (!window.location.host.includes('localhost')) {
@@ -875,15 +865,6 @@ const Dashboard = () => {
                 y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
               })(window, document, "clarity", "script", "f0rc7ez2pl");
             }
-=======
-      <Script id="microsoft-clarity-zk" strategy="afterInteractive">
-        {`
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "f0rc7ez2pl");
->>>>>>> colorui-hs
           `}
       </Script> */}
 
