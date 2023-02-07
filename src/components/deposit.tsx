@@ -251,8 +251,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
   };
 
   const handleDepositAmountChange = (e: any) => {
-    if (e.target.value) setDepositAmount(Number(e.target.value));
-    else setDepositAmount(0);
+     setDepositAmount(e.target.value);
   };
 
   const handleBalanceChange = async () => {
@@ -263,7 +262,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
   const handleMax = async () => {
     // if (dataBalance) {
     setDepositAmount(
-      Number(uint256.uint256ToBN(dataBalance[0] || 0)) / 10 ** 18
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
     );
     // }
   };
@@ -421,6 +420,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                   }}
                 >
                   <div
+                    onClick={toggleDropdown}
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
@@ -445,7 +445,6 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                       }}
                     >
                       <Image
-                        onClick={toggleDropdown}
                         src={dropDownArrow}
                         alt="Picture of the author"
                         width="20px"
@@ -477,6 +476,12 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                   }}
                 >
                   <div
+                    onClick={() => {
+                      setCommitmentDropDown(!commitmentDropDown);
+                      setCommitmentArrow(
+                        commitmentDropDown ? arrowDown : arrowUp
+                      );
+                    }}
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
@@ -494,12 +499,6 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                       }}
                     >
                       <Image
-                        onClick={() => {
-                          setCommitmentDropDown(!commitmentDropDown);
-                          setCommitmentArrow(
-                            commitmentDropDown ? arrowDown : arrowUp
-                          );
-                        }}
                         src={commitmentArrow}
                         alt="Picture of the author"
                         width="20px"
@@ -732,7 +731,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                         onChange={(value: any) => {
                           setDepositAmount(
                             (value *
-                              (Number(uint256.uint256ToBN(dataBalance[0])) /
+                              (Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : '-')) /
                                 10 ** 18)) /
                               100
                           );
