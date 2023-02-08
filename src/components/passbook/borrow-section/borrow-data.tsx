@@ -960,23 +960,7 @@ const BorrowData = ({
                             />
                           )}
                         </div>
-                      </Col>
-                      {/* <Col lg="8">
-                        {
-                          <TxHistoryTable
-                            asset={asset}
-                            type="loans"
-                            market={asset.loanMarket}
-                            observables={[
-                              repayTransactionReceipt,
-                              addCollateralTransactionReceipt,
-                              withdrawLoanTransactionReceipt,
-                              swapLoanToSecondaryTransactionReceipt,
-                              revertSwapTransactionReceipt,
-                            ]}
-                          />
-                        }
-                      </Col> */}
+                      </Col>  
                     </Row>
                   </div>
                 </div>

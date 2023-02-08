@@ -92,7 +92,7 @@ let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string 
   ];
 
   const [value, setValue] = useState(0);
-
+  const [asset, setAsset] = useState(assetParam);
   const [tokenName, setTokenName] = useState(asset);
   const [borrowTokenName, setBorrowTokenName] = useState(asset);
   const [token, setToken] = useState(getTokenFromName(asset));
@@ -138,7 +138,6 @@ let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string 
   });
 
 
-  const [asset, setAsset] = useState(assetParam);
   const [commitPeriod, setCommitPeriod] = useState(0);
 
   const [dropDown, setDropDown] = useState(false);

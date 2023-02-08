@@ -138,7 +138,7 @@ const ActiveDeposit = ({
     { name: "DAI", icon: "mdi-ethereum" },
   ];
 
-  const [tokenName, setTokenName] = useState("BTC");
+  const [tokenName, setTokenName] = useState(asset.market);
   const [customActiveTab, setCustomActiveTab] = useState("1");
   const [modal_deposit, setmodal_deposit] = useState(false);
   const [dropDown, setDropDown] = useState(false);
@@ -482,42 +482,6 @@ const ActiveDeposit = ({
             </button>
           </Col>
 
-          {/* <Col className="mr-4 ">
-            <div>
-              <img
-                src={
-                  CoinClassNames[EventMap[asset.market.toUpperCase()]] ||
-                  asset.market.toUpperCase()
-                }
-                height="18px"
-              />
-
-              <div
-                className="mr-6"
-                style={{
-                  display: "inline-block",
-                  fontSize: "18px",
-                }}
-                // align="right"
-              >
-                &nbsp; &nbsp;
-                {EventMap[asset.market.toUpperCase()]}
-              </div>
-            </div>
-            <CardTitle tag="h5"></CardTitle>
-
-            <CardSubtitle className=" text-muted" tag="h6">
-              <span style={{ fontSize: "14px" }}>
-                &nbsp; &nbsp;&nbsp;{" "}
-                {(
-                  parseFloat(BNtoNum(Number(asset.amount))) +
-                  parseFloat(BNtoNum(Number(asset.acquiredYield)))
-                ).toFixed(6)}
-              </span>
-              &nbsp; &nbsp;
-            </CardSubtitle>
-          </Col> */}
-
           {action ? (
             <div style={{ borderWidth: 1 }}>
               <CardBody>
@@ -698,7 +662,7 @@ const ActiveDeposit = ({
                           )}
                         </div>
                       </Col>
-                      <Col lg="8">
+                      {/* <Col lg="8">
                         {
                           <TxHistoryTable
                             asset={asset}
@@ -710,7 +674,7 @@ const ActiveDeposit = ({
                             ]}
                           />
                         }
-                      </Col>
+                      </Col> */}
                     </Row>
                   </div>
                 </div>
@@ -815,7 +779,7 @@ const ActiveDeposit = ({
                       ></img>
                       &nbsp;&nbsp;{tokenName}
                     </div>
-                    <div
+                    {/* <div
                       style={{
                         marginRight: "20px",
                         marginTop: "3px",
@@ -830,11 +794,11 @@ const ActiveDeposit = ({
                         width="20px"
                         height="20px"
                       />
-                    </div>
+                    </div> */}
                   </div>
                 </label>
 
-                {dropDown ? (
+                 {dropDown ? (
                   <>
                     <div
                       style={{
@@ -856,6 +820,7 @@ const ActiveDeposit = ({
                         if (coin.name === tokenName) return <></>;
                         return (
                           <div
+                            key={index}
                             style={{
                               margin: "10px 0",
                               cursor: "pointer",
