@@ -1009,6 +1009,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                 }}
               >
                 <div
+                  onClick={toggleBorrowDropdown}
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
@@ -1033,7 +1034,6 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     }}
                   >
                     <Image
-                      onClick={toggleBorrowDropdown}
                       src={borrowArrow}
                       alt="Picture of the author"
                       width="20px"
@@ -1060,6 +1060,12 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       }}
                     >
                       <div
+                        onClick={() => {
+                          setCommitmentDropDown(!commitmentDropDown);
+                          setCommitmentArrow(
+                            commitmentDropDown ? arrowDown : arrowUp
+                          );
+                        }}
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -1077,12 +1083,6 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                           }}
                         >
                           <Image
-                            onClick={() => {
-                              setCommitmentDropDown(!commitmentDropDown);
-                              setCommitmentArrow(
-                                commitmentDropDown ? arrowDown : arrowUp
-                              );
-                            }}
                             src={commitmentArrow}
                             alt="Picture of the author"
                             width="20px"
