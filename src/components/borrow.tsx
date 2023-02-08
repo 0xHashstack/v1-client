@@ -50,10 +50,11 @@ import arrowUp from "../assets/images/arrowUp.svg";
 import { ICoin } from "./dashboard/dashboard-body";
 
 interface IBorrowParams {
-  loanAmount: number;
-  collateralAmount: number;
+  loanAmount: number | null;
+  collateralAmount: number | null;
   commitBorrowPeriod: number | null;
   collateralMarket: string | null;
+  loanMarket: string | null;
 }
 
 interface IDepositLoanRates {
@@ -69,7 +70,7 @@ interface IDepositLoanRates {
   };
 }
 
-let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
+let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string }) => {
   const coins: ICoin[] = [
     {
       name: "USDT",
@@ -103,8 +104,8 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
   const [isLoading, setLoading] = useState(false);
 
   const [borrowParams, setBorrowParams] = useState<IBorrowParams>({
-    loanAmount: 0,
-    collateralAmount: 0,
+    loanAmount: null,
+    collateralAmount: null,
     commitBorrowPeriod: 0,
     collateralMarket: null,
   });
@@ -136,6 +137,8 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
     },
   });
 
+
+  const [asset, setAsset] = useState(assetParam);
   const [commitPeriod, setCommitPeriod] = useState(0);
 
   const [dropDown, setDropDown] = useState(false);
@@ -173,6 +176,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
   useEffect(() => {
     setToken(getTokenFromName(asset));
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
+      console.log("loan rates", val);
       setDepositLoanRates(val);
     });
   }, [asset]);
@@ -183,10 +187,10 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
       approveTransactionReceipt.data?.transaction_hash,
       approveTransactionReceipt
     );
+    if (!isValid()) return;
     TxToastManager.handleTxToast(
       approveTransactionReceipt,
-      `Borrow: Approve ${borrowParams.collateralAmount?.toFixed(4)} ${
-        borrowParams.collateralMarket
+      `Borrow: Approve ${borrowParams.collateralAmount?.toFixed(4)} ${borrowParams.collateralMarket
       }`,
       true
     );
@@ -198,6 +202,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
       requestBorrowTransactionReceipt.data?.transaction_hash,
       requestBorrowTransactionReceipt
     );
+    if(!isValid()) return;
     if (borrowParams.loanAmount)
       TxToastManager.handleTxToast(
         requestBorrowTransactionReceipt,
@@ -340,11 +345,6 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
   };
 
   const handleCollateralChange = async (asset: any) => {
-    // console.log(`setting collateral market to ${e.target.value}`);
-    // console.log(
-    //   "------------------------------------------------------------------collateralMarketToken",
-    //   collateralMarketToken
-    // );
     setBorrowParams({
       ...borrowParams,
       collateralMarket: asset,
@@ -354,25 +354,22 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
     await refreshBalance();
   };
 
-  const handleLoanInputChange = async (asset: any) => {
-    if (asset) {
-      setBorrowParams({
-        ...borrowParams,
-        loanAmount: Number(asset),
-      });
-      await handleMinLoan(asset);
-    } else {
-      setBorrowParams({
-        ...borrowParams,
-        loanAmount: 0,
-      });
-    }
+  // const handleLoanMarketChange = async (asset: any) {
+
+  // }
+
+  const handleLoanInputChange = async (e: any) => {
+    console.log("asset ajeeb", e.target.value);
+    setBorrowParams({
+      ...borrowParams,
+      loanAmount: e.target.value
+    });
   };
 
   const handleCollateralInputChange = async (e: any) => {
     setBorrowParams({
       ...borrowParams,
-      collateralAmount: Number(e.target.value),
+      collateralAmount: e.target.value,
     });
     await refreshAllowance();
   };
@@ -545,7 +542,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
   function isValidColleteralAmount() {
     if (!borrowParams.collateralAmount) return false;
     return (
-      Number(borrowParams.collateralAmount) <
+      Number(borrowParams.collateralAmount) <=
       Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
     );
   }
@@ -671,32 +668,11 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                   id="amount"
                   placeholder="Amount"
                   onChange={handleCollateralInputChange}
-                  value={
-                    borrowParams.collateralAmount
-                      ? (borrowParams.collateralAmount as number)
-                      : 0
-                  }
+                  value={(borrowParams.collateralAmount as number)}
                   valid={isValidColleteralAmount()}
                 />
                 {
                   <>
-                    {/* <Button
-                      outline
-                      type="button"
-                      className="btn btn-md w-xs"
-                      onClick={handleMin}
-                      // disabled={balance ? false : true}
-                      style={{
-                        background: "white",
-                        color: "black",
-                        border: "1px solid black",
-                      }}
-                    >
-                      <span style={{ borderBottom: "2px dotted #fff" }}>
-                        Min
-                      </span>
-                    </Button> */}
-
                     <Button
                       outline
                       type="button"
@@ -717,13 +693,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                   </>
                 }
               </InputGroup>
-              {/* {!isValidColleteralAmount() ? (
-                <FormText color="#e97272">
-                  Collateral amount must be non-zero and {"<="} your balance
-                </FormText>
-              ) : (
-                <></>
-              )} */}
+
               <div
                 style={{
                   display: "flex",
@@ -755,14 +725,14 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                   grabCursor={false}
                   showMarkers="hidden"
                   onChange={(value: any) => {
-                    setBorrowParams({
-                      ...borrowParams,
-                      collateralAmount:
-                        (value *
-                          (Number(uint256.uint256ToBN(dataBalance[0])) /
-                            10 ** 18)) /
-                        100,
-                    });
+                    if (value == 100) handleMax();
+                    else {
+                      setBorrowParams({
+                        ...borrowParams,
+                        collateralAmount:
+                          (value * (Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18) / 100),
+                      });
+                    }
                     setValue(value);
                   }}
                   valueRenderer={(value: any) => `${value}%`}
@@ -856,6 +826,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       if (coin.name === borrowTokenName) return <></>;
                       return (
                         <div
+                          key={index}
                           style={{
                             margin: "10px 0",
                             cursor: "pointer",
@@ -867,7 +838,8 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                             setBorrowTokenName(`${coin.name}`);
                             setBorrowDropDown(false);
                             setBorrowArrow(arrowDown);
-                            handleLoanInputChange(`${coin.name}`);
+                            // handleLoanInputChange(`${coin.name}`);
+                            setAsset(`${coin.name}`)
                           }}
                         >
                           <img
@@ -1506,7 +1478,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     loadingApprove ||
                     isTransactionLoading(requestBorrowTransactionReceipt)
                   ) ? (
-                    "Borrow"
+                    `Borrow ${loadingApprove} ${loadingBorrow} ${!isValid()}`
                   ) : (
                     <MySpinner text="Borrowing token" />
                   )}
