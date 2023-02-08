@@ -417,7 +417,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     padding: "5px 10px",
                     fontSize: "18px",
                     borderRadius: "5px",
-                    border: "2px solid #00000050",
+                    border: "2px solid rgb(57, 61, 79)",
                     fontWeight: "200",
                   }}
                 >
@@ -473,7 +473,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                     padding: "5px 10px",
                     fontSize: "15px",
                     borderRadius: "5px",
-                    border: "2px solid #00000050",
+                    border: "2px solid rgb(57, 61, 79)",
                     fontWeight: "400",
                   }}
                 >
@@ -525,7 +525,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                         margin: "0px auto",
                         marginBottom: "20px",
                         padding: "5px 10px",
-                        backgroundColor: "#F8F8F8",
+                        backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px #00000020",
                       }}
                     >
@@ -580,6 +580,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                         padding: "5px 10px",
                         backgroundColor: "rgb(42, 46, 63)",
                         boxShadow: "0px 0px 10px #00000020",
+                      
 
                       }}
                     >
@@ -642,7 +643,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                       <Input
                         style={{
                           backgroundColor: "#1D2131",
-                          borderRight: "1px solid #FFF",
+                          borderRight: "1px solid #rgb(57, 61, 79)",
                         }}
                         type="number"
                         className="form-control"
@@ -721,13 +722,13 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 
                     <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
                       <Slider
-                        handlerActiveColor="black"
+                        handlerActiveColor="rgb(57, 61, 79)"
                         stepSize={10}
                         value={value}
-                        trackColor="#ADB5BD"
+                        trackColor="rgb(57, 61, 79)"
                         handlerShape="rounded"
-                        handlerColor="black"
-                        fillColor="black"
+                        handlerColor="white"
+                        fillColor="white"
                         trackLength={420}
                         grabCursor={false}
                         showMarkers="hidden"

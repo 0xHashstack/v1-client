@@ -797,7 +797,7 @@ const ActiveDeposit = ({
                     padding: "5px 10px",
                     fontSize: "18px",
                     borderRadius: "5px",
-                    border: "2px solid #00000050",
+                    border: "2px solid rgb(57, 61, 79)",
                     fontWeight: "200",
                   }}
                 >
@@ -850,7 +850,7 @@ const ActiveDeposit = ({
                         margin: "0px auto",
                         marginBottom: "20px",
                         padding: "5px 10px",
-                        backgroundColor: "#F8F8F8",
+                        backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px #00000020",
                       }}
                     >
@@ -896,7 +896,7 @@ const ActiveDeposit = ({
                         style={{
                           backgroundColor: "#1D2131",
                           padding: "10px ",
-                          borderRight: "1px solid #FFF",
+                          borderRight: "1px solid rgb(57, 61, 79)",
                         }}
                         type="number"
                         className="form-control"
@@ -954,13 +954,13 @@ const ActiveDeposit = ({
 
                     <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
                       <Slider
-                        handlerActiveColor="black"
+                        handlerActiveColor="rgb(57, 61, 79)"
                         stepSize={10}
                         value={value}
-                        trackColor="#ADB5BD"
+                        trackColor="rgb(57, 61, 79)"
                         handlerShape="rounded"
-                        handlerColor="black"
-                        fillColor="black"
+                        handlerColor="white"
+                        fillColor="white"
                         trackLength={420}
                         grabCursor={false}
                         showMarkers="hidden"
