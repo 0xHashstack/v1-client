@@ -48,6 +48,7 @@ export const tokenAddressMap: ItokenAddressMap = {
   USDC: getTokenFromName("USDC")?.address,
   BNB: getTokenFromName("BNB")?.address,
   ETH: getTokenFromName("ETH")?.address,
+  DAI: getTokenFromName("DAI")?.address
 };
 
 export function isTransactionLoading(receipt: UseTransactionReceiptResult) {
