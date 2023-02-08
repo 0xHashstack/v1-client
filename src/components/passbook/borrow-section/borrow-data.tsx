@@ -961,7 +961,7 @@ const BorrowData = ({
                           )}
                         </div>
                       </Col>
-                      <Col lg="8">
+                      {/* <Col lg="8">
                         {
                           <TxHistoryTable
                             asset={asset}
@@ -976,7 +976,7 @@ const BorrowData = ({
                             ]}
                           />
                         }
-                      </Col>
+                      </Col> */}
                     </Row>
                   </div>
                 </div>

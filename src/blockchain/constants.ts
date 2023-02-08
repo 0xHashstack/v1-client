@@ -298,6 +298,8 @@ export const MinimumAmount: IMinimumAmount = {
 	USDC: 1000,
 	BTC: 0.1,
 	BNB: 5,
+	ETH: 0.2,
+	DAI: 5
 };
 
 export const starknetMarketAddress: IAddress = {};

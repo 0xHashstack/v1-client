@@ -300,7 +300,6 @@ const Dashboard = () => {
       console.log(el.amount, "deposits123");
       return el.amount !== "0";
     });
-    console.log({ nonZeroDeposits });
     setActiveDepositsData(nonZeroDeposits);
   };
 
@@ -309,7 +308,6 @@ const Dashboard = () => {
       account &&
       OffchainAPI.getActiveDeposits(account).then(
         (deposits) => {
-          console.log(deposits);
           onDepositData(deposits);
           setIsLoading(false);
         },
@@ -771,7 +769,7 @@ const Dashboard = () => {
                   >
                     {dappsArray.map((dapp, index) => {
                       return (
-                        <div>
+                        <div key={index}>
                           <img src={`./dapps/${dapp}.svg`} height="90px" />
                         </div>
                       );
@@ -787,7 +785,7 @@ const Dashboard = () => {
                   >
                     {dappsArray.map((dapp, index) => {
                       return (
-                        <div>
+                        <div key={index}>
                           <img src={`./dapps/${dapp}.svg`} height="90px" />
                         </div>
                       );

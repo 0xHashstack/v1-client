@@ -644,7 +644,7 @@ const ActiveLoan = ({
                             )} */}
                           </div>
                         </Col>
-                        <Col lg="8">
+                        {/* <Col lg="8">
                           {
                             <TxHistoryTable
                               asset={asset}
@@ -659,7 +659,7 @@ const ActiveLoan = ({
                               ]}
                             />
                           }
-                        </Col>
+                        </Col> */}
                       </Row>
                     </div>
                   </div>

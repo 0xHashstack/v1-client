@@ -77,8 +77,7 @@ const AddToCollateral = ({
       addCollateralTransactionReceipt,
       `Add ${asset.collateralMarket} Collateral to Loan`
     );
-    setAddCollateralTransactionReceipt(addCollateralTransactionReceipt);
-  }, [addCollateralTransactionReceipt]);
+   }, [addCollateralTransactionReceipt]);
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
