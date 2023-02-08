@@ -347,7 +347,7 @@ const SpendLoanNav = () => {
           </div>
           {account ? (
             <Form>
-              <div style={{ minWidth: "50vw" }}>
+              <div style={{ minWidth: "20vw" }}>
                 <div
                   style={{
                     display: "flex",

@@ -1006,7 +1006,7 @@ const BorrowData = ({
         >
           {account ? (
             <Form>
-              <div style={{ minWidth: "50vw" }}>
+              <div style={{ minWidth: "20vw" }}>
                 <Col sm={8}>
                   <Nav
                     tabs
