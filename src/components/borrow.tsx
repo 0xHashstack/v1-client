@@ -190,7 +190,7 @@ let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string 
     if (!isValid()) return;
     TxToastManager.handleTxToast(
       approveTransactionReceipt,
-      `Borrow: Approve ${borrowParams.collateralAmount?.toFixed(4)} ${borrowParams.collateralMarket
+      `Borrow: Approve ${borrowParams.collateralAmount} ${borrowParams.collateralMarket
       }`,
       true
     );
@@ -206,7 +206,7 @@ let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string 
     if (borrowParams.loanAmount)
       TxToastManager.handleTxToast(
         requestBorrowTransactionReceipt,
-        `Borrow ${borrowParams.loanAmount?.toFixed(4)} ${token?.name}`
+        `Borrow ${borrowParams.loanAmount} ${token?.name}`
       );
   }, [requestBorrowTransactionReceipt]);
 
@@ -397,7 +397,7 @@ let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string 
     setBorrowParams({
       ...borrowParams,
       loanAmount:
-        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+        Number(uint256.uint256ToBN(loanAssetBalance ? loanAssetBalance[0] : 0)) /
         10 ** 18,
     });
     await refreshAllowance();
@@ -548,11 +548,14 @@ let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string 
   }
 
   function isLoanAmountValid() {
+    console.log("loanamount", borrowParams.loanAmount);
     if (!borrowParams.loanAmount) return false;
+    console.log("was is undefined");
     return borrowParams.loanAmount >= MinimumAmount[asset];
   }
   // function isValidLoanAmount
   function isValid() {
+    console.log("collateral amount", isValidColleteralAmount(), "loan amount", isLoanAmountValid());
     return isValidColleteralAmount() && isLoanAmountValid();
   }
 
@@ -1091,11 +1094,11 @@ let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string 
                       borderRight: "1px solid #FFF",
                     }}
                     id="loan-amount"
-                    type="text"
+                    type="number"
                     className="form-control"
                     placeholder={`Minimum amount = ${MinimumAmount[asset]}`}
                     min={MinimumAmount[asset]}
-                    value={borrowParams.loanAmount as number}
+                    value={(borrowParams.loanAmount as number)}
                     onChange={handleLoanInputChange}
                     valid={isLoanAmountValid()}
                   />
@@ -1478,7 +1481,7 @@ let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string 
                     loadingApprove ||
                     isTransactionLoading(requestBorrowTransactionReceipt)
                   ) ? (
-                    `Borrow ${loadingApprove} ${loadingBorrow} ${!isValid()}`
+                    `Borrow`
                   ) : (
                     <MySpinner text="Borrowing token" />
                   )}
