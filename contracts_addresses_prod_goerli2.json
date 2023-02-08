@@ -30,7 +30,7 @@
         "name": "BNB",
         "symbol": "BNB",
         "decimals": 18,
-        "address": "0x5d41add963bc6de5ba86cb1bec147f739df42a55c5d995b782da4534b2152ad",
+        "address": "0x500d61ecf16158a186d660cc069f5d66fa34fead533e2cdf386a410b0d9c10c",
         "CEXSymbol": "BNBUSDT",
         "pontis_key": "27705915699721060"
       },
@@ -38,14 +38,14 @@
         "name": "ETH",
         "symbol": "ETH",
         "decimals": 18,
-        "address": "0x5d41add963bc6de5ba86cb1bec147f739df42a55c5d995b782da4534b2152ad",
+        "address": "0x500d61ecf16158a186d660cc069f5d66fa34fead533e2cdf386a410b0d9c10c",
         "CEXSymbol": "BNBUSDT",
         "pontis_key": "27705915699721060"
       },      {
         "name": "DAI",
         "symbol": "DAI",
         "decimals": 18,
-        "address": "0x5d41add963bc6de5ba86cb1bec147f739df42a55c5d995b782da4534b2152ad",
+        "address": "0x500d61ecf16158a186d660cc069f5d66fa34fead533e2cdf386a410b0d9c10c",
         "CEXSymbol": "BNBUSDT",
         "pontis_key": "27705915699721060"
       }

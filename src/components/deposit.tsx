@@ -13,6 +13,7 @@ import {
   Label,
   NavLink,
 } from "reactstrap";
+import { estimateFee } from "starknet/account";
 
 import Slider from "react-custom-slider";
 
@@ -58,7 +59,7 @@ interface ICoin {
   icon: string;
 }
 
-let Deposit: any = ({ asset }: { asset: string }) => {
+let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
   const coins: ICoin[] = [
     {
       name: "USDT",
@@ -79,6 +80,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     { name: "DAI", icon: "mdi-ethereum" },
   ];
 
+  const [asset, setAsset] = useState(assetParam);
   const [value, setValue] = useState(50);
   const [tokenName, setTokenName] = useState(asset);
   const [tokenIcon, setTokenIcon] = useState("mdi-bitcoin");
@@ -117,6 +119,18 @@ let Deposit: any = ({ asset }: { asset: string }) => {
   useEffect(() => {
     setToken(getTokenFromName(asset));
   }, [asset]);
+
+  // useEffect(() => {
+  //   const getEstimateFee = async () => {
+  //     // if(!account) return;
+  //   //   const { suggestedMaxFee: estimatedFee1 } = await estimateFee({
+  //   //     contractAddress: testAddress,
+  //   //     entrypoint: "increase_balance",
+  //   //     calldata: ["10", "30"]
+  //   // });
+  //   }
+  //   getEstimateFee();
+  // }, [])
 
   useEffect(() => {
     // console.log('approve tx receipt', approveTransactionReceipt.data?.transaction_hash, approveTransactionReceipt);
@@ -251,12 +265,13 @@ let Deposit: any = ({ asset }: { asset: string }) => {
   };
 
   const handleDepositAmountChange = (e: any) => {
-     setDepositAmount(e.target.value);
+    setDepositAmount(e.target.value);
   };
 
   const handleBalanceChange = async () => {
-    await refreshAllowance();
-    await refreshBalance();
+    const allow = await refreshAllowance();
+    const bal = await refreshBalance();
+    console.log("updated on toggle", allow, bal, asset);
   };
 
   const handleMax = async () => {
@@ -284,7 +299,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
     }
   };
 
-  const toggleDropdown = () => {
+  const toggleDropdown = async () => {
     setDropDown(!dropDown);
     setDropDownArrow(dropDown ? arrowDown : arrowUp);
     // disconnectEvent(), connect(connector);
@@ -420,7 +435,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                   }}
                 >
                   <div
-                    onClick={toggleDropdown}
+                    onClick={toggleDropdown} // for the token of loanMarket
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
@@ -531,6 +546,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                         if (coin.name === tokenName) return <></>;
                         return (
                           <div
+                            key={index}
                             style={{
                               margin: "10px 0",
                               cursor: "pointer",
@@ -542,15 +558,17 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                               setTokenName(`${coin.name}`);
                               setDropDown(false);
                               setDropDownArrow(arrowDown);
+                              setAsset(`${coin.name}`);
                               handleBalanceChange();
                               // handleDepositAmountChange(0);
                             }}
                           >
-                            <img
-                              src={`./${coin.name}.svg`}
+                            <Image
+                              src={`/${coin.name}.svg`}
                               width="30px"
                               height="30px"
-                            ></img>
+                              alt="coin image"
+                            />
                             <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
                           </div>
                         );

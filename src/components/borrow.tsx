@@ -618,6 +618,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                 }}
               >
                 <div
+                  onClick={toggleDropdown}
                   style={{
                     display: "flex",
                     justifyContent: "space-between",
@@ -642,7 +643,6 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     }}
                   >
                     <Image
-                      onClick={toggleDropdown}
                       src={dropDownArrow}
                       alt="Picture of the author"
                       width="20px"
@@ -803,6 +803,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       if (coin.name === tokenName) return <></>;
                       return (
                         <div
+                          key={index}
                           style={{
                             margin: "10px 0",
                             cursor: "pointer",
