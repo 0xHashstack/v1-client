@@ -16,6 +16,9 @@ interface IHistoryData {
   actionType: string;
   date: string;
   value: string;
+  isNegative: boolean;
+  showSign: boolean;
+  tokenName: string;
   id: number;
 }
 
@@ -128,60 +131,69 @@ const TxHistoryTable = ({
   //   setLookingForTxs(_lookup);
   // }, [txHistoryData]);
 
-  // const renderTableData = () => {
-  //   console.log("renderTableDat:", txHistoryData);
-  //   return (
-  //     txHistoryData &&
-  //     txHistoryData
-  //       .filter((txEntry) => {
-  //         console.log(txEntry, asset, txEntry.id === asset.loanId, txEntry);
-  //         if (type === "deposits") {
-  //           return txEntry.id === asset.depositId;
-  //         } else if (type === "loans") {
-  //           return txEntry.id === asset.loanId;
-  //         } else {
-  //           return txEntry.id === asset.loanId;
-  //         }
-  //       })
-  //       .sort((a: IHistoryData, b: IHistoryData) => {
-  //         const dateA = new Date(a.date);
-  //         const dateB = new Date(b.date);
-  //         return dateA - dateB;
-  //       })
-  //       .map((row, index) => {
-  //         const { txnHash, actionType, date, value } = row;
-  //         let myDate = new Date(date);
-  //         let formattedDate = myDate.toLocaleString();
+  const renderTableData = () => {
+    console.log("renderTableDat:", txHistoryData);
+    function getTokenName(tokenName: string) {
+      return tokenName ? tokenName : ''
+    }
+    function getSign(isNegative: boolean, showSign: boolean) {
+      if (showSign) {
+        return isNegative ? "-" : "+";
+      }
+      return ''
+    }
+    return (
+      txHistoryData &&
+      txHistoryData
+        .filter((txEntry) => {
+          console.log(txEntry, asset, txEntry.id === asset.loanId, txEntry);
+          if (type === "deposits") {
+            return txEntry.id === asset.depositId;
+          } else if (type === "loans") {
+            return txEntry.id === asset.loanId;
+          } else {
+            return txEntry.id === asset.loanId;
+          }
+        })
+        .sort((a: IHistoryData, b: IHistoryData) => {
+          const dateA = new Date(a.date);
+          const dateB = new Date(b.date);
+          return dateA - dateB;
+        })
+        .map((row, index) => {
+          const { txnHash, actionType, date, value, tokenName, isNegative, showSign } = row;
+          let myDate = new Date(date);
+          let formattedDate = myDate.toLocaleString();
 
   //         let formattedValue = new BigNumber(value);
 
-  //         return (
-  //           <tr
-  //             key={index}
-  //             onClick={() =>
-  //               window.open(`https://testnet.starkscan.co/tx/${txnHash}`)
-  //             }
-  //             style={{ cursor: "pointer" }}
-  //           >
-  //             <td>
-  //               {txnHash.substring(0, 10) +
-  //                 "..............." +
-  //                 txnHash.substring(txnHash.length - 11)}
-  //             </td>
-  //             <td>{actionType}</td>
-  //             <td>{formattedDate}</td>
-  //             <td style={{ textAlign: "center" }}>
-  //               {value == "all"
-  //                 ? "100%"
-  //                 : BNtoNum(formattedValue.toNumber(), 18)}
-  //             </td>
-  //           </tr>
-  //         );
-  //       })
-  //   );
-  // };
-  // // console.log(asset, type, market, observables);
-  // // console.log(asset.depositId);
+          return (
+            <tr
+              key={index}
+              onClick={() =>
+                window.open(`https://testnet.starkscan.co/tx/${txnHash}`)
+              }
+              style={{ cursor: "pointer" }}
+            >
+              <td>
+                {txnHash.substring(0, 10) +
+                  "..............." +
+                  txnHash.substring(txnHash.length - 11)}
+              </td>
+              <td>{actionType?.replace(/([a-z])([A-Z])/g, '$1 $2')}</td>
+              <td>{formattedDate}</td>
+              <td style={{ textAlign: "center" }}>
+                {value == "all"
+                  ? "100%"
+                  : getSign(isNegative, showSign) + parseFloat(BNtoNum(formattedValue.toNumber(), 18)).toFixed(4) + " " + getTokenName(tokenName) }
+              </td>
+            </tr>
+          );
+        })
+    );
+  };
+  // console.log(asset, type, market, observables);
+  // console.log(asset.depositId);
 
   // return (
   //   <div className="table-responsive">

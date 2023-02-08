@@ -1,5 +1,5 @@
 import axios from "axios";
-import { tokenAddressMap } from "../blockchain/stark-constants";
+import { getTokenFromAddress, tokenAddressMap } from "../blockchain/stark-constants";
 
 export default class OffchainAPI {
   // static ENDPOINT = 'http://52.77.185.41:3000'
@@ -105,6 +105,7 @@ export default class OffchainAPI {
         "SushiSwapped",
         "RevertSushiSwapped",
         "LoanRepaid",
+        "LoanInterestDeduction",
       ],
     });
     const events = await OffchainAPI.httpPost(route, data, "loans", token);
@@ -119,20 +120,41 @@ export default class OffchainAPI {
             tokenAddressMap[token] === JSON.parse(event.eventInfo).market
           );
         }
-        return (
-          tokenAddressMap[token] === JSON.parse(event.eventInfo).loanMarket
-        );
+        return true;
+        // intentionally removing check. Further in flow, there is anyways loanId check
+        // return (
+        //   tokenAddressMap[token] === JSON.parse(event.eventInfo).loanMarket
+        // );
       })
       .map((event: any) => {
         let value = JSON.parse(event.eventInfo).loanAmount
+        let displayToken = token;
+        let showSign = false;
+        let isNegative = false;
         if (event.event === "RevertSushiSwapped" || event.event == 'SushiSwapped') {
           value = 'all'
+        }
+        if(event.event === 'AddCollateral') {
+          const collateralAddress = JSON.parse(event.eventInfo).collateralMarket
+          displayToken = getTokenFromAddress(collateralAddress).name;
+          value = JSON.parse(event.eventInfo).currentCollateralAmount;
+        } else if(event.event === 'LoanInterestDeduction') {
+          value = JSON.parse(event.eventInfo).interestDeducted;
+          showSign = true;
+          isNegative = true;
+        } else if(event.event == 'WithdrawPartialLoan') {
+          value = JSON.parse(event.eventInfo).amount;
+          showSign = true;
+          isNegative = true;
         }
         return {
           txnHash: event.txHash,
           actionType: event.event,
           date: event.createdon,
           value,
+          tokenName: displayToken,
+          showSign,
+          isNegative,
           id: event.loanId,
         };
       });
@@ -157,30 +179,65 @@ export default class OffchainAPI {
     let data = JSON.stringify({
       events: [
         "NewLoan",
-        "LoanRepaid",
-        "WithdrawPartial",
+        "WithdrawPartialLoan",
         "AddCollateral",
-        "WithdrawCollateral",
         "SushiSwapped",
         "RevertSushiSwapped",
+        "LoanRepaid",
+        "LoanInterestDeduction",
       ],
     });
     const events = await OffchainAPI.httpPost(route, data, "repaid", token);
     return events
-      .filter((event: any) => {
+    .filter((event: any) => {
+      console.log(event.event);
+      if (event.event === "RevertSushiSwapped") {
+        return true;
+      }
+      if (event.event === "WithdrawPartialLoan") {
         return (
-          tokenAddressMap[token] === JSON.parse(event.eventInfo).market ||
-          tokenAddressMap[token] === JSON.parse(event.eventInfo).loanMarket
+          tokenAddressMap[token] === JSON.parse(event.eventInfo).market
         );
-      })
-      .map((event: any) => {
-        return {
-          txnHash: event.txHash,
-          actionType: event.event,
-          date: event.createdon,
-          value: 0,
-          id: event.loanId,
-        };
-      });
+      }
+      return true;
+      // intentionally removing check. Further in flow, there is anyways loanId check
+      // return (
+      //   tokenAddressMap[token] === JSON.parse(event.eventInfo).loanMarket
+      // );
+    })
+    .map((event: any) => {
+      let value = JSON.parse(event.eventInfo).loanAmount
+      let displayToken = token;
+      let showSign = false;
+      let isNegative = false;
+      if (event.event === "RevertSushiSwapped" || event.event == 'SushiSwapped') {
+        value = 'all'
+      }
+      if(event.event === 'AddCollateral') {
+        const collateralAddress = JSON.parse(event.eventInfo).collateralMarket
+        displayToken = getTokenFromAddress(collateralAddress).name;
+        value = JSON.parse(event.eventInfo).currentCollateralAmount;
+      } else if(event.event === 'LoanInterestDeduction') {
+        value = JSON.parse(event.eventInfo).interestDeducted;
+        showSign = true;
+        isNegative = true;
+      } else if(event.event == 'WithdrawPartialLoan') {
+        value = JSON.parse(event.eventInfo).amount;
+        showSign = true;
+        isNegative = true;
+      } else if(event.event == 'LoanRepaid') {
+        value = '0';
+      }
+      return {
+        txnHash: event.txHash,
+        actionType: event.event,
+        date: event.createdon,
+        value,
+        tokenName: displayToken,
+        showSign,
+        isNegative,
+        id: event.loanId,
+      };
+    });
   }
 }

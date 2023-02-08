@@ -288,7 +288,7 @@ const ActiveDepositsTab = ({
               <Row
                 style={{
                   borderStyle: "hidden",
-                  color: "black",
+                  color: "white",
                   fontWeight: "600",
                   margin: "1px 1px 1px 10px",
                   alignItems: "center",

@@ -8,6 +8,7 @@ import {
   Spinner,
   InputGroup,
   FormGroup,
+  UncontrolledAlert,
   FormText,
   FormFeedback,
   Label,
@@ -410,8 +411,8 @@ let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
         <div
           className="modal-body"
           style={{
-            backgroundColor: "white",
-            color: "black",
+            backgroundColor: "#1D2131",
+            color: "white",
             padding: "40px",
           }}
         >
@@ -419,7 +420,7 @@ let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
             <Form>
               <div className="row mb-4">
                 <Col sm={8}>
-                  <h5 style={{ color: "black" }}>Supply</h5>
+                  <h5 style={{ color: "white" }}>Supply</h5>
                 </Col>
 
                 <label
@@ -430,7 +431,7 @@ let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
                     padding: "5px 10px",
                     fontSize: "18px",
                     borderRadius: "5px",
-                    border: "2px solid #00000050",
+                    border: "2px solid rgb(57, 61, 79)",
                     fontWeight: "200",
                   }}
                 >
@@ -486,7 +487,7 @@ let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
                     padding: "5px 10px",
                     fontSize: "15px",
                     borderRadius: "5px",
-                    border: "2px solid #00000050",
+                    border: "2px solid rgb(57, 61, 79)",
                     fontWeight: "400",
                   }}
                 >
@@ -538,7 +539,7 @@ let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
                         margin: "0px auto",
                         marginBottom: "20px",
                         padding: "5px 10px",
-                        backgroundColor: "#F8F8F8",
+                        backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px #00000020",
                       }}
                     >
@@ -594,8 +595,10 @@ let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
                         margin: "0px auto",
                         marginBottom: "20px",
                         padding: "5px 10px",
-                        backgroundColor: "#F8F8F8",
+                        backgroundColor: "rgb(42, 46, 63)",
                         boxShadow: "0px 0px 10px #00000020",
+                      
+
                       }}
                     >
                       <div
@@ -656,8 +659,8 @@ let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
                     <InputGroup>
                       <Input
                         style={{
-                          backgroundColor: "white",
-                          borderRight: "1px solid #FFF",
+                          backgroundColor: "#1D2131",
+                          borderRight: "1px solid #rgb(57, 61, 79)",
                         }}
                         type="number"
                         className="form-control"
@@ -695,9 +698,9 @@ let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
                             onClick={handleMax}
                             // disabled={balance ? false : true}
                             style={{
-                              background: "white",
-                              color: "black",
-                              border: "1px solid black",
+                              background: "#1D2131",
+                              color: "rgb(111, 111, 111)",
+                              border: "1px solid rgb(57, 61, 79)",
                               borderLeft: "none",
                             }}
                           >
@@ -736,13 +739,13 @@ let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
 
                     <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
                       <Slider
-                        handlerActiveColor="black"
+                        handlerActiveColor="rgb(57, 61, 79)"
                         stepSize={10}
                         value={value}
-                        trackColor="#ADB5BD"
+                        trackColor="rgb(57, 61, 79)"
                         handlerShape="rounded"
-                        handlerColor="black"
-                        fillColor="black"
+                        handlerColor="white"
+                        fillColor="white"
                         trackLength={420}
                         grabCursor={false}
                         showMarkers="hidden"
@@ -842,7 +845,7 @@ let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}>
                       $ 0.50
                     </div>
                   </div>
@@ -854,7 +857,7 @@ let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply APR:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600", color:"rgb(111, 111, 111)" }}>
                       7.75 %
                     </div>
                   </div>
@@ -868,7 +871,7 @@ let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
                     <div style={{ color: "#6F6F6F" }}>
                       Asset Utilization Rate:
                     </div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}>
                       0.43
                     </div>
                   </div>
@@ -880,13 +883,14 @@ let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}>
                       Starknet
                     </div>
                   </div>
                 </div>
                 <Button
-                  color="primary"
+                  color="white"
+                  style={{backgroundColor: "rgb(57, 61, 79)",color:"white"}}
                   className="w-md"
                   disabled={
                     commitPeriod === undefined ||

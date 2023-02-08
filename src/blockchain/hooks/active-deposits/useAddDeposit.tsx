@@ -106,16 +106,23 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 		reset: resetDeposit,
 		execute: executeDeposit,
 	} = useStarknetExecute({
-		calls: {
-			contractAddress: diamondAddress,
-			entrypoint: 'deposit_request',
-			calldata: [
-				tokenAddressMap[token],
-				depositCommit,
-				NumToBN(depositAmount as number, 18),
-				0,
-			],
-		},
+		calls: [
+			{
+				contractAddress: depositMarket as string,
+				entrypoint: 'approve',
+				calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
+			},
+			{
+				contractAddress: diamondAddress,
+				entrypoint: 'deposit_request',
+				calldata: [
+					tokenAddressMap[token],
+					depositCommit,
+					NumToBN(depositAmount as number, 18),
+					0,
+				],
+			},
+		]
 	});
 
 	const handleApprove = async (asset: string) => {

@@ -3,13 +3,13 @@ import { CardTitle, Col, Row, UncontrolledAccordion } from "reactstrap";
 
 const SpendLoanData = () => {
   return (
-    <div>
+    <div >
       <UncontrolledAccordion
         defaultOpen="0"
         open="false"
         style={{
           margin: "10px",
-          color: "black",
+          color: "white",
           textAlign: "left",
           marginLeft: "70px",
         }}
@@ -20,6 +20,7 @@ const SpendLoanData = () => {
 
             alignItems: "center",
             gap: "50px",
+            
           }}
         >
           <Col style={{ marginLeft: "-10px" }}>

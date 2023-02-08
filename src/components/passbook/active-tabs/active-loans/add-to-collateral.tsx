@@ -120,11 +120,18 @@ const AddToCollateral = ({
     reset: resetAddCollateral,
     execute: executeAddCollateral,
   } = useStarknetExecute({
-    calls: {
-      contractAddress: diamondAddress,
-      entrypoint: "add_collateral",
-      calldata: [loanId, NumToBN(inputVal as number, 18), 0],
-    },
+    calls: [
+      {
+        contractAddress: marketToAddCollateral as string,
+        entrypoint: "approve",
+        calldata: [diamondAddress, NumToBN(inputVal as number, 18), 0],
+      },
+      {
+        contractAddress: diamondAddress,
+        entrypoint: "add_collateral",
+        calldata: [loanId, NumToBN(inputVal as number, 18), 0],
+      },
+    ]
   });
 
   useEffect(() => {
@@ -226,7 +233,7 @@ const AddToCollateral = ({
       </div>
 
       <div className="d-grid gap-2">
-        {dataAllowance &&
+        {/* {dataAllowance &&
         Number(BNtoNum(dataAllowance[0]?.low, 18)) < (inputVal as number) ? (
           <Button
             color="primary"
@@ -239,7 +246,7 @@ const AddToCollateral = ({
             }
             onClick={(e) => handleApprove(asset)}
           >
-            {/* setApproveStatus(transactions[0]?.status); */}
+            {/* setApproveStatus(transactions[0]?.status); *}
             {!(
               loadingApprove || isTransactionLoading(approveTransactionReceipt)
             ) ? (
@@ -248,7 +255,7 @@ const AddToCollateral = ({
               <MySpinner text="Approving Token" />
             )}
           </Button>
-        ) : (
+        ) : (  */}
           <Button
             color="primary"
             className="w-md"
@@ -264,12 +271,12 @@ const AddToCollateral = ({
               loadingApprove ||
               isTransactionLoading(addCollateralTransactionReceipt)
             ) ? (
-              "Add Collateral"
+              "Approve & Add Collateral"
             ) : (
               <MySpinner text="Adding Collateral" />
             )}
           </Button>
-        )}
+        {/* )} */}
       </div>
     </Form>
   );

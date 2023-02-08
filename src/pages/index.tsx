@@ -619,7 +619,7 @@ const Dashboard = () => {
                     style={{
                       display: "flex",
                       margin: "10px 18px",
-                      color: "black",
+                      color: "white",
                       fontSize: "10px",
                     }}
                   >
@@ -648,11 +648,12 @@ const Dashboard = () => {
                     <button
                       style={{
                         color: "white",
-                        backgroundColor: "black",
+                        backgroundColor: "rgb(57, 61, 79)",
                         padding: "6px 16px",
                         borderRadius: "5px",
                         display: "flex",
                         alignItems: "center",
+                        border:"none"
                       }}
                     >
                       Active&nbsp;&nbsp;&nbsp;
@@ -734,17 +735,17 @@ const Dashboard = () => {
                   >
                     <CardBody
                       style={{
-                        backgroundColor: "white",
+                        backgroundColor: "rgb(42, 46, 63)",
                         overflowX: "hidden",
                         marginTop: "-20px",
                       }}
                     >
-                      <Row style={{ backgroundColor: "black", height: "40px" }}>
+                      <Row style={{ backgroundColor: "white", height: "40px" }}>
                         {customActiveTab === "2" ? <SpendLoan /> : null}
                       </Row>
                     </CardBody>
                   </Card>
-                  <div style={{ color: "black", margin: "10px 0" }}>
+                  <div style={{ color: "white", margin: "10px 0" }}>
                     &nbsp; &nbsp; Only unspent loans are displayed here. For
                     comprehensive list of active loansgo to{" "}
                     <u style={{ cursor: "pointer" }}>your borrow</u>
@@ -754,7 +755,7 @@ const Dashboard = () => {
                     style={{
                       fontSize: "16px",
                       marginLeft: "15px",
-                      color: "black",
+                      color: "white",
                     }}
                   >
                     Select Dapp to begin with the spend
@@ -843,24 +844,28 @@ const Dashboard = () => {
       {/* testnet.hashstack.finance */}
       <Script id="microsoft-clarity-testnet" strategy="afterInteractive">
         {`
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "f0nuusees0");
+            if (!window.location.host.includes('localhost')) {
+              (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "f0nuusees0");
+            }
           `}
       </Script>
 
       {/* zk.hashstack.finance */}
-      <Script id="microsoft-clarity-zk" strategy="afterInteractive">
-        {`
-            (function(c,l,a,r,i,t,y){
-              c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
-              t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
-              y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
-            })(window, document, "clarity", "script", "f0rc7ez2pl");
+      {/* <Script id="microsoft-clarity-zk" strategy="afterInteractive">
+          {`
+            if (!window.location.host.includes('localhost')) {
+              (function(c,l,a,r,i,t,y){
+                c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+                t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+                y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+              })(window, document, "clarity", "script", "f0rc7ez2pl");
+            }
           `}
-      </Script>
+      </Script> */}
 
       <div
         className="page-content"
