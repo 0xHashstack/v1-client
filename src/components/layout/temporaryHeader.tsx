@@ -634,11 +634,11 @@ const SecondaryHeader = ({
             style={{
               position: "absolute",
               right: "65px",
-              backgroundColor: "#E7E7E7",
+              backgroundColor: "#1D2131",
               width: "195px",
               height: "110px",
               borderRadius: "5px",
-              boxShadow: "0px 0px 10px #00000050",
+              boxShadow: "0px 0px 10px rgb(57, 61, 79)",
               zIndex: "1000",
             }}
           >
@@ -655,7 +655,9 @@ const SecondaryHeader = ({
                 style={{
                   padding: "7px 6px",
                   borderRadius: "5px",
-                  backgroundColor: "#E7E7E7",
+                  backgroundColor: "rgb(57, 61, 79)",
+                  color:"white",
+                  border:"none"
                 }}
               >
                 Switch Wallet
@@ -664,7 +666,9 @@ const SecondaryHeader = ({
                 style={{
                   padding: "7px 6px",
                   borderRadius: "5px",
-                  backgroundColor: "#E7E7E7",
+                  backgroundColor: "rgb(57, 61, 79)",
+                  color:"white",
+                  border:"none"
                 }}
                 onClick={handleDisconnectWallet}
               >
@@ -684,7 +688,7 @@ const SecondaryHeader = ({
               >
                 Network
                 <br />
-                <div style={{ color: "#000" }}>{networkSelected.network}</div>
+                <div style={{ color: "white" }}>{networkSelected.network}</div>
               </div>
             </div>
           </div>
@@ -699,7 +703,7 @@ const SecondaryHeader = ({
             style={{
               position: "absolute",
               right: "20px",
-              backgroundColor: "#F8F8F8",
+              backgroundColor: "#1D2131",
               width: "195px",
               height: "100px",
               borderRadius: "5px",
