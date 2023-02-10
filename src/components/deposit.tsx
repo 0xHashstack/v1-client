@@ -14,7 +14,7 @@ import {
   Label,
   NavLink,
 } from "reactstrap";
-import { estimateFee } from "starknet/account";
+// import { estimateFee } from "starknet/account";
 
 import Slider from "react-custom-slider";
 
@@ -54,13 +54,14 @@ import { TxToastManager } from "../blockchain/txToastManager";
 import MySpinner from "./mySpinner";
 import Image from "next/image";
 import classnames from "classnames";
+import OffchainAPI from "../services/offchainapi.service";
 
 interface ICoin {
   name: string;
   icon: string;
 }
 
-let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
+let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam }: { asset: string, depositLoanRates: any }) => {
   const coins: ICoin[] = [
     {
       name: "USDT",
@@ -89,6 +90,8 @@ let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
   const [token, setToken] = useState(getTokenFromName(asset));
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
+
+  const [depositLoanRates, setDepositLoanRates] = useState(depositLoanRatesParam);
 
   const [commitmentValue, setCommitmentValue] = useState("Flexible");
   const [commitmentDropDown, setCommitmentDropDown] = useState(false);
@@ -131,7 +134,15 @@ let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
   //   // });
   //   }
   //   getEstimateFee();
-  // }, [])
+  // }, []
+
+  useEffect(() => {
+    OffchainAPI.getProtocolDepositLoanRates().then((val) => {
+      console.log("deposit rates in supply", val);
+      setDepositLoanRates(val);
+    })
+  }, [asset]);
+
 
   useEffect(() => {
     // console.log('approve tx receipt', approveTransactionReceipt.data?.transaction_hash, approveTransactionReceipt);
@@ -858,7 +869,17 @@ let Deposit: any = ({ asset: assetParam }: { asset: string }) => {
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply APR:</div>
                     <div style={{ textAlign: "right", fontWeight: "600", color:"rgb(111, 111, 111)" }}>
-                      7.75 %
+                      {
+                        depositLoanRates && commitPeriod < 3 ? (
+                          `${parseFloat(
+                            depositLoanRates[
+                              `${getTokenFromName(asset as string).address}__${commitPeriod}`
+                            ]?.depositAPR?.apr100x as string
+                          )} %`
+                        ): (
+                          <MySpinner />
+                        )
+                      }
                     </div>
                   </div>
                   <div

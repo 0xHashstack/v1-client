@@ -147,7 +147,7 @@ const ActiveDepositsTab = ({
     calls: {
       contractAddress: tokenAddressMap[tokenName] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
+      calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
     },
   });
 
@@ -170,7 +170,7 @@ const ActiveDepositsTab = ({
         calldata: [
           tokenAddressMap[tokenName],
           commitPeriod,
-          NumToBN(depositAmount, 18),
+          NumToBN(depositAmount as number, 18),
           0,
         ],
       },
@@ -512,6 +512,7 @@ const ActiveDepositsTab = ({
                               if (coin.name === tokenName) return <></>;
                               return (
                                 <div
+                                  key={index}
                                   style={{
                                     margin: "10px 0",
                                     cursor: "pointer",
