@@ -334,8 +334,8 @@ const SpendLoanNav = () => {
         <div
           className="modal-body"
           style={{
-            backgroundColor: "white",
-            color: "black",
+            backgroundColor: "#1D2131",
+            color: "white",
             padding: "40px",
           }}
         >
@@ -362,7 +362,7 @@ const SpendLoanNav = () => {
                       padding: "10px 10px",
                       fontSize: "13px",
                       borderRadius: "5px",
-                      border: "2px solid #00000050",
+                      border: "2px solid rgb(57, 61, 79)",
                       fontWeight: "200",
                       display: "flex",
                       gap: "10px",
@@ -388,7 +388,7 @@ const SpendLoanNav = () => {
                       padding: "5px 10px",
                       fontSize: "18px",
                       borderRadius: "5px",
-                      border: "2px solid #00000050",
+                      border: "2px solid rgb(57, 61, 79)",
                       fontWeight: "200",
                     }}
                   >
@@ -438,7 +438,7 @@ const SpendLoanNav = () => {
                         padding: "5px 10px",
                         fontSize: "18px",
                         borderRadius: "5px",
-                        border: "2px solid #00000050",
+                        border: "2px solid rgb(57, 61, 79)",
                         fontWeight: "200",
                       }}
                     >
@@ -478,7 +478,7 @@ const SpendLoanNav = () => {
                         padding: "5px 10px",
                         fontSize: "18px",
                         borderRadius: "5px",
-                        border: "2px solid #00000050",
+                        border: "2px solid rgb(57, 61, 79)",
                         fontWeight: "200",
                       }}
                     >
@@ -517,7 +517,7 @@ const SpendLoanNav = () => {
                       padding: "5px 10px",
                       fontSize: "18px",
                       borderRadius: "5px",
-                      border: "2px solid #00000050",
+                      border: "2px solid rgb(57, 61, 79)",
                       fontWeight: "200",
                     }}
                   >
@@ -641,7 +641,7 @@ const SpendLoanNav = () => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Est. conversion:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color: "#6F6F6F" }}>
                       1BCT = 21,000 USDT
                     </div>
                   </div>
@@ -654,7 +654,7 @@ const SpendLoanNav = () => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color: "#6F6F6F" }}>
                       $ 0.50
                     </div>
                   </div>
@@ -667,14 +667,15 @@ const SpendLoanNav = () => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color: "#6F6F6F" }}>
                       Starknet
                     </div>
                   </div>
                 </div>
                 <Button
-                  color="primary"
+                  color="white"
                   className="w-md"
+                  style={{backgroundColor:"rgb(57, 61, 79)"}}
                   disabled={
                     commitPeriod === undefined ||
                     loadingApprove ||

@@ -1205,7 +1205,7 @@ const BorrowData = ({
                         <InputGroup>
                           <Input
                             style={{
-                              backgroundColor: "white",
+                              backgroundColor: "#1D2131",
                               padding: "10px ",
                             }}
                             type="number"
@@ -1251,7 +1251,7 @@ const BorrowData = ({
                         <InputGroup>
                           <Input
                             style={{
-                              backgroundColor: "white",
+                              backgroundColor: "#1D2131",
                               padding: "10px ",
                             }}
                             type="number"

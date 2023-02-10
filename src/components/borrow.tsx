@@ -572,8 +572,8 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
         <div
           className="modal-body"
           style={{
-            backgroundColor: "white",
-            color: "black",
+            backgroundColor: "#1D2131",
+            color: "white",
             padding: "40px",
           }}
         >
@@ -581,7 +581,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
             <Form>
               {/* <div className="row mb-4"> */}
               <Col sm={8}>
-                <h3 style={{ color: "black" }}>Borrow</h3>
+                <h3 style={{ color: "white" }}>Borrow</h3>
               </Col>
               <div style={{ fontSize: "8px", fontWeight: "600" }}>
                 Collateral Market
@@ -594,8 +594,8 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                   padding: "5px 10px",
                   fontSize: "18px",
                   borderRadius: "5px",
-                  border: "2px solid #00000050",
-                  fontWeight: "200",
+                  border: "2px solid rgb(57, 61, 79)",
+                  fontWeight: "200",  
                 }}
               >
                 <div
@@ -644,8 +644,8 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
               <InputGroup>
                 <Input
                   style={{
-                    backgroundColor: "white",
-                    borderRight: "1px solid #FFF",
+                    backgroundColor: "#1D2131",
+                    borderRight: "1px solid rgb(57, 61, 79)",
                   }}
                   type="number"
                   className="form-control"
@@ -664,9 +664,9 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                       onClick={handleMax}
                       // disabled={balance ? false : true}
                       style={{
-                        background: "white",
-                        color: "black",
-                        border: "1px solid black",
+                        background: "#1D2131",
+                        color: "rgb(111, 111, 111)",
+                        border: "1px solid rgb(57, 61, 79)",
                         borderLeft: "none",
                       }}
                     >
@@ -698,13 +698,13 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
               </div>
               <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
                 <Slider
-                  handlerActiveColor="black"
+                  handlerActiveColor="#1D2131"
                   stepSize={5}
                   value={value}
-                  trackColor="#ADB5BD"
+                  trackColor="rgb(57, 61, 79)"
                   handlerShape="rounded"
-                  handlerColor="black"
-                  fillColor="black"
+                  handlerColor="white"
+                  fillColor="white"
                   trackLength={420}
                   grabCursor={false}
                   showMarkers="hidden"
@@ -749,7 +749,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                       margin: "0px auto",
                       marginBottom: "20px",
                       padding: "5px 10px",
-                      backgroundColor: "#F8F8F8",
+                      backgroundColor: "#1D2131",
                       boxShadow: "0px 0px 10px #0020",
                     }}
                   >
@@ -802,7 +802,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                       margin: "0px auto",
                       marginBottom: "20px",
                       padding: "5px 10px",
-                      backgroundColor: "#F8F8F8",
+                      backgroundColor: "#1D2131",
                       boxShadow: "0px 0px 10px #00000020",
                     }}
                   >
@@ -855,7 +855,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                       margin: "0px auto",
                       marginBottom: "20px",
                       padding: "5px 10px",
-                      backgroundColor: "#F8F8F8",
+                      backgroundColor: "#1D2131",
                       boxShadow: "0px 0px 10px #00000020",
                     }}
                   >
@@ -945,7 +945,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                   padding: "5px 10px",
                   fontSize: "18px",
                   borderRadius: "5px",
-                  border: "2px solid #00000050",
+                  border: "2px solid rgb(57, 61, 79)",
                   fontWeight: "200",
                 }}
               >
@@ -996,7 +996,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                         padding: "5px 10px",
                         fontSize: "15px",
                         borderRadius: "5px",
-                        border: "2px solid #00000050",
+                        border: "2px solid rgb(57, 61, 79)",
                         fontWeight: "400",
                       }}
                     >
@@ -1056,8 +1056,8 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                 <InputGroup style={{ marginBottom: "30px" }}>
                   <Input
                     style={{
-                      backgroundColor: "white",
-                      borderRight: "1px solid #FFF",
+                      backgroundColor: "#1D2131",
+                      borderRight: "1px solid rgb(57, 61, 79)",
                     }}
                     id="loan-amount"
                     type="number"
@@ -1094,9 +1094,9 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                         onClick={handleMaxLoan}
                         // disabled={balance ? false : true}
                         style={{
-                          background: "white",
-                          color: "black",
-                          border: "1px solid black",
+                          background: "#1D2131",
+                          color: "rgb(111, 111, 111)",
+                          border: "1px solid rgb(57, 61, 79)",
                           borderLeft: "none",
                         }}
                       >
@@ -1329,7 +1329,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
                       $ 10.91
                     </div>
                   </div>
@@ -1341,7 +1341,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Transaction fees:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
                       $ 10.91
                     </div>
                   </div>
@@ -1353,7 +1353,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Fair price:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
                       $ 10.91
                     </div>
                   </div>
@@ -1365,7 +1365,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>i Collateral market:</div>
-                    <div style={{ textAlign: "right", fontWeight: "400" }}>
+                    <div style={{ textAlign: "right", fontWeight: "400",color:"#6F6F6F" }}>
                       $ 10.91
                     </div>
                   </div>
@@ -1377,7 +1377,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>ii Borrow market:</div>
-                    <div style={{ textAlign: "right", fontWeight: "400" }}>
+                    <div style={{ textAlign: "right", fontWeight: "400",color:"#6F6F6F" }}>
                       $10.91
                     </div>
                   </div>
@@ -1389,7 +1389,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Risk premium:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
                       0.6%
                     </div>
                   </div>
@@ -1401,7 +1401,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Debt category:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
                       DC1/DC2/DC3
                     </div>
                   </div>
@@ -1413,7 +1413,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Borrow apr:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
                      {
                       depositLoanRates && 
                       borrowParams.commitBorrowPeriod != null && 
@@ -1438,14 +1438,14 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Borrow network:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
                       Starknet
                     </div>
                   </div>
                 </div>
 
                 <Button
-                  color="primary"
+                  color="white"
                   className="w-md"
                   disabled={
                     borrowParams.commitBorrowPeriod === undefined ||
@@ -1453,7 +1453,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     loadingBorrow ||
                     !isValid()
                   }
-                  style={{ padding: "10px 0" }}
+                  style={{ padding: "10px 0",border:"none",backgroundColor:"rgb(57, 61, 79)" }}
                   onClick={(e) => handleBorrow(asset)}
                 >
                   {!(
