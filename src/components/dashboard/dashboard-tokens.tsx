@@ -33,7 +33,7 @@ const DashboardTokens = ({
       `%c Protocol deposit ${depositCommitment} ${borrowCommitment} ${coin.name}`,
       "background: #222; color: #bada55"
     );
-  });
+  }, []);
 
   return (
     <tr
@@ -48,7 +48,7 @@ const DashboardTokens = ({
       <th style={{ padding: "28px 2px" }}>
         {" "}
         {coin.name === "BTC" ? (
-          <Image src={tickMark} width="20px" height="20px" />
+          <Image src={tickMark} width="20px" height="20px" alt="dropdown tick" />
         ) : (
           <></>
         )}
@@ -68,13 +68,13 @@ const DashboardTokens = ({
       </th>
       <td style={{ padding: "31px 10px" }}>0000</td>
       <td style={{ padding: "31px 10px" }}>0000</td>
-      <td style={{ padding: "31px 10px" }}>00000</td>
+      <td style={{ padding: "31px 10px" }}>0000</td>
       <td style={{ padding: "31px 10px" }}>0000</td>
       <td style={{ padding: "31px", textAlign: "center" }}>
         <div>
           {/* {deposit ? deposit[0].apr.toNumber() / 100 : "NaN"}% */}
 
-          {/* {depositLoanRates && parseInt(depositCommitment) < 4 ? (
+          {depositLoanRates && parseInt(depositCommitment) < 4 ? (
             `${
               parseFloat(
                 depositLoanRates[
@@ -84,7 +84,7 @@ const DashboardTokens = ({
             } %`
           ) : (
             <MySpinner />
-          )} */}
+          )}
         </div>
       </td>
       <td style={{ padding: "31px", textAlign: "center" }}>
@@ -96,7 +96,7 @@ const DashboardTokens = ({
                 depositLoanRates[
                   `${getTokenFromName(coin.name).address}__${borrowCommitment}`
                 ]?.borrowAPR?.apr100x
-              ) / 100 || '0'
+              ) / 100
             }%`
           ) : (
             <MySpinner />

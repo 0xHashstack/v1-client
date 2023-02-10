@@ -48,13 +48,13 @@ import { ceil, round } from "../services/utils.service";
 import arrowDown from "../assets/images/arrowDown.svg";
 import arrowUp from "../assets/images/arrowUp.svg";
 import { ICoin } from "./dashboard/dashboard-body";
+import _ from "lodash";
 
 interface IBorrowParams {
   loanAmount: number | null;
   collateralAmount: number | null;
   commitBorrowPeriod: number | null;
   collateralMarket: string | null;
-  loanMarket: string | null;
 }
 
 interface IDepositLoanRates {
@@ -70,7 +70,8 @@ interface IDepositLoanRates {
   };
 }
 
-let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string }) => {
+let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRatesParam }: { asset: string; title: string, depositLoanRates: IDepositLoanRates }) => {
+  console.log("the asset you get from borrow popup", assetParam)
   const coins: ICoin[] = [
     {
       name: "USDT",
@@ -124,21 +125,7 @@ let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string 
     watch: true,
   });
 
-  const [depositLoanRates, setDepositLoanRates] = useState<IDepositLoanRates>({
-    "0": {
-      borrowAPR: {
-        apr100x: "0",
-        block: 0,
-      },
-      depositAPR: {
-        apr100x: "0",
-        block: 0,
-      },
-    },
-  });
-
-
-  const [commitPeriod, setCommitPeriod] = useState(0);
+  const [depositLoanRates, setDepositLoanRates] = useState<IDepositLoanRates>(depositLoanRatesParam);
 
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
@@ -201,7 +188,7 @@ let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string 
       requestBorrowTransactionReceipt.data?.transaction_hash,
       requestBorrowTransactionReceipt
     );
-    if(!isValid()) return;
+    if (!isValid()) return;
     if (borrowParams.loanAmount)
       TxToastManager.handleTxToast(
         requestBorrowTransactionReceipt,
@@ -335,11 +322,10 @@ let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string 
     error: errorApprove,
   } = returnTransactionParameters();
 
-  const handleCommitmentChange = (e: any) => {
-    console.log(e.target.value);
+  const handleCommitmentChange = (commitPeriod: number) => {
     setBorrowParams({
       ...borrowParams,
-      commitBorrowPeriod: e.target.value,
+      commitBorrowPeriod: commitPeriod,
     });
   };
 
@@ -400,10 +386,6 @@ let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string 
         10 ** 18,
     });
     await refreshAllowance();
-  };
-
-  const handleCommitChange = (e: any) => {
-    setCommitPeriod(e);
   };
 
   const handleMin = async () => {
@@ -887,7 +869,7 @@ let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string 
                         setCommitmentValue("1 month");
                         setCommitmentDropDown(false);
                         setCommitmentArrow(arrowDown);
-                        handleCommitChange(2);
+                        handleCommitmentChange(1);
                       }}
                     >
                       &nbsp;1 month
@@ -899,25 +881,10 @@ let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string 
                         cursor: "pointer",
                       }}
                       onClick={() => {
-                        setCommitmentValue("2 weeks");
-                        setCommitmentDropDown(false);
-                        setCommitmentArrow(arrowDown);
-                        handleCommitChange(1);
-                      }}
-                    >
-                      &nbsp;2 weeks
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "15px",
-                        margin: "10px 0",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
                         setCommitmentValue("Flexible");
                         setCommitmentDropDown(false);
                         setCommitmentArrow(arrowDown);
-                        handleCommitChange(0);
+                        handleCommitmentChange(0);
                       }}
                     >
                       &nbsp;Flexible
@@ -1447,7 +1414,20 @@ let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string 
                   >
                     <div style={{ color: "#6F6F6F" }}>Borrow apr:</div>
                     <div style={{ textAlign: "right", fontWeight: "600" }}>
-                      5.6%
+                     {
+                      depositLoanRates && 
+                      borrowParams.commitBorrowPeriod != null && 
+                      (borrowParams.commitBorrowPeriod as number) < 2 ? (
+                        `${parseFloat(
+                          depositLoanRates[
+                            `${getTokenFromName(asset as string).address}__${borrowParams.commitBorrowPeriod}`
+                          ]?.borrowAPR?.apr100x as string
+                        )
+                      } %`
+                      ): (
+                        <MySpinner />
+                      )}
+
                     </div>
                   </div>
                   <div
@@ -1459,7 +1439,7 @@ let Borrow: any = ({ asset: assetParam, title }: { asset: string; title: string 
                   >
                     <div style={{ color: "#6F6F6F" }}>Borrow network:</div>
                     <div style={{ textAlign: "right", fontWeight: "600" }}>
-                      starknet
+                      Starknet
                     </div>
                   </div>
                 </div>
