@@ -107,7 +107,7 @@ const DashboardTokens = ({
         <Deposit asset={coin.name} />
       </td>
       <td style={{ width: "120px", padding: "25px 20px" }}>
-        <Borrow asset={coin.name} title={coin.name} />
+        <Borrow asset={coin.name} title={coin.name} depositLoanRates={depositLoanRates} />
       </td>
     </tr>
   );

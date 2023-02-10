@@ -62,7 +62,7 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
                   scope="col"
                   style={{ width: "100px", padding: "35px 10px" }}
                 >
-                  Supply APR
+                  Total Borrow
                 </th>
                 <th scope="col" style={{ width: "155px" }}>
                   <div style={{ textAlign: "center", margin: "8px auto" }}>
@@ -88,6 +88,7 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
                       backgroundColor: "#393D4F",
                     }}
                   >
+                    <option value={"NONE"}>Flexible</option>
                     <option value={"TWOWEEKS"}>Two Weeks</option>
                     <option value={"ONEMONTH"}>One Month</option>
                     <option value={"THREEMONTHS"}>Three Month</option>
@@ -116,10 +117,9 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
                       fontSize: "12px",
                       backgroundColor: "#393D4F",
                     }}
-                  >
-                    <option value={"TWOWEEKS"}>Two Weeks</option>
+                  > 
+                    <option value={"NONE"}>Flexible</option>
                     <option value={"ONEMONTH"}>One Month</option>
-                    <option value={"THREEMONTHS"}>Three Month</option>
                   </select>
                 </th>
                 {/* <th scope="col">Savings Interest</th> */}
