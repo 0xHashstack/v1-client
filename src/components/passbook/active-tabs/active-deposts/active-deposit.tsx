@@ -1000,9 +1000,9 @@ const ActiveDeposit = ({
                   </Col>
                 </div>
               </FormGroup>
-
+      
               <div className="d-grid gap-2">
-                <div
+                {customActiveTab === "1"?<div
                   style={{
                     marginBottom: "25px",
                     fontSize: "11px",
@@ -1059,7 +1059,63 @@ const ActiveDeposit = ({
                       Starknet
                     </div>
                   </div>
-                </div>
+                </div>:customActiveTab === "2"?
+                <div
+                  style={{
+                    marginBottom: "25px",
+                    fontSize: "11px",
+                    marginTop: "-10px",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)"  }}>
+                      $ 0.50
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>Transaction fees</div>
+                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)"  }}>
+                      0.1 %
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      margin: "3px 0",
+                    }}
+                  >
+                    <div style={{ color: "#6F6F6F" }}>
+                      Pre closure charges
+                    </div>
+                    <div style={{ textAlign: "right", fontWeight: "600" ,color:"rgb(111, 111, 111)" }}>
+                      0.02%
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      margin: "3px 0",
+                    }}
+                  >
+                   <div style={{padding:"15px"}}>
+
+                   </div>
+                    <div style={{ color: "#6F6F6F" }}>You Are Pre-Closing This Supply Earlier Than Its Minumum Commitment Period. A Timelock Of 3 Days Is Applied On Such Withdrawals. When You Place Withdrawal Requests.The Timelock is Activated. It Will Be Processed On Your Second Attempt To Withdraw Supply.After The Timelock Expiry In 72hrs</div>
+                  </div>
+                  </div> : null}
                 <Button
                   style={{backgroundColor:"rgb(57, 61, 79)",color:"white",border:"none",}}
                   color="white"
@@ -1078,7 +1134,7 @@ const ActiveDeposit = ({
                     loadingApprove ||
                     isTransactionLoading(requestDepositTransactionReceipt)
                   ) ? (
-                    "Supply"
+                    customActiveTab === "1"?"Add Supply":customActiveTab === "2"?"Withdraw Supply":""
                   ) : (
                     <MySpinner text="Depositing token" />
                   )}

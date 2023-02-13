@@ -1365,8 +1365,8 @@ const BorrowData = ({
                 ) : (
                   <></>
                 )}
-
-                <div
+                {isSelfLiquidate && selection === "Self Liquidate"  ?(<>
+                  <div
                   style={{
                     display: "flex",
                     justifyItems: "center",
@@ -1432,8 +1432,10 @@ const BorrowData = ({
                     </div>
                   </label>
                 </div>
+                </>):null}
+                
 
-                {isSelfLiquidate ? (
+                {isSelfLiquidate && selection === "Self Liquidate" ? (
                   <>
                     <div
                       style={{
