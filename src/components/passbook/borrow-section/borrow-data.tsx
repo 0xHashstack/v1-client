@@ -988,9 +988,19 @@ const BorrowData = ({
                     fontSize: "12px",
                     paddingTop: "10px",
                     color: "rgb(111, 111, 111)",
+                    display: "flex",
+                    gap: "10px",
+                    width: "100%",
                   }}
                 >
                   Loan ID = {asset.loanId}
+                  <Image
+                    style={{}}
+                    src={Downarrow}
+                    alt="Picture of the author"
+                    width="16px"
+                    height="16px"
+                  />
                 </div>
 
                 {!isCollateralActions ? (
