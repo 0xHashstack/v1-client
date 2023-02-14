@@ -74,7 +74,7 @@ const DashboardTokens = ({
         <div>
           {/* {deposit ? deposit[0].apr.toNumber() / 100 : "NaN"}% */}
 
-          {depositLoanRates && parseInt(depositCommitment) < 4 ? (
+          {/* {depositLoanRates && parseInt(depositCommitment) < 4 ? (
             `${
               parseFloat(
                 depositLoanRates[
@@ -84,7 +84,7 @@ const DashboardTokens = ({
             } %`
           ) : (
             <MySpinner />
-          )}
+          )} */}
         </div>
       </td>
       <td style={{ padding: "31px", textAlign: "center" }}>
