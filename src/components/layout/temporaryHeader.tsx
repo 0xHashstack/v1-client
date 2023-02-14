@@ -781,7 +781,7 @@ const SecondaryHeader = ({
           >
             <div
               style={{
-                display: "flex",
+                display: "flex",  
                 gap: "6px",
                 padding: "10px 12px",
                 fontSize: "12px",
