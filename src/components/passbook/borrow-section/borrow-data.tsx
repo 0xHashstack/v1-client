@@ -1037,90 +1037,93 @@ const BorrowData = ({
                         </div>
                       </label>
 
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyItems: "center",
-                          gap: "20px",
-                        }}
-                      >
-                        <label
+                      {selection === "Spend Borrow" ? (
+                        <div
                           style={{
-                            width: "100px",
-                            height: "45px",
-
-                            padding: "10px 10px",
-                            fontSize: "13px",
-                            borderRadius: "5px",
-                            border: "2px solid rgb(57, 61, 79)",
-                            fontWeight: "200",
                             display: "flex",
-                            gap: "10px",
-                            alignItems: "center",
-                            justifyContent: "center",
+                            justifyItems: "center",
+                            gap: "20px",
                           }}
                         >
-                          <div style={{ textAlign: "center" }}>
-                            {actionLabel}
-                          </div>
-                          <Image
-                            onClick={toggleDropdownTwo}
-                            style={{ cursor: "pointer" }}
-                            src={dropDownArrowTwo}
-                            alt="Picture of the author"
-                            width="20px"
-                            height="20px"
-                          />
-                        </label>
-
-                        <label
-                          style={{
-                            width: "300px",
-                            padding: "5px 10px",
-                            fontSize: "18px",
-                            borderRadius: "5px",
-                            border: "2px solid rgb(57, 61, 79)",
-                            fontWeight: "200",
-                          }}
-                        >
-                          <div
+                          <label
                             style={{
+                              width: "100px",
+                              height: "45px",
+
+                              padding: "10px 10px",
+                              fontSize: "13px",
+                              borderRadius: "5px",
+                              border: "2px solid rgb(57, 61, 79)",
+                              fontWeight: "200",
                               display: "flex",
-                              justifyContent: "space-between",
+                              gap: "10px",
                               alignItems: "center",
+                              justifyContent: "center",
                             }}
                           >
-                            <div>
-                              &nbsp;&nbsp;
-                              <img
-                                src={`./yagilogo.svg`}
-                                width="60px"
-                                height="30px"
-                              ></img>
+                            <div style={{ textAlign: "center" }}>
+                              {actionLabel}
                             </div>
+                            <Image
+                              onClick={toggleDropdownTwo}
+                              style={{ cursor: "pointer" }}
+                              src={dropDownArrowTwo}
+                              alt="Picture of the author"
+                              width="20px"
+                              height="20px"
+                            />
+                          </label>
+
+                          <label
+                            style={{
+                              width: "300px",
+                              padding: "5px 10px",
+                              fontSize: "18px",
+                              borderRadius: "5px",
+                              border: "2px solid rgb(57, 61, 79)",
+                              fontWeight: "200",
+                            }}
+                          >
                             <div
                               style={{
-                                marginRight: "20px",
-                                marginTop: "3px",
-                                cursor: "pointer",
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
                               }}
                             >
-                              <Image
-                                // onClick={toggleDropdown}
-                                src={dropDownArrow}
-                                alt="Picture of the author"
-                                width="20px"
-                                height="20px"
-                              />
+                              <div>
+                                &nbsp;&nbsp;
+                                <img
+                                  src={`./yagilogo.svg`}
+                                  width="60px"
+                                  height="30px"
+                                ></img>
+                              </div>
+                              <div
+                                style={{
+                                  marginRight: "20px",
+                                  marginTop: "3px",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                <Image
+                                  // onClick={toggleDropdown}
+                                  src={dropDownArrow}
+                                  alt="Picture of the author"
+                                  width="20px"
+                                  height="20px"
+                                />
+                              </div>
                             </div>
-                          </div>
-                        </label>
-                      </div>
+                          </label>
+                        </div>
+                      ) : null}
                     </div>
 
                     <br />
 
-                    {actionLabel === "Trade" || actionLabel === "Swap" ? (
+                    {selection === "Spend Borrow" &&
+                    (actionLabel === "Swap" || actionLabel === "Trade") ? (
                       <div
                         style={{
                           display: "flex",
@@ -1209,6 +1212,275 @@ const BorrowData = ({
                         </div>
                       </div>
                     </div>
+
+                    {selection === "Self Liquidate" ? (
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginBottom: "7px",
+                          marginTop: "-20px",
+                        }}
+                      >
+                        <div>
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              paddingTop: "7px",
+                              color: "rgb(111, 111, 111)",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            Repayment Amount:
+                            <span
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                color: "white",
+                              }}
+                            >
+                              &nbsp;0
+                            </span>
+                          </div>
+
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              paddingTop: "7px",
+                              color: "rgb(111, 111, 111)",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            Borrow Spent(?):
+                            <span
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                color: "white",
+                              }}
+                            >
+                              &nbsp;Yes
+                            </span>
+                          </div>
+
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              paddingTop: "7px",
+                              color: "rgb(111, 111, 111)",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            Spent dapp:
+                            <span
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                color: "white",
+                              }}
+                            >
+                              &nbsp;&nbsp;&nbsp;
+                              <img src="./yagilogo.svg" width="50px" />
+                            </span>
+                          </div>
+
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              paddingTop: "7px",
+                              color: "rgb(111, 111, 111)",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            To:
+                            <span
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                color: "white",
+                              }}
+                            >
+                              &nbsp;Swap
+                            </span>
+                          </div>
+
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              paddingTop: "7px",
+                              color: "rgb(111, 111, 111)",
+                              display: "flex",
+                              alignItems: "center",
+                              marginBottom: "10px",
+                            }}
+                          >
+                            Spent Market:
+                            <span
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                color: "white",
+                              }}
+                            >
+                              &nbsp;XRP
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
+
+                    {selection === "Repay Borrow" ||
+                    selection === "Withdraw Partial Borrow" ? (
+                      <>
+                        {" "}
+                        <div
+                          style={{
+                            display: "flex",
+                            fontSize: "10px",
+                            color: "rgb(111, 111, 111)",
+                            marginTop: "-10px",
+                            marginBottom: "15px",
+                          }}
+                        >
+                          Repayment Amount
+                        </div>
+                        <FormGroup>
+                          <div className="row mb-4" style={{ width: "440px" }}>
+                            <Col sm={12}>
+                              <InputGroup>
+                                <Input
+                                  style={{
+                                    backgroundColor: "#1D2131",
+                                    borderRight: "1px solid #rgb(57, 61, 79)",
+                                  }}
+                                  type="number"
+                                  className="form-control"
+                                  id="amount"
+                                  min={MinimumAmount[asset]}
+                                  placeholder={`Minimum ${MinimumAmount[asset]} ${asset}`}
+                                  onChange={handleDepositAmountChange}
+                                  value={depositAmount}
+                                  valid={!isInvalid()}
+                                />
+
+                                {
+                                  <>
+                                    <Button
+                                      outline
+                                      type="button"
+                                      className="btn btn-md w-xs"
+                                      onClick={handleMax}
+                                      // disabled={balance ? false : true}
+                                      style={{
+                                        background: "#1D2131",
+                                        color: "rgb(111, 111, 111)",
+                                        border: "1px solid rgb(57, 61, 79)",
+                                        borderLeft: "none",
+                                      }}
+                                    >
+                                      <span
+                                        style={{ borderBottom: "2px  #fff" }}
+                                      >
+                                        MAX
+                                      </span>
+                                    </Button>
+                                  </>
+                                }
+                              </InputGroup>
+
+                              <div
+                                style={{
+                                  display: "flex",
+                                  fontSize: "10px",
+                                  justifyContent: "end",
+                                  marginTop: "4px",
+                                }}
+                              >
+                                Wallet Balance:&nbsp;
+                                {/* {dataBalance ? (
+                                  (
+                                    Number(
+                                      uint256.uint256ToBN(dataBalance[0])
+                                    ) /
+                                    10 ** 18
+                                  ).toString()
+                                ) : (
+                                  <MySpinner />
+                                )} */}
+                                {/* <div style={{ color: "#76809D" }}>
+                                  &nbsp;{asset}{" "}
+                                </div> */}
+                              </div>
+
+                              {selection === "Repay Borrow" ? (
+                                <div
+                                  style={{
+                                    marginLeft: "-10px",
+                                    marginTop: "15px",
+                                  }}
+                                >
+                                  <Slider
+                                    handlerActiveColor="rgb(57, 61, 79)"
+                                    stepSize={10}
+                                    value={value}
+                                    trackColor="rgb(57, 61, 79)"
+                                    handlerShape="rounded"
+                                    handlerColor="white"
+                                    fillColor="white"
+                                    trackLength={420}
+                                    grabCursor={false}
+                                    showMarkers="hidden"
+                                    onChange={(value: any) => {
+                                      setDepositAmount(
+                                        (value *
+                                          (Number(
+                                            uint256.uint256ToBN(dataBalance[0])
+                                          ) /
+                                            10 ** 18)) /
+                                          100
+                                      );
+                                      setValue(value);
+                                    }}
+                                    valueRenderer={(value: any) => `${value}%`}
+                                    showValue={false}
+                                  />
+                                </div>
+                              ) : null}
+
+                              <div
+                                style={{
+                                  fontSize: "10px",
+                                  position: "absolute",
+                                  right: "12px",
+                                  top: "90px",
+                                }}
+                              >
+                                {value}%
+                              </div>
+                              {depositAmount != 0 &&
+                                depositAmount >
+                                  Number(
+                                    uint256.uint256ToBN(
+                                      dataBalance ? dataBalance[0] : 0
+                                    )
+                                  ) /
+                                    10 ** 18 && (
+                                  <FormText
+                                    style={{ color: "#e97272 !important" }}
+                                  >
+                                    {`Amount is greater than your balance`}
+                                  </FormText>
+                                )}
+                            </Col>
+                          </div>
+                        </FormGroup>
+                      </>
+                    ) : null}
                   </>
                 ) : (
                   <label
@@ -1460,7 +1732,7 @@ const BorrowData = ({
                   </>
                 ) : null} */}
 
-                {isSelfLiquidate && selection === "Self Liquidate" ? (
+                {/* {isSelfLiquidate && selection === "Self Liquidate" ? (
                   <>
                     <div
                       style={{
@@ -1482,7 +1754,7 @@ const BorrowData = ({
                       <div style={{ padding: "5px 10px", fontSize: "20px" }}>
                         <img src={"./xrpLogo.svg"} height="19px" /> XRP
                       </div>
-                      {/* <InputGroup>
+                      <InputGroup>
                       <Input
                         style={{
                           backgroundColor: "white",
@@ -1494,10 +1766,10 @@ const BorrowData = ({
                         min={MinimumAmount[tokenName]}
                         placeholder={`XRP`}
                       />
-                    </InputGroup> */}
+                    </InputGroup>
                     </div>
                   </>
-                ) : null}
+                ) : null} */}
 
                 {stakeDropDown ? (
                   <>
@@ -1702,7 +1974,8 @@ const BorrowData = ({
                 )}
               </div>
 
-              {actionLabel === "Trade" || actionLabel === "Swap" ? (
+              {selection === "Spend Borrow" &&
+              (actionLabel === "Swap" || actionLabel === "Trade") ? (
                 <FormGroup>
                   <div className="row mb-4">
                     <Col sm={12}>
