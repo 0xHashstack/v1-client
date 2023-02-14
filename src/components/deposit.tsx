@@ -55,6 +55,8 @@ import MySpinner from "./mySpinner";
 import Image from "next/image";
 import classnames from "classnames";
 import OffchainAPI from "../services/offchainapi.service";
+import Downarrow from "../assets/images/ArrowDownDark.svg"
+import UpArrow from "../assets/images/ArrowUpDark.svg"
 
 interface ICoin {
   name: string;
@@ -89,13 +91,13 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
 
   const [token, setToken] = useState(getTokenFromName(asset));
   const [dropDown, setDropDown] = useState(false);
-  const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
+  const [dropDownArrow, setDropDownArrow] = useState(Downarrow);
 
   const [depositLoanRates, setDepositLoanRates] = useState(depositLoanRatesParam);
 
   const [commitmentValue, setCommitmentValue] = useState("Flexible");
   const [commitmentDropDown, setCommitmentDropDown] = useState(false);
-  const [commitmentArrow, setCommitmentArrow] = useState(arrowDown);
+  const [commitmentArrow, setCommitmentArrow] = useState(Downarrow);
 
   const [modal_deposit, setmodal_deposit] = useState(false);
 
@@ -311,7 +313,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
 
   const toggleDropdown = async () => {
     setDropDown(!dropDown);
-    setDropDownArrow(dropDown ? arrowDown : arrowUp);
+    setDropDownArrow(dropDown ? Downarrow : UpArrow);
     // disconnectEvent(), connect(connector);
   };
 
@@ -524,6 +526,12 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                       }}
                     >
                       <Image
+                        onClick={() => {
+                          setCommitmentDropDown(!commitmentDropDown);
+                          setCommitmentArrow(
+                            commitmentDropDown ? Downarrow : UpArrow
+                          );
+                        }}
                         src={commitmentArrow}
                         alt="Picture of the author"
                         width="20px"
@@ -567,7 +575,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                             onClick={() => {
                               setTokenName(`${coin.name}`);
                               setDropDown(false);
-                              setDropDownArrow(arrowDown);
+                              setDropDownArrow(Downarrow);
                               setAsset(`${coin.name}`);
                               handleBalanceChange();
                               // handleDepositAmountChange(0);
@@ -619,7 +627,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                         onClick={() => {
                           setCommitmentValue("1 month");
                           setCommitmentDropDown(false);
-                          setCommitmentArrow(arrowDown);
+                          setCommitmentArrow(Downarrow);
                           handleCommitChange(2);
                         }}
                       >
@@ -634,7 +642,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                         onClick={() => {
                           setCommitmentValue("2 weeks");
                           setCommitmentDropDown(false);
-                          setCommitmentArrow(arrowDown);
+                          setCommitmentArrow(Downarrow);
                           handleCommitChange(1);
                         }}
                       >
@@ -649,7 +657,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                         onClick={() => {
                           setCommitmentValue("Flexible");
                           setCommitmentDropDown(false);
-                          setCommitmentArrow(arrowDown);
+                          setCommitmentArrow(Downarrow);
                           handleCommitChange(0);
                         }}
                       >
@@ -713,7 +721,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                               borderLeft: "none",
                             }}
                           >
-                            <span style={{ borderBottom: "2px dotted #fff" }}>
+                            <span style={{ borderBottom: "2px  #fff" }}>
                               MAX
                             </span>
                           </Button>

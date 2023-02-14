@@ -45,9 +45,11 @@ import MySpinner from "./mySpinner";
 import OffchainAPI from "../services/offchainapi.service";
 import { ceil, round } from "../services/utils.service";
 
-import arrowDown from "../assets/images/arrowDown.svg";
-import arrowUp from "../assets/images/arrowUp.svg";
+// import Downarrow from "../assets/images/Downarrow.svg";
+// import UpArrow from "../assets/images/UpArrow.svg";
 import { ICoin } from "./dashboard/dashboard-body";
+import Downarrow from "../assets/images/ArrowDownDark.svg"
+import UpArrow from "../assets/images/ArrowUpDark.svg"
 import _ from "lodash";
 
 interface IBorrowParams {
@@ -128,34 +130,34 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
   const [depositLoanRates, setDepositLoanRates] = useState<IDepositLoanRates>(depositLoanRatesParam);
 
   const [dropDown, setDropDown] = useState(false);
-  const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
+  const [dropDownArrow, setDropDownArrow] = useState(Downarrow);
 
   const [commitmentValue, setCommitmentValue] = useState("Flexible");
   const [commitmentDropDown, setCommitmentDropDown] = useState(false);
-  const [commitmentArrow, setCommitmentArrow] = useState(arrowDown);
+  const [commitmentArrow, setCommitmentArrow] = useState(Downarrow);
 
   const [borrowDropDown, setBorrowDropDown] = useState(false);
-  const [borrowArrow, setBorrowArrow] = useState(arrowDown);
+  const [borrowArrow, setBorrowArrow] = useState(Downarrow);
 
   const [collateralMarketToken, setCollateralwMarketToken] = useState("USDT");
 
   const toggleDropdown = () => {
     setDropDown(!dropDown);
-    setDropDownArrow(dropDown ? arrowDown : arrowUp);
+    setDropDownArrow(dropDown ? Downarrow : UpArrow);
     setBorrowDropDown(false);
-    setBorrowArrow(arrowDown);
+    setBorrowArrow(Downarrow);
     setCommitmentDropDown(false);
-    setCommitmentArrow(arrowDown);
+    setCommitmentArrow(Downarrow);
     // disconnectEvent(), connect(connector);
   };
 
   const toggleBorrowDropdown = () => {
     setBorrowDropDown(!borrowDropDown);
-    setBorrowArrow(borrowDropDown ? arrowDown : arrowUp);
+    setBorrowArrow(borrowDropDown ? Downarrow : UpArrow);
     setDropDown(false);
-    setDropDownArrow(arrowDown);
+    setDropDownArrow(Downarrow);
     setCommitmentDropDown(false);
-    setCommitmentArrow(arrowDown);
+    setCommitmentArrow(Downarrow);
     // disconnectEvent(), connect(connector);
   };
 
@@ -595,7 +597,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                   fontSize: "18px",
                   borderRadius: "5px",
                   border: "2px solid rgb(57, 61, 79)",
-                  fontWeight: "200",  
+                  fontWeight: "200",
                 }}
               >
                 <div
@@ -670,7 +672,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                         borderLeft: "none",
                       }}
                     >
-                      <span style={{ borderBottom: "2px dotted #fff" }}>
+                      <span style={{ borderBottom: "2px  #fff" }}>
                         MAX
                       </span>
                     </Button>
@@ -728,8 +730,8 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                 style={{
                   fontSize: "10px",
                   position: "absolute",
-                  right: "38px",
-                  top: "275px",
+                  right: "39px",
+                  top: "260px",
                 }}
               >
                 {value}%
@@ -768,7 +770,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                           onClick={() => {
                             setTokenName(`${coin.name}`);
                             setDropDown(false);
-                            setDropDownArrow(arrowDown);
+                            setDropDownArrow(Downarrow);
                             handleCollateralChange(`${coin.name}`);
                             // handleMinLoan(`${coin.name}`);
                           }}
@@ -821,7 +823,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                           onClick={() => {
                             setBorrowTokenName(`${coin.name}`);
                             setBorrowDropDown(false);
-                            setBorrowArrow(arrowDown);
+                            setBorrowArrow(Downarrow);
                             // handleLoanInputChange(`${coin.name}`);
                             setAsset(`${coin.name}`)
                           }}
@@ -868,7 +870,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                       onClick={() => {
                         setCommitmentValue("1 month");
                         setCommitmentDropDown(false);
-                        setCommitmentArrow(arrowDown);
+                        setCommitmentArrow(Downarrow);
                         handleCommitmentChange(1);
                       }}
                     >
@@ -883,7 +885,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                       onClick={() => {
                         setCommitmentValue("Flexible");
                         setCommitmentDropDown(false);
-                        setCommitmentArrow(arrowDown);
+                        setCommitmentArrow(Downarrow);
                         handleCommitmentChange(0);
                       }}
                     >
@@ -1024,6 +1026,12 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                           }}
                         >
                           <Image
+                            onClick={() => {
+                              setCommitmentDropDown(!commitmentDropDown);
+                              setCommitmentArrow(
+                                commitmentDropDown ? Downarrow : UpArrow
+                              );
+                            }}
                             src={commitmentArrow}
                             alt="Picture of the author"
                             width="20px"
@@ -1100,7 +1108,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                           borderLeft: "none",
                         }}
                       >
-                        <span style={{ borderBottom: "2px dotted #fff" }}>
+                        <span style={{ borderBottom: "2px  #fff" }}>
                           MAX
                         </span>
                       </Button>
@@ -1329,7 +1337,13 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       $ 10.91
                     </div>
                   </div>
@@ -1341,7 +1355,13 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Transaction fees:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       $ 10.91
                     </div>
                   </div>
@@ -1353,7 +1373,13 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Fair price:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       $ 10.91
                     </div>
                   </div>
@@ -1365,7 +1391,13 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>i Collateral market:</div>
-                    <div style={{ textAlign: "right", fontWeight: "400",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "400",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       $ 10.91
                     </div>
                   </div>
@@ -1377,7 +1409,13 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>ii Borrow market:</div>
-                    <div style={{ textAlign: "right", fontWeight: "400",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "400",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       $10.91
                     </div>
                   </div>
@@ -1389,7 +1427,13 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Risk premium:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       0.6%
                     </div>
                   </div>
@@ -1401,7 +1445,13 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Debt category:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       DC1/DC2/DC3
                     </div>
                   </div>
@@ -1413,7 +1463,13 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Borrow apr:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                      {
                       depositLoanRates && 
                       borrowParams.commitBorrowPeriod != null && 
@@ -1438,7 +1494,13 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Borrow network:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       Starknet
                     </div>
                   </div>
@@ -1453,7 +1515,11 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     loadingBorrow ||
                     !isValid()
                   }
-                  style={{ padding: "10px 0",border:"none",backgroundColor:"rgb(57, 61, 79)" }}
+                  style={{
+                    padding: "10px 0",
+                    border: "none",
+                    backgroundColor: "rgb(57, 61, 79)",
+                  }}
                   onClick={(e) => handleBorrow(asset)}
                 >
                   {!(

@@ -534,79 +534,6 @@ const BorrowData = ({
 
           <Col>xxxxxxxx</Col>
 
-          {/* <Col className="mr-4 ">
-            <div>
-              <img
-                src={
-                  CoinClassNames[
-                    EventMap[asset.collateralMarket.toUpperCase()]
-                  ] || asset.collateralMarket.toUpperCase()
-                }
-                height="18px"
-              />
-
-              <div
-                className="mr-6"
-                style={{
-                  display: "inline-block",
-                  fontSize: "18px",
-                }}
-                // align="right"
-              >
-                &nbsp; &nbsp;
-                {EventMap[asset.collateralMarket.toUpperCase()]}
-              </div>
-            </div>
-            <CardTitle tag="h5"></CardTitle>
-            <CardSubtitle className=" text-muted" tag="h6">
-              <span style={{ fontSize: "14px" }}>
-                &nbsp; &nbsp;&nbsp;{" "}
-                {parseFloat(BNtoNum(Number(asset.collateralAmount))).toFixed(6)}
-              </span>
-              &nbsp; &nbsp;
-            </CardSubtitle>
-          </Col> */}
-
-          {/* <Col className="mr-4 ">
-            <Card className="mb-1" style={{ marginTop: "20px" }}>
-              <CardBody>
-                <div>
-                  <img
-                    src={
-                      CoinClassNames[
-                        EventMap[asset.currentLoanMarket.toUpperCase()]
-                      ] || asset.currentLoanMarket.toUpperCase()
-                    }
-                    height="18px"
-                  />
-
-                  <div
-                    className="mr-6"
-                    style={{
-                      display: "inline-block",
-                      fontSize: "18px",
-                    }}
-                    // align="right"
-                  >
-                    &nbsp; &nbsp;
-                    {EventMap[asset.currentLoanMarket.toUpperCase()]}
-                  </div>
-                </div>
-                <CardTitle tag="h5"></CardTitle>
-
-                <CardSubtitle className=" text-muted" tag="h6">
-                  <span style={{ fontSize: "14px" }}>
-                    &nbsp; &nbsp;&nbsp;{" "}
-                    {parseFloat(
-                      BNtoNum(Number(asset.currentLoanAmount))
-                    ).toFixed(6)}
-                  </span>
-                  &nbsp; &nbsp;
-                </CardSubtitle>
-              </CardBody>
-            </Card>
-          </Col> */}
-
           <Col className="mr-4 ">
             <div
               className="mr-6"
@@ -625,8 +552,8 @@ const BorrowData = ({
             <button
               style={{
                 backgroundColor: "rgb(57, 61, 79)",
-                color:"white",
-                border:"none",
+                color: "white",
+                border: "none",
                 borderRadius: "5px",
                 padding: "8px 15px",
               }}
@@ -1050,7 +977,13 @@ const BorrowData = ({
                   </Nav>
                 </Col>
 
-                <div style={{ fontSize: "12px", paddingTop: "10px",color:"rgb(111, 111, 111)" }}>
+                <div
+                  style={{
+                    fontSize: "12px",
+                    paddingTop: "10px",
+                    color: "rgb(111, 111, 111)",
+                  }}
+                >
                   Loan ID = {asset.loanId}
                 </div>
 
@@ -1099,51 +1032,87 @@ const BorrowData = ({
 
                     <br />
 
-                    <label
+                    <div
                       style={{
-                        width: "420px",
-                        marginBottom: "25px",
-                        padding: "5px 10px",
-                        fontSize: "18px",
-                        borderRadius: "5px",
-                        border: "2px solid rgb(57, 61, 79)",
-                        fontWeight: "200",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: "7px",
                       }}
                     >
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <div>
-                          {" "}
-                          <img
-                            src={`./${tokenName}.svg`}
-                            width="30px"
-                            height="30px"
-                          ></img>
-                          &nbsp;&nbsp;{tokenName}
-                        </div>
+                      <div>
                         <div
                           style={{
-                            marginRight: "20px",
-                            marginTop: "3px",
-                            marginBottom: "0",
-                            cursor: "pointer",
+                            fontSize: "12px",
+                            paddingTop: "10px",
+                            color: "rgb(111, 111, 111)",
+                            display: "flex",
+                            alignItems: "center",
                           }}
                         >
-                          {/* <Image
-        onClick={toggleDropdown}
-        src={dropDownArrow}
-        alt="Picture of the author"
-        width="20px"
-        height="20px"
-      /> */}
+                          Borrow Market:
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            &nbsp;
+                            <img
+                              src={`./${tokenName}.svg`}
+                              width="12px"
+                              height="12px"
+                            ></img>
+                            &nbsp;
+                            <div style={{ color: "white" }}>{tokenName}</div>
+                          </span>
                         </div>
                       </div>
-                    </label>
+                      <div
+                        style={{
+                          marginRight: "20px",
+                          marginTop: "3px",
+                          marginBottom: "0",
+                          cursor: "pointer",
+                        }}
+                      ></div>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: "7px",
+                      }}
+                    >
+                      <div>
+                        <div
+                          style={{
+                            fontSize: "12px",
+                            color: "rgb(111, 111, 111)",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          Borrow Amount:
+                          <span
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              color: "white",
+                            }}
+                          >
+                            &nbsp;600 USDT
+                          </span>
+                        </div>
+                      </div>
+                      <div
+                        style={{
+                          marginRight: "20px",
+                          marginTop: "3px",
+                          marginBottom: "0",
+                          cursor: "pointer",
+                        }}
+                      ></div>
+                    </div>
                   </>
                 ) : (
                   <label
@@ -1198,6 +1167,8 @@ const BorrowData = ({
                           style={{
                             display: "flex",
                             fontSize: "10px",
+                            marginBottom: "2px",
+                            color: "#8B8B8B",
                           }}
                         >
                           Repayed Amount
@@ -1349,75 +1320,78 @@ const BorrowData = ({
                 ) : (
                   <></>
                 )}
-
-                <div
-                  style={{
-                    display: "flex",
-                    justifyItems: "center",
-                    gap: "20px",
-                  }}
-                >
-                  <label
-                    style={{
-                      width: "100px",
-                      marginBottom: "20px",
-                      padding: "10px 10px",
-                      fontSize: "15px",
-                      borderRadius: "5px",
-                      border: "2px solid rgb(57, 61, 79)",
-                      fontWeight: "200",
-                    }}
-                  >
-                    <div style={{ textAlign: "center" }}>{title.label}</div>
-                  </label>
-
-                  <label
-                    style={{
-                      width: "300px",
-                      marginBottom: "20px",
-                      padding: "5px 10px",
-                      fontSize: "18px",
-                      borderRadius: "5px",
-                      border: "2px solid rgb(57, 61, 79)",
-                      fontWeight: "200",
-                    }}
-                  >
+                {/* {isSelfLiquidate && selection === "Self Liquidate" ? (
+                  <>
                     <div
                       style={{
                         display: "flex",
-                        justifyContent: "space-between",
-                        alignItems: "center",
+                        justifyItems: "center",
+                        gap: "20px",
                       }}
                     >
-                      <div>
-                        &nbsp;&nbsp;
-                        <img
-                          src={`./yagilogo.svg`}
-                          width="60px"
-                          height="30px"
-                        ></img>
-                      </div>
-                      <div
+                      <label
                         style={{
-                          marginRight: "20px",
-                          marginTop: "3px",
-                          marginBottom: "0",
-                          cursor: "pointer",
+                          width: "100px",
+                          marginBottom: "20px",
+                          padding: "10px 10px",
+                          fontSize: "15px",
+                          borderRadius: "5px",
+                          border: "2px solid rgb(57, 61, 79)",
+                          fontWeight: "200",
                         }}
                       >
-                        <Image
-                          // onClick={toggleDropdown}
-                          src={dropDownArrow}
-                          alt="Picture of the author"
-                          width="20px"
-                          height="20px"
-                        />
-                      </div>
-                    </div>
-                  </label>
-                </div>
+                        <div style={{ textAlign: "center" }}>{title.label}</div>
+                      </label>
 
-                {isSelfLiquidate ? (
+                      <label
+                        style={{
+                          width: "300px",
+                          marginBottom: "20px",
+                          padding: "5px 10px",
+                          fontSize: "18px",
+                          borderRadius: "5px",
+                          border: "2px solid rgb(57, 61, 79)",
+                          fontWeight: "200",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>
+                            &nbsp;&nbsp;
+                            <img
+                              src={`./yagilogo.svg`}
+                              width="60px"
+                              height="30px"
+                            ></img>
+                          </div>
+                          <div
+                            style={{
+                              marginRight: "20px",
+                              marginTop: "3px",
+                              marginBottom: "0",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <Image
+                              // onClick={toggleDropdown}
+                              src={dropDownArrow}
+                              alt="Picture of the author"
+                              width="20px"
+                              height="20px"
+                            />
+                          </div>
+                        </div>
+                      </label>
+                    </div>
+                  </>
+                ) : null} */}
+
+                {isSelfLiquidate && selection === "Self Liquidate" ? (
                   <>
                     <div
                       style={{
@@ -1490,23 +1464,33 @@ const BorrowData = ({
                         // }}
                       >
                         {!isCollateralActions ? (
-                          selection === "Withdraw Partial Borrow" ? (
-                            <div
-                              onClick={() => {
-                                selectionAction("Self Liquidate");
-                              }}
-                            >
-                              &nbsp;Self Liquidate
+                          <>
+                            <div style={{ display: "block" }}>
+                              <div
+                                onClick={() => {
+                                  selectionAction("Self Liquidate");
+                                }}
+                              >
+                                &nbsp;Self Liquidate
+                              </div>
+                              <br />
+                              <div
+                                onClick={() => {
+                                  selectionAction("Repay Borrow");
+                                }}
+                              >
+                                &nbsp;Repay Borrow
+                              </div>
+                              <br />
+                              <div
+                                onClick={() => {
+                                  selectionAction("Withdraw Partial Borrow");
+                                }}
+                              >
+                                &nbsp;Withdraw Partial Borrow
+                              </div>
                             </div>
-                          ) : (
-                            <div
-                              onClick={() => {
-                                selectionAction("Withdraw Partial Borrow");
-                              }}
-                            >
-                              &nbsp;Withdraw Partial Borrow
-                            </div>
-                          )
+                          </>
                         ) : selection === "Add Collateral" ? (
                           <div
                             onClick={() => {
@@ -1540,7 +1524,7 @@ const BorrowData = ({
                         style={{
                           display: "flex",
                           fontSize: "10px",
-                          color:"rgb(111, 111, 111)"
+                          color: "rgb(111, 111, 111)",
                         }}
                       >
                         Borrowed Amount
@@ -1622,7 +1606,7 @@ const BorrowData = ({
                           display: "flex",
                           fontSize: "10px",
                           marginTop: "15px",
-                          color:"rgb(111, 111, 111)"
+                          color: "rgb(111, 111, 111)",
                         }}
                       >
                         Collateral Amount
@@ -1738,7 +1722,13 @@ const BorrowData = ({
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       $ 0.50
                     </div>
                   </div>
@@ -1750,7 +1740,13 @@ const BorrowData = ({
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Debt Category:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       DC1/DC2/DC3
                     </div>
                   </div>
@@ -1764,7 +1760,13 @@ const BorrowData = ({
                     <div style={{ color: "#6F6F6F" }}>
                       Estimated collateral return:
                     </div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       <img src={`./BTC.svg`} width="8px" /> 1
                     </div>
                   </div>
@@ -1776,7 +1778,13 @@ const BorrowData = ({
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       Starknet
                     </div>
                   </div>
@@ -1784,8 +1792,7 @@ const BorrowData = ({
                 <Button
                   color="primary"
                   className="w-md"
-                  style={{backgroundColor:"rgb(57, 61, 79)",border:"none"}}
-
+                  style={{ backgroundColor: "rgb(57, 61, 79)", border: "none" }}
                   disabled={
                     commitPeriod === undefined ||
                     loadingApprove ||
