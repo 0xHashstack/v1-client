@@ -614,7 +614,7 @@ const ActiveDepositsTab = ({
                           >
                             <Slider
                               handlerActiveColor="black"
-                              stepSize={10}
+                              stepSize={0.5}
                               value={value}
                               trackColor="#ADB5BD"
                               handlerShape="rounded"

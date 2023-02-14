@@ -1265,7 +1265,7 @@ const BorrowData = ({
                             >
                               <Slider
                                 handlerActiveColor="black"
-                                stepSize={10}
+                                stepSize={0.5}
                                 value={value}
                                 trackColor="#ADB5BD"
                                 handlerShape="rounded"
@@ -1654,7 +1654,7 @@ const BorrowData = ({
                       <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
                         <Slider
                           handlerActiveColor="rgb(57, 61, 79)"
-                          stepSize={10}
+                          stepSize={0.5}
                           value={value}
                           trackColor="rgb(57, 61, 79)"
                           handlerShape="rounded"

@@ -757,7 +757,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                     <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
                       <Slider
                         handlerActiveColor="rgb(57, 61, 79)"
-                        stepSize={10}
+                        stepSize={0.5}
                         value={value}
                         trackColor="rgb(57, 61, 79)"
                         handlerShape="rounded"
