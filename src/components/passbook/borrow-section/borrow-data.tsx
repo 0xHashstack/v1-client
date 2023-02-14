@@ -1483,46 +1483,364 @@ const BorrowData = ({
                     ) : null}
                   </>
                 ) : (
-                  <label
-                    style={{
-                      width: "420px",
-                      margin: "5px auto",
-                      marginBottom: "20px",
-                      padding: "5px 10px",
-                      fontSize: "18px",
-                      borderRadius: "5px",
-                      border: "2px solid rgb(57, 61, 79)",
-                      fontWeight: "200",
-                    }}
-                  >
+                  <>
+                    <label
+                      style={{
+                        width: "420px",
+                        margin: "5px auto",
+                        marginBottom: "20px",
+                        padding: "5px 10px",
+                        fontSize: "18px",
+                        borderRadius: "5px",
+                        border: "2px solid rgb(57, 61, 79)",
+                        fontWeight: "200",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          fontSize: "14px",
+                          fontWeight: "400",
+                        }}
+                      >
+                        <div>&nbsp;&nbsp;{selection}</div>
+                        <div
+                          style={{
+                            marginRight: "20px",
+                            marginTop: "3px",
+                            marginBottom: "0",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <Image
+                            onClick={toggleDropdown}
+                            src={dropDownArrow}
+                            alt="Picture of the author"
+                            width="20px"
+                            height="20px"
+                          />
+                        </div>
+                      </div>
+                    </label>
+
                     <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        fontSize: "14px",
-                        fontWeight: "400",
+                        marginBottom: "7px",
+                        marginTop: "-20px",
                       }}
                     >
-                      <div>&nbsp;&nbsp;{selection}</div>
-                      <div
-                        style={{
-                          marginRight: "20px",
-                          marginTop: "3px",
-                          marginBottom: "0",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <Image
-                          onClick={toggleDropdown}
-                          src={dropDownArrow}
-                          alt="Picture of the author"
-                          width="20px"
-                          height="20px"
-                        />
+                      <div>
+                        <div
+                          style={{
+                            fontSize: "12px",
+                            paddingTop: "10px",
+                            color: "rgb(111, 111, 111)",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          Borrow Market:
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            &nbsp;
+                            <img
+                              src={`./${tokenName}.svg`}
+                              width="12px"
+                              height="12px"
+                            ></img>
+                            &nbsp;
+                            <div style={{ color: "white" }}>{tokenName}</div>
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </label>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: "7px",
+                      }}
+                    >
+                      <div>
+                        <div
+                          style={{
+                            fontSize: "12px",
+                            color: "rgb(111, 111, 111)",
+                            display: "flex",
+                            alignItems: "center",
+                            marginBottom: "15px",
+                          }}
+                        >
+                          Borrow Amount:
+                          <span
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              color: "white",
+                            }}
+                          >
+                            &nbsp;600 USDT
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {selection === "Withdraw Collateral" ? (
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginBottom: "7px",
+                          marginTop: "-10px",
+                        }}
+                      >
+                        <div>
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              color: "rgb(111, 111, 111)",
+                              display: "flex",
+                              alignItems: "center",
+                              marginBottom: "15px",
+                            }}
+                          >
+                            Borrowed Status:
+                            <span
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                color: "white",
+                              }}
+                            >
+                              &nbsp;Active
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: "20px",
+                        marginTop: "-24px",
+                      }}
+                    >
+                      <div>
+                        <div
+                          style={{
+                            fontSize: "12px",
+                            paddingTop: "10px",
+                            color: "rgb(111, 111, 111)",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          Collateral Market:
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            &nbsp;
+                            <img
+                              src={`./${tokenName}.svg`}
+                              width="12px"
+                              height="12px"
+                            ></img>
+                            &nbsp;
+                            <div style={{ color: "white" }}>{tokenName}</div>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {selection === "Add Collateral" ? (
+                      <>
+                        <div
+                          style={{
+                            display: "flex",
+                            fontSize: "10px",
+                            color: "rgb(111, 111, 111)",
+                            marginTop: "-10px",
+                            marginBottom: "7px",
+                          }}
+                        >
+                          Collateral Amount
+                        </div>
+
+                        <FormGroup>
+                          <div className="row mb-4" style={{ width: "440px" }}>
+                            <Col sm={12}>
+                              <InputGroup>
+                                <Input
+                                  style={{
+                                    backgroundColor: "#1D2131",
+                                    borderRight: "1px solid #rgb(57, 61, 79)",
+                                  }}
+                                  type="number"
+                                  className="form-control"
+                                  id="amount"
+                                  min={MinimumAmount[asset]}
+                                  placeholder={`Minimum ${MinimumAmount[asset]} ${asset}`}
+                                  onChange={handleDepositAmountChange}
+                                  value={depositAmount}
+                                  valid={!isInvalid()}
+                                />
+
+                                {
+                                  <>
+                                    <Button
+                                      outline
+                                      type="button"
+                                      className="btn btn-md w-xs"
+                                      onClick={handleMax}
+                                      // disabled={balance ? false : true}
+                                      style={{
+                                        background: "#1D2131",
+                                        color: "rgb(111, 111, 111)",
+                                        border: "1px solid rgb(57, 61, 79)",
+                                        borderLeft: "none",
+                                      }}
+                                    >
+                                      <span
+                                        style={{ borderBottom: "2px  #fff" }}
+                                      >
+                                        MAX
+                                      </span>
+                                    </Button>
+                                  </>
+                                }
+                              </InputGroup>
+
+                              <div
+                                style={{
+                                  display: "flex",
+                                  fontSize: "10px",
+                                  justifyContent: "end",
+                                  marginTop: "4px",
+                                }}
+                              >
+                                Wallet Balance:&nbsp;
+                                {/* {dataBalance ? (
+                                  (
+                                    Number(
+                                      uint256.uint256ToBN(dataBalance[0])
+                                    ) /
+                                    10 ** 18
+                                  ).toString()
+                                ) : (
+                                  <MySpinner />
+                                )} */}
+                                {/* <div style={{ color: "#76809D" }}>
+                                  &nbsp;{asset}{" "}
+                                </div> */}
+                              </div>
+
+                              <div
+                                style={{
+                                  fontSize: "10px",
+                                  position: "absolute",
+                                  right: "12px",
+                                  top: "80px",
+                                }}
+                              >
+                                {value}%
+                              </div>
+                              {depositAmount != 0 &&
+                                depositAmount >
+                                  Number(
+                                    uint256.uint256ToBN(
+                                      dataBalance ? dataBalance[0] : 0
+                                    )
+                                  ) /
+                                    10 ** 18 && (
+                                  <FormText
+                                    style={{ color: "#e97272 !important" }}
+                                  >
+                                    {`Amount is greater than your balance`}
+                                  </FormText>
+                                )}
+                            </Col>
+                          </div>
+                        </FormGroup>
+
+                        <div
+                          style={{
+                            marginLeft: "-10px",
+                            marginTop: "-15px",
+                            marginBottom: "15px",
+                          }}
+                        >
+                          <Slider
+                            handlerActiveColor="rgb(57, 61, 79)"
+                            stepSize={10}
+                            value={value}
+                            trackColor="rgb(57, 61, 79)"
+                            handlerShape="rounded"
+                            handlerColor="white"
+                            fillColor="white"
+                            trackLength={420}
+                            grabCursor={false}
+                            showMarkers="hidden"
+                            onChange={(value: any) => {
+                              setDepositAmount(
+                                (value *
+                                  (Number(uint256.uint256ToBN(dataBalance[0])) /
+                                    10 ** 18)) /
+                                  100
+                              );
+                              setValue(value);
+                            }}
+                            valueRenderer={(value: any) => `${value}%`}
+                            showValue={false}
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginBottom: "20px",
+                          marginTop: "-24px",
+                        }}
+                      >
+                        <div>
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              paddingTop: "10px",
+                              color: "rgb(111, 111, 111)",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            Collateral Market:
+                            <span
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                color: "white",
+                              }}
+                            >
+                              &nbsp; 00.00 USDT
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
 
                 {/* {isSelfLiquidate ? (
