@@ -57,7 +57,7 @@ interface IBorrowParams {
   collateralMarket: string | null;
 }
 
-interface IDepositLoanRates {
+export interface IDepositLoanRates {
   [key: string]: {
     borrowAPR?: {
       apr100x: string;

@@ -162,7 +162,7 @@ const ActiveDepositsTab = ({
       {
         contractAddress: tokenAddressMap[tokenName] as string,
         entrypoint: "approve",
-        calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
+        calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
       },
       {
         contractAddress: diamondAddress,
@@ -210,8 +210,7 @@ const ActiveDepositsTab = ({
   };
 
   const handleDepositAmountChange = (e: any) => {
-    if (e.target.value) setDepositAmount(Number(e.target.value));
-    else setDepositAmount(0);
+    setDepositAmount(e.target.value);
   };
 
   function isInvalid() {
@@ -391,7 +390,7 @@ const ActiveDepositsTab = ({
                   padding: "40px",
                 }}
               >
-                {!account ? (
+                {account ? (
                   <Form>
                     <div>
                       <Col sm={8}>

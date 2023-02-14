@@ -287,11 +287,9 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
   };
 
   const handleMax = async () => {
-    // if (dataBalance) {
     setDepositAmount(
       Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
     );
-    // }
   };
 
   const handleMin = async () => {

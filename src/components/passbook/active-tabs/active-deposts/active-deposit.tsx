@@ -36,6 +36,7 @@ import {
   isTransactionLoading,
   tokenAddressMap,
   ERC20Abi,
+  getTokenFromName,
 } from "../../../../blockchain/stark-constants";
 import {
   BNtoNum,
@@ -64,6 +65,7 @@ import { Abi, uint256 } from "starknet";
 import { ICoin } from "../../../dashboard/dashboard-body";
 import { GetErrorText, NumToBN } from "../../../../blockchain/utils";
 import classnames from "classnames";
+import { IDepositLoanRates } from "../../../borrow";
 
 const ActiveDeposit = ({
   asset,
@@ -84,7 +86,7 @@ const ActiveDeposit = ({
   withdrawDepositTransactionDone: any;
   historicalAPRs: any;
 }) => {
-  console.log(asset);
+  console.log("your supply action asset", asset);
   const {
     DepositAmount,
     handleApprove,
@@ -138,7 +140,8 @@ const ActiveDeposit = ({
     { name: "DAI", icon: "mdi-ethereum" },
   ];
 
-  const [tokenName, setTokenName] = useState(asset.market);
+  const [tokenName, setTokenName] = useState<string>(asset.market);
+  const [depositLoanRates, setDepositLoanRates] = useState<IDepositLoanRates>();
   const [customActiveTab, setCustomActiveTab] = useState("1");
   const [modal_deposit, setmodal_deposit] = useState(false);
   const [dropDown, setDropDown] = useState(false);
@@ -146,7 +149,7 @@ const ActiveDeposit = ({
   // const [depositAmount, setDepositAmount] = useState<number>();
   const [value, setValue] = useState(0);
   const { address: account } = useAccount();
-  const [commitPeriod, setCommitPeriod] = useState(0);
+  const [commitPeriod, setCommitPeriod] = useState(asset.commitmentIndex);
   // const [transDeposit, setTransDeposit] = useState("");
 
   const { contract } = useContract({
@@ -192,7 +195,7 @@ const ActiveDeposit = ({
     calls: {
       contractAddress: tokenAddressMap[tokenName] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
+      calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
     },
   });
 
@@ -206,7 +209,7 @@ const ActiveDeposit = ({
       {
         contractAddress: tokenAddressMap[tokenName] as string,
         entrypoint: "approve",
-        calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
+        calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
       },
       {
         contractAddress: diamondAddress,
@@ -214,12 +217,49 @@ const ActiveDeposit = ({
         calldata: [
           tokenAddressMap[tokenName],
           commitPeriod,
-          NumToBN(depositAmount, 18),
+          NumToBN(depositAmount as number, 18),
           0,
         ],
       },
     ],
   });
+
+  const {
+    data: dataWithdraw, 
+    error: errorWithdraw,
+    reset: resetWithdraw, 
+    execute: executeWithdraw
+  } = useStarknetExecute({
+    calls: [
+      {
+        contractAddress: diamondAddress,
+        entrypoint: "withdraw_request",
+        calldata: [
+          asset.depositId,
+          NumToBN(depositAmount as number, 18),
+        ],
+      }
+    ]
+  })
+
+
+  // useEffect(() => {
+  //   async function name() {
+  //     console.log("execute withdraw");
+
+  //     await executeWithdraw()
+  //   }
+  //   name()
+  
+  // }, [])
+  
+
+  useEffect(() => {
+    OffchainAPI.getProtocolDepositLoanRates().then((val) => {
+      console.log("loan rates", val);
+      setDepositLoanRates(val);
+    });
+  }, [asset]);
 
   const requestDepositTransactionReceipt = useTransactionReceipt({
     hash: transDeposit,
@@ -254,17 +294,26 @@ const ActiveDeposit = ({
   };
 
   const handleDepositAmountChange = (e: any) => {
-    if (e.target.value) setDepositAmount(Number(e.target.value));
-    else setDepositAmount(0);
+    setDepositAmount(e.target.value);
   };
+
+  const handleMax = () => {
+    setDepositAmount(
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
+    )
+  }
 
   function isInvalid() {
     return (
       depositAmount < MinimumAmount[tokenName] ||
       depositAmount >
-        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
     );
   }
+
+  const handleWithdrawDeposit = async (asset: string) => {
+    
+  };
 
   const handleDeposit = async (asset: string) => {
     if (
@@ -310,7 +359,7 @@ const ActiveDeposit = ({
     );
     TxToastManager.handleTxToast(
       approveTransactionReceipt,
-      `Add Deposit: Approve ${depositAmount?.toFixed(4)} ${asset.market}`,
+      `Add Deposit: Approve ${Number(depositAmount)?.toFixed(4)} ${asset.market}`,
       true
     );
   }, [approveTransactionReceipt]);
@@ -323,7 +372,7 @@ const ActiveDeposit = ({
     );
     TxToastManager.handleTxToast(
       addDepositTransactionReceipt,
-      `Deposit ${depositAmount?.toFixed(4)} ${asset.market}`
+      `Deposit ${Number(depositAmount)?.toFixed(4)} ${asset.market}`
     );
   }, [addDepositTransactionReceipt]);
 
@@ -338,10 +387,6 @@ const ActiveDeposit = ({
       `Withdraw ${withdrawAmount?.toFixed(4)} ${asset.market}`
     );
   }, [withdrawTransactionReceipt]);
-
-  const handleWithdrawDeposit = async (withdrawDeposit: any) => {
-    await withdrawDeposit();
-  };
 
   useEffect(() => {
     const currentBalance =
@@ -371,7 +416,7 @@ const ActiveDeposit = ({
         >
           {/* <AccordionItem style={{ padding: "20px" }}> */}
           {/* <AccordionHeader targetId="1"> */}
-          <Col style={{ marginLeft: "-10px" }}>ID123445</Col>
+          <Col style={{ marginLeft: "-10px" }}>{`ID${asset.depositId}` ?? 'N/a'}</Col>
 
           <Col style={{}}>
             <div>
@@ -379,7 +424,7 @@ const ActiveDeposit = ({
                 src={
                   asset
                     ? CoinClassNames[EventMap[asset.market.toUpperCase()]] ||
-                      asset.market.toUpperCase()
+                    asset.market.toUpperCase()
                     : null
                 }
                 height="24px"
@@ -390,7 +435,7 @@ const ActiveDeposit = ({
                   display: "inline-block",
                   fontSize: "13px",
                 }}
-                // align="right"
+              // align="right"
               >
                 &nbsp; &nbsp;
                 {EventMap[asset.market.toUpperCase()]}
@@ -408,7 +453,7 @@ const ActiveDeposit = ({
                 src={
                   asset
                     ? CoinClassNames[EventMap[asset.market.toUpperCase()]] ||
-                      asset.market.toUpperCase()
+                    asset.market.toUpperCase()
                     : null
                 }
                 height="18px"
@@ -472,8 +517,8 @@ const ActiveDeposit = ({
                 backgroundColor: "rgb(57, 61, 79)",
                 borderRadius: "5px",
                 padding: "8px 15px",
-                color:"white",
-                border:"none"
+                color: "white",
+                border: "none"
               }}
               onClick={() => {
                 // setAction(!action);
@@ -533,7 +578,7 @@ const ActiveDeposit = ({
                               <div className="row mb-4">
                                 <Col sm={12}>
                                   <Input
-                                    type="text"
+                                    type="number"
                                     className="form-control"
                                     id="horizontal-password-Input"
                                     placeholder={
@@ -562,7 +607,7 @@ const ActiveDeposit = ({
                                       loadingApprove ||
                                       loadingDeposit ||
                                       (depositAmount as number) <
-                                        MinimumAmount[asset]
+                                      MinimumAmount[asset]
                                     }
                                     onClick={(e) => handleApprove(asset)}
                                   >
@@ -587,7 +632,7 @@ const ActiveDeposit = ({
                                       loadingApprove ||
                                       loadingDeposit ||
                                       (depositAmount as number) <
-                                        MinimumAmount[asset]
+                                      MinimumAmount[asset]
                                     }
                                     onClick={(e) => DepositAmount(asset)}
                                   >
@@ -611,7 +656,7 @@ const ActiveDeposit = ({
                               <div className="row mb-4">
                                 <Col sm={12}>
                                   <Input
-                                    type="text"
+                                    type="number"
                                     className="form-control"
                                     id="horizontal-password-Input"
                                     placeholder="Amount"
@@ -800,7 +845,7 @@ const ActiveDeposit = ({
                   </div>
                 </label>
 
-                 {dropDown ? (
+                {dropDown ? (
                   <>
                     <div
                       style={{
@@ -879,7 +924,7 @@ const ActiveDeposit = ({
                             outline
                             type="button"
                             className="btn btn-md w-xs"
-                            // onClick={handleMax}
+                            onClick={handleMax}
                             // disabled={balance ? false : true}
                             style={{
                               background: "#1D2131",
@@ -888,7 +933,7 @@ const ActiveDeposit = ({
                               borderLeft: "none",
                             }}
                           >
-                            <span style={{ borderBottom: "2px dotted #fff",color:"rgb(111, 111, 111)" }}>
+                            <span style={{ borderBottom: "2px dotted #fff", color: "rgb(111, 111, 111)" }}>
                               MAX
                             </span>
                           </Button>
@@ -934,7 +979,7 @@ const ActiveDeposit = ({
                             (value *
                               (Number(uint256.uint256ToBN(dataBalance[0])) /
                                 10 ** 18)) /
-                              100
+                            100
                           );
                           setValue(value);
                         }}
@@ -954,10 +999,10 @@ const ActiveDeposit = ({
                     </div>
                     {depositAmount != 0 &&
                       depositAmount >
-                        Number(
-                          uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)
-                        ) /
-                          10 ** 18 && (
+                      Number(
+                        uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)
+                      ) /
+                      10 ** 18 && (
                         <FormText style={{ color: "#e97272 !important" }}>
                           {`Amount is greater than your balance`}
                         </FormText>
@@ -982,7 +1027,7 @@ const ActiveDeposit = ({
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)"  }}>
+                    <div style={{ textAlign: "right", fontWeight: "600", color: "rgb(111, 111, 111)" }}>
                       $ 0.50
                     </div>
                   </div>
@@ -994,8 +1039,18 @@ const ActiveDeposit = ({
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply APR:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)"  }}>
-                      7.75 %
+                    <div style={{ textAlign: "right", fontWeight: "600", color: "rgb(111, 111, 111)" }}>
+                      {
+                        depositLoanRates && commitPeriod < 3 ? (
+                          `${parseFloat(
+                            depositLoanRates[
+                              `${getTokenFromName(tokenName).address}__${commitPeriod}`
+                            ]?.depositAPR?.apr100x as string
+                          )} %`
+                        ) : (
+                          <MySpinner />
+                        )
+                      }
                     </div>
                   </div>
                   <div
@@ -1008,7 +1063,7 @@ const ActiveDeposit = ({
                     <div style={{ color: "#6F6F6F" }}>
                       Asset Utilization Rate:
                     </div>
-                    <div style={{ textAlign: "right", fontWeight: "600" ,color:"rgb(111, 111, 111)" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600", color: "rgb(111, 111, 111)" }}>
                       0.43
                     </div>
                   </div>
@@ -1020,13 +1075,13 @@ const ActiveDeposit = ({
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" ,color:"rgb(111, 111, 111)" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600", color: "rgb(111, 111, 111)" }}>
                       Starknet
                     </div>
                   </div>
                 </div>
                 <Button
-                  style={{backgroundColor:"rgb(57, 61, 79)",color:"white",border:"none",}}
+                  style={{ backgroundColor: "rgb(57, 61, 79)", color: "white", border: "none", }}
                   color="white"
                   className="w-md"
                   disabled={
@@ -1036,14 +1091,16 @@ const ActiveDeposit = ({
                     isInvalid()
                   }
                   onClick={(e) => {
+                    if(customActiveTab === "1")
                     handleDeposit(tokenName);
+                    else handleWithdrawDeposit(tokenName)
                   }}
                 >
                   {!(
                     loadingApprove ||
                     isTransactionLoading(requestDepositTransactionReceipt)
                   ) ? (
-                    "Supply"
+                    customActiveTab === "1" ? "Add Supply": "Withdraw"
                   ) : (
                     <MySpinner text="Depositing token" />
                   )}

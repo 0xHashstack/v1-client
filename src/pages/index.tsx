@@ -262,6 +262,7 @@ const Dashboard = () => {
 
   const onDepositData = async (depositsData: any[]) => {
     let deposits: any[] = [];
+    console.log("depositdata", depositsData);
     for (let i = 0; i < depositsData.length; i++) {
       let deposit: any = depositsData[i];
       console.log(deposit);
