@@ -633,7 +633,7 @@ const BorrowTab = ({
           </>
         ) : (
           <>
-            <div style={{ textAlign: "center", margin: "185px auto" }}>
+            <div style={{ textAlign: "center", margin: "185px auto",color:"white" }}>
               <div>Your Ethereum wallet is empty. </div>
               <div
                 style={{ fontWeight: "bold", cursor: "pointer" }}
