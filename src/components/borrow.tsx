@@ -45,9 +45,11 @@ import MySpinner from "./mySpinner";
 import OffchainAPI from "../services/offchainapi.service";
 import { ceil, round } from "../services/utils.service";
 
-import arrowDown from "../assets/images/arrowDown.svg";
-import arrowUp from "../assets/images/arrowUp.svg";
+// import Downarrow from "../assets/images/Downarrow.svg";
+// import UpArrow from "../assets/images/UpArrow.svg";
 import { ICoin } from "./dashboard/dashboard-body";
+import Downarrow from "../assets/images/ArrowDownDark.svg"
+import UpArrow from "../assets/images/ArrowUpDark.svg"
 
 interface IBorrowParams {
   loanAmount: number;
@@ -139,34 +141,34 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
   const [commitPeriod, setCommitPeriod] = useState(0);
 
   const [dropDown, setDropDown] = useState(false);
-  const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
+  const [dropDownArrow, setDropDownArrow] = useState(Downarrow);
 
   const [commitmentValue, setCommitmentValue] = useState("Flexible");
   const [commitmentDropDown, setCommitmentDropDown] = useState(false);
-  const [commitmentArrow, setCommitmentArrow] = useState(arrowDown);
+  const [commitmentArrow, setCommitmentArrow] = useState(Downarrow);
 
   const [borrowDropDown, setBorrowDropDown] = useState(false);
-  const [borrowArrow, setBorrowArrow] = useState(arrowDown);
+  const [borrowArrow, setBorrowArrow] = useState(Downarrow);
 
   const [collateralMarketToken, setCollateralwMarketToken] = useState("USDT");
 
   const toggleDropdown = () => {
     setDropDown(!dropDown);
-    setDropDownArrow(dropDown ? arrowDown : arrowUp);
+    setDropDownArrow(dropDown ? Downarrow : UpArrow);
     setBorrowDropDown(false);
-    setBorrowArrow(arrowDown);
+    setBorrowArrow(Downarrow);
     setCommitmentDropDown(false);
-    setCommitmentArrow(arrowDown);
+    setCommitmentArrow(Downarrow);
     // disconnectEvent(), connect(connector);
   };
 
   const toggleBorrowDropdown = () => {
     setBorrowDropDown(!borrowDropDown);
-    setBorrowArrow(borrowDropDown ? arrowDown : arrowUp);
+    setBorrowArrow(borrowDropDown ? Downarrow : UpArrow);
     setDropDown(false);
-    setDropDownArrow(arrowDown);
+    setDropDownArrow(Downarrow);
     setCommitmentDropDown(false);
-    setCommitmentArrow(arrowDown);
+    setCommitmentArrow(Downarrow);
     // disconnectEvent(), connect(connector);
   };
 
@@ -710,7 +712,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                         borderLeft: "none",
                       }}
                     >
-                      <span style={{ borderBottom: "2px dotted #fff" }}>
+                      <span style={{ borderBottom: "2px  #fff" }}>
                         MAX
                       </span>
                     </Button>
@@ -774,8 +776,8 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                 style={{
                   fontSize: "10px",
                   position: "absolute",
-                  right: "38px",
-                  top: "275px",
+                  right: "39px",
+                  top: "260px",
                 }}
               >
                 {value}%
@@ -813,7 +815,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                           onClick={() => {
                             setTokenName(`${coin.name}`);
                             setDropDown(false);
-                            setDropDownArrow(arrowDown);
+                            setDropDownArrow(Downarrow);
                             handleCollateralChange(`${coin.name}`);
                             // handleMinLoan(`${coin.name}`);
                           }}
@@ -865,7 +867,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                           onClick={() => {
                             setBorrowTokenName(`${coin.name}`);
                             setBorrowDropDown(false);
-                            setBorrowArrow(arrowDown);
+                            setBorrowArrow(Downarrow);
                             handleLoanInputChange(`${coin.name}`);
                           }}
                         >
@@ -911,7 +913,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       onClick={() => {
                         setCommitmentValue("1 month");
                         setCommitmentDropDown(false);
-                        setCommitmentArrow(arrowDown);
+                        setCommitmentArrow(Downarrow);
                         handleCommitChange(2);
                       }}
                     >
@@ -926,7 +928,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       onClick={() => {
                         setCommitmentValue("2 weeks");
                         setCommitmentDropDown(false);
-                        setCommitmentArrow(arrowDown);
+                        setCommitmentArrow(Downarrow);
                         handleCommitChange(1);
                       }}
                     >
@@ -941,7 +943,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                       onClick={() => {
                         setCommitmentValue("Flexible");
                         setCommitmentDropDown(false);
-                        setCommitmentArrow(arrowDown);
+                        setCommitmentArrow(Downarrow);
                         handleCommitChange(0);
                       }}
                     >
@@ -1079,7 +1081,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                             onClick={() => {
                               setCommitmentDropDown(!commitmentDropDown);
                               setCommitmentArrow(
-                                commitmentDropDown ? arrowDown : arrowUp
+                                commitmentDropDown ? Downarrow : UpArrow
                               );
                             }}
                             src={commitmentArrow}
@@ -1158,7 +1160,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                           borderLeft: "none",
                         }}
                       >
-                        <span style={{ borderBottom: "2px dotted #fff" }}>
+                        <span style={{ borderBottom: "2px  #fff" }}>
                           MAX
                         </span>
                       </Button>

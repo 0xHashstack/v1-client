@@ -50,8 +50,8 @@ import Deposit from "../../../deposit";
 import { toast } from "react-toastify";
 
 import Slider from "react-custom-slider";
-import arrowDown from "../../../../assets/images/arrowDown.svg";
-import arrowUp from "../../../../assets/images/arrowUp.svg";
+import arrowDown from "../../../../assets/images/ArrowDownDark.svg";
+import arrowUp from "../../../../assets/images/ArrowUpDark.svg";
 import OffchainAPI from "../../../../services/offchainapi.service";
 import Image from "next/image";
 import {
@@ -923,7 +923,7 @@ const ActiveDeposit = ({
                               borderLeft: "none",
                             }}
                           >
-                            <span style={{ borderBottom: "2px dotted #fff",color:"rgb(111, 111, 111)" }}>
+                            <span style={{ borderBottom: "2px  #fff",color:"rgb(111, 111, 111)" }}>
                               MAX
                             </span>
                           </Button>

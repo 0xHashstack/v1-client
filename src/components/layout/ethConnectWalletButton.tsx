@@ -38,7 +38,7 @@ export default function EthWalletButton() {
                     <label
                       onClick={openConnectModal}
                       style={{
-                        backgroundColor: "#000",
+                        backgroundColor: "#2A2E3F",
                         width: "100%",
                         marginBottom: "10px",
                         padding: "15px 10px",

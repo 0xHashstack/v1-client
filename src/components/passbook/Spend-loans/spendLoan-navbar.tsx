@@ -24,8 +24,8 @@ import MySpinner from "../../mySpinner";
 
 import Image from "next/image";
 import Slider from "react-custom-slider";
-import arrowDown from "../../../assets/images/arrowDown.svg";
-import arrowUp from "../../../assets/images/arrowUp.svg";
+import arrowDown from "../../../assets/images/ArrowDownDark.svg";
+import arrowUp from "../../../assets/images/ArrowUpDark.svg";
 import { ICoin } from "../../dashboard/dashboard-body";
 import { Abi, uint256 } from "starknet";
 import { toast } from "react-toastify";
@@ -372,7 +372,7 @@ const SpendLoanNav = () => {
                   >
                     <div style={{ textAlign: "center" }}>{title.label}</div>
                     <Image
-                      // onClick={toggleDropdown}
+                      // onClick={togglesDropdown}
                       style={{ cursor: "pointer" }}
                       src={dropDownArrow}
                       alt="Picture of the author"

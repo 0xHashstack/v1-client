@@ -53,6 +53,8 @@ import { TxToastManager } from "../blockchain/txToastManager";
 import MySpinner from "./mySpinner";
 import Image from "next/image";
 import classnames from "classnames";
+import Downarrow from "../assets/images/ArrowDownDark.svg"
+import UpArrow from "../assets/images/ArrowUpDark.svg"
 
 interface ICoin {
   name: string;
@@ -86,11 +88,11 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 
   const [token, setToken] = useState(getTokenFromName(asset));
   const [dropDown, setDropDown] = useState(false);
-  const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
+  const [dropDownArrow, setDropDownArrow] = useState(Downarrow);
 
   const [commitmentValue, setCommitmentValue] = useState("Flexible");
   const [commitmentDropDown, setCommitmentDropDown] = useState(false);
-  const [commitmentArrow, setCommitmentArrow] = useState(arrowDown);
+  const [commitmentArrow, setCommitmentArrow] = useState(Downarrow);
 
   const [modal_deposit, setmodal_deposit] = useState(false);
 
@@ -288,7 +290,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
 
   const toggleDropdown = () => {
     setDropDown(!dropDown);
-    setDropDownArrow(dropDown ? arrowDown : arrowUp);
+    setDropDownArrow(dropDown ? Downarrow : UpArrow);
     // disconnectEvent(), connect(connector);
   };
 
@@ -498,7 +500,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                         onClick={() => {
                           setCommitmentDropDown(!commitmentDropDown);
                           setCommitmentArrow(
-                            commitmentDropDown ? arrowDown : arrowUp
+                            commitmentDropDown ? Downarrow : UpArrow
                           );
                         }}
                         src={commitmentArrow}
@@ -543,7 +545,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                             onClick={() => {
                               setTokenName(`${coin.name}`);
                               setDropDown(false);
-                              setDropDownArrow(arrowDown);
+                              setDropDownArrow(Downarrow);
                               handleBalanceChange();
                               // handleDepositAmountChange(0);
                             }}
@@ -593,7 +595,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                         onClick={() => {
                           setCommitmentValue("1 month");
                           setCommitmentDropDown(false);
-                          setCommitmentArrow(arrowDown);
+                          setCommitmentArrow(Downarrow);
                           handleCommitChange(2);
                         }}
                       >
@@ -608,7 +610,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                         onClick={() => {
                           setCommitmentValue("2 weeks");
                           setCommitmentDropDown(false);
-                          setCommitmentArrow(arrowDown);
+                          setCommitmentArrow(Downarrow);
                           handleCommitChange(1);
                         }}
                       >
@@ -623,7 +625,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                         onClick={() => {
                           setCommitmentValue("Flexible");
                           setCommitmentDropDown(false);
-                          setCommitmentArrow(arrowDown);
+                          setCommitmentArrow(Downarrow);
                           handleCommitChange(0);
                         }}
                       >
@@ -687,7 +689,7 @@ let Deposit: any = ({ asset }: { asset: string }) => {
                               borderLeft: "none",
                             }}
                           >
-                            <span style={{ borderBottom: "2px dotted #fff" }}>
+                            <span style={{ borderBottom: "2px  #fff" }}>
                               MAX
                             </span>
                           </Button>

@@ -1,8 +1,8 @@
 import React, { useState, useContext } from "react";
 import Link from "next/link";
 import { Modal, Form, Row, Navbar } from "reactstrap";
-import arrowDown from "../../assets/images/arrowDown.svg";
-import arrowUp from "../../assets/images/arrowUp.svg";
+import arrowDown from "../../assets/images/ArrowDownDark.svg";
+import arrowUp from "../../assets/images/ArrowUpDark.svg";
 import starknetLogo from "../../assets/images/starknetLogo.svg";
 import ethLogo from "../../assets/images/ethLogo.svg";
 import braavosWallet from "../../assets/images/braavosWallet.svg";
@@ -304,8 +304,8 @@ const SecondaryHeader = ({
               <div
                 className="modal-body"
                 style={{
-                  backgroundColor: "white",
-                  color: "#6F6F6F",
+                  backgroundColor: "#1D2131",
+                  color: "white",
                   padding: "40px",
                 }}
               >
@@ -318,7 +318,7 @@ const SecondaryHeader = ({
                       color: "black",
                     }}
                   >
-                    <h4 style={{ color: "black", paddingBottom: "10px" }}>
+                    <h4 style={{ color: "white", paddingBottom: "10px" }}>
                       Connect a wallet
                     </h4>
                     <div style={{ marginTop: "-10px", cursor: "pointer" }}>
@@ -417,7 +417,7 @@ const SecondaryHeader = ({
                     <label
                       onClick={handleConnectBraavosWallet}
                       style={{
-                        backgroundColor: "#000",
+                        backgroundColor: "#2A2E3F",
                         width: "100%",
                         marginBottom: "10px",
                         padding: "15px 10px",
@@ -479,7 +479,7 @@ const SecondaryHeader = ({
                       terms of service & disclaimer
                     </a>
                   </p>
-                  <p style={{ fontSize: "10px" }}>
+                  <p style={{ fontSize: "10px", color:"#8C8C8C" }}>
                     This mainnet is currently in alpha with limitations on the
                     maximum supply & borrow amount. This is done in
                     consideration of the current network and liquidity
@@ -723,7 +723,7 @@ const SecondaryHeader = ({
               <h6 style={{ color: "#636779" }}>General Settings</h6>
             </div>
             <div>
-              <div style={{ marginLeft: "11px", color: "black" }}>
+              <div style={{ marginLeft: "11px", color: "white" }}>
                 Dark Mode
                 <div
                   style={{
@@ -771,7 +771,7 @@ const SecondaryHeader = ({
             style={{
               position: "absolute",
               right: "20px",
-              backgroundColor: "#F8F8F8",
+              backgroundColor:"#1C202F",
               width: "195px",
               height: "300px",
               borderRadius: "5px",
@@ -807,7 +807,7 @@ const SecondaryHeader = ({
               <div>Select Language</div>
             </div>
             <div
-              style={{ marginLeft: "10px", color: "black", fontSize: "12px" }}
+              style={{ marginLeft: "10px", color: "white", fontSize: "12px" }}
             >
               {languages.map((language) => {
                 let str = language.name.split(" ");
