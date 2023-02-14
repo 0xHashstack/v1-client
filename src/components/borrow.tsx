@@ -614,7 +614,7 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                   fontSize: "18px",
                   borderRadius: "5px",
                   border: "2px solid rgb(57, 61, 79)",
-                  fontWeight: "200",  
+                  fontWeight: "200",
                 }}
               >
                 <div
@@ -1387,7 +1387,13 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       $ 10.91
                     </div>
                   </div>
@@ -1399,7 +1405,13 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Transaction fees:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       $ 10.91
                     </div>
                   </div>
@@ -1411,7 +1423,13 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Fair price:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       $ 10.91
                     </div>
                   </div>
@@ -1423,7 +1441,13 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>i Collateral market:</div>
-                    <div style={{ textAlign: "right", fontWeight: "400",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "400",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       $ 10.91
                     </div>
                   </div>
@@ -1435,7 +1459,13 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>ii Borrow market:</div>
-                    <div style={{ textAlign: "right", fontWeight: "400",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "400",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       $10.91
                     </div>
                   </div>
@@ -1447,7 +1477,13 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Risk premium:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       0.6%
                     </div>
                   </div>
@@ -1459,7 +1495,13 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Debt category:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       DC1/DC2/DC3
                     </div>
                   </div>
@@ -1471,7 +1513,13 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Borrow apr:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       5.6%
                     </div>
                   </div>
@@ -1483,7 +1531,13 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Borrow network:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"#6F6F6F" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "#6F6F6F",
+                      }}
+                    >
                       starknet
                     </div>
                   </div>
@@ -1498,7 +1552,11 @@ let Borrow: any = ({ asset, title }: { asset: string; title: string }) => {
                     loadingBorrow ||
                     !isValid()
                   }
-                  style={{ padding: "10px 0",border:"none",backgroundColor:"rgb(57, 61, 79)" }}
+                  style={{
+                    padding: "10px 0",
+                    border: "none",
+                    backgroundColor: "rgb(57, 61, 79)",
+                  }}
                   onClick={(e) => handleBorrow(asset)}
                 >
                   {!(
