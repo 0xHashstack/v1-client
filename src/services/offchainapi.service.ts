@@ -1,6 +1,7 @@
 import axios from "axios";
 import { getTokenFromAddress, tokenAddressMap } from "../blockchain/stark-constants";
-
+import OraclePrices from './../../public/mock-data/OraclePrices.json';
+import Reserves from './../../public/mock-data/Reserves.json';
 export default class OffchainAPI {
   // static ENDPOINT = 'http://52.77.185.41:3000'
   static ENDPOINT = "https://offchainapi.testnet.starknet.hashstack.finance";
@@ -239,5 +240,17 @@ export default class OffchainAPI {
         id: event.loanId,
       };
     });
+  }
+
+  static async getOraclePrices() {
+    let route = `/api/oracle-prices`
+    // return OffchainAPI.httpGet(route);
+    return OraclePrices;
+  }
+
+  static async getReserves() {
+    let route = `/api/reserves`
+    // return OffchainAPI.httpGet(route);
+    return Reserves;
   }
 }

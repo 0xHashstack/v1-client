@@ -37,12 +37,32 @@ let DashboardTBody: any = ({
   depositCommitment: string;
 }) => {
   const [depositLoanRates, setDepositLoanRates] = useState();
+  const [oracleAndFairPrices, setOracleAndFairPrices] = useState<any>();
+
+  const processOracleFairPrices = (coinName: string, arr) => {
+    const oraclePrice = arr.find((ele) => {
+      return ele.name === coinName
+    });
+    return oraclePrice?.price?.toFixed(3);  
+  }
+
   useEffect(() => {
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
       console.log(val);
       setDepositLoanRates(val);
     });
   }, []);
+
+  const getPrices = () => {
+    OffchainAPI.getOraclePrices().then((prices) => {
+      console.log("prices", prices);
+      setOracleAndFairPrices(prices);
+    })
+  }
+
+  useEffect(() => {
+    getPrices();
+  }, [oracleAndFairPrices])
 
   if (isloading) {
     return (
@@ -56,6 +76,10 @@ let DashboardTBody: any = ({
   } else {
     // return <div>sdlfksjdf</div>;
     return Coins.map((coin, idx) => {
+      if(oracleAndFairPrices === undefined) return;
+      let oraclePriceForCoin = processOracleFairPrices(coin.name, oracleAndFairPrices?.oraclePrices);
+      let fairPriceForCoin = processOracleFairPrices(coin.name, oracleAndFairPrices?.fairPrices);
+      console.log("prices process", oraclePriceForCoin, fairPriceForCoin, coin.name);
       return (
         <DashboardTokens
           coin={coin}
@@ -64,6 +88,8 @@ let DashboardTBody: any = ({
           borrowCommitment={borrowCommitment}
           depositCommitment={depositCommitment}
           depositLoanRates={depositLoanRates}
+          oraclePriceForCoin={oraclePriceForCoin}
+          fairPriceForCoin={fairPriceForCoin}
         />
       );
     });

@@ -21,19 +21,26 @@ const DashboardTokens = ({
   borrowCommitment,
   depositCommitment,
   depositLoanRates,
+  oraclePriceForCoin, 
+  fairPriceForCoin,
 }: {
   coin: ICoin;
   idx: number;
   borrowCommitment: string;
   depositCommitment: string;
   depositLoanRates: any;
+  oraclePriceForCoin: any;
+  fairPriceForCoin: any
 }) => {
+  
+
   useEffect(() => {
     console.log(
       `%c Protocol deposit ${depositCommitment} ${borrowCommitment} ${coin.name}`,
       "background: #222; color: #bada55"
     );
   }, []);
+
 
   return (
     <tr
@@ -66,8 +73,8 @@ const DashboardTokens = ({
           <span style={{ marginLeft: "-15px" }}>{coin.name}</span>
         </div>
       </th>
-      <td style={{ padding: "31px 10px" }}>0000</td>
-      <td style={{ padding: "31px 10px" }}>0000</td>
+      <td style={{ padding: "31px 10px" }}>{oraclePriceForCoin || 'N/A'}</td>
+      <td style={{ padding: "31px 10px" }}>{fairPriceForCoin || 'N/A'}</td>
       <td style={{ padding: "31px 10px" }}>0000</td>
       <td style={{ padding: "31px 10px" }}>0000</td>
       <td style={{ padding: "31px", textAlign: "center" }}>
