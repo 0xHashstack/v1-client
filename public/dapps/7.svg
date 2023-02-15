@@ -1,17 +1,3 @@
-<svg width="95" height="95" viewBox="0 0 95 95" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g filter="url(#filter0_d_2043_80986)">
-<rect x="4" width="87" height="87" rx="8" fill="white"/>
-</g>
-<defs>
-<filter id="filter0_d_2043_80986" x="0" y="0" width="95" height="95" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
-<feFlood flood-opacity="0" result="BackgroundImageFix"/>
-<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
-<feOffset dy="4"/>
-<feGaussianBlur stdDeviation="2"/>
-<feComposite in2="hardAlpha" operator="out"/>
-<feColorMatrix type="matrix" values="0 0 0 0 0.894118 0 0 0 0 0.929412 0 0 0 0 0.94902 0 0 0 1 0"/>
-<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_2043_80986"/>
-<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_2043_80986" result="shape"/>
-</filter>
-</defs>
+<svg width="87" height="87" viewBox="0 0 87 87" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="87" height="87" rx="8" fill="#393D4F"/>
 </svg>
