@@ -284,7 +284,7 @@ const Liquidation = ({
           <thead>
             <tr style={{ color: "rgb(140, 140, 140)" }}>
               <th scope="col">Debt Market</th>
-              <th scope="col"> Amount</th>
+              <th scope="col">Amount</th>
               <th scope="col">Collateral Market</th>
               <th scope="col">Collateral Balance</th>
               <th scope="col">Risk Premium</th>
@@ -298,7 +298,9 @@ const Liquidation = ({
           <tbody>
             {Array.isArray(activeLiquidationsData) &&
             activeLiquidationsData.length > 0 ? (
-              activeLiquidationsData.map((asset, key) => (
+              activeLiquidationsData.map((asset, key) => {
+                console.log("asset in li", asset)
+                return (
                 <tr key={key} style={{ color: "white" }}>
                   <th scope="row">
                     <div className="d-flex align-items-center">
@@ -307,11 +309,11 @@ const Liquidation = ({
                           src={
                             CoinClassNames[
                               EventMap[asset.loanMarket.toUpperCase()]
-                            ] || asset.loanMarket.toUpperCase()
+                            ]  || asset.loanMarket.toUpperCase()
                           }
                         />
                       </div>
-                      <span>USDT</span>
+                      <span>{EventMap[asset.loanMarket.toUpperCase()]}</span>
                     </div>
                   </th>
                   <td>
@@ -321,11 +323,11 @@ const Liquidation = ({
                        style={{scale:"0.7"}}
                           src={
                             CoinClassNames[
-                              EventMap[asset.collateralMarket.toUpperCase()]
+                              EventMap[asset.loanMarket.toUpperCase()]
                             ] || asset.collateralMarket.toUpperCase()
                           }
                         />
-                        <span style={{scale:"0.7"}}>USDT</span>
+                        <span style={{scale:"0.7"}}>{EventMap[asset.loanMarket.toUpperCase()]}</span>
                     </div>
                     </div>
                   </td>
@@ -362,7 +364,7 @@ const Liquidation = ({
                       {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Debt Converted*/}
-                      YES
+                      NO
                     </div>
                   </td>
                   <td>
@@ -370,14 +372,14 @@ const Liquidation = ({
                       {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Converted Market*/}
-                      <img
+                      {/* <img
                         src={
                           CoinClassNames[
                             EventMap[asset.collateralMarket.toUpperCase()]
                           ] || asset.collateralMarket.toUpperCase()
                         }
-                      />
-                      BTC
+                      /> */}
+                      -
                     </div>
                   </td>
                   <td>
@@ -385,7 +387,7 @@ const Liquidation = ({
                       {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Amount*/}
-                      10065.1515
+                      -
                     </div>
                   </td>
                   <td>
@@ -403,7 +405,7 @@ const Liquidation = ({
                     ></LiquidationButton>
                   </td>
                 </tr>
-              ))
+              )})
             ) : (
               <tr>
                 <td colSpan={5}>No Records Found.</td>
