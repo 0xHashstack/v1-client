@@ -639,7 +639,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  <div
+                  {customActiveTab !== "2"?( <div
                     style={{
                       position: "absolute",
                       zIndex: "500",
@@ -666,7 +666,8 @@ const Dashboard = () => {
                         height="14px"
                       />
                     </button>
-                  </div>
+                  </div>) :null}
+                  
                 </>
               ) : null}
 
