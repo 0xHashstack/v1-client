@@ -639,7 +639,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  <div
+                  {customActiveTab !== "2"?( <div
                     style={{
                       position: "absolute",
                       zIndex: "500",
@@ -666,7 +666,8 @@ const Dashboard = () => {
                         height="14px"
                       />
                     </button>
-                  </div>
+                  </div>) :null}
+                  
                 </>
               ) : null}
 
@@ -753,47 +754,8 @@ const Dashboard = () => {
                     <u style={{ cursor: "pointer" }}>your borrow</u>
                   </div>
                   <SpendLoanNav />
-                  <div
-                    style={{
-                      fontSize: "16px",
-                      marginLeft: "15px",
-                      color: "white",
-                    }}
-                  >
-                    Select Dapp to begin with the spend
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-betwwen",
-                      gap: "120px",
-                      margin: "10px 15px",
-                    }}
-                  >
-                    {dappsArray.map((dapp, index) => {
-                      return (
-                        <div>
-                          <img src={`./dapps/${dapp}.svg`} height="90px" />
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-betwwen",
-                      gap: "120px",
-                      margin: "10px 15px",
-                    }}
-                  >
-                    {dappsArray.map((dapp, index) => {
-                      return (
-                        <div>
-                          <img src={`./dapps/${dapp}.svg`} height="90px" />
-                        </div>
-                      );
-                    })}
-                  </div>
+                  
+                  
                 </>
               ) : null}
             </Col>
