@@ -59,8 +59,8 @@ import Repay from "./repay";
 
 import Image from "next/image";
 import Slider from "react-custom-slider";
-import arrowDown from "../../../assets/images/arrowDown.svg";
-import arrowUp from "../../../assets/images/arrowUp.svg";
+import Downarrow from "../../../assets/images/ArrowDownDark.svg";
+import UpArrow from "../../../assets/images/ArrowUpDark.svg";
 import { ICoin } from "../../dashboard/dashboard-body";
 import { Abi, uint256 } from "starknet";
 import useAddDeposit from "../../../blockchain/hooks/active-deposits/useAddDeposit";
@@ -191,25 +191,34 @@ const BorrowData = ({
   } = useAddDeposit(asset, diamondAddress);
 
   const [tokenName, setTokenName] = useState("BTC");
+  const [marketTokenName, setMarketTokenName] = useState("BTC");
   const [title, setTitle] = useState({
     amount: "Borrowd",
-    label: "Starknet",
+    label: "Stake",
   });
   const [isCollateralActions, setIsCollateralActions] = useState(false);
   const [isSelfLiquidate, setIsSelfLiquidate] = useState(false);
   const [customActiveTab, setCustomActiveTab] = useState("1");
   const [modal_deposit, setmodal_deposit] = useState(false);
   const [dropDown, setDropDown] = useState(false);
-  const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
+  const [dropDownArrow, setDropDownArrow] = useState(Downarrow);
+  const [dropDownArrowTwo, setDropDownArrowTwo] = useState(Downarrow);
+  const [dropDownArrowThree, setDropDownArrowThree] = useState(Downarrow);
+  const [marketDropDown, setMarketDropDown] = useState(false);
+  const [actionLabel, setActionLabel] = useState("Stake");
 
   const [borrowInterest, setBorrowInterest] = useState<string>("");
   const [currentBorrowInterest, setCurrentBorrowInterest] = useState<string>();
 
-  const [selection, setSelection] = useState("Withdraw Partial Borrow");
+  const [selection, setSelection] = useState("Spend Borrow");
   const [selectionTwo, setSelectionTwo] = useState("Add Collateral");
+
+  const [idDropDown, setIdDropDown] = useState(false);
+  const [idDropDownArrow, setIdDropDownArrow] = useState(Downarrow);
 
   const [value, setValue] = useState(0);
   const [commitPeriod, setCommitPeriod] = useState(0);
+  const [stakeDropDown, setStakeDropDown] = useState(false);
   // const [transDeposit, setTransDeposit] = useState("");
 
   const { contract } = useContract({
@@ -296,8 +305,18 @@ const BorrowData = ({
 
   const toggleDropdown = () => {
     setDropDown(!dropDown);
-    setDropDownArrow(dropDown ? arrowDown : arrowUp);
+    setDropDownArrow(dropDown ? Downarrow : UpArrow);
     // disconnectEvent(), connect(connector);
+  };
+
+  const toggleDropdownTwo = () => {
+    setStakeDropDown(!stakeDropDown);
+    setDropDownArrowTwo(stakeDropDown ? Downarrow : UpArrow);
+  };
+
+  const toggleDropdownThree = () => {
+    setMarketDropDown(!marketDropDown);
+    setDropDownArrowThree(marketDropDown ? Downarrow : UpArrow);
   };
 
   const handleBalanceChange = async () => {
@@ -357,7 +376,7 @@ const BorrowData = ({
   const selectionAction = (value: string) => {
     setSelection(value);
     setDropDown(false);
-    setDropDownArrow(arrowDown);
+    setDropDownArrow(Downarrow);
 
     if (value === "Self Liquidate") {
       setTitle({
@@ -389,6 +408,20 @@ const BorrowData = ({
     }
   };
 
+  const handleAction = (value: string) => {
+    if (value === "Stake") {
+      setActionLabel("Stake");
+    }
+    if (value === "Swap") {
+      setActionLabel("Swap");
+    }
+    if (value === "Trade") {
+      setActionLabel("Trade");
+    }
+    setStakeDropDown(false);
+    setDropDownArrowTwo(Downarrow);
+  };
+
   useEffect(() => {
     setBorrowInterest(borrowInterestAccrued(asset));
     if (asset && historicalAPRs) {
@@ -416,9 +449,6 @@ const BorrowData = ({
             gap: "50px",
           }}
         >
-          {/* <AccordionItem style={{ padding: "20px" }}> */}
-          {/* <AccordionHeader targetId="1"> */}
-
           <Col style={{ marginLeft: "-10px" }}>ID{asset.loanId}</Col>
 
           <Col style={{}}>
@@ -447,43 +477,6 @@ const BorrowData = ({
             </div>
             <CardTitle tag="h5"></CardTitle>
           </Col>
-          {/* <Col className="mr-4 ">
-            <div>
-              <img
-                src={
-                  CoinClassNames[EventMap[asset.loanMarket.toUpperCase()]] ||
-                  asset.loanMarket.toUpperCase()
-                }
-                height="18px"
-              />
-
-              <div
-                className="mr-6"
-                style={{
-                  display: "inline-block",
-                  fontSize: "18px",
-                }}
-              >
-                &nbsp; &nbsp;
-                {EventMap[asset.loanMarket.toUpperCase()]}
-              </div>
-            </div>
-            <CardTitle tag="h5"></CardTitle>
-            <CardSubtitle className=" text-muted" tag="h6">
-              <span style={{ fontSize: "14px" }}>
-                &nbsp; &nbsp;&nbsp;{" "}
-                {parseFloat(BNtoNum(Number(asset.loanAmount))).toFixed(6)}
-              </span>
-              &nbsp; &nbsp;
-              {!asset.isSwapped && (
-                <img
-                  src="https://img.icons8.com/cotton/64/000000/synchronize--v3.png"
-                  // width="18%"
-                  height="12px"
-                />
-              )}
-            </CardSubtitle>
-          </Col> */}
 
           <Col className="mr-4 ">
             <span style={{ fontSize: "14px", fontWeight: "600" }}>
@@ -944,7 +937,7 @@ const BorrowData = ({
                         onClick={() => {
                           setCustomActiveTab("1");
                           setIsCollateralActions(false);
-                          setSelection("Withdrae Partial Borrow");
+                          setSelection("Spend Borrow");
                         }}
                       >
                         <span className="d-none d-sm-block">
@@ -982,55 +975,168 @@ const BorrowData = ({
                     fontSize: "12px",
                     paddingTop: "10px",
                     color: "rgb(111, 111, 111)",
+                    display: "flex",
+                    gap: "10px",
+                    width: "100%",
                   }}
                 >
-                  Loan ID = {asset.loanId}
+                  Borrow ID = {asset.loanId}
+                  <Image
+                    style={{ cursor: "pointer" }}
+                    src={idDropDownArrow}
+                    alt="Picture of the author"
+                    width="16px"
+                    height="16px"
+                    onClick={() => {
+                      setIdDropDown(!idDropDown);
+                      setIdDropDownArrow(idDropDown ? Downarrow : UpArrow);
+                    }}
+                  />
                 </div>
 
                 {!isCollateralActions ? (
                   <>
-                    <label
-                      style={{
-                        width: "420px",
-                        margin: "5px auto",
-                        marginBottom: "20px",
-                        padding: "5px 10px",
-                        fontSize: "18px",
-                        borderRadius: "5px",
-                        border: "2px solid rgb(57, 61, 79)",
-                        fontWeight: "200",
-                      }}
-                    >
+                    <div style={{ display: "block", maxWidth: "420px" }}>
+                      <label
+                        style={{
+                          width: "420px",
+                          margin: "5px auto",
+                          marginBottom: "20px",
+                          padding: "5px 10px",
+                          fontSize: "18px",
+                          borderRadius: "5px",
+                          border: "2px solid rgb(57, 61, 79)",
+                          fontWeight: "200",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            fontSize: "14px",
+                            fontWeight: "400",
+                          }}
+                        >
+                          <div>&nbsp;&nbsp;{selection}</div>
+                          <div
+                            style={{
+                              marginRight: "20px",
+                              marginTop: "3px",
+                              marginBottom: "0",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <Image
+                              onClick={toggleDropdown}
+                              src={dropDownArrow}
+                              alt="Picture of the author"
+                              width="20px"
+                              height="20px"
+                            />
+                          </div>
+                        </div>
+                      </label>
+
+                      {selection === "Spend Borrow" ? (
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyItems: "center",
+                            gap: "20px",
+                          }}
+                        >
+                          <label
+                            style={{
+                              width: "100px",
+                              height: "45px",
+
+                              padding: "10px 10px",
+                              fontSize: "13px",
+                              borderRadius: "5px",
+                              border: "2px solid rgb(57, 61, 79)",
+                              fontWeight: "200",
+                              display: "flex",
+                              gap: "10px",
+                              alignItems: "center",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <div style={{ textAlign: "center" }}>
+                              {actionLabel}
+                            </div>
+                            <Image
+                              onClick={toggleDropdownTwo}
+                              style={{ cursor: "pointer" }}
+                              src={dropDownArrowTwo}
+                              alt="Picture of the author"
+                              width="20px"
+                              height="20px"
+                            />
+                          </label>
+
+                          <label
+                            style={{
+                              width: "300px",
+                              padding: "5px 10px",
+                              fontSize: "18px",
+                              borderRadius: "5px",
+                              border: "2px solid rgb(57, 61, 79)",
+                              fontWeight: "200",
+                            }}
+                          >
+                            <div
+                              style={{
+                                display: "flex",
+                                justifyContent: "space-between",
+                                alignItems: "center",
+                              }}
+                            >
+                              <div>
+                                &nbsp;&nbsp;
+                                <img
+                                  src={`./yagilogo.svg`}
+                                  width="60px"
+                                  height="30px"
+                                ></img>
+                              </div>
+                              <div
+                                style={{
+                                  marginRight: "20px",
+                                  marginTop: "3px",
+                                  cursor: "pointer",
+                                }}
+                              >
+                                <Image
+                                  // onClick={toggleDropdown}
+                                  src={dropDownArrow}
+                                  alt="Picture of the author"
+                                  width="20px"
+                                  height="20px"
+                                />
+                              </div>
+                            </div>
+                          </label>
+                        </div>
+                      ) : null}
+                    </div>
+
+                    <br />
+
+                    {selection === "Spend Borrow" &&
+                    (actionLabel === "Swap" || actionLabel === "Trade") ? (
                       <div
                         style={{
                           display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                          fontSize: "14px",
-                          fontWeight: "400",
+                          fontSize: "10px",
+                          color: "rgb(111, 111, 111)",
+                          marginTop: "-10px",
+                          marginBottom: "15px",
                         }}
                       >
-                        <div>&nbsp;&nbsp;{selection}</div>
-                        <div
-                          style={{
-                            marginRight: "20px",
-                            marginTop: "3px",
-                            marginBottom: "0",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <Image
-                            onClick={toggleDropdown}
-                            src={dropDownArrow}
-                            alt="Picture of the author"
-                            width="20px"
-                            height="20px"
-                          />
-                        </div>
+                        From
                       </div>
-                    </label>
-
-                    <br />
+                    ) : null}
 
                     <div
                       style={{
@@ -1038,6 +1144,7 @@ const BorrowData = ({
                         justifyContent: "space-between",
                         alignItems: "center",
                         marginBottom: "7px",
+                        marginTop: "-20px",
                       }}
                     >
                       <div>
@@ -1090,6 +1197,7 @@ const BorrowData = ({
                             color: "rgb(111, 111, 111)",
                             display: "flex",
                             alignItems: "center",
+                            marginBottom: "15px",
                           }}
                         >
                           Borrow Amount:
@@ -1104,65 +1212,646 @@ const BorrowData = ({
                           </span>
                         </div>
                       </div>
+                    </div>
+
+                    {selection === "Self Liquidate" ? (
                       <div
                         style={{
-                          marginRight: "20px",
-                          marginTop: "3px",
-                          marginBottom: "0",
-                          cursor: "pointer",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginBottom: "7px",
+                          marginTop: "-20px",
                         }}
-                      ></div>
-                    </div>
+                      >
+                        <div>
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              paddingTop: "7px",
+                              color: "rgb(111, 111, 111)",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            Repayment Amount:
+                            <span
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                color: "white",
+                              }}
+                            >
+                              &nbsp;0
+                            </span>
+                          </div>
+
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              paddingTop: "7px",
+                              color: "rgb(111, 111, 111)",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            Borrow Spent(?):
+                            <span
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                color: "white",
+                              }}
+                            >
+                              &nbsp;Yes
+                            </span>
+                          </div>
+
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              paddingTop: "7px",
+                              color: "rgb(111, 111, 111)",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            Spent dapp:
+                            <span
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                color: "white",
+                              }}
+                            >
+                              &nbsp;&nbsp;&nbsp;
+                              <img src="./yagilogo.svg" width="50px" />
+                            </span>
+                          </div>
+
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              paddingTop: "7px",
+                              color: "rgb(111, 111, 111)",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            To:
+                            <span
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                color: "white",
+                              }}
+                            >
+                              &nbsp;Swap
+                            </span>
+                          </div>
+
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              paddingTop: "7px",
+                              color: "rgb(111, 111, 111)",
+                              display: "flex",
+                              alignItems: "center",
+                              marginBottom: "10px",
+                            }}
+                          >
+                            Spent Market:
+                            <span
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                color: "white",
+                              }}
+                            >
+                              &nbsp;XRP
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
+
+                    {selection === "Repay Borrow" ||
+                    selection === "Withdraw Partial Borrow" ? (
+                      <>
+                        {" "}
+                        <div
+                          style={{
+                            display: "flex",
+                            fontSize: "10px",
+                            color: "rgb(111, 111, 111)",
+                            marginTop: "-10px",
+                            marginBottom: "15px",
+                          }}
+                        >
+                          Repayment Amount
+                        </div>
+                        <FormGroup>
+                          <div className="row mb-4" style={{ width: "440px" }}>
+                            <Col sm={12}>
+                              <InputGroup>
+                                <Input
+                                  style={{
+                                    backgroundColor: "#1D2131",
+                                    borderRight: "1px solid #rgb(57, 61, 79)",
+                                  }}
+                                  type="number"
+                                  className="form-control"
+                                  id="amount"
+                                  min={MinimumAmount[asset]}
+                                  placeholder={`Minimum ${MinimumAmount[asset]} ${asset}`}
+                                  onChange={handleDepositAmountChange}
+                                  value={depositAmount}
+                                  valid={!isInvalid()}
+                                />
+
+                                {
+                                  <>
+                                    <Button
+                                      outline
+                                      type="button"
+                                      className="btn btn-md w-xs"
+                                      onClick={handleMax}
+                                      // disabled={balance ? false : true}
+                                      style={{
+                                        background: "#1D2131",
+                                        color: "rgb(111, 111, 111)",
+                                        border: "1px solid rgb(57, 61, 79)",
+                                        borderLeft: "none",
+                                      }}
+                                    >
+                                      <span
+                                        style={{ borderBottom: "2px  #fff" }}
+                                      >
+                                        MAX
+                                      </span>
+                                    </Button>
+                                  </>
+                                }
+                              </InputGroup>
+
+                              <div
+                                style={{
+                                  display: "flex",
+                                  fontSize: "10px",
+                                  justifyContent: "end",
+                                  marginTop: "4px",
+                                }}
+                              >
+                                Wallet Balance:&nbsp;
+                                {/* {dataBalance ? (
+                                  (
+                                    Number(
+                                      uint256.uint256ToBN(dataBalance[0])
+                                    ) /
+                                    10 ** 18
+                                  ).toString()
+                                ) : (
+                                  <MySpinner />
+                                )} */}
+                                {/* <div style={{ color: "#76809D" }}>
+                                  &nbsp;{asset}{" "}
+                                </div> */}
+                              </div>
+
+                              {selection === "Repay Borrow" ? (
+                                <div
+                                  style={{
+                                    marginLeft: "-10px",
+                                    marginTop: "15px",
+                                  }}
+                                >
+                                  <Slider
+                                    handlerActiveColor="rgb(57, 61, 79)"
+                                    stepSize={10}
+                                    value={value}
+                                    trackColor="rgb(57, 61, 79)"
+                                    handlerShape="rounded"
+                                    handlerColor="white"
+                                    fillColor="white"
+                                    trackLength={420}
+                                    grabCursor={false}
+                                    showMarkers="hidden"
+                                    onChange={(value: any) => {
+                                      setDepositAmount(
+                                        (value *
+                                          (Number(
+                                            uint256.uint256ToBN(dataBalance[0])
+                                          ) /
+                                            10 ** 18)) /
+                                          100
+                                      );
+                                      setValue(value);
+                                    }}
+                                    valueRenderer={(value: any) => `${value}%`}
+                                    showValue={false}
+                                  />
+                                </div>
+                              ) : null}
+
+                              {selection === "Repay Borrow" ? (
+                                <div
+                                  style={{
+                                    fontSize: "10px",
+                                    position: "absolute",
+                                    right: "12px",
+                                    top: "90px",
+                                  }}
+                                >
+                                  {value}%
+                                </div>
+                              ) : null}
+
+                              {depositAmount != 0 &&
+                                depositAmount >
+                                  Number(
+                                    uint256.uint256ToBN(
+                                      dataBalance ? dataBalance[0] : 0
+                                    )
+                                  ) /
+                                    10 ** 18 && (
+                                  <FormText
+                                    style={{ color: "#e97272 !important" }}
+                                  >
+                                    {`Amount is greater than your balance`}
+                                  </FormText>
+                                )}
+                            </Col>
+                          </div>
+                        </FormGroup>
+                      </>
+                    ) : null}
                   </>
                 ) : (
-                  <label
-                    style={{
-                      width: "420px",
-                      margin: "5px auto",
-                      marginBottom: "20px",
-                      padding: "5px 10px",
-                      fontSize: "18px",
-                      borderRadius: "5px",
-                      border: "2px solid rgb(57, 61, 79)",
-                      fontWeight: "200",
-                    }}
-                  >
+                  <>
+                    <label
+                      style={{
+                        width: "420px",
+                        margin: "5px auto",
+                        marginBottom: "20px",
+                        padding: "5px 10px",
+                        fontSize: "18px",
+                        borderRadius: "5px",
+                        border: "2px solid rgb(57, 61, 79)",
+                        fontWeight: "200",
+                      }}
+                    >
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          fontSize: "14px",
+                          fontWeight: "400",
+                        }}
+                      >
+                        <div>&nbsp;&nbsp;{selection}</div>
+                        <div
+                          style={{
+                            marginRight: "20px",
+                            marginTop: "3px",
+                            marginBottom: "0",
+                            cursor: "pointer",
+                          }}
+                        >
+                          <Image
+                            onClick={toggleDropdown}
+                            src={dropDownArrow}
+                            alt="Picture of the author"
+                            width="20px"
+                            height="20px"
+                          />
+                        </div>
+                      </div>
+                    </label>
+
                     <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
                         alignItems: "center",
-                        fontSize: "14px",
-                        fontWeight: "400",
+                        marginBottom: "7px",
+                        marginTop: "-20px",
                       }}
                     >
-                      <div>&nbsp;&nbsp;{selection}</div>
-                      <div
-                        style={{
-                          marginRight: "20px",
-                          marginTop: "3px",
-                          marginBottom: "0",
-                          cursor: "pointer",
-                        }}
-                      >
-                        <Image
-                          onClick={toggleDropdown}
-                          src={dropDownArrow}
-                          alt="Picture of the author"
-                          width="20px"
-                          height="20px"
-                        />
+                      <div>
+                        <div
+                          style={{
+                            fontSize: "12px",
+                            paddingTop: "10px",
+                            color: "rgb(111, 111, 111)",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          Borrow Market:
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            &nbsp;
+                            <img
+                              src={`./${tokenName}.svg`}
+                              width="12px"
+                              height="12px"
+                            ></img>
+                            &nbsp;
+                            <div style={{ color: "white" }}>{tokenName}</div>
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </label>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: "7px",
+                      }}
+                    >
+                      <div>
+                        <div
+                          style={{
+                            fontSize: "12px",
+                            color: "rgb(111, 111, 111)",
+                            display: "flex",
+                            alignItems: "center",
+                            marginBottom: "15px",
+                          }}
+                        >
+                          Borrow Amount:
+                          <span
+                            style={{
+                              display: "flex",
+                              alignItems: "center",
+                              color: "white",
+                            }}
+                          >
+                            &nbsp;600 USDT
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {selection === "Withdraw Collateral" ? (
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginBottom: "7px",
+                          marginTop: "-10px",
+                        }}
+                      >
+                        <div>
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              color: "rgb(111, 111, 111)",
+                              display: "flex",
+                              alignItems: "center",
+                              marginBottom: "15px",
+                            }}
+                          >
+                            Borrowed Status:
+                            <span
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                color: "white",
+                              }}
+                            >
+                              &nbsp;Active
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    ) : null}
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        alignItems: "center",
+                        marginBottom: "20px",
+                        marginTop: "-24px",
+                      }}
+                    >
+                      <div>
+                        <div
+                          style={{
+                            fontSize: "12px",
+                            paddingTop: "10px",
+                            color: "rgb(111, 111, 111)",
+                            display: "flex",
+                            alignItems: "center",
+                          }}
+                        >
+                          Collateral Market:
+                          <span
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            &nbsp;
+                            <img
+                              src={`./${tokenName}.svg`}
+                              width="12px"
+                              height="12px"
+                            ></img>
+                            &nbsp;
+                            <div style={{ color: "white" }}>{tokenName}</div>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+
+                    {selection === "Add Collateral" ? (
+                      <>
+                        <div
+                          style={{
+                            display: "flex",
+                            fontSize: "10px",
+                            color: "rgb(111, 111, 111)",
+                            marginTop: "-10px",
+                            marginBottom: "7px",
+                          }}
+                        >
+                          Collateral Amount
+                        </div>
+
+                        <FormGroup>
+                          <div className="row mb-4" style={{ width: "440px" }}>
+                            <Col sm={12}>
+                              <InputGroup>
+                                <Input
+                                  style={{
+                                    backgroundColor: "#1D2131",
+                                    borderRight: "1px solid #rgb(57, 61, 79)",
+                                  }}
+                                  type="number"
+                                  className="form-control"
+                                  id="amount"
+                                  min={MinimumAmount[asset]}
+                                  placeholder={`Minimum ${MinimumAmount[asset]} ${asset}`}
+                                  onChange={handleDepositAmountChange}
+                                  value={depositAmount}
+                                  valid={!isInvalid()}
+                                />
+
+                                {
+                                  <>
+                                    <Button
+                                      outline
+                                      type="button"
+                                      className="btn btn-md w-xs"
+                                      onClick={handleMax}
+                                      // disabled={balance ? false : true}
+                                      style={{
+                                        background: "#1D2131",
+                                        color: "rgb(111, 111, 111)",
+                                        border: "1px solid rgb(57, 61, 79)",
+                                        borderLeft: "none",
+                                      }}
+                                    >
+                                      <span
+                                        style={{ borderBottom: "2px  #fff" }}
+                                      >
+                                        MAX
+                                      </span>
+                                    </Button>
+                                  </>
+                                }
+                              </InputGroup>
+
+                              <div
+                                style={{
+                                  display: "flex",
+                                  fontSize: "10px",
+                                  justifyContent: "end",
+                                  marginTop: "4px",
+                                }}
+                              >
+                                Wallet Balance:&nbsp;
+                                {/* {dataBalance ? (
+                                  (
+                                    Number(
+                                      uint256.uint256ToBN(dataBalance[0])
+                                    ) /
+                                    10 ** 18
+                                  ).toString()
+                                ) : (
+                                  <MySpinner />
+                                )} */}
+                                {/* <div style={{ color: "#76809D" }}>
+                                  &nbsp;{asset}{" "}
+                                </div> */}
+                              </div>
+
+                              <div
+                                style={{
+                                  fontSize: "10px",
+                                  position: "absolute",
+                                  right: "12px",
+                                  top: "80px",
+                                }}
+                              >
+                                {value}%
+                              </div>
+
+                              {depositAmount != 0 &&
+                                depositAmount >
+                                  Number(
+                                    uint256.uint256ToBN(
+                                      dataBalance ? dataBalance[0] : 0
+                                    )
+                                  ) /
+                                    10 ** 18 && (
+                                  <FormText
+                                    style={{ color: "#e97272 !important" }}
+                                  >
+                                    {`Amount is greater than your balance`}
+                                  </FormText>
+                                )}
+                            </Col>
+                          </div>
+                        </FormGroup>
+
+                        <div
+                          style={{
+                            marginLeft: "-10px",
+                            marginTop: "-15px",
+                            marginBottom: "15px",
+                          }}
+                        >
+                          <Slider
+                            handlerActiveColor="rgb(57, 61, 79)"
+                            stepSize={10}
+                            value={value}
+                            trackColor="rgb(57, 61, 79)"
+                            handlerShape="rounded"
+                            handlerColor="white"
+                            fillColor="white"
+                            trackLength={420}
+                            grabCursor={false}
+                            showMarkers="hidden"
+                            onChange={(value: any) => {
+                              setDepositAmount(
+                                (value *
+                                  (Number(uint256.uint256ToBN(dataBalance[0])) /
+                                    10 ** 18)) /
+                                  100
+                              );
+                              setValue(value);
+                            }}
+                            valueRenderer={(value: any) => `${value}%`}
+                            showValue={false}
+                          />
+                        </div>
+                      </>
+                    ) : (
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          marginBottom: "20px",
+                          marginTop: "-24px",
+                        }}
+                      >
+                        <div>
+                          <div
+                            style={{
+                              fontSize: "12px",
+                              paddingTop: "10px",
+                              color: "rgb(111, 111, 111)",
+                              display: "flex",
+                              alignItems: "center",
+                            }}
+                          >
+                            Collateral Market:
+                            <span
+                              style={{
+                                display: "flex",
+                                alignItems: "center",
+                                color: "white",
+                              }}
+                            >
+                              &nbsp; 00.00 USDT
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </>
                 )}
 
-                {isSelfLiquidate ? (
+                {/* {isSelfLiquidate ? (
                   <FormGroup>
                     <div className="row mb-4" style={{ width: "445px" }}>
                       <Col sm={12}>
-                        {/* <Label for="amount">Amount</Label> */}
-
                         <div
                           style={{
                             display: "flex",
@@ -1230,32 +1919,7 @@ const BorrowData = ({
                             id="amount"
                             min={MinimumAmount[tokenName]}
                             placeholder={`No`}
-                            // onChange={handleDepositAmountChange}
-                            // value={depositAmount}
-                            // valid={!isInvalid()}
                           />
-
-                          {/* {
-                        <>
-                          <Button
-                            outline
-                            type="button"
-                            className="btn btn-md w-xs"
-                            // onClick={handleMax}
-                            // disabled={balance ? false : true}
-                            style={{
-                              background: "white",
-                              color: "black",
-                              border: "1px solid black",
-                              borderLeft: "none",
-                            }}
-                          >
-                            <span style={{ borderBottom: "2px dotted #fff" }}>
-                              MAX
-                            </span>
-                          </Button>
-                        </>
-                      } */}
                         </InputGroup>
 
                         {!isSelfLiquidate ? (
@@ -1319,7 +1983,7 @@ const BorrowData = ({
                   </FormGroup>
                 ) : (
                   <></>
-                )}
+                )} */}
                 {/* {isSelfLiquidate && selection === "Self Liquidate" ? (
                   <>
                     <div
@@ -1391,7 +2055,7 @@ const BorrowData = ({
                   </>
                 ) : null} */}
 
-                {isSelfLiquidate && selection === "Self Liquidate" ? (
+                {/* {isSelfLiquidate && selection === "Self Liquidate" ? (
                   <>
                     <div
                       style={{
@@ -1413,7 +2077,7 @@ const BorrowData = ({
                       <div style={{ padding: "5px 10px", fontSize: "20px" }}>
                         <img src={"./xrpLogo.svg"} height="19px" /> XRP
                       </div>
-                      {/* <InputGroup>
+                      <InputGroup>
                       <Input
                         style={{
                           backgroundColor: "white",
@@ -1425,10 +2089,74 @@ const BorrowData = ({
                         min={MinimumAmount[tokenName]}
                         placeholder={`XRP`}
                       />
-                    </InputGroup> */}
+                    </InputGroup>
                     </div>
                   </>
-                ) : null}
+                ) : null} */}
+
+                {stakeDropDown ? (
+                  <>
+                    <div
+                      style={{
+                        borderRadius: "5px",
+                        position: "absolute",
+                        zIndex: "100",
+                        top: "240px",
+                        left: "40px",
+                        width: "100px",
+                        margin: "0px auto",
+                        marginBottom: "20px",
+                        padding: "5px 10px",
+                        backgroundColor: "#1D2131",
+                        boxShadow: "0px 0px 10px rgb(57, 61, 79)",
+                      }}
+                    >
+                      <div
+                        style={{
+                          margin: "10px 0",
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                          fontSize: "16px",
+                        }}
+                      >
+                        {!isCollateralActions ? (
+                          <>
+                            <div style={{ display: "block" }}>
+                              <div
+                                onClick={() => {
+                                  handleAction("Stake");
+                                }}
+                              >
+                                &nbsp;Stake
+                              </div>
+                              <br />
+                              <div
+                                onClick={() => {
+                                  handleAction("Swap");
+                                }}
+                              >
+                                &nbsp;Swap
+                              </div>
+                              <br />
+                              <div
+                                onClick={() => {
+                                  handleAction("Trade");
+                                }}
+                              >
+                                &nbsp;Trade
+                              </div>
+                            </div>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
 
                 {dropDown ? (
                   <>
@@ -1439,7 +2167,6 @@ const BorrowData = ({
                         zIndex: "100",
                         top: "175px",
                         left: "40px",
-
                         width: "420px",
                         margin: "0px auto",
                         marginBottom: "20px",
@@ -1456,12 +2183,6 @@ const BorrowData = ({
                           alignItems: "center",
                           fontSize: "16px",
                         }}
-                        // onClick={() => {
-                        //   setTokenName(`${coin.name}`);
-                        //   setDropDown(false);
-                        //   setDropDownArrow(arrowDown);
-                        //   handleBalanceChange();
-                        // }}
                       >
                         {!isCollateralActions ? (
                           <>
@@ -1472,6 +2193,14 @@ const BorrowData = ({
                                 }}
                               >
                                 &nbsp;Self Liquidate
+                              </div>
+                              <br />
+                              <div
+                                onClick={() => {
+                                  selectionAction("Spend Borrow");
+                                }}
+                              >
+                                &nbsp;Spend Borrow
                               </div>
                               <br />
                               <div
@@ -1514,9 +2243,62 @@ const BorrowData = ({
                 ) : (
                   <></>
                 )}
+
+                {marketDropDown ? (
+                  <>
+                    <div
+                      style={{
+                        borderRadius: "5px",
+                        position: "absolute",
+                        zIndex: "100",
+                        top: "405px",
+                        left: "39px",
+                        width: "420px",
+                        margin: "0px auto",
+                        marginBottom: "20px",
+                        padding: "5px 10px",
+                        backgroundColor: "#1D2131",
+                        boxShadow: "0px 0px 10px #00000020",
+                      }}
+                    >
+                      {coins.map((coin, index) => {
+                        if (coin.name === marketTokenName) return <></>;
+                        return (
+                          <div
+                            style={{
+                              margin: "10px 0",
+                              cursor: "pointer",
+                              display: "flex",
+                              alignItems: "center",
+                              fontSize: "16px",
+                            }}
+                            onClick={() => {
+                              setMarketTokenName(`${coin.name}`);
+                              setMarketDropDown(false);
+                              setDropDownArrowThree(Downarrow);
+                              handleBalanceChange();
+
+                              // handleDepositAmountChange(0);
+                            }}
+                          >
+                            <img
+                              src={`./${coin.name}.svg`}
+                              width="30px"
+                              height="30px"
+                            ></img>
+                            <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
               </div>
 
-              {!isSelfLiquidate ? (
+              {selection === "Spend Borrow" &&
+              (actionLabel === "Swap" || actionLabel === "Trade") ? (
                 <FormGroup>
                   <div className="row mb-4">
                     <Col sm={12}>
@@ -1525,180 +2307,57 @@ const BorrowData = ({
                           display: "flex",
                           fontSize: "10px",
                           color: "rgb(111, 111, 111)",
+                          marginTop: "-10px",
                         }}
                       >
-                        Borrowed Amount
+                        To
                       </div>
-                      <InputGroup>
-                        <Input
+                      <label
+                        style={{
+                          width: "420px",
+                          margin: "10px auto",
+                          marginBottom: "20px",
+                          padding: "5px 10px",
+                          fontSize: "18px",
+                          borderRadius: "5px",
+                          border: "2px solid rgb(57, 61, 79)",
+                          fontWeight: "200",
+                        }}
+                      >
+                        <div
                           style={{
-                            backgroundColor: "#1D2131",
-                            padding: "10px ",
-                            marginTop: "5px",
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
                           }}
-                          type="number"
-                          className="form-control"
-                          id="amount"
-                          min={MinimumAmount[tokenName]}
-                          placeholder={`Minimum ${MinimumAmount[tokenName]} ${tokenName}`}
-                          onChange={handleDepositAmountChange}
-                          value={depositAmount}
-                          valid={!isInvalid()}
-                        />
-
-                        {/* {
-                        <>
-                          <Button
-                            outline
-                            type="button"
-                            className="btn btn-md w-xs"
-                            // onClick={handleMax}
-                            // disabled={balance ? false : true}
-                            style={{
-                              background: "white",
-                              color: "black",
-                              border: "1px solid black",
-                              borderLeft: "none",
-                            }}
-                          >
-                            <span style={{ borderBottom: "2px dotted #fff" }}>
-                              MAX
-                            </span>
-                          </Button>
-                        </>
-                      } */}
-                      </InputGroup>
-
-                      {selection === "Withdraw Collateral" ? (
-                        <>
-                          {" "}
+                        >
+                          <div>
+                            {" "}
+                            <img
+                              src={`./${marketTokenName}.svg`}
+                              width="24px"
+                              height="24px"
+                            ></img>
+                            &nbsp;&nbsp;{marketTokenName}
+                          </div>
                           <div
                             style={{
-                              display: "flex",
-                              fontSize: "10px",
-                              marginTop: "15px",
+                              marginRight: "20px",
+                              marginTop: "3px",
+                              marginBottom: "0",
+                              cursor: "pointer",
                             }}
                           >
-                            Borrow Status
-                          </div>
-                          <InputGroup>
-                            <Input
-                              style={{
-                                backgroundColor: "white",
-                                padding: "10px ",
-                                marginTop: "5px",
-                              }}
-                              type="number"
-                              className="form-control"
-                              id="amount"
-                              min={MinimumAmount[tokenName]}
-                              placeholder={`Repaid`}
-                              // onChange={handleDepositAmountChange}
-                              // value={depositAmount}
-                              // valid={!isInvalid()}
+                            <Image
+                              onClick={toggleDropdownThree}
+                              src={dropDownArrowThree}
+                              alt="Picture of the author"
+                              width="20px"
+                              height="20px"
                             />
-                          </InputGroup>
-                        </>
-                      ) : null}
-
-                      <div
-                        style={{
-                          display: "flex",
-                          fontSize: "10px",
-                          marginTop: "15px",
-                          color: "rgb(111, 111, 111)",
-                        }}
-                      >
-                        Collateral Amount
-                      </div>
-                      <InputGroup>
-                        <Input
-                          style={{
-                            backgroundColor: "#1D2131",
-                            padding: "10px ",
-                            marginTop: "5px",
-                          }}
-                          type="number"
-                          className="form-control"
-                          id="amount"
-                          min={MinimumAmount[tokenName]}
-                          placeholder={`Minimum ${MinimumAmount[tokenName]} ${tokenName}`}
-                          onChange={handleDepositAmountChange}
-                          value={depositAmount}
-                          valid={!isInvalid()}
-                        />
-                      </InputGroup>
-
-                      <div
-                        style={{
-                          display: "flex",
-                          fontSize: "10px",
-                          justifyContent: "end",
-                          marginTop: "4px",
-                        }}
-                      >
-                        Wallet Balance:&nbsp;
-                        {dataBalance ? (
-                          (
-                            Number(uint256.uint256ToBN(dataBalance[0])) /
-                            10 ** 18
-                          ).toString()
-                        ) : (
-                          <MySpinner />
-                        )}
-                        <div style={{ color: "#76809D" }}>
-                          &nbsp;{tokenName}{" "}
+                          </div>
                         </div>
-                      </div>
-
-                      <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
-                        <Slider
-                          handlerActiveColor="rgb(57, 61, 79)"
-                          stepSize={0.5}
-                          value={value}
-                          trackColor="rgb(57, 61, 79)"
-                          handlerShape="rounded"
-                          handlerColor="white"
-                          fillColor="white"
-                          trackLength={420}
-                          grabCursor={false}
-                          showMarkers="hidden"
-                          onChange={(value: any) => {
-                            setDepositAmount(
-                              (value *
-                                (Number(uint256.uint256ToBN(dataBalance[0])) /
-                                  10 ** 18)) /
-                                100
-                            );
-                            setValue(value);
-                          }}
-                          valueRenderer={(value: any) => `${value}%`}
-                          showValue={false}
-                        />
-                      </div>
-                      <div
-                        style={{
-                          fontSize: "10px",
-                          position: "absolute",
-                          right: "12px",
-                          top: "190px",
-                        }}
-                      >
-                        {value}%
-                      </div>
-
-                      {depositAmount != 0 &&
-                        depositAmount >
-                          Number(
-                            uint256.uint256ToBN(
-                              dataBalance ? dataBalance[0] : 0
-                            )
-                          ) /
-                            10 ** 18 && (
-                          <FormText style={{ color: "#e97272 !important" }}>
-                            {`Amount is greater than your balance`}
-                          </FormText>
-                        )}
+                      </label>
                     </Col>
                   </div>
                 </FormGroup>
@@ -1706,118 +2365,745 @@ const BorrowData = ({
                 <></>
               )}
 
-              <div className="d-grid gap-2">
-                <div
-                  style={{
-                    marginBottom: "25px",
-                    fontSize: "11px",
-                    marginTop: "-10px",
-                  }}
-                >
+              {selection === "Spend Borrow" ? (
+                <div className="d-grid gap-2">
                   <div
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
+                      marginBottom: "25px",
+                      fontSize: "11px",
+                      marginTop: "-10px",
                     }}
                   >
-                    <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
                     <div
                       style={{
-                        textAlign: "right",
-                        fontWeight: "600",
-                        color: "#6F6F6F",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
                       }}
                     >
-                      $ 0.50
+                      <div style={{ color: "#6F6F6F" }}>Est. Conversion:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        1 BTC = 21,000 USDT
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        $0.5
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        Starknet
+                      </div>
                     </div>
                   </div>
-                  <div
+                  <Button
+                    color="primary"
+                    className="w-md"
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
+                      backgroundColor: "rgb(57, 61, 79)",
+                      border: "none",
+                    }}
+                    disabled={
+                      commitPeriod === undefined ||
+                      loadingApprove ||
+                      loadingDeposit ||
+                      isInvalid()
+                    }
+                    onClick={(e) => {
+                      handleDeposit(tokenName);
                     }}
                   >
-                    <div style={{ color: "#6F6F6F" }}>Debt Category:</div>
+                    {!(
+                      loadingApprove ||
+                      isTransactionLoading(requestDepositTransactionReceipt)
+                    ) ? (
+                      <>{selection}</>
+                    ) : (
+                      <MySpinner text="Depositing token" />
+                    )}
+                  </Button>
+                </div>
+              ) : null}
+
+              {selection === "Repay Borrow" ? (
+                <div className="d-grid gap-2">
+                  <div
+                    style={{
+                      marginBottom: "25px",
+                      fontSize: "11px",
+                      marginTop: "-10px",
+                    }}
+                  >
                     <div
                       style={{
-                        textAlign: "right",
-                        fontWeight: "600",
-                        color: "#6F6F6F",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
                       }}
                     >
-                      DC1/DC2/DC3
+                      <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        $0.5
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Debt Category:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        DC1/DC2/DC3
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div
+                        style={{
+                          color: "#6F6F6F",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        Estimated Collateral Return:
+                      </div>
+                      <div style={{ display: "flex" }}>
+                        <img
+                          src="./LabelIcon.svg"
+                          style={{ marginTop: "-2px" }}
+                        />
+                        &nbsp;<div>1</div>
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Network:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        Starknet
+                      </div>
                     </div>
                   </div>
-                  <div
+                  <Button
+                    color="primary"
+                    className="w-md"
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
+                      backgroundColor: "rgb(57, 61, 79)",
+                      border: "none",
+                    }}
+                    disabled={
+                      commitPeriod === undefined ||
+                      loadingApprove ||
+                      loadingDeposit ||
+                      isInvalid()
+                    }
+                    onClick={(e) => {
+                      handleDeposit(tokenName);
                     }}
                   >
-                    <div style={{ color: "#6F6F6F" }}>
-                      Estimated collateral return:
-                    </div>
+                    {!(
+                      loadingApprove ||
+                      isTransactionLoading(requestDepositTransactionReceipt)
+                    ) ? (
+                      <>{selection}</>
+                    ) : (
+                      <MySpinner text="Depositing token" />
+                    )}
+                  </Button>
+                </div>
+              ) : null}
+
+              {selection === "Withdraw Partial Borrow" ? (
+                <div className="d-grid gap-2">
+                  <div
+                    style={{
+                      marginBottom: "25px",
+                      fontSize: "11px",
+                      marginTop: "-10px",
+                    }}
+                  >
                     <div
                       style={{
-                        textAlign: "right",
-                        fontWeight: "600",
-                        color: "#6F6F6F",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
                       }}
                     >
-                      <img src={`./BTC.svg`} width="8px" /> 1
+                      <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        $0.5
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Transaction fees:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        x%
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        marginTop: "-20px",
+                      }}
+                    >
+                      <div style={{ padding: "15px" }}></div>
+                      <div style={{ color: "#6F6F6F", fontSize: "9px" }}>
+                        Withdrawing partial borrow increases the chances of your
+                        borrow becoming a non-performing asset leading to
+                        liquidation. By proceeding ahead, you acknowledge the
+                        risks this withdrawal has on your active borrow
+                      </div>
                     </div>
                   </div>
-                  <div
+                  <Button
+                    color="primary"
+                    className="w-md"
                     style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
+                      backgroundColor: "rgb(57, 61, 79)",
+                      border: "none",
+                    }}
+                    disabled={
+                      commitPeriod === undefined ||
+                      loadingApprove ||
+                      loadingDeposit ||
+                      isInvalid()
+                    }
+                    onClick={(e) => {
+                      handleDeposit(tokenName);
                     }}
                   >
-                    <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
+                    {!(
+                      loadingApprove ||
+                      isTransactionLoading(requestDepositTransactionReceipt)
+                    ) ? (
+                      <>{selection}</>
+                    ) : (
+                      <MySpinner text="Depositing token" />
+                    )}
+                  </Button>
+                </div>
+              ) : null}
+
+              {selection === "Self Liquidate" ? (
+                <div className="d-grid gap-2">
+                  <div
+                    style={{
+                      marginBottom: "25px",
+                      fontSize: "11px",
+                      marginTop: "-10px",
+                    }}
+                  >
                     <div
                       style={{
-                        textAlign: "right",
-                        fontWeight: "600",
-                        color: "#6F6F6F",
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
                       }}
                     >
-                      Starknet
+                      <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        $0.5
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Transaction fees:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        1%
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>
+                        Self liquidation fees:
+                      </div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        1%
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div
+                        style={{
+                          color: "#6F6F6F",
+                          display: "flex",
+                          alignItems: "center",
+                        }}
+                      >
+                        Estimated collateral return:
+                      </div>
+                      <div style={{ display: "flex" }}>
+                        <img
+                          src="./LabelIcon.svg"
+                          style={{ marginTop: "-2px" }}
+                        />
+                        &nbsp;<div>1</div>
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Network:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        Starknet
+                      </div>
+                    </div>
+                  </div>
+                  <Button
+                    color="primary"
+                    className="w-md"
+                    style={{
+                      backgroundColor: "rgb(57, 61, 79)",
+                      border: "none",
+                    }}
+                    disabled={
+                      commitPeriod === undefined ||
+                      loadingApprove ||
+                      loadingDeposit ||
+                      isInvalid()
+                    }
+                    onClick={(e) => {
+                      handleDeposit(tokenName);
+                    }}
+                  >
+                    {!(
+                      loadingApprove ||
+                      isTransactionLoading(requestDepositTransactionReceipt)
+                    ) ? (
+                      <>{selection}</>
+                    ) : (
+                      <MySpinner text="Depositing token" />
+                    )}
+                  </Button>
+
+                  <div
+                    style={{
+                      marginTop: "-20px",
+                    }}
+                  >
+                    <div style={{ padding: "15px" }}></div>
+                    <div style={{ color: "#6F6F6F", fontSize: "9px" }}>
+                      Self liquidation allows borrowers to secure a borrow
+                      that’s closer to its liquidation price. This helps
+                      borrower to recover a portion of their collateral, which
+                      otherwise
                     </div>
                   </div>
                 </div>
-                <Button
-                  color="primary"
-                  className="w-md"
-                  style={{ backgroundColor: "rgb(57, 61, 79)", border: "none" }}
-                  disabled={
-                    commitPeriod === undefined ||
-                    loadingApprove ||
-                    loadingDeposit ||
-                    isInvalid()
-                  }
-                  onClick={(e) => {
-                    handleDeposit(tokenName);
-                  }}
-                >
-                  {!(
-                    loadingApprove ||
-                    isTransactionLoading(requestDepositTransactionReceipt)
-                  ) ? (
-                    <>{selection}</>
-                  ) : (
-                    <MySpinner text="Depositing token" />
-                  )}
-                </Button>
-              </div>
+              ) : null}
+
+              {selection === "Add Collateral" ? (
+                <div className="d-grid gap-2">
+                  <div
+                    style={{
+                      marginBottom: "25px",
+                      fontSize: "11px",
+                      marginTop: "-10px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        $0.5
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Debt Category:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        DC1/DC2/DC3
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Borrow apr:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        00.0%
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Borrow Network:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        Starknet
+                      </div>
+                    </div>
+                  </div>
+                  <Button
+                    color="primary"
+                    className="w-md"
+                    style={{
+                      backgroundColor: "rgb(57, 61, 79)",
+                      border: "none",
+                    }}
+                    disabled={
+                      commitPeriod === undefined ||
+                      loadingApprove ||
+                      loadingDeposit ||
+                      isInvalid()
+                    }
+                    onClick={(e) => {
+                      handleDeposit(tokenName);
+                    }}
+                  >
+                    {!(
+                      loadingApprove ||
+                      isTransactionLoading(requestDepositTransactionReceipt)
+                    ) ? (
+                      <>{selection}</>
+                    ) : (
+                      <MySpinner text="Depositing token" />
+                    )}
+                  </Button>
+                </div>
+              ) : null}
+
+              {selection === "Withdraw Collateral" ? (
+                <div className="d-grid gap-2">
+                  <div
+                    style={{
+                      marginBottom: "25px",
+                      fontSize: "11px",
+                      marginTop: "-10px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        $0.5
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Transaction fees:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        x%
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>
+                        Pre-closure charges:
+                      </div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        y%
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        Starknet
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        marginTop: "-20px",
+                      }}
+                    >
+                      <div style={{ padding: "15px" }}></div>
+                      <div style={{ color: "#6F6F6F", fontSize: "9px" }}>
+                        A pre-closure charge is applied on your collateral,
+                        since you are withdrawing the collateral of a pre-closed
+                        borrow.
+                      </div>
+                    </div>
+                  </div>
+
+                  <Button
+                    color="primary"
+                    className="w-md"
+                    style={{
+                      backgroundColor: "rgb(57, 61, 79)",
+                      border: "none",
+                    }}
+                    disabled={
+                      commitPeriod === undefined ||
+                      loadingApprove ||
+                      loadingDeposit ||
+                      isInvalid()
+                    }
+                    onClick={(e) => {
+                      handleDeposit(tokenName);
+                    }}
+                  >
+                    {!(
+                      loadingApprove ||
+                      isTransactionLoading(requestDepositTransactionReceipt)
+                    ) ? (
+                      <>{selection}</>
+                    ) : (
+                      <MySpinner text="Depositing token" />
+                    )}
+                  </Button>
+                </div>
+              ) : null}
             </Form>
           ) : (
             <h2 style={{ color: "black" }}>Please connect your wallet</h2>
           )}
         </div>
+
+        {idDropDown ? (
+          <>
+            <div
+              style={{
+                borderRadius: "5px",
+                position: "absolute",
+                zIndex: "100",
+                top: "130px",
+                left: "40px",
+                width: "123px",
+                margin: "0px auto",
+                marginBottom: "20px",
+                padding: "5px 10px",
+                backgroundColor: "#393D4F",
+                // boxShadow: "0px 0px 10px rgb(57, 61, 79)",
+              }}
+            >
+              <div
+                style={{
+                  margin: "10px 0",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: "11px",
+                  color: "#6F6F6F",
+                }}
+              >
+                Borrow ID - 123665
+              </div>{" "}
+              <div
+                style={{
+                  margin: "10px 0",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: "11px",
+                  color: "#6F6F6F",
+                }}
+              >
+                Borrow ID - 123665
+              </div>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </Modal>
     </div>
   );
