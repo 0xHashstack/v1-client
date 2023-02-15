@@ -386,8 +386,8 @@ const ActiveDepositsTab = ({
               <div
                 className="modal-body"
                 style={{
-                  backgroundColor: "white",
-                  color: "black",
+                  backgroundColor: "#1D2131",
+                  color: "white",
                   padding: "40px",
                 }}
               >
@@ -451,7 +451,7 @@ const ActiveDepositsTab = ({
                           padding: "5px 10px",
                           fontSize: "18px",
                           borderRadius: "5px",
-                          border: "2px solid #00000050",
+                          border: "2px solid rgb(57, 61, 79)",
                           fontWeight: "200",
                         }}
                       >
@@ -504,7 +504,7 @@ const ActiveDepositsTab = ({
                               margin: "0px auto",
                               marginBottom: "20px",
                               padding: "5px 10px",
-                              backgroundColor: "#F8F8F8",
+                              backgroundColor: "#1D2131",
                               boxShadow: "0px 0px 10px #00000020",
                             }}
                           >
@@ -548,9 +548,9 @@ const ActiveDepositsTab = ({
                           <InputGroup>
                             <Input
                               style={{
-                                backgroundColor: "white",
+                                backgroundColor: "#1D2131",
                                 padding: "10px ",
-                                borderRight: "1px solid #FFF",
+                                borderRight: "1px solid rgb(57, 61, 79)",
                               }}
                               type="number"
                               className="form-control"
@@ -571,14 +571,14 @@ const ActiveDepositsTab = ({
                                   // onClick={handleMax}
                                   // disabled={balance ? false : true}
                                   style={{
-                                    background: "white",
-                                    color: "black",
-                                    border: "1px solid black",
+                                    background: "#1D2131",
+                                    color: "#8C8C8C",
+                                    border: "1px solid rgb(57, 61, 79)",
                                     borderLeft: "none",
                                   }}
                                 >
                                   <span
-                                    style={{ borderBottom: "2px dotted #fff" }}
+                                    style={{ borderBottom: "2px  #fff" }}
                                   >
                                     MAX
                                   </span>
@@ -613,13 +613,13 @@ const ActiveDepositsTab = ({
                             style={{ marginLeft: "-10px", marginTop: "15px" }}
                           >
                             <Slider
-                              handlerActiveColor="black"
+                              handlerActiveColor="rgb(57, 61, 79)"
                               stepSize={10}
                               value={value}
-                              trackColor="#ADB5BD"
+                              trackColor="rgb(57, 61, 79)"
                               handlerShape="rounded"
-                              handlerColor="black"
-                              fillColor="black"
+                              handlerColor="white"
+                              fillColor="white"
                               trackLength={420}
                               grabCursor={false}
                               showMarkers="hidden"
@@ -681,7 +681,7 @@ const ActiveDepositsTab = ({
                         >
                           <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "600" }}
+                            style={{ textAlign: "right", fontWeight: "600",color:"#8B8B8B" }}
                           >
                             $ 0.50
                           </div>
@@ -695,7 +695,7 @@ const ActiveDepositsTab = ({
                         >
                           <div style={{ color: "#6F6F6F" }}>Supply APR:</div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "600" }}
+                            style={{ textAlign: "right", fontWeight: "600",color:"#8B8B8B" }}
                           >
                             7.75 %
                           </div>
@@ -711,7 +711,7 @@ const ActiveDepositsTab = ({
                             Asset Utilization Rate:
                           </div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "600" }}
+                            style={{ textAlign: "right", fontWeight: "600",color:"#8B8B8B" }}
                           >
                             0.43
                           </div>
@@ -727,14 +727,15 @@ const ActiveDepositsTab = ({
                             Supply Network:
                           </div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "600" }}
+                            style={{ textAlign: "right", fontWeight: "600",color:"#8B8B8B" }}
                           >
                             Starknet
                           </div>
                         </div>
                       </div>
                       <Button
-                        color="primary"
+                        color="white"
+                        style={{border:"none",backgroundColor:"#393D4F"}}
                         className="w-md"
                         disabled={
                           commitPeriod === undefined ||

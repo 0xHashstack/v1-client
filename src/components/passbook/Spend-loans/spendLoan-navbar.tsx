@@ -837,7 +837,7 @@ const SpendLoanNav = () => {
               </div>
             </Form>
           ) : (
-            <h2 style={{ color: "black" }}>Please connect your wallet</h2>
+            <h2 style={{ color: "white" }}>Please connect your wallet</h2>
           )}
         </div>
       </Modal>
