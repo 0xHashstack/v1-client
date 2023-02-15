@@ -111,6 +111,8 @@ const SpendLoanNav = () => {
   const [value, setValue] = useState(0);
   const [commitPeriod, setCommitPeriod] = useState(0);
   // const [transDeposit, setTransDeposit] = useState("");
+  const [SpendLoan, setSpendLoan] = useState("1")
+  const dappsArray = ["1", "2", "3", "4", "5", "6", "7"];
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
@@ -214,7 +216,7 @@ const SpendLoanNav = () => {
     return (
       depositAmount < MinimumAmount[tokenName] ||
       depositAmount >
-        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
     );
   }
 
@@ -263,10 +265,10 @@ const SpendLoanNav = () => {
         >
           <NavItem
             onClick={() => {
-              setmodal_deposit(true);
               setTitle({
                 label: "Stake",
               });
+              setSpendLoan("1")
             }}
           >
             <NavLink
@@ -276,6 +278,9 @@ const SpendLoanNav = () => {
                 border: "1px solid #000",
                 borderRadius: "5px",
               }}
+              className={classnames({
+                active: SpendLoan === "1",
+              })}
             >
               <span className="d-none d-sm-block">Stake</span>
             </NavLink>
@@ -283,10 +288,10 @@ const SpendLoanNav = () => {
 
           <NavItem
             onClick={() => {
-              setmodal_deposit(true);
               setTitle({
                 label: "Swap",
               });
+              setSpendLoan("2")
             }}
           >
             <NavLink
@@ -296,6 +301,9 @@ const SpendLoanNav = () => {
                 border: "1px solid #000",
                 borderRadius: "5px",
               }}
+              className={classnames({
+                active: SpendLoan === "2",
+              })}
             >
               <span className="d-none d-sm-block">Swap</span>
             </NavLink>
@@ -303,10 +311,10 @@ const SpendLoanNav = () => {
 
           <NavItem
             onClick={() => {
-              setmodal_deposit(true);
               setTitle({
                 label: "Trade",
               });
+              setSpendLoan("3")
             }}
           >
             <NavLink
@@ -316,11 +324,60 @@ const SpendLoanNav = () => {
                 border: "1px solid #000",
                 borderRadius: "5px",
               }}
+              className={classnames({
+                active: SpendLoan === "3",
+              })}
             >
               <span className="d-none d-sm-block">Trade</span>
             </NavLink>
           </NavItem>
         </Nav>
+      </div>
+      <div
+        style={{
+          fontSize: "16px",
+          marginLeft: "15px",
+          color: "white",
+        }}
+      >
+        Select Dapp to begin with the spend
+      </div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-betwwen",
+          gap: "120px",
+          margin: "10px 15px",
+        }}
+      >
+        {dappsArray.map((dapp, index) => {
+          return (
+            <div key={index } onClick={()=>{
+              setmodal_deposit(true);
+            }}>
+              <img src={`./dapps/${dapp}.svg`} height="90px" />
+            </div>
+          );
+        })}
+      </div>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-betwwen",
+          gap: "120px",
+          margin: "10px 15px",
+        }}
+      >
+        {dappsArray.map((dapp, index) => {
+          return (
+            <div key={index} onClick={()=>{
+              setmodal_deposit(true);
+            }}>
+              <img src={`./dapps/${dapp}.svg`} height="90px" />
+            </div>
+          );
+        })}
       </div>
 
       <Modal
@@ -344,6 +401,9 @@ const SpendLoanNav = () => {
             style={{ margin: "10px 0", fontSize: "20px", fontWeight: "400" }}
           >
             Supply Borrow
+            <div style={{fontSize: "11px",color:"#8B8B8B", padding:"5px 0 0 0"}}>
+              Loan ID -123456 
+            </div>
           </div>
           {account ? (
             <Form>
@@ -429,7 +489,51 @@ const SpendLoanNav = () => {
 
                 {title.label === "Swap" || title.label === "Trade" ? (
                   <>
-                    <div>From</div>
+                    <div style={{fontSize:"11px",color:"#8B8B8B"}}>From</div>
+
+                    <label
+                      style={{
+                        width: "420px",
+                        // marginBottom: "25px",
+                        // padding: "5px 10px",
+                        fontSize: "14px",
+                        // borderRadius: "5px",
+                        // border: "2px solid rgb(57, 61, 79)",
+                        fontWeight: "200",
+                      }}
+                    >
+                      <div
+                        style={{
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <div style={{display:"flex",gap:"8px",color:"#8B8B8B"}}>
+                        <div>
+                        Borrowed Market :  
+                        </div>
+                        <div>
+                        <img
+                          src={`./${tokenName}.svg`}
+                          width="24px"
+                          height="24px"
+                        ></img>
+                        &nbsp;&nbsp;<span style={{color:"white"}}>{tokenName}</span> 
+                        </div>
+                      </div>
+
+                      <div style={{display:"flex",gap:"8px",color:"#8B8B8B"}}>
+                        <div>
+                        Availabe Borrowed Amount :  
+                        </div>
+                        <div style={{color:"white"}}>
+                        00.00 &nbsp;&nbsp;{tokenName}
+                        </div>
+                      </div>
+                      </div>
+                    </label>
+
+                    <div style={{fontSize:"11px",color:"#8B8B8B"}}>To</div>
 
                     <label
                       style={{
@@ -465,78 +569,112 @@ const SpendLoanNav = () => {
                             marginBottom: "0",
                             cursor: "pointer",
                           }}
-                        ></div>
-                      </div>
-                    </label>
-
-                    <div>To</div>
-
-                    <label
-                      style={{
-                        width: "420px",
-                        marginBottom: "25px",
-                        padding: "5px 10px",
-                        fontSize: "18px",
-                        borderRadius: "5px",
-                        border: "2px solid rgb(57, 61, 79)",
-                        fontWeight: "200",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <div>
-                          {" "}
-                          <img
-                            src={`./${tokenName}.svg`}
-                            width="30px"
-                            height="30px"
-                          ></img>
-                          &nbsp;&nbsp;{tokenName}
+                        >
+                           <Image
+                              onClick={toggleDropdown}
+                              src={dropDownArrow}
+                              alt="Picture of the author"
+                              width="20px"
+                              height="20px"
+                            />
                         </div>
-                        <div
-                          style={{
-                            marginRight: "20px",
-                            marginTop: "3px",
-                            marginBottom: "0",
-                            cursor: "pointer",
-                          }}
-                        ></div>
                       </div>
                     </label>
+                    {dropDown ? (
+                        <>
+                          <div
+                            style={{
+                              borderRadius: "5px",
+                              position: "absolute",
+                              zIndex: "100",
+                              top: "306px",
+                              left: "40px",
+
+                              width: "420px",
+                              margin: "0px auto",
+                              marginBottom: "20px",
+                              padding: "5px 10px",
+                              backgroundColor: "#1D2131",
+                              boxShadow: "0px 0px 10px #00000020",
+                            }}
+                          >
+                            {coins.map((coin, index) => {
+                              if (coin.name === tokenName) return <></>;
+                              return (
+                                <div
+                                  style={{
+                                    margin: "10px 0",
+                                    cursor: "pointer",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    fontSize: "16px",
+                                  }}
+                                  key={index}
+                                  onClick={() => {
+                                    setTokenName(`${coin.name}`);
+                                    setDropDown(false);
+                                    setDropDownArrow(arrowDown);
+                                    handleBalanceChange();
+                                  }}
+                                >
+                                  <img
+                                    src={`./${coin.name}.svg`}
+                                    width="30px"
+                                    height="30px"
+                                  ></img>
+                                  <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                   </>
                 ) : (
                   <label
                     style={{
                       width: "420px",
-                      marginBottom: "25px",
-                      padding: "5px 10px",
-                      fontSize: "18px",
-                      borderRadius: "5px",
-                      border: "2px solid rgb(57, 61, 79)",
-                      fontWeight: "200",
+                      // marginBottom: "25px",
+                      // padding: "5px 10px",
+                      fontSize: "16px",
+                      // borderRadius: "5px",
+                      // border: "2px solid rgb(57, 61, 79)",
+                      fontWeight: "50",
                     }}
                   >
                     <div
                       style={{
-                        display: "flex",
+                        
                         justifyContent: "space-between",
                         alignItems: "center",
+                        padding: "0px 0 12px 0"
                       }}
                     >
-                      <div>
-                        {" "}
+                      <div style={{display:"flex",gap:"8px",color:"#8B8B8B"}}>
+                        <div>
+                        Borrowed Market :  
+                        </div>
+                        <div>
                         <img
                           src={`./${tokenName}.svg`}
-                          width="30px"
-                          height="30px"
+                          width="24px"
+                          height="24px"
                         ></img>
-                        &nbsp;&nbsp;{tokenName}
+                        &nbsp;&nbsp;<span style={{color:"white"}}>{tokenName}</span> 
+                        </div>
                       </div>
+
+                      <div style={{display:"flex",gap:"8px",color:"#8B8B8B"}}>
+                        <div>
+                        Availabe Borrowed Amount :  
+                        </div>
+                        <div style={{color:"white"}}>
+                        00.00 &nbsp;&nbsp;{tokenName}
+                        </div>
+                      </div>
+                      
                       <div
                         style={{
                           marginRight: "20px",
@@ -641,7 +779,7 @@ const SpendLoanNav = () => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Est. conversion:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color: "#6F6F6F" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600", color: "#6F6F6F" }}>
                       1BCT = 21,000 USDT
                     </div>
                   </div>
@@ -654,7 +792,7 @@ const SpendLoanNav = () => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color: "#6F6F6F" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600", color: "#6F6F6F" }}>
                       $ 0.50
                     </div>
                   </div>
@@ -667,7 +805,7 @@ const SpendLoanNav = () => {
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color: "#6F6F6F" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600", color: "#6F6F6F" }}>
                       Starknet
                     </div>
                   </div>
@@ -675,16 +813,16 @@ const SpendLoanNav = () => {
                 <Button
                   color="white"
                   className="w-md"
-                  style={{backgroundColor:"rgb(57, 61, 79)"}}
+                  style={{ backgroundColor: "rgb(57, 61, 79)" }}
                   disabled={
                     commitPeriod === undefined ||
                     loadingApprove ||
                     loadingDeposit ||
                     isInvalid()
                   }
-                  //   onClick={(e) => {
-                  //     handleDeposit(tokenName);
-                  //   }}
+                //   onClick={(e) => {
+                //     handleDeposit(tokenName);
+                //   }}
                 >
                   {title.label}
                   {/* {!(
