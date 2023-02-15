@@ -6,7 +6,13 @@ import {
 } from "../../blockchain/stark-constants";
 import DashboardTBody from "./dashboard-body";
 
-const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
+const LoanBorrowCommitment = ({ isLoading, activeDepositsData, activeLoansData }
+  : { 
+    isLoading: boolean; 
+    activeDepositsData: 
+    any; activeLoansData: any; 
+  }
+) => {
   const [depositCommitment, setDepositCommitment] = useState<string>("");
   const [borrowCommitment, setBorrowCommitment] = useState<string>("");
 
@@ -144,7 +150,9 @@ const LoanBorrowCommitment = ({ isLoading }: { isLoading: boolean }) => {
                 isloading={isLoading}
                 borrowCommitment={borrowCommitment}
                 depositCommitment={depositCommitment}
-              ></DashboardTBody>
+                activeDepositsData={activeDepositsData}
+                activeLoansData={activeLoansData}
+              />
             </tbody>
           </Table>
         </div>

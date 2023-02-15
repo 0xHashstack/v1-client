@@ -31,19 +31,27 @@ let DashboardTBody: any = ({
   isloading,
   borrowCommitment,
   depositCommitment,
+  activeDepositsData: activeDepositsDataParam,
+  activeLoansData: activeLoansDataParam,
 }: {
   isloading: boolean;
   borrowCommitment: string;
   depositCommitment: string;
+  activeDepositsData: any; 
+  activeLoansData: any;
 }) => {
   const [depositLoanRates, setDepositLoanRates] = useState();
   const [oracleAndFairPrices, setOracleAndFairPrices] = useState<any>();
-
+  
   const processOracleFairPrices = (coinName: string, arr) => {
     const oraclePrice = arr.find((ele) => {
       return ele.name === coinName
     });
     return oraclePrice?.price?.toFixed(3);  
+  }
+
+  const getTotal = (arr) => {
+    
   }
 
   useEffect(() => {

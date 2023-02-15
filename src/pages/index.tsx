@@ -317,7 +317,9 @@ const Dashboard = () => {
           setActiveDepositsData([]);
           console.log(err);
         }
-      );
+      ).catch(() => {
+        console.log("error in getting deposits", error);
+      });
   }, [
     // account,
     passbookStatus,
@@ -685,9 +687,14 @@ const Dashboard = () => {
                       boxShadow: "0px 0px 1px 1px #181728",
                     }}
                   >
+                    {console.log("depositDatall", activeDepositsData, activeLoansData)}
                     {" "}
                     {customActiveTab === "1" ? (
-                      <LoanBorrowCommitment isLoading={isLoading} />
+                      <LoanBorrowCommitment 
+                        isLoading={isLoading} 
+                        activeDepositsData={activeDepositsData}
+                        activeLoansData={activeLoansData}
+                      />
                     ) : null}
                     <Row>
                       <div>
