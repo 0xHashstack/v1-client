@@ -23,7 +23,7 @@ import {
 import classnames from "classnames";
 import Image from "next/image";
 
-import arrowDown from "../../assets/images/arrowDown.svg";
+import arrowDown from "../../assets/images/ArrowDownDark.svg";
 
 const DashboardMenu = ({
   customActiveTab,
