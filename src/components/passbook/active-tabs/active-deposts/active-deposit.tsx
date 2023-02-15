@@ -833,52 +833,6 @@ const ActiveDeposit = ({
                     </span>
                   </div>
                 </div>
-                {/* <label
-                  style={{
-                    width: "420px",
-                    margin: "10px auto",
-                    marginBottom: "20px",
-                    padding: "5px 10px",
-                    fontSize: "18px",
-                    borderRadius: "5px",
-                    border: "2px solid rgb(57, 61, 79)",
-                    fontWeight: "200",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <div>
-                      {" "}
-                      <img
-                        src={`./${tokenName}.svg`}
-                        width="30px"
-                        height="30px"
-                      ></img>
-                      &nbsp;&nbsp;{tokenName}
-                    </div>
-                    <div
-                      style={{
-                        marginRight: "20px",
-                        marginTop: "3px",
-                        marginBottom: "0",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <Image
-                        onClick={toggleDropdown}
-                        src={dropDownArrow}
-                        alt="Picture of the author"
-                        width="20px"
-                        height="20px"
-                      />
-                    </div>
-                  </div>
-                </label> */}
 
                 {dropDown ? (
                   <>
@@ -958,8 +912,6 @@ const ActiveDeposit = ({
                             outline
                             type="button"
                             className="btn btn-md w-xs"
-                            // onClick={handleMax}
-                            // disabled={balance ? false : true}
                             style={{
                               background: "#1D2131",
                               color: "white",
@@ -986,7 +938,6 @@ const ActiveDeposit = ({
                         fontSize: "10px",
                         justifyContent: "end",
                         marginTop: "4px",
-                        // color:"rgb(111, 111, 111)"
                       }}
                     >
                       Available:&nbsp;
