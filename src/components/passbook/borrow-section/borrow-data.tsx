@@ -213,6 +213,9 @@ const BorrowData = ({
   const [selection, setSelection] = useState("Spend Borrow");
   const [selectionTwo, setSelectionTwo] = useState("Add Collateral");
 
+  const [idDropDown, setIdDropDown] = useState(false);
+  const [idDropDownArrow, setIdDropDownArrow] = useState(Downarrow);
+
   const [value, setValue] = useState(0);
   const [commitPeriod, setCommitPeriod] = useState(0);
   const [stakeDropDown, setStakeDropDown] = useState(false);
@@ -993,13 +996,17 @@ const BorrowData = ({
                     width: "100%",
                   }}
                 >
-                  Loan ID = {asset.loanId}
+                  Borrow ID = {asset.loanId}
                   <Image
-                    style={{}}
-                    src={Downarrow}
+                    style={{ cursor: "pointer" }}
+                    src={idDropDownArrow}
                     alt="Picture of the author"
                     width="16px"
                     height="16px"
+                    onClick={() => {
+                      setIdDropDown(!idDropDown);
+                      setIdDropDownArrow(idDropDown ? Downarrow : UpArrow);
+                    }}
                   />
                 </div>
 
@@ -3066,6 +3073,53 @@ const BorrowData = ({
             <h2 style={{ color: "black" }}>Please connect your wallet</h2>
           )}
         </div>
+
+        {idDropDown ? (
+          <>
+            <div
+              style={{
+                borderRadius: "5px",
+                position: "absolute",
+                zIndex: "100",
+                top: "130px",
+                left: "40px",
+                width: "123px",
+                margin: "0px auto",
+                marginBottom: "20px",
+                padding: "5px 10px",
+                backgroundColor: "#393D4F",
+                // boxShadow: "0px 0px 10px rgb(57, 61, 79)",
+              }}
+            >
+              <div
+                style={{
+                  margin: "10px 0",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: "11px",
+                  color: "#6F6F6F",
+                }}
+              >
+                Borrow ID - 123665
+              </div>{" "}
+              <div
+                style={{
+                  margin: "10px 0",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: "11px",
+                  color: "#6F6F6F",
+                }}
+              >
+                Borrow ID - 123665
+              </div>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </Modal>
     </div>
   );

@@ -53,6 +53,7 @@ import Slider from "react-custom-slider";
 import arrowDown from "../../../../assets/images/ArrowDownDark.svg";
 import arrowUp from "../../../../assets/images/ArrowUpDark.svg";
 import Downarrow from "../../../../assets/images/ArrowDownDark.svg";
+import UpArrow from "../../../../assets/images/ArrowUpDark.svg";
 import OffchainAPI from "../../../../services/offchainapi.service";
 import Image from "next/image";
 import {
@@ -143,7 +144,9 @@ const ActiveDeposit = ({
   const [customActiveTab, setCustomActiveTab] = useState("1");
   const [modal_deposit, setmodal_deposit] = useState(false);
   const [dropDown, setDropDown] = useState(false);
-  const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
+  const [dropDownArrow, setDropDownArrow] = useState(Downarrow);
+  const [idDropDown, setIdDropDown] = useState(false);
+  const [idDropDownArrow, setIdDropDownArrow] = useState(Downarrow);
   // const [depositAmount, setDepositAmount] = useState<number>();
   const [value, setValue] = useState(0);
   const { address: account } = useAccount();
@@ -803,10 +806,14 @@ const ActiveDeposit = ({
                   Supply ID = ID123665
                   <Image
                     style={{ cursor: "pointer" }}
-                    src={Downarrow}
+                    src={idDropDownArrow}
                     alt="Picture of the author"
                     width="14px"
                     height="14px"
+                    onClick={() => {
+                      setIdDropDown(!idDropDown);
+                      setIdDropDownArrow(idDropDown ? Downarrow : UpArrow);
+                    }}
                   />
                 </div>
                 <div>
@@ -1205,6 +1212,52 @@ const ActiveDeposit = ({
             <h2 style={{ color: "black" }}>Please connect your wallet</h2>
           )}
         </div>
+        {idDropDown ? (
+          <>
+            <div
+              style={{
+                borderRadius: "5px",
+                position: "absolute",
+                zIndex: "100",
+                top: "100px",
+                left: "40px",
+                width: "115px",
+                margin: "0px auto",
+                marginBottom: "20px",
+                padding: "5px 10px",
+                backgroundColor: "#393D4F",
+                // boxShadow: "0px 0px 10px rgb(57, 61, 79)",
+              }}
+            >
+              <div
+                style={{
+                  margin: "10px 0",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: "10px",
+                  color: "#6F6F6F",
+                }}
+              >
+                Supply ID - 123665
+              </div>{" "}
+              <div
+                style={{
+                  margin: "10px 0",
+                  cursor: "pointer",
+                  display: "flex",
+                  alignItems: "center",
+                  fontSize: "10px",
+                  color: "#6F6F6F",
+                }}
+              >
+                Supply ID - 123665
+              </div>
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
       </Modal>
     </div>
   );
