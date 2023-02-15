@@ -52,6 +52,7 @@ import { toast } from "react-toastify";
 import Slider from "react-custom-slider";
 import arrowDown from "../../../../assets/images/ArrowDownDark.svg";
 import arrowUp from "../../../../assets/images/ArrowUpDark.svg";
+import Downarrow from "../../../../assets/images/ArrowDownDark.svg";
 import OffchainAPI from "../../../../services/offchainapi.service";
 import Image from "next/image";
 import {
@@ -472,8 +473,8 @@ const ActiveDeposit = ({
                 backgroundColor: "rgb(57, 61, 79)",
                 borderRadius: "5px",
                 padding: "8px 15px",
-                color:"white",
-                border:"none"
+                color: "white",
+                border: "none",
               }}
               onClick={() => {
                 // setAction(!action);
@@ -788,8 +789,51 @@ const ActiveDeposit = ({
                     </NavItem>
                   </Nav>
                 </Col>
-
-                <label
+                <div
+                  style={{
+                    fontSize: "9px",
+                    paddingTop: "10px",
+                    color: "rgb(111, 111, 111)",
+                    display: "flex",
+                    gap: "10px",
+                    width: "100%",
+                  }}
+                >
+                  {/* Loan ID = {asset.loanId} */}
+                  Supply ID = ID123665
+                  <Image
+                    style={{ cursor: "pointer" }}
+                    src={Downarrow}
+                    alt="Picture of the author"
+                    width="14px"
+                    height="14px"
+                  />
+                </div>
+                <div>
+                  <div
+                    style={{
+                      fontSize: "14px",
+                      paddingTop: "10px",
+                      color: "rgb(111, 111, 111)",
+                      display: "flex",
+                      alignItems: "center",
+                      marginBottom: "10px",
+                    }}
+                  >
+                    Supply Market:
+                    <span style={{ display: "flex", alignItems: "center" }}>
+                      &nbsp;
+                      <img
+                        src={`./${tokenName}.svg`}
+                        width="13px"
+                        height="13px"
+                      ></img>
+                      &nbsp;
+                      <div style={{ color: "white" }}>{tokenName}</div>
+                    </span>
+                  </div>
+                </div>
+                {/* <label
                   style={{
                     width: "420px",
                     margin: "10px auto",
@@ -834,7 +878,7 @@ const ActiveDeposit = ({
                       />
                     </div>
                   </div>
-                </label>
+                </label> */}
 
                 {dropDown ? (
                   <>
@@ -923,7 +967,12 @@ const ActiveDeposit = ({
                               borderLeft: "none",
                             }}
                           >
-                            <span style={{ borderBottom: "2px  #fff",color:"rgb(111, 111, 111)" }}>
+                            <span
+                              style={{
+                                borderBottom: "2px  #fff",
+                                color: "rgb(111, 111, 111)",
+                              }}
+                            >
                               MAX
                             </span>
                           </Button>
@@ -1000,124 +1049,178 @@ const ActiveDeposit = ({
                   </Col>
                 </div>
               </FormGroup>
-      
-              <div className="d-grid gap-2">
-                {customActiveTab === "1"?<div
-                  style={{
-                    marginBottom: "25px",
-                    fontSize: "11px",
-                    marginTop: "-10px",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
-                    }}
-                  >
-                    <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)"  }}>
-                      $ 0.50
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
-                    }}
-                  >
-                    <div style={{ color: "#6F6F6F" }}>Supply APR:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)"  }}>
-                      7.75 %
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
-                    }}
-                  >
-                    <div style={{ color: "#6F6F6F" }}>
-                      Asset Utilization Rate:
-                    </div>
-                    <div style={{ textAlign: "right", fontWeight: "600" ,color:"rgb(111, 111, 111)" }}>
-                      0.43
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
-                    }}
-                  >
-                    <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600" ,color:"rgb(111, 111, 111)" }}>
-                      Starknet
-                    </div>
-                  </div>
-                </div>:customActiveTab === "2"?
-                <div
-                  style={{
-                    marginBottom: "25px",
-                    fontSize: "11px",
-                    marginTop: "-10px",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
-                    }}
-                  >
-                    <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)"  }}>
-                      $ 0.50
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
-                    }}
-                  >
-                    <div style={{ color: "#6F6F6F" }}>Transaction fees</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)"  }}>
-                      0.1 %
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
-                    }}
-                  >
-                    <div style={{ color: "#6F6F6F" }}>
-                      Pre closure charges
-                    </div>
-                    <div style={{ textAlign: "right", fontWeight: "600" ,color:"rgb(111, 111, 111)" }}>
-                      0.02%
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      margin: "3px 0",
-                    }}
-                  >
-                   <div style={{padding:"15px"}}>
 
-                   </div>
-                    <div style={{ color: "#6F6F6F" }}>You Are Pre-Closing This Supply Earlier Than Its Minumum Commitment Period. A Timelock Of 3 Days Is Applied On Such Withdrawals. When You Place Withdrawal Requests.The Timelock is Activated. It Will Be Processed On Your Second Attempt To Withdraw Supply.After The Timelock Expiry In 72hrs</div>
+              <div className="d-grid gap-2">
+                {customActiveTab === "1" ? (
+                  <div
+                    style={{
+                      marginBottom: "25px",
+                      fontSize: "11px",
+                      marginTop: "-10px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "rgb(111, 111, 111)",
+                        }}
+                      >
+                        $ 0.50
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Supply APR:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "rgb(111, 111, 111)",
+                        }}
+                      >
+                        7.75 %
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>
+                        Asset Utilization Rate:
+                      </div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "rgb(111, 111, 111)",
+                        }}
+                      >
+                        0.43
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "rgb(111, 111, 111)",
+                        }}
+                      >
+                        Starknet
+                      </div>
+                    </div>
                   </div>
-                  </div> : null}
+                ) : customActiveTab === "2" ? (
+                  <div
+                    style={{
+                      marginBottom: "25px",
+                      fontSize: "11px",
+                      marginTop: "-10px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "rgb(111, 111, 111)",
+                        }}
+                      >
+                        $ 0.50
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Transaction fees</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "rgb(111, 111, 111)",
+                        }}
+                      >
+                        0.1 %
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>
+                        Pre closure charges
+                      </div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "rgb(111, 111, 111)",
+                        }}
+                      >
+                        0.02%
+                      </div>
+                    </div>
+                    <div
+                      style={{
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ padding: "15px" }}></div>
+                      <div style={{ color: "#6F6F6F", fontSize: "9px" }}>
+                        You Are Pre-Closing This Supply Earlier Than Its Minumum
+                        Commitment Period. A Timelock Of 3 Days Is Applied On
+                        Such Withdrawals. When You Place Withdrawal Requests.The
+                        Timelock is Activated. It Will Be Processed On Your
+                        Second Attempt To Withdraw Supply.After The Timelock
+                        Expiry In 72hrs
+                      </div>
+                    </div>
+                  </div>
+                ) : null}
                 <Button
-                  style={{backgroundColor:"rgb(57, 61, 79)",color:"white",border:"none",}}
+                  style={{
+                    backgroundColor: "rgb(57, 61, 79)",
+                    color: "white",
+                    border: "none",
+                  }}
                   color="white"
                   className="w-md"
                   disabled={
@@ -1134,7 +1237,13 @@ const ActiveDeposit = ({
                     loadingApprove ||
                     isTransactionLoading(requestDepositTransactionReceipt)
                   ) ? (
-                    customActiveTab === "1"?"Add Supply":customActiveTab === "2"?"Withdraw Supply":""
+                    customActiveTab === "1" ? (
+                      "Add Supply"
+                    ) : customActiveTab === "2" ? (
+                      "Withdraw Supply"
+                    ) : (
+                      ""
+                    )
                   ) : (
                     <MySpinner text="Depositing token" />
                   )}
