@@ -329,7 +329,7 @@ const Dashboard = () => {
     setTimeout(() => {
       setIsLoading(false);
     }, 100);
-    if (customActiveTab == "3") {
+    if (customActiveTab == "6") {
       navigateLoansToLiquidate(liquidationIndex);
     }
   }, [customActiveTab]); //only call this when custom active tab changes
@@ -416,11 +416,11 @@ const Dashboard = () => {
   };
 
   const onLiquidationsData = async (liquidationsData: any[]) => {
-    console.log("onLiquidationsData in", liquidationsData);
     const liquidations: any[] = [];
     for (let i = 0; i < liquidationsData.length; i++) {
-      let loan = liquidationsData[i];
-      liquidations.push({
+      const loan = liquidationsData[i];
+      console.log("loan in liquidation", loan);
+      let myLiquidableLoan = {
         loanOwner: loan.account,
         loanMarket: getTokenFromAddress(loan.loanMarket)?.name,
         commitment: getCommitmentNameFromIndexDeposit(loan.commitment),
@@ -429,20 +429,23 @@ const Dashboard = () => {
         collateralAmount: loan.collateralAmount,
         isLiquidationDone: false,
         id: loan.loanId,
-      });
+      };
+      let myLoanString = JSON.stringify(myLiquidableLoan);
+      liquidations.push(JSON.parse(myLoanString));
     }
-
     // getting the unique liquidable loans by filtering laonMarket and Commitment
-    const uniqueLiquidableLoans = liquidations.filter(
-      (loan, index, self) =>
-        index ===
-        self.findIndex(
-          (t) =>
-            t.loanMarket === loan.loanMarket && t.commitment === loan.commitment
-        )
-    );
-
-    setActiveLiquidationsData(uniqueLiquidableLoans);
+    // const uniqueLiquidableLoans = liquidations.filter(
+    //   (loan, index, self) =>
+    //     index ===
+    //     self.findIndex(
+    //       (t) =>
+    //         t.loanMarket === loan.loanMarket && t.commitment === loan.commitment
+    //     )
+    // );
+    // console.log("uni liquida", uniqueLiquidableLoans);
+    // setActiveLiquidationsData(uniqueLiquidableLoans);
+    console.log("onLiquidationsData in", liquidationsData, liquidations);
+    setActiveLiquidationsData(liquidations);
   };
 
   const navigateLoansToLiquidate = async (liquidationIndex: any) => {
