@@ -321,7 +321,7 @@ const Dashboard = () => {
         console.log("error in getting deposits", error);
       });
   }, [
-    // account,
+    account,
     passbookStatus,
     customActiveTab,
     isTransactionDone,
@@ -584,7 +584,7 @@ const Dashboard = () => {
   function dashboardUI() {
     return (
       <div>
-        {customActiveTab === "1" ? <StatsBoard /> : null}
+        {customActiveTab === "1" ? <StatsBoard  /> : null}
         <Container fluid style={{ backgroundColor: "transparent" }}>
           {/* Protocol Stats */}
           {/* <ProtocolStats /> */}
@@ -690,7 +690,7 @@ const Dashboard = () => {
                   >
                     {console.log("depositDatall", activeDepositsData, activeLoansData)}
                     {" "}
-                    {customActiveTab === "1" ? (
+                    {customActiveTab === "1" && activeDepositsData.length ? (
                       <LoanBorrowCommitment 
                         isLoading={isLoading} 
                         activeDepositsData={activeDepositsData}

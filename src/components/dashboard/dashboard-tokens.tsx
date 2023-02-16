@@ -23,6 +23,7 @@ const DashboardTokens = ({
   depositLoanRates,
   oraclePriceForCoin, 
   fairPriceForCoin,
+  reserves,
 }: {
   coin: ICoin;
   idx: number;
@@ -30,9 +31,9 @@ const DashboardTokens = ({
   depositCommitment: string;
   depositLoanRates: any;
   oraclePriceForCoin: any;
-  fairPriceForCoin: any
+  fairPriceForCoin: any; 
+  reserves: any;
 }) => {
-  
 
   useEffect(() => {
     console.log(
@@ -40,6 +41,8 @@ const DashboardTokens = ({
       "background: #222; color: #bada55"
     );
   }, []);
+
+  console.log("reserves", reserves);
 
 
   return (
@@ -63,20 +66,21 @@ const DashboardTokens = ({
       <th scope="row" style={{ padding: "25px 5px" }}>
         <div className="d-flex align-items-center">
           <div className="avatar-xs me-3">
-            <img
-              src={`./${coin.name}.svg`}
+            <Image
+              alt="token"
+              src={`/${coin.name}.svg`}
               width="20px"
               height="20px"
               style={{ marginTop: "5px" }}
-            ></img>
+            ></Image>
           </div>
           <span style={{ marginLeft: "-15px" }}>{coin.name}</span>
         </div>
       </th>
       <td style={{ padding: "31px 10px" }}>{oraclePriceForCoin || 'N/A'}</td>
       <td style={{ padding: "31px 10px" }}>{fairPriceForCoin || 'N/A'}</td>
-      <td style={{ padding: "31px 10px" }}>0000</td>
-      <td style={{ padding: "31px 10px" }}>0000</td>
+      <td style={{ padding: "31px 10px" }}>{reserves?.deposits?.[coin.name] ?? 'N/A'}</td>
+      <td style={{ padding: "31px 10px" }}>{reserves?.loans?.[coin.name] ?? 'N/A'}</td>
       <td style={{ padding: "31px", textAlign: "center" }}>
         <div>
           {/* {deposit ? deposit[0].apr.toNumber() / 100 : "NaN"}% */}

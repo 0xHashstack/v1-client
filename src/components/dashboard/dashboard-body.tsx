@@ -42,6 +42,7 @@ let DashboardTBody: any = ({
 }) => {
   const [depositLoanRates, setDepositLoanRates] = useState();
   const [oracleAndFairPrices, setOracleAndFairPrices] = useState<any>();
+  const [reserves, setReserves] = useState();
   
   const processOracleFairPrices = (coinName: string, arr) => {
     const oraclePrice = arr.find((ele) => {
@@ -50,9 +51,13 @@ let DashboardTBody: any = ({
     return oraclePrice?.price?.toFixed(3);  
   }
 
-  const getTotal = (arr) => {
-    
-  }
+  useEffect(() => {
+    const getReserves = async () => {
+      const res = await OffchainAPI.getReserves();
+      setReserves(res?.reserves);
+    }
+    getReserves();
+  }, [])
 
   useEffect(() => {
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
@@ -90,6 +95,7 @@ let DashboardTBody: any = ({
       console.log("prices process", oraclePriceForCoin, fairPriceForCoin, coin.name);
       return (
         <DashboardTokens
+          reserves={reserves}
           coin={coin}
           idx={idx}
           key={idx}
