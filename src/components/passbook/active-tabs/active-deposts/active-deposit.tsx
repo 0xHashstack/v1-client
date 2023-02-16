@@ -107,10 +107,10 @@ const ActiveDeposit = ({
     transDeposit,
   } = useAddDeposit(asset, diamondAddress);
 
-  const [action, setAction] = useState(false);
-
   const { withdrawDeposit, withdrawAmount, setWithdrawAmount, transWithdraw } =
     useWithdrawDeposit(asset, diamondAddress, asset.depositId);
+  const [action, setAction] = useState(false);
+
 
   const approveTransactionReceipt = useTransactionReceipt({
     hash: transApprove,
@@ -120,15 +120,11 @@ const ActiveDeposit = ({
     hash: transDeposit,
     watch: true,
   });
-  const withdrawTransactionReceipt = useTransactionReceipt({
-    hash: transWithdraw,
-    watch: true,
-  });
 
   const Coins: ICoin[] = [
-    { name: "USDT",icon: "mdi-bitcoin", },
-    { name: "USDC",icon: "mdi-ethereum",},
-    { name: "BTC",icon: "mdi-bitcoin",},
+    { name: "USDT", icon: "mdi-bitcoin", },
+    { name: "USDC", icon: "mdi-ethereum", },
+    { name: "BTC", icon: "mdi-bitcoin", },
     { name: "ETH", icon: "mdi-ethereum" },
     { name: "DAI", icon: "mdi-dai" },
   ];
@@ -147,6 +143,11 @@ const ActiveDeposit = ({
   const [commitPeriod, setCommitPeriod] = useState(asset.commitmentIndex);
   const [supplyId, setSupplyId] = useState(asset.depositId);
   // const [transDeposit, setTransDeposit] = useState("");
+
+  const withdrawTransactionReceipt = useTransactionReceipt({
+    hash: transWithdraw,
+    watch: true,
+  });
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
@@ -283,6 +284,10 @@ const ActiveDeposit = ({
     setDepositAmount(e.target.value);
   };
 
+  const handleWithdrawAmountChange = (e: any) => {
+    setWithdrawAmount(e.target.value);
+  }
+
   const handleMax = () => {
     setDepositAmount(
       Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
@@ -333,8 +338,8 @@ const ActiveDeposit = ({
   //   }
   // }
 
-  const handleWithdrawDeposit = async (withdrawDeposit: any) => {
-    await withdrawDeposit();
+  const handleWithdrawDeposit = async (withdrawDepositParam: any) => {
+    withdrawDeposit();
   }
 
   const handleDeposit = async (asset: string) => {
@@ -399,6 +404,7 @@ const ActiveDeposit = ({
   }, [addDepositTransactionReceipt]);
 
   useEffect(() => {
+    if (!withdrawAmount) return;
     console.log(
       "borrow tx receipt",
       withdrawTransactionReceipt.data?.transaction_hash,
@@ -406,7 +412,7 @@ const ActiveDeposit = ({
     );
     TxToastManager.handleTxToast(
       withdrawTransactionReceipt,
-      `Withdraw ${withdrawAmount?.toFixed(4)} ${asset.market}`
+      `Withdraw ${Number(withdrawAmount)?.toFixed(4)} ${asset.market}`
     );
   }, [withdrawTransactionReceipt]);
 
@@ -731,19 +737,6 @@ const ActiveDeposit = ({
                           )}
                         </div>
                       </Col>
-                      {/* <Col lg="8">
-                        {
-                          <TxHistoryTable
-                            asset={asset}
-                            type="deposits"
-                            market={asset.market}
-                            observables={[
-                              withdrawTransactionReceipt,
-                              addDepositTransactionReceipt,
-                            ]}
-                          />
-                        }
-                      </Col> */}
                     </Row>
                   </div>
                 </div>
@@ -934,39 +927,37 @@ const ActiveDeposit = ({
                         className="form-control"
                         id="amount"
                         min={MinimumAmount[tokenName]}
-                        placeholder={`Minimum ${MinimumAmount[tokenName]} ${tokenName}`}
-                        onChange={handleDepositAmountChange}
-                        value={depositAmount}
-                        valid={customActiveTab === "2" || !isInvalid()}
+                        placeholder={customActiveTab === "1" ? `Minimum ${MinimumAmount[tokenName]} ${tokenName}` : ''}
+                        onChange={(e) => {
+                          if (customActiveTab === "1") handleDepositAmountChange(e);
+                          else handleWithdrawAmountChange(e);
+                        }}
+                        value={customActiveTab === "1" ? depositAmount : withdrawAmount}
+                        valid={!isInvalid()}
                       // valid={false}
                       />
-
-                      {
-                        <>
-                          <Button
-                            outline
-                            type="button"
-                            className="btn btn-md w-xs"
-                            onClick={handleMax}
-                            // disabled={balance ? false : true}
-                            style={{
-                              background: "#1D2131",
-                              color: "white",
-                              border: "1px solid rgb(57, 61, 79)",
-                              borderLeft: "none",
-                            }}
-                          >
-                            <span
-                              style={{
-                                borderBottom: "2px  #fff",
-                                color: "rgb(111, 111, 111)",
-                              }}
-                            >
-                              MAX
-                            </span>
-                          </Button>
-                        </>
-                      }
+                      <Button
+                        outline
+                        type="button"
+                        className="btn btn-md w-xs"
+                        onClick={handleMax}
+                        // disabled={balance ? false : true}
+                        style={{
+                          background: "#1D2131",
+                          color: "white",
+                          border: "1px solid rgb(57, 61, 79)",
+                          borderLeft: "none",
+                        }}
+                      >
+                        <span
+                          style={{
+                            borderBottom: "2px  #fff",
+                            color: "rgb(111, 111, 111)",
+                          }}
+                        >
+                          MAX
+                        </span>
+                      </Button>
                     </InputGroup>
 
                     <div
@@ -1172,12 +1163,14 @@ const ActiveDeposit = ({
                   color="white"
                   className="w-md"
                   disabled={
-                    customActiveTab !== "2" &&
                     (
-                      loadingApprove ||
-                      loadingDeposit ||
-                      isInvalid()
-                    )
+                      customActiveTab !== "2" &&
+                      (
+                        loadingApprove ||
+                        loadingDeposit ||
+                        isInvalid()
+                      )
+                    ) || !withdrawAmount || withdrawAmount <= 0
                   }
                   onClick={(e) => {
                     if (customActiveTab === "1")

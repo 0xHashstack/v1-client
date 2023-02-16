@@ -14,7 +14,7 @@ import { GetErrorText, NumToBN } from "../../utils";
 const useWithdrawDeposit = (
   _token: any,
   _diamondAddress: string,
-  _depositId: number
+  _depositId: number,
 ) => {
   const [token, setToken] = useState("");
   const [diamondAddress, setDiamondAddress] = useState("");
@@ -56,7 +56,8 @@ const useWithdrawDeposit = (
     withdrawDeposit,
     setWithdrawAmount,
     withdrawAmount,
-    transWithdraw
+    transWithdraw,
+    executeWithdrawDep,
   };
 };
 

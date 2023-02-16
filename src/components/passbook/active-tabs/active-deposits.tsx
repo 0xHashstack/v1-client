@@ -457,7 +457,7 @@ const ActiveDepositsTab = ({
                               src={`./${tokenName}.svg`}
                               width="30px"
                               height="30px"
-                            ></img>
+                             ></img>
                             &nbsp;&nbsp;{tokenName}
                           </div>
                           <div
