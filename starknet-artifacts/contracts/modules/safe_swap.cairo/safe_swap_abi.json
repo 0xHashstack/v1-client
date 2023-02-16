@@ -2,38 +2,6 @@
     {
         "members": [
             {
-                "name": "address",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "is_supported",
-                "offset": 1,
-                "type": "felt"
-            },
-            {
-                "name": "min_amount",
-                "offset": 2,
-                "type": "Uint256"
-            },
-            {
-                "name": "stork_key",
-                "offset": 4,
-                "type": "felt"
-            },
-            {
-                "name": "pontis_key",
-                "offset": 5,
-                "type": "felt"
-            }
-        ],
-        "name": "Market",
-        "size": 6,
-        "type": "struct"
-    },
-    {
-        "members": [
-            {
                 "name": "low",
                 "offset": 0,
                 "type": "felt"
@@ -88,69 +56,6 @@
     {
         "inputs": [
             {
-                "name": "asset_record",
-                "type": "Market"
-            }
-        ],
-        "name": "asset_price",
-        "outputs": [
-            {
-                "name": "price",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            }
-        ],
-        "name": "get_value_from_stork",
-        "outputs": [
-            {
-                "name": "price",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            }
-        ],
-        "name": "get_value_from_pontis",
-        "outputs": [
-            {
-                "name": "price",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "pause_price_feed",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "unpause_price_feed",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
                 "name": "asset_from",
                 "type": "felt"
             },
@@ -163,13 +68,14 @@
                 "type": "Uint256"
             }
         ],
-        "name": "jedi_swap",
+        "name": "get_min_amount_out",
         "outputs": [
             {
-                "name": "amount_out",
+                "name": "min_amount_out",
                 "type": "Uint256"
             }
         ],
+        "stateMutability": "view",
         "type": "function"
     },
     {

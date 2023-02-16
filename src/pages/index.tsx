@@ -690,7 +690,7 @@ const Dashboard = () => {
                   >
                     {console.log("depositDatall", activeDepositsData, activeLoansData)}
                     {" "}
-                    {customActiveTab === "1" && activeDepositsData.length ? (
+                    {customActiveTab === "1" ? (
                       <LoanBorrowCommitment 
                         isLoading={isLoading} 
                         activeDepositsData={activeDepositsData}

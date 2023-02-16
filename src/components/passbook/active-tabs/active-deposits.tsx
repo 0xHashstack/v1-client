@@ -72,24 +72,12 @@ const ActiveDepositsTab = ({
   isTransactionDone: any;
   inputVal1: any;
 }) => {
-  const coins: ICoin[] = [
-    {
-      name: "USDT",
-      icon: "mdi-bitcoin",
-    },
-    {
-      name: "USDC",
-      icon: "mdi-ethereum",
-    },
-    {
-      name: "BTC",
-      icon: "mdi-bitcoin",
-    },
-    { name: "BNB", icon: "mdi-drag-variant" },
-
+  const Coins: ICoin[] = [
+    { name: "USDT",icon: "mdi-bitcoin", },
+    { name: "USDC",icon: "mdi-ethereum",},
+    { name: "BTC",icon: "mdi-bitcoin",},
     { name: "ETH", icon: "mdi-ethereum" },
-
-    { name: "DAI", icon: "mdi-ethereum" },
+    { name: "DAI", icon: "mdi-dai" },
   ];
 
   const [historicalAPRs, setHistoricalAPRs] = useState();
@@ -257,6 +245,7 @@ const ActiveDepositsTab = ({
     }
   };
 
+
   const {
     data: dataApprove,
     loading: loadingApprove,
@@ -342,7 +331,7 @@ const ActiveDepositsTab = ({
               </Row>
             </Table>
 
-            {activeDepositsData.map((asset, key) => {
+            {activeDepositsData.map((asset, key, allAssets) => {
               return (
                 <ActiveDeposit
                   key={key}
@@ -356,6 +345,7 @@ const ActiveDepositsTab = ({
                     withdrawDepositTransactionDone
                   }
                   historicalAPRs={historicalAPRs}
+                  allAssets={allAssets}
                 />
               );
             })}

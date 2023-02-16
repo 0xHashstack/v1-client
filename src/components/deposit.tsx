@@ -64,24 +64,12 @@ interface ICoin {
 }
 
 let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam }: { asset: string, depositLoanRates: any }) => {
-  const coins: ICoin[] = [
-    {
-      name: "USDT",
-      icon: "mdi-bitcoin",
-    },
-    {
-      name: "USDC",
-      icon: "mdi-ethereum",
-    },
-    {
-      name: "BTC",
-      icon: "mdi-bitcoin",
-    },
-    { name: "BNB", icon: "mdi-drag-variant" },
-
+  const Coins: ICoin[] = [
+    { name: "USDT",icon: "mdi-bitcoin", },
+    { name: "USDC",icon: "mdi-ethereum",},
+    { name: "BTC",icon: "mdi-bitcoin",},
     { name: "ETH", icon: "mdi-ethereum" },
-
-    { name: "DAI", icon: "mdi-ethereum" },
+    { name: "DAI", icon: "mdi-dai" },
   ];
 
   const [asset, setAsset] = useState(assetParam);
@@ -879,7 +867,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                         depositLoanRates && commitPeriod < 3 ? (
                           `${parseFloat(
                             depositLoanRates[
-                              `${getTokenFromName(asset as string).address}__${commitPeriod}`
+                              `${getTokenFromName(asset as string)?.address}__${commitPeriod}`
                             ]?.depositAPR?.apr100x as string
                           )} %`
                         ): (

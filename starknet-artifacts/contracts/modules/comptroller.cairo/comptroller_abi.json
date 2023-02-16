@@ -2,28 +2,6 @@
     {
         "members": [
             {
-                "name": "market",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "apr_changes",
-                "offset": 1,
-                "type": "felt"
-            },
-            {
-                "name": "created_at",
-                "offset": 2,
-                "type": "felt"
-            }
-        ],
-        "name": "APR",
-        "size": 3,
-        "type": "struct"
-    },
-    {
-        "members": [
-            {
                 "name": "low",
                 "offset": 0,
                 "type": "felt"
@@ -51,23 +29,55 @@
                 "type": "felt"
             },
             {
-                "name": "min_amount",
+                "name": "deposit_min_amount",
                 "offset": 2,
                 "type": "Uint256"
             },
             {
-                "name": "stork_key",
+                "name": "deposit_max_amount",
                 "offset": 4,
-                "type": "felt"
+                "type": "Uint256"
             },
             {
-                "name": "pontis_key",
-                "offset": 5,
+                "name": "loan_min_amount",
+                "offset": 6,
+                "type": "Uint256"
+            },
+            {
+                "name": "loan_max_amount",
+                "offset": 8,
+                "type": "Uint256"
+            },
+            {
+                "name": "empiric_key",
+                "offset": 10,
                 "type": "felt"
             }
         ],
         "name": "Market",
-        "size": 6,
+        "size": 11,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "address",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "is_supported",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "empiric_key",
+                "offset": 2,
+                "type": "felt"
+            }
+        ],
+        "name": "L3_Market",
+        "size": 3,
         "type": "struct"
     },
     {
@@ -84,6 +94,23 @@
             }
         ],
         "name": "SavingsApr",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "apr",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "created_at",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "BorrowApr",
         "size": 2,
         "type": "struct"
     },
@@ -127,151 +154,27 @@
     {
         "inputs": [
             {
-                "name": "market",
-                "type": "felt"
-            },
-            {
-                "name": "commitment",
-                "type": "felt"
-            },
-            {
-                "name": "_apr",
-                "type": "felt"
-            }
-        ],
-        "name": "set_apr",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "market",
-                "type": "felt"
-            },
-            {
-                "name": "commitment",
-                "type": "felt"
-            }
-        ],
-        "name": "get_apr",
-        "outputs": [
-            {
-                "name": "res",
-                "type": "APR"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "market",
-                "type": "felt"
-            },
-            {
-                "name": "commitment",
-                "type": "felt"
-            },
-            {
-                "name": "index",
-                "type": "felt"
-            }
-        ],
-        "name": "get_apr_ind",
-        "outputs": [
-            {
-                "name": "res",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "market",
-                "type": "felt"
-            },
-            {
-                "name": "commitment",
-                "type": "felt"
-            },
-            {
-                "name": "index",
-                "type": "felt"
-            }
-        ],
-        "name": "get_apr_time",
-        "outputs": [
-            {
-                "name": "res",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "market",
-                "type": "felt"
-            },
-            {
-                "name": "commitment",
-                "type": "felt"
-            }
-        ],
-        "name": "get_apr_last_time",
-        "outputs": [
-            {
-                "name": "res",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "market",
-                "type": "felt"
-            },
-            {
-                "name": "commitment",
-                "type": "felt"
-            }
-        ],
-        "name": "get_apr_time_length",
-        "outputs": [
-            {
-                "name": "len",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
                 "name": "address",
                 "type": "felt"
             },
             {
-                "name": "min_amount",
+                "name": "deposit_min_amount",
                 "type": "Uint256"
             },
             {
-                "name": "stork_key",
-                "type": "felt"
+                "name": "deposit_max_amount",
+                "type": "Uint256"
             },
             {
-                "name": "pontis_key",
+                "name": "loan_min_amount",
+                "type": "Uint256"
+            },
+            {
+                "name": "loan_max_amount",
+                "type": "Uint256"
+            },
+            {
+                "name": "empiric_key",
                 "type": "felt"
             }
         ],
@@ -291,6 +194,89 @@
             {
                 "name": "market",
                 "type": "Market"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "integration",
+                "type": "felt"
+            },
+            {
+                "name": "destination",
+                "type": "felt"
+            },
+            {
+                "name": "empiric_key",
+                "type": "felt"
+            }
+        ],
+        "name": "add_secondary_market_support",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "integration",
+                "type": "felt"
+            },
+            {
+                "name": "destination",
+                "type": "felt"
+            }
+        ],
+        "name": "secondary_supported_market",
+        "outputs": [
+            {
+                "name": "l3_market",
+                "type": "L3_Market"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "num_seconds",
+                "type": "felt"
+            }
+        ],
+        "name": "set_deposit_commitments",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "num_seconds",
+                "type": "felt"
+            }
+        ],
+        "name": "set_loan_commitments",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "deposit_or_borrow",
+                "type": "felt"
+            },
+            {
+                "name": "index",
+                "type": "felt"
+            }
+        ],
+        "name": "get_commitment",
+        "outputs": [
+            {
+                "name": "commitment",
+                "type": "felt"
             }
         ],
         "stateMutability": "view",
@@ -351,7 +337,7 @@
                 "type": "felt"
             }
         ],
-        "name": "get_savings_apr_ind",
+        "name": "get_savings_apr_by_index",
         "outputs": [
             {
                 "name": "res",
@@ -431,6 +417,119 @@
     {
         "inputs": [
             {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "name": "get_borrow_apr",
+        "outputs": [
+            {
+                "name": "res",
+                "type": "BorrowApr"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            },
+            {
+                "name": "index",
+                "type": "felt"
+            }
+        ],
+        "name": "get_borrow_apr_by_index",
+        "outputs": [
+            {
+                "name": "res",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            },
+            {
+                "name": "index",
+                "type": "felt"
+            }
+        ],
+        "name": "get_borrow_apr_time",
+        "outputs": [
+            {
+                "name": "res",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "name": "get_borrow_apr_last_time",
+        "outputs": [
+            {
+                "name": "res",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "name": "get_borrow_apr_time_length",
+        "outputs": [
+            {
+                "name": "len",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
                 "name": "factor",
                 "type": "felt"
             }
@@ -468,6 +567,29 @@
         "outputs": [
             {
                 "name": "factor",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "validity",
+                "type": "felt"
+            }
+        ],
+        "name": "set_commitment_timelock",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_commitment_timelock",
+        "outputs": [
+            {
+                "name": "validity",
                 "type": "felt"
             }
         ],
@@ -523,24 +645,42 @@
     {
         "inputs": [
             {
-                "name": "validity",
+                "name": "min",
+                "type": "felt"
+            },
+            {
+                "name": "max",
                 "type": "felt"
             }
         ],
-        "name": "set_commitment_timelock",
+        "name": "set_min_max_borrow_apr",
         "outputs": [],
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "get_commitment_timelock",
-        "outputs": [
+        "inputs": [
             {
-                "name": "validity",
+                "name": "min",
+                "type": "felt"
+            },
+            {
+                "name": "max",
                 "type": "felt"
             }
         ],
-        "stateMutability": "view",
+        "name": "set_min_max_savings_apr",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "decimals",
+                "type": "felt"
+            }
+        ],
+        "name": "set_expected_empiric_decimals",
+        "outputs": [],
         "type": "function"
     },
     {
@@ -596,6 +736,29 @@
                 "type": "felt"
             }
         ],
+        "name": "set_empiric_proxy",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_empiric_proxy",
+        "outputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
         "name": "set_jedi_swap_router",
         "outputs": [],
         "type": "function"
@@ -615,81 +778,49 @@
     {
         "inputs": [
             {
-                "name": "num_seconds",
+                "name": "address",
                 "type": "felt"
             }
         ],
-        "name": "set_deposit_commitments",
+        "name": "set_10kswap_router",
         "outputs": [],
         "type": "function"
     },
     {
-        "inputs": [
-            {
-                "name": "num_seconds",
-                "type": "felt"
-            }
-        ],
-        "name": "set_loan_commitments",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "min",
-                "type": "felt"
-            },
-            {
-                "name": "max",
-                "type": "felt"
-            }
-        ],
-        "name": "set_min_max_borrow_apr",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "min",
-                "type": "felt"
-            },
-            {
-                "name": "max",
-                "type": "felt"
-            }
-        ],
-        "name": "set_min_max_savings_apr",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "num_seconds",
-                "type": "felt"
-            }
-        ],
-        "name": "set_loan_commitment",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "deposit_or_borrow",
-                "type": "felt"
-            },
-            {
-                "name": "index",
-                "type": "felt"
-            }
-        ],
-        "name": "get_commitment",
+        "inputs": [],
+        "name": "get_10kswap_router",
         "outputs": [
             {
-                "name": "commitment",
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "set_my_swap_router",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "update_myswap_pool_info",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_my_swap_router",
+        "outputs": [
+            {
+                "name": "address",
                 "type": "felt"
             }
         ],
@@ -958,6 +1089,45 @@
         "type": "function"
     },
     {
+        "inputs": [
+            {
+                "name": "commitment_timelock_validity",
+                "type": "felt"
+            },
+            {
+                "name": "reserve_factor",
+                "type": "felt"
+            },
+            {
+                "name": "interest_correlation_factor",
+                "type": "felt"
+            },
+            {
+                "name": "interest_offset",
+                "type": "felt"
+            },
+            {
+                "name": "min_borrow_apr",
+                "type": "felt"
+            },
+            {
+                "name": "max_borrow_apr",
+                "type": "felt"
+            },
+            {
+                "name": "min_savings_apr",
+                "type": "felt"
+            },
+            {
+                "name": "max_savings_apr",
+                "type": "felt"
+            }
+        ],
+        "name": "set_settings",
+        "outputs": [],
+        "type": "function"
+    },
+    {
         "inputs": [],
         "name": "pause_comptroller",
         "outputs": [],
@@ -978,6 +1148,84 @@
                 "type": "felt"
             }
         ],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "_is_mock_vrf",
+                "type": "felt"
+            }
+        ],
+        "name": "set_is_mock_vrf_trigger",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "_seed",
+                "type": "felt"
+            }
+        ],
+        "name": "set_seed",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "_address",
+                "type": "felt"
+            }
+        ],
+        "name": "set_empiric_vrf_address",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "version_string",
+                "type": "felt"
+            }
+        ],
+        "name": "set_version",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_version",
+        "outputs": [
+            {
+                "name": "version_string",
+                "type": "felt"
+            }
+        ],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "amount",
+                "type": "Uint256"
+            }
+        ],
+        "name": "set_minimum_liquidator_deposit_amount",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_minimum_liquidator_deposit_amount",
+        "outputs": [
+            {
+                "name": "amount",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     }
 ]

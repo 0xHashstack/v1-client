@@ -33,7 +33,7 @@ const useWithdrawDeposit = (
     loading: loadingDeposit,
     error: errorDeposit,
     reset: resetDeposit,
-    execute: executeDeposit,
+    execute: executeWithdrawDep,
   } = useStarknetExecute({
     calls: {
       contractAddress: diamondAddress,
@@ -45,7 +45,7 @@ const useWithdrawDeposit = (
   const withdrawDeposit = async () => {
     console.log(`${withdrawAmount} ${depositId} ${diamondAddress}`);
     try {
-      const val = await executeDeposit();
+      const val = await executeWithdrawDep();
       setTransWithdraw(val.transaction_hash);
     } catch(err) {
       console.log(err, 'withdraw deposit')

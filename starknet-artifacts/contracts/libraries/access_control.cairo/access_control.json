@@ -68,6 +68,7 @@
         "builtins": [
             "range_check"
         ],
+        "compiler_version": "0.10.1",
         "data": [
             "0x480680017fff8000",
             "0x47657443616c6c657241646472657373",
@@ -91,7 +92,7 @@
                         "end_col": 90,
                         "end_line": 198,
                         "input_file": {
-                            "filename": "/home/yangit/cairo_venv/lib/python3.7/site-packages/starkware/starknet/common/syscalls.cairo"
+                            "filename": "/Users/venkatkunisetty/cairo_venv/lib/python3.9/site-packages/starkware/starknet/common/syscalls.cairo"
                         },
                         "start_col": 63,
                         "start_line": 198
@@ -105,10 +106,10 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
-                        "end_col": 91,
+                        "end_col": 92,
                         "end_line": 198,
                         "input_file": {
-                            "filename": "/home/yangit/cairo_venv/lib/python3.7/site-packages/starkware/starknet/common/syscalls.cairo"
+                            "filename": "/Users/venkatkunisetty/cairo_venv/lib/python3.9/site-packages/starkware/starknet/common/syscalls.cairo"
                         },
                         "start_col": 5,
                         "start_line": 198
@@ -126,7 +127,7 @@
                                 "end_col": 93,
                                 "end_line": 199,
                                 "input_file": {
-                                    "filename": "/home/yangit/cairo_venv/lib/python3.7/site-packages/starkware/starknet/common/syscalls.cairo"
+                                    "filename": "/Users/venkatkunisetty/cairo_venv/lib/python3.9/site-packages/starkware/starknet/common/syscalls.cairo"
                                 },
                                 "start_col": 5,
                                 "start_line": 199
@@ -138,21 +139,21 @@
                         "end_col": 58,
                         "end_line": 200,
                         "input_file": {
-                            "filename": "/home/yangit/cairo_venv/lib/python3.7/site-packages/starkware/starknet/common/syscalls.cairo"
+                            "filename": "/Users/venkatkunisetty/cairo_venv/lib/python3.9/site-packages/starkware/starknet/common/syscalls.cairo"
                         },
                         "parent_location": [
                             {
-                                "end_col": 44,
+                                "end_col": 43,
                                 "end_line": 196,
                                 "input_file": {
-                                    "filename": "/home/yangit/cairo_venv/lib/python3.7/site-packages/starkware/starknet/common/syscalls.cairo"
+                                    "filename": "/Users/venkatkunisetty/cairo_venv/lib/python3.9/site-packages/starkware/starknet/common/syscalls.cairo"
                                 },
                                 "parent_location": [
                                     {
-                                        "end_col": 60,
+                                        "end_col": 61,
                                         "end_line": 201,
                                         "input_file": {
-                                            "filename": "/home/yangit/cairo_venv/lib/python3.7/site-packages/starkware/starknet/common/syscalls.cairo"
+                                            "filename": "/Users/venkatkunisetty/cairo_venv/lib/python3.9/site-packages/starkware/starknet/common/syscalls.cairo"
                                         },
                                         "start_col": 5,
                                         "start_line": 201
@@ -179,7 +180,7 @@
                         "end_col": 59,
                         "end_line": 201,
                         "input_file": {
-                            "filename": "/home/yangit/cairo_venv/lib/python3.7/site-packages/starkware/starknet/common/syscalls.cairo"
+                            "filename": "/Users/venkatkunisetty/cairo_venv/lib/python3.9/site-packages/starkware/starknet/common/syscalls.cairo"
                         },
                         "start_col": 28,
                         "start_line": 201
@@ -193,10 +194,10 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
-                        "end_col": 60,
+                        "end_col": 61,
                         "end_line": 201,
                         "input_file": {
-                            "filename": "/home/yangit/cairo_venv/lib/python3.7/site-packages/starkware/starknet/common/syscalls.cairo"
+                            "filename": "/Users/venkatkunisetty/cairo_venv/lib/python3.9/site-packages/starkware/starknet/common/syscalls.cairo"
                         },
                         "start_col": 5,
                         "start_line": 201
@@ -682,6 +683,25 @@
                 "size": 3,
                 "type": "struct"
             },
+            "starkware.cairo.common.cairo_builtins.KeccakBuiltin": {
+                "full_name": "starkware.cairo.common.cairo_builtins.KeccakBuiltin",
+                "members": {
+                    "input": {
+                        "cairo_type": "starkware.cairo.common.keccak_state.KeccakBuiltinState",
+                        "offset": 0
+                    },
+                    "output": {
+                        "cairo_type": "starkware.cairo.common.keccak_state.KeccakBuiltinState",
+                        "offset": 8
+                    }
+                },
+                "size": 16,
+                "type": "struct"
+            },
+            "starkware.cairo.common.cairo_builtins.KeccakBuiltinState": {
+                "destination": "starkware.cairo.common.keccak_state.KeccakBuiltinState",
+                "type": "alias"
+            },
             "starkware.cairo.common.cairo_builtins.SignatureBuiltin": {
                 "full_name": "starkware.cairo.common.cairo_builtins.SignatureBuiltin",
                 "members": {
@@ -733,6 +753,53 @@
             },
             "starkware.cairo.common.hash.HashBuiltin": {
                 "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
+                "type": "alias"
+            },
+            "starkware.cairo.common.keccak_state.KeccakBuiltinState": {
+                "full_name": "starkware.cairo.common.keccak_state.KeccakBuiltinState",
+                "members": {
+                    "s0": {
+                        "cairo_type": "felt",
+                        "offset": 0
+                    },
+                    "s1": {
+                        "cairo_type": "felt",
+                        "offset": 1
+                    },
+                    "s2": {
+                        "cairo_type": "felt",
+                        "offset": 2
+                    },
+                    "s3": {
+                        "cairo_type": "felt",
+                        "offset": 3
+                    },
+                    "s4": {
+                        "cairo_type": "felt",
+                        "offset": 4
+                    },
+                    "s5": {
+                        "cairo_type": "felt",
+                        "offset": 5
+                    },
+                    "s6": {
+                        "cairo_type": "felt",
+                        "offset": 6
+                    },
+                    "s7": {
+                        "cairo_type": "felt",
+                        "offset": 7
+                    }
+                },
+                "size": 8,
+                "type": "struct"
+            },
+            "starkware.cairo.common.math.FALSE": {
+                "destination": "starkware.cairo.common.bool.FALSE",
+                "type": "alias"
+            },
+            "starkware.cairo.common.math.TRUE": {
+                "destination": "starkware.cairo.common.bool.TRUE",
                 "type": "alias"
             },
             "starkware.starknet.common.storage.ADDR_BOUND": {
@@ -1371,6 +1438,10 @@
                         "cairo_type": "felt",
                         "offset": 2
                     },
+                    "nonce": {
+                        "cairo_type": "felt",
+                        "offset": 7
+                    },
                     "signature": {
                         "cairo_type": "felt*",
                         "offset": 4
@@ -1388,7 +1459,7 @@
                         "offset": 0
                     }
                 },
-                "size": 7,
+                "size": 8,
                 "type": "struct"
             },
             "starkware.starknet.common.syscalls.get_caller_address": {
@@ -1414,7 +1485,7 @@
                 "type": "struct"
             },
             "starkware.starknet.common.syscalls.get_caller_address.Return": {
-                "cairo_type": "(caller_address : felt)",
+                "cairo_type": "(caller_address: felt)",
                 "type": "type_definition"
             },
             "starkware.starknet.common.syscalls.get_caller_address.SIZEOF_LOCALS": {

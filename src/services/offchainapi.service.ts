@@ -4,7 +4,8 @@ import OraclePrices from './../../public/mock-data/OraclePrices.json';
 import Reserves from './../../public/mock-data/Reserves.json';
 export default class OffchainAPI {
   // static ENDPOINT = 'http://52.77.185.41:3000'
-  static ENDPOINT = "https://offchainapi.testnet.starknet.hashstack.finance";
+  // static ENDPOINT = "https://offchainapi.testnet.starknet.hashstack.finance";
+  static ENDPOINT = "http://offchainstarknettestnetstaging-api.eba-uf3qrhac.ap-southeast-1.elasticbeanstalk.com";
   // static ENDPOINT = 'https://8992-106-51-78-197.in.ngrok.io'
   // static ENDPOINT = process.env.NEXT_PUBLIC_APP_ENV=='production' ?
   // 	'https://offchainapi.testnet.starknet.hashstack.finance' : 'http://localhost:3010'
@@ -12,7 +13,7 @@ export default class OffchainAPI {
   // static ENDPOINT =
   //     process.env.NODE_ENV === "development"
   //       ? "http://localhost:3010"
-  //       : "https://offchainapi.testnet.starknet.hashstack.finance";
+  //       : "https://offchainapi.testnet.starknet.hashstjack.finance";
 
   static async httpGet(route: string) {
     try {

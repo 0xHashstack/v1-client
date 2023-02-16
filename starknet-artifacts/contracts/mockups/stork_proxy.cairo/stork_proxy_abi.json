@@ -46,5 +46,20 @@
             }
         ],
         "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "_price",
+                "type": "felt"
+            }
+        ],
+        "name": "set_price",
+        "outputs": [],
+        "type": "function"
     }
 ]

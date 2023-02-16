@@ -74,24 +74,12 @@ export interface IDepositLoanRates {
 
 let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRatesParam }: { asset: string; title: string, depositLoanRates: IDepositLoanRates }) => {
   console.log("the asset you get from borrow popup", assetParam)
-  const coins: ICoin[] = [
-    {
-      name: "USDT",
-      icon: "mdi-bitcoin",
-    },
-    {
-      name: "USDC",
-      icon: "mdi-ethereum",
-    },
-    {
-      name: "BTC",
-      icon: "mdi-bitcoin",
-    },
-    { name: "BNB", icon: "mdi-drag-variant" },
-
+  const Coins: ICoin[] = [
+    { name: "USDT",icon: "mdi-bitcoin", },
+    { name: "USDC",icon: "mdi-ethereum",},
+    { name: "BTC",icon: "mdi-bitcoin",},
     { name: "ETH", icon: "mdi-ethereum" },
-
-    { name: "DAI", icon: "mdi-ethereum" },
+    { name: "DAI", icon: "mdi-dai" },
   ];
 
   const [value, setValue] = useState(0);
@@ -1476,7 +1464,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                       (borrowParams.commitBorrowPeriod as number) < 2 ? (
                         `${parseFloat(
                           depositLoanRates[
-                            `${getTokenFromName(asset as string).address}__${borrowParams.commitBorrowPeriod}`
+                            `${getTokenFromName(asset as string)?.address}__${borrowParams.commitBorrowPeriod}`
                           ]?.borrowAPR?.apr100x as string
                         )
                       } %`

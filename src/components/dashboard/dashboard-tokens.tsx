@@ -89,7 +89,7 @@ const DashboardTokens = ({
             `${
               parseFloat(
                 depositLoanRates[
-                  `${getTokenFromName(coin.name).address}__${depositCommitment}`
+                  `${getTokenFromName(coin.name)?.address}__${depositCommitment}`
                 ]?.depositAPR.apr100x
               ) / 100
             } %`
@@ -105,7 +105,7 @@ const DashboardTokens = ({
             `${
               parseFloat(
                 depositLoanRates[
-                  `${getTokenFromName(coin.name).address}__${borrowCommitment}`
+                  `${getTokenFromName(coin.name)?.address}__${borrowCommitment}`
                 ]?.borrowAPR?.apr100x
               ) / 100
             }%`

@@ -10,6 +10,7 @@
         "builtins": [
             "range_check"
         ],
+        "compiler_version": "0.10.1",
         "data": [],
         "debug_info": {
             "file_contents": {},
@@ -17,6 +18,18 @@
         },
         "hints": {},
         "identifiers": {
+            "__main__.ALL_ONES": {
+                "type": "const",
+                "value": 340282366920938463463374607431768211455
+            },
+            "__main__.BNB_USD_KEY": {
+                "type": "const",
+                "value": 27705915699721060
+            },
+            "__main__.BTC_USD_KEY": {
+                "type": "const",
+                "value": 27712517064455012
+            },
             "__main__.COLLATERAL_FACTOR": {
                 "type": "const",
                 "value": 50
@@ -41,6 +54,10 @@
                 "type": "const",
                 "value": 10
             },
+            "__main__.EMPIRIC_AGGREGATION_MODE": {
+                "type": "const",
+                "value": 84959893733710
+            },
             "__main__.INTEREST_CORRELATION_FACTOR": {
                 "type": "const",
                 "value": 12
@@ -49,9 +66,21 @@
                 "type": "const",
                 "value": 2
             },
+            "__main__.JEDI_SWAP": {
+                "type": "const",
+                "value": 1962660952167394271600
+            },
             "__main__.JEDI_SWAP_ROUTER": {
                 "type": "const",
                 "value": -1525931897750371677894986688960514853796323324466073655737537954027061688415
+            },
+            "__main__.L3_USD_VALUE": {
+                "type": "const",
+                "value": 33486487068905418524577264997
+            },
+            "__main__.L3_VIEW_DETAILS": {
+                "type": "const",
+                "value": 561810026933634005214285560317308019
             },
             "__main__.LOAN_CLOSURE_FEE": {
                 "type": "const",
@@ -81,21 +110,61 @@
                 "type": "const",
                 "value": 5
             },
+            "__main__.MY_SWAP": {
+                "type": "const",
+                "value": 30814223327519088
+            },
+            "__main__.NONE": {
+                "type": "const",
+                "value": 1852796517
+            },
             "__main__.PONTIS_AGGREGATE_MODE": {
                 "type": "const",
-                "value": 120282243752302
-            },
-            "__main__.PONTIS_PROXY_ADDRESS": {
-                "type": "const",
-                "value": 536554312408700354284283040928046824434969893969739486945260186308733942996
+                "value": 84959893733710
             },
             "__main__.RESERVE_FACTOR": {
                 "type": "const",
                 "value": 90
             },
-            "__main__.STORK_PROXY_ADDRESS": {
+            "__main__.REVERT_JEDI_SWAP_SELECTOR": {
                 "type": "const",
-                "value": 665497614061944768972868143999142371159667291648454344145858451475542021079
+                "value": 1044761765805363329851230171440758833606189790634219697221808825005197727869
+            },
+            "__main__.REVERT_LOAN": {
+                "type": "const",
+                "value": 138296686476671356175868270
+            },
+            "__main__.REVERT_MY_SWAP_SELECTOR": {
+                "type": "const",
+                "value": 1282420234497475247530047648760555964334724830064806028144069307966053393812
+            },
+            "__main__.REVERT_YAGI_SELECTOR": {
+                "type": "const",
+                "value": 354933473777727027454740524512970025958137764075388479792741268970890732767
+            },
+            "__main__.SPEND_LOAN": {
+                "type": "const",
+                "value": 545145489755870942159214
+            },
+            "__main__.USDC_USD_KEY": {
+                "type": "const",
+                "value": 8463218501920060260
+            },
+            "__main__.USDT_USD_KEY": {
+                "type": "const",
+                "value": 8463218574934504292
+            },
+            "__main__.YAGI": {
+                "type": "const",
+                "value": 2036426601
+            },
+            "starkware.cairo.common.bool.FALSE": {
+                "type": "const",
+                "value": 0
+            },
+            "starkware.cairo.common.bool.TRUE": {
+                "type": "const",
+                "value": 1
             },
             "starkware.cairo.common.cairo_builtins.BitwiseBuiltin": {
                 "full_name": "starkware.cairo.common.cairo_builtins.BitwiseBuiltin",
@@ -170,6 +239,25 @@
                 "size": 3,
                 "type": "struct"
             },
+            "starkware.cairo.common.cairo_builtins.KeccakBuiltin": {
+                "full_name": "starkware.cairo.common.cairo_builtins.KeccakBuiltin",
+                "members": {
+                    "input": {
+                        "cairo_type": "starkware.cairo.common.keccak_state.KeccakBuiltinState",
+                        "offset": 0
+                    },
+                    "output": {
+                        "cairo_type": "starkware.cairo.common.keccak_state.KeccakBuiltinState",
+                        "offset": 8
+                    }
+                },
+                "size": 16,
+                "type": "struct"
+            },
+            "starkware.cairo.common.cairo_builtins.KeccakBuiltinState": {
+                "destination": "starkware.cairo.common.keccak_state.KeccakBuiltinState",
+                "type": "alias"
+            },
             "starkware.cairo.common.cairo_builtins.SignatureBuiltin": {
                 "full_name": "starkware.cairo.common.cairo_builtins.SignatureBuiltin",
                 "members": {
@@ -221,6 +309,53 @@
             },
             "starkware.cairo.common.hash.HashBuiltin": {
                 "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
+                "type": "alias"
+            },
+            "starkware.cairo.common.keccak_state.KeccakBuiltinState": {
+                "full_name": "starkware.cairo.common.keccak_state.KeccakBuiltinState",
+                "members": {
+                    "s0": {
+                        "cairo_type": "felt",
+                        "offset": 0
+                    },
+                    "s1": {
+                        "cairo_type": "felt",
+                        "offset": 1
+                    },
+                    "s2": {
+                        "cairo_type": "felt",
+                        "offset": 2
+                    },
+                    "s3": {
+                        "cairo_type": "felt",
+                        "offset": 3
+                    },
+                    "s4": {
+                        "cairo_type": "felt",
+                        "offset": 4
+                    },
+                    "s5": {
+                        "cairo_type": "felt",
+                        "offset": 5
+                    },
+                    "s6": {
+                        "cairo_type": "felt",
+                        "offset": 6
+                    },
+                    "s7": {
+                        "cairo_type": "felt",
+                        "offset": 7
+                    }
+                },
+                "size": 8,
+                "type": "struct"
+            },
+            "starkware.cairo.common.math.FALSE": {
+                "destination": "starkware.cairo.common.bool.FALSE",
+                "type": "alias"
+            },
+            "starkware.cairo.common.math.TRUE": {
+                "destination": "starkware.cairo.common.bool.TRUE",
                 "type": "alias"
             },
             "starkware.starknet.common.storage.ADDR_BOUND": {
@@ -859,6 +994,10 @@
                         "cairo_type": "felt",
                         "offset": 2
                     },
+                    "nonce": {
+                        "cairo_type": "felt",
+                        "offset": 7
+                    },
                     "signature": {
                         "cairo_type": "felt*",
                         "offset": 4
@@ -876,7 +1015,7 @@
                         "offset": 0
                     }
                 },
-                "size": 7,
+                "size": 8,
                 "type": "struct"
             }
         },

@@ -8,22 +8,10 @@ export interface ICoin {
 }
 
 const Coins: ICoin[] = [
-  {
-    name: "USDT",
-    icon: "mdi-bitcoin",
-  },
-  {
-    name: "USDC",
-    icon: "mdi-ethereum",
-  },
-  {
-    name: "BTC",
-    icon: "mdi-bitcoin",
-  },
-  { name: "BNB", icon: "mdi-drag-variant" },
-
+  { name: "USDT",icon: "mdi-bitcoin", },
+  { name: "USDC",icon: "mdi-ethereum",},
+  { name: "BTC",icon: "mdi-bitcoin",},
   { name: "ETH", icon: "mdi-ethereum" },
-
   { name: "DAI", icon: "mdi-dai" },
 ];
 
@@ -61,7 +49,7 @@ let DashboardTBody: any = ({
 
   useEffect(() => {
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
-      console.log(val);
+      console.log("got them", val);
       setDepositLoanRates(val);
     });
   }, []);

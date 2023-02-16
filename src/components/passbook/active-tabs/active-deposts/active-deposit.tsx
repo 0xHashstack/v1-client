@@ -70,7 +70,7 @@ import classnames from "classnames";
 import { IDepositLoanRates } from "../../../borrow";
 
 const ActiveDeposit = ({
-  asset,
+  asset: assetParam,
   modal_add_active_deposit,
   tog_add_active_deposit,
   modal_withdraw_active_deposit,
@@ -78,6 +78,7 @@ const ActiveDeposit = ({
   depositRequestSel,
   withdrawDepositTransactionDone,
   historicalAPRs,
+  allAssets,
 }: {
   asset: any;
   modal_add_active_deposit: any;
@@ -87,7 +88,9 @@ const ActiveDeposit = ({
   depositRequestSel: any;
   withdrawDepositTransactionDone: any;
   historicalAPRs: any;
+  allAssets: any;
 }) => {
+  const [asset, setAsset] = useState(assetParam);
   console.log("your supply action asset", asset);
   const {
     DepositAmount,
@@ -122,24 +125,12 @@ const ActiveDeposit = ({
     watch: true,
   });
 
-  const coins: ICoin[] = [
-    {
-      name: "USDT",
-      icon: "mdi-bitcoin",
-    },
-    {
-      name: "USDC",
-      icon: "mdi-ethereum",
-    },
-    {
-      name: "BTC",
-      icon: "mdi-bitcoin",
-    },
-    { name: "BNB", icon: "mdi-drag-variant" },
-
+  const Coins: ICoin[] = [
+    { name: "USDT",icon: "mdi-bitcoin", },
+    { name: "USDC",icon: "mdi-ethereum",},
+    { name: "BTC",icon: "mdi-bitcoin",},
     { name: "ETH", icon: "mdi-ethereum" },
-
-    { name: "DAI", icon: "mdi-ethereum" },
+    { name: "DAI", icon: "mdi-dai" },
   ];
 
   const [tokenName, setTokenName] = useState<string>(asset.market);
@@ -154,6 +145,7 @@ const ActiveDeposit = ({
   const [value, setValue] = useState(0);
   const { address: account } = useAccount();
   const [commitPeriod, setCommitPeriod] = useState(asset.commitmentIndex);
+  const [supplyId, setSupplyId] = useState(asset.depositId);
   // const [transDeposit, setTransDeposit] = useState("");
 
   const { contract } = useContract({
@@ -229,15 +221,15 @@ const ActiveDeposit = ({
   });
 
   const {
-    data: dataWithdraw, 
+    data: dataWithdraw,
     error: errorWithdraw,
-    reset: resetWithdraw, 
+    reset: resetWithdraw,
     execute: executeWithdraw
   } = useStarknetExecute({
     calls: [
       {
         contractAddress: diamondAddress,
-        entrypoint: "withdraw_request",
+        entrypoint: "withdraw_deposit",
         calldata: [
           asset.depositId,
           NumToBN(depositAmount as number, 18),
@@ -247,16 +239,6 @@ const ActiveDeposit = ({
   })
 
 
-  // useEffect(() => {
-  //   async function name() {
-  //     console.log("execute withdraw");
-
-  //     await executeWithdraw()
-  //   }
-  //   name()
-  
-  // }, [])
-  
 
   useEffect(() => {
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
@@ -315,9 +297,45 @@ const ActiveDeposit = ({
     );
   }
 
-  const handleWithdrawDeposit = async (asset: string) => {
-    
-  };
+  // const handleWithdrawDeposit = async () => {
+  //   if (
+  //     !tokenAddressMap[asset] &&
+  //     !depositAmount &&
+  //     !diamondAddress &&
+  //     !commitPeriod
+  //   ) {
+  //     toast.error(`${GetErrorText(`Invalid request`)}`, {
+  //       position: toast.POSITION.BOTTOM_RIGHT,
+  //       closeOnClick: true,
+  //     });
+  //     return;
+  //   }
+  //   if (depositAmount === 0) {
+  //     // approve the transfer
+  //     toast.error(`${GetErrorText(`Can't deposit 0 of ${asset}`)}`, {
+  //       position: toast.POSITION.BOTTOM_RIGHT,
+  //       closeOnClick: true,
+  //     });
+  //     return;
+  //   }
+  //   try {
+  //     let val = await executeWithdraw();
+  //     // setTransDeposit(val.transaction_hash);
+  //   } catch (err) {
+  //     console.log(err, "err deposit");
+  //   }
+  //   if (errorDeposit) {
+  //     toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
+  //       position: toast.POSITION.BOTTOM_RIGHT,
+  //       closeOnClick: true,
+  //     });
+  //     return;
+  //   }
+  // }
+
+  const handleWithdrawDeposit = async (withdrawDeposit: any) => {
+    await withdrawDeposit();
+  }
 
   const handleDeposit = async (asset: string) => {
     if (
@@ -420,15 +438,15 @@ const ActiveDeposit = ({
         >
           {/* <AccordionItem style={{ padding: "20px" }}> */}
           {/* <AccordionHeader targetId="1"> */}
-          <Col style={{ marginLeft: "-10px" }}>{`ID${asset.depositId}` ?? 'N/a'}</Col>
+          <Col style={{ marginLeft: "-10px" }}>{`ID${assetParam.depositId}` ?? 'N/a'}</Col>
 
           <Col style={{}}>
             <div>
               <img
                 src={
                   asset
-                    ? CoinClassNames[EventMap[asset.market.toUpperCase()]] ||
-                    asset.market.toUpperCase()
+                    ? CoinClassNames[EventMap[assetParam.market.toUpperCase()]] ||
+                    assetParam.market.toUpperCase()
                     : null
                 }
                 height="24px"
@@ -442,7 +460,7 @@ const ActiveDeposit = ({
               // align="right"
               >
                 &nbsp; &nbsp;
-                {EventMap[asset.market.toUpperCase()]}
+                {EventMap[assetParam.market.toUpperCase()]}
               </div>
             </div>
             <CardTitle tag="h5"></CardTitle>
@@ -450,14 +468,14 @@ const ActiveDeposit = ({
 
           <Col>
             <span style={{ fontSize: "14px", fontWeight: "600" }}>
-              {BNtoNum(Number(asset.amount))}
+              {BNtoNum(Number(assetParam.amount))}
             </span>
             <div>
               <img
                 src={
                   asset
-                    ? CoinClassNames[EventMap[asset.market.toUpperCase()]] ||
-                    asset.market.toUpperCase()
+                    ? CoinClassNames[EventMap[assetParam.market.toUpperCase()]] ||
+                    assetParam.market.toUpperCase()
                     : null
                 }
                 height="18px"
@@ -471,18 +489,18 @@ const ActiveDeposit = ({
                 }}
               >
                 &nbsp;
-                {EventMap[asset.market.toUpperCase()]}
+                {EventMap[assetParam.market.toUpperCase()]}
               </div>
             </div>
           </Col>
 
           <Col className="mr-4 ">
             <span style={{ fontSize: "14px", fontWeight: "600" }}>
-              {asset &&
+              {assetParam &&
                 historicalAPRs &&
-                depositInterestAccrued(asset, historicalAPRs)}
+                depositInterestAccrued(assetParam, historicalAPRs)}
               &nbsp;
-              {EventMap[asset.market.toUpperCase()]}
+              {EventMap[assetParam.market.toUpperCase()]}
             </span>
             <div
               className="mr-6"
@@ -492,9 +510,9 @@ const ActiveDeposit = ({
               }}
             >
               <span style={{ fontSize: "14px" }}>
-                {asset &&
+                {assetParam &&
                   historicalAPRs &&
-                  currentDepositInterestRate(asset, historicalAPRs)}
+                  currentDepositInterestRate(assetParam, historicalAPRs)}
                 %APR
               </span>
             </div>
@@ -508,7 +526,7 @@ const ActiveDeposit = ({
                 fontSize: "14px",
               }}
             >
-              {asset.commitment.toLowerCase()}
+              {assetParam.commitment.toLowerCase()}
             </div>
             <CardTitle tag="h5"></CardTitle>
           </Col>
@@ -811,8 +829,7 @@ const ActiveDeposit = ({
                     width: "100%",
                   }}
                 >
-                  {/* Loan ID = {asset.loanId} */}
-                  Supply ID = ID123665
+                  {`Supply ID = ${asset?.depositId}` ?? 'N/A'}
                   <Image
                     style={{ cursor: "pointer" }}
                     src={idDropDownArrow}
@@ -920,7 +937,8 @@ const ActiveDeposit = ({
                         placeholder={`Minimum ${MinimumAmount[tokenName]} ${tokenName}`}
                         onChange={handleDepositAmountChange}
                         value={depositAmount}
-                        valid={!isInvalid()}
+                        valid={customActiveTab === "2" || !isInvalid()}
+                      // valid={false}
                       />
 
                       {
@@ -941,7 +959,7 @@ const ActiveDeposit = ({
                             <span
                               style={{
                                 borderBottom: "2px  #fff",
-                                 color:  "rgb(111, 111, 111)",
+                                color: "rgb(111, 111, 111)",
                               }}
                             >
                               MAX
@@ -1021,7 +1039,7 @@ const ActiveDeposit = ({
               </FormGroup>
 
               <div className="d-grid gap-2">
-                {customActiveTab === "1"?<div
+                {customActiveTab === "1" ? <div
                   style={{
                     marginBottom: "25px",
                     fontSize: "11px",
@@ -1088,64 +1106,7 @@ const ActiveDeposit = ({
                       Starknet
                     </div>
                   </div>
-                </div>:customActiveTab === "2"?
-                <div
-                  style={{
-                    marginBottom: "25px",
-                    fontSize: "11px",
-                    marginTop: "-10px",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
-                    }}
-                  >
-                    <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)"  }}>
-                      $ 0.50
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
-                    }}
-                  >
-                    <div style={{ color: "#6F6F6F" }}>Transaction fees</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)"  }}>
-                      0.1 %
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
-                    }}
-                  >
-                    <div style={{ color: "#6F6F6F" }}>
-                      Pre closure charges
-                    </div>
-                    <div style={{ textAlign: "right", fontWeight: "600" ,color:"rgb(111, 111, 111)" }}>
-                      0.02%
-                    </div>
-                  </div>
-                  <div
-                    style={{
-                      margin: "3px 0",
-                    }}
-                  >
-                   <div style={{padding:"15px"}}>
-
-                   </div>
-                    <div style={{ color: "#6F6F6F" }}>You Are Pre-Closing This Supply Earlier Than Its Minumum Commitment Period. A Timelock Of 3 Days Is Applied On Such Withdrawals. When You Place Withdrawal Requests.The Timelock is Activated. It Will Be Processed On Your Second Attempt To Withdraw Supply.After The Timelock Expiry In 72hrs</div>
-                  </div>
-                  </div> : null}
-                {customActiveTab === "1" ? (
+                </div> : customActiveTab === "2" ?
                   <div
                     style={{
                       marginBottom: "25px",
@@ -1161,96 +1122,7 @@ const ActiveDeposit = ({
                       }}
                     >
                       <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                      <div
-                        style={{
-                          textAlign: "right",
-                          fontWeight: "600",
-                          color: "rgb(111, 111, 111)",
-                        }}
-                      >
-                        $ 0.50
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        margin: "3px 0",
-                      }}
-                    >
-                      <div style={{ color: "#6F6F6F" }}>Supply APR:</div>
-                      <div
-                        style={{
-                          textAlign: "right",
-                          fontWeight: "600",
-                          color: "rgb(111, 111, 111)",
-                        }}
-                      >
-                        7.75 %
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        margin: "3px 0",
-                      }}
-                    >
-                      <div style={{ color: "#6F6F6F" }}>
-                        Asset Utilization Rate:
-                      </div>
-                      <div
-                        style={{
-                          textAlign: "right",
-                          fontWeight: "600",
-                          color: "rgb(111, 111, 111)",
-                        }}
-                      >
-                        0.43
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        margin: "3px 0",
-                      }}
-                    >
-                      <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
-                      <div
-                        style={{
-                          textAlign: "right",
-                          fontWeight: "600",
-                          color: "rgb(111, 111, 111)",
-                        }}
-                      >
-                        Starknet
-                      </div>
-                    </div>
-                  </div>
-                ) : customActiveTab === "2" ? (
-                  <div
-                    style={{
-                      marginBottom: "25px",
-                      fontSize: "11px",
-                      marginTop: "-10px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        display: "flex",
-                        justifyContent: "space-between",
-                        margin: "3px 0",
-                      }}
-                    >
-                      <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                      <div
-                        style={{
-                          textAlign: "right",
-                          fontWeight: "600",
-                          color: "rgb(111, 111, 111)",
-                        }}
-                      >
+                      <div style={{ textAlign: "right", fontWeight: "600", color: "rgb(111, 111, 111)" }}>
                         $ 0.50
                       </div>
                     </div>
@@ -1262,13 +1134,7 @@ const ActiveDeposit = ({
                       }}
                     >
                       <div style={{ color: "#6F6F6F" }}>Transaction fees</div>
-                      <div
-                        style={{
-                          textAlign: "right",
-                          fontWeight: "600",
-                          color: "rgb(111, 111, 111)",
-                        }}
-                      >
+                      <div style={{ textAlign: "right", fontWeight: "600", color: "rgb(111, 111, 111)" }}>
                         0.1 %
                       </div>
                     </div>
@@ -1282,13 +1148,7 @@ const ActiveDeposit = ({
                       <div style={{ color: "#6F6F6F" }}>
                         Pre closure charges
                       </div>
-                      <div
-                        style={{
-                          textAlign: "right",
-                          fontWeight: "600",
-                          color: "rgb(111, 111, 111)",
-                        }}
-                      >
+                      <div style={{ textAlign: "right", fontWeight: "600", color: "rgb(111, 111, 111)" }}>
                         0.02%
                       </div>
                     </div>
@@ -1297,35 +1157,31 @@ const ActiveDeposit = ({
                         margin: "3px 0",
                       }}
                     >
-                      <div style={{ padding: "15px" }}></div>
-                      <div style={{ color: "#6F6F6F", fontSize: "9px" }}>
-                        You Are Pre-Closing This Supply Earlier Than Its Minumum
-                        Commitment Period. A Timelock Of 3 Days Is Applied On
-                        Such Withdrawals. When You Place Withdrawal Requests.The
-                        Timelock is Activated. It Will Be Processed On Your
-                        Second Attempt To Withdraw Supply.After The Timelock
-                        Expiry In 72hrs
+                      <div style={{ padding: "15px" }}>
+
                       </div>
+                      <div style={{ color: "#6F6F6F" }}>You Are Pre-Closing This Supply Earlier Than Its Minumum Commitment Period. A Timelock Of 3 Days Is Applied On Such Withdrawals. When You Place Withdrawal Requests.The Timelock is Activated. It Will Be Processed On Your Second Attempt To Withdraw Supply.After The Timelock Expiry In 72hrs</div>
                     </div>
-                  </div>
-                ) : null}
+                  </div> : null}
                 <Button
                   style={{
-                     backgroundColor:  "rgb(57, 61, 79)",
-                     color:  "white",
-                     border:  "none",
-                   }}
+                    backgroundColor: "rgb(57, 61, 79)",
+                    color: "white",
+                    border: "none",
+                  }}
                   color="white"
                   className="w-md"
                   disabled={
-                    commitPeriod === undefined ||
-                    loadingApprove ||
-                    loadingDeposit ||
-                    isInvalid()
+                    customActiveTab !== "2" &&
+                    (
+                      loadingApprove ||
+                      loadingDeposit ||
+                      isInvalid()
+                    )
                   }
                   onClick={(e) => {
-                    if(customActiveTab === "1")
-                    handleDeposit(tokenName);
+                    if (customActiveTab === "1")
+                      handleDeposit(tokenName);
                     else handleWithdrawDeposit(tokenName)
                   }}
                 >
@@ -1367,30 +1223,29 @@ const ActiveDeposit = ({
                 // boxShadow: "0px 0px 10px rgb(57, 61, 79)",
               }}
             >
-              <div
-                style={{
-                  margin: "10px 0",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  fontSize: "10px",
-                  color: "#6F6F6F",
-                }}
-              >
-                Supply ID - 123665
-              </div>{" "}
-              <div
-                style={{
-                  margin: "10px 0",
-                  cursor: "pointer",
-                  display: "flex",
-                  alignItems: "center",
-                  fontSize: "10px",
-                  color: "#6F6F6F",
-                }}
-              >
-                Supply ID - 123665
-              </div>
+              {allAssets.map((asset, index) => {
+                return (
+                  <div
+                    key={index}
+                    style={{
+                      margin: "10px 0",
+                      cursor: "pointer",
+                      display: "flex",
+                      alignItems: "center",
+                      fontSize: "0.6rem",
+                      color: "#6F6F6F",
+                    }}
+                    onClick={() => {
+                      setAsset(asset);
+                      setTokenName(asset.market);
+                      setIdDropDown(!idDropDown);
+                      setIdDropDownArrow(Downarrow);
+                    }}
+                  >
+                    {`Supply ID: ${asset.depositId}`}
+                  </div>
+                );
+              })}
             </div>
           </>
         ) : (

@@ -12,23 +12,33 @@
                 "type": "felt"
             },
             {
-                "name": "min_amount",
+                "name": "deposit_min_amount",
                 "offset": 2,
                 "type": "Uint256"
             },
             {
-                "name": "stork_key",
+                "name": "deposit_max_amount",
                 "offset": 4,
-                "type": "felt"
+                "type": "Uint256"
             },
             {
-                "name": "pontis_key",
-                "offset": 5,
+                "name": "loan_min_amount",
+                "offset": 6,
+                "type": "Uint256"
+            },
+            {
+                "name": "loan_max_amount",
+                "offset": 8,
+                "type": "Uint256"
+            },
+            {
+                "name": "empiric_key",
+                "offset": 10,
                 "type": "felt"
             }
         ],
         "name": "Market",
-        "size": 6,
+        "size": 11,
         "type": "struct"
     },
     {
@@ -46,48 +56,6 @@
         ],
         "name": "Uint256",
         "size": 2,
-        "type": "struct"
-    },
-    {
-        "members": [
-            {
-                "name": "market",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "amount",
-                "offset": 1,
-                "type": "Uint256"
-            },
-            {
-                "name": "current_amount",
-                "offset": 3,
-                "type": "Uint256"
-            },
-            {
-                "name": "commitment",
-                "offset": 5,
-                "type": "felt"
-            },
-            {
-                "name": "timelock_validity",
-                "offset": 6,
-                "type": "felt"
-            },
-            {
-                "name": "is_timelock_activated",
-                "offset": 7,
-                "type": "felt"
-            },
-            {
-                "name": "activation_time",
-                "offset": 8,
-                "type": "felt"
-            }
-        ],
-        "name": "Collateral",
-        "size": 9,
         "type": "struct"
     },
     {
@@ -138,13 +106,60 @@
                 "type": "felt"
             },
             {
-                "name": "created_at",
+                "name": "l3_integration",
                 "offset": 11,
+                "type": "felt"
+            },
+            {
+                "name": "created_at",
+                "offset": 12,
                 "type": "felt"
             }
         ],
         "name": "Loan",
-        "size": 12,
+        "size": 13,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "market",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "amount",
+                "offset": 1,
+                "type": "Uint256"
+            },
+            {
+                "name": "current_amount",
+                "offset": 3,
+                "type": "Uint256"
+            },
+            {
+                "name": "commitment",
+                "offset": 5,
+                "type": "felt"
+            },
+            {
+                "name": "timelock_validity",
+                "offset": 6,
+                "type": "felt"
+            },
+            {
+                "name": "is_timelock_activated",
+                "offset": 7,
+                "type": "felt"
+            },
+            {
+                "name": "activation_time",
+                "offset": 8,
+                "type": "felt"
+            }
+        ],
+        "name": "Collateral",
+        "size": 9,
         "type": "struct"
     },
     {
@@ -196,22 +211,9 @@
             {
                 "name": "price",
                 "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
+            },
             {
-                "name": "asset",
-                "type": "felt"
-            }
-        ],
-        "name": "get_value_from_stork",
-        "outputs": [
-            {
-                "name": "price",
+                "name": "decimals",
                 "type": "felt"
             }
         ],
@@ -221,14 +223,64 @@
     {
         "inputs": [
             {
-                "name": "asset",
+                "name": "loan_market",
+                "type": "felt"
+            },
+            {
+                "name": "collateral_market",
+                "type": "felt"
+            },
+            {
+                "name": "amount",
+                "type": "Uint256"
+            }
+        ],
+        "name": "adjust_price_for_token_decimals",
+        "outputs": [
+            {
+                "name": "adjusted_amount",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "data": [
+            {
+                "name": "old_loan_record",
+                "type": "Loan"
+            },
+            {
+                "name": "new_loan_record",
+                "type": "Loan"
+            },
+            {
+                "name": "timestamp",
                 "type": "felt"
             }
         ],
-        "name": "get_value_from_pontis",
+        "keys": [],
+        "name": "loan_swap",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "set_integration_contract_address",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_integration_contract_address",
         "outputs": [
             {
-                "name": "price",
+                "name": "l3_integration_address",
                 "type": "felt"
             }
         ],
@@ -236,15 +288,28 @@
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "pause_price_feed",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "unpause_price_feed",
-        "outputs": [],
+        "inputs": [
+            {
+                "name": "integration",
+                "type": "felt"
+            },
+            {
+                "name": "loan_id",
+                "type": "felt"
+            }
+        ],
+        "name": "view_details",
+        "outputs": [
+            {
+                "name": "return_data_len",
+                "type": "felt"
+            },
+            {
+                "name": "return_data",
+                "type": "felt*"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -268,25 +333,6 @@
         ],
         "keys": [],
         "name": "loan_interest_deducted",
-        "type": "event"
-    },
-    {
-        "data": [
-            {
-                "name": "old_loan_record",
-                "type": "Loan"
-            },
-            {
-                "name": "new_loan_record",
-                "type": "Loan"
-            },
-            {
-                "name": "timestamp",
-                "type": "felt"
-            }
-        ],
-        "keys": [],
-        "name": "loan_swap",
         "type": "event"
     },
     {
@@ -323,6 +369,10 @@
                 "type": "felt"
             },
             {
+                "name": "amount_withdrawn",
+                "type": "Uint256"
+            },
+            {
                 "name": "timestamp",
                 "type": "felt"
             }
@@ -336,6 +386,10 @@
             {
                 "name": "loan_record",
                 "type": "Loan"
+            },
+            {
+                "name": "collateral",
+                "type": "Collateral"
             },
             {
                 "name": "timestamp",

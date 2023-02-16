@@ -1,0 +1,19 @@
+[
+    {
+        "inputs": [
+            {
+                "name": "loan_id",
+                "type": "felt"
+            }
+        ],
+        "name": "get_loan_test",
+        "outputs": [
+            {
+                "name": "loan_id",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]
