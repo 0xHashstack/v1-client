@@ -67,6 +67,7 @@ import useAddDeposit from "../../../blockchain/hooks/active-deposits/useAddDepos
 import { toast } from "react-toastify";
 import classnames from "classnames";
 import useWithdrawCollateral from "../../../blockchain/hooks/repaid-loans/useWithdrawCollateral";
+import useRepay from "../../../blockchain/hooks/active-borrow/useRepay";
 
 const BorrowData = ({
   asset,
@@ -179,6 +180,8 @@ const BorrowData = ({
     transDeposit: any;
   } = useAddDeposit(asset, diamondAddress);
 
+  const { repayAmount, setRepayAmount, executeRepay } = useRepay(asset, diamondAddress);
+
   const { withdrawCollateral } = useWithdrawCollateral(diamondAddress, asset.loanId);
 
   const [tokenName, setTokenName] = useState("BTC");
@@ -257,31 +260,6 @@ const BorrowData = ({
       entrypoint: "approve",
       calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
     },
-  });
-
-  const {
-    data: dataDeposit,
-    error: errorDeposit,
-    reset: resetDeposit,
-    execute: executeDeposit,
-  } = useStarknetExecute({
-    calls: [
-      {
-        contractAddress: tokenAddressMap[tokenName] as string,
-        entrypoint: "approve",
-        calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
-      },
-      {
-        contractAddress: diamondAddress,
-        entrypoint: "deposit_request",
-        calldata: [
-          tokenAddressMap[tokenName],
-          commitPeriod,
-          NumToBN(depositAmount, 18),
-          0,
-        ],
-      },
-    ],
   });
 
   const requestDepositTransactionReceipt = useTransactionReceipt({

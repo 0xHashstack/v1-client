@@ -6,8 +6,8 @@ import { ERC20Abi, tokenAddressMap } from "../../stark-constants";
 import { TxToastManager } from "../../txToastManager";
 import { BNtoNum, GetErrorText, NumToBN } from "../../utils";
 
-const useRepay = (diamondAddress: string, asset: any, repayAmount: inputValParam = 0) => {
-  const [inputVal, setInputVal] = useState<number>(inputValParam);
+const useRepay = ( asset: any, diamondAddress: string ) => {
+  const [repayAmount, setRepayAmount] = useState<number>();
   const [commitmentPeriod, setCommitmentPeriod] = useState();
   const [loanId, setLoanId] = useState<number>();
 
@@ -18,41 +18,6 @@ const useRepay = (diamondAddress: string, asset: any, repayAmount: inputValParam
   const { address: account } = useAccount();
   const [transApprove, setTransApprove] = useState("");
   const [transRepay, setTransRepay] = useState("");
-
-  const approveTransactionReceipt = useTransactionReceipt({
-    hash: transApprove,
-    watch: true,
-  });
-  const repayTransactionReceipt = useTransactionReceipt({
-    hash: transRepay,
-    watch: true,
-  });
-
-  useEffect(() => {
-    console.log(
-      "approve tx receipt",
-      approveTransactionReceipt.data?.transaction_hash,
-      approveTransactionReceipt
-    );
-    TxToastManager.handleTxToast(
-      approveTransactionReceipt,
-      `Repay: Approve ${asset.loanMarket}`,
-      true
-    );
-  }, [approveTransactionReceipt]);
-
-  useEffect(() => {
-    console.log(
-      "repay tx receipt",
-      repayTransactionReceipt.data?.transaction_hash,
-      repayTransactionReceipt
-    );
-    TxToastManager.handleTxToast(
-      repayTransactionReceipt,
-      `Repay ${asset.loanMarket} Loan`
-    );
-    // setRepayTransactionReceipt(repayTransactionReceipt);
-  }, [repayTransactionReceipt]);
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
@@ -83,7 +48,7 @@ const useRepay = (diamondAddress: string, asset: any, repayAmount: inputValParam
     calls: {
       contractAddress: tokenAddressMap[asset.loanMarket] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(inputVal as number, 18), 0],
+      calldata: [diamondAddress, NumToBN(repayAmount as number, 18), 0],
     },
   });
 
@@ -94,16 +59,23 @@ const useRepay = (diamondAddress: string, asset: any, repayAmount: inputValParam
     reset: resetRepay,
     execute: executeRepay,
   } = useStarknetExecute({
-    calls: {
-      contractAddress: diamondAddress,
-      entrypoint: "loan_repay",
-      calldata: [
-        tokenAddressMap[asset.loanMarket],
-        asset.commitmentIndex,
-        NumToBN(inputVal as number, 18),
-        0,
-      ],
-    },
+    calls: [
+      {
+        contractAddress: diamondAddress,
+        entrypoint: "loan_repay",
+        calldata: [
+          tokenAddressMap[asset.loanMarket],
+          asset.commitmentIndex,
+          NumToBN(repayAmount as number, 18),
+          0,
+        ],
+      },
+      {
+        contractAddress: tokenAddressMap[asset.loanMarket] as string,
+        entrypoint: "approve",
+        calldata: [diamondAddress, NumToBN(repayAmount as number, 18), 0],
+      },
+    ]
   });
 
   useEffect(() => {
@@ -122,7 +94,7 @@ const useRepay = (diamondAddress: string, asset: any, repayAmount: inputValParam
         let _allowance = uint256.uint256ToBN(data.remaining);
         // console.log({ _allowance: _allowance.toString(), depositAmount });
         setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
-        if (allowanceVal > (inputVal as number)) {
+        if (allowanceVal > (repayAmount as number)) {
           setAllowed(true);
           setShouldApprove(false);
         } else {
@@ -145,7 +117,10 @@ const useRepay = (diamondAddress: string, asset: any, repayAmount: inputValParam
   };
 
   return {
+    repayAmount, 
+    setRepayAmount,
     handleApprove,
+    executeRepay
   };
 }
 
