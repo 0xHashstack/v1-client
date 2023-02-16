@@ -101,6 +101,7 @@ const SpendLoanNav = () => {
   const [modal_deposit, setmodal_deposit] = useState(false);
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
+  const [yagiDownArrow, setyagiDownArrow] = useState(arrowDown);
 
   const [borrowInterest, setBorrowInterest] = useState<string>("");
   const [currentBorrowInterest, setCurrentBorrowInterest] = useState<string>();
@@ -113,6 +114,9 @@ const SpendLoanNav = () => {
   // const [transDeposit, setTransDeposit] = useState("");
   const [SpendLoan, setSpendLoan] = useState("1")
   const dappsArray = ["1", "2", "3", "4", "5", "6", "7"];
+  const yagitimes = ["1","2","3","4"];
+  const [yagiselection, setyagiselection] = useState("1")
+  const [Yagidrop, setYagidrop] = useState(false)
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
@@ -211,6 +215,12 @@ const SpendLoanNav = () => {
     if (e.target.value) setDepositAmount(Number(e.target.value));
     else setDepositAmount(0);
   };
+
+  const toggleyagi =()=>{
+    setYagidrop(!Yagidrop)
+    setyagiDownArrow(Yagidrop ? arrowDown : arrowUp);
+    
+  }
 
   function isInvalid() {
     return (
@@ -476,13 +486,66 @@ const SpendLoanNav = () => {
                         }}
                       >
                         <Image
-                          // onClick={toggleDropdown}
-                          src={dropDownArrow}
+                          onClick={()=>{
+                            toggleyagi()
+                          }}
+                          src={yagiDownArrow}
                           alt="Picture of the author"
                           width="20px"
                           height="20px"
                         />
+                        
                       </div>
+                      {Yagidrop ? (
+                    <>
+                    <div
+                      style={{
+                        borderRadius: "5px",
+                        position: "absolute",
+                        zIndex: "100",
+                        top: "156px",
+                        left: "160px",
+
+                        width: "300px",
+                        margin: "0px auto",
+                        marginBottom: "20px",
+                        padding: "5px 10px",
+                        backgroundColor: "#1D2131",
+                        boxShadow: "0px 0px 10px #00000020",
+                      }}
+                    >
+                    {yagitimes.map((select, index) => {
+                      if (yagiselection === select) {
+                        return <></>
+                      }
+                        return (
+                          <div
+                            style={{
+                              margin: "10px 0",
+                              cursor: "pointer",
+                              display: "flex",
+                              alignItems: "center",
+                              fontSize: "16px",
+                            }}
+                            key={index}
+                            onClick={() => {
+                              setyagiselection(select)
+                              toggleyagi()
+                            }}
+                          >
+                           <img
+                          src={`./yagilogo.svg`}
+                          width="60px"
+                          height="30px"
+                        ></img>
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </>
+                ) : (
+                  <></>
+                )}
                     </div>
                   </label>
                 </div>
