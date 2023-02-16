@@ -35,8 +35,8 @@ import { TxToastManager } from "../../../blockchain/txToastManager";
 import BorrowData from "./borrow-data";
 import OffchainAPI from "../../../services/offchainapi.service";
 import Image from "next/image";
-import arrowDown from "../../../assets/images/arrowDown.svg";
-import arrowUp from "../../../assets/images/arrowUp.svg";
+import arrowDown from "../../../assets/images/ArrowDownDark.svg";
+import arrowUp from "../../../assets/images/ArrowUpDark.svg";
 import { Abi, uint256 } from "starknet";
 import { ICoin } from "../../dashboard/dashboard-body";
 import MySpinner from "../../mySpinner";
@@ -656,8 +656,8 @@ const BorrowTab = ({
               <div
                 className="modal-body"
                 style={{
-                  backgroundColor: "white",
-                  color: "black",
+                  backgroundColor: "#1D2131",
+                  color: "white",
                   padding: "40px",
                 }}
               >
@@ -665,7 +665,7 @@ const BorrowTab = ({
                   <Form>
                     {/* <div className="row mb-4"> */}
                     <Col sm={8}>
-                      <h3 style={{ color: "black" }}>Borrow</h3>
+                      <h3 style={{ color: "white" }}>Borrow</h3>
                     </Col>
                     <div style={{ fontSize: "8px", fontWeight: "600" }}>
                       Collateral Market
@@ -678,7 +678,7 @@ const BorrowTab = ({
                         padding: "5px 10px",
                         fontSize: "18px",
                         borderRadius: "5px",
-                        border: "2px solid #00000050",
+                        border: "2px solid rgb(57, 61, 79)",
                         fontWeight: "200",
                       }}
                     >
@@ -728,7 +728,7 @@ const BorrowTab = ({
                     <InputGroup>
                       <Input
                         style={{
-                          backgroundColor: "white",
+                          backgroundColor: "#1D2131",
                           borderRight: "1px solid #FFF",
                         }}
                         type="number"
@@ -752,13 +752,13 @@ const BorrowTab = ({
                             // onClick={handleMax}
                             // disabled={balance ? false : true}
                             style={{
-                              background: "white",
-                              color: "black",
-                              border: "1px solid black",
+                              background: "#1D2131",
+                              color: "rgb(111, 111, 111)",
+                              border: "1px solid rgb(57, 61, 79)",
                               borderLeft: "none",
                             }}
                           >
-                            <span style={{ borderBottom: "2px dotted #fff" }}>
+                            <span style={{ borderBottom: "2px   rgb(255, 255, 255" }}>
                               MAX
                             </span>
                           </Button>
@@ -785,13 +785,13 @@ const BorrowTab = ({
                     </div>
                     <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
                       <Slider
-                        handlerActiveColor="black"
+                        handlerActiveColor="rgb(57, 61, 79)"
                         stepSize={5}
                         value={value}
-                        trackColor="#ADB5BD"
+                        trackColor="rgb(57, 61, 79)"
                         handlerShape="rounded"
-                        handlerColor="black"
-                        fillColor="black"
+                        handlerColor="white"
+                        fillColor="white"
                         trackLength={420}
                         grabCursor={false}
                         showMarkers="hidden"
@@ -1004,7 +1004,7 @@ const BorrowTab = ({
                         padding: "5px 10px",
                         fontSize: "18px",
                         borderRadius: "5px",
-                        border: "2px solid #00000050",
+                        border: "2px solid rgb(57, 61, 79)",
                         fontWeight: "200",
                       }}
                     >
@@ -1055,7 +1055,7 @@ const BorrowTab = ({
                               padding: "5px 10px",
                               fontSize: "15px",
                               borderRadius: "5px",
-                              border: "2px solid #00000050",
+                              border: "2px solid rgb(57, 61, 79)",
                               fontWeight: "400",
                             }}
                           >
@@ -1115,8 +1115,8 @@ const BorrowTab = ({
                       <InputGroup style={{ marginBottom: "30px" }}>
                         <Input
                           style={{
-                            backgroundColor: "white",
-                            borderRight: "1px solid #FFF",
+                            backgroundColor: "#1D2131",
+                            borderRight: "1px solid rgb(57, 61, 79)",
                           }}
                           id="loan-amount"
                           type="text"
@@ -1153,17 +1153,18 @@ const BorrowTab = ({
                               // onClick={handleMaxLoan}
                               // disabled={balance ? false : true}
                               style={{
-                                background: "white",
-                                color: "black",
-                                border: "1px solid black",
+                                background: "#1D2131",
+                                color: "rgb(111, 111, 111)",
                                 borderLeft: "none",
+                                border: "1px solid rgb(57, 61, 79)",
+                                
                               }}
                             >
-                              <span style={{ borderBottom: "2px dotted #fff" }}>
+                              <span style={{ borderBottom: "2px  rgb(255, 255, 255)" }}>
                                 MAX
                               </span>
                             </Button>
-                          </>
+                          </> 
                         }
                       </InputGroup>
                       {/* </label> */}
@@ -1227,7 +1228,7 @@ const BorrowTab = ({
                         >
                           <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "600" }}
+                            style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}
                           >
                             $ 10.91
                           </div>
@@ -1243,7 +1244,7 @@ const BorrowTab = ({
                             Transaction fees:
                           </div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "600" }}
+                            style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}
                           >
                             $ 10.91
                           </div>
@@ -1257,7 +1258,7 @@ const BorrowTab = ({
                         >
                           <div style={{ color: "#6F6F6F" }}>Fair price:</div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "600" }}
+                            style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}
                           >
                             $ 10.91
                           </div>
@@ -1273,7 +1274,7 @@ const BorrowTab = ({
                             i Collateral market:
                           </div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "400" }}
+                            style={{ textAlign: "right", fontWeight: "400",color:"rgb(111, 111, 111)" }}
                           >
                             $ 10.91
                           </div>
@@ -1289,7 +1290,7 @@ const BorrowTab = ({
                             ii Borrow market:
                           </div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "400" }}
+                            style={{ textAlign: "right", fontWeight: "400",color:"rgb(111, 111, 111)" }}
                           >
                             $10.91
                           </div>
@@ -1303,7 +1304,7 @@ const BorrowTab = ({
                         >
                           <div style={{ color: "#6F6F6F" }}>Risk premium:</div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "600" }}
+                            style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}
                           >
                             0.6%
                           </div>
@@ -1317,7 +1318,7 @@ const BorrowTab = ({
                         >
                           <div style={{ color: "#6F6F6F" }}>Debt category:</div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "600" }}
+                            style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}
                           >
                             DC1/DC2/DC3
                           </div>
@@ -1331,7 +1332,7 @@ const BorrowTab = ({
                         >
                           <div style={{ color: "#6F6F6F" }}>Borrow apr:</div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "600" }}
+                            style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}
                           >
                             5.6%
                           </div>
@@ -1347,7 +1348,7 @@ const BorrowTab = ({
                             Borrow network:
                           </div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "600" }}
+                            style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}
                           >
                             starknet
                           </div>
@@ -1355,7 +1356,7 @@ const BorrowTab = ({
                       </div>
 
                       <Button
-                        color="primary"
+                        color="white"
                         className="w-md"
                         disabled={
                           borrowParams.commitBorrowPeriod === undefined ||
@@ -1363,7 +1364,9 @@ const BorrowTab = ({
                           loadingBorrow ||
                           !isValid()
                         }
-                        style={{ padding: "10px 0" }}
+                        style={{ padding: "10px 0",
+                        border: "none",
+                        backgroundColor: "rgb(57, 61, 79)", }}
                         onClick={(e) => handleBorrow(tokenName)}
                       >
                         {!(
