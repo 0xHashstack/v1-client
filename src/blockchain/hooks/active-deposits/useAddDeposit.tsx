@@ -185,8 +185,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 		loadingApprove,
 		loadingDeposit,
 		dataApprove,
-    dataDeposit
-
+		dataDeposit
 	};
 };
 

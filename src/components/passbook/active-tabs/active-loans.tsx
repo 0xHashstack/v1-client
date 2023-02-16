@@ -343,7 +343,7 @@ const ActiveLoansTab = ({
       <Table className="table table-nowrap align-middle mb-0">
         <thead>
           <tr>
-            <th scope="col"> &nbsp; &nbsp; &nbsp; Borrow Market</th>
+            <th scope="col"> &nbsp; &nbsp; &nbsp;Borrow Market</th>
             <th scope="col"> &nbsp; &nbsp; &nbsp;Interest</th>
             <th scope="col"> &nbsp; &nbsp; &nbsp;Collateral</th>
             <th scope="col"> &nbsp; &nbsp; &nbsp;Current Balance</th>
