@@ -743,7 +743,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                       boxShadow: "0px 0px 10px #0020",
                     }}
                   >
-                    {coins.map((coin, index) => {
+                    {Coins.map((coin, index) => {
                       if (coin.name === tokenName) return <></>;
                       return (
                         <div
@@ -796,7 +796,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                       boxShadow: "0px 0px 10px #00000020",
                     }}
                   >
-                    {coins.map((coin, index) => {
+                    {Coins.map((coin, index) => {
                       if (coin.name === borrowTokenName) return <></>;
                       return (
                         <div
@@ -994,7 +994,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                         onClick={() => {
                           setCommitmentDropDown(!commitmentDropDown);
                           setCommitmentArrow(
-                            commitmentDropDown ? arrowDown : arrowUp
+                            commitmentDropDown ? Downarrow : UpArrow
                           );
                         }}
                         style={{

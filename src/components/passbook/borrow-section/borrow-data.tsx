@@ -468,7 +468,7 @@ const BorrowData = ({
 
           <Col className="mr-4 ">
             <span style={{ fontSize: "14px", fontWeight: "600" }}>
-              {parseFloat(BNtoNum(Number(asset.collateralAmount)))}
+              {parseFloat(BNtoNum(Number(asset.loanAmount)))}
             </span>
             <div>
               <img
@@ -2249,7 +2249,7 @@ const BorrowData = ({
                         boxShadow: "0px 0px 10px #00000020",
                       }}
                     >
-                      {coins.map((coin, index) => {
+                      {Coins.map((coin, index) => {
                         if (coin.name === marketTokenName) return <></>;
                         return (
                           <div

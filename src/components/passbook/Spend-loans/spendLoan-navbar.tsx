@@ -649,7 +649,7 @@ const SpendLoanNav = () => {
                               boxShadow: "0px 0px 10px #00000020",
                             }}
                           >
-                            {coins.map((coin, index) => {
+                            {Coins.map((coin, index) => {
                               if (coin.name === tokenName) return <></>;
                               return (
                                 <div

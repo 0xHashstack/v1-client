@@ -224,6 +224,7 @@ const Dashboard = () => {
           return asset.state === 0;
         })
       );
+      console.log("loans: " + loans);
       setRepaidLoansData(
         loans.filter((asset) => {
           console.log(asset, "testasset");

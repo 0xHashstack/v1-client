@@ -644,22 +644,6 @@ const ActiveLoan = ({
                             )} */}
                           </div>
                         </Col>
-                        {/* <Col lg="8">
-                          {
-                            <TxHistoryTable
-                              asset={asset}
-                              type="loans"
-                              market={asset.loanMarket}
-                              observables={[
-                                repayTransactionReceipt,
-                                addCollateralTransactionReceipt,
-                                withdrawLoanTransactionReceipt,
-                                swapLoanToSecondaryTransactionReceipt,
-                                revertSwapTransactionReceipt,
-                              ]}
-                            />
-                          }
-                        </Col> */}
                       </Row>
                     </div>
                   </div>
