@@ -1,7 +1,19 @@
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import statsIcon from "../../assets/images/statsIcon.svg";
+import OffchainAPI from "../../services/offchainapi.service";
 
 const StatsBoard = () => {
+  const [oraclePrices, setOraclePrices] = useState<any>();
+  const [deposits, setDeposits] = useState<any>();
+  const [loans, setLoans] = useState<any>();
+
+  useEffect(() => {
+    OffchainAPI.getOraclePrices().then((val) => {
+      console.log("got them", val);
+    });
+  }, []);
+
   return (
     <div
       className="stats-board"

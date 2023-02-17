@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import Ellipse1 from "../assets/images/Ellipse 59.svg";
 import {
   Container,
   Row,
@@ -308,25 +308,22 @@ const Dashboard = () => {
   useEffect(() => {
     !isTransactionDone &&
       account &&
-      OffchainAPI.getActiveDeposits(account).then(
-        (deposits) => {
-          onDepositData(deposits);
-          setIsLoading(false);
-        },
-        (err) => {
-          setIsLoading(false);
-          setActiveDepositsData([]);
-          console.log(err);
-        }
-      ).catch(() => {
-        console.log("error in getting deposits", error);
-      });
-  }, [
-    account,
-    passbookStatus,
-    customActiveTab,
-    isTransactionDone,
-  ]);
+      OffchainAPI.getActiveDeposits(account)
+        .then(
+          (deposits) => {
+            onDepositData(deposits);
+            setIsLoading(false);
+          },
+          (err) => {
+            setIsLoading(false);
+            setActiveDepositsData([]);
+            console.log(err);
+          }
+        )
+        .catch((error) => {
+          console.log("error in getting deposits", error);
+        });
+  }, [account, passbookStatus, customActiveTab, isTransactionDone]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -584,12 +581,9 @@ const Dashboard = () => {
 
   function dashboardUI() {
     return (
-      <div>
-        {customActiveTab === "1" ? <StatsBoard  /> : null}
-        <Container fluid style={{ backgroundColor: "transparent" }}>
-          {/* Protocol Stats */}
-          {/* <ProtocolStats /> */}
-
+      <div style={{ width: "100%", backgroundColor: "#1C202", height: "100%" }}>
+        {customActiveTab === "1" ? <StatsBoard /> : null}
+        <Container fluid>
           <Row>
             <Col xl={"12"}>
               {/* <Card style={{ height: "35rem", overflowY: "scroll" }}> */}
@@ -603,9 +597,7 @@ const Dashboard = () => {
                     toggleCustom={toggleCustom}
                     account={account as string}
                   />
-                ) : (
-                  <div></div>
-                )}
+                ) : null}
               </div>
               <div style={{ margin: "1px 5px 10px 14px" }}>
                 {customActiveTab === "6" ? (
@@ -644,42 +636,43 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  {customActiveTab !== "2"?( <div
-                    style={{
-                      position: "absolute",
-                      zIndex: "500",
-                      right: "80px",
-                      top: "60px",
-                    }}
-                  >
-                    <button
+                  {customActiveTab !== "2" ? (
+                    <div
                       style={{
-                        color: "white",
-                        backgroundColor: "rgb(57, 61, 79)",
-                        padding: "6px 16px",
-                        borderRadius: "5px",
-                        display: "flex",
-                        alignItems: "center",
-                        border:"none"
+                        position: "absolute",
+                        zIndex: "500",
+                        right: "80px",
+                        top: "60px",
                       }}
                     >
-                      Active&nbsp;&nbsp;&nbsp;
-                      <Image
-                        src={dropDownArrow}
-                        alt="Picture of the author"
-                        width="14px"
-                        height="14px"
-                      />
-                    </button>
-                  </div>) :null}
-                  
+                      <button
+                        style={{
+                          color: "white",
+                          backgroundColor: "rgb(57, 61, 79)",
+                          padding: "6px 16px",
+                          borderRadius: "5px",
+                          display: "flex",
+                          alignItems: "center",
+                          border: "none",
+                        }}
+                      >
+                        Active&nbsp;&nbsp;&nbsp;
+                        <Image
+                          src={dropDownArrow}
+                          alt="Picture of the author"
+                          width="14px"
+                          height="14px"
+                        />
+                      </button>
+                    </div>
+                  ) : null}
                 </>
               ) : null}
 
               {customActiveTab === "1" ||
               customActiveTab === "3" ||
               customActiveTab === "4" ? (
-                <Card style={{ height: "30rem" }}>
+                <Card style={{ height: "60vh", maxHeight: "30rem" }}>
                   <CardBody
                     style={{
                       overflowX: "hidden",
@@ -689,11 +682,14 @@ const Dashboard = () => {
                       boxShadow: "0px 0px 1px 1px #181728",
                     }}
                   >
-                    {console.log("depositDatall", activeDepositsData, activeLoansData)}
-                    {" "}
+                    {console.log(
+                      "depositDatall",
+                      activeDepositsData,
+                      activeLoansData
+                    )}{" "}
                     {customActiveTab === "1" ? (
-                      <LoanBorrowCommitment 
-                        isLoading={isLoading} 
+                      <LoanBorrowCommitment
+                        isLoading={isLoading}
                         activeDepositsData={activeDepositsData}
                         activeLoansData={activeLoansData}
                       />
@@ -764,8 +760,6 @@ const Dashboard = () => {
                     <u style={{ cursor: "pointer" }}>your borrow</u>
                   </div>
                   <SpendLoanNav />
-                  
-                  
                 </>
               ) : null}
             </Col>
@@ -814,7 +808,6 @@ const Dashboard = () => {
         <title>Hashstack | Starknet testnet</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-
       {/* testnet.hashstack.finance */}
       <Script id="microsoft-clarity-testnet" strategy="afterInteractive">
         {`
@@ -827,7 +820,6 @@ const Dashboard = () => {
             }
           `}
       </Script>
-
       {/* zk.hashstack.finance */}
       {/* <Script id="microsoft-clarity-zk" strategy="afterInteractive">
           {`
@@ -840,7 +832,6 @@ const Dashboard = () => {
             }
           `}
       </Script> */}
-
       <div
         className="page-content"
         style={{
@@ -862,7 +853,6 @@ const Dashboard = () => {
         ) : (
           dashboardUI()
         )} */}
-
         {/* <Analytics></Analytics>
             {props.children} */}
       </div>

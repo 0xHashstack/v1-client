@@ -1,8 +1,10 @@
 .container {
   padding: 0 2rem;
+  background-color: #1C202F !important;
 }
 
 .main {
+  background-color: #1C202F !important;
   min-height: 100vh;
   padding: 4rem 0;
   flex: 1;

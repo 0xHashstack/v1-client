@@ -35,11 +35,15 @@ const DashboardMenu = ({
   account: string;
 }) => {
   return (
-    <Col xl="7">
+    <Col>
       <Nav
         tabs
         className="nav-tabs-custom"
-        style={{ borderBottom: "0px", gap: "10px", margin: "20px 30px" }}
+        style={{
+          borderBottom: "0px",
+          gap: "10px",
+          margin: "20px 30px",
+        }}
       >
         <NavItem>
           <NavLink
