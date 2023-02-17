@@ -672,7 +672,14 @@ const Dashboard = () => {
               {customActiveTab === "1" ||
               customActiveTab === "3" ||
               customActiveTab === "4" ? (
-                <Card style={{ height: "60vh", maxHeight: "30rem" }}>
+                <Card
+                  style={{
+                    height: "60vh",
+                    maxHeight: "35rem",
+                    border: "none",
+                    boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
+                  }}
+                >
                   <CardBody
                     style={{
                       overflowX: "hidden",

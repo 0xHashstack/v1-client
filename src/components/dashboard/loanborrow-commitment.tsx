@@ -29,7 +29,7 @@ const LoanBorrowCommitment = ({
   return (
     <div style={{}}>
       <TabPane tabId="1">
-        <div className="table-responsive" style={{ paddingTop: "12px" }}>
+        <div className="table-responsive">
           <Table className="table table-nowrap  mb-0">
             <thead>
               <tr

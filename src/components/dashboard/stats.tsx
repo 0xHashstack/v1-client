@@ -33,6 +33,7 @@ const StatsBoard = () => {
           justifyContent: "space-between",
           padding: "20px 40px",
           gap: "30px",
+          boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
         }}
       >
         <div className="Net Worth">
@@ -69,6 +70,7 @@ const StatsBoard = () => {
           justifyContent: "space-between",
           padding: "20px 40px",
           gap: "30px",
+          boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
         }}
       >
         <div className="Net Worth">
