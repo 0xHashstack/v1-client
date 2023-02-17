@@ -60,6 +60,8 @@ import SpendLoanNav from "../components/passbook/Spend-loans/spendLoan-navbar";
 // import YourSupplyBody from "../components/dashboard/supply";
 import { TabContext } from "../hooks/contextHooks/TabContext";
 import DashboardLiquid from "../components/dashboard/DashboardLiquid";
+import SuccessToast from "../components/toastModals/customToastModal";
+import ToastModal from "../components/toastModals/customToastModal";
 
 interface IDeposit {
   amount: string;
@@ -863,6 +865,7 @@ const Dashboard = () => {
         {/* <Analytics></Analytics>
             {props.children} */}
       </div>
+      {/* <ToastModal bool={true} heading="Success" desc="lorem ipsum" /> */}
       {/* // </React.Fragment> */}
     </div>
   );
