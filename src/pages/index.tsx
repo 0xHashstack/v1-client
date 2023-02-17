@@ -61,6 +61,9 @@ import SpendLoanNav from "../components/passbook/Spend-loans/spendLoan-navbar";
 import { TabContext } from "../hooks/contextHooks/TabContext";
 import DashboardLiquid from "../components/dashboard/DashboardLiquid";
 
+import useMaxloan from "../blockchain/hooks/Max_loan_given_collat";
+import { BNtoNum, GetErrorText, NumToBN } from "../blockchain/utils";
+
 interface IDeposit {
   amount: string;
   account: string | undefined;
@@ -91,6 +94,8 @@ interface ILoans {
 }
 
 const Dashboard = () => {
+ 
+  
   const [dropDownArrow, setDropDownArrow] = useState(connectWalletArrowDown);
   const [isLoading, setIsLoading] = useState(true);
   const [activeDepositsData, setActiveDepositsData] = useState<IDeposit[]>([]);
@@ -246,6 +251,10 @@ const Dashboard = () => {
           console.log("loans:", loans);
           onLoansData(loans);
           setIsLoading(false);
+          // console.log("herea");
+          
+          // console.log(useMaxloan);
+          
         },
         (err) => {
           setIsLoading(false);
@@ -259,6 +268,7 @@ const Dashboard = () => {
     customActiveTab,
     isTransactionDone,
     activeLiquidationsData,
+  
   ]);
 
   const onDepositData = async (depositsData: any[]) => {
@@ -304,6 +314,13 @@ const Dashboard = () => {
     });
     setActiveDepositsData(nonZeroDeposits);
   };
+  let x = useMaxloan('USDC','USDT',100000000);
+  if (x.loading === false) {
+    // console.log(x.data);
+    
+      // console.log(Number(BNtoNum(x.data.max_loan_amount.low, 1)));
+      
+  }
 
   useEffect(() => {
     !isTransactionDone &&
@@ -321,11 +338,14 @@ const Dashboard = () => {
       ).catch(() => {
         console.log("error in getting deposits", error);
       });
+      console.log(x.data);
+      
   }, [
     account,
     passbookStatus,
     customActiveTab,
     isTransactionDone,
+    x.loading
   ]);
 
   useEffect(() => {
@@ -417,7 +437,9 @@ const Dashboard = () => {
   const handleWithdrawDepositTime = (e: any) => {
     setWithdrawDepositVal(e.target.value);
   };
-
+  
+ 
+  
   const onLiquidationsData = async (liquidationsData: any[]) => {
     const liquidations: any[] = [];
     for (let i = 0; i < liquidationsData.length; i++) {
