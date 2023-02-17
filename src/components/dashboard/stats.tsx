@@ -1,7 +1,11 @@
 import Image from "next/image";
 import statsIcon from "../../assets/images/statsIcon.svg";
+import { TabContext } from "../../hooks/contextHooks/TabContext";
+import { useContext } from "react";
 
 const StatsBoard = () => {
+  const { customActiveTab, toggleCustom } = useContext(TabContext);
+
   return (
     <div
       className="stats-board"
@@ -38,13 +42,15 @@ const StatsBoard = () => {
         <div className="Net Worth">
           <p style={{ marginBottom: "10px" }}>Net APR</p>
           <h4>15.5%</h4>
-        </div>
+        </div >
         <Image
           src={statsIcon}
           alt="Navbar Logo"
-          style={{ marginLeft: "20px" }}
+          style={{ marginLeft: "20px" ,cursor:"pointer"}}
           height="20px"
           width="20px"
+          onClick={()=>{toggleCustom("7")}}
+    
         />
       </div>
       <div className="stat-card"></div>
@@ -74,9 +80,10 @@ const StatsBoard = () => {
         <Image
           src={statsIcon}
           alt="Navbar Logo"
-          style={{ marginLeft: "20px" }}
+          style={{ marginLeft: "20px",cursor:"pointer" }}
           height="20px"
           width="20px"
+          onClick={()=>{toggleCustom("8")}}
         />
       </div>
       <div className="stat-card"></div>

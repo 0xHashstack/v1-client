@@ -63,6 +63,8 @@ import DashboardLiquid from "../components/dashboard/DashboardLiquid";
 
 import useMaxloan from "../blockchain/hooks/Max_loan_given_collat";
 import { BNtoNum, GetErrorText, NumToBN } from "../blockchain/utils";
+import Crossimg from "../../public/cross.svg"
+// import App from "./Chart"
 
 interface IDeposit {
   amount: string;
@@ -94,8 +96,8 @@ interface ILoans {
 }
 
 const Dashboard = () => {
- 
-  
+
+
   const [dropDownArrow, setDropDownArrow] = useState(connectWalletArrowDown);
   const [isLoading, setIsLoading] = useState(true);
   const [activeDepositsData, setActiveDepositsData] = useState<IDeposit[]>([]);
@@ -251,10 +253,7 @@ const Dashboard = () => {
           console.log("loans:", loans);
           onLoansData(loans);
           setIsLoading(false);
-          // console.log("herea");
-          
-          // console.log(useMaxloan);
-          
+
         },
         (err) => {
           setIsLoading(false);
@@ -268,7 +267,7 @@ const Dashboard = () => {
     customActiveTab,
     isTransactionDone,
     activeLiquidationsData,
-  
+
   ]);
 
   const onDepositData = async (depositsData: any[]) => {
@@ -314,13 +313,7 @@ const Dashboard = () => {
     });
     setActiveDepositsData(nonZeroDeposits);
   };
-  let x = useMaxloan('USDC','USDT',100000000);
-  if (x.loading === false) {
-    // console.log(x.data);
-    
-      // console.log(Number(BNtoNum(x.data.max_loan_amount.low, 1)));
-      
-  }
+
 
   useEffect(() => {
     !isTransactionDone &&
@@ -336,16 +329,16 @@ const Dashboard = () => {
           console.log(err);
         }
       ).catch(() => {
-        console.log("error in getting deposits", error);
+        console.log("error in getting deposits");
       });
-      console.log(x.data);
-      
+
+
   }, [
     account,
     passbookStatus,
     customActiveTab,
     isTransactionDone,
-    x.loading
+
   ]);
 
   useEffect(() => {
@@ -437,9 +430,9 @@ const Dashboard = () => {
   const handleWithdrawDepositTime = (e: any) => {
     setWithdrawDepositVal(e.target.value);
   };
-  
- 
-  
+
+
+
   const onLiquidationsData = async (liquidationsData: any[]) => {
     const liquidations: any[] = [];
     for (let i = 0; i < liquidationsData.length; i++) {
@@ -607,7 +600,7 @@ const Dashboard = () => {
   function dashboardUI() {
     return (
       <div>
-        {customActiveTab === "1" ? <StatsBoard  /> : null}
+        {customActiveTab === "1" ? <StatsBoard /> : null}
         <Container fluid style={{ backgroundColor: "transparent" }}>
           {/* Protocol Stats */}
           {/* <ProtocolStats /> */}
@@ -617,9 +610,9 @@ const Dashboard = () => {
               {/* <Card style={{ height: "35rem", overflowY: "scroll" }}> */}
               <div style={{ margin: "1px 5px 5px 14px" }}>
                 {customActiveTab === "1" ||
-                customActiveTab === "2" ||
-                customActiveTab === "3" ||
-                customActiveTab === "4" ? (
+                  customActiveTab === "2" ||
+                  customActiveTab === "3" ||
+                  customActiveTab === "4" ? (
                   <DashboardMenu
                     customActiveTab={customActiveTab}
                     toggleCustom={toggleCustom}
@@ -641,8 +634,8 @@ const Dashboard = () => {
                 )}
               </div>
               {customActiveTab === "3" ||
-              customActiveTab === "4" ||
-              customActiveTab === "2" ? (
+                customActiveTab === "4" ||
+                customActiveTab === "2" ? (
                 <>
                   <div
                     style={{
@@ -666,7 +659,7 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  {customActiveTab !== "2"?( <div
+                  {customActiveTab !== "2" ? (<div
                     style={{
                       position: "absolute",
                       zIndex: "500",
@@ -682,7 +675,7 @@ const Dashboard = () => {
                         borderRadius: "5px",
                         display: "flex",
                         alignItems: "center",
-                        border:"none"
+                        border: "none"
                       }}
                     >
                       Active&nbsp;&nbsp;&nbsp;
@@ -693,14 +686,202 @@ const Dashboard = () => {
                         height="14px"
                       />
                     </button>
-                  </div>) :null}
-                  
+                  </div>) : null}
+
+                </>
+              ) : null}
+              {customActiveTab === "7" ? (
+                <>
+                  {" "}
+                  <Card
+                    style={{
+                      height: "25rem",
+                      overflowY: "scroll",
+                    }}
+                  >
+                    <CardBody
+                      style={{
+                        backgroundColor: "rgb(42, 46, 63)",
+                        overflowX: "hidden",
+                        marginTop: "-20px",
+                      }}
+                    >
+                      <div style={{ fontSize: "30px", padding: "20px" }}>
+                        Your Metrics
+                        <span>
+                          <img src={Crossimg} alt="" />
+                        </span>
+                      </div>
+                      <div style={{ display: "flex" }}>
+                        <Col style={{ padding: "15px" }}>
+                          <div style={{ gap: "15px", display: "flex" }}>
+                            <div style={{ border: "solid rgb(57, 61, 79)", padding: '2px 12px', width: '160px', borderRadius: '4px' }}>
+                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
+                                Total Supply
+                              </span>
+                              <div style={{ fontSize: "25px" }}>
+                                $8935.5
+                              </div>
+                            </div>
+                            <div style={{ border: "solid rgb(57, 61, 79)", padding: '2px 12px', width: '170px', borderRadius: '4px' }}>
+                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
+                                Total Apr Earned
+                              </span>
+                              <div style={{ fontSize: "25px" }}>
+                                15.5 %
+                              </div>
+                            </div>
+                          </div>
+                          <div style={{ gap: "35px", padding: "15px 0px" }}>
+                            {/* You and use map here to go for the Active Supply Markets */}
+                            <div style={{ border: "solid rgb(57, 61, 79)", padding: '2px 12px', width: "fit-content", borderRadius: '4px', gap: "4px" }}>
+                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
+                                Active Supply Markets
+                              </span>
+                              <div style={{ fontSize: "20px", textAlign: "center",display:"flex",gap:"8px" }}>
+                                {/* Map here for diffrent coins */}
+                                <div>
+                                  <div>
+                                    <img src="./BTC.svg" alt="BTC" />
+                                  </div>
+                                  <span>
+                                    BTC
+                                  </span>
+                                </div>
+                                
+                              </div>
+                            </div>
+                          </div>
+                        </Col>
+                        <Col style={{ padding: "15px" }}>
+                          <div style={{ gap: "15px", display: "flex" }}>
+                            <div style={{ border: "solid rgb(57, 61, 79)", padding: '2px 12px', width: '160px', borderRadius: '4px' }}>
+                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
+                                Your Borrow
+                              </span>
+                              <div style={{ fontSize: "25px" }}>
+                                $8935.5
+                              </div>
+                            </div>
+                            <div style={{ border: "solid rgb(57, 61, 79)", padding: '2px 12px', width: '170px', borderRadius: '4px' }}>
+                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
+                              Effective Borrow Apr
+                              </span>
+                              <div style={{ fontSize: "25px" }}>
+                                15.5 %
+                              </div>
+                            </div>
+                          </div>
+                          <div style={{ gap: "35px", padding: "15px 0px" }}>
+                            {/* You and use map here to go for the Active Supply Markets */}
+                            <div style={{ border: "solid rgb(57, 61, 79)", padding: '2px 12px', width: "fit-content", borderRadius: '4px', gap: "4px" }}>
+                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
+                              Active Borrow Markets
+                              </span>
+                              <div style={{ fontSize: "20px", textAlign: "center",display:"flex",gap:"8px" }}>
+                                {/* Map here for diffrent coins */}
+                                <div>
+                                  <div>
+                                    <img src="./BTC.svg" alt="BTC" />
+                                  </div>
+                                  <span>
+                                    BTC
+                                  </span>
+                                </div>
+                                
+                              </div>
+                            </div>
+                          </div>
+                        </Col>
+                      </div>
+                      <div style={{ padding: "15px" }}>
+                        Think we should provide additional insights? <span style={{ textDecoration: "underline" }}>Write to us</span>
+                      </div>
+                    </CardBody>
+
+                  </Card>
+                </>
+              ) : null}
+
+              {customActiveTab === "8" ? (
+                <>
+                  {" "}
+                  <Card
+                    style={{
+                      height: "25rem",
+                      overflowY: "scroll",
+                    }}
+                  >
+                    <CardBody
+                      style={{
+                        backgroundColor: "rgb(42, 46, 63)",
+                        overflowX: "hidden",
+                        marginTop: "-20px",
+                      }}
+                    >
+                      <div style={{ fontSize: "30px", padding: "20px" }}>
+                        Protocol Metrics
+                        <span>
+                          <img src="../../public/cross.svg" alt="" />
+                        </span>
+                      </div>
+                      <Row>
+                      <div style={{ display: "flex" }}>
+                        <Col style={{ padding: "15px" }}>
+                          <div style={{ gap: "15px", display: "flex" }}>
+                            <div style={{ border: "solid black", padding: '10px 12px', width: 'fit-content', borderRadius: '4px' }}>
+                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
+                                Supplied Liquidity:
+                              </span>
+                              <div style={{ fontSize: "20px" }}>
+                                $ 1,000,952
+                              </div>
+                            </div>
+                            <div style={{ border: "solid black", padding: '10px 12px', width: 'fit-content', borderRadius: '4px' }}>
+                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
+                                Borrowed Liquidity:
+                              </span>
+                              <div style={{ fontSize: "20px" }}>
+                              $ 1,000,952
+                              </div>
+                            </div>
+                          </div>
+                          
+                        </Col>
+                        <Col style={{ padding: "15px" }}>
+                          <div style={{ gap: "15px", display: "flex" }}>
+                            <div style={{ border: "solid black", padding: '10px 12px', width: 'fit-content', borderRadius: '4px' }}>
+                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
+                                Your Borrow
+                              </span>
+                              <div style={{ fontSize: "20px" }}>
+                                $ 8932.5
+                              </div>
+                            </div>
+                            <div style={{ border: "solid black", padding: '10px 12px', width: 'fit-content', borderRadius: '4px' }}>
+                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
+                                Effective Borrow Apr
+                              </span>
+                              <div style={{ fontSize: "20px" }}>
+                              15.5%
+                              </div>
+                            </div>
+                          </div>
+                          
+                        </Col>
+                        
+                      </div>
+                      </Row>
+                     
+                    </CardBody>
+
+                  </Card>
                 </>
               ) : null}
 
               {customActiveTab === "1" ||
-              customActiveTab === "3" ||
-              customActiveTab === "4" ? (
+                customActiveTab === "3" ||
+                customActiveTab === "4" ? (
                 <Card style={{ height: "30rem" }}>
                   <CardBody
                     style={{
@@ -714,8 +895,8 @@ const Dashboard = () => {
                     {console.log("depositDatall", activeDepositsData, activeLoansData)}
                     {" "}
                     {customActiveTab === "1" ? (
-                      <LoanBorrowCommitment 
-                        isLoading={isLoading} 
+                      <LoanBorrowCommitment
+                        isLoading={isLoading}
                         activeDepositsData={activeDepositsData}
                         activeLoansData={activeLoansData}
                       />
@@ -786,8 +967,8 @@ const Dashboard = () => {
                     <u style={{ cursor: "pointer" }}>your borrow</u>
                   </div>
                   <SpendLoanNav />
-                  
-                  
+
+
                 </>
               ) : null}
             </Col>

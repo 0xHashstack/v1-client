@@ -99,7 +99,7 @@ const SecondaryHeader = ({
     direction: { connectWalletArrowDown },
   });
 
-  const states = ["1", "2", "3", "4", "5"];
+  const states = ["1", "2", "3", "4", "5","7"];
 
   // Context Hook For Tabcontex
   const { customActiveTab, toggleCustom } = useContext(TabContext);
