@@ -14,13 +14,13 @@ const useWithdrawCollateral = (_diamondAddress: string, _loanId: number) => {
 
   const [transWithdrawCollateral, setTransWithdrawCollateral] = useState('');
 
-	const withdrawCollateralTransactionReceipt = useTransactionReceipt({hash: transWithdrawCollateral, watch: true})
+  const withdrawCollateralTransactionReceipt = useTransactionReceipt({ hash: transWithdrawCollateral, watch: true })
 
 
-	useEffect(() => {
-		console.log('withdraw col tx receipt', withdrawCollateralTransactionReceipt.data?.transaction_hash, withdrawCollateralTransactionReceipt);
-		TxToastManager.handleTxToast(withdrawCollateralTransactionReceipt, `Withdraw collateral`, true)
-	}, [withdrawCollateralTransactionReceipt])
+  useEffect(() => {
+    console.log('withdraw col tx receipt', withdrawCollateralTransactionReceipt.data?.transaction_hash, withdrawCollateralTransactionReceipt);
+    TxToastManager.handleTxToast(withdrawCollateralTransactionReceipt, `Withdraw collateral`, true)
+  }, [withdrawCollateralTransactionReceipt])
 
   const {
     data: dataWithdrawCollateral,
@@ -48,15 +48,22 @@ const useWithdrawCollateral = (_diamondAddress: string, _loanId: number) => {
     try {
       const val = await executeWithdrawCollateral();
       setTransWithdrawCollateral(val.transaction_hash);
-    } catch(err) {
+    } catch (err) {
       console.log(err, 'withdraw collateral')
+    }
+    if (errorWithdrawCollateral) {
+      toast.error(`${GetErrorText(`Failed to withdraw collateral for ID${loanId}`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
     }
   };
 
   return {
     withdrawCollateral,
     executeWithdrawCollateral,
-    loadingWithdrawCollateral, 
+    loadingWithdrawCollateral,
     errorWithdrawCollateral,
   };
 };

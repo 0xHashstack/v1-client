@@ -337,14 +337,6 @@ const ActiveDepositsTab = ({
                 <ActiveDeposit
                   key={key}
                   asset={asset}
-                  modal_add_active_deposit={modal_add_active_deposit}
-                  tog_add_active_deposit={tog_add_active_deposit}
-                  modal_withdraw_active_deposit={modal_withdraw_active_deposit}
-                  tog_withdraw_active_deposit={tog_withdraw_active_deposit}
-                  depositRequestSel={depositRequestSel}
-                  withdrawDepositTransactionDone={
-                    withdrawDepositTransactionDone
-                  }
                   historicalAPRs={historicalAPRs}
                   allAssets={allAssets}
                 />

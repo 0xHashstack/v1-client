@@ -565,9 +565,10 @@ const BorrowTab = ({
               {/* </Table> */}
             </Table>
 
-            {activeLoansData.map((asset, key) => {
+            {activeLoansData.map((asset, key, allAssets) => {
               return (
                 <BorrowData
+                  allAssets={allAssets}
                   asset={asset}
                   historicalAPRs={historicalAPRs}
                   key={key}

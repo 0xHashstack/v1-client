@@ -593,12 +593,6 @@ const Dashboard = () => {
 
   function dashboardUI() {
     return (
-      <div>
-        {customActiveTab === "1" ? <StatsBoard /> : null}
-        <Container fluid style={{ backgroundColor: "transparent" }}>
-          {/* Protocol Stats */}
-          {/* <ProtocolStats /> */}
-
       <div style={{ width: "100%", backgroundColor: "#1C202", height: "100%" }}>
         {customActiveTab === "1" ? <StatsBoard /> : null}
         <Container fluid>

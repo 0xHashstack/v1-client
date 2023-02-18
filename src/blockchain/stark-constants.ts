@@ -98,6 +98,8 @@ export function handleTransactionToast(receipt: UseTransactionReceiptResult) {}
 
 export const diamondAddress: string = contractsEnv.DIAMOND_ADDRESS;
 
+export const l3DiamondAddress: string = contractsEnv.L3_DIAMOND_ADDRESS;
+
 export const getTokenFromAddress = (address: string) => {
   let index = contractsEnv.TOKENS.map((item) => item.address).indexOf(address);
   let token = contractsEnv.TOKENS[index];

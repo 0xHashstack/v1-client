@@ -6,7 +6,6 @@ import { TxToastManager } from "../../txToastManager";
 import { GetErrorText, NumToBN } from "../../utils";
 
 const useAddCollateral = (diamondAddress: string, asset: any) => {
-    const [loanId, setLoanId] = useState<number>(asset.loanId);
     const [addCollateralAmount, setAddCollateralAmount] = useState<number>();
 
     const [transWithdrawCollateral, setTransWithdrawCollateral] = useState('');
@@ -36,7 +35,7 @@ const useAddCollateral = (diamondAddress: string, asset: any) => {
                 contractAddress: diamondAddress,
                 entrypoint: "add_collateral",
                 calldata: [
-                    loanId,
+                    asset.loanId,
                     NumToBN(addCollateralAmount as number, tokenDecimalsMap[asset.collateralMarket]),
                     0,
                 ],
@@ -45,22 +44,21 @@ const useAddCollateral = (diamondAddress: string, asset: any) => {
     });
 
     const handleAddCollateral = async () => {
-        if (loanId === undefined && !diamondAddress) {
+        if (asset.loanId === undefined && !diamondAddress) {
             toast.error(`${GetErrorText(`Some inputs missing`)}`, {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 closeOnClick: true,
             });
             return;
         }
-        console.log(`${loanId} ${diamondAddress}`);
+        console.log(`${asset.loanId} ${diamondAddress}`);
         try {
             const val = await executeAddCollateral();
-            setTransWithdrawCollateral(val.transaction_hash);
         } catch (err) {
-            console.log(err, 'withdraw collateral')
+            console.log(err, 'add collateral')
         }
         if (errorAddCollateral) {
-            toast.error(`${GetErrorText(`Adding collateral for Loan ID${asset.loanId} failed`)}`, {
+            toast.error(`${GetErrorText(`Failed to add collateral for Loan ID${asset.loanId}`)}`, {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 closeOnClick: true,
             });

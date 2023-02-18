@@ -19,9 +19,6 @@ const useMaxloan = (market: string, collateral_market: string,collateral_amount:
     contract,
     method: "get_max_loan_amount",
     args: [tokenAddressMap[market],tokenAddressMap[collateral_market],[collateral_amount,0]],
-    options:{
-      watch:true
-    }
   });
   
 
