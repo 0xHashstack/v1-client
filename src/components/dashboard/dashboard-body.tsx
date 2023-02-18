@@ -8,9 +8,9 @@ export interface ICoin {
 }
 
 const Coins: ICoin[] = [
-  { name: "USDT",icon: "mdi-bitcoin", },
-  { name: "USDC",icon: "mdi-ethereum",},
-  { name: "BTC",icon: "mdi-bitcoin",},
+  { name: "USDT", icon: "mdi-bitcoin" },
+  { name: "USDC", icon: "mdi-ethereum" },
+  { name: "BTC", icon: "mdi-bitcoin" },
   { name: "ETH", icon: "mdi-ethereum" },
   { name: "DAI", icon: "mdi-dai" },
 ];
@@ -25,27 +25,27 @@ let DashboardTBody: any = ({
   isloading: boolean;
   borrowCommitment: string;
   depositCommitment: string;
-  activeDepositsData: any; 
+  activeDepositsData: any;
   activeLoansData: any;
 }) => {
   const [depositLoanRates, setDepositLoanRates] = useState();
   const [oracleAndFairPrices, setOracleAndFairPrices] = useState<any>();
   const [reserves, setReserves] = useState();
-  
+
   const processOracleFairPrices = (coinName: string, arr) => {
     const oraclePrice = arr.find((ele) => {
-      return ele.name === coinName
+      return ele.name === coinName;
     });
-    return oraclePrice?.price?.toFixed(3);  
-  }
+    return oraclePrice?.price?.toFixed(3);
+  };
 
   useEffect(() => {
     const getReserves = async () => {
       const res = await OffchainAPI.getReserves();
       setReserves(res?.reserves);
-    }
+    };
     getReserves();
-  }, [])
+  }, []);
 
   useEffect(() => {
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
@@ -58,12 +58,12 @@ let DashboardTBody: any = ({
     OffchainAPI.getOraclePrices().then((prices) => {
       console.log("prices", prices);
       setOracleAndFairPrices(prices);
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     getPrices();
-  }, [oracleAndFairPrices])
+  }, [oracleAndFairPrices]);
 
   if (isloading) {
     return (
@@ -77,22 +77,35 @@ let DashboardTBody: any = ({
   } else {
     // return <div>sdlfksjdf</div>;
     return Coins.map((coin, idx) => {
-      if(oracleAndFairPrices === undefined) return;
-      let oraclePriceForCoin = processOracleFairPrices(coin.name, oracleAndFairPrices?.oraclePrices);
-      let fairPriceForCoin = processOracleFairPrices(coin.name, oracleAndFairPrices?.fairPrices);
-      console.log("prices process", oraclePriceForCoin, fairPriceForCoin, coin.name);
+      if (oracleAndFairPrices === undefined) return;
+      let oraclePriceForCoin = processOracleFairPrices(
+        coin.name,
+        oracleAndFairPrices?.oraclePrices
+      );
+      let fairPriceForCoin = processOracleFairPrices(
+        coin.name,
+        oracleAndFairPrices?.fairPrices
+      );
+      console.log(
+        "prices process",
+        oraclePriceForCoin,
+        fairPriceForCoin,
+        coin.name
+      );
       return (
-        <DashboardTokens
-          reserves={reserves}
-          coin={coin}
-          idx={idx}
-          key={idx}
-          borrowCommitment={borrowCommitment}
-          depositCommitment={depositCommitment}
-          depositLoanRates={depositLoanRates}
-          oraclePriceForCoin={oraclePriceForCoin}
-          fairPriceForCoin={fairPriceForCoin}
-        />
+        <>
+          <DashboardTokens
+            reserves={reserves}
+            coin={coin}
+            idx={idx}
+            key={idx}
+            borrowCommitment={borrowCommitment}
+            depositCommitment={depositCommitment}
+            depositLoanRates={depositLoanRates}
+            oraclePriceForCoin={oraclePriceForCoin}
+            fairPriceForCoin={fairPriceForCoin}
+          />
+        </>
       );
     });
   }

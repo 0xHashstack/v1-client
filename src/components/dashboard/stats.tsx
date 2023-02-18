@@ -1,7 +1,18 @@
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import statsIcon from "../../assets/images/statsIcon.svg";
+import OffchainAPI from "../../services/offchainapi.service";
 
 const StatsBoard = () => {
+  const [oraclePrices, setOraclePrices] = useState<any>();
+  const [deposits, setDeposits] = useState<any>();
+  const [loans, setLoans] = useState<any>();
+
+  useEffect(() => {
+    OffchainAPI.getOraclePrices().then((val) => {
+      console.log("got them", val);
+    });
+  }, []);
 
   return (
     <div
@@ -22,6 +33,7 @@ const StatsBoard = () => {
           justifyContent: "space-between",
           padding: "20px 40px",
           gap: "30px",
+          boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
         }}
       >
         <div className="Net Worth">
@@ -58,6 +70,7 @@ const StatsBoard = () => {
           justifyContent: "space-between",
           padding: "20px 40px",
           gap: "30px",
+          boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
         }}
       >
         <div className="Net Worth">
