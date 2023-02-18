@@ -172,6 +172,9 @@ const Dashboard = () => {
   // Context hook for the CustomTab
   const { customActiveTab, toggleCustom } = useContext(TabContext);
 
+  const [CoinsSupplyMetrics, setCoinsSupplyMetrics] = useState("");
+  const [CoinsBorrowMetrics, setCoinsBorrowMetrics] = useState("");
+
   function toggle(newIndex: string) {
     if (newIndex === index) {
       setIndex("1");
@@ -730,7 +733,7 @@ const Dashboard = () => {
                         }}
                       >
                         Your Metrics
-                        <span>
+                        <span onClick={()=>{toggleCustom("1")}}>
                           <img
                             src="./cross.svg"
                             alt="cross"
@@ -812,9 +815,13 @@ const Dashboard = () => {
                                 }}
                               >
                                 <div>
-                                  <img src="./BTC.svg" alt="BTC" />
+                                  {
+                                    CoinsSupplyMetrics !== ""?
+                                    <img src= {`./${CoinsSupplyMetrics}.svg`} alt="BTC" />:null
+                                  }
+                                
                                 </div>
-                                <span>BTC</span>
+                                <span>{CoinsSupplyMetrics}</span>
                               </div>
                             </div>
                             <div
@@ -826,11 +833,12 @@ const Dashboard = () => {
                               <div
                                 style={{
                                   padding: "10px",
-                                  backgroundColor: "#1C202F",
+                                  backgroundColor: CoinsSupplyMetrics === "BTC"?"white" :"#1C202F",
                                   borderRadius: "37px",
                                   zIndex: "999",
                                   boxShadow: "4px 2px 5px black",
                                 }}
+                                onClick={()=>{setCoinsSupplyMetrics("BTC")}}
                               >
                                 <img
                                   src="./BTC.svg"
@@ -842,13 +850,14 @@ const Dashboard = () => {
                               <div
                                 style={{
                                   padding: "10px",
-                                  backgroundColor: "#1C202F",
+                                  backgroundColor: CoinsSupplyMetrics === "USDT"?"white" :"#1C202F",
                                   borderRadius: "37px",
                                   position: "relative",
                                   left: "-10px",
                                   zIndex: "998",
                                   boxShadow: "4px 2px 5px black",
                                 }}
+                                onClick={()=>{setCoinsSupplyMetrics("USDT")}}
                               >
                                 <img
                                   src="./USDT.svg"
@@ -860,13 +869,14 @@ const Dashboard = () => {
                               <div
                                 style={{
                                   padding: "10px",
-                                  backgroundColor: "#1C202F",
+                                  backgroundColor: CoinsSupplyMetrics === "USDC"?"white" :"#1C202F",
                                   borderRadius: "37px",
                                   position: "relative",
                                   left: "-20px",
                                   zIndex: "997",
                                   boxShadow: "4px 2px 5px black",
                                 }}
+                                onClick={()=>{setCoinsSupplyMetrics("USDC")}}
                               >
                                 <img
                                   src="./USDC.svg"
@@ -950,9 +960,13 @@ const Dashboard = () => {
                                 }}
                               >
                                 <div>
-                                  <img src="./BTC.svg" alt="BTC" />
+                                  {
+                                    CoinsBorrowMetrics!==""?
+                                    <img src= {`./${CoinsBorrowMetrics}.svg`} alt="BTC" />:null
+                                  }
+                                  
                                 </div>
-                                <span>BTC</span>
+                                <span>{CoinsBorrowMetrics}</span>
                               </div>
                             </div>
                             <div
@@ -964,11 +978,12 @@ const Dashboard = () => {
                               <div
                                 style={{
                                   padding: "10px",
-                                  backgroundColor: "#1C202F",
+                                  backgroundColor: CoinsBorrowMetrics === "BTC"? "white": "#1C202F",
                                   borderRadius: "37px",
                                   zIndex: "999",
                                   boxShadow: "4px 2px 5px black",
                                 }}
+                                onClick={()=>{setCoinsBorrowMetrics("BTC")} }
                               >
                                 <img
                                   src="./BTC.svg"
@@ -980,13 +995,14 @@ const Dashboard = () => {
                               <div
                                 style={{
                                   padding: "10px",
-                                  backgroundColor: "#1C202F",
+                                  backgroundColor: CoinsBorrowMetrics === "USDT"?"white": "#1C202F",
                                   borderRadius: "37px",
                                   position: "relative",
                                   left: "-10px",
                                   zIndex: "998",
                                   boxShadow: "4px 2px 5px black",
                                 }}
+                                onClick={()=>{setCoinsBorrowMetrics("USDT")} }
                               >
                                 <img
                                   src="./USDT.svg"
@@ -998,13 +1014,14 @@ const Dashboard = () => {
                               <div
                                 style={{
                                   padding: "10px",
-                                  backgroundColor: "#1C202F",
+                                  backgroundColor: CoinsBorrowMetrics === "USDC"?"white": "#1C202F",
                                   borderRadius: "37px",
                                   position: "relative",
                                   left: "-20px",
                                   zIndex: "997",
                                   boxShadow: "4px 2px 5px black",
                                 }}
+                                onClick={()=>{setCoinsBorrowMetrics("USDC")} }
                               >
                                 <img
                                   src="./USDC.svg"
@@ -1052,7 +1069,7 @@ const Dashboard = () => {
                         }}
                       >
                         Protocol Metrics
-                        <span>
+                        <span onClick={()=>{toggleCustom("1")}}>
                           <img
                             src="./cross.svg"
                             alt="cross"
