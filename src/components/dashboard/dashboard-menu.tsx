@@ -26,10 +26,12 @@ import Image from "next/image";
 import arrowDown from "../../assets/images/ArrowDownDark.svg";
 
 const DashboardMenu = ({
+  margin,
   customActiveTab,
   toggleCustom,
   account,
 }: {
+  margin: string;
   customActiveTab: any;
   toggleCustom: (tab: any) => void;
   account: string;
@@ -42,7 +44,7 @@ const DashboardMenu = ({
         style={{
           borderBottom: "0px",
           gap: "10px",
-          margin: "20px 30px",
+          margin: `20px ${margin}`,
         }}
       >
         <NavItem>
