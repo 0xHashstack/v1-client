@@ -66,8 +66,9 @@ import ToastModal from "../components/toastModals/customToastModal";
 import useMaxloan from "../blockchain/hooks/Max_loan_given_collat";
 import { BNtoNum, GetErrorText, NumToBN } from "../blockchain/utils";
 import Crossimg from "../../public/cross.svg";
-import Chart from "./Chart";
-import Chart2 from "./Chart2";
+import Chart from "../components/charts/Chart";
+import Chart2 from "../components/charts/Chart2";
+import BarChartComponent from "../components/charts/barChart";
 // import App from "./Chart"
 
 interface IDeposit {
@@ -597,11 +598,18 @@ const Dashboard = () => {
             <Col xl={"12"}>
               {/* <Card style={{ height: "35rem", overflowY: "scroll" }}> */}
               <div style={{ margin: "1px 5px 5px 14px" }}>
-                {customActiveTab === "1" ||
-                customActiveTab === "2" ||
+                {customActiveTab === "2" ||
                 customActiveTab === "3" ||
                 customActiveTab === "4" ? (
                   <DashboardMenu
+                    margin={"0px"}
+                    customActiveTab={customActiveTab}
+                    toggleCustom={toggleCustom}
+                    account={account as string}
+                  />
+                ) : customActiveTab === "1" ? (
+                  <DashboardMenu
+                    margin={"30px"}
                     customActiveTab={customActiveTab}
                     toggleCustom={toggleCustom}
                     account={account as string}
@@ -648,7 +656,7 @@ const Dashboard = () => {
                       </>
                     ) : (
                       <>
-                        <div style={{ width: "7%" }}>
+                        <div style={{ width: "10%" }}>
                           <div style={{ color: "#8C8C8C" }}>
                             Total Borrow Assets
                           </div>
@@ -703,7 +711,7 @@ const Dashboard = () => {
                   <Card
                     style={{
                       height: "25rem",
-                      overflowY: "scroll",
+                      // overflowY: "scroll",
                     }}
                   >
                     <CardBody
@@ -713,10 +721,21 @@ const Dashboard = () => {
                         marginTop: "-20px",
                       }}
                     >
-                      <div style={{ fontSize: "30px", padding: "20px" }}>
+                      <div
+                        style={{
+                          fontSize: "30px",
+                          padding: "20px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
                         Your Metrics
                         <span>
-                          <img src={Crossimg} alt="" />
+                          <img
+                            src="./cross.svg"
+                            alt="cross"
+                            style={{ cursor: "pointer" }}
+                          />
                         </span>
                       </div>
                       <div style={{ display: "flex" }}>
@@ -1013,8 +1032,8 @@ const Dashboard = () => {
                   {" "}
                   <Card
                     style={{
-                      height: "75rem",
-                      overflowY: "scroll",
+                      height: "115rem",
+                      // overflowY: "scroll",
                     }}
                   >
                     <CardBody
@@ -1024,12 +1043,24 @@ const Dashboard = () => {
                         marginTop: "-20px",
                       }}
                     >
-                      <div style={{ fontSize: "30px", padding: "20px" }}>
+                      <div
+                        style={{
+                          fontSize: "30px",
+                          padding: "20px",
+                          display: "flex",
+                          justifyContent: "space-between",
+                        }}
+                      >
                         Protocol Metrics
                         <span>
-                          <img src="../../public/cross.svg" alt="" />
+                          <img
+                            src="./cross.svg"
+                            alt="cross"
+                            style={{ cursor: "pointer" }}
+                          />
                         </span>
                       </div>
+
                       <Row>
                         <div style={{ display: "flex" }}>
                           <Col style={{ padding: "25px" }}>
@@ -1119,30 +1150,37 @@ const Dashboard = () => {
                         </div>
                       </Row>
 
-                      <Row>
-                        <Col style={{ padding: "25px" }}>
-                          <div
-                            style={{
-                              backgroundColor: "#1D2131",
-                              padding: "35px 0px",
-                              boxShadow: "5px 6px 10px black",
-                            }}
-                          >
-                            <Chart />
-                          </div>
-                        </Col>
-                        <Col style={{ padding: "25px" }}>
-                          <div
-                            style={{
-                              backgroundColor: "#1D2131",
-                              padding: "35px 0px",
-                              boxShadow: "5px 6px 10px black",
-                            }}
-                          >
-                            <Chart />
-                          </div>
-                        </Col>
-                      </Row>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          gap: "30px",
+                          margin: "20px 25px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            backgroundColor: "#1D2131",
+                            padding: "35px 0px",
+                            boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
+                            width: "48%",
+                          }}
+                        >
+                          <BarChartComponent title={"Asset Utilisation:"} />
+                        </div>
+
+                        <div
+                          style={{
+                            backgroundColor: "#1D2131",
+                            padding: "35px 0px",
+
+                            boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
+                            width: "48%",
+                          }}
+                        >
+                          <Chart title={"Asset Utilisation rate:"} />
+                        </div>
+                      </div>
 
                       <Row>
                         <div style={{ display: "flex" }}>
@@ -1193,7 +1231,7 @@ const Dashboard = () => {
                         </div>
                       </Row>
 
-                      <Row>
+                      {/* <Row>
                         <Col style={{ padding: "25px" }}>
                           <div
                             style={{
@@ -1216,9 +1254,61 @@ const Dashboard = () => {
                             <Chart />
                           </div>
                         </Col>
-                      </Row>
+                      </Row> */}
 
-                      <Row>
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          gap: "30px",
+                          margin: "20px 25px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            backgroundColor: "#1D2131",
+                            padding: "35px 0px",
+                            boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
+                            width: "48%",
+                          }}
+                        >
+                          <Chart title={"Supply APR:"} />
+                        </div>
+
+                        <div
+                          style={{
+                            backgroundColor: "#1D2131",
+                            padding: "35px 0px",
+
+                            boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
+                            width: "48%",
+                          }}
+                        >
+                          <Chart title={"Borrow APR:"} />
+                        </div>
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          gap: "30px",
+                          margin: "80px 25px 20px 25px",
+                        }}
+                      >
+                        <div
+                          style={{
+                            backgroundColor: "#1D2131",
+                            padding: "35px 0px",
+                            boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
+                            width: "100%",
+                          }}
+                        >
+                          <Chart2 title={"Risk premium:"} />
+                        </div>
+                      </div>
+
+                      {/* <Row>
                         <Col style={{ padding: "25px" }}>
                           <div
                             style={{
@@ -1230,7 +1320,7 @@ const Dashboard = () => {
                             <Chart2 />
                           </div>
                         </Col>
-                      </Row>
+                      </Row> */}
                     </CardBody>
                   </Card>
                 </>
@@ -1328,10 +1418,23 @@ const Dashboard = () => {
                       </Row>
                     </CardBody>
                   </Card>
-                  <div style={{ color: "white", margin: "10px 0" }}>
+                  <div
+                    style={{
+                      color: "white",
+                      margin: "10px 0",
+                      color: "#8B8B8B",
+                    }}
+                  >
                     &nbsp; &nbsp; Only unspent loans are displayed here. For
                     comprehensive list of active loansgo to{" "}
-                    <u style={{ cursor: "pointer" }} onClick={()=>{toggleCustom("4")}}>your borrow</u>
+                    <u
+                      style={{ cursor: "pointer" }}
+                      onClick={() => {
+                        toggleCustom("4");
+                      }}
+                    >
+                      your borrow
+                    </u>
                   </div>
                   <SpendLoanNav />
                 </>

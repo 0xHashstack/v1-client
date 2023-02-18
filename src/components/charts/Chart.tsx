@@ -10,7 +10,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const Chart2 = () => {
+const Chart = ({ title }: { title: string }) => {
   const data = [
     {
       name: "Page A",
@@ -58,10 +58,12 @@ const Chart2 = () => {
 
   return (
     <>
-      <ResponsiveContainer width="95%" height={450}>
+      {" "}
+      <h5 style={{ margin: " 5px 35px 30px 35px" }}>{title}</h5>
+      <ResponsiveContainer width="95%" height={250}>
         <LineChart
-          width={1200}
-          height={450}
+          width={600}
+          height={250}
           data={data}
           margin={{ top: 5, right: 30, left: 20, bottom: 5 }}
         >
@@ -77,4 +79,4 @@ const Chart2 = () => {
   );
 };
 
-export default Chart2;
+export default Chart;
