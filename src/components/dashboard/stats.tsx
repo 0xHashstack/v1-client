@@ -2,8 +2,12 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import statsIcon from "../../assets/images/statsIcon.svg";
 import OffchainAPI from "../../services/offchainapi.service";
+import { TabContext } from "../../hooks/contextHooks/TabContext";
+import { useContext } from "react";
 
 const StatsBoard = () => {
+  const { customActiveTab, toggleCustom } = useContext(TabContext);
+
   const [oraclePrices, setOraclePrices] = useState<any>();
   const [deposits, setDeposits] = useState<any>();
   const [loans, setLoans] = useState<any>();
@@ -51,13 +55,15 @@ const StatsBoard = () => {
         <div className="Net Worth">
           <p style={{ marginBottom: "10px" }}>Net APR</p>
           <h4>15.5%</h4>
-        </div>
+        </div >
         <Image
           src={statsIcon}
           alt="Navbar Logo"
-          style={{ marginLeft: "20px" }}
+          style={{ marginLeft: "20px" ,cursor:"pointer"}}
           height="20px"
           width="20px"
+          onClick={()=>{toggleCustom("7")}}
+    
         />
       </div>
       <div className="stat-card"></div>
@@ -88,9 +94,10 @@ const StatsBoard = () => {
         <Image
           src={statsIcon}
           alt="Navbar Logo"
-          style={{ marginLeft: "20px" }}
+          style={{ marginLeft: "20px",cursor:"pointer" }}
           height="20px"
           width="20px"
+          onClick={()=>{toggleCustom("8")}}
         />
       </div>
       <div className="stat-card"></div>

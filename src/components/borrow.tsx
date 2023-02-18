@@ -52,6 +52,11 @@ import { ICoin } from "./dashboard/dashboard-body";
 import Downarrow from "../assets/images/ArrowDownDark.svg"
 import UpArrow from "../assets/images/ArrowUpDark.svg"
 import _ from "lodash";
+import Maxloan from "../blockchain/hooks/Max_loan_given_collat";
+import { BNtoNum } from "../blockchain/utils";
+import useMaxloan from "../blockchain/hooks/Max_loan_given_collat";
+
+
 
 interface IBorrowParams {
   loanAmount: number | null;
@@ -97,7 +102,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
 
   const [borrowParams, setBorrowParams] = useState<IBorrowParams>({
     loanAmount: null,
-    collateralAmount: null,
+    collateralAmount: 0,
     commitBorrowPeriod: 0,
     collateralMarket: null,
   });
@@ -129,6 +134,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
   const [borrowArrow, setBorrowArrow] = useState(Downarrow);
 
   const [collateralMarketToken, setCollateralwMarketToken] = useState("USDT");
+  const [MaxloanData, setMaxloanData] = useState(0)
 
   const toggleDropdown = () => {
     setDropDown(!dropDown);
@@ -263,6 +269,9 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
     },
   });
 
+// =======================================================================================
+
+// ==========================================================================================
   const { contract: loanMarketContract } = useContract({
     abi: ERC20Abi as Abi,
     address: tokenAddressMap[asset as string] as string,
@@ -296,8 +305,24 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
       error: errorToken,
     };
   };
+  
+  console.log(borrowParams.collateralAmount);
+  // {borrowParams.collateralAmount ?(
+     const {data,loading,error} = useMaxloan(tokenName,asset,borrowParams.collateralAmount);
+     let l =setTimeout(() => {
+    if (loading === false) {
+      console.log(Number(BNtoNum(data.max_loan_amount.low, 1)));
+      const Data = Number(BNtoNum(data.max_loan_amount.low, 1));
+      setMaxloanData(Data)
+    }
+    clearTimeout(l);
+  }, 100);
+  
+  
 
+ 
   const handleApprove = async (asset: string) => {
+    
     try {
       const val = await ApproveToken();
       setTransApprove(val.transaction_hash);
@@ -370,12 +395,13 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
   };
 
   const handleMaxLoan = async () => {
-    setBorrowParams({
-      ...borrowParams,
-      loanAmount:
-        Number(uint256.uint256ToBN(loanAssetBalance ? loanAssetBalance[0] : 0)) /
-        10 ** 18,
-    });
+    
+     setBorrowParams({
+       ...borrowParams,
+       loanAmount:
+       MaxloanData,
+     });
+
     await refreshAllowance();
   };
 
