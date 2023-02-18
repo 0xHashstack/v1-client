@@ -802,7 +802,7 @@ const Dashboard = () => {
                               style={{ display: "flex", alignItems: "center" }}
                             >
                               {/* important note */}
-                              {/* Use formula here wile mapping that position is relative and left to be -12*(index-1) while mapping to give the effect */}
+                              {/* Use formula here wile mapping that position is relative and left to be -10*(index-1) while mapping to give the effect */}
                               {/* also zindex value to be 1000-index */}
                               <div
                                 style={{
