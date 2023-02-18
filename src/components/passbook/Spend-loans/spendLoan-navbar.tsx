@@ -94,7 +94,7 @@ const SpendLoanNav = () => {
   const [modal_deposit, setmodal_deposit] = useState(false);
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
-
+  const [yagiDownArrow, setyagiDownArrow] = useState(arrowDown);
   const [dropDownTwo, setDropDownTwo] = useState(false);
   const [stakeDropDownArrow, setStakeDropDownArrow] = useState(arrowDown);
   const [idDropDown, setIdDropDown] = useState(false);
@@ -112,7 +112,6 @@ const SpendLoanNav = () => {
   const [SpendLoan, setSpendLoan] = useState("1");
   const dappsArray = ["1", "2", "3", "4", "5", "6"];
   const yagitimes = ["1", "2", "3", "4"];
-  const [yagiDownArrow, setyagiDownArrow] = useState(arrowDown);
   const [yagiselection, setyagiselection] = useState("1");
   const [Yagidrop, setYagidrop] = useState(false);
 
@@ -427,109 +426,392 @@ const SpendLoanNav = () => {
               style={{
                 fontSize: "11px",
                 color: "#8B8B8B",
-                padding: "5px 0 0 0",
+                padding: "5px 0 10px 0",
+                display: "flex",
+                gap: "10px",
               }}
             >
-              Loan ID - {selectedLoan.loanId}
+              <div>Loan ID - {selectedLoan.loanId}</div>
+              <Image
+                style={{ cursor: "pointer" }}
+                src={idDropDownArrow}
+                alt="Picture of the author"
+                width="14px"
+                height="14px"
+                onClick={() => {
+                  setIdDropDown(!idDropDown);
+                  setIdDropDownArrow(idDropDown ? arrowDown : arrowUp);
+                }}
+              />
             </div>
-          </div>
-          {account ? (
-            <Form>
-              <div style={{ minWidth: "30vw" }}>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyItems: "center",
-                    gap: "20px",
-                  }}
-                >
-                  <label
+            {account ? (
+              <Form>
+                <div style={{ minWidth: "30vw" }}>
+                  <div
                     style={{
-                      width: "100px",
-                      marginBottom: "20px",
-                      padding: "10px 10px",
-                      fontSize: "13px",
-                      borderRadius: "5px",
-                      border: "2px solid rgb(57, 61, 79)",
-                      fontWeight: "200",
                       display: "flex",
-                      gap: "10px",
-                      alignItems: "center",
-                      justifyContent: "center",
+                      justifyItems: "center",
+                      gap: "20px",
                     }}
                   >
-                    <div style={{ textAlign: "center" }}>{title.label}</div>
-                    <Image
-                      onClick={() => {
-                        setStakeDropDownArrow(
-                          dropDownTwo ? arrowDown : arrowUp
-                        );
-                        setDropDownTwo(!dropDownTwo);
-                      }}
-                      style={{ cursor: "pointer" }}
-                      src={stakeDropDownArrow}
-                      alt="Picture of the author"
-                      width="20px"
-                      height="20px"
-                    />
-                  </label>
-
-                  <label
-                    style={{
-                      width: "300px",
-                      marginBottom: "20px",
-                      padding: "5px 10px",
-                      fontSize: "18px",
-                      borderRadius: "5px",
-                      border: "2px solid rgb(57, 61, 79)",
-                      fontWeight: "200",
-                    }}
-                  >
-                    <div
+                    <label
                       style={{
+                        width: "100px",
+                        marginBottom: "20px",
+                        padding: "10px 10px",
+                        fontSize: "13px",
+                        borderRadius: "5px",
+                        border: "2px solid rgb(57, 61, 79)",
+                        fontWeight: "200",
                         display: "flex",
-                        justifyContent: "space-between",
+                        gap: "10px",
                         alignItems: "center",
+                        justifyContent: "center",
                       }}
                     >
-                      <div>
-                        &nbsp;&nbsp;
-                        <img
-                          src={`./yagilogo.svg`}
-                          width="60px"
-                          height="30px"
-                        ></img>
-                      </div>
+                      <div style={{ textAlign: "center" }}>{title.label}</div>
+                      <Image
+                        onClick={() => {
+                          setStakeDropDownArrow(
+                            dropDownTwo ? arrowDown : arrowUp
+                          );
+                          setDropDownTwo(!dropDownTwo);
+                        }}
+                        style={{ cursor: "pointer" }}
+                        src={stakeDropDownArrow}
+                        alt="Picture of the author"
+                        width="20px"
+                        height="20px"
+                      />
+                    </label>
+
+                    <label
+                      style={{
+                        width: "300px",
+                        marginBottom: "20px",
+                        padding: "5px 10px",
+                        fontSize: "18px",
+                        borderRadius: "5px",
+                        border: "2px solid rgb(57, 61, 79)",
+                        fontWeight: "200",
+                      }}
+                    >
                       <div
                         style={{
-                          marginRight: "20px",
-                          marginTop: "3px",
-                          marginBottom: "0",
-                          cursor: "pointer",
+                          display: "flex",
+                          justifyContent: "space-between",
+                          alignItems: "center",
                         }}
                       >
-                        <Image
-                          onClick={() => {
-                            toggleyagi();
+                        <div>
+                          &nbsp;&nbsp;
+                          <img
+                            src={`./yagilogo.svg`}
+                            width="60px"
+                            height="30px"
+                          ></img>
+                        </div>
+                        <div
+                          style={{
+                            marginRight: "20px",
+                            marginTop: "3px",
+                            marginBottom: "0",
+                            cursor: "pointer",
                           }}
-                          src={yagiDownArrow}
-                          alt="Picture of the author"
-                          width="20px"
-                          height="20px"
-                        />
+                        >
+                          <Image
+                            onClick={() => {
+                              toggleyagi();
+                            }}
+                            src={yagiDownArrow}
+                            alt="Picture of the author"
+                            width="20px"
+                            height="20px"
+                          />
+                        </div>
+
+                        {Yagidrop ? (
+                          <>
+                            <div
+                              style={{
+                                borderRadius: "5px",
+                                position: "absolute",
+                                zIndex: "100",
+                                top: "156px",
+                                left: "160px",
+
+                                width: "300px",
+                                margin: "0px auto",
+                                marginBottom: "20px",
+                                padding: "5px 10px",
+                                backgroundColor: "#1D2131",
+                                boxShadow: "0px 0px 10px #00000020",
+                              }}
+                            >
+                              {yagitimes.map((select, index) => {
+                                if (yagiselection === select) {
+                                  return <></>;
+                                }
+                                return (
+                                  <div
+                                    style={{
+                                      margin: "10px 0",
+                                      cursor: "pointer",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      fontSize: "16px",
+                                    }}
+                                    key={index}
+                                    onClick={() => {
+                                      setyagiselection(select);
+                                      toggleyagi();
+                                    }}
+                                  >
+                                    <img
+                                      src={`./yagilogo.svg`}
+                                      width="60px"
+                                      height="30px"
+                                    ></img>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+
+                        {dropDownTwo ? (
+                          <>
+                            <div
+                              style={{
+                                borderRadius: "5px",
+                                position: "absolute",
+                                zIndex: "100",
+                                top: "156px",
+                                left: "40px",
+
+                                width: "100px",
+                                margin: "0px auto",
+                                marginBottom: "20px",
+                                padding: "5px 10px",
+                                backgroundColor: "#1D2131",
+                                boxShadow: "0px 0px 10px #00000020",
+                              }}
+                            >
+                              {labels.map((word, index) => {
+                                if (title.label === word) {
+                                  return <></>;
+                                }
+                                return (
+                                  <div
+                                    style={{
+                                      margin: "10px 0",
+                                      cursor: "pointer",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      fontSize: "14px",
+                                    }}
+                                    key={index}
+                                    onClick={() => {
+                                      setTitle({ label: word });
+                                      setDropDownTwo(!dropDownTwo);
+                                      setStakeDropDownArrow(arrowDown);
+                                    }}
+                                  >
+                                    {word}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+
+                        {idDropDown ? (
+                          <>
+                            <div
+                              style={{
+                                borderRadius: "5px",
+                                position: "absolute",
+                                zIndex: "100",
+                                top: "105px",
+                                left: "40px",
+                                width: "115px",
+                                margin: "0px auto",
+                                marginBottom: "20px",
+                                padding: "5px 10px",
+                                backgroundColor: "#393D4F",
+                                // boxShadow: "0px 0px 10px rgb(57, 61, 79)",
+                              }}
+                            >
+                              {["1223222", "2378289"].map((asset, index) => {
+                                return (
+                                  <div
+                                    key={index}
+                                    style={{
+                                      margin: "10px 0",
+                                      cursor: "pointer",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      fontSize: "0.6rem",
+                                      color: "#6F6F6F",
+                                    }}
+                                    // onClick={() => {
+                                    //   setAsset(asset);
+                                    //   setTokenName(asset.market);
+                                    //   setIdDropDown(!idDropDown);
+                                    //   setIdDropDownArrow(Downarrow);
+                                    // }}
+                                  >
+                                    {`Supply ID: ${asset}`}
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          </>
+                        ) : (
+                          <></>
+                        )}
+                      </div>
+                    </label>
+                  </div>
+
+                  {title.label === "Swap" || title.label === "Trade" ? (
+                    <>
+                      <div style={{ fontSize: "11px", color: "#8B8B8B" }}>
+                        From
                       </div>
 
-                      {Yagidrop ? (
+                      <label
+                        style={{
+                          width: "420px",
+                          // marginBottom: "25px",
+                          // padding: "5px 10px",
+                          fontSize: "14px",
+                          // borderRadius: "5px",
+                          // border: "2px solid rgb(57, 61, 79)",
+                          fontWeight: "200",
+                        }}
+                      >
+                        <div
+                          style={{
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div
+                            style={{
+                              display: "flex",
+                              gap: "8px",
+                              color: "#8B8B8B",
+                            }}
+                          >
+                            <div>Borrowed Market :</div>
+                            <div>
+                              <img
+                                src={`./${tokenName}.svg`}
+                                width="24px"
+                                height="24px"
+                              ></img>
+                              &nbsp;&nbsp;
+                              <span style={{ color: "white" }}>
+                                {tokenName}
+                              </span>
+                            </div>
+                          </div>
+                          <div>
+                            <img
+                              src={`./${selectedLoan.loanMarket}.svg`}
+                              width="24px"
+                              height="24px"
+                            ></img>
+                            &nbsp;&nbsp;
+                            <span style={{ color: "white" }}>
+                              {selectedLoan.loanMarket}
+                            </span>
+                          </div>
+                        </div>
+
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "8px",
+                            color: "#8B8B8B",
+                          }}
+                        >
+                          <div>Availabe Borrowed Amount :</div>
+                          <div style={{ color: "white" }}>
+                            00.00 &nbsp;&nbsp;{tokenName}
+                          </div>
+                        </div>
+                        <div style={{ color: "white" }}>
+                          {(selectedLoan.loanAmount / 10 ** 18).toFixed(4)}{" "}
+                          &nbsp;&nbsp;{selectedLoan.loanMarket}
+                        </div>
+                      </label>
+
+                      <div style={{ fontSize: "11px", color: "#8B8B8B" }}>
+                        To
+                      </div>
+
+                      <label
+                        style={{
+                          width: "420px",
+                          marginBottom: "25px",
+                          padding: "5px 10px",
+                          fontSize: "18px",
+                          borderRadius: "5px",
+                          border: "2px solid rgb(57, 61, 79)",
+                          fontWeight: "200",
+                        }}
+                      >
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                          }}
+                        >
+                          <div>
+                            {" "}
+                            <img
+                              src={`./${tokenName}.svg`}
+                              width="30px"
+                              height="30px"
+                            ></img>
+                            &nbsp;&nbsp;{tokenName}
+                          </div>
+                          <div
+                            style={{
+                              marginRight: "20px",
+                              marginTop: "3px",
+                              marginBottom: "0",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <Image
+                              onClick={toggleDropdown}
+                              src={dropDownArrow}
+                              alt="Picture of the author"
+                              width="20px"
+                              height="20px"
+                            />
+                          </div>
+                        </div>
+                      </label>
+                      {dropDown ? (
                         <>
                           <div
                             style={{
                               borderRadius: "5px",
                               position: "absolute",
                               zIndex: "100",
-                              top: "156px",
-                              left: "160px",
+                              top: "306px",
+                              left: "40px",
 
-                              width: "300px",
+                              width: "420px",
                               margin: "0px auto",
                               marginBottom: "20px",
                               padding: "5px 10px",
@@ -537,10 +819,8 @@ const SpendLoanNav = () => {
                               boxShadow: "0px 0px 10px #00000020",
                             }}
                           >
-                            {yagitimes.map((select, index) => {
-                              if (yagiselection === select) {
-                                return <></>;
-                              }
+                            {Coins.map((coin, index) => {
+                              if (coin.name === tokenName) return <></>;
                               return (
                                 <div
                                   style={{
@@ -552,15 +832,18 @@ const SpendLoanNav = () => {
                                   }}
                                   key={index}
                                   onClick={() => {
-                                    setyagiselection(select);
-                                    toggleyagi();
+                                    setTokenName(`${coin.name}`);
+                                    setDropDown(false);
+                                    setDropDownArrow(arrowDown);
+                                    handleBalanceChange();
                                   }}
                                 >
                                   <img
-                                    src={`./yagilogo.svg`}
-                                    width="60px"
+                                    src={`./${coin.name}.svg`}
+                                    width="30px"
                                     height="30px"
                                   ></img>
+                                  <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
                                 </div>
                               );
                             })}
@@ -569,125 +852,24 @@ const SpendLoanNav = () => {
                       ) : (
                         <></>
                       )}
-
-                      {dropDownTwo ? (
-                        <>
-                          <div
-                            style={{
-                              borderRadius: "5px",
-                              position: "absolute",
-                              zIndex: "100",
-                              top: "156px",
-                              left: "40px",
-
-                              width: "100px",
-                              margin: "0px auto",
-                              marginBottom: "20px",
-                              padding: "5px 10px",
-                              backgroundColor: "#1D2131",
-                              boxShadow: "0px 0px 10px #00000020",
-                            }}
-                          >
-                            {labels.map((word, index) => {
-                              if (title.label === word) {
-                                return <></>;
-                              }
-                              return (
-                                <div
-                                  style={{
-                                    margin: "10px 0",
-                                    cursor: "pointer",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    fontSize: "14px",
-                                  }}
-                                  key={index}
-                                  onClick={() => {
-                                    setTitle({ label: word });
-                                    setDropDownTwo(!dropDownTwo);
-                                    setStakeDropDownArrow(arrowDown);
-                                  }}
-                                >
-                                  {word}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-
-                      {idDropDown ? (
-                        <>
-                          <div
-                            style={{
-                              borderRadius: "5px",
-                              position: "absolute",
-                              zIndex: "100",
-                              top: "105px",
-                              left: "40px",
-                              width: "115px",
-                              margin: "0px auto",
-                              marginBottom: "20px",
-                              padding: "5px 10px",
-                              backgroundColor: "#393D4F",
-                              // boxShadow: "0px 0px 10px rgb(57, 61, 79)",
-                            }}
-                          >
-                            {["1223222", "2378289"].map((asset, index) => {
-                              return (
-                                <div
-                                  key={index}
-                                  style={{
-                                    margin: "10px 0",
-                                    cursor: "pointer",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    fontSize: "0.6rem",
-                                    color: "#6F6F6F",
-                                  }}
-                                  // onClick={() => {
-                                  //   setAsset(asset);
-                                  //   setTokenName(asset.market);
-                                  //   setIdDropDown(!idDropDown);
-                                  //   setIdDropDownArrow(Downarrow);
-                                  // }}
-                                >
-                                  {`Supply ID: ${asset}`}
-                                </div>
-                              );
-                            })}
-                          </div>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </div>
-                  </label>
-                </div>
-
-                {title.label === "Swap" || title.label === "Trade" ? (
-                  <>
-                    <div style={{ fontSize: "11px", color: "#8B8B8B" }}>
-                      From
-                    </div>
-
+                    </>
+                  ) : (
                     <label
                       style={{
                         width: "420px",
                         // marginBottom: "25px",
                         // padding: "5px 10px",
-                        fontSize: "14px",
+                        fontSize: "16px",
                         // borderRadius: "5px",
                         // border: "2px solid rgb(57, 61, 79)",
-                        fontWeight: "200",
+                        fontWeight: "50",
                       }}
                     >
                       <div
                         style={{
                           justifyContent: "space-between",
                           alignItems: "center",
+                          padding: "0px 0 12px 0",
                         }}
                       >
                         <div
@@ -708,66 +890,20 @@ const SpendLoanNav = () => {
                             <span style={{ color: "white" }}>{tokenName}</span>
                           </div>
                         </div>
-                        <div>
-                          <img
-                            src={`./${selectedLoan.loanMarket}.svg`}
-                            width="24px"
-                            height="24px"
-                          ></img>
-                          &nbsp;&nbsp;
-                          <span style={{ color: "white" }}>
-                            {selectedLoan.loanMarket}
-                          </span>
-                        </div>
-                      </div>
 
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: "8px",
-                          color: "#8B8B8B",
-                        }}
-                      >
-                        <div>Availabe Borrowed Amount :</div>
-                        <div style={{ color: "white" }}>
-                          00.00 &nbsp;&nbsp;{tokenName}
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "8px",
+                            color: "#8B8B8B",
+                          }}
+                        >
+                          <div>Availabe Borrowed Amount :</div>
+                          <div style={{ color: "white" }}>
+                            00.00 &nbsp;&nbsp;{tokenName}
+                          </div>
                         </div>
-                      </div>
-                      <div style={{ color: "white" }}>
-                        {(selectedLoan.loanAmount / 10 ** 18).toFixed(4)}{" "}
-                        &nbsp;&nbsp;{selectedLoan.loanMarket}
-                      </div>
-                    </label>
 
-                    <div style={{ fontSize: "11px", color: "#8B8B8B" }}>To</div>
-
-                    <label
-                      style={{
-                        width: "420px",
-                        marginBottom: "25px",
-                        padding: "5px 10px",
-                        fontSize: "18px",
-                        borderRadius: "5px",
-                        border: "2px solid rgb(57, 61, 79)",
-                        fontWeight: "200",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <div>
-                          {" "}
-                          <img
-                            src={`./${tokenName}.svg`}
-                            width="30px"
-                            height="30px"
-                          ></img>
-                          &nbsp;&nbsp;{tokenName}
-                        </div>
                         <div
                           style={{
                             marginRight: "20px",
@@ -775,213 +911,91 @@ const SpendLoanNav = () => {
                             marginBottom: "0",
                             cursor: "pointer",
                           }}
-                        >
-                          <Image
-                            onClick={toggleDropdown}
-                            src={dropDownArrow}
-                            alt="Picture of the author"
-                            width="20px"
-                            height="20px"
-                          />
-                        </div>
+                        ></div>
                       </div>
                     </label>
-
-                    {dropDown ? (
-                      <>
-                        <div
-                          style={{
-                            borderRadius: "5px",
-                            position: "absolute",
-                            zIndex: "100",
-                            top: "306px",
-                            left: "40px",
-
-                            width: "420px",
-                            margin: "0px auto",
-                            marginBottom: "20px",
-                            padding: "5px 10px",
-                            backgroundColor: "#1D2131",
-                            boxShadow: "0px 0px 10px #00000020",
-                          }}
-                        >
-                          {Coins.map((coin, index) => {
-                            if (coin.name === tokenName) return <></>;
-                            return (
-                              <div
-                                style={{
-                                  margin: "10px 0",
-                                  cursor: "pointer",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  fontSize: "16px",
-                                }}
-                                key={index}
-                                onClick={() => {
-                                  setTokenName(`${coin.name}`);
-                                  setDropDown(false);
-                                  setDropDownArrow(arrowDown);
-                                  handleBalanceChange();
-                                }}
-                              >
-                                <img
-                                  src={`./${coin.name}.svg`}
-                                  width="30px"
-                                  height="30px"
-                                ></img>
-                                <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </>
-                    ) : (
-                      <></>
-                    )}
-                  </>
-                ) : (
-                  <label
-                    style={{
-                      width: "420px",
-                      // marginBottom: "25px",
-                      // padding: "5px 10px",
-                      fontSize: "16px",
-                      // borderRadius: "5px",
-                      // border: "2px solid rgb(57, 61, 79)",
-                      fontWeight: "50",
-                    }}
-                  >
-                    <div
-                      style={{
-                        justifyContent: "space-between",
-                        alignItems: "center",
-                        padding: "0px 0 12px 0",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: "8px",
-                          color: "#8B8B8B",
-                        }}
-                      >
-                        <div>Borrowed Market :</div>
-                        <div>
-                          <img
-                            src={`./${tokenName}.svg`}
-                            width="24px"
-                            height="24px"
-                          ></img>
-                          &nbsp;&nbsp;
-                          <span style={{ color: "white" }}>{tokenName}</span>
-                        </div>
-                      </div>
-
-                      <div
-                        style={{
-                          display: "flex",
-                          gap: "8px",
-                          color: "#8B8B8B",
-                        }}
-                      >
-                        <div>Availabe Borrowed Amount :</div>
-                        <div style={{ color: "white" }}>
-                          00.00 &nbsp;&nbsp;{tokenName}
-                        </div>
-                      </div>
-
-                      <div
-                        style={{
-                          marginRight: "20px",
-                          marginTop: "3px",
-                          marginBottom: "0",
-                          cursor: "pointer",
-                        }}
-                      ></div>
-                    </div>
-                  </label>
-                )}
-              </div>
-
-              <div className="d-grid gap-2">
-                <div
-                  style={{
-                    marginBottom: "25px",
-                    fontSize: "11px",
-                    marginTop: "-10px",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
-                    }}
-                  >
-                    <div style={{ color: "#6F6F6F" }}>Est. conversion:</div>
-                    <div
-                      style={{
-                        textAlign: "right",
-                        fontWeight: "600",
-                        color: "#6F6F6F",
-                      }}
-                    >
-                      1BCT = 21,000 USDT
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
-                    }}
-                  >
-                    <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div
-                      style={{
-                        textAlign: "right",
-                        fontWeight: "600",
-                        color: "#6F6F6F",
-                      }}
-                    >
-                      $ 0.50
-                    </div>
-                  </div>
-
-                  <div
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      margin: "3px 0",
-                    }}
-                  >
-                    <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
-                    <div
-                      style={{
-                        textAlign: "right",
-                        fontWeight: "600",
-                        color: "#6F6F6F",
-                      }}
-                    >
-                      Starknet
-                    </div>
-                  </div>
+                  )}
                 </div>
-                <Button
-                  color="white"
-                  className="w-md"
-                  style={{ backgroundColor: "rgb(57, 61, 79)" }}
-                  disabled={
-                    commitPeriod === undefined ||
-                    loadingApprove ||
-                    loadingJediSwap ||
-                    isInvalid()
-                  }
-                  onClick={handleSwap}
-                >
-                  {title.label}
-                  {/* {!(
+
+                <div className="d-grid gap-2">
+                  <div
+                    style={{
+                      marginBottom: "25px",
+                      fontSize: "11px",
+                      marginTop: "-10px",
+                    }}
+                  >
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Est. conversion:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        1BCT = 21,000 USDT
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        $ 0.50
+                      </div>
+                    </div>
+
+                    <div
+                      style={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                        margin: "3px 0",
+                      }}
+                    >
+                      <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
+                      <div
+                        style={{
+                          textAlign: "right",
+                          fontWeight: "600",
+                          color: "#6F6F6F",
+                        }}
+                      >
+                        Starknet
+                      </div>
+                    </div>
+                  </div>
+                  <Button
+                    color="white"
+                    className="w-md"
+                    style={{ backgroundColor: "rgb(57, 61, 79)" }}
+                    disabled={
+                      commitPeriod === undefined ||
+                      loadingApprove ||
+                      loadingJediSwap ||
+                      isInvalid()
+                    }
+                    onClick={handleSwap}
+                  >
+                    {title.label}
+                    {/* {!(
                     loadingApprove ||
                     isTransactionLoading(requestDepositTransactionReceipt)
                   ) ? (
@@ -989,12 +1003,13 @@ const SpendLoanNav = () => {
                   ) : (
                     <MySpinner text="Depositing token" />
                   )} */}
-                </Button>
-              </div>
-            </Form>
-          ) : (
-            <h2 style={{ color: "white" }}>Please connect your wallet</h2>
-          )}
+                  </Button>
+                </div>
+              </Form>
+            ) : (
+              <h2 style={{ color: "white" }}>Please connect your wallet</h2>
+            )}
+          </div>
         </div>
       </Modal>
     </>
