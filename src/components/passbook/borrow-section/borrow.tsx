@@ -26,6 +26,7 @@ import {
   getTokenFromName,
   isTransactionLoading,
   tokenAddressMap,
+  tokenDecimalsMap,
 } from "../../../blockchain/stark-constants";
 import starknetLogo from "../../../assets/images/starknetLogo.svg";
 import Slider from "react-custom-slider";
@@ -135,11 +136,11 @@ const BorrowTab = ({
       loading: false,
       refresh: () => {},
     });
-  const [repayTransactionReceipt, setRepayTransactionReceipt] =
-    useState<UseTransactionReceiptResult>({
-      loading: false,
-      refresh: () => {},
-    });
+  // const [repayTransactionReceipt, setRepayTransactionReceipt] =
+  //   useState<UseTransactionReceiptResult>({
+  //     loading: false,
+  //     refresh: () => {},
+  //   });
   const [revertSwapTransactionReceipt, setRevertSwapTransactionReceipt] =
     useState<UseTransactionReceiptResult>({
       loading: false,
@@ -194,11 +195,11 @@ const BorrowTab = ({
         entrypoint: "loan_request",
         calldata: [
           tokenAddressMap[tokenName],
-          NumToBN(borrowParams.loanAmount as number, 18),
+          NumToBN(borrowParams.loanAmount as number, tokenDecimalsMap[tokenName]),
           0,
           borrowParams.commitBorrowPeriod,
           tokenAddressMap[borrowParams.collateralMarket as string],
-          NumToBN(borrowParams.collateralAmount as number, 18),
+          NumToBN(borrowParams.collateralAmount as number, tokenDecimalsMap[borrowParams.collateralMarket as string]),
           0,
         ],
       },
@@ -564,9 +565,10 @@ const BorrowTab = ({
               {/* </Table> */}
             </Table>
 
-            {activeLoansData.map((asset, key) => {
+            {activeLoansData.map((asset, key, allAssets) => {
               return (
                 <BorrowData
+                  allAssets={allAssets}
                   asset={asset}
                   historicalAPRs={historicalAPRs}
                   key={key}
@@ -588,7 +590,6 @@ const BorrowTab = ({
                   inputVal1={inputVal1}
                   setInputVal1={setInputVal1}
                   setLoanId={setLoanId}
-                  handleMax={handleMax}
                   isLoading={isLoading}
                   handleWithdrawLoanTransactionDone={
                     handleWithdrawLoanTransactionDone
@@ -600,7 +601,7 @@ const BorrowTab = ({
                   setAddCollateralTransactionReceipt={
                     setAddCollateralTransactionReceipt
                   }
-                  setRepayTransactionReceipt={setRepayTransactionReceipt}
+                  // setRepayTransactionReceipt={setRepayTransactionReceipt}
                   withdrawLoanTransactionReceipt={
                     withdrawLoanTransactionReceipt
                   }
@@ -610,7 +611,7 @@ const BorrowTab = ({
                   setRevertSwapTransactionReceipt={
                     setRevertSwapTransactionReceipt
                   }
-                  repayTransactionReceipt={repayTransactionReceipt}
+                  // repayTransactionReceipt={repayTransactionReceipt}
                   addCollateralTransactionReceipt={
                     addCollateralTransactionReceipt
                   }

@@ -3,61 +3,58 @@ import {
   useStarknet,
   useStarknetExecute,
 } from "@starknet-react/core";
-import { exec } from "child_process";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { number } from "starknet";
-import deposit from "../../../components/deposit";
-import { tokenAddressMap } from "../../stark-constants";
+import { tokenAddressMap, tokenDecimalsMap } from "../../stark-constants";
 import { GetErrorText, NumToBN } from "../../utils";
 
 const useWithdrawDeposit = (
-  _token: any,
-  _diamondAddress: string,
-  _depositId: number,
+  asset: any,
+  diamondAddress: string,
 ) => {
-  const [token, setToken] = useState("");
-  const [diamondAddress, setDiamondAddress] = useState("");
   const [withdrawAmount, setWithdrawAmount] = useState<number>();
-  const [depositId, setDepositId] = useState<number>();
-  useEffect(() => {
-    setToken(_token.market);
-    setDiamondAddress(_diamondAddress);
-    setDepositId(_depositId);
-  }, [_token.market, _diamondAddress, _depositId]);
-
   const [transWithdraw, setTransWithdraw] = useState('');
 
   const {
-    data: dataDeposit,
-    loading: loadingDeposit,
-    error: errorDeposit,
-    reset: resetDeposit,
+    data: dataWithdrawDeposit,
+    loading: loadingWithdrawDeposit,
+    error: errorWithdrawDeposit,
+    reset: resetWithdrawDeposit,
     execute: executeWithdrawDep,
   } = useStarknetExecute({
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "withdraw_deposit",
-      calldata: [depositId, NumToBN(withdrawAmount as number, 18), 0],
+      calldata: [asset.depositId, NumToBN(withdrawAmount as number, tokenDecimalsMap[asset.market]), 0],
     },
   });
 
-  const withdrawDeposit = async () => {
-    console.log(`${withdrawAmount} ${depositId} ${diamondAddress}`);
+  const handleWithdrawDeposit = async () => {
+    console.log(`${withdrawAmount} ${asset.depositId} ${diamondAddress}`);
     try {
       const val = await executeWithdrawDep();
       setTransWithdraw(val.transaction_hash);
     } catch(err) {
       console.log(err, 'withdraw deposit')
     }
+    if (errorWithdrawDeposit) {
+      toast.error(`${GetErrorText(`Withdraw for ID:${asset.depositId} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
+    }
   };
 
   return {
-    withdrawDeposit,
+    handleWithdrawDeposit,
     setWithdrawAmount,
     withdrawAmount,
     transWithdraw,
     executeWithdrawDep,
+    loadingWithdrawDeposit,
+    errorWithdrawDeposit,
   };
 };
 

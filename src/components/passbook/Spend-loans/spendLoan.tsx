@@ -1,8 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Col, Row, Table } from "reactstrap";
+import React, { useContext, useEffect, useState } from "react";
+import { Col, Row, TabContent, Table } from "reactstrap";
+import { TabContext } from "../../../hooks/contextHooks/TabContext";
 import SpendLoanData from "./spendLoan-data";
 
-const SpendLoan = () => {
+const SpendLoan = ({ activeLoansData }) => {
+
+  const { selectedLoan, setSelectedLoan } = useContext(TabContext);
+
   return (
     <>
       {/* <UncontrolledAccordion
@@ -16,21 +20,35 @@ const SpendLoan = () => {
           textAlign: "left",
         }}
       > */}
+
+
+
       <Table>
-        {/* <Table className="table table-nowrap  mb-0"> */}
         <Row
+          onClick={() => {
+            setSelectedLoan("");
+          }}
           style={{
             // width: "92.77vw",
 
             color: "rgb(140, 140, 140)",
             fontWeight: "600",
             alignItems: "center",
-            gap: "60px",
+            // gap: "20px",
             fontSize: "11px",
             backgroundColor: "rgb(42, 46, 63)",
             textAlign: "left",
           }}
         >
+          <Col
+            style={{
+              width: "10px",
+              padding: "20px 10px",
+              marginLeft: "70px",
+            }}
+          >
+            Borrow ID
+          </Col>
           <Col
             style={{
               width: "10px",
@@ -57,8 +75,16 @@ const SpendLoan = () => {
         </Row>
         {/* </Table> */}
       </Table>
-      
-      <SpendLoanData />
+
+      {activeLoansData.map((loan, index) => {
+        return (
+          <div key={index} >
+            <SpendLoanData loan={loan} />
+          </div>
+        )
+      })}
+
+      {/* <SpendLoanData /> */}
     </>
   );
 };

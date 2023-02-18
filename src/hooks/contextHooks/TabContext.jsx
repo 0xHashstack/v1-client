@@ -12,7 +12,14 @@ export function TabsProvider({ children }) {
         if (customActiveTab !== tab) {
           setCustomActiveTab(tab);
         }
-      };
+    };
+
+	const [selectedLoan, setSelectedLoan] = useState(2);
+	const [title, setTitle] = useState({
+		label: "Stake",
+	});
+	
+
 
 	return (
 		<TabContext.Provider
@@ -20,6 +27,10 @@ export function TabsProvider({ children }) {
 				customActiveTab,
 				setCustomActiveTab,
 				toggleCustom,
+				selectedLoan,
+				setSelectedLoan,
+				title, 
+				setTitle,
 			}}
 		>
 			{children}

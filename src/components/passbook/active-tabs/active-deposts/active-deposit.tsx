@@ -37,6 +37,7 @@ import {
   tokenAddressMap,
   ERC20Abi,
   getTokenFromName,
+  tokenDecimalsMap,
 } from "../../../../blockchain/stark-constants";
 import {
   BNtoNum,
@@ -71,22 +72,10 @@ import { IDepositLoanRates } from "../../../borrow";
 
 const ActiveDeposit = ({
   asset: assetParam,
-  modal_add_active_deposit,
-  tog_add_active_deposit,
-  modal_withdraw_active_deposit,
-  tog_withdraw_active_deposit,
-  depositRequestSel,
-  withdrawDepositTransactionDone,
   historicalAPRs,
   allAssets,
 }: {
   asset: any;
-  modal_add_active_deposit: any;
-  tog_add_active_deposit: any;
-  modal_withdraw_active_deposit: any;
-  tog_withdraw_active_deposit: any;
-  depositRequestSel: any;
-  withdrawDepositTransactionDone: any;
   historicalAPRs: any;
   allAssets: any;
 }) => {
@@ -107,8 +96,8 @@ const ActiveDeposit = ({
     transDeposit,
   } = useAddDeposit(asset, diamondAddress);
 
-  const { withdrawDeposit, withdrawAmount, setWithdrawAmount, transWithdraw } =
-    useWithdrawDeposit(asset, diamondAddress, asset.depositId);
+  const { handleWithdrawDeposit, withdrawAmount, setWithdrawAmount, transWithdraw, loadingWithdrawDeposit, errorWithdrawDeposit } =
+    useWithdrawDeposit(asset, diamondAddress);
   const [action, setAction] = useState(false);
 
 
@@ -206,7 +195,7 @@ const ActiveDeposit = ({
       {
         contractAddress: tokenAddressMap[tokenName] as string,
         entrypoint: "approve",
-        calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
+        calldata: [diamondAddress, NumToBN(depositAmount as number, tokenDecimalsMap[tokenName]), 0],
       },
       {
         contractAddress: diamondAddress,
@@ -214,7 +203,7 @@ const ActiveDeposit = ({
         calldata: [
           tokenAddressMap[tokenName],
           commitPeriod,
-          NumToBN(depositAmount as number, 18),
+          NumToBN(depositAmount as number, tokenDecimalsMap[tokenName]),
           0,
         ],
       },
@@ -295,11 +284,18 @@ const ActiveDeposit = ({
   }
 
   function isInvalid() {
-    return (
-      depositAmount < MinimumAmount[tokenName] ||
-      depositAmount >
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
-    );
+    if (customActiveTab === '1')
+      return (
+        !depositAmount || depositAmount < MinimumAmount[tokenName] ||
+        depositAmount >
+        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
+      );
+    else
+      return (
+        !withdrawAmount || withdrawAmount <= 0 ||
+        withdrawAmount >
+        Number(uint256.uint256ToBN(asset.amount)) / 10 ** 18
+      );
   }
 
   // const handleWithdrawDeposit = async () => {
@@ -337,10 +333,6 @@ const ActiveDeposit = ({
   //     return;
   //   }
   // }
-
-  const handleWithdrawDeposit = async (withdrawDepositParam: any) => {
-    withdrawDeposit();
-  }
 
   const handleDeposit = async (asset: string) => {
     if (
@@ -421,7 +413,7 @@ const ActiveDeposit = ({
       parseFloat(BNtoNum(Number(asset.amount))) +
       parseFloat(BNtoNum(Number(asset.acquiredYield)));
     console.log("currentBalance", (value / 100) * currentBalance);
-    setWithdrawAmount(Number((value / 100) * currentBalance));
+    setWithdrawAmount((value / 100) * currentBalance);
   }, [value]);
 
   return (
@@ -556,193 +548,6 @@ const ActiveDeposit = ({
               Actions
             </button>
           </Col>
-
-          {action ? (
-            <div style={{ borderWidth: 1 }}>
-              <CardBody>
-                <div>
-                  <div className="mb-4 ">
-                    <Row>
-                      <Col lg="4 mb-3">
-                        <div
-                          className="block-example border"
-                          style={{
-                            padding: "15px",
-                            borderRadius: "5px",
-                          }}
-                        >
-                          <div className="mb-3">
-                            {/* <label className="card-radio-label mb-2"> */}
-                            <Button
-                              className="btn-block btn-md"
-                              color={
-                                modal_add_active_deposit === true
-                                  ? "light"
-                                  : "outline-light"
-                              }
-                              onClick={() => {
-                                tog_add_active_deposit();
-                              }}
-                            >
-                              Add to Deposit
-                            </Button>
-                            &nbsp; &nbsp;
-                            <Button
-                              className="btn-block btn-md"
-                              color={
-                                modal_withdraw_active_deposit === true
-                                  ? "light"
-                                  : "outline-light"
-                              }
-                              onClick={() => {
-                                tog_withdraw_active_deposit();
-                              }}
-                            >
-                              Withdraw Deposit
-                            </Button>
-                          </div>
-                          {modal_add_active_deposit && (
-                            <Form>
-                              <div className="row mb-4">
-                                <Col sm={12}>
-                                  <Input
-                                    type="number"
-                                    className="form-control"
-                                    id="horizontal-password-Input"
-                                    placeholder={
-                                      depositRequestSel
-                                        ? `Minimum amount =  ${MinimumAmount[depositRequestSel]}`
-                                        : "Amount"
-                                    }
-                                    onChange={(event) => {
-                                      setDepositAmount(
-                                        Number(event.target.value)
-                                      );
-                                      setDepositCommit(asset.commitmentIndex);
-                                      setDepositMarket(asset.marketAddress);
-                                    }}
-                                  />
-                                </Col>
-                              </div>
-
-                              <div className="d-grid gap-2">
-                                {allowanceVal < (depositAmount as number) ? (
-                                  <Button
-                                    color="primary"
-                                    className="w-md"
-                                    disabled={
-                                      depositCommit === undefined ||
-                                      loadingApprove ||
-                                      loadingDeposit ||
-                                      (depositAmount as number) <
-                                      MinimumAmount[asset]
-                                    }
-                                    onClick={(e) => handleApprove(asset)}
-                                  >
-                                    {/* setApproveStatus(transactions[0]?.status); */}
-                                    {!(
-                                      loadingApprove ||
-                                      isTransactionLoading(
-                                        approveTransactionReceipt
-                                      )
-                                    ) ? (
-                                      "Approve"
-                                    ) : (
-                                      <MySpinner text="Approvin token" />
-                                    )}
-                                  </Button>
-                                ) : (
-                                  <Button
-                                    color="primary"
-                                    className="w-md"
-                                    disabled={
-                                      depositCommit === undefined ||
-                                      loadingApprove ||
-                                      loadingDeposit ||
-                                      (depositAmount as number) <
-                                      MinimumAmount[asset]
-                                    }
-                                    onClick={(e) => DepositAmount(asset)}
-                                  >
-                                    {!(
-                                      loadingApprove ||
-                                      isTransactionLoading(
-                                        addDepositTransactionReceipt
-                                      )
-                                    ) ? (
-                                      "Deposit"
-                                    ) : (
-                                      <MySpinner text="Adding Deposit" />
-                                    )}
-                                  </Button>
-                                )}
-                              </div>
-                            </Form>
-                          )}
-                          {modal_withdraw_active_deposit && (
-                            <Form>
-                              <div className="row mb-4">
-                                <Col sm={12}>
-                                  <Input
-                                    type="number"
-                                    className="form-control"
-                                    id="horizontal-password-Input"
-                                    placeholder="Amount"
-                                    onChange={(event) => {
-                                      setWithdrawAmount(
-                                        Number(event.target.value)
-                                      );
-                                    }}
-                                    value={withdrawAmount}
-                                  />
-                                  <RangeSlider
-                                    value={value}
-                                    step={25}
-                                    tooltip="on"
-                                    tooltipLabel={(v) => `${v} %`}
-                                    onChange={(changeEvent) =>
-                                      setValue(
-                                        parseFloat(changeEvent.target.value)
-                                      )
-                                    }
-                                    style={{
-                                      width: "100%",
-                                      marginTop: "12px",
-                                    }}
-                                  />
-                                </Col>
-                              </div>
-
-                              <div className="d-grid gap-2">
-                                <Button
-                                  className="w-md"
-                                  disabled={(depositAmount as number) <= 0}
-                                  onClick={() => {
-                                    handleWithdrawDeposit(withdrawDeposit);
-                                  }}
-                                  style={{
-                                    color: "#4B41E5",
-                                  }}
-                                >
-                                  {!isTransactionLoading(
-                                    withdrawTransactionReceipt
-                                  ) ? (
-                                    "Withdraw Deposit"
-                                  ) : (
-                                    <MySpinner text="Withdrawing Deposit" />
-                                  )}
-                                </Button>
-                              </div>
-                            </Form>
-                          )}
-                        </div>
-                      </Col>
-                    </Row>
-                  </div>
-                </div>
-              </CardBody>
-            </div>
-          ) : null}
         </Row>
         <hr style={{ color: "#00000080" }} />
       </UncontrolledAccordion>
@@ -926,11 +731,11 @@ const ActiveDeposit = ({
                         type="number"
                         className="form-control"
                         id="amount"
-                        min={MinimumAmount[tokenName]}
-                        placeholder={customActiveTab === "1" ? `Minimum ${MinimumAmount[tokenName]} ${tokenName}` : ''}
+                        // min={MinimumAmount[tokenName]}
+                        placeholder={customActiveTab === "1" ? `Minimum ${MinimumAmount[tokenName]} ${tokenName}` : `Amount in ${tokenName}`}
                         onChange={(e) => {
                           if (customActiveTab === "1") handleDepositAmountChange(e);
-                          else handleWithdrawAmountChange(e);
+                          else if (customActiveTab === "2") handleWithdrawAmountChange(e);
                         }}
                         value={customActiveTab === "1" ? depositAmount : withdrawAmount}
                         valid={!isInvalid()}
@@ -968,15 +773,16 @@ const ActiveDeposit = ({
                         marginTop: "4px",
                       }}
                     >
-                      Available:&nbsp;
-                      {dataBalance ? (
+                      {customActiveTab === '1' ? "Wallet Balance" : "Available"}:&nbsp;
+                      {customActiveTab === "1" ? dataBalance && (
                         (
                           Number(uint256.uint256ToBN(dataBalance[0])) /
                           10 ** 18
                         ).toString()
-                      ) : (
-                        <MySpinner />
-                      )}
+                      ) : customActiveTab === "2" ? Number(asset?.amount / 10 ** 18)
+                        : (
+                          <MySpinner />
+                        )}
                       <div style={{ color: "#76809D" }}>&nbsp;{tokenName} </div>
                     </div>
 
@@ -1015,16 +821,25 @@ const ActiveDeposit = ({
                     >
                       {value}%
                     </div>
-                    {depositAmount != 0 &&
-                      depositAmount >
-                      Number(
-                        uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)
-                      ) /
-                      10 ** 18 && (
-                        <FormText style={{ color: "#e97272 !important" }}>
-                          {`Amount is greater than your balance`}
-                        </FormText>
-                      )}
+                    {
+                      customActiveTab === '1' ? depositAmount !== 0 &&
+                        depositAmount >
+                        Number(
+                          uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)
+                        ) /
+                        10 ** 18 && (
+                          <FormText style={{ color: "#e97272 !important" }}>
+                            {`Amount is greater than your wallet balance`}
+                          </FormText>
+                        ) 
+                      :
+                      customActiveTab === '2' && withdrawAmount !== 0 &&
+                        withdrawAmount > Number(asset?.amount / 10 ** 18) && (
+                          <FormText style={{ color: "#e97272 !important" }}>
+                            {`Amount is greater than your available balance`}
+                          </FormText>
+                        )
+                    }
                   </Col>
                 </div>
               </FormGroup>
@@ -1164,13 +979,17 @@ const ActiveDeposit = ({
                   className="w-md"
                   disabled={
                     (
-                      customActiveTab !== "2" &&
+                      customActiveTab === "1" &&
                       (
                         loadingApprove ||
                         loadingDeposit ||
                         isInvalid()
                       )
-                    ) || !withdrawAmount || withdrawAmount <= 0
+                    ) || customActiveTab === "2" && (
+                      !withdrawAmount ||
+                      withdrawAmount <= 0 ||
+                      loadingWithdrawDeposit
+                    )
                   }
                   onClick={(e) => {
                     if (customActiveTab === "1")

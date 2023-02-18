@@ -35,6 +35,7 @@ import {
   getTokenFromName,
   isTransactionLoading,
   tokenAddressMap,
+  tokenDecimalsMap,
 } from "../blockchain/stark-constants";
 import { GetErrorText, NumToBN } from "../blockchain/utils";
 import Image from "next/image";
@@ -80,9 +81,9 @@ export interface IDepositLoanRates {
 let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRatesParam }: { asset: string; title: string, depositLoanRates: IDepositLoanRates }) => {
   console.log("the asset you get from borrow popup", assetParam)
   const Coins: ICoin[] = [
-    { name: "USDT",icon: "mdi-bitcoin", },
-    { name: "USDC",icon: "mdi-ethereum",},
-    { name: "BTC",icon: "mdi-bitcoin",},
+    { name: "USDT", icon: "mdi-bitcoin", },
+    { name: "USDC", icon: "mdi-ethereum", },
+    { name: "BTC", icon: "mdi-bitcoin", },
     { name: "ETH", icon: "mdi-ethereum" },
     { name: "DAI", icon: "mdi-dai" },
   ];
@@ -206,7 +207,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
       entrypoint: "approve",
       calldata: [
         diamondAddress,
-        NumToBN(borrowParams.collateralAmount as number, 18),
+        NumToBN(borrowParams.collateralAmount as number, tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18),
         0,
       ],
     },
@@ -228,7 +229,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
         entrypoint: "approve",
         calldata: [
           diamondAddress,
-          NumToBN(borrowParams.collateralAmount as number, 18),
+          NumToBN(borrowParams.collateralAmount as number, tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18),
           0,
         ],
       },
@@ -237,11 +238,11 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
         entrypoint: "loan_request",
         calldata: [
           tokenAddressMap[asset],
-          NumToBN(borrowParams.loanAmount as number, 18),
+          NumToBN(borrowParams.loanAmount as number, tokenDecimalsMap[asset]),
           0,
           borrowParams.commitBorrowPeriod,
           tokenAddressMap[borrowParams.collateralMarket as string],
-          NumToBN(borrowParams.collateralAmount as number, 18),
+          NumToBN(borrowParams.collateralAmount as number, tokenDecimalsMap[asset]),
           0,
         ],
       },
@@ -268,9 +269,9 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
     },
   });
 
-// =======================================================================================
+  // =======================================================================================
 
-// ==========================================================================================
+  // ==========================================================================================
   const { contract: loanMarketContract } = useContract({
     abi: ERC20Abi as Abi,
     address: tokenAddressMap[asset as string] as string,
@@ -304,24 +305,24 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
       error: errorToken,
     };
   };
-  
+
   console.log(borrowParams.collateralAmount);
   // {borrowParams.collateralAmount ?(
-     const {data,loading,error} = useMaxloan(tokenName,asset,borrowParams.collateralAmount);
-     let l =setTimeout(() => {
-    if (loading === false) {
-      console.log(Number(BNtoNum(data.max_loan_amount.low, 1)));
-      const Data = Number(BNtoNum(data.max_loan_amount.low, 1));
+  const { data, loading, error } = useMaxloan(tokenName, asset, Number(borrowParams.collateralAmount));
+  let l = setTimeout(() => {
+    if (loading === false && !error) {
+      console.log("printing", Number(BNtoNum(data?.max_loan_amount.low, 1)));
+      const Data = Number(BNtoNum(data?.max_loan_amount.low, 1));
       setMaxloanData(Data)
     }
     clearTimeout(l);
-  }, 100);
-  
-  
+  }, 1000);
 
- 
+
+
+
   const handleApprove = async (asset: string) => {
-    
+
     try {
       const val = await ApproveToken();
       setTransApprove(val.transaction_hash);
@@ -394,12 +395,12 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
   };
 
   const handleMaxLoan = async () => {
-    
-     setBorrowParams({
-       ...borrowParams,
-       loanAmount:
-       MaxloanData,
-     });
+
+    setBorrowParams({
+      ...borrowParams,
+      loanAmount:
+        MaxloanData,
+    });
 
     await refreshAllowance();
   };
@@ -1484,19 +1485,19 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                         color: "#6F6F6F",
                       }}
                     >
-                     {
-                      depositLoanRates && 
-                      borrowParams.commitBorrowPeriod != null && 
-                      (borrowParams.commitBorrowPeriod as number) < 2 ? (
-                        `${parseFloat(
-                          depositLoanRates[
-                            `${getTokenFromName(asset as string)?.address}__${borrowParams.commitBorrowPeriod}`
-                          ]?.borrowAPR?.apr100x as string
-                        )
-                      } %`
-                      ): (
-                        <MySpinner />
-                      )}
+                      {
+                        depositLoanRates &&
+                          borrowParams.commitBorrowPeriod != null &&
+                          (borrowParams.commitBorrowPeriod as number) < 2 ? (
+                          `${parseFloat(
+                            depositLoanRates[
+                              `${getTokenFromName(asset as string)?.address}__${borrowParams.commitBorrowPeriod}`
+                            ]?.borrowAPR?.apr100x as string
+                          )
+                          } %`
+                        ) : (
+                          <MySpinner />
+                        )}
 
                     </div>
                   </div>

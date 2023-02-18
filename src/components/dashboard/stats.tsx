@@ -1,9 +1,9 @@
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import statsIcon from "../../assets/images/statsIcon.svg";
+import OffchainAPI from "../../services/offchainapi.service";
 import { TabContext } from "../../hooks/contextHooks/TabContext";
 import { useContext } from "react";
-import OffchainAPI from "../../services/offchainapi.service";
 
 const StatsBoard = () => {
   const { customActiveTab, toggleCustom } = useContext(TabContext);

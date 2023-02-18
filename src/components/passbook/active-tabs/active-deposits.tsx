@@ -25,6 +25,7 @@ import {
   ERC20Abi,
   tokenAddressMap,
   isTransactionLoading,
+  tokenDecimalsMap,
 } from "../../../blockchain/stark-constants";
 import TxHistoryTable from "../../dashboard/tx-history-table";
 import useAddDeposit from "../../../blockchain/hooks/active-deposits/useAddDeposit";
@@ -135,7 +136,7 @@ const ActiveDepositsTab = ({
     calls: {
       contractAddress: tokenAddressMap[tokenName] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
+      calldata: [diamondAddress, NumToBN(depositAmount as number, tokenDecimalsMap[tokenName]), 0],
     },
   });
 
@@ -150,7 +151,7 @@ const ActiveDepositsTab = ({
       {
         contractAddress: tokenAddressMap[tokenName] as string,
         entrypoint: "approve",
-        calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
+        calldata: [diamondAddress, NumToBN(depositAmount as number, tokenDecimalsMap[tokenName]), 0],
       },
       {
         contractAddress: diamondAddress,
@@ -158,7 +159,7 @@ const ActiveDepositsTab = ({
         calldata: [
           tokenAddressMap[tokenName],
           commitPeriod,
-          NumToBN(depositAmount as number, 18),
+          NumToBN(depositAmount as number, tokenDecimalsMap[tokenName]),
           0,
         ],
       },
@@ -336,14 +337,6 @@ const ActiveDepositsTab = ({
                 <ActiveDeposit
                   key={key}
                   asset={asset}
-                  modal_add_active_deposit={modal_add_active_deposit}
-                  tog_add_active_deposit={tog_add_active_deposit}
-                  modal_withdraw_active_deposit={modal_withdraw_active_deposit}
-                  tog_withdraw_active_deposit={tog_withdraw_active_deposit}
-                  depositRequestSel={depositRequestSel}
-                  withdrawDepositTransactionDone={
-                    withdrawDepositTransactionDone
-                  }
                   historicalAPRs={historicalAPRs}
                   allAssets={allAssets}
                 />

@@ -10,6 +10,7 @@ import { Table } from "reactstrap";
 import {
   diamondAddress,
   tokenAddressMap,
+  tokenDecimalsMap,
 } from "../../../blockchain/stark-constants";
 import { BNtoNum, GetErrorText, NumToBN } from "../../../blockchain/utils";
 import { getPrice } from "../../../blockchain/priceFeed";
@@ -222,7 +223,7 @@ const ActiveLoansTab = ({
     calls: {
       contractAddress: tokenAddressMap[marketToAddCollateral] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(inputVal1 as number, 18), 0],
+      calldata: [diamondAddress, NumToBN(inputVal1 as number, tokenDecimalsMap[marketToAddCollateral]), 0],
     },
   });
   // Adding collateral

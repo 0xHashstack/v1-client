@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Abi, number, uint256 } from 'starknet';
 import deposit from '../../../components/deposit';
-import { ERC20Abi, tokenAddressMap } from '../../stark-constants';
+import { ERC20Abi, tokenAddressMap, tokenDecimalsMap } from '../../stark-constants';
 import { BNtoNum, GetErrorText, NumToBN } from '../../utils';
 
 const useAddDeposit = (_token: any, _diamondAddress: string) => {
@@ -95,7 +95,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 		calls: {
 			contractAddress: depositMarket as string,
 			entrypoint: 'approve',
-			calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
+			calldata: [diamondAddress, NumToBN(depositAmount as number, tokenDecimalsMap[token]), 0],
 		},
 	});
 
@@ -110,7 +110,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 			{
 				contractAddress: depositMarket as string,
 				entrypoint: 'approve',
-				calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
+				calldata: [diamondAddress, NumToBN(depositAmount as number, tokenDecimalsMap[token]), 0],
 			},
 			{
 				contractAddress: diamondAddress,
@@ -118,7 +118,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 				calldata: [
 					tokenAddressMap[token],
 					depositCommit,
-					NumToBN(depositAmount as number, 18),
+					NumToBN(depositAmount as number, tokenDecimalsMap[token]),
 					0,
 				],
 			},

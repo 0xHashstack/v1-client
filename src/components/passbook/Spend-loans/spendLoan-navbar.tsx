@@ -5,7 +5,7 @@ import {
   useStarknetExecute,
   useTransactionReceipt,
 } from "@starknet-react/core";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -35,9 +35,20 @@ import {
 } from "../../../blockchain/stark-constants";
 import { currentBorrowInterestRate, NumToBN } from "../../../blockchain/utils";
 import { MinimumAmount } from "../../../blockchain/constants";
+import { TabContext } from "../../../hooks/contextHooks/TabContext";
+import useSpendBorrow from "../../../blockchain/hooks/SpendBorrow/useSpendBorrow";
 
 const SpendLoanNav = () => {
   const [tokenName, setTokenName] = useState("BTC");
+  const { title, setTitle, selectedLoan, setSelectedLoan } =
+    useContext(TabContext);
+  const {
+    executeJediSwap,
+    dataJediSwap,
+    loadingJediSwap,
+    errorJediSwap,
+    handleSwap,
+  } = useSpendBorrow(diamondAddress, selectedLoan, tokenName);
 
   const Coins: ICoin[] = [
     { name: "USDT", icon: "mdi-bitcoin" },
@@ -75,10 +86,6 @@ const SpendLoanNav = () => {
     transDeposit: any;
   } = useAddDeposit(tokenName, diamondAddress);
 
-  const [title, setTitle] = useState({
-    label: "Stake",
-  });
-
   const { address: account } = useAccount();
 
   const [isCollateralActions, setIsCollateralActions] = useState(false);
@@ -87,7 +94,7 @@ const SpendLoanNav = () => {
   const [modal_deposit, setmodal_deposit] = useState(false);
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
-  const [yagiDownArrow, setyagiDownArrow] = useState(arrowDown);
+
   const [dropDownTwo, setDropDownTwo] = useState(false);
   const [stakeDropDownArrow, setStakeDropDownArrow] = useState(arrowDown);
   const [idDropDown, setIdDropDown] = useState(false);
@@ -105,6 +112,7 @@ const SpendLoanNav = () => {
   const [SpendLoan, setSpendLoan] = useState("1");
   const dappsArray = ["1", "2", "3", "4", "5", "6"];
   const yagitimes = ["1", "2", "3", "4"];
+  const [yagiDownArrow, setyagiDownArrow] = useState(arrowDown);
   const [yagiselection, setyagiselection] = useState("1");
   const [Yagidrop, setYagidrop] = useState(false);
 
@@ -422,18 +430,7 @@ const SpendLoanNav = () => {
                 padding: "5px 0 0 0",
               }}
             >
-              Borrow ID -123456&nbsp;&nbsp;
-              <Image
-                style={{ cursor: "pointer", marginTop: "3px" }}
-                src={idDropDownArrow}
-                alt="Picture of the author"
-                width="14px"
-                height="14px"
-                onClick={() => {
-                  setIdDropDown(!idDropDown);
-                  setIdDropDownArrow(idDropDown ? arrowDown : arrowUp);
-                }}
-              />
+              Loan ID - {selectedLoan.loanId}
             </div>
           </div>
           {account ? (
@@ -711,19 +708,34 @@ const SpendLoanNav = () => {
                             <span style={{ color: "white" }}>{tokenName}</span>
                           </div>
                         </div>
-
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "8px",
-                            color: "#8B8B8B",
-                          }}
-                        >
-                          <div>Availabe Borrowed Amount :</div>
-                          <div style={{ color: "white" }}>
-                            00.00 &nbsp;&nbsp;{tokenName}
-                          </div>
+                        <div>
+                          <img
+                            src={`./${selectedLoan.loanMarket}.svg`}
+                            width="24px"
+                            height="24px"
+                          ></img>
+                          &nbsp;&nbsp;
+                          <span style={{ color: "white" }}>
+                            {selectedLoan.loanMarket}
+                          </span>
                         </div>
+                      </div>
+
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "8px",
+                          color: "#8B8B8B",
+                        }}
+                      >
+                        <div>Availabe Borrowed Amount :</div>
+                        <div style={{ color: "white" }}>
+                          00.00 &nbsp;&nbsp;{tokenName}
+                        </div>
+                      </div>
+                      <div style={{ color: "white" }}>
+                        {(selectedLoan.loanAmount / 10 ** 18).toFixed(4)}{" "}
+                        &nbsp;&nbsp;{selectedLoan.loanMarket}
                       </div>
                     </label>
 
@@ -774,6 +786,7 @@ const SpendLoanNav = () => {
                         </div>
                       </div>
                     </label>
+
                     {dropDown ? (
                       <>
                         <div
@@ -962,12 +975,10 @@ const SpendLoanNav = () => {
                   disabled={
                     commitPeriod === undefined ||
                     loadingApprove ||
-                    loadingDeposit ||
+                    loadingJediSwap ||
                     isInvalid()
                   }
-                  //   onClick={(e) => {
-                  //     handleDeposit(tokenName);
-                  //   }}
+                  onClick={handleSwap}
                 >
                   {title.label}
                   {/* {!(
