@@ -956,7 +956,7 @@ const Dashboard = () => {
                       }}
                     >
                       <Row style={{ backgroundColor: "white", height: "40px" }}>
-                        {customActiveTab === "2" ? <SpendLoan /> : null}
+                        {customActiveTab === "2" ? <SpendLoan activeLoansData={activeLoansData.filter((loan) => loan.state === 'OPEN')} /> : null}
                       </Row>
                     </CardBody>
                   </Card>

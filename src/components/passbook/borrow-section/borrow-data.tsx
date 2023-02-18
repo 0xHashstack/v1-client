@@ -101,7 +101,6 @@ const BorrowData = ({
   handleWithdrawLoan,
   setSwapMarket,
   handleSwapTransactionDone,
-  handleSwap,
   setAddCollateralTransactionReceipt,
   // setRepayTransactionReceipt,
   withdrawLoanTransactionReceipt,
@@ -149,7 +148,7 @@ const BorrowData = ({
   revertSwapTransactionReceipt: any;
 }) => {
   const [asset, setAsset] = useState(assetParam);
-  const [toToken, setToToken] = useState(asset.loanMarket);
+  const [marketTokenName, setMarketTokenName] = useState("BTC");
 
   const Coins: ICoin[] = [
     { name: "USDT", icon: "mdi-bitcoin", },
@@ -193,7 +192,7 @@ const BorrowData = ({
   const { partialWithdrawAmount, setPartialWithdrawAmount, executeWithdrawPartialBorrow, transWithdrawPartialBorrowHash,
     setTransWithdrawPartialBorrowHash, partialWithdrawTransReceipt, loadingWithdrawPartialBorrow } = useWithdrawPartialBorrow(asset, diamondAddress);
   const { handleAddCollateral, loadingAddCollateral, errorAddCollateral, addCollateralAmount, setAddCollateralAmount } = useAddCollateral(diamondAddress, asset);
-  const { jediSwapSupportedPoolsData, loadingJediSwapSupportedPools, errorJediSwapSupportedPools, executeJediSwap, dataJediSwap, loadingJediSwap, errorJediSwap } = useSpendBorrow(diamondAddress, asset, toToken);
+  const { jediSwapSupportedPoolsData, loadingJediSwapSupportedPools, errorJediSwapSupportedPools, executeJediSwap, dataJediSwap, loadingJediSwap, errorJediSwap } = useSpendBorrow(diamondAddress, asset, marketTokenName);
 
   useEffect(() => {
     console.log("loading jedi", loadingJediSwapSupportedPools);
@@ -208,7 +207,6 @@ const BorrowData = ({
   //     console.log('Jedi Swap', dataJediSwap, errorJediSwap);
   // }, [loadingJediSwap, dataJediSwap, errorJediSwap]);
 
-  const [marketTokenName, setMarketTokenName] = useState("BTC");
   const [title, setTitle] = useState({
     amount: "Borrowd",
     label: "Stake",
@@ -421,8 +419,19 @@ const BorrowData = ({
     }
   }
 
-  const handleMax = () => {
-
+  const handleSwap = async () => {
+    try {
+      const val = await executeJediSwap();
+    } catch (err) {
+      console.log(err, "err repay");
+    }
+    if (errorJediSwap) {
+      toast.error(`${GetErrorText(`Swap for Loan ID${asset.loanId} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
+    }
   }
 
   const tog_center = async () => {
@@ -980,9 +989,9 @@ const BorrowData = ({
                                   disabled={
                                     asset.isSwapped || handleSwapTransactionDone
                                   }
-                                  onClick={() => {
-                                    handleSwap();
-                                  }}
+                                  // onClick={() => {
+                                  //   handleSwap();
+                                  // }}
                                   style={{
                                     color: "#4B41E5",
                                   }}
@@ -2315,12 +2324,10 @@ const BorrowData = ({
                     disabled={
                       commitPeriod === undefined ||
                       loadingApprove ||
-                      loadingDeposit ||
+                      loadingJediSwap ||
                       isInvalid()
                     }
-                    onClick={(e) => {
-                      // handleDeposit(asset.loanMarket);
-                    }}
+                    onClick={actionLabel === "Swap" && handleSwap}
                   >
                     {!(
                       loadingApprove ||

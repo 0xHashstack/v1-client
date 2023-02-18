@@ -6,7 +6,7 @@ import JediSwapAbi2 from "../../../../starknet-artifacts/contracts/integrations/
 import { Abi } from "starknet";
 import { useEffect } from "react";
 
-const useSpendBorrow = (diamondAddress: string, asset: any, toToken: any) => {
+const useSpendBorrow = (diamondAddress: string, asset: any, toTokenName: any) => {
     const { contract: l3Contract } = useContract({
         abi: JediSwapAbi2.abi as Abi,
         address: "0x1fc40e21ce68f61d538c070cbfea9483243bcdae0072b0f8c2c85fd4ecd28ab",
@@ -36,7 +36,7 @@ const useSpendBorrow = (diamondAddress: string, asset: any, toToken: any) => {
 		calls: {
 			contractAddress: diamondAddress,
 			entrypoint: 'interact_with_l3',
-			calldata: ["1962660952167394271600", 2, [asset.loanId, toToken]],
+			calldata: ["1962660952167394271600", 2, asset.loanId, tokenAddressMap[toTokenName]],
 		},
 	});
 

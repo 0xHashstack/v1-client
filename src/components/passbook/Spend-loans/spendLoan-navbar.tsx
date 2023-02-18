@@ -5,7 +5,7 @@ import {
   useStarknetExecute,
   useTransactionReceipt,
 } from "@starknet-react/core";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Button,
   Col,
@@ -37,6 +37,7 @@ import {
 } from "../../../blockchain/stark-constants";
 import { currentBorrowInterestRate, NumToBN } from "../../../blockchain/utils";
 import { MinimumAmount } from "../../../blockchain/constants";
+import { TabContext } from "../../../hooks/contextHooks/TabContext";
 
 const SpendLoanNav = () => {
   const [tokenName, setTokenName] = useState("BTC");
@@ -77,9 +78,7 @@ const SpendLoanNav = () => {
     transDeposit: any;
   } = useAddDeposit(tokenName, diamondAddress);
 
-  const [title, setTitle] = useState({
-    label: "Stake",
-  });
+  const { title, setTitle } = useContext(TabContext);
 
   const { address: account } = useAccount();
 
