@@ -1032,7 +1032,7 @@ const Dashboard = () => {
                   {" "}
                   <Card
                     style={{
-                      height: "115rem",
+                      height: "118rem",
                       // overflowY: "scroll",
                     }}
                   >
@@ -1166,7 +1166,11 @@ const Dashboard = () => {
                             width: "48%",
                           }}
                         >
-                          <BarChartComponent title={"Asset Utilisation:"} />
+                          <BarChartComponent
+                            title={"Asset Utilisation:"}
+                            tokenImage="./btcGraph.svg"
+                            tokenName="BTC"
+                          />
                         </div>
 
                         <div
@@ -1178,7 +1182,11 @@ const Dashboard = () => {
                             width: "48%",
                           }}
                         >
-                          <Chart title={"Asset Utilisation rate:"} />
+                          <Chart
+                            title={"Asset Utilisation rate:"}
+                            tokenImage="./btcGraph.svg"
+                            tokenName="BTC"
+                          />
                         </div>
                       </div>
 

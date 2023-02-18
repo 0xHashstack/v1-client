@@ -10,7 +10,15 @@ import {
   ResponsiveContainer,
 } from "recharts";
 
-const Chart = ({ title }: { title: string }) => {
+const Chart = ({
+  title,
+  tokenImage,
+  tokenName,
+}: {
+  title: string;
+  tokenImage?: string;
+  tokenName?: string;
+}) => {
   const data = [
     {
       name: "Page A",
@@ -58,8 +66,18 @@ const Chart = ({ title }: { title: string }) => {
 
   return (
     <>
-      {" "}
-      <h5 style={{ margin: " 5px 35px 30px 35px" }}>{title}</h5>
+      <div
+        style={{
+          display: "flex",
+          gap: "10px",
+          alignItems: "center",
+          margin: " 5px 35px 30px 35px",
+        }}
+      >
+        <h5 style={{ margin: "0" }}>{title}</h5>
+        <img src={tokenImage} alt={tokenName} width="20px" />
+        {tokenName}
+      </div>
       <ResponsiveContainer width="95%" height={250}>
         <LineChart
           width={600}
