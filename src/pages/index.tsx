@@ -624,19 +624,39 @@ const Dashboard = () => {
                       fontSize: "10px",
                     }}
                   >
-                    <div style={{ width: "7%" }}>
-                      Total Supply
-                      <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                        $8,932.14
-                      </div>
-                    </div>
-                    <div style={{ width: "7%" }}>
-                      {" "}
-                      APR Earned
-                      <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                        $8,932.14
-                      </div>
-                    </div>
+                    {customActiveTab === "3" || customActiveTab === "4" ? (
+                      <>
+                        <div style={{ width: "7%" }}>
+                          <div style={{ color: "#8C8C8C" }}>Total Supply</div>
+                          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                            $8,932.14
+                          </div>
+                        </div>
+                        <div style={{ width: "7%" }}>
+                          <div style={{ color: "#8C8C8C" }}>APR Earned</div>
+                          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                            $8,932.14
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div style={{ width: "7%" }}>
+                          <div style={{ color: "#8C8C8C" }}>
+                            Total Borrow Assets
+                          </div>
+                          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                            $8,932.14
+                          </div>
+                        </div>
+                        <div style={{ width: "7%" }}>
+                          <div style={{ color: "#8C8C8C" }}>Net Borrow APR</div>
+                          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                            $8,932.14
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                   {customActiveTab !== "2" ? (
                     <div
