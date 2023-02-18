@@ -1,10 +1,11 @@
 import { useContract, useStarknetCall, useStarknetExecute } from "@starknet-react/core";
 import { tokenAddressMap } from "../../stark-constants";
-import { NumToBN } from "../../utils";
+import { GetErrorText, NumToBN } from "../../utils";
 import JediSwapAbi from "../../../../starknet-artifacts/contracts/integrations/modules/jedi_swap.cairo/jedi_swap_abi.json";
 import JediSwapAbi2 from "../../../../starknet-artifacts/contracts/integrations/modules/jedi_swap.cairo/jedi_swap.json"
 import { Abi } from "starknet";
 import { useEffect } from "react";
+import { toast } from "react-toastify";
 
 const useSpendBorrow = (diamondAddress: string, asset: any, toTokenName: any) => {
     const { contract: l3Contract } = useContract({
@@ -40,6 +41,21 @@ const useSpendBorrow = (diamondAddress: string, asset: any, toTokenName: any) =>
 		},
 	});
 
+    const handleSwap = async () => {
+        try {
+          const val = await executeJediSwap();
+        } catch (err) {
+          console.log(err, "err repay");
+        }
+        if (errorJediSwap) {
+          toast.error(`${GetErrorText(`Swap for Loan ID${asset.loanId} failed`)}`, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            closeOnClick: true,
+          });
+          return;
+        }
+      }
+
     return {
         jediSwapSupportedPoolsData,
         loadingJediSwapSupportedPools,
@@ -49,7 +65,8 @@ const useSpendBorrow = (diamondAddress: string, asset: any, toTokenName: any) =>
         executeJediSwap, 
         loadingJediSwap, 
         dataJediSwap,
-        errorJediSwap
+        errorJediSwap, 
+        handleSwap
     }
 
 }

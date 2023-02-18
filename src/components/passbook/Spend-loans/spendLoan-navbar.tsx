@@ -38,9 +38,13 @@ import {
 import { currentBorrowInterestRate, NumToBN } from "../../../blockchain/utils";
 import { MinimumAmount } from "../../../blockchain/constants";
 import { TabContext } from "../../../hooks/contextHooks/TabContext";
+import useSpendBorrow from "../../../blockchain/hooks/SpendBorrow/useSpendBorrow";
 
 const SpendLoanNav = () => {
+  
   const [tokenName, setTokenName] = useState("BTC");
+  const { title, setTitle, selectedLoan, setSelectedLoan } = useContext(TabContext);
+  const { executeJediSwap, dataJediSwap, loadingJediSwap, errorJediSwap, handleSwap } = useSpendBorrow(diamondAddress, selectedLoan, tokenName);
 
   const Coins: ICoin[] = [
     { name: "USDT",icon: "mdi-bitcoin", },
@@ -78,7 +82,6 @@ const SpendLoanNav = () => {
     transDeposit: any;
   } = useAddDeposit(tokenName, diamondAddress);
 
-  const { title, setTitle } = useContext(TabContext);
 
   const { address: account } = useAccount();
 
@@ -399,7 +402,7 @@ const SpendLoanNav = () => {
           >
             Supply Borrow
             <div style={{fontSize: "11px",color:"#8B8B8B", padding:"5px 0 0 0"}}>
-              Loan ID -123456 
+              Loan ID - {selectedLoan.loanId}
             </div>
           </div>
           {account ? (
@@ -564,11 +567,11 @@ const SpendLoanNav = () => {
                         </div>
                         <div>
                         <img
-                          src={`./${tokenName}.svg`}
+                          src={`./${selectedLoan.loanMarket}.svg`}
                           width="24px"
                           height="24px"
                         ></img>
-                        &nbsp;&nbsp;<span style={{color:"white"}}>{tokenName}</span> 
+                        &nbsp;&nbsp;<span style={{color:"white"}}>{selectedLoan.loanMarket}</span> 
                         </div>
                       </div>
 
@@ -577,7 +580,7 @@ const SpendLoanNav = () => {
                         Availabe Borrowed Amount :  
                         </div>
                         <div style={{color:"white"}}>
-                        00.00 &nbsp;&nbsp;{tokenName}
+                        {(selectedLoan.loanAmount / 10 ** 18).toFixed(4)} &nbsp;&nbsp;{selectedLoan.loanMarket}
                         </div>
                       </div>
                       </div>
@@ -867,12 +870,10 @@ const SpendLoanNav = () => {
                   disabled={
                     commitPeriod === undefined ||
                     loadingApprove ||
-                    loadingDeposit ||
+                    loadingJediSwap ||
                     isInvalid()
                   }
-                //   onClick={(e) => {
-                //     handleDeposit(tokenName);
-                //   }}
+                  onClick={handleSwap}
                 >
                   {title.label}
                   {/* {!(
