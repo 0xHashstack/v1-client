@@ -1,10 +1,21 @@
 import Image from "next/image";
+import { useEffect, useState } from "react";
 import statsIcon from "../../assets/images/statsIcon.svg";
 import { TabContext } from "../../hooks/contextHooks/TabContext";
 import { useContext } from "react";
+import OffchainAPI from "../../services/offchainapi.service";
 
 const StatsBoard = () => {
   const { customActiveTab, toggleCustom } = useContext(TabContext);
+  const [oraclePrices, setOraclePrices] = useState<any>();
+  const [deposits, setDeposits] = useState<any>();
+  const [loans, setLoans] = useState<any>();
+
+  useEffect(() => {
+    OffchainAPI.getOraclePrices().then((val) => {
+      console.log("got them", val);
+    });
+  }, []);
 
   return (
     <div
@@ -25,6 +36,7 @@ const StatsBoard = () => {
           justifyContent: "space-between",
           padding: "20px 40px",
           gap: "30px",
+          boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
         }}
       >
         <div className="Net Worth">
@@ -42,15 +54,16 @@ const StatsBoard = () => {
         <div className="Net Worth">
           <p style={{ marginBottom: "10px" }}>Net APR</p>
           <h4>15.5%</h4>
-        </div >
+        </div>
         <Image
           src={statsIcon}
           alt="Navbar Logo"
-          style={{ marginLeft: "20px" ,cursor:"pointer"}}
+          style={{ marginLeft: "20px", cursor: "pointer" }}
           height="20px"
           width="20px"
-          onClick={()=>{toggleCustom("7")}}
-    
+          onClick={() => {
+            toggleCustom("7");
+          }}
         />
       </div>
       <div className="stat-card"></div>
@@ -63,6 +76,7 @@ const StatsBoard = () => {
           justifyContent: "space-between",
           padding: "20px 40px",
           gap: "30px",
+          boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
         }}
       >
         <div className="Net Worth">
@@ -80,10 +94,12 @@ const StatsBoard = () => {
         <Image
           src={statsIcon}
           alt="Navbar Logo"
-          style={{ marginLeft: "20px",cursor:"pointer" }}
+          style={{ marginLeft: "20px", cursor: "pointer" }}
           height="20px"
           width="20px"
-          onClick={()=>{toggleCustom("8")}}
+          onClick={() => {
+            toggleCustom("8");
+          }}
         />
       </div>
       <div className="stat-card"></div>

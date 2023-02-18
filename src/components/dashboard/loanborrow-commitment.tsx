@@ -6,13 +6,15 @@ import {
 } from "../../blockchain/stark-constants";
 import DashboardTBody from "./dashboard-body";
 
-const LoanBorrowCommitment = ({ isLoading, activeDepositsData, activeLoansData }
-  : { 
-    isLoading: boolean; 
-    activeDepositsData: 
-    any; activeLoansData: any; 
-  }
-) => {
+const LoanBorrowCommitment = ({
+  isLoading,
+  activeDepositsData,
+  activeLoansData,
+}: {
+  isLoading: boolean;
+  activeDepositsData: any;
+  activeLoansData: any;
+}) => {
   const [depositCommitment, setDepositCommitment] = useState<string>("");
   const [borrowCommitment, setBorrowCommitment] = useState<string>("");
 
@@ -27,51 +29,34 @@ const LoanBorrowCommitment = ({ isLoading, activeDepositsData, activeLoansData }
   return (
     <div style={{}}>
       <TabPane tabId="1">
-        <div className="table-responsive" style={{ paddingTop: "12px" }}>
+        <div className="table-responsive">
           <Table className="table table-nowrap  mb-0">
             <thead>
               <tr
                 style={{
                   borderStyle: "hidden",
                   color: "#8C8C8C",
+                  verticalAlign: "middle",
                 }}
               >
                 <th style={{ width: "35px" }}></th>
-                <th
-                  scope="col"
-                  style={{
-                    width: "100px",
-                    padding: "35px 10px",
-                  }}
-                >
+                <th scope="col" style={{ width: "100px" }}>
                   Markets
                 </th>
-                <th
-                  scope="col"
-                  style={{ width: "100px", padding: "35px 10px" }}
-                >
+                <th scope="col" style={{ width: "100px" }}>
                   Oracle Price
                 </th>
-                <th
-                  scope="col"
-                  style={{ width: "100px", padding: "35px 10px" }}
-                >
+                <th scope="col" style={{ width: "100px" }}>
                   Fair Price
                 </th>
-                <th
-                  scope="col"
-                  style={{ width: "100px", padding: "35px 10px" }}
-                >
+                <th scope="col" style={{ width: "100px" }}>
                   Total Supply
                 </th>
-                <th
-                  scope="col"
-                  style={{ width: "100px", padding: "35px 10px" }}
-                >
+                <th scope="col" style={{ width: "100px" }}>
                   Total Borrow
                 </th>
                 <th scope="col" style={{ width: "155px" }}>
-                  <div style={{ textAlign: "center", margin: "8px auto" }}>
+                  <div style={{ textAlign: "center", paddingBottom: "5px" }}>
                     {" "}
                     Supply APR
                   </div>
@@ -101,7 +86,7 @@ const LoanBorrowCommitment = ({ isLoading, activeDepositsData, activeLoansData }
                   </select>
                 </th>
                 <th scope="col" style={{ width: "150px" }}>
-                  <div style={{ textAlign: "center", margin: "8px auto" }}>
+                  <div style={{ textAlign: "center", paddingBottom: "5px" }}>
                     {" "}
                     Borrow APR
                   </div>
@@ -123,24 +108,17 @@ const LoanBorrowCommitment = ({ isLoading, activeDepositsData, activeLoansData }
                       fontSize: "12px",
                       backgroundColor: "#393D4F",
                     }}
-                  > 
+                  >
                     <option value={"NONE"}>Flexible</option>
                     <option value={"ONEMONTH"}>One Month</option>
                   </select>
                 </th>
                 {/* <th scope="col">Savings Interest</th> */}
                 {/* <th scope="col">Borrow Interest</th> */}
-                <th
-                  scope="col"
-                  style={{ width: "100px", padding: "35px 20px" }}
-                >
+                <th scope="col" style={{ width: "100px" }}>
                   Supply
                 </th>
-                <th
-                  scope="col"
-                  style={{ width: "100px", padding: "35px 20px" }}
-                  colSpan={2}
-                >
+                <th scope="col" style={{ width: "100px" }} colSpan={2}>
                   Borrow
                 </th>
               </tr>

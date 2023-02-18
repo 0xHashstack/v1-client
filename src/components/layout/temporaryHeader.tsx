@@ -179,6 +179,8 @@ const SecondaryHeader = ({
             backgroundColor: "#1C202F",
             width: "100%",
             color: "white",
+            boxShadow:
+              "rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px",
           }}
         >
           <div className="d-flex">
@@ -479,7 +481,7 @@ const SecondaryHeader = ({
                       terms of service & disclaimer
                     </a>
                   </p>
-                  <p style={{ fontSize: "10px", color:"#8C8C8C" }}>
+                  <p style={{ fontSize: "10px", color: "#8C8C8C" }}>
                     This mainnet is currently in alpha with limitations on the
                     maximum supply & borrow amount. This is done in
                     consideration of the current network and liquidity
@@ -656,8 +658,8 @@ const SecondaryHeader = ({
                   padding: "7px 6px",
                   borderRadius: "5px",
                   backgroundColor: "rgb(57, 61, 79)",
-                  color:"white",
-                  border:"none"
+                  color: "white",
+                  border: "none",
                 }}
               >
                 Switch Wallet
@@ -667,8 +669,8 @@ const SecondaryHeader = ({
                   padding: "7px 6px",
                   borderRadius: "5px",
                   backgroundColor: "rgb(57, 61, 79)",
-                  color:"white",
-                  border:"none"
+                  color: "white",
+                  border: "none",
                 }}
                 onClick={handleDisconnectWallet}
               >
@@ -771,7 +773,7 @@ const SecondaryHeader = ({
             style={{
               position: "absolute",
               right: "20px",
-              backgroundColor:"#1C202F",
+              backgroundColor: "#1C202F",
               width: "195px",
               height: "300px",
               borderRadius: "5px",
@@ -781,7 +783,7 @@ const SecondaryHeader = ({
           >
             <div
               style={{
-                display: "flex",  
+                display: "flex",
                 gap: "6px",
                 padding: "10px 12px",
                 fontSize: "12px",

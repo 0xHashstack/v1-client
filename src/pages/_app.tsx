@@ -6,7 +6,7 @@ import { publicProvider } from "wagmi/providers/public";
 import { getDefaultWallets, RainbowKitProvider } from "@rainbow-me/rainbowkit";
 import type { AppProps } from "next/app";
 import loadable from "@loadable/component";
-
+import Image from "next/image";
 import Layout from "../components/layout";
 import { ToastContainer } from "react-toastify";
 import { Provider } from "react-redux";
@@ -15,7 +15,8 @@ import store from "../store";
 import "../assets/scss/theme.scss";
 import "./scrollbar.css";
 import { TabsProvider } from "../hooks/contextHooks/TabContext";
-
+import Ellipse1 from "../assets/images/Ellipse 59.svg";
+import Ellipse2 from "../assets/images/Ellipse 60.svg";
 import { InjectedConnector, StarknetProvider } from "@starknet-react/core";
 import { SequencerProvider } from "starknet";
 import ErrorBoundary from "../components/ErrorComponent";
@@ -45,6 +46,22 @@ function MyApp({ Component, pageProps }: AppProps) {
   ];
   return (
     <div style={{ backgroundColor: "#1C202F", height: "100vh" }}>
+      <div style={{ position: "fixed", bottom: "0px", left: "0px" }}>
+        <img
+          src={`${Ellipse1.src}`}
+          alt="ellipse"
+          width="750px"
+          height="750px"
+        />
+      </div>
+      <div style={{ position: "fixed", bottom: "0px", right: "0px" }}>
+        <img
+          src={`${Ellipse2.src}`}
+          alt="ellipse"
+          width="800px"
+          height="800px"
+        />
+      </div>
       <ErrorBoundary>
         <IdentifierProvider>
           <WagmiConfig client={wagmiClient}>

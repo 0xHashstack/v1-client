@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import Ellipse1 from "../assets/images/Ellipse 59.svg";
 import {
   Container,
   Row,
@@ -60,6 +60,8 @@ import SpendLoanNav from "../components/passbook/Spend-loans/spendLoan-navbar";
 // import YourSupplyBody from "../components/dashboard/supply";
 import { TabContext } from "../hooks/contextHooks/TabContext";
 import DashboardLiquid from "../components/dashboard/DashboardLiquid";
+import SuccessToast from "../components/toastModals/customToastModal";
+import ToastModal from "../components/toastModals/customToastModal";
 
 import useMaxloan from "../blockchain/hooks/Max_loan_given_collat";
 import { BNtoNum, GetErrorText, NumToBN } from "../blockchain/utils";
@@ -327,8 +329,8 @@ const Dashboard = () => {
             console.log(err);
           }
         )
-        .catch(() => {
-          console.log("error in getting deposits");
+        .catch((error) => {
+          console.log("error in getting deposits", error);
         });
   }, [account, passbookStatus, customActiveTab, isTransactionDone]);
 
@@ -588,12 +590,9 @@ const Dashboard = () => {
 
   function dashboardUI() {
     return (
-      <div>
+      <div style={{ width: "100%", backgroundColor: "#1C202", height: "100%" }}>
         {customActiveTab === "1" ? <StatsBoard /> : null}
-        <Container fluid style={{ backgroundColor: "transparent" }}>
-          {/* Protocol Stats */}
-          {/* <ProtocolStats /> */}
-
+        <Container fluid>
           <Row>
             <Col xl={"12"}>
               {/* <Card style={{ height: "35rem", overflowY: "scroll" }}> */}
@@ -607,9 +606,7 @@ const Dashboard = () => {
                     toggleCustom={toggleCustom}
                     account={account as string}
                   />
-                ) : (
-                  <div></div>
-                )}
+                ) : null}
               </div>
               <div style={{ margin: "1px 5px 10px 14px" }}>
                 {customActiveTab === "6" ? (
@@ -634,19 +631,39 @@ const Dashboard = () => {
                       fontSize: "10px",
                     }}
                   >
-                    <div style={{ width: "7%" }}>
-                      Total Supply
-                      <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                        $8,932.14
-                      </div>
-                    </div>
-                    <div style={{ width: "7%" }}>
-                      {" "}
-                      APR Earned
-                      <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                        $8,932.14
-                      </div>
-                    </div>
+                    {customActiveTab === "3" || customActiveTab === "4" ? (
+                      <>
+                        <div style={{ width: "7%" }}>
+                          <div style={{ color: "#8C8C8C" }}>Total Supply</div>
+                          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                            $8,932.14
+                          </div>
+                        </div>
+                        <div style={{ width: "7%" }}>
+                          <div style={{ color: "#8C8C8C" }}>APR Earned</div>
+                          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                            $8,932.14
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div style={{ width: "7%" }}>
+                          <div style={{ color: "#8C8C8C" }}>
+                            Total Borrow Assets
+                          </div>
+                          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                            $8,932.14
+                          </div>
+                        </div>
+                        <div style={{ width: "7%" }}>
+                          <div style={{ color: "#8C8C8C" }}>Net Borrow APR</div>
+                          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                            $8,932.14
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </div>
                   {customActiveTab !== "2" ? (
                     <div
@@ -1222,7 +1239,14 @@ const Dashboard = () => {
               {customActiveTab === "1" ||
               customActiveTab === "3" ||
               customActiveTab === "4" ? (
-                <Card style={{ height: "30rem" }}>
+                <Card
+                  style={{
+                    height: "60vh",
+                    maxHeight: "35rem",
+                    border: "none",
+                    boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
+                  }}
+                >
                   <CardBody
                     style={{
                       overflowX: "hidden",
@@ -1358,7 +1382,6 @@ const Dashboard = () => {
         <title>Hashstack | Starknet testnet</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-
       {/* testnet.hashstack.finance */}
       <Script id="microsoft-clarity-testnet" strategy="afterInteractive">
         {`
@@ -1371,7 +1394,6 @@ const Dashboard = () => {
             }
           `}
       </Script>
-
       {/* zk.hashstack.finance */}
       {/* <Script id="microsoft-clarity-zk" strategy="afterInteractive">
           {`
@@ -1384,7 +1406,6 @@ const Dashboard = () => {
             }
           `}
       </Script> */}
-
       <div
         className="page-content"
         style={{
@@ -1406,10 +1427,10 @@ const Dashboard = () => {
         ) : (
           dashboardUI()
         )} */}
-
         {/* <Analytics></Analytics>
             {props.children} */}
       </div>
+      {/* <ToastModal bool={true} heading="Success" desc="lorem ipsum" /> */}
       {/* // </React.Fragment> */}
     </div>
   );

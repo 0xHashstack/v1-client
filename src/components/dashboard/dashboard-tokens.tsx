@@ -21,7 +21,7 @@ const DashboardTokens = ({
   borrowCommitment,
   depositCommitment,
   depositLoanRates,
-  oraclePriceForCoin, 
+  oraclePriceForCoin,
   fairPriceForCoin,
   reserves,
 }: {
@@ -31,10 +31,9 @@ const DashboardTokens = ({
   depositCommitment: string;
   depositLoanRates: any;
   oraclePriceForCoin: any;
-  fairPriceForCoin: any; 
+  fairPriceForCoin: any;
   reserves: any;
 }) => {
-
   useEffect(() => {
     console.log(
       `%c Protocol deposit ${depositCommitment} ${borrowCommitment} ${coin.name}`,
@@ -44,83 +43,101 @@ const DashboardTokens = ({
 
   console.log("reserves", reserves);
 
-
   return (
-    <tr
-      key={idx}
-      style={{
-        backgroundColor: "#2A2E3F",
-        color: "white",
-        borderBottom: "2px solid #D6D6D650",
-        height: "80px",
-      }}
-    >
-      <th style={{ padding: "28px 2px" }}>
-        {" "}
-        {coin.name === "BTC" ? (
-          <Image src={tickMark} width="20px" height="20px" alt="dropdown tick" />
-        ) : (
-          <></>
-        )}
-      </th>
-      <th scope="row" style={{ padding: "25px 5px" }}>
-        <div className="d-flex align-items-center">
-          <div className="avatar-xs me-3">
+    <>
+      <tr
+        key={idx}
+        style={{
+          backgroundColor: "#2A2E3F",
+          color: "white",
+          height: "80px",
+          borderBottom: "1.5px solid #252335",
+        }}
+      >
+        <th style={{ padding: "28px 2px" }}>
+          {" "}
+          {coin.name === "BTC" ? (
             <Image
-              alt="token"
-              src={`/${coin.name}.svg`}
+              src={tickMark}
               width="20px"
               height="20px"
-              style={{ marginTop: "5px" }}
-            ></Image>
+              alt="dropdown tick"
+            />
+          ) : (
+            <></>
+          )}
+        </th>
+        <th scope="row" style={{ padding: "25px 5px" }}>
+          <div className="d-flex align-items-center">
+            <div className="avatar-xs me-3">
+              <Image
+                alt="token"
+                src={`/${coin.name}.svg`}
+                width="20px"
+                height="20px"
+                style={{ marginTop: "5px" }}
+              ></Image>
+            </div>
+            <span style={{ marginLeft: "-15px" }}>{coin.name}</span>
           </div>
-          <span style={{ marginLeft: "-15px" }}>{coin.name}</span>
-        </div>
-      </th>
-      <td style={{ padding: "31px 10px" }}>{oraclePriceForCoin || 'N/A'}</td>
-      <td style={{ padding: "31px 10px" }}>{fairPriceForCoin || 'N/A'}</td>
-      <td style={{ padding: "31px 10px" }}>{reserves?.deposits?.[coin.name] ?? 'N/A'}</td>
-      <td style={{ padding: "31px 10px" }}>{reserves?.loans?.[coin.name] ?? 'N/A'}</td>
-      <td style={{ padding: "31px", textAlign: "center" }}>
-        <div>
-          {/* {deposit ? deposit[0].apr.toNumber() / 100 : "NaN"}% */}
+        </th>
+        <td style={{ padding: "31px 10px" }}>{oraclePriceForCoin || "N/A"}</td>
+        <td style={{ padding: "31px 10px" }}>{fairPriceForCoin || "N/A"}</td>
+        <td style={{ padding: "31px 10px" }}>
+          {reserves?.deposits?.[coin.name] ?? "N/A"}
+        </td>
+        <td style={{ padding: "31px 10px" }}>
+          {reserves?.loans?.[coin.name] ?? "N/A"}
+        </td>
+        <td style={{ padding: "31px", textAlign: "center" }}>
+          <div>
+            {/* {deposit ? deposit[0].apr.toNumber() / 100 : "NaN"}% */}
 
-          {depositLoanRates && parseInt(depositCommitment) < 4 ? (
-            `${
-              parseFloat(
-                depositLoanRates[
-                  `${getTokenFromName(coin.name)?.address}__${depositCommitment}`
-                ]?.depositAPR.apr100x
-              ) / 100
-            } %`
-          ) : (
-            <MySpinner />
-          )}
-        </div>
-      </td>
-      <td style={{ padding: "31px", textAlign: "center" }}>
-        <div>
-          {/* {borrow ? borrow[0].apr.toNumber() / 100 : "NaN"}% */}
-          {depositLoanRates && parseInt(borrowCommitment) < 2 ? (
-            `${
-              parseFloat(
-                depositLoanRates[
-                  `${getTokenFromName(coin.name)?.address}__${borrowCommitment}`
-                ]?.borrowAPR?.apr100x
-              ) / 100
-            }%`
-          ) : (
-            <MySpinner />
-          )}
-        </div>
-      </td>
-      <td style={{ width: "120px", padding: "25px 20px" }}>
-        <Deposit asset={coin.name} depositLoanRates={depositLoanRates} />
-      </td>
-      <td style={{ width: "120px", padding: "25px 20px" }}>
-        <Borrow asset={coin.name} title={coin.name} depositLoanRates={depositLoanRates} />
-      </td>
-    </tr>
+            {depositLoanRates && parseInt(depositCommitment) < 4 ? (
+              `${
+                parseFloat(
+                  depositLoanRates[
+                    `${
+                      getTokenFromName(coin.name)?.address
+                    }__${depositCommitment}`
+                  ]?.depositAPR.apr100x
+                ) / 100
+              } %`
+            ) : (
+              <MySpinner />
+            )}
+          </div>
+        </td>
+        <td style={{ padding: "31px", textAlign: "center" }}>
+          <div>
+            {/* {borrow ? borrow[0].apr.toNumber() / 100 : "NaN"}% */}
+            {depositLoanRates && parseInt(borrowCommitment) < 2 ? (
+              `${
+                parseFloat(
+                  depositLoanRates[
+                    `${
+                      getTokenFromName(coin.name)?.address
+                    }__${borrowCommitment}`
+                  ]?.borrowAPR?.apr100x
+                ) / 100
+              }%`
+            ) : (
+              <MySpinner />
+            )}
+          </div>
+        </td>
+        <td style={{ width: "120px", padding: "25px 20px" }}>
+          <Deposit asset={coin.name} depositLoanRates={depositLoanRates} />
+        </td>
+        <td style={{ width: "120px", padding: "25px 20px" }}>
+          <Borrow
+            asset={coin.name}
+            title={coin.name}
+            depositLoanRates={depositLoanRates}
+          />
+        </td>
+      </tr>
+    </>
   );
 };
 export default DashboardTokens;
