@@ -905,12 +905,12 @@ const Dashboard = () => {
 
                       <Row>
                        <Col style={{ padding: "25px" }}>
-                       <div style={{backgroundColor: "#1D2131" ,padding: "35px 0px"}}>
+                       <div style={{backgroundColor: "#1D2131" ,padding: "35px 0px",boxShadow: "5px 6px 10px black"}}>
                        <Chart/>
                        </div>
                        </Col>
                        <Col style={{ padding: "25px" }}>
-                       <div style={{backgroundColor: "#1D2131" ,padding: "35px 0px"}}>
+                       <div style={{backgroundColor: "#1D2131" ,padding: "35px 0px",boxShadow: "5px 6px 10px black"}}>
                        <Chart/>
                        </div>
                        </Col>
@@ -948,12 +948,12 @@ const Dashboard = () => {
 
                       <Row>
                        <Col style={{ padding: "25px" }}>
-                       <div style={{backgroundColor: "#1D2131" ,padding: "35px 0px"}}>
+                       <div style={{backgroundColor: "#1D2131" ,padding: "35px 0px",boxShadow: "5px 6px 10px black"}}>
                        <Chart/>
                        </div>
                        </Col>
                        <Col style={{ padding: "25px" }}>
-                       <div style={{backgroundColor: "#1D2131" ,padding: "35px 0px"}}>
+                       <div style={{backgroundColor: "#1D2131" ,padding: "35px 0px",boxShadow: "5px 6px 10px black"}}>
                        <Chart/>
                        </div>
                        </Col>
@@ -961,7 +961,7 @@ const Dashboard = () => {
 
                       <Row>
                       <Col style={{ padding: "25px" }}>
-                      <div style={{backgroundColor: "#1D2131" ,padding: "35px 0px"}}>
+                      <div style={{backgroundColor: "#1D2131" ,padding: "35px 0px",boxShadow: "5px 6px 10px black"}}>
                        <Chart2/>
                        </div>
                        </Col>
