@@ -2,7 +2,7 @@ import { useAccount, useContract, useStarknetCall, useStarknetExecute, useTransa
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Abi, uint256 } from "starknet";
-import { ERC20Abi, tokenAddressMap } from "../../stark-constants";
+import { ERC20Abi, tokenAddressMap, tokenDecimalsMap } from "../../stark-constants";
 import { TxToastManager } from "../../txToastManager";
 import { BNtoNum, GetErrorText, NumToBN } from "../../utils";
 
@@ -17,7 +17,13 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
 
   const { address: account } = useAccount();
   const [transApprove, setTransApprove] = useState("");
-  const [transRepay, setTransRepay] = useState("");
+  const [transRepayHash, setTransRepayHash] = useState("");
+  const [transSelfLiquidateHash, setIsSelfLiquidateHash] = useState("");
+
+  const repayTransactionReceipt = useTransactionReceipt({
+    hash: transRepayHash,
+    watch: true
+  })
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
@@ -48,7 +54,7 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
     calls: {
       contractAddress: tokenAddressMap[asset.loanMarket] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(repayAmount as number, 18), 0],
+      calldata: [diamondAddress, NumToBN(repayAmount as number, tokenDecimalsMap[asset.loanMarket]), 0],
     },
   });
 
@@ -61,20 +67,41 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
   } = useStarknetExecute({
     calls: [
       {
+        contractAddress: tokenAddressMap[asset.loanMarket] as string,
+        entrypoint: "approve",
+        calldata: [diamondAddress, NumToBN(repayAmount as number, tokenDecimalsMap[asset.loanMarket]), 0],
+      },
+      {
         contractAddress: diamondAddress,
         entrypoint: "loan_repay",
         calldata: [
           tokenAddressMap[asset.loanMarket],
           asset.commitmentIndex,
-          NumToBN(repayAmount as number, 18),
+          NumToBN(repayAmount as number, tokenDecimalsMap[asset.loanMarket]),
           0,
         ],
-      },
+      }
+    ]
+  });
+
+  const {
+    data: dataSelfLiquidate,
+    loading: loadingSelfLiquidate,
+    error: errorSelfLiquidate,
+    reset: resetSelfLiquidate,
+    execute: executeSelfLiquidate,
+  } = useStarknetExecute({
+    calls: [
       {
-        contractAddress: tokenAddressMap[asset.loanMarket] as string,
-        entrypoint: "approve",
-        calldata: [diamondAddress, NumToBN(repayAmount as number, 18), 0],
-      },
+        contractAddress: diamondAddress,
+        entrypoint: "loan_repay",
+        calldata: [
+          tokenAddressMap[asset.loanMarket],
+          asset.commitmentIndex,
+          0,
+          0,
+        ],
+      }
     ]
   });
 
@@ -120,7 +147,17 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
     repayAmount, 
     setRepayAmount,
     handleApprove,
-    executeRepay
+    executeRepay,
+    transRepayHash,
+    setTransRepayHash,
+    repayTransactionReceipt,
+    loadingRepay,
+    errorRepay,
+
+    //SelfLiquidate - Repay with 0 amount
+    executeSelfLiquidate, 
+    loadingSelfLiquidate,
+    errorSelfLiquidate,
   };
 }
 

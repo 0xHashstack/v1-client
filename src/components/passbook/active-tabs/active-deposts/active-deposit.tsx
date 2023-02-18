@@ -37,6 +37,7 @@ import {
   tokenAddressMap,
   ERC20Abi,
   getTokenFromName,
+  tokenDecimalsMap,
 } from "../../../../blockchain/stark-constants";
 import {
   BNtoNum,
@@ -206,7 +207,7 @@ const ActiveDeposit = ({
       {
         contractAddress: tokenAddressMap[tokenName] as string,
         entrypoint: "approve",
-        calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
+        calldata: [diamondAddress, NumToBN(depositAmount as number, tokenDecimalsMap[tokenName]), 0],
       },
       {
         contractAddress: diamondAddress,
@@ -214,7 +215,7 @@ const ActiveDeposit = ({
         calldata: [
           tokenAddressMap[tokenName],
           commitPeriod,
-          NumToBN(depositAmount as number, 18),
+          NumToBN(depositAmount as number, tokenDecimalsMap[tokenName]),
           0,
         ],
       },

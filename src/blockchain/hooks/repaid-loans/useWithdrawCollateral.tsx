@@ -23,10 +23,10 @@ const useWithdrawCollateral = (_diamondAddress: string, _loanId: number) => {
 	}, [withdrawCollateralTransactionReceipt])
 
   const {
-    data,
-    loading,
-    error,
-    reset,
+    data: dataWithdrawCollateral,
+    loading: loadingWithdrawCollateral,
+    error: errorWithdrawCollateral,
+    reset: resetWithdrawCollateral,
     execute: executeWithdrawCollateral,
   } = useStarknetExecute({
     calls: {
@@ -55,6 +55,9 @@ const useWithdrawCollateral = (_diamondAddress: string, _loanId: number) => {
 
   return {
     withdrawCollateral,
+    executeWithdrawCollateral,
+    loadingWithdrawCollateral, 
+    errorWithdrawCollateral,
   };
 };
 

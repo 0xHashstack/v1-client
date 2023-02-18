@@ -17,6 +17,7 @@ import {
   getTokenFromAddress,
   isTransactionLoading,
   tokenAddressMap,
+  tokenDecimalsMap,
 } from "../../../../blockchain/stark-constants";
 import { TxToastManager } from "../../../../blockchain/txToastManager";
 import { BNtoNum, GetErrorText, NumToBN } from "../../../../blockchain/utils";
@@ -87,7 +88,7 @@ const Repay = ({
     calls: {
       contractAddress: tokenAddressMap[asset.loanMarket] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(inputVal as number, 18), 0],
+      calldata: [diamondAddress, NumToBN(inputVal as number, tokenDecimalsMap[asset.loanMarket]), 0],
     },
   });
 
@@ -110,7 +111,7 @@ const Repay = ({
         calldata: [
           tokenAddressMap[asset.loanMarket],
           asset.commitmentIndex,
-          NumToBN(inputVal as number, 18),
+          NumToBN(inputVal as number, tokenDecimalsMap[asset.loanMarket]),
           0,
         ],
       }

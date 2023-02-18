@@ -85,7 +85,8 @@ interface ILoans {
   debtCategory: number | undefined;
   loanId: number;
   isSwapped: boolean;
-  state: number;
+  state: string;
+  stateType: number;
   currentLoanMarket: string | undefined;
   currentLoanAmount: number;
 }
@@ -204,7 +205,8 @@ const Dashboard = () => {
         debtCategory,
         loanId: loanData.loanId,
         isSwapped: loanData.state == "SWAPPED", // Swap status
-        state:
+        state: loanData.state,
+        stateType:
           loanData.state == "REPAID" || loanData.state == "LIQUIDATED" ? 1 : 0, // Repay status
         currentLoanMarket: getTokenFromAddress(
           loanData.currentMarket || loanData.loanMarket
@@ -219,16 +221,12 @@ const Dashboard = () => {
       };
       loans.push(JSON.parse(JSON.stringify(temp_len)));
 
-      setActiveLoansData(
-        loans.filter((asset) => {
-          return asset.state === 0;
-        })
-      );
+      setActiveLoansData(loans);
       console.log("loans: " + loans);
       setRepaidLoansData(
         loans.filter((asset) => {
           console.log(asset, "testasset");
-          return asset.state === 1;
+          return asset.state === "REPAID";
         })
       );
     }

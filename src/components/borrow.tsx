@@ -35,6 +35,7 @@ import {
   getTokenFromName,
   isTransactionLoading,
   tokenAddressMap,
+  tokenDecimalsMap,
 } from "../blockchain/stark-constants";
 import { GetErrorText, NumToBN } from "../blockchain/utils";
 import Image from "next/image";
@@ -200,7 +201,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
       entrypoint: "approve",
       calldata: [
         diamondAddress,
-        NumToBN(borrowParams.collateralAmount as number, 18),
+        NumToBN(borrowParams.collateralAmount as number, tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18),
         0,
       ],
     },
@@ -222,7 +223,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
         entrypoint: "approve",
         calldata: [
           diamondAddress,
-          NumToBN(borrowParams.collateralAmount as number, 18),
+          NumToBN(borrowParams.collateralAmount as number, tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18),
           0,
         ],
       },
@@ -231,11 +232,11 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
         entrypoint: "loan_request",
         calldata: [
           tokenAddressMap[asset],
-          NumToBN(borrowParams.loanAmount as number, 18),
+          NumToBN(borrowParams.loanAmount as number, tokenDecimalsMap[asset]),
           0,
           borrowParams.commitBorrowPeriod,
           tokenAddressMap[borrowParams.collateralMarket as string],
-          NumToBN(borrowParams.collateralAmount as number, 18),
+          NumToBN(borrowParams.collateralAmount as number, tokenDecimalsMap[asset]),
           0,
         ],
       },

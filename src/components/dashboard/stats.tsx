@@ -2,6 +2,7 @@ import Image from "next/image";
 import statsIcon from "../../assets/images/statsIcon.svg";
 
 const StatsBoard = () => {
+
   return (
     <div
       className="stats-board"
