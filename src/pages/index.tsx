@@ -63,7 +63,7 @@ import DashboardLiquid from "../components/dashboard/DashboardLiquid";
 
 import useMaxloan from "../blockchain/hooks/Max_loan_given_collat";
 import { BNtoNum, GetErrorText, NumToBN } from "../blockchain/utils";
-import Crossimg from "../../public/cross.svg"
+import Crossimg from "../../public/cross.svg";
 import Chart from "./Chart";
 import Chart2 from "./Chart2";
 // import App from "./Chart"
@@ -98,8 +98,6 @@ interface ILoans {
 }
 
 const Dashboard = () => {
-
-
   const [dropDownArrow, setDropDownArrow] = useState(connectWalletArrowDown);
   const [isLoading, setIsLoading] = useState(true);
   const [activeDepositsData, setActiveDepositsData] = useState<IDeposit[]>([]);
@@ -255,7 +253,6 @@ const Dashboard = () => {
           console.log("loans:", loans);
           onLoansData(loans);
           setIsLoading(false);
-
         },
         (err) => {
           setIsLoading(false);
@@ -269,7 +266,6 @@ const Dashboard = () => {
     customActiveTab,
     isTransactionDone,
     activeLiquidationsData,
-
   ]);
 
   const onDepositData = async (depositsData: any[]) => {
@@ -316,32 +312,25 @@ const Dashboard = () => {
     setActiveDepositsData(nonZeroDeposits);
   };
 
-
   useEffect(() => {
     !isTransactionDone &&
       account &&
-      OffchainAPI.getActiveDeposits(account).then(
-        (deposits) => {
-          onDepositData(deposits);
-          setIsLoading(false);
-        },
-        (err) => {
-          setIsLoading(false);
-          setActiveDepositsData([]);
-          console.log(err);
-        }
-      ).catch(() => {
-        console.log("error in getting deposits");
-      });
-
-
-  }, [
-    account,
-    passbookStatus,
-    customActiveTab,
-    isTransactionDone,
-
-  ]);
+      OffchainAPI.getActiveDeposits(account)
+        .then(
+          (deposits) => {
+            onDepositData(deposits);
+            setIsLoading(false);
+          },
+          (err) => {
+            setIsLoading(false);
+            setActiveDepositsData([]);
+            console.log(err);
+          }
+        )
+        .catch(() => {
+          console.log("error in getting deposits");
+        });
+  }, [account, passbookStatus, customActiveTab, isTransactionDone]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -432,8 +421,6 @@ const Dashboard = () => {
   const handleWithdrawDepositTime = (e: any) => {
     setWithdrawDepositVal(e.target.value);
   };
-
-
 
   const onLiquidationsData = async (liquidationsData: any[]) => {
     const liquidations: any[] = [];
@@ -612,9 +599,9 @@ const Dashboard = () => {
               {/* <Card style={{ height: "35rem", overflowY: "scroll" }}> */}
               <div style={{ margin: "1px 5px 5px 14px" }}>
                 {customActiveTab === "1" ||
-                  customActiveTab === "2" ||
-                  customActiveTab === "3" ||
-                  customActiveTab === "4" ? (
+                customActiveTab === "2" ||
+                customActiveTab === "3" ||
+                customActiveTab === "4" ? (
                   <DashboardMenu
                     customActiveTab={customActiveTab}
                     toggleCustom={toggleCustom}
@@ -636,8 +623,8 @@ const Dashboard = () => {
                 )}
               </div>
               {customActiveTab === "3" ||
-                customActiveTab === "4" ||
-                customActiveTab === "2" ? (
+              customActiveTab === "4" ||
+              customActiveTab === "2" ? (
                 <>
                   <div
                     style={{
@@ -661,35 +648,36 @@ const Dashboard = () => {
                       </div>
                     </div>
                   </div>
-                  {customActiveTab !== "2" ? (<div
-                    style={{
-                      position: "absolute",
-                      zIndex: "500",
-                      right: "80px",
-                      top: "60px",
-                    }}
-                  >
-                    <button
+                  {customActiveTab !== "2" ? (
+                    <div
                       style={{
-                        color: "white",
-                        backgroundColor: "rgb(57, 61, 79)",
-                        padding: "6px 16px",
-                        borderRadius: "5px",
-                        display: "flex",
-                        alignItems: "center",
-                        border: "none"
+                        position: "absolute",
+                        zIndex: "500",
+                        right: "80px",
+                        top: "60px",
                       }}
                     >
-                      Active&nbsp;&nbsp;&nbsp;
-                      <Image
-                        src={dropDownArrow}
-                        alt="Picture of the author"
-                        width="14px"
-                        height="14px"
-                      />
-                    </button>
-                  </div>) : null}
-
+                      <button
+                        style={{
+                          color: "white",
+                          backgroundColor: "rgb(57, 61, 79)",
+                          padding: "6px 16px",
+                          borderRadius: "5px",
+                          display: "flex",
+                          alignItems: "center",
+                          border: "none",
+                        }}
+                      >
+                        Active&nbsp;&nbsp;&nbsp;
+                        <Image
+                          src={dropDownArrow}
+                          alt="Picture of the author"
+                          width="14px"
+                          height="14px"
+                        />
+                      </button>
+                    </div>
+                  ) : null}
                 </>
               ) : null}
               {customActiveTab === "7" ? (
@@ -717,118 +705,288 @@ const Dashboard = () => {
                       <div style={{ display: "flex" }}>
                         <Col style={{ padding: "15px" }}>
                           <div style={{ gap: "15px", display: "flex" }}>
-                            <div style={{ border: "solid rgb(57, 61, 79)", padding: '2px 12px', width: 'fit-content', borderRadius: '4px' }}>
-                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
+                            <div
+                              style={{
+                                border: "solid rgb(57, 61, 79)",
+                                padding: "2px 12px",
+                                width: "fit-content",
+                                borderRadius: "4px",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  color: "rgb(111, 111, 111)",
+                                  fontSize: "13px",
+                                }}
+                              >
                                 Total Supply
                               </span>
-                              <div style={{ fontSize: "25px" }}>
-                                $8935.5
-                              </div>
+                              <div style={{ fontSize: "25px" }}>$8935.5</div>
                             </div>
-                            <div style={{ border: "solid rgb(57, 61, 79)", padding: '2px 12px', width: 'fit-content', borderRadius: '4px' }}>
-                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
+                            <div
+                              style={{
+                                border: "solid rgb(57, 61, 79)",
+                                padding: "2px 12px",
+                                width: "fit-content",
+                                borderRadius: "4px",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  color: "rgb(111, 111, 111)",
+                                  fontSize: "13px",
+                                }}
+                              >
                                 Total Apr Earned
                               </span>
-                              <div style={{ fontSize: "25px" }}>
-                                15.5 %
-                              </div>
+                              <div style={{ fontSize: "25px" }}>15.5 %</div>
                             </div>
                           </div>
-                          <div style={{ gap: "35px", padding: "15px 0px",display:"flex" }}>
-                          
-                            <div style={{ border: "solid rgb(57, 61, 79)", padding: '2px 12px', width: "fit-content", borderRadius: '4px', gap: "4px" }}>
-                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
+                          <div
+                            style={{
+                              gap: "35px",
+                              padding: "15px 0px",
+                              display: "flex",
+                            }}
+                          >
+                            <div
+                              style={{
+                                border: "solid rgb(57, 61, 79)",
+                                padding: "2px 12px",
+                                width: "fit-content",
+                                borderRadius: "4px",
+                                gap: "4px",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  color: "rgb(111, 111, 111)",
+                                  fontSize: "13px",
+                                }}
+                              >
                                 Active Supply Markets
                               </span>
 
-                              <div style={{ fontSize: "20px", textAlign: "center",display:"flex",gap:"8px" }}>
-                                  <div>
-                                    <img src="./BTC.svg" alt="BTC" />
-                                  </div>
-                                  <span>
-                                    BTC
-                                  </span>
+                              <div
+                                style={{
+                                  fontSize: "20px",
+                                  textAlign: "center",
+                                  display: "flex",
+                                  gap: "8px",
+                                }}
+                              >
+                                <div>
+                                  <img src="./BTC.svg" alt="BTC" />
+                                </div>
+                                <span>BTC</span>
                               </div>
                             </div>
-                            <div style={{display:"flex",alignItems:"center"}}>
+                            <div
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
                               {/* important note */}
-                                {/* Use formula here wile mapping that position is relative and left to be -12*(index-1) while mapping to give the effect */}
-                                {/* also zindex value to be 1000-index */}
-                                <div style={{padding: "10px" ,backgroundColor: "#1C202F",borderRadius: "37px",zIndex:"999",boxShadow: "4px 2px 5px black"}}>
-                                <img src="./BTC.svg" alt="BTC" style={{height:"30px" ,width:"30px"}} />
-                                </div>
+                              {/* Use formula here wile mapping that position is relative and left to be -12*(index-1) while mapping to give the effect */}
+                              {/* also zindex value to be 1000-index */}
+                              <div
+                                style={{
+                                  padding: "10px",
+                                  backgroundColor: "#1C202F",
+                                  borderRadius: "37px",
+                                  zIndex: "999",
+                                  boxShadow: "4px 2px 5px black",
+                                }}
+                              >
+                                <img
+                                  src="./BTC.svg"
+                                  alt="BTC"
+                                  style={{ height: "30px", width: "30px" }}
+                                />
+                              </div>
 
-                                <div style={{padding: "10px" ,backgroundColor: "#1C202F",borderRadius: "37px",position:"relative",left:"-10px",zIndex:"998",boxShadow: "4px 2px 5px black"}}>
-                                <img src="./USDT.svg" alt="BTC" style={{height:"30px" ,width:"30px"}} />
-                                </div>
+                              <div
+                                style={{
+                                  padding: "10px",
+                                  backgroundColor: "#1C202F",
+                                  borderRadius: "37px",
+                                  position: "relative",
+                                  left: "-10px",
+                                  zIndex: "998",
+                                  boxShadow: "4px 2px 5px black",
+                                }}
+                              >
+                                <img
+                                  src="./USDT.svg"
+                                  alt="BTC"
+                                  style={{ height: "30px", width: "30px" }}
+                                />
+                              </div>
 
-                                <div style={{padding: "10px" ,backgroundColor: "#1C202F",borderRadius: "37px",position:"relative",left:"-20px",zIndex:"997",boxShadow: "4px 2px 5px black"}}>
-                                <img src="./USDC.svg" alt="BTC" style={{height:"30px" ,width:"30px"}} />
-                                </div>
-
+                              <div
+                                style={{
+                                  padding: "10px",
+                                  backgroundColor: "#1C202F",
+                                  borderRadius: "37px",
+                                  position: "relative",
+                                  left: "-20px",
+                                  zIndex: "997",
+                                  boxShadow: "4px 2px 5px black",
+                                }}
+                              >
+                                <img
+                                  src="./USDC.svg"
+                                  alt="BTC"
+                                  style={{ height: "30px", width: "30px" }}
+                                />
+                              </div>
                             </div>
                           </div>
                         </Col>
                         <Col style={{ padding: "15px" }}>
                           <div style={{ gap: "15px", display: "flex" }}>
-                            <div style={{ border: "solid rgb(57, 61, 79)", padding: '2px 12px', width: 'fit-content', borderRadius: '4px' }}>
-                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
+                            <div
+                              style={{
+                                border: "solid rgb(57, 61, 79)",
+                                padding: "2px 12px",
+                                width: "fit-content",
+                                borderRadius: "4px",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  color: "rgb(111, 111, 111)",
+                                  fontSize: "13px",
+                                }}
+                              >
                                 Your Borrow
                               </span>
-                              <div style={{ fontSize: "25px" }}>
-                                $8935.5
-                              </div>
+                              <div style={{ fontSize: "25px" }}>$8935.5</div>
                             </div>
-                            <div style={{ border: "solid rgb(57, 61, 79)", padding: '2px 12px', width: 'fit-content', borderRadius: '4px' }}>
-                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
+                            <div
+                              style={{
+                                border: "solid rgb(57, 61, 79)",
+                                padding: "2px 12px",
+                                width: "fit-content",
+                                borderRadius: "4px",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  color: "rgb(111, 111, 111)",
+                                  fontSize: "13px",
+                                }}
+                              >
                                 Rffective Borrow Apr
                               </span>
-                              <div style={{ fontSize: "25px" }}>
-                                15.5 %
-                              </div>
+                              <div style={{ fontSize: "25px" }}>15.5 %</div>
                             </div>
                           </div>
-                          <div style={{ gap: "35px", padding: "15px 0px",display:"flex" }}>
-                          
-                            <div style={{ border: "solid rgb(57, 61, 79)", padding: '2px 12px', width: "fit-content", borderRadius: '4px', gap: "4px" }}>
-                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
+                          <div
+                            style={{
+                              gap: "35px",
+                              padding: "15px 0px",
+                              display: "flex",
+                            }}
+                          >
+                            <div
+                              style={{
+                                border: "solid rgb(57, 61, 79)",
+                                padding: "2px 12px",
+                                width: "fit-content",
+                                borderRadius: "4px",
+                                gap: "4px",
+                              }}
+                            >
+                              <span
+                                style={{
+                                  color: "rgb(111, 111, 111)",
+                                  fontSize: "13px",
+                                }}
+                              >
                                 Active Borrow Markets
                               </span>
 
-                              <div style={{ fontSize: "20px", textAlign: "center",display:"flex",gap:"8px" }}>
-                                  <div>
-                                    <img src="./BTC.svg" alt="BTC" />
-                                  </div>
-                                  <span>
-                                    BTC
-                                  </span>
+                              <div
+                                style={{
+                                  fontSize: "20px",
+                                  textAlign: "center",
+                                  display: "flex",
+                                  gap: "8px",
+                                }}
+                              >
+                                <div>
+                                  <img src="./BTC.svg" alt="BTC" />
+                                </div>
+                                <span>BTC</span>
                               </div>
                             </div>
-                            <div style={{display:"flex",alignItems:"center"}}>
+                            <div
+                              style={{ display: "flex", alignItems: "center" }}
+                            >
                               {/* important note */}
-                                {/* Use formula here wile mapping that position is relative and left to be -12*(index-1) while mapping to give the effect */}
-                                {/* also zindex value to be 1000-index */}
-                                <div style={{padding: "10px" ,backgroundColor: "#1C202F",borderRadius: "37px",zIndex:"999",boxShadow: "4px 2px 5px black"}}>
-                                <img src="./BTC.svg" alt="BTC" style={{height:"30px" ,width:"30px"}} />
-                                </div>
+                              {/* Use formula here wile mapping that position is relative and left to be -12*(index-1) while mapping to give the effect */}
+                              {/* also zindex value to be 1000-index */}
+                              <div
+                                style={{
+                                  padding: "10px",
+                                  backgroundColor: "#1C202F",
+                                  borderRadius: "37px",
+                                  zIndex: "999",
+                                  boxShadow: "4px 2px 5px black",
+                                }}
+                              >
+                                <img
+                                  src="./BTC.svg"
+                                  alt="BTC"
+                                  style={{ height: "30px", width: "30px" }}
+                                />
+                              </div>
 
-                                <div style={{padding: "10px" ,backgroundColor: "#1C202F",borderRadius: "37px",position:"relative",left:"-10px",zIndex:"998",boxShadow: "4px 2px 5px black"}}>
-                                <img src="./USDT.svg" alt="BTC" style={{height:"30px" ,width:"30px"}} />
-                                </div>
+                              <div
+                                style={{
+                                  padding: "10px",
+                                  backgroundColor: "#1C202F",
+                                  borderRadius: "37px",
+                                  position: "relative",
+                                  left: "-10px",
+                                  zIndex: "998",
+                                  boxShadow: "4px 2px 5px black",
+                                }}
+                              >
+                                <img
+                                  src="./USDT.svg"
+                                  alt="BTC"
+                                  style={{ height: "30px", width: "30px" }}
+                                />
+                              </div>
 
-                                <div style={{padding: "10px" ,backgroundColor: "#1C202F",borderRadius: "37px",position:"relative",left:"-20px",zIndex:"997",boxShadow: "4px 2px 5px black"}}>
-                                <img src="./USDC.svg" alt="BTC" style={{height:"30px" ,width:"30px"}} />
-                                </div>
-
+                              <div
+                                style={{
+                                  padding: "10px",
+                                  backgroundColor: "#1C202F",
+                                  borderRadius: "37px",
+                                  position: "relative",
+                                  left: "-20px",
+                                  zIndex: "997",
+                                  boxShadow: "4px 2px 5px black",
+                                }}
+                              >
+                                <img
+                                  src="./USDC.svg"
+                                  alt="BTC"
+                                  style={{ height: "30px", width: "30px" }}
+                                />
+                              </div>
                             </div>
                           </div>
                         </Col>
                       </div>
                       <div style={{ padding: "15px" }}>
-                        Think we should provide additional insights? <span style={{ textDecoration: "underline" }}>Write to us</span>
+                        Think we should provide additional insights?{" "}
+                        <span style={{ textDecoration: "underline" }}>
+                          Write to us
+                        </span>
                       </div>
                     </CardBody>
-
                   </Card>
                 </>
               ) : null}
@@ -856,126 +1014,214 @@ const Dashboard = () => {
                         </span>
                       </div>
                       <Row>
-                      <div style={{ display: "flex" }}>
-                        <Col style={{ padding: "25px" }}>
-                          <div style={{ gap: "15px", display: "flex" }}>
-                            <div style={{ border: "solid black", padding: '10px 12px', width: 'fit-content', borderRadius: '4px' }}>
-                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
-                                Supplied Liquidity:
-                              </span>
-                              <div style={{ fontSize: "20px" }}>
-                                $ 1,000,952
+                        <div style={{ display: "flex" }}>
+                          <Col style={{ padding: "25px" }}>
+                            <div style={{ gap: "15px", display: "flex" }}>
+                              <div
+                                style={{
+                                  border: "solid black",
+                                  padding: "10px 12px",
+                                  width: "fit-content",
+                                  borderRadius: "4px",
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    color: "rgb(111, 111, 111)",
+                                    fontSize: "13px",
+                                  }}
+                                >
+                                  Supplied Liquidity:
+                                </span>
+                                <div style={{ fontSize: "20px" }}>
+                                  $ 1,000,952
+                                </div>
+                              </div>
+                              <div
+                                style={{
+                                  border: "solid black",
+                                  padding: "10px 12px",
+                                  width: "fit-content",
+                                  borderRadius: "4px",
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    color: "rgb(111, 111, 111)",
+                                    fontSize: "13px",
+                                  }}
+                                >
+                                  Borrowed Liquidity:
+                                </span>
+                                <div style={{ fontSize: "20px" }}>
+                                  $ 1,000,952
+                                </div>
                               </div>
                             </div>
-                            <div style={{ border: "solid black", padding: '10px 12px', width: 'fit-content', borderRadius: '4px' }}>
-                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
-                                Borrowed Liquidity:
-                              </span>
-                              <div style={{ fontSize: "20px" }}>
-                              $ 1,000,952
+                          </Col>
+                          <Col style={{ padding: "25px" }}>
+                            <div style={{ gap: "15px", display: "flex" }}>
+                              <div
+                                style={{
+                                  border: "solid black",
+                                  padding: "10px 12px",
+                                  width: "fit-content",
+                                  borderRadius: "4px",
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    color: "rgb(111, 111, 111)",
+                                    fontSize: "13px",
+                                  }}
+                                >
+                                  Your Borrow
+                                </span>
+                                <div style={{ fontSize: "20px" }}>$ 8932.5</div>
+                              </div>
+                              <div
+                                style={{
+                                  border: "solid black",
+                                  padding: "10px 12px",
+                                  width: "fit-content",
+                                  borderRadius: "4px",
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    color: "rgb(111, 111, 111)",
+                                    fontSize: "13px",
+                                  }}
+                                >
+                                  Effective Borrow Apr
+                                </span>
+                                <div style={{ fontSize: "20px" }}>15.5%</div>
                               </div>
                             </div>
-                          </div>
-                          
-                        </Col>
-                        <Col style={{ padding: "25px" }}>
-                          <div style={{ gap: "15px", display: "flex" }}>
-                            <div style={{ border: "solid black", padding: '10px 12px', width: 'fit-content', borderRadius: '4px' }}>
-                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
-                                Your Borrow
-                              </span>
-                              <div style={{ fontSize: "20px" }}>
-                                $ 8932.5
-                              </div>
-                            </div>
-                            <div style={{ border: "solid black", padding: '10px 12px', width: 'fit-content', borderRadius: '4px' }}>
-                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
-                                Effective Borrow Apr
-                              </span>
-                              <div style={{ fontSize: "20px" }}>
-                              15.5%
-                              </div>
-                            </div>
-                          </div>
-                          
-                        </Col>
-                        
-                      </div>
+                          </Col>
+                        </div>
                       </Row>
 
                       <Row>
-                       <Col style={{ padding: "25px" }}>
-                       <div style={{backgroundColor: "#1D2131" ,padding: "35px 0px",boxShadow: "5px 6px 10px black"}}>
-                       <Chart/>
-                       </div>
-                       </Col>
-                       <Col style={{ padding: "25px" }}>
-                       <div style={{backgroundColor: "#1D2131" ,padding: "35px 0px",boxShadow: "5px 6px 10px black"}}>
-                       <Chart/>
-                       </div>
-                       </Col>
-                      </Row>
-
-                      <Row>
-                      <div style={{ display: "flex" }}>
                         <Col style={{ padding: "25px" }}>
-                          <div style={{ gap: "15px", display: "flex" }}>
-                            <div style={{ border: "solid black", padding: '10px 12px', width: 'fit-content', borderRadius: '4px' }}>
-                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
-                                Average Supply Apr:
-                              </span>
-                              <div style={{ fontSize: "20px" }}>
-                                3.6 %
-                              </div>
-                            </div>
-                          </div>
-                          
-                        </Col>
-                        <Col style={{ padding: "25px" }}>
-                          <div style={{ gap: "15px", display: "flex" }}>
-                            <div style={{ border: "solid black", padding: '10px 12px', width: 'fit-content', borderRadius: '4px' }}>
-                              <span style={{ color: "rgb(111, 111, 111)", fontSize: "13px" }}>
-                                Average Borrow Apr:
-                              </span>
-                              <div style={{ fontSize: "20px" }}>
-                                $ 8932.5
-                              </div>
-                            </div>
+                          <div
+                            style={{
+                              backgroundColor: "#1D2131",
+                              padding: "35px 0px",
+                              boxShadow: "5px 6px 10px black",
+                            }}
+                          >
+                            <Chart />
                           </div>
                         </Col>
-                      </div>
+                        <Col style={{ padding: "25px" }}>
+                          <div
+                            style={{
+                              backgroundColor: "#1D2131",
+                              padding: "35px 0px",
+                              boxShadow: "5px 6px 10px black",
+                            }}
+                          >
+                            <Chart />
+                          </div>
+                        </Col>
                       </Row>
 
                       <Row>
-                       <Col style={{ padding: "25px" }}>
-                       <div style={{backgroundColor: "#1D2131" ,padding: "35px 0px",boxShadow: "5px 6px 10px black"}}>
-                       <Chart/>
-                       </div>
-                       </Col>
-                       <Col style={{ padding: "25px" }}>
-                       <div style={{backgroundColor: "#1D2131" ,padding: "35px 0px",boxShadow: "5px 6px 10px black"}}>
-                       <Chart/>
-                       </div>
-                       </Col>
+                        <div style={{ display: "flex" }}>
+                          <Col style={{ padding: "25px" }}>
+                            <div style={{ gap: "15px", display: "flex" }}>
+                              <div
+                                style={{
+                                  border: "solid black",
+                                  padding: "10px 12px",
+                                  width: "fit-content",
+                                  borderRadius: "4px",
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    color: "rgb(111, 111, 111)",
+                                    fontSize: "13px",
+                                  }}
+                                >
+                                  Average Supply Apr:
+                                </span>
+                                <div style={{ fontSize: "20px" }}>3.6 %</div>
+                              </div>
+                            </div>
+                          </Col>
+                          <Col style={{ padding: "25px" }}>
+                            <div style={{ gap: "15px", display: "flex" }}>
+                              <div
+                                style={{
+                                  border: "solid black",
+                                  padding: "10px 12px",
+                                  width: "fit-content",
+                                  borderRadius: "4px",
+                                }}
+                              >
+                                <span
+                                  style={{
+                                    color: "rgb(111, 111, 111)",
+                                    fontSize: "13px",
+                                  }}
+                                >
+                                  Average Borrow Apr:
+                                </span>
+                                <div style={{ fontSize: "20px" }}>$ 8932.5</div>
+                              </div>
+                            </div>
+                          </Col>
+                        </div>
                       </Row>
 
                       <Row>
-                      <Col style={{ padding: "25px" }}>
-                      <div style={{backgroundColor: "#1D2131" ,padding: "35px 0px",boxShadow: "5px 6px 10px black"}}>
-                       <Chart2/>
-                       </div>
-                       </Col>
+                        <Col style={{ padding: "25px" }}>
+                          <div
+                            style={{
+                              backgroundColor: "#1D2131",
+                              padding: "35px 0px",
+                              boxShadow: "5px 6px 10px black",
+                            }}
+                          >
+                            <Chart />
+                          </div>
+                        </Col>
+                        <Col style={{ padding: "25px" }}>
+                          <div
+                            style={{
+                              backgroundColor: "#1D2131",
+                              padding: "35px 0px",
+                              boxShadow: "5px 6px 10px black",
+                            }}
+                          >
+                            <Chart />
+                          </div>
+                        </Col>
                       </Row>
-                     
+
+                      <Row>
+                        <Col style={{ padding: "25px" }}>
+                          <div
+                            style={{
+                              backgroundColor: "#1D2131",
+                              padding: "35px 0px",
+                              boxShadow: "5px 6px 10px black",
+                            }}
+                          >
+                            <Chart2 />
+                          </div>
+                        </Col>
+                      </Row>
                     </CardBody>
-
                   </Card>
                 </>
               ) : null}
 
               {customActiveTab === "1" ||
-                customActiveTab === "3" ||
-                customActiveTab === "4" ? (
+              customActiveTab === "3" ||
+              customActiveTab === "4" ? (
                 <Card style={{ height: "30rem" }}>
                   <CardBody
                     style={{
@@ -986,8 +1232,11 @@ const Dashboard = () => {
                       boxShadow: "0px 0px 1px 1px #181728",
                     }}
                   >
-                    {console.log("depositDatall", activeDepositsData, activeLoansData)}
-                    {" "}
+                    {console.log(
+                      "depositDatall",
+                      activeDepositsData,
+                      activeLoansData
+                    )}{" "}
                     {customActiveTab === "1" ? (
                       <LoanBorrowCommitment
                         isLoading={isLoading}
@@ -1061,8 +1310,6 @@ const Dashboard = () => {
                     <u style={{ cursor: "pointer" }}>your borrow</u>
                   </div>
                   <SpendLoanNav />
-
-
                 </>
               ) : null}
             </Col>
