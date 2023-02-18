@@ -1331,7 +1331,7 @@ const Dashboard = () => {
                   <div style={{ color: "white", margin: "10px 0" }}>
                     &nbsp; &nbsp; Only unspent loans are displayed here. For
                     comprehensive list of active loansgo to{" "}
-                    <u style={{ cursor: "pointer" }}>your borrow</u>
+                    <u style={{ cursor: "pointer" }} onClick={()=>{toggleCustom("4")}}>your borrow</u>
                   </div>
                   <SpendLoanNav />
                 </>
