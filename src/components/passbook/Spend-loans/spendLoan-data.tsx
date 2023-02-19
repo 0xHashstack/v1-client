@@ -13,22 +13,31 @@ const SpendLoanData = ({ loan }) => {
         style={{
           margin: "10px",
           color: "white",
-          textAlign: "left",
-          marginLeft: "70px",
+          textAlign: "center",
+          // marginLeft: "70px",
         }}
       >
         <Row
-          onClick={() => setSelectedLoan(loan)}
+          onClick={() => {
+            if (selectedLoan.loanId != loan.loanId) {
+              setSelectedLoan(loan);
+            } else {
+              setSelectedLoan("");
+            }
+          }}
           style={{
-            // margin: "15px 1px 15px 10px",
-            opacity: `${selectedLoan.loanId === loan.loanId ? "1" : "0.5"}`,
+            opacity: `${selectedLoan.loanId === loan.loanId ? "10" : "0.5"}`,
             alignItems: "center",
-            gap: "50px",
+            marginLeft: "-40px",
+            cursor: "pointer",
+            padding: "20px 0",
+            backgroundColor: `${
+              selectedLoan.loanId === loan.loanId ? "#1C202F40" : "#2A2E3F"
+            }`,
+            // gap: "30px",
           }}
         >
-          <Col style={{ marginLeft: "-10px" }}>
-            ID{loan.loanId}
-          </Col>
+          <Col style={{ marginLeft: "-10px" }}>ID{loan.loanId}</Col>
           <Col style={{ marginLeft: "-10px" }}>
             <img src={`./${loan.loanMarket}.svg`} height="20px" />
             &nbsp;&nbsp;{loan.loanMarket}
@@ -36,12 +45,12 @@ const SpendLoanData = ({ loan }) => {
 
           <Col className="mr-4 ">
             <span style={{ fontSize: "14px", fontWeight: "600" }}>
-              {(loan.loanAmount/ 10 ** 18).toFixed(4)}
+              {(loan.loanAmount / 10 ** 18).toFixed(4)}
             </span>
-            <div>
+            {/* <div>
               <img src={`./${loan.loanMarket}.svg`} height="20px" />
               &nbsp;&nbsp;{loan.loanMarket}
-            </div>
+            </div> */}
           </Col>
 
           <Col>
@@ -60,10 +69,6 @@ const SpendLoanData = ({ loan }) => {
             >
               {(loan.collateralAmount / 10 ** 18).toFixed(4)}
             </span>
-            <div style={{ marginLeft: "20px" }}>
-              <img src={`./usdt.svg`} height="20px" />
-              &nbsp;&nbsp;USDT
-            </div>
           </Col>
         </Row>
       </UncontrolledAccordion>

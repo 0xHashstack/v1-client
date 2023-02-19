@@ -4,7 +4,6 @@ import { TabContext } from "../../../hooks/contextHooks/TabContext";
 import SpendLoanData from "./spendLoan-data";
 
 const SpendLoan = ({ activeLoansData }) => {
-
   const { selectedLoan, setSelectedLoan } = useContext(TabContext);
 
   return (
@@ -21,8 +20,6 @@ const SpendLoan = ({ activeLoansData }) => {
         }}
       > */}
 
-
-
       <Table>
         <Row
           onClick={() => {
@@ -34,17 +31,18 @@ const SpendLoan = ({ activeLoansData }) => {
             color: "rgb(140, 140, 140)",
             fontWeight: "600",
             alignItems: "center",
-            // gap: "20px",
             fontSize: "11px",
             backgroundColor: "rgb(42, 46, 63)",
-            textAlign: "left",
+            textAlign: "center",
+            marginLeft: "-40px",
           }}
         >
           <Col
             style={{
-              width: "10px",
+              // width: "10px",
               padding: "20px 10px",
-              marginLeft: "70px",
+
+              // marginLeft: "70px",
             }}
           >
             Borrow ID
@@ -53,7 +51,7 @@ const SpendLoan = ({ activeLoansData }) => {
             style={{
               width: "10px",
               padding: "20px 10px",
-              marginLeft: "70px",
+              // marginLeft: "70px",
             }}
           >
             Borrow Market
@@ -78,10 +76,10 @@ const SpendLoan = ({ activeLoansData }) => {
 
       {activeLoansData.map((loan, index) => {
         return (
-          <div key={index} >
+          <div key={index}>
             <SpendLoanData loan={loan} />
           </div>
-        )
+        );
       })}
 
       {/* <SpendLoanData /> */}

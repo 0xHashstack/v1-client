@@ -266,7 +266,7 @@ const BorrowData = ({
   const [actionLabel, setActionLabel] = useState("Stake");
 
   const [borrowInterest, setBorrowInterest] = useState<string>("");
-  const [currentBorrowInterest, setCurrentBorrowInterest] = useState<string>();
+  const [currentBorrowInterest, setCurrentBorrowInterest] = useState<any>();
 
   const [selection, setSelection] = useState("Spend Borrow");
   const [selectionTwo, setSelectionTwo] = useState("Add Collateral");
@@ -277,10 +277,11 @@ const BorrowData = ({
   const [value, setValue] = useState(0);
   const [commitPeriod, setCommitPeriod] = useState(0);
   const [stakeDropDown, setStakeDropDown] = useState(false);
-
-  const yagitimes = ["1", "2", "3", "4"];
+  const [appsImage, setappsImage] = useState("yagiLogo");
+  const apps = ["mySwap", "jediSwap", "yagiLogo"];
   const [yagiDownArrow, setyagiDownArrow] = useState(Downarrow);
-  const [yagiselection, setyagiselection] = useState("1");
+  const [yagiselection, setyagiselection] = useState("0");
+
   const [Yagidrop, setYagidrop] = useState(false);
 
   useEffect(() => {
@@ -641,17 +642,19 @@ const BorrowData = ({
         style={{
           margin: "10px",
           color: "white",
-          textAlign: "left",
+          textAlign: "center",
         }}
       >
         <Row
           style={{
             margin: "15px 1px 15px 10px",
             alignItems: "center",
-            gap: "50px",
+            gap: "30px",
           }}
         >
-          <Col style={{ marginLeft: "-10px" }}>ID{assetParam.loanId}</Col>
+          <Col style={{ marginLeft: "-10px", textAlign: "center" }}>
+            ID{assetParam.loanId}
+          </Col>
 
           <Col style={{}}>
             <div>
@@ -681,9 +684,6 @@ const BorrowData = ({
           </Col>
 
           <Col className="mr-4 ">
-            <span style={{ fontSize: "14px", fontWeight: "600" }}>
-              {parseFloat(BNtoNum(Number(assetParam.loanAmount)))}
-            </span>
             <div>
               <img
                 src={
@@ -695,8 +695,11 @@ const BorrowData = ({
                 }
                 height="18px"
               />
-
-              <div
+              &nbsp;&nbsp;
+              <span style={{ fontSize: "14px", fontWeight: "600" }}>
+                {parseFloat(BNtoNum(Number(assetParam.loanAmount)))}
+              </span>
+              {/* <div
                 className="mr-6"
                 style={{
                   display: "inline-block",
@@ -705,7 +708,7 @@ const BorrowData = ({
               >
                 &nbsp;
                 {EventMap[assetParam.loanMarket.toUpperCase()]}
-              </div>
+              </div> */}
             </div>
           </Col>
 
@@ -722,11 +725,21 @@ const BorrowData = ({
                 fontSize: "13px",
               }}
             >
-              <span style={{ fontSize: "14px" }}>
-                {currentBorrowInterest}% APR
+              <span
+                style={{
+                  fontSize: "10px",
+                }}
+              >
+                {parseFloat(currentBorrowInterest).toFixed(2)}% APR
               </span>
             </div>
           </Col>
+
+          <Col>xxxxxxxx</Col>
+
+          <Col>xxxxxxxx</Col>
+
+          <Col>xxxxxxxx</Col>
 
           <Col>xxxxxxxx</Col>
 
@@ -1298,7 +1311,7 @@ const BorrowData = ({
                               <div>
                                 &nbsp;&nbsp;
                                 <img
-                                  src={`./yagilogo.svg`}
+                                  src={`./${appsImage}.svg`}
                                   width="60px"
                                   height="30px"
                                 ></img>
@@ -2298,8 +2311,8 @@ const BorrowData = ({
                         boxShadow: "0px 0px 10px #00000020",
                       }}
                     >
-                      {yagitimes.map((select, index) => {
-                        if (yagiselection === select) {
+                      {apps.map((select, index) => {
+                        if (appsImage === select) {
                           return <></>;
                         }
                         return (
@@ -2313,12 +2326,13 @@ const BorrowData = ({
                             }}
                             key={index}
                             onClick={() => {
-                              setyagiselection(select);
+                              setappsImage(`${apps[index]}`);
+                              // setyagiselection(`${select}`);
                               toggleyagi();
                             }}
                           >
                             <img
-                              src={`./yagilogo.svg`}
+                              src={`./${apps[index]}.svg`}
                               width="60px"
                               height="30px"
                             ></img>

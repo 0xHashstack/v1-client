@@ -100,6 +100,9 @@ const SpendLoanNav = () => {
   const [idDropDown, setIdDropDown] = useState(false);
   const [idDropDownArrow, setIdDropDownArrow] = useState(arrowDown);
 
+  const [appsImage, setappsImage] = useState("yagiLogo");
+  const apps = ["mySwap", "jediSwap", "yagiLogo"];
+
   const [borrowInterest, setBorrowInterest] = useState<string>("");
   const [currentBorrowInterest, setCurrentBorrowInterest] = useState<string>();
 
@@ -111,8 +114,6 @@ const SpendLoanNav = () => {
   // const [transDeposit, setTransDeposit] = useState("");
   const [SpendLoan, setSpendLoan] = useState("1");
   const dappsArray = ["1", "2", "3", "4", "5", "6"];
-  const yagitimes = ["1", "2", "3", "4"];
-  const [yagiselection, setyagiselection] = useState("1");
   const [Yagidrop, setYagidrop] = useState(false);
 
   const { contract } = useContract({
@@ -506,7 +507,7 @@ const SpendLoanNav = () => {
                         <div>
                           &nbsp;&nbsp;
                           <img
-                            src={`./yagilogo.svg`}
+                            src={`./${appsImage}.svg`}
                             width="60px"
                             height="30px"
                           ></img>
@@ -548,8 +549,8 @@ const SpendLoanNav = () => {
                                 boxShadow: "0px 0px 10px #00000020",
                               }}
                             >
-                              {yagitimes.map((select, index) => {
-                                if (yagiselection === select) {
+                              {apps.map((select, index) => {
+                                if (appsImage === select) {
                                   return <></>;
                                 }
                                 return (
@@ -563,12 +564,13 @@ const SpendLoanNav = () => {
                                     }}
                                     key={index}
                                     onClick={() => {
-                                      setyagiselection(select);
+                                      setappsImage(`${apps[index]}`);
+                                      // setyagiselection(`${select}`);
                                       toggleyagi();
                                     }}
                                   >
                                     <img
-                                      src={`./yagilogo.svg`}
+                                      src={`./${apps[index]}.svg`}
                                       width="60px"
                                       height="30px"
                                     ></img>
