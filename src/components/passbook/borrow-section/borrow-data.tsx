@@ -72,6 +72,7 @@ import useRepay from "../../../blockchain/hooks/active-borrow/useRepay";
 import useWithdrawPartialBorrow from "../../../blockchain/hooks/active-borrow/useWithdrawPartialBorrow";
 import useAddCollateral from "../../../blockchain/hooks/active-borrow/useAddCollateral";
 import useSpendBorrow from "../../../blockchain/hooks/SpendBorrow/useSpendBorrow";
+import useMySwap from "../../../blockchain/hooks/SpendBorrow/useMySwap";
 
 const BorrowData = ({
   asset: assetParam,
@@ -148,7 +149,6 @@ const BorrowData = ({
   revertSwapTransactionReceipt: any;
 }) => {
   const [asset, setAsset] = useState(assetParam);
-  console.log("xxxxxxxxxxxxxxxx", asset);
   const [marketTokenName, setMarketTokenName] = useState("BTC");
 
   const Coins: ICoin[] = [
@@ -224,32 +224,29 @@ const BorrowData = ({
     jediSwapSupportedPoolsData,
     loadingJediSwapSupportedPools,
     errorJediSwapSupportedPools,
-    executeJediSwap,
+
+    handleJediSwap,
     dataJediSwap,
     loadingJediSwap,
     errorJediSwap,
   } = useSpendBorrow(diamondAddress, asset, marketTokenName);
 
-  useEffect(() => {
-    console.log("loading jedi", loadingJediSwapSupportedPools);
-    if (!loadingJediSwapSupportedPools)
-      console.log(
-        "jediSwapSupportedPoolsData",
-        jediSwapSupportedPoolsData,
-        errorJediSwapSupportedPools
-      );
-  }, [
-    jediSwapSupportedPoolsData,
-    loadingJediSwapSupportedPools,
-    errorJediSwapSupportedPools,
-  ]);
+  const { handleMySwap, loadingMySwap, errorMySwap } = useMySwap(diamondAddress, asset, marketTokenName);
+
 
   // useEffect(() => {
-  //   const data = executeJediSwap();
-  //   console.log("data for jediswap", data);
-  //   if(!loadingJediSwap)
-  //     console.log('Jedi Swap', dataJediSwap, errorJediSwap);
-  // }, [loadingJediSwap, dataJediSwap, errorJediSwap]);
+  //   console.log("loading jedi", loadingJediSwapSupportedPools);
+  //   if (!loadingJediSwapSupportedPools)
+  //     console.log(
+  //       "jediSwapSupportedPoolsData",
+  //       jediSwapSupportedPoolsData,
+  //       errorJediSwapSupportedPools
+  //     );
+  // }, [
+  //   jediSwapSupportedPoolsData,
+  //   loadingJediSwapSupportedPools,
+  //   errorJediSwapSupportedPools,
+  // ]);
 
   const [title, setTitle] = useState({
     amount: "Borrowd",
@@ -372,6 +369,14 @@ const BorrowData = ({
   const handleWithdrawCollateral = async (withdrawCollateral) => {
     await withdrawCollateral();
   };
+
+  const handleSpendBorrowCTAButton = () => {
+    if(actionLabel === "Swap") {
+      appsImage === "mySwap" ? handleMySwap() :
+      appsImage === "jediSwap" ? handleJediSwap() : null
+    }
+    else return null;
+  }
 
   const handleWithdrawPartialBorrow = async () => {
     if (!partialWithdrawAmount && !asset.loanId && !diamondAddress) {
@@ -2131,7 +2136,7 @@ const BorrowData = ({
                   </>
                 )}
 
-                {stakeDropDown ? (
+                {stakeDropDown && (
                   <>
                     <div
                       style={{
@@ -2191,11 +2196,9 @@ const BorrowData = ({
                       </div>
                     </div>
                   </>
-                ) : (
-                  <></>
                 )}
 
-                {dropDown ? (
+                {dropDown && (
                   <>
                     <div
                       style={{
@@ -2277,11 +2280,9 @@ const BorrowData = ({
                       </div>
                     </div>
                   </>
-                ) : (
-                  <></>
                 )}
 
-                {marketDropDown ? (
+                {marketDropDown && (
                   <>
                     <div
                       style={{
@@ -2330,8 +2331,6 @@ const BorrowData = ({
                       })}
                     </div>
                   </>
-                ) : (
-                  <></>
                 )}
 
                 {Yagidrop ? (
@@ -2527,12 +2526,11 @@ const BorrowData = ({
                       border: "none",
                     }}
                     disabled={
-                      commitPeriod === undefined ||
-                      loadingApprove ||
-                      loadingJediSwap ||
-                      isInvalid()
+                      (appsImage === "mySwap" && loadingJediSwap) ||
+                      (appsImage === "jediSwap" && loadingMySwap) ||
+                      (appsImage === "yagiLogo" || actionLabel === "Trade" || actionLabel === "Stake")
                     }
-                    onClick={actionLabel === "Swap" && handleSwap}
+                    onClick={handleSpendBorrowCTAButton}
                   >
                     {!(
                       loadingApprove ||
