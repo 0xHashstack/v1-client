@@ -60,7 +60,6 @@ import SpendLoanNav from "../components/passbook/Spend-loans/spendLoan-navbar";
 // import YourSupplyBody from "../components/dashboard/supply";
 import { TabContext } from "../hooks/contextHooks/TabContext";
 import DashboardLiquid from "../components/dashboard/DashboardLiquid";
-import SuccessToast from "../components/toastModals/customToastModal";
 import ToastModal from "../components/toastModals/customToastModal";
 
 import useMaxloan from "../blockchain/hooks/Max_loan_given_collat";
@@ -600,8 +599,8 @@ const Dashboard = () => {
               {/* <Card style={{ height: "35rem", overflowY: "scroll" }}> */}
               <div style={{ margin: "1px 5px 5px 14px" }}>
                 {customActiveTab === "2" ||
-                customActiveTab === "3" ||
-                customActiveTab === "4" ? (
+                  customActiveTab === "3" ||
+                  customActiveTab === "4" ? (
                   <DashboardMenu
                     margin={"0px"}
                     customActiveTab={customActiveTab}
@@ -629,8 +628,8 @@ const Dashboard = () => {
                 )}
               </div>
               {customActiveTab === "3" ||
-              customActiveTab === "4" ||
-              customActiveTab === "2" ? (
+                customActiveTab === "4" ||
+                customActiveTab === "2" ? (
                 <>
                   <div
                     style={{
@@ -1390,8 +1389,8 @@ const Dashboard = () => {
               ) : null}
 
               {customActiveTab === "1" ||
-              customActiveTab === "3" ||
-              customActiveTab === "4" ? (
+                customActiveTab === "3" ||
+                customActiveTab === "4" ? (
                 <Card
                   style={{
                     height: "60vh",
@@ -1504,7 +1503,9 @@ const Dashboard = () => {
                       your borrow
                     </u>
                   </div>
-                  <SpendLoanNav />
+                  <SpendLoanNav activeLoansData={activeLoansData.filter(
+                    (loan) => loan.state === "OPEN"
+                  )} />
                 </>
               ) : null}
             </Col>
@@ -1601,7 +1602,7 @@ const Dashboard = () => {
         {/* <Analytics></Analytics>
             {props.children} */}
       </div>
-      {/* <ToastModal bool={true} heading="Success" desc="lorem ipsum" /> */}
+      <ToastModal bool={true} heading="Transaction Complete" desc="Copy Transaction Hash" />
       {/* // </React.Fragment> */}
     </div>
   );

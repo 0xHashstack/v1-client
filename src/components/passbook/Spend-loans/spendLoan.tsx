@@ -8,26 +8,12 @@ const SpendLoan = ({ activeLoansData }) => {
 
   return (
     <>
-      {/* <UncontrolledAccordion
-        defaultOpen="0"
-        open="false"
-        style={{
-          width: "100%",
-          // margin: "10px",
-
-          color: "black",
-          textAlign: "left",
-        }}
-      > */}
-
       <Table>
         <Row
           onClick={() => {
             setSelectedLoan("");
           }}
           style={{
-            // width: "92.77vw",
-
             color: "rgb(140, 140, 140)",
             fontWeight: "600",
             alignItems: "center",

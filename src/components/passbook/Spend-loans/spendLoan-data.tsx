@@ -19,20 +19,20 @@ const SpendLoanData = ({ loan }) => {
       >
         <Row
           onClick={() => {
-            if (selectedLoan.loanId != loan.loanId) {
+            if (selectedLoan?.loanId != loan.loanId) {
               setSelectedLoan(loan);
             } else {
               setSelectedLoan("");
             }
           }}
           style={{
-            opacity: `${selectedLoan.loanId === loan.loanId ? "10" : "0.5"}`,
+            opacity: `${selectedLoan?.loanId === loan.loanId ? "10" : "0.5"}`,
             alignItems: "center",
             marginLeft: "-40px",
             cursor: "pointer",
             padding: "20px 0",
             backgroundColor: `${
-              selectedLoan.loanId === loan.loanId ? "#1C202F40" : "#2A2E3F"
+              selectedLoan?.loanId === loan.loanId ? "#1C202F40" : "#2A2E3F"
             }`,
             // gap: "30px",
           }}
@@ -47,10 +47,6 @@ const SpendLoanData = ({ loan }) => {
             <span style={{ fontSize: "14px", fontWeight: "600" }}>
               {(loan.loanAmount / 10 ** 18).toFixed(4)}
             </span>
-            {/* <div>
-              <img src={`./${loan.loanMarket}.svg`} height="20px" />
-              &nbsp;&nbsp;{loan.loanMarket}
-            </div> */}
           </Col>
 
           <Col>

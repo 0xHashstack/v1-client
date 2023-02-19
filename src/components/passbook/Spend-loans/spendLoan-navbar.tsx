@@ -37,8 +37,17 @@ import { currentBorrowInterestRate, NumToBN } from "../../../blockchain/utils";
 import { MinimumAmount } from "../../../blockchain/constants";
 import { TabContext } from "../../../hooks/contextHooks/TabContext";
 import useSpendBorrow from "../../../blockchain/hooks/SpendBorrow/useSpendBorrow";
+import useMySwap from "../../../blockchain/hooks/SpendBorrow/useMySwap";
 
-const SpendLoanNav = () => {
+const Coins: ICoin[] = [
+  { name: "USDT", icon: "mdi-bitcoin" },
+  { name: "USDC", icon: "mdi-ethereum" },
+  { name: "BTC", icon: "mdi-bitcoin" },
+  { name: "ETH", icon: "mdi-ethereum" },
+  { name: "DAI", icon: "mdi-dai" },
+];
+
+const SpendLoanNav = ({ activeLoansData }) => {
   const [tokenName, setTokenName] = useState("BTC");
   const { title, setTitle, selectedLoan, setSelectedLoan } =
     useContext(TabContext);
@@ -47,16 +56,10 @@ const SpendLoanNav = () => {
     dataJediSwap,
     loadingJediSwap,
     errorJediSwap,
-    handleSwap,
+    handleJediSwap,
   } = useSpendBorrow(diamondAddress, selectedLoan, tokenName);
 
-  const Coins: ICoin[] = [
-    { name: "USDT", icon: "mdi-bitcoin" },
-    { name: "USDC", icon: "mdi-ethereum" },
-    { name: "BTC", icon: "mdi-bitcoin" },
-    { name: "ETH", icon: "mdi-ethereum" },
-    { name: "DAI", icon: "mdi-dai" },
-  ];
+  const { handleMySwap, loadingMySwap, errorMySwap } = useMySwap(diamondAddress, selectedLoan, tokenName);
 
   const {
     DepositAmount,
@@ -112,8 +115,8 @@ const SpendLoanNav = () => {
   const [value, setValue] = useState(0);
   const [commitPeriod, setCommitPeriod] = useState(0);
   // const [transDeposit, setTransDeposit] = useState("");
-  const [SpendLoan, setSpendLoan] = useState("1");
-  const dappsArray = ["1", "2", "3", "4", "5", "6"];
+  const [SpendLoan, setSpendLoan] = useState();
+  const dappsArray = [{name: "1", supportedActions: ["Trade", "Swap"]}, {name: "2", supportedActions: ["Stake", "Trade"]}, {name: "3", supportedActions: ["Trade", "Swap"]}, {name: "4", supportedActions: ["Stake", "Swap"]}, {name: "5", supportedActions: ["Stake", "Swap"]}];
   const [Yagidrop, setYagidrop] = useState(false);
 
   const { contract } = useContract({
@@ -221,12 +224,12 @@ const SpendLoanNav = () => {
     setyagiDownArrow(Yagidrop ? arrowDown : arrowUp);
   };
 
-  function isInvalid() {
-    return (
-      depositAmount < MinimumAmount[tokenName] ||
-      depositAmount >
-        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
-    );
+  const handleCTAButton = () => {
+    if(title.label === "Swap") {
+      appsImage === "mySwap" ? handleMySwap() :
+      appsImage === "jediSwap" ? handleJediSwap() : null
+    }
+    else return null;
   }
 
   const selectionAction = (value: string) => {
@@ -363,20 +366,26 @@ const SpendLoanNav = () => {
         }}
       >
         {dappsArray.map((dapp, index) => {
-          return (
-            <div
-              key={index}
-              onClick={() => {
-                setmodal_deposit(true);
-              }}
-            >
-              <img
-                src={`./dapps/${dapp}.svg`}
-                height="90px"
-                style={{ cursor: "pointer" }}
-              />
-            </div>
-          );
+          if(dapp.supportedActions.find((action: string) => action === title.label)) {
+            return (
+              <div
+                key={index}
+                onClick={() => {
+                  if(!activeLoansData) return;
+                  setmodal_deposit(true);
+                  if(!selectedLoan)
+                    setSelectedLoan(activeLoansData?.[0]);
+                }}
+              >
+                <img
+                  src={`./dapps/${dapp.name}.svg`}
+                  height="90px"
+                  style={{ cursor: "pointer" }}
+                />
+              </div>
+            );
+          }
+          return null;
         })}
       </div>
 
@@ -389,16 +398,26 @@ const SpendLoanNav = () => {
         }}
       >
         {dappsArray.map((dapp, index) => {
-          return (
-            <div
-              key={index}
-              onClick={() => {
-                setmodal_deposit(true);
-              }}
-            >
-              <img src={`./dapps/${dapp}.svg`} height="90px" />
-            </div>
-          );
+          if(dapp.supportedActions.find((action: string) => action === title.label)) {
+            return (
+              <div
+                key={index}
+                onClick={() => {
+                  if(!activeLoansData) return;
+                  setmodal_deposit(true);
+                  if(!selectedLoan)
+                    setSelectedLoan(activeLoansData?.[0]);
+                }}
+              >
+                <img
+                  src={`./dapps/${dapp.name}.svg`}
+                  height="90px"
+                  style={{ cursor: "pointer" }}
+                />
+              </div>
+            );
+          }
+          return null;
         })}
       </div>
 
@@ -432,7 +451,7 @@ const SpendLoanNav = () => {
                 gap: "10px",
               }}
             >
-              <div>Loan ID - {selectedLoan.loanId}</div>
+              <div>Loan ID - {selectedLoan?.loanId}</div>
               <Image
                 style={{ cursor: "pointer" }}
                 src={idDropDownArrow}
@@ -648,7 +667,7 @@ const SpendLoanNav = () => {
                                 // boxShadow: "0px 0px 10px rgb(57, 61, 79)",
                               }}
                             >
-                              {["1223222", "2378289"].map((asset, index) => {
+                              {activeLoansData.map((loan, index) => {
                                 return (
                                   <div
                                     key={index}
@@ -657,17 +676,16 @@ const SpendLoanNav = () => {
                                       cursor: "pointer",
                                       display: "flex",
                                       alignItems: "center",
-                                      fontSize: "0.6rem",
+                                      fontSize: "0.7rem",
                                       color: "#6F6F6F",
                                     }}
-                                    // onClick={() => {
-                                    //   setAsset(asset);
-                                    //   setTokenName(asset.market);
-                                    //   setIdDropDown(!idDropDown);
-                                    //   setIdDropDownArrow(Downarrow);
-                                    // }}
+                                    onClick={() => {
+                                      setSelectedLoan(loan);
+                                      setIdDropDownArrow(arrowDown);
+                                      setIdDropDown(!idDropDown);
+                                    }}
                                   >
-                                    {`Supply ID: ${asset}`}
+                                    {`Loan ID: ${loan.loanId}`}
                                   </div>
                                 );
                               })}
@@ -712,27 +730,17 @@ const SpendLoanNav = () => {
                           >
                             <div>Borrowed Market :</div>
                             <div>
-                              <img
-                                src={`./${tokenName}.svg`}
+                              <Image
+                                alt="hello"
+                                src={`/${selectedLoan?.loanMarket}.svg`}
                                 width="24px"
                                 height="24px"
-                              ></img>
+                              ></Image>
                               &nbsp;&nbsp;
                               <span style={{ color: "white" }}>
-                                {tokenName}
+                                {selectedLoan?.loanMarket}
                               </span>
                             </div>
-                          </div>
-                          <div>
-                            <img
-                              src={`./${selectedLoan.loanMarket}.svg`}
-                              width="24px"
-                              height="24px"
-                            ></img>
-                            &nbsp;&nbsp;
-                            <span style={{ color: "white" }}>
-                              {selectedLoan.loanMarket}
-                            </span>
                           </div>
                         </div>
 
@@ -745,12 +753,9 @@ const SpendLoanNav = () => {
                         >
                           <div>Availabe Borrowed Amount :</div>
                           <div style={{ color: "white" }}>
-                            00.00 &nbsp;&nbsp;{tokenName}
+                            {(selectedLoan?.loanAmount / 10 ** 18).toFixed(4)}
+                            &nbsp;{selectedLoan?.loanMarket}
                           </div>
-                        </div>
-                        <div style={{ color: "white" }}>
-                          {(selectedLoan.loanAmount / 10 ** 18).toFixed(4)}{" "}
-                          &nbsp;&nbsp;{selectedLoan.loanMarket}
                         </div>
                       </label>
 
@@ -884,12 +889,12 @@ const SpendLoanNav = () => {
                           <div>Borrowed Market :</div>
                           <div>
                             <img
-                              src={`./${tokenName}.svg`}
+                              src={`./${selectedLoan?.loanMarket}.svg`}
                               width="24px"
                               height="24px"
-                            ></img>
+                            />
                             &nbsp;&nbsp;
-                            <span style={{ color: "white" }}>{tokenName}</span>
+                            <span style={{ color: "white" }}>{selectedLoan?.loanMarket}</span>
                           </div>
                         </div>
 
@@ -902,7 +907,7 @@ const SpendLoanNav = () => {
                         >
                           <div>Availabe Borrowed Amount :</div>
                           <div style={{ color: "white" }}>
-                            00.00 &nbsp;&nbsp;{tokenName}
+                          {(selectedLoan?.loanAmount / 10 ** 18).toFixed(4)}&nbsp;&nbsp;{selectedLoan?.loanMarket}
                           </div>
                         </div>
 
@@ -989,12 +994,10 @@ const SpendLoanNav = () => {
                     className="w-md"
                     style={{ backgroundColor: "rgb(57, 61, 79)" }}
                     disabled={
-                      commitPeriod === undefined ||
-                      loadingApprove ||
-                      loadingJediSwap ||
-                      isInvalid()
+                      (appsImage === "mySwap" && loadingJediSwap) ||
+                      (appsImage === "jediSwap" && loadingMySwap)
                     }
-                    onClick={handleSwap}
+                    onClick={handleCTAButton}
                   >
                     {title.label}
                     {/* {!(

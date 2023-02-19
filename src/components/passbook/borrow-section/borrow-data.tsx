@@ -1603,7 +1603,7 @@ const BorrowData = ({
                                   outline
                                   type="button"
                                   className="btn btn-md w-xs"
-                                  onClick={handleMax}
+                                  // onClick={handleMax}
                                   // disabled={balance ? false : true}
                                   style={{
                                     background: "#1D2131",
@@ -2688,13 +2688,13 @@ const BorrowData = ({
                       backgroundColor: "rgb(57, 61, 79)",
                       border: "none",
                     }}
-                    disabled={
-                      commitPeriod === undefined ||
-                      loadingApprove ||
-                      loadingDeposit ||
-                      !addCollateralAmount ||
-                      addCollateralAmount < 0
-                    }
+                    // disabled={
+                    //   // commitPeriod === undefined ||
+                    //   // loadingApprove ||
+                    //   // loadingDeposit ||
+                    //   // !addCollateralAmount ||
+                    //   // addCollateralAmount < 0
+                    // }
                     onClick={handleWithdrawPartialBorrow}
                   >
                     {!(
