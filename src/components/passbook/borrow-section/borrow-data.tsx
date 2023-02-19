@@ -148,6 +148,7 @@ const BorrowData = ({
   revertSwapTransactionReceipt: any;
 }) => {
   const [asset, setAsset] = useState(assetParam);
+  console.log("xxxxxxxxxxxxxxxx", asset);
   const [marketTokenName, setMarketTokenName] = useState("BTC");
 
   const Coins: ICoin[] = [
@@ -533,10 +534,10 @@ const BorrowData = ({
     return (
       depositAmount < MinimumAmount[asset.loanMarket] ||
       depositAmount >
-        Number(
-          uint256.uint256ToBN(loanMarketBalance ? loanMarketBalance[0] : 0)
-        ) /
-          10 ** 18
+      Number(
+        uint256.uint256ToBN(loanMarketBalance ? loanMarketBalance[0] : 0)
+      ) /
+      10 ** 18
     );
   }
 
@@ -656,14 +657,14 @@ const BorrowData = ({
             ID{assetParam.loanId}
           </Col>
 
-          <Col style={{}}>
+          <Col>
             <div>
               <img
                 src={
                   assetParam
                     ? CoinClassNames[
-                        EventMap[assetParam.loanMarket.toUpperCase()]
-                      ] || assetParam.loanMarket.toUpperCase()
+                    EventMap[assetParam.loanMarket.toUpperCase()]
+                    ] || assetParam.loanMarket.toUpperCase()
                     : null
                 }
                 height="24px"
@@ -674,7 +675,7 @@ const BorrowData = ({
                   display: "inline-block",
                   fontSize: "13px",
                 }}
-                // align="right"
+              // align="right"
               >
                 &nbsp; &nbsp;
                 {EventMap[assetParam.loanMarket.toUpperCase()]}
@@ -689,8 +690,8 @@ const BorrowData = ({
                 src={
                   asset
                     ? CoinClassNames[
-                        EventMap[assetParam.loanMarket.toUpperCase()]
-                      ] || assetParam.loanMarket.toUpperCase()
+                    EventMap[assetParam.loanMarket.toUpperCase()]
+                    ] || assetParam.loanMarket.toUpperCase()
                     : null
                 }
                 height="18px"
@@ -737,11 +738,51 @@ const BorrowData = ({
 
           <Col>xxxxxxxx</Col>
 
-          <Col>xxxxxxxx</Col>
+          <Col>{assetParam?.commitment}</Col>
 
-          <Col>xxxxxxxx</Col>
+          <Col>
+          <div>
+              <img
+                src={
+                  assetParam
+                    ? CoinClassNames[
+                    EventMap[assetParam.loanMarket.toUpperCase()]
+                    ] || assetParam.loanMarket.toUpperCase()
+                    : null
+                }
+                height="24px"
+              />
+              <div
+                className="mr-6"
+                style={{
+                  display: "inline-block",
+                  fontSize: "13px",
+                }}
+              >
+                &nbsp; &nbsp;
+                {EventMap[assetParam.loanMarket.toUpperCase()]}
+              </div>
+            </div>
+          </Col>
 
-          <Col>xxxxxxxx</Col>
+          <Col>
+            <div>
+              <img
+                src={
+                  asset
+                    ? CoinClassNames[
+                    EventMap[assetParam.loanMarket.toUpperCase()]
+                    ] || assetParam.collateralMarket.toUpperCase()
+                    : null
+                }
+                height="18px"
+              />
+              &nbsp;&nbsp;
+              <span style={{ fontSize: "14px", fontWeight: "600" }}>
+                {parseFloat(BNtoNum(Number(assetParam.collateralAmount)))}
+              </span>
+            </div>
+          </Col>
 
           <Col className="mr-4 ">
             <div
@@ -750,9 +791,9 @@ const BorrowData = ({
                 display: "inline-block",
                 fontSize: "14px",
               }}
-              // align="right"
+            // align="right"
             >
-              {assetParam.commitment}
+              {assetParam.state}
             </div>
             <CardTitle tag="h5"></CardTitle>
           </Col>
@@ -849,7 +890,7 @@ const BorrowData = ({
                                       </NavLink>
                                     </NavItem>
                                   ) : // </>
-                                  null}
+                                    null}
                                 </Nav>
                               )}
                             </Col>
@@ -1050,7 +1091,7 @@ const BorrowData = ({
                                       onChange={(e) => {
                                         setSwapMarket(
                                           tokenAddressMap[
-                                            e.target.value as string
+                                          e.target.value as string
                                           ] as string
                                         );
                                         setLoanId(asset.loanId);
@@ -1340,7 +1381,7 @@ const BorrowData = ({
                     <br />
 
                     {selection === "Spend Borrow" &&
-                    (actionLabel === "Swap" || actionLabel === "Trade") ? (
+                      (actionLabel === "Swap" || actionLabel === "Trade") ? (
                       <div
                         style={{
                           display: "flex",
@@ -1556,7 +1597,7 @@ const BorrowData = ({
                     ) : null}
 
                     {selection === "Repay Borrow" ||
-                    selection === "Withdraw Partial Borrow" ? (
+                      selection === "Withdraw Partial Borrow" ? (
                       <>
                         {" "}
                         <div
@@ -1669,7 +1710,7 @@ const BorrowData = ({
                                             uint256.uint256ToBN(dataBalance[0])
                                           ) /
                                             10 ** 18)) /
-                                          100
+                                        100
                                       );
                                       setValue(value);
                                     }}
@@ -1694,14 +1735,14 @@ const BorrowData = ({
 
                               {repayAmount &&
                                 repayAmount >
-                                  Number(
-                                    uint256.uint256ToBN(
-                                      loanMarketBalance
-                                        ? loanMarketBalance[0]
-                                        : 0
-                                    )
-                                  ) /
-                                    10 ** 18 && (
+                                Number(
+                                  uint256.uint256ToBN(
+                                    loanMarketBalance
+                                      ? loanMarketBalance[0]
+                                      : 0
+                                  )
+                                ) /
+                                10 ** 18 && (
                                   <FormText
                                     style={{ color: "#e97272 !important" }}
                                   >
@@ -1996,14 +2037,14 @@ const BorrowData = ({
 
                               {addCollateralAmount &&
                                 addCollateralAmount >
-                                  Number(
-                                    uint256.uint256ToBN(
-                                      collateralMarketBalance
-                                        ? collateralMarketBalance[0]
-                                        : 0
-                                    )
-                                  ) /
-                                    10 ** 18 && (
+                                Number(
+                                  uint256.uint256ToBN(
+                                    collateralMarketBalance
+                                      ? collateralMarketBalance[0]
+                                      : 0
+                                  )
+                                ) /
+                                10 ** 18 && (
                                   <FormText
                                     style={{ color: "#e97272 !important" }}
                                   >
@@ -2041,7 +2082,7 @@ const BorrowData = ({
                                     )
                                   ) /
                                     10 ** 18)) /
-                                  100
+                                100
                               );
                               setValue(value);
                             }}
@@ -2347,7 +2388,7 @@ const BorrowData = ({
               </div>
 
               {selection === "Spend Borrow" &&
-              (actionLabel === "Swap" || actionLabel === "Trade") ? (
+                (actionLabel === "Swap" || actionLabel === "Trade") ? (
                 <FormGroup>
                   <div className="row mb-4">
                     <Col sm={12}>
