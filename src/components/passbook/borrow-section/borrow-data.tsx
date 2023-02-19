@@ -3124,7 +3124,7 @@ const BorrowData = ({
           )}
         </div>
 
-        {idDropDown ? (
+        {idDropDown && (
           <>
             <div
               style={{
@@ -3141,7 +3141,8 @@ const BorrowData = ({
                 // boxShadow: "0px 0px 10px rgb(57, 61, 79)",
               }}
             >
-              {allAssets.map((asset, index) => {
+              {allAssets.map((eleAsset, index) => {
+                if(eleAsset.loanId === asset.loanId) return <></>;
                 return (
                   <>
                     <div
@@ -3155,20 +3156,18 @@ const BorrowData = ({
                         color: "#6F6F6F",
                       }}
                       onClick={() => {
-                        setAsset(asset);
+                        setAsset(eleAsset);
                         setIdDropDownArrow(idDropDown ? Downarrow : UpArrow);
                         setIdDropDown(false);
                       }}
                     >
-                      Borrow ID - {asset.loanId}
+                      Borrow ID - {eleAsset.loanId}
                     </div>{" "}
                   </>
                 );
               })}
             </div>
           </>
-        ) : (
-          <></>
         )}
       </Modal>
     </div>
