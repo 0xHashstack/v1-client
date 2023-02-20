@@ -27,7 +27,7 @@ const useAddCollateral = (diamondAddress: string, asset: any) => {
     } = useStarknetExecute({
         calls: [
             {
-                contractAddress: tokenAddressMap[asset.loanMarket] as string,
+                contractAddress: tokenAddressMap[asset.collateralMarket] as string,
                 entrypoint: "approve",
                 calldata: [diamondAddress, NumToBN(addCollateralAmount as number, tokenDecimalsMap[asset.collateralMarket]), 0],
             },

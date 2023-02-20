@@ -54,16 +54,15 @@ let DashboardTBody: any = ({
     });
   }, []);
 
-  const getPrices = () => {
-    OffchainAPI.getOraclePrices().then((prices) => {
-      console.log("prices", prices);
-      setOracleAndFairPrices(prices);
-    });
-  };
-
   useEffect(() => {
+    const getPrices = () => {
+      OffchainAPI.getOraclePrices().then((prices) => {
+        console.log("prices", prices);
+        setOracleAndFairPrices(prices);
+      });
+    };
     getPrices();
-  }, [oracleAndFairPrices]);
+  }, [])
 
   if (isloading) {
     return (

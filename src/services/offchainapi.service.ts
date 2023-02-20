@@ -5,6 +5,7 @@ import Reserves from './../../public/mock-data/Reserves.json';
 export default class OffchainAPI {
   // static ENDPOINT = 'http://52.77.185.41:3000'
   // static ENDPOINT = "https://offchainapi.testnet.starknet.hashstack.finance";
+  // static ENDPOINT = "http://offchainstarknettestnetstaging-api.eba-uf3qrhac.ap-southeast-1.elasticbeanstalk.com";
   static ENDPOINT = "http://offchainstarknettestnetstaging-api.eba-uf3qrhac.ap-southeast-1.elasticbeanstalk.com";
   // static ENDPOINT = 'https://8992-106-51-78-197.in.ngrok.io'
   // static ENDPOINT = process.env.NEXT_PUBLIC_APP_ENV=='production' ?
@@ -244,14 +245,14 @@ export default class OffchainAPI {
   }
 
   static async getOraclePrices() {
-    let route = `/api/oracle-prices`
-    // return OffchainAPI.httpGet(route);
-    return OraclePrices;
+    let route = `/oracle-prices`
+    return OffchainAPI.httpGet(route);
+    // return OraclePrices;
   }
 
   static async getReserves() {
-    let route = `/api/reserves`
-    // return OffchainAPI.httpGet(route);
-    return Reserves;
+    let route = `/reserves`
+    return OffchainAPI.httpGet(route);
+    // return Reserves;
   }
 }
