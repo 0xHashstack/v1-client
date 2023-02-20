@@ -2040,7 +2040,7 @@ const BorrowData = ({
                                 {value}%
                               </div>
 
-                              {addCollateralAmount &&
+                              {addCollateralAmount ?
                                 addCollateralAmount >
                                 Number(
                                   uint256.uint256ToBN(
@@ -2055,7 +2055,7 @@ const BorrowData = ({
                                   >
                                     {`Amount is greater than your balance`}
                                   </FormText>
-                                )}
+                                ): <></>}
                             </Col>
                           </div>
                         </FormGroup>

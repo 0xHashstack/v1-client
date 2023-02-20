@@ -676,7 +676,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                       cursor: "pointer",
                                       display: "flex",
                                       alignItems: "center",
-                                      fontSize: "0.7rem",
+                                      fontSize: "0.8rem",
                                       color: "#6F6F6F",
                                     }}
                                     onClick={() => {
