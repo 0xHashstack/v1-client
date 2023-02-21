@@ -202,5 +202,21 @@
         ],
         "stateMutability": "view",
         "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_supported_pools_myswap",
+        "outputs": [
+            {
+                "name": "pools_len",
+                "type": "felt"
+            },
+            {
+                "name": "pools",
+                "type": "SupportedPool*"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
     }
 ]

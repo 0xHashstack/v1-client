@@ -238,19 +238,19 @@ const BorrowData = ({
     marketTokenName
   );
 
-  useEffect(() => {
-    console.log("loading jedi", loadingJediSwapSupportedPools);
-    if (!loadingJediSwapSupportedPools)
-      console.log(
-        "jediSwapSupportedPoolsData",
-        jediSwapSupportedPoolsData,
-        errorJediSwapSupportedPools
-      );
-  }, [
-    jediSwapSupportedPoolsData,
-    loadingJediSwapSupportedPools,
-    errorJediSwapSupportedPools,
-  ]);
+  // useEffect(() => {
+  //   console.log("loading jedi", loadingJediSwapSupportedPools);
+  //   if (!loadingJediSwapSupportedPools)
+  //     console.log(
+  //       "jediSwapSupportedPoolsData",
+  //       jediSwapSupportedPoolsData.pools[0].tokenA.toString(),
+  //       errorJediSwapSupportedPools
+  //     );
+  // }, [
+  //   jediSwapSupportedPoolsData,
+  //   loadingJediSwapSupportedPools,
+  //   errorJediSwapSupportedPools,
+  // ]);
 
   const [title, setTitle] = useState({
     amount: "Borrowd",
