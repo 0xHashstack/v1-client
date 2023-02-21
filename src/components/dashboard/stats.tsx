@@ -41,7 +41,7 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
         depositsArray.map((item: any, index: number) => {
           if (item.market === val.oraclePrices[i].name) {
             sum += (item.amount / 10 ** 18) * val.oraclePrices[i].price;
-            console.log("venkatss", sum);
+            // console.log("venkatss", sum);
           }
           setTotalSupply(sum);
         });
@@ -52,7 +52,7 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
           ) {
             borrow -= (item.loanAmount / 10 ** 18) * val.oraclePrices[i].price;
             sum -= (item.loanAmount / 10 ** 18) * val.oraclePrices[i].price;
-            console.log("venkat", sum);
+            // console.log("venkat", sum);
           }
           if (
             item.currentLoanMarket === val.oraclePrices[i].name &&
@@ -62,27 +62,27 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
               (item.currentLoanAmount / 10 ** 18) * val.oraclePrices[i].price;
             sum -=
               (item.currentLoanAmount / 10 ** 18) * val.oraclePrices[i].price;
-            console.log("venkat", sum);
+            // console.log("venkat", sum);
           }
           if (item.collateralMarket === val.oraclePrices[i].name) {
             borrow +=
               (item.collateralAmount / 10 ** 18) * val.oraclePrices[i].price;
             sum +=
               (item.collateralAmount / 10 ** 18) * val.oraclePrices[i].price;
-            console.log("venkat", sum);
+            // console.log("venkat", sum);
           }
           setYourBorrow(borrow);
           setNetWorth(sum);
         });
         const getReserves = async () => {
           let reservesAmount = 0;
-          const res = await OffchainAPI.getReserves();
-          console.log("MMM", res?.reserves);
+          const res: any = await OffchainAPI.getReserves();
+          // console.log("MMM", res?.reserves);
           for (let token in res?.reserves?.deposits) {
             if (token == val.oraclePrices[i].name) {
               reservesAmount +=
                 res?.reserves.deposits[token] * val.oraclePrices[i].price;
-              console.log("BBBB", reservesAmount);
+              // console.log("BBBB", reservesAmount);
             }
           }
           setTotalReserves(reservesAmount);
@@ -92,7 +92,7 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
             if (token == val.oraclePrices[i].name) {
               borrowedAmount +=
                 res?.reserves.loans[token] * val.oraclePrices[i].price;
-              console.log("BBBB", reservesAmount);
+              // console.log("BBBB", reservesAmount);
             }
           }
           setAvailableReserves(reservesAmount - borrowedAmount);
@@ -104,8 +104,8 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
     });
   }, [depositsArray]);
 
-  console.log("hiharsh", depositsArray);
-  console.log("byeharsh", loansArray);
+  // console.log("hiharsh", depositsArray);
+  // console.log("byeharsh", loansArray);
 
   return (
     <div
