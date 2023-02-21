@@ -371,10 +371,6 @@ let Borrow: any = ({
     await refreshBalance();
   };
 
-  // const handleLoanMarketChange = async (asset: any) {
-
-  // }
-
   const handleLoanInputChange = async (e: any) => {
     console.log("asset ajeeb", e.target.value);
     setBorrowParams({
@@ -389,7 +385,8 @@ let Borrow: any = ({
       collateralAmount: e.target.value,
     });
     const balance =
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18);
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+      10 ** (tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18);
     if (!balance) return;
     // calculate percentage of collateral of balance
     var percentage = (e.target.value / balance) * 100;
@@ -418,7 +415,7 @@ let Borrow: any = ({
       ...borrowParams,
       collateralAmount:
         Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-        10 ** (tokenDecimalsMap[borrowParams.collateralMarket || ""]  || 18),
+        10 ** (tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18),
     });
     await refreshAllowance();
   };
@@ -550,14 +547,6 @@ let Borrow: any = ({
           borrowParams
         );
         setAllowance(Number(uint256.uint256ToBN(dataAllowance[0])) / 10 ** 18);
-
-        // if (allowanceVal > (borrowParams?.collateralAmount as number)) {
-        //   setAllowed(true);
-        //   setShouldApprove(false);
-        // } else {
-        //   setShouldApprove(true);
-        //   setAllowed(false);
-        // }
       } else if (errorAllowance) {
         // handleToast(true, "Check allowance", errorAllowance)
       }
@@ -568,7 +557,8 @@ let Borrow: any = ({
     if (!borrowParams.collateralAmount) return false;
     return (
       Number(borrowParams.collateralAmount) <=
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[borrowParams?.collateralMarket as string] || 18)
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+        10 ** (tokenDecimalsMap[borrowParams?.collateralMarket as string] || 18)
     );
   }
 
@@ -817,7 +807,7 @@ let Borrow: any = ({
                       borderRadius: "5px",
                       position: "absolute",
                       zIndex: "100",
-                      top: "140px",
+                      top: "145px",
                       left: "39px",
                       width: "420px",
                       margin: "0px auto",
@@ -867,7 +857,7 @@ let Borrow: any = ({
                       borderRadius: "5px",
                       position: "absolute",
                       zIndex: "100",
-                      top: "340px",
+                      top: "358px",
                       left: "39px",
                       // top: "-10px",
 
@@ -895,7 +885,6 @@ let Borrow: any = ({
                             setBorrowTokenName(`${coin.name}`);
                             setBorrowDropDown(false);
                             setBorrowArrow(Downarrow);
-                            // handleLoanInputChange(`${coin.name}`);
                             setAsset(`${coin.name}`);
                           }}
                         >
@@ -920,7 +909,7 @@ let Borrow: any = ({
                       borderRadius: "5px",
                       position: "absolute",
                       zIndex: "100",
-                      top: "420px",
+                      top: "443px",
                       left: "39px",
                       // top: "-10px",
 
@@ -967,46 +956,6 @@ let Borrow: any = ({
               ) : (
                 <></>
               )}
-              {/* <FormGroup floating>
-                <div className="row mb-4">
-                  <Col sm={12}>
-                    <Label for="loan-amount">Loan amount</Label>
-                    <InputGroup>
-                      <Input
-                        id="loan-amount"
-                        type="text"
-                        className="form-control"
-                        placeholder={`Minimum amount = ${MinimumAmount[asset]}`}
-                        min={MinimumAmount[asset]}
-                        value={borrowParams.loanAmount as number}
-                        onChange={handleLoanInputChange}
-                        valid={isLoanAmountValid()}
-                      />
-                      {
-                        <>
-                          <Button
-                            outline
-                            type="button"
-                            className="btn btn-md w-xs"
-                            onClick={() => handleMinLoan(asset)}
-                            style={{ background: "#2e3444", border: "#2e3444" }}
-                          >
-                            Min
-                          </Button>
-                        </>
-                      }
-                    </InputGroup>
-                    {!isLoanAmountValid() ? (
-                      <FormText>
-                        Loan amount should be {">="} {MinimumAmount[asset]}{" "}
-                        {asset}
-                      </FormText>
-                    ) : (
-                      <></>
-                    )}
-                  </Col>
-                </div>
-              </FormGroup> */}
               <div
                 style={{
                   fontSize: "11px",
@@ -1123,18 +1072,8 @@ let Borrow: any = ({
                         </div>
                       </div>
                     </label>
-                    {/* <select
-                      id="commitment"
-                      className="form-select"
-                      placeholder="Commitment"
-                      onChange={(e) => handleCommitmentChange(e)}
-                    >
-                      <option value={0}>Flexible</option>
-                      <option value={1}>One Month</option>
-                    </select> */}
                   </Col>
                 </div>
-                {/* <label style={{}}> */}
                 <div
                   style={{
                     fontSize: "11px",
@@ -1161,212 +1100,29 @@ let Borrow: any = ({
                     onChange={handleLoanInputChange}
                     valid={isLoanAmountValid()}
                   />
-                  {
-                    <>
-                      {/* <Button
-                        outline
-                        type="button"
-                        className="btn btn-md w-xs"
-                        onClick={handleMin}
-                        // disabled={balance ? false : true}
-                        style={{
-                          background: "white",
-                          color: "black",
-                          border: "1px solid black",
-                        }}
-                      >
-                        <span style={{ borderBottom: "2px dotted #fff" }}>
-                          Min
-                        </span>
-                      </Button> */}
-
-                      <Button
-                        outline
-                        type="button"
-                        className="btn btn-md w-xs"
-                        onClick={handleMaxLoan}
-                        // disabled={balance ? false : true}
-                        style={{
-                          background: "#1D2131",
-                          color: "rgb(111, 111, 111)",
-                          border: "1px solid rgb(57, 61, 79)",
-                          borderLeft: "none",
-                        }}
-                      >
-                        {!loadingMaxLoan ? (
-                          <span style={{ borderBottom: "2px  #fff" }}>MAX</span>
-                        ) : (
-                          <MySpinner text="" />
-                        )}
-                      </Button>
-                    </>
-                  }
+                  <Button
+                    outline
+                    type="button"
+                    className="btn btn-md w-xs"
+                    onClick={handleMaxLoan}
+                    // disabled={balance ? false : true}
+                    style={{
+                      background: "#1D2131",
+                      color: "rgb(111, 111, 111)",
+                      border: "1px solid rgb(57, 61, 79)",
+                      borderLeft: "none",
+                    }}
+                  >
+                    {!loadingMaxLoan ? (
+                      <span style={{ borderBottom: "2px  #fff" }}>MAX</span>
+                    ) : (
+                      <MySpinner text="" />
+                    )}
+                  </Button>
                 </InputGroup>
                 {/* </label> */}
               </FormGroup>
-              <div className="row mb-12">
-                {/* <Col sm={12}>
-                  <p>
-                    Borrow APR:{" "}
-                    <strong>
-                      {depositLoanRates &&
-                      borrowParams.commitBorrowPeriod != null &&
-                      (borrowParams.commitBorrowPeriod as number) < 4 ? (
-                        `${
-                          parseFloat(
-                            depositLoanRates[
-                              `${getTokenFromName(asset as string).address}__${
-                                borrowParams.commitBorrowPeriod
-                              }`
-                            ]?.borrowAPR?.apr100x as string
-                          ) / 100
-                        } %`
-                      ) : (
-                        <MySpinner />
-                      )}
-                    </strong>
-                  </p>
-                </Col> */}
-                {/* <Col sm={6}>
-                  <p style={{ float: "right" }}>
-                    Collateral APY{" "}
-                    <strong>
-                      {depositLoanRates &&
-                      (borrowParams.commitBorrowPeriod as number) < 4 &&
-                      borrowParams.commitBorrowPeriod ? (
-                        `${
-                          parseFloat(
-                            depositLoanRates[
-                              `${getTokenFromName(asset as string).address}__${
-                                borrowParams.commitBorrowPeriod
-                              }`
-                            ]?.depositAPR?.apr100x as string
-                          ) / 100
-                        } %`
-                      ) : (
-                        <MySpinner />
-                      )}
-                    </strong>
-                  </p>
-                </Col> */}
-              </div>
-              {/* <div className="row mb-4">
-                <Col sm={8}>
-                  {borrowParams.collateralMarket && (
-                    // <div align="right">
-                    <div style={{ float: "right" }}>
-                      {" "}
-                      Balance :{" "}
-                      {dataBalance
-                        ? (
-                            Number(uint256.uint256ToBN(dataBalance[0])) /
-                            10 ** 18
-                          ).toString()
-                        : " Loading"}
-                    </div>
-                  )}
-                </Col>
-              </div> */}
-              {/* <FormGroup floating>
-                <div className="row mb-4">
-                  <Col sm={12}>
-                    <Label for="collateral-market">Collateral Market</Label>
-                    <select
-                      id="collteral-market"
-                      className="form-select"
-                      onChange={handleCollateralChange}
-                    >
-                      <option hidden>Collateral market</option>
-                      <option value={"USDT"}>USDT</option>
-                      <option value={"USDC"}>USDC</option>
-                      <option value={"BTC"}>BTC</option>
-                      <option value={"BNB"}>BNB</option>
-                    </select>
-                  </Col>
-                </div>
-              </FormGroup> */}
-              {/* <div className="row mb-4">
-                <Col sm={12}>
-                  <Label for="amount">Collateral Amount</Label>
-                  <InputGroup>
-                    <Input
-                      type="number"
-                      className="form-control"
-                      id="amount"
-                      placeholder="Amount"
-                      onChange={handleCollateralInputChange}
-                      value={
-                        borrowParams.collateralAmount
-                          ? (borrowParams.collateralAmount as number)
-                          : 0
-                      }
-                      valid={isValidColleteralAmount()}
-                    />
-                    {borrowParams.collateralMarket && (
-                      <>
-                        <Button
-                          outline
-                          type="button"
-                          className="btn btn-md w-xs"
-                          onClick={handleMin}
-                          // disabled={dataBalance ? false : true}
-                          style={{ background: "#2e3444", border: "#2e3444" }}
-                        >
-                          <span style={{ borderBottom: "2px dotted #fff" }}>
-                            {isLoading ? <MySpinner /> : "Min"}
-                          </span>
-                        </Button>
-
-                        <Button
-                          outline
-                          type="button"
-                          className="btn btn-md w-xs"
-                          onClick={handleMax}
-                          disabled={dataBalance ? false : true}
-                          style={{ background: "#2e3444", border: "#2e3444" }}
-                        >
-                          <span style={{ borderBottom: "2px dotted #fff" }}>
-                            Max
-                          </span>
-                        </Button>
-                      </>
-                    )}
-                  </InputGroup>
-                  {!isValidColleteralAmount() ? (
-                    <FormText color="#e97272">
-                      Collateral amount must be non-zero and {"<="} your balance
-                    </FormText>
-                  ) : (
-                    <></>
-                  )}
-                </Col>
-              </div> */}
               <div className="d-grid gap-2">
-                {/* {allowanceVal < (borrowParams.collateralAmount as number) ? (
-                  <Button
-                    color="primary"
-                    className="w-md"
-                    disabled={
-                      borrowParams.commitBorrowPeriod === undefined ||
-                      loadingApprove ||
-                      loadingBorrow || 
-                      loadingAllowance
-                    }
-                    onClick={(e) => handleApprove(asset)}
-                  >
-                    {!(
-                      
-                      loadingApprove ||
-                      isTransactionLoading(approveTransactionReceipt)
-                    ) ? (
-                      "Approve"
-                    ) : (
-                      <MySpinner text="Approving token" />
-                    )}
-                  </Button>
-                ) :  */}
-                {/* ( */}
-
                 <div
                   style={{
                     marginBottom: "25px",

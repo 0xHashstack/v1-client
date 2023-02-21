@@ -17,8 +17,8 @@ import {
 } from "reactstrap";
 
 import Slider from "react-custom-slider";
-import arrowDown from "../../../assets/images/arrowDown.svg";
-import arrowUp from "../../../assets/images/arrowUp.svg";
+import arrowDown from "../../../assets/images/ArrowDownDark.svg";
+import arrowUp from "../../../assets/images/ArrowUpDark.svg";
 
 import {
   diamondAddress,
@@ -26,6 +26,7 @@ import {
   tokenAddressMap,
   isTransactionLoading,
   tokenDecimalsMap,
+  getTokenFromName,
 } from "../../../blockchain/stark-constants";
 import TxHistoryTable from "../../dashboard/tx-history-table";
 import useAddDeposit from "../../../blockchain/hooks/active-deposits/useAddDeposit";
@@ -74,13 +75,13 @@ const ActiveDepositsTab = ({
   inputVal1: any;
 }) => {
   const Coins: ICoin[] = [
-    { name: "USDT",icon: "mdi-bitcoin", },
-    { name: "USDC",icon: "mdi-ethereum",},
-    { name: "BTC",icon: "mdi-bitcoin",},
+    { name: "USDT", icon: "mdi-bitcoin" },
+    { name: "USDC", icon: "mdi-ethereum" },
+    { name: "BTC", icon: "mdi-bitcoin" },
     { name: "ETH", icon: "mdi-ethereum" },
     { name: "DAI", icon: "mdi-dai" },
   ];
-
+  const [asset, setAsset] = useState<any>();
   const [historicalAPRs, setHistoricalAPRs] = useState();
   const [tokenName, setTokenName] = useState("BTC");
   const [customActiveTab, setCustomActiveTab] = useState("1");
@@ -92,6 +93,10 @@ const ActiveDepositsTab = ({
   const { address: account } = useAccount();
   const [commitPeriod, setCommitPeriod] = useState(0);
   const [transDeposit, setTransDeposit] = useState("");
+  const [commitmentDropDown, setCommitmentDropDown] = useState(false);
+  const [commitmentArrow, setCommitmentArrow] = useState(arrowDown);
+  const [commitmentValue, setCommitmentValue] = useState("Flexible");
+  const [depositLoanRates, setDepositLoanRates] = useState<any>();
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
@@ -136,7 +141,11 @@ const ActiveDepositsTab = ({
     calls: {
       contractAddress: tokenAddressMap[tokenName] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(depositAmount as number, tokenDecimalsMap[tokenName]), 0],
+      calldata: [
+        diamondAddress,
+        NumToBN(depositAmount as number, tokenDecimalsMap[tokenName]),
+        0,
+      ],
     },
   });
 
@@ -151,7 +160,11 @@ const ActiveDepositsTab = ({
       {
         contractAddress: tokenAddressMap[tokenName] as string,
         entrypoint: "approve",
-        calldata: [diamondAddress, NumToBN(depositAmount as number, tokenDecimalsMap[tokenName]), 0],
+        calldata: [
+          diamondAddress,
+          NumToBN(depositAmount as number, tokenDecimalsMap[tokenName]),
+          0,
+        ],
       },
       {
         contractAddress: diamondAddress,
@@ -182,9 +195,20 @@ const ActiveDepositsTab = ({
     return { data, loading, reset, error };
   };
 
+  useEffect(() => {
+    OffchainAPI.getProtocolDepositLoanRates().then((val) => {
+      console.log("got them", val);
+      setDepositLoanRates(val);
+    });
+  }, []);
+
   const tog_center = async () => {
     setmodal_deposit(!modal_deposit);
     // removeBodyCss();
+  };
+
+  const handleCommitChange = (e: any) => {
+    setCommitPeriod(e);
   };
 
   const toggleDropdown = () => {
@@ -200,13 +224,15 @@ const ActiveDepositsTab = ({
 
   const handleDepositAmountChange = (e: any) => {
     setDepositAmount(e.target.value);
-    const balance = Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[tokenName] || 18);
-    if(!balance) return;
+    const balance =
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+      10 ** (tokenDecimalsMap[tokenName] || 18);
+    if (!balance) return;
     // calculate percentage of collateral of balance
     var percentage = (e.target.value / balance) * 100;
     percentage = Math.max(0, percentage);
-    if(percentage > 100) {
-      setValue("Greater than 100")
+    if (percentage > 100) {
+      setValue("Greater than 100");
       return;
     }
     // Round off percentage to 2 decimal places
@@ -218,9 +244,17 @@ const ActiveDepositsTab = ({
     return (
       depositAmount < MinimumAmount[tokenName] ||
       depositAmount >
-        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[tokenName] || 18)
+        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+          10 ** (tokenDecimalsMap[tokenName] || 18)
     );
   }
+
+  const handleMax = async () => {
+    setDepositAmount(
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+        10 ** (tokenDecimalsMap[asset] || 18)
+    );
+  };
 
   const handleDeposit = async (asset: string) => {
     if (
@@ -257,7 +291,6 @@ const ActiveDepositsTab = ({
       return;
     }
   };
-
 
   const {
     data: dataApprove,
@@ -357,7 +390,13 @@ const ActiveDepositsTab = ({
           </>
         ) : (
           <>
-            <div style={{ textAlign: "center", margin: "200px auto",color:"white" }}>
+            <div
+              style={{
+                textAlign: "center",
+                margin: "200px auto",
+                color: "white",
+              }}
+            >
               <div>Your Ethereum wallet is empty. </div>
               <div
                 style={{ fontWeight: "bold", cursor: "pointer" }}
@@ -387,54 +426,25 @@ const ActiveDepositsTab = ({
               >
                 {account ? (
                   <Form>
-                    <div>
-                      <Col sm={8}>
-                        <Nav
-                          tabs
-                          className="nav-tabs-custom"
-                          style={{ borderBottom: "0px", gap: "10px" }}
-                        >
-                          <NavItem>
-                            <NavLink
-                              style={{
-                                cursor: "pointer",
-                                color: "black",
-                                border: "1px solid #000",
-                                borderRadius: "5px",
-                              }}
-                              className={classnames({
-                                active: customActiveTab === "1",
-                              })}
-                              onClick={() => {
-                                setCustomActiveTab("1");
-                              }}
-                            >
-                              <span className="d-none d-sm-block">
-                                Add Supply
-                              </span>
-                            </NavLink>
-                          </NavItem>
-                          <NavItem>
-                            <NavLink
-                              style={{
-                                cursor: "pointer",
-                                color: "black",
-                                border: "1px solid #000",
-                                borderRadius: "5px",
-                              }}
-                              className={classnames({
-                                active: customActiveTab === "2",
-                              })}
-                              onClick={() => {
-                                setCustomActiveTab("2");
-                              }}
-                            >
-                              <span className="d-none d-sm-block">
-                                Withdraw Supply
-                              </span>
-                            </NavLink>
-                          </NavItem>
-                        </Nav>
+                    <div className="row mb-4">
+                      <Col
+                        sm={8}
+                        style={{
+                          display: "flex",
+                          justifyContent: "space-between",
+                          width: "100%",
+                        }}
+                      >
+                        <h5 style={{ color: "white", fontSize: "24px" }}>
+                          Supply
+                        </h5>
+                        <img
+                          src="./cross.svg"
+                          onClick={() => {
+                            setmodal_deposit(false);
+                          }}
+                          style={{ marginTop: "-10px", cursor: "pointer" }}
+                        />
                       </Col>
 
                       <label
@@ -445,11 +455,12 @@ const ActiveDepositsTab = ({
                           padding: "5px 10px",
                           fontSize: "18px",
                           borderRadius: "5px",
-                          border: "2px solid rgb(57, 61, 79)",
+                          border: "1px solid rgb(57, 61, 79)",
                           fontWeight: "200",
                         }}
                       >
                         <div
+                          onClick={toggleDropdown} // for the token of loanMarket
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
@@ -460,9 +471,9 @@ const ActiveDepositsTab = ({
                             {" "}
                             <img
                               src={`./${tokenName}.svg`}
-                              width="30px"
-                              height="30px"
-                             ></img>
+                              width="24px"
+                              height="24px"
+                            ></img>
                             &nbsp;&nbsp;{tokenName}
                           </div>
                           <div
@@ -474,8 +485,68 @@ const ActiveDepositsTab = ({
                             }}
                           >
                             <Image
-                              onClick={toggleDropdown}
                               src={dropDownArrow}
+                              alt="Picture of the author"
+                              width="20px"
+                              height="20px"
+                            />
+                          </div>
+                        </div>
+                      </label>
+
+                      <div
+                        style={{
+                          fontSize: "11px",
+                          fontWeight: "600",
+                          color: "#8b8b8b",
+                        }}
+                      >
+                        Minimum Commitment Period
+                      </div>
+
+                      <label
+                        style={{
+                          width: "420px",
+                          margin: "0 auto",
+                          padding: "5px 10px",
+                          fontSize: "15px",
+                          borderRadius: "5px",
+                          border: "1px solid rgb(57, 61, 79)",
+                          fontWeight: "400",
+                        }}
+                      >
+                        <div
+                          onClick={() => {
+                            setCommitmentDropDown(!commitmentDropDown);
+                            setCommitmentArrow(
+                              commitmentDropDown ? arrowDown : arrowUp
+                            );
+                          }}
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            marginLeft: "10px",
+                            height: "35px",
+                          }}
+                        >
+                          <div>{commitmentValue}</div>
+                          <div
+                            style={{
+                              marginRight: "20px",
+                              marginTop: "3px",
+                              marginBottom: "0",
+                              cursor: "pointer",
+                            }}
+                          >
+                            <Image
+                              onClick={() => {
+                                setCommitmentDropDown(!commitmentDropDown);
+                                setCommitmentArrow(
+                                  commitmentDropDown ? arrowDown : arrowUp
+                                );
+                              }}
+                              src={commitmentArrow}
                               alt="Picture of the author"
                               width="20px"
                               height="20px"
@@ -491,9 +562,8 @@ const ActiveDepositsTab = ({
                               borderRadius: "5px",
                               position: "absolute",
                               zIndex: "100",
-                              top: "125px",
+                              top: "132px",
                               left: "39px",
-
                               width: "420px",
                               margin: "0px auto",
                               marginBottom: "20px",
@@ -518,18 +588,89 @@ const ActiveDepositsTab = ({
                                     setTokenName(`${coin.name}`);
                                     setDropDown(false);
                                     setDropDownArrow(arrowDown);
+                                    setAsset(`${coin.name}`);
                                     handleBalanceChange();
+                                    // handleDepositAmountChange(0);
                                   }}
                                 >
-                                  <img
-                                    src={`./${coin.name}.svg`}
-                                    width="30px"
-                                    height="30px"
-                                  ></img>
+                                  <Image
+                                    src={`/${coin.name}.svg`}
+                                    width="24px"
+                                    height="24px"
+                                    alt="coin image"
+                                  />
                                   <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
                                 </div>
                               );
                             })}
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+
+                      {commitmentDropDown ? (
+                        <>
+                          <div
+                            style={{
+                              borderRadius: "5px",
+                              position: "absolute",
+                              zIndex: "100",
+                              top: "212px",
+                              left: "39px",
+                              width: "420px",
+                              margin: "0px auto",
+                              marginBottom: "20px",
+                              padding: "5px 10px",
+                              backgroundColor: "#1D2131",
+                              boxShadow: "0px 0px 10px #00000020",
+                            }}
+                          >
+                            <div
+                              style={{
+                                fontSize: "15px",
+                                margin: "10px 0",
+                                cursor: "pointer",
+                              }}
+                              onClick={() => {
+                                setCommitmentValue("1 month");
+                                setCommitmentDropDown(false);
+                                setCommitmentArrow(arrowDown);
+                                handleCommitChange(2);
+                              }}
+                            >
+                              &nbsp;1 month
+                            </div>
+                            <div
+                              style={{
+                                fontSize: "15px",
+                                margin: "10px 0",
+                                cursor: "pointer",
+                              }}
+                              onClick={() => {
+                                setCommitmentValue("2 weeks");
+                                setCommitmentDropDown(false);
+                                setCommitmentArrow(arrowDown);
+                                handleCommitChange(1);
+                              }}
+                            >
+                              &nbsp;2 weeks
+                            </div>
+                            <div
+                              style={{
+                                fontSize: "15px",
+                                margin: "10px 0",
+                                cursor: "pointer",
+                              }}
+                              onClick={() => {
+                                setCommitmentValue("Flexible");
+                                setCommitmentDropDown(false);
+                                setCommitmentArrow(arrowDown);
+                                handleCommitChange(0);
+                              }}
+                            >
+                              &nbsp;Flexible
+                            </div>
                           </div>
                         </>
                       ) : (
@@ -544,44 +685,35 @@ const ActiveDepositsTab = ({
                             <Input
                               style={{
                                 backgroundColor: "#1D2131",
-                                padding: "10px ",
-                                borderRight: "1px solid rgb(57, 61, 79)",
+                                borderRight: "1px solid #1D2131",
+                                height: "45px",
                               }}
                               type="number"
                               className="form-control"
                               id="amount"
-                              min={MinimumAmount[tokenName]}
-                              placeholder={`Minimum ${MinimumAmount[tokenName]} ${tokenName}`}
+                              min={MinimumAmount[asset]}
+                              placeholder={`Minimum ${MinimumAmount[asset]} ${asset}`}
                               onChange={handleDepositAmountChange}
                               value={depositAmount}
                               valid={!isInvalid()}
                             />
-
-                            {
-                              <>
-                                <Button
-                                  outline
-                                  type="button"
-                                  className="btn btn-md w-xs"
-                                  // onClick={handleMax}
-                                  // disabled={balance ? false : true}
-                                  style={{
-                                    background: "#1D2131",
-                                    color: "#8C8C8C",
-                                    border: "1px solid rgb(57, 61, 79)",
-                                    borderLeft: "none",
-                                  }}
-                                >
-                                  <span
-                                    style={{ borderBottom: "2px  #fff" }}
-                                  >
-                                    MAX
-                                  </span>
-                                </Button>
-                              </>
-                            }
+                            <Button
+                              outline
+                              type="button"
+                              className="btn btn-md w-xs"
+                              onClick={handleMax}
+                              style={{
+                                background: "#1D2131",
+                                color: "rgb(111, 111, 111)",
+                                border: "1px solid rgb(57, 61, 79)",
+                                borderLeft: "none",
+                              }}
+                            >
+                              <span style={{ borderBottom: "2px  #fff" }}>
+                                MAX
+                              </span>
+                            </Button>
                           </InputGroup>
-
                           <div
                             style={{
                               display: "flex",
@@ -590,17 +722,17 @@ const ActiveDepositsTab = ({
                               marginTop: "4px",
                             }}
                           >
-                            Available:&nbsp;
+                            Wallet Balance:&nbsp;
                             {dataBalance ? (
                               (
                                 Number(uint256.uint256ToBN(dataBalance[0])) /
-                                10 ** (tokenDecimalsMap[tokenName] || 18)
+                                10 ** (tokenDecimalsMap[asset] || 18)
                               ).toString()
                             ) : (
                               <MySpinner />
                             )}
-                            <div style={{ color: "#76809D" }}>
-                              &nbsp;{tokenName}{" "}
+                            <div style={{ color: "#8b8b8b" }}>
+                              &nbsp;{asset}{" "}
                             </div>
                           </div>
 
@@ -622,9 +754,11 @@ const ActiveDepositsTab = ({
                                 setDepositAmount(
                                   (value *
                                     (Number(
-                                      uint256.uint256ToBN(dataBalance[0])
+                                      uint256.uint256ToBN(
+                                        dataBalance ? dataBalance[0] : "-"
+                                      )
                                     ) /
-                                      10 ** (tokenDecimalsMap[tokenName] || 18))) /
+                                      10 ** (tokenDecimalsMap[asset] || 18))) /
                                     100
                                 );
                                 setValue(value);
@@ -638,7 +772,7 @@ const ActiveDepositsTab = ({
                               fontSize: "10px",
                               position: "absolute",
                               right: "12px",
-                              top: "90px",
+                              top: "94px",
                             }}
                           >
                             {value}%
@@ -650,7 +784,7 @@ const ActiveDepositsTab = ({
                                   dataBalance ? dataBalance[0] : 0
                                 )
                               ) /
-                                10 ** (tokenDecimalsMap[tokenName] || 18) && (
+                                10 ** (tokenDecimalsMap[asset] || 18) && (
                               <FormText style={{ color: "#e97272 !important" }}>
                                 {`Amount is greater than your balance`}
                               </FormText>
@@ -658,7 +792,6 @@ const ActiveDepositsTab = ({
                         </Col>
                       </div>
                     </FormGroup>
-
                     <div className="d-grid gap-2">
                       <div
                         style={{
@@ -676,7 +809,11 @@ const ActiveDepositsTab = ({
                         >
                           <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "600",color:"#8B8B8B" }}
+                            style={{
+                              textAlign: "right",
+                              fontWeight: "600",
+                              color: "rgb(111, 111, 111)",
+                            }}
                           >
                             $ 0.50
                           </div>
@@ -690,9 +827,23 @@ const ActiveDepositsTab = ({
                         >
                           <div style={{ color: "#6F6F6F" }}>Supply APR:</div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "600",color:"#8B8B8B" }}
+                            style={{
+                              textAlign: "right",
+                              fontWeight: "600",
+                              color: "rgb(111, 111, 111)",
+                            }}
                           >
-                            7.75 %
+                            {depositLoanRates && commitPeriod < 3 ? (
+                              `${parseFloat(
+                                depositLoanRates[
+                                  `${
+                                    getTokenFromName(asset as string)?.address
+                                  }__${commitPeriod}`
+                                ]?.depositAPR?.apr100x as string
+                              )} %`
+                            ) : (
+                              <MySpinner />
+                            )}
                           </div>
                         </div>
                         <div
@@ -706,7 +857,11 @@ const ActiveDepositsTab = ({
                             Asset Utilization Rate:
                           </div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "600",color:"#8B8B8B" }}
+                            style={{
+                              textAlign: "right",
+                              fontWeight: "600",
+                              color: "rgb(111, 111, 111)",
+                            }}
                           >
                             0.43
                           </div>
@@ -722,7 +877,11 @@ const ActiveDepositsTab = ({
                             Supply Network:
                           </div>
                           <div
-                            style={{ textAlign: "right", fontWeight: "600",color:"#8B8B8B" }}
+                            style={{
+                              textAlign: "right",
+                              fontWeight: "600",
+                              color: "rgb(111, 111, 111)",
+                            }}
                           >
                             Starknet
                           </div>
@@ -730,7 +889,12 @@ const ActiveDepositsTab = ({
                       </div>
                       <Button
                         color="white"
-                        style={{border:"none",backgroundColor:"#393D4F"}}
+                        style={{
+                          backgroundColor: "rgb(57, 61, 79)",
+                          color: "white",
+                          padding: "10px 0",
+                          boxShadow: "rgba(0, 0, 0, 0.5) 3.4px 3.4px 5.2px 0px",
+                        }}
                         className="w-md"
                         disabled={
                           commitPeriod === undefined ||
@@ -739,7 +903,7 @@ const ActiveDepositsTab = ({
                           isInvalid()
                         }
                         onClick={(e) => {
-                          handleDeposit(tokenName);
+                          handleDeposit(asset);
                         }}
                       >
                         {!(

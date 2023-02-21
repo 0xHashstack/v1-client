@@ -72,9 +72,9 @@ let Deposit: any = ({
   depositLoanRates: any;
 }) => {
   const Coins: ICoin[] = [
-    { name: "USDT",  icon: "mdi-bitcoin" },
-    { name: "USDC",  icon: "mdi-ethereum"  },
-    { name: "BTC",  icon: "mdi-bitcoin"  },
+    { name: "USDT", icon: "mdi-bitcoin" },
+    { name: "USDC", icon: "mdi-ethereum" },
+    { name: "BTC", icon: "mdi-bitcoin" },
     { name: "ETH", icon: "mdi-ethereum" },
     { name: "DAI", icon: "mdi-dai" },
   ];
@@ -246,7 +246,6 @@ let Deposit: any = ({
     },
   });
 
-
   const {
     data: dataApprove,
     loading: loadingApprove,
@@ -266,12 +265,13 @@ let Deposit: any = ({
   const handleDepositAmountChange = (e: any) => {
     setDepositAmount(e.target.value);
     const balance =
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[asset] || 18);
-    if  (!balance) return;
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+      10 ** (tokenDecimalsMap[asset] || 18);
+    if (!balance) return;
     // calculate percentage of collateral of balance
     var percentage = (e.target.value / balance) * 100;
     percentage = Math.max(0, percentage);
-    if  (percentage > 100) {
+    if (percentage > 100) {
       setValue("Greater than 100");
       return;
     }
@@ -288,7 +288,8 @@ let Deposit: any = ({
 
   const handleMax = async () => {
     setDepositAmount(
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[asset] || 18)
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+        10 ** (tokenDecimalsMap[asset] || 18)
     );
   };
 
@@ -384,7 +385,8 @@ let Deposit: any = ({
     return (
       depositAmount < MinimumAmount[asset] ||
       depositAmount >
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[asset] || 18)
+        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+          10 ** (tokenDecimalsMap[asset] || 18)
     );
   }
 
@@ -713,12 +715,6 @@ let Deposit: any = ({
                         <span style={{ borderBottom: "2px  #fff" }}>MAX</span>
                       </Button>
                     </InputGroup>
-                    {/* {depositAmount != 0 &&
-                      depositAmount < MinimumAmount[asset] && (
-                        <FormText style={{ color: "#e97272 !important" }}>
-                          {`Please enter amount more than minimum amount = ${MinimumAmount[asset]} ${asset}`}
-                        </FormText>
-                      )} */}
                     <div
                       style={{
                         display: "flex",
@@ -760,7 +756,7 @@ let Deposit: any = ({
                                 )
                               ) /
                                 10 ** (tokenDecimalsMap[asset] || 18))) /
-                            100
+                              100
                           );
                           setValue(value);
                         }}
@@ -780,10 +776,10 @@ let Deposit: any = ({
                     </div>
                     {depositAmount != 0 &&
                       depositAmount >
-                      Number(
-                        uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)
-                      ) /
-                      10 **  (tokenDecimalsMap[asset] || 18) && (
+                        Number(
+                          uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)
+                        ) /
+                          10 ** (tokenDecimalsMap[asset] || 18) && (
                         <FormText style={{ color: "#e97272 !important" }}>
                           {`Amount is greater than your balance`}
                         </FormText>
@@ -791,51 +787,7 @@ let Deposit: any = ({
                   </Col>
                 </div>
               </FormGroup>
-
-              {/* <FormGroup floating>
-                <div className="row mb-4">
-                  <Col sm={12}>
-                    <Label for="commitment">Commitment</Label>
-                    <select
-                      id="commitment"
-                      className="form-select"
-                      placeholder="Commitment"
-                      onChange={handleCommitChange}
-                    >
-                      <option value={0}>Flexible</option>
-                      <option value={1}>Two Weeks</option>
-                      <option value={2}>One Month</option>
-                      <option value={3}>Three Months</option>
-                    </select>
-                  </Col>
-                </div>
-              </FormGroup> */}
               <div className="d-grid gap-2">
-                {/* {allowanceVal < (depositAmount as number) ? (
-                  <Button
-                    color="primary"
-                    className="w-md"
-                    disabled={
-                      commitPeriod === undefined ||
-                      loadingApprove ||
-                      loadingDeposit ||
-                      depositAmount < MinimumAmount[asset]
-                    }
-                    onClick={(e) => handleApprove(asset)}
-                  >
-                    {!(
-                      loadingApprove ||
-                      isTransactionLoading(approveTransactionReceipt)
-                    ) ? (
-                      "Approve"
-                    ) : (
-                      <div>
-                        <MySpinner text="Approving token" />
-                      </div>
-                    )}
-                  </Button>
-                ) : ( */}
-
                 <div
                   style={{
                     marginBottom: "25px",
@@ -855,7 +807,7 @@ let Deposit: any = ({
                       style={{
                         textAlign: "right",
                         fontWeight: "600",
-                         color:  "rgb(111, 111, 111)",
+                        color: "rgb(111, 111, 111)",
                       }}
                     >
                       $ 0.50
@@ -873,7 +825,7 @@ let Deposit: any = ({
                       style={{
                         textAlign: "right",
                         fontWeight: "600",
-                        color:  "rgb(111, 111, 111)",
+                        color: "rgb(111, 111, 111)",
                       }}
                     >
                       {depositLoanRates && commitPeriod < 3 ? (
@@ -884,7 +836,7 @@ let Deposit: any = ({
                             }__${commitPeriod}`
                           ]?.depositAPR?.apr100x as string
                         )} %`
-                      )  : (
+                      ) : (
                         <MySpinner />
                       )}
                     </div>
@@ -903,7 +855,7 @@ let Deposit: any = ({
                       style={{
                         textAlign: "right",
                         fontWeight: "600",
-                         color:  "rgb(111, 111, 111)",
+                        color: "rgb(111, 111, 111)",
                       }}
                     >
                       0.43
@@ -921,7 +873,7 @@ let Deposit: any = ({
                       style={{
                         textAlign: "right",
                         fontWeight: "600",
-                         color:  "rgb(111, 111, 111)",
+                        color: "rgb(111, 111, 111)",
                       }}
                     >
                       Starknet
