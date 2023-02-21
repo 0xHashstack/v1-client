@@ -6,6 +6,7 @@ import { TabContext } from "../../hooks/contextHooks/TabContext";
 import { useContext } from "react";
 import { number } from "starknet";
 import { useAccount } from "@starknet-react/core";
+import { tokenDecimalsMap } from "../../blockchain/stark-constants";
 
 const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
   const { account: starknetAccount, address: _account } = useAccount();
@@ -33,6 +34,8 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
   }, [_account]);
 
   useEffect(() => {
+    if (!depositsArray || !loansArray) return;
+    let supply = 0;
     let sum = 0;
     let borrow = 0;
 
@@ -40,49 +43,56 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
       for (let i = 0; i < val.oraclePrices.length; i++) {
         depositsArray.map((item: any, index: number) => {
           if (item.market === val.oraclePrices[i].name) {
-            sum += (item.amount / 10 ** 18) * val.oraclePrices[i].price;
-            // console.log("venkatss", sum);
+            supply +=
+              (item.amount / 10 ** Number(tokenDecimalsMap[item.market])) *
+              val.oraclePrices[i].price;
+            sum +=
+              (item.amount / 10 ** Number(tokenDecimalsMap[item.market])) *
+              val.oraclePrices[i].price;
           }
-          setTotalSupply(sum);
         });
+
         loansArray.map((item: any, index: number) => {
           if (
             item.loanMarket === val.oraclePrices[i].name &&
             !["REPAID", "LIQUIDATED"].includes(item.state)
           ) {
-            borrow -= (item.loanAmount / 10 ** 18) * val.oraclePrices[i].price;
-            sum -= (item.loanAmount / 10 ** 18) * val.oraclePrices[i].price;
-            // console.log("venkat", sum);
+            borrow +=
+              (item.loanAmount /
+                10 ** Number(tokenDecimalsMap[item.loanMarket])) *
+              val.oraclePrices[i].price;
+            sum -=
+              (item.loanAmount /
+                10 ** Number(tokenDecimalsMap[item.loanMarket])) *
+              val.oraclePrices[i].price;
           }
           if (
             item.currentLoanMarket === val.oraclePrices[i].name &&
             !["REPAID", "LIQUIDATED"].includes(item.state)
           ) {
-            borrow -=
-              (item.currentLoanAmount / 10 ** 18) * val.oraclePrices[i].price;
-            sum -=
-              (item.currentLoanAmount / 10 ** 18) * val.oraclePrices[i].price;
-            // console.log("venkat", sum);
+            sum +=
+              (item.currentLoanAmount /
+                10 ** Number(tokenDecimalsMap[item.currentLoanMarket])) *
+              val.oraclePrices[i].price;
           }
           if (item.collateralMarket === val.oraclePrices[i].name) {
-            borrow +=
-              (item.collateralAmount / 10 ** 18) * val.oraclePrices[i].price;
             sum +=
-              (item.collateralAmount / 10 ** 18) * val.oraclePrices[i].price;
-            // console.log("venkat", sum);
+              (item.collateralAmount /
+                10 ** Number(tokenDecimalsMap[item.collateralMarket])) *
+              val.oraclePrices[i].price;
           }
-          setYourBorrow(borrow);
-          setNetWorth(sum);
         });
+        setYourBorrow(borrow);
+        setNetWorth(sum);
+        setTotalSupply(supply);
+
         const getReserves = async () => {
           let reservesAmount = 0;
           const res: any = await OffchainAPI.getReserves();
-          // console.log("MMM", res?.reserves);
           for (let token in res?.reserves?.deposits) {
             if (token == val.oraclePrices[i].name) {
               reservesAmount +=
                 res?.reserves.deposits[token] * val.oraclePrices[i].price;
-              // console.log("BBBB", reservesAmount);
             }
           }
           setTotalReserves(reservesAmount);
@@ -92,20 +102,15 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
             if (token == val.oraclePrices[i].name) {
               borrowedAmount +=
                 res?.reserves.loans[token] * val.oraclePrices[i].price;
-              // console.log("BBBB", reservesAmount);
             }
           }
           setAvailableReserves(reservesAmount - borrowedAmount);
-          // setReserves(reservesAmount);
         };
 
         getReserves();
       }
     });
-  }, [depositsArray]);
-
-  // console.log("hiharsh", depositsArray);
-  // console.log("byeharsh", loansArray);
+  }, [depositsArray, loansArray]);
 
   return (
     <div
@@ -129,15 +134,15 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
           boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
         }}
       >
-        <div className="Net Worth">
+        <div className="">
           <p style={{ marginBottom: "10px" }}>Net Worth</p>
           <h4>${netWorth.toFixed(2)}</h4>
         </div>
-        <div className="Net Worth">
+        <div className="">
           <p style={{ marginBottom: "10px" }}>Your Supply</p>
           <h4>${totalSupply.toFixed(2)}</h4>
         </div>
-        <div className="Net Worth">
+        <div className="">
           <p style={{ marginBottom: "10px" }}>Your Borrow</p>
           <h4>${yourBorrow.toFixed(2)}</h4>
         </div>

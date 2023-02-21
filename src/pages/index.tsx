@@ -294,6 +294,7 @@ const Dashboard = () => {
       );
   }, [
     // account,
+    account,
     passbookStatus,
     customActiveTab,
     isTransactionDone,
@@ -622,7 +623,9 @@ const Dashboard = () => {
   function dashboardUI() {
     return (
       <div style={{ width: "100%", backgroundColor: "#1C202", height: "100%" }}>
-        {customActiveTab === "1" && activeDepositsData?.length ? (
+        {customActiveTab === "1" &&
+        activeDepositsData?.length &&
+        activeLoansData?.length ? (
           <StatsBoard
             depositsArray={activeDepositsData}
             loansArray={activeLoansData}
