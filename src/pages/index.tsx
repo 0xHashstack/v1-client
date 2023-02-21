@@ -308,6 +308,7 @@ const Dashboard = () => {
       console.log("on deposit", i, myDepString);
       deposits.push(JSON.parse(myDepString));
     }
+    console.log("depositsxyz", deposits);
     let nonZeroDeposits = deposits.filter(function (el) {
       console.log(el.amount, "deposits123");
       return el.amount !== "0";
@@ -592,15 +593,20 @@ const Dashboard = () => {
   function dashboardUI() {
     return (
       <div style={{ width: "100%", backgroundColor: "#1C202", height: "100%" }}>
-        {customActiveTab === "1" ? <StatsBoard /> : null}
+        {customActiveTab === "1" && activeDepositsData?.length ? (
+          <StatsBoard
+            depositsArray={activeDepositsData}
+            loansArray={activeLoansData}
+          />
+        ) : null}
         <Container fluid>
           <Row>
             <Col xl={"12"}>
               {/* <Card style={{ height: "35rem", overflowY: "scroll" }}> */}
               <div style={{ margin: "1px 5px 5px 14px" }}>
                 {customActiveTab === "2" ||
-                  customActiveTab === "3" ||
-                  customActiveTab === "4" ? (
+                customActiveTab === "3" ||
+                customActiveTab === "4" ? (
                   <DashboardMenu
                     margin={"0px"}
                     customActiveTab={customActiveTab}
@@ -628,8 +634,8 @@ const Dashboard = () => {
                 )}
               </div>
               {customActiveTab === "3" ||
-                customActiveTab === "4" ||
-                customActiveTab === "2" ? (
+              customActiveTab === "4" ||
+              customActiveTab === "2" ? (
                 <>
                   <div
                     style={{
@@ -1389,8 +1395,8 @@ const Dashboard = () => {
               ) : null}
 
               {customActiveTab === "1" ||
-                customActiveTab === "3" ||
-                customActiveTab === "4" ? (
+              customActiveTab === "3" ||
+              customActiveTab === "4" ? (
                 <Card
                   style={{
                     height: "60vh",
@@ -1503,9 +1509,11 @@ const Dashboard = () => {
                       your borrow
                     </u>
                   </div>
-                  <SpendLoanNav activeLoansData={activeLoansData.filter(
-                    (loan) => loan.state === "OPEN"
-                  )} />
+                  <SpendLoanNav
+                    activeLoansData={activeLoansData.filter(
+                      (loan) => loan.state === "OPEN"
+                    )}
+                  />
                 </>
               ) : null}
             </Col>
@@ -1602,7 +1610,11 @@ const Dashboard = () => {
         {/* <Analytics></Analytics>
             {props.children} */}
       </div>
-      <ToastModal bool={true} heading="Transaction Complete" desc="Copy Transaction Hash" />
+      {/* <ToastModal
+        bool={false}
+        heading="Transaction Complete"
+        desc="Copy Transaction Hash"
+      /> */}
       {/* // </React.Fragment> */}
     </div>
   );

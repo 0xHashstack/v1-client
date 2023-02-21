@@ -33,6 +33,7 @@ let DashboardTBody: any = ({
   const [reserves, setReserves] = useState();
 
   const processOracleFairPrices = (coinName: string, arr) => {
+    if (!arr) return;
     const oraclePrice = arr.find((ele) => {
       return ele.name === coinName;
     });
@@ -62,7 +63,7 @@ let DashboardTBody: any = ({
       });
     };
     getPrices();
-  }, [])
+  }, []);
 
   if (isloading) {
     return (
