@@ -87,6 +87,7 @@ const SecondaryHeader = ({
   const [languageChosen, setLanguageChosen] = React.useState("English");
   const [settingDropDown, setSettingDropDown] = useState(false);
   const [dropDownOpen, setdropDownOpen] = useState(false);
+  const [liquidateDropDown, setLiquidateDropDown] = useState(false);
   const [networkSelected, setnetworkSelected] = useState({
     network: "",
     starknet: false,
@@ -99,7 +100,7 @@ const SecondaryHeader = ({
     direction: { connectWalletArrowDown },
   });
 
-  const states = ["1", "2", "3", "4", "5","7"];
+  const states = ["1", "2", "3", "4", "5", "7"];
 
   // Context Hook For Tabcontex
   const { customActiveTab, toggleCustom } = useContext(TabContext);
@@ -170,21 +171,39 @@ const SecondaryHeader = ({
       setDropDownArrow(dropDownOpen ? arrowDown : arrowUp);
     }
   };
+
   return (
     // <Container className="headerContainer">
     <div style={{ overflowX: "hidden" }}>
       <Row>
         <Navbar
           style={{
+            padding: "13px 0",
             backgroundColor: "#1C202F",
             width: "100%",
+            height: "76px",
             color: "white",
             boxShadow:
               "rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px",
           }}
         >
-          <div className="d-flex">
-            <div style={{ display: "flex", alignItems: "center" }}>
+          <div
+            className="d-flex"
+            style={{
+              display: "flex",
+              gap: "15px",
+              alignItems: "center",
+              height: "45px",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                marginLeft: "5px",
+                marginTop: "5px",
+              }}
+            >
               <Link href="/">
                 <div>
                   <Image src={hashstackLogo} alt="Navbar Logo" height="40px" />
@@ -199,7 +218,7 @@ const SecondaryHeader = ({
                 borderRadius: "5px",
                 color: "#FFF",
                 cursor: "pointer",
-                marginLeft: "40px",
+                marginBottom: "0px",
                 backgroundColor: states.includes(customActiveTab)
                   ? "#393D4F"
                   : "",
@@ -211,13 +230,11 @@ const SecondaryHeader = ({
                   display: "flex",
                   justifyContent: "space-between",
                   alignItems: "center",
-                  // backgroundColor:"grey"
                 }}
                 onClick={() => {
                   toggleCustom("1");
                 }}
               >
-                {" "}
                 <Image
                   src={dashboardIcon}
                   alt="Picture of the author"
@@ -236,7 +253,7 @@ const SecondaryHeader = ({
                 borderRadius: "5px",
                 color: "#FFF",
                 cursor: "pointer",
-                margin: "0",
+                marginBottom: "0px",
               }}
               className="button"
             >
@@ -266,7 +283,6 @@ const SecondaryHeader = ({
                 borderRadius: "5px",
                 color: "#FFF",
                 cursor: "pointer",
-                marginRight: "100px",
                 marginBottom: "0px",
                 backgroundColor: customActiveTab === "6" ? "#393D4F" : "",
               }}
@@ -279,7 +295,7 @@ const SecondaryHeader = ({
                   alignItems: "center",
                 }}
                 onClick={() => {
-                  toggleCustom("6");
+                  setLiquidateDropDown(!liquidateDropDown);
                 }}
               >
                 {" "}
@@ -343,7 +359,7 @@ const SecondaryHeader = ({
                         padding: "15px 10px",
                         fontSize: "18px",
                         borderRadius: "5px",
-                        border: "2px solid #00000050",
+                        border: "1px solid #393D4F",
                       }}
                     >
                       <div
@@ -470,7 +486,7 @@ const SecondaryHeader = ({
                     </a>
                   </p> */}
 
-                  <p>
+                  <p style={{ fontSize: "14px" }}>
                     By connecting your wallet, you agree to Hashstack’s &nbsp;
                     <br />
                     <a
@@ -503,7 +519,7 @@ const SecondaryHeader = ({
               <label
                 style={{
                   backgroundColor: "#2A2E3F",
-                  padding: "15px",
+                  padding: "13px 25px",
                   fontSize: "12px",
                   borderRadius: "5px",
                   color: "#FFF",
@@ -536,6 +552,7 @@ const SecondaryHeader = ({
 
               <label
                 style={{
+                  height: "48px",
                   backgroundColor: "#2A2E3F",
                   padding: "15px",
                   fontSize: "12px",
@@ -630,15 +647,38 @@ const SecondaryHeader = ({
         </Navbar>
       </Row>
 
+      {liquidateDropDown ? (
+        <label
+          style={{
+            backgroundColor: "#1D2130",
+            position: "absolute",
+            top: "56px",
+            left: "515px",
+            padding: "10px",
+            cursor: "pointer",
+            color: "white",
+            fontSize: "12px",
+          }}
+          onClick={() => {
+            toggleCustom("6");
+            setLiquidateDropDown(false);
+          }}
+        >
+          <img src="./money-recive.svg" style={{ marginRight: "5px  " }} />
+          Liquidate
+        </label>
+      ) : null}
+
       {account && connectWalletArrowState.bool ? (
         <div style={{ zIndex: "1000" }}>
           <div
             style={{
               position: "absolute",
-              right: "65px",
+              top: "68px",
+              right: "60px",
               backgroundColor: "#1D2131",
               width: "195px",
-              height: "110px",
+              height: "150px",
               borderRadius: "5px",
               boxShadow: "0px 0px 10px rgb(57, 61, 79)",
               zIndex: "1000",
@@ -646,26 +686,15 @@ const SecondaryHeader = ({
           >
             <div
               style={{
-                display: "flex",
-                justifyContent: "space-between",
+                display: "block",
                 padding: "10px 12px",
-                gap: "2px",
                 fontSize: "10.5px",
               }}
             >
               <button
                 style={{
-                  padding: "7px 6px",
-                  borderRadius: "5px",
-                  backgroundColor: "rgb(57, 61, 79)",
-                  color: "white",
-                  border: "none",
-                }}
-              >
-                Switch Wallet
-              </button>
-              <button
-                style={{
+                  marginLeft: "100px",
+                  marginBottom: "10px",
                   padding: "7px 6px",
                   borderRadius: "5px",
                   backgroundColor: "rgb(57, 61, 79)",
@@ -676,13 +705,26 @@ const SecondaryHeader = ({
               >
                 Disconnect
               </button>
+              <br />
+              <button
+                style={{
+                  marginLeft: "89px",
+                  padding: "7px 6px",
+                  borderRadius: "5px",
+                  backgroundColor: "rgb(57, 61, 79)",
+                  color: "white",
+                  border: "none",
+                }}
+              >
+                Switch Wallet
+              </button>
             </div>
             <hr style={{ margin: "0 10px" }} />
             <div>
               <div
                 style={{
                   position: "absolute",
-                  right: "0.7vw",
+                  right: "1.5vw",
                   bottom: "10px",
                   color: "#636779",
                   textAlign: "right",
@@ -690,7 +732,26 @@ const SecondaryHeader = ({
               >
                 Network
                 <br />
-                <div style={{ color: "white" }}>{networkSelected.network}</div>
+                <div
+                  style={{
+                    color: "white",
+                    marginRight: "-15px",
+                    display: "flex",
+                    gap: "5px",
+                  }}
+                >
+                  <img src="./green.svg" />
+                  <div>{networkSelected.network} </div>
+                  <Image
+                    src={dropDownArrow}
+                    alt="Picture of the author"
+                    width="18px"
+                    height="18px"
+                    style={{
+                      cursor: "pointer",
+                    }}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -775,7 +836,7 @@ const SecondaryHeader = ({
               right: "20px",
               backgroundColor: "#1C202F",
               width: "195px",
-              height: "300px",
+              height: "500px",
               borderRadius: "5px",
               boxShadow: "0px 0px 10px #00000050",
               zIndex: "1000",
@@ -814,38 +875,41 @@ const SecondaryHeader = ({
               {languages.map((language) => {
                 let str = language.name.split(" ");
                 return (
-                  <div
-                    style={{
-                      display: "flex",
-                      gap: "7px",
-                      marginBottom: "10px",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Image
-                      src={language.icon}
-                      alt="Picture of the author"
-                      width="15px"
-                      height="15px"
-                      style={{ cursor: "pointer" }}
-                    />
-                    <div>{str[0]}</div>
-                    {str[0] == languageChosen ? (
-                      <div style={{ position: "absolute", right: "20px" }}>
-                        <Image src={tickMark} />
-                      </div>
-                    ) : (
-                      <></>
-                    )}
-                    {str.length > 1 ? (
-                      <div style={{ fontSize: "8px", color: "#ADB5BD" }}>
-                        {str[1]}&nbsp;
-                        {str[2]}
-                      </div>
-                    ) : (
-                      <></>
-                    )}
-                  </div>
+                  <>
+                    <div
+                      style={{
+                        display: "flex",
+                        gap: "7px",
+                        marginBottom: "10px",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Image
+                        src={language.icon}
+                        alt="Picture of the author"
+                        width="15px"
+                        height="15px"
+                        style={{ cursor: "pointer" }}
+                      />
+                      <div>{str[0]}</div>
+                      {str[0] == languageChosen ? (
+                        <div style={{ position: "absolute", right: "20px" }}>
+                          <Image src={tickMark} />
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                      {str.length > 1 ? (
+                        <div style={{ fontSize: "8px", color: "#ADB5BD" }}>
+                          {str[1]}&nbsp;
+                          {str[2]}
+                        </div>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                    <hr style={{ width: "95%" }} />
+                  </>
                 );
               })}
             </div>

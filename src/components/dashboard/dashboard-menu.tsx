@@ -45,6 +45,7 @@ const DashboardMenu = ({
           borderBottom: "0px",
           gap: "10px",
           margin: `20px ${margin}`,
+          fontSize: "16px",
         }}
       >
         <NavItem>
@@ -52,9 +53,8 @@ const DashboardMenu = ({
             style={{
               cursor: "pointer",
               color: "black",
-              border: "1px solid #000",
               borderRadius: "5px",
-              boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
+              boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
             }}
             className={classnames({
               active: customActiveTab === "1",
@@ -94,9 +94,8 @@ const DashboardMenu = ({
                 style={{
                   cursor: "pointer",
                   color: "black",
-                  border: "1px solid #000",
                   borderRadius: "5px",
-                  boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
+                  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
                 }}
                 className={classnames({
                   active: customActiveTab === "2",
@@ -113,9 +112,9 @@ const DashboardMenu = ({
                 style={{
                   cursor: "pointer",
                   color: "black",
-                  border: "1px solid #000",
+
                   borderRadius: "5px",
-                  boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
+                  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
                 }}
                 className={classnames({
                   active: customActiveTab === "3",
@@ -132,9 +131,8 @@ const DashboardMenu = ({
                 style={{
                   cursor: "pointer",
                   color: "black",
-                  border: "1px solid #000",
                   borderRadius: "5px",
-                  boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
+                  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
                 }}
                 className={classnames({
                   active: customActiveTab === "4",

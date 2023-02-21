@@ -1486,8 +1486,8 @@ const Dashboard = () => {
               customActiveTab === "4" ? (
                 <Card
                   style={{
-                    height: "60vh",
-                    maxHeight: "35rem",
+                    height: "73vh",
+                    maxHeight: "38rem",
                     border: "none",
                     boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
                   }}

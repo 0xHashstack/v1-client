@@ -55,19 +55,25 @@ import MySpinner from "./mySpinner";
 import Image from "next/image";
 import classnames from "classnames";
 import OffchainAPI from "../services/offchainapi.service";
-import Downarrow from "../assets/images/ArrowDownDark.svg"
-import UpArrow from "../assets/images/ArrowUpDark.svg"
+import Downarrow from "../assets/images/ArrowDownDark.svg";
+import UpArrow from "../assets/images/ArrowUpDark.svg";
 
 interface ICoin {
   name: string;
   icon: string;
 }
 
-let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam }: { asset: string, depositLoanRates: any }) => {
+let Deposit: any = ({
+  asset: assetParam,
+  depositLoanRates: depositLoanRatesParam,
+}: {
+  asset: string;
+  depositLoanRates: any;
+}) => {
   const Coins: ICoin[] = [
-    { name: "USDT",icon: "mdi-bitcoin", },
-    { name: "USDC",icon: "mdi-ethereum",},
-    { name: "BTC",icon: "mdi-bitcoin",},
+    { name: "USDT", icon: "mdi-bitcoin" },
+    { name: "USDC", icon: "mdi-ethereum" },
+    { name: "BTC", icon: "mdi-bitcoin" },
     { name: "ETH", icon: "mdi-ethereum" },
     { name: "DAI", icon: "mdi-dai" },
   ];
@@ -81,7 +87,9 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(Downarrow);
 
-  const [depositLoanRates, setDepositLoanRates] = useState(depositLoanRatesParam);
+  const [depositLoanRates, setDepositLoanRates] = useState(
+    depositLoanRatesParam
+  );
 
   const [commitmentValue, setCommitmentValue] = useState("Flexible");
   const [commitmentDropDown, setCommitmentDropDown] = useState(false);
@@ -130,9 +138,8 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
       console.log("deposit rates in supply", val);
       setDepositLoanRates(val);
-    })
+    });
   }, [asset]);
-
 
   useEffect(() => {
     // console.log('approve tx receipt', approveTransactionReceipt.data?.transaction_hash, approveTransactionReceipt);
@@ -268,13 +275,14 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
 
   const handleDepositAmountChange = (e: any) => {
     setDepositAmount(e.target.value);
-    const balance = Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18;
-    if(!balance) return;
+    const balance =
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18;
+    if (!balance) return;
     // calculate percentage of collateral of balance
     var percentage = (e.target.value / balance) * 100;
     percentage = Math.max(0, percentage);
-    if(percentage > 100) {
-      setValue("Greater than 100")
+    if (percentage > 100) {
+      setValue("Greater than 100");
       return;
     }
     // Round off percentage to 2 decimal places
@@ -392,25 +400,27 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
 
   return (
     <>
-      <NavLink
-        type="button"
-        // className="btn btn-dark btn-sm w-xs"
-        onClick={tog_center}
-        style={{
-          backgroundColor: "#393D4F",
-          color: "white",
-          padding: "10px 18px",
-          borderRadius: "5px",
-          border: "none",
-          fontSize: "11px",
-          width: "75px",
-        }}
-        className={classnames({
-          active: customActiveTab === "2",
-        })}
-      >
-        Supply
-      </NavLink>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <NavLink
+          type="button"
+          // className="btn btn-dark btn-sm w-xs"
+          onClick={tog_center}
+          style={{
+            backgroundColor: "#393D4F",
+            color: "white",
+            padding: "10px 18px",
+            borderRadius: "5px",
+            border: "none",
+            fontSize: "11px",
+            width: "75px",
+          }}
+          className={classnames({
+            active: customActiveTab === "2",
+          })}
+        >
+          Supply
+        </NavLink>
+      </div>
       <Modal
         style={{ width: "548px", height: "603px" }}
         isOpen={modal_deposit}
@@ -614,8 +624,6 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                         padding: "5px 10px",
                         backgroundColor: "rgb(42, 46, 63)",
                         boxShadow: "0px 0px 10px #00000020",
-                      
-
                       }}
                     >
                       <div
@@ -769,7 +777,11 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                         onChange={(value: any) => {
                           setDepositAmount(
                             (value *
-                              (Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : '-')) /
+                              (Number(
+                                uint256.uint256ToBN(
+                                  dataBalance ? dataBalance[0] : "-"
+                                )
+                              ) /
                                 10 ** 18)) /
                               100
                           );
@@ -862,7 +874,13 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "rgb(111, 111, 111)",
+                      }}
+                    >
                       $ 0.50
                     </div>
                   </div>
@@ -874,18 +892,24 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply APR:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600", color:"rgb(111, 111, 111)" }}>
-                      {
-                        depositLoanRates && commitPeriod < 3 ? (
-                          `${parseFloat(
-                            depositLoanRates[
-                              `${getTokenFromName(asset as string)?.address}__${commitPeriod}`
-                            ]?.depositAPR?.apr100x as string
-                          )} %`
-                        ): (
-                          <MySpinner />
-                        )
-                      }
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "rgb(111, 111, 111)",
+                      }}
+                    >
+                      {depositLoanRates && commitPeriod < 3 ? (
+                        `${parseFloat(
+                          depositLoanRates[
+                            `${
+                              getTokenFromName(asset as string)?.address
+                            }__${commitPeriod}`
+                          ]?.depositAPR?.apr100x as string
+                        )} %`
+                      ) : (
+                        <MySpinner />
+                      )}
                     </div>
                   </div>
                   <div
@@ -898,7 +922,13 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                     <div style={{ color: "#6F6F6F" }}>
                       Asset Utilization Rate:
                     </div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "rgb(111, 111, 111)",
+                      }}
+                    >
                       0.43
                     </div>
                   </div>
@@ -910,14 +940,20 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}>
+                    <div
+                      style={{
+                        textAlign: "right",
+                        fontWeight: "600",
+                        color: "rgb(111, 111, 111)",
+                      }}
+                    >
                       Starknet
                     </div>
                   </div>
                 </div>
                 <Button
                   color="white"
-                  style={{backgroundColor: "rgb(57, 61, 79)",color:"white"}}
+                  style={{ backgroundColor: "rgb(57, 61, 79)", color: "white" }}
                   className="w-md"
                   disabled={
                     commitPeriod === undefined ||
