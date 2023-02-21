@@ -31,6 +31,7 @@ import {
   getTokenFromName,
   isTransactionLoading,
   tokenAddressMap,
+  tokenDecimalsMap,
 } from "../blockchain/stark-constants";
 
 import { BNtoNum, GetErrorText, NumToBN } from "../blockchain/utils";
@@ -71,9 +72,9 @@ let Deposit: any = ({
   depositLoanRates: any;
 }) => {
   const Coins: ICoin[] = [
-    { name: "USDT", icon: "mdi-bitcoin" },
-    { name: "USDC", icon: "mdi-ethereum" },
-    { name: "BTC", icon: "mdi-bitcoin" },
+    { name: "USDT",  icon: "mdi-bitcoin" },
+    { name: "USDC",  icon: "mdi-ethereum"  },
+    { name: "BTC",  icon: "mdi-bitcoin"  },
     { name: "ETH", icon: "mdi-ethereum" },
     { name: "DAI", icon: "mdi-dai" },
   ];
@@ -105,7 +106,7 @@ let Deposit: any = ({
 
   const [allowanceVal, setAllowance] = useState(0);
 
-  const { address: account } = useAccount();
+  const { account, address: accountAddress, status } = useAccount();
   const [transApprove, setTransApprove] = useState("");
   const [transDeposit, setTransDeposit] = useState("");
 
@@ -171,19 +172,11 @@ let Deposit: any = ({
   } = useStarknetCall({
     contract: contract,
     method: "balanceOf",
-    args: [account],
+    args: [accountAddress],
     options: {
       watch: true,
     },
   });
-
-  // useEffect(() => {
-  //   // console.log('balance', {
-  //   //   dataBalance, loadingBalance, errorBalance, refreshBalance, contract, account
-  //   // })
-  // }, [dataBalance, loadingBalance, errorBalance, refreshBalance]);
-
-  // Approve
 
   const [customActiveTab, setCustomActiveTab] = useState("9");
 
@@ -247,15 +240,12 @@ let Deposit: any = ({
   } = useStarknetCall({
     contract: contract,
     method: "allowance",
-    args: [account, diamondAddress],
+    args: [accountAddress, diamondAddress],
     options: {
       watch: true,
     },
   });
 
-  // const handleApprove = async () => {
-  //   let val = await USDC();
-  // };
 
   const {
     data: dataApprove,
@@ -276,12 +266,12 @@ let Deposit: any = ({
   const handleDepositAmountChange = (e: any) => {
     setDepositAmount(e.target.value);
     const balance =
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18;
-    if (!balance) return;
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[asset] || 18);
+    if  (!balance) return;
     // calculate percentage of collateral of balance
     var percentage = (e.target.value / balance) * 100;
     percentage = Math.max(0, percentage);
-    if (percentage > 100) {
+    if  (percentage > 100) {
       setValue("Greater than 100");
       return;
     }
@@ -298,7 +288,7 @@ let Deposit: any = ({
 
   const handleMax = async () => {
     setDepositAmount(
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[asset] || 18)
     );
   };
 
@@ -394,7 +384,7 @@ let Deposit: any = ({
     return (
       depositAmount < MinimumAmount[asset] ||
       depositAmount >
-        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[asset] || 18)
     );
   }
 
@@ -437,7 +427,7 @@ let Deposit: any = ({
             padding: "40px",
           }}
         >
-          {account ? (
+          {accountAddress ? (
             <Form>
               <div className="row mb-4">
                 <Col
@@ -741,7 +731,7 @@ let Deposit: any = ({
                       {dataBalance ? (
                         (
                           Number(uint256.uint256ToBN(dataBalance[0])) /
-                          10 ** 18
+                          10 ** (tokenDecimalsMap[asset] || 18)
                         ).toString()
                       ) : (
                         <MySpinner />
@@ -769,8 +759,8 @@ let Deposit: any = ({
                                   dataBalance ? dataBalance[0] : "-"
                                 )
                               ) /
-                                10 ** 18)) /
-                              100
+                                10 ** (tokenDecimalsMap[asset] || 18))) /
+                            100
                           );
                           setValue(value);
                         }}
@@ -790,10 +780,10 @@ let Deposit: any = ({
                     </div>
                     {depositAmount != 0 &&
                       depositAmount >
-                        Number(
-                          uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)
-                        ) /
-                          10 ** 18 && (
+                      Number(
+                        uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)
+                      ) /
+                      10 **  (tokenDecimalsMap[asset] || 18) && (
                         <FormText style={{ color: "#e97272 !important" }}>
                           {`Amount is greater than your balance`}
                         </FormText>
@@ -865,7 +855,7 @@ let Deposit: any = ({
                       style={{
                         textAlign: "right",
                         fontWeight: "600",
-                        color: "rgb(111, 111, 111)",
+                         color:  "rgb(111, 111, 111)",
                       }}
                     >
                       $ 0.50
@@ -883,7 +873,7 @@ let Deposit: any = ({
                       style={{
                         textAlign: "right",
                         fontWeight: "600",
-                        color: "rgb(111, 111, 111)",
+                        color:  "rgb(111, 111, 111)",
                       }}
                     >
                       {depositLoanRates && commitPeriod < 3 ? (
@@ -894,7 +884,7 @@ let Deposit: any = ({
                             }__${commitPeriod}`
                           ]?.depositAPR?.apr100x as string
                         )} %`
-                      ) : (
+                      )  : (
                         <MySpinner />
                       )}
                     </div>
@@ -913,7 +903,7 @@ let Deposit: any = ({
                       style={{
                         textAlign: "right",
                         fontWeight: "600",
-                        color: "rgb(111, 111, 111)",
+                         color:  "rgb(111, 111, 111)",
                       }}
                     >
                       0.43
@@ -931,7 +921,7 @@ let Deposit: any = ({
                       style={{
                         textAlign: "right",
                         fontWeight: "600",
-                        color: "rgb(111, 111, 111)",
+                         color:  "rgb(111, 111, 111)",
                       }}
                     >
                       Starknet

@@ -32,11 +32,12 @@ import {
   diamondAddress,
   ERC20Abi,
   tokenAddressMap,
+  tokenDecimalsMap,
 } from "../../../blockchain/stark-constants";
 import { currentBorrowInterestRate, NumToBN } from "../../../blockchain/utils";
 import { MinimumAmount } from "../../../blockchain/constants";
 import { TabContext } from "../../../hooks/contextHooks/TabContext";
-import useSpendBorrow from "../../../blockchain/hooks/SpendBorrow/useSpendBorrow";
+import useJediSwap from "../../../blockchain/hooks/SpendBorrow/useJediSwap";
 import useMySwap from "../../../blockchain/hooks/SpendBorrow/useMySwap";
 
 const Coins: ICoin[] = [
@@ -57,7 +58,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
     loadingJediSwap,
     errorJediSwap,
     handleJediSwap,
-  } = useSpendBorrow(diamondAddress, selectedLoan, tokenName);
+  } = useJediSwap(diamondAddress, selectedLoan, tokenName);
 
   const { handleMySwap, loadingMySwap, errorMySwap } = useMySwap(diamondAddress, selectedLoan, tokenName);
 
@@ -753,7 +754,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                         >
                           <div>Availabe Borrowed Amount :</div>
                           <div style={{ color: "white" }}>
-                            {(selectedLoan?.loanAmount / 10 ** 18).toFixed(4)}
+                            {(selectedLoan?.loanAmount / 10 ** (tokenDecimalsMap[selectedLoan?.loanMarket] || 18)).toFixed(4)}
                             &nbsp;{selectedLoan?.loanMarket}
                           </div>
                         </div>
@@ -907,7 +908,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                         >
                           <div>Availabe Borrowed Amount :</div>
                           <div style={{ color: "white" }}>
-                          {(selectedLoan?.loanAmount / 10 ** 18).toFixed(4)}&nbsp;&nbsp;{selectedLoan?.loanMarket}
+                          {(selectedLoan?.loanAmount / 10 ** (tokenDecimalsMap[selectedLoan?.loanMarket] || 18)).toFixed(4)}&nbsp;&nbsp;{selectedLoan?.loanMarket}
                           </div>
                         </div>
 

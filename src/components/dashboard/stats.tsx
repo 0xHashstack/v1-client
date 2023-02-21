@@ -7,6 +7,7 @@ import { useContext } from "react";
 import { number } from "starknet";
 import { useAccount } from "@starknet-react/core";
 import { tokenDecimalsMap } from "../../blockchain/stark-constants";
+import MySpinner from "../mySpinner";
 
 const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
   const { account: starknetAccount, address: _account } = useAccount();
@@ -137,15 +138,15 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
       >
         <div className="">
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>Net Worth</p>
-          <h4>${netWorth.toFixed(2)}</h4>
+          <h4>{netWorth !== undefined  ? `$${netWorth.toFixed(2)}` : <MySpinner />}</h4>
         </div>
         <div className="">
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>Your Supply</p>
-          <h4>${totalSupply.toFixed(2)}</h4>
+          <h4>{totalSupply !== undefined ? `$${totalSupply.toFixed(2)}` : <MySpinner />}</h4>
         </div>
         <div className="">
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>Your Borrow</p>
-          <h4>${yourBorrow.toFixed(2)}</h4>
+          <h4>{yourBorrow !== undefined ? `$${yourBorrow.toFixed(2)}` : <MySpinner />}</h4>
         </div>
         <Image
           src={statsIcon}
@@ -178,19 +179,19 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>
             Total Reserves
           </p>
-          <h4>{totalReserves.toFixed(2)}</h4>
+          <h4>{totalReserves !== undefined  ? `$${totalReserves.toFixed(2)}` : <MySpinner />}</h4>
         </div>
         <div className="Net Worth">
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>
             Available Reserves
           </p>
-          <h4>{availableReserves.toFixed(2)}</h4>
+          <h4>{availableReserves !== undefined ? `$${availableReserves.toFixed(2)}` : <MySpinner />}</h4>
         </div>
         <div className="Net Worth">
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>
             Asset utilisation rate
           </p>
-          <h4>{(100 * (1 - availableReserves / totalReserves)).toFixed(2)}%</h4>
+          <h4>{(availableReserves !== undefined && totalReserves !== undefined) ? `${(100 * (1 - availableReserves / totalReserves)).toFixed(2)}%` : <MySpinner />}</h4>
         </div>
 
         <Image

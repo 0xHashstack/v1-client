@@ -36,8 +36,8 @@ import { TxToastManager } from "../../../blockchain/txToastManager";
 import BorrowData from "./borrow-data";
 import OffchainAPI from "../../../services/offchainapi.service";
 import Image from "next/image";
-import arrowDown from "../../../assets/images/ArrowDownDark.svg";
-import arrowUp from "../../../assets/images/ArrowUpDark.svg";
+import Downarrow from "../../../assets/images/ArrowDownDark.svg";
+import UpArrow from "../../../assets/images/ArrowUpDark.svg";
 import { Abi, uint256 } from "starknet";
 import { ICoin } from "../../dashboard/dashboard-body";
 import MySpinner from "../../mySpinner";
@@ -89,11 +89,11 @@ const BorrowTab = ({
 
   const [value, setValue] = useState(0);
   const [dropDown, setDropDown] = useState(false);
-  const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
+  const [dropDownArrow, setDropDownArrow] = useState(Downarrow);
 
   const [commitmentValue, setCommitmentValue] = useState("Flexible");
   const [commitmentDropDown, setCommitmentDropDown] = useState(false);
-  const [commitmentArrow, setCommitmentArrow] = useState(arrowDown);
+  const [commitmentArrow, setCommitmentArrow] = useState(Downarrow);
   const [borrowParams, setBorrowParams] = useState<IBorrowParams>({
     loanAmount: 0,
     collateralAmount: 0,
@@ -104,7 +104,7 @@ const BorrowTab = ({
   const [modal_borrow, setmodal_borrow] = useState(false);
 
   const [borrowDropDown, setBorrowDropDown] = useState(false);
-  const [borrowArrow, setBorrowArrow] = useState(arrowDown);
+  const [borrowArrow, setBorrowArrow] = useState(Downarrow);
 
   const [tokenName, setTokenName] = useState("BTC");
   const [borrowTokenName, setBorrowTokenName] = useState("BTC");
@@ -255,12 +255,10 @@ const BorrowTab = ({
 
   const [historicalAPRs, setHistoricalAPRs] = useState();
 
-  useEffect(() => {
-    OffchainAPI.getHistoricalBorrowRates().then((val) => {
-      setHistoricalAPRs(val);
-      console.log(val);
-    });
-  }, []);
+  const toggleDropdown = () => {
+    setDropDown(!dropDown);
+    setDropDownArrow(dropDown ? Downarrow : UpArrow);
+  };
 
   /* =================== add collateral states ======================= */
   const [inputVal1, setInputVal1] = useState(0);
@@ -451,36 +449,11 @@ const BorrowTab = ({
     }
   };
 
-  const handleMax = async (
-    _collateralAmount: any,
-    _loanAmount: any,
-    loanMarket: any,
-    collateralMarket: string
-  ) => {
-    setLoading(true);
-    const collateralAmount: any = parseFloat(
-      BNtoNum(Number(_collateralAmount))
-    ).toFixed(6);
-    const loanAmount: any = parseFloat(BNtoNum(Number(_loanAmount))).toFixed(6);
-
-    const loanPrice = await getPrice(loanMarket);
-    const collateralPrice = await getPrice(collateralMarket);
-
-    const totalLoanPriceUSD = loanAmount * loanPrice;
-    const totalCollateralPrice = collateralAmount * collateralPrice;
-    const maxPermisableUSD = (70 / 100) * totalCollateralPrice;
-    const maxPermisableWithdrawal = maxPermisableUSD / loanPrice;
-
-    setInputVal1(maxPermisableWithdrawal);
-    // console.log("max loan withdrawal", maxPermisableWithdrawal);
-    setLoading(false);
-  };
-
   function isValidColleteralAmount() {
     if (!borrowParams.collateralAmount) return false;
     return (
       Number(borrowParams.collateralAmount) <
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[borrowParams.collateralMarket as string] || 18)
     );
   }
 
@@ -726,7 +699,7 @@ const BorrowTab = ({
                           }}
                         >
                           <Image
-                            // onClick={toggleDropdown}
+                            onClick={toggleDropdown}
                             src={dropDownArrow}
                             alt="Picture of the author"
                             width="20px"
@@ -797,14 +770,15 @@ const BorrowTab = ({
                       }}
                     >
                       Wallet Balance :{" "}
-                      {dataBalance ? (
+                      {!loadingBalance ? (
                         (
-                          Number(uint256.uint256ToBN(dataBalance[0])) /
-                          10 ** 18
+                          Number(uint256.uint256ToBN(dataBalance?.[0] || 0)) /
+                          10 ** (tokenDecimalsMap[borrowParams?.collateralMarket] || 18)
                         ).toString()
                       ) : (
                         <MySpinner />
                       )}
+                      <div style={{ color: "#76809D" }}>&nbsp;{borrowParams?.collateralMarket}</div>
                     </div>
                     <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
                       <Slider
@@ -824,7 +798,7 @@ const BorrowTab = ({
                             collateralAmount:
                               (value *
                                 (Number(uint256.uint256ToBN(dataBalance[0])) /
-                                  10 ** 18)) /
+                                  10 ** (tokenDecimalsMap[borrowParams?.collateralMarket] || 18))) /
                               100,
                           });
                           setValue(value);
@@ -844,178 +818,6 @@ const BorrowTab = ({
                     >
                       {value}%
                     </div>
-                    {/* {dropDown ? (
-                      <>
-                        <div
-                          style={{
-                            borderRadius: "5px",
-                            position: "absolute",
-                            zIndex: "100",
-                            top: "140px",
-                            left: "39px",
-                            // top: "-10px",
-
-                            width: "420px",
-                            margin: "0px auto",
-                            marginBottom: "20px",
-                            padding: "5px 10px",
-                            backgroundColor: "#F8F8F8",
-                            boxShadow: "0px 0px 10px #00000020",
-                          }}
-                        >
-                          {Coins.map((coin, index) => {
-                            if (coin.name === tokenName) return <></>;
-                            return (
-                              <div
-                                style={{
-                                  margin: "10px 0",
-                                  cursor: "pointer",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  fontSize: "16px",
-                                }}
-                                onClick={() => {
-                                  setTokenName(`${coin.name}`);
-                                  setDropDown(false);
-                                  setDropDownArrow(arrowDown);
-                                  handleCollateralChange(`${coin.name}`);
-                                  // handleMinLoan(`${coin.name}`);
-                                }}
-                              >
-                                <img
-                                  src={`./${coin.name}.svg`}
-                                  width="30px"
-                                  height="30px"
-                                ></img>
-                                <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
-                              </div>
-                            );
-                          })}
-                        </div>
-                      </>
-                    ) : (
-                      <></>
-                    )} */}
-                    {/* {borrowDropDown ? (
-                <>
-                  <div
-                    style={{
-                      borderRadius: "5px",
-                      position: "absolute",
-                      zIndex: "100",
-                      top: "340px",
-                      left: "39px",
-                      // top: "-10px",
-
-                      width: "420px",
-                      margin: "0px auto",
-                      marginBottom: "20px",
-                      padding: "5px 10px",
-                      backgroundColor: "#F8F8F8",
-                      boxShadow: "0px 0px 10px #00000020",
-                    }}
-                  >
-                    {Coins.map((coin, index) => {
-                      if (coin.name === borrowTokenName) return <></>;
-                      return (
-                        <div
-                          style={{
-                            margin: "10px 0",
-                            cursor: "pointer",
-                            display: "flex",
-                            alignItems: "center",
-                            fontSize: "16px",
-                          }}
-                          onClick={() => {
-                            setBorrowTokenName(`${coin.name}`);
-                            setBorrowDropDown(false);
-                            setBorrowArrow(arrowDown);
-                            handleLoanInputChange(`${coin.name}`);
-                          }}
-                        >
-                          <img
-                            src={`./${coin.name}.svg`}
-                            width="30px"
-                            height="30px"
-                          ></img>
-                          <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                </>
-              ) : (
-                <></>
-              )}
-              {commitmentDropDown ? (
-                <>
-                  <div
-                    style={{
-                      borderRadius: "5px",
-                      position: "absolute",
-                      zIndex: "100",
-                      top: "420px",
-                      left: "39px",
-                      // top: "-10px",
-
-                      width: "420px",
-                      margin: "0px auto",
-                      marginBottom: "20px",
-                      padding: "5px 10px",
-                      backgroundColor: "#F8F8F8",
-                      boxShadow: "0px 0px 10px #00000020",
-                    }}
-                  >
-                    <div
-                      style={{
-                        fontSize: "15px",
-                        margin: "10px 0",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        setCommitmentValue("1 month");
-                        setCommitmentDropDown(false);
-                        setCommitmentArrow(arrowDown);
-                        handleCommitChange(2);
-                      }}
-                    >
-                      &nbsp;1 month
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "15px",
-                        margin: "10px 0",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        setCommitmentValue("2 weeks");
-                        setCommitmentDropDown(false);
-                        setCommitmentArrow(arrowDown);
-                        handleCommitChange(1);
-                      }}
-                    >
-                      &nbsp;2 weeks
-                    </div>
-                    <div
-                      style={{
-                        fontSize: "15px",
-                        margin: "10px 0",
-                        cursor: "pointer",
-                      }}
-                      onClick={() => {
-                        setCommitmentValue("Flexible");
-                        setCommitmentDropDown(false);
-                        setCommitmentArrow(arrowDown);
-                        handleCommitChange(0);
-                      }}
-                    >
-                      &nbsp;Flexible
-                    </div>
-                  </div>
-                </>
-              ) : (
-                <></>
-              )} */}
                     <div style={{ fontSize: "8px", fontWeight: "600" }}>
                       Borrow Market
                     </div>
@@ -1103,7 +905,7 @@ const BorrowTab = ({
                                   onClick={() => {
                                     setCommitmentDropDown(!commitmentDropDown);
                                     setCommitmentArrow(
-                                      commitmentDropDown ? arrowDown : arrowUp
+                                      commitmentDropDown ? Downarrow : UpArrow
                                     );
                                   }}
                                   src={commitmentArrow}
@@ -1114,15 +916,6 @@ const BorrowTab = ({
                               </div>
                             </div>
                           </label>
-                          {/* <select
-                      id="commitment"
-                      className="form-select"
-                      placeholder="Commitment"
-                      onChange={(e) => handleCommitmentChange(e)}
-                    >
-                      <option value={0}>Flexible</option>
-                      <option value={1}>One Month</option>
-                    </select> */}
                         </Col>
                       </div>
                       {/* <label style={{}}> */}
@@ -1147,27 +940,9 @@ const BorrowTab = ({
                           placeholder={`Minimum amount = ${MinimumAmount[tokenName]}`}
                           min={MinimumAmount[tokenName]}
                           value={borrowParams.loanAmount as number}
-                          // onChange={handleLoanInputChange}
-                          // valid={isLoanAmountValid()}
                         />
                         {
                           <>
-                            {/* <Button
-                        outline
-                        type="button"
-                        className="btn btn-md w-xs"
-                        onClick={handleMin}
-                        // disabled={balance ? false : true}
-                        style={{
-                          background: "white",
-                          color: "black",
-                          border: "1px solid black",
-                        }}
-                      >
-                        <span style={{ borderBottom: "2px dotted #fff" }}>
-                          Min
-                        </span>
-                      </Button> */}
 
                             <Button
                               outline

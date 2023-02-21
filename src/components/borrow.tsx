@@ -389,7 +389,7 @@ let Borrow: any = ({
       collateralAmount: e.target.value,
     });
     const balance =
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18;
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18);
     if (!balance) return;
     // calculate percentage of collateral of balance
     var percentage = (e.target.value / balance) * 100;
@@ -418,7 +418,7 @@ let Borrow: any = ({
       ...borrowParams,
       collateralAmount:
         Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-        10 ** 18,
+        10 ** (tokenDecimalsMap[borrowParams.collateralMarket || ""]  || 18),
     });
     await refreshAllowance();
   };
@@ -568,7 +568,7 @@ let Borrow: any = ({
     if (!borrowParams.collateralAmount) return false;
     return (
       Number(borrowParams.collateralAmount) <=
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[borrowParams?.collateralMarket as string] || 18)
     );
   }
 
@@ -759,7 +759,7 @@ let Borrow: any = ({
                 {dataBalance ? (
                   (
                     Number(uint256.uint256ToBN(dataBalance[0])) /
-                    10 ** 18
+                    10 ** (tokenDecimalsMap[tokenName] || 18)
                   ).toFixed(4)
                 ) : (
                   <MySpinner />

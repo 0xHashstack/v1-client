@@ -1,13 +1,17 @@
 import { useContract, useStarknetCall, useStarknetExecute } from "@starknet-react/core";
 import { tokenAddressMap } from "../../stark-constants";
+import { number } from "starknet";
 import { GetErrorText, NumToBN } from "../../utils";
 import JediSwapAbi from "../../../../starknet-artifacts/contracts/integrations/modules/jedi_swap.cairo/jedi_swap_abi.json";
 import JediSwapAbi2 from "../../../../starknet-artifacts/contracts/integrations/modules/jedi_swap.cairo/jedi_swap.json"
 import { Abi } from "starknet";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
-const useSpendBorrow = (diamondAddress: string, asset: any, toTokenName: any) => {
+const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
+
+  const [supportedPoolsJediSwap, setSupportedPoolsJediSwap] = useState();
+
   const { contract: l3Contract } = useContract({
     abi: JediSwapAbi2.abi as Abi,
     address: "0x1fc40e21ce68f61d538c070cbfea9483243bcdae0072b0f8c2c85fd4ecd28ab",
@@ -20,12 +24,44 @@ const useSpendBorrow = (diamondAddress: string, asset: any, toTokenName: any) =>
     refresh: refreshJediSwapSupportedPools,
   } = useStarknetCall({
     contract: l3Contract,
-    method: 'get_supported_pools_myswap',
+    method: 'get_supported_pools_jedi_swap',
     args: [],
     options: {
       watch: false
     }
   })
+
+  useEffect(() => {
+
+    const setValue = (map: Map<string, Array<string>>, firstVal: string, secondVal: string) => {
+      if(map.get(firstVal))
+        map.set(firstVal, [...map.get(firstVal), secondVal]);
+      else map.set(firstVal, [secondVal]);
+    }
+
+    console.log("loading jedi", loadingJediSwapSupportedPools);
+    const poolsData = new Map();
+    if (!loadingJediSwapSupportedPools) {
+      console.log(
+        "jediSwapSupportedPoolsData",
+        jediSwapSupportedPoolsData,
+        errorJediSwapSupportedPools
+      );
+      const pools = jediSwapSupportedPoolsData?.pools;
+      for(let i = 0; i<pools?.length; i++) {
+        const firstTokenAddress = number.toHex(pools[i].tokenA)
+        const secondTokenAddress = number.toHex(pools[i].tokenB);
+        setValue(poolsData, firstTokenAddress, secondTokenAddress);
+        setValue(poolsData, secondTokenAddress, firstTokenAddress);
+      }
+      console.log("pooldata jediswap", poolsData);
+      setSupportedPoolsJediSwap(poolsData);
+    }
+  }, [
+    jediSwapSupportedPoolsData,
+    loadingJediSwapSupportedPools,
+    errorJediSwapSupportedPools,
+  ]);
 
   const {
     data: dataJediSwap,
@@ -62,6 +98,7 @@ const useSpendBorrow = (diamondAddress: string, asset: any, toTokenName: any) =>
     errorJediSwapSupportedPools,
     refreshJediSwapSupportedPools,
 
+
     executeJediSwap,
     loadingJediSwap,
     dataJediSwap,
@@ -71,4 +108,4 @@ const useSpendBorrow = (diamondAddress: string, asset: any, toTokenName: any) =>
 
 }
 
-export default useSpendBorrow;
+export default useJediSwap;

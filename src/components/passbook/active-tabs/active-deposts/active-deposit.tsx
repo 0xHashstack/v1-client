@@ -276,7 +276,7 @@ const ActiveDeposit = ({
   const handleDepositAmountChange = (e: any) => {
     setDepositAmount(e.target.value);
     const balance =
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18;
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[tokenName] || 18);
     if (!balance) return;
     // calculate percentage of collateral of balance
     var percentage = (e.target.value / balance) * 100;
@@ -296,7 +296,7 @@ const ActiveDeposit = ({
 
   const handleMax = () => {
     setDepositAmount(
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[tokenName] || 18)
     );
   };
 
@@ -307,7 +307,7 @@ const ActiveDeposit = ({
         depositAmount < MinimumAmount[tokenName] ||
         depositAmount >
           Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-            10 ** 18
+            10 ** (tokenDecimalsMap[tokenName] || 18)
       );
     else
       return (
@@ -865,10 +865,10 @@ const ActiveDeposit = ({
                         dataBalance &&
                         (
                           Number(uint256.uint256ToBN(dataBalance[0])) /
-                          10 ** 18
+                          10 ** (tokenDecimalsMap[tokenName] || 18)
                         ).toString()
                       ) : customActiveTab === "2" ? (
-                        Number(asset?.amount / 10 ** 18)
+                        Number(asset?.amount / 10 ** (tokenDecimalsMap[tokenName] || 18))
                       ) : (
                         <MySpinner />
                       )}
@@ -891,7 +891,7 @@ const ActiveDeposit = ({
                           setDepositAmount(
                             (value *
                               (Number(uint256.uint256ToBN(dataBalance[0])) /
-                                10 ** 18)) /
+                                10 ** (tokenDecimalsMap[tokenName] || 18))) /
                               100
                           );
                           setValue(value);
@@ -918,14 +918,14 @@ const ActiveDeposit = ({
                               dataBalance ? dataBalance[0] : 0
                             )
                           ) /
-                            10 ** 18 && (
+                            10 ** (tokenDecimalsMap[tokenName] || 18) && (
                           <FormText style={{ color: "#e97272 !important" }}>
                             {`Amount is greater than your wallet balance`}
                           </FormText>
                         )
                       : customActiveTab === "2" &&
                         withdrawAmount !== 0 &&
-                        withdrawAmount > Number(asset?.amount / 10 ** 18) && (
+                        withdrawAmount > Number(asset?.amount / 10 ** (tokenDecimalsMap[tokenName] || 18)) && (
                           <FormText style={{ color: "#e97272 !important" }}>
                             {`Amount is greater than your available balance`}
                           </FormText>

@@ -200,7 +200,7 @@ const ActiveDepositsTab = ({
 
   const handleDepositAmountChange = (e: any) => {
     setDepositAmount(e.target.value);
-    const balance = Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18;
+    const balance = Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[tokenName] || 18);
     if(!balance) return;
     // calculate percentage of collateral of balance
     var percentage = (e.target.value / balance) * 100;
@@ -218,7 +218,7 @@ const ActiveDepositsTab = ({
     return (
       depositAmount < MinimumAmount[tokenName] ||
       depositAmount >
-        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
+        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[tokenName] || 18)
     );
   }
 
@@ -594,7 +594,7 @@ const ActiveDepositsTab = ({
                             {dataBalance ? (
                               (
                                 Number(uint256.uint256ToBN(dataBalance[0])) /
-                                10 ** 18
+                                10 ** (tokenDecimalsMap[tokenName] || 18)
                               ).toString()
                             ) : (
                               <MySpinner />
@@ -624,7 +624,7 @@ const ActiveDepositsTab = ({
                                     (Number(
                                       uint256.uint256ToBN(dataBalance[0])
                                     ) /
-                                      10 ** 18)) /
+                                      10 ** (tokenDecimalsMap[tokenName] || 18))) /
                                     100
                                 );
                                 setValue(value);
@@ -650,7 +650,7 @@ const ActiveDepositsTab = ({
                                   dataBalance ? dataBalance[0] : 0
                                 )
                               ) /
-                                10 ** 18 && (
+                                10 ** (tokenDecimalsMap[tokenName] || 18) && (
                               <FormText style={{ color: "#e97272 !important" }}>
                                 {`Amount is greater than your balance`}
                               </FormText>
