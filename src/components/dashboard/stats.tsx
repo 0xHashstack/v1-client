@@ -132,37 +132,36 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
           justifyContent: "space-between",
           padding: "20px 40px",
           gap: "30px",
-          boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
+          boxShadow:
+            "5px 10px 5px -5px rgba(20, 23, 38, 0.15), 5px 5px 5px -5px rgba(20, 23, 38, 0.3)",
         }}
       >
         <div className="">
-          <p style={{ marginBottom: "10px" }}>Net Worth</p>
+          <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>Net Worth</p>
           <h4>{netWorth !== undefined  ? `$${netWorth.toFixed(2)}` : <MySpinner />}</h4>
         </div>
         <div className="">
-          <p style={{ marginBottom: "10px" }}>Your Supply</p>
+          <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>Your Supply</p>
           <h4>{totalSupply !== undefined ? `$${totalSupply.toFixed(2)}` : <MySpinner />}</h4>
         </div>
         <div className="">
-          <p style={{ marginBottom: "10px" }}>Your Borrow</p>
+          <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>Your Borrow</p>
           <h4>{yourBorrow !== undefined ? `$${yourBorrow.toFixed(2)}` : <MySpinner />}</h4>
         </div>
-        {/* <div className="Net Worth">
-          <p style={{ marginBottom: "10px" }}>Net APR</p>
-          <h4>15.5%</h4>
-        </div> */}
         <Image
           src={statsIcon}
           alt="Navbar Logo"
           style={{ marginLeft: "20px", cursor: "pointer" }}
-          height="20px"
-          width="20px"
+          height={24}
+          width={24}
           onClick={() => {
             toggleCustom("7");
           }}
         />
       </div>
+
       <div className="stat-card"></div>
+
       <div
         className="stat-card"
         style={{
@@ -172,27 +171,35 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
           justifyContent: "space-between",
           padding: "20px 40px",
           gap: "30px",
-          boxShadow: "rgba(0, 0, 0, 0.5) 2.4px 2.4px 3.2px",
+          boxShadow:
+            "5px 10px 5px -5px rgba(20, 23, 38, 0.15), 5px 5px 5px -5px rgba(20, 23, 38, 0.3)",
         }}
       >
         <div className="Net Worth">
-          <p style={{ marginBottom: "10px" }}>Total Reserves</p>
+          <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>
+            Total Reserves
+          </p>
           <h4>{totalReserves !== undefined  ? `$${totalReserves.toFixed(2)}` : <MySpinner />}</h4>
         </div>
         <div className="Net Worth">
-          <p style={{ marginBottom: "10px" }}>Available Reserves</p>
+          <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>
+            Available Reserves
+          </p>
           <h4>{availableReserves !== undefined ? `$${availableReserves.toFixed(2)}` : <MySpinner />}</h4>
         </div>
         <div className="Net Worth">
-          <p style={{ marginBottom: "10px" }}>Asset utilisation rate</p>
+          <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>
+            Asset utilisation rate
+          </p>
           <h4>{(availableReserves !== undefined && totalReserves !== undefined) ? `${(100 * (1 - availableReserves / totalReserves)).toFixed(2)}%` : <MySpinner />}</h4>
         </div>
+
         <Image
           src={statsIcon}
           alt="Navbar Logo"
           style={{ marginLeft: "20px", cursor: "pointer" }}
-          height="20px"
-          width="20px"
+          height={24}
+          width={24}
           onClick={() => {
             toggleCustom("8");
           }}

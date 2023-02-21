@@ -52,9 +52,10 @@ const DashboardTokens = ({
           color: "white",
           height: "80px",
           borderBottom: "1.5px solid #252335",
+          textAlign: "center",
         }}
       >
-        <th style={{ padding: "28px 2px" }}>
+        <th>
           {" "}
           {coin.name === "BTC" ? (
             <Image
@@ -67,9 +68,15 @@ const DashboardTokens = ({
             <></>
           )}
         </th>
-        <th scope="row" style={{ padding: "25px 5px" }}>
-          <div className="d-flex align-items-center">
-            <div className="avatar-xs me-3">
+        <th scope="row" style={{ padding: "25px 5px", textAlign: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <div>
               <Image
                 alt="token"
                 src={`/${coin.name}.svg`}
@@ -77,8 +84,9 @@ const DashboardTokens = ({
                 height="20px"
                 style={{ marginTop: "5px" }}
               ></Image>
+              &nbsp;&nbsp;&nbsp;
             </div>
-            <span style={{ marginLeft: "-15px" }}>{coin.name}</span>
+            <span style={{}}>{coin.name}</span>
           </div>
         </th>
         <td style={{ padding: "31px 10px" }}>{oraclePriceForCoin || "N/A"}</td>
@@ -127,15 +135,24 @@ const DashboardTokens = ({
           </div>
         </td>
         <td style={{ width: "120px", padding: "25px 20px" }}>
-          <Deposit asset={coin.name} depositLoanRates={depositLoanRates} />
+          <div
+            style={{ display: "flex", justifyContent: "center", gap: "40px" }}
+          >
+            <Deposit asset={coin.name} depositLoanRates={depositLoanRates} />
+            <Borrow
+              asset={coin.name}
+              title={coin.name}
+              depositLoanRates={depositLoanRates}
+            />
+          </div>
         </td>
-        <td style={{ width: "120px", padding: "25px 20px" }}>
+        {/* <td style={{ width: "120px", padding: "25px 20px" }}>
           <Borrow
             asset={coin.name}
             title={coin.name}
             depositLoanRates={depositLoanRates}
           />
-        </td>
+        </td> */}
       </tr>
     </>
   );

@@ -37,22 +37,24 @@ const LoanBorrowCommitment = ({
                   borderStyle: "hidden",
                   color: "#8C8C8C",
                   verticalAlign: "middle",
+                  fontSize: "14px",
+                  textAlign: "center",
                 }}
               >
                 <th style={{ width: "35px" }}></th>
-                <th scope="col" style={{ width: "100px" }}>
+                <th scope="col" style={{ width: "100px", fontWeight: "300" }}>
                   Markets
                 </th>
-                <th scope="col" style={{ width: "100px" }}>
+                <th scope="col" style={{ width: "100px", fontWeight: "300" }}>
                   Oracle Price
                 </th>
-                <th scope="col" style={{ width: "100px" }}>
+                <th scope="col" style={{ width: "100px", fontWeight: "300" }}>
                   Fair Price
                 </th>
-                <th scope="col" style={{ width: "100px" }}>
+                <th scope="col" style={{ width: "100px", fontWeight: "300" }}>
                   Total Supply
                 </th>
-                <th scope="col" style={{ width: "100px" }}>
+                <th scope="col" style={{ width: "100px", fontWeight: "300" }}>
                   Total Borrow
                 </th>
                 <th scope="col" style={{ width: "155px" }}>
@@ -115,12 +117,28 @@ const LoanBorrowCommitment = ({
                 </th>
                 {/* <th scope="col">Savings Interest</th> */}
                 {/* <th scope="col">Borrow Interest</th> */}
-                <th scope="col" style={{ width: "100px" }}>
-                  Supply
+                <th
+                  // scope="col"
+                  style={{
+                    width: "200px",
+                    fontWeight: "300",
+                  }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      gap: "70px",
+                      border: "none",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <div>Supply</div>
+                    <div>Borrow</div>
+                  </div>
                 </th>
-                <th scope="col" style={{ width: "100px" }} colSpan={2}>
+                {/* <th scope="col" style={{ width: "100px", fontWeight: "300" }}>
                   Borrow
-                </th>
+                </th> */}
               </tr>
             </thead>
             <tbody>

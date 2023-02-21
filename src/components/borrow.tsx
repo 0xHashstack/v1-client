@@ -49,14 +49,12 @@ import { ceil, round } from "../services/utils.service";
 // import Downarrow from "../assets/images/Downarrow.svg";
 // import UpArrow from "../assets/images/UpArrow.svg";
 import { ICoin } from "./dashboard/dashboard-body";
-import Downarrow from "../assets/images/ArrowDownDark.svg"
-import UpArrow from "../assets/images/ArrowUpDark.svg"
+import Downarrow from "../assets/images/ArrowDownDark.svg";
+import UpArrow from "../assets/images/ArrowUpDark.svg";
 import _ from "lodash";
 import Maxloan from "../blockchain/hooks/Max_loan_given_collat";
 import { BNtoNum } from "../blockchain/utils";
 import useMaxloan from "../blockchain/hooks/Max_loan_given_collat";
-
-
 
 interface IBorrowParams {
   loanAmount: number | null;
@@ -78,12 +76,20 @@ export interface IDepositLoanRates {
   };
 }
 
-let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRatesParam }: { asset: string; title: string, depositLoanRates: IDepositLoanRates }) => {
-  console.log("the asset you get from borrow popup", assetParam)
+let Borrow: any = ({
+  asset: assetParam,
+  title,
+  depositLoanRates: depositLoanRatesParam,
+}: {
+  asset: string;
+  title: string;
+  depositLoanRates: IDepositLoanRates;
+}) => {
+  console.log("the asset you get from borrow popup", assetParam);
   const Coins: ICoin[] = [
-    { name: "USDT", icon: "mdi-bitcoin", },
-    { name: "USDC", icon: "mdi-ethereum", },
-    { name: "BTC", icon: "mdi-bitcoin", },
+    { name: "USDT", icon: "mdi-bitcoin" },
+    { name: "USDC", icon: "mdi-ethereum" },
+    { name: "BTC", icon: "mdi-bitcoin" },
     { name: "ETH", icon: "mdi-ethereum" },
     { name: "DAI", icon: "mdi-dai" },
   ];
@@ -121,7 +127,9 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
     watch: true,
   });
 
-  const [depositLoanRates, setDepositLoanRates] = useState<IDepositLoanRates>(depositLoanRatesParam);
+  const [depositLoanRates, setDepositLoanRates] = useState<IDepositLoanRates>(
+    depositLoanRatesParam
+  );
 
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(Downarrow);
@@ -134,7 +142,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
   const [borrowArrow, setBorrowArrow] = useState(Downarrow);
 
   const [collateralMarketToken, setCollateralwMarketToken] = useState("USDT");
-  const [MaxloanData, setMaxloanData] = useState(0)
+  const [MaxloanData, setMaxloanData] = useState(0);
 
   const toggleDropdown = () => {
     setDropDown(!dropDown);
@@ -173,8 +181,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
     if (!isValid()) return;
     TxToastManager.handleTxToast(
       approveTransactionReceipt,
-      `Borrow: Approve ${borrowParams.collateralAmount} ${borrowParams.collateralMarket
-      }`,
+      `Borrow: Approve ${borrowParams.collateralAmount} ${borrowParams.collateralMarket}`,
       true
     );
   }, [approveTransactionReceipt]);
@@ -207,7 +214,10 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
       entrypoint: "approve",
       calldata: [
         diamondAddress,
-        NumToBN(borrowParams.collateralAmount as number, tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18),
+        NumToBN(
+          borrowParams.collateralAmount as number,
+          tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18
+        ),
         0,
       ],
     },
@@ -229,7 +239,10 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
         entrypoint: "approve",
         calldata: [
           diamondAddress,
-          NumToBN(borrowParams.collateralAmount as number, tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18),
+          NumToBN(
+            borrowParams.collateralAmount as number,
+            tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18
+          ),
           0,
         ],
       },
@@ -242,7 +255,10 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
           0,
           borrowParams.commitBorrowPeriod,
           tokenAddressMap[borrowParams.collateralMarket as string],
-          NumToBN(borrowParams.collateralAmount as number, tokenDecimalsMap[asset]),
+          NumToBN(
+            borrowParams.collateralAmount as number,
+            tokenDecimalsMap[asset]
+          ),
           0,
         ],
       },
@@ -308,21 +324,21 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
 
   console.log(borrowParams.collateralAmount);
   // {borrowParams.collateralAmount ?(
-  const { dataMaxLoan, errorMaxLoan, loadingMaxLoan, refreshMaxLoan } = useMaxloan(tokenName, asset, Number(borrowParams.collateralAmount));
+  const { dataMaxLoan, errorMaxLoan, loadingMaxLoan, refreshMaxLoan } =
+    useMaxloan(tokenName, asset, Number(borrowParams.collateralAmount));
   let l = setTimeout(() => {
     if (loadingMaxLoan === false && !errorMaxLoan) {
-      console.log("printing", Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1)));
+      console.log(
+        "printing",
+        Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1))
+      );
       const Data = Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1));
-      setMaxloanData(Data)
+      setMaxloanData(Data);
     }
     clearTimeout(l);
   }, 1000);
 
-
-
-
   const handleApprove = async (asset: string) => {
-
     try {
       const val = await ApproveToken();
       setTransApprove(val.transaction_hash);
@@ -363,7 +379,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
     console.log("asset ajeeb", e.target.value);
     setBorrowParams({
       ...borrowParams,
-      loanAmount: e.target.value
+      loanAmount: e.target.value,
     });
   };
 
@@ -372,13 +388,14 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
       ...borrowParams,
       collateralAmount: e.target.value,
     });
-    const balance = Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18);
+    const balance =
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18);
     if (!balance) return;
     // calculate percentage of collateral of balance
     var percentage = (e.target.value / balance) * 100;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
-      setValue("Greater than 100")
+      setValue("Greater than 100");
       return;
     }
     // Round off percentage to 2 decimal places
@@ -407,11 +424,9 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
   };
 
   const handleMaxLoan = async () => {
-
     setBorrowParams({
       ...borrowParams,
-      loanAmount:
-        MaxloanData,
+      loanAmount: MaxloanData,
     });
 
     await refreshAllowance();
@@ -565,31 +580,38 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
   }
   // function isValidLoanAmount
   function isValid() {
-    console.log("collateral amount", isValidColleteralAmount(), "loan amount", isLoanAmountValid());
+    console.log(
+      "collateral amount",
+      isValidColleteralAmount(),
+      "loan amount",
+      isLoanAmountValid()
+    );
     return isValidColleteralAmount() && isLoanAmountValid();
   }
 
   return (
     <>
-      <NavLink
-        type="button"
-        onClick={() => {
-          tog_borrow();
-          setTokenName(asset);
-          handleCollateralChange(`${asset}`);
-        }}
-        style={{
-          backgroundColor: "#393D4F",
-          color: "white",
-          padding: "10px 18px",
-          borderRadius: "5px",
-          border: "none",
-          fontSize: "11px",
-          width: "75px",
-        }}
-      >
-        Borrow
-      </NavLink>
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <NavLink
+          type="button"
+          onClick={() => {
+            tog_borrow();
+            setTokenName(asset);
+            handleCollateralChange(`${asset}`);
+          }}
+          style={{
+            backgroundColor: "#393D4F",
+            color: "white",
+            padding: "10px 18px",
+            borderRadius: "5px",
+            border: "none",
+            fontSize: "11px",
+            width: "75px",
+          }}
+        >
+          Borrow
+        </NavLink>
+      </div>
       <Modal
         style={{ width: "548px", height: "945px" }}
         isOpen={modal_borrow}
@@ -681,7 +703,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                   id="amount"
                   placeholder="Amount"
                   onChange={handleCollateralInputChange}
-                  value={(borrowParams.collateralAmount)}
+                  value={borrowParams.collateralAmount}
                   valid={isValidColleteralAmount()}
                 />
                 {
@@ -699,14 +721,11 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                         borderLeft: "none",
                       }}
                     >
-                      <span style={{ borderBottom: "2px  #fff" }}>
-                        MAX
-                      </span>
+                      <span style={{ borderBottom: "2px  #fff" }}>MAX</span>
                     </Button>
                   </>
                 }
               </InputGroup>
-
               <div
                 style={{
                   display: "flex",
@@ -743,7 +762,14 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                       setBorrowParams({
                         ...borrowParams,
                         collateralAmount:
-                          (value * (Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18) / 100),
+                          (value *
+                            (Number(
+                              uint256.uint256ToBN(
+                                dataBalance ? dataBalance[0] : 0
+                              )
+                            ) /
+                              10 ** 18)) /
+                          100,
                       });
                     }
                     setValue(value);
@@ -852,7 +878,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                             setBorrowDropDown(false);
                             setBorrowArrow(Downarrow);
                             // handleLoanInputChange(`${coin.name}`);
-                            setAsset(`${coin.name}`)
+                            setAsset(`${coin.name}`);
                           }}
                         >
                           <img
@@ -1099,7 +1125,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                     className="form-control"
                     placeholder={`Minimum amount = ${MinimumAmount[asset]}`}
                     min={MinimumAmount[asset]}
-                    value={(borrowParams.loanAmount as number)}
+                    value={borrowParams.loanAmount as number}
                     onChange={handleLoanInputChange}
                     valid={isLoanAmountValid()}
                   />
@@ -1135,12 +1161,8 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                           borderLeft: "none",
                         }}
                       >
-                        {!(
-                          loadingMaxLoan
-                        ) ? (
-                          <span style={{ borderBottom: "2px  #fff" }}>
-                            MAX
-                          </span>
+                        {!loadingMaxLoan ? (
+                          <span style={{ borderBottom: "2px  #fff" }}>MAX</span>
                         ) : (
                           <MySpinner text="" />
                         )}
@@ -1503,20 +1525,19 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                         color: "#6F6F6F",
                       }}
                     >
-                      {
-                        depositLoanRates &&
-                          borrowParams.commitBorrowPeriod != null &&
-                          (borrowParams.commitBorrowPeriod as number) < 2 ? (
-                          `${parseFloat(
-                            depositLoanRates[
-                              `${getTokenFromName(asset as string)?.address}__${borrowParams.commitBorrowPeriod}`
-                            ]?.borrowAPR?.apr100x as string
-                          )
-                          } %`
-                        ) : (
-                          <MySpinner />
-                        )}
-
+                      {depositLoanRates &&
+                      borrowParams.commitBorrowPeriod != null &&
+                      (borrowParams.commitBorrowPeriod as number) < 2 ? (
+                        `${parseFloat(
+                          depositLoanRates[
+                            `${getTokenFromName(asset as string)?.address}__${
+                              borrowParams.commitBorrowPeriod
+                            }`
+                          ]?.borrowAPR?.apr100x as string
+                        )} %`
+                      ) : (
+                        <MySpinner />
+                      )}
                     </div>
                   </div>
                   <div
