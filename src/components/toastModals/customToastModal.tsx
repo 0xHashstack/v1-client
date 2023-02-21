@@ -1,15 +1,30 @@
 import { useState } from "react";
-import { Modal } from "reactstrap";
+import { Button, Modal } from "reactstrap";
 const ToastModal = ({
-  bool,
+  success,
   heading,
   desc,
 }: {
-  bool: boolean;
+  success: boolean;
   heading: string;
   desc: string;
 }) => {
   const [modal, setModal] = useState(true);
+  const [textToCopy, setTextToCopy] = useState("");
+  const [copySuccessMessage, setCopySuccessMessage] = useState("Text Copied !!");
+  const [showOnCopy, setShowOnCopy] = useState(false);
+
+  const copyToClipboard = async () => {
+    try {
+      await navigator.clipboard.writeText(textToCopy);
+      setCopySuccessMessage("Copied !!");
+      setShowOnCopy(true);
+      setTimeout(() => setShowOnCopy(false), 1000)
+    }
+    catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div>
@@ -38,7 +53,7 @@ const ToastModal = ({
             />
           </div>
           <div style={{ margin: "40px 220px 20px 220px" }}>
-            {bool ? (
+            {success ? (
               <img
                 src="./successToast.svg"
                 alt="successToast"
@@ -53,8 +68,13 @@ const ToastModal = ({
             )}
           </div>
           <div style={{ fontSize: "24px" }}>{heading}</div>
-          <div style={{ marginTop: "20px" }}>
-            <u>{desc}</u>
+          <div onClick={copyToClipboard} style={{ cursor: 'pointer', marginTop: "20px" }}>
+            <u>{
+              showOnCopy ?
+                copySuccessMessage
+                :
+                desc
+            }</u>
           </div>
         </div>
       </Modal>

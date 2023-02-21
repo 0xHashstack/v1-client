@@ -1693,7 +1693,7 @@ const Dashboard = () => {
         {/* <Analytics></Analytics>
             {props.children} */}
       </div>
-      {/* <ToastModal bool={true} heading="Transaction Complete" desc="Copy Transaction Hash" /> */}
+      <ToastModal success={true} heading="Transaction Complete" desc="Copy Transaction Hash" />
       {/* // </React.Fragment> */}
     </div>
   );
