@@ -30,6 +30,7 @@ const TxHistoryTable = loadable(
 );
 
 import ProtocolStats from "../components/dashboard/protocol-stats";
+
 import RepaidLoansTab from "../components/passbook/active-tabs/repaid-loans";
 import ActiveLoansTab from "../components/passbook/active-tabs/active-loans";
 import ActiveDepositsTab from "../components/passbook/active-tabs/active-deposits";
@@ -68,6 +69,8 @@ import Crossimg from "../../public/cross.svg";
 import Chart from "../components/charts/Chart";
 import Chart2 from "../components/charts/Chart2";
 import BarChartComponent from "../components/charts/barChart";
+import DownArrow from "../assets/images/ArrowDownDark.svg";
+import UpArrow from "../assets/images/ArrowUpDark.svg";
 // import App from "./Chart"
 
 interface IDeposit {
@@ -99,6 +102,8 @@ interface ILoans {
   currentLoanMarket: string | undefined;
   currentLoanAmount: number;
 }
+
+const loanTypes = ["Show All", "REPAID", "OPEN", "SWAPPED"];
 
 const Dashboard = () => {
   const [dropDownArrow, setDropDownArrow] = useState(connectWalletArrowDown);
@@ -175,6 +180,13 @@ const Dashboard = () => {
   const [CoinsSupplyMetrics, setCoinsSupplyMetrics] = useState("");
   const [CoinsBorrowMetrics, setCoinsBorrowMetrics] = useState("");
 
+  const [typeOfLoans, setTypeOfLoans] = useState("Show All");
+  const [isDropDownOpenTypeOfLoans, setIsDropDownOpenTypeOfLoans] =
+    useState(false);
+  const [typeOfLoansDropDownArrowType, setTypeOfLoansDropDownArrowType] =
+    useState(DownArrow);
+  const [filteredLoans, setFilteredLoans] = useState<ILoans[]>([]);
+
   function toggle(newIndex: string) {
     if (newIndex === index) {
       setIndex("1");
@@ -241,8 +253,25 @@ const Dashboard = () => {
           return asset.state === "REPAID";
         })
       );
+      if (typeOfLoans === "Show All") setFilteredLoans(loans);
+      else {
+        setFilteredLoans(
+          loans.filter((loan) => {
+            return loan.state === typeOfLoans;
+          })
+        );
+      }
     }
   };
+
+  useEffect(() => {
+    if (typeOfLoans === "Show All") return setFilteredLoans(activeLoansData);
+    setFilteredLoans(
+      activeLoansData.filter((loan) => {
+        return loan.state === typeOfLoans;
+      })
+    );
+  }, [typeOfLoans, activeLoansData]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -521,7 +550,7 @@ const Dashboard = () => {
       case "2": //
         return (
           <ActiveLoansTab
-            activeLoansData={activeLoansData}
+            activeLoansData={filteredLoans}
             customActiveTabs={customActiveTabs}
             isTransactionDone={isTransactionDone}
             depositRequestSel={depositRequestSel}
@@ -548,7 +577,7 @@ const Dashboard = () => {
   const borrowActionTabs = () => {
     return (
       <BorrowTab
-        activeLoansData={activeLoansData}
+        activeLoansData={filteredLoans}
         customActiveTabs={customActiveTabs}
         isTransactionDone={isTransactionDone}
         depositRequestSel={depositRequestSel}
@@ -679,7 +708,7 @@ const Dashboard = () => {
                       </>
                     )}
                   </div>
-                  {customActiveTab !== "2" ? (
+                  {customActiveTab !== "3" ? (
                     <div
                       style={{
                         position: "absolute",
@@ -692,21 +721,76 @@ const Dashboard = () => {
                         style={{
                           color: "white",
                           backgroundColor: "rgb(57, 61, 79)",
-                          padding: "6px 16px",
+                          padding: "6px 8px 6px 10px",
                           borderRadius: "5px",
                           display: "flex",
+                          width: "105px",
+                          justifyContent: "space-between",
                           alignItems: "center",
                           border: "none",
                         }}
+                        onClick={() => {
+                          setTypeOfLoansDropDownArrowType(
+                            isDropDownOpenTypeOfLoans ? DownArrow : UpArrow
+                          );
+                          setIsDropDownOpenTypeOfLoans(
+                            !isDropDownOpenTypeOfLoans
+                          );
+                        }}
                       >
-                        Active&nbsp;&nbsp;&nbsp;
+                        {typeOfLoans}&nbsp;&nbsp;&nbsp;
                         <Image
-                          src={dropDownArrow}
+                          src={typeOfLoansDropDownArrowType}
                           alt="Picture of the author"
                           width="14px"
                           height="14px"
                         />
                       </button>
+
+                      {isDropDownOpenTypeOfLoans ? (
+                        <>
+                          <div
+                            style={{
+                              borderRadius: "5px",
+                              position: "absolute",
+                              zIndex: "100",
+                              top: "31px",
+                              right: "0px",
+                              width: "105px",
+                              margin: "0px auto",
+                              marginBottom: "20px",
+                              padding: "5px 10px",
+                              backgroundColor: "#393D4F",
+                              // boxShadow: "0px 0px 10px rgb(57, 61, 79)",
+                            }}
+                          >
+                            {loanTypes.map((type, index) => {
+                              return (
+                                <div
+                                  key={index}
+                                  style={{
+                                    margin: "10px 0",
+                                    cursor: "pointer",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    fontSize: "0.8rem",
+                                    color: "#6F6F6F",
+                                  }}
+                                  onClick={() => {
+                                    setTypeOfLoans(type);
+                                    setTypeOfLoansDropDownArrowType(DownArrow);
+                                    setIsDropDownOpenTypeOfLoans(false);
+                                  }}
+                                >
+                                  {type}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </div>
                   ) : null}
                 </>
@@ -1423,7 +1507,7 @@ const Dashboard = () => {
                       <LoanBorrowCommitment
                         isLoading={isLoading}
                         activeDepositsData={activeDepositsData}
-                        activeLoansData={activeLoansData}
+                        activeLoansData={filteredLoans}
                       />
                     ) : null}
                     <Row>

@@ -234,19 +234,19 @@ const BorrowData = ({
   const { handleMySwap, loadingMySwap, errorMySwap } = useMySwap(diamondAddress, asset, marketTokenName);
 
 
-  // useEffect(() => {
-  //   console.log("loading jedi", loadingJediSwapSupportedPools);
-  //   if (!loadingJediSwapSupportedPools)
-  //     console.log(
-  //       "jediSwapSupportedPoolsData",
-  //       jediSwapSupportedPoolsData,
-  //       errorJediSwapSupportedPools
-  //     );
-  // }, [
-  //   jediSwapSupportedPoolsData,
-  //   loadingJediSwapSupportedPools,
-  //   errorJediSwapSupportedPools,
-  // ]);
+  useEffect(() => {
+    console.log("loading jedi", loadingJediSwapSupportedPools);
+    if (!loadingJediSwapSupportedPools)
+      console.log(
+        "jediSwapSupportedPoolsData",
+        jediSwapSupportedPoolsData,
+        errorJediSwapSupportedPools
+      );
+  }, [
+    jediSwapSupportedPoolsData,
+    loadingJediSwapSupportedPools,
+    errorJediSwapSupportedPools,
+  ]);
 
   const [title, setTitle] = useState({
     amount: "Borrowd",
@@ -366,14 +366,31 @@ const BorrowData = ({
     watch: true,
   });
 
+  const handleCollateralInputChangeAddCollateralAction = (e) => {
+    setAddCollateralAmount(e.target.value)
+    const balance = Number(uint256.uint256ToBN(collateralMarketBalance ? collateralMarketBalance[0] : 0)) / 10 ** 18;
+    if (!balance) return;
+    // calculate percentage of collateral of balance
+    var percentage = (e.target.value / balance) * 100;
+    percentage = Math.max(0, percentage);
+    if (percentage > 100) {
+      setValue("Greater than 100")
+      return;
+    }
+    // Round off percentage to 2 decimal places
+    percentage = Math.round(percentage * 100) / 100;
+    setValue(percentage);
+  }
+
+
   const handleWithdrawCollateral = async (withdrawCollateral) => {
     await withdrawCollateral();
   };
 
   const handleSpendBorrowCTAButton = () => {
-    if(actionLabel === "Swap") {
+    if (actionLabel === "Swap") {
       appsImage === "mySwap" ? handleMySwap() :
-      appsImage === "jediSwap" ? handleJediSwap() : null
+        appsImage === "jediSwap" ? handleJediSwap() : null
     }
     else return null;
   }
@@ -544,6 +561,21 @@ const BorrowData = ({
       ) /
       10 ** 18
     );
+  }
+
+  const handleSliderValue = (e) => {
+    const balance = Number(uint256.uint256ToBN(loanMarketBalance ? loanMarketBalance[0] : 0)) / 10 ** 18;
+    if (!balance) return;
+    // calculate percentage of collateral of balance
+    var percentage = (e.target.value / balance) * 100;
+    percentage = Math.max(0, percentage);
+    if (percentage > 100) {
+      setValue("Greater than 100")
+      return;
+    }
+    // Round off percentage to 2 decimal places
+    percentage = Math.round(percentage * 100) / 100;
+    setValue(percentage);
   }
 
   const handleDeposit = async (asset: string) => {
@@ -746,7 +778,7 @@ const BorrowData = ({
           <Col>{assetParam?.commitment}</Col>
 
           <Col>
-          <div>
+            <div>
               <img
                 src={
                   assetParam
@@ -1637,6 +1669,7 @@ const BorrowData = ({
                                       setRepayAmount(e.target.value);
                                     else
                                       setPartialWithdrawAmount(e.target.value);
+                                    handleSliderValue(e);
                                   }}
                                   value={
                                     selection === "Repay Borrow"
@@ -1673,11 +1706,11 @@ const BorrowData = ({
                                 }}
                               >
                                 Wallet Balance:&nbsp;
-                                {collateralMarketBalance ? (
+                                {loanMarketAllowance ? (
                                   (
                                     Number(
                                       uint256.uint256ToBN(
-                                        collateralMarketBalance[0]
+                                        loanMarketBalance[0]
                                       )
                                     ) /
                                     10 ** 18
@@ -1712,7 +1745,7 @@ const BorrowData = ({
                                       setRepayAmount(
                                         (value *
                                           (Number(
-                                            uint256.uint256ToBN(dataBalance[0])
+                                            uint256.uint256ToBN(loanMarketBalance?.[0] || 0)
                                           ) /
                                             10 ** 18)) /
                                         100
@@ -1976,9 +2009,7 @@ const BorrowData = ({
                                   id="amount"
                                   min={MinimumAmount[asset]}
                                   placeholder={`Amount in ${asset.collateralMarket}`}
-                                  onChange={(e) =>
-                                    setAddCollateralAmount(e.target.value)
-                                  }
+                                  onChange={handleCollateralInputChangeAddCollateralAction}
                                   value={addCollateralAmount}
                                   valid={!isInvalid()}
                                 />
@@ -2055,7 +2086,7 @@ const BorrowData = ({
                                   >
                                     {`Amount is greater than your balance`}
                                   </FormText>
-                                ): <></>}
+                                ) : <></>}
                             </Col>
                           </div>
                         </FormGroup>
@@ -3140,7 +3171,7 @@ const BorrowData = ({
               }}
             >
               {allAssets.map((eleAsset, index) => {
-                if(eleAsset.loanId === asset.loanId) return <></>;
+                if (eleAsset.loanId === asset.loanId) return <></>;
                 return (
                   <>
                     <div

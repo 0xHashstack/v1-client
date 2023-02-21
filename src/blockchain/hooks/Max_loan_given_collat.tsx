@@ -15,14 +15,13 @@ const useMaxloan = (market: string, collateral_market: string,collateral_amount:
     address: diamondAddress,
   });
    
-  const { data,loading,error,refresh } = useStarknetCall({
+  const { data: dataMaxLoan ,error: errorMaxLoan,loading: loadingMaxLoan,refresh: refreshMaxLoan } = useStarknetCall({
     contract,
     method: "get_max_loan_amount",
     args: [tokenAddressMap[market],tokenAddressMap[collateral_market],[collateral_amount,0]],
   });
-  
 
-  return { data ,error,loading,refresh};
+  return { dataMaxLoan, errorMaxLoan, loadingMaxLoan, refreshMaxLoan };
 };
 export default useMaxloan;
 

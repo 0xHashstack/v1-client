@@ -256,13 +256,13 @@ export default class OffchainAPI {
 
   static async getOraclePrices() {
     let route = `/oracle-prices`;
-    return OffchainAPI.httpGet(route);
-    // return OraclePrices;
+    // return OffchainAPI.httpGet(route);
+    return OraclePrices;
   }
 
   static async getReserves() {
     let route = `/reserves`;
-    return OffchainAPI.httpGet(route);
-    // return Reserves;
+    // return OffchainAPI.httpGet(route);
+    return Reserves;
   }
 }
