@@ -4,13 +4,14 @@ const ToastModal = ({
   success,
   heading,
   desc,
+  textToCopy,
 }: {
   success: boolean;
   heading: string;
   desc: string;
+  textToCopy: string;
 }) => {
   const [modal, setModal] = useState(true);
-  const [textToCopy, setTextToCopy] = useState("");
   const [copySuccessMessage, setCopySuccessMessage] = useState("Text Copied !!");
   const [showOnCopy, setShowOnCopy] = useState(false);
 
