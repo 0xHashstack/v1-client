@@ -31,6 +31,7 @@ import {
   getTokenFromName,
   isTransactionLoading,
   tokenAddressMap,
+  tokenDecimalsMap,
 } from "../blockchain/stark-constants";
 
 import { BNtoNum, GetErrorText, NumToBN } from "../blockchain/utils";
@@ -65,9 +66,9 @@ interface ICoin {
 
 let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam }: { asset: string, depositLoanRates: any }) => {
   const Coins: ICoin[] = [
-    { name: "USDT",icon: "mdi-bitcoin", },
-    { name: "USDC",icon: "mdi-ethereum",},
-    { name: "BTC",icon: "mdi-bitcoin",},
+    { name: "USDT", icon: "mdi-bitcoin", },
+    { name: "USDC", icon: "mdi-ethereum", },
+    { name: "BTC", icon: "mdi-bitcoin", },
     { name: "ETH", icon: "mdi-ethereum" },
     { name: "DAI", icon: "mdi-dai" },
   ];
@@ -97,7 +98,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
 
   const [allowanceVal, setAllowance] = useState(0);
 
-  const { address: account } = useAccount();
+  const { account, address: accountAddress, status } = useAccount();
   const [transApprove, setTransApprove] = useState("");
   const [transDeposit, setTransDeposit] = useState("");
 
@@ -164,19 +165,11 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
   } = useStarknetCall({
     contract: contract,
     method: "balanceOf",
-    args: [account],
+    args: [accountAddress],
     options: {
       watch: true,
     },
   });
-
-  // useEffect(() => {
-  //   // console.log('balance', {
-  //   //   dataBalance, loadingBalance, errorBalance, refreshBalance, contract, account
-  //   // })
-  // }, [dataBalance, loadingBalance, errorBalance, refreshBalance]);
-
-  // Approve
 
   const [customActiveTab, setCustomActiveTab] = useState("9");
 
@@ -240,15 +233,12 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
   } = useStarknetCall({
     contract: contract,
     method: "allowance",
-    args: [account, diamondAddress],
+    args: [accountAddress, diamondAddress],
     options: {
       watch: true,
     },
   });
 
-  // const handleApprove = async () => {
-  //   let val = await USDC();
-  // };
 
   const {
     data: dataApprove,
@@ -268,12 +258,12 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
 
   const handleDepositAmountChange = (e: any) => {
     setDepositAmount(e.target.value);
-    const balance = Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18;
-    if(!balance) return;
+    const balance = Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[asset] || 18);
+    if (!balance) return;
     // calculate percentage of collateral of balance
     var percentage = (e.target.value / balance) * 100;
     percentage = Math.max(0, percentage);
-    if(percentage > 100) {
+    if (percentage > 100) {
       setValue("Greater than 100")
       return;
     }
@@ -290,7 +280,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
 
   const handleMax = async () => {
     setDepositAmount(
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[asset] || 18)
     );
   };
 
@@ -386,7 +376,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
     return (
       depositAmount < MinimumAmount[asset] ||
       depositAmount >
-        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[asset] || 18)
     );
   }
 
@@ -427,7 +417,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
             padding: "40px",
           }}
         >
-          {account ? (
+          {accountAddress ? (
             <Form>
               <div className="row mb-4">
                 <Col sm={8}>
@@ -614,7 +604,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                         padding: "5px 10px",
                         backgroundColor: "rgb(42, 46, 63)",
                         boxShadow: "0px 0px 10px #00000020",
-                      
+
 
                       }}
                     >
@@ -746,7 +736,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                       {dataBalance ? (
                         (
                           Number(uint256.uint256ToBN(dataBalance[0])) /
-                          10 ** 18
+                          10 ** (tokenDecimalsMap[asset] || 18)
                         ).toString()
                       ) : (
                         <MySpinner />
@@ -770,8 +760,8 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                           setDepositAmount(
                             (value *
                               (Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : '-')) /
-                                10 ** 18)) /
-                              100
+                                10 ** (tokenDecimalsMap[asset] || 18))) /
+                            100
                           );
                           setValue(value);
                         }}
@@ -791,10 +781,10 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                     </div>
                     {depositAmount != 0 &&
                       depositAmount >
-                        Number(
-                          uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)
-                        ) /
-                          10 ** 18 && (
+                      Number(
+                        uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)
+                      ) /
+                      10 **  (tokenDecimalsMap[asset] || 18) && (
                         <FormText style={{ color: "#e97272 !important" }}>
                           {`Amount is greater than your balance`}
                         </FormText>
@@ -862,7 +852,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600", color: "rgb(111, 111, 111)" }}>
                       $ 0.50
                     </div>
                   </div>
@@ -874,7 +864,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply APR:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600", color:"rgb(111, 111, 111)" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600", color: "rgb(111, 111, 111)" }}>
                       {
                         depositLoanRates && commitPeriod < 3 ? (
                           `${parseFloat(
@@ -882,7 +872,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                               `${getTokenFromName(asset as string)?.address}__${commitPeriod}`
                             ]?.depositAPR?.apr100x as string
                           )} %`
-                        ): (
+                        ) : (
                           <MySpinner />
                         )
                       }
@@ -898,7 +888,7 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                     <div style={{ color: "#6F6F6F" }}>
                       Asset Utilization Rate:
                     </div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600", color: "rgb(111, 111, 111)" }}>
                       0.43
                     </div>
                   </div>
@@ -910,14 +900,14 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
                     }}
                   >
                     <div style={{ color: "#6F6F6F" }}>Supply Network:</div>
-                    <div style={{ textAlign: "right", fontWeight: "600",color:"rgb(111, 111, 111)" }}>
+                    <div style={{ textAlign: "right", fontWeight: "600", color: "rgb(111, 111, 111)" }}>
                       Starknet
                     </div>
                   </div>
                 </div>
                 <Button
                   color="white"
-                  style={{backgroundColor: "rgb(57, 61, 79)",color:"white"}}
+                  style={{ backgroundColor: "rgb(57, 61, 79)", color: "white" }}
                   className="w-md"
                   disabled={
                     commitPeriod === undefined ||

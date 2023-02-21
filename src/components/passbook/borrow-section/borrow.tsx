@@ -480,8 +480,9 @@ const BorrowTab = ({
     if (!borrowParams.collateralAmount) return false;
     return (
       Number(borrowParams.collateralAmount) <
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[borrowParams.collateralMarket as string] || 18)
     );
+
   }
 
   function isLoanAmountValid() {
@@ -800,7 +801,7 @@ const BorrowTab = ({
                       {dataBalance ? (
                         (
                           Number(uint256.uint256ToBN(dataBalance[0])) /
-                          10 ** 18
+                          10 ** (tokenDecimalsMap[borrowParams?.collateralMarket] || 18)
                         ).toString()
                       ) : (
                         <MySpinner />
@@ -824,7 +825,7 @@ const BorrowTab = ({
                             collateralAmount:
                               (value *
                                 (Number(uint256.uint256ToBN(dataBalance[0])) /
-                                  10 ** 18)) /
+                                  10 ** (tokenDecimalsMap[borrowParams?.collateralMarket] || 18))) /
                               100,
                           });
                           setValue(value);

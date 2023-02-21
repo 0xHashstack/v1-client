@@ -42,6 +42,7 @@ import {
   ERC20Abi,
   isTransactionLoading,
   tokenAddressMap,
+  tokenDecimalsMap,
 } from "../../../blockchain/stark-constants";
 import { TxToastManager } from "../../../blockchain/txToastManager";
 import {
@@ -71,7 +72,7 @@ import useWithdrawCollateral from "../../../blockchain/hooks/repaid-loans/useWit
 import useRepay from "../../../blockchain/hooks/active-borrow/useRepay";
 import useWithdrawPartialBorrow from "../../../blockchain/hooks/active-borrow/useWithdrawPartialBorrow";
 import useAddCollateral from "../../../blockchain/hooks/active-borrow/useAddCollateral";
-import useSpendBorrow from "../../../blockchain/hooks/SpendBorrow/useSpendBorrow";
+import useJediSwap from "../../../blockchain/hooks/SpendBorrow/useJediSwap";
 import useMySwap from "../../../blockchain/hooks/SpendBorrow/useMySwap";
 
 const BorrowData = ({
@@ -229,7 +230,7 @@ const BorrowData = ({
     dataJediSwap,
     loadingJediSwap,
     errorJediSwap,
-  } = useSpendBorrow(diamondAddress, asset, marketTokenName);
+  } = useJediSwap(diamondAddress, asset, marketTokenName);
 
   const { handleMySwap, loadingMySwap, errorMySwap } = useMySwap(
     diamondAddress,
@@ -377,7 +378,7 @@ const BorrowData = ({
           collateralMarketBalance ? collateralMarketBalance[0] : 0
         )
       ) /
-      10 ** 18;
+      10 ** (tokenDecimalsMap[asset?.collateralMarket as string] || 18);
     if (!balance) return;
     // calculate percentage of collateral of balance
     var percentage = (e.target.value / balance) * 100;
@@ -569,7 +570,7 @@ const BorrowData = ({
         Number(
           uint256.uint256ToBN(loanMarketBalance ? loanMarketBalance[0] : 0)
         ) /
-          10 ** 18
+          10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18)
     );
   }
 
@@ -578,7 +579,7 @@ const BorrowData = ({
       Number(
         uint256.uint256ToBN(loanMarketBalance ? loanMarketBalance[0] : 0)
       ) /
-      10 ** 18;
+      10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18);
     if (!balance) return;
     // calculate percentage of collateral of balance
     var percentage = (e.target.value / balance) * 100;
@@ -1716,7 +1717,7 @@ const BorrowData = ({
                                     Number(
                                       uint256.uint256ToBN(loanMarketBalance[0])
                                     ) /
-                                    10 ** 18
+                                    10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18)
                                   ).toString()
                                 ) : (
                                   <MySpinner />
@@ -1752,7 +1753,7 @@ const BorrowData = ({
                                               loanMarketBalance?.[0] || 0
                                             )
                                           ) /
-                                            10 ** 18)) /
+                                            10 ** (tokenDecimalsMap[asset.loanMarket]))) /
                                           100
                                       );
                                       setValue(value);
@@ -1785,7 +1786,7 @@ const BorrowData = ({
                                         : 0
                                     )
                                   ) /
-                                    10 ** 18 && (
+                                    10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18) && (
                                   <FormText
                                     style={{ color: "#e97272 !important" }}
                                   >
@@ -2055,7 +2056,7 @@ const BorrowData = ({
                                         collateralMarketBalance[0]
                                       )
                                     ) /
-                                    10 ** 18
+                                    10 ** (tokenDecimalsMap[asset?.collateralMarket as string] || 18)
                                   )
                                     .toFixed(4)
                                     .toString()
@@ -2087,7 +2088,7 @@ const BorrowData = ({
                                         : 0
                                     )
                                   ) /
-                                    10 ** 18 && (
+                                    10 ** (tokenDecimalsMap[asset?.collateralMarket] || 18) && (
                                   <FormText
                                     style={{ color: "#e97272 !important" }}
                                   >
@@ -2127,7 +2128,7 @@ const BorrowData = ({
                                       collateralMarketBalance?.[0] || 0
                                     )
                                   ) /
-                                    10 ** 18)) /
+                                    10 ** (tokenDecimalsMap[asset.collateralMarket] || 18))) /
                                   100
                               );
                               setValue(value);
