@@ -268,6 +268,18 @@ let Deposit: any = ({ asset: assetParam, depositLoanRates: depositLoanRatesParam
 
   const handleDepositAmountChange = (e: any) => {
     setDepositAmount(e.target.value);
+    const balance = Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18;
+    if(!balance) return;
+    // calculate percentage of collateral of balance
+    var percentage = (e.target.value / balance) * 100;
+    percentage = Math.max(0, percentage);
+    if(percentage > 100) {
+      setValue("Greater than 100")
+      return;
+    }
+    // Round off percentage to 2 decimal places
+    percentage = Math.round(percentage * 100) / 100;
+    setValue(percentage);
   };
 
   const handleBalanceChange = async () => {

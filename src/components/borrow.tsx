@@ -102,7 +102,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
 
   const [borrowParams, setBorrowParams] = useState<IBorrowParams>({
     loanAmount: null,
-    collateralAmount: 0,
+    collateralAmount: null,
     commitBorrowPeriod: 0,
     collateralMarket: null,
   });
@@ -372,9 +372,21 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
       ...borrowParams,
       collateralAmount: e.target.value,
     });
+    const balance = Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18;
+    if(!balance) return;
+    // calculate percentage of collateral of balance
+    var percentage = (e.target.value / balance) * 100;
+    percentage = Math.max(0, percentage);
+    if(percentage > 100) {
+      setValue("Greater than 100")
+      return;
+    }
+    // Round off percentage to 2 decimal places
+    percentage = Math.round(percentage * 100) / 100;
+    setValue(percentage);
     await refreshAllowance();
   };
-
+  
   function removeBodyCss() {
     document.body.classList.add("no_padding");
   }
@@ -669,7 +681,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                   id="amount"
                   placeholder="Amount"
                   onChange={handleCollateralInputChange}
-                  value={(borrowParams.collateralAmount as number)}
+                  value={(borrowParams.collateralAmount)}
                   valid={isValidColleteralAmount()}
                 />
                 {
@@ -708,7 +720,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                   (
                     Number(uint256.uint256ToBN(dataBalance[0])) /
                     10 ** 18
-                  ).toString()
+                  ).toFixed(4)
                 ) : (
                   <MySpinner />
                 )}
@@ -716,7 +728,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
               <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
                 <Slider
                   handlerActiveColor="#1D2131"
-                  stepSize={5}
+                  stepSize={0.5}
                   value={value}
                   trackColor="rgb(57, 61, 79)"
                   handlerShape="rounded"
@@ -1538,7 +1550,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                   onClick={(e) => handleBorrow(asset)}
                 >
                   {!(
-                    loadingApprove ||
+                    loadingApprove
                     isTransactionLoading(requestBorrowTransactionReceipt)
                   ) ? (
                     `Borrow`
