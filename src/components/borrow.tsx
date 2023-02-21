@@ -631,10 +631,30 @@ let Borrow: any = ({
           {account ? (
             <Form>
               {/* <div className="row mb-4"> */}
-              <Col sm={8}>
-                <h3 style={{ color: "white" }}>Borrow</h3>
+              <Col
+                sm={8}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "100%",
+                }}
+              >
+                <h5 style={{ color: "white", fontSize: "24px" }}>Borrow</h5>
+                <img
+                  src="./cross.svg"
+                  onClick={() => {
+                    setmodal_borrow(false);
+                  }}
+                  style={{ marginTop: "-10px", cursor: "pointer" }}
+                />
               </Col>
-              <div style={{ fontSize: "8px", fontWeight: "600" }}>
+              <div
+                style={{
+                  fontSize: "11px",
+                  fontWeight: "600",
+                  color: "#8b8b8b",
+                }}
+              >
                 Collateral Market
               </div>
               <label
@@ -645,7 +665,7 @@ let Borrow: any = ({
                   padding: "5px 10px",
                   fontSize: "18px",
                   borderRadius: "5px",
-                  border: "2px solid rgb(57, 61, 79)",
+                  border: "1px solid rgb(57, 61, 79)",
                   fontWeight: "200",
                 }}
               >
@@ -661,8 +681,8 @@ let Borrow: any = ({
                     {" "}
                     <img
                       src={`./${tokenName}.svg`}
-                      width="30px"
-                      height="30px"
+                      width="24px"
+                      height="24px"
                     ></img>
                     &nbsp;&nbsp;{tokenName}
                   </div>
@@ -685,9 +705,10 @@ let Borrow: any = ({
               </label>
               <div
                 style={{
-                  fontSize: "8px",
+                  fontSize: "11px",
                   fontWeight: "600",
                   margin: "-5px 0 5px 0",
+                  color: "#8b8b8b",
                 }}
               >
                 Collateral Amount
@@ -695,6 +716,7 @@ let Borrow: any = ({
               <InputGroup>
                 <Input
                   style={{
+                    height: "40px",
                     backgroundColor: "#1D2131",
                     borderRight: "1px solid rgb(57, 61, 79)",
                   }}
@@ -713,7 +735,6 @@ let Borrow: any = ({
                       type="button"
                       className="btn btn-md w-xs"
                       onClick={handleMax}
-                      // disabled={balance ? false : true}
                       style={{
                         background: "#1D2131",
                         color: "rgb(111, 111, 111)",
@@ -784,7 +805,7 @@ let Borrow: any = ({
                   fontSize: "10px",
                   position: "absolute",
                   right: "39px",
-                  top: "260px",
+                  top: "267px",
                 }}
               >
                 {value}%
@@ -798,8 +819,6 @@ let Borrow: any = ({
                       zIndex: "100",
                       top: "140px",
                       left: "39px",
-                      // top: "-10px",
-
                       width: "420px",
                       margin: "0px auto",
                       marginBottom: "20px",
@@ -825,13 +844,12 @@ let Borrow: any = ({
                             setDropDown(false);
                             setDropDownArrow(Downarrow);
                             handleCollateralChange(`${coin.name}`);
-                            // handleMinLoan(`${coin.name}`);
                           }}
                         >
                           <img
                             src={`./${coin.name}.svg`}
-                            width="30px"
-                            height="30px"
+                            width="24px"
+                            height="24px"
                           ></img>
                           <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
                         </div>
@@ -883,8 +901,8 @@ let Borrow: any = ({
                         >
                           <img
                             src={`./${coin.name}.svg`}
-                            width="30px"
-                            height="30px"
+                            width="24px"
+                            height="24px"
                           ></img>
                           <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
                         </div>
@@ -989,7 +1007,13 @@ let Borrow: any = ({
                   </Col>
                 </div>
               </FormGroup> */}
-              <div style={{ fontSize: "8px", fontWeight: "600" }}>
+              <div
+                style={{
+                  fontSize: "11px",
+                  fontWeight: "600",
+                  color: "#8b8b8b",
+                }}
+              >
                 Borrow Market
               </div>
               <label
@@ -1000,7 +1024,7 @@ let Borrow: any = ({
                   padding: "5px 10px",
                   fontSize: "18px",
                   borderRadius: "5px",
-                  border: "2px solid rgb(57, 61, 79)",
+                  border: "1px solid rgb(57, 61, 79)",
                   fontWeight: "200",
                 }}
               >
@@ -1016,8 +1040,8 @@ let Borrow: any = ({
                     {" "}
                     <img
                       src={`./${borrowTokenName}.svg`}
-                      width="30px"
-                      height="30px"
+                      width="24px"
+                      height="24px"
                     ></img>
                     &nbsp;&nbsp;{borrowTokenName}
                   </div>
@@ -1041,7 +1065,13 @@ let Borrow: any = ({
               <FormGroup floating>
                 <div className="row mb-4">
                   <Col sm={12}>
-                    <div style={{ fontSize: "8px", fontWeight: "600" }}>
+                    <div
+                      style={{
+                        fontSize: "11px",
+                        fontWeight: "600",
+                        color: "#8b8b8b",
+                      }}
+                    >
                       Minimum Commitment Period
                     </div>
                     <label
@@ -1051,7 +1081,7 @@ let Borrow: any = ({
                         padding: "5px 10px",
                         fontSize: "15px",
                         borderRadius: "5px",
-                        border: "2px solid rgb(57, 61, 79)",
+                        border: "1px solid rgb(57, 61, 79)",
                         fontWeight: "400",
                       }}
                     >
@@ -1107,8 +1137,9 @@ let Borrow: any = ({
                 {/* <label style={{}}> */}
                 <div
                   style={{
-                    fontSize: "8px",
+                    fontSize: "11px",
                     fontWeight: "600",
+                    color: "#8b8b8b",
                     margin: "-10px 0 5px 0",
                   }}
                 >
@@ -1117,6 +1148,7 @@ let Borrow: any = ({
                 <InputGroup style={{ marginBottom: "30px" }}>
                   <Input
                     style={{
+                      height: "40px",
                       backgroundColor: "#1D2131",
                       borderRight: "1px solid rgb(57, 61, 79)",
                     }}
@@ -1570,8 +1602,9 @@ let Borrow: any = ({
                     !isValid()
                   }
                   style={{
-                    padding: "10px 0",
+                    boxShadow: "rgba(0, 0, 0, 0.5) 3.4px 3.4px 5.2px 0px",
                     border: "none",
+                    padding: "12px 0",
                     backgroundColor: "rgb(57, 61, 79)",
                   }}
                   onClick={(e) => handleBorrow(asset)}

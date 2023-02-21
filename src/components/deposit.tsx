@@ -440,8 +440,22 @@ let Deposit: any = ({
           {account ? (
             <Form>
               <div className="row mb-4">
-                <Col sm={8}>
-                  <h5 style={{ color: "white" }}>Supply</h5>
+                <Col
+                  sm={8}
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    width: "100%",
+                  }}
+                >
+                  <h5 style={{ color: "white", fontSize: "24px" }}>Supply</h5>
+                  <img
+                    src="./cross.svg"
+                    onClick={() => {
+                      setmodal_deposit(false);
+                    }}
+                    style={{ marginTop: "-10px", cursor: "pointer" }}
+                  />
                 </Col>
 
                 <label
@@ -452,7 +466,7 @@ let Deposit: any = ({
                     padding: "5px 10px",
                     fontSize: "18px",
                     borderRadius: "5px",
-                    border: "2px solid rgb(57, 61, 79)",
+                    border: "1px solid rgb(57, 61, 79)",
                     fontWeight: "200",
                   }}
                 >
@@ -468,8 +482,8 @@ let Deposit: any = ({
                       {" "}
                       <img
                         src={`./${tokenName}.svg`}
-                        width="30px"
-                        height="30px"
+                        width="24px"
+                        height="24px"
                       ></img>
                       &nbsp;&nbsp;{tokenName}
                     </div>
@@ -493,9 +507,9 @@ let Deposit: any = ({
 
                 <div
                   style={{
-                    fontSize: "10px",
+                    fontSize: "11px",
                     fontWeight: "600",
-                    marginBottom: "5px",
+                    color: "#8b8b8b",
                   }}
                 >
                   Minimum Commitment Period
@@ -508,7 +522,7 @@ let Deposit: any = ({
                     padding: "5px 10px",
                     fontSize: "15px",
                     borderRadius: "5px",
-                    border: "2px solid rgb(57, 61, 79)",
+                    border: "1px solid rgb(57, 61, 79)",
                     fontWeight: "400",
                   }}
                 >
@@ -524,6 +538,7 @@ let Deposit: any = ({
                       justifyContent: "space-between",
                       alignItems: "center",
                       marginLeft: "10px",
+                      height: "35px",
                     }}
                   >
                     <div>{commitmentValue}</div>
@@ -558,10 +573,8 @@ let Deposit: any = ({
                         borderRadius: "5px",
                         position: "absolute",
                         zIndex: "100",
-                        top: "125px",
+                        top: "132px",
                         left: "39px",
-                        // top: "-10px",
-
                         width: "420px",
                         margin: "0px auto",
                         marginBottom: "20px",
@@ -593,8 +606,8 @@ let Deposit: any = ({
                           >
                             <Image
                               src={`/${coin.name}.svg`}
-                              width="30px"
-                              height="30px"
+                              width="24px"
+                              height="24px"
                               alt="coin image"
                             />
                             <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
@@ -616,8 +629,6 @@ let Deposit: any = ({
                         zIndex: "100",
                         top: "210px",
                         left: "39px",
-                        // top: "-10px",
-
                         width: "420px",
                         margin: "0px auto",
                         marginBottom: "20px",
@@ -685,7 +696,8 @@ let Deposit: any = ({
                       <Input
                         style={{
                           backgroundColor: "#1D2131",
-                          borderRight: "1px solid #rgb(57, 61, 79)",
+                          borderRight: "1px solid #1D2131",
+                          height: "45px",
                         }}
                         type="number"
                         className="form-control"
@@ -696,45 +708,20 @@ let Deposit: any = ({
                         value={depositAmount}
                         valid={!isInvalid()}
                       />
-
-                      {
-                        <>
-                          {/* <Button
-                            outline
-                            type="button"
-                            className="btn btn-md w-xs"
-                            onClick={handleMin}
-                            // disabled={balance ? false : true}
-                            style={{
-                              background: "white",
-                              color: "black",
-                              border: "1px solid black",
-                            }}
-                          >
-                            <span style={{ borderBottom: "2px dotted #fff" }}>
-                              Min
-                            </span>
-                          </Button> */}
-
-                          <Button
-                            outline
-                            type="button"
-                            className="btn btn-md w-xs"
-                            onClick={handleMax}
-                            // disabled={balance ? false : true}
-                            style={{
-                              background: "#1D2131",
-                              color: "rgb(111, 111, 111)",
-                              border: "1px solid rgb(57, 61, 79)",
-                              borderLeft: "none",
-                            }}
-                          >
-                            <span style={{ borderBottom: "2px  #fff" }}>
-                              MAX
-                            </span>
-                          </Button>
-                        </>
-                      }
+                      <Button
+                        outline
+                        type="button"
+                        className="btn btn-md w-xs"
+                        onClick={handleMax}
+                        style={{
+                          background: "#1D2131",
+                          color: "rgb(111, 111, 111)",
+                          border: "1px solid rgb(57, 61, 79)",
+                          borderLeft: "none",
+                        }}
+                      >
+                        <span style={{ borderBottom: "2px  #fff" }}>MAX</span>
+                      </Button>
                     </InputGroup>
                     {/* {depositAmount != 0 &&
                       depositAmount < MinimumAmount[asset] && (
@@ -750,7 +737,7 @@ let Deposit: any = ({
                         marginTop: "4px",
                       }}
                     >
-                      Available:&nbsp;
+                      Wallet Balance:&nbsp;
                       {dataBalance ? (
                         (
                           Number(uint256.uint256ToBN(dataBalance[0])) /
@@ -759,7 +746,7 @@ let Deposit: any = ({
                       ) : (
                         <MySpinner />
                       )}
-                      <div style={{ color: "#76809D" }}>&nbsp;{asset} </div>
+                      <div style={{ color: "#8b8b8b" }}>&nbsp;{asset} </div>
                     </div>
 
                     <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
@@ -796,7 +783,7 @@ let Deposit: any = ({
                         fontSize: "10px",
                         position: "absolute",
                         right: "12px",
-                        top: "90px",
+                        top: "94px",
                       }}
                     >
                       {value}%
@@ -953,7 +940,12 @@ let Deposit: any = ({
                 </div>
                 <Button
                   color="white"
-                  style={{ backgroundColor: "rgb(57, 61, 79)", color: "white" }}
+                  style={{
+                    backgroundColor: "rgb(57, 61, 79)",
+                    color: "white",
+                    padding: "10px 0",
+                    boxShadow: "rgba(0, 0, 0, 0.5) 3.4px 3.4px 5.2px 0px",
+                  }}
                   className="w-md"
                   disabled={
                     commitPeriod === undefined ||

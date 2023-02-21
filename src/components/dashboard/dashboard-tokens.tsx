@@ -55,7 +55,7 @@ const DashboardTokens = ({
           textAlign: "center",
         }}
       >
-        <th>
+        {/* <th>
           {" "}
           {coin.name === "BTC" ? (
             <Image
@@ -67,7 +67,7 @@ const DashboardTokens = ({
           ) : (
             <></>
           )}
-        </th>
+        </th> */}
         <th scope="row" style={{ padding: "25px 5px", textAlign: "center" }}>
           <div
             style={{

@@ -41,7 +41,6 @@ const LoanBorrowCommitment = ({
                   textAlign: "center",
                 }}
               >
-                <th style={{ width: "35px" }}></th>
                 <th scope="col" style={{ width: "100px", fontWeight: "300" }}>
                   Markets
                 </th>
@@ -57,9 +56,8 @@ const LoanBorrowCommitment = ({
                 <th scope="col" style={{ width: "100px", fontWeight: "300" }}>
                   Total Borrow
                 </th>
-                <th scope="col" style={{ width: "155px" }}>
+                <th scope="col" style={{ width: "155px", fontWeight: "300" }}>
                   <div style={{ textAlign: "center", paddingBottom: "5px" }}>
-                    {" "}
                     Supply APR
                   </div>
                   <select
@@ -87,7 +85,7 @@ const LoanBorrowCommitment = ({
                     <option value={"THREEMONTHS"}>Three Month</option>
                   </select>
                 </th>
-                <th scope="col" style={{ width: "150px" }}>
+                <th scope="col" style={{ width: "150px", fontWeight: "300" }}>
                   <div style={{ textAlign: "center", paddingBottom: "5px" }}>
                     {" "}
                     Borrow APR
