@@ -950,7 +950,7 @@ const BorrowData = ({
                                     : "outline-light"
                                 }
                               >
-                                Add Collateral
+                                
                               </Button>
                               &nbsp; &nbsp;
                               <Button
