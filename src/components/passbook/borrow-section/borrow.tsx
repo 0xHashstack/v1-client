@@ -255,13 +255,6 @@ const BorrowTab = ({
 
   const [historicalAPRs, setHistoricalAPRs] = useState();
 
-  useEffect(() => {
-    OffchainAPI.getHistoricalBorrowRates().then((val) => {
-      setHistoricalAPRs(val);
-      console.log(val);
-    });
-  }, []);
-
   const toggleDropdown = () => {
     setDropDown(!dropDown);
     setDropDownArrow(dropDown ? Downarrow : UpArrow);
@@ -456,38 +449,12 @@ const BorrowTab = ({
     }
   };
 
-  const handleMax = async (
-    _collateralAmount: any,
-    _loanAmount: any,
-    loanMarket: any,
-    collateralMarket: string
-  ) => {
-    setLoading(true);
-    const collateralAmount: any = parseFloat(
-      BNtoNum(Number(_collateralAmount))
-    ).toFixed(6);
-    const loanAmount: any = parseFloat(BNtoNum(Number(_loanAmount))).toFixed(6);
-
-    const loanPrice = await getPrice(loanMarket);
-    const collateralPrice = await getPrice(collateralMarket);
-
-    const totalLoanPriceUSD = loanAmount * loanPrice;
-    const totalCollateralPrice = collateralAmount * collateralPrice;
-    const maxPermisableUSD = (70 / 100) * totalCollateralPrice;
-    const maxPermisableWithdrawal = maxPermisableUSD / loanPrice;
-
-    setInputVal1(maxPermisableWithdrawal);
-    // console.log("max loan withdrawal", maxPermisableWithdrawal);
-    setLoading(false);
-  };
-
   function isValidColleteralAmount() {
     if (!borrowParams.collateralAmount) return false;
     return (
       Number(borrowParams.collateralAmount) <
       Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[borrowParams.collateralMarket as string] || 18)
     );
-
   }
 
   function isLoanAmountValid() {
