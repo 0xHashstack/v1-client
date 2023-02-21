@@ -180,7 +180,7 @@ const Dashboard = () => {
   const [CoinsSupplyMetrics, setCoinsSupplyMetrics] = useState("");
   const [CoinsBorrowMetrics, setCoinsBorrowMetrics] = useState("");
 
-  const [typeOfLoans, setTypeOfLoans] = useState("Open");
+  const [typeOfLoans, setTypeOfLoans] = useState("Show All");
   const [isDropDownOpenTypeOfLoans, setIsDropDownOpenTypeOfLoans] = useState(false);
   const [typeOfLoansDropDownArrowType, setTypeOfLoansDropDownArrowType] = useState(DownArrow);
   const [filteredLoans, setFilteredLoans] = useState<ILoans[]>([]);
@@ -271,7 +271,7 @@ const Dashboard = () => {
         return loan.state === typeOfLoans;
       })
     )
-  }, [typeOfLoans])
+  }, [typeOfLoans, activeLoansData])
 
   useEffect(() => {
     setTimeout(() => {

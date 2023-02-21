@@ -308,11 +308,11 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
 
   console.log(borrowParams.collateralAmount);
   // {borrowParams.collateralAmount ?(
-  const { data, loading, error } = useMaxloan(tokenName, asset, Number(borrowParams.collateralAmount));
+  const { dataMaxLoan, errorMaxLoan, loadingMaxLoan, refreshMaxLoan } = useMaxloan(tokenName, asset, Number(borrowParams.collateralAmount));
   let l = setTimeout(() => {
-    if (loading === false && !error) {
-      console.log("printing", Number(BNtoNum(data?.max_loan_amount.low, 1)));
-      const Data = Number(BNtoNum(data?.max_loan_amount.low, 1));
+    if (loadingMaxLoan === false && !errorMaxLoan) {
+      console.log("printing", Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1)));
+      const Data = Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1));
       setMaxloanData(Data)
     }
     clearTimeout(l);
@@ -373,11 +373,11 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
       collateralAmount: e.target.value,
     });
     const balance = Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** 18;
-    if(!balance) return;
+    if (!balance) return;
     // calculate percentage of collateral of balance
     var percentage = (e.target.value / balance) * 100;
     percentage = Math.max(0, percentage);
-    if(percentage > 100) {
+    if (percentage > 100) {
       setValue("Greater than 100")
       return;
     }
@@ -386,7 +386,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
     setValue(percentage);
     await refreshAllowance();
   };
-  
+
   function removeBodyCss() {
     document.body.classList.add("no_padding");
   }
@@ -1135,9 +1135,15 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                           borderLeft: "none",
                         }}
                       >
-                        <span style={{ borderBottom: "2px  #fff" }}>
-                          MAX
-                        </span>
+                        {!(
+                          loadingMaxLoan
+                        ) ? (
+                          <span style={{ borderBottom: "2px  #fff" }}>
+                            MAX
+                          </span>
+                        ) : (
+                          <MySpinner text="" />
+                        )}
                       </Button>
                     </>
                   }
@@ -1550,7 +1556,7 @@ let Borrow: any = ({ asset: assetParam, title, depositLoanRates: depositLoanRate
                   onClick={(e) => handleBorrow(asset)}
                 >
                   {!(
-                    loadingApprove
+                    loadingApprove ||
                     isTransactionLoading(requestBorrowTransactionReceipt)
                   ) ? (
                     `Borrow`
