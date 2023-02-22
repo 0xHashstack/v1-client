@@ -74,6 +74,7 @@ import useWithdrawPartialBorrow from "../../../blockchain/hooks/active-borrow/us
 import useAddCollateral from "../../../blockchain/hooks/active-borrow/useAddCollateral";
 import useJediSwap from "../../../blockchain/hooks/SpendBorrow/useJediSwap";
 import useMySwap from "../../../blockchain/hooks/SpendBorrow/useMySwap";
+import ToastModal from "../../toastModals/customToastModal";
 
 const BorrowData = ({
   asset: assetParam,
@@ -161,7 +162,7 @@ const BorrowData = ({
   ];
 
   const {
-    DepositAmount,
+    handleDepositAmount,
     handleApprove,
     setDepositAmount,
     setDepositCommit,
@@ -174,7 +175,7 @@ const BorrowData = ({
     transApprove,
     transDeposit,
   }: {
-    DepositAmount: any;
+    handleDepositAmount: any;
     handleApprove: any;
     setDepositAmount: any;
     setDepositCommit: any;
@@ -201,7 +202,7 @@ const BorrowData = ({
   const { executeSelfLiquidate, loadingSelfLiquidate, errorSelfLiquidate } =
     useRepay(asset, diamondAddress);
   const {
-    withdrawCollateral,
+    executeWithdrawCollateral,
     loadingWithdrawCollateral,
     errorWithdrawCollateral,
   } = useWithdrawCollateral(diamondAddress, asset.loanId);
@@ -220,6 +221,10 @@ const BorrowData = ({
     errorAddCollateral,
     addCollateralAmount,
     setAddCollateralAmount,
+
+    isAddcollatToastOpen,
+    setIsToastAddcollatOpen,
+    toastAddcollatParam
   } = useAddCollateral(diamondAddress, asset);
   const {
     jediSwapSupportedPoolsData,
@@ -279,6 +284,10 @@ const BorrowData = ({
   const [value, setValue] = useState(0);
   const [commitPeriod, setCommitPeriod] = useState(0);
   const [stakeDropDown, setStakeDropDown] = useState(false);
+
+  const [toastParam, setToastParam] = useState({});
+  const [isToastOpen, setIsToastOpen] = useState(false);
+
   const [appsImage, setappsImage] = useState("yagiLogo");
   const apps = ["mySwap", "jediSwap", "yagiLogo"];
   const [yagiDownArrow, setyagiDownArrow] = useState(Downarrow);
@@ -392,8 +401,33 @@ const BorrowData = ({
     setValue(percentage);
   };
 
-  const handleWithdrawCollateral = async (withdrawCollateral) => {
-    await withdrawCollateral();
+  const handleWithdrawCollateral = async () => {
+    try {
+      const val = await executeWithdrawCollateral();
+      // setTransWithdrawCollateral(val.transaction_hash);
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash", 
+        textToCopy: val.transaction_hash,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
+    } catch (err) {
+      console.log(err, 'withdraw collateral')
+      const toastParamValue = {
+        success: false,
+        heading: "Withdraw Collateral Failed",
+        desc: "Copy the error", 
+        textToCopy: err,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
+      toast.error(`${GetErrorText(`Failed to withdraw collateral for ID${asset.loanId}`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+    }
   };
 
   const handleSpendBorrowCTAButton = () => {
@@ -401,8 +435,8 @@ const BorrowData = ({
       appsImage === "mySwap"
         ? handleMySwap()
         : appsImage === "jediSwap"
-        ? handleJediSwap()
-        : null;
+          ? handleJediSwap()
+          : null;
     } else return null;
   };
 
@@ -433,10 +467,24 @@ const BorrowData = ({
     try {
       const val = await executeWithdrawPartialBorrow();
       setTransRepayHash(val.transaction_hash);
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash",
+        textToCopy: val.transaction_hash,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
     } catch (err) {
       console.log(err, "err repay");
-    }
-    if (errorRepay) {
+      const toastParamValue = {
+        success: false,
+        heading: "Withdraw Transaction Failed",
+        desc: "Copy the error",
+        textToCopy: err,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
       toast.error(
         `${GetErrorText(`Repay for Loan ID${asset.loanId} failed`)}`,
         {
@@ -451,10 +499,24 @@ const BorrowData = ({
   const handleSelfLiquidate = async () => {
     try {
       const val = await executeSelfLiquidate();
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash",
+        textToCopy: val.transaction_hash,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
     } catch (err) {
-      console.log(err);
-    }
-    if (errorSelfLiquidate) {
+      console.log("err self liquidate", err);
+      const toastParamValue = {
+        success: false,
+        heading: "Self Liquidate Transaction Failed",
+        desc: "Copy the error",
+        textToCopy: err,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
       toast.error(
         `${GetErrorText(`Self Liquidation for Loan ID${asset.loanId} failed`)}`,
         {
@@ -498,10 +560,24 @@ const BorrowData = ({
     try {
       const val = await executeRepay();
       setTransRepayHash(val.transaction_hash);
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash",
+        textToCopy: val.transaction_hash,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
     } catch (err) {
       console.log(err, "err repay");
-    }
-    if (errorRepay) {
+      const toastParamValue = {
+        success: false,
+        heading: "Repay Transaction Failed",
+        desc: "Copy the error",
+        textToCopy: err,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
       toast.error(
         `${GetErrorText(`Repay for Loan ID${asset.loanId} failed`)}`,
         {
@@ -513,20 +589,20 @@ const BorrowData = ({
     }
   };
 
-  const handleSwap = async () => {
-    try {
-      const val = await executeJediSwap();
-    } catch (err) {
-      console.log(err, "err repay");
-    }
-    if (errorJediSwap) {
-      toast.error(`${GetErrorText(`Swap for Loan ID${asset.loanId} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
-  };
+  // const handleSwap = async () => {
+  //   try {
+  //     const val = await executeJediSwap();
+  //   } catch (err) {
+  //     console.log(err, "err repay");
+  //   }
+  //   if (errorJediSwap) {
+  //     toast.error(`${GetErrorText(`Swap for Loan ID${asset.loanId} failed`)}`, {
+  //       position: toast.POSITION.BOTTOM_RIGHT,
+  //       closeOnClick: true,
+  //     });
+  //     return;
+  //   }
+  // };
 
   const toggleyagi = () => {
     setYagidrop(!Yagidrop);
@@ -567,10 +643,10 @@ const BorrowData = ({
     return (
       depositAmount < MinimumAmount[asset.loanMarket] ||
       depositAmount >
-        Number(
-          uint256.uint256ToBN(loanMarketBalance ? loanMarketBalance[0] : 0)
-        ) /
-          10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18)
+      Number(
+        uint256.uint256ToBN(loanMarketBalance ? loanMarketBalance[0] : 0)
+      ) /
+      10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18)
     );
   }
 
@@ -715,8 +791,8 @@ const BorrowData = ({
                 src={
                   assetParam
                     ? CoinClassNames[
-                        EventMap[assetParam.loanMarket.toUpperCase()]
-                      ] || assetParam.loanMarket.toUpperCase()
+                    EventMap[assetParam.loanMarket.toUpperCase()]
+                    ] || assetParam.loanMarket.toUpperCase()
                     : null
                 }
                 height="24px"
@@ -727,7 +803,7 @@ const BorrowData = ({
                   display: "inline-block",
                   fontSize: "13px",
                 }}
-                // align="right"
+              // align="right"
               >
                 &nbsp; &nbsp;
                 {EventMap[assetParam.loanMarket.toUpperCase()]}
@@ -742,8 +818,8 @@ const BorrowData = ({
                 src={
                   asset
                     ? CoinClassNames[
-                        EventMap[assetParam.loanMarket.toUpperCase()]
-                      ] || assetParam.loanMarket.toUpperCase()
+                    EventMap[assetParam.loanMarket.toUpperCase()]
+                    ] || assetParam.loanMarket.toUpperCase()
                     : null
                 }
                 height="18px"
@@ -789,8 +865,8 @@ const BorrowData = ({
                 src={
                   assetParam
                     ? CoinClassNames[
-                        EventMap[assetParam.loanMarket.toUpperCase()]
-                      ] || assetParam.loanMarket.toUpperCase()
+                    EventMap[assetParam.loanMarket.toUpperCase()]
+                    ] || assetParam.loanMarket.toUpperCase()
                     : null
                 }
                 height="24px"
@@ -814,8 +890,8 @@ const BorrowData = ({
                 src={
                   asset
                     ? CoinClassNames[
-                        EventMap[assetParam.loanMarket.toUpperCase()]
-                      ] || assetParam.collateralMarket.toUpperCase()
+                    EventMap[assetParam.loanMarket.toUpperCase()]
+                    ] || assetParam.collateralMarket.toUpperCase()
                     : null
                 }
                 height="18px"
@@ -834,7 +910,7 @@ const BorrowData = ({
                 display: "inline-block",
                 fontSize: "14px",
               }}
-              // align="right"
+            // align="right"
             >
               {assetParam.state}
             </div>
@@ -933,7 +1009,7 @@ const BorrowData = ({
                                       </NavLink>
                                     </NavItem>
                                   ) : // </>
-                                  null}
+                                    null}
                                 </Nav>
                               )}
                             </Col>
@@ -951,7 +1027,7 @@ const BorrowData = ({
                                     : "outline-light"
                                 }
                               >
-                                
+
                               </Button>
                               &nbsp; &nbsp;
                               <Button
@@ -1134,7 +1210,7 @@ const BorrowData = ({
                                       onChange={(e) => {
                                         setSwapMarket(
                                           tokenAddressMap[
-                                            e.target.value as string
+                                          e.target.value as string
                                           ] as string
                                         );
                                         setLoanId(asset.loanId);
@@ -1424,7 +1500,7 @@ const BorrowData = ({
                     <br />
 
                     {selection === "Spend Borrow" &&
-                    (actionLabel === "Swap" || actionLabel === "Trade") ? (
+                      (actionLabel === "Swap" || actionLabel === "Trade") ? (
                       <div
                         style={{
                           display: "flex",
@@ -1640,7 +1716,7 @@ const BorrowData = ({
                     ) : null}
 
                     {selection === "Repay Borrow" ||
-                    selection === "Withdraw Partial Borrow" ? (
+                      selection === "Withdraw Partial Borrow" ? (
                       <>
                         {" "}
                         <div
@@ -1754,7 +1830,7 @@ const BorrowData = ({
                                             )
                                           ) /
                                             10 ** (tokenDecimalsMap[asset.loanMarket]))) /
-                                          100
+                                        100
                                       );
                                       setValue(value);
                                     }}
@@ -1779,14 +1855,14 @@ const BorrowData = ({
 
                               {repayAmount &&
                                 repayAmount >
-                                  Number(
-                                    uint256.uint256ToBN(
-                                      loanMarketBalance
-                                        ? loanMarketBalance[0]
-                                        : 0
-                                    )
-                                  ) /
-                                    10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18) && (
+                                Number(
+                                  uint256.uint256ToBN(
+                                    loanMarketBalance
+                                      ? loanMarketBalance[0]
+                                      : 0
+                                  )
+                                ) /
+                                10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18) && (
                                   <FormText
                                     style={{ color: "#e97272 !important" }}
                                   >
@@ -2081,14 +2157,14 @@ const BorrowData = ({
 
                               {addCollateralAmount ? (
                                 addCollateralAmount >
-                                  Number(
-                                    uint256.uint256ToBN(
-                                      collateralMarketBalance
-                                        ? collateralMarketBalance[0]
-                                        : 0
-                                    )
-                                  ) /
-                                    10 ** (tokenDecimalsMap[asset?.collateralMarket] || 18) && (
+                                Number(
+                                  uint256.uint256ToBN(
+                                    collateralMarketBalance
+                                      ? collateralMarketBalance[0]
+                                      : 0
+                                  )
+                                ) /
+                                10 ** (tokenDecimalsMap[asset?.collateralMarket] || 18) && (
                                   <FormText
                                     style={{ color: "#e97272 !important" }}
                                   >
@@ -2129,7 +2205,7 @@ const BorrowData = ({
                                     )
                                   ) /
                                     10 ** (tokenDecimalsMap[asset.collateralMarket] || 18))) /
-                                  100
+                                100
                               );
                               setValue(value);
                             }}
@@ -2429,7 +2505,7 @@ const BorrowData = ({
               </div>
 
               {selection === "Spend Borrow" &&
-              (actionLabel === "Swap" || actionLabel === "Trade") ? (
+                (actionLabel === "Swap" || actionLabel === "Trade") ? (
                 <FormGroup>
                   <div className="row mb-4">
                     <Col sm={12}>
@@ -3145,9 +3221,7 @@ const BorrowData = ({
                       border: "none",
                     }}
                     disabled={loadingApprove || loadingDeposit || isInvalid()}
-                    onClick={(e) => {
-                      handleWithdrawCollateral(withdrawCollateral);
-                    }}
+                    onClick={handleWithdrawCollateral}
                   >
                     {!(
                       loadingApprove ||
@@ -3211,6 +3285,8 @@ const BorrowData = ({
             </div>
           </>
         )}
+        {isToastOpen ? <ToastModal isOpen={isToastOpen} setIsOpen={setIsToastOpen} success={toastParam.success} heading={toastParam.heading} desc={toastParam.desc} textToCopy={toastParam.textToCopy} /> : <></>}
+        {isAddcollatToastOpen ? <ToastModal isOpen={isAddcollatToastOpen} setIsOpen={setIsToastAddcollatOpen} success={toastAddcollatParam.success} heading={toastAddcollatParam.heading} desc={toastAddcollatParam.desc} textToCopy={toastAddcollatParam.textToCopy} /> : <></>}
       </Modal>
     </div>
   );

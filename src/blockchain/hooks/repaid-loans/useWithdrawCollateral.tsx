@@ -36,32 +36,7 @@ const useWithdrawCollateral = (_diamondAddress: string, _loanId: number) => {
     },
   });
 
-  const withdrawCollateral = async () => {
-    if (loanId === undefined && !diamondAddress) {
-      toast.error(`${GetErrorText(`Some inputs missing`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
-    console.log(`${loanId} ${diamondAddress}`);
-    try {
-      const val = await executeWithdrawCollateral();
-      setTransWithdrawCollateral(val.transaction_hash);
-    } catch (err) {
-      console.log(err, 'withdraw collateral')
-    }
-    if (errorWithdrawCollateral) {
-      toast.error(`${GetErrorText(`Failed to withdraw collateral for ID${loanId}`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
-  };
-
   return {
-    withdrawCollateral,
     executeWithdrawCollateral,
     loadingWithdrawCollateral,
     errorWithdrawCollateral,
