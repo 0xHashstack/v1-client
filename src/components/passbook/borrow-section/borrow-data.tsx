@@ -235,9 +235,20 @@ const BorrowData = ({
     dataJediSwap,
     loadingJediSwap,
     errorJediSwap,
+
+    isJediswapToastOpen,
+    setIsToastJediswapOpen,
+    toastJediswapParam,
   } = useJediSwap(diamondAddress, asset, marketTokenName);
 
-  const { handleMySwap, loadingMySwap, errorMySwap } = useMySwap(
+  const {
+    handleMySwap,
+    loadingMySwap,
+    errorMySwap,
+    isMyswapToastOpen,
+    setIsToastMyswapOpen,
+    toastMyswapParam
+  } = useMySwap(
     diamondAddress,
     asset,
     marketTokenName
@@ -408,7 +419,7 @@ const BorrowData = ({
       const toastParamValue = {
         success: true,
         heading: "Success",
-        desc: "Copy the Transaction Hash", 
+        desc: "Copy the Transaction Hash",
         textToCopy: val.transaction_hash,
       };
       setToastParam(toastParamValue);
@@ -418,7 +429,7 @@ const BorrowData = ({
       const toastParamValue = {
         success: false,
         heading: "Withdraw Collateral Failed",
-        desc: "Copy the error", 
+        desc: "Copy the error",
         textToCopy: err,
       };
       setToastParam(toastParamValue);
@@ -3287,6 +3298,8 @@ const BorrowData = ({
         )}
         {isToastOpen ? <ToastModal isOpen={isToastOpen} setIsOpen={setIsToastOpen} success={toastParam.success} heading={toastParam.heading} desc={toastParam.desc} textToCopy={toastParam.textToCopy} /> : <></>}
         {isAddcollatToastOpen ? <ToastModal isOpen={isAddcollatToastOpen} setIsOpen={setIsToastAddcollatOpen} success={toastAddcollatParam.success} heading={toastAddcollatParam.heading} desc={toastAddcollatParam.desc} textToCopy={toastAddcollatParam.textToCopy} /> : <></>}
+        {isJediswapToastOpen ? <ToastModal isOpen={isJediswapToastOpen} setIsOpen={setIsToastJediswapOpen} success={toastJediswapParam.success} heading={toastJediswapParam.heading} desc={toastJediswapParam.desc} textToCopy={toastJediswapParam.textToCopy}  /> : <></>}
+        {isMyswapToastOpen ? <ToastModal isOpen={isMyswapToastOpen} setIsOpen={setIsToastMyswapOpen} success={toastMyswapParam.success} heading={toastMyswapParam.heading} desc={toastMyswapParam.desc} textToCopy={toastMyswapParam.textToCopy}  /> : <></>}
       </Modal>
     </div>
   );
