@@ -343,7 +343,6 @@ let Deposit: any = ({
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
       });
-      console.log("errordeposit mehulaaaaaaaaa", err, errorDeposit);
       return;
     }
   };

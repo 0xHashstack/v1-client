@@ -55,6 +55,7 @@ import _ from "lodash";
 import Maxloan from "../blockchain/hooks/Max_loan_given_collat";
 import { BNtoNum } from "../blockchain/utils";
 import useMaxloan from "../blockchain/hooks/Max_loan_given_collat";
+import ToastModal from "./toastModals/customToastModal";
 
 interface IBorrowParams {
   loanAmount: number | null;
@@ -130,6 +131,9 @@ let Borrow: any = ({
   const [depositLoanRates, setDepositLoanRates] = useState<IDepositLoanRates>(
     depositLoanRatesParam
   );
+
+  const [toastParam, setToastParam] = useState({});
+  const [isToastOpen, setIsToastOpen] = useState(false);
 
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(Downarrow);
@@ -418,7 +422,7 @@ let Borrow: any = ({
       ...borrowParams,
       collateralAmount:
         Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-        10 ** (tokenDecimalsMap[borrowParams.collateralMarket || ""]  || 18),
+        10 ** (tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18),
     });
     await refreshAllowance();
   };
@@ -478,35 +482,31 @@ let Borrow: any = ({
       });
     }
     try {
-      // approve collateral spending
-      // await handleApprove();
-      // if (errorApprove) {
-      // 	toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
-      // 		position: toast.POSITION.BOTTOM_RIGHT,
-      // 		closeOnClick: true,
-      // 	});
-      // 	return;
-      // }
-
-      // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
-      try {
-        let val = await executeBorrow();
-        setTransBorrow(val.transaction_hash);
-      } catch (err) {
-        console.log(err, "err borrow");
-      }
-      if (errorBorrow) {
-        toast.error(`${GetErrorText(`Borrow request for ${asset} failed`)}`, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          closeOnClick: true,
-        });
-        return;
-      }
+      let val = await executeBorrow();
+      setTransBorrow(val.transaction_hash);
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash", 
+        textToCopy: val.transaction_hash,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
     } catch (err) {
-      toast.error(`${GetErrorText(err)}`, {
+      console.log(err, "err borrow");
+      const toastParamValue = {
+        success: false,
+        heading: "Borrow Transaction Failed",
+        desc: "Copy the error", 
+        textToCopy: err,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
+      toast.error(`${GetErrorText(`Borrow request for ${asset} failed`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
       });
+      return;
     }
   };
 
@@ -743,6 +743,7 @@ let Borrow: any = ({
                 ) : (
                   <MySpinner />
                 )}
+                <div style={{ color: "#76809D" }}>&nbsp;{tokenName} </div>
               </div>
               <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
                 <Slider
@@ -949,46 +950,6 @@ let Borrow: any = ({
               ) : (
                 <></>
               )}
-              {/* <FormGroup floating>
-                <div className="row mb-4">
-                  <Col sm={12}>
-                    <Label for="loan-amount">Loan amount</Label>
-                    <InputGroup>
-                      <Input
-                        id="loan-amount"
-                        type="text"
-                        className="form-control"
-                        placeholder={`Minimum amount = ${MinimumAmount[asset]}`}
-                        min={MinimumAmount[asset]}
-                        value={borrowParams.loanAmount as number}
-                        onChange={handleLoanInputChange}
-                        valid={isLoanAmountValid()}
-                      />
-                      {
-                        <>
-                          <Button
-                            outline
-                            type="button"
-                            className="btn btn-md w-xs"
-                            onClick={() => handleMinLoan(asset)}
-                            style={{ background: "#2e3444", border: "#2e3444" }}
-                          >
-                            Min
-                          </Button>
-                        </>
-                      }
-                    </InputGroup>
-                    {!isLoanAmountValid() ? (
-                      <FormText>
-                        Loan amount should be {">="} {MinimumAmount[asset]}{" "}
-                        {asset}
-                      </FormText>
-                    ) : (
-                      <></>
-                    )}
-                  </Col>
-                </div>
-              </FormGroup> */}
               <div style={{ fontSize: "8px", fontWeight: "600" }}>
                 Borrow Market
               </div>
@@ -1093,18 +1054,8 @@ let Borrow: any = ({
                         </div>
                       </div>
                     </label>
-                    {/* <select
-                      id="commitment"
-                      className="form-select"
-                      placeholder="Commitment"
-                      onChange={(e) => handleCommitmentChange(e)}
-                    >
-                      <option value={0}>Flexible</option>
-                      <option value={1}>One Month</option>
-                    </select> */}
                   </Col>
                 </div>
-                {/* <label style={{}}> */}
                 <div
                   style={{
                     fontSize: "8px",
@@ -1173,50 +1124,6 @@ let Borrow: any = ({
                 {/* </label> */}
               </FormGroup>
               <div className="row mb-12">
-                {/* <Col sm={12}>
-                  <p>
-                    Borrow APR:{" "}
-                    <strong>
-                      {depositLoanRates &&
-                      borrowParams.commitBorrowPeriod != null &&
-                      (borrowParams.commitBorrowPeriod as number) < 4 ? (
-                        `${
-                          parseFloat(
-                            depositLoanRates[
-                              `${getTokenFromName(asset as string).address}__${
-                                borrowParams.commitBorrowPeriod
-                              }`
-                            ]?.borrowAPR?.apr100x as string
-                          ) / 100
-                        } %`
-                      ) : (
-                        <MySpinner />
-                      )}
-                    </strong>
-                  </p>
-                </Col> */}
-                {/* <Col sm={6}>
-                  <p style={{ float: "right" }}>
-                    Collateral APY{" "}
-                    <strong>
-                      {depositLoanRates &&
-                      (borrowParams.commitBorrowPeriod as number) < 4 &&
-                      borrowParams.commitBorrowPeriod ? (
-                        `${
-                          parseFloat(
-                            depositLoanRates[
-                              `${getTokenFromName(asset as string).address}__${
-                                borrowParams.commitBorrowPeriod
-                              }`
-                            ]?.depositAPR?.apr100x as string
-                          ) / 100
-                        } %`
-                      ) : (
-                        <MySpinner />
-                      )}
-                    </strong>
-                  </p>
-                </Col> */}
               </div>
               {/* <div className="row mb-4">
                 <Col sm={8}>
@@ -1310,30 +1217,6 @@ let Borrow: any = ({
                 </Col>
               </div> */}
               <div className="d-grid gap-2">
-                {/* {allowanceVal < (borrowParams.collateralAmount as number) ? (
-                  <Button
-                    color="primary"
-                    className="w-md"
-                    disabled={
-                      borrowParams.commitBorrowPeriod === undefined ||
-                      loadingApprove ||
-                      loadingBorrow || 
-                      loadingAllowance
-                    }
-                    onClick={(e) => handleApprove(asset)}
-                  >
-                    {!(
-                      
-                      loadingApprove ||
-                      isTransactionLoading(approveTransactionReceipt)
-                    ) ? (
-                      "Approve"
-                    ) : (
-                      <MySpinner text="Approving token" />
-                    )}
-                  </Button>
-                ) :  */}
-                {/* ( */}
 
                 <div
                   style={{
@@ -1526,12 +1409,11 @@ let Borrow: any = ({
                       }}
                     >
                       {depositLoanRates &&
-                      borrowParams.commitBorrowPeriod != null &&
-                      (borrowParams.commitBorrowPeriod as number) < 2 ? (
+                        borrowParams.commitBorrowPeriod != null &&
+                        (borrowParams.commitBorrowPeriod as number) < 2 ? (
                         `${parseFloat(
                           depositLoanRates[
-                            `${getTokenFromName(asset as string)?.address}__${
-                              borrowParams.commitBorrowPeriod
+                            `${getTokenFromName(asset as string)?.address}__${borrowParams.commitBorrowPeriod
                             }`
                           ]?.borrowAPR?.apr100x as string
                         )} %`
@@ -1591,6 +1473,7 @@ let Borrow: any = ({
             <h2>Please connect your wallet</h2>
           )}
         </div>
+        {isToastOpen ? <ToastModal isOpen={isToastOpen} setIsOpen={setIsToastOpen} success={toastParam.success} heading={toastParam.heading} desc={toastParam.desc} textToCopy={toastParam.textToCopy} /> : <></>}
       </Modal>
     </>
   );
