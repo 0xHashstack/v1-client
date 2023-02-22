@@ -608,12 +608,14 @@ const Dashboard = () => {
                 {customActiveTab === "2" ||
                 customActiveTab === "3" ||
                 customActiveTab === "4" ? (
-                  <DashboardMenu
-                    margin={"0px"}
-                    customActiveTab={customActiveTab}
-                    toggleCustom={toggleCustom}
-                    account={account as string}
-                  />
+                  <div style={{ marginTop: "90px" }}>
+                    <DashboardMenu
+                      margin={"0px"}
+                      customActiveTab={customActiveTab}
+                      toggleCustom={toggleCustom}
+                      account={account as string}
+                    />
+                  </div>
                 ) : customActiveTab === "1" ? (
                   <DashboardMenu
                     margin={"30px"}
@@ -859,7 +861,11 @@ const Dashboard = () => {
                         marginTop: "-20px",
                       }}
                     >
-                      <Row style={{ backgroundColor: "white", height: "40px" }}>
+                      <Row
+                        style={{
+                          height: "40px",
+                        }}
+                      >
                         {customActiveTab === "2" ? (
                           <SpendLoan
                             activeLoansData={activeLoansData.filter(

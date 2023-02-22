@@ -3,7 +3,7 @@ import { Col, Row, TabContent, Table } from "reactstrap";
 import { TabContext } from "../../../hooks/contextHooks/TabContext";
 import SpendLoanData from "./spendLoan-data";
 
-const SpendLoan = ({ activeLoansData }) => {
+const SpendLoan = ({ activeLoansData }: { activeLoansData: any }) => {
   const { selectedLoan, setSelectedLoan } = useContext(TabContext);
 
   return (
@@ -14,13 +14,16 @@ const SpendLoan = ({ activeLoansData }) => {
             setSelectedLoan("");
           }}
           style={{
+            marginLeft: "50px",
+            width: "80%",
+            zIndex: "1000",
+            position: "sticky",
             color: "rgb(140, 140, 140)",
             fontWeight: "300",
             alignItems: "center",
             fontSize: "14px",
-            backgroundColor: "rgb(42, 46, 63)",
-            textAlign: "center",
-            gap: "70px",
+            backgroundColor: "#2A2E3F",
+            textAlign: "left",
           }}
         >
           <Col
@@ -60,14 +63,15 @@ const SpendLoan = ({ activeLoansData }) => {
         {/* </Table> */}
       </Table>
 
-      {activeLoansData.map((loan, index) => {
-        console.log("KKKKKKKKKKKK", loan);
-        return (
-          <div key={index}>
-            <SpendLoanData loan={loan} />
-          </div>
-        );
-      })}
+      <div style={{ marginTop: "60px" }}>
+        {activeLoansData.map((loan: any, index: number) => {
+          return (
+            <div key={index}>
+              <SpendLoanData loan={loan} />
+            </div>
+          );
+        })}
+      </div>
 
       {/* <SpendLoanData /> */}
     </>

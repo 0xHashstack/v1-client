@@ -12,7 +12,7 @@ const SpendLoanData = ({ loan }) => {
         open="false"
         style={{
           color: "white",
-          textAlign: "center",
+          textAlign: "left",
         }}
       >
         <Row
@@ -25,17 +25,18 @@ const SpendLoanData = ({ loan }) => {
           }}
           style={{
             opacity: `${selectedLoan?.loanId === loan.loanId ? "10" : "0.5"}`,
+            marginLeft: "40px",
             alignItems: "center",
             cursor: "pointer",
             padding: "20px 0",
-            gap: "80px",
+            gap: "50px",
             backgroundColor: `${
               selectedLoan?.loanId === loan.loanId ? "#1C202F40" : "#2A2E3F"
             }`,
           }}
         >
-          <Col style={{ marginLeft: "-10px" }}>ID{loan.loanId}</Col>
-          <Col style={{ marginLeft: "-10px" }}>
+          <Col>ID{loan.loanId}</Col>
+          <Col>
             <img src={`./${loan.loanMarket}.svg`} height="20px" />
             &nbsp;&nbsp;{loan.loanMarket}
           </Col>
@@ -60,7 +61,6 @@ const SpendLoanData = ({ loan }) => {
               style={{
                 fontSize: "14px",
                 fontWeight: "600",
-                marginLeft: "20px",
               }}
             >
               {(
