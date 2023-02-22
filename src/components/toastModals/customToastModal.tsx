@@ -5,13 +5,16 @@ const ToastModal = ({
   heading,
   desc,
   textToCopy,
+  isOpen,
+  setIsOpen,
 }: {
   success: boolean;
   heading: string;
   desc: string;
   textToCopy: string;
+  isOpen: boolean;
+  setIsOpen: (isOpen: boolean) => void;
 }) => {
-  const [modal, setModal] = useState(true);
   const [copySuccessMessage, setCopySuccessMessage] = useState("Text Copied !!");
   const [showOnCopy, setShowOnCopy] = useState(false);
 
@@ -30,11 +33,12 @@ const ToastModal = ({
   return (
     <div>
       <Modal
-        isOpen={modal}
+        isOpen={isOpen}
         style={{
           width: "512px",
           height: "308px",
           outline: "none",
+          zIndex: 9999,
         }}
       >
         <div
@@ -50,7 +54,7 @@ const ToastModal = ({
               src="./cross.svg"
               alt="successToast"
               style={{ width: "20px", height: "20px", cursor: "pointer" }}
-              onClick={() => setModal(false)}
+              onClick={() => setIsOpen(false)}
             />
           </div>
           <div style={{ margin: "40px 220px 20px 220px" }}>

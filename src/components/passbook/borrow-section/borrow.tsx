@@ -131,11 +131,14 @@ const BorrowTab = ({
   const [swap_to_active_loan, setSwapToActiveLoan] = useState(false);
   const [swap_active_loan, setSwapActiveLoan] = useState(true);
 
+  const [toastParam, setToastParam] = useState({});
+  const [isToastOpen, setIsToastOpen] = useState(false);
+
   const [addCollateralTransactionReceipt, setAddCollateralTransactionReceipt] =
     useState<UseTransactionReceiptResult>({
       loading: false,
       refresh: () => {},
-    });
+  });
   // const [repayTransactionReceipt, setRepayTransactionReceipt] =
   //   useState<UseTransactionReceiptResult>({
   //     loading: false,
@@ -728,11 +731,7 @@ const BorrowTab = ({
                         id="amount"
                         placeholder="Amount"
                         // onChange={handleCollateralInputChange}
-                        // value={
-                        //   borrowParams.collateralAmount
-                        //     ? (borrowParams.collateralAmount as number)
-                        //     : 0
-                        // }
+                        value={(borrowParams.collateralAmount)}
                         // valid={isValidColleteralAmount()}
                       />
                       {

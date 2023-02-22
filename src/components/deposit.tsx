@@ -58,6 +58,7 @@ import classnames from "classnames";
 import OffchainAPI from "../services/offchainapi.service";
 import Downarrow from "../assets/images/ArrowDownDark.svg";
 import UpArrow from "../assets/images/ArrowUpDark.svg";
+import ToastModal from "./toastModals/customToastModal";
 
 interface ICoin {
   name: string;
@@ -109,6 +110,8 @@ let Deposit: any = ({
   const { account, address: accountAddress, status } = useAccount();
   const [transApprove, setTransApprove] = useState("");
   const [transDeposit, setTransDeposit] = useState("");
+  const [toastParam, setToastParam] = useState({});
+  const [isToastOpen, setIsToastOpen] = useState(false);
 
   const approveTransactionReceipt = useTransactionReceipt({
     hash: transApprove,
@@ -122,18 +125,6 @@ let Deposit: any = ({
   useEffect(() => {
     setToken(getTokenFromName(asset));
   }, [asset]);
-
-  // useEffect(() => {
-  //   const getEstimateFee = async () => {
-  //     // if(!account) return;
-  //   //   const { suggestedMaxFee: estimatedFee1 } = await estimateFee({
-  //   //     contractAddress: testAddress,
-  //   //     entrypoint: "increase_balance",
-  //   //     calldata: ["10", "30"]
-  //   // });
-  //   }
-  //   getEstimateFee();
-  // }, []
 
   useEffect(() => {
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
@@ -300,15 +291,6 @@ let Deposit: any = ({
     document.body.classList.add("no_padding");
   }
 
-  const handleApprove = async (asset: string) => {
-    try {
-      const val = await USDC();
-      // console.log('valll', val.transaction_hash);
-    } catch (err) {
-      console.log(err, "err approve token deposit");
-    }
-  };
-
   const toggleDropdown = async () => {
     setDropDown(!dropDown);
     setDropDownArrow(dropDown ? Downarrow : UpArrow);
@@ -336,37 +318,37 @@ let Deposit: any = ({
       });
       return;
     }
-    // console.log(diamondAddress, depositAmount);
-    // await handleApprove();
-    // run deposit function
-
-    // console.log('allowance', BNtoNum(dataAllowance[0]?.low, 18).toString());
-    // console.log('amountin -: ', depositAmount);
-
-    // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
     try {
       let val = await executeDeposit();
       setTransDeposit(val.transaction_hash);
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash", 
+        textToCopy: val.transaction_hash,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
     } catch (err) {
       console.log(err, "err deposit");
-    }
-    if (errorDeposit) {
+      const toastParamValue = {
+        success: false,
+        heading: "Deposit Transaction Failed",
+        desc: "Copy the error", 
+        textToCopy: err,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
       toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
       });
+      console.log("errordeposit mehulaaaaaaaaa", err, errorDeposit);
       return;
     }
   };
 
   useEffect(() => {
-    // console.log('check deposit allownace', token?.name, {
-    // 	dataAllowance,
-    // 	remaining: (dataAllowance ? uint256.uint256ToBN(dataAllowance[0]).toString() : '0'),
-    // 	errorAllowance,
-    // 	refreshAllowance,
-    // 	loadingAllowance,
-    // });
     if (!loadingAllowance) {
       if (dataAllowance) {
         let data: any = dataAllowance;
@@ -381,6 +363,7 @@ let Deposit: any = ({
   }, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
 
   function isInvalid() {
+    if(!depositAmount) return true;
     return (
       depositAmount < MinimumAmount[asset] ||
       depositAmount >
@@ -389,7 +372,7 @@ let Deposit: any = ({
   }
 
   return (
-    <>
+    <div>
       <div style={{ display: "flex", justifyContent: "center" }}>
         <NavLink
           type="button"
@@ -745,7 +728,7 @@ let Deposit: any = ({
                         (
                           Number(uint256.uint256ToBN(dataBalance[0])) /
                           10 ** (tokenDecimalsMap[asset] || 18)
-                        ).toString()
+                        ).toFixed(4)
                       ) : (
                         <MySpinner />
                       )}
@@ -804,50 +787,7 @@ let Deposit: any = ({
                   </Col>
                 </div>
               </FormGroup>
-
-              {/* <FormGroup floating>
-                <div className="row mb-4">
-                  <Col sm={12}>
-                    <Label for="commitment">Commitment</Label>
-                    <select
-                      id="commitment"
-                      className="form-select"
-                      placeholder="Commitment"
-                      onChange={handleCommitChange}
-                    >
-                      <option value={0}>Flexible</option>
-                      <option value={1}>Two Weeks</option>
-                      <option value={2}>One Month</option>
-                      <option value={3}>Three Months</option>
-                    </select>
-                  </Col>
-                </div>
-              </FormGroup> */}
               <div className="d-grid gap-2">
-                {/* {allowanceVal < (depositAmount as number) ? (
-                  <Button
-                    color="primary"
-                    className="w-md"
-                    disabled={
-                      commitPeriod === undefined ||
-                      loadingApprove ||
-                      loadingDeposit ||
-                      depositAmount < MinimumAmount[asset]
-                    }
-                    onClick={(e) => handleApprove(asset)}
-                  >
-                    {!(
-                      loadingApprove ||
-                      isTransactionLoading(approveTransactionReceipt)
-                    ) ? (
-                      "Approve"
-                    ) : (
-                      <div>
-                        <MySpinner text="Approving token" />
-                      </div>
-                    )}
-                  </Button>
-                ) : ( */}
 
                 <div
                   style={{
@@ -970,8 +910,9 @@ let Deposit: any = ({
             <h2>Please connect your wallet</h2>
           )}
         </div>
+        {isToastOpen ? <ToastModal isOpen={isToastOpen} setIsOpen={setIsToastOpen} success={toastParam.success} heading={toastParam.heading} desc={toastParam.desc} textToCopy={toastParam.textToCopy} /> : <></>}
       </Modal>
-    </>
+    </div>
   );
 };
 
