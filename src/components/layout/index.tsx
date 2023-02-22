@@ -19,6 +19,7 @@ import {
 import { ConnectWallet } from "../wallet";
 import SecondaryHeader from "./temporaryHeader";
 import StatsBoard from "../dashboard/stats";
+import ConnectWalletModal from "./connectWalletModal";
 
 const Layout = (props: any) => {
   const dispatch = useDispatch();
@@ -62,50 +63,19 @@ const Layout = (props: any) => {
   }, [isPreloader]);
 
   function switchScreens() {
-    // if (account) {
-    return (
-      <>
-        <SecondaryHeader
-          handleConnectWallet={handleConnectWallet}
-          handleDisconnectWallet={() => disconnect()}
-        />
-        <div className="main-content">{props.children}</div>
-
-        {/* <Footer /> */}
-
-        {/* <Container>
-            <Row style={{ marginTop: "25ch" }}>
-              <Col lg="12">
-                <div className="text-center mb-5">
-                  <h4 className="font-weight-medium">
-                    Welcome to Hashstack&apos;s public testnet !!
-                  </h4>
-                  <ConnectWallet />
-                </div>
-              </Col>
-            </Row>
-          </Container> */}
-      </>
-    );
-    // } else if (!account) {
-    //   return (
-    //     <div id="layout-wrapper">
-    //       <PrimaryHeader
-    //         handleConnectWallet={handleConnectWallet}
-    //         handleDisconnectWallet={() => disconnect()}
-    //       />
-    //   <div
-    //     style={{ marginLeft: "200px", marginRight: "200px" }}
-    //     className="main-content"
-    //   >
-    //     {props.children}
-    //   </div>
-    //   <Footer />
-    // </div>
-    //   );
-    // } else {
-    //   return null;
-    // }
+    if (account) {
+      return (
+        <>
+          <SecondaryHeader
+            handleConnectWallet={handleConnectWallet}
+            handleDisconnectWallet={() => disconnect()}
+          />
+          <div className="main-content">{props.children}</div>
+        </>
+      );
+    } else {
+      return <ConnectWalletModal />;
+    }
   }
 
   return (

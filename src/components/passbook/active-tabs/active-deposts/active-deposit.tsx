@@ -83,7 +83,7 @@ const ActiveDeposit = ({
   const [asset, setAsset] = useState(assetParam);
   console.log("your supply action asset", asset);
   const {
-    DepositAmount,
+    // DepositAmount,
     handleApprove,
     setDepositAmount,
     setDepositCommit,
@@ -104,8 +104,8 @@ const ActiveDeposit = ({
     transWithdraw,
     loadingWithdrawDeposit,
     errorWithdrawDeposit,
-    isDepWithdrawToastOpen, 
-    setIsDepWithdrawToastOpen, 
+    isDepWithdrawToastOpen,
+    setIsDepWithdrawToastOpen,
     toastDepWithdrawParam,
   } = useWithdrawDeposit(asset, diamondAddress);
   const [action, setAction] = useState(false);
@@ -135,15 +135,12 @@ const ActiveDeposit = ({
   const [dropDownArrow, setDropDownArrow] = useState(Downarrow);
   const [idDropDown, setIdDropDown] = useState(false);
   const [idDropDownArrow, setIdDropDownArrow] = useState(Downarrow);
-  // const [depositAmount, setDepositAmount] = useState<number>();
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState<any>(0);
   const { address: account } = useAccount();
   const [commitPeriod, setCommitPeriod] = useState(asset.commitmentIndex);
   const [supplyId, setSupplyId] = useState(asset.depositId);
   const [toastParam, setToastParam] = useState({});
   const [isToastOpen, setIsToastOpen] = useState(false);
-
-  // const [transDeposit, setTransDeposit] = useState("");
 
   const withdrawTransactionReceipt = useTransactionReceipt({
     hash: transWithdraw,
@@ -352,7 +349,7 @@ const ActiveDeposit = ({
       const toastParamValue = {
         success: true,
         heading: "Success",
-        desc: "Copy the Transaction Hash", 
+        desc: "Copy the Transaction Hash",
         textToCopy: val.transaction_hash,
       };
       setToastParam(toastParamValue);
@@ -363,7 +360,7 @@ const ActiveDeposit = ({
       const toastParamValue = {
         success: false,
         heading: "Deposit Transaction Failed",
-        desc: "Copy the error", 
+        desc: "Copy the error",
         textToCopy: err,
       };
       setToastParam(toastParamValue);
@@ -427,7 +424,7 @@ const ActiveDeposit = ({
     <div style={{ borderTop: "5px" }}>
       <UncontrolledAccordion
         defaultOpen="0"
-        open="false"
+        // open="false"
         style={{
           margin: "10px",
           color: "white",
@@ -1155,8 +1152,30 @@ const ActiveDeposit = ({
         ) : (
           <></>
         )}
-        {isToastOpen ? <ToastModal isOpen={isToastOpen} setIsOpen={setIsToastOpen} success={toastParam.success} heading={toastParam.heading} desc={toastParam.desc} textToCopy={toastParam.textToCopy} /> : <></>}
-        {isDepWithdrawToastOpen ? <ToastModal isOpen={isDepWithdrawToastOpen} setIsOpen={setIsDepWithdrawToastOpen} success={toastDepWithdrawParam.success} heading={toastDepWithdrawParam.heading} desc={toastDepWithdrawParam.desc} textToCopy={toastDepWithdrawParam.textToCopy} /> : <></>}
+        {isToastOpen ? (
+          <ToastModal
+            isOpen={isToastOpen}
+            setIsOpen={setIsToastOpen}
+            success={toastParam.success}
+            heading={toastParam.heading}
+            desc={toastParam.desc}
+            textToCopy={toastParam.textToCopy}
+          />
+        ) : (
+          <></>
+        )}
+        {isDepWithdrawToastOpen ? (
+          <ToastModal
+            isOpen={isDepWithdrawToastOpen}
+            setIsOpen={setIsDepWithdrawToastOpen}
+            success={toastDepWithdrawParam.success}
+            heading={toastDepWithdrawParam.heading}
+            desc={toastDepWithdrawParam.desc}
+            textToCopy={toastDepWithdrawParam.textToCopy}
+          />
+        ) : (
+          <></>
+        )}
       </Modal>
     </div>
   );

@@ -776,8 +776,8 @@ const Dashboard = () => {
               customActiveTab === "4" ? (
                 <Card
                   style={{
-                    height: "73vh",
-                    maxHeight: "38rem",
+                    height: "75vh",
+                    maxHeight: "35rem",
                     border: "none",
                     boxShadow:
                       "5px 10px 5px -5px rgba(20, 23, 38, 0.15), 5px 5px 5px -5px rgba(20, 23, 38, 0.3)",
@@ -931,18 +931,22 @@ const Dashboard = () => {
 
   return (
     // <React.Fragment>
-    <div
-      style={{
-        backgroundColor: "#1C202F",
-      }}
-    >
-      <Head>
-        <title>Hashstack | Starknet testnet</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
-      {/* testnet.hashstack.finance */}
-      <Script id="microsoft-clarity-testnet" strategy="afterInteractive">
-        {`
+    <>
+      <div
+        style={{
+          backgroundColor: "#1C202F",
+        }}
+      >
+        <Head>
+          <title>Hashstack | Starknet testnet</title>
+          <meta
+            name="viewport"
+            content="initial-scale=1.0, width=device-width"
+          />
+        </Head>
+        {/* testnet.hashstack.finance */}
+        <Script id="microsoft-clarity-testnet" strategy="afterInteractive">
+          {`
             if (!window.location.host.includes('localhost')) {
               (function(c,l,a,r,i,t,y){
                 c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
@@ -951,9 +955,9 @@ const Dashboard = () => {
               })(window, document, "clarity", "script", "f0nuusees0");
             }
           `}
-      </Script>
-      {/* zk.hashstack.finance */}
-      {/* <Script id="microsoft-clarity-zk" strategy="afterInteractive">
+        </Script>
+        {/* zk.hashstack.finance */}
+        {/* <Script id="microsoft-clarity-zk" strategy="afterInteractive">
           {`
             if (!window.location.host.includes('localhost')) {
               (function(c,l,a,r,i,t,y){
@@ -964,37 +968,39 @@ const Dashboard = () => {
             }
           `}
       </Script> */}
-      <div
-        className="page-content"
-        style={{
-          marginTop: "0px",
-          zIndex: "100",
-          backgroundColor: "#1C202F",
-        }}
-      >
-        {/* <MetaTags>
+        <div
+          className="page-content"
+          style={{
+            marginTop: "0px",
+            zIndex: "100",
+            backgroundColor: "#1C202F",
+          }}
+        >
+          {/* <MetaTags>
           <title>Hashstack Finance</title>
         </MetaTags> */}
-        {/* {maintenance()} */}
-        {dashboardUI()}
-        {/* <Banner /> */}
-        {/* {!starknetAccount ? (
+          {/* {maintenance()} */}
+
+          {dashboardUI()}
+          {/* <Banner /> */}
+          {/* {!starknetAccount ? (
           <h3>Loading...</h3>
         ) : !isCorrectNetwork() ? (
           incorrectChain()
         ) : (
           dashboardUI()
         )} */}
-        {/* <Analytics></Analytics>
+          {/* <Analytics></Analytics>
             {props.children} */}
-      </div>
-      {/* <ToastModal
+        </div>
+        {/* <ToastModal
         bool={false}
         heading="Transaction Complete"
         desc="Copy Transaction Hash"
       /> */}
-      {/* // </React.Fragment> */}
-    </div>
+        {/* // </React.Fragment> */}
+      </div>
+    </>
   );
 };
 

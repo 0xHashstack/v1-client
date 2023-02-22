@@ -173,14 +173,20 @@ const SecondaryHeader = ({
   };
 
   return (
-    // <Container className="headerContainer">
-    <div style={{ overflowX: "hidden" }}>
+    <div
+      style={{
+        overflowX: "hidden",
+        backgroundColor: "#1C202F",
+      }}
+    >
       <Row>
         <Navbar
           style={{
+            zIndex: "10",
+            position: "fixed",
             padding: "13px 0",
             backgroundColor: "#1C202F",
-            width: "100%",
+            width: "100vw",
             height: "76px",
             color: "white",
             boxShadow:
@@ -475,17 +481,6 @@ const SecondaryHeader = ({
                     <EthWalletButton />
                   </div>
 
-                  {/* <p>
-                    Don’t have a supporting wallet.{" "}
-                    <a
-                      href="https://braavos.app/"
-                      target="_blank"
-                      style={{ color: "#2563EB" }}
-                    >
-                      Download Braavos from here
-                    </a>
-                  </p> */}
-
                   <p style={{ fontSize: "14px" }}>
                     By connecting your wallet, you agree to Hashstack’s &nbsp;
                     <br />
@@ -650,6 +645,7 @@ const SecondaryHeader = ({
       {liquidateDropDown ? (
         <label
           style={{
+            zIndex: "1000",
             backgroundColor: "#1D2130",
             position: "absolute",
             top: "56px",
@@ -674,8 +670,8 @@ const SecondaryHeader = ({
           <div
             style={{
               position: "absolute",
-              top: "68px",
-              right: "60px",
+              top: "73px",
+              right: "83px",
               backgroundColor: "#1D2131",
               width: "195px",
               height: "150px",
@@ -765,6 +761,7 @@ const SecondaryHeader = ({
           <div
             style={{
               position: "absolute",
+              top: "75px",
               right: "20px",
               backgroundColor: "#1D2131",
               width: "195px",
@@ -833,6 +830,7 @@ const SecondaryHeader = ({
           <div
             style={{
               position: "absolute",
+              top: "75px",
               right: "20px",
               backgroundColor: "#1C202F",
               width: "195px",

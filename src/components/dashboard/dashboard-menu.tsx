@@ -64,7 +64,7 @@ const DashboardMenu = ({
             }}
           >
             {customActiveTab === "1" ? (
-              <span className="d-none d-sm-block">Market</span>
+              <span className="d-none d-sm-block">Markets</span>
             ) : (
               <div
                 style={{ display: "flex", alignItems: "center", gap: "5px" }}

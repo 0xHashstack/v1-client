@@ -17,11 +17,16 @@ import "./scrollbar.css";
 import { TabsProvider } from "../hooks/contextHooks/TabContext";
 import Ellipse1 from "../assets/images/Ellipse 59.svg";
 import Ellipse2 from "../assets/images/Ellipse 60.svg";
-import { InjectedConnector, StarknetProvider } from "@starknet-react/core";
+import {
+  InjectedConnector,
+  StarknetProvider,
+  useAccount,
+} from "@starknet-react/core";
 import { SequencerProvider } from "starknet";
 import ErrorBoundary from "../components/ErrorComponent";
 import { IdentifierProvider } from "../blockchain/hooks/context/identifierContext";
 import ConnectionDetails from "../components/walletIdentifier/connectionDashboard";
+import ConnectWalletModal from "../components/layout/connectWalletModal";
 
 const { chains, provider } = configureChains(
   [mainnet, goerli],
@@ -79,7 +84,6 @@ function MyApp({ Component, pageProps }: AppProps) {
                   <DetailsProvider>
                     <TabsProvider>
                       {/* <ConnectionDetails /> */}
-
                       <Layout>
                         <Component {...pageProps} />
                       </Layout>
