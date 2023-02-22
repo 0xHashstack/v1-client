@@ -16,6 +16,10 @@ const useWithdrawDeposit = (
   const [withdrawAmount, setWithdrawAmount] = useState<number>();
   const [transWithdraw, setTransWithdraw] = useState('');
 
+  const [toastDepWithdrawParam, setDepWithdrawToastParam] = useState({});
+  const [isDepWithdrawToastOpen, setIsDepWithdrawToastOpen] = useState(false);
+
+
   const {
     data: dataWithdrawDeposit,
     loading: loadingWithdrawDeposit,
@@ -35,15 +39,28 @@ const useWithdrawDeposit = (
     try {
       const val = await executeWithdrawDep();
       setTransWithdraw(val.transaction_hash);
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash", 
+        textToCopy: val.transaction_hash,
+      };
+      setDepWithdrawToastParam(toastParamValue);
+      setIsDepWithdrawToastOpen(true);
     } catch(err) {
       console.log(err, 'withdraw deposit')
-    }
-    if (errorWithdrawDeposit) {
+      const toastParamValue = {
+        success: false,
+        heading: "Deposit Transaction Failed",
+        desc: "Copy the error", 
+        textToCopy: err,
+      };
+      setDepWithdrawToastParam(toastParamValue);
+      setIsDepWithdrawToastOpen(true);
       toast.error(`${GetErrorText(`Withdraw for ID:${asset.depositId} failed`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
       });
-      return;
     }
   };
 
@@ -55,6 +72,10 @@ const useWithdrawDeposit = (
     executeWithdrawDep,
     loadingWithdrawDeposit,
     errorWithdrawDeposit,
+
+    isDepWithdrawToastOpen, 
+    setIsDepWithdrawToastOpen, 
+    toastDepWithdrawParam,
   };
 };
 
