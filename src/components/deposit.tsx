@@ -665,7 +665,6 @@ let Deposit: any = ({
               <FormGroup>
                 <div className="row mb-4">
                   <Col sm={12}>
-                    {/* <Label for="amount">Amount</Label> */}
                     <InputGroup>
                       <Input
                         style={{

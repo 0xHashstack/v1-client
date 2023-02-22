@@ -128,7 +128,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
   const [value, setValue] = useState(0);
   const [commitPeriod, setCommitPeriod] = useState(0);
   // const [transDeposit, setTransDeposit] = useState("");
-  const [SpendLoan, setSpendLoan] = useState();
+  const [SpendLoan, setSpendLoan] = useState<any>();
   const dappsArray = [
     { name: "1", supportedActions: ["Trade", "Swap"] },
     { name: "2", supportedActions: ["Stake", "Trade"] },
@@ -681,28 +681,30 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                 backgroundColor: "#393D4F",
                               }}
                             >
-                              {activeLoansData.map((loan, index) => {
-                                return (
-                                  <div
-                                    key={index}
-                                    style={{
-                                      margin: "10px 0",
-                                      cursor: "pointer",
-                                      display: "flex",
-                                      alignItems: "center",
-                                      fontSize: "0.7rem",
-                                      color: "#6F6F6F",
-                                    }}
-                                    onClick={() => {
-                                      setSelectedLoan(loan);
-                                      setIdDropDownArrow(arrowDown);
-                                      setIdDropDown(!idDropDown);
-                                    }}
-                                  >
-                                    {`Borrow ID: ${loan.loanId}`}
-                                  </div>
-                                );
-                              })}
+                              {activeLoansData.map(
+                                (loan: any, index: number) => {
+                                  return (
+                                    <div
+                                      key={index}
+                                      style={{
+                                        margin: "10px 0",
+                                        cursor: "pointer",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        fontSize: "0.7rem",
+                                        color: "#6F6F6F",
+                                      }}
+                                      onClick={() => {
+                                        setSelectedLoan(loan);
+                                        setIdDropDownArrow(arrowDown);
+                                        setIdDropDown(!idDropDown);
+                                      }}
+                                    >
+                                      {`Borrow ID: ${loan.loanId}`}
+                                    </div>
+                                  );
+                                }
+                              )}
                             </div>
                           </>
                         ) : (
@@ -1030,14 +1032,6 @@ const SpendLoanNav = ({ activeLoansData }) => {
                     onClick={handleCTAButton}
                   >
                     {title.label}
-                    {/* {!(
-                    loadingApprove ||
-                    isTransactionLoading(requestDepositTransactionReceipt)
-                  ) ? (
-                    <>{selection}</>
-                  ) : (
-                    <MySpinner text="Depositing token" />
-                  )} */}
                   </Button>
                 </div>
               </Form>
