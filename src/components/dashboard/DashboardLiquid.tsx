@@ -23,7 +23,7 @@ import {
 import classnames from "classnames";
 import Image from "next/image";
 
-import arrowDown from "../../assets/images/arrowDown.svg";
+import arrowDown from "../../assets/images/ArrowDownDark.svg";
 
 const DashboardLiquid = ({
   customActiveTab,
@@ -56,24 +56,22 @@ const DashboardLiquid = ({
               toggleCustom("1");
             }}
           >
-              <div
-                style={{ display: "flex", alignItems: "center", gap: "5px" }}
-              >
-                <Image
-                  // onClick={toggleBorrowDropdown}
-                  style={{
-                    rotate: "90deg",
-                    cursor: "pointer",
-                    // marginLeft: "-7px",
-                  }}
-                  src={arrowDown}
-                  alt="Picture of the author"
-                  width="18px"
-                  height="18px"
-                  // style={{ rotate: "90" }}
-                />
-                <div>Back</div>
-              </div>
+            <div style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+              <Image
+                // onClick={toggleBorrowDropdown}
+                style={{
+                  rotate: "90deg",
+                  cursor: "pointer",
+                  // marginLeft: "-7px",
+                }}
+                src={arrowDown}
+                alt="Picture of the author"
+                width="18px"
+                height="18px"
+                // style={{ rotate: "90" }}
+              />
+              <div>Back</div>
+            </div>
           </NavLink>
         </NavItem>
         {account ? (
@@ -85,8 +83,8 @@ const DashboardLiquid = ({
                   color: "white",
                   border: "1px solid #000",
                   borderRadius: "5px",
-                  backgroundColor:"black",
-                  fontWeight:"350px"
+                  backgroundColor: "black",
+                  fontWeight: "350px",
                 }}
                 className={classnames({
                   active: customActiveTab === "6",

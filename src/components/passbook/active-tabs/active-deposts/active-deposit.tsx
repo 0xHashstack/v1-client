@@ -276,7 +276,8 @@ const ActiveDeposit = ({
   const handleDepositAmountChange = (e: any) => {
     setDepositAmount(e.target.value);
     const balance =
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[tokenName] || 18);
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+      10 ** (tokenDecimalsMap[tokenName] || 18);
     if (!balance) return;
     // calculate percentage of collateral of balance
     var percentage = (e.target.value / balance) * 100;
@@ -296,7 +297,8 @@ const ActiveDeposit = ({
 
   const handleMax = () => {
     setDepositAmount(
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) / 10 ** (tokenDecimalsMap[tokenName] || 18)
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+        10 ** (tokenDecimalsMap[tokenName] || 18)
     );
   };
 
@@ -316,42 +318,6 @@ const ActiveDeposit = ({
         withdrawAmount > Number(uint256.uint256ToBN(asset.amount)) / 10 ** 18
       );
   }
-
-  // const handleWithdrawDeposit = async () => {
-  //   if (
-  //     !tokenAddressMap[asset] &&
-  //     !depositAmount &&
-  //     !diamondAddress &&
-  //     !commitPeriod
-  //   ) {
-  //     toast.error(`${GetErrorText(`Invalid request`)}`, {
-  //       position: toast.POSITION.BOTTOM_RIGHT,
-  //       closeOnClick: true,
-  //     });
-  //     return;
-  //   }
-  //   if (depositAmount === 0) {
-  //     // approve the transfer
-  //     toast.error(`${GetErrorText(`Can't deposit 0 of ${asset}`)}`, {
-  //       position: toast.POSITION.BOTTOM_RIGHT,
-  //       closeOnClick: true,
-  //     });
-  //     return;
-  //   }
-  //   try {
-  //     let val = await executeWithdraw();
-  //     // setTransDeposit(val.transaction_hash);
-  //   } catch (err) {
-  //     console.log(err, "err deposit");
-  //   }
-  //   if (errorDeposit) {
-  //     toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
-  //       position: toast.POSITION.BOTTOM_RIGHT,
-  //       closeOnClick: true,
-  //     });
-  //     return;
-  //   }
-  // }
 
   const handleDeposit = async (asset: string) => {
     if (
@@ -450,13 +416,11 @@ const ActiveDeposit = ({
       >
         <Row
           style={{
-            margin: "15px 1px 15px 10px",
             alignItems: "center",
+            textAlign: "center",
             gap: "50px",
           }}
         >
-          {/* <AccordionItem style={{ padding: "20px" }}> */}
-          {/* <AccordionHeader targetId="1"> */}
           <Col style={{ marginLeft: "-10px" }}>
             {`ID${assetParam.depositId}` ?? "N/a"}
           </Col>
@@ -477,9 +441,8 @@ const ActiveDeposit = ({
                 className="mr-6"
                 style={{
                   display: "inline-block",
-                  fontSize: "13px",
+                  fontSize: "16px",
                 }}
-                // align="right"
               >
                 &nbsp; &nbsp;
                 {EventMap[assetParam.market.toUpperCase()]}
@@ -487,35 +450,6 @@ const ActiveDeposit = ({
             </div>
             <CardTitle tag="h5"></CardTitle>
           </Col>
-
-          {/* <Col>
-            <span style={{ fontSize: "14px", fontWeight: "600" }}>
-              {BNtoNum(Number(assetParam.amount))}
-            </span>
-            <div>
-              <img
-                src={
-                  asset
-                    ? CoinClassNames[
-                        EventMap[assetParam.market.toUpperCase()]
-                      ] || assetParam.market.toUpperCase()
-                    : null
-                }
-                height="18px"
-              />
-
-              <div
-                className="mr-6"
-                style={{
-                  display: "inline-block",
-                  fontSize: "13px",
-                }}
-              >
-                &nbsp;
-                {EventMap[assetParam.market.toUpperCase()]}
-              </div>
-            </div>
-          </Col> */}
 
           <Col className="mr-4 ">
             <div>
@@ -527,10 +461,10 @@ const ActiveDeposit = ({
                       ] || assetParam.market.toUpperCase()
                     : null
                 }
-                height="18px"
+                height="20px"
               />
               &nbsp;&nbsp;
-              <span style={{ fontSize: "14px", fontWeight: "600" }}>
+              <span style={{ fontSize: "16px", fontWeight: "600" }}>
                 {BNtoNum(Number(assetParam.amount))}
               </span>
             </div>
@@ -561,9 +495,7 @@ const ActiveDeposit = ({
           </Col> */}
 
           <Col>
-            <div
-              style={{ fontSize: "14px", fontWeight: "600", textAlign: "left" }}
-            >
+            <div style={{ fontSize: "14px", fontWeight: "600" }}>
               {assetParam &&
                 historicalAPRs &&
                 depositInterestAccrued(assetParam, historicalAPRs)}
@@ -780,8 +712,8 @@ const ActiveDeposit = ({
                           >
                             <img
                               src={`./${coin.name}.svg`}
-                              width="30px"
-                              height="30px"
+                              width="24px"
+                              height="24px"
                             ></img>
                             <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
                           </div>
@@ -803,11 +735,11 @@ const ActiveDeposit = ({
                           backgroundColor: "#1D2131",
                           padding: "10px ",
                           borderRight: "1px solid rgb(57, 61, 79)",
+                          color: "#393D4F",
                         }}
                         type="number"
                         className="form-control"
                         id="amount"
-                        // min={MinimumAmount[tokenName]}
                         placeholder={
                           customActiveTab === "1"
                             ? `Minimum ${MinimumAmount[tokenName]} ${tokenName}`
@@ -868,7 +800,10 @@ const ActiveDeposit = ({
                           10 ** (tokenDecimalsMap[tokenName] || 18)
                         ).toString()
                       ) : customActiveTab === "2" ? (
-                        Number(asset?.amount / 10 ** (tokenDecimalsMap[tokenName] || 18))
+                        Number(
+                          asset?.amount /
+                            10 ** (tokenDecimalsMap[tokenName] || 18)
+                        )
                       ) : (
                         <MySpinner />
                       )}
@@ -925,7 +860,11 @@ const ActiveDeposit = ({
                         )
                       : customActiveTab === "2" &&
                         withdrawAmount !== 0 &&
-                        withdrawAmount > Number(asset?.amount / 10 ** (tokenDecimalsMap[tokenName] || 18)) && (
+                        withdrawAmount >
+                          Number(
+                            asset?.amount /
+                              10 ** (tokenDecimalsMap[tokenName] || 18)
+                          ) && (
                           <FormText style={{ color: "#e97272 !important" }}>
                             {`Amount is greater than your available balance`}
                           </FormText>

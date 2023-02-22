@@ -8,19 +8,19 @@ const SpendLoan = ({ activeLoansData }) => {
 
   return (
     <>
-      <Table>
+      <Table style={{ backgroundColor: "rgb(42, 46, 63)" }}>
         <Row
           onClick={() => {
             setSelectedLoan("");
           }}
           style={{
             color: "rgb(140, 140, 140)",
-            fontWeight: "600",
+            fontWeight: "300",
             alignItems: "center",
-            fontSize: "11px",
+            fontSize: "14px",
             backgroundColor: "rgb(42, 46, 63)",
             textAlign: "center",
-            marginLeft: "-40px",
+            gap: "70px",
           }}
         >
           <Col
@@ -61,6 +61,7 @@ const SpendLoan = ({ activeLoansData }) => {
       </Table>
 
       {activeLoansData.map((loan, index) => {
+        console.log("KKKKKKKKKKKK", loan);
         return (
           <div key={index}>
             <SpendLoanData loan={loan} />

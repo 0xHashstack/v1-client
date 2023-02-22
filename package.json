@@ -17,6 +17,7 @@
 		"@mui/icons-material": "^5.11.0",
 		"@mui/joy": "^5.0.0-alpha.63",
 		"@mui/material": "^5.11.4",
+		"@next/font": "^13.1.6",
 		"@rainbow-me/rainbowkit": "^0.8.1",
 		"@starknet-react/core": "0.14.6",
 		"@types/loadable__component": "^5.13.4",

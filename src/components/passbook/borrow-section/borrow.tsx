@@ -517,7 +517,6 @@ const BorrowTab = ({
         open="false"
         style={{
           margin: "10px",
-          color: "black",
           textAlign: "center",
         }}
       >
@@ -529,11 +528,11 @@ const BorrowTab = ({
                 style={{
                   borderStyle: "hidden",
                   color: "rgb(140, 140, 140)",
-                  fontWeight: "600",
-                  margin: "1px 1px 1px 10px",
+                  fontWeight: "300",
+                  // margin: "1px 1px 1px 10px",
                   alignItems: "center",
-                  gap: "40px",
-                  fontSize: "11px",
+                  gap: "30px",
+                  fontSize: "14px",
                 }}
               >
                 <Col
@@ -603,6 +602,8 @@ const BorrowTab = ({
             </Table>
 
             {activeLoansData.map((asset, key, allAssets) => {
+              console.log("KKKKKKKKK", asset);
+
               return (
                 <BorrowData
                   allAssets={allAssets}

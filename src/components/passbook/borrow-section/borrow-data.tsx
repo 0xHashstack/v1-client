@@ -238,20 +238,6 @@ const BorrowData = ({
     marketTokenName
   );
 
-  // useEffect(() => {
-  //   console.log("loading jedi", loadingJediSwapSupportedPools);
-  //   if (!loadingJediSwapSupportedPools)
-  //     console.log(
-  //       "jediSwapSupportedPoolsData",
-  //       jediSwapSupportedPoolsData.pools[0].tokenA.toString(),
-  //       errorJediSwapSupportedPools
-  //     );
-  // }, [
-  //   jediSwapSupportedPoolsData,
-  //   loadingJediSwapSupportedPools,
-  //   errorJediSwapSupportedPools,
-  // ]);
-
   const [title, setTitle] = useState({
     amount: "Borrowd",
     label: "Stake",
@@ -693,14 +679,13 @@ const BorrowData = ({
         defaultOpen="0"
         open="false"
         style={{
-          margin: "10px",
           color: "white",
           textAlign: "center",
         }}
       >
         <Row
           style={{
-            margin: "15px 1px 15px 10px",
+            margin: "15px 0px 15px 0px",
             alignItems: "center",
             gap: "30px",
           }}
@@ -710,7 +695,7 @@ const BorrowData = ({
           </Col>
 
           <Col>
-            <div>
+            <div style={{ marginTop: "10px" }}>
               <img
                 src={
                   assetParam
@@ -719,7 +704,7 @@ const BorrowData = ({
                       ] || assetParam.loanMarket.toUpperCase()
                     : null
                 }
-                height="24px"
+                height="20px"
               />
               <div
                 className="mr-6"
@@ -727,7 +712,6 @@ const BorrowData = ({
                   display: "inline-block",
                   fontSize: "13px",
                 }}
-                // align="right"
               >
                 &nbsp; &nbsp;
                 {EventMap[assetParam.loanMarket.toUpperCase()]}
@@ -755,7 +739,7 @@ const BorrowData = ({
             </div>
           </Col>
 
-          <Col style={{ textAlign: "left" }}>
+          <Col style={{ textAlign: "center" }}>
             <div style={{ fontSize: "14px", fontWeight: "600" }}>
               {parseFloat(BNtoNum(Number(assetParam.loanInterest))).toFixed(6)}
               &nbsp;
@@ -950,9 +934,7 @@ const BorrowData = ({
                                     ? "light"
                                     : "outline-light"
                                 }
-                              >
-                                
-                              </Button>
+                              ></Button>
                               &nbsp; &nbsp;
                               <Button
                                 color={
@@ -1192,6 +1174,7 @@ const BorrowData = ({
           </AccordionBody>
           {/* </AccordionItem> */}
         </Row>
+        <hr style={{ color: "#00000080" }} />
       </UncontrolledAccordion>
 
       <Modal
@@ -1502,7 +1485,7 @@ const BorrowData = ({
                             marginBottom: "15px",
                           }}
                         >
-                          Borrow Amount:
+                          Available Borrowed Amount:
                           <span
                             style={{
                               display: "flex",
@@ -1632,6 +1615,8 @@ const BorrowData = ({
                                 color: "white",
                               }}
                             >
+                              &nbsp;&nbsp;
+                              <img src="./XRP.svg" height="15px" />
                               &nbsp;XRP
                             </span>
                           </div>
@@ -1711,20 +1696,28 @@ const BorrowData = ({
                                   marginTop: "4px",
                                 }}
                               >
-                                Wallet Balance:&nbsp;
+                                {selection === "Withdraw Partial Borrow" ? (
+                                  <>Borrow Balance:&nbsp;</>
+                                ) : (
+                                  <>Wallet Balance:&nbsp;</>
+                                )}
+
                                 {loanMarketAllowance ? (
                                   (
                                     Number(
                                       uint256.uint256ToBN(loanMarketBalance[0])
                                     ) /
-                                    10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18)
+                                    10 **
+                                      (tokenDecimalsMap[
+                                        asset?.loanMarket as string
+                                      ] || 18)
                                   ).toString()
                                 ) : (
                                   <MySpinner />
                                 )}
-                                {/* <div style={{ color: "#76809D" }}>
-                                  &nbsp;{asset}{" "}
-                                </div> */}
+                                <div style={{ color: "#76809D" }}>
+                                  &nbsp;{asset.loanMarket}
+                                </div>
                               </div>
 
                               {selection === "Repay Borrow" ? (
@@ -1753,7 +1746,10 @@ const BorrowData = ({
                                               loanMarketBalance?.[0] || 0
                                             )
                                           ) /
-                                            10 ** (tokenDecimalsMap[asset.loanMarket]))) /
+                                            10 **
+                                              tokenDecimalsMap[
+                                                asset.loanMarket
+                                              ])) /
                                           100
                                       );
                                       setValue(value);
@@ -1786,7 +1782,10 @@ const BorrowData = ({
                                         : 0
                                     )
                                   ) /
-                                    10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18) && (
+                                    10 **
+                                      (tokenDecimalsMap[
+                                        asset?.loanMarket as string
+                                      ] || 18) && (
                                   <FormText
                                     style={{ color: "#e97272 !important" }}
                                   >
@@ -1861,7 +1860,7 @@ const BorrowData = ({
                             alignItems: "center",
                           }}
                         >
-                          Borrow Market:
+                          Borrowed Market:
                           <span
                             style={{ display: "flex", alignItems: "center" }}
                           >
@@ -1898,7 +1897,7 @@ const BorrowData = ({
                             marginBottom: "15px",
                           }}
                         >
-                          Borrow Amount:
+                          Borrowed Amount:
                           <span
                             style={{
                               display: "flex",
@@ -1932,6 +1931,7 @@ const BorrowData = ({
                               display: "flex",
                               alignItems: "center",
                               marginBottom: "15px",
+                              marginTop: "-3px",
                             }}
                           >
                             Borrowed Status:
@@ -2056,7 +2056,10 @@ const BorrowData = ({
                                         collateralMarketBalance[0]
                                       )
                                     ) /
-                                    10 ** (tokenDecimalsMap[asset?.collateralMarket as string] || 18)
+                                    10 **
+                                      (tokenDecimalsMap[
+                                        asset?.collateralMarket as string
+                                      ] || 18)
                                   )
                                     .toFixed(4)
                                     .toString()
@@ -2088,7 +2091,10 @@ const BorrowData = ({
                                         : 0
                                     )
                                   ) /
-                                    10 ** (tokenDecimalsMap[asset?.collateralMarket] || 18) && (
+                                    10 **
+                                      (tokenDecimalsMap[
+                                        asset?.collateralMarket
+                                      ] || 18) && (
                                   <FormText
                                     style={{ color: "#e97272 !important" }}
                                   >
@@ -2128,7 +2134,10 @@ const BorrowData = ({
                                       collateralMarketBalance?.[0] || 0
                                     )
                                   ) /
-                                    10 ** (tokenDecimalsMap[asset.collateralMarket] || 18))) /
+                                    10 **
+                                      (tokenDecimalsMap[
+                                        asset.collateralMarket
+                                      ] || 18))) /
                                   100
                               );
                               setValue(value);
@@ -2158,7 +2167,7 @@ const BorrowData = ({
                               alignItems: "center",
                             }}
                           >
-                            Collateral Amount:
+                            Available Collateral:
                             <span
                               style={{
                                 display: "flex",
@@ -3180,7 +3189,6 @@ const BorrowData = ({
                 marginBottom: "20px",
                 padding: "5px 10px",
                 backgroundColor: "#393D4F",
-                // boxShadow: "0px 0px 10px rgb(57, 61, 79)",
               }}
             >
               {allAssets.map((eleAsset, index) => {

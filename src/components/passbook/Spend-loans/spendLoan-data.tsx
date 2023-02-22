@@ -11,10 +11,8 @@ const SpendLoanData = ({ loan }) => {
         defaultOpen="0"
         open="false"
         style={{
-          margin: "10px",
           color: "white",
           textAlign: "center",
-          // marginLeft: "70px",
         }}
       >
         <Row
@@ -28,13 +26,12 @@ const SpendLoanData = ({ loan }) => {
           style={{
             opacity: `${selectedLoan?.loanId === loan.loanId ? "10" : "0.5"}`,
             alignItems: "center",
-            marginLeft: "-40px",
             cursor: "pointer",
             padding: "20px 0",
+            gap: "80px",
             backgroundColor: `${
               selectedLoan?.loanId === loan.loanId ? "#1C202F40" : "#2A2E3F"
             }`,
-            // gap: "30px",
           }}
         >
           <Col style={{ marginLeft: "-10px" }}>ID{loan.loanId}</Col>
@@ -45,7 +42,10 @@ const SpendLoanData = ({ loan }) => {
 
           <Col className="mr-4 ">
             <span style={{ fontSize: "14px", fontWeight: "600" }}>
-              {(loan.loanAmount / 10 ** (tokenDecimalsMap[loan?.loanMarket] || 18)).toFixed(4)}
+              {(
+                loan.loanAmount /
+                10 ** (tokenDecimalsMap[loan?.loanMarket] || 18)
+              ).toFixed(4)}
             </span>
           </Col>
 
@@ -63,10 +63,14 @@ const SpendLoanData = ({ loan }) => {
                 marginLeft: "20px",
               }}
             >
-              {(loan.collateralAmount / 10 ** (tokenDecimalsMap[loan?.loanMarket] || 18)).toFixed(4)}
+              {(
+                loan.collateralAmount /
+                10 ** (tokenDecimalsMap[loan?.loanMarket] || 18)
+              ).toFixed(4)}
             </span>
           </Col>
         </Row>
+        <div style={{ borderBottom: "1.5px solid #252335" }}></div>
       </UncontrolledAccordion>
     </div>
   );

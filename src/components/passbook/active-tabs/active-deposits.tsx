@@ -322,12 +322,13 @@ const ActiveDepositsTab = ({
               <Row
                 style={{
                   borderStyle: "hidden",
-                  color: "rgb(140, 140, 140)",
-                  fontWeight: "600",
-                  margin: "1px 1px 1px 10px",
+                  fontWeight: "300",
                   alignItems: "center",
                   gap: "50px",
-                  fontSize: "11px",
+                  textAlign: "center",
+                  color: "#8C8C8C",
+                  verticalAlign: "middle",
+                  fontSize: "14px",
                 }}
               >
                 <Col
