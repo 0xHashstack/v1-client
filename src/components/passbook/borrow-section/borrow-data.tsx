@@ -74,6 +74,7 @@ import useWithdrawPartialBorrow from "../../../blockchain/hooks/active-borrow/us
 import useAddCollateral from "../../../blockchain/hooks/active-borrow/useAddCollateral";
 import useJediSwap from "../../../blockchain/hooks/SpendBorrow/useJediSwap";
 import useMySwap from "../../../blockchain/hooks/SpendBorrow/useMySwap";
+import ToastModal from "../../toastModals/customToastModal";
 
 const BorrowData = ({
   asset: assetParam,
@@ -161,7 +162,7 @@ const BorrowData = ({
   ];
 
   const {
-    DepositAmount,
+    handleDepositAmount,
     handleApprove,
     setDepositAmount,
     setDepositCommit,
@@ -174,7 +175,7 @@ const BorrowData = ({
     transApprove,
     transDeposit,
   }: {
-    DepositAmount: any;
+    handleDepositAmount: any;
     handleApprove: any;
     setDepositAmount: any;
     setDepositCommit: any;
@@ -201,7 +202,7 @@ const BorrowData = ({
   const { executeSelfLiquidate, loadingSelfLiquidate, errorSelfLiquidate } =
     useRepay(asset, diamondAddress);
   const {
-    withdrawCollateral,
+    executeWithdrawCollateral,
     loadingWithdrawCollateral,
     errorWithdrawCollateral,
   } = useWithdrawCollateral(diamondAddress, asset.loanId);
@@ -220,6 +221,10 @@ const BorrowData = ({
     errorAddCollateral,
     addCollateralAmount,
     setAddCollateralAmount,
+
+    isAddcollatToastOpen,
+    setIsToastAddcollatOpen,
+    toastAddcollatParam,
   } = useAddCollateral(diamondAddress, asset);
   const {
     jediSwapSupportedPoolsData,
@@ -230,13 +235,20 @@ const BorrowData = ({
     dataJediSwap,
     loadingJediSwap,
     errorJediSwap,
+
+    isJediswapToastOpen,
+    setIsToastJediswapOpen,
+    toastJediswapParam,
   } = useJediSwap(diamondAddress, asset, marketTokenName);
 
-  const { handleMySwap, loadingMySwap, errorMySwap } = useMySwap(
-    diamondAddress,
-    asset,
-    marketTokenName
-  );
+  const {
+    handleMySwap,
+    loadingMySwap,
+    errorMySwap,
+    isMyswapToastOpen,
+    setIsToastMyswapOpen,
+    toastMyswapParam,
+  } = useMySwap(diamondAddress, asset, marketTokenName);
 
   const [title, setTitle] = useState({
     amount: "Borrowd",
@@ -265,6 +277,10 @@ const BorrowData = ({
   const [value, setValue] = useState(0);
   const [commitPeriod, setCommitPeriod] = useState(0);
   const [stakeDropDown, setStakeDropDown] = useState(false);
+
+  const [toastParam, setToastParam] = useState({});
+  const [isToastOpen, setIsToastOpen] = useState(false);
+
   const [appsImage, setappsImage] = useState("yagiLogo");
   const apps = ["mySwap", "jediSwap", "yagiLogo"];
   const [yagiDownArrow, setyagiDownArrow] = useState(Downarrow);
@@ -378,8 +394,38 @@ const BorrowData = ({
     setValue(percentage);
   };
 
-  const handleWithdrawCollateral = async (withdrawCollateral) => {
-    await withdrawCollateral();
+  const handleWithdrawCollateral = async () => {
+    try {
+      const val = await executeWithdrawCollateral();
+      // setTransWithdrawCollateral(val.transaction_hash);
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash",
+        textToCopy: val.transaction_hash,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
+    } catch (err) {
+      console.log(err, "withdraw collateral");
+      const toastParamValue = {
+        success: false,
+        heading: "Withdraw Collateral Failed",
+        desc: "Copy the error",
+        textToCopy: err,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
+      toast.error(
+        `${GetErrorText(
+          `Failed to withdraw collateral for ID${asset.loanId}`
+        )}`,
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          closeOnClick: true,
+        }
+      );
+    }
   };
 
   const handleSpendBorrowCTAButton = () => {
@@ -419,10 +465,24 @@ const BorrowData = ({
     try {
       const val = await executeWithdrawPartialBorrow();
       setTransRepayHash(val.transaction_hash);
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash",
+        textToCopy: val.transaction_hash,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
     } catch (err) {
       console.log(err, "err repay");
-    }
-    if (errorRepay) {
+      const toastParamValue = {
+        success: false,
+        heading: "Withdraw Transaction Failed",
+        desc: "Copy the error",
+        textToCopy: err,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
       toast.error(
         `${GetErrorText(`Repay for Loan ID${asset.loanId} failed`)}`,
         {
@@ -437,10 +497,24 @@ const BorrowData = ({
   const handleSelfLiquidate = async () => {
     try {
       const val = await executeSelfLiquidate();
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash",
+        textToCopy: val.transaction_hash,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
     } catch (err) {
-      console.log(err);
-    }
-    if (errorSelfLiquidate) {
+      console.log("err self liquidate", err);
+      const toastParamValue = {
+        success: false,
+        heading: "Self Liquidate Transaction Failed",
+        desc: "Copy the error",
+        textToCopy: err,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
       toast.error(
         `${GetErrorText(`Self Liquidation for Loan ID${asset.loanId} failed`)}`,
         {
@@ -484,10 +558,24 @@ const BorrowData = ({
     try {
       const val = await executeRepay();
       setTransRepayHash(val.transaction_hash);
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash",
+        textToCopy: val.transaction_hash,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
     } catch (err) {
       console.log(err, "err repay");
-    }
-    if (errorRepay) {
+      const toastParamValue = {
+        success: false,
+        heading: "Repay Transaction Failed",
+        desc: "Copy the error",
+        textToCopy: err,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
       toast.error(
         `${GetErrorText(`Repay for Loan ID${asset.loanId} failed`)}`,
         {
@@ -499,20 +587,20 @@ const BorrowData = ({
     }
   };
 
-  const handleSwap = async () => {
-    try {
-      const val = await executeJediSwap();
-    } catch (err) {
-      console.log(err, "err repay");
-    }
-    if (errorJediSwap) {
-      toast.error(`${GetErrorText(`Swap for Loan ID${asset.loanId} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
-  };
+  // const handleSwap = async () => {
+  //   try {
+  //     const val = await executeJediSwap();
+  //   } catch (err) {
+  //     console.log(err, "err repay");
+  //   }
+  //   if (errorJediSwap) {
+  //     toast.error(`${GetErrorText(`Swap for Loan ID${asset.loanId} failed`)}`, {
+  //       position: toast.POSITION.BOTTOM_RIGHT,
+  //       closeOnClick: true,
+  //     });
+  //     return;
+  //   }
+  // };
 
   const toggleyagi = () => {
     setYagidrop(!Yagidrop);
@@ -3154,9 +3242,7 @@ const BorrowData = ({
                       border: "none",
                     }}
                     disabled={loadingApprove || loadingDeposit || isInvalid()}
-                    onClick={(e) => {
-                      handleWithdrawCollateral(withdrawCollateral);
-                    }}
+                    onClick={handleWithdrawCollateral}
                   >
                     {!(
                       loadingApprove ||
@@ -3218,6 +3304,54 @@ const BorrowData = ({
               })}
             </div>
           </>
+        )}
+        {isToastOpen ? (
+          <ToastModal
+            isOpen={isToastOpen}
+            setIsOpen={setIsToastOpen}
+            success={toastParam.success}
+            heading={toastParam.heading}
+            desc={toastParam.desc}
+            textToCopy={toastParam.textToCopy}
+          />
+        ) : (
+          <></>
+        )}
+        {isAddcollatToastOpen ? (
+          <ToastModal
+            isOpen={isAddcollatToastOpen}
+            setIsOpen={setIsToastAddcollatOpen}
+            success={toastAddcollatParam.success}
+            heading={toastAddcollatParam.heading}
+            desc={toastAddcollatParam.desc}
+            textToCopy={toastAddcollatParam.textToCopy}
+          />
+        ) : (
+          <></>
+        )}
+        {isJediswapToastOpen ? (
+          <ToastModal
+            isOpen={isJediswapToastOpen}
+            setIsOpen={setIsToastJediswapOpen}
+            success={toastJediswapParam.success}
+            heading={toastJediswapParam.heading}
+            desc={toastJediswapParam.desc}
+            textToCopy={toastJediswapParam.textToCopy}
+          />
+        ) : (
+          <></>
+        )}
+        {isMyswapToastOpen ? (
+          <ToastModal
+            isOpen={isMyswapToastOpen}
+            setIsOpen={setIsToastMyswapOpen}
+            success={toastMyswapParam.success}
+            heading={toastMyswapParam.heading}
+            desc={toastMyswapParam.desc}
+            textToCopy={toastMyswapParam.textToCopy}
+          />
+        ) : (
+          <></>
         )}
       </Modal>
     </div>

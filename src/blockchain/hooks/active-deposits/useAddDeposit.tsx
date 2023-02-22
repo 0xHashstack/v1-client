@@ -29,7 +29,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 
 	const { address: account } = useAccount();
 	const [transApprove, setTransApprove] = useState('');
-	const [transDeposit, setTransBorrow] = useState('');
+	const [transDeposit, setTransDeposit] = useState('');
 
 
 	useEffect(() => {
@@ -134,7 +134,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 		}
 	};
 
-	const DepositAmount = async (asset: string) => {
+	const handleDepositAmount = async (asset: string) => {
 		if (
 			!tokenAddressMap[asset] &&
 			!depositAmount &&
@@ -156,23 +156,23 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 			return;
 		}
 		console.log(diamondAddress, depositAmount);
-		// await handleApprove();
-		// run deposit function
-
-		// console.log("allowance", BNtoNum(dataAllowance[0]?.low, 18).toString());
-		// console.log("amountin -: ", depositAmount);
-
-		// setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
 		try {
 			let tx = await executeDeposit();
-			setTransBorrow(tx.transaction_hash);
+			setTransDeposit(tx.transaction_hash);
 		} catch(err) {
 			console.log(err, 'err add deposit')
+		}
+		if (errorDeposit) {
+			toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
+			  position: toast.POSITION.BOTTOM_RIGHT,
+			  closeOnClick: true,
+			});
+			return;
 		}
 	};
 
 	return {
-		DepositAmount,
+		handleDepositAmount,
 		handleApprove,
 		setDepositAmount,
 		setDepositCommit,

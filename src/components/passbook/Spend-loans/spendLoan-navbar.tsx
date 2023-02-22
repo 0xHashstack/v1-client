@@ -39,6 +39,7 @@ import { MinimumAmount } from "../../../blockchain/constants";
 import { TabContext } from "../../../hooks/contextHooks/TabContext";
 import useJediSwap from "../../../blockchain/hooks/SpendBorrow/useJediSwap";
 import useMySwap from "../../../blockchain/hooks/SpendBorrow/useMySwap";
+import ToastModal from "../../toastModals/customToastModal";
 
 const Coins: ICoin[] = [
   { name: "USDT", icon: "mdi-bitcoin" },
@@ -58,16 +59,23 @@ const SpendLoanNav = ({ activeLoansData }) => {
     loadingJediSwap,
     errorJediSwap,
     handleJediSwap,
+
+    isJediswapToastOpen,
+    setIsToastJediswapOpen,
+    toastJediswapParam,
   } = useJediSwap(diamondAddress, selectedLoan, tokenName);
 
-  const { handleMySwap, loadingMySwap, errorMySwap } = useMySwap(
-    diamondAddress,
-    selectedLoan,
-    tokenName
-  );
+  const {
+    handleMySwap,
+    loadingMySwap,
+    errorMySwap,
+    isMyswapToastOpen,
+    setIsToastMyswapOpen,
+    toastMyswapParam,
+  } = useMySwap(diamondAddress, selectedLoan, tokenName);
 
   const {
-    DepositAmount,
+    handleDepositAmount,
     handleApprove,
     setDepositAmount,
     setDepositCommit,
@@ -80,7 +88,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
     transApprove,
     transDeposit,
   }: {
-    DepositAmount: any;
+    handleDepositAmount: any;
     handleApprove: any;
     setDepositAmount: any;
     setDepositCommit: any;
@@ -1038,6 +1046,30 @@ const SpendLoanNav = ({ activeLoansData }) => {
             )}
           </div>
         </div>
+        {isMyswapToastOpen ? (
+          <ToastModal
+            isOpen={isMyswapToastOpen}
+            setIsOpen={setIsToastMyswapOpen}
+            success={toastMyswapParam.success}
+            heading={toastMyswapParam.heading}
+            desc={toastMyswapParam.desc}
+            textToCopy={toastMyswapParam.textToCopy}
+          />
+        ) : (
+          <></>
+        )}
+        {isJediswapToastOpen ? (
+          <ToastModal
+            isOpen={isJediswapToastOpen}
+            setIsOpen={setIsToastJediswapOpen}
+            success={toastJediswapParam.success}
+            heading={toastJediswapParam.heading}
+            desc={toastJediswapParam.desc}
+            textToCopy={toastJediswapParam.textToCopy}
+          />
+        ) : (
+          <></>
+        )}
       </Modal>
     </>
   );

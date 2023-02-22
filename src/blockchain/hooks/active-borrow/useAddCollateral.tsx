@@ -9,7 +9,8 @@ const useAddCollateral = (diamondAddress: string, asset: any) => {
     const [addCollateralAmount, setAddCollateralAmount] = useState<number>();
 
     const [transWithdrawCollateral, setTransWithdrawCollateral] = useState('');
-
+    const [toastAddcollatParam, setToastAddcollatParam] = useState({});
+    const [isAddcollatToastOpen, setIsToastAddcollatOpen] = useState(false);
     const withdrawCollateralTransactionReceipt = useTransactionReceipt({ hash: transWithdrawCollateral, watch: true })
 
 
@@ -54,10 +55,24 @@ const useAddCollateral = (diamondAddress: string, asset: any) => {
         console.log(`${asset.loanId} ${diamondAddress}`);
         try {
             const val = await executeAddCollateral();
+            const toastParamValue = {
+                success: true,
+                heading: "Success",
+                desc: "Copy the Transaction Hash",
+                textToCopy: val.transaction_hash,
+            };
+            setToastAddcollatParam(toastParamValue);
+            setIsToastAddcollatOpen(true);
         } catch (err) {
             console.log(err, 'add collateral')
-        }
-        if (errorAddCollateral) {
+            const toastParamValue = {
+                success: false,
+                heading: "Add Collateral Failed",
+                desc: "Copy the error",
+                textToCopy: err,
+            };
+            setToastAddcollatParam(toastParamValue);
+            setIsToastAddcollatOpen(true);
             toast.error(`${GetErrorText(`Failed to add collateral for Loan ID${asset.loanId}`)}`, {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 closeOnClick: true,
@@ -73,7 +88,11 @@ const useAddCollateral = (diamondAddress: string, asset: any) => {
         executeAddCollateral,
         loadingAddCollateral,
         errorAddCollateral,
-        handleAddCollateral
+        handleAddCollateral,
+
+        isAddcollatToastOpen,
+        setIsToastAddcollatOpen,
+        toastAddcollatParam
     };
 };
 

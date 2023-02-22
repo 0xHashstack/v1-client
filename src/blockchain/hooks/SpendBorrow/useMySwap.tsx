@@ -8,6 +8,9 @@ import { useEffect, useState } from "react";
 import { Abi, number } from "starknet";
 
 const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
+  const [toastMyswapParam, setToastMyswapParam] = useState({});
+  const [isMyswapToastOpen, setIsToastMyswapOpen] = useState(false);
+  
   // const [supportedPoolsMySwap, setSupportedPoolsMySwap] = useState();
 
   // const { contract: l3Contract } = useContract({
@@ -78,10 +81,24 @@ const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
   const handleMySwap = async () => {
       try {
         const val = await executeMySwap();
+        const toastParamValue = {
+          success: true,
+          heading: "Success",
+          desc: "Copy the Transaction Hash",
+          textToCopy: val.transaction_hash,
+      };
+      setToastMyswapParam(toastParamValue);
+      setIsToastMyswapOpen(true);
       } catch (err) {
         console.log(err, "err repay");
-      }
-      if (errorMySwap) {
+        const toastParamValue = {
+          success: false,
+          heading: "Swap Transaction Failed",
+          desc: "Copy the error",
+          textToCopy: err,
+      };
+      setToastMyswapParam(toastParamValue);
+      setIsToastMyswapOpen(true);
         toast.error(`${GetErrorText(`Swap for Loan ID${asset.loanId} failed`)}`, {
           position: toast.POSITION.BOTTOM_RIGHT,
           closeOnClick: true,
@@ -95,7 +112,11 @@ const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
       loadingMySwap, 
       dataMySwap,
       errorMySwap, 
-      handleMySwap
+      handleMySwap,
+
+      isMyswapToastOpen,
+      setIsToastMyswapOpen,
+      toastMyswapParam
   }
 }
 

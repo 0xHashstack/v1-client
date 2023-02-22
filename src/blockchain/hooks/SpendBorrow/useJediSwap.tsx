@@ -10,6 +10,8 @@ import { toast } from "react-toastify";
 
 const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
 
+  const [toastJediswapParam, setToastJediswapParam] = useState({});
+  const [isJediswapToastOpen, setIsToastJediswapOpen] = useState(false);
   const [supportedPoolsJediSwap, setSupportedPoolsJediSwap] = useState();
 
   const { contract: l3Contract } = useContract({
@@ -80,10 +82,24 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
   const handleJediSwap = async () => {
     try {
       const val = await executeJediSwap();
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash",
+        textToCopy: val.transaction_hash,
+    };
+    setToastJediswapParam(toastParamValue);
+    setIsToastJediswapOpen(true);
     } catch (err) {
       console.log(err, "err repay");
-    }
-    if (errorJediSwap) {
+      const toastParamValue = {
+        success: false,
+        heading: "Swap Transaction Failed",
+        desc: "Copy the error",
+        textToCopy: err,
+    };
+    setToastJediswapParam(toastParamValue);
+    setIsToastJediswapOpen(true);
       toast.error(`${GetErrorText(`Swap for Loan ID${asset.loanId} failed`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
@@ -98,12 +114,15 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
     errorJediSwapSupportedPools,
     refreshJediSwapSupportedPools,
 
-
     executeJediSwap,
     loadingJediSwap,
     dataJediSwap,
     errorJediSwap,
-    handleJediSwap
+    handleJediSwap,
+
+    isJediswapToastOpen,
+    setIsToastJediswapOpen,
+    toastJediswapParam,
   }
 
 }

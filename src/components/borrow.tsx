@@ -55,6 +55,7 @@ import _ from "lodash";
 import Maxloan from "../blockchain/hooks/Max_loan_given_collat";
 import { BNtoNum } from "../blockchain/utils";
 import useMaxloan from "../blockchain/hooks/Max_loan_given_collat";
+import ToastModal from "./toastModals/customToastModal";
 
 interface IBorrowParams {
   loanAmount: number | null;
@@ -130,6 +131,9 @@ let Borrow: any = ({
   const [depositLoanRates, setDepositLoanRates] = useState<IDepositLoanRates>(
     depositLoanRatesParam
   );
+
+  const [toastParam, setToastParam] = useState({});
+  const [isToastOpen, setIsToastOpen] = useState(false);
 
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(Downarrow);
@@ -475,35 +479,31 @@ let Borrow: any = ({
       });
     }
     try {
-      // approve collateral spending
-      // await handleApprove();
-      // if (errorApprove) {
-      // 	toast.error(`${GetErrorText(`Approve for token ${asset} failed`)}`, {
-      // 		position: toast.POSITION.BOTTOM_RIGHT,
-      // 		closeOnClick: true,
-      // 	});
-      // 	return;
-      // }
-
-      // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
-      try {
-        let val = await executeBorrow();
-        setTransBorrow(val.transaction_hash);
-      } catch (err) {
-        console.log(err, "err borrow");
-      }
-      if (errorBorrow) {
-        toast.error(`${GetErrorText(`Borrow request for ${asset} failed`)}`, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          closeOnClick: true,
-        });
-        return;
-      }
+      let val = await executeBorrow();
+      setTransBorrow(val.transaction_hash);
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash",
+        textToCopy: val.transaction_hash,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
     } catch (err) {
-      toast.error(`${GetErrorText(err)}`, {
+      console.log(err, "err borrow");
+      const toastParamValue = {
+        success: false,
+        heading: "Borrow Transaction Failed",
+        desc: "Copy the error",
+        textToCopy: err,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
+      toast.error(`${GetErrorText(`Borrow request for ${asset} failed`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
       });
+      return;
     }
   };
 
@@ -754,6 +754,7 @@ let Borrow: any = ({
                 ) : (
                   <MySpinner />
                 )}
+                <div style={{ color: "#76809D" }}>&nbsp;{tokenName} </div>
               </div>
               <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
                 <Slider
@@ -1380,6 +1381,18 @@ let Borrow: any = ({
             <h2>Please connect your wallet</h2>
           )}
         </div>
+        {isToastOpen ? (
+          <ToastModal
+            isOpen={isToastOpen}
+            setIsOpen={setIsToastOpen}
+            success={toastParam.success}
+            heading={toastParam.heading}
+            desc={toastParam.desc}
+            textToCopy={toastParam.textToCopy}
+          />
+        ) : (
+          <></>
+        )}
       </Modal>
     </>
   );

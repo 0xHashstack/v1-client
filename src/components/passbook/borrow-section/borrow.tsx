@@ -133,6 +133,9 @@ const BorrowTab = ({
   const [swap_to_active_loan, setSwapToActiveLoan] = useState(false);
   const [swap_active_loan, setSwapActiveLoan] = useState(true);
 
+  const [toastParam, setToastParam] = useState({});
+  const [isToastOpen, setIsToastOpen] = useState(false);
+
   const [addCollateralTransactionReceipt, setAddCollateralTransactionReceipt] =
     useState<UseTransactionReceiptResult>({
       loading: false,
@@ -790,6 +793,9 @@ const BorrowTab = ({
                         className="form-control"
                         id="amount"
                         placeholder="Amount"
+                        // onChange={handleCollateralInputChange}
+                        value={borrowParams.collateralAmount}
+                        // valid={isValidColleteralAmount()}
                       />
                       <Button
                         outline
