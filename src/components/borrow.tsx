@@ -821,6 +821,7 @@ let Borrow: any = ({
                     {Coins.map((coin, index) => {
                       if (coin.name === tokenName) return <></>;
                       return (
+                        <>
                         <div
                           key={index}
                           style={{
@@ -839,11 +840,13 @@ let Borrow: any = ({
                         >
                           <img
                             src={`./${coin.name}.svg`}
-                            width="24px"
-                            height="24px"
+                            width="15px"
+                            height="15px"
                           ></img>
                           <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
                         </div>
+                        <hr/>
+                        </>
                       );
                     })}
                   </div>
@@ -873,6 +876,7 @@ let Borrow: any = ({
                     {Coins.map((coin, index) => {
                       if (coin.name === borrowTokenName) return <></>;
                       return (
+                        <>
                         <div
                           key={index}
                           style={{
@@ -891,11 +895,13 @@ let Borrow: any = ({
                         >
                           <img
                             src={`./${coin.name}.svg`}
-                            width="24px"
-                            height="24px"
+                            width="15px"
+                            height="15px"
                           ></img>
                           <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
                         </div>
+                        <hr/>
+                        </>
                       );
                     })}
                   </div>

@@ -8,22 +8,23 @@ const SpendLoan = ({ activeLoansData }: { activeLoansData: any }) => {
 
   return (
     <>
-      <Table style={{ backgroundColor: "rgb(42, 46, 63)" }}>
+      <Table style={{ backgroundColor: "rgb(42, 46, 63)",position:'absolute',zIndex:'2',width:'99%',top:"-9px"}}>
         <Row
           onClick={() => {
             setSelectedLoan("");
           }}
           style={{
             marginLeft: "50px",
-            width: "80%",
+            width: "96%",
             zIndex: "1000",
-            position: "sticky",
+            // position: "absolute",
             color: "rgb(140, 140, 140)",
             fontWeight: "300",
             alignItems: "center",
             fontSize: "14px",
             backgroundColor: "#2A2E3F",
             textAlign: "left",
+            gap:'50px'
           }}
         >
           <Col

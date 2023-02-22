@@ -434,7 +434,7 @@ const ActiveDeposit = ({
         <Row
           style={{
             alignItems: "center",
-            textAlign: "center",
+            textAlign: "left",
             gap: "50px",
           }}
         >

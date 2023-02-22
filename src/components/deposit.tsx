@@ -552,7 +552,7 @@ let Deposit: any = ({
                         width: "420px",
                         margin: "0px auto",
                         marginBottom: "20px",
-                        padding: "5px 10px",
+                        padding: "10px 10px",
                         backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px #00000020",
                       }}
@@ -560,10 +560,11 @@ let Deposit: any = ({
                       {Coins.map((coin, index) => {
                         if (coin.name === tokenName) return <></>;
                         return (
+                          <>
                           <div
                             key={index}
                             style={{
-                              margin: "10px 0",
+                              margin: "0px 0",
                               cursor: "pointer",
                               display: "flex",
                               alignItems: "center",
@@ -580,12 +581,15 @@ let Deposit: any = ({
                           >
                             <Image
                               src={`/${coin.name}.svg`}
-                              width="24px"
-                              height="24px"
+                              width="15px"
+                              height="15px"
                               alt="coin image"
                             />
                             <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                            
                           </div>
+                          <hr/>
+                          </>
                         );
                       })}
                     </div>
