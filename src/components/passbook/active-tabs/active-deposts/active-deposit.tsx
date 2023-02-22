@@ -69,6 +69,7 @@ import { ICoin } from "../../../dashboard/dashboard-body";
 import { GetErrorText, NumToBN } from "../../../../blockchain/utils";
 import classnames from "classnames";
 import { IDepositLoanRates } from "../../../borrow";
+import ToastModal from "../../../toastModals/customToastModal";
 
 const ActiveDeposit = ({
   asset: assetParam,
@@ -103,6 +104,9 @@ const ActiveDeposit = ({
     transWithdraw,
     loadingWithdrawDeposit,
     errorWithdrawDeposit,
+    isDepWithdrawToastOpen, 
+    setIsDepWithdrawToastOpen, 
+    toastDepWithdrawParam,
   } = useWithdrawDeposit(asset, diamondAddress);
   const [action, setAction] = useState(false);
 
@@ -136,6 +140,9 @@ const ActiveDeposit = ({
   const { address: account } = useAccount();
   const [commitPeriod, setCommitPeriod] = useState(asset.commitmentIndex);
   const [supplyId, setSupplyId] = useState(asset.depositId);
+  const [toastParam, setToastParam] = useState({});
+  const [isToastOpen, setIsToastOpen] = useState(false);
+
   // const [transDeposit, setTransDeposit] = useState("");
 
   const withdrawTransactionReceipt = useTransactionReceipt({
@@ -342,16 +349,29 @@ const ActiveDeposit = ({
     }
     try {
       let val = await executeDeposit();
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash", 
+        textToCopy: val.transaction_hash,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
       // setTransDeposit(val.transaction_hash);
     } catch (err) {
       console.log(err, "err deposit");
-    }
-    if (errorDeposit) {
+      const toastParamValue = {
+        success: false,
+        heading: "Deposit Transaction Failed",
+        desc: "Copy the error", 
+        textToCopy: err,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
       toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
       });
-      return;
     }
   };
 
@@ -1135,6 +1155,8 @@ const ActiveDeposit = ({
         ) : (
           <></>
         )}
+        {isToastOpen ? <ToastModal isOpen={isToastOpen} setIsOpen={setIsToastOpen} success={toastParam.success} heading={toastParam.heading} desc={toastParam.desc} textToCopy={toastParam.textToCopy} /> : <></>}
+        {isDepWithdrawToastOpen ? <ToastModal isOpen={isDepWithdrawToastOpen} setIsOpen={setIsDepWithdrawToastOpen} success={toastDepWithdrawParam.success} heading={toastDepWithdrawParam.heading} desc={toastDepWithdrawParam.desc} textToCopy={toastDepWithdrawParam.textToCopy} /> : <></>}
       </Modal>
     </div>
   );
