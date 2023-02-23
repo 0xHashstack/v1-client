@@ -41,7 +41,7 @@ const SpendLoanData = ({ loan }) => {
         >
           <Col>ID{loan.loanId}</Col>
           <Col>
-            <img src={`./${loan.loanMarket}.svg`} height="20px" />
+            <img src={`./${loan.loanMarket}.svg`} height="15px" />
             &nbsp;&nbsp;{loan.loanMarket}
           </Col>
 
@@ -56,7 +56,7 @@ const SpendLoanData = ({ loan }) => {
 
           <Col>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <img src={`./${loan.collateralMarket}.svg`} height="20px" />
+            <img src={`./${loan.collateralMarket}.svg`} height="15px" />
             &nbsp;&nbsp;{loan.collateralMarket}
           </Col>
 

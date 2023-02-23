@@ -19,8 +19,8 @@ import {
 import Slider from "react-custom-slider";
 
 import RangeSlider from "react-bootstrap-range-slider";
-import arrowDown from "../assets/images/arrowDown.svg";
-import arrowUp from "../assets/images/arrowUp.svg";
+import arrowDown from "../assets/images/ArrowDownDark.svg";
+import arrowUp from "../assets/images/ArrowUpDark.svg";
 import { MinimumAmount } from "../blockchain/constants";
 import BigNumber, { ethers } from "ethers";
 
@@ -630,6 +630,7 @@ let Deposit: any = ({
                       >
                         &nbsp;1 month
                       </div>
+                      <hr/>
                       <div
                         style={{
                           fontSize: "15px",
@@ -645,6 +646,7 @@ let Deposit: any = ({
                       >
                         &nbsp;2 weeks
                       </div>
+                      <hr/>
                       <div
                         style={{
                           fontSize: "15px",
@@ -660,6 +662,7 @@ let Deposit: any = ({
                       >
                         &nbsp;Flexible
                       </div>
+                      <hr/>
                     </div>
                   </>
                 ) : (

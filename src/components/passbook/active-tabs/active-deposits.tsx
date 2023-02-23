@@ -325,7 +325,7 @@ const ActiveDepositsTab = ({
                   fontWeight: "300",
                   alignItems: "center",
                   gap: "50px",
-                  textAlign: "left",
+                  textAlign: "center",
                   color: "#8C8C8C",
                   verticalAlign: "middle",
                   fontSize: "14px",

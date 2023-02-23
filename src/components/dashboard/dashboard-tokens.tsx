@@ -68,8 +68,8 @@ const DashboardTokens = ({
             <Image
               alt="token"
               src={`/${coin.name}.svg`}
-              width="20px"
-              height="20px"
+              width="15px"
+              height="15px"
               style={{ marginTop: "5px" }}
             ></Image>
             &nbsp;&nbsp;&nbsp;

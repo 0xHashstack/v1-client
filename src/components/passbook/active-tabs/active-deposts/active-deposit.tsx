@@ -434,7 +434,7 @@ const ActiveDeposit = ({
         <Row
           style={{
             alignItems: "center",
-            textAlign: "left",
+            textAlign: "center",
             gap: "50px",
           }}
         >
@@ -452,7 +452,7 @@ const ActiveDeposit = ({
                       ] || assetParam.market.toUpperCase()
                     : null
                 }
-                height="24px"
+                height="15px"
               />
               <div
                 className="mr-6"
@@ -478,10 +478,10 @@ const ActiveDeposit = ({
                       ] || assetParam.market.toUpperCase()
                     : null
                 }
-                height="20px"
+                height="16px"
               />
               &nbsp;&nbsp;
-              <span style={{ fontSize: "16px", fontWeight: "600" }}>
+              <span style={{ fontSize: "15px", fontWeight: "600" }}>
                 {BNtoNum(Number(assetParam.amount))}
               </span>
             </div>

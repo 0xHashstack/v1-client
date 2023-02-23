@@ -792,7 +792,7 @@ const BorrowData = ({
                       ] || assetParam.loanMarket.toUpperCase()
                     : null
                 }
-                height="20px"
+                height="15px"
               />
               <div
                 className="mr-6"
@@ -818,7 +818,7 @@ const BorrowData = ({
                       ] || assetParam.loanMarket.toUpperCase()
                     : null
                 }
-                height="18px"
+                height="15px"
               />
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
@@ -865,7 +865,7 @@ const BorrowData = ({
                       ] || assetParam.loanMarket.toUpperCase()
                     : null
                 }
-                height="24px"
+                height="15px"
               />
               <div
                 className="mr-6"
@@ -890,7 +890,7 @@ const BorrowData = ({
                       ] || assetParam.collateralMarket.toUpperCase()
                     : null
                 }
-                height="18px"
+                height="15px"
               />
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
