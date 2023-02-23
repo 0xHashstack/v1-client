@@ -17,7 +17,7 @@ const SpendLoan = ({ activeLoansData }: { activeLoansData: any }) => {
             marginLeft: "50px",
             width: "80%",
             zIndex: "1000",
-            position: "sticky",
+            position: "fixed",
             color: "rgb(140, 140, 140)",
             fontWeight: "300",
             alignItems: "center",

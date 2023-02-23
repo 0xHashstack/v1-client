@@ -105,7 +105,7 @@ interface ILoans {
   currentLoanAmount: number;
 }
 
-const loanTypes = ["Show All", "REPAID", "OPEN"];
+const loanTypes = ["REPAID", "ACTIVEE"];
 
 const Dashboard = () => {
   const [dropDownArrow, setDropDownArrow] = useState(connectWalletArrowDown);
@@ -255,7 +255,7 @@ const Dashboard = () => {
           return asset.state === "REPAID";
         })
       );
-      if (typeOfLoans === "Show All") setFilteredLoans(loans);
+      if (typeOfLoans === "Open") setFilteredLoans(loans);
       else {
         setFilteredLoans(
           loans.filter((loan) => {
@@ -267,7 +267,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    if (typeOfLoans === "Show All") return setFilteredLoans(activeLoansData);
+    if (typeOfLoans === "Open") return setFilteredLoans(activeLoansData);
     setFilteredLoans(
       activeLoansData.filter((loan) => {
         return loan.state === typeOfLoans;

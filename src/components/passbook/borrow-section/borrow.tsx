@@ -589,13 +589,6 @@ const BorrowTab = ({
                 </Col>
                 <Col
                   scope="col"
-                  style={{ width: "100px", padding: "20px 10px" }}
-                >
-                  Status
-                </Col>
-
-                <Col
-                  scope="col"
                   style={{ width: "100px", padding: "20px 20px" }}
                 >
                   Actions
@@ -605,8 +598,6 @@ const BorrowTab = ({
             </Table>
 
             {activeLoansData.map((asset, key, allAssets) => {
-              console.log("KKKKKKKKK", asset);
-
               return (
                 <BorrowData
                   allAssets={allAssets}

@@ -274,7 +274,7 @@ const BorrowData = ({
   const [idDropDown, setIdDropDown] = useState(false);
   const [idDropDownArrow, setIdDropDownArrow] = useState(Downarrow);
 
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState<any>(0);
   const [commitPeriod, setCommitPeriod] = useState(0);
   const [stakeDropDown, setStakeDropDown] = useState(false);
 
@@ -587,21 +587,6 @@ const BorrowData = ({
     }
   };
 
-  // const handleSwap = async () => {
-  //   try {
-  //     const val = await executeJediSwap();
-  //   } catch (err) {
-  //     console.log(err, "err repay");
-  //   }
-  //   if (errorJediSwap) {
-  //     toast.error(`${GetErrorText(`Swap for Loan ID${asset.loanId} failed`)}`, {
-  //       position: toast.POSITION.BOTTOM_RIGHT,
-  //       closeOnClick: true,
-  //     });
-  //     return;
-  //   }
-  // };
-
   const toggleyagi = () => {
     setYagidrop(!Yagidrop);
     setyagiDownArrow(Yagidrop ? Downarrow : UpArrow);
@@ -899,7 +884,7 @@ const BorrowData = ({
             </div>
           </Col>
 
-          <Col className="mr-4 ">
+          {/* <Col className="mr-4 ">
             <div
               className="mr-6"
               style={{
@@ -911,7 +896,7 @@ const BorrowData = ({
               {assetParam.state}
             </div>
             <CardTitle tag="h5"></CardTitle>
-          </Col>
+          </Col> */}
 
           <Col>
             <button
