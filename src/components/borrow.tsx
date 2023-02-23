@@ -943,6 +943,7 @@ let Borrow: any = ({
                     >
                       &nbsp;1 month
                     </div>
+                    <hr/>
                     <div
                       style={{
                         fontSize: "15px",
@@ -958,6 +959,7 @@ let Borrow: any = ({
                     >
                       &nbsp;Flexible
                     </div>
+                    <hr/>
                   </div>
                 </>
               ) : (

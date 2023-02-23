@@ -530,6 +530,8 @@ const BorrowTab = ({
               {/* <Table className="table table-nowrap  mb-0"> */}
               <Row
                 style={{
+                  marginTop: "-20px",
+                  marginLeft: "10px",
                   borderStyle: "hidden",
                   color: "rgb(140, 140, 140)",
                   fontWeight: "300",

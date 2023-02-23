@@ -759,7 +759,7 @@ const BorrowData = ({
       >
         <Row
           style={{
-            margin: "15px 0px 15px 0px",
+            margin: "15px 0px 15px 10px",
             alignItems: "center",
             gap: "30px",
           }}
@@ -778,7 +778,7 @@ const BorrowData = ({
                       ] || assetParam.loanMarket.toUpperCase()
                     : null
                 }
-                height="20px"
+                height="15px"
               />
               <div
                 className="mr-6"
@@ -804,7 +804,7 @@ const BorrowData = ({
                       ] || assetParam.loanMarket.toUpperCase()
                     : null
                 }
-                height="18px"
+                height="15px"
               />
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
@@ -851,7 +851,7 @@ const BorrowData = ({
                       ] || assetParam.loanMarket.toUpperCase()
                     : null
                 }
-                height="24px"
+                height="15px"
               />
               <div
                 className="mr-6"
@@ -876,7 +876,7 @@ const BorrowData = ({
                       ] || assetParam.collateralMarket.toUpperCase()
                     : null
                 }
-                height="18px"
+                height="15px"
               />
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>

@@ -334,6 +334,7 @@ const ActiveDepositsTab = ({
               >
                 <Col
                   style={{
+                    marginLeft: "50px",
                     width: "10px",
                     padding: "20px 10px",
                   }}
