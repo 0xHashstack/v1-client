@@ -847,7 +847,7 @@ const Dashboard = () => {
                       <div>
                         <Col lg={12}>
                           {customActiveTab === "6" ? (
-                            <div style={{ color: "black" }}>
+                            <div style={{ color: "black", marginTop: "30px" }}>
                               <Liquidation
                                 activeLiquidationsData={activeLiquidationsData}
                                 isTransactionDone={isTransactionDone}

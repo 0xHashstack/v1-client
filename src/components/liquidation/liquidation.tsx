@@ -220,7 +220,7 @@ const LiquidationButton = ({
         <Button
           // className="text-muted"
           color="light"
-          style={{ color: "white",backgroundColor: "rgb(57, 61, 79)" }}
+          style={{ color: "white", backgroundColor: "rgb(57, 61, 79)" }}
           outline
           onClick={async () => {
             // reset()
@@ -245,7 +245,7 @@ const LiquidationButton = ({
         <Button
           className="text-muted"
           color="light"
-          style={{backgroundColor: "rgb(57, 61, 79)" }}
+          style={{ backgroundColor: "rgb(57, 61, 79)" }}
           outline
           onClick={async () => {
             // reset()
@@ -279,7 +279,10 @@ const Liquidation = ({
 }) => {
   return (
     <TabPane tabId="3">
-      <div className="table-responsive" style={{backgroundColor: "rgb(42, 46, 63)"}}>
+      <div
+        className="table-responsive"
+        style={{ backgroundColor: "rgb(42, 46, 63)" }}
+      >
         <Table className="table table-nowrap align-middle mb-0">
           <thead>
             <tr style={{ color: "rgb(140, 140, 140)" }}>
@@ -299,113 +302,116 @@ const Liquidation = ({
             {Array.isArray(activeLiquidationsData) &&
             activeLiquidationsData.length > 0 ? (
               activeLiquidationsData.map((asset, key) => {
-                console.log("asset in li", asset)
+                console.log("asset in li", asset);
                 return (
-                <tr key={key} style={{ color: "white" }}>
-                  <th scope="row">
-                    <div className="d-flex align-items-center">
-                      <div className="avatar-xs me-3">
-                        <img
-                          src={
-                            CoinClassNames[
-                              EventMap[asset.loanMarket.toUpperCase()]
-                            ]  || asset.loanMarket.toUpperCase()
-                          }
-                        />
+                  <tr key={key} style={{ color: "white" }}>
+                    <th scope="row">
+                      <div className="d-flex align-items-center">
+                        <div className="avatar-xs me-3">
+                          <img
+                            src={
+                              CoinClassNames[
+                                EventMap[asset.loanMarket.toUpperCase()]
+                              ] || asset.loanMarket.toUpperCase()
+                            }
+                          />
+                        </div>
+                        <span>{EventMap[asset.loanMarket.toUpperCase()]}</span>
                       </div>
-                      <span>{EventMap[asset.loanMarket.toUpperCase()]}</span>
-                    </div>
-                  </th>
-                  <td>
-                    <div >{BNtoNum(Number(asset.loanAmount))}
-                    <div >
-                    <img
-                       style={{scale:"0.7"}}
-                          src={
-                            CoinClassNames[
-                              EventMap[asset.loanMarket.toUpperCase()]
-                            ] || asset.collateralMarket.toUpperCase()
-                          }
-                        />
-                        <span style={{scale:"0.7"}}>{EventMap[asset.loanMarket.toUpperCase()]}</span>
-                    </div>
-                    </div>
-                  </td>
-                  <th scope="row">
-                    <div className="d-flex align-items-center">
-                      <div className="avatar-xs me-3">
-                        <img
-                          src={
-                            CoinClassNames[
-                              EventMap[asset.collateralMarket.toUpperCase()]
-                            ] || asset.collateralMarket.toUpperCase()
-                          }
-                        />
+                    </th>
+                    <td>
+                      <div>
+                        {BNtoNum(Number(asset.loanAmount))}
+                        <div>
+                          <img
+                            style={{ scale: "0.7" }}
+                            src={
+                              CoinClassNames[
+                                EventMap[asset.loanMarket.toUpperCase()]
+                              ] || asset.collateralMarket.toUpperCase()
+                            }
+                          />
+                          <span style={{ scale: "0.7" }}>
+                            {EventMap[asset.loanMarket.toUpperCase()]}
+                          </span>
+                        </div>
                       </div>
-                      <span>
-                        {EventMap[asset.collateralMarket.toUpperCase()]}
-                      </span>
-                    </div>
-                  </th>
-                  <td>
-                    <div>{BNtoNum(Number(asset.collateralAmount))}
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      {/* {EventMap[asset.commitment]}
+                    </td>
+                    <th scope="row">
+                      <div className="d-flex align-items-center">
+                        <div className="avatar-xs me-3">
+                          <img
+                            src={
+                              CoinClassNames[
+                                EventMap[asset.collateralMarket.toUpperCase()]
+                              ] || asset.collateralMarket.toUpperCase()
+                            }
+                          />
+                        </div>
+                        <span>
+                          {EventMap[asset.collateralMarket.toUpperCase()]}
+                        </span>
+                      </div>
+                    </th>
+                    <td>
+                      <div>{BNtoNum(Number(asset.collateralAmount))}</div>
+                    </td>
+                    <td>
+                      <div>
+                        {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Risk Premium value */}
-                      N/A
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      {/* {EventMap[asset.commitment]}
+                        N/A
+                      </div>
+                    </td>
+                    <td>
+                      <div>
+                        {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Debt Converted*/}
-                      NO
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      {/* {EventMap[asset.commitment]}
+                        NO
+                      </div>
+                    </td>
+                    <td>
+                      <div>
+                        {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Converted Market*/}
-                      {/* <img
+                        {/* <img
                         src={
                           CoinClassNames[
                             EventMap[asset.collateralMarket.toUpperCase()]
                           ] || asset.collateralMarket.toUpperCase()
                         }
                       /> */}
-                      -
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      {/* {EventMap[asset.commitment]}
+                        -
+                      </div>
+                    </td>
+                    <td>
+                      <div>
+                        {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Amount*/}
-                      -
-                    </div>
-                  </td>
-                  <td>
-                    <div>
-                      {/* {EventMap[asset.commitment]}
+                        -
+                      </div>
+                    </td>
+                    <td>
+                      <div>
+                        {/* {EventMap[asset.commitment]}
                       {console.log(EventMap[asset.commitment])
                       } Amount*/}
-                      10%
-                    </div>
-                  </td>
-                  <td >
-                    <LiquidationButton
-                      loan={asset}
-                      isTransactionDone={isTransactionDone}
-                    ></LiquidationButton>
-                  </td>
-                </tr>
-              )})
+                        10%
+                      </div>
+                    </td>
+                    <td>
+                      <LiquidationButton
+                        loan={asset}
+                        isTransactionDone={isTransactionDone}
+                      ></LiquidationButton>
+                    </td>
+                  </tr>
+                );
+              })
             ) : (
               <tr>
                 <td colSpan={5}>No Records Found.</td>
@@ -417,7 +423,11 @@ const Liquidation = ({
           <Button
             className="d-flex align-items-center"
             color="light"
-            style={{ color: "white", margin: "2px 0px",backgroundColor: "rgb(57, 61, 79)" }}
+            style={{
+              color: "white",
+              margin: "2px 0px",
+              backgroundColor: "rgb(57, 61, 79)",
+            }}
             outline
             onClick={() => {
               // increaseLiquidationIndex;
