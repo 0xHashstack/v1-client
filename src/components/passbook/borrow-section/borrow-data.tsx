@@ -731,7 +731,6 @@ const BorrowData = ({
   };
 
   const handleAction = (value: string) => {
-    setappsImage(dappsArray.find((dapp) => dapp.supportedActions.includes(actionLabel)));
     if (value === "Stake") {
       setActionLabel("Stake");
     }
@@ -743,6 +742,11 @@ const BorrowData = ({
     }
     setStakeDropDown(false);
     setDropDownArrowTwo(Downarrow);
+    let dapp = "";
+    if(value === "Swap") 
+      dapp = "jediSwap";
+    else if(value === "Stake") dapp = "yagi"
+    setappsImage(dapp);
   };
 
   useEffect(() => {
