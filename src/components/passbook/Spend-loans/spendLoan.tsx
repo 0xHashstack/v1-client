@@ -6,6 +6,12 @@ import SpendLoanData from "./spendLoan-data";
 const SpendLoan = ({ activeLoansData }: { activeLoansData: any }) => {
   const { selectedLoan, setSelectedLoan } = useContext(TabContext);
 
+  useEffect(() => {
+    if (!selectedLoan && activeLoansData.length > 0) {
+      setSelectedLoan(activeLoansData[0]);
+    }
+  }, []);
+
   return (
     <>
       <Table

@@ -282,6 +282,7 @@ let Deposit: any = ({
       Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
         10 ** (tokenDecimalsMap[asset] || 18)
     );
+    setValue(100);
   };
 
   const handleMin = async () => {

@@ -110,14 +110,13 @@ const SpendLoanNav = ({ activeLoansData }) => {
   const [modal_deposit, setmodal_deposit] = useState(false);
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
-  const [yagiDownArrow, setyagiDownArrow] = useState(arrowDown);
+  const [dappDownArrow, setDappDownArrow] = useState(arrowDown);
   const [dropDownTwo, setDropDownTwo] = useState(false);
   const [stakeDropDownArrow, setStakeDropDownArrow] = useState(arrowDown);
   const [idDropDown, setIdDropDown] = useState(false);
   const [idDropDownArrow, setIdDropDownArrow] = useState(arrowDown);
 
-  const [appsImage, setappsImage] = useState("yagiLogo");
-  const apps = ["mySwap", "jediSwap", "yagiLogo"];
+  const [appsImage, setAppsImage] = useState("yagi");
 
   const [borrowInterest, setBorrowInterest] = useState<string>("");
   const [currentBorrowInterest, setCurrentBorrowInterest] = useState<string>();
@@ -130,11 +129,11 @@ const SpendLoanNav = ({ activeLoansData }) => {
   // const [transDeposit, setTransDeposit] = useState("");
   const [SpendLoan, setSpendLoan] = useState<any>();
   const dappsArray = [
-    { name: "1", supportedActions: ["Trade", "Swap"] },
-    { name: "2", supportedActions: ["Stake", "Trade"] },
-    { name: "3", supportedActions: ["Trade", "Swap"] },
+    { name: "jediswap", supportedActions: [ "Swap"] },
+    { name: "myswap", supportedActions: ["Swap"] },
+    { name: "yagi", supportedActions: ["Stake"] },
   ];
-  const [Yagidrop, setYagidrop] = useState(false);
+  const [dappDropdown, setDappDropdown] = useState(false);
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
@@ -236,9 +235,9 @@ const SpendLoanNav = ({ activeLoansData }) => {
     else setDepositAmount(0);
   };
 
-  const toggleyagi = () => {
-    setYagidrop(!Yagidrop);
-    setyagiDownArrow(Yagidrop ? arrowDown : arrowUp);
+  const toggleDappDropdown = () => {
+    setDappDropdown(!dappDropdown);
+    setDappDownArrow(dappDropdown ? arrowDown : arrowUp);
   };
 
   const handleCTAButton = () => {
@@ -397,6 +396,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                   if (!activeLoansData) return;
                   setmodal_deposit(true);
                   if (!selectedLoan) setSelectedLoan(activeLoansData?.[0]);
+                  setAppsImage(dapp.name);
                 }}
               >
                 <img
@@ -556,16 +556,16 @@ const SpendLoanNav = ({ activeLoansData }) => {
                         >
                           <Image
                             onClick={() => {
-                              toggleyagi();
+                              toggleDappDropdown();
                             }}
-                            src={yagiDownArrow}
+                            src={dappDownArrow}
                             alt="Picture of the author"
                             width="20px"
                             height="20px"
                           />
                         </div>
 
-                        {Yagidrop ? (
+                        {dappDropdown ? (
                           <>
                             <div
                               style={{
@@ -583,33 +583,35 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                 boxShadow: "0px 0px 10px #00000020",
                               }}
                             >
-                              {apps.map((select, index) => {
-                                if (appsImage === select) {
-                                  return <></>;
+                              {dappsArray.map((dapp, index) => {
+                                if(dapp.supportedActions.includes(title.label)) {
+                                  if (appsImage === dapp.name) {
+                                    return <></>;
+                                  }
+                                  return (
+                                    <div
+                                      style={{
+                                        margin: "10px 0",
+                                        cursor: "pointer",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        fontSize: "16px",
+                                      }}
+                                      key={index}
+                                      onClick={() => {
+                                        setAppsImage(`${dapp.name}`);
+                                        toggleDappDropdown();
+                                      }}
+                                    >
+                                      <img
+                                        src={`./${dapp.name}.svg`}
+                                        width="60px"
+                                        height="30px"
+                                      ></img>
+                                    </div>
+                                  );
                                 }
-                                return (
-                                  <div
-                                    style={{
-                                      margin: "10px 0",
-                                      cursor: "pointer",
-                                      display: "flex",
-                                      alignItems: "center",
-                                      fontSize: "16px",
-                                    }}
-                                    key={index}
-                                    onClick={() => {
-                                      setappsImage(`${apps[index]}`);
-                                      // setyagiselection(`${select}`);
-                                      toggleyagi();
-                                    }}
-                                  >
-                                    <img
-                                      src={`./${apps[index]}.svg`}
-                                      width="60px"
-                                      height="30px"
-                                    ></img>
-                                  </div>
-                                );
+                                return null;
                               })}
                             </div>
                           </>

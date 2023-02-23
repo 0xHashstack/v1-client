@@ -41,7 +41,7 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
     let borrow = 0;
 
     OffchainAPI.getOraclePrices().then((val) => {
-      for (let i = 0; i < val.oraclePrices.length; i++) {
+      for (let i = 0; i < val?.oraclePrices?.length; i++) {
         depositsArray.map((item: any, index: number) => {
           if (item.market === val.oraclePrices[i].name) {
             supply +=
