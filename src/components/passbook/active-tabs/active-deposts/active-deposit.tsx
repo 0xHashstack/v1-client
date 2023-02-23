@@ -433,14 +433,13 @@ const ActiveDeposit = ({
       >
         <Row
           style={{
+            marginLeft: "30px",
             alignItems: "center",
-            textAlign: "center",
+            textAlign: "left",
             gap: "50px",
           }}
         >
-          <Col style={{ marginLeft: "-10px" }}>
-            {`ID${assetParam.depositId}` ?? "N/a"}
-          </Col>
+          <Col>{`ID${assetParam.depositId}` ?? "N/a"}</Col>
 
           <Col style={{}}>
             <div>

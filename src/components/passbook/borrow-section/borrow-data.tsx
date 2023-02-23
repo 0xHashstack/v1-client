@@ -773,7 +773,7 @@ const BorrowData = ({
       >
         <Row
           style={{
-            margin: "15px 0px 15px 0px",
+            margin: "15px 0px 15px 10px",
             alignItems: "center",
             gap: "30px",
           }}

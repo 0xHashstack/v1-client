@@ -8,12 +8,21 @@ const SpendLoan = ({ activeLoansData }: { activeLoansData: any }) => {
 
   return (
     <>
-      <Table style={{ backgroundColor: "rgb(42, 46, 63)",position:'absolute',zIndex:'2',width:'99%',top:"-9px"}}>
+      <Table
+        style={{
+          backgroundColor: "rgb(42, 46, 63)",
+          position: "absolute",
+          zIndex: "2",
+          width: "99%",
+          top: "-9px",
+        }}
+      >
         <Row
           onClick={() => {
             setSelectedLoan("");
           }}
           style={{
+            marginTop: "15px",
             marginLeft: "50px",
             width: "96%",
             zIndex: "1000",
@@ -24,7 +33,7 @@ const SpendLoan = ({ activeLoansData }: { activeLoansData: any }) => {
             fontSize: "14px",
             backgroundColor: "#2A2E3F",
             textAlign: "left",
-            gap:'50px'
+            gap: "50px",
           }}
         >
           <Col
