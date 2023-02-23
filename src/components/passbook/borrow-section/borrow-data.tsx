@@ -789,6 +789,13 @@ const BorrowData = ({
               >
                 &nbsp; &nbsp;
                 {EventMap[assetParam.loanMarket.toUpperCase()]}
+              </div>{" "}
+              <div>
+                <img
+                  style={{ marginLeft: "25px" }}
+                  src="./swap.svg"
+                  height="15px"
+                />
               </div>
             </div>
             <CardTitle tag="h5"></CardTitle>
