@@ -521,6 +521,7 @@ const BorrowTab = ({
         style={{
           margin: "10px",
           textAlign: "left",
+          marginLeft: "20px",
         }}
       >
         {Array.isArray(activeLoansData) && activeLoansData.length > 0 ? (
@@ -532,7 +533,6 @@ const BorrowTab = ({
                   borderStyle: "hidden",
                   color: "rgb(140, 140, 140)",
                   fontWeight: "300",
-                  // margin: "1px 1px 1px 10px",
                   alignItems: "center",
                   gap: "30px",
                   fontSize: "14px",
@@ -706,7 +706,8 @@ const BorrowTab = ({
                         onClick={() => {
                           setmodal_borrow(false);
                         }}
-                        style={{ marginTop: "-10px", cursor: "pointer" }}
+                        style={{ marginTop: "5px", cursor: "pointer" }}
+                        height="15px"
                       />
                     </Col>
                     <div

@@ -754,6 +754,7 @@ const BorrowData = ({
         style={{
           color: "white",
           textAlign: "left",
+          marginLeft: "20px",
         }}
       >
         <Row
@@ -763,7 +764,7 @@ const BorrowData = ({
             gap: "30px",
           }}
         >
-          <Col style={{ marginLeft: "-10px", textAlign: "center" }}>
+          <Col style={{ marginLeft: "-10px", textAlign: "left" }}>
             ID{assetParam.loanId}
           </Col>
 
@@ -812,7 +813,7 @@ const BorrowData = ({
             </div>
           </Col>
 
-          <Col style={{ textAlign: "center" }}>
+          <Col>
             <div style={{ fontSize: "14px", fontWeight: "600" }}>
               {parseFloat(BNtoNum(Number(assetParam.loanInterest))).toFixed(6)}
               &nbsp;

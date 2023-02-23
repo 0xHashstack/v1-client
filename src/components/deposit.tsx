@@ -429,7 +429,8 @@ let Deposit: any = ({
                     onClick={() => {
                       setmodal_deposit(false);
                     }}
-                    style={{ marginTop: "-10px", cursor: "pointer" }}
+                    style={{ marginTop: "5px", cursor: "pointer" }}
+                    height="15px"
                   />
                 </Col>
 
@@ -562,34 +563,33 @@ let Deposit: any = ({
                         if (coin.name === tokenName) return <></>;
                         return (
                           <>
-                          <div
-                            key={index}
-                            style={{
-                              margin: "0px 0",
-                              cursor: "pointer",
-                              display: "flex",
-                              alignItems: "center",
-                              fontSize: "16px",
-                            }}
-                            onClick={() => {
-                              setTokenName(`${coin.name}`);
-                              setDropDown(false);
-                              setDropDownArrow(Downarrow);
-                              setAsset(`${coin.name}`);
-                              handleBalanceChange();
-                              // handleDepositAmountChange(0);
-                            }}
-                          >
-                            <Image
-                              src={`/${coin.name}.svg`}
-                              width="15px"
-                              height="15px"
-                              alt="coin image"
-                            />
-                            <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
-                            
-                          </div>
-                          <hr/>
+                            <div
+                              key={index}
+                              style={{
+                                margin: "0px 0",
+                                cursor: "pointer",
+                                display: "flex",
+                                alignItems: "center",
+                                fontSize: "16px",
+                              }}
+                              onClick={() => {
+                                setTokenName(`${coin.name}`);
+                                setDropDown(false);
+                                setDropDownArrow(Downarrow);
+                                setAsset(`${coin.name}`);
+                                handleBalanceChange();
+                                // handleDepositAmountChange(0);
+                              }}
+                            >
+                              <Image
+                                src={`/${coin.name}.svg`}
+                                width="15px"
+                                height="15px"
+                                alt="coin image"
+                              />
+                              <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                            </div>
+                            <hr />
                           </>
                         );
                       })}

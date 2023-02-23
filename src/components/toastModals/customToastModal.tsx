@@ -15,7 +15,8 @@ const ToastModal = ({
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
 }) => {
-  const [copySuccessMessage, setCopySuccessMessage] = useState("Text Copied !!");
+  const [copySuccessMessage, setCopySuccessMessage] =
+    useState("Text Copied !!");
   const [showOnCopy, setShowOnCopy] = useState(false);
 
   const copyToClipboard = async () => {
@@ -23,12 +24,11 @@ const ToastModal = ({
       await navigator.clipboard.writeText(textToCopy);
       setCopySuccessMessage("Copied !!");
       setShowOnCopy(true);
-      setTimeout(() => setShowOnCopy(false), 1000)
-    }
-    catch (error) {
+      setTimeout(() => setShowOnCopy(false), 1000);
+    } catch (error) {
       console.log(error);
     }
-  }
+  };
 
   return (
     <div>
@@ -52,9 +52,11 @@ const ToastModal = ({
           <div style={{ textAlign: "right", margin: "40px" }}>
             <img
               src="./cross.svg"
-              alt="successToast"
-              style={{ width: "20px", height: "20px", cursor: "pointer" }}
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                setIsOpen(false);
+              }}
+              style={{ marginTop: "5px", cursor: "pointer" }}
+              height="15px"
             />
           </div>
           <div style={{ margin: "40px 220px 20px 220px" }}>
@@ -73,13 +75,11 @@ const ToastModal = ({
             )}
           </div>
           <div style={{ fontSize: "24px" }}>{heading}</div>
-          <div onClick={copyToClipboard} style={{ cursor: 'pointer', marginTop: "20px" }}>
-            <u>{
-              showOnCopy ?
-                copySuccessMessage
-                :
-                desc
-            }</u>
+          <div
+            onClick={copyToClipboard}
+            style={{ cursor: "pointer", marginTop: "20px" }}
+          >
+            <u>{showOnCopy ? copySuccessMessage : desc}</u>
           </div>
         </div>
       </Modal>
