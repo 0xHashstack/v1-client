@@ -3,7 +3,6 @@ import { tokenAddressMap } from "../../stark-constants";
 import { number } from "starknet";
 import { GetErrorText, NumToBN } from "../../utils";
 import JediSwapAbi from "../../../../starknet-artifacts/contracts/integrations/modules/jedi_swap.cairo/jedi_swap_abi.json";
-import JediSwapAbi2 from "../../../../starknet-artifacts/contracts/integrations/modules/jedi_swap.cairo/jedi_swap.json"
 import { Abi } from "starknet";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -15,7 +14,7 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
   const [supportedPoolsJediSwap, setSupportedPoolsJediSwap] = useState();
 
   const { contract: l3Contract } = useContract({
-    abi: JediSwapAbi2.abi as Abi,
+    abi: JediSwapAbi as Abi,
     address: "0x1fc40e21ce68f61d538c070cbfea9483243bcdae0072b0f8c2c85fd4ecd28ab",
   });
 

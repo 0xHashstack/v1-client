@@ -1,15 +1,16 @@
 {
     "deposit" : {
         "newDeposit": 0,
-        "preClosureDeposit": 0.36,
+        "preClosureDeposit": 0.36
     },
     "loan": {
         "withdrawal": 0.1,
-        "newLoan": "0.1",
+        "newLoan": 0.1,
         "preClosureLoan": 0, 
         "swapLoan": 0.05,
         "repayLoan": 0.05,
         "withdrawCollateral-preClosed": 0.36,
-        "withdrawCollateral": 0.1
+        "withdrawCollateral": 0.1,
+        "SelfLiquidationFee": 0
     }
 }

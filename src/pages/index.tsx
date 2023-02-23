@@ -204,17 +204,6 @@ const Dashboard = () => {
     const loans: ILoans[] = [];
     for (let i = 0; i < loansData.length; ++i) {
       let loanData = loansData[i];
-      const cdr = new BigNumber(loanData.collateralAmount)
-        .div(new BigNumber(loanData.loanAmount))
-        .toNumber();
-      let debtCategory;
-      if (cdr >= 1) {
-        debtCategory = 1;
-      } else if (cdr >= 0.5 && cdr < 1) {
-        debtCategory = 2;
-      } else if (cdr >= 0.333 && cdr < 0.5) {
-        debtCategory = 3;
-      }
       let temp_len = {
         loanMarket: getTokenFromAddress(loanData.loanMarket)?.name,
         loanMarketAddress: loanData.loanMarket,
@@ -227,8 +216,8 @@ const Dashboard = () => {
         interestRate: 0,
         //interest market will always be same as loan market
         account,
-        cdr,
-        debtCategory,
+        cdr: loanData.cdr,
+        debtCategory: loanData.dc,
         loanId: loanData.loanId,
         isSwapped: loanData.state == "SWAPPED", // Swap status
         state: loanData.state,
