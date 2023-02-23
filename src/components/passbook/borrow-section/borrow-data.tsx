@@ -818,7 +818,7 @@ const BorrowData = ({
       >
         <Row
           style={{
-            margin: "15px 0px 15px 10px",
+            margin: "15px 0px 15px 20px",
             alignItems: "center",
             gap: "30px",
           }}
@@ -848,6 +848,13 @@ const BorrowData = ({
               >
                 &nbsp; &nbsp;
                 {EventMap[assetParam.loanMarket.toUpperCase()]}
+              </div>{" "}
+              <div>
+                <img
+                  style={{ marginLeft: "25px" }}
+                  src="./swap.svg"
+                  height="15px"
+                />
               </div>
             </div>
             <CardTitle tag="h5"></CardTitle>
@@ -1789,7 +1796,7 @@ const BorrowData = ({
                                   style={{
                                     backgroundColor: "#1D2131",
                                     // borderRight: "2px solid #393D4F",
-                                    borderRight: 'none',
+                                    borderRight: "none",
                                     height: "40px",
                                   }}
                                   type="number"
@@ -1819,7 +1826,11 @@ const BorrowData = ({
                                   style={{
                                     background: "#1D2131",
                                     color: "rgb(111, 111, 111)",
-                                    border: `1px solid ${!(!repayAmount || repayAmount <= 0) ? '#34c38f' : 'rgb(57, 61, 79)'}`,
+                                    border: `1px solid ${
+                                      !(!repayAmount || repayAmount <= 0)
+                                        ? "#34c38f"
+                                        : "rgb(57, 61, 79)"
+                                    }`,
                                     borderLeft: "none",
                                   }}
                                 >
@@ -2171,7 +2182,11 @@ const BorrowData = ({
                                   style={{
                                     background: "#1D2131",
                                     color: "rgb(111, 111, 111)",
-                                    border: `1px solid ${!isInvalid() ? '#34c38f' : 'rgb(57, 61, 79)'}`,
+                                    border: `1px solid ${
+                                      !isInvalid()
+                                        ? "#34c38f"
+                                        : "rgb(57, 61, 79)"
+                                    }`,
                                     borderLeft: "none",
                                   }}
                                 >

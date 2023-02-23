@@ -48,8 +48,10 @@ import MySpinner from "../../mySpinner";
 import { GetErrorText, NumToBN } from "../../../blockchain/utils";
 import { toast } from "react-toastify";
 import classnames from "classnames";
+import ToastModal from "../../toastModals/customToastModal";
 
 const ActiveDepositsTab = ({
+  reserves,
   activeDepositsData,
   modal_add_active_deposit,
   tog_add_active_deposit,
@@ -62,6 +64,7 @@ const ActiveDepositsTab = ({
   isTransactionDone,
   inputVal1,
 }: {
+  reserves: any;
   activeDepositsData: any;
   modal_add_active_deposit: any;
   tog_add_active_deposit: any;
@@ -97,6 +100,8 @@ const ActiveDepositsTab = ({
   const [commitmentArrow, setCommitmentArrow] = useState(arrowDown);
   const [commitmentValue, setCommitmentValue] = useState("Flexible");
   const [depositLoanRates, setDepositLoanRates] = useState<any>();
+  const [toastParam, setToastParam] = useState({});
+  const [isToastOpen, setIsToastOpen] = useState(false);
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
@@ -244,16 +249,17 @@ const ActiveDepositsTab = ({
     return (
       depositAmount < MinimumAmount[tokenName] ||
       depositAmount >
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-      10 ** (tokenDecimalsMap[tokenName] || 18)
+        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+          10 ** (tokenDecimalsMap[tokenName] || 18)
     );
   }
 
   const handleMax = async () => {
     setDepositAmount(
       Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-      10 ** (tokenDecimalsMap[asset] || 18)
+        10 ** (tokenDecimalsMap[asset] || 18)
     );
+    setValue(100);
   };
 
   const handleDeposit = async (asset: string) => {
@@ -312,9 +318,8 @@ const ActiveDepositsTab = ({
         open="false"
         style={{
           margin: "10px",
-          color: "black",
           textAlign: "left",
-          marginLeft: "50px",
+          marginLeft: "20px",
         }}
       >
         {Array.isArray(activeDepositsData) && activeDepositsData.length > 0 ? (
@@ -322,13 +327,12 @@ const ActiveDepositsTab = ({
             <Table>
               <Row
                 style={{
+                  marginLeft: "40px",
                   borderStyle: "hidden",
+                  color: "rgb(140, 140, 140)",
                   fontWeight: "300",
                   alignItems: "center",
-                  gap: "50px",
-                  textAlign: "center",
-                  color: "#8C8C8C",
-                  verticalAlign: "middle",
+                  gap: "30px",
                   fontSize: "14px",
                 }}
               >
@@ -382,6 +386,7 @@ const ActiveDepositsTab = ({
             {activeDepositsData.map((asset, key, allAssets) => {
               return (
                 <ActiveDeposit
+                  reserves={reserves}
                   key={key}
                   asset={asset}
                   historicalAPRs={historicalAPRs}
@@ -505,7 +510,6 @@ const ActiveDepositsTab = ({
                         }}
                       >
                         Minimum Commitment Period
-
                       </div>
 
                       <label
@@ -571,7 +575,7 @@ const ActiveDepositsTab = ({
                               width: "420px",
                               margin: "0px auto",
                               marginBottom: "20px",
-                              padding: "5px 10px",
+                              padding: "10px 10px",
                               backgroundColor: "#1D2131",
                               boxShadow: "0px 0px 10px #00000020",
                             }}
@@ -579,10 +583,11 @@ const ActiveDepositsTab = ({
                             {Coins.map((coin, index) => {
                               if (coin.name === tokenName) return <></>;
                               return (
+                                <>
                                   <div
                                     key={index}
                                     style={{
-                                      margin: "10px 0",
+                                      margin: "0px 0",
                                       cursor: "pointer",
                                       display: "flex",
                                       alignItems: "center",
@@ -599,16 +604,17 @@ const ActiveDepositsTab = ({
                                   >
                                     <Image
                                       src={`/${coin.name}.svg`}
-                                      width="24px"
-                                      height="24px"
+                                      width="15px"
+                                      height="15px"
                                       alt="coin image"
                                     />
                                     <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
                                   </div>
+                                  {coin.name !== "DAI" ? <hr /> : null}
+                                </>
                               );
                             })}
                           </div>
-                          <hr/>
                         </>
                       ) : (
                         <></>
@@ -621,7 +627,7 @@ const ActiveDepositsTab = ({
                               borderRadius: "5px",
                               position: "absolute",
                               zIndex: "100",
-                              top: "212px",
+                              top: "215px",
                               left: "39px",
                               width: "420px",
                               margin: "0px auto",
@@ -646,6 +652,7 @@ const ActiveDepositsTab = ({
                             >
                               &nbsp;1 month
                             </div>
+                            <hr />
                             <div
                               style={{
                                 fontSize: "15px",
@@ -661,6 +668,7 @@ const ActiveDepositsTab = ({
                             >
                               &nbsp;2 weeks
                             </div>
+                            <hr />
                             <div
                               style={{
                                 fontSize: "15px",
@@ -670,7 +678,7 @@ const ActiveDepositsTab = ({
                               onClick={() => {
                                 setCommitmentValue("Flexible");
                                 setCommitmentDropDown(false);
-                                setCommitmentArrow(arrowDown);
+                                setCommitmentArrow(Downarrow);
                                 handleCommitChange(0);
                               }}
                             >
@@ -685,7 +693,6 @@ const ActiveDepositsTab = ({
                     <FormGroup>
                       <div className="row mb-4">
                         <Col sm={12}>
-                          {/* <Label for="amount">Amount</Label> */}
                           <InputGroup>
                             <Input
                               style={{
@@ -710,7 +717,11 @@ const ActiveDepositsTab = ({
                               style={{
                                 background: "#1D2131",
                                 color: "rgb(111, 111, 111)",
-                                border: "1px solid rgb(57, 61, 79)",
+                                border: `1px solid ${
+                                  !isInvalid() === true
+                                    ? "#34c38f"
+                                    : "rgb(57, 61, 79)"
+                                }`,
                                 borderLeft: "none",
                               }}
                             >
@@ -764,7 +775,7 @@ const ActiveDepositsTab = ({
                                       )
                                     ) /
                                       10 ** (tokenDecimalsMap[asset] || 18))) /
-                                  100
+                                    100
                                 );
                                 setValue(value);
                               }}
@@ -784,12 +795,12 @@ const ActiveDepositsTab = ({
                           </div>
                           {depositAmount != 0 &&
                             depositAmount >
-                            Number(
-                              uint256.uint256ToBN(
-                                dataBalance ? dataBalance[0] : 0
-                              )
-                            ) /
-                            10 ** (tokenDecimalsMap[asset] || 18) && (
+                              Number(
+                                uint256.uint256ToBN(
+                                  dataBalance ? dataBalance[0] : 0
+                                )
+                              ) /
+                                10 ** (tokenDecimalsMap[asset] || 18) && (
                               <FormText style={{ color: "#e97272 !important" }}>
                                 {`Amount is greater than your balance`}
                               </FormText>
@@ -841,7 +852,8 @@ const ActiveDepositsTab = ({
                             {depositLoanRates && commitPeriod < 3 ? (
                               `${parseFloat(
                                 depositLoanRates[
-                                  `${getTokenFromName(asset as string)?.address
+                                  `${
+                                    getTokenFromName(asset as string)?.address
                                   }__${commitPeriod}`
                                 ]?.depositAPR?.apr100x as string
                               )} %`
@@ -867,7 +879,14 @@ const ActiveDepositsTab = ({
                               color: "rgb(111, 111, 111)",
                             }}
                           >
-                            0.43
+                            {reserves.loans ? (
+                              (
+                                (100 * reserves.loans[tokenName]) /
+                                reserves.deposits[tokenName]
+                              ).toFixed(2) + "%"
+                            ) : (
+                              <MySpinner />
+                            )}
                           </div>
                         </div>
                         <div
@@ -922,10 +941,22 @@ const ActiveDepositsTab = ({
                     </div>
                   </Form>
                 ) : (
-                  <h2 style={{ color: "black" }}>Please connect your wallet</h2>
+                  <h2 style={{ color: "white" }}>Please connect your wallet</h2>
                 )}
               </div>
             </Modal>
+            {isToastOpen ? (
+              <ToastModal
+                isOpen={isToastOpen}
+                setIsOpen={setIsToastOpen}
+                success={toastParam.success}
+                heading={toastParam.heading}
+                desc={toastParam.desc}
+                textToCopy={toastParam.textToCopy}
+              />
+            ) : (
+              <></>
+            )}
           </>
         )}
       </UncontrolledAccordion>

@@ -72,10 +72,12 @@ import { IDepositLoanRates } from "../../../borrow";
 import ToastModal from "../../../toastModals/customToastModal";
 
 const ActiveDeposit = ({
+  reserves,
   asset: assetParam,
   historicalAPRs,
   allAssets,
 }: {
+  reserves: any;
   asset: any;
   historicalAPRs: any;
   allAssets: any;
@@ -424,18 +426,18 @@ const ActiveDeposit = ({
     <div style={{ borderTop: "5px" }}>
       <UncontrolledAccordion
         defaultOpen="0"
+        open="false"
         style={{
-          margin: "10px",
           color: "white",
           textAlign: "left",
+          marginLeft: "20px",
         }}
       >
         <Row
           style={{
-            marginLeft: "30px",
+            margin: "15px 0px 15px 20px",
             alignItems: "center",
-            textAlign: "left",
-            gap: "50px",
+            gap: "20px",
           }}
         >
           <Col>{`ID${assetParam.depositId}` ?? "N/a"}</Col>
@@ -456,10 +458,10 @@ const ActiveDeposit = ({
                 className="mr-6"
                 style={{
                   display: "inline-block",
-                  fontSize: "16px",
+                  fontSize: "14px",
                 }}
               >
-                &nbsp; &nbsp;
+                &nbsp;
                 {EventMap[assetParam.market.toUpperCase()]}
               </div>
             </div>
@@ -484,31 +486,6 @@ const ActiveDeposit = ({
               </span>
             </div>
           </Col>
-
-          {/* <Col className="mr-4 ">
-            <span style={{ fontSize: "14px", fontWeight: "600" }}>
-              {assetParam &&
-                historicalAPRs &&
-                depositInterestAccrued(assetParam, historicalAPRs)}
-              &nbsp;
-              {EventMap[assetParam.market.toUpperCase()]}
-            </span>
-            <div
-              className="mr-6"
-              style={{
-                display: "inline-block",
-                fontSize: "13px",
-              }}
-            >
-              <span style={{ fontSize: "14px" }}>
-                {assetParam &&
-                  historicalAPRs &&
-                  currentDepositInterestRate(assetParam, historicalAPRs)}
-                %APR
-              </span>
-            </div>
-          </Col> */}
-
           <Col>
             <div style={{ fontSize: "14px", fontWeight: "600" }}>
               {assetParam &&
@@ -574,7 +551,6 @@ const ActiveDeposit = ({
                 border: "none",
               }}
               onClick={() => {
-                // setAction(!action);
                 setmodal_deposit(!modal_deposit);
               }}
             >
@@ -773,9 +749,8 @@ const ActiveDeposit = ({
                         style={{
                           backgroundColor: "#1D2131",
                           padding: "10px ",
-                          // borderRight: "1px solid rgb(57, 61, 79)",
                           borderRight: "none",
-                          color: "#393D4F",
+                          color: "#8C8C8C",
                         }}
                         type="number"
                         className="form-control"
@@ -988,7 +963,14 @@ const ActiveDeposit = ({
                           color: "rgb(111, 111, 111)",
                         }}
                       >
-                        0.43
+                        {reserves.loans ? (
+                          (
+                            (100 * reserves.loans[tokenName]) /
+                            reserves.deposits[tokenName]
+                          ).toFixed(2) + "%"
+                        ) : (
+                          <MySpinner />
+                        )}
                       </div>
                     </div>
                     <div

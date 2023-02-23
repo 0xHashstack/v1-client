@@ -68,9 +68,11 @@ interface ICoin {
 }
 
 let Deposit: any = ({
+  reserves,
   asset: assetParam,
   depositLoanRates: depositLoanRatesParam,
 }: {
+  reserves: any;
   asset: string;
   depositLoanRates: any;
 }) => {
@@ -83,7 +85,7 @@ let Deposit: any = ({
   ];
 
   const [asset, setAsset] = useState(assetParam);
-  const [value, setValue] = useState(50);
+  const [value, setValue] = useState<any>(0);
   const [tokenName, setTokenName] = useState(asset);
   const [tokenIcon, setTokenIcon] = useState("mdi-bitcoin");
 
@@ -114,7 +116,6 @@ let Deposit: any = ({
   const [transDeposit, setTransDeposit] = useState("");
   const [toastParam, setToastParam] = useState({});
   const [isToastOpen, setIsToastOpen] = useState(false);
-  
 
   const approveTransactionReceipt = useTransactionReceipt({
     hash: transApprove,
@@ -272,7 +273,6 @@ let Deposit: any = ({
     // Round off percentage to 2 decimal places
     percentage = Math.round(percentage * 100) / 100;
     setValue(percentage);
-    
   };
 
   const handleBalanceChange = async () => {
@@ -404,7 +404,7 @@ let Deposit: any = ({
   }, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
 
   function isInvalid() {
-    if (!depositAmount)  return  true;
+    if (!depositAmount) return true;
     return (
       depositAmount < MinimumAmount[asset] ||
       depositAmount >
@@ -412,7 +412,6 @@ let Deposit: any = ({
       10 ** (tokenDecimalsMap[asset] || 18)
     );
   }
-  
 
   return (
     <div>
@@ -630,7 +629,7 @@ let Deposit: any = ({
                               />
                               <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
                             </div>
-                            <hr />
+                            {coin.name !== "DAI" ? <hr /> : null}
                           </>
                         );
                       })}
@@ -653,7 +652,7 @@ let Deposit: any = ({
                         margin: "0px auto",
                         marginBottom: "20px",
                         padding: "5px 10px",
-                        backgroundColor: "rgb(42, 46, 63)",
+                        backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px #00000020",
                       }}
                     >
@@ -726,10 +725,9 @@ let Deposit: any = ({
                         id="amount"
                         min={MinimumAmount[asset]}
                         placeholder={`Minimum ${MinimumAmount[asset]} ${asset}`}
-                        onChange={handleDepositAmountChange }
+                        onChange={handleDepositAmountChange}
                         value={depositAmount}
                         valid={!isInvalid()}
-                        
                       />
                       <Button
                         outline
@@ -739,7 +737,11 @@ let Deposit: any = ({
                         style={{
                           background: "#1D2131",
                           color: "rgb(111, 111, 111)",
-                          border: `1px solid ${!isInvalid() === true ?'#34c38f':"rgb(57, 61, 79)"}`,
+                          border: `1px solid ${
+                            !isInvalid() === true
+                              ? "#34c38f"
+                              : "rgb(57, 61, 79)"
+                          }`,
                           borderLeft: "none",
                         }}
                       >
@@ -888,7 +890,14 @@ let Deposit: any = ({
                         color: "rgb(111, 111, 111)",
                       }}
                     >
-                      0.43
+                      {reserves.loans ? (
+                        (
+                          (100 * reserves.loans[tokenName]) /
+                          reserves.deposits[tokenName]
+                        ).toFixed(2) + "%"
+                      ) : (
+                        <MySpinner />
+                      )}
                     </div>
                   </div>
                   <div
@@ -942,7 +951,7 @@ let Deposit: any = ({
               </div>
             </Form>
           ) : (
-            <h2>Please connect your wallet</h2>
+            <h2 style={{ color: "white" }}>Please connect your wallet</h2>
           )}
         </div>
         {isToastOpen ? (

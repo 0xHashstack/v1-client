@@ -110,7 +110,6 @@ interface ILoans {
 const loanTypes = ["Repaid", "Active"];
 
 const Dashboard = () => {
-  const [dropDownArrow, setDropDownArrow] = useState(connectWalletArrowDown);
   const [isLoading, setIsLoading] = useState(true);
   const [activeDepositsData, setActiveDepositsData] = useState<IDeposit[]>([]);
   const [activeLoansData, setActiveLoansData] = useState<ILoans[]>([]);
@@ -140,11 +139,6 @@ const Dashboard = () => {
   const [modal_withdraw_active_deposit, setmodal_withdraw_active_deposit] =
     useState(false);
 
-  const [loanOption, setLoanOption] = useState();
-  const [swapOption, setSwapOption] = useState();
-  const [loanCommitement, setLoanCommitement] = useState();
-
-  const [collateralOption, setCollateralOption] = useState();
   const [depositInterestChange, setDepositInterestChange] = useState("NONE");
   const [borrowInterestChange, setBorrowInterestChange] = useState("NONE");
 
@@ -166,23 +160,9 @@ const Dashboard = () => {
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
   }, [_account]);
 
-  const dappsArray = ["1", "2", "3", "4", "5", "6", "7"];
-
-  const [uf, setUf] = useState(null);
-  const [txHistoryData, setTxHistoryData] = useState(null);
-  const [totalUsers, setTotalUsers] = useState(null);
-  const [dominantMarket, setDominantMarket] = useState("");
-
-  const [collateral_active_loan, setCollateralActiveLoan] = useState(true);
-  const [repay_active_loan, setReapyActiveLoan] = useState(false);
-  const [withdraw_active_loan, setWithdrawActiveLoan] = useState(false);
-  const [swap_active_loan, setSwapActiveLoan] = useState(true);
-  const [swap_to_active_loan, setSwapToActiveLoan] = useState(false);
-  // Context hook for the CustomTab
   const { customActiveTab, toggleCustom } = useContext(TabContext);
 
-  const [CoinsSupplyMetrics, setCoinsSupplyMetrics] = useState("");
-  const [CoinsBorrowMetrics, setCoinsBorrowMetrics] = useState("");
+  const [reserves, setReserves] = useState();
 
   const [typeOfLoans, setTypeOfLoans] = useState("Active");
   const [isDropDownOpenTypeOfLoans, setIsDropDownOpenTypeOfLoans] =
@@ -199,7 +179,13 @@ const Dashboard = () => {
     }
   }
 
-  let utilizationFactor;
+  useEffect(() => {
+    const getReserves = async () => {
+      const res = await OffchainAPI.getReserves();
+      setReserves(res?.reserves);
+    };
+    getReserves();
+  }, []);
 
   const onLoansData = async (loansData: any[]) => {
     console.log("Loans: ", loansData);
@@ -514,6 +500,7 @@ const Dashboard = () => {
       case "1":
         return (
           <ActiveDepositsTab
+            reserves={reserves}
             activeDepositsData={activeDepositsData}
             modal_add_active_deposit={modal_add_active_deposit}
             tog_add_active_deposit={tog_add_active_deposit}
@@ -823,6 +810,7 @@ const Dashboard = () => {
                     )}{" "}
                     {customActiveTab === "1" ? (
                       <LoanBorrowCommitment
+                        reserves={reserves}
                         isLoading={isLoading}
                         activeDepositsData={activeDepositsData}
                         activeLoansData={filteredLoans}
@@ -853,7 +841,7 @@ const Dashboard = () => {
                       <div>
                         <Col lg={12}>
                           {customActiveTab === "6" ? (
-                            <div style={{ color: "black" }}>
+                            <div style={{ color: "black", marginTop: "30px" }}>
                               <Liquidation
                                 activeLiquidationsData={activeLiquidationsData}
                                 isTransactionDone={isTransactionDone}

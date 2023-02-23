@@ -42,6 +42,8 @@ import { Abi, uint256 } from "starknet";
 import { ICoin } from "../../dashboard/dashboard-body";
 import MySpinner from "../../mySpinner";
 import { MinimumAmount } from "../../../blockchain/constants";
+import useMaxloan from "../../../blockchain/hooks/Max_loan_given_collat";
+import ToastModal from "../../toastModals/customToastModal";
 
 const BorrowTab = ({
   asset: assetParam,
@@ -89,7 +91,7 @@ const BorrowTab = ({
     { name: "DAI", icon: "mdi-dai" },
   ];
 
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState<any>(0);
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(Downarrow);
   const [asset, setAsset] = useState(assetParam);
@@ -135,6 +137,7 @@ const BorrowTab = ({
 
   const [toastParam, setToastParam] = useState({});
   const [isToastOpen, setIsToastOpen] = useState(false);
+  const [MaxloanData, setMaxloanData] = useState(0);
 
   const [addCollateralTransactionReceipt, setAddCollateralTransactionReceipt] =
     useState<UseTransactionReceiptResult>({
@@ -249,6 +252,12 @@ const BorrowTab = ({
   });
 
   useEffect(() => {
+    OffchainAPI.getProtocolDepositLoanRates().then((val) => {
+      setDepositLoanRates(val);
+    });
+  }, []);
+
+  useEffect(() => {
     // console.log(
     //   "withdraw tx receipt",
     //   withdrawLoanTransactionReceipt.data?.transaction_hash,
@@ -282,6 +291,26 @@ const BorrowTab = ({
   /* =================== add collateral states ======================= */
   const [inputVal1, setInputVal1] = useState(0);
   const [isLoading, setLoading] = useState(false);
+
+  const [transBorrow, setTransBorrow] = useState("");
+  const requestBorrowTransactionReceipt = useTransactionReceipt({
+    hash: transBorrow,
+    watch: true,
+  });
+
+  const { dataMaxLoan, errorMaxLoan, loadingMaxLoan, refreshMaxLoan } =
+    useMaxloan(tokenName, asset, Number(borrowParams.collateralAmount));
+  let l = setTimeout(() => {
+    if (loadingMaxLoan === false && !errorMaxLoan) {
+      console.log(
+        "printing",
+        Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1))
+      );
+      const Data = Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1));
+      setMaxloanData(Data);
+    }
+    clearTimeout(l);
+  }, 1000);
 
   const toggleCustoms = (tab: string) => {
     if (customActiveTabs !== tab) {
@@ -324,6 +353,14 @@ const BorrowTab = ({
     if (loanActionTab !== tab) {
       setLoanActionTab(tab);
     }
+  };
+
+  const handleLoanInputChange = async (e: any) => {
+    console.log("asset ajeeb", e.target.value);
+    setBorrowParams({
+      ...borrowParams,
+      loanAmount: e.target.value,
+    });
   };
 
   function tog_swap_active_loan() {
@@ -375,6 +412,8 @@ const BorrowTab = ({
       calldata: [diamondAddress, NumToBN(inputVal1 as number, 18), 0],
     },
   });
+
+  const [depositLoanRates, setDepositLoanRates] = useState<IDepositLoanRates>();
   // Adding collateral
 
   /* ============================== Withdraw Loan ============================ */
@@ -441,6 +480,47 @@ const BorrowTab = ({
     setmodal_borrow(!modal_borrow);
   };
 
+  const handleMax = async () => {
+    setBorrowParams({
+      ...borrowParams,
+      collateralAmount:
+        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+        10 ** (tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18),
+    });
+    await refreshAllowance();
+  };
+
+  const handleMaxLoan = async () => {
+    setBorrowParams({
+      ...borrowParams,
+      loanAmount: MaxloanData,
+    });
+
+    await refreshAllowance();
+  };
+
+  const handleCollateralInputChange = async (e: any) => {
+    setBorrowParams({
+      ...borrowParams,
+      collateralAmount: e.target.value,
+    });
+    const balance =
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+      10 ** (tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18);
+    if (!balance) return;
+    // calculate percentage of collateral of balance
+    var percentage = (e.target.value / balance) * 100;
+    percentage = Math.max(0, percentage);
+    if (percentage > 100) {
+      setValue("Greater than 100");
+      return;
+    }
+    // Round off percentage to 2 decimal places
+    percentage = Math.round(percentage * 100) / 100;
+    setValue(percentage);
+    await refreshAllowance();
+  };
+
   const handleSwap = async () => {
     console.log(swapMarket, " ", loanId, " ", diamondAddress);
     if (!swapMarket && !loanId && !diamondAddress) {
@@ -499,9 +579,52 @@ const BorrowTab = ({
     setCommitmentArrow(Downarrow);
   };
 
-  function handleBorrow(tokenName: string): void {
-    throw new Error("Function not implemented.");
-  }
+  const handleBorrow = async (asset: string) => {
+    if (
+      !tokenAddressMap[asset] ||
+      !borrowParams.loanAmount ||
+      (!borrowParams.commitBorrowPeriod && !diamondAddress)
+    ) {
+      toast.error(`${GetErrorText(`Invalid request`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
+    }
+    if (borrowParams.collateralAmount === 0) {
+      toast.error(`${GetErrorText(`Can't use collateral 0 of ${asset}`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+    }
+    try {
+      let val = await executeBorrow();
+      setTransBorrow(val.transaction_hash);
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash",
+        textToCopy: val.transaction_hash,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
+    } catch (err) {
+      console.log(err, "err borrow");
+      const toastParamValue = {
+        success: false,
+        heading: "Borrow Transaction Failed",
+        desc: "Copy the error",
+        textToCopy: err,
+      };
+      setToastParam(toastParamValue);
+      setIsToastOpen(true);
+      toast.error(`${GetErrorText(`Borrow request for ${asset} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
+    }
+  };
 
   const handleCollateralChange = async (asset: any) => {
     setBorrowParams({
@@ -692,6 +815,7 @@ const BorrowTab = ({
               >
                 {account ? (
                   <Form>
+                    {/* <div className="row mb-4"> */}
                     <Col
                       sm={8}
                       style={{
@@ -729,11 +853,12 @@ const BorrowTab = ({
                         padding: "5px 10px",
                         fontSize: "18px",
                         borderRadius: "5px",
-                        border: "2px solid rgb(57, 61, 79)",
+                        border: "1px solid rgb(57, 61, 79)",
                         fontWeight: "200",
                       }}
                     >
                       <div
+                        onClick={toggleDropdown}
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -741,6 +866,7 @@ const BorrowTab = ({
                         }}
                       >
                         <div>
+                          {" "}
                           <img
                             src={`./${tokenName}.svg`}
                             width="24px"
@@ -757,7 +883,6 @@ const BorrowTab = ({
                           }}
                         >
                           <Image
-                            onClick={toggleDropdown}
                             src={dropDownArrow}
                             alt="Picture of the author"
                             width="14px"
@@ -770,8 +895,8 @@ const BorrowTab = ({
                       style={{
                         fontSize: "11px",
                         fontWeight: "600",
-                        color: "#8b8b8b",
                         margin: "-5px 0 5px 0",
+                        color: "#8b8b8b",
                       }}
                     >
                       Collateral Amount
@@ -779,37 +904,43 @@ const BorrowTab = ({
                     <InputGroup>
                       <Input
                         style={{
-                          backgroundColor: "#1D2131",
-                          borderRight: "1px solid #FFF",
                           height: "40px",
+                          backgroundColor: "#1D2131",
+                          // borderRight: "1px solid rgb(57, 61, 79)",
+                          borderRight: "none",
                         }}
                         type="number"
                         className="form-control"
                         id="amount"
                         placeholder="Amount"
-                        // onChange={handleCollateralInputChange}
+                        onChange={handleCollateralInputChange}
                         value={borrowParams.collateralAmount}
-                        // valid={isValidColleteralAmount()}
+                        valid={isValidColleteralAmount()}
                       />
-                      <Button
-                        outline
-                        type="button"
-                        className="btn btn-md w-xs"
-                        style={{
-                          background: "#1D2131",
-                          color: "rgb(111, 111, 111)",
-                          border: "1px solid rgb(57, 61, 79)",
-                          borderLeft: "none",
-                        }}
-                      >
-                        <span
-                          style={{
-                            borderBottom: "2px   rgb(255, 255, 255",
-                          }}
-                        >
-                          MAX
-                        </span>
-                      </Button>
+                      {
+                        <>
+                          <Button
+                            outline
+                            type="button"
+                            className="btn btn-md w-xs"
+                            onClick={handleMax}
+                            style={{
+                              background: "#1D2131",
+                              color: "rgb(111, 111, 111)",
+                              border: `1px solid ${
+                                isValidColleteralAmount()
+                                  ? "#34c38f"
+                                  : "rgb(57, 61, 79)"
+                              }`,
+                              borderLeft: "none",
+                            }}
+                          >
+                            <span style={{ borderBottom: "2px  #fff" }}>
+                              MAX
+                            </span>
+                          </Button>
+                        </>
+                      }
                     </InputGroup>
                     <div
                       style={{
@@ -820,24 +951,20 @@ const BorrowTab = ({
                       }}
                     >
                       Wallet Balance :{" "}
-                      {!loadingBalance ? (
+                      {dataBalance ? (
                         (
-                          Number(uint256.uint256ToBN(dataBalance?.[0] || 0)) /
-                          10 **
-                            (tokenDecimalsMap[borrowParams?.collateralMarket] ||
-                              18)
-                        ).toString()
+                          Number(uint256.uint256ToBN(dataBalance[0])) /
+                          10 ** (tokenDecimalsMap[tokenName] || 18)
+                        ).toFixed(4)
                       ) : (
                         <MySpinner />
                       )}
-                      <div style={{ color: "#76809D" }}>
-                        &nbsp;{borrowParams?.collateralMarket}
-                      </div>
+                      <div style={{ color: "#76809D" }}>&nbsp;{tokenName} </div>
                     </div>
                     <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
                       <Slider
-                        handlerActiveColor="rgb(57, 61, 79)"
-                        stepSize={5}
+                        handlerActiveColor="#1D2131"
+                        stepSize={0.5}
                         value={value}
                         trackColor="rgb(57, 61, 79)"
                         handlerShape="rounded"
@@ -847,29 +974,34 @@ const BorrowTab = ({
                         grabCursor={false}
                         showMarkers="hidden"
                         onChange={(value: any) => {
-                          setBorrowParams({
-                            ...borrowParams,
-                            collateralAmount:
-                              (value *
-                                (Number(uint256.uint256ToBN(dataBalance[0])) /
-                                  10 **
-                                    (tokenDecimalsMap[
-                                      borrowParams?.collateralMarket
-                                    ] || 18))) /
-                              100,
-                          });
+                          if (value == 100) handleMax();
+                          else {
+                            setBorrowParams({
+                              ...borrowParams,
+                              collateralAmount:
+                                (value *
+                                  (Number(
+                                    uint256.uint256ToBN(
+                                      dataBalance ? dataBalance[0] : 0
+                                    )
+                                  ) /
+                                    10 ** 18)) /
+                                100,
+                            });
+                          }
                           setValue(value);
                         }}
                         valueRenderer={(value: any) => `${value}%`}
                         showValue={false}
                       />
+                      {/* </div> */}
                     </div>{" "}
                     <div
                       style={{
                         fontSize: "10px",
                         position: "absolute",
-                        right: "38px",
-                        top: "275px",
+                        right: "39px",
+                        top: "267px",
                       }}
                     >
                       {value}%
@@ -894,29 +1026,32 @@ const BorrowTab = ({
                           {Coins.map((coin, index) => {
                             if (coin.name === tokenName) return <></>;
                             return (
-                              <div
-                                key={index}
-                                style={{
-                                  margin: "10px 0",
-                                  cursor: "pointer",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  fontSize: "16px",
-                                }}
-                                onClick={() => {
-                                  setTokenName(`${coin.name}`);
-                                  setDropDown(false);
-                                  setDropDownArrow(Downarrow);
-                                  handleCollateralChange(`${coin.name}`);
-                                }}
-                              >
-                                <img
-                                  src={`./${coin.name}.svg`}
-                                  width="24px"
-                                  height="24px"
-                                ></img>
-                                <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
-                              </div>
+                              <>
+                                <div
+                                  key={index}
+                                  style={{
+                                    margin: "10px 0",
+                                    cursor: "pointer",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    fontSize: "16px",
+                                  }}
+                                  onClick={() => {
+                                    setTokenName(`${coin.name}`);
+                                    setDropDown(false);
+                                    setDropDownArrow(Downarrow);
+                                    handleCollateralChange(`${coin.name}`);
+                                  }}
+                                >
+                                  <img
+                                    src={`./${coin.name}.svg`}
+                                    width="15px"
+                                    height="15px"
+                                  ></img>
+                                  <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                                </div>
+                                {coin.name !== "DAI" ? <hr /> : null}
+                              </>
                             );
                           })}
                         </div>
@@ -946,29 +1081,32 @@ const BorrowTab = ({
                           {Coins.map((coin, index) => {
                             if (coin.name === borrowTokenName) return <></>;
                             return (
-                              <div
-                                key={index}
-                                style={{
-                                  margin: "10px 0",
-                                  cursor: "pointer",
-                                  display: "flex",
-                                  alignItems: "center",
-                                  fontSize: "16px",
-                                }}
-                                onClick={() => {
-                                  setBorrowTokenName(`${coin.name}`);
-                                  setBorrowDropDown(false);
-                                  setBorrowArrow(Downarrow);
-                                  setAsset(`${coin.name}`);
-                                }}
-                              >
-                                <img
-                                  src={`./${coin.name}.svg`}
-                                  width="24px"
-                                  height="24px"
-                                ></img>
-                                <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
-                              </div>
+                              <>
+                                <div
+                                  key={index}
+                                  style={{
+                                    margin: "10px 0",
+                                    cursor: "pointer",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    fontSize: "16px",
+                                  }}
+                                  onClick={() => {
+                                    setBorrowTokenName(`${coin.name}`);
+                                    setBorrowDropDown(false);
+                                    setBorrowArrow(Downarrow);
+                                    setAsset(`${coin.name}`);
+                                  }}
+                                >
+                                  <img
+                                    src={`./${coin.name}.svg`}
+                                    width="15px"
+                                    height="15px"
+                                  ></img>
+                                  <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                                </div>
+                                {coin.name !== "DAI" ? <hr /> : null}
+                              </>
                             );
                           })}
                         </div>
@@ -983,7 +1121,7 @@ const BorrowTab = ({
                             borderRadius: "5px",
                             position: "absolute",
                             zIndex: "100",
-                            top: "444px",
+                            top: "443px",
                             left: "39px",
                             // top: "-10px",
 
@@ -1010,6 +1148,7 @@ const BorrowTab = ({
                           >
                             &nbsp;1 month
                           </div>
+                          <hr />
                           <div
                             style={{
                               fontSize: "15px",
@@ -1047,7 +1186,7 @@ const BorrowTab = ({
                         padding: "5px 10px",
                         fontSize: "18px",
                         borderRadius: "5px",
-                        border: "2px solid rgb(57, 61, 79)",
+                        border: "1px solid rgb(57, 61, 79)",
                         fontWeight: "200",
                       }}
                     >
@@ -1077,7 +1216,6 @@ const BorrowTab = ({
                           }}
                         >
                           <Image
-                            // onClick={toggleBorrowDropdown}
                             src={borrowArrow}
                             alt="Picture of the author"
                             width="14px"
@@ -1105,11 +1243,17 @@ const BorrowTab = ({
                               padding: "5px 10px",
                               fontSize: "15px",
                               borderRadius: "5px",
-                              border: "2px solid rgb(57, 61, 79)",
+                              border: "1px solid rgb(57, 61, 79)",
                               fontWeight: "400",
                             }}
                           >
                             <div
+                              onClick={() => {
+                                setCommitmentDropDown(!commitmentDropDown);
+                                setCommitmentArrow(
+                                  commitmentDropDown ? Downarrow : UpArrow
+                                );
+                              }}
                               style={{
                                 display: "flex",
                                 justifyContent: "space-between",
@@ -1156,39 +1300,47 @@ const BorrowTab = ({
                       <InputGroup style={{ marginBottom: "30px" }}>
                         <Input
                           style={{
-                            backgroundColor: "#1D2131",
-                            borderRight: "1px solid rgb(57, 61, 79)",
                             height: "40px",
+                            backgroundColor: "#1D2131",
+                            // borderRight: "1px solid rgb(57, 61, 79)",
+                            borderRight: "none",
                           }}
                           id="loan-amount"
-                          type="text"
+                          type="number"
                           className="form-control"
-                          placeholder={`Minimum amount = ${MinimumAmount[tokenName]}`}
-                          min={MinimumAmount[tokenName]}
+                          placeholder={`Minimum amount = ${MinimumAmount[asset]}`}
+                          min={MinimumAmount[asset]}
                           value={borrowParams.loanAmount as number}
+                          onChange={handleLoanInputChange}
+                          valid={isLoanAmountValid()}
                         />
                         <Button
                           outline
                           type="button"
                           className="btn btn-md w-xs"
-                          // onClick={handleMaxLoan}
+                          onClick={handleMaxLoan}
                           // disabled={balance ? false : true}
                           style={{
                             background: "#1D2131",
                             color: "rgb(111, 111, 111)",
+                            border: `1px solid ${
+                              isLoanAmountValid()
+                                ? "#34c38f"
+                                : "rgb(57, 61, 79)"
+                            }`,
                             borderLeft: "none",
-                            border: "1px solid rgb(57, 61, 79)",
                           }}
                         >
-                          <span
-                            style={{
-                              borderBottom: "2px  rgb(255, 255, 255)",
-                            }}
-                          >
-                            MAX
-                          </span>
+                          {!loadingMaxLoan ? (
+                            <span style={{ borderBottom: "2px  #fff" }}>
+                              MAX
+                            </span>
+                          ) : (
+                            <MySpinner text="" />
+                          )}
                         </Button>
                       </InputGroup>
+                      {/* </label> */}
                     </FormGroup>
                     <div className="d-grid gap-2">
                       <div
@@ -1252,7 +1404,7 @@ const BorrowTab = ({
                             style={{
                               textAlign: "right",
                               fontWeight: "600",
-                              color: "rgb(111, 111, 111)",
+                              color: "#6F6F6F",
                             }}
                           >
                             $ 10.91
@@ -1272,7 +1424,7 @@ const BorrowTab = ({
                             style={{
                               textAlign: "right",
                               fontWeight: "600",
-                              color: "rgb(111, 111, 111)",
+                              color: "#6F6F6F",
                             }}
                           >
                             $ 10.91
@@ -1290,7 +1442,7 @@ const BorrowTab = ({
                             style={{
                               textAlign: "right",
                               fontWeight: "600",
-                              color: "rgb(111, 111, 111)",
+                              color: "#6F6F6F",
                             }}
                           >
                             $ 10.91
@@ -1310,7 +1462,7 @@ const BorrowTab = ({
                             style={{
                               textAlign: "right",
                               fontWeight: "400",
-                              color: "rgb(111, 111, 111)",
+                              color: "#6F6F6F",
                             }}
                           >
                             $ 10.91
@@ -1330,7 +1482,7 @@ const BorrowTab = ({
                             style={{
                               textAlign: "right",
                               fontWeight: "400",
-                              color: "rgb(111, 111, 111)",
+                              color: "#6F6F6F",
                             }}
                           >
                             $10.91
@@ -1348,7 +1500,7 @@ const BorrowTab = ({
                             style={{
                               textAlign: "right",
                               fontWeight: "600",
-                              color: "rgb(111, 111, 111)",
+                              color: "#6F6F6F",
                             }}
                           >
                             0.6%
@@ -1366,7 +1518,7 @@ const BorrowTab = ({
                             style={{
                               textAlign: "right",
                               fontWeight: "600",
-                              color: "rgb(111, 111, 111)",
+                              color: "#6F6F6F",
                             }}
                           >
                             DC1/DC2/DC3
@@ -1384,10 +1536,24 @@ const BorrowTab = ({
                             style={{
                               textAlign: "right",
                               fontWeight: "600",
-                              color: "rgb(111, 111, 111)",
+                              color: "#6F6F6F",
                             }}
                           >
-                            5.6%
+                            {depositLoanRates &&
+                            borrowParams.commitBorrowPeriod != null &&
+                            (borrowParams.commitBorrowPeriod as number) < 2 ? (
+                              `${
+                                parseFloat(
+                                  depositLoanRates[
+                                    `${
+                                      getTokenFromName(asset as string)?.address
+                                    }__${borrowParams.commitBorrowPeriod}`
+                                  ]?.borrowAPR?.apr100x as string
+                                ) / 100
+                              } %`
+                            ) : (
+                              <MySpinner />
+                            )}
                           </div>
                         </div>
                         <div
@@ -1404,10 +1570,10 @@ const BorrowTab = ({
                             style={{
                               textAlign: "right",
                               fontWeight: "600",
-                              color: "rgb(111, 111, 111)",
+                              color: "#6F6F6F",
                             }}
                           >
-                            starknet
+                            Starknet
                           </div>
                         </div>
                       </div>
@@ -1422,17 +1588,18 @@ const BorrowTab = ({
                           !isValid()
                         }
                         style={{
-                          padding: "10px 0",
+                          boxShadow: "rgba(0, 0, 0, 0.5) 3.4px 3.4px 5.2px 0px",
                           border: "none",
+                          padding: "12px 0",
                           backgroundColor: "rgb(57, 61, 79)",
                         }}
-                        onClick={(e) => handleBorrow(tokenName)}
+                        onClick={(e) => handleBorrow(asset)}
                       >
                         {!(
-                          loadingApprove
-                          // || isTransactionLoading(requestBorrowTransactionReceipt)
+                          loadingApprove ||
+                          isTransactionLoading(requestBorrowTransactionReceipt)
                         ) ? (
-                          "Borrow"
+                          `Borrow`
                         ) : (
                           <MySpinner text="Borrowing token" />
                         )}
@@ -1443,6 +1610,18 @@ const BorrowTab = ({
                   <h2>Please connect your wallet</h2>
                 )}
               </div>
+              {isToastOpen ? (
+                <ToastModal
+                  isOpen={isToastOpen}
+                  setIsOpen={setIsToastOpen}
+                  success={toastParam.success}
+                  heading={toastParam.heading}
+                  desc={toastParam.desc}
+                  textToCopy={toastParam.textToCopy}
+                />
+              ) : (
+                <></>
+              )}
             </Modal>
           </>
         )}

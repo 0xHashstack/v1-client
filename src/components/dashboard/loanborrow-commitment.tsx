@@ -7,10 +7,12 @@ import {
 import DashboardTBody from "./dashboard-body";
 
 const LoanBorrowCommitment = ({
+  reserves,
   isLoading,
   activeDepositsData,
   activeLoansData,
 }: {
+  reserves: any;
   isLoading: boolean;
   activeDepositsData: any;
   activeLoansData: any;
@@ -143,6 +145,7 @@ const LoanBorrowCommitment = ({
             </thead>
             <tbody>
               <DashboardTBody
+                reserves={reserves}
                 isloading={isLoading}
                 borrowCommitment={borrowCommitment}
                 depositCommitment={depositCommitment}
