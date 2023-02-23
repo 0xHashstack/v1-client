@@ -83,7 +83,7 @@ let Deposit: any = ({
   ];
 
   const [asset, setAsset] = useState(assetParam);
-  const [value, setValue] = useState(50);
+  const [value, setValue] = useState<any>(0);
   const [tokenName, setTokenName] = useState(asset);
   const [tokenIcon, setTokenIcon] = useState("mdi-bitcoin");
 

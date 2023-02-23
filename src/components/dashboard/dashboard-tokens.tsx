@@ -3,9 +3,11 @@ import useBorrowAPR from "../../blockchain/hooks/aprs/useBorrowAPR";
 import useSavingsAPR from "../../blockchain/hooks/aprs/useSavingsAPR";
 import useDeposit from "../../blockchain/hooks/useDeposit";
 import {
+  ERC20Abi,
   getTokenFromAddress,
   getTokenFromName,
   tokenAddressMap,
+  tokenDecimalsMap,
 } from "../../blockchain/stark-constants";
 import Image from "next/image";
 import tickMark from "../../assets/images/tickMark.svg";
@@ -14,6 +16,8 @@ import Borrow from "../borrow";
 import Deposit from "../deposit";
 import MySpinner from "../mySpinner";
 import { ICoin } from "./dashboard-body";
+import { useAccount, useContract, useStarknetCall } from "@starknet-react/core";
+import { Abi, uint256 } from "starknet";
 
 const DashboardTokens = ({
   coin,
@@ -41,7 +45,26 @@ const DashboardTokens = ({
     );
   }, []);
 
-  console.log("reserves harsh", reserves);
+  const { contract } = useContract({
+    abi: ERC20Abi as Abi,
+    address: tokenAddressMap[coin.name] as string,
+  });
+
+  const { account, address: accountAddress, status } = useAccount();
+
+  const {
+    data: dataBalance,
+    loading: loadingBalance,
+    error: errorBalance,
+    refresh: refreshBalance,
+  } = useStarknetCall({
+    contract: contract,
+    method: "balanceOf",
+    args: [accountAddress],
+    options: {
+      watch: true,
+    },
+  });
 
   return (
     <tr
@@ -77,8 +100,16 @@ const DashboardTokens = ({
             </div>
             <span style={{ textAlign: "left", marginTop: "5px" }}>
               {coin.name}
-              <div style={{ fontSize: "9px", color: "#8C8C8C" }}>
-                Wallet Bal. $5000
+              <div style={{ fontSize: "9px", color: "#8C8C8C", width: "20px" }}>
+                Wallet Bal. $
+                {dataBalance ? (
+                  (
+                    Number(uint256.uint256ToBN(dataBalance[0])) /
+                    10 ** (tokenDecimalsMap[coin.name] || 18)
+                  ).toFixed(2)
+                ) : (
+                  <MySpinner />
+                )}
               </div>
             </span>
           </div>
