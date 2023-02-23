@@ -151,6 +151,7 @@ const BorrowData = ({
   revertSwapTransactionReceipt: any;
 }) => {
   const [asset, setAsset] = useState(assetParam);
+  console.log("asset borrow data", asset)
   const [marketTokenName, setMarketTokenName] = useState("BTC");
 
   const Coins: ICoin[] = [
@@ -256,7 +257,7 @@ const BorrowData = ({
   });
   const [isCollateralActions, setIsCollateralActions] = useState(false);
   const [isSelfLiquidate, setIsSelfLiquidate] = useState(false);
-  const [customActiveTab, setCustomActiveTab] = useState("1");
+  const [customActiveTab, setCustomActiveTab] = useState("2");
   const [modal_deposit, setmodal_deposit] = useState(false);
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(Downarrow);
@@ -743,9 +744,9 @@ const BorrowData = ({
     setStakeDropDown(false);
     setDropDownArrowTwo(Downarrow);
     let dapp = "";
-    if(value === "Swap") 
+    if (value === "Swap")
       dapp = "jediSwap";
-    else if(value === "Stake") dapp = "yagi"
+    else if (value === "Stake") dapp = "yagi"
     setappsImage(dapp);
   };
 
@@ -1302,13 +1303,14 @@ const BorrowData = ({
                         className={classnames({
                           active: customActiveTab === "1",
                         })}
+                        disabled={asset.state === "REPAID"}
                         onClick={() => {
                           setCustomActiveTab("1");
                           setIsCollateralActions(false);
                           setSelection("Spend Borrow");
                         }}
                       >
-                        <span className="d-none d-sm-block">
+                        <span style={{ color: asset.state === "REPAID" ? "grey" : "black", }} className="d-none d-sm-block">
                           Borrow Actions
                         </span>
                       </NavLink>
@@ -1625,6 +1627,7 @@ const BorrowData = ({
                               color: "rgb(111, 111, 111)",
                               display: "flex",
                               alignItems: "center",
+                              marginBottom: !asset.isSwapped ? '1rem' : '0rem',
                             }}
                           >
                             Borrow Spent(?):
@@ -1635,76 +1638,80 @@ const BorrowData = ({
                                 color: "white",
                               }}
                             >
-                              &nbsp;Yes
+                              &nbsp;{asset.isSwapped ? "Yes" : "No"}
                             </span>
                           </div>
+                          {asset.isSwapped ? (
+                            <>
+                              <div
+                                style={{
+                                  fontSize: "12px",
+                                  paddingTop: "7px",
+                                  color: "rgb(111, 111, 111)",
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                Spent dapp:
+                                <span
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    color: "white",
+                                  }}
+                                >
+                                  &nbsp;&nbsp;&nbsp;
+                                  <img src="./yagi.svg" width="50px" />
+                                </span>
+                              </div>
 
-                          <div
-                            style={{
-                              fontSize: "12px",
-                              paddingTop: "7px",
-                              color: "rgb(111, 111, 111)",
-                              display: "flex",
-                              alignItems: "center",
-                            }}
-                          >
-                            Spent dapp:
-                            <span
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                color: "white",
-                              }}
-                            >
-                              &nbsp;&nbsp;&nbsp;
-                              <img src="./yagilogo.svg" width="50px" />
-                            </span>
-                          </div>
+                              <div
+                                style={{
+                                  fontSize: "12px",
+                                  paddingTop: "7px",
+                                  color: "rgb(111, 111, 111)",
+                                  display: "flex",
+                                  alignItems: "center",
+                                }}
+                              >
+                                To:
+                                <span
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    color: "white",
+                                  }}
+                                >
+                                  &nbsp;Swap
+                                </span>
+                              </div>
 
-                          <div
-                            style={{
-                              fontSize: "12px",
-                              paddingTop: "7px",
-                              color: "rgb(111, 111, 111)",
-                              display: "flex",
-                              alignItems: "center",
-                            }}
-                          >
-                            To:
-                            <span
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                color: "white",
-                              }}
-                            >
-                              &nbsp;Swap
-                            </span>
-                          </div>
+                              <div
+                                style={{
+                                  fontSize: "12px",
+                                  paddingTop: "7px",
+                                  color: "rgb(111, 111, 111)",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  marginBottom: "10px",
+                                }}
+                              >
+                                Spent Market:
+                                <span
+                                  style={{
+                                    display: "flex",
+                                    alignItems: "center",
+                                    color: "white",
+                                  }}
+                                >
+                                  &nbsp;&nbsp;
+                                  <img src="./XRP.svg" height="15px" />
+                                  &nbsp;XRP
+                                </span>
+                              </div>
+                            </>
+                          ) : null}
 
-                          <div
-                            style={{
-                              fontSize: "12px",
-                              paddingTop: "7px",
-                              color: "rgb(111, 111, 111)",
-                              display: "flex",
-                              alignItems: "center",
-                              marginBottom: "10px",
-                            }}
-                          >
-                            Spent Market:
-                            <span
-                              style={{
-                                display: "flex",
-                                alignItems: "center",
-                                color: "white",
-                              }}
-                            >
-                              &nbsp;&nbsp;
-                              <img src="./XRP.svg" height="15px" />
-                              &nbsp;XRP
-                            </span>
-                          </div>
                         </div>
                       </div>
                     ) : null}
@@ -1796,7 +1803,7 @@ const BorrowData = ({
                                     (tokenDecimalsMap[
                                       asset?.loanMarket as string
                                     ] || 18)
-                                  ).toString()
+                                  ).toFixed(4)
                                 ) : (
                                   <MySpinner />
                                 )}
@@ -1858,7 +1865,7 @@ const BorrowData = ({
                                 </div>
                               ) : null}
 
-                              {repayAmount &&
+                              {repayAmount !== 0 &&
                                 repayAmount >
                                 Number(
                                   uint256.uint256ToBN(
