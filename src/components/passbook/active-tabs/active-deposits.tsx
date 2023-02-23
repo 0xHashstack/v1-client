@@ -316,9 +316,8 @@ const ActiveDepositsTab = ({
         open="false"
         style={{
           margin: "10px",
-          color: "black",
           textAlign: "left",
-          marginLeft: "30px",
+          marginLeft: "20px",
         }}
       >
         {Array.isArray(activeDepositsData) && activeDepositsData.length > 0 ? (
@@ -326,19 +325,17 @@ const ActiveDepositsTab = ({
             <Table>
               <Row
                 style={{
-                  width: "100%",
+                  marginLeft: "40px",
                   borderStyle: "hidden",
+                  color: "rgb(140, 140, 140)",
                   fontWeight: "300",
                   alignItems: "center",
-                  textAlign: "center",
-                  color: "#8C8C8C",
-                  verticalAlign: "middle",
+                  gap: "30px",
                   fontSize: "14px",
                 }}
               >
                 <Col
                   style={{
-                    marginLeft: "-15px",
                     width: "10px",
                     padding: "20px 10px",
                   }}

@@ -424,18 +424,18 @@ const ActiveDeposit = ({
     <div style={{ borderTop: "5px" }}>
       <UncontrolledAccordion
         defaultOpen="0"
+        open="false"
         style={{
-          margin: "10px",
           color: "white",
           textAlign: "left",
+          marginLeft: "20px",
         }}
       >
         <Row
           style={{
-            marginLeft: "30px",
+            margin: "15px 0px 15px 20px",
             alignItems: "center",
-            textAlign: "left",
-            gap: "50px",
+            gap: "20px",
           }}
         >
           <Col>{`ID${assetParam.depositId}` ?? "N/a"}</Col>
@@ -456,10 +456,10 @@ const ActiveDeposit = ({
                 className="mr-6"
                 style={{
                   display: "inline-block",
-                  fontSize: "16px",
+                  fontSize: "14px",
                 }}
               >
-                &nbsp; &nbsp;
+                &nbsp;
                 {EventMap[assetParam.market.toUpperCase()]}
               </div>
             </div>
