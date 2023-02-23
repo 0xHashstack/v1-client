@@ -244,15 +244,15 @@ const ActiveDepositsTab = ({
     return (
       depositAmount < MinimumAmount[tokenName] ||
       depositAmount >
-        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-          10 ** (tokenDecimalsMap[tokenName] || 18)
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+      10 ** (tokenDecimalsMap[tokenName] || 18)
     );
   }
 
   const handleMax = async () => {
     setDepositAmount(
       Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-        10 ** (tokenDecimalsMap[asset] || 18)
+      10 ** (tokenDecimalsMap[asset] || 18)
     );
   };
 
@@ -325,7 +325,7 @@ const ActiveDepositsTab = ({
                   fontWeight: "300",
                   alignItems: "center",
                   gap: "50px",
-                  textAlign: "left",
+                  textAlign: "center",
                   color: "#8C8C8C",
                   verticalAlign: "middle",
                   fontSize: "14px",
@@ -333,7 +333,6 @@ const ActiveDepositsTab = ({
               >
                 <Col
                   style={{
-                    marginLeft: "50px",
                     width: "10px",
                     padding: "20px 10px",
                   }}
@@ -504,6 +503,7 @@ const ActiveDepositsTab = ({
                         }}
                       >
                         Minimum Commitment Period
+
                       </div>
 
                       <label
@@ -577,36 +577,36 @@ const ActiveDepositsTab = ({
                             {Coins.map((coin, index) => {
                               if (coin.name === tokenName) return <></>;
                               return (
-                                <div
-                                  key={index}
-                                  style={{
-                                    margin: "10px 0",
-                                    cursor: "pointer",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    fontSize: "16px",
-                                  }}
-                                  onClick={() => {
-                                    setTokenName(`${coin.name}`);
-                                    setDropDown(false);
-                                    setDropDownArrow(arrowDown);
-                                    setAsset(`${coin.name}`);
-                                    handleBalanceChange();
-                                    // handleDepositAmountChange(0);
-                                  }}
-                                >
-                                  <Image
-                                    src={`/${coin.name}.svg`}
-                                    width="24px"
-                                    height="24px"
-                                    alt="coin image"
-                                  />
-                                  <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
-                                </div>
+                                  <div
+                                    key={index}
+                                    style={{
+                                      margin: "10px 0",
+                                      cursor: "pointer",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      fontSize: "16px",
+                                    }}
+                                    onClick={() => {
+                                      setTokenName(`${coin.name}`);
+                                      setDropDown(false);
+                                      setDropDownArrow(arrowDown);
+                                      setAsset(`${coin.name}`);
+                                      handleBalanceChange();
+                                      // handleDepositAmountChange(0);
+                                    }}
+                                  >
+                                    <Image
+                                      src={`/${coin.name}.svg`}
+                                      width="24px"
+                                      height="24px"
+                                      alt="coin image"
+                                    />
+                                    <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                                  </div>
                               );
                             })}
                           </div>
-                          <hr />
+                          <hr/>
                         </>
                       ) : (
                         <></>
@@ -762,7 +762,7 @@ const ActiveDepositsTab = ({
                                       )
                                     ) /
                                       10 ** (tokenDecimalsMap[asset] || 18))) /
-                                    100
+                                  100
                                 );
                                 setValue(value);
                               }}
@@ -782,12 +782,12 @@ const ActiveDepositsTab = ({
                           </div>
                           {depositAmount != 0 &&
                             depositAmount >
-                              Number(
-                                uint256.uint256ToBN(
-                                  dataBalance ? dataBalance[0] : 0
-                                )
-                              ) /
-                                10 ** (tokenDecimalsMap[asset] || 18) && (
+                            Number(
+                              uint256.uint256ToBN(
+                                dataBalance ? dataBalance[0] : 0
+                              )
+                            ) /
+                            10 ** (tokenDecimalsMap[asset] || 18) && (
                               <FormText style={{ color: "#e97272 !important" }}>
                                 {`Amount is greater than your balance`}
                               </FormText>
@@ -839,8 +839,7 @@ const ActiveDepositsTab = ({
                             {depositLoanRates && commitPeriod < 3 ? (
                               `${parseFloat(
                                 depositLoanRates[
-                                  `${
-                                    getTokenFromName(asset as string)?.address
+                                  `${getTokenFromName(asset as string)?.address
                                   }__${commitPeriod}`
                                 ]?.depositAPR?.apr100x as string
                               )} %`

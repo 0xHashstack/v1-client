@@ -56,6 +56,7 @@ const DashboardTokens = ({
       }}
     >
       <th scope="row" style={{ padding: "25px 5px", textAlign: "center" }}>
+        <div>
         <div
           style={{
             display: "flex",
@@ -75,6 +76,11 @@ const DashboardTokens = ({
             &nbsp;&nbsp;&nbsp;
           </div>
           <span>{coin.name}</span>
+        </div>
+        <span style={{fontSize:'9px',color:"#8C8C8C",marginLeft:'30px'}}>
+        Wallet Bal. $5000
+        </span>
+       
         </div>
       </th>
       <td style={{ padding: "31px 10px" }}>{oraclePriceForCoin || "N/A"}</td>

@@ -686,7 +686,7 @@ const Dashboard = () => {
                     <div
                       style={{
                         position: "absolute",
-                        zIndex: "500",
+                        zIndex: "3",
                         right: "80px",
                         top: "60px",
                       }}
@@ -769,9 +769,13 @@ const Dashboard = () => {
                   ) : null}
                 </>
               ) : null}
-              {customActiveTab === "7" ? <YourMatrics /> : null}
+              {customActiveTab === "7" ? 
+              <div style={{marginTop:"130px"}}>
+              <YourMatrics /> 
+              </div>: null}
 
-              {customActiveTab === "8" ? <ProtocolMatrics /> : null}
+              {customActiveTab === "8" ? 
+              <div style={{marginTop:"130px"}}><ProtocolMatrics /></div> : null}
 
               {customActiveTab === "1" ||
               customActiveTab === "3" ||

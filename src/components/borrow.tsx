@@ -708,7 +708,8 @@ let Borrow: any = ({
                   style={{
                     height: "40px",
                     backgroundColor: "#1D2131",
-                    borderRight: "1px solid rgb(57, 61, 79)",
+                    // borderRight: "1px solid rgb(57, 61, 79)",
+                    borderRight:"none"
                   }}
                   type="number"
                   className="form-control"
@@ -728,7 +729,7 @@ let Borrow: any = ({
                       style={{
                         background: "#1D2131",
                         color: "rgb(111, 111, 111)",
-                        border: "1px solid rgb(57, 61, 79)",
+                        border: `1px solid ${isValidColleteralAmount()? '#34c38f': 'rgb(57, 61, 79)'}`,
                         borderLeft: "none",
                       }}
                     >
@@ -1098,8 +1099,8 @@ let Borrow: any = ({
                     style={{
                       height: "40px",
                       backgroundColor: "#1D2131",
-                      borderRight: "1px solid rgb(57, 61, 79)",
-                    }}
+                      // borderRight: "1px solid rgb(57, 61, 79)",
+                      borderRight:'none'}}
                     id="loan-amount"
                     type="number"
                     className="form-control"
@@ -1118,7 +1119,7 @@ let Borrow: any = ({
                     style={{
                       background: "#1D2131",
                       color: "rgb(111, 111, 111)",
-                      border: "1px solid rgb(57, 61, 79)",
+                      border: `1px solid ${isLoanAmountValid()? '#34c38f' : 'rgb(57, 61, 79)'}`,
                       borderLeft: "none",
                     }}
                   >

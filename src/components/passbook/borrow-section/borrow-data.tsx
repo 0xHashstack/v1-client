@@ -1736,7 +1736,8 @@ const BorrowData = ({
                                 <Input
                                   style={{
                                     backgroundColor: "#1D2131",
-                                    borderRight: "2px solid #393D4F",
+                                    // borderRight: "2px solid #393D4F",
+                                    borderRight:'none',
                                     height: "40px",
                                   }}
                                   type="number"
@@ -1766,7 +1767,7 @@ const BorrowData = ({
                                   style={{
                                     background: "#1D2131",
                                     color: "rgb(111, 111, 111)",
-                                    border: "1px solid rgb(57, 61, 79)",
+                                    border: `1px solid ${!(!repayAmount || repayAmount <= 0)?'#34c38f' : 'rgb(57, 61, 79)'}`,
                                     borderLeft: "none",
                                   }}
                                 >
@@ -2118,7 +2119,7 @@ const BorrowData = ({
                                   style={{
                                     background: "#1D2131",
                                     color: "rgb(111, 111, 111)",
-                                    border: "1px solid rgb(57, 61, 79)",
+                                    border: `1px solid ${!isInvalid()? '#34c38f':'rgb(57, 61, 79)'}`,
                                     borderLeft: "none",
                                   }}
                                 >
