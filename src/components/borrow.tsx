@@ -95,7 +95,7 @@ let Borrow: any = ({
     { name: "DAI", icon: "mdi-dai" },
   ];
 
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState<any>(0);
   const [asset, setAsset] = useState(assetParam);
   const [tokenName, setTokenName] = useState(asset);
   const [borrowTokenName, setBorrowTokenName] = useState(asset);
@@ -563,9 +563,7 @@ let Borrow: any = ({
   }
 
   function isLoanAmountValid() {
-    console.log("loanamount", borrowParams.loanAmount);
     if (!borrowParams.loanAmount) return false;
-    console.log("was is undefined");
     return borrowParams.loanAmount >= MinimumAmount[asset];
   }
   // function isValidLoanAmount
@@ -710,7 +708,7 @@ let Borrow: any = ({
                     height: "40px",
                     backgroundColor: "#1D2131",
                     // borderRight: "1px solid rgb(57, 61, 79)",
-                    borderRight:"none"
+                    borderRight: "none",
                   }}
                   type="number"
                   className="form-control"
@@ -730,7 +728,11 @@ let Borrow: any = ({
                       style={{
                         background: "#1D2131",
                         color: "rgb(111, 111, 111)",
-                        border: `1px solid ${isValidColleteralAmount()? '#34c38f': 'rgb(57, 61, 79)'}`,
+                        border: `1px solid ${
+                          isValidColleteralAmount()
+                            ? "#34c38f"
+                            : "rgb(57, 61, 79)"
+                        }`,
                         borderLeft: "none",
                       }}
                     >
@@ -847,7 +849,7 @@ let Borrow: any = ({
                             ></img>
                             <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
                           </div>
-                          <hr />
+                          {coin.name !== "DAI" ? <hr /> : null}
                         </>
                       );
                     })}
@@ -902,7 +904,7 @@ let Borrow: any = ({
                             ></img>
                             <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
                           </div>
-                          <hr />
+                          {coin.name !== "DAI" ? <hr /> : null}
                         </>
                       );
                     })}
@@ -961,7 +963,6 @@ let Borrow: any = ({
                     >
                       &nbsp;Flexible
                     </div>
-                    <hr />
                   </div>
                 </>
               ) : (
@@ -1101,7 +1102,8 @@ let Borrow: any = ({
                       height: "40px",
                       backgroundColor: "#1D2131",
                       // borderRight: "1px solid rgb(57, 61, 79)",
-                      borderRight:'none'}}
+                      borderRight: "none",
+                    }}
                     id="loan-amount"
                     type="number"
                     className="form-control"
@@ -1120,7 +1122,9 @@ let Borrow: any = ({
                     style={{
                       background: "#1D2131",
                       color: "rgb(111, 111, 111)",
-                      border: `1px solid ${isLoanAmountValid()? '#34c38f' : 'rgb(57, 61, 79)'}`,
+                      border: `1px solid ${
+                        isLoanAmountValid() ? "#34c38f" : "rgb(57, 61, 79)"
+                      }`,
                       borderLeft: "none",
                     }}
                   >
@@ -1327,13 +1331,15 @@ let Borrow: any = ({
                       {depositLoanRates &&
                       borrowParams.commitBorrowPeriod != null &&
                       (borrowParams.commitBorrowPeriod as number) < 2 ? (
-                        `${parseFloat(
-                          depositLoanRates[
-                            `${getTokenFromName(asset as string)?.address}__${
-                              borrowParams.commitBorrowPeriod
-                            }`
-                          ]?.borrowAPR?.apr100x as string
-                        )} %`
+                        `${
+                          parseFloat(
+                            depositLoanRates[
+                              `${getTokenFromName(asset as string)?.address}__${
+                                borrowParams.commitBorrowPeriod
+                              }`
+                            ]?.borrowAPR?.apr100x as string
+                          ) / 100
+                        } %`
                       ) : (
                         <MySpinner />
                       )}
