@@ -11,57 +11,57 @@ const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
   const [toastMyswapParam, setToastMyswapParam] = useState({});
   const [isMyswapToastOpen, setIsToastMyswapOpen] = useState(false);
   
-  // const [supportedPoolsMySwap, setSupportedPoolsMySwap] = useState();
+  const [supportedPoolsMySwap, setSupportedPoolsMySwap] = useState();
 
-  // const { contract: l3Contract } = useContract({
-  //   abi: MySwapAbi as Abi,
-  //   address: "0x1fc40e21ce68f61d538c070cbfea9483243bcdae0072b0f8c2c85fd4ecd28ab",
-  // });
+  const { contract: l3Contract } = useContract({
+    abi: MySwapAbi as Abi,
+    address: "0x1fc40e21ce68f61d538c070cbfea9483243bcdae0072b0f8c2c85fd4ecd28ab",
+  });
 
-  // const {
-  //   data: mySwapSupportedPoolsData,
-  //   loading: loadingMySwapSupportedPools,
-  //   error: errorMySwapSupportedPools,
-  //   refresh: refreshMySwapSupportedPools,
-  // } = useStarknetCall({
-  //   contract: l3Contract,
-  //   method: 'get_supported_pools_myswap',
-  //   args: [],
-  //   options: {
-  //     watch: false
-  //   }
-  // })
+  const {
+    data: mySwapSupportedPoolsData,
+    loading: loadingMySwapSupportedPools,
+    error: errorMySwapSupportedPools,
+    refresh: refreshMySwapSupportedPools,
+  } = useStarknetCall({
+    contract: l3Contract,
+    method: 'get_supported_pools_myswap',
+    args: [],
+    options: {
+      watch: false
+    }
+  })
 
-  // useEffect(() => {
-  //   const setValue = (map: Map<string, Array<string>>, firstVal: string, secondVal: string) => {
-  //     if(map.get(firstVal))
-  //       map.set(firstVal, [...map.get(firstVal), secondVal]);
-  //     else map.set(firstVal, [secondVal]);
-  //   }
+  useEffect(() => {
+    const setValue = (map: Map<string, Array<string>>, firstVal: string, secondVal: string) => {
+      if(map.get(firstVal))
+        map.set(firstVal, [...map.get(firstVal), secondVal]);
+      else map.set(firstVal, [secondVal]);
+    }
 
-  //   console.log("loading jedi", loadingMySwapSupportedPools);
-  //   const poolsData = new Map();
-  //   if (!loadingMySwapSupportedPools) {
-  //     console.log(
-  //       "MySwapSupportedPoolsData",
-  //       mySwapSupportedPoolsData,
-  //       errorMySwapSupportedPools
-  //     );
-  //     const pools = mySwapSupportedPoolsData?.pools;
-  //     for(let i = 0; i<pools?.length; i++) {
-  //       const firstTokenAddress = number.toHex(pools[i].tokenA)
-  //       const secondTokenAddress = number.toHex(pools[i].tokenB);
-  //       setValue(poolsData, firstTokenAddress, secondTokenAddress);
-  //       setValue(poolsData, secondTokenAddress, firstTokenAddress);
-  //     }
-  //     console.log("pooldata myswap", poolsData);
-  //     setSupportedPoolsMySwap(poolsData)
-  //   }
-  // }, [
-  //   mySwapSupportedPoolsData,
-  //   loadingMySwapSupportedPools,
-  //   errorMySwapSupportedPools,
-  // ]);
+    console.log("loading jedi", loadingMySwapSupportedPools);
+    const poolsData = new Map();
+    if (!loadingMySwapSupportedPools) {
+      console.log(
+        "MySwapSupportedPoolsData",
+        mySwapSupportedPoolsData,
+        errorMySwapSupportedPools
+      );
+      const pools = mySwapSupportedPoolsData?.pools;
+      for(let i = 0; i<pools?.length; i++) {
+        const firstTokenAddress = number.toHex(pools[i].tokenA)
+        const secondTokenAddress = number.toHex(pools[i].tokenB);
+        setValue(poolsData, firstTokenAddress, secondTokenAddress);
+        setValue(poolsData, secondTokenAddress, firstTokenAddress);
+      }
+      console.log("pooldata myswap", poolsData);
+      setSupportedPoolsMySwap(poolsData)
+    }
+  }, [
+    mySwapSupportedPoolsData,
+    loadingMySwapSupportedPools,
+    errorMySwapSupportedPools,
+  ]);
 
 
   const {
