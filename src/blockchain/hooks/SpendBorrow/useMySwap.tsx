@@ -114,6 +114,12 @@ const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
       errorMySwap, 
       handleMySwap,
 
+      supportedPoolsMySwap,
+      loadingMySwapSupportedPools,
+      errorMySwapSupportedPools,
+      refreshMySwapSupportedPools,
+      mySwapSupportedPoolsData,
+
       isMyswapToastOpen,
       setIsToastMyswapOpen,
       toastMyswapParam

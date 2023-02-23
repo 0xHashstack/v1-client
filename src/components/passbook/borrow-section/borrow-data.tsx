@@ -43,6 +43,8 @@ import {
   isTransactionLoading,
   tokenAddressMap,
   tokenDecimalsMap,
+  getTokenFromName,
+  getTokenFromAddress,
 } from "../../../blockchain/stark-constants";
 import { TxToastManager } from "../../../blockchain/txToastManager";
 import {
@@ -75,6 +77,7 @@ import useAddCollateral from "../../../blockchain/hooks/active-borrow/useAddColl
 import useJediSwap from "../../../blockchain/hooks/SpendBorrow/useJediSwap";
 import useMySwap from "../../../blockchain/hooks/SpendBorrow/useMySwap";
 import ToastModal from "../../toastModals/customToastModal";
+import { StrictButtonGroupProps } from "semantic-ui-react";
 
 const BorrowData = ({
   asset: assetParam,
@@ -231,6 +234,7 @@ const BorrowData = ({
     jediSwapSupportedPoolsData,
     loadingJediSwapSupportedPools,
     errorJediSwapSupportedPools,
+    supportedPoolsJediSwap,
 
     handleJediSwap,
     dataJediSwap,
@@ -246,6 +250,7 @@ const BorrowData = ({
     handleMySwap,
     loadingMySwap,
     errorMySwap,
+    supportedPoolsMySwap,
     isMyswapToastOpen,
     setIsToastMyswapOpen,
     toastMyswapParam,
@@ -699,6 +704,7 @@ const BorrowData = ({
   const selectionAction = (value: string) => {
     setSelection(value);
     setDropDown(false);
+    setIdDropDown(false);
     setDropDownArrow(Downarrow);
 
     if (value === "Self Liquidate") {
@@ -2448,6 +2454,12 @@ const BorrowData = ({
                     >
                       {Coins.map((coin, index) => {
                         if (coin.name === marketTokenName) return <></>;
+                        const borrowMarketAddress = getTokenFromName(asset.loanMarket).address;
+                        const supportedMarkets = appsImage === 'jediSwap' ? 
+                                                    supportedPoolsJediSwap?.get(borrowMarketAddress) : 
+                                                    supportedPoolsMySwap?.get(borrowMarketAddress);
+                        const isSupported = supportedMarkets.includes(getTokenFromName(coin.name).address);
+                        if(!isSupported) return <></>;
                         return (
                           <div
                             key={index}
@@ -2498,34 +2510,6 @@ const BorrowData = ({
                         boxShadow: "0px 0px 10px #00000020",
                       }}
                     >
-                      {/* {apps.map((select, index) => {
-                        if (appsImage === select) {
-                          return <></>;
-                        }
-                        return (
-                          <div
-                            style={{
-                              margin: "10px 0",
-                              cursor: "pointer",
-                              display: "flex",
-                              alignItems: "center",
-                              fontSize: "16px",
-                            }}
-                            key={index}
-                            onClick={() => {
-                              setappsImage(`${apps[index]}`);
-                              // setyagiselection(`${select}`);
-                              toggleyagi();
-                            }}
-                          >
-                            <img
-                              src={`./${apps[index]}.svg`}
-                              width="60px"
-                              height="30px"
-                            ></img>
-                          </div>
-                        );
-                      })} */}
                       {dappsArray.map((dapp, index) => {
                         if (
                           dapp.supportedActions.find(
@@ -3337,6 +3321,16 @@ const BorrowData = ({
                         setAsset(eleAsset);
                         setIdDropDownArrow(idDropDown ? Downarrow : UpArrow);
                         setIdDropDown(false);
+                        setMarketTokenName((prev) => {
+                          if(appsImage === "jediSwap") {
+                            console.log(getTokenFromAddress(supportedPoolsJediSwap.get(getTokenFromName(eleAsset.loanMarket).address)[0] as string).name, "meeeeeeee")
+                            return getTokenFromAddress(supportedPoolsJediSwap.get(getTokenFromName(eleAsset.loanMarket).address)[0] as string).name;
+                          }
+                          else if(appsImage === "mySwap") {
+                            return getTokenFromAddress(supportedPoolsMySwap.get(getTokenFromName(eleAsset.loanMarket).address)[0] as string).name;
+                          }
+                          else return prev;
+                        });
                       }}
                     >
                       Borrow ID - {eleAsset.loanId}

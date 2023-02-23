@@ -109,6 +109,7 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
   }
 
   return {
+    supportedPoolsJediSwap,
     jediSwapSupportedPoolsData,
     loadingJediSwapSupportedPools,
     errorJediSwapSupportedPools,
