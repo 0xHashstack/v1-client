@@ -898,20 +898,6 @@ const BorrowData = ({
             </div>
           </Col>
 
-          {/* <Col className="mr-4 ">
-            <div
-              className="mr-6"
-              style={{
-                display: "inline-block",
-                fontSize: "14px",
-              }}
-              // align="right"
-            >
-              {assetParam.state}
-            </div>
-            <CardTitle tag="h5"></CardTitle>
-          </Col> */}
-
           <Col>
             <button
               style={{
@@ -923,6 +909,7 @@ const BorrowData = ({
               }}
               onClick={() => {
                 setmodal_deposit(true);
+
               }}
             >
               Actions
@@ -1720,8 +1707,8 @@ const BorrowData = ({
                                   }}
                                 >
                                   &nbsp;&nbsp;
-                                  <img src="./XRP.svg" height="15px" />
-                                  &nbsp;XRP
+                                  <img src={`./${asset.currentLoanMarket}.svg`} height="15px" />
+                                  &nbsp; {asset.currentLoanMarket}
                                 </span>
                               </div>
                             </>
@@ -2557,6 +2544,7 @@ const BorrowData = ({
                                 // if (!activeLoansData) return;
                                 // setmodal_deposit(true);
                                 setappsImage(dapp.name);
+                                toggleyagi();
                               }}
                             >
                               <img

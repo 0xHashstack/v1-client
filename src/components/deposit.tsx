@@ -16,6 +16,8 @@ import {
 } from "reactstrap";
 // import { estimateFee } from "starknet/account";
 
+import DepositAbi from "../../ABIs/deposit_abi.json";
+
 import Slider from "react-custom-slider";
 
 import RangeSlider from "react-bootstrap-range-slider";
@@ -50,7 +52,7 @@ import {
   useTransactions,
 } from "@starknet-react/core";
 import dropDownArrow from "../public/drop-down-arrow.svg";
-import { Abi, Contract, uint256, number } from "starknet";
+import { Abi, Contract, uint256, number, Provider, Account, ec } from "starknet";
 import { TxToastManager } from "../blockchain/txToastManager";
 import MySpinner from "./mySpinner";
 import Image from "next/image";
@@ -280,7 +282,7 @@ let Deposit: any = ({
   const handleMax = async () => {
     setDepositAmount(
       Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-        10 ** (tokenDecimalsMap[asset] || 18)
+      10 ** (tokenDecimalsMap[asset] || 18)
     );
     setValue(100);
   };
@@ -298,6 +300,42 @@ let Deposit: any = ({
     setDropDownArrow(dropDown ? Downarrow : UpArrow);
     // disconnectEvent(), connect(connector);
   };
+
+  const { account: userAccount } = useAccount();
+  const { contract: depositContract } = useContract({
+    abi: DepositAbi as Abi,
+    address: diamondAddress,
+  })
+  const provider = new Provider({ sequencer: { baseUrl: 'https://alpha4-2.starknet.io' } })
+  const depositContract2 = new Contract(DepositAbi as Abi, diamondAddress, depositContract2?.providerOrAccount);
+
+
+  const getGas = async () => {
+    // const amount = uint256.bnToUint256(NumToBN(depositAmount, 18));
+    try {
+      console.log("gas tokenAddressMap[asset]", tokenAddressMap[asset], diamondAddress, commitPeriod, depositAmount, depositContract)
+      console.log('provider', depositContract?.providerOrAccount, userAccount)
+
+      let call = depositContract?.populate('deposit_request', [
+        tokenAddressMap[asset],
+        commitPeriod,
+        [NumToBN(depositAmount, 18), 0]
+      ])
+      if (!call) {
+        throw new Error("call undefined");
+      } else {
+        let gas = await userAccount?.estimateFee([call]);
+        // let gas = await depositContract?.estimateFee.withdraw_deposit(
+        //     1,
+        //     [NumToBN(depositAmount, 18), 0]
+        // );
+        console.log("gas for deposit", gas);
+      }
+    }
+    catch (error) {
+      console.log("query gas error", diamondAddress, error)
+    }
+  }
 
   const handleDeposit = async (asset: string) => {
     if (
@@ -368,8 +406,8 @@ let Deposit: any = ({
     return (
       depositAmount < MinimumAmount[asset] ||
       depositAmount >
-        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-          10 ** (tokenDecimalsMap[asset] || 18)
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+      10 ** (tokenDecimalsMap[asset] || 18)
     );
   }
 
@@ -631,7 +669,7 @@ let Deposit: any = ({
                       >
                         &nbsp;1 month
                       </div>
-                      <hr/>
+                      <hr />
                       <div
                         style={{
                           fontSize: "15px",
@@ -647,7 +685,7 @@ let Deposit: any = ({
                       >
                         &nbsp;2 weeks
                       </div>
-                      <hr/>
+                      <hr />
                       <div
                         style={{
                           fontSize: "15px",
@@ -663,7 +701,7 @@ let Deposit: any = ({
                       >
                         &nbsp;Flexible
                       </div>
-                      <hr/>
+                      <hr />
                     </div>
                   </>
                 ) : (
@@ -745,7 +783,7 @@ let Deposit: any = ({
                                 )
                               ) /
                                 10 ** (tokenDecimalsMap[asset] || 18))) /
-                              100
+                            100
                           );
                           setValue(value);
                         }}
@@ -765,10 +803,10 @@ let Deposit: any = ({
                     </div>
                     {depositAmount != 0 &&
                       depositAmount >
-                        Number(
-                          uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)
-                        ) /
-                          10 ** (tokenDecimalsMap[asset] || 18) && (
+                      Number(
+                        uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)
+                      ) /
+                      10 ** (tokenDecimalsMap[asset] || 18) && (
                         <FormText style={{ color: "#e97272 !important" }}>
                           {`Amount is greater than your balance`}
                         </FormText>
@@ -820,8 +858,7 @@ let Deposit: any = ({
                       {depositLoanRates && commitPeriod < 3 ? (
                         `${parseFloat(
                           depositLoanRates[
-                            `${
-                              getTokenFromName(asset as string)?.address
+                            `${getTokenFromName(asset as string)?.address
                             }__${commitPeriod}`
                           ]?.depositAPR?.apr100x as string
                         )} %`
@@ -884,9 +921,10 @@ let Deposit: any = ({
                     loadingDeposit ||
                     isInvalid()
                   }
-                  onClick={(e) => {
-                    handleDeposit(asset);
-                  }}
+                  // onClick={(e) => {
+                  //   handleDeposit(asset);
+                  // }}
+                  onClick={getGas}
                 >
                   {!(
                     loadingApprove ||

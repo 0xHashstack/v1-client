@@ -1060,7 +1060,7 @@ const ActiveDeposit = ({
                         0.02%
                       </div>
                     </div>
-                    <div
+                    {asset.commitment !== "NONE" ? <div
                       style={{
                         margin: "3px 0",
                       }}
@@ -1074,7 +1074,7 @@ const ActiveDeposit = ({
                         Second Attempt To Withdraw Supply.After The Timelock
                         Expiry In 72hrs
                       </div>
-                    </div>
+                    </div> : <></>}
                   </div>
                 ) : null}
                 <Button
