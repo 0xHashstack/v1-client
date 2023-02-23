@@ -1,11 +1,11 @@
-import React, { useContext,useState } from "react";
+import React, { useContext, useState } from "react";
 import { CardTitle, Col, Row, UncontrolledAccordion } from "reactstrap";
 import { tokenDecimalsMap } from "../../../blockchain/stark-constants";
 import { TabContext } from "../../../hooks/contextHooks/TabContext";
 
 const SpendLoanData = ({ loan }) => {
   const { selectedLoan, setSelectedLoan } = useContext(TabContext);
-  const [hover, sethover] = useState(false)
+  const [hover, sethover] = useState(false);
   return (
     <div>
       <UncontrolledAccordion
@@ -14,6 +14,8 @@ const SpendLoanData = ({ loan }) => {
         style={{
           color: "white",
           textAlign: "left",
+          paddingLeft: "50px",
+          paddingRight: "50px",
         }}
       >
         <Row
@@ -24,24 +26,31 @@ const SpendLoanData = ({ loan }) => {
               setSelectedLoan("");
             }
           }}
-          
           style={{
-            opacity: `${selectedLoan?.loanId === loan.loanId || hover? "10" : "0.5"}`,
-            marginLeft: "40px",
+            opacity: `${
+              selectedLoan?.loanId === loan.loanId || hover ? "10" : "0.5"
+            }`,
+
             alignItems: "center",
             cursor: "pointer",
             padding: "20px 0",
-            gap: "50px",
+            gap: "100px",
             backgroundColor: `${
-              selectedLoan?.loanId === loan.loanId || hover? "#1C202F40" : "#2A2E3F"
+              selectedLoan?.loanId === loan.loanId || hover
+                ? "#1C202F40"
+                : "#2A2E3F"
             }`,
           }}
-          onMouseEnter={()=>{sethover(true)}}
-          onMouseLeave={()=>{sethover(false)}}
+          onMouseEnter={() => {
+            sethover(true);
+          }}
+          onMouseLeave={() => {
+            sethover(false);
+          }}
         >
           <Col>ID{loan.loanId}</Col>
           <Col>
-            <img src={`./${loan.loanMarket}.svg`} height="20px" />
+            <img src={`./${loan.loanMarket}.svg`} height="15px" />
             &nbsp;&nbsp;{loan.loanMarket}
           </Col>
 
@@ -56,7 +65,7 @@ const SpendLoanData = ({ loan }) => {
 
           <Col>
             &nbsp;&nbsp;&nbsp;&nbsp;
-            <img src={`./${loan.collateralMarket}.svg`} height="20px" />
+            <img src={`./${loan.collateralMarket}.svg`} height="15px" />
             &nbsp;&nbsp;{loan.collateralMarket}
           </Col>
 

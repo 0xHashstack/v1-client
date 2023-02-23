@@ -346,14 +346,13 @@ const SecondaryHeader = ({
                       Connect a wallet
                     </h4>
                     <div style={{ marginTop: "-10px", cursor: "pointer" }}>
-                      <Image
+                      <img
+                        src="./cross.svg"
                         onClick={() => {
                           setConnectWallet(false);
                         }}
-                        src={crossButton}
-                        alt="Picture of the author"
-                        width="20px"
-                        height="20px"
+                        style={{ marginTop: "5px", cursor: "pointer" }}
+                        height="15px"
                       />
                     </div>
                   </span>

@@ -129,7 +129,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
   // const [transDeposit, setTransDeposit] = useState("");
   const [SpendLoan, setSpendLoan] = useState<any>();
   const dappsArray = [
-    { name: "jediswap", supportedActions: [ "Swap"] },
+    { name: "jediswap", supportedActions: ["Swap"] },
     { name: "myswap", supportedActions: ["Swap"] },
     { name: "yagi", supportedActions: ["Stake"] },
   ];
@@ -454,7 +454,8 @@ const SpendLoanNav = ({ activeLoansData }) => {
                 onClick={() => {
                   setmodal_deposit(false);
                 }}
-                style={{ marginTop: "-10px", cursor: "pointer" }}
+                style={{ marginTop: "5px", cursor: "pointer" }}
+                height="15px"
               />
             </Col>
             <div
@@ -584,7 +585,9 @@ const SpendLoanNav = ({ activeLoansData }) => {
                               }}
                             >
                               {dappsArray.map((dapp, index) => {
-                                if(dapp.supportedActions.includes(title.label)) {
+                                if (
+                                  dapp.supportedActions.includes(title.label)
+                                ) {
                                   if (appsImage === dapp.name) {
                                     return <></>;
                                   }

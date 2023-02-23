@@ -28,6 +28,7 @@ const SpendLoan = ({ activeLoansData }: { activeLoansData: any }) => {
             setSelectedLoan("");
           }}
           style={{
+            marginTop: "15px",
             marginLeft: "50px",
             width: "95%",
             zIndex: "1000",

@@ -424,7 +424,6 @@ const ActiveDeposit = ({
     <div style={{ borderTop: "5px" }}>
       <UncontrolledAccordion
         defaultOpen="0"
-        // open="false"
         style={{
           margin: "10px",
           color: "white",
@@ -433,14 +432,13 @@ const ActiveDeposit = ({
       >
         <Row
           style={{
+            marginLeft: "30px",
             alignItems: "center",
             textAlign: "left",
             gap: "50px",
           }}
         >
-          <Col style={{ marginLeft: "-10px" }}>
-            {`ID${assetParam.depositId}` ?? "N/a"}
-          </Col>
+          <Col>{`ID${assetParam.depositId}` ?? "N/a"}</Col>
 
           <Col style={{}}>
             <div>
@@ -452,7 +450,7 @@ const ActiveDeposit = ({
                       ] || assetParam.market.toUpperCase()
                     : null
                 }
-                height="24px"
+                height="15px"
               />
               <div
                 className="mr-6"
@@ -478,10 +476,10 @@ const ActiveDeposit = ({
                       ] || assetParam.market.toUpperCase()
                     : null
                 }
-                height="20px"
+                height="16px"
               />
               &nbsp;&nbsp;
-              <span style={{ fontSize: "16px", fontWeight: "600" }}>
+              <span style={{ fontSize: "15px", fontWeight: "600" }}>
                 {BNtoNum(Number(assetParam.amount))}
               </span>
             </div>
@@ -639,7 +637,21 @@ const ActiveDeposit = ({
                           Withdraw Supply
                         </span>
                       </NavLink>
-                    </NavItem>
+                    </NavItem>{" "}
+                    <img
+                      src="./cross.svg"
+                      onClick={() => {
+                        setmodal_deposit(false);
+                      }}
+                      style={{
+                        position: "absolute",
+                        top: "45px",
+                        right: "40px",
+                        marginTop: "5px",
+                        cursor: "pointer",
+                      }}
+                      height="15px"
+                    />
                   </Nav>
                 </Col>
                 <div

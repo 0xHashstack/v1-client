@@ -19,8 +19,8 @@ import {
 import Slider from "react-custom-slider";
 
 import RangeSlider from "react-bootstrap-range-slider";
-import arrowDown from "../assets/images/arrowDown.svg";
-import arrowUp from "../assets/images/arrowUp.svg";
+import arrowDown from "../assets/images/ArrowDownDark.svg";
+import arrowUp from "../assets/images/ArrowUpDark.svg";
 import { MinimumAmount } from "../blockchain/constants";
 import BigNumber, { ethers } from "ethers";
 
@@ -429,7 +429,8 @@ let Deposit: any = ({
                     onClick={() => {
                       setmodal_deposit(false);
                     }}
-                    style={{ marginTop: "-10px", cursor: "pointer" }}
+                    style={{ marginTop: "5px", cursor: "pointer" }}
+                    height="15px"
                   />
                 </Col>
 
@@ -562,34 +563,33 @@ let Deposit: any = ({
                         if (coin.name === tokenName) return <></>;
                         return (
                           <>
-                          <div
-                            key={index}
-                            style={{
-                              margin: "0px 0",
-                              cursor: "pointer",
-                              display: "flex",
-                              alignItems: "center",
-                              fontSize: "16px",
-                            }}
-                            onClick={() => {
-                              setTokenName(`${coin.name}`);
-                              setDropDown(false);
-                              setDropDownArrow(Downarrow);
-                              setAsset(`${coin.name}`);
-                              handleBalanceChange();
-                              // handleDepositAmountChange(0);
-                            }}
-                          >
-                            <Image
-                              src={`/${coin.name}.svg`}
-                              width="15px"
-                              height="15px"
-                              alt="coin image"
-                            />
-                            <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
-                            
-                          </div>
-                          <hr/>
+                            <div
+                              key={index}
+                              style={{
+                                margin: "0px 0",
+                                cursor: "pointer",
+                                display: "flex",
+                                alignItems: "center",
+                                fontSize: "16px",
+                              }}
+                              onClick={() => {
+                                setTokenName(`${coin.name}`);
+                                setDropDown(false);
+                                setDropDownArrow(Downarrow);
+                                setAsset(`${coin.name}`);
+                                handleBalanceChange();
+                                // handleDepositAmountChange(0);
+                              }}
+                            >
+                              <Image
+                                src={`/${coin.name}.svg`}
+                                width="15px"
+                                height="15px"
+                                alt="coin image"
+                              />
+                              <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                            </div>
+                            <hr />
                           </>
                         );
                       })}
@@ -631,6 +631,7 @@ let Deposit: any = ({
                       >
                         &nbsp;1 month
                       </div>
+                      <hr/>
                       <div
                         style={{
                           fontSize: "15px",
@@ -646,6 +647,7 @@ let Deposit: any = ({
                       >
                         &nbsp;2 weeks
                       </div>
+                      <hr/>
                       <div
                         style={{
                           fontSize: "15px",
@@ -661,6 +663,7 @@ let Deposit: any = ({
                       >
                         &nbsp;Flexible
                       </div>
+                      <hr/>
                     </div>
                   </>
                 ) : (

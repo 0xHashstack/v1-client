@@ -635,7 +635,8 @@ let Borrow: any = ({
                   onClick={() => {
                     setmodal_borrow(false);
                   }}
-                  style={{ marginTop: "-10px", cursor: "pointer" }}
+                  style={{ marginTop: "5px", cursor: "pointer" }}
+                  height="15px"
                 />
               </Col>
               <div
@@ -822,30 +823,30 @@ let Borrow: any = ({
                       if (coin.name === tokenName) return <></>;
                       return (
                         <>
-                        <div
-                          key={index}
-                          style={{
-                            margin: "10px 0",
-                            cursor: "pointer",
-                            display: "flex",
-                            alignItems: "center",
-                            fontSize: "16px",
-                          }}
-                          onClick={() => {
-                            setTokenName(`${coin.name}`);
-                            setDropDown(false);
-                            setDropDownArrow(Downarrow);
-                            handleCollateralChange(`${coin.name}`);
-                          }}
-                        >
-                          <img
-                            src={`./${coin.name}.svg`}
-                            width="15px"
-                            height="15px"
-                          ></img>
-                          <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
-                        </div>
-                        <hr/>
+                          <div
+                            key={index}
+                            style={{
+                              margin: "10px 0",
+                              cursor: "pointer",
+                              display: "flex",
+                              alignItems: "center",
+                              fontSize: "16px",
+                            }}
+                            onClick={() => {
+                              setTokenName(`${coin.name}`);
+                              setDropDown(false);
+                              setDropDownArrow(Downarrow);
+                              handleCollateralChange(`${coin.name}`);
+                            }}
+                          >
+                            <img
+                              src={`./${coin.name}.svg`}
+                              width="15px"
+                              height="15px"
+                            ></img>
+                            <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                          </div>
+                          <hr />
                         </>
                       );
                     })}
@@ -877,30 +878,30 @@ let Borrow: any = ({
                       if (coin.name === borrowTokenName) return <></>;
                       return (
                         <>
-                        <div
-                          key={index}
-                          style={{
-                            margin: "10px 0",
-                            cursor: "pointer",
-                            display: "flex",
-                            alignItems: "center",
-                            fontSize: "16px",
-                          }}
-                          onClick={() => {
-                            setBorrowTokenName(`${coin.name}`);
-                            setBorrowDropDown(false);
-                            setBorrowArrow(Downarrow);
-                            setAsset(`${coin.name}`);
-                          }}
-                        >
-                          <img
-                            src={`./${coin.name}.svg`}
-                            width="15px"
-                            height="15px"
-                          ></img>
-                          <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
-                        </div>
-                        <hr/>
+                          <div
+                            key={index}
+                            style={{
+                              margin: "10px 0",
+                              cursor: "pointer",
+                              display: "flex",
+                              alignItems: "center",
+                              fontSize: "16px",
+                            }}
+                            onClick={() => {
+                              setBorrowTokenName(`${coin.name}`);
+                              setBorrowDropDown(false);
+                              setBorrowArrow(Downarrow);
+                              setAsset(`${coin.name}`);
+                            }}
+                          >
+                            <img
+                              src={`./${coin.name}.svg`}
+                              width="15px"
+                              height="15px"
+                            ></img>
+                            <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                          </div>
+                          <hr />
                         </>
                       );
                     })}
@@ -943,6 +944,7 @@ let Borrow: any = ({
                     >
                       &nbsp;1 month
                     </div>
+                    <hr />
                     <div
                       style={{
                         fontSize: "15px",
@@ -958,6 +960,7 @@ let Borrow: any = ({
                     >
                       &nbsp;Flexible
                     </div>
+                    <hr />
                   </div>
                 </>
               ) : (

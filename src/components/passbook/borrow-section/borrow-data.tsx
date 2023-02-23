@@ -767,16 +767,17 @@ const BorrowData = ({
         style={{
           color: "white",
           textAlign: "left",
+          marginLeft: "20px",
         }}
       >
         <Row
           style={{
-            margin: "15px 0px 15px 0px",
+            margin: "15px 0px 15px 10px",
             alignItems: "center",
             gap: "30px",
           }}
         >
-          <Col style={{ marginLeft: "-10px", textAlign: "center" }}>
+          <Col style={{ marginLeft: "-10px", textAlign: "left" }}>
             ID{assetParam.loanId}
           </Col>
 
@@ -790,7 +791,7 @@ const BorrowData = ({
                     ] || assetParam.loanMarket.toUpperCase()
                     : null
                 }
-                height="20px"
+                height="15px"
               />
               <div
                 className="mr-6"
@@ -816,7 +817,7 @@ const BorrowData = ({
                     ] || assetParam.loanMarket.toUpperCase()
                     : null
                 }
-                height="18px"
+                height="15px"
               />
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
@@ -825,7 +826,7 @@ const BorrowData = ({
             </div>
           </Col>
 
-          <Col style={{ textAlign: "center" }}>
+          <Col>
             <div style={{ fontSize: "14px", fontWeight: "600" }}>
               {parseFloat(BNtoNum(Number(assetParam.loanInterest))).toFixed(6)}
               &nbsp;
@@ -863,7 +864,7 @@ const BorrowData = ({
                     ] || assetParam.loanMarket.toUpperCase()
                     : null
                 }
-                height="24px"
+                height="15px"
               />
               <div
                 className="mr-6"
@@ -888,7 +889,7 @@ const BorrowData = ({
                     ] || assetParam.collateralMarket.toUpperCase()
                     : null
                 }
-                height="18px"
+                height="15px"
               />
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
@@ -1336,7 +1337,21 @@ const BorrowData = ({
                           Collateral Actions
                         </span>
                       </NavLink>
-                    </NavItem>
+                    </NavItem>{" "}
+                    <img
+                      src="./cross.svg"
+                      onClick={() => {
+                        setmodal_deposit(false);
+                      }}
+                      style={{
+                        position: "absolute",
+                        top: "55px",
+                        right: "40px",
+                        marginTop: "5px",
+                        cursor: "pointer",
+                      }}
+                      height="15px"
+                    />
                   </Nav>
                 </Col>
 
