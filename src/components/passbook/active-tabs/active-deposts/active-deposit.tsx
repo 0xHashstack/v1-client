@@ -764,7 +764,7 @@ const ActiveDeposit = ({
                           backgroundColor: "#1D2131",
                           padding: "10px ",
                           borderRight: "1px solid rgb(57, 61, 79)",
-                          color: "#393D4F",
+                          color: "#8c8c8c",
                         }}
                         type="number"
                         className="form-control"
@@ -908,7 +908,7 @@ const ActiveDeposit = ({
                     style={{
                       marginBottom: "25px",
                       fontSize: "11px",
-                      marginTop: "-10px",
+                      marginTop: "-25px",
                     }}
                   >
                     <div

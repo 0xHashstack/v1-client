@@ -688,8 +688,8 @@ let Borrow: any = ({
                     <Image
                       src={dropDownArrow}
                       alt="Picture of the author"
-                      width="20px"
-                      height="20px"
+                      width="14px"
+                      height="14px"
                     />
                   </div>
                 </div>
@@ -1015,8 +1015,8 @@ let Borrow: any = ({
                     <Image
                       src={borrowArrow}
                       alt="Picture of the author"
-                      width="20px"
-                      height="20px"
+                      width="14px"
+                      height="14px"
                     />
                   </div>
                 </div>
@@ -1076,8 +1076,8 @@ let Borrow: any = ({
                             }}
                             src={commitmentArrow}
                             alt="Picture of the author"
-                            width="20px"
-                            height="20px"
+                            width="14px"
+                            height="14px"
                           />
                         </div>
                       </div>

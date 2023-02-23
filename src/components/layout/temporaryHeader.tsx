@@ -387,8 +387,8 @@ const SecondaryHeader = ({
                             onClick={toggleDropdown}
                             src={dropDownArrow}
                             alt="Picture of the author"
-                            width="20px"
-                            height="20px"
+                            width="14px"
+                            height="14px"
                           />
                         </div>
                       </div>
@@ -612,8 +612,8 @@ const SecondaryHeader = ({
                     }}
                     src={connectWalletArrowDown}
                     alt="Picture of the author"
-                    width="15px"
-                    height="15px"
+                    width="14px"
+                    height="14px"
                     style={{ cursor: "pointer" }}
                   />
                 </span>
@@ -740,8 +740,8 @@ const SecondaryHeader = ({
                   <Image
                     src={dropDownArrow}
                     alt="Picture of the author"
-                    width="18px"
-                    height="18px"
+                    width="14px"
+                    height="14px"
                     style={{
                       cursor: "pointer",
                     }}

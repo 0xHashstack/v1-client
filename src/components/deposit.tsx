@@ -474,8 +474,8 @@ let Deposit: any = ({
                       <Image
                         src={dropDownArrow}
                         alt="Picture of the author"
-                        width="20px"
-                        height="20px"
+                        width="14px"
+                        height="14px"
                       />
                     </div>
                   </div>
@@ -535,8 +535,8 @@ let Deposit: any = ({
                         }}
                         src={commitmentArrow}
                         alt="Picture of the author"
-                        width="20px"
-                        height="20px"
+                        width="14px"
+                        height="14px"
                       />
                     </div>
                   </div>
@@ -631,7 +631,7 @@ let Deposit: any = ({
                       >
                         &nbsp;1 month
                       </div>
-                      <hr/>
+                      <hr />
                       <div
                         style={{
                           fontSize: "15px",
@@ -647,7 +647,7 @@ let Deposit: any = ({
                       >
                         &nbsp;2 weeks
                       </div>
-                      <hr/>
+                      <hr />
                       <div
                         style={{
                           fontSize: "15px",
@@ -663,7 +663,7 @@ let Deposit: any = ({
                       >
                         &nbsp;Flexible
                       </div>
-                      <hr/>
+                      <hr />
                     </div>
                   </>
                 ) : (

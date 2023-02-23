@@ -491,8 +491,8 @@ const ActiveDepositsTab = ({
                             <Image
                               src={dropDownArrow}
                               alt="Picture of the author"
-                              width="20px"
-                              height="20px"
+                              width="14px"
+                              height="14px"
                             />
                           </div>
                         </div>
@@ -552,8 +552,8 @@ const ActiveDepositsTab = ({
                               }}
                               src={commitmentArrow}
                               alt="Picture of the author"
-                              width="20px"
-                              height="20px"
+                              width="14px"
+                              height="14px"
                             />
                           </div>
                         </div>
@@ -802,7 +802,7 @@ const ActiveDepositsTab = ({
                         style={{
                           marginBottom: "25px",
                           fontSize: "11px",
-                          marginTop: "-10px",
+                          marginTop: "-25px",
                         }}
                       >
                         <div

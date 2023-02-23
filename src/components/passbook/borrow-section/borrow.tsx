@@ -760,8 +760,8 @@ const BorrowTab = ({
                             onClick={toggleDropdown}
                             src={dropDownArrow}
                             alt="Picture of the author"
-                            width="20px"
-                            height="20px"
+                            width="14px"
+                            height="14px"
                           />
                         </div>
                       </div>
@@ -1080,8 +1080,8 @@ const BorrowTab = ({
                             // onClick={toggleBorrowDropdown}
                             src={borrowArrow}
                             alt="Picture of the author"
-                            width="20px"
-                            height="20px"
+                            width="14px"
+                            height="14px"
                           />
                         </div>
                       </div>
@@ -1135,8 +1135,8 @@ const BorrowTab = ({
                                   }}
                                   src={commitmentArrow}
                                   alt="Picture of the author"
-                                  width="20px"
-                                  height="20px"
+                                  width="14px"
+                                  height="14px"
                                 />
                               </div>
                             </div>
