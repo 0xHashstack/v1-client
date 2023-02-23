@@ -514,6 +514,16 @@ const ActiveDeposit = ({
               {assetParam &&
                 historicalAPRs &&
                 depositInterestAccrued(assetParam, historicalAPRs)}
+                {/* {depositLoanRates ? (
+                        `${parseFloat(
+                          depositLoanRates[
+                            `${getTokenFromName(asset as string)?.address
+                            }__${commitPeriod}`
+                          ]?.depositAPR?.apr100x as string
+                        )} %`
+                      ) : (
+                        <MySpinner />
+                      )} */}
               &nbsp;
               {EventMap[assetParam.market.toUpperCase()]}
             </div>

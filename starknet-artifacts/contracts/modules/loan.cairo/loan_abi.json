@@ -2,65 +2,6 @@
     {
         "members": [
             {
-                "name": "address",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "is_supported",
-                "offset": 1,
-                "type": "felt"
-            },
-            {
-                "name": "deposit_min_amount",
-                "offset": 2,
-                "type": "Uint256"
-            },
-            {
-                "name": "deposit_max_amount",
-                "offset": 4,
-                "type": "Uint256"
-            },
-            {
-                "name": "loan_min_amount",
-                "offset": 6,
-                "type": "Uint256"
-            },
-            {
-                "name": "loan_max_amount",
-                "offset": 8,
-                "type": "Uint256"
-            },
-            {
-                "name": "empiric_key",
-                "offset": 10,
-                "type": "felt"
-            }
-        ],
-        "name": "Market",
-        "size": 11,
-        "type": "struct"
-    },
-    {
-        "members": [
-            {
-                "name": "low",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "high",
-                "offset": 1,
-                "type": "felt"
-            }
-        ],
-        "name": "Uint256",
-        "size": 2,
-        "type": "struct"
-    },
-    {
-        "members": [
-            {
                 "name": "id",
                 "offset": 0,
                 "type": "felt"
@@ -118,6 +59,23 @@
         ],
         "name": "Loan",
         "size": 13,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "low",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "high",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "Uint256",
+        "size": 2,
         "type": "struct"
     },
     {
@@ -198,27 +156,6 @@
         "keys": [],
         "name": "Unpaused",
         "type": "event"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset_record",
-                "type": "Market"
-            }
-        ],
-        "name": "asset_price",
-        "outputs": [
-            {
-                "name": "price",
-                "type": "felt"
-            },
-            {
-                "name": "decimals",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
     },
     {
         "data": [
@@ -655,17 +592,6 @@
             }
         ],
         "name": "swap_secondary_market_to_loan",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "loan_id",
-                "type": "felt"
-            }
-        ],
-        "name": "deduct_loan_interest",
         "outputs": [],
         "type": "function"
     },

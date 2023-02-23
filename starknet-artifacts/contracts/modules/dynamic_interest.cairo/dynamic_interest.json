@@ -65763,6 +65763,10 @@
                 "destination": "contracts.integrations.interfaces.IMySwapRouter.IMySwapRouter",
                 "type": "alias"
             },
+            "contracts.libraries.dexes.lib_myswap_dex.JEDI_SWAP": {
+                "destination": "contracts.storages.constants.JEDI_SWAP",
+                "type": "alias"
+            },
             "contracts.libraries.dexes.lib_myswap_dex.MySwapPool": {
                 "destination": "contracts.integrations.interfaces.IMySwapRouter.MySwapPool",
                 "type": "alias"
@@ -67447,6 +67451,10 @@
             },
             "contracts.libraries.lib_safe_swap.uint256_add": {
                 "destination": "starkware.cairo.common.uint256.uint256_add",
+                "type": "alias"
+            },
+            "contracts.libraries.lib_safe_swap.uint256_eq": {
+                "destination": "starkware.cairo.common.uint256.uint256_eq",
                 "type": "alias"
             },
             "contracts.libraries.lib_safe_swap.uint256_le": {

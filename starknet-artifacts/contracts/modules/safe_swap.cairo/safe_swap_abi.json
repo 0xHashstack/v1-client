@@ -1,22 +1,5 @@
 [
     {
-        "members": [
-            {
-                "name": "low",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "high",
-                "offset": 1,
-                "type": "felt"
-            }
-        ],
-        "name": "Uint256",
-        "size": 2,
-        "type": "struct"
-    },
-    {
         "data": [
             {
                 "name": "previousOwner",
@@ -52,31 +35,6 @@
         "keys": [],
         "name": "Unpaused",
         "type": "event"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset_from",
-                "type": "felt"
-            },
-            {
-                "name": "asset_to",
-                "type": "felt"
-            },
-            {
-                "name": "amount_in",
-                "type": "Uint256"
-            }
-        ],
-        "name": "get_min_amount_out",
-        "outputs": [
-            {
-                "name": "min_amount_out",
-                "type": "Uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
     },
     {
         "inputs": [],

@@ -925,10 +925,10 @@ let Deposit: any = ({
                     loadingDeposit ||
                     isInvalid()
                   }
-                  // onClick={(e) => {
-                  //   handleDeposit(asset);
-                  // }}
-                  onClick={getGas}
+                  onClick={(e) => {
+                    handleDeposit(asset);
+                  }}
+                  // onClick={getGas}
                 >
                   {!(
                     loadingApprove ||

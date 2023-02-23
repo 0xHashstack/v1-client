@@ -265,54 +265,6 @@
         "type": "event"
     },
     {
-        "inputs": [
-            {
-                "name": "address",
-                "type": "felt"
-            }
-        ],
-        "name": "set_integration_contract_address",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "get_integration_contract_address",
-        "outputs": [
-            {
-                "name": "l3_integration_address",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "integration",
-                "type": "felt"
-            },
-            {
-                "name": "loan_id",
-                "type": "felt"
-            }
-        ],
-        "name": "view_details",
-        "outputs": [
-            {
-                "name": "return_data_len",
-                "type": "felt"
-            },
-            {
-                "name": "return_data",
-                "type": "felt*"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
         "data": [
             {
                 "name": "collateral_record",

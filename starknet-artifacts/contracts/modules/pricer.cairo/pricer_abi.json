@@ -148,5 +148,30 @@
         ],
         "stateMutability": "view",
         "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset_from",
+                "type": "felt"
+            },
+            {
+                "name": "asset_to",
+                "type": "felt"
+            },
+            {
+                "name": "amount_in",
+                "type": "Uint256"
+            }
+        ],
+        "name": "get_efficient_amount_out",
+        "outputs": [
+            {
+                "name": "amount_out",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
     }
 ]

@@ -46452,7 +46452,20 @@
                         "__main__._get_amounts_out"
                     ],
                     "flow_tracking_data": null,
-                    "hints": [],
+                    "hints": [
+                        {
+                            "location": {
+                                "end_col": 68,
+                                "end_line": 215,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/mockups/jedi_swap_router.cairo"
+                                },
+                                "start_col": 5,
+                                "start_line": 215
+                            },
+                            "n_prefix_newlines": 0
+                        }
+                    ],
                     "inst": {
                         "end_col": 81,
                         "end_line": 124,
@@ -73478,6 +73491,25 @@
                     }
                 }
             ],
+            "1708": [
+                {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__._get_amounts_out"
+                    ],
+                    "code": "print(\"pricesss\", ids.asset_from_price, ids.asset_to_price)",
+                    "flow_tracking_data": {
+                        "ap_tracking": {
+                            "group": 111,
+                            "offset": 0
+                        },
+                        "reference_ids": {
+                            "__main__._get_amounts_out.asset_from_price": 51,
+                            "__main__._get_amounts_out.asset_to_price": 52
+                        }
+                    }
+                }
+            ],
             "1804": [
                 {
                     "accessible_scopes": [
@@ -74470,6 +74502,52 @@
             "__main__._get_amounts_out.SIZEOF_LOCALS": {
                 "type": "const",
                 "value": 6
+            },
+            "__main__._get_amounts_out.asset_from_price": {
+                "cairo_type": "felt",
+                "full_name": "__main__._get_amounts_out.asset_from_price",
+                "references": [
+                    {
+                        "ap_tracking_data": {
+                            "group": 110,
+                            "offset": 0
+                        },
+                        "pc": 1697,
+                        "value": "[cast(ap + (-2), felt*)]"
+                    },
+                    {
+                        "ap_tracking_data": {
+                            "group": 110,
+                            "offset": 0
+                        },
+                        "pc": 1698,
+                        "value": "[cast(fp + 1, felt*)]"
+                    }
+                ],
+                "type": "reference"
+            },
+            "__main__._get_amounts_out.asset_to_price": {
+                "cairo_type": "felt",
+                "full_name": "__main__._get_amounts_out.asset_to_price",
+                "references": [
+                    {
+                        "ap_tracking_data": {
+                            "group": 111,
+                            "offset": 0
+                        },
+                        "pc": 1705,
+                        "value": "[cast(ap + (-2), felt*)]"
+                    },
+                    {
+                        "ap_tracking_data": {
+                            "group": 111,
+                            "offset": 0
+                        },
+                        "pc": 1706,
+                        "value": "[cast(fp + 3, felt*)]"
+                    }
+                ],
+                "type": "reference"
             },
             "__main__._get_reserves": {
                 "decorators": [],
@@ -81009,6 +81087,22 @@
                     },
                     "pc": 561,
                     "value": "[cast(fp + 2, starkware.cairo.common.uint256.Uint256*)]"
+                },
+                {
+                    "ap_tracking_data": {
+                        "group": 110,
+                        "offset": 0
+                    },
+                    "pc": 1698,
+                    "value": "[cast(fp + 1, felt*)]"
+                },
+                {
+                    "ap_tracking_data": {
+                        "group": 111,
+                        "offset": 0
+                    },
+                    "pc": 1706,
+                    "value": "[cast(fp + 3, felt*)]"
                 }
             ]
         }

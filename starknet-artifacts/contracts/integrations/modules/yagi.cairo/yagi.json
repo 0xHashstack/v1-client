@@ -18046,12 +18046,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 18,
-                        "end_line": 21,
+                        "end_line": 26,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 21
+                        "start_line": 26
                     }
                 },
                 "606": {
@@ -18063,24 +18063,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 19,
+                        "end_line": 24,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 38,
-                                "end_line": 24,
+                                "end_line": 29,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                 },
                                 "start_col": 25,
-                                "start_line": 24
+                                "start_line": 29
                             },
                             "While expanding the reference 'asset_address' in:"
                         ],
                         "start_col": 5,
-                        "start_line": 19
+                        "start_line": 24
                     }
                 },
                 "607": {
@@ -18092,12 +18092,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 39,
-                        "end_line": 24,
+                        "end_line": 29,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 24
+                        "start_line": 29
                     }
                 },
                 "609": {
@@ -18109,7 +18109,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 48,
-                        "end_line": 18,
+                        "end_line": 23,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
@@ -18123,12 +18123,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 46,
-                                        "end_line": 28,
+                                        "end_line": 33,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                         },
                                         "start_col": 26,
-                                        "start_line": 28
+                                        "start_line": 33
                                     },
                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                 ],
@@ -18138,7 +18138,7 @@
                             "While expanding the reference 'syscall_ptr' in:"
                         ],
                         "start_col": 30,
-                        "start_line": 18
+                        "start_line": 23
                     }
                 },
                 "610": {
@@ -18150,7 +18150,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 76,
-                        "end_line": 18,
+                        "end_line": 23,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
@@ -18164,12 +18164,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 46,
-                                        "end_line": 28,
+                                        "end_line": 33,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                         },
                                         "start_col": 26,
-                                        "start_line": 28
+                                        "start_line": 33
                                     },
                                     "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                 ],
@@ -18179,7 +18179,7 @@
                             "While expanding the reference 'pedersen_ptr' in:"
                         ],
                         "start_col": 50,
-                        "start_line": 18
+                        "start_line": 23
                     }
                 },
                 "611": {
@@ -18191,7 +18191,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 93,
-                        "end_line": 18,
+                        "end_line": 23,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
@@ -18205,12 +18205,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 46,
-                                        "end_line": 28,
+                                        "end_line": 33,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                         },
                                         "start_col": 26,
-                                        "start_line": 28
+                                        "start_line": 33
                                     },
                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                 ],
@@ -18220,7 +18220,7 @@
                             "While expanding the reference 'range_check_ptr' in:"
                         ],
                         "start_col": 78,
-                        "start_line": 18
+                        "start_line": 23
                     }
                 },
                 "612": {
@@ -18232,12 +18232,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 46,
-                        "end_line": 28,
+                        "end_line": 33,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
                         "start_col": 26,
-                        "start_line": 28
+                        "start_line": 33
                     }
                 },
                 "614": {
@@ -18249,12 +18249,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 38,
-                        "end_line": 30,
+                        "end_line": 35,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 30
+                        "start_line": 35
                     }
                 },
                 "616": {
@@ -18273,7 +18273,7 @@
                         "parent_location": [
                             {
                                 "end_col": 46,
-                                "end_line": 28,
+                                "end_line": 33,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                 },
@@ -18294,12 +18294,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 145,
-                                                        "end_line": 34,
+                                                        "end_line": 39,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                                         },
                                                         "start_col": 37,
-                                                        "start_line": 34
+                                                        "start_line": 39
                                                     },
                                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                                 ],
@@ -18314,7 +18314,7 @@
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
                                 "start_col": 26,
-                                "start_line": 28
+                                "start_line": 33
                             },
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
@@ -18338,7 +18338,7 @@
                         "parent_location": [
                             {
                                 "end_col": 46,
-                                "end_line": 28,
+                                "end_line": 33,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                 },
@@ -18359,12 +18359,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 145,
-                                                        "end_line": 34,
+                                                        "end_line": 39,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                                         },
                                                         "start_col": 37,
-                                                        "start_line": 34
+                                                        "start_line": 39
                                                     },
                                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                 ],
@@ -18379,7 +18379,7 @@
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 26,
-                                "start_line": 28
+                                "start_line": 33
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
@@ -18396,24 +18396,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 22,
-                        "end_line": 28,
+                        "end_line": 33,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 100,
-                                "end_line": 34,
+                                "end_line": 39,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                 },
                                 "start_col": 88,
-                                "start_line": 34
+                                "start_line": 39
                             },
                             "While expanding the reference 'open_address' in:"
                         ],
                         "start_col": 10,
-                        "start_line": 28
+                        "start_line": 33
                     }
                 },
                 "619": {
@@ -18425,24 +18425,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 19,
+                        "end_line": 24,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 129,
-                                "end_line": 34,
+                                "end_line": 39,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                 },
                                 "start_col": 116,
-                                "start_line": 34
+                                "start_line": 39
                             },
                             "While expanding the reference 'asset_address' in:"
                         ],
                         "start_col": 5,
-                        "start_line": 19
+                        "start_line": 24
                     }
                 },
                 "620": {
@@ -18454,24 +18454,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 41,
-                        "end_line": 19,
+                        "end_line": 24,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 144,
-                                "end_line": 34,
+                                "end_line": 39,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                 },
                                 "start_col": 138,
-                                "start_line": 34
+                                "start_line": 39
                             },
                             "While expanding the reference 'amount' in:"
                         ],
                         "start_col": 26,
-                        "start_line": 19
+                        "start_line": 24
                     }
                 },
                 "621": {
@@ -18483,24 +18483,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 41,
-                        "end_line": 19,
+                        "end_line": 24,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 144,
-                                "end_line": 34,
+                                "end_line": 39,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                 },
                                 "start_col": 138,
-                                "start_line": 34
+                                "start_line": 39
                             },
                             "While expanding the reference 'amount' in:"
                         ],
                         "start_col": 26,
-                        "start_line": 19
+                        "start_line": 24
                     }
                 },
                 "622": {
@@ -18512,12 +18512,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 145,
-                        "end_line": 34,
+                        "end_line": 39,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
                         "start_col": 37,
-                        "start_line": 34
+                        "start_line": 39
                     }
                 },
                 "624": {
@@ -18543,36 +18543,36 @@
                                 "parent_location": [
                                     {
                                         "end_col": 145,
-                                        "end_line": 34,
+                                        "end_line": 39,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 48,
-                                                "end_line": 18,
+                                                "end_line": 23,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                                 },
                                                 "parent_location": [
                                                     {
                                                         "end_col": 38,
-                                                        "end_line": 35,
+                                                        "end_line": 40,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                                         },
                                                         "start_col": 9,
-                                                        "start_line": 35
+                                                        "start_line": 40
                                                     },
                                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                                 ],
                                                 "start_col": 30,
-                                                "start_line": 18
+                                                "start_line": 23
                                             },
                                             "While expanding the reference 'syscall_ptr' in:"
                                         ],
                                         "start_col": 37,
-                                        "start_line": 34
+                                        "start_line": 39
                                     },
                                     "While trying to update the implicit return value 'syscall_ptr' in:"
                                 ],
@@ -18601,36 +18601,36 @@
                         "parent_location": [
                             {
                                 "end_col": 46,
-                                "end_line": 28,
+                                "end_line": 33,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 76,
-                                        "end_line": 18,
+                                        "end_line": 23,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 38,
-                                                "end_line": 35,
+                                                "end_line": 40,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                                 },
                                                 "start_col": 9,
-                                                "start_line": 35
+                                                "start_line": 40
                                             },
                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                         ],
                                         "start_col": 50,
-                                        "start_line": 18
+                                        "start_line": 23
                                     },
                                     "While expanding the reference 'pedersen_ptr' in:"
                                 ],
                                 "start_col": 26,
-                                "start_line": 28
+                                "start_line": 33
                             },
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
@@ -18661,36 +18661,36 @@
                                 "parent_location": [
                                     {
                                         "end_col": 145,
-                                        "end_line": 34,
+                                        "end_line": 39,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 93,
-                                                "end_line": 18,
+                                                "end_line": 23,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                                 },
                                                 "parent_location": [
                                                     {
                                                         "end_col": 38,
-                                                        "end_line": 35,
+                                                        "end_line": 40,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                                         },
                                                         "start_col": 9,
-                                                        "start_line": 35
+                                                        "start_line": 40
                                                     },
                                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                 ],
                                                 "start_col": 78,
-                                                "start_line": 18
+                                                "start_line": 23
                                             },
                                             "While expanding the reference 'range_check_ptr' in:"
                                         ],
                                         "start_col": 37,
-                                        "start_line": 34
+                                        "start_line": 39
                                     },
                                     "While trying to update the implicit return value 'range_check_ptr' in:"
                                 ],
@@ -18712,24 +18712,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 23,
-                        "end_line": 34,
+                        "end_line": 39,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 35,
+                                "end_line": 40,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                 },
                                 "start_col": 17,
-                                "start_line": 35
+                                "start_line": 40
                             },
                             "While expanding the reference 'usd_value' in:"
                         ],
                         "start_col": 14,
-                        "start_line": 34
+                        "start_line": 39
                     }
                 },
                 "628": {
@@ -18741,24 +18741,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 23,
-                        "end_line": 34,
+                        "end_line": 39,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 35,
+                                "end_line": 40,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                 },
                                 "start_col": 17,
-                                "start_line": 35
+                                "start_line": 40
                             },
                             "While expanding the reference 'usd_value' in:"
                         ],
                         "start_col": 14,
-                        "start_line": 34
+                        "start_line": 39
                     }
                 },
                 "629": {
@@ -18770,24 +18770,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 33,
-                        "end_line": 34,
+                        "end_line": 39,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 36,
-                                "end_line": 35,
+                                "end_line": 40,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                 },
                                 "start_col": 28,
-                                "start_line": 35
+                                "start_line": 40
                             },
                             "While expanding the reference 'decimals' in:"
                         ],
                         "start_col": 25,
-                        "start_line": 34
+                        "start_line": 39
                     }
                 },
                 "630": {
@@ -18799,12 +18799,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 38,
-                        "end_line": 35,
+                        "end_line": 40,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 35
+                        "start_line": 40
                     }
                 },
                 "631": {
@@ -18816,12 +18816,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 18,
-                        "end_line": 24,
+                        "end_line": 27,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 24
+                        "start_line": 27
                     }
                 },
                 "633": {
@@ -18833,7 +18833,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 39,
-                        "end_line": 21,
+                        "end_line": 24,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
@@ -18847,12 +18847,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 46,
-                                        "end_line": 27,
+                                        "end_line": 30,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                         },
                                         "start_col": 26,
-                                        "start_line": 27
+                                        "start_line": 30
                                     },
                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                 ],
@@ -18862,7 +18862,7 @@
                             "While expanding the reference 'syscall_ptr' in:"
                         ],
                         "start_col": 21,
-                        "start_line": 21
+                        "start_line": 24
                     }
                 },
                 "634": {
@@ -18874,7 +18874,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 67,
-                        "end_line": 21,
+                        "end_line": 24,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
@@ -18888,12 +18888,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 46,
-                                        "end_line": 27,
+                                        "end_line": 30,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                         },
                                         "start_col": 26,
-                                        "start_line": 27
+                                        "start_line": 30
                                     },
                                     "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                 ],
@@ -18903,7 +18903,7 @@
                             "While expanding the reference 'pedersen_ptr' in:"
                         ],
                         "start_col": 41,
-                        "start_line": 21
+                        "start_line": 24
                     }
                 },
                 "635": {
@@ -18915,7 +18915,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 84,
-                        "end_line": 21,
+                        "end_line": 24,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
@@ -18929,12 +18929,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 46,
-                                        "end_line": 27,
+                                        "end_line": 30,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                         },
                                         "start_col": 26,
-                                        "start_line": 27
+                                        "start_line": 30
                                     },
                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                 ],
@@ -18944,7 +18944,7 @@
                             "While expanding the reference 'range_check_ptr' in:"
                         ],
                         "start_col": 69,
-                        "start_line": 21
+                        "start_line": 24
                     }
                 },
                 "636": {
@@ -18956,12 +18956,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 46,
-                        "end_line": 27,
+                        "end_line": 30,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "start_col": 26,
-                        "start_line": 27
+                        "start_line": 30
                     }
                 },
                 "638": {
@@ -18973,12 +18973,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 38,
-                        "end_line": 29,
+                        "end_line": 32,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 29
+                        "start_line": 32
                     }
                 },
                 "640": {
@@ -18997,7 +18997,7 @@
                         "parent_location": [
                             {
                                 "end_col": 46,
-                                "end_line": 27,
+                                "end_line": 30,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
@@ -19018,12 +19018,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 98,
-                                                        "end_line": 33,
+                                                        "end_line": 36,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                                         },
                                                         "start_col": 28,
-                                                        "start_line": 33
+                                                        "start_line": 36
                                                     },
                                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                                 ],
@@ -19038,7 +19038,7 @@
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
                                 "start_col": 26,
-                                "start_line": 27
+                                "start_line": 30
                             },
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
@@ -19062,7 +19062,7 @@
                         "parent_location": [
                             {
                                 "end_col": 46,
-                                "end_line": 27,
+                                "end_line": 30,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
@@ -19083,12 +19083,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 98,
-                                                        "end_line": 33,
+                                                        "end_line": 36,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                                         },
                                                         "start_col": 28,
-                                                        "start_line": 33
+                                                        "start_line": 36
                                                     },
                                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                 ],
@@ -19103,7 +19103,7 @@
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 26,
-                                "start_line": 27
+                                "start_line": 30
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
@@ -19120,24 +19120,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 22,
-                        "end_line": 27,
+                        "end_line": 30,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 80,
-                                "end_line": 33,
+                                "end_line": 36,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "start_col": 68,
-                                "start_line": 33
+                                "start_line": 36
                             },
                             "While expanding the reference 'open_address' in:"
                         ],
                         "start_col": 10,
-                        "start_line": 27
+                        "start_line": 30
                     }
                 },
                 "643": {
@@ -19149,24 +19149,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 18,
-                        "end_line": 22,
+                        "end_line": 25,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 97,
-                                "end_line": 33,
+                                "end_line": 36,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "start_col": 90,
-                                "start_line": 33
+                                "start_line": 36
                             },
                             "While expanding the reference 'loan_id' in:"
                         ],
                         "start_col": 5,
-                        "start_line": 22
+                        "start_line": 25
                     }
                 },
                 "644": {
@@ -19178,12 +19178,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 98,
-                        "end_line": 33,
+                        "end_line": 36,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "start_col": 28,
-                        "start_line": 33
+                        "start_line": 36
                     }
                 },
                 "646": {
@@ -19209,36 +19209,36 @@
                                 "parent_location": [
                                     {
                                         "end_col": 98,
-                                        "end_line": 33,
+                                        "end_line": 36,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 39,
-                                                "end_line": 21,
+                                                "end_line": 24,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                                 },
                                                 "parent_location": [
                                                     {
                                                         "end_col": 35,
-                                                        "end_line": 34,
+                                                        "end_line": 37,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                                         },
                                                         "start_col": 9,
-                                                        "start_line": 34
+                                                        "start_line": 37
                                                     },
                                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                                 ],
                                                 "start_col": 21,
-                                                "start_line": 21
+                                                "start_line": 24
                                             },
                                             "While expanding the reference 'syscall_ptr' in:"
                                         ],
                                         "start_col": 28,
-                                        "start_line": 33
+                                        "start_line": 36
                                     },
                                     "While trying to update the implicit return value 'syscall_ptr' in:"
                                 ],
@@ -19267,36 +19267,36 @@
                         "parent_location": [
                             {
                                 "end_col": 46,
-                                "end_line": 27,
+                                "end_line": 30,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 67,
-                                        "end_line": 21,
+                                        "end_line": 24,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 35,
-                                                "end_line": 34,
+                                                "end_line": 37,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                                 },
                                                 "start_col": 9,
-                                                "start_line": 34
+                                                "start_line": 37
                                             },
                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                         ],
                                         "start_col": 41,
-                                        "start_line": 21
+                                        "start_line": 24
                                     },
                                     "While expanding the reference 'pedersen_ptr' in:"
                                 ],
                                 "start_col": 26,
-                                "start_line": 27
+                                "start_line": 30
                             },
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
@@ -19327,36 +19327,36 @@
                                 "parent_location": [
                                     {
                                         "end_col": 98,
-                                        "end_line": 33,
+                                        "end_line": 36,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 84,
-                                                "end_line": 21,
+                                                "end_line": 24,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                                 },
                                                 "parent_location": [
                                                     {
                                                         "end_col": 35,
-                                                        "end_line": 34,
+                                                        "end_line": 37,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                                         },
                                                         "start_col": 9,
-                                                        "start_line": 34
+                                                        "start_line": 37
                                                     },
                                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                 ],
                                                 "start_col": 69,
-                                                "start_line": 21
+                                                "start_line": 24
                                             },
                                             "While expanding the reference 'range_check_ptr' in:"
                                         ],
                                         "start_col": 28,
-                                        "start_line": 33
+                                        "start_line": 36
                                     },
                                     "While trying to update the implicit return value 'range_check_ptr' in:"
                                 ],
@@ -19378,24 +19378,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 33,
+                        "end_line": 36,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 34,
+                                "end_line": 37,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "start_col": 29,
-                                "start_line": 34
+                                "start_line": 37
                             },
                             "While expanding the reference 'loan' in:"
                         ],
                         "start_col": 14,
-                        "start_line": 33
+                        "start_line": 36
                     }
                 },
                 "650": {
@@ -19407,24 +19407,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 33,
+                        "end_line": 36,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 34,
+                                "end_line": 37,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "start_col": 29,
-                                "start_line": 34
+                                "start_line": 37
                             },
                             "While expanding the reference 'loan' in:"
                         ],
                         "start_col": 14,
-                        "start_line": 33
+                        "start_line": 36
                     }
                 },
                 "651": {
@@ -19436,24 +19436,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 33,
+                        "end_line": 36,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 34,
+                                "end_line": 37,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "start_col": 29,
-                                "start_line": 34
+                                "start_line": 37
                             },
                             "While expanding the reference 'loan' in:"
                         ],
                         "start_col": 14,
-                        "start_line": 33
+                        "start_line": 36
                     }
                 },
                 "652": {
@@ -19465,24 +19465,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 33,
+                        "end_line": 36,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 34,
+                                "end_line": 37,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "start_col": 29,
-                                "start_line": 34
+                                "start_line": 37
                             },
                             "While expanding the reference 'loan' in:"
                         ],
                         "start_col": 14,
-                        "start_line": 33
+                        "start_line": 36
                     }
                 },
                 "653": {
@@ -19494,24 +19494,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 33,
+                        "end_line": 36,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 34,
+                                "end_line": 37,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "start_col": 29,
-                                "start_line": 34
+                                "start_line": 37
                             },
                             "While expanding the reference 'loan' in:"
                         ],
                         "start_col": 14,
-                        "start_line": 33
+                        "start_line": 36
                     }
                 },
                 "654": {
@@ -19523,24 +19523,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 33,
+                        "end_line": 36,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 34,
+                                "end_line": 37,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "start_col": 29,
-                                "start_line": 34
+                                "start_line": 37
                             },
                             "While expanding the reference 'loan' in:"
                         ],
                         "start_col": 14,
-                        "start_line": 33
+                        "start_line": 36
                     }
                 },
                 "655": {
@@ -19552,24 +19552,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 33,
+                        "end_line": 36,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 34,
+                                "end_line": 37,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "start_col": 29,
-                                "start_line": 34
+                                "start_line": 37
                             },
                             "While expanding the reference 'loan' in:"
                         ],
                         "start_col": 14,
-                        "start_line": 33
+                        "start_line": 36
                     }
                 },
                 "656": {
@@ -19581,24 +19581,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 33,
+                        "end_line": 36,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 34,
+                                "end_line": 37,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "start_col": 29,
-                                "start_line": 34
+                                "start_line": 37
                             },
                             "While expanding the reference 'loan' in:"
                         ],
                         "start_col": 14,
-                        "start_line": 33
+                        "start_line": 36
                     }
                 },
                 "657": {
@@ -19610,24 +19610,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 33,
+                        "end_line": 36,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 34,
+                                "end_line": 37,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "start_col": 29,
-                                "start_line": 34
+                                "start_line": 37
                             },
                             "While expanding the reference 'loan' in:"
                         ],
                         "start_col": 14,
-                        "start_line": 33
+                        "start_line": 36
                     }
                 },
                 "658": {
@@ -19639,24 +19639,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 33,
+                        "end_line": 36,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 34,
+                                "end_line": 37,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "start_col": 29,
-                                "start_line": 34
+                                "start_line": 37
                             },
                             "While expanding the reference 'loan' in:"
                         ],
                         "start_col": 14,
-                        "start_line": 33
+                        "start_line": 36
                     }
                 },
                 "659": {
@@ -19668,24 +19668,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 33,
+                        "end_line": 36,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 34,
+                                "end_line": 37,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "start_col": 29,
-                                "start_line": 34
+                                "start_line": 37
                             },
                             "While expanding the reference 'loan' in:"
                         ],
                         "start_col": 14,
-                        "start_line": 33
+                        "start_line": 36
                     }
                 },
                 "660": {
@@ -19697,24 +19697,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 33,
+                        "end_line": 36,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 34,
+                                "end_line": 37,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "start_col": 29,
-                                "start_line": 34
+                                "start_line": 37
                             },
                             "While expanding the reference 'loan' in:"
                         ],
                         "start_col": 14,
-                        "start_line": 33
+                        "start_line": 36
                     }
                 },
                 "661": {
@@ -19726,24 +19726,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 33,
+                        "end_line": 36,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 34,
+                                "end_line": 37,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "start_col": 29,
-                                "start_line": 34
+                                "start_line": 37
                             },
                             "While expanding the reference 'loan' in:"
                         ],
                         "start_col": 14,
-                        "start_line": 33
+                        "start_line": 36
                     }
                 },
                 "662": {
@@ -19755,12 +19755,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 35,
-                        "end_line": 34,
+                        "end_line": 37,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 34
+                        "start_line": 37
                     }
                 },
                 "663": {
@@ -19772,7 +19772,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 41,
-                        "end_line": 38,
+                        "end_line": 42,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
@@ -19786,12 +19786,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 46,
-                                        "end_line": 39,
+                                        "end_line": 43,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                         },
                                         "start_col": 26,
-                                        "start_line": 39
+                                        "start_line": 43
                                     },
                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                 ],
@@ -19801,7 +19801,7 @@
                             "While expanding the reference 'syscall_ptr' in:"
                         ],
                         "start_col": 23,
-                        "start_line": 38
+                        "start_line": 42
                     }
                 },
                 "664": {
@@ -19813,7 +19813,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 69,
-                        "end_line": 38,
+                        "end_line": 42,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
@@ -19827,12 +19827,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 46,
-                                        "end_line": 39,
+                                        "end_line": 43,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                         },
                                         "start_col": 26,
-                                        "start_line": 39
+                                        "start_line": 43
                                     },
                                     "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                 ],
@@ -19842,7 +19842,7 @@
                             "While expanding the reference 'pedersen_ptr' in:"
                         ],
                         "start_col": 43,
-                        "start_line": 38
+                        "start_line": 42
                     }
                 },
                 "665": {
@@ -19854,7 +19854,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 86,
-                        "end_line": 38,
+                        "end_line": 42,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
@@ -19868,12 +19868,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 46,
-                                        "end_line": 39,
+                                        "end_line": 43,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                         },
                                         "start_col": 26,
-                                        "start_line": 39
+                                        "start_line": 43
                                     },
                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                 ],
@@ -19883,7 +19883,7 @@
                             "While expanding the reference 'range_check_ptr' in:"
                         ],
                         "start_col": 71,
-                        "start_line": 38
+                        "start_line": 42
                     }
                 },
                 "666": {
@@ -19895,12 +19895,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 46,
-                        "end_line": 39,
+                        "end_line": 43,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "start_col": 26,
-                        "start_line": 39
+                        "start_line": 43
                     }
                 },
                 "668": {
@@ -19919,7 +19919,7 @@
                         "parent_location": [
                             {
                                 "end_col": 46,
-                                "end_line": 39,
+                                "end_line": 43,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
@@ -19933,12 +19933,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 40,
-                                                "end_line": 40,
+                                                "end_line": 44,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                                 },
                                                 "start_col": 20,
-                                                "start_line": 40
+                                                "start_line": 44
                                             },
                                             "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                         ],
@@ -19948,7 +19948,7 @@
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
                                 "start_col": 26,
-                                "start_line": 39
+                                "start_line": 43
                             },
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
@@ -19965,12 +19965,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 40,
-                        "end_line": 40,
+                        "end_line": 44,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "start_col": 20,
-                        "start_line": 40
+                        "start_line": 44
                     }
                 },
                 "671": {
@@ -19982,12 +19982,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 38,
-                        "end_line": 42,
+                        "end_line": 46,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 42
+                        "start_line": 46
                     }
                 },
                 "672": {
@@ -20006,36 +20006,36 @@
                         "parent_location": [
                             {
                                 "end_col": 40,
-                                "end_line": 40,
+                                "end_line": 44,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 41,
-                                        "end_line": 38,
+                                        "end_line": 42,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 15,
-                                                "end_line": 44,
+                                                "end_line": 48,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                                 },
                                                 "start_col": 5,
-                                                "start_line": 44
+                                                "start_line": 48
                                             },
                                             "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                         ],
                                         "start_col": 23,
-                                        "start_line": 38
+                                        "start_line": 42
                                     },
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
                                 "start_col": 20,
-                                "start_line": 40
+                                "start_line": 44
                             },
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
@@ -20059,36 +20059,36 @@
                         "parent_location": [
                             {
                                 "end_col": 46,
-                                "end_line": 39,
+                                "end_line": 43,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 69,
-                                        "end_line": 38,
+                                        "end_line": 42,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 15,
-                                                "end_line": 44,
+                                                "end_line": 48,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                                 },
                                                 "start_col": 5,
-                                                "start_line": 44
+                                                "start_line": 48
                                             },
                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                         ],
                                         "start_col": 43,
-                                        "start_line": 38
+                                        "start_line": 42
                                     },
                                     "While expanding the reference 'pedersen_ptr' in:"
                                 ],
                                 "start_col": 26,
-                                "start_line": 39
+                                "start_line": 43
                             },
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
@@ -20112,36 +20112,36 @@
                         "parent_location": [
                             {
                                 "end_col": 46,
-                                "end_line": 39,
+                                "end_line": 43,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 86,
-                                        "end_line": 38,
+                                        "end_line": 42,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 15,
-                                                "end_line": 44,
+                                                "end_line": 48,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                                 },
                                                 "start_col": 5,
-                                                "start_line": 44
+                                                "start_line": 48
                                             },
                                             "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                         ],
                                         "start_col": 71,
-                                        "start_line": 38
+                                        "start_line": 42
                                     },
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 26,
-                                "start_line": 39
+                                "start_line": 43
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
@@ -20158,12 +20158,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 15,
-                        "end_line": 44,
+                        "end_line": 48,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 44
+                        "start_line": 48
                     }
                 },
                 "676": {
@@ -20201,7 +20201,7 @@
                         "parent_location": [
                             {
                                 "end_col": 41,
-                                "end_line": 38,
+                                "end_line": 42,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
@@ -20218,7 +20218,7 @@
                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                 ],
                                 "start_col": 23,
-                                "start_line": 38
+                                "start_line": 42
                             },
                             "While expanding the reference 'syscall_ptr' in:"
                         ],
@@ -20243,7 +20243,7 @@
                         "parent_location": [
                             {
                                 "end_col": 69,
-                                "end_line": 38,
+                                "end_line": 42,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
@@ -20260,7 +20260,7 @@
                                     "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                 ],
                                 "start_col": 43,
-                                "start_line": 38
+                                "start_line": 42
                             },
                             "While expanding the reference 'pedersen_ptr' in:"
                         ],
@@ -20285,7 +20285,7 @@
                         "parent_location": [
                             {
                                 "end_col": 86,
-                                "end_line": 38,
+                                "end_line": 42,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
@@ -20302,7 +20302,7 @@
                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                 ],
                                 "start_col": 71,
-                                "start_line": 38
+                                "start_line": 42
                             },
                             "While expanding the reference 'range_check_ptr' in:"
                         ],
@@ -20338,7 +20338,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 41,
-                        "end_line": 38,
+                        "end_line": 42,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
@@ -20379,7 +20379,7 @@
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
                         "start_col": 23,
-                        "start_line": 38
+                        "start_line": 42
                     }
                 },
                 "684": {
@@ -20568,7 +20568,7 @@
                                 "parent_location": [
                                     {
                                         "end_col": 39,
-                                        "end_line": 21,
+                                        "end_line": 24,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                         },
@@ -20585,7 +20585,7 @@
                                             "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                         ],
                                         "start_col": 21,
-                                        "start_line": 21
+                                        "start_line": 24
                                     },
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
@@ -20608,7 +20608,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 69,
-                        "end_line": 38,
+                        "end_line": 42,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
@@ -20622,7 +20622,7 @@
                                 "parent_location": [
                                     {
                                         "end_col": 67,
-                                        "end_line": 21,
+                                        "end_line": 24,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                         },
@@ -20639,7 +20639,7 @@
                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                         ],
                                         "start_col": 41,
-                                        "start_line": 21
+                                        "start_line": 24
                                     },
                                     "While expanding the reference 'pedersen_ptr' in:"
                                 ],
@@ -20649,7 +20649,7 @@
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
                         "start_col": 43,
-                        "start_line": 38
+                        "start_line": 42
                     }
                 },
                 "694": {
@@ -20662,7 +20662,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 86,
-                        "end_line": 38,
+                        "end_line": 42,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
@@ -20676,7 +20676,7 @@
                                 "parent_location": [
                                     {
                                         "end_col": 84,
-                                        "end_line": 21,
+                                        "end_line": 24,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                         },
@@ -20693,7 +20693,7 @@
                                             "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                         ],
                                         "start_col": 69,
-                                        "start_line": 21
+                                        "start_line": 24
                                     },
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
@@ -20703,7 +20703,7 @@
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
                         "start_col": 71,
-                        "start_line": 38
+                        "start_line": 42
                     }
                 },
                 "695": {
@@ -20764,7 +20764,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 39,
-                        "end_line": 21,
+                        "end_line": 24,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
@@ -20817,7 +20817,7 @@
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
                         "start_col": 21,
-                        "start_line": 21
+                        "start_line": 24
                     }
                 },
                 "699": {
@@ -20830,7 +20830,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 84,
-                        "end_line": 21,
+                        "end_line": 24,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
@@ -20883,7 +20883,7 @@
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
                         "start_col": 69,
-                        "start_line": 21
+                        "start_line": 24
                     }
                 },
                 "700": {
@@ -21094,7 +21094,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 67,
-                        "end_line": 21,
+                        "end_line": 24,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
@@ -21135,7 +21135,7 @@
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
                         "start_col": 41,
-                        "start_line": 21
+                        "start_line": 24
                     }
                 },
                 "709": {
@@ -23396,7 +23396,7 @@
                         "parent_location": [
                             {
                                 "end_col": 41,
-                                "end_line": 38,
+                                "end_line": 42,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
@@ -23413,7 +23413,7 @@
                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                 ],
                                 "start_col": 23,
-                                "start_line": 38
+                                "start_line": 42
                             },
                             "While expanding the reference 'syscall_ptr' in:"
                         ],
@@ -23438,7 +23438,7 @@
                         "parent_location": [
                             {
                                 "end_col": 69,
-                                "end_line": 38,
+                                "end_line": 42,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
@@ -23455,7 +23455,7 @@
                                     "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                 ],
                                 "start_col": 43,
-                                "start_line": 38
+                                "start_line": 42
                             },
                             "While expanding the reference 'pedersen_ptr' in:"
                         ],
@@ -23480,7 +23480,7 @@
                         "parent_location": [
                             {
                                 "end_col": 86,
-                                "end_line": 38,
+                                "end_line": 42,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                                 },
@@ -23497,7 +23497,7 @@
                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                 ],
                                 "start_col": 71,
-                                "start_line": 38
+                                "start_line": 42
                             },
                             "While expanding the reference 'range_check_ptr' in:"
                         ],
@@ -23533,7 +23533,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 41,
-                        "end_line": 38,
+                        "end_line": 42,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
@@ -23574,7 +23574,7 @@
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
                         "start_col": 23,
-                        "start_line": 38
+                        "start_line": 42
                     }
                 },
                 "783": {
@@ -23731,7 +23731,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 69,
-                        "end_line": 38,
+                        "end_line": 42,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
@@ -23772,7 +23772,7 @@
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
                         "start_col": 43,
-                        "start_line": 38
+                        "start_line": 42
                     }
                 },
                 "790": {
@@ -23785,7 +23785,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 86,
-                        "end_line": 38,
+                        "end_line": 42,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
                         },
@@ -23826,7 +23826,7 @@
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
                         "start_col": 71,
-                        "start_line": 38
+                        "start_line": 42
                     }
                 },
                 "791": {
@@ -28815,7 +28815,7 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 48,
-                                                "end_line": 18,
+                                                "end_line": 23,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                                 },
@@ -28832,7 +28832,7 @@
                                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                                 ],
                                                 "start_col": 30,
-                                                "start_line": 18
+                                                "start_line": 23
                                             },
                                             "While expanding the reference 'syscall_ptr' in:"
                                         ],
@@ -28874,7 +28874,7 @@
                                 "parent_location": [
                                     {
                                         "end_col": 76,
-                                        "end_line": 18,
+                                        "end_line": 23,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                         },
@@ -28891,7 +28891,7 @@
                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                         ],
                                         "start_col": 50,
-                                        "start_line": 18
+                                        "start_line": 23
                                     },
                                     "While expanding the reference 'pedersen_ptr' in:"
                                 ],
@@ -28935,7 +28935,7 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 93,
-                                                "end_line": 18,
+                                                "end_line": 23,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
                                                 },
@@ -28952,7 +28952,7 @@
                                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                 ],
                                                 "start_col": 78,
-                                                "start_line": 18
+                                                "start_line": 23
                                             },
                                             "While expanding the reference 'range_check_ptr' in:"
                                         ],
@@ -34362,6 +34362,49 @@
                 "type": "alias"
             },
             "contracts.storages.open_store.empiric_vrf_address.storage_write": {
+                "destination": "starkware.starknet.common.syscalls.storage_write",
+                "type": "alias"
+            },
+            "contracts.storages.open_store.expected_empiric_decimals": {
+                "type": "namespace"
+            },
+            "contracts.storages.open_store.expected_empiric_decimals.Args": {
+                "full_name": "contracts.storages.open_store.expected_empiric_decimals.Args",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "contracts.storages.open_store.expected_empiric_decimals.HashBuiltin": {
+                "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
+                "type": "alias"
+            },
+            "contracts.storages.open_store.expected_empiric_decimals.ImplicitArgs": {
+                "full_name": "contracts.storages.open_store.expected_empiric_decimals.ImplicitArgs",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "contracts.storages.open_store.expected_empiric_decimals.Return": {
+                "cairo_type": "()",
+                "type": "type_definition"
+            },
+            "contracts.storages.open_store.expected_empiric_decimals.SIZEOF_LOCALS": {
+                "type": "const",
+                "value": 0
+            },
+            "contracts.storages.open_store.expected_empiric_decimals.hash2": {
+                "destination": "starkware.cairo.common.hash.hash2",
+                "type": "alias"
+            },
+            "contracts.storages.open_store.expected_empiric_decimals.normalize_address": {
+                "destination": "starkware.starknet.common.storage.normalize_address",
+                "type": "alias"
+            },
+            "contracts.storages.open_store.expected_empiric_decimals.storage_read": {
+                "destination": "starkware.starknet.common.syscalls.storage_read",
+                "type": "alias"
+            },
+            "contracts.storages.open_store.expected_empiric_decimals.storage_write": {
                 "destination": "starkware.starknet.common.syscalls.storage_write",
                 "type": "alias"
             },

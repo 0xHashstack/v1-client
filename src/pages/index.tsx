@@ -243,6 +243,7 @@ const Dashboard = () => {
             : loanData.openLoanAmount
         ), // Borrow amount(current)
         timestamp: loanData.time,
+        l3App: loanData.l3Id === 'jedi_swap' ? 'jediSwap' : loanData.l3Id === 'myswap' ? 'mySwap' : null,
         //get apr is for loans apr
       };
       loans.push(JSON.parse(JSON.stringify(temp_len)));

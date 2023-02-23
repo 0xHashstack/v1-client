@@ -2,6 +2,65 @@
     {
         "members": [
             {
+                "name": "market",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "amount",
+                "offset": 1,
+                "type": "Uint256"
+            },
+            {
+                "name": "current_amount",
+                "offset": 3,
+                "type": "Uint256"
+            },
+            {
+                "name": "commitment",
+                "offset": 5,
+                "type": "felt"
+            },
+            {
+                "name": "timelock_validity",
+                "offset": 6,
+                "type": "felt"
+            },
+            {
+                "name": "is_timelock_activated",
+                "offset": 7,
+                "type": "felt"
+            },
+            {
+                "name": "activation_time",
+                "offset": 8,
+                "type": "felt"
+            }
+        ],
+        "name": "Collateral",
+        "size": 9,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "low",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "high",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "Uint256",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
                 "name": "id",
                 "offset": 0,
                 "type": "felt"
@@ -62,65 +121,6 @@
         "type": "struct"
     },
     {
-        "members": [
-            {
-                "name": "low",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "high",
-                "offset": 1,
-                "type": "felt"
-            }
-        ],
-        "name": "Uint256",
-        "size": 2,
-        "type": "struct"
-    },
-    {
-        "members": [
-            {
-                "name": "market",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "amount",
-                "offset": 1,
-                "type": "Uint256"
-            },
-            {
-                "name": "current_amount",
-                "offset": 3,
-                "type": "Uint256"
-            },
-            {
-                "name": "commitment",
-                "offset": 5,
-                "type": "felt"
-            },
-            {
-                "name": "timelock_validity",
-                "offset": 6,
-                "type": "felt"
-            },
-            {
-                "name": "is_timelock_activated",
-                "offset": 7,
-                "type": "felt"
-            },
-            {
-                "name": "activation_time",
-                "offset": 8,
-                "type": "felt"
-            }
-        ],
-        "name": "Collateral",
-        "size": 9,
-        "type": "struct"
-    },
-    {
         "data": [
             {
                 "name": "previousOwner",
@@ -160,25 +160,6 @@
     {
         "data": [
             {
-                "name": "old_loan_record",
-                "type": "Loan"
-            },
-            {
-                "name": "new_loan_record",
-                "type": "Loan"
-            },
-            {
-                "name": "timestamp",
-                "type": "felt"
-            }
-        ],
-        "keys": [],
-        "name": "loan_swap",
-        "type": "event"
-    },
-    {
-        "data": [
-            {
                 "name": "collateral_record",
                 "type": "Collateral"
             },
@@ -197,6 +178,25 @@
         ],
         "keys": [],
         "name": "loan_interest_deducted",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "old_loan_record",
+                "type": "Loan"
+            },
+            {
+                "name": "new_loan_record",
+                "type": "Loan"
+            },
+            {
+                "name": "timestamp",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "loan_swap",
         "type": "event"
     },
     {
