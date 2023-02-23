@@ -100,7 +100,7 @@ const DashboardTokens = ({
             </div>
             <span style={{ textAlign: "left", marginTop: "5px" }}>
               {coin.name}
-              <div style={{ fontSize: "9px", color: "#8C8C8C", width: "20px" }}>
+              <div style={{ fontSize: "9px", color: "#8C8C8C", width: "60px" }}>
                 Wallet Bal. $
                 {dataBalance ? (
                   (
