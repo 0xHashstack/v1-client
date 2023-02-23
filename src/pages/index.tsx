@@ -73,6 +73,8 @@ import DownArrow from "../assets/images/ArrowDownDark.svg";
 import UpArrow from "../assets/images/ArrowUpDark.svg";
 import YourMatrics from "../components/matrics/yourMatrics";
 import ProtocolMatrics from "../components/matrics/protocolMatrix";
+import MySpinner from "../components/mySpinner";
+import { NumericFormat } from "react-number-format";
 // import App from "./Chart"
 
 interface IDeposit {
@@ -589,11 +591,17 @@ const Dashboard = () => {
     );
   }
 
-  function dashboardUI() {
+  function DashboardUI() {
+    const [totalBorrowAssets, setTotalBorrowAssets] = useState();
+    const [totalSupplyDash, setTotalSupplyDash] = useState();
+
+
     return (
       <div style={{ width: "100%", backgroundColor: "#1C202", height: "100%" }}>
         {customActiveTab === "1" ? (
           <StatsBoard
+            setTotalBorrowAssets={setTotalBorrowAssets}
+            setTotalSupplyDash={setTotalSupplyDash}
             depositsArray={activeDepositsData}
             loansArray={activeLoansData}
           />
@@ -604,8 +612,8 @@ const Dashboard = () => {
               {/* <Card style={{ height: "35rem", overflowY: "scroll" }}> */}
               <div style={{ margin: "1px 5px 5px 14px" }}>
                 {customActiveTab === "2" ||
-                customActiveTab === "3" ||
-                customActiveTab === "4" ? (
+                  customActiveTab === "3" ||
+                  customActiveTab === "4" ? (
                   <div style={{ marginTop: "90px" }}>
                     <DashboardMenu
                       margin={"0px"}
@@ -635,8 +643,8 @@ const Dashboard = () => {
                 )}
               </div>
               {customActiveTab === "3" ||
-              customActiveTab === "4" ||
-              customActiveTab === "2" ? (
+                customActiveTab === "4" ||
+                customActiveTab === "2" ? (
                 <>
                   <div
                     style={{
@@ -651,7 +659,11 @@ const Dashboard = () => {
                         <div style={{ width: "7%" }}>
                           <div style={{ color: "#8C8C8C" }}>Total Supply</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            $8,932.14
+                            {totalSupplyDash !== undefined ? (
+                              <NumericFormat displayType="text" value={totalSupplyDash.toFixed(2)} thousandSeparator="," prefix={'$'} />
+                            ) : (
+                              <MySpinner />
+                            )}
                           </div>
                         </div>
                         <div style={{ width: "7%" }}>
@@ -668,7 +680,11 @@ const Dashboard = () => {
                             Total Borrow Assets
                           </div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            $8,932.14
+                            {totalBorrowAssets !== undefined ? (
+                              <NumericFormat displayType="text" value={totalBorrowAssets.toFixed(2)} thousandSeparator="," prefix={'$'} />
+                            ) : (
+                              <MySpinner />
+                            )}
                           </div>
                         </div>
                         <div style={{ width: "7%" }}>
@@ -780,8 +796,8 @@ const Dashboard = () => {
               ) : null}
 
               {customActiveTab === "1" ||
-              customActiveTab === "3" ||
-              customActiveTab === "4" ? (
+                customActiveTab === "3" ||
+                customActiveTab === "4" ? (
                 <Card
                   style={{
                     height: "76vh",
@@ -993,7 +1009,7 @@ const Dashboard = () => {
         </MetaTags> */}
           {/* {maintenance()} */}
 
-          {dashboardUI()}
+          {DashboardUI()}
           {/* <Banner /> */}
           {/* {!starknetAccount ? (
           <h3>Loading...</h3>

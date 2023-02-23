@@ -31,6 +31,7 @@ import classnames from "classnames";
 import {
   diamondAddress,
   ERC20Abi,
+  getTokenFromAddress,
   tokenAddressMap,
   tokenDecimalsMap,
 } from "../../../blockchain/stark-constants";
@@ -60,6 +61,8 @@ const SpendLoanNav = ({ activeLoansData }) => {
     errorJediSwap,
     handleJediSwap,
 
+    supportedPoolsJediSwap,
+
     isJediswapToastOpen,
     setIsToastJediswapOpen,
     toastJediswapParam,
@@ -70,6 +73,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
     loadingMySwap,
     errorMySwap,
     isMyswapToastOpen,
+    supportedPoolsMySwap,
     setIsToastMyswapOpen,
     toastMyswapParam,
   } = useMySwap(diamondAddress, selectedLoan, tokenName);
@@ -245,8 +249,8 @@ const SpendLoanNav = ({ activeLoansData }) => {
       appsImage === "mySwap"
         ? handleMySwap()
         : appsImage === "jediSwap"
-        ? handleJediSwap()
-        : null;
+          ? handleJediSwap()
+          : null;
     } else return null;
   };
 
@@ -477,6 +481,15 @@ const SpendLoanNav = ({ activeLoansData }) => {
                 onClick={() => {
                   setIdDropDown(!idDropDown);
                   setIdDropDownArrow(idDropDown ? arrowDown : arrowUp);
+                  setTokenName((prev) => {
+                    if (appsImage === "jediSwap") {
+                      return getTokenFromAddress(supportedPoolsJediSwap.get(tokenAddressMap[dapp.loanMarket])[0] as string).name;
+                    }
+                    else if (appsImage === "mySwap") {
+                      return getTokenFromAddress(supportedPoolsMySwap.get(tokenAddressMap[dapp.loanMarket])[0] as string).name;
+                    }
+                    else return prev;
+                  });
                 }}
               />
             </div>
@@ -658,6 +671,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                       setTitle({ label: word });
                                       setDropDownTwo(!dropDownTwo);
                                       setStakeDropDownArrow(arrowDown);
+                                      setAppsImage((prev) => word === "Swap" ? 'jediSwap' : word === "Stake" ? 'yagi' : prev);
                                     }}
                                   >
                                     {word}
@@ -780,8 +794,8 @@ const SpendLoanNav = ({ activeLoansData }) => {
                             {(
                               selectedLoan?.loanAmount /
                               10 **
-                                (tokenDecimalsMap[selectedLoan?.loanMarket] ||
-                                  18)
+                              (tokenDecimalsMap[selectedLoan?.loanMarket] ||
+                                18)
                             ).toFixed(4)}
                             &nbsp;{selectedLoan?.loanMarket}
                           </div>
@@ -857,6 +871,12 @@ const SpendLoanNav = ({ activeLoansData }) => {
                           >
                             {Coins.map((coin, index) => {
                               if (coin.name === tokenName) return <></>;
+                              const borrowMarketAddress = tokenAddressMap[selectedLoan.loanMarket];
+                              const supportedMarkets = appsImage === 'jediSwap' ?
+                                supportedPoolsJediSwap?.get(borrowMarketAddress) :
+                                supportedPoolsMySwap?.get(borrowMarketAddress);
+                              const isSupported = supportedMarkets.includes(tokenAddressMap[coin.name]);
+                              if (!isSupported) return <></>;
                               return (
                                 <div
                                   style={{
@@ -941,8 +961,8 @@ const SpendLoanNav = ({ activeLoansData }) => {
                             {(
                               selectedLoan?.loanAmount /
                               10 **
-                                (tokenDecimalsMap[selectedLoan?.loanMarket] ||
-                                  18)
+                              (tokenDecimalsMap[selectedLoan?.loanMarket] ||
+                                18)
                             ).toFixed(4)}
                             &nbsp;&nbsp;{selectedLoan?.loanMarket}
                           </div>

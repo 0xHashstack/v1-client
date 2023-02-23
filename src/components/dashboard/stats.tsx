@@ -10,14 +10,14 @@ import { tokenDecimalsMap } from "../../blockchain/stark-constants";
 import MySpinner from "../mySpinner";
 import {NumericFormat} from 'react-number-format';
 
-const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
+const StatsBoard = (result: { depositsArray: any; loansArray: any, setTotalBorrowAssets: any, setTotalSupplyDash: any }) => {
   const { account: starknetAccount, address: _account } = useAccount();
   const [totalSupply, setTotalSupply] = useState(0);
   const [yourBorrow, setYourBorrow] = useState(0);
   const [totalReserves, setTotalReserves] = useState(0);
   const [availableReserves, setAvailableReserves] = useState(0);
   const [account, setAccount] = useState<string>("");
-  const { depositsArray, loansArray } = result;
+  const { depositsArray, loansArray, setTotalBorrowAssets, setTotalSupplyDash } = result;
   const { customActiveTab, toggleCustom } = useContext(TabContext);
   const [oraclePrices, setOraclePrices] = useState<any>();
   const [deposits, setDeposits] = useState<any>();
@@ -87,6 +87,9 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
         setYourBorrow(borrow);
         setNetWorth(sum);
         setTotalSupply(supply);
+
+        setTotalBorrowAssets(borrow);
+        setTotalSupplyDash(supply);
 
         const getReserves = async () => {
           let reservesAmount = 0;

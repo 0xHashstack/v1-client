@@ -2493,11 +2493,11 @@ const BorrowData = ({
                     >
                       {Coins.map((coin, index) => {
                         if (coin.name === marketTokenName) return <></>;
-                        const borrowMarketAddress = getTokenFromName(asset.loanMarket).address;
+                        const borrowMarketAddress = tokenAddressMap[asset.loanMarket];
                         const supportedMarkets = appsImage === 'jediSwap' ?
                           supportedPoolsJediSwap?.get(borrowMarketAddress) :
                           supportedPoolsMySwap?.get(borrowMarketAddress);
-                        const isSupported = supportedMarkets.includes(getTokenFromName(coin.name).address);
+                        const isSupported = supportedMarkets.includes(tokenAddressMap[coin.name]);
                         if (!isSupported) return <></>;
                         return (
                           <div
@@ -3369,11 +3369,10 @@ const BorrowData = ({
                         setIdDropDown(false);
                         setMarketTokenName((prev) => {
                           if (appsImage === "jediSwap") {
-                            console.log(getTokenFromAddress(supportedPoolsJediSwap.get(getTokenFromName(eleAsset.loanMarket).address)[0] as string).name, "meeeeeeee")
-                            return getTokenFromAddress(supportedPoolsJediSwap.get(getTokenFromName(eleAsset.loanMarket).address)[0] as string).name;
+                            return getTokenFromAddress(supportedPoolsJediSwap.get(tokenAddressMap[eleAsset.loanMarket])[0] as string).name;
                           }
                           else if (appsImage === "mySwap") {
-                            return getTokenFromAddress(supportedPoolsMySwap.get(getTokenFromName(eleAsset.loanMarket).address)[0] as string).name;
+                            return getTokenFromAddress(supportedPoolsMySwap.get(tokenAddressMap[eleAsset.loanMarket])[0] as string).name;
                           }
                           else return prev;
                         });
