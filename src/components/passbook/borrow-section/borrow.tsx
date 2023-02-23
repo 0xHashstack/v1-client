@@ -520,7 +520,7 @@ const BorrowTab = ({
         open="false"
         style={{
           margin: "10px",
-          textAlign: "center",
+          textAlign: "left",
         }}
       >
         {Array.isArray(activeLoansData) && activeLoansData.length > 0 ? (
@@ -541,7 +541,7 @@ const BorrowTab = ({
                 <Col
                   style={{
                     width: "10px",
-                    padding: "20px 10px",
+                    padding: "20px 10px 20px 30px",
                   }}
                 >
                   Borrow ID

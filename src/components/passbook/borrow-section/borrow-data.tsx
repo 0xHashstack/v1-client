@@ -753,7 +753,7 @@ const BorrowData = ({
         open="false"
         style={{
           color: "white",
-          textAlign: "center",
+          textAlign: "left",
         }}
       >
         <Row
