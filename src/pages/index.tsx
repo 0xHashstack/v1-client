@@ -182,7 +182,7 @@ const Dashboard = () => {
   const [CoinsSupplyMetrics, setCoinsSupplyMetrics] = useState("");
   const [CoinsBorrowMetrics, setCoinsBorrowMetrics] = useState("");
 
-  const [typeOfLoans, setTypeOfLoans] = useState("Show All");
+  const [typeOfLoans, setTypeOfLoans] = useState("Active");
   const [isDropDownOpenTypeOfLoans, setIsDropDownOpenTypeOfLoans] =
     useState(false);
   const [typeOfLoansDropDownArrowType, setTypeOfLoansDropDownArrowType] =
@@ -270,12 +270,15 @@ const Dashboard = () => {
     let validTypes = ["REPAID", "SWAPPED", "OPEN"];
     if (typeOfLoans === "Repaid") {
       setFilteredLoans(
-        activeLoansData.filter((loan) => 
-      loan.state === typeOfLoans.toUpperCase()))
+        activeLoansData.filter((loan) => {
+          return loan.state === typeOfLoans.toUpperCase() && loan.collateralAmount > 0;
+        }
+      ))
+      return;
     }
     setFilteredLoans(
       activeLoansData.filter((loan) => {
-        return loan.state === typeOfLoans;
+        return loan.state !== "REPAID" && loan.state !== "LIQUIDATED";
       })
     );
   }, [typeOfLoans, activeLoansData]);
