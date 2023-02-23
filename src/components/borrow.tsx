@@ -39,7 +39,7 @@ import {
 } from "../blockchain/stark-constants";
 import { GetErrorText, NumToBN } from "../blockchain/utils";
 import Image from "next/image";
-import { Abi, uint256 } from "starknet";
+import { Abi, uint256, number } from "starknet";
 import { getPrice } from "../blockchain/priceFeed";
 import { TxToastManager } from "../blockchain/txToastManager";
 import MySpinner from "./mySpinner";
@@ -56,6 +56,8 @@ import Maxloan from "../blockchain/hooks/Max_loan_given_collat";
 import { BNtoNum } from "../blockchain/utils";
 import useMaxloan from "../blockchain/hooks/Max_loan_given_collat";
 import ToastModal from "./toastModals/customToastModal";
+import loanABI from '../../starknet-artifacts/contracts/modules/loan.cairo/loan_abi.json';
+import TransactionFees from "../../TransactionFees.json";
 
 interface IBorrowParams {
   loanAmount: number | null;
@@ -203,6 +205,41 @@ let Borrow: any = ({
         `Borrow ${borrowParams.loanAmount} ${token?.name}`
       );
   }, [requestBorrowTransactionReceipt]);
+
+  /* ======================== Get Debt Category ======================== */
+
+  const [debtCategory, setDebtCategory] = useState(0);
+
+  const { contract: loanContract } = useContract({
+    address: diamondAddress,
+    abi: loanABI as Abi,
+  })
+
+  const {
+    data: dataDebtCategory,
+    loading: loadingDebtCategory,
+    error: errorDebtCategory,
+    refresh: refreshDebtCategory,
+  } = useStarknetCall({
+    contract: loanContract,
+    method: "get_debt_category",
+    args: [
+      tokenAddressMap[asset],
+      tokenAddressMap[borrowParams.collateralMarket || ""],
+      [Number(borrowParams.loanAmount as string), 0],
+      [Number(borrowParams.collateralAmount as string), 0]
+    ],
+    options: {
+      watch: true,
+    }
+  })
+
+  useEffect(() => {
+    if(!borrowParams.loanAmount || !borrowParams.collateralAmount) return;
+    console.log("debt category", BNtoNum(dataDebtCategory?.debt_category, 0), errorDebtCategory, loadingDebtCategory)
+    if(loadingDebtCategory === false && !errorDebtCategory) 
+      setDebtCategory(BNtoNum(dataDebtCategory?.debt_category, 0))
+  }, [errorDebtCategory, dataDebtCategory, loadingDebtCategory])
 
   /* ======================= Approve ================================= */
   const {
@@ -558,7 +595,7 @@ let Borrow: any = ({
     return (
       Number(borrowParams.collateralAmount) <=
       Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-        10 ** (tokenDecimalsMap[borrowParams?.collateralMarket as string] || 18)
+      10 ** (tokenDecimalsMap[borrowParams?.collateralMarket as string] || 18)
     );
   }
 
@@ -710,7 +747,7 @@ let Borrow: any = ({
                     height: "40px",
                     backgroundColor: "#1D2131",
                     // borderRight: "1px solid rgb(57, 61, 79)",
-                    borderRight:"none"
+                    borderRight: "none"
                   }}
                   type="number"
                   className="form-control"
@@ -730,7 +767,7 @@ let Borrow: any = ({
                       style={{
                         background: "#1D2131",
                         color: "rgb(111, 111, 111)",
-                        border: `1px solid ${isValidColleteralAmount()? '#34c38f': 'rgb(57, 61, 79)'}`,
+                        border: `1px solid ${isValidColleteralAmount() ? '#34c38f' : 'rgb(57, 61, 79)'}`,
                         borderLeft: "none",
                       }}
                     >
@@ -1101,7 +1138,8 @@ let Borrow: any = ({
                       height: "40px",
                       backgroundColor: "#1D2131",
                       // borderRight: "1px solid rgb(57, 61, 79)",
-                      borderRight:'none'}}
+                      borderRight: 'none'
+                    }}
                     id="loan-amount"
                     type="number"
                     className="form-control"
@@ -1120,7 +1158,7 @@ let Borrow: any = ({
                     style={{
                       background: "#1D2131",
                       color: "rgb(111, 111, 111)",
-                      border: `1px solid ${isLoanAmountValid()? '#34c38f' : 'rgb(57, 61, 79)'}`,
+                      border: `1px solid ${isLoanAmountValid() ? '#34c38f' : 'rgb(57, 61, 79)'}`,
                       borderLeft: "none",
                     }}
                   >
@@ -1216,7 +1254,7 @@ let Borrow: any = ({
                         color: "#6F6F6F",
                       }}
                     >
-                      $ 10.91
+                      {TransactionFees.loan.newLoan}%
                     </div>
                   </div>
                   <div
@@ -1288,7 +1326,7 @@ let Borrow: any = ({
                         color: "#6F6F6F",
                       }}
                     >
-                      0.6%
+                      0%
                     </div>
                   </div>
                   <div
@@ -1306,7 +1344,11 @@ let Borrow: any = ({
                         color: "#6F6F6F",
                       }}
                     >
-                      DC1/DC2/DC3
+                      {
+                        loadingDebtCategory ? 
+                        <MySpinner text="" /> :
+                        `DC ${Number(debtCategory).toFixed(0)}`
+                      }
                     </div>
                   </div>
                   <div
@@ -1325,14 +1367,13 @@ let Borrow: any = ({
                       }}
                     >
                       {depositLoanRates &&
-                      borrowParams.commitBorrowPeriod != null &&
-                      (borrowParams.commitBorrowPeriod as number) < 2 ? (
+                        borrowParams.commitBorrowPeriod != null &&
+                        (borrowParams.commitBorrowPeriod as number) < 2 ? (
                         `${parseFloat(
                           depositLoanRates[
-                            `${getTokenFromName(asset as string)?.address}__${
-                              borrowParams.commitBorrowPeriod
+                            `${getTokenFromName(asset as string)?.address}__${borrowParams.commitBorrowPeriod
                             }`
-                          ]?.borrowAPR?.apr100x as string
+                          ]?.borrowAPR?.apr100x / 100 as string
                         )} %`
                       ) : (
                         <MySpinner />
