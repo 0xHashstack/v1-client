@@ -756,6 +756,7 @@ const BorrowData = ({
       setCurrentBorrowInterest(
         currentBorrowInterestRate(asset, historicalAPRs)
       );
+      console.log("currentBorrowInterest", currentBorrowInterest);
     }
   }, [asset, historicalAPRs]);
 
@@ -1663,7 +1664,7 @@ const BorrowData = ({
                                   }}
                                 >
                                   &nbsp;&nbsp;&nbsp;
-                                  <img src="./yagi.svg" width="50px" />
+                                  <img src={`./${asset.l3App}.svg`} width="50px" />
                                 </span>
                               </div>
 
@@ -2768,7 +2769,7 @@ const BorrowData = ({
                           color: "#6F6F6F",
                         }}
                       >
-                        DC1/DC2/DC3
+                        DC{asset.debtCategory}
                       </div>
                     </div>
                     <div
@@ -3114,7 +3115,7 @@ const BorrowData = ({
                           color: "#6F6F6F",
                         }}
                       >
-                        DC1/DC2/DC3
+                        DC{asset.debtCategory}
                       </div>
                     </div>
                     <div
