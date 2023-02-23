@@ -424,7 +424,6 @@ const ActiveDeposit = ({
     <div style={{ borderTop: "5px" }}>
       <UncontrolledAccordion
         defaultOpen="0"
-        // open="false"
         style={{
           margin: "10px",
           color: "white",
@@ -638,7 +637,21 @@ const ActiveDeposit = ({
                           Withdraw Supply
                         </span>
                       </NavLink>
-                    </NavItem>
+                    </NavItem>{" "}
+                    <img
+                      src="./cross.svg"
+                      onClick={() => {
+                        setmodal_deposit(false);
+                      }}
+                      style={{
+                        position: "absolute",
+                        top: "45px",
+                        right: "40px",
+                        marginTop: "5px",
+                        cursor: "pointer",
+                      }}
+                      height="15px"
+                    />
                   </Nav>
                 </Col>
                 <div

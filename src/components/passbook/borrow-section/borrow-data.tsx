@@ -1323,7 +1323,21 @@ const BorrowData = ({
                           Collateral Actions
                         </span>
                       </NavLink>
-                    </NavItem>
+                    </NavItem>{" "}
+                    <img
+                      src="./cross.svg"
+                      onClick={() => {
+                        setmodal_deposit(false);
+                      }}
+                      style={{
+                        position: "absolute",
+                        top: "55px",
+                        right: "40px",
+                        marginTop: "5px",
+                        cursor: "pointer",
+                      }}
+                      height="15px"
+                    />
                   </Nav>
                 </Col>
 
