@@ -268,9 +268,12 @@ const Dashboard = () => {
     if (typeOfLoans === "Repaid") {
       setFilteredLoans(
         activeLoansData.filter((loan) => {
-          return loan.state === typeOfLoans.toUpperCase() && loan.collateralAmount > 0;
-        }
-      ))
+          return (
+            loan.state === typeOfLoans.toUpperCase() &&
+            loan.collateralAmount > 0
+          );
+        })
+      );
       return;
     }
     setFilteredLoans(
@@ -691,7 +694,7 @@ const Dashboard = () => {
                     <div
                       style={{
                         position: "absolute",
-                        zIndex: "500",
+                        zIndex: "3",
                         right: "80px",
                         top: "60px",
                       }}
@@ -774,17 +777,25 @@ const Dashboard = () => {
                   ) : null}
                 </>
               ) : null}
-              {customActiveTab === "7" ? <YourMatrics /> : null}
+              {customActiveTab === "7" ? (
+                <div style={{ marginTop: "130px" }}>
+                  <YourMatrics />
+                </div>
+              ) : null}
 
-              {customActiveTab === "8" ? <ProtocolMatrics /> : null}
+              {customActiveTab === "8" ? (
+                <div style={{ marginTop: "130px" }}>
+                  <ProtocolMatrics />
+                </div>
+              ) : null}
 
               {customActiveTab === "1" ||
               customActiveTab === "3" ||
               customActiveTab === "4" ? (
                 <Card
                   style={{
-                    height: "75vh",
-                    maxHeight: "35rem",
+                    height: "76vh",
+                    maxHeight: "36rem",
                     border: "none",
                     boxShadow:
                       "5px 10px 5px -5px rgba(20, 23, 38, 0.15), 5px 5px 5px -5px rgba(20, 23, 38, 0.3)",

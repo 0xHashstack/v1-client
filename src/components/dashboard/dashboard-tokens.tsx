@@ -56,25 +56,32 @@ const DashboardTokens = ({
       }}
     >
       <th scope="row" style={{ padding: "25px 5px", textAlign: "center" }}>
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "left",
-            padding: "0 40px",
-          }}
-        >
-          <div>
-            <Image
-              alt="token"
-              src={`/${coin.name}.svg`}
-              width="15px"
-              height="15px"
-              style={{ marginTop: "5px" }}
-            ></Image>
-            &nbsp;&nbsp;&nbsp;
+        <div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "left",
+              padding: "0 40px",
+            }}
+          >
+            <div>
+              <Image
+                alt="token"
+                src={`/${coin.name}.svg`}
+                width="15px"
+                height="15px"
+                style={{ marginTop: "5px" }}
+              ></Image>
+              &nbsp;&nbsp;&nbsp;
+            </div>
+            <span style={{ textAlign: "left", marginTop: "5px" }}>
+              {coin.name}
+              <div style={{ fontSize: "9px", color: "#8C8C8C" }}>
+                Wallet Bal. $5000
+              </div>
+            </span>
           </div>
-          <span>{coin.name}</span>
         </div>
       </th>
       <td style={{ padding: "31px 10px" }}>{oraclePriceForCoin || "N/A"}</td>

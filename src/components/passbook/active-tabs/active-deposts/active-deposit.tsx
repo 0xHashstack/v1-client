@@ -763,8 +763,9 @@ const ActiveDeposit = ({
                         style={{
                           backgroundColor: "#1D2131",
                           padding: "10px ",
-                          borderRight: "1px solid rgb(57, 61, 79)",
-                          color: "#8c8c8c",
+                          // borderRight: "1px solid rgb(57, 61, 79)",
+                          borderRight: "none",
+                          color: "#393D4F",
                         }}
                         type="number"
                         className="form-control"
@@ -797,7 +798,10 @@ const ActiveDeposit = ({
                         style={{
                           background: "#1D2131",
                           color: "white",
-                          border: "1px solid rgb(57, 61, 79)",
+
+                          border: `1px solid ${
+                            !isInvalid() ? "#34c38f" : "rgb(57, 61, 79)"
+                          }`,
                           borderLeft: "none",
                         }}
                       >
