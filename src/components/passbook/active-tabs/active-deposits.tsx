@@ -51,6 +51,7 @@ import classnames from "classnames";
 import ToastModal from "../../toastModals/customToastModal";
 
 const ActiveDepositsTab = ({
+  reserves,
   activeDepositsData,
   modal_add_active_deposit,
   tog_add_active_deposit,
@@ -63,6 +64,7 @@ const ActiveDepositsTab = ({
   isTransactionDone,
   inputVal1,
 }: {
+  reserves: any;
   activeDepositsData: any;
   modal_add_active_deposit: any;
   tog_add_active_deposit: any;
@@ -384,6 +386,7 @@ const ActiveDepositsTab = ({
             {activeDepositsData.map((asset, key, allAssets) => {
               return (
                 <ActiveDeposit
+                  reserves={reserves}
                   key={key}
                   asset={asset}
                   historicalAPRs={historicalAPRs}
@@ -876,7 +879,14 @@ const ActiveDepositsTab = ({
                               color: "rgb(111, 111, 111)",
                             }}
                           >
-                            0.43
+                            {reserves.loans ? (
+                              (
+                                (100 * reserves.loans[tokenName]) /
+                                reserves.deposits[tokenName]
+                              ).toFixed(2) + "%"
+                            ) : (
+                              <MySpinner />
+                            )}
                           </div>
                         </div>
                         <div

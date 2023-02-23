@@ -66,9 +66,11 @@ interface ICoin {
 }
 
 let Deposit: any = ({
+  reserves,
   asset: assetParam,
   depositLoanRates: depositLoanRatesParam,
 }: {
+  reserves: any;
   asset: string;
   depositLoanRates: any;
 }) => {
@@ -851,7 +853,14 @@ let Deposit: any = ({
                         color: "rgb(111, 111, 111)",
                       }}
                     >
-                      0.43
+                      {reserves.loans ? (
+                        (
+                          (100 * reserves.loans[tokenName]) /
+                          reserves.deposits[tokenName]
+                        ).toFixed(2) + "%"
+                      ) : (
+                        <MySpinner />
+                      )}
                     </div>
                   </div>
                   <div

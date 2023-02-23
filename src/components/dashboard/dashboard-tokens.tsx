@@ -41,7 +41,7 @@ const DashboardTokens = ({
     );
   }, []);
 
-  console.log("reserves", reserves);
+  console.log("reserves harsh", reserves);
 
   return (
     <tr
@@ -113,7 +113,6 @@ const DashboardTokens = ({
       </td>
       <td style={{ padding: "31px", textAlign: "center" }}>
         <div>
-          {/* {borrow ? borrow[0].apr.toNumber() / 100 : "NaN"}% */}
           {depositLoanRates && parseInt(borrowCommitment) < 2 ? (
             `${
               parseFloat(
@@ -129,8 +128,13 @@ const DashboardTokens = ({
       </td>
       <td style={{ width: "120px", padding: "25px 20px" }}>
         <div style={{ display: "flex", justifyContent: "center", gap: "40px" }}>
-          <Deposit asset={coin.name} depositLoanRates={depositLoanRates} />
+          <Deposit
+            reserves={reserves}
+            asset={coin.name}
+            depositLoanRates={depositLoanRates}
+          />
           <Borrow
+            reserves={reserves}
             asset={coin.name}
             title={coin.name}
             depositLoanRates={depositLoanRates}
