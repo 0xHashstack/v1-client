@@ -48,6 +48,7 @@ import MySpinner from "../../mySpinner";
 import { GetErrorText, NumToBN } from "../../../blockchain/utils";
 import { toast } from "react-toastify";
 import classnames from "classnames";
+import ToastModal from "../../toastModals/customToastModal";
 
 const ActiveDepositsTab = ({
   activeDepositsData,
@@ -97,6 +98,8 @@ const ActiveDepositsTab = ({
   const [commitmentArrow, setCommitmentArrow] = useState(arrowDown);
   const [commitmentValue, setCommitmentValue] = useState("Flexible");
   const [depositLoanRates, setDepositLoanRates] = useState<any>();
+  const [toastParam, setToastParam] = useState({});
+  const [isToastOpen, setIsToastOpen] = useState(false);
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
@@ -254,6 +257,7 @@ const ActiveDepositsTab = ({
       Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
         10 ** (tokenDecimalsMap[asset] || 18)
     );
+    setValue(100);
   };
 
   const handleDeposit = async (asset: string) => {
@@ -571,7 +575,7 @@ const ActiveDepositsTab = ({
                               width: "420px",
                               margin: "0px auto",
                               marginBottom: "20px",
-                              padding: "5px 10px",
+                              padding: "10px 10px",
                               backgroundColor: "#1D2131",
                               boxShadow: "0px 0px 10px #00000020",
                             }}
@@ -579,36 +583,38 @@ const ActiveDepositsTab = ({
                             {Coins.map((coin, index) => {
                               if (coin.name === tokenName) return <></>;
                               return (
-                                <div
-                                  key={index}
-                                  style={{
-                                    margin: "10px 0",
-                                    cursor: "pointer",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    fontSize: "16px",
-                                  }}
-                                  onClick={() => {
-                                    setTokenName(`${coin.name}`);
-                                    setDropDown(false);
-                                    setDropDownArrow(arrowDown);
-                                    setAsset(`${coin.name}`);
-                                    handleBalanceChange();
-                                    // handleDepositAmountChange(0);
-                                  }}
-                                >
-                                  <Image
-                                    src={`/${coin.name}.svg`}
-                                    width="24px"
-                                    height="24px"
-                                    alt="coin image"
-                                  />
-                                  <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
-                                </div>
+                                <>
+                                  <div
+                                    key={index}
+                                    style={{
+                                      margin: "0px 0",
+                                      cursor: "pointer",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      fontSize: "16px",
+                                    }}
+                                    onClick={() => {
+                                      setTokenName(`${coin.name}`);
+                                      setDropDown(false);
+                                      setDropDownArrow(arrowDown);
+                                      setAsset(`${coin.name}`);
+                                      handleBalanceChange();
+                                      // handleDepositAmountChange(0);
+                                    }}
+                                  >
+                                    <Image
+                                      src={`/${coin.name}.svg`}
+                                      width="15px"
+                                      height="15px"
+                                      alt="coin image"
+                                    />
+                                    <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                                  </div>
+                                  {coin.name !== "DAI" ? <hr /> : null}
+                                </>
                               );
                             })}
                           </div>
-                          <hr />
                         </>
                       ) : (
                         <></>
@@ -621,7 +627,7 @@ const ActiveDepositsTab = ({
                               borderRadius: "5px",
                               position: "absolute",
                               zIndex: "100",
-                              top: "212px",
+                              top: "215px",
                               left: "39px",
                               width: "420px",
                               margin: "0px auto",
@@ -646,6 +652,7 @@ const ActiveDepositsTab = ({
                             >
                               &nbsp;1 month
                             </div>
+                            <hr />
                             <div
                               style={{
                                 fontSize: "15px",
@@ -661,6 +668,7 @@ const ActiveDepositsTab = ({
                             >
                               &nbsp;2 weeks
                             </div>
+                            <hr />
                             <div
                               style={{
                                 fontSize: "15px",
@@ -670,7 +678,7 @@ const ActiveDepositsTab = ({
                               onClick={() => {
                                 setCommitmentValue("Flexible");
                                 setCommitmentDropDown(false);
-                                setCommitmentArrow(arrowDown);
+                                setCommitmentArrow(Downarrow);
                                 handleCommitChange(0);
                               }}
                             >
@@ -685,7 +693,6 @@ const ActiveDepositsTab = ({
                     <FormGroup>
                       <div className="row mb-4">
                         <Col sm={12}>
-                          {/* <Label for="amount">Amount</Label> */}
                           <InputGroup>
                             <Input
                               style={{
@@ -710,7 +717,11 @@ const ActiveDepositsTab = ({
                               style={{
                                 background: "#1D2131",
                                 color: "rgb(111, 111, 111)",
-                                border: "1px solid rgb(57, 61, 79)",
+                                border: `1px solid ${
+                                  !isInvalid() === true
+                                    ? "#34c38f"
+                                    : "rgb(57, 61, 79)"
+                                }`,
                                 borderLeft: "none",
                               }}
                             >
@@ -923,10 +934,22 @@ const ActiveDepositsTab = ({
                     </div>
                   </Form>
                 ) : (
-                  <h2 style={{ color: "black" }}>Please connect your wallet</h2>
+                  <h2 style={{ color: "white" }}>Please connect your wallet</h2>
                 )}
               </div>
             </Modal>
+            {isToastOpen ? (
+              <ToastModal
+                isOpen={isToastOpen}
+                setIsOpen={setIsToastOpen}
+                success={toastParam.success}
+                heading={toastParam.heading}
+                desc={toastParam.desc}
+                textToCopy={toastParam.textToCopy}
+              />
+            ) : (
+              <></>
+            )}
           </>
         )}
       </UncontrolledAccordion>
