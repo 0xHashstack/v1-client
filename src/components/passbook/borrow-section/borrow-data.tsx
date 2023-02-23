@@ -849,13 +849,13 @@ const BorrowData = ({
                 &nbsp; &nbsp;
                 {EventMap[assetParam.loanMarket.toUpperCase()]}
               </div>{" "}
-              <div>
+              {["SWAPPED", "STAKED", "TRADED"].includes(asset.state) ? <div>
                 <img
                   style={{ marginLeft: "25px" }}
-                  src="./swap.svg"
+                  src={`./${asset.state === "SWAPPED" ? 'swap' : asset.state === "STAKED" ? 'stake' : 'trade'}.svg`}
                   height="15px"
                 />
-              </div>
+              </div> : <></>}
             </div>
             <CardTitle tag="h5"></CardTitle>
           </Col>

@@ -256,6 +256,8 @@ export const EventMap: IEventMap = {
   "USDC.T": "USDC",
   "USDT.T": "USDT",
   "BTC.T": "BTC",
+  "ETH.T": "ETH",
+  "DAI.T": "DAI",
   "BNB.T": "BNB",
   "WBNB.T": "BNB",
 
@@ -266,6 +268,7 @@ export const EventMap: IEventMap = {
   BNB: "BNB",
   WBNB: "BNB",
   CAKE: "CAKE",
+  ETH: "ETH",
   SXP: "SXP",
 
   NONE: "Flexible",
@@ -285,12 +288,15 @@ export const CoinClassNames: ICoinClassNames = {
   BTC: "./btc.svg",
   BNB: "./bnb.svg",
   DAI: "./dai.svg",
+  ETH: "./eth.svg",
   WBNB: "./bnb.svg",
   "USDT.T": "./usdt.svg",
+  "ETH.T": "./eth.svg",
   "USDC.T": "./usdc.svg",
   "BTC.T": "./btc.svg",
   "BNB.T": "./bnb.svg",
   "WBNB.T": "./bnb.svg",
+  "DAI.T": "./dai.svg",
   CAKE: "./pancake.svg",
   SXP: "./sxp.svg",
 };
