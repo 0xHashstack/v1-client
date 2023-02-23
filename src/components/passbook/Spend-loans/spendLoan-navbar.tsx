@@ -516,8 +516,8 @@ const SpendLoanNav = ({ activeLoansData }) => {
                         style={{ cursor: "pointer" }}
                         src={stakeDropDownArrow}
                         alt="Picture of the author"
-                        width="20px"
-                        height="20px"
+                        width="14px"
+                        height="14px"
                       />
                     </label>
 
@@ -561,8 +561,8 @@ const SpendLoanNav = ({ activeLoansData }) => {
                             }}
                             src={dappDownArrow}
                             alt="Picture of the author"
-                            width="20px"
-                            height="20px"
+                            width="14px"
+                            height="14px"
                           />
                         </div>
 
@@ -831,8 +831,8 @@ const SpendLoanNav = ({ activeLoansData }) => {
                               onClick={toggleDropdown}
                               src={dropDownArrow}
                               alt="Picture of the author"
-                              width="20px"
-                              height="20px"
+                              width="14px"
+                              height="14px"
                             />
                           </div>
                         </div>

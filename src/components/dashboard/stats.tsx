@@ -8,6 +8,7 @@ import { number } from "starknet";
 import { useAccount } from "@starknet-react/core";
 import { tokenDecimalsMap } from "../../blockchain/stark-constants";
 import MySpinner from "../mySpinner";
+import {NumericFormat} from 'react-number-format';
 
 const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
   const { account: starknetAccount, address: _account } = useAccount();
@@ -139,14 +140,16 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
         <div className="">
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>Net Worth</p>
           <h4>
-            {netWorth !== undefined ? `$${netWorth.toFixed(2)}` : <MySpinner />}
+            {netWorth !== undefined ? 
+            <NumericFormat displayType="text" value={netWorth.toFixed(2)}  thousandSeparator="," prefix={'$'} />
+            : <MySpinner />}
           </h4>
         </div>
         <div className="">
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>Your Supply</p>
           <h4>
             {totalSupply !== undefined ? (
-              `$${totalSupply.toFixed(2)}`
+              <NumericFormat displayType="text" value={totalSupply.toFixed(2)}  thousandSeparator="," prefix={'$'} />
             ) : (
               <MySpinner />
             )}
@@ -156,7 +159,7 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>Your Borrow</p>
           <h4>
             {yourBorrow !== undefined ? (
-              `$${yourBorrow.toFixed(2)}`
+              <NumericFormat displayType="text" value={yourBorrow.toFixed(2)}  thousandSeparator="," prefix={'$'} />
             ) : (
               <MySpinner />
             )}
@@ -192,10 +195,12 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
         <div className="Net Worth">
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>
             Total Reserves
+           
           </p>
           <h4>
             {totalReserves !== undefined ? (
-              `$${totalReserves.toFixed(2)}`
+              
+              <NumericFormat displayType="text" value={totalReserves.toFixed(2)}  thousandSeparator="," prefix={'$'} />
             ) : (
               <MySpinner />
             )}
@@ -207,7 +212,7 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any }) => {
           </p>
           <h4>
             {availableReserves !== undefined ? (
-              `$${availableReserves.toFixed(2)}`
+              <NumericFormat displayType="text" value={availableReserves.toFixed(2)}  thousandSeparator="," prefix={'$'} />
             ) : (
               <MySpinner />
             )}

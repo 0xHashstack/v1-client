@@ -850,7 +850,7 @@ const BorrowData = ({
             </div>
           </Col>
 
-          <Col>xxxxxxxx</Col>
+          <Col>0.00</Col>
 
           <Col>{assetParam?.commitment}</Col>
 
@@ -1403,8 +1403,8 @@ const BorrowData = ({
                               onClick={toggleDropdown}
                               src={dropDownArrow}
                               alt="Picture of the author"
-                              width="20px"
-                              height="20px"
+                              width="14px"
+                              height="14px"
                             />
                           </div>
                         </div>
@@ -1442,8 +1442,8 @@ const BorrowData = ({
                               style={{ cursor: "pointer" }}
                               src={dropDownArrowTwo}
                               alt="Picture of the author"
-                              width="20px"
-                              height="20px"
+                              width="14px"
+                              height="14px"
                             />
                           </label>
 
@@ -1483,8 +1483,8 @@ const BorrowData = ({
                                   onClick={toggleyagi}
                                   src={yagiDownArrow}
                                   alt="Picture of the author"
-                                  width="20px"
-                                  height="20px"
+                                  width="14px"
+                                  height="14px"
                                 />
                               </div>
                             </div>
@@ -1574,7 +1574,7 @@ const BorrowData = ({
                             marginBottom: "15px",
                           }}
                         >
-                          Available Borrowed Amount:
+                          Available borrowed amount:
                           <span
                             style={{
                               display: "flex",
@@ -1584,7 +1584,7 @@ const BorrowData = ({
                           >
                             &nbsp;
                             {parseFloat(BNtoNum(Number(asset.loanAmount)))}{" "}
-                            {asset.loanMarket}
+                            {/* {asset.loanMarket} */}
                           </span>
                         </div>
                       </div>
@@ -1742,7 +1742,8 @@ const BorrowData = ({
                                 <Input
                                   style={{
                                     backgroundColor: "#1D2131",
-                                    borderRight: "2px solid #393D4F",
+                                    // borderRight: "2px solid #393D4F",
+                                    borderRight:'none',
                                     height: "40px",
                                   }}
                                   type="number"
@@ -1772,7 +1773,7 @@ const BorrowData = ({
                                   style={{
                                     background: "#1D2131",
                                     color: "rgb(111, 111, 111)",
-                                    border: "1px solid rgb(57, 61, 79)",
+                                    border: `1px solid ${!(!repayAmount || repayAmount <= 0)?'#34c38f' : 'rgb(57, 61, 79)'}`,
                                     borderLeft: "none",
                                   }}
                                 >
@@ -1928,8 +1929,8 @@ const BorrowData = ({
                             onClick={toggleDropdown}
                             src={dropDownArrow}
                             alt="Picture of the author"
-                            width="20px"
-                            height="20px"
+                            width="14px"
+                            height="14px"
                           />
                         </div>
                       </div>
@@ -2124,7 +2125,7 @@ const BorrowData = ({
                                   style={{
                                     background: "#1D2131",
                                     color: "rgb(111, 111, 111)",
-                                    border: "1px solid rgb(57, 61, 79)",
+                                    border: `1px solid ${!isInvalid()? '#34c38f':'rgb(57, 61, 79)'}`,
                                     borderLeft: "none",
                                   }}
                                 >
@@ -2620,8 +2621,8 @@ const BorrowData = ({
                               onClick={toggleDropdownThree}
                               src={dropDownArrowThree}
                               alt="Picture of the author"
-                              width="20px"
-                              height="20px"
+                              width="14px"
+                              height="14px"
                             />
                           </div>
                         </div>

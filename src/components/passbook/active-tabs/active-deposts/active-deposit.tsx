@@ -763,7 +763,8 @@ const ActiveDeposit = ({
                         style={{
                           backgroundColor: "#1D2131",
                           padding: "10px ",
-                          borderRight: "1px solid rgb(57, 61, 79)",
+                          // borderRight: "1px solid rgb(57, 61, 79)",
+                          borderRight: "none",
                           color: "#393D4F",
                         }}
                         type="number"
@@ -797,7 +798,10 @@ const ActiveDeposit = ({
                         style={{
                           background: "#1D2131",
                           color: "white",
-                          border: "1px solid rgb(57, 61, 79)",
+
+                          border: `1px solid ${
+                            !isInvalid() ? "#34c38f" : "rgb(57, 61, 79)"
+                          }`,
                           borderLeft: "none",
                         }}
                       >
@@ -908,7 +912,7 @@ const ActiveDeposit = ({
                     style={{
                       marginBottom: "25px",
                       fontSize: "11px",
-                      marginTop: "-10px",
+                      marginTop: "-25px",
                     }}
                   >
                     <div

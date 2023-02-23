@@ -114,6 +114,7 @@ let Deposit: any = ({
   const [transDeposit, setTransDeposit] = useState("");
   const [toastParam, setToastParam] = useState({});
   const [isToastOpen, setIsToastOpen] = useState(false);
+  
 
   const approveTransactionReceipt = useTransactionReceipt({
     hash: transApprove,
@@ -271,6 +272,7 @@ let Deposit: any = ({
     // Round off percentage to 2 decimal places
     percentage = Math.round(percentage * 100) / 100;
     setValue(percentage);
+    
   };
 
   const handleBalanceChange = async () => {
@@ -402,7 +404,7 @@ let Deposit: any = ({
   }, [dataAllowance, errorAllowance, refreshAllowance, loadingAllowance]);
 
   function isInvalid() {
-    if (!depositAmount) return true;
+    if (!depositAmount)  return  true;
     return (
       depositAmount < MinimumAmount[asset] ||
       depositAmount >
@@ -410,6 +412,7 @@ let Deposit: any = ({
       10 ** (tokenDecimalsMap[asset] || 18)
     );
   }
+  
 
   return (
     <div>
@@ -512,8 +515,8 @@ let Deposit: any = ({
                       <Image
                         src={dropDownArrow}
                         alt="Picture of the author"
-                        width="20px"
-                        height="20px"
+                        width="14px"
+                        height="14px"
                       />
                     </div>
                   </div>
@@ -573,8 +576,8 @@ let Deposit: any = ({
                         }}
                         src={commitmentArrow}
                         alt="Picture of the author"
-                        width="20px"
-                        height="20px"
+                        width="14px"
+                        height="14px"
                       />
                     </div>
                   </div>
@@ -723,9 +726,10 @@ let Deposit: any = ({
                         id="amount"
                         min={MinimumAmount[asset]}
                         placeholder={`Minimum ${MinimumAmount[asset]} ${asset}`}
-                        onChange={handleDepositAmountChange}
+                        onChange={handleDepositAmountChange }
                         value={depositAmount}
                         valid={!isInvalid()}
+                        
                       />
                       <Button
                         outline
@@ -735,7 +739,7 @@ let Deposit: any = ({
                         style={{
                           background: "#1D2131",
                           color: "rgb(111, 111, 111)",
-                          border: "1px solid rgb(57, 61, 79)",
+                          border: `1px solid ${!isInvalid() === true ?'#34c38f':"rgb(57, 61, 79)"}`,
                           borderLeft: "none",
                         }}
                       >
