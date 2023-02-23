@@ -255,14 +255,11 @@ const Dashboard = () => {
           return asset.state === "REPAID";
         })
       );
-      if (typeOfLoans === "Open") setFilteredLoans(loans);
-      else {
-        setFilteredLoans(
-          loans.filter((loan) => {
-            return loan.state === typeOfLoans;
-          })
-        );
-      }
+      setFilteredLoans(
+        activeLoansData.filter((loan) => {
+          return loan.state !== "REPAID" && loan.state !== "LIQUIDATED";
+        })
+      );
     }
   };
 
