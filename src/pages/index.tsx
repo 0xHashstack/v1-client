@@ -214,11 +214,10 @@ const Dashboard = () => {
         currentLoanMarket: getTokenFromAddress(
           loanData.currentMarket || loanData.loanMarket
         )?.name, // Borrow market(current)
-        currentLoanAmount: Number(
+        currentLoanAmount:
           loanData.currentAmount != "0"
             ? loanData.currentAmount
-            : loanData.openLoanAmount
-        ), // Borrow amount(current)
+            : loanData.openLoanAmount, // Borrow amount(current)
         timestamp: loanData.time,
         l3App:
           loanData.l3Id === "jedi_swap"

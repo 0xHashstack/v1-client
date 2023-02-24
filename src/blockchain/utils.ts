@@ -177,3 +177,13 @@ export const etherToWeiBN = (amount: number, tokenAddress: string) => {
     .div(number.toBN(factor));
   return amountBN;
 };
+
+export const weiToEtherNumber = (amount: string, tokenAddress: string) => {
+  const token = getTokenFromAddress(tokenAddress);
+  const decimals = token?.decimals || 18; // @todo should avoid using 18 default
+  const factor = 1000_000;
+  const amountBN = number
+    .toBN(amount).mul(number.toBN(factor))
+    .div(number.toBN(10).pow(number.toBN(decimals)));
+  return amountBN.toNumber() / factor;
+}

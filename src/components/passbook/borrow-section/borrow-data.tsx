@@ -53,6 +53,7 @@ import {
   currentBorrowInterestRate,
   GetErrorText,
   NumToBN,
+  weiToEtherNumber,
 } from "../../../blockchain/utils";
 import OffchainAPI from "../../../services/offchainapi.service";
 import TxHistoryTable from "../../dashboard/tx-history-table";
@@ -303,6 +304,8 @@ const BorrowData = ({
   const [yagiDownArrow, setyagiDownArrow] = useState(Downarrow);
   const [yagiselection, setyagiselection] = useState("0");
 
+  const { address: accountAddress, status } = useAccount();
+
   const [Yagidrop, setYagidrop] = useState(false);
 
   useEffect(() => {
@@ -374,6 +377,13 @@ const BorrowData = ({
     return amountOut;
   };
 
+  const handleMax = async () => {
+    setDepositAmount(
+      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+        10 ** (tokenDecimalsMap[asset] || 18)
+    );
+    setValue(100);
+  };
   // const {
   //   data: getAmountOutData,
   //   loading: loadingGetAmountOut,
@@ -476,6 +486,25 @@ const BorrowData = ({
     contract: loanMarketContract,
     method: "balanceOf",
     args: [account],
+    options: {
+      watch: true,
+    },
+  });
+
+  const { contract } = useContract({
+    abi: ERC20Abi as Abi,
+    address: tokenAddressMap[asset] as string,
+  });
+
+  const {
+    data: dataBalance,
+    loading: loadingBalance,
+    error: errorBalance,
+    refresh: refreshBalance,
+  } = useStarknetCall({
+    contract: contract,
+    method: "balanceOf",
+    args: [accountAddress],
     options: {
       watch: true,
     },
@@ -1000,8 +1029,8 @@ const BorrowData = ({
                 src={
                   assetParam
                     ? CoinClassNames[
-                        EventMap[assetParam.loanMarket.toUpperCase()]
-                      ] || assetParam.loanMarket.toUpperCase()
+                        EventMap[assetParam.collateralMarket.toUpperCase()]
+                      ] || assetParam.collateralMarket.toUpperCase()
                     : null
                 }
                 height="15px"
@@ -1014,7 +1043,7 @@ const BorrowData = ({
                 }}
               >
                 &nbsp; &nbsp;
-                {EventMap[assetParam.loanMarket.toUpperCase()]}
+                {EventMap[assetParam.collateralMarket.toUpperCase()]}
               </div>
             </div>
           </Col>
@@ -1025,7 +1054,7 @@ const BorrowData = ({
                 src={
                   asset
                     ? CoinClassNames[
-                        EventMap[assetParam.loanMarket.toUpperCase()]
+                        EventMap[assetParam.collateralMarket.toUpperCase()]
                       ] || assetParam.collateralMarket.toUpperCase()
                     : null
                 }
@@ -1048,10 +1077,19 @@ const BorrowData = ({
                 padding: "8px 15px",
               }}
               onClick={() => {
+                if (assetParam?.state === "REPAID") {
+                  setCustomActiveTab("2");
+                  setSelection("Withdraw Collateral");
+                  setIsCollateralActions(true);
+                }
                 setmodal_deposit(true);
               }}
             >
-              Actions
+              {assetParam?.state === "REPAID" ? (
+                <>Withdraw Collateral</>
+              ) : (
+                <>Actions</>
+              )}
             </button>
           </Col>
 
@@ -1423,14 +1461,14 @@ const BorrowData = ({
                       <NavLink
                         style={{
                           cursor: "pointer",
-                          color: "black",
+                          color: "white",
                           border: "1px solid #000",
                           borderRadius: "5px",
                         }}
                         className={classnames({
                           active: customActiveTab === "1",
                         })}
-                        disabled={asset.state === "REPAID"}
+                        disabled={assetParam.state === "REPAID"}
                         onClick={() => {
                           setCustomActiveTab("1");
                           setIsCollateralActions(false);
@@ -1439,7 +1477,8 @@ const BorrowData = ({
                       >
                         <span
                           style={{
-                            color: asset.state === "REPAID" ? "grey" : "black",
+                            color:
+                              assetParam.state === "REPAID" ? "grey" : "white",
                           }}
                           className="d-none d-sm-block"
                         >
@@ -1458,6 +1497,7 @@ const BorrowData = ({
                         className={classnames({
                           active: customActiveTab === "2",
                         })}
+                        disabled={assetParam.state === "REPAID"}
                         onClick={() => {
                           setCustomActiveTab("2");
                           setIsCollateralActions(true);
@@ -1917,7 +1957,23 @@ const BorrowData = ({
                                   outline
                                   type="button"
                                   className="btn btn-md w-xs"
-                                  // onClick={handleMax}
+                                  onClick={() => {
+                                    if (selection === "Repay Borrow") {
+                                      let amount = loanMarketBalance?.length
+                                        ? uint256.uint256ToBN(
+                                            loanMarketBalance[0]
+                                          )
+                                        : 0;
+                                      amount = weiToEtherNumber(
+                                        amount,
+                                        asset.loanMarket
+                                      );
+                                      setRepayAmount(amount);
+                                      setValue(100)
+                                    } else {
+                                      
+                                    }
+                                  }}
                                   // disabled={balance ? false : true}
                                   style={{
                                     background: "#1D2131",
@@ -2070,22 +2126,27 @@ const BorrowData = ({
                         }}
                       >
                         <div>&nbsp;&nbsp;{selection}</div>
-                        <div
+                        <label
                           style={{
                             marginRight: "20px",
                             marginTop: "3px",
                             marginBottom: "0",
-                            cursor: "pointer",
+                            backgroundColor: "transparent",
                           }}
                         >
-                          <Image
-                            onClick={toggleDropdown}
-                            src={dropDownArrow}
-                            alt="Picture of the author"
-                            width="14px"
-                            height="14px"
-                          />
-                        </div>
+                          {assetParam.state === "REPAID" ? (
+                            <></>
+                          ) : (
+                            <Image
+                              style={{ cursor: "pointer" }}
+                              onClick={toggleDropdown}
+                              src={dropDownArrow}
+                              alt="Picture of the author"
+                              width="14px"
+                              height="14px"
+                            />
+                          )}
+                        </label>
                       </div>
                     </label>
 
@@ -2273,13 +2334,24 @@ const BorrowData = ({
                                   outline
                                   type="button"
                                   className="btn btn-md w-xs"
-                                  // onClick={handleMax}
-                                  // disabled={balance ? false : true}
+                                  onClick={() => {
+                                    let amount = collateralMarketBalance?.length
+                                      ? uint256.uint256ToBN(
+                                          collateralMarketBalance[0]
+                                        )
+                                      : 0;
+                                    amount = weiToEtherNumber(
+                                      amount,
+                                      asset.collateralMarket
+                                    );
+                                    setAddCollateralAmount(amount);
+                                    setValue(100)
+                                  }}
                                   style={{
                                     background: "#1D2131",
                                     color: "rgb(111, 111, 111)",
                                     border: `1px solid ${
-                                      !isInvalid()
+                                      !isInvalid() === true
                                         ? "#34c38f"
                                         : "rgb(57, 61, 79)"
                                     }`,

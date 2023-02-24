@@ -37,7 +37,12 @@ import {
   tokenAddressMap,
   tokenDecimalsMap,
 } from "../blockchain/stark-constants";
-import { etherToWeiBN, GetErrorText, NumToBN } from "../blockchain/utils";
+import {
+  etherToWeiBN,
+  GetErrorText,
+  NumToBN,
+  weiToEtherNumber,
+} from "../blockchain/utils";
 import Image from "next/image";
 import { Abi, uint256, number } from "starknet";
 import { getPrice } from "../blockchain/priceFeed";
@@ -373,8 +378,8 @@ let Borrow: any = ({
   // @todo Write a standard function to convert the number to BN with decimal adjusted
   const { dataMaxLoan, errorMaxLoan, loadingMaxLoan, refreshMaxLoan } =
     useMaxloan(
-      tokenName,
       asset,
+      tokenName,
       etherToWeiBN(
         borrowParams.collateralAmount as number,
         borrowParams.collateralMarket as string
@@ -389,7 +394,11 @@ let Borrow: any = ({
         loadingMaxLoan,
         Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1))
       );
-      const Data = Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1));
+      const Data = dataMaxLoan?.max_loan_amount
+        ? weiToEtherNumber(
+            uint256.uint256ToBN(dataMaxLoan?.max_loan_amount).toString()
+          )
+        : "0";
       setMaxloanData(Data);
     }
   }, [errorMaxLoan, dataMaxLoan, loadingMaxLoan]);

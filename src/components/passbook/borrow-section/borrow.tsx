@@ -91,6 +91,12 @@ const BorrowTab = ({
     { name: "DAI", icon: "mdi-dai" },
   ];
 
+  // const loanTypes = ["Repaid", "Active"];
+  // const [typeOfLoansDropDownArrowType, setTypeOfLoansDropDownArrowType] =
+  //   useState(Downarrow);
+  // const [typeOfLoans, setTypeOfLoans] = useState("Active");
+  const [isDropDownOpenTypeOfLoans, setIsDropDownOpenTypeOfLoans] =
+    useState(false);
   const [value, setValue] = useState<any>(0);
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(Downarrow);
@@ -724,6 +730,7 @@ const BorrowTab = ({
             </Table>
 
             {activeLoansData.map((asset, key, allAssets) => {
+              console.log("activeLoansData", asset);
               return (
                 <BorrowData
                   allAssets={allAssets}
