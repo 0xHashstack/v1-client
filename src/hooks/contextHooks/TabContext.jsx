@@ -16,7 +16,7 @@ export function TabsProvider({ children }) {
 
   const [selectedLoan, setSelectedLoan] = useState();
   const [title, setTitle] = useState({
-    label: "Stake",
+    label: "None",
   });
 
   return (

@@ -390,7 +390,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
         {dappsArray.map((dapp, index) => {
           if (
             dapp.supportedActions.find(
-              (action: string) => action === title.label
+              (action: string) => action === title.label || title.label === "None"
             )
           ) {
             return (
@@ -401,6 +401,10 @@ const SpendLoanNav = ({ activeLoansData }) => {
                   setmodal_deposit(true);
                   if (!selectedLoan) setSelectedLoan(activeLoansData?.[0]);
                   setAppsImage(dapp.name);
+                  setTitle({
+                    label: dapp.supportedActions[0],
+                  });
+                  setSpendLoan(dapp.supportedActions[0] === "Swap" ? "2" : dapp.supportedActions[0] === "Stake" ? "1" : "3");
                 }}
               >
                 <img
