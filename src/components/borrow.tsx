@@ -88,10 +88,12 @@ let Borrow: any = ({
   asset: assetParam,
   title,
   depositLoanRates: depositLoanRatesParam,
+  fairPriceArray,
 }: {
   asset: string;
   title: string;
   depositLoanRates: IDepositLoanRates;
+  fairPriceArray: any;
 }) => {
   console.log("the asset you get from borrow popup", assetParam);
   const Coins: ICoin[] = [
@@ -154,6 +156,14 @@ let Borrow: any = ({
 
   const [collateralMarketToken, setCollateralwMarketToken] = useState("USDT");
   const [MaxloanData, setMaxloanData] = useState(0);
+
+  const processOracleFairPrices = (coinName: string, arr) => {
+    if (!arr) return;
+    const oraclePrice = arr.find((ele) => {
+      return ele.name === coinName;
+    });
+    return oraclePrice?.price?.toFixed(3);
+  };
 
   const toggleDropdown = () => {
     setDropDown(!dropDown);
@@ -1298,18 +1308,16 @@ let Borrow: any = ({
                         fontWeight: "600",
                         color: "#6F6F6F",
                       }}
-                    >
-                      $ 10.91
-                    </div>
+                    ></div>
                   </div>
                   <div
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
-                      margin: "3px 0 0 10px",
+                      margin: "3px 0 0 0px",
                     }}
                   >
-                    <div style={{ color: "#6F6F6F" }}>i Collateral market:</div>
+                    <div style={{ color: "#6F6F6F" }}>Collateral market:</div>
                     <div
                       style={{
                         textAlign: "right",
@@ -1317,17 +1325,17 @@ let Borrow: any = ({
                         color: "#6F6F6F",
                       }}
                     >
-                      $ 10.91
+                      {processOracleFairPrices(tokenName, fairPriceArray)}
                     </div>
                   </div>
                   <div
                     style={{
                       display: "flex",
                       justifyContent: "space-between",
-                      margin: "3px 0 0 10px",
+                      margin: "3px 0 0 0px",
                     }}
                   >
-                    <div style={{ color: "#6F6F6F" }}>ii Borrow market:</div>
+                    <div style={{ color: "#6F6F6F" }}>Borrow market:</div>
                     <div
                       style={{
                         textAlign: "right",
@@ -1335,7 +1343,7 @@ let Borrow: any = ({
                         color: "#6F6F6F",
                       }}
                     >
-                      $10.91
+                      {processOracleFairPrices(borrowTokenName, fairPriceArray)}
                     </div>
                   </div>
                   <div
