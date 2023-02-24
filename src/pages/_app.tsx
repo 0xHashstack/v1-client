@@ -22,7 +22,7 @@ import {
   StarknetProvider,
   useAccount,
 } from "@starknet-react/core";
-import { SequencerProvider } from "starknet";
+import { SequencerProvider, RpcProvider } from "starknet";
 import ErrorBoundary from "../components/ErrorComponent";
 import { IdentifierProvider } from "../blockchain/hooks/context/identifierContext";
 import ConnectionDetails from "../components/walletIdentifier/connectionDashboard";
@@ -75,8 +75,10 @@ function MyApp({ Component, pageProps }: AppProps) {
                 connectors={connectors}
                 autoConnect
                 defaultProvider={
-                  new SequencerProvider({
-                    baseUrl: "https://alpha4-2.starknet.io",
+                  // @todo to move this to env variables
+                  new RpcProvider({
+                    nodeUrl:
+                      "https://starknet-goerli2.infura.io/v3/3274a9630231466681b6300375f517f2",
                   })
                 }
               >

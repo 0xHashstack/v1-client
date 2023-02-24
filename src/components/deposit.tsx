@@ -52,7 +52,15 @@ import {
   useTransactions,
 } from "@starknet-react/core";
 import dropDownArrow from "../public/drop-down-arrow.svg";
-import { Abi, Contract, uint256, number, Provider, Account, ec } from "starknet";
+import {
+  Abi,
+  Contract,
+  uint256,
+  number,
+  Provider,
+  Account,
+  ec,
+} from "starknet";
 import { TxToastManager } from "../blockchain/txToastManager";
 import MySpinner from "./mySpinner";
 import Image from "next/image";
@@ -284,7 +292,7 @@ let Deposit: any = ({
   const handleMax = async () => {
     setDepositAmount(
       Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-      10 ** (tokenDecimalsMap[asset] || 18)
+        10 ** (tokenDecimalsMap[asset] || 18)
     );
     setValue(100);
   };
@@ -307,22 +315,34 @@ let Deposit: any = ({
   const { contract: depositContract } = useContract({
     abi: DepositAbi as Abi,
     address: diamondAddress,
-  })
-  const provider = new Provider({ sequencer: { baseUrl: 'https://alpha4-2.starknet.io' } })
-  const depositContract2 = new Contract(DepositAbi as Abi, diamondAddress, depositContract2?.providerOrAccount);
-
+  });
+  const provider = new Provider({
+    sequencer: { baseUrl: "https://alpha4-2.starknet.io" },
+  });
+  const depositContract2 = new Contract(
+    DepositAbi as Abi,
+    diamondAddress,
+    depositContract2?.providerOrAccount
+  );
 
   const getGas = async () => {
     // const amount = uint256.bnToUint256(NumToBN(depositAmount, 18));
     try {
-      console.log("gas tokenAddressMap[asset]", tokenAddressMap[asset], diamondAddress, commitPeriod, depositAmount, depositContract)
-      console.log('provider', depositContract?.providerOrAccount, userAccount)
+      console.log(
+        "gas tokenAddressMap[asset]",
+        tokenAddressMap[asset],
+        diamondAddress,
+        commitPeriod,
+        depositAmount,
+        depositContract
+      );
+      console.log("provider", depositContract?.providerOrAccount, userAccount);
 
-      let call = depositContract?.populate('deposit_request', [
+      let call = depositContract?.populate("deposit_request", [
         tokenAddressMap[asset],
         commitPeriod,
-        [NumToBN(depositAmount, 18), 0]
-      ])
+        [NumToBN(depositAmount, 18), 0],
+      ]);
       if (!call) {
         throw new Error("call undefined");
       } else {
@@ -333,11 +353,10 @@ let Deposit: any = ({
         // );
         console.log("gas for deposit", gas);
       }
+    } catch (error) {
+      console.log("query gas error", diamondAddress, error);
     }
-    catch (error) {
-      console.log("query gas error", diamondAddress, error)
-    }
-  }
+  };
 
   const handleDeposit = async (asset: string) => {
     if (
@@ -408,8 +427,8 @@ let Deposit: any = ({
     return (
       depositAmount < MinimumAmount[asset] ||
       depositAmount >
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-      10 ** (tokenDecimalsMap[asset] || 18)
+        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+          10 ** (tokenDecimalsMap[asset] || 18)
     );
   }
 
@@ -789,7 +808,7 @@ let Deposit: any = ({
                                 )
                               ) /
                                 10 ** (tokenDecimalsMap[asset] || 18))) /
-                            100
+                              100
                           );
                           setValue(value);
                         }}
@@ -809,10 +828,10 @@ let Deposit: any = ({
                     </div>
                     {depositAmount != 0 &&
                       depositAmount >
-                      Number(
-                        uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)
-                      ) /
-                      10 ** (tokenDecimalsMap[asset] || 18) && (
+                        Number(
+                          uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)
+                        ) /
+                          10 ** (tokenDecimalsMap[asset] || 18) && (
                         <FormText style={{ color: "#e97272 !important" }}>
                           {`Amount is greater than your balance`}
                         </FormText>
@@ -864,7 +883,8 @@ let Deposit: any = ({
                       {depositLoanRates && commitPeriod < 3 ? (
                         `${parseFloat(
                           depositLoanRates[
-                            `${getTokenFromName(asset as string)?.address
+                            `${
+                              getTokenFromName(asset as string)?.address
                             }__${commitPeriod}`
                           ]?.depositAPR?.apr100x as string
                         )} %`
@@ -890,7 +910,7 @@ let Deposit: any = ({
                         color: "rgb(111, 111, 111)",
                       }}
                     >
-                      {reserves.loans ? (
+                      {reserves?.loans ? (
                         (
                           (100 * reserves.loans[tokenName]) /
                           reserves.deposits[tokenName]

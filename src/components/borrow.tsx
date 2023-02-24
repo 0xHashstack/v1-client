@@ -37,7 +37,7 @@ import {
   tokenAddressMap,
   tokenDecimalsMap,
 } from "../blockchain/stark-constants";
-import { GetErrorText, NumToBN } from "../blockchain/utils";
+import { etherToWeiBN, GetErrorText, NumToBN } from "../blockchain/utils";
 import Image from "next/image";
 import { Abi, uint256, number } from "starknet";
 import { getPrice } from "../blockchain/priceFeed";
@@ -56,7 +56,7 @@ import Maxloan from "../blockchain/hooks/Max_loan_given_collat";
 import { BNtoNum } from "../blockchain/utils";
 import useMaxloan from "../blockchain/hooks/Max_loan_given_collat";
 import ToastModal from "./toastModals/customToastModal";
-import loanABI from '../../starknet-artifacts/contracts/modules/loan.cairo/loan_abi.json';
+import loanABI from "../../starknet-artifacts/contracts/modules/loan.cairo/loan_abi.json";
 import TransactionFees from "../../TransactionFees.json";
 
 interface IBorrowParams {
@@ -213,7 +213,7 @@ let Borrow: any = ({
   const { contract: loanContract } = useContract({
     address: diamondAddress,
     abi: loanABI as Abi,
-  })
+  });
 
   const {
     data: dataDebtCategory,
@@ -227,19 +227,24 @@ let Borrow: any = ({
       tokenAddressMap[asset],
       tokenAddressMap[borrowParams.collateralMarket || ""],
       [Number(borrowParams.loanAmount as string), 0],
-      [Number(borrowParams.collateralAmount as string), 0]
+      [Number(borrowParams.collateralAmount as string), 0],
     ],
     options: {
       watch: true,
-    }
-  })
+    },
+  });
 
   useEffect(() => {
-    if(!borrowParams.loanAmount || !borrowParams.collateralAmount) return;
-    console.log("debt category", BNtoNum(dataDebtCategory?.debt_category, 0), errorDebtCategory, loadingDebtCategory)
-    if(loadingDebtCategory === false && !errorDebtCategory) 
-      setDebtCategory(BNtoNum(dataDebtCategory?.debt_category, 0))
-  }, [errorDebtCategory, dataDebtCategory, loadingDebtCategory])
+    if (!borrowParams.loanAmount || !borrowParams.collateralAmount) return;
+    console.log(
+      "debt category",
+      BNtoNum(dataDebtCategory?.debt_category, 0),
+      errorDebtCategory,
+      loadingDebtCategory
+    );
+    if (loadingDebtCategory === false && !errorDebtCategory)
+      setDebtCategory(BNtoNum(dataDebtCategory?.debt_category, 0));
+  }, [errorDebtCategory, dataDebtCategory, loadingDebtCategory]);
 
   /* ======================= Approve ================================= */
   const {
@@ -365,19 +370,29 @@ let Borrow: any = ({
 
   console.log(borrowParams.collateralAmount);
   // {borrowParams.collateralAmount ?(
+  // @todo Write a standard function to convert the number to BN with decimal adjusted
   const { dataMaxLoan, errorMaxLoan, loadingMaxLoan, refreshMaxLoan } =
-    useMaxloan(tokenName, asset, Number(borrowParams.collateralAmount));
-  let l = setTimeout(() => {
+    useMaxloan(
+      tokenName,
+      asset,
+      etherToWeiBN(
+        borrowParams.collateralAmount as number,
+        borrowParams.collateralMarket as string
+      ).toString()
+    );
+  useEffect(() => {
     if (loadingMaxLoan === false && !errorMaxLoan) {
       console.log(
         "printing",
+        dataMaxLoan,
+        errorMaxLoan,
+        loadingMaxLoan,
         Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1))
       );
       const Data = Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1));
       setMaxloanData(Data);
     }
-    clearTimeout(l);
-  }, 1000);
+  }, [errorMaxLoan, dataMaxLoan, loadingMaxLoan]);
 
   const handleApprove = async (asset: string) => {
     try {
@@ -595,7 +610,7 @@ let Borrow: any = ({
     return (
       Number(borrowParams.collateralAmount) <=
       Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-      10 ** (tokenDecimalsMap[borrowParams?.collateralMarket as string] || 18)
+        10 ** (tokenDecimalsMap[borrowParams?.collateralMarket as string] || 18)
     );
   }
 
@@ -1347,11 +1362,11 @@ let Borrow: any = ({
                         color: "#6F6F6F",
                       }}
                     >
-                      {
-                        loadingDebtCategory ? 
-                        <MySpinner text="" /> :
+                      {loadingDebtCategory ? (
+                        <MySpinner text="" />
+                      ) : (
                         `DC ${Number(debtCategory).toFixed(0)}`
-                      }
+                      )}
                     </div>
                   </div>
                   <div

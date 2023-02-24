@@ -220,7 +220,12 @@ const Dashboard = () => {
             : loanData.openLoanAmount
         ), // Borrow amount(current)
         timestamp: loanData.time,
-        l3App: loanData.l3Id === 'jedi_swap' ? 'jediSwap' : loanData.l3Id === 'myswap' ? 'mySwap' : null,
+        l3App:
+          loanData.l3Id === "jedi_swap"
+            ? "jediSwap"
+            : loanData.l3Id === "myswap"
+            ? "mySwap"
+            : null,
         //get apr is for loans apr
       };
       loans.push(JSON.parse(JSON.stringify(temp_len)));
@@ -582,7 +587,6 @@ const Dashboard = () => {
     const [totalBorrowAssets, setTotalBorrowAssets] = useState();
     const [totalSupplyDash, setTotalSupplyDash] = useState();
 
-
     return (
       <div style={{ width: "100%", backgroundColor: "#1C202", height: "100%" }}>
         {customActiveTab === "1" ? (
@@ -599,8 +603,8 @@ const Dashboard = () => {
               {/* <Card style={{ height: "35rem", overflowY: "scroll" }}> */}
               <div style={{ margin: "1px 5px 5px 14px" }}>
                 {customActiveTab === "2" ||
-                  customActiveTab === "3" ||
-                  customActiveTab === "4" ? (
+                customActiveTab === "3" ||
+                customActiveTab === "4" ? (
                   <div style={{ marginTop: "90px" }}>
                     <DashboardMenu
                       margin={"0px"}
@@ -630,8 +634,8 @@ const Dashboard = () => {
                 )}
               </div>
               {customActiveTab === "3" ||
-                customActiveTab === "4" ||
-                customActiveTab === "2" ? (
+              customActiveTab === "4" ||
+              customActiveTab === "2" ? (
                 <>
                   <div
                     style={{
@@ -647,7 +651,12 @@ const Dashboard = () => {
                           <div style={{ color: "#8C8C8C" }}>Total Supply</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
                             {totalSupplyDash !== undefined ? (
-                              <NumericFormat displayType="text" value={totalSupplyDash.toFixed(2)} thousandSeparator="," prefix={'$'} />
+                              <NumericFormat
+                                displayType="text"
+                                value={totalSupplyDash.toFixed(2)}
+                                thousandSeparator=","
+                                prefix={"$"}
+                              />
                             ) : (
                               <MySpinner />
                             )}
@@ -668,7 +677,12 @@ const Dashboard = () => {
                           </div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
                             {totalBorrowAssets !== undefined ? (
-                              <NumericFormat displayType="text" value={totalBorrowAssets.toFixed(2)} thousandSeparator="," prefix={'$'} />
+                              <NumericFormat
+                                displayType="text"
+                                value={totalBorrowAssets.toFixed(2)}
+                                thousandSeparator=","
+                                prefix={"$"}
+                              />
                             ) : (
                               <MySpinner />
                             )}
@@ -694,6 +708,7 @@ const Dashboard = () => {
                     >
                       <button
                         style={{
+                          marginTop: "40px",
                           color: "white",
                           backgroundColor: "rgb(57, 61, 79)",
                           padding: "6px 8px 6px 10px",
@@ -783,8 +798,8 @@ const Dashboard = () => {
               ) : null}
 
               {customActiveTab === "1" ||
-                customActiveTab === "3" ||
-                customActiveTab === "4" ? (
+              customActiveTab === "3" ||
+              customActiveTab === "4" ? (
                 <Card
                   style={{
                     height: "76vh",

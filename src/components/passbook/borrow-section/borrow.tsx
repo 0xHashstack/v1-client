@@ -254,6 +254,7 @@ const BorrowTab = ({
   useEffect(() => {
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
       setDepositLoanRates(val);
+      setHistoricalAPRs(val);
     });
   }, []);
 
