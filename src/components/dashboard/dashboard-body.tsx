@@ -96,6 +96,7 @@ let DashboardTBody: any = ({
             depositLoanRates={depositLoanRates}
             oraclePriceForCoin={oraclePriceForCoin}
             fairPriceForCoin={fairPriceForCoin}
+            fairPriceArray={oracleAndFairPrices?.fairPrices}
           />
         </>
       );

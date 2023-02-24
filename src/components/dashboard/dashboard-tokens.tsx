@@ -28,6 +28,7 @@ const DashboardTokens = ({
   oraclePriceForCoin,
   fairPriceForCoin,
   reserves,
+  fairPriceArray,
 }: {
   coin: ICoin;
   idx: number;
@@ -37,6 +38,7 @@ const DashboardTokens = ({
   oraclePriceForCoin: any;
   fairPriceForCoin: any;
   reserves: any;
+  fairPriceArray: any;
 }) => {
   useEffect(() => {
     console.log(
@@ -169,6 +171,7 @@ const DashboardTokens = ({
             asset={coin.name}
             title={coin.name}
             depositLoanRates={depositLoanRates}
+            fairPriceArray={fairPriceArray}
           />
         </div>
       </td>
