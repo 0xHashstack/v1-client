@@ -2,6 +2,23 @@
     {
         "members": [
             {
+                "name": "low",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "high",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "Uint256",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
                 "name": "id",
                 "offset": 0,
                 "type": "felt"
@@ -59,23 +76,6 @@
         ],
         "name": "Loan",
         "size": 13,
-        "type": "struct"
-    },
-    {
-        "members": [
-            {
-                "name": "low",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "high",
-                "offset": 1,
-                "type": "felt"
-            }
-        ],
-        "name": "Uint256",
-        "size": 2,
         "type": "struct"
     },
     {
@@ -156,6 +156,31 @@
         "keys": [],
         "name": "Unpaused",
         "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "amount",
+                "type": "Uint256"
+            },
+            {
+                "name": "to_decimals",
+                "type": "felt"
+            }
+        ],
+        "name": "normalize_price",
+        "outputs": [
+            {
+                "name": "normalized_price",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
     },
     {
         "data": [
@@ -602,10 +627,10 @@
                 "type": "felt"
             }
         ],
-        "name": "get_max_withdrawal_amount_usd",
+        "name": "get_max_withdrawal_amount",
         "outputs": [
             {
-                "name": "amount_usd",
+                "name": "amount",
                 "type": "Uint256"
             }
         ],
@@ -709,6 +734,17 @@
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "loan_id",
+                "type": "felt"
+            }
+        ],
+        "name": "deduct_loan_interest",
+        "outputs": [],
         "type": "function"
     }
 ]
