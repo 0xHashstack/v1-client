@@ -259,6 +259,7 @@ const BorrowData = ({
     isMyswapToastOpen,
     setIsToastMyswapOpen,
     toastMyswapParam,
+    poolIdtoTokens,
   } = useMySwap(diamondAddress, asset, marketTokenName);
 
   const [title, setTitle] = useState({
@@ -294,6 +295,11 @@ const BorrowData = ({
 
   const [appsImage, setappsImage] = useState("yagi");
   const apps = ["mySwap", "jediSwap", "yagi"];
+
+  const [poolId, setPoolId] = useState(0);
+
+  const [totalAmountOutmySwap, setTotalAmountOutmySwap] = useState("N/A");
+  const [totalAmountOutJediSwap, setTotalAmountOutJediSwap] = useState("N/A");
 
   const dappsArray = [
     { name: "jediSwap", supportedActions: ["Swap"] },
@@ -359,6 +365,19 @@ const BorrowData = ({
     },
   });
 
+  useEffect(() => {
+    let currentPoolId = 0;
+    if(!poolIdtoTokens) return;
+    for (const [poolId, tokens] of poolIdtoTokens.entries()) {
+      if(tokens.includes(tokenAddressMap[asset.loanMarket]) && tokens.includes(tokenAddressMap[marketTokenName])) {
+        currentPoolId = poolId;
+        console.log("poolId", poolId)
+        break;
+      }
+    }
+    setPoolId(currentPoolId);
+  }, [asset, poolIdtoTokens, marketTokenName]);
+
   const { contract: l3JediContract } = useContract({
     abi: JediSwapAbi as Abi,
     address:
@@ -384,46 +403,51 @@ const BorrowData = ({
     );
     setValue(100);
   };
-  // const {
-  //   data: getAmountOutData,
-  //   loading: loadingGetAmountOut,
-  //   error: errorGetAmountOut,
-  //   refresh: refreshGetAmountOut,
-  // } = useStarknetCall({
-  //   contract: l3Contract,
-  //   method: "get_amount_out_jedi_swap",
-  //   args: [
-  //     // "0x38be05dde4b01e92d12a62f5dfa6584b5cad8e7b2295e2cb488f2b0385ff34f",
-  //     // "0x5b2a7c089e36c6caf4724d2df5bd7687fcdc9bd76d280ecb1e411410811b54e",
-  //     // uint256.bnToUint256(number.toBN("10").pow(number.toBN("25"))),
-  //     tokenAddressMap[asset.loanMarket],
-  //     tokenAddressMap[marketTokenName],
-  //     uint256.bnToUint256(number.toBN(getAmount().toString())),
-  //   ],
-  //   options: {
-  //     watch: true,
-  //   },
-  // });
+  const {
+    data: getAmountOutData,
+    loading: loadingGetAmountOut,
+    error: errorGetAmountOut,
+    refresh: refreshGetAmountOut,
+  } = useStarknetCall({
+    contract: l3JediContract,
+    method: "get_amount_out_jedi_swap",
+    args: [
+      // "0x38be05dde4b01e92d12a62f5dfa6584b5cad8e7b2295e2cb488f2b0385ff34f",
+      // "0x5b2a7c089e36c6caf4724d2df5bd7687fcdc9bd76d280ecb1e411410811b54e",
+      // uint256.bnToUint256(number.toBN("10").pow(number.toBN("25"))),
+      tokenAddressMap[asset.loanMarket],
+      tokenAddressMap[marketTokenName],
+      uint256.bnToUint256(number.toBN(getAmount().toString())),
+    ],
+    options: {
+      watch: true,
+    },
+  });
 
-  // useEffect(() => {
-  //   console.log(
-  //     "getamount",
-  //     tokenAddressMap[asset.loanMarket],
-  //     tokenAddressMap[marketTokenName],
-  //     asset.currentLoanAmount || "0",
-  //     getTokenFromName(asset.loanMarket)?.name,
-  //     getTokenFromName(marketTokenName)?.name
-  //   );
-  //   console.log(
-  //     "getAmountOutData",
-  //     getAmountOutData,
-  //     getAmountOutData?.amount_to
-  //       ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
-  //       : "NA",
-  //     loadingGetAmountOut,
-  //     errorGetAmountOut
-  //   );
-  // }, [getAmountOutData, loadingGetAmountOut, errorGetAmountOut]);
+  useEffect(() => {
+    console.log(
+      "getamount",
+      tokenAddressMap[asset.loanMarket],
+      tokenAddressMap[marketTokenName],
+      asset.currentLoanAmount || "0",
+      getTokenFromName(asset.loanMarket)?.name,
+      getTokenFromName(marketTokenName)?.name
+    );
+    console.log(
+      "getAmountOutDataJediSwap",
+      getAmountOutData,
+      getAmountOutData?.amount_to
+        ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
+        : "NA",
+      loadingGetAmountOut,
+      errorGetAmountOut
+    );
+    const amount = getAmountOutData?.amount_to
+    ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
+    : "NA";
+    setTotalAmountOutJediSwap(amount);
+ 
+  }, [getAmountOutData, loadingGetAmountOut, errorGetAmountOut]);
 
   const { contract: l3MySwapContract } = useContract({
     abi: MySwapAbi as Abi,
@@ -446,7 +470,7 @@ const BorrowData = ({
       tokenAddressMap[asset.loanMarket],
       tokenAddressMap[marketTokenName],
       uint256.bnToUint256(number.toBN(getAmount().toString())),
-      2, // use pool id of respective pool. get from supported pools function
+      poolId, // use pool id of respective pool. get from supported pools function
     ],
     options: {
       watch: true,
@@ -471,6 +495,10 @@ const BorrowData = ({
       loadingGetAmountOutMySwap,
       errorGetAmountOutMySwap
     );
+    const amount = getAmountOutDataMySwap?.amount_to
+    ? uint256.uint256ToBN(getAmountOutDataMySwap?.amount_to).toString()
+    : "NA";
+    setTotalAmountOutmySwap(amount);
   }, [
     getAmountOutDataMySwap,
     loadingGetAmountOutMySwap,
@@ -2682,7 +2710,7 @@ const BorrowData = ({
                           appsImage === "jediSwap"
                             ? supportedPoolsJediSwap?.get(borrowMarketAddress)
                             : supportedPoolsMySwap?.get(borrowMarketAddress);
-                        const isSupported = supportedMarkets.includes(
+                        const isSupported = supportedMarkets?.includes(
                           tokenAddressMap[coin.name]
                         );
                         if (!isSupported) return <></>;
@@ -2701,8 +2729,6 @@ const BorrowData = ({
                               setMarketDropDown(false);
                               setDropDownArrowThree(Downarrow);
                               handleLoanMarketBalanceChange();
-
-                              // handleDepositAmountChange(0);
                             }}
                           >
                             <img
@@ -2869,7 +2895,19 @@ const BorrowData = ({
                           color: "#6F6F6F",
                         }}
                       >
-                        1 BTC = 21,000 USDT
+                        {/* 1 BTC = 21,000 USDT */}
+                        {/** TODO: Adjust for token Decimals */}
+                        {
+                          appsImage === 'mySwap'  ? (
+                            totalAmountOutmySwap !== 'NA' ? 
+                              `1 ${asset.loanMarket} = ${(totalAmountOutmySwap/asset.currentLoanAmount).toFixed(4)} ${marketTokenName}` 
+                              : <MySpinner />
+                          ) : appsImage === 'jediSwap'? (
+                            totalAmountOutJediSwap !== 'NA' ? 
+                              `1 ${asset.loanMarket} = ${(totalAmountOutJediSwap/asset.currentLoanAmount).toFixed(4)} ${marketTokenName}` 
+                              : <MySpinner />
+                          ): '-'
+                        } 
                       </div>
                     </div>
                     <div

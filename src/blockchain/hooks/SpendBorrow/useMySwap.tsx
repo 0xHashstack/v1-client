@@ -10,6 +10,7 @@ import { Abi, number } from "starknet";
 const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
   const [toastMyswapParam, setToastMyswapParam] = useState({});
   const [isMyswapToastOpen, setIsToastMyswapOpen] = useState(false);
+  const [poolIdtoTokens, setPoolIdtoTokens] = useState();
   
   const [supportedPoolsMySwap, setSupportedPoolsMySwap] = useState();
 
@@ -41,6 +42,7 @@ const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
 
     console.log("loading jedi", loadingMySwapSupportedPools);
     const poolsData = new Map();
+    const poolIdtoTokensMap = new Map();
     if (!loadingMySwapSupportedPools) {
       console.log(
         "MySwapSupportedPoolsData",
@@ -51,11 +53,14 @@ const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
       for(let i = 0; i<pools?.length; i++) {
         const firstTokenAddress = number.toHex(pools[i].tokenA)
         const secondTokenAddress = number.toHex(pools[i].tokenB);
+        const poolId = pools[i].pool.toNumber();
         setValue(poolsData, firstTokenAddress, secondTokenAddress);
         setValue(poolsData, secondTokenAddress, firstTokenAddress);
+        poolIdtoTokensMap.set(poolId, [firstTokenAddress, secondTokenAddress])
       }
       console.log("pooldata myswap", poolsData);
       setSupportedPoolsMySwap(poolsData)
+      setPoolIdtoTokens(poolIdtoTokensMap)
     }
   }, [
     mySwapSupportedPoolsData,
@@ -119,6 +124,7 @@ const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
       errorMySwapSupportedPools,
       refreshMySwapSupportedPools,
       mySwapSupportedPoolsData,
+      poolIdtoTokens,
 
       isMyswapToastOpen,
       setIsToastMyswapOpen,
