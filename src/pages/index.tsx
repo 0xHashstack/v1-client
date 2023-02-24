@@ -47,6 +47,7 @@ import {
   getCommitmentNameFromIndexDeposit,
   getCommitmentNameFromIndexLoan,
   getTokenFromAddress,
+  tokenDecimalsMap,
 } from "../blockchain/stark-constants";
 import BigNumber from "bignumber.js";
 import { useAccount, useStarknet } from "@starknet-react/core";
@@ -155,6 +156,10 @@ const Dashboard = () => {
   const [index, setIndex] = useState("1");
   const { account: starknetAccount, address: _account } = useAccount();
   const [account, setAccount] = useState<string>("");
+  // const [totalBorrowApr, setTotalBorrowApr] = useState(0);
+  const [netBorrowedApr, setNetBorrowedApr] = useState(0);
+  const [netAprEarned, setNetAprEarned] = useState(0);
+  const [oracleAndFairPrices, setOracleAndFairPrices] = useState();
 
   useEffect(() => {
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
@@ -187,6 +192,62 @@ const Dashboard = () => {
     getReserves();
   }, []);
 
+  useEffect(() => {
+    const getPrices = () => {
+      OffchainAPI.getOraclePrices().then((prices) => {
+        console.log("prices dashboard", prices);
+        setOracleAndFairPrices(prices);
+      });
+    };
+    getPrices();
+  }, []);
+
+  useEffect(() => {
+    if(!oracleAndFairPrices || !activeLoansData) return;
+    calculateNetBorrowedApr();
+  }, [activeLoansData, oracleAndFairPrices]);
+
+  
+  useEffect(() => {
+    if(!oracleAndFairPrices || !activeDepositsData) return;
+    calculateNetAprEarned();
+  }, [activeDepositsData, oracleAndFairPrices]);
+
+  const calculateNetAprEarned = () => {
+    let sum = 0;
+    for (let i = 0; i < oracleAndFairPrices?.oraclePrices?.length; i++) {
+      activeDepositsData.map((item: any, index: number) => {
+        if (item.market === oracleAndFairPrices?.oraclePrices[i].name) {
+          sum +=
+            ((Number(item.acquiredYield) + Number(item.interestPaid)) / 10 ** Number(tokenDecimalsMap[item.market])) *
+            oracleAndFairPrices?.oraclePrices[i].price;
+        }
+      });
+    
+    }
+    console.log("net apr earned", sum);
+    setNetAprEarned(sum);
+  }
+
+  const calculateNetBorrowedApr = () => {
+    let sum = 0;
+    for (let i = 0; i < oracleAndFairPrices?.oraclePrices?.length; i++) {
+      activeLoansData.map((item: any) => {
+        if (
+          item.loanMarket === oracleAndFairPrices?.oraclePrices[i].name &&
+          !["REPAID", "LIQUIDATED"].includes(item.state)
+        )  {
+          sum +=
+            ((Number(item.interestPaid) + Number(item.interest)) / 10 ** Number(tokenDecimalsMap[item.loanMarket])) *
+            oracleAndFairPrices?.oraclePrices[i].price;
+        }
+      })
+    };
+    console.log("net borrow apr earned", sum);
+    setNetBorrowedApr(sum.toFixed(2));
+  };
+
+
   const onLoansData = async (loansData: any[]) => {
     console.log("Loans: ", loansData);
     const loans: ILoans[] = [];
@@ -200,8 +261,10 @@ const Dashboard = () => {
         commitmentIndex: getCommitmentIndex(loanData.commitment) as number,
         collateralMarket: getTokenFromAddress(loanData.collateralMarket)?.name, // 4 Collateral Market
         collateralAmount: Number(loanData.collateralAmount), // 5 Collateral Amount
-        loanInterest: Number(loanData.interest), //loan interest
+        interestPaid: Number(loanData.interestPaid), //loan interest
+        interest: Number(loanData.interest),
         interestRate: 0,
+
         //interest market will always be same as loan market
         account,
         cdr: loanData.cdr,
@@ -319,7 +382,8 @@ const Dashboard = () => {
         commitmentIndex: Number(deposit.commitment),
         market: getTokenFromAddress(deposit.market as string)?.name,
         marketAddress: deposit.market as string,
-        acquiredYield: Number(0), // deposit interest
+        acquiredYield: Number(0), // deposit interest TODO: FORMULA
+        interestPaid: deposit.interestPaid, // deposit interest
         interestRate: 0,
         depositId: deposit.depositId,
         timestamp: deposit.createdAtOnChain,
@@ -664,7 +728,8 @@ const Dashboard = () => {
                         <div style={{ width: "7%" }}>
                           <div style={{ color: "#8C8C8C" }}>APR Earned</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            $8,932.14
+                            {/* $8,932.14 */}
+                            ${netAprEarned}
                           </div>
                         </div>
                       </>
@@ -688,7 +753,8 @@ const Dashboard = () => {
                         <div style={{ width: "7%" }}>
                           <div style={{ color: "#8C8C8C" }}>APR Earned</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            $8,932.14
+                            {/* $8,932.14 */}
+                            ${netAprEarned}
                           </div>
                         </div>
                       </>
@@ -714,7 +780,8 @@ const Dashboard = () => {
                         <div style={{ width: "7%" }}>
                           <div style={{ color: "#8C8C8C" }}>Net Borrow APR</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            $8,932.14
+                            {/* $8,932.14 */}
+                            ${netBorrowedApr}
                           </div>
                         </div>
                       </>
