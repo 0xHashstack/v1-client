@@ -644,9 +644,33 @@ const Dashboard = () => {
                       fontSize: "10px",
                     }}
                   >
-                    {customActiveTab === "3" || customActiveTab === "4" ? (
+                    {customActiveTab === "4" ? (
                       <>
                         <div style={{ width: "7%" }}>
+                          <div style={{ color: "#8C8C8C" }}>Total Borrow</div>
+                          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                            {totalBorrowAssets !== undefined ? (
+                              <NumericFormat
+                                displayType="text"
+                                value={totalBorrowAssets.toFixed(2)}
+                                thousandSeparator=","
+                                prefix={"$"}
+                              />
+                            ) : (
+                              <MySpinner />
+                            )}
+                          </div>
+                        </div>
+                        <div style={{ width: "7%" }}>
+                          <div style={{ color: "#8C8C8C" }}>APR Earned</div>
+                          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                            $8,932.14
+                          </div>
+                        </div>
+                      </>
+                    ) : customActiveTab === "3" ? (
+                      <>
+                        <div style={{ width: "8%" }}>
                           <div style={{ color: "#8C8C8C" }}>Total Supply</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
                             {totalSupplyDash !== undefined ? (
