@@ -10,6 +10,7 @@ import crossButton from "../../assets/images/crossButton.svg";
 import starknetLogo from "../../assets/images/starknetLogo.svg";
 import { useDisconnect } from "wagmi";
 import ethLogo from "../../assets/images/ethLogo.svg";
+import ArgentXlogo from "../../assets/images/ArgentXlogo.svg"
 
 const ConnectWalletModal = () => {
   const [connectWallet, setConnectWallet] = useState(false);
@@ -27,9 +28,13 @@ const ConnectWalletModal = () => {
   });
   const { address: account } = useAccount();
   const { available, connect } = useConnectors();
+  console.log(available);
+  
   function handleButtonConnectWallet() {
     available.length > 0
       ? available.map((connector) => {
+        console.log(connector);
+        
           setnetworkSelected({
             network: "Etherium Goerli",
             starknet: true,
@@ -73,10 +78,25 @@ const ConnectWalletModal = () => {
   const handleConnectBraavosWallet = () => {
     {
       available.length > 0
-        ? available.map((connector) => {
-            if (network === "Starknet") {
+        ? available.map((connector,id) => {
+          // console.log(id);
+            if (network === "Starknet" && id === 0) {
               disconnectEvent(), connect(connector);
             }
+          })
+        : window.open("https://braavos.app/", "_blank");
+    }
+  };
+
+  const handleConnectArgentXWallet = () => {
+    {
+      available.length > 0
+        ? available.map((connector,id) => {
+          // console.log(id);
+            if (network === "Starknet" && id === 1) {
+              disconnectEvent(), connect(connector);
+            }
+
           })
         : window.open("https://braavos.app/", "_blank");
     }
@@ -241,8 +261,54 @@ const ConnectWalletModal = () => {
                 </div>
               </div>
             </label>
+
+            {/*  */}
+            <label
+              onClick={handleConnectArgentXWallet}
+              style={{
+                backgroundColor: "#2A2E3F",
+                width: "100%",
+                marginBottom: "10px",
+                padding: "15px 10px",
+                fontSize: "18px",
+                borderRadius: "5px",
+                border: "2px solid #00000050",
+                cursor: "pointer",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <div
+                  style={{
+                    fontSize: "15px",
+                    marginTop: "6px",
+                    color: "#FFF",
+                  }}
+                >
+                  {/* &nbsp;{networkSelected.walletName} Wallet */}
+                  &nbsp;Argent X Wallet
+
+                </div>
+                <div style={{ marginRight: "10px", marginTop: "2px" }}>
+                  <Image
+                    src={ArgentXlogo}
+                    alt="Picture of the author"
+                    width="25px"
+                    height="25px"
+                  />
+                </div>
+              </div>
+            </label>
             {/* </a> */}
-            <EthWalletButton />
+            {
+              network !== "Starknet"? <EthWalletButton />:null
+            }
+           
           </div>
 
           <p style={{ fontSize: "14px" }}>

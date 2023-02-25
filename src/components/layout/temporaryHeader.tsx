@@ -736,7 +736,8 @@ const SecondaryHeader = ({
                   }}
                 >
                   <img src="./green.svg" />
-                  <div>{networkSelected.network} </div>
+                  {/* <div>{networkSelected.network} </div> */}
+                  <div> Starknet </div>
                   <Image
                     src={dropDownArrow}
                     alt="Picture of the author"
