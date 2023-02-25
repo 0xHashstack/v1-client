@@ -264,7 +264,7 @@ const Dashboard = () => {
         interestPaid: Number(loanData.interestPaid), //loan interest
         interest: Number(loanData.interest),
         interestRate: 0,
-
+        openLoanAmount: Number(loanData.openLoanAmount), // Open Loan Amount
         //interest market will always be same as loan market
         account,
         cdr: loanData.cdr,
