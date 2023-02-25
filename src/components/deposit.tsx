@@ -111,7 +111,7 @@ let Deposit: any = ({
 
   const [modal_deposit, setmodal_deposit] = useState(false);
 
-  const [depositAmount, setDepositAmount] = useState<number>();
+  const [depositAmount, setDepositAmount] = useState<any>();
   const [commitPeriod, setCommitPeriod] = useState(0);
 
   const [isLoadingApprove, setLoadingApprove] = useState(false);
@@ -291,8 +291,8 @@ let Deposit: any = ({
 
   const handleMax = async () => {
     setDepositAmount(
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-        10 ** (tokenDecimalsMap[asset] || 18)
+      (Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+        10 ** (tokenDecimalsMap[asset] || 18)).toFixed(4)
     );
     setValue(100);
   };
