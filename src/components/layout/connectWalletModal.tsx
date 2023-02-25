@@ -31,7 +31,7 @@ const ConnectWalletModal = () => {
     available.length > 0
       ? available.map((connector) => {
           setnetworkSelected({
-            network: "Etherium Goerli",
+            network: "Starknet",
             starknet: true,
             walletName: "Braavos",
             walletLogo: braavosWallet,
