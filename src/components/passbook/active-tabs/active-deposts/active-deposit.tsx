@@ -965,8 +965,8 @@ const ActiveDeposit = ({
                       >
                         {reserves?.loans ? (
                           (
-                            (100 * reserves.loans[tokenName]) /
-                            reserves.deposits[tokenName]
+                            (100 * reserves?.loans[tokenName]) /
+                            reserves?.deposits[tokenName]
                           ).toFixed(2) + "%"
                         ) : (
                           <MySpinner />

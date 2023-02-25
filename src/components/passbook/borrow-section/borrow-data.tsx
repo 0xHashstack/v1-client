@@ -78,7 +78,7 @@ import useAddCollateral from "../../../blockchain/hooks/active-borrow/useAddColl
 import useJediSwap from "../../../blockchain/hooks/SpendBorrow/useJediSwap";
 import JediSwapAbi from "../../../../starknet-artifacts/contracts/integrations/modules/jedi_swap.cairo/jedi_swap_abi.json";
 import MySwapAbi from "../../../../starknet-artifacts/contracts/integrations/modules/my_swap.cairo/my_swap_abi.json";
-
+import LoanAbi from "../../../../starknet-artifacts/contracts/modules/loan.cairo/loan_abi.json";
 import TransactionFees from "../../../../TransactionFees.json";
 import useMySwap from "../../../blockchain/hooks/SpendBorrow/useMySwap";
 import ToastModal from "../../toastModals/customToastModal";
@@ -276,7 +276,7 @@ const BorrowData = ({
   const [dropDownArrowThree, setDropDownArrowThree] = useState(Downarrow);
   const [marketDropDown, setMarketDropDown] = useState(false);
   const [actionLabel, setActionLabel] = useState("Stake");
-
+  const [maxPartialWithdrawAmount, setMaxPartialWithdrawAmount] = useState(0);
   const [borrowInterest, setBorrowInterest] = useState<string>("");
   const [currentBorrowInterest, setCurrentBorrowInterest] = useState<any>();
 
@@ -403,6 +403,33 @@ const BorrowData = ({
     );
     setValue(100);
   };
+
+  const { contract: loanContract } = useContract({
+    address: diamondAddress,
+    abi: LoanAbi as Abi,
+  });
+
+  const {
+    data: partialWithdrawData,
+    loading: partialWithdrawLoading,
+    error: partialWithdrawError,
+    refresh: partialWithdrawRefresh,
+  } = useStarknetCall({
+    contract: loanContract,
+    method: "get_max_withdrawal_amount",
+    args: [asset.loanId],
+    options: {
+      watch: true,
+    },
+  });
+
+  useEffect(() => {
+    console.log('partialWithdraw', partialWithdrawData, partialWithdrawLoading, partialWithdrawError)
+    const amount = partialWithdrawData ? uint256.uint256ToBN(partialWithdrawData.amount).toString() : "0";
+    const amountWei = weiToEtherNumber(amount, asset.loanMarket);
+    setMaxPartialWithdrawAmount(amountWei);
+  }, [partialWithdrawData, partialWithdrawLoading, partialWithdrawError])
+
   const {
     data: getAmountOutData,
     loading: loadingGetAmountOut,
@@ -1999,7 +2026,8 @@ const BorrowData = ({
                                       setRepayAmount(amount);
                                       setValue(100)
                                     } else {
-                                      
+                                      partialWithdrawRefresh();
+                                      setPartialWithdrawAmount(maxPartialWithdrawAmount);
                                     }
                                   }}
                                   // disabled={balance ? false : true}
