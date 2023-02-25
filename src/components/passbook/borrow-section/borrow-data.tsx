@@ -1518,6 +1518,8 @@ const BorrowData = ({
                           color: "white",
                           border: "1px solid #000",
                           borderRadius: "5px",
+                          backgroundColor:
+                          assetParam.state === "REPAID" ? "grey" : "white",
                         }}
                         className={classnames({
                           active: customActiveTab === "1",
@@ -1530,10 +1532,10 @@ const BorrowData = ({
                         }}
                       >
                         <span
-                          style={{
-                            color:
-                              assetParam.state === "REPAID" ? "grey" : "white",
-                          }}
+                          // style={{
+                          //   backgroundColor:
+                          //     assetParam.state === "REPAID" ? "grey" : "white",
+                          // }}
                           className="d-none d-sm-block"
                         >
                           Borrow Actions
