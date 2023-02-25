@@ -103,12 +103,12 @@ const DashboardTokens = ({
             <span style={{ textAlign: "left", marginTop: "5px" }}>
               {coin.name}
               <div style={{ fontSize: "9px", color: "#8C8C8C", width: "60px" }}>
-                Wallet Bal. $
+                Wallet Bal &nbsp;
                 {dataBalance ? (
                   (
                     Number(uint256.uint256ToBN(dataBalance[0])) /
                     10 ** (tokenDecimalsMap[coin.name] || 18)
-                  ).toFixed(2)
+                  ).toFixed(4)
                 ) : (
                   <MySpinner />
                 )}
