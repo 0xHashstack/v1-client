@@ -879,7 +879,7 @@ const ActiveDepositsTab = ({
                               color: "rgb(111, 111, 111)",
                             }}
                           >
-                            {reserves.loans ? (
+                            {reserves?.loans ? (
                               (
                                 (100 * reserves.loans[tokenName]) /
                                 reserves.deposits[tokenName]
