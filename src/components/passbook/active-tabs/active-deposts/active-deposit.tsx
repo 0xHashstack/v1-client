@@ -302,10 +302,15 @@ const ActiveDeposit = ({
   };
 
   const handleMax = () => {
-    setDepositAmount(
-      Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-        10 ** (tokenDecimalsMap[tokenName] || 18)
-    );
+    if(customActiveTab === "1")
+      setDepositAmount(
+        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+          10 ** (tokenDecimalsMap[tokenName] || 18)
+      );
+    else {
+      setWithdrawAmount((Number(asset.amount) + Number(asset.acquiredYield))/ 10 ** (tokenDecimalsMap[tokenName] || 18));
+      console.log("max clicked", asset);
+    }
   };
 
   function isInvalid() {
@@ -356,7 +361,7 @@ const ActiveDeposit = ({
       };
       setToastParam(toastParamValue);
       setIsToastOpen(true);
-      // setTransDeposit(val.transaction_hash);
+      setTransDeposit(val.transaction_hash);
     } catch (err) {
       console.log(err, "err deposit");
       const toastParamValue = {
