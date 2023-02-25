@@ -796,7 +796,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                           <div>Availabe Borrowed Amount :</div>
                           <div style={{ color: "white" }}>
                             {(
-                              selectedLoan?.loanAmount /
+                              selectedLoan?.openLoanAmount /
                               10 **
                               (tokenDecimalsMap[selectedLoan?.loanMarket] ||
                                 18)
@@ -963,7 +963,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                           <div>Availabe Borrowed Amount :</div>
                           <div style={{ color: "white" }}>
                             {(
-                              selectedLoan?.loanAmount /
+                              selectedLoan?.openLoanAmount /
                               10 **
                               (tokenDecimalsMap[selectedLoan?.loanMarket] ||
                                 18)

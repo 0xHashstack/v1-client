@@ -1812,7 +1812,7 @@ const BorrowData = ({
                             marginBottom: "15px",
                           }}
                         >
-                          Borrowed amount:
+                          Availabed Borrowed Amount:
                           <span
                             style={{
                               display: "flex",
@@ -1821,7 +1821,7 @@ const BorrowData = ({
                             }}
                           >
                             &nbsp;
-                            {parseFloat(BNtoNum(Number(asset.loanAmount)))}{" "}
+                            {parseFloat(BNtoNum(Number(asset.openLoanAmount)))}{" "}
                             {/* {asset.loanMarket} */}
                           </span>
                         </div>

@@ -56,10 +56,10 @@ const SpendLoanData = ({ loan }) => {
 
           <Col className="mr-4 ">
             <span style={{ fontSize: "14px", fontWeight: "600" }}>
-              {(
+              {/* {(
                 loan.loanAmount /
                 10 ** (tokenDecimalsMap[loan?.loanMarket] || 18)
-              ).toFixed(4)}
+              ).toFixed(4)} */}
             </span>
           </Col>
 
