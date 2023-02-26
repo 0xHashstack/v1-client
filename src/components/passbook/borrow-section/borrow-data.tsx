@@ -1814,7 +1814,7 @@ const BorrowData = ({
                             marginBottom: "15px",
                           }}
                         >
-                          Availabed Borrowed Amount:
+                          Available Borrowed Amount:
                           <span
                             style={{
                               display: "flex",
@@ -1823,7 +1823,7 @@ const BorrowData = ({
                             }}
                           >
                             &nbsp;
-                            {parseFloat(BNtoNum(Number(asset.openLoanAmount)))}{" "}
+                            {parseFloat(BNtoNum(Number(asset.currentLoanAmount)))}{" "}
                             {/* {asset.loanMarket} */}
                           </span>
                         </div>
@@ -2063,7 +2063,7 @@ const BorrowData = ({
                                 )}
 
                                 {selection === "Withdraw Partial Borrow" ?
-                                  (asset.openLoanAmount/ 10 ** (tokenDecimalsMap[asset.loanMarket] || 18)) : (loanMarketAllowance ? (
+                                  (asset.currentLoanAmount/ 10 ** (tokenDecimalsMap[asset.loanMarket] || 18)) : (loanMarketAllowance ? (
                                     (
                                       Number(
                                         uint256.uint256ToBN(loanMarketBalance[0])
@@ -2925,15 +2925,23 @@ const BorrowData = ({
                         }}
                       >
                         {/* 1 BTC = 21,000 USDT */}
-                        {/** TODO: Adjust for token Decimals */}
+                        {/* * TODO: Adjust for token Decimals */}
                         {
                           appsImage === 'mySwap' ? (
                             totalAmountOutmySwap !== 'NA' ?
-                              `1 ${asset.loanMarket} = ${(totalAmountOutmySwap / asset.currentLoanAmount).toFixed(4)} ${marketTokenName}`
+                               (
+                                  (totalAmountOutmySwap > asset?.currenLoanAmount) ?
+                                  `1 ${asset.loanMarket} = ${(totalAmountOutmySwap / asset.currentLoanAmount).toFixed(4)} ${marketTokenName}`
+                                  : `1 ${marketTokenName} = ${(asset.currentLoanAmount / totalAmountOutmySwap).toFixed(4)} ${asset.loanMarket}`
+                               )
                               : <MySpinner />
                           ) : appsImage === 'jediSwap' ? (
                             totalAmountOutJediSwap !== 'NA' ?
-                              `1 ${asset.loanMarket} = ${(totalAmountOutJediSwap / asset.currentLoanAmount).toFixed(4)} ${marketTokenName}`
+                              (
+                                (totalAmountOutJediSwap > asset?.currenLoanAmount) ? 
+                                `1 ${asset.loanMarket} = ${(totalAmountOutJediSwap / asset.currentLoanAmount).toFixed(4)} ${marketTokenName}`
+                                :  `1 ${marketTokenName} = ${(asset.currentLoanAmount / totalAmountOutJediSwap).toFixed(4)} ${asset.loanMarket}`
+                              )
                               : <MySpinner />
                           ) : '-'
                         }

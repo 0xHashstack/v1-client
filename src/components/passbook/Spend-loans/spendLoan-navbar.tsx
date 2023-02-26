@@ -41,6 +41,7 @@ import { TabContext } from "../../../hooks/contextHooks/TabContext";
 import useJediSwap from "../../../blockchain/hooks/SpendBorrow/useJediSwap";
 import useMySwap from "../../../blockchain/hooks/SpendBorrow/useMySwap";
 import ToastModal from "../../toastModals/customToastModal";
+import MySpinner from "../../mySpinner";
 
 const Coins: ICoin[] = [
   { name: "USDT", icon: "mdi-bitcoin" },
@@ -796,11 +797,11 @@ const SpendLoanNav = ({ activeLoansData }) => {
                           <div>Availabe Borrowed Amount :</div>
                           <div style={{ color: "white" }}>
                             {(
-                              selectedLoan?.openLoanAmount /
+                              selectedLoan?.currentLoanAmount /
                               10 **
                               (tokenDecimalsMap[selectedLoan?.loanMarket] ||
                                 18)
-                            ).toFixed(4)}
+                            ).toFixed(4) || 0}
                             &nbsp;{selectedLoan?.loanMarket}
                           </div>
                         </div>
@@ -963,7 +964,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                           <div>Availabe Borrowed Amount :</div>
                           <div style={{ color: "white" }}>
                             {(
-                              selectedLoan?.openLoanAmount /
+                              selectedLoan?.currentLoanAmount /
                               10 **
                               (tokenDecimalsMap[selectedLoan?.loanMarket] ||
                                 18)
@@ -1008,7 +1009,18 @@ const SpendLoanNav = ({ activeLoansData }) => {
                           color: "#6F6F6F",
                         }}
                       >
-                        1BCT = 21,000 USDT
+                        1 BTC = 21,000 USDT
+                        {/* {
+                          appsImage === 'mySwap' ? (
+                            totalAmountOutmySwap !== 'NA' ?
+                              `1 ${asset.loanMarket} = ${(totalAmountOutmySwap / asset.currentLoanAmount).toFixed(4)} ${marketTokenName}`
+                              : <MySpinner />
+                          ) : appsImage === 'jediSwap' ? (
+                            totalAmountOutJediSwap !== 'NA' ?
+                              `1 ${asset.loanMarket} = ${(totalAmountOutJediSwap / asset.currentLoanAmount).toFixed(4)} ${marketTokenName}`
+                              : <MySpinner />
+                          ) : '-'
+                        } */}
                       </div>
                     </div>
 
