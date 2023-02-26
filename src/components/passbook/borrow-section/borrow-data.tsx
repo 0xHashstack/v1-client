@@ -1039,7 +1039,7 @@ const BorrowData = ({
                 &nbsp; &nbsp;
                 {EventMap[assetParam.loanMarket.toUpperCase()]}
               </div>{" "}
-              {["SWAPPED", "STAKED", "TRADED"].includes(asset.state) ? (
+              {["SWAPPED", "STAKED", "TRADED"].includes(assetParam.state) ? (
                 <div
                   style={{
                     marginLeft: "25px",
@@ -1047,9 +1047,9 @@ const BorrowData = ({
                     color: "rgb(139, 139, 139)",
                   }}
                 >
-                  {`${asset.state === "SWAPPED"
+                  {`${assetParam.state === "SWAPPED"
                     ? "Swapped"
-                    : asset.state === "STAKED"
+                    : assetParam.state === "STAKED"
                       ? "Staked"
                       : "Traded"
                     }`}
