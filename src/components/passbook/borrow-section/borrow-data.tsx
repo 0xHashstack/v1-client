@@ -269,6 +269,7 @@ const BorrowData = ({
     dataRevertSpend,
     errorRevertSpend,
     handleRevertSpend,
+    requestRevertSpendReceipt,
 
     isRevertSpendToastOpen,
     setIsToastRevertSpendOpen,
@@ -1046,13 +1047,12 @@ const BorrowData = ({
                     color: "rgb(139, 139, 139)",
                   }}
                 >
-                  {`${
-                    asset.state === "SWAPPED"
+                  {`${asset.state === "SWAPPED"
                       ? "Swapped"
                       : asset.state === "STAKED"
-                      ? "Staked"
-                      : "Traded"
-                  }`}
+                        ? "Staked"
+                        : "Traded"
+                    }`}
                   {/* <img
                     style={{ marginLeft: "25px" }}
                     src={`./${asset.state === "SWAPPED"
@@ -3626,7 +3626,7 @@ const BorrowData = ({
                     disabled={loadingRevertSpend}
                     onClick={handleRevertSpend}
                   >
-                    {!isTransactionLoading(requestDepositTransactionReceipt) ? (
+                    {!isTransactionLoading(requestRevertSpendReceipt) ? (
                       <>{selection}</>
                     ) : (
                       <MySpinner text="Reverting Spend" />
@@ -3972,6 +3972,19 @@ const BorrowData = ({
         ) : (
           <></>
         )}
+        {isRevertSpendToastOpen ? (
+          <ToastModal
+            isOpen={isRevertSpendToastOpen}
+            setIsOpen={setIsToastRevertSpendOpen}
+            success={toastRevertSpendParam.success}
+            heading={toastRevertSpendParam.heading}
+            desc={toastRevertSpendParam.desc}
+            textToCopy={toastRevertSpendParam.textToCopy}
+          />
+        ) : (
+          <></>
+        )
+        }
       </Modal>
     </div>
   );
