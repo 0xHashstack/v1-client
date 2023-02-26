@@ -144,8 +144,8 @@ const SpendLoanNav = ({ activeLoansData }) => {
   // const [transDeposit, setTransDeposit] = useState("");
   const [SpendLoan, setSpendLoan] = useState<any>();
   const dappsArray = [
-    { name: "jediswap", supportedActions: ["Swap"] },
-    { name: "myswap", supportedActions: ["Swap"] },
+    { name: "jediSwap", supportedActions: ["Swap"] },
+    { name: "mySwap", supportedActions: ["Swap"] },
     { name: "yagi", supportedActions: ["Stake"] },
   ];
   const [dappDropdown, setDappDropdown] = useState(false);
@@ -623,15 +623,15 @@ const SpendLoanNav = ({ activeLoansData }) => {
                 onClick={() => {
                   setIdDropDownArrow(idDropDown ? arrowDown : arrowUp);
                   setIdDropDown(!idDropDown);
-                  setTokenName((prev) => {
-                    if (appsImage === "jediSwap") {
-                      return getTokenFromAddress(supportedPoolsJediSwap.get(tokenAddressMap[dapp.loanMarket])[0] as string).name;
-                    }
-                    else if (appsImage === "mySwap") {
-                      return getTokenFromAddress(supportedPoolsMySwap.get(tokenAddressMap[dapp.loanMarket])[0] as string).name;
-                    }
-                    else return prev;
-                  });
+                  // setTokenName((prev) => {
+                  //   if (appsImage === "jediSwap") {
+                  //     return getTokenFromAddress(supportedPoolsJediSwap.get(tokenAddressMap[dapp.loanMarket])[0] as string).name;
+                  //   }
+                  //   else if (appsImage === "mySwap") {
+                  //     return getTokenFromAddress(supportedPoolsMySwap.get(tokenAddressMap[dapp.loanMarket])[0] as string).name;
+                  //   }
+                  //   else return prev;
+                  // });
                 }}
               />
             </div>
