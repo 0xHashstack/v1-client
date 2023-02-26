@@ -159,7 +159,7 @@ const Dashboard = () => {
   // const [totalBorrowApr, setTotalBorrowApr] = useState(0);
   const [netBorrowedApr, setNetBorrowedApr] = useState(0);
   const [netAprEarned, setNetAprEarned] = useState(0);
-  const [oracleAndFairPrices, setOracleAndFairPrices] = useState();
+  const [oracleAndFairPrices, setOracleAndFairPrices] = useState<any>();
 
   useEffect(() => {
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
@@ -195,7 +195,7 @@ const Dashboard = () => {
   useEffect(() => {
     const getPrices = () => {
       OffchainAPI.getOraclePrices().then((prices) => {
-        console.log("prices dashboard", prices);
+        console.log("prices", prices);
         setOracleAndFairPrices(prices);
       });
     };
@@ -203,13 +203,12 @@ const Dashboard = () => {
   }, []);
 
   useEffect(() => {
-    if(!oracleAndFairPrices || !activeLoansData) return;
+    if (!oracleAndFairPrices || !activeLoansData) return;
     calculateNetBorrowedApr();
   }, [activeLoansData, oracleAndFairPrices]);
 
-  
   useEffect(() => {
-    if(!oracleAndFairPrices || !activeDepositsData) return;
+    if (!oracleAndFairPrices || !activeDepositsData) return;
     calculateNetAprEarned();
   }, [activeDepositsData, oracleAndFairPrices]);
 
@@ -219,15 +218,15 @@ const Dashboard = () => {
       activeDepositsData.map((item: any, index: number) => {
         if (item.market === oracleAndFairPrices?.oraclePrices[i].name) {
           sum +=
-            ((Number(item.acquiredYield) + Number(item.interestPaid)) / 10 ** Number(tokenDecimalsMap[item.market])) *
+            ((Number(item.acquiredYield) + Number(item.interestPaid)) /
+              10 ** Number(tokenDecimalsMap[item.market])) *
             oracleAndFairPrices?.oraclePrices[i].price;
         }
       });
-    
     }
     console.log("net apr earned", sum);
     setNetAprEarned(sum);
-  }
+  };
 
   const calculateNetBorrowedApr = () => {
     let sum = 0;
@@ -236,17 +235,17 @@ const Dashboard = () => {
         if (
           item.loanMarket === oracleAndFairPrices?.oraclePrices[i].name &&
           !["REPAID", "LIQUIDATED"].includes(item.state)
-        )  {
+        ) {
           sum +=
-            ((Number(item.interestPaid) + Number(item.interest)) / 10 ** Number(tokenDecimalsMap[item.loanMarket])) *
+            ((Number(item.interestPaid) + Number(item.interest)) /
+              10 ** Number(tokenDecimalsMap[item.loanMarket])) *
             oracleAndFairPrices?.oraclePrices[i].price;
         }
-      })
-    };
+      });
+    }
     console.log("net borrow apr earned", sum);
     setNetBorrowedApr(sum.toFixed(2));
   };
-
 
   const onLoansData = async (loansData: any[]) => {
     console.log("Loans: ", loansData);
@@ -620,6 +619,7 @@ const Dashboard = () => {
         depositRequestSel={depositRequestSel}
         removeBodyCss={removeBodyCss}
         setCustomActiveTabs={setCustomActiveTabs}
+        fairPriceArray={oracleAndFairPrices?.fairPrices}
       />
     );
   };
@@ -728,8 +728,7 @@ const Dashboard = () => {
                         <div style={{ width: "7%" }}>
                           <div style={{ color: "#8C8C8C" }}>APR Earned</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            {/* $8,932.14 */}
-                            ${netAprEarned}
+                            {/* $8,932.14 */}${netAprEarned}
                           </div>
                         </div>
                       </>
@@ -753,8 +752,7 @@ const Dashboard = () => {
                         <div style={{ width: "7%" }}>
                           <div style={{ color: "#8C8C8C" }}>APR Earned</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            {/* $8,932.14 */}
-                            ${netAprEarned}
+                            {/* $8,932.14 */}${netAprEarned}
                           </div>
                         </div>
                       </>
@@ -780,8 +778,7 @@ const Dashboard = () => {
                         <div style={{ width: "7%" }}>
                           <div style={{ color: "#8C8C8C" }}>Net Borrow APR</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            {/* $8,932.14 */}
-                            ${netBorrowedApr}
+                            {/* $8,932.14 */}${netBorrowedApr}
                           </div>
                         </div>
                       </>

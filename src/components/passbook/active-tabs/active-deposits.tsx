@@ -404,7 +404,7 @@ const ActiveDepositsTab = ({
                 color: "white",
               }}
             >
-              <div>Your Ethereum wallet is empty. </div>
+              <div>Your Wallet is empty. </div>
               <div
                 style={{ fontWeight: "bold", cursor: "pointer" }}
                 onClick={() => {

@@ -1039,8 +1039,21 @@ const BorrowData = ({
                 {EventMap[assetParam.loanMarket.toUpperCase()]}
               </div>{" "}
               {["SWAPPED", "STAKED", "TRADED"].includes(asset.state) ? (
-                <div>
-                  <img
+                <div
+                  style={{
+                    marginLeft: "25px",
+                    fontSize: "12px",
+                    color: "rgb(139, 139, 139)",
+                  }}
+                >
+                  {`${
+                    asset.state === "SWAPPED"
+                      ? "Swapped"
+                      : asset.state === "STAKED"
+                      ? "Staked"
+                      : "Traded"
+                  }`}
+                  {/* <img
                     style={{ marginLeft: "25px" }}
                     src={`./${asset.state === "SWAPPED"
                       ? "swap"
@@ -1049,7 +1062,7 @@ const BorrowData = ({
                         : "trade"
                       }.svg`}
                     height="15px"
-                  />
+                  /> */}
                 </div>
               ) : (
                 <></>
@@ -1078,7 +1091,9 @@ const BorrowData = ({
           </Col>
 
           <Col>
-            <div style={{ fontSize: "14px", fontWeight: "600" }}>
+            <div
+              style={{ fontSize: "14px", fontWeight: "600", width: "110px" }}
+            >
               {parseFloat(BNtoNum(Number(assetParam.interestPaid))).toFixed(6)}
               &nbsp;
               {EventMap[assetParam.loanMarket.toUpperCase()]}
@@ -1101,7 +1116,7 @@ const BorrowData = ({
             </div>
           </Col>
 
-          <Col>0.00</Col>
+          <Col style={{ marginLeft: "-8px" }}>0.00</Col>
 
           <Col>{assetParam?.commitment}</Col>
 

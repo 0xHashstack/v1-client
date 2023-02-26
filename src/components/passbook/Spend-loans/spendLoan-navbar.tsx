@@ -233,9 +233,12 @@ const SpendLoanNav = ({ activeLoansData }) => {
     let currentPoolId = 0;
     if (!poolIdtoTokens) return;
     for (const [poolId, tokens] of poolIdtoTokens.entries()) {
-      if (tokens.includes(tokenAddressMap[selectedLoan?.loanMarket]) && tokens.includes(tokenAddressMap[tokenName])) {
+      if (
+        tokens.includes(tokenAddressMap[selectedLoan?.loanMarket]) &&
+        tokens.includes(tokenAddressMap[tokenName])
+      ) {
         currentPoolId = poolId;
-        console.log("poolId", poolId)
+        console.log("poolId", poolId);
         break;
       }
     }
@@ -297,7 +300,6 @@ const SpendLoanNav = ({ activeLoansData }) => {
       ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
       : "NA";
     setTotalAmountOutJediSwap(amount);
-
   }, [getAmountOutData, loadingGetAmountOut, errorGetAmountOut]);
 
   const { contract: l3MySwapContract } = useContract({
@@ -387,8 +389,8 @@ const SpendLoanNav = ({ activeLoansData }) => {
       appsImage === "mySwap"
         ? handleMySwap()
         : appsImage === "jediSwap"
-          ? handleJediSwap()
-          : null;
+        ? handleJediSwap()
+        : null;
     } else return null;
   };
 
@@ -528,7 +530,8 @@ const SpendLoanNav = ({ activeLoansData }) => {
         {dappsArray.map((dapp, index) => {
           if (
             dapp.supportedActions.find(
-              (action: string) => action === title.label || title.label === "None"
+              (action: string) =>
+                action === title.label || title.label === "None"
             )
           ) {
             return (
@@ -542,7 +545,13 @@ const SpendLoanNav = ({ activeLoansData }) => {
                   setTitle({
                     label: dapp.supportedActions[0],
                   });
-                  setSpendLoan(dapp.supportedActions[0] === "Swap" ? "2" : dapp.supportedActions[0] === "Stake" ? "1" : "3");
+                  setSpendLoan(
+                    dapp.supportedActions[0] === "Swap"
+                      ? "2"
+                      : dapp.supportedActions[0] === "Stake"
+                      ? "1"
+                      : "3"
+                  );
                 }}
               >
                 <img
@@ -800,24 +809,33 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                   return <></>;
                                 }
                                 return (
-                                  <div
-                                    style={{
-                                      margin: "10px 0",
-                                      cursor: "pointer",
-                                      display: "flex",
-                                      alignItems: "center",
-                                      fontSize: "14px",
-                                    }}
-                                    key={index}
-                                    onClick={() => {
-                                      setTitle({ label: word });
-                                      setDropDownTwo(!dropDownTwo);
-                                      setStakeDropDownArrow(arrowDown);
-                                      setAppsImage((prev) => word === "Swap" ? 'jediSwap' : word === "Stake" ? 'yagi' : prev);
-                                    }}
-                                  >
-                                    {word}
-                                  </div>
+                                  <>
+                                    <div
+                                      style={{
+                                        margin: "10px 0",
+                                        cursor: "pointer",
+                                        display: "flex",
+                                        alignItems: "center",
+                                        fontSize: "14px",
+                                      }}
+                                      key={index}
+                                      onClick={() => {
+                                        setTitle({ label: word });
+                                        setDropDownTwo(!dropDownTwo);
+                                        setStakeDropDownArrow(arrowDown);
+                                        setAppsImage((prev) =>
+                                          word === "Swap"
+                                            ? "jediSwap"
+                                            : word === "Stake"
+                                            ? "yagi"
+                                            : prev
+                                        );
+                                      }}
+                                    >
+                                      {word}
+                                    </div>{" "}
+                                    <hr />
+                                  </>
                                 );
                               })}
                             </div>
@@ -913,8 +931,8 @@ const SpendLoanNav = ({ activeLoansData }) => {
                               <Image
                                 alt="hello"
                                 src={`/${selectedLoan?.loanMarket}.svg`}
-                                width="24px"
-                                height="24px"
+                                width="17px"
+                                height="17px"
                               ></Image>
                               &nbsp;&nbsp;
                               <span style={{ color: "white" }}>
@@ -929,6 +947,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                             display: "flex",
                             gap: "8px",
                             color: "#8B8B8B",
+                            marginTop: "-5px",
                           }}
                         >
                           <div>Availabe Borrowed Amount :</div>
@@ -936,15 +955,21 @@ const SpendLoanNav = ({ activeLoansData }) => {
                             {(
                               selectedLoan?.currentLoanAmount /
                               10 **
-                              (tokenDecimalsMap[selectedLoan?.loanMarket] ||
-                                18)
+                                (tokenDecimalsMap[selectedLoan?.loanMarket] ||
+                                  18)
                             ).toFixed(4) || 0}
                             &nbsp;{selectedLoan?.loanMarket}
                           </div>
                         </div>
                       </label>
 
-                      <div style={{ fontSize: "11px", color: "#8B8B8B" }}>
+                      <div
+                        style={{
+                          fontSize: "11px",
+                          color: "#8B8B8B",
+                          marginTop: "5px",
+                        }}
+                      >
                         To
                       </div>
 
@@ -953,7 +978,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                           width: "420px",
                           marginBottom: "25px",
                           padding: "5px 10px",
-                          fontSize: "18px",
+                          fontSize: "16px",
                           borderRadius: "5px",
                           border: "2px solid rgb(57, 61, 79)",
                           fontWeight: "200",
@@ -970,8 +995,8 @@ const SpendLoanNav = ({ activeLoansData }) => {
                             {" "}
                             <img
                               src={`./${tokenName}.svg`}
-                              width="30px"
-                              height="30px"
+                              width="24px"
+                              height="24px"
                             ></img>
                             &nbsp;&nbsp;{tokenName}
                           </div>
@@ -1013,11 +1038,19 @@ const SpendLoanNav = ({ activeLoansData }) => {
                           >
                             {Coins.map((coin, index) => {
                               if (coin.name === tokenName) return <></>;
-                              const borrowMarketAddress = tokenAddressMap[selectedLoan?.loanMarket];
-                              const supportedMarkets = appsImage === 'jediSwap' ?
-                                supportedPoolsJediSwap?.get(borrowMarketAddress) :
-                                supportedPoolsMySwap?.get(borrowMarketAddress);
-                              const isSupported = supportedMarkets.includes(tokenAddressMap[coin.name]);
+                              const borrowMarketAddress =
+                                tokenAddressMap[selectedLoan?.loanMarket];
+                              const supportedMarkets =
+                                appsImage === "jediSwap"
+                                  ? supportedPoolsJediSwap?.get(
+                                      borrowMarketAddress
+                                    )
+                                  : supportedPoolsMySwap?.get(
+                                      borrowMarketAddress
+                                    );
+                              const isSupported = supportedMarkets.includes(
+                                tokenAddressMap[coin.name]
+                              );
                               if (!isSupported) return <></>;
                               return (
                                 <div
@@ -1103,8 +1136,8 @@ const SpendLoanNav = ({ activeLoansData }) => {
                             {(
                               selectedLoan?.currentLoanAmount /
                               10 **
-                              (tokenDecimalsMap[selectedLoan?.loanMarket] ||
-                                18)
+                                (tokenDecimalsMap[selectedLoan?.loanMarket] ||
+                                  18)
                             ).toFixed(4)}
                             &nbsp;&nbsp;{selectedLoan?.loanMarket}
                           </div>
@@ -1147,25 +1180,43 @@ const SpendLoanNav = ({ activeLoansData }) => {
                         }}
                       >
                         {/* 1 BTC = 21,000 USDT */}
-                        {
-                          appsImage === 'mySwap' ? (
-                            totalAmountOutmySwap !== 'NA' ?
-                               (
-                                  (totalAmountOutmySwap > selectedLoan?.currenLoanAmount) ?
-                                  `1 ${selectedLoan?.loanMarket} = ${(totalAmountOutmySwap / selectedLoan.currentLoanAmount).toFixed(4)} ${tokenName}`
-                                  : `1 ${tokenName} = ${(selectedLoan?.currentLoanAmount / totalAmountOutmySwap).toFixed(4)} ${selectedLoan?.loanMarket}`
-                               )
-                              : <MySpinner />
-                          ) : appsImage === 'jediSwap' ? (
-                            totalAmountOutJediSwap !== 'NA' ?
-                              (
-                                (totalAmountOutJediSwap > selectedLoan?.currenLoanAmount) ? 
-                                `1 ${selectedLoan?.loanMarket} = ${(totalAmountOutJediSwap / selectedLoan?.currentLoanAmount).toFixed(4)} ${tokenName}`
-                                :  `1 ${tokenName} = ${(selectedLoan?.currentLoanAmount / totalAmountOutJediSwap).toFixed(4)} ${selectedLoan?.loanMarket}`
-                              )
-                              : <MySpinner />
-                          ) : '-'
-                        }
+                        {appsImage === "mySwap" ? (
+                          totalAmountOutmySwap !== "NA" ? (
+                            totalAmountOutmySwap >
+                            selectedLoan?.currenLoanAmount ? (
+                              `1 ${selectedLoan?.loanMarket} = ${(
+                                totalAmountOutmySwap /
+                                selectedLoan.currentLoanAmount
+                              ).toFixed(4)} ${tokenName}`
+                            ) : (
+                              `1 ${tokenName} = ${(
+                                selectedLoan?.currentLoanAmount /
+                                totalAmountOutmySwap
+                              ).toFixed(4)} ${selectedLoan?.loanMarket}`
+                            )
+                          ) : (
+                            <MySpinner />
+                          )
+                        ) : appsImage === "jediSwap" ? (
+                          totalAmountOutJediSwap !== "NA" ? (
+                            totalAmountOutJediSwap >
+                            selectedLoan?.currenLoanAmount ? (
+                              `1 ${selectedLoan?.loanMarket} = ${(
+                                totalAmountOutJediSwap /
+                                selectedLoan?.currentLoanAmount
+                              ).toFixed(4)} ${tokenName}`
+                            ) : (
+                              `1 ${tokenName} = ${(
+                                selectedLoan?.currentLoanAmount /
+                                totalAmountOutJediSwap
+                              ).toFixed(4)} ${selectedLoan?.loanMarket}`
+                            )
+                          ) : (
+                            <MySpinner />
+                          )
+                        ) : (
+                          "-"
+                        )}
                       </div>
                     </div>
 

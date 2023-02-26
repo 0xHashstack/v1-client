@@ -44,6 +44,8 @@ import MySpinner from "../../mySpinner";
 import { MinimumAmount } from "../../../blockchain/constants";
 import useMaxloan from "../../../blockchain/hooks/Max_loan_given_collat";
 import ToastModal from "../../toastModals/customToastModal";
+import loanABI from "../../../../starknet-artifacts/contracts/modules/loan.cairo/loan_abi.json";
+import TransactionFees from "../../../../TransactionFees.json";
 
 const BorrowTab = ({
   asset: assetParam,
@@ -54,6 +56,7 @@ const BorrowTab = ({
   // inputVal1,
   removeBodyCss,
   setCustomActiveTabs,
+  fairPriceArray,
 }: {
   asset: string;
   activeLoansData: any;
@@ -63,6 +66,7 @@ const BorrowTab = ({
   // inputVal1: any;
   removeBodyCss: () => void;
   setCustomActiveTabs: any;
+  fairPriceArray: any;
 }) => {
   interface IBorrowParams {
     loanAmount: number;
@@ -393,6 +397,14 @@ const BorrowTab = ({
     setSwapOption(e.target.value);
   };
 
+  const processOracleFairPrices = (coinName: string, arr: any) => {
+    if (!arr) return;
+    const oraclePrice = arr.find((ele: any) => {
+      return ele.name === coinName;
+    });
+    return oraclePrice?.price?.toFixed(3);
+  };
+
   // add collateral
   const [marketToAddCollateral, setMarketToAddCollateral] = useState("");
   const [loanId, setLoanId] = useState<number>();
@@ -421,6 +433,7 @@ const BorrowTab = ({
   });
 
   const [depositLoanRates, setDepositLoanRates] = useState<IDepositLoanRates>();
+  const [debtCategory, setDebtCategory] = useState(0);
   // Adding collateral
 
   /* ============================== Withdraw Loan ============================ */
@@ -482,6 +495,42 @@ const BorrowTab = ({
       );
     }
   };
+
+  const { contract: loanContract } = useContract({
+    address: diamondAddress,
+    abi: loanABI as Abi,
+  });
+
+  const {
+    data: dataDebtCategory,
+    loading: loadingDebtCategory,
+    error: errorDebtCategory,
+    refresh: refreshDebtCategory,
+  } = useStarknetCall({
+    contract: loanContract,
+    method: "get_debt_category",
+    args: [
+      tokenAddressMap[asset],
+      tokenAddressMap[borrowParams.collateralMarket || ""],
+      [Number(borrowParams.loanAmount as string), 0],
+      [Number(borrowParams.collateralAmount as string), 0],
+    ],
+    options: {
+      watch: true,
+    },
+  });
+
+  useEffect(() => {
+    if (!borrowParams.loanAmount || !borrowParams.collateralAmount) return;
+    console.log(
+      "debt category",
+      BNtoNum(dataDebtCategory?.debt_category, 0),
+      errorDebtCategory,
+      loadingDebtCategory
+    );
+    if (loadingDebtCategory === false && !errorDebtCategory)
+      setDebtCategory(BNtoNum(dataDebtCategory?.debt_category, 0));
+  }, [errorDebtCategory, dataDebtCategory, loadingDebtCategory]);
 
   const tog_borrow = async () => {
     setmodal_borrow(!modal_borrow);
@@ -794,7 +843,7 @@ const BorrowTab = ({
                 color: "white",
               }}
             >
-              <div>Your Ethereum wallet is empty. </div>
+              <div>Your Wallet is empty. </div>
               <div
                 style={{ fontWeight: "bold", cursor: "pointer" }}
                 onClick={() => {
@@ -1407,7 +1456,7 @@ const BorrowTab = ({
                             margin: "3px 0",
                           }}
                         >
-                          <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
+                          <div style={{ color: "#6F6F6F" }}>Gas estimate:</div>
                           <div
                             style={{
                               textAlign: "right",
@@ -1415,7 +1464,7 @@ const BorrowTab = ({
                               color: "#6F6F6F",
                             }}
                           >
-                            $ 10.91
+                            NA
                           </div>
                         </div>
                         <div
@@ -1435,7 +1484,7 @@ const BorrowTab = ({
                               color: "#6F6F6F",
                             }}
                           >
-                            $ 10.91
+                            {TransactionFees.loan.newLoan}%
                           </div>
                         </div>
                         <div
@@ -1452,19 +1501,17 @@ const BorrowTab = ({
                               fontWeight: "600",
                               color: "#6F6F6F",
                             }}
-                          >
-                            $ 10.91
-                          </div>
+                          ></div>
                         </div>
                         <div
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
-                            margin: "3px 0 0 10px",
+                            margin: "3px 0 0 0px",
                           }}
                         >
                           <div style={{ color: "#6F6F6F" }}>
-                            i Collateral market:
+                            Collateral market:
                           </div>
                           <div
                             style={{
@@ -1473,19 +1520,17 @@ const BorrowTab = ({
                               color: "#6F6F6F",
                             }}
                           >
-                            $ 10.91
+                            {processOracleFairPrices(tokenName, fairPriceArray)}
                           </div>
                         </div>
                         <div
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
-                            margin: "3px 0 0 10px",
+                            margin: "3px 0 0 0px",
                           }}
                         >
-                          <div style={{ color: "#6F6F6F" }}>
-                            ii Borrow market:
-                          </div>
+                          <div style={{ color: "#6F6F6F" }}>Borrow market:</div>
                           <div
                             style={{
                               textAlign: "right",
@@ -1493,7 +1538,10 @@ const BorrowTab = ({
                               color: "#6F6F6F",
                             }}
                           >
-                            $10.91
+                            {processOracleFairPrices(
+                              borrowTokenName,
+                              fairPriceArray
+                            )}
                           </div>
                         </div>
                         <div
@@ -1511,7 +1559,7 @@ const BorrowTab = ({
                               color: "#6F6F6F",
                             }}
                           >
-                            0.6%
+                            0.0%
                           </div>
                         </div>
                         <div
@@ -1529,7 +1577,11 @@ const BorrowTab = ({
                               color: "#6F6F6F",
                             }}
                           >
-                            DC1/DC2/DC3
+                            {loadingDebtCategory ? (
+                              <MySpinner text="" />
+                            ) : (
+                              `DC ${Number(debtCategory).toFixed(0)}`
+                            )}
                           </div>
                         </div>
                         <div
