@@ -1265,7 +1265,7 @@ let Borrow: any = ({
                       margin: "3px 0",
                     }}
                   >
-                    <div style={{ color: "#6F6F6F" }}>Gas Estimate:</div>
+                    <div style={{ color: "#6F6F6F" }}>Gas estimate:</div>
                     <div
                       style={{
                         textAlign: "right",
@@ -1273,7 +1273,7 @@ let Borrow: any = ({
                         color: "#6F6F6F",
                       }}
                     >
-                      $ 10.91
+                      NA
                     </div>
                   </div>
                   <div
