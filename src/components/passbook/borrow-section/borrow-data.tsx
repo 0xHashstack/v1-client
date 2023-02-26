@@ -1051,7 +1051,7 @@ const BorrowData = ({
 
           <Col>
             <div style={{ fontSize: "14px", fontWeight: "600" }}>
-              {parseFloat(BNtoNum(Number(assetParam.loanInterest))).toFixed(6)}
+              {parseFloat(BNtoNum(Number(assetParam.interestPaid))).toFixed(6)}
               &nbsp;
               {EventMap[assetParam.loanMarket.toUpperCase()]}
             </div>
