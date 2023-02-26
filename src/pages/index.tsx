@@ -285,7 +285,7 @@ const Dashboard = () => {
         l3App:
           loanData.l3Id === "jedi_swap"
             ? "jediSwap"
-            : loanData.l3Id === "myswap"
+            : loanData.l3Id === "my_swap"
             ? "mySwap"
             : null,
         //get apr is for loans apr
