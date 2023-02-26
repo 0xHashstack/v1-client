@@ -45,13 +45,13 @@ const useRevertSpend = (diamondAddress: string, asset: any) => {
             console.log(err, "err repay");
             const toastParamValue = {
                 success: false,
-                heading: "Swap Transaction Failed",
+                heading: "Rever Spend Failed",
                 desc: "Copy the error",
                 textToCopy: err,
             };
             setToastRevertSpendParam(toastParamValue);
             setIsToastRevertSpendOpen(true);
-            toast.error(`${GetErrorText(`Swap for Loan ID${asset.loanId} failed`)}`, {
+            toast.error(`${GetErrorText(`Revert Spend for Loan ID${asset.loanId} failed`)}`, {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 closeOnClick: true,
             });
@@ -65,6 +65,7 @@ const useRevertSpend = (diamondAddress: string, asset: any) => {
         dataRevertSpend,
         errorRevertSpend,
         handleRevertSpend,
+        requestRevertSpendReceipt,
 
         isRevertSpendToastOpen,
         setIsToastRevertSpendOpen,
