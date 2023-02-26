@@ -768,6 +768,21 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                       onClick={() => {
                                         setAppsImage(`${dapp.name}`);
                                         toggleDappDropdown();
+                                        setTokenName((prev) => {
+                                          if (dapp.name === "jediSwap") {
+                                            return getTokenFromAddress(
+                                              supportedPoolsJediSwap?.get(
+                                                tokenAddressMap[selectedLoan?.loanMarket]
+                                              )[0] as string
+                                            ).name;
+                                          } else if (dapp.name === "mySwap") {
+                                            return getTokenFromAddress(
+                                              supportedPoolsMySwap?.get(
+                                                tokenAddressMap[selectedLoan?.loanMarket]
+                                              )[0] as string
+                                            ).name;
+                                          } else return prev;
+                                        });
                                       }}
                                     >
                                       <img
@@ -804,7 +819,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                 boxShadow: "0px 0px 10px #00000020",
                               }}
                             >
-                              {labels.map((word, index) => {
+                              {labels.map((word, index, labels) => {
                                 if (title.label === word) {
                                   return <></>;
                                 }
@@ -834,7 +849,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                     >
                                       {word}
                                     </div>{" "}
-                                    <hr />
+                                    {index < labels.length -1 ?  <hr /> : null}
                                   </>
                                 );
                               })}
@@ -1048,14 +1063,15 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                   : supportedPoolsMySwap?.get(
                                       borrowMarketAddress
                                     );
-                              const isSupported = supportedMarkets.includes(
+                              const isSupported = supportedMarkets?.includes(
                                 tokenAddressMap[coin.name]
                               );
                               if (!isSupported) return <></>;
                               return (
+                                <>
                                 <div
                                   style={{
-                                    margin: "10px 0",
+                                    margin: "7px 0",
                                     cursor: "pointer",
                                     display: "flex",
                                     alignItems: "center",
@@ -1071,11 +1087,13 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                 >
                                   <img
                                     src={`./${coin.name}.svg`}
-                                    width="30px"
-                                    height="30px"
+                                    width="18px"
+                                    height="20px"
                                   ></img>
                                   <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
                                 </div>
+                                { index < supportedMarkets?.length ? <hr /> : null}
+                                </>
                               );
                             })}
                           </div>
