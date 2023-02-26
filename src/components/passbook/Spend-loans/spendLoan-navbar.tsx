@@ -32,9 +32,12 @@ import {
   diamondAddress,
   ERC20Abi,
   getTokenFromAddress,
+  getTokenFromName,
   tokenAddressMap,
   tokenDecimalsMap,
 } from "../../../blockchain/stark-constants";
+import JediSwapAbi from "../../../../starknet-artifacts/contracts/integrations/modules/jedi_swap.cairo/jedi_swap_abi.json";
+import MySwapAbi from "../../../../starknet-artifacts/contracts/integrations/modules/my_swap.cairo/my_swap_abi.json";
 import { currentBorrowInterestRate, NumToBN } from "../../../blockchain/utils";
 import { MinimumAmount } from "../../../blockchain/constants";
 import { TabContext } from "../../../hooks/contextHooks/TabContext";
@@ -42,6 +45,7 @@ import useJediSwap from "../../../blockchain/hooks/SpendBorrow/useJediSwap";
 import useMySwap from "../../../blockchain/hooks/SpendBorrow/useMySwap";
 import ToastModal from "../../toastModals/customToastModal";
 import MySpinner from "../../mySpinner";
+import { number } from "starknet";
 
 const Coins: ICoin[] = [
   { name: "USDT", icon: "mdi-bitcoin" },
@@ -77,6 +81,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
     supportedPoolsMySwap,
     setIsToastMyswapOpen,
     toastMyswapParam,
+    poolIdtoTokens,
   } = useMySwap(diamondAddress, selectedLoan, tokenName);
 
   const {
@@ -128,6 +133,11 @@ const SpendLoanNav = ({ activeLoansData }) => {
 
   const [selection, setSelection] = useState("Withdraw Partial Borrow");
   const [selectionTwo, setSelectionTwo] = useState("Add Collateral");
+
+  const [poolId, setPoolId] = useState(0);
+
+  const [totalAmountOutmySwap, setTotalAmountOutmySwap] = useState("N/A");
+  const [totalAmountOutJediSwap, setTotalAmountOutJediSwap] = useState("N/A");
 
   const [value, setValue] = useState(0);
   const [commitPeriod, setCommitPeriod] = useState(0);
@@ -218,6 +228,133 @@ const SpendLoanNav = ({ activeLoansData }) => {
     hash: transDeposit,
     watch: true,
   });
+
+  useEffect(() => {
+    let currentPoolId = 0;
+    if (!poolIdtoTokens) return;
+    for (const [poolId, tokens] of poolIdtoTokens.entries()) {
+      if (tokens.includes(tokenAddressMap[selectedLoan?.loanMarket]) && tokens.includes(tokenAddressMap[tokenName])) {
+        currentPoolId = poolId;
+        console.log("poolId", poolId)
+        break;
+      }
+    }
+    setPoolId(currentPoolId);
+  }, [selectedLoan, poolIdtoTokens, tokenName]);
+
+  const { contract: l3JediContract } = useContract({
+    abi: JediSwapAbi as Abi,
+    address:
+      "0x1fc40e21ce68f61d538c070cbfea9483243bcdae0072b0f8c2c85fd4ecd28ab",
+  });
+
+  const getAmount = () => {
+    let amountOut = selectedLoan?.currentLoanAmount || "0";
+    console.log("getAmount", amountOut);
+    return amountOut;
+  };
+
+  const {
+    data: getAmountOutData,
+    loading: loadingGetAmountOut,
+    error: errorGetAmountOut,
+    refresh: refreshGetAmountOut,
+  } = useStarknetCall({
+    contract: l3JediContract,
+    method: "get_amount_out_jedi_swap",
+    args: [
+      // "0x38be05dde4b01e92d12a62f5dfa6584b5cad8e7b2295e2cb488f2b0385ff34f",
+      // "0x5b2a7c089e36c6caf4724d2df5bd7687fcdc9bd76d280ecb1e411410811b54e",
+      // uint256.bnToUint256(number.toBN("10").pow(number.toBN("25"))),
+      tokenAddressMap[selectedLoan?.loanMarket],
+      tokenAddressMap[tokenName],
+      uint256.bnToUint256(number.toBN(getAmount().toString())),
+    ],
+    options: {
+      watch: true,
+    },
+  });
+
+  useEffect(() => {
+    console.log(
+      "getamount",
+      tokenAddressMap[selectedLoan?.loanMarket],
+      tokenAddressMap[tokenName],
+      selectedLoan?.currentLoanAmount || "0",
+      getTokenFromName(selectedLoan?.loanMarket)?.name,
+      getTokenFromName(tokenName)?.name
+    );
+    console.log(
+      "getAmountOutDataJediSwap",
+      getAmountOutData,
+      getAmountOutData?.amount_to
+        ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
+        : "NA",
+      loadingGetAmountOut,
+      errorGetAmountOut
+    );
+    const amount = getAmountOutData?.amount_to
+      ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
+      : "NA";
+    setTotalAmountOutJediSwap(amount);
+
+  }, [getAmountOutData, loadingGetAmountOut, errorGetAmountOut]);
+
+  const { contract: l3MySwapContract } = useContract({
+    abi: MySwapAbi as Abi,
+    address:
+      "0x1fc40e21ce68f61d538c070cbfea9483243bcdae0072b0f8c2c85fd4ecd28ab",
+  });
+
+  const {
+    data: getAmountOutDataMySwap,
+    loading: loadingGetAmountOutMySwap,
+    error: errorGetAmountOutMySwap,
+    refresh: refreshGetAmountOutMySwap,
+  } = useStarknetCall({
+    contract: l3MySwapContract,
+    method: "get_amount_out_myswap",
+    args: [
+      // "0x38be05dde4b01e92d12a62f5dfa6584b5cad8e7b2295e2cb488f2b0385ff34f",
+      // "0x5b2a7c089e36c6caf4724d2df5bd7687fcdc9bd76d280ecb1e411410811b54e",
+      // uint256.bnToUint256(number.toBN("10").pow(number.toBN("25"))),
+      tokenAddressMap[selectedLoan?.loanMarket],
+      tokenAddressMap[tokenName],
+      uint256.bnToUint256(number.toBN(getAmount().toString())),
+      poolId, // use pool id of respective pool. get from supported pools function
+    ],
+    options: {
+      watch: true,
+    },
+  });
+
+  useEffect(() => {
+    console.log(
+      "getamountmyswap",
+      tokenAddressMap[selectedLoan?.loanMarket],
+      tokenAddressMap[tokenName],
+      selectedLoan?.currentLoanAmount || "0",
+      getTokenFromName(selectedLoan?.loanMarket)?.name,
+      getTokenFromName(tokenName)?.name
+    );
+    console.log(
+      "getAmountOutDataMyswap",
+      getAmountOutDataMySwap,
+      getAmountOutDataMySwap?.amount_to
+        ? uint256.uint256ToBN(getAmountOutDataMySwap?.amount_to).toString()
+        : "NA",
+      loadingGetAmountOutMySwap,
+      errorGetAmountOutMySwap
+    );
+    const amount = getAmountOutDataMySwap?.amount_to
+      ? uint256.uint256ToBN(getAmountOutDataMySwap?.amount_to).toString()
+      : "NA";
+    setTotalAmountOutmySwap(amount);
+  }, [
+    getAmountOutDataMySwap,
+    loadingGetAmountOutMySwap,
+    errorGetAmountOutMySwap,
+  ]);
 
   const tog_center = async () => {
     setmodal_deposit(!modal_deposit);
@@ -484,8 +621,8 @@ const SpendLoanNav = ({ activeLoansData }) => {
                 width="14px"
                 height="14px"
                 onClick={() => {
-                  setIdDropDown(!idDropDown);
                   setIdDropDownArrow(idDropDown ? arrowDown : arrowUp);
+                  setIdDropDown(!idDropDown);
                   setTokenName((prev) => {
                     if (appsImage === "jediSwap") {
                       return getTokenFromAddress(supportedPoolsJediSwap.get(tokenAddressMap[dapp.loanMarket])[0] as string).name;
@@ -591,7 +728,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                 borderRadius: "5px",
                                 position: "absolute",
                                 zIndex: "100",
-                                top: "156px",
+                                top: "162px",
                                 left: "160px",
 
                                 width: "300px",
@@ -647,7 +784,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                 borderRadius: "5px",
                                 position: "absolute",
                                 zIndex: "100",
-                                top: "156px",
+                                top: "162px",
                                 left: "40px",
 
                                 width: "100px",
@@ -863,7 +1000,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                               borderRadius: "5px",
                               position: "absolute",
                               zIndex: "100",
-                              top: "306px",
+                              top: "326px",
                               left: "40px",
 
                               width: "420px",
@@ -876,7 +1013,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                           >
                             {Coins.map((coin, index) => {
                               if (coin.name === tokenName) return <></>;
-                              const borrowMarketAddress = tokenAddressMap[selectedLoan.loanMarket];
+                              const borrowMarketAddress = tokenAddressMap[selectedLoan?.loanMarket];
                               const supportedMarkets = appsImage === 'jediSwap' ?
                                 supportedPoolsJediSwap?.get(borrowMarketAddress) :
                                 supportedPoolsMySwap?.get(borrowMarketAddress);
@@ -1009,18 +1146,26 @@ const SpendLoanNav = ({ activeLoansData }) => {
                           color: "#6F6F6F",
                         }}
                       >
-                        1 BTC = 21,000 USDT
-                        {/* {
+                        {/* 1 BTC = 21,000 USDT */}
+                        {
                           appsImage === 'mySwap' ? (
                             totalAmountOutmySwap !== 'NA' ?
-                              `1 ${asset.loanMarket} = ${(totalAmountOutmySwap / asset.currentLoanAmount).toFixed(4)} ${marketTokenName}`
+                               (
+                                  (totalAmountOutmySwap > selectedLoan?.currenLoanAmount) ?
+                                  `1 ${selectedLoan?.loanMarket} = ${(totalAmountOutmySwap / selectedLoan.currentLoanAmount).toFixed(4)} ${tokenName}`
+                                  : `1 ${tokenName} = ${(selectedLoan?.currentLoanAmount / totalAmountOutmySwap).toFixed(4)} ${selectedLoan?.loanMarket}`
+                               )
                               : <MySpinner />
                           ) : appsImage === 'jediSwap' ? (
                             totalAmountOutJediSwap !== 'NA' ?
-                              `1 ${asset.loanMarket} = ${(totalAmountOutJediSwap / asset.currentLoanAmount).toFixed(4)} ${marketTokenName}`
+                              (
+                                (totalAmountOutJediSwap > selectedLoan?.currenLoanAmount) ? 
+                                `1 ${selectedLoan?.loanMarket} = ${(totalAmountOutJediSwap / selectedLoan?.currentLoanAmount).toFixed(4)} ${tokenName}`
+                                :  `1 ${tokenName} = ${(selectedLoan?.currentLoanAmount / totalAmountOutJediSwap).toFixed(4)} ${selectedLoan?.loanMarket}`
+                              )
                               : <MySpinner />
                           ) : '-'
-                        } */}
+                        }
                       </div>
                     </div>
 
