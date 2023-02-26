@@ -29,27 +29,27 @@ const ConnectWalletModal = () => {
   const { address: account } = useAccount();
   const { available, connect } = useConnectors();
   console.log(available);
-  
+
   function handleButtonConnectWallet() {
     available.length > 0
       ? available.map((connector) => {
         console.log(connector);
-        
-          setnetworkSelected({
-            network: "Starknet",
-            starknet: true,
-            walletName: "Braavos",
-            walletLogo: braavosWallet,
-            redirectLink: "/",
-          });
-        })
-      : setnetworkSelected({
-          network: "",
+
+        setnetworkSelected({
+          network: "Starknet",
           starknet: true,
-          walletName: "Download Braavos",
+          walletName: "Braavos",
           walletLogo: braavosWallet,
-          redirectLink: "https://braavos.app/",
+          redirectLink: "/",
         });
+      })
+      : setnetworkSelected({
+        network: "",
+        starknet: true,
+        walletName: "Download Braavos",
+        walletLogo: braavosWallet,
+        redirectLink: "https://braavos.app/",
+      });
     // setNetwork("Select Network");
     setConnectWallet(!connectWallet);
     // removeBodyCss();
@@ -78,12 +78,12 @@ const ConnectWalletModal = () => {
   const handleConnectBraavosWallet = () => {
     {
       available.length > 0
-        ? available.map((connector,id) => {
+        ? available.map((connector, id) => {
           // console.log(id);
-            if (network === "Starknet" && id === 0) {
-              disconnectEvent(), connect(connector);
-            }
-          })
+          if (network === "Starknet" && id === 0) {
+            disconnectEvent(), connect(connector);
+          }
+        })
         : window.open("https://braavos.app/", "_blank");
     }
   };
@@ -91,13 +91,13 @@ const ConnectWalletModal = () => {
   const handleConnectArgentXWallet = () => {
     {
       available.length > 0
-        ? available.map((connector,id) => {
+        ? available.map((connector, id) => {
           // console.log(id);
-            if (network === "Starknet" && id === 1) {
-              disconnectEvent(), connect(connector);
-            }
+          if (network === "Starknet" && id === 1) {
+            disconnectEvent(), connect(connector);
+          }
 
-          })
+        })
         : window.open("https://braavos.app/", "_blank");
     }
   };
@@ -159,7 +159,19 @@ const ConnectWalletModal = () => {
                   alignItems: "center",
                 }}
               >
-                <div>{network}</div>
+                <div style={{
+                  display: "flex",
+                }}>
+                  {network === "Starknet" ? (
+                    <Image
+                      src={starknetLogo}
+                      alt="Picture of the author"
+                      width="15px"
+                      height="15px"
+                    />
+                  ) : null}
+                  <div style={{marginLeft: "8px",}}>{network}</div>
+                </div>
                 <div
                   style={{
                     marginRight: "20px",
@@ -306,9 +318,9 @@ const ConnectWalletModal = () => {
             </label>
             {/* </a> */}
             {
-              network !== "Starknet"? <EthWalletButton />:null
+              network !== "Starknet" ? <EthWalletButton /> : null
             }
-           
+
           </div>
 
           <p style={{ fontSize: "14px" }}>
