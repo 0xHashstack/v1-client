@@ -170,7 +170,7 @@ const ConnectWalletModal = () => {
                       height="15px"
                     />
                   ) : null}
-                  <div style={{marginLeft: "8px",}}>{network}</div>
+                  <div style={{marginLeft: "8px"}}>{network}</div>
                 </div>
                 <div
                   style={{
