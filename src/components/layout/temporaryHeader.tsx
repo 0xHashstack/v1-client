@@ -26,6 +26,7 @@ import { useDisconnect } from "wagmi";
 import EthWalletButton from "./ethConnectWalletButton";
 import { TabContext } from "../../hooks/contextHooks/TabContext";
 
+
 const SecondaryHeader = ({
   handleDisconnectWallet,
   handleConnectWallet,
@@ -115,62 +116,63 @@ const SecondaryHeader = ({
   function removeBodyCss() {
     document.body.classList.add("no_padding");
   }
-
-  function handleButtonConnectWallet() {
-    setSettingDropDown(false);
-    available.length > 0
-      ? available.map((connector) => {
-          setnetworkSelected({
-            network: "Starknet",
-            starknet: true,
-            walletName: "Braavos",
-            walletLogo: braavosWallet,
-            redirectLink: "/",
-          });
-        })
-      : setnetworkSelected({
-          network: "",
-          starknet: true,
-          walletName: "Download Braavos",
-          walletLogo: braavosWallet,
-          redirectLink: "https://braavos.app/",
-        });
-    setNetwork("Select Network");
-    setConnectWallet(!connectWallet);
-    removeBodyCss();
-  }
-
-  const toggleDropdown = () => {
+   const toggleDropdown = () => {
     setdropDownOpen(!dropDownOpen);
     setDropDownArrow(dropDownOpen ? arrowDown : arrowUp);
     // disconnectEvent(), connect(connector);
   };
 
-  const disconnectEvent = () => {
-    if (evmAddress) {
-      disconnect();
-    }
-  };
+  // function handleButtonConnectWallet() {
+  //   setSettingDropDown(false);
+  //   available.length > 0
+  //     ? available.map((connector) => {
+  //         setnetworkSelected({
+  //           network: "Starknet",
+  //           starknet: true,
+  //           walletName: "Braavos",
+  //           walletLogo: braavosWallet,
+  //           redirectLink: "/",
+  //         });
+  //       })
+  //     : setnetworkSelected({
+  //         network: "",
+  //         starknet: true,
+  //         walletName: "Download Braavos",
+  //         walletLogo: braavosWallet,
+  //         redirectLink: "https://braavos.app/",
+  //       });
+  //   setNetwork("Select Network");
+  //   setConnectWallet(!connectWallet);
+  //   removeBodyCss();
+  // }
 
-  const handleConnectBraavosWallet = () => {
-    {
-      available.length > 0
-        ? available.map((connector) => {
-            if (network === "Starknet") {
-              disconnectEvent(), connect(connector);
-            }
-          })
-        : window.open("https://braavos.app/", "_blank");
-    }
-  };
+ 
 
-  const selectStarKnetNetwork = () => {
-    {
-      setNetwork("Starknet");
-      setdropDownOpen(!dropDownOpen);
-      setDropDownArrow(dropDownOpen ? arrowDown : arrowUp);
-    }
-  };
+  // const disconnectEvent = () => {
+  //   if (evmAddress) {
+  //     disconnect();
+  //   }
+  // };
+
+  // const handleConnectBraavosWallet = () => {
+  //   {
+  //     available.length > 0
+  //       ? available.map((connector) => {
+  //           if (network === "Starknet") {
+  //             disconnectEvent(), connect(connector);
+  //           }
+  //         })
+  //       : window.open("https://braavos.app/", "_blank");
+  //   }
+  // };
+
+  // const selectStarKnetNetwork = () => {
+  //   {
+  //     setNetwork("Starknet");
+  //     setdropDownOpen(!dropDownOpen);
+  //     setDropDownArrow(dropDownOpen ? arrowDown : arrowUp);
+  //   }
+  // };
 
   return (
     <div
@@ -248,7 +250,7 @@ const SecondaryHeader = ({
                   height="15px"
                   style={{ cursor: "pointer" }}
                 />
-                &nbsp;&nbsp;Dashboard
+                &nbsp;&nbsp;<span style={{ fontSize: "larger"}} >Dashboard</span>
               </span>
             </label>
 
@@ -278,7 +280,7 @@ const SecondaryHeader = ({
                   height="15px"
                   style={{ cursor: "pointer" }}
                 />
-                &nbsp;&nbsp;Contribute-2-Earn
+                &nbsp;&nbsp;<span  style={{fontSize: "larger"}}> Contribute-2-Earn </span>
               </span>
             </label>
 
@@ -312,13 +314,13 @@ const SecondaryHeader = ({
                   height="15px"
                   style={{ cursor: "pointer" }}
                 />
-                &nbsp;&nbsp;More
+                &nbsp;&nbsp; <span  style={{fontSize: "larger"}}>More </span>
               </span>
             </label>
           </div>
 
-          <div className="d-flex flex-wrap gap-4 ">
-            <Modal
+           <div className="d-flex flex-wrap gap-4 ">
+           {/* <Modal
               isOpen={connectWallet && !account}
               toggle={() => {
                 handleButtonConnectWallet();
@@ -437,7 +439,7 @@ const SecondaryHeader = ({
                     </label>
 
                     {/* <a href={networkSelected.redirectLink} target=""> */}
-                    <label
+                   {/*} <label
                       onClick={handleConnectBraavosWallet}
                       style={{
                         backgroundColor: "#2A2E3F",
@@ -477,7 +479,7 @@ const SecondaryHeader = ({
                       </div>
                     </label>
                     {/* </a> */}
-                    <EthWalletButton />
+                    {/* <EthWalletButton />
                   </div>
 
                   <p style={{ fontSize: "14px" }}>
@@ -507,7 +509,7 @@ const SecondaryHeader = ({
                   </p>
                 </Form>
               </div>
-            </Modal>
+            </Modal> */} 
 
             <div style={{ display: "flex", gap: "20px" }}>
               <label
@@ -540,7 +542,7 @@ const SecondaryHeader = ({
                     height="15px"
                     style={{ cursor: "pointer" }}
                   />
-                  &nbsp;&nbsp;&nbsp;Transfer Deposit
+                  &nbsp;&nbsp;&nbsp; <span  style={{fontSize: "larger"}}>Transfer Deposit</span>
                 </span>
               </label>
 
@@ -556,9 +558,9 @@ const SecondaryHeader = ({
                   cursor: "pointer",
                 }}
                 className="button"
-                onClick={() => {
-                  handleButtonConnectWallet();
-                }}
+                // onClick={() => {
+                //   handleButtonConnectWallet();
+                // }}
               >
                 <span
                   style={{
@@ -579,7 +581,7 @@ const SecondaryHeader = ({
                         height="18px"
                         style={{ cursor: "pointer" }}
                       />
-                      <div>
+                      <div  style={{fontSize: "larger"}}>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         {`${account.substring(0, 3)}...${account.substring(
                           account.length - 10,
@@ -652,7 +654,7 @@ const SecondaryHeader = ({
             padding: "10px",
             cursor: "pointer",
             color: "white",
-            fontSize: "12px",
+            fontSize: "13px",
           }}
           onClick={() => {
             toggleCustom("6");

@@ -28,6 +28,7 @@ import { IdentifierProvider } from "../blockchain/hooks/context/identifierContex
 import ConnectionDetails from "../components/walletIdentifier/connectionDashboard";
 import ConnectWalletModal from "../components/layout/connectWalletModal";
 
+
 const { chains, provider } = configureChains(
   [mainnet, goerli],
   [publicProvider()]

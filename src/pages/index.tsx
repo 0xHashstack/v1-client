@@ -911,12 +911,15 @@ const Dashboard = () => {
                       activeLoansData
                     )}{" "}
                     {customActiveTab === "1" ? (
+                      activeDepositsData && activeLoansData?
                       <LoanBorrowCommitment
                         reserves={reserves}
                         isLoading={isLoading}
                         activeDepositsData={activeDepositsData}
                         activeLoansData={filteredLoans}
                       />
+                      :"This is it"
+                  
                     ) : null}
                     <Row>
                       <div>
