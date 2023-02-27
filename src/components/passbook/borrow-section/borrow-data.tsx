@@ -2272,7 +2272,9 @@ const BorrowData = ({
                                 ) : loanMarketAllowance ? (
                                   (
                                     Number(
-                                      uint256.uint256ToBN(loanMarketBalance[0])
+                                      uint256.uint256ToBN(
+                                        loanMarketBalance?.[0]
+                                      )
                                     ) /
                                     10 **
                                     (tokenDecimalsMap[
