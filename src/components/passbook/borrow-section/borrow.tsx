@@ -1423,30 +1423,24 @@ const BorrowTab = ({
                               gap: "3px",
                             }}
                           >
-                            <Image
-                              src={starknetLogo}
-                              alt="Picture of the author"
+                            <img
+                              src="./mySwapSmallIcon.svg"
+                              alt="Icon 1"
                               width="15px"
                               height="15px"
                             />{" "}
-                            <Image
-                              src={starknetLogo}
-                              alt="Picture of the author"
+                            <img
+                              src="./jediSwapSmallIcon.svg"
+                              alt="Icon 2"
                               width="15px"
                               height="15px"
                             />{" "}
-                            <Image
-                              src={starknetLogo}
-                              alt="Picture of the author"
+                            <img
+                              src="./yagiSmallIcon.svg"
+                              alt="Icon 3"
                               width="15px"
                               height="15px"
                             />{" "}
-                            <Image
-                              src={starknetLogo}
-                              alt="Picture of the author"
-                              width="15px"
-                              height="15px"
-                            />
                           </div>
                         </div>
                         <div
