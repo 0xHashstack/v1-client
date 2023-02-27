@@ -6,6 +6,7 @@ import MySwapAbi from '../../../../starknet-artifacts/contracts/integrations/mod
 import useMyAccount from "../walletDetails/getAddress";
 import { useEffect, useState } from "react";
 import { Abi, number } from "starknet";
+import { l3DiamondAddress } from "../../stark-constants";
 
 const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
   const [toastMyswapParam, setToastMyswapParam] = useState({});
@@ -16,7 +17,7 @@ const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
 
   const { contract: l3Contract } = useContract({
     abi: MySwapAbi as Abi,
-    address: "0x1fc40e21ce68f61d538c070cbfea9483243bcdae0072b0f8c2c85fd4ecd28ab",
+    address: l3DiamondAddress,
   });
 
   const {

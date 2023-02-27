@@ -326,7 +326,7 @@ const ActiveDeposit = ({
       return (
         !withdrawAmount ||
         withdrawAmount <= 0 ||
-        withdrawAmount > Number(uint256.uint256ToBN(asset.amount)) / 10 ** 18
+        withdrawAmount > Number(uint256.uint256ToBN(asset.amount)) / 10 ** (tokenDecimalsMap[asset.market] || 18)
       );
   }
 

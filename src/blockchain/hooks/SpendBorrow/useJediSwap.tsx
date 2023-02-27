@@ -1,5 +1,5 @@
 import { useContract, useStarknetCall, useStarknetExecute } from "@starknet-react/core";
-import { tokenAddressMap } from "../../stark-constants";
+import { l3DiamondAddress, tokenAddressMap } from "../../stark-constants";
 import { number } from "starknet";
 import { GetErrorText, NumToBN } from "../../utils";
 import JediSwapAbi from "../../../../starknet-artifacts/contracts/integrations/modules/jedi_swap.cairo/jedi_swap_abi.json";
@@ -15,7 +15,7 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
 
   const { contract: l3Contract } = useContract({
     abi: JediSwapAbi as Abi,
-    address: "0x1fc40e21ce68f61d538c070cbfea9483243bcdae0072b0f8c2c85fd4ecd28ab",
+    address: l3DiamondAddress,
   });
 
   const {
