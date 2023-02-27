@@ -707,7 +707,9 @@ const SpendLoanNav = ({ activeLoansData }) => {
                           &nbsp;&nbsp;
                           <img
                             src={`./${appsImage}.svg`}
-                            width="60px"
+                            width={`${
+                              appsImage === "mySwap" ? "60px" : "100px"
+                            }`}
                             height="30px"
                           ></img>
                         </div>
@@ -758,7 +760,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                   return (
                                     <div
                                       style={{
-                                        margin: "10px 0",
+                                        margin: "10px 15px",
                                         cursor: "pointer",
                                         display: "flex",
                                         alignItems: "center",
@@ -772,13 +774,17 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                           if (dapp.name === "jediSwap") {
                                             return getTokenFromAddress(
                                               supportedPoolsJediSwap?.get(
-                                                tokenAddressMap[selectedLoan?.loanMarket]
+                                                tokenAddressMap[
+                                                  selectedLoan?.loanMarket
+                                                ]
                                               )[0] as string
                                             ).name;
                                           } else if (dapp.name === "mySwap") {
                                             return getTokenFromAddress(
                                               supportedPoolsMySwap?.get(
-                                                tokenAddressMap[selectedLoan?.loanMarket]
+                                                tokenAddressMap[
+                                                  selectedLoan?.loanMarket
+                                                ]
                                               )[0] as string
                                             ).name;
                                           } else return prev;
@@ -787,7 +793,11 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                     >
                                       <img
                                         src={`./${dapp.name}.svg`}
-                                        width="60px"
+                                        width={`${
+                                          dapp.name === "mySwap"
+                                            ? "60px"
+                                            : "100px"
+                                        }`}
                                         height="30px"
                                       ></img>
                                     </div>
@@ -849,7 +859,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                     >
                                       {word}
                                     </div>{" "}
-                                    {index < labels.length -1 ?  <hr /> : null}
+                                    {index < labels.length - 1 ? <hr /> : null}
                                   </>
                                 );
                               })}
@@ -1069,30 +1079,32 @@ const SpendLoanNav = ({ activeLoansData }) => {
                               if (!isSupported) return <></>;
                               return (
                                 <>
-                                <div
-                                  style={{
-                                    margin: "7px 0",
-                                    cursor: "pointer",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    fontSize: "16px",
-                                  }}
-                                  key={index}
-                                  onClick={() => {
-                                    setTokenName(`${coin.name}`);
-                                    setDropDown(false);
-                                    setDropDownArrow(arrowDown);
-                                    handleBalanceChange();
-                                  }}
-                                >
-                                  <img
-                                    src={`./${coin.name}.svg`}
-                                    width="18px"
-                                    height="20px"
-                                  ></img>
-                                  <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
-                                </div>
-                                { index < supportedMarkets?.length ? <hr /> : null}
+                                  <div
+                                    style={{
+                                      margin: "7px 0",
+                                      cursor: "pointer",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      fontSize: "16px",
+                                    }}
+                                    key={index}
+                                    onClick={() => {
+                                      setTokenName(`${coin.name}`);
+                                      setDropDown(false);
+                                      setDropDownArrow(arrowDown);
+                                      handleBalanceChange();
+                                    }}
+                                  >
+                                    <img
+                                      src={`./${coin.name}.svg`}
+                                      width="18px"
+                                      height="20px"
+                                    ></img>
+                                    <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                                  </div>
+                                  {index < supportedMarkets?.length ? (
+                                    <hr />
+                                  ) : null}
                                 </>
                               );
                             })}
