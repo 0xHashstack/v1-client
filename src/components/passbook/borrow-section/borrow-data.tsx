@@ -1864,7 +1864,7 @@ const BorrowData = ({
                             marginBottom: "15px",
                           }}
                         >
-                          Borrowed Amount:
+                          Available Borrowed Amount:
                           <span
                             style={{
                               display: "flex",
@@ -1873,7 +1873,7 @@ const BorrowData = ({
                             }}
                           >
                             &nbsp;
-                            {parseFloat(BNtoNum(Number(asset.loanAmount)))}{" "}
+                            {parseFloat(BNtoNum(Number(asset.openLoanAmount)))}{" "}
                             {/* {asset.loanMarket} */}
                           </span>
                         </div>
@@ -2117,11 +2117,11 @@ const BorrowData = ({
                                   }}
                                 >
                                   &nbsp;
-                                  {asset.currentLoanAmount /
+                                  {(asset.currentLoanAmount /
                                     (10 **
                                       tokenDecimalsMap[
                                         asset.currentLoanMarket
-                                      ] || 18)}
+                                      ] || 18)).toFixed(6)}
                                 </span>
                               </div>
                             </>
@@ -2233,9 +2233,9 @@ const BorrowData = ({
                                 )}
 
                                 {selection === "Withdraw Partial Borrow" ? (
-                                  asset.currentLoanAmount /
+                                  (asset.openLoanAmount /
                                   10 **
-                                    (tokenDecimalsMap[asset.loanMarket] || 18)
+                                    (tokenDecimalsMap[asset.loanMarket] || 18)).toFixed(4)
                                 ) : loanMarketAllowance ? (
                                   (
                                     Number(
