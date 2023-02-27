@@ -855,7 +855,7 @@ let Borrow: any = ({
                                 dataBalance ? dataBalance[0] : 0
                               )
                             ) /
-                              10 ** 18)) /
+                              10 ** (tokenDecimalsMap[asset?.collateralMarket] || 18))) /
                           100,
                       });
                     }

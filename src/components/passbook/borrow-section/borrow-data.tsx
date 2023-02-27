@@ -402,7 +402,7 @@ const BorrowData = ({
   const { contract: l3JediContract } = useContract({
     abi: JediSwapAbi as Abi,
     address:
-      "0x1fc40e21ce68f61d538c070cbfea9483243bcdae0072b0f8c2c85fd4ecd28ab",
+      l3DiamondAddress,
   });
 
   console.log(
@@ -506,7 +506,7 @@ const BorrowData = ({
   const { contract: l3MySwapContract } = useContract({
     abi: MySwapAbi as Abi,
     address:
-      "0x1fc40e21ce68f61d538c070cbfea9483243bcdae0072b0f8c2c85fd4ecd28ab",
+      l3DiamondAddress,
   });
 
   const {
