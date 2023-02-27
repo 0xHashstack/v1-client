@@ -163,6 +163,10 @@ const BorrowData = ({
   console.log("asset borrow data", asset);
   const [marketTokenName, setMarketTokenName] = useState("USDT");
 
+  useEffect(() => {
+    setAsset(assetParam);
+  }, [assetParam]);
+  
   const Coins: ICoin[] = [
     { name: "USDT", icon: "mdi-bitcoin" },
     { name: "USDC", icon: "mdi-ethereum" },
