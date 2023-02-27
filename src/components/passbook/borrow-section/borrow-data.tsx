@@ -166,7 +166,7 @@ const BorrowData = ({
   useEffect(() => {
     setAsset(assetParam);
   }, [assetParam]);
-  
+
   const Coins: ICoin[] = [
     { name: "USDT", icon: "mdi-bitcoin" },
     { name: "USDC", icon: "mdi-ethereum" },
@@ -2239,7 +2239,9 @@ const BorrowData = ({
                                 ) : loanMarketAllowance ? (
                                   (
                                     Number(
-                                      uint256.uint256ToBN(loanMarketBalance[0])
+                                      uint256.uint256ToBN(
+                                        loanMarketBalance?.[0]
+                                      )
                                     ) /
                                     10 **
                                       (tokenDecimalsMap[
