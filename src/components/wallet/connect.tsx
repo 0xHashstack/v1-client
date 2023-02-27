@@ -1,33 +1,53 @@
 // import { Connector } from '@starknet-react/core';
-import { useStarknet, useConnectors } from "@starknet-react/core";
-import React, { useEffect } from "react";
-import { toast } from "react-toastify";
+import { useConnectors } from "@starknet-react/core";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { useAccount, useDisconnect } from "wagmi";
+import React from "react";
 import { Button } from "reactstrap";
-import { GetErrorText } from "../../blockchain/utils";
 
 const ConnectWallet = () => {
+  const { disconnect } = useDisconnect();
+  const { address: evmAddress } = useAccount();
+
+  const disconnectEvent = () => {
+    if (evmAddress) {
+      disconnect();
+    }
+  };
+
   const { available, connect } = useConnectors();
-  useEffect(() => {
-    console.log(available);
-  });
   return (
     <div>
       {available.length > 0 ? (
         available.map((connector) => {
           return (
-            <Button
-              color="dark"
-              outline
-              className="btn-outline"
-              style={{
-                margin: '18px'
-              }}
-              onClick={(e) => connect(connector)}
-              key={connector.id()}
-            >
-              <i className="fas fa-wallet font-size-16 align-middle me-2"></i>{" "}
-              Connect to {`${connector.name()}`}
-            </Button>
+            <>
+              <Button
+                color="dark"
+                outline
+                className="btn-outline"
+                style={{
+                  margin: "18px",
+                }}
+                onClick={(e) => {
+                  disconnectEvent(), connect(connector);
+                }}
+                key={connector.id()}
+              >
+                <i className="fas fa-wallet font-size-16 align-middle me-2"></i>{" "}
+                Connect to {`${connector.name()}`}
+              </Button>
+              <Button
+                color="dark"
+                style={{
+                  margin: "10px",
+                  border: "none",
+                  backgroundColor: "transparent",
+                }}
+              >
+                <ConnectButton />
+              </Button>
+            </>
           );
         })
       ) : (
@@ -36,10 +56,8 @@ const ConnectWallet = () => {
           outline
           className="btn-outline"
           onClick={() => {
-                      window.open(
-                        "https://braavos.app/download/"
-                      );
-                    }}
+            window.open("https://braavos.app/download/");
+          }}
           // onClick={(e) => {
           //   toast.error(
           //     `${GetErrorText(

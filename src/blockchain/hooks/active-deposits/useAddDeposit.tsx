@@ -11,7 +11,7 @@ import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { Abi, number, uint256 } from 'starknet';
 import deposit from '../../../components/deposit';
-import { ERC20Abi, tokenAddressMap } from '../../stark-constants';
+import { ERC20Abi, tokenAddressMap, tokenDecimalsMap } from '../../stark-constants';
 import { BNtoNum, GetErrorText, NumToBN } from '../../utils';
 
 const useAddDeposit = (_token: any, _diamondAddress: string) => {
@@ -29,7 +29,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 
 	const { address: account } = useAccount();
 	const [transApprove, setTransApprove] = useState('');
-	const [transDeposit, setTransBorrow] = useState('');
+	const [transDeposit, setTransDeposit] = useState('');
 
 
 	useEffect(() => {
@@ -95,7 +95,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 		calls: {
 			contractAddress: depositMarket as string,
 			entrypoint: 'approve',
-			calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
+			calldata: [diamondAddress, NumToBN(depositAmount as number, tokenDecimalsMap[token]), 0],
 		},
 	});
 
@@ -110,7 +110,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 			{
 				contractAddress: depositMarket as string,
 				entrypoint: 'approve',
-				calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
+				calldata: [diamondAddress, NumToBN(depositAmount as number, tokenDecimalsMap[token]), 0],
 			},
 			{
 				contractAddress: diamondAddress,
@@ -118,7 +118,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 				calldata: [
 					tokenAddressMap[token],
 					depositCommit,
-					NumToBN(depositAmount as number, 18),
+					NumToBN(depositAmount as number, tokenDecimalsMap[token]),
 					0,
 				],
 			},
@@ -134,7 +134,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 		}
 	};
 
-	const DepositAmount = async (asset: string) => {
+	const handleDepositAmount = async (asset: string) => {
 		if (
 			!tokenAddressMap[asset] &&
 			!depositAmount &&
@@ -156,23 +156,23 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 			return;
 		}
 		console.log(diamondAddress, depositAmount);
-		// await handleApprove();
-		// run deposit function
-
-		// console.log("allowance", BNtoNum(dataAllowance[0]?.low, 18).toString());
-		// console.log("amountin -: ", depositAmount);
-
-		// setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
 		try {
 			let tx = await executeDeposit();
-			setTransBorrow(tx.transaction_hash);
+			setTransDeposit(tx.transaction_hash);
 		} catch(err) {
 			console.log(err, 'err add deposit')
+		}
+		if (errorDeposit) {
+			toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
+			  position: toast.POSITION.BOTTOM_RIGHT,
+			  closeOnClick: true,
+			});
+			return;
 		}
 	};
 
 	return {
-		DepositAmount,
+		handleDepositAmount,
 		handleApprove,
 		setDepositAmount,
 		setDepositCommit,
@@ -185,8 +185,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 		loadingApprove,
 		loadingDeposit,
 		dataApprove,
-    dataDeposit
-
+		dataDeposit
 	};
 };
 

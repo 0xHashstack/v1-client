@@ -2,55 +2,6 @@
     {
         "members": [
             {
-                "name": "address",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "is_supported",
-                "offset": 1,
-                "type": "felt"
-            },
-            {
-                "name": "min_amount",
-                "offset": 2,
-                "type": "Uint256"
-            },
-            {
-                "name": "stork_key",
-                "offset": 4,
-                "type": "felt"
-            },
-            {
-                "name": "pontis_key",
-                "offset": 5,
-                "type": "felt"
-            }
-        ],
-        "name": "Market",
-        "size": 6,
-        "type": "struct"
-    },
-    {
-        "members": [
-            {
-                "name": "low",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "high",
-                "offset": 1,
-                "type": "felt"
-            }
-        ],
-        "name": "Uint256",
-        "size": 2,
-        "type": "struct"
-    },
-    {
-        "members": [
-            {
                 "name": "market",
                 "offset": 0,
                 "type": "felt"
@@ -88,6 +39,23 @@
         ],
         "name": "Collateral",
         "size": 9,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "low",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "high",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "Uint256",
+        "size": 2,
         "type": "struct"
     },
     {
@@ -138,13 +106,52 @@
                 "type": "felt"
             },
             {
-                "name": "created_at",
+                "name": "l3_integration",
                 "offset": 11,
+                "type": "felt"
+            },
+            {
+                "name": "created_at",
+                "offset": 12,
                 "type": "felt"
             }
         ],
         "name": "Loan",
-        "size": 12,
+        "size": 13,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "apr",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "created_at",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "BorrowApr",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "apr",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "created_at",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "SavingsApr",
+        "size": 2,
         "type": "struct"
     },
     {
@@ -183,69 +190,6 @@
         "keys": [],
         "name": "Unpaused",
         "type": "event"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset_record",
-                "type": "Market"
-            }
-        ],
-        "name": "asset_price",
-        "outputs": [
-            {
-                "name": "price",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            }
-        ],
-        "name": "get_value_from_stork",
-        "outputs": [
-            {
-                "name": "price",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            }
-        ],
-        "name": "get_value_from_pontis",
-        "outputs": [
-            {
-                "name": "price",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "pause_price_feed",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "unpause_price_feed",
-        "outputs": [],
-        "type": "function"
     },
     {
         "data": [
@@ -323,12 +267,62 @@
                 "type": "felt"
             },
             {
+                "name": "amount_withdrawn",
+                "type": "Uint256"
+            },
+            {
                 "name": "timestamp",
                 "type": "felt"
             }
         ],
         "keys": [],
         "name": "collateral_withdrawal",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            },
+            {
+                "name": "index",
+                "type": "felt"
+            },
+            {
+                "name": "borrow_apr",
+                "type": "BorrowApr"
+            }
+        ],
+        "keys": [],
+        "name": "borrow_apr_update",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            },
+            {
+                "name": "index",
+                "type": "felt"
+            },
+            {
+                "name": "savings_apr",
+                "type": "SavingsApr"
+            }
+        ],
+        "keys": [],
+        "name": "savings_apr_update",
         "type": "event"
     },
     {
@@ -343,6 +337,35 @@
             }
         ],
         "name": "update_interest",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "update_vrf_number",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "requestor_address",
+                "type": "felt"
+            },
+            {
+                "name": "request_id",
+                "type": "felt"
+            },
+            {
+                "name": "random_words_len",
+                "type": "felt"
+            },
+            {
+                "name": "random_words",
+                "type": "felt*"
+            }
+        ],
+        "name": "receive_random_words",
         "outputs": [],
         "type": "function"
     },

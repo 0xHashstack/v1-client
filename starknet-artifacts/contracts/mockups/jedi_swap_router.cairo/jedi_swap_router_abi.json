@@ -21,11 +21,83 @@
             {
                 "name": "factory",
                 "type": "felt"
+            },
+            {
+                "name": "_empiric_proxy",
+                "type": "felt"
             }
         ],
         "name": "constructor",
         "outputs": [],
         "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market_address",
+                "type": "felt"
+            },
+            {
+                "name": "empiric_key",
+                "type": "felt"
+            }
+        ],
+        "name": "set_empiric_keys",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset_market",
+                "type": "felt"
+            }
+        ],
+        "name": "asset_price",
+        "outputs": [
+            {
+                "name": "price",
+                "type": "felt"
+            },
+            {
+                "name": "decimals",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "set_empiric_proxy",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset",
+                "type": "felt"
+            }
+        ],
+        "name": "get_value_from_empiric",
+        "outputs": [
+            {
+                "name": "price",
+                "type": "felt"
+            },
+            {
+                "name": "decimals",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
     },
     {
         "inputs": [],
@@ -96,56 +168,6 @@
                 "type": "Uint256"
             },
             {
-                "name": "reserveIn",
-                "type": "Uint256"
-            },
-            {
-                "name": "reserveOut",
-                "type": "Uint256"
-            }
-        ],
-        "name": "get_amount_out",
-        "outputs": [
-            {
-                "name": "amountOut",
-                "type": "Uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "amountOut",
-                "type": "Uint256"
-            },
-            {
-                "name": "reserveIn",
-                "type": "Uint256"
-            },
-            {
-                "name": "reserveOut",
-                "type": "Uint256"
-            }
-        ],
-        "name": "get_amount_in",
-        "outputs": [
-            {
-                "name": "amountIn",
-                "type": "Uint256"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "amountIn",
-                "type": "Uint256"
-            },
-            {
                 "name": "path_len",
                 "type": "felt"
             },
@@ -194,7 +216,6 @@
                 "type": "Uint256*"
             }
         ],
-        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -321,46 +342,6 @@
             }
         ],
         "name": "swap_exact_tokens_for_tokens",
-        "outputs": [
-            {
-                "name": "amounts_len",
-                "type": "felt"
-            },
-            {
-                "name": "amounts",
-                "type": "Uint256*"
-            }
-        ],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "amountOut",
-                "type": "Uint256"
-            },
-            {
-                "name": "amountInMax",
-                "type": "Uint256"
-            },
-            {
-                "name": "path_len",
-                "type": "felt"
-            },
-            {
-                "name": "path",
-                "type": "felt*"
-            },
-            {
-                "name": "to",
-                "type": "felt"
-            },
-            {
-                "name": "deadline",
-                "type": "felt"
-            }
-        ],
-        "name": "swap_tokens_for_exact_tokens",
         "outputs": [
             {
                 "name": "amounts_len",

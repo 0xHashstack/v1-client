@@ -167,7 +167,7 @@ const RepaidLoan = ({
                       </div>
                     </Col>
 
-                    <Col lg="8">
+                    {/* <Col lg="8">
                       {
                         <TxHistoryTable
                           asset={asset}
@@ -175,7 +175,7 @@ const RepaidLoan = ({
                           market={asset.loanMarket}
                         />
                       }
-                    </Col>
+                    </Col> */}
                   </Row>
                 </div>
               </CardBody>

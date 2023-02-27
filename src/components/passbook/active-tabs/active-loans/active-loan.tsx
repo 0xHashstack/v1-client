@@ -39,7 +39,7 @@ import {
 import OffchainAPI from "../../../../services/offchainapi.service";
 import TxHistoryTable from "../../../dashboard/tx-history-table";
 import MySpinner from "../../../mySpinner";
-import SwapToLoan from "../swaps/swap-to-loan";
+// import SwapToLoan from "../swaps/swap-to-loan";
 import AddToCollateral from "./add-to-collateral";
 import Repay from "./repay";
 
@@ -634,31 +634,15 @@ const ActiveLoan = ({
                               </Form>
                             )}
 
-                            {swap_to_active_loan && loanActionTab === "1" && (
+                            {/* {swap_to_active_loan && loanActionTab === "1" && (
                               <SwapToLoan
                                 asset={asset}
                                 setRevertSwapTransactionReceipt={
                                   setRevertSwapTransactionReceipt
                                 }
                               />
-                            )}
+                            )} */}
                           </div>
-                        </Col>
-                        <Col lg="8">
-                          {
-                            <TxHistoryTable
-                              asset={asset}
-                              type="loans"
-                              market={asset.loanMarket}
-                              observables={[
-                                repayTransactionReceipt,
-                                addCollateralTransactionReceipt,
-                                withdrawLoanTransactionReceipt,
-                                swapLoanToSecondaryTransactionReceipt,
-                                revertSwapTransactionReceipt,
-                              ]}
-                            />
-                          }
                         </Col>
                       </Row>
                     </div>

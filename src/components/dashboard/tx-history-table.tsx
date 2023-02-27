@@ -33,102 +33,103 @@ const TxHistoryTable = ({
   market: string;
   observables?: UseTransactionReceiptResult[];
 }) => {
-  const { account, commitment } = asset;
-  const [txHistoryData, setTxHistoryData] = useState<IHistoryData[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [lookingForTxs, setLookingForTxs] = useState<{
-    [key: string]: boolean;
-  }>({});
-  async function refreshHistory() {
-    setLoading(true);
-    let events: IHistoryData[] = [];
-    try {
-      if (type === "deposits") {
-        events = await OffchainAPI.getTransactionEventsActiveDeposits(
-          number.toHex(number.toBN(number.toFelt(account || ""))),
-          market
-        );
-        console.log("tx history:", events);
-      } else if (type === "loans") {
-        events = await OffchainAPI.getTransactionEventsActiveLoans(
-          number.toHex(number.toBN(number.toFelt(account || ""))),
-          market
-        );
-      } else if (type === "repaid") {
-        events = await OffchainAPI.getTransactionEventsRepaid(
-          number.toHex(number.toBN(number.toFelt(account || ""))),
-          market
-        );
-      }
-      console.log("history", type, events);
-      setTxHistoryData(events);
-      setLoading(false);
-    } catch (err) {
-      console.log("error fetch history", err);
-      toast.error("Could not fetch history");
-      setLoading(false);
-    }
-  }
+  // const { account, commitment } = asset;
+  // const [txHistoryData, setTxHistoryData] = useState<IHistoryData[]>([]);
+  // const [loading, setLoading] = useState(true);
+  // const [lookingForTxs, setLookingForTxs] = useState<{
+  //   [key: string]: boolean;
+  // }>({});
 
-  function hasTx(tx: string) {
-    console.log("history: check for tx", tx);
-    for (let i = 0; i < txHistoryData.length; ++i) {
-      let history = txHistoryData[i];
-      console.log("historymatch", history.txnHash, tx, history.txnHash == tx);
-      if (history.txnHash == tx) return true;
-    }
-    return false;
-  }
+  // async function refreshHistory() {
+  //   setLoading(true);
+  //   let events: IHistoryData[] = [];
+  //   try {
+  //     if (type === "deposits") {
+  //       events = await OffchainAPI.getTransactionEventsActiveDeposits(
+  //         number.toHex(number.toBN(number.toFelt(account || ""))),
+  //         market
+  //       );
+  //       console.log("tx history:", events);
+  //     } else if (type === "loans") {
+  //       events = await OffchainAPI.getTransactionEventsActiveLoans(
+  //         number.toHex(number.toBN(number.toFelt(account || ""))),
+  //         market
+  //       );
+  //     } else if (type === "repaid") {
+  //       events = await OffchainAPI.getTransactionEventsRepaid(
+  //         number.toHex(number.toBN(number.toFelt(account || ""))),
+  //         market
+  //       );
+  //     }
+  //     console.log("history", type, events);
+  //     setTxHistoryData(events);
+  //     setLoading(false);
+  //   } catch (err) {
+  //     console.log("error fetch history", err);
+  //     toast.error("Could not fetch history");
+  //     setLoading(false);
+  //   }
+  // }
 
-  useEffect(() => {
-    console.log("history: lookingForTxs change", lookingForTxs);
-  }, [lookingForTxs]);
+  // function hasTx(tx: string) {
+  //   console.log("history: check for tx", tx);
+  //   for (let i = 0; i < txHistoryData.length; ++i) {
+  //     let history = txHistoryData[i];
+  //     console.log("historymatch", history.txnHash, tx, history.txnHash == tx);
+  //     if (history.txnHash == tx) return true;
+  //   }
+  //   return false;
+  // }
 
-  async function lookForTransaction(tx: string, retry = 0) {
-    console.log("history: lookForTransaction", lookingForTxs, { retry });
-    if (lookingForTxs[tx]) return;
-    if (Object.keys(lookingForTxs).includes(tx) && retry == 0) {
-      return;
-    }
-    if (lookingForTxs[tx] == undefined) {
-      let _txMap: any = {};
-      _txMap[tx] = false;
-      setLookingForTxs({ ...lookingForTxs, ..._txMap });
-    }
+  // useEffect(() => {
+  //   console.log("history: lookingForTxs change", lookingForTxs);
+  // }, [lookingForTxs]);
 
-    await refreshHistory();
-    setTimeout(() => {
-      if (!lookingForTxs[tx]) lookForTransaction(tx, retry + 1);
-    }, 5000);
-  }
+  // async function lookForTransaction(tx: string, retry = 0) {
+  //   console.log("history: lookForTransaction", lookingForTxs, { retry });
+  //   if (lookingForTxs[tx]) return;
+  //   if (Object.keys(lookingForTxs).includes(tx) && retry == 0) {
+  //     return;
+  //   }
+  //   if (lookingForTxs[tx] == undefined) {
+  //     let _txMap: any = {};
+  //     _txMap[tx] = false;
+  //     setLookingForTxs({ ...lookingForTxs, ..._txMap });
+  //   }
 
-  useEffect(() => {
-    // const _account = ;
-    console.log(type);
-    refreshHistory();
-  }, [type, account, market]);
+  //   await refreshHistory();
+  //   setTimeout(() => {
+  //     if (!lookingForTxs[tx]) lookForTransaction(tx, retry + 1);
+  //   }, 5000);
+  // }
 
-  useEffect(() => {
-    if (observables) {
-      for (let i = 0; i < observables?.length; ++i) {
-        let observable = observables[i];
-        let status = observable.data?.status;
-        let hash = observable.data?.transaction_hash;
-        if (hash && (status == "PENDING" || status == "ACCEPTED_ON_L2")) {
-          lookForTransaction(hash);
-        }
-      }
-    }
-  }, [observables]);
+  // useEffect(() => {
+  //   // const _account = ;
+  //   console.log(type);
+  //   refreshHistory();
+  // }, [type, account, market]);
 
-  useEffect(() => {
-    let _lookup = { ...lookingForTxs };
-    for (let i = 0; i < txHistoryData.length; ++i) {
-      let history = txHistoryData[i];
-      _lookup[history.txnHash] = true;
-    }
-    setLookingForTxs(_lookup);
-  }, [txHistoryData]);
+  // useEffect(() => {
+  //   if (observables) {
+  //     for (let i = 0; i < observables?.length; ++i) {
+  //       let observable = observables[i];
+  //       let status = observable.data?.status;
+  //       let hash = observable.data?.transaction_hash;
+  //       if (hash && (status == "PENDING" || status == "ACCEPTED_ON_L2")) {
+  //         lookForTransaction(hash);
+  //       }
+  //     }
+  //   }
+  // }, [observables]);
+
+  // useEffect(() => {
+  //   let _lookup = { ...lookingForTxs };
+  //   for (let i = 0; i < txHistoryData.length; ++i) {
+  //     let history = txHistoryData[i];
+  //     _lookup[history.txnHash] = true;
+  //   }
+  //   setLookingForTxs(_lookup);
+  // }, [txHistoryData]);
 
   const renderTableData = () => {
     console.log("renderTableDat:", txHistoryData);
@@ -164,7 +165,7 @@ const TxHistoryTable = ({
           let myDate = new Date(date);
           let formattedDate = myDate.toLocaleString();
 
-          let formattedValue = new BigNumber(value);
+  //         let formattedValue = new BigNumber(value);
 
           return (
             <tr
@@ -194,42 +195,43 @@ const TxHistoryTable = ({
   // console.log(asset, type, market, observables);
   // console.log(asset.depositId);
 
-  return (
-    <div className="table-responsive">
-      <Table className="table table-nowrap align-middle mb-0 mr-2 ">
-        <thead>
-          <tr>
-            <th>Transaction Hash</th>
-            <th>Action Type</th>
-            <th>Date</th>
-            <th>Amount In Protocol</th>
-          </tr>
-        </thead>
-        <tbody>{renderTableData()}</tbody>
-      </Table>
-      <div style={{ padding: "10px", textAlign: "center", width: "100%" }}>
-        {loading && !Object.keys(lookingForTxs).length ? (
-          <MySpinner />
-        ) : (
-          <span></span>
-        )}
-        {Object.keys(lookingForTxs)
-          .filter((tx) => lookingForTxs[tx] == false)
-          .map((tx) => {
-            let len = tx.length;
-            return (
-              <MySpinner
-                key={tx}
-                text={`Waiting for ${tx.substring(0, 4)}...${tx.substring(
-                  len - 4,
-                  len
-                )} (~ 1 min)`}
-              />
-            );
-          })}
-      </div>
-    </div>
-  );
+  // return (
+  //   <div className="table-responsive">
+  //     <Table className="table table-nowrap align-middle mb-0 mr-2 ">
+  //       <thead>
+  //         <tr>
+  //           <th>Transaction Hash</th>
+  //           <th>Action Type</th>
+  //           <th>Date</th>
+  //           <th>Amount In Protocol</th>
+  //         </tr>
+  //       </thead>
+  //       <tbody>{renderTableData()}</tbody>
+  //     </Table>
+  //     <div style={{ padding: "10px", textAlign: "center", width: "100%" }}>
+  //       {loading && !Object.keys(lookingForTxs).length ? (
+  //         <MySpinner />
+  //       ) : (
+  //         <span></span>
+  //       )}
+  //       {Object.keys(lookingForTxs)
+  //         .filter((tx) => lookingForTxs[tx] == false)
+  //         .map((tx) => {
+  //           let len = tx.length;
+  //           return (
+  //             <MySpinner
+  //               key={tx}
+  //               text={`Waiting for ${tx.substring(0, 4)}...${tx.substring(
+  //                 len - 4,
+  //                 len
+  //               )} (~ 1 min)`}
+  //             />
+  //           );
+  //         })}
+  //     </div>
+  //   </div>
+  // );
+  return <span></span>
 };
 
 export default TxHistoryTable;

@@ -1,5 +1,6 @@
 import { DecimalsMap } from "./constants";
 import { BigNumber } from "bignumber.js";
+import { number } from "starknet";
 import Fortmatic from "fortmatic";
 import { Bitski } from "bitski";
 import { toast } from "react-toastify";
@@ -32,7 +33,7 @@ export const fixedSpecial = (num: number, n: number) => {
 
 export const BNtoNum = (value: number, decimal: number = 18) => {
   const val = new BigNumber(value).shiftedBy(-decimal).toNumber();
-  return val < 1 ? val.toPrecision() : fixedSpecial(val, 0);
+  return val < 1 ? val.toPrecision() : Number(fixedSpecial(val, 0)).toFixed(4);
 };
 
 export const NumToBN = (value: number, decimal: number = 18) => {
@@ -146,17 +147,43 @@ export const currentDepositInterestRate = (asset: any, historicalAPRs: any) => {
 
 export const currentBorrowInterestRate = (asset: any, historicalAPRs: any) => {
   console.log(historicalAPRs, asset);
-  const marketHistoricalAPRs = historicalAPRs.filter((aprRecords: any) => {
-    return (
-      aprRecords.market === asset.loanMarketAddress &&
-      parseInt(aprRecords.commitment) === asset.commitmentIndex
-    );
-  });
-  console.log(marketHistoricalAPRs);
-  const aprWithMultiplier =
-    marketHistoricalAPRs[marketHistoricalAPRs.length - 1].apr100x;
-  const multiplier = new BigNumber("100");
-  const aprWithMultiplierBigNumber = new BigNumber(aprWithMultiplier);
-  const aprBigNumber = aprWithMultiplierBigNumber.dividedBy(multiplier);
-  return aprBigNumber.toFixed(6);
+  let key = `${getTokenFromName(asset.loanMarket).address}__${
+    asset.commitmentIndex
+  }`;
+  console.log("currentBorrowInterestRate", key);
+  return (historicalAPRs[key].borrowAPR.apr100x / 100).toFixed(2);
+  // const marketHistoricalAPRs = historicalAPRs.filter((aprRecords: any) => {
+  //   return (
+  //     aprRecords.market === asset.loanMarketAddress &&
+  //     parseInt(aprRecords.commitment) === asset.commitmentIndex
+  //   );
+  // });
+  // console.log(marketHistoricalAPRs);
+  // const aprWithMultiplier =
+  //   marketHistoricalAPRs[marketHistoricalAPRs.length - 1].apr100x;
+  // const multiplier = new BigNumber("100");
+  // const aprWithMultiplierBigNumber = new BigNumber(aprWithMultiplier);
+  // const aprBigNumber = aprWithMultiplierBigNumber.dividedBy(multiplier);
+  // return aprBigNumber.toFixed(6);
 };
+
+export const etherToWeiBN = (amount: number, tokenAddress: string) => {
+  const token = getTokenFromAddress(tokenAddress);
+  const decimals = token?.decimals || 18; // @todo should avoid using 18 default
+  const factor = 1000_000;
+  const amountBN = number
+    .toBN(amount * factor)
+    .mul(number.toBN(10).pow(number.toBN(decimals)))
+    .div(number.toBN(factor));
+  return amountBN;
+};
+
+export const weiToEtherNumber = (amount: string, tokenAddress: string) => {
+  const token = getTokenFromAddress(tokenAddress);
+  const decimals = token?.decimals || 18; // @todo should avoid using 18 default
+  const factor = 1000_000;
+  const amountBN = number
+    .toBN(amount).mul(number.toBN(factor))
+    .div(number.toBN(10).pow(number.toBN(decimals)));
+  return amountBN.toNumber() / factor;
+}
