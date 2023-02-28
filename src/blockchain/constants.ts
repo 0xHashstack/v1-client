@@ -302,12 +302,11 @@ export const CoinClassNames: ICoinClassNames = {
 };
 
 export const MinimumAmount: IMinimumAmount = {
-  USDT: 1000,
-  USDC: 1000,
-  BTC: 0.1,
-  BNB: 5,
-  ETH: 0.2,
-  DAI: 5,
+  USDT: 10,
+  USDC: 10,
+  BTC: 0.0005,
+  ETH: 0.00625,
+  DAI: 10,
 };
 
 export const starknetMarketAddress: IAddress = {};
