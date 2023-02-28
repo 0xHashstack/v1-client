@@ -28,6 +28,7 @@ import { IdentifierProvider } from "../blockchain/hooks/context/identifierContex
 import ConnectionDetails from "../components/walletIdentifier/connectionDashboard";
 import ConnectWalletModal from "../components/layout/connectWalletModal";
 
+
 const { chains, provider } = configureChains(
   [mainnet, goerli],
   [publicProvider()]
@@ -78,7 +79,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                   // @todo to move this to env variables
                   new RpcProvider({
                     nodeUrl:
-                      "https://starknet-goerli2.infura.io/v3/3274a9630231466681b6300375f517f2",
+                      "https://starknet-goerli.infura.io/v3/3274a9630231466681b6300375f517f2",
                   })
                 }
               >

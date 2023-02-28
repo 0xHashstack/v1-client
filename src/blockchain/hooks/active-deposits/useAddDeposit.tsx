@@ -12,7 +12,8 @@ import { toast } from 'react-toastify';
 import { Abi, number, uint256 } from 'starknet';
 import deposit from '../../../components/deposit';
 import { ERC20Abi, tokenAddressMap, tokenDecimalsMap } from '../../stark-constants';
-import { BNtoNum, GetErrorText, NumToBN } from '../../utils';
+import { BNtoNum, GetErrorText, NumToBN ,weiToEtherNumber} from '../../utils';
+import { etherToWeiBN } from '../../utils';
 
 const useAddDeposit = (_token: any, _diamondAddress: string) => {
 	const [token, setToken] = useState('');
@@ -71,7 +72,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 				let data: any = dataAllowance;
 				let _allowance = uint256.uint256ToBN(data.remaining);
 				// console.log({ _allowance: _allowance.toString(), depositAmount });
-				setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
+				setAllowance(Number(weiToEtherNumber(dataAllowance[0]?.low, tokenAddressMap[token]||"").toString()));
 				if (allowanceVal > (depositAmount as number)) {
 					setAllowed(true);
 					setShouldApprove(false);
@@ -95,7 +96,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 		calls: {
 			contractAddress: depositMarket as string,
 			entrypoint: 'approve',
-			calldata: [diamondAddress, NumToBN(depositAmount as number, tokenDecimalsMap[token]), 0],
+			calldata: [diamondAddress, etherToWeiBN(depositAmount as number, tokenAddressMap[token]||"").toString(), 0],
 		},
 	});
 
@@ -110,7 +111,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 			{
 				contractAddress: depositMarket as string,
 				entrypoint: 'approve',
-				calldata: [diamondAddress, NumToBN(depositAmount as number, tokenDecimalsMap[token]), 0],
+				calldata: [diamondAddress, etherToWeiBN(depositAmount as number, tokenAddressMap[token]||"").toString(), 0],
 			},
 			{
 				contractAddress: diamondAddress,
@@ -118,7 +119,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 				calldata: [
 					tokenAddressMap[token],
 					depositCommit,
-					NumToBN(depositAmount as number, tokenDecimalsMap[token]),
+					etherToWeiBN(depositAmount as number, tokenAddressMap[token]||"").toString(),
 					0,
 				],
 			},

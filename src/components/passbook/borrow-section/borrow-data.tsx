@@ -998,6 +998,7 @@ const BorrowData = ({
     }
     console.log("currentBorrowInterest", asset, historicalAPRs);
   }, [asset, historicalAPRs]);
+   console.log("look here",asset);
 
   return (
     <div key={key} style={{ borderTop: "5px" }}>

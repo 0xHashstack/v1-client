@@ -5,6 +5,7 @@ import { Abi, uint256 } from "starknet";
 import { ERC20Abi, tokenAddressMap, tokenDecimalsMap } from "../../stark-constants";
 import { TxToastManager } from "../../txToastManager";
 import { BNtoNum, GetErrorText, NumToBN } from "../../utils";
+import { etherToWeiBN ,weiToEtherNumber} from "../../utils";
 
 const useRepay = ( asset: any, diamondAddress: string ) => {
   const [repayAmount, setRepayAmount] = useState<number>();
@@ -54,7 +55,7 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
     calls: {
       contractAddress: tokenAddressMap[asset.loanMarket] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(repayAmount as number, tokenDecimalsMap[asset.loanMarket]), 0],
+      calldata: [diamondAddress, etherToWeiBN(repayAmount as number, tokenAddressMap[asset.loanMarket] || "").toString(), 0],
     },
   });
 
@@ -69,7 +70,7 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
       {
         contractAddress: tokenAddressMap[asset.loanMarket] as string,
         entrypoint: "approve",
-        calldata: [diamondAddress, NumToBN(repayAmount as number, tokenDecimalsMap[asset.loanMarket]), 0],
+        calldata: [diamondAddress, etherToWeiBN(repayAmount as number, tokenAddressMap[asset.loanMarket]|| "").toString(), 0],
       },
       {
         contractAddress: diamondAddress,
@@ -77,7 +78,7 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
         calldata: [
           tokenAddressMap[asset.loanMarket],
           asset.commitmentIndex,
-          NumToBN(repayAmount as number, tokenDecimalsMap[asset.loanMarket]),
+          etherToWeiBN(repayAmount as number, tokenAddressMap[asset.loanMarket]|| "").toString(),
           0,
         ],
       }
@@ -120,7 +121,7 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
         let data: any = dataAllowance;
         let _allowance = uint256.uint256ToBN(data.remaining);
         // console.log({ _allowance: _allowance.toString(), depositAmount });
-        setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
+        setAllowance(Number(weiToEtherNumber(dataAllowance[0]?.low, tokenAddressMap[asset.loanMarket]|| "").toString()));
         if (allowanceVal > (repayAmount as number)) {
           setAllowed(true);
           setShouldApprove(false);

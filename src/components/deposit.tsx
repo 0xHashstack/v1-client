@@ -36,7 +36,7 @@ import {
   tokenDecimalsMap,
 } from "../blockchain/stark-constants";
 
-import { BNtoNum, GetErrorText, NumToBN } from "../blockchain/utils";
+import { BNtoNum, etherToWeiBN, GetErrorText, NumToBN } from "../blockchain/utils";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React from "react";
@@ -193,7 +193,7 @@ let Deposit: any = ({
     calls: {
       contractAddress: tokenAddressMap[asset] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
+      calldata: [diamondAddress, etherToWeiBN(depositAmount, tokenAddressMap[asset]||"").toString(), 0],
     },
   });
 
@@ -209,7 +209,7 @@ let Deposit: any = ({
       {
         contractAddress: tokenAddressMap[asset] as string,
         entrypoint: "approve",
-        calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
+        calldata: [diamondAddress, etherToWeiBN(depositAmount, tokenAddressMap[asset] || "").toString(), 0],
       },
       {
         contractAddress: diamondAddress,
@@ -217,7 +217,8 @@ let Deposit: any = ({
         calldata: [
           tokenAddressMap[asset],
           commitPeriod,
-          NumToBN(depositAmount, 18),
+          // NumToBN(depositAmount, 18),
+          etherToWeiBN(depositAmount, tokenAddressMap[asset] || "").toString(),
           0,
         ],
       },
@@ -316,9 +317,7 @@ let Deposit: any = ({
     abi: DepositAbi as Abi,
     address: diamondAddress,
   });
-  const provider = new Provider({
-    sequencer: { baseUrl: "https://alpha4-2.starknet.io" },
-  });
+
   const depositContract2 = new Contract(
     DepositAbi as Abi,
     diamondAddress,
@@ -341,7 +340,7 @@ let Deposit: any = ({
       let call = depositContract?.populate("deposit_request", [
         tokenAddressMap[asset],
         commitPeriod,
-        [NumToBN(depositAmount, 18), 0],
+        [etherToWeiBN(depositAmount, tokenAddressMap[asset]||"").toString(), 0],
       ]);
       if (!call) {
         throw new Error("call undefined");

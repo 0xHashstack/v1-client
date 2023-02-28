@@ -98,7 +98,7 @@ const ConnectWalletModal = () => {
           }
 
         })
-        : window.open("https://braavos.app/", "_blank");
+        : window.open("https://www.argent.xyz/argent-x/", "_blank");
     }
   };
   return (

@@ -19,7 +19,7 @@ import {
   tokenAddressMap,
 } from "../../../blockchain/stark-constants";
 import { TxToastManager } from "../../../blockchain/txToastManager";
-import { BNtoNum, GetErrorText, NumToBN } from "../../../blockchain/utils";
+import { BNtoNum, GetErrorText, NumToBN ,etherToWeiBN} from "../../../blockchain/utils";
 import MySpinner from "../../mySpinner";
 
 const AddToCollateral = ({
@@ -108,7 +108,7 @@ const AddToCollateral = ({
     calls: {
       contractAddress: marketToAddCollateral as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(inputVal as number, 18), 0],
+      calldata: [diamondAddress, etherToWeiBN(inputVal as number, tokenAddressMap[marketToAddCollateral]||"").toString(), 0],
     },
   });
 
@@ -122,7 +122,7 @@ const AddToCollateral = ({
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "add_collateral",
-      calldata: [loanId, NumToBN(inputVal as number, 18), 0],
+      calldata: [loanId, etherToWeiBN(inputVal as number, tokenAddressMap[marketToAddCollateral]||"").toString(), 0],
     },
   });
 

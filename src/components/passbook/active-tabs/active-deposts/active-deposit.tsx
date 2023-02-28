@@ -43,6 +43,7 @@ import {
   BNtoNum,
   currentDepositInterestRate,
   depositInterestAccrued,
+  weiToEtherNumber,
 } from "../../../../blockchain/utils";
 import TxHistoryTable from "../../../dashboard/tx-history-table";
 import { useTransactionReceipt } from "@starknet-react/core";
@@ -66,7 +67,7 @@ import {
 } from "@starknet-react/core";
 import { Abi, uint256 } from "starknet";
 import { ICoin } from "../../../dashboard/dashboard-body";
-import { GetErrorText, NumToBN } from "../../../../blockchain/utils";
+import { GetErrorText, NumToBN,etherToWeiBN } from "../../../../blockchain/utils";
 import classnames from "classnames";
 import { IDepositLoanRates } from "../../../borrow";
 import ToastModal from "../../../toastModals/customToastModal";
@@ -192,7 +193,7 @@ const ActiveDeposit = ({
     calls: {
       contractAddress: tokenAddressMap[tokenName] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(depositAmount as number, 18), 0],
+      calldata: [diamondAddress, etherToWeiBN(depositAmount as number, tokenAddressMap[tokenName]||"").toString(), 0],
     },
   });
 
@@ -208,7 +209,7 @@ const ActiveDeposit = ({
         entrypoint: "approve",
         calldata: [
           diamondAddress,
-          NumToBN(depositAmount as number, tokenDecimalsMap[tokenName]),
+          etherToWeiBN(depositAmount as number, tokenAddressMap[tokenName]||"").toString(),
           0,
         ],
       },
@@ -218,7 +219,7 @@ const ActiveDeposit = ({
         calldata: [
           tokenAddressMap[tokenName],
           commitPeriod,
-          NumToBN(depositAmount as number, tokenDecimalsMap[tokenName]),
+          etherToWeiBN(depositAmount as number, tokenAddressMap[tokenName]||"").toString(),
           0,
         ],
       },
@@ -235,7 +236,7 @@ const ActiveDeposit = ({
       {
         contractAddress: diamondAddress,
         entrypoint: "withdraw_deposit",
-        calldata: [asset.depositId, NumToBN(depositAmount as number, 18)],
+        calldata: [asset.depositId, etherToWeiBN(depositAmount as number, tokenAddressMap[asset]||"").toString()],
       },
     ],
   });
@@ -421,8 +422,8 @@ const ActiveDeposit = ({
 
   useEffect(() => {
     const currentBalance =
-      parseFloat(BNtoNum(Number(asset.amount))) +
-      parseFloat(BNtoNum(Number(asset.acquiredYield)));
+      parseFloat(weiToEtherNumber(asset.amount,tokenAddressMap[asset.market]||"").toString()) +
+      parseFloat(weiToEtherNumber(asset.acquiredYield,tokenAddressMap[asset.market]||"").toString());
     console.log("currentBalance", (value / 100) * currentBalance);
     setWithdrawAmount((value / 100) * currentBalance);
   }, [value]);
