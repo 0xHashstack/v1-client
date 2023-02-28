@@ -1138,9 +1138,9 @@ console.log("Repaid loans data",repaidLoansData);
         heading="Transaction Complete"
         desc="Copy Transaction Hash"
       /> */}
-        {/* // </React.Fragment> */}
-      </div>
-    </>
+    </React.Fragment>
+      // </div>
+    // </>
   );
 };
 
