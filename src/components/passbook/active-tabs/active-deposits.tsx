@@ -45,7 +45,7 @@ import { Abi, uint256 } from "starknet";
 import { ICoin } from "../../dashboard/dashboard-body";
 import { MinimumAmount } from "../../../blockchain/constants";
 import MySpinner from "../../mySpinner";
-import { GetErrorText, NumToBN } from "../../../blockchain/utils";
+import { GetErrorText, NumToBN,etherToWeiBN } from "../../../blockchain/utils";
 import { toast } from "react-toastify";
 import classnames from "classnames";
 import ToastModal from "../../toastModals/customToastModal";
@@ -148,7 +148,7 @@ const ActiveDepositsTab = ({
       entrypoint: "approve",
       calldata: [
         diamondAddress,
-        NumToBN(depositAmount as number, tokenDecimalsMap[tokenName]),
+        etherToWeiBN(depositAmount as number, tokenAddressMap[tokenName]||"").toString(),
         0,
       ],
     },
@@ -167,7 +167,7 @@ const ActiveDepositsTab = ({
         entrypoint: "approve",
         calldata: [
           diamondAddress,
-          NumToBN(depositAmount as number, tokenDecimalsMap[tokenName]),
+          etherToWeiBN(depositAmount as number, tokenAddressMap[tokenName]||"").toString(),
           0,
         ],
       },
@@ -177,7 +177,7 @@ const ActiveDepositsTab = ({
         calldata: [
           tokenAddressMap[tokenName],
           commitPeriod,
-          NumToBN(depositAmount as number, tokenDecimalsMap[tokenName]),
+          etherToWeiBN(depositAmount as number, tokenAddressMap[tokenName]||"").toString(),
           0,
         ],
       },

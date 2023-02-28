@@ -5,6 +5,7 @@ import {
   getCommitmentIndexStringFromNameLoan,
 } from "../../blockchain/stark-constants";
 import DashboardTBody from "./dashboard-body";
+import DashboardSpinner from "./DashboardSpinner";
 
 const LoanBorrowCommitment = ({
   reserves,
@@ -144,6 +145,7 @@ const LoanBorrowCommitment = ({
               </tr>
             </thead>
             <tbody>
+              
               <DashboardTBody
                 reserves={reserves}
                 isloading={isLoading}
@@ -151,7 +153,7 @@ const LoanBorrowCommitment = ({
                 depositCommitment={depositCommitment}
                 activeDepositsData={activeDepositsData}
                 activeLoansData={activeLoansData}
-              />
+                />
             </tbody>
           </Table>
         </div>

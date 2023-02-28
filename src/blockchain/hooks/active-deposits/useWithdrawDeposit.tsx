@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { number } from "starknet";
 import { tokenAddressMap, tokenDecimalsMap } from "../../stark-constants";
-import { GetErrorText, NumToBN } from "../../utils";
+import { GetErrorText, NumToBN,etherToWeiBN } from "../../utils";
 
 const useWithdrawDeposit = (
   asset: any,
@@ -30,7 +30,7 @@ const useWithdrawDeposit = (
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "withdraw_deposit",
-      calldata: [asset.depositId, NumToBN(withdrawAmount as number, tokenDecimalsMap[asset.market]), 0],
+      calldata: [asset.depositId, etherToWeiBN(withdrawAmount as number, tokenAddressMap[asset.market]||"").toString(), 0],
     },
   });
 

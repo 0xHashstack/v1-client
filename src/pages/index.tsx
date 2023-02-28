@@ -127,6 +127,7 @@ const Dashboard = () => {
   // const [customActiveTabs, setCustomActiveTabs] = useState("1");
   const [loanActionTab, setLoanActionTab] = useState("0");
   const [passbookStatus, setPassbookStatus] = useState("ActiveDeposit");
+  
 
   const [modal_repay_loan, setmodal_repay_loan] = useState(false);
   const [modal_withdraw_loan, setmodal_withdraw_loan] = useState(false);
@@ -175,6 +176,7 @@ const Dashboard = () => {
   const [typeOfLoansDropDownArrowType, setTypeOfLoansDropDownArrowType] =
     useState(DownArrow);
   const [filteredLoans, setFilteredLoans] = useState<ILoans[]>([]);
+  const [ActiveRepaytab, setActiveRepaytab] = useState("Active")
 
   function toggle(newIndex: string) {
     if (newIndex === index) {
@@ -306,6 +308,7 @@ const Dashboard = () => {
       );
     }
   };
+console.log("Repaid loans data",repaidLoansData);
 
   useEffect(() => {
     let validTypes = ["REPAID", "SWAPPED", "OPEN"];
@@ -612,15 +615,21 @@ const Dashboard = () => {
 
   const borrowActionTabs = () => {
     return (
+      typeOfLoans === "Active"? 
       <BorrowTab
-        activeLoansData={filteredLoans}
-        customActiveTabs={customActiveTabs}
-        isTransactionDone={isTransactionDone}
-        depositRequestSel={depositRequestSel}
-        removeBodyCss={removeBodyCss}
-        setCustomActiveTabs={setCustomActiveTabs}
-        fairPriceArray={oracleAndFairPrices?.fairPrices}
-      />
+      activeLoansData={filteredLoans}
+      customActiveTabs={customActiveTabs}
+      isTransactionDone={isTransactionDone}
+      depositRequestSel={depositRequestSel}
+      removeBodyCss={removeBodyCss}
+      setCustomActiveTabs={setCustomActiveTabs}
+      fairPriceArray={oracleAndFairPrices?.fairPrices}
+    />
+    :  <RepaidLoansTab
+    repaidLoansData={repaidLoansData}
+    customActiveTabs={customActiveTab}
+  />
+     
     );
   };
 
@@ -857,6 +866,7 @@ const Dashboard = () => {
                                     setTypeOfLoans(type);
                                     setTypeOfLoansDropDownArrowType(DownArrow);
                                     setIsDropDownOpenTypeOfLoans(false);
+                                    setActiveRepaytab(type)
                                   }}
                                 >
                                   {type}
@@ -911,12 +921,15 @@ const Dashboard = () => {
                       activeLoansData
                     )}{" "}
                     {customActiveTab === "1" ? (
+                      activeDepositsData && activeLoansData?
                       <LoanBorrowCommitment
                         reserves={reserves}
                         isLoading={isLoading}
                         activeDepositsData={activeDepositsData}
                         activeLoansData={filteredLoans}
                       />
+                      :"This is it"
+                  
                     ) : null}
                     <Row>
                       <div>

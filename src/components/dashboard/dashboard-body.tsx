@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Spinner } from "reactstrap";
 import OffchainAPI from "../../services/offchainapi.service";
 import DashboardTokens from "./dashboard-tokens";
+import Typewriter from "typewriter-effect"
 export interface ICoin {
   name: string;
   icon: string;
@@ -58,11 +59,16 @@ let DashboardTBody: any = ({
     getPrices();
   }, []);
 
+  console.log(isloading);
+  
   if (isloading) {
+  
     return (
       // <tr align="center">
+      
       <tr>
         <td colSpan={6}>
+          
           <Spinner>Loading...</Spinner>
         </td>
       </tr>
@@ -84,6 +90,8 @@ let DashboardTBody: any = ({
         fairPriceForCoin,
         coin.name
       );
+      console.log(coin);
+      
       return (
         <>
           <DashboardTokens
