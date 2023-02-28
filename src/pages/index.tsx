@@ -76,6 +76,7 @@ import YourMatrics from "../components/matrics/yourMatrics";
 import ProtocolMatrics from "../components/matrics/protocolMatrix";
 import MySpinner from "../components/mySpinner";
 import { NumericFormat } from "react-number-format";
+import RepayloanShow from "../components/passbook/borrow-section/RepayloanShow";
 // import App from "./Chart"
 
 interface IDeposit {
@@ -614,6 +615,8 @@ console.log("Repaid loans data",repaidLoansData);
   };
 
   const borrowActionTabs = () => {
+    console.log(repaidLoansData);
+    
     return (
       typeOfLoans === "Active"? 
       <BorrowTab
@@ -625,10 +628,13 @@ console.log("Repaid loans data",repaidLoansData);
       setCustomActiveTabs={setCustomActiveTabs}
       fairPriceArray={oracleAndFairPrices?.fairPrices}
     />
-    :  <RepaidLoansTab
+    : <RepayloanShow 
     repaidLoansData={repaidLoansData}
-    customActiveTabs={customActiveTab}
-  />
+    />
+    // :  <RepaidLoansTab
+    // repaidLoansData={repaidLoansData}
+    // customActiveTabs={customActiveTab}
+  // />
      
     );
   };

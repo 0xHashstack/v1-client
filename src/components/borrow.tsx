@@ -275,10 +275,10 @@ let Borrow: any = ({
       entrypoint: "approve",
       calldata: [
         diamondAddress,
-        NumToBN(
+        etherToWeiBN(
           borrowParams.collateralAmount as number,
-          tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18
-        ),
+          tokenAddressMap[borrowParams.collateralMarket || ""] || ""
+        ).toString(),
         0,
       ],
     },
@@ -300,10 +300,10 @@ let Borrow: any = ({
         entrypoint: "approve",
         calldata: [
           diamondAddress,
-          NumToBN(
+          etherToWeiBN(
             borrowParams.collateralAmount as number,
-            tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18
-          ),
+            tokenAddressMap[borrowParams.collateralMarket || ""] || ""
+          ).toString(),
           0,
         ],
       },
@@ -312,14 +312,14 @@ let Borrow: any = ({
         entrypoint: "loan_request",
         calldata: [
           tokenAddressMap[asset],
-          NumToBN(borrowParams.loanAmount as number, tokenDecimalsMap[asset]),
+          etherToWeiBN(borrowParams.loanAmount as number, tokenAddressMap[asset]||"").toString(),
           0,
           borrowParams.commitBorrowPeriod,
           tokenAddressMap[borrowParams.collateralMarket as string],
-          NumToBN(
+          etherToWeiBN(
             borrowParams.collateralAmount as number,
-            tokenDecimalsMap[asset]
-          ),
+            tokenAddressMap[asset] || ""
+          ).toString(),
           0,
         ],
       },

@@ -39,7 +39,7 @@ import {
 } from "../../../blockchain/stark-constants";
 import JediSwapAbi from "../../../../starknet-artifacts/contracts/integrations/modules/jedi_swap.cairo/jedi_swap_abi.json";
 import MySwapAbi from "../../../../starknet-artifacts/contracts/integrations/modules/my_swap.cairo/my_swap_abi.json";
-import { currentBorrowInterestRate, NumToBN } from "../../../blockchain/utils";
+import { currentBorrowInterestRate, etherToWeiBN, NumToBN } from "../../../blockchain/utils";
 import { MinimumAmount } from "../../../blockchain/constants";
 import { TabContext } from "../../../hooks/contextHooks/TabContext";
 import useJediSwap from "../../../blockchain/hooks/SpendBorrow/useJediSwap";
@@ -196,7 +196,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
     calls: {
       contractAddress: tokenAddressMap[tokenName] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
+      calldata: [diamondAddress, etherToWeiBN(depositAmount, tokenAddressMap[tokenName]||"").toString(), 0],
     },
   });
 
@@ -210,7 +210,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
       {
         contractAddress: tokenAddressMap[tokenName] as string,
         entrypoint: "approve",
-        calldata: [diamondAddress, NumToBN(depositAmount, 18), 0],
+        calldata: [diamondAddress, etherToWeiBN(depositAmount, tokenAddressMap[tokenName]||"").toString(), 0],
       },
       {
         contractAddress: diamondAddress,
@@ -218,7 +218,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
         calldata: [
           tokenAddressMap[tokenName],
           commitPeriod,
-          NumToBN(depositAmount, 18),
+          etherToWeiBN(depositAmount, tokenAddressMap[tokenName]||"").toString(),
           0,
         ],
       },
