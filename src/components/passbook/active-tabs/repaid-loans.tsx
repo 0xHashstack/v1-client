@@ -31,6 +31,8 @@ const RepaidLoansTab = ({
   customActiveTabs: any;
 }) => {
   console.log("inside repay: ", customActiveTabs);
+  console.log("repayedss loans damta",repaidLoansData);
+  
 
   return (
     <div className="table-responsive  mt-3" style={{ overflow : "hidden"}}>

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { tokenAddressMap, tokenDecimalsMap } from "../../stark-constants";
 import { TxToastManager } from "../../txToastManager";
-import { GetErrorText, NumToBN } from "../../utils";
+import { GetErrorText, NumToBN, etherToWeiBN } from "../../utils";
 
 const useAddCollateral = (diamondAddress: string, asset: any) => {
     const [addCollateralAmount, setAddCollateralAmount] = useState<number>();
@@ -30,14 +30,15 @@ const useAddCollateral = (diamondAddress: string, asset: any) => {
             {
                 contractAddress: tokenAddressMap[asset.collateralMarket] as string,
                 entrypoint: "approve",
-                calldata: [diamondAddress, NumToBN(addCollateralAmount as number, tokenDecimalsMap[asset.collateralMarket]), 0],
+                // calldata: [diamondAddress, NumToBN(addCollateralAmount as number, tokenDecimalsMap[asset.collateralMarket]), 0],
+                calldata: [diamondAddress, etherToWeiBN(addCollateralAmount as number , tokenAddressMap[asset.collateralMarket] || "").toString(), 0],
             },
             {
                 contractAddress: diamondAddress,
                 entrypoint: "add_collateral",
                 calldata: [
                     asset.loanId,
-                    NumToBN(addCollateralAmount as number, tokenDecimalsMap[asset.collateralMarket]),
+                    etherToWeiBN(addCollateralAmount as number , tokenAddressMap[asset.collateralMarket] || "").toString(),
                     0,
                 ],
             }

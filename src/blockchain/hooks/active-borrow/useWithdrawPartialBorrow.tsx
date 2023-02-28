@@ -3,6 +3,8 @@ import { useState } from "react";
 import { Abi, uint256 } from "starknet";
 import { ERC20Abi, tokenDecimalsMap } from "../../stark-constants";
 import { NumToBN } from "../../utils";
+import { etherToWeiBN } from "../../utils";
+import { tokenAddressMap } from "../../stark-constants";
 
 const useWithdrawPartialBorrow = (asset: any, diamondAddress: string) => {
   const [partialWithdrawAmount, setPartialWithdrawAmount] = useState<number>();
@@ -28,7 +30,7 @@ const useWithdrawPartialBorrow = (asset: any, diamondAddress: string) => {
       entrypoint: "withdraw_partial_loan",
       calldata: [
         loanId,
-        NumToBN(partialWithdrawAmount as number, tokenDecimalsMap[asset.loanMarket]),
+        etherToWeiBN(partialWithdrawAmount as number, tokenAddressMap[asset.loanMarket]|| "").toString(),
         0,
       ],
     }
