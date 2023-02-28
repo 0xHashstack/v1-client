@@ -14,19 +14,19 @@ const useWithdrawCollateral = (_diamondAddress: string, _loanId: number) => {
 
   const [transWithdrawCollateral, setTransWithdrawCollateral] = useState('');
 
-	const withdrawCollateralTransactionReceipt = useTransactionReceipt({hash: transWithdrawCollateral, watch: true})
+  const withdrawCollateralTransactionReceipt = useTransactionReceipt({ hash: transWithdrawCollateral, watch: true })
 
 
-	useEffect(() => {
-		console.log('withdraw col tx receipt', withdrawCollateralTransactionReceipt.data?.transaction_hash, withdrawCollateralTransactionReceipt);
-		TxToastManager.handleTxToast(withdrawCollateralTransactionReceipt, `Withdraw collateral`, true)
-	}, [withdrawCollateralTransactionReceipt])
+  useEffect(() => {
+    console.log('withdraw col tx receipt', withdrawCollateralTransactionReceipt.data?.transaction_hash, withdrawCollateralTransactionReceipt);
+    TxToastManager.handleTxToast(withdrawCollateralTransactionReceipt, `Withdraw collateral`, true)
+  }, [withdrawCollateralTransactionReceipt])
 
   const {
-    data,
-    loading,
-    error,
-    reset,
+    data: dataWithdrawCollateral,
+    loading: loadingWithdrawCollateral,
+    error: errorWithdrawCollateral,
+    reset: resetWithdrawCollateral,
     execute: executeWithdrawCollateral,
   } = useStarknetExecute({
     calls: {
@@ -36,25 +36,10 @@ const useWithdrawCollateral = (_diamondAddress: string, _loanId: number) => {
     },
   });
 
-  const withdrawCollateral = async () => {
-    if (loanId === undefined && !diamondAddress) {
-      toast.error(`${GetErrorText(`Some inputs missing`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
-    console.log(`${loanId} ${diamondAddress}`);
-    try {
-      const val = await executeWithdrawCollateral();
-      setTransWithdrawCollateral(val.transaction_hash);
-    } catch(err) {
-      console.log(err, 'withdraw collateral')
-    }
-  };
-
   return {
-    withdrawCollateral,
+    executeWithdrawCollateral,
+    loadingWithdrawCollateral,
+    errorWithdrawCollateral,
   };
 };
 

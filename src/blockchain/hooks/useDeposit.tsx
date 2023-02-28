@@ -32,22 +32,6 @@ const useDeposit = ({
     },
   });
 
-  //   const handleDeposit = async () => {
-  // let val;
-  // if (token === "BTC") {
-  //   val = await BTC();
-  // }
-  // if (token === "BNB") {
-  //   val = await BNB();
-  // }
-  // if (token === "USDC") {
-  //   val = await USDC();
-  // }
-  // if (token === "USDT") {
-  //   val = await USDT();
-  // }
-  //   };
-
   const executeDeposit = async () => {
     await execute();
   };

@@ -10,8 +10,9 @@ import { Table } from "reactstrap";
 import {
   diamondAddress,
   tokenAddressMap,
+  tokenDecimalsMap,
 } from "../../../blockchain/stark-constants";
-import { BNtoNum, GetErrorText, NumToBN } from "../../../blockchain/utils";
+import { BNtoNum, GetErrorText, NumToBN ,etherToWeiBN, weiToEtherNumber} from "../../../blockchain/utils";
 import { getPrice } from "../../../blockchain/priceFeed";
 import { TxToastManager } from "../../../blockchain/txToastManager";
 import ActiveLoan from "./active-loans/active-loan";
@@ -55,6 +56,7 @@ const ActiveLoansTab = ({
   const [repay_active_loan, setReapyActiveLoan] = useState(false);
   const [swap_to_active_loan, setSwapToActiveLoan] = useState(false);
   const [swap_active_loan, setSwapActiveLoan] = useState(true);
+  const [loanmarkforpartialloan, setloanmarkforpartialloan] = useState("")
 
   const [addCollateralTransactionReceipt, setAddCollateralTransactionReceipt] =
     useState<UseTransactionReceiptResult>({
@@ -222,7 +224,7 @@ const ActiveLoansTab = ({
     calls: {
       contractAddress: tokenAddressMap[marketToAddCollateral] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(inputVal1 as number, 18), 0],
+      calldata: [diamondAddress, etherToWeiBN(inputVal1 as number, tokenAddressMap[marketToAddCollateral]||"").toString(), 0],
     },
   });
   // Adding collateral
@@ -238,7 +240,7 @@ const ActiveLoansTab = ({
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "withdraw_partial_loan",
-      calldata: [loanId, NumToBN(inputVal1 as number, 18), 0],
+      calldata: [loanId, etherToWeiBN(inputVal1 as number, tokenAddressMap[loanmarkforpartialloan]||"").toString(), 0],
     },
   });
   /* ============================== Swap To Secondary Market ============================ */
@@ -257,6 +259,7 @@ const ActiveLoansTab = ({
   });
 
   const handleWithdrawLoan = async (asset: any) => {
+    setloanmarkforpartialloan(asset.laonMarket)
     if (asset.isSwapped) {
       toast.error(`${GetErrorText(`Cannot withdraw swapped loan`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
@@ -321,9 +324,9 @@ const ActiveLoansTab = ({
   ) => {
     setLoading(true);
     const collateralAmount: any = parseFloat(
-      BNtoNum(Number(_collateralAmount))
+     weiToEtherNumber(_collateralAmount,tokenAddressMap[collateralMarket]||"").toString()
     ).toFixed(6);
-    const loanAmount: any = parseFloat(BNtoNum(Number(_loanAmount))).toFixed(6);
+    const loanAmount: any = parseFloat(weiToEtherNumber(_loanAmount,tokenAddressMap[loanMarket]||"").toString()).toFixed(6);
 
     const loanPrice = await getPrice(loanMarket);
     const collateralPrice = await getPrice(collateralMarket);
@@ -343,7 +346,7 @@ const ActiveLoansTab = ({
       <Table className="table table-nowrap align-middle mb-0">
         <thead>
           <tr>
-            <th scope="col"> &nbsp; &nbsp; &nbsp; Borrow Market</th>
+            <th scope="col"> &nbsp; &nbsp; &nbsp;Borrow Market</th>
             <th scope="col"> &nbsp; &nbsp; &nbsp;Interest</th>
             <th scope="col"> &nbsp; &nbsp; &nbsp;Collateral</th>
             <th scope="col"> &nbsp; &nbsp; &nbsp;Current Balance</th>

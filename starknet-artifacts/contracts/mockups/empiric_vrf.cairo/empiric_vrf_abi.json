@@ -1,0 +1,34 @@
+[
+    {
+        "inputs": [
+            {
+                "name": "seed",
+                "type": "felt"
+            },
+            {
+                "name": "callback_address",
+                "type": "felt"
+            },
+            {
+                "name": "callback_gas_limit",
+                "type": "felt"
+            },
+            {
+                "name": "publish_delay",
+                "type": "felt"
+            },
+            {
+                "name": "num_words",
+                "type": "felt"
+            }
+        ],
+        "name": "request_randomness",
+        "outputs": [
+            {
+                "name": "request_id",
+                "type": "felt"
+            }
+        ],
+        "type": "function"
+    }
+]

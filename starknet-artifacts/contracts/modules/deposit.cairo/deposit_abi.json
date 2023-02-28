@@ -228,6 +228,23 @@
     {
         "inputs": [
             {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "deposit_min_amount",
+        "outputs": [
+            {
+                "name": "min_amount",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
                 "name": "deposit_id",
                 "type": "felt"
             }
@@ -239,6 +256,32 @@
                 "type": "Deposit"
             }
         ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user",
+                "type": "felt"
+            },
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "name": "get_user_deposit",
+        "outputs": [
+            {
+                "name": "deposit_id",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -250,6 +293,7 @@
                 "type": "felt"
             }
         ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -266,6 +310,28 @@
                 "type": "Uint256"
             }
         ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "name": "get_deposit_reserves_commitment",
+        "outputs": [
+            {
+                "name": "reserve_commitment",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {

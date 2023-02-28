@@ -36,6 +36,10 @@ const RepaidLoan = ({
   const handleWithdrawCollateral = async (handleWithdrawCollateral: any) => {
     await handleWithdrawCollateral();
   };
+  console.log("Repayed loan asset",asset);
+  console.log("Custom active tab",customActiveTabs);
+  
+  
   return (
     <UncontrolledAccordion defaultOpen="0" open="1">
       <Row>
@@ -167,7 +171,7 @@ const RepaidLoan = ({
                       </div>
                     </Col>
 
-                    <Col lg="8">
+                    {/* <Col lg="8">
                       {
                         <TxHistoryTable
                           asset={asset}
@@ -175,7 +179,7 @@ const RepaidLoan = ({
                           market={asset.loanMarket}
                         />
                       }
-                    </Col>
+                    </Col> */}
                   </Row>
                 </div>
               </CardBody>

@@ -12,6 +12,10 @@ interface ItokenAddressMap {
   [key: string]: string | undefined;
 }
 
+interface ItokenDecimalsMap {
+  [key: string]: number | undefined;
+}
+
 export function processAddress(address: string) {
   return number.toHex(number.toBN(number.toFelt(address)));
 }
@@ -20,7 +24,7 @@ export function processAddress(address: string) {
 //   process.env.NODE_ENV === "development"
 //     ? DeployDetailsDev.devnet
 //     : DeployDetailsProd.goerli_2;
-let contractsEnv = DeployDetailsProd.goerli_2;
+let contractsEnv = DeployDetailsProd.goerli;
 contractsEnv.DIAMOND_ADDRESS = processAddress(contractsEnv.DIAMOND_ADDRESS);
 for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
   contractsEnv.TOKENS[i].address = processAddress(
@@ -46,7 +50,16 @@ export const tokenAddressMap: ItokenAddressMap = {
   BTC: getTokenFromName("BTC")?.address,
   USDT: getTokenFromName("USDT")?.address,
   USDC: getTokenFromName("USDC")?.address,
-  BNB: getTokenFromName("BNB")?.address,
+  ETH: getTokenFromName("ETH")?.address,
+  DAI: getTokenFromName("DAI")?.address
+};
+
+export const tokenDecimalsMap: ItokenDecimalsMap = {
+  BTC: getTokenFromName("BTC")?.decimals,
+  USDT: getTokenFromName("USDT")?.decimals,
+  USDC: getTokenFromName("USDC")?.decimals,
+  ETH: getTokenFromName("ETH")?.decimals,
+  DAI: getTokenFromName("DAI")?.decimals
 };
 
 export function isTransactionLoading(receipt: UseTransactionReceiptResult) {
@@ -85,12 +98,16 @@ export function handleTransactionToast(receipt: UseTransactionReceiptResult) {}
 
 export const diamondAddress: string = contractsEnv.DIAMOND_ADDRESS;
 
+export const l3DiamondAddress: string = contractsEnv.L3_DIAMOND_ADDRESS;
+
 export const getTokenFromAddress = (address: string) => {
   let index = contractsEnv.TOKENS.map((item) => item.address).indexOf(address);
   let token = contractsEnv.TOKENS[index];
   console.log("getTokenFromAddress", address, token);
   return token;
 };
+
+// export const getTokenDecimalsFromName = (name: string) => 
 
 export const getCommitmentNameFromIndexDeposit = (index: string) => {
   if (index === "0") {

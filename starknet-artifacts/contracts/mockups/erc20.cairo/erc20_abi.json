@@ -82,6 +82,17 @@
         "type": "constructor"
     },
     {
+        "inputs": [
+            {
+                "name": "recipient",
+                "type": "felt"
+            }
+        ],
+        "name": "mint",
+        "outputs": [],
+        "type": "function"
+    },
+    {
         "inputs": [],
         "name": "name",
         "outputs": [

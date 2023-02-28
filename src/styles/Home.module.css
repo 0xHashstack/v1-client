@@ -1,8 +1,10 @@
 .container {
   padding: 0 2rem;
+  background-color: #1C202F !important;
 }
 
 .main {
+  background-color: #1C202F !important;
   min-height: 100vh;
   padding: 4rem 0;
   flex: 1;
@@ -36,7 +38,7 @@
 }
 
 .code {
-  background: #fafafa;
+  background: black;
   border-radius: 5px;
   padding: 0.75rem;
   font-size: 1.1rem;
@@ -58,7 +60,7 @@
   text-align: left;
   color: inherit;
   text-decoration: none;
-  border: 1px solid #eaeaea;
+  border: 1px solid black;
   border-radius: 10px;
   transition: color 0.15s ease, border-color 0.15s ease;
   max-width: 300px;
@@ -89,7 +91,7 @@
 
 .textarea {
   width: 100%;
-  color: white;
+  color: black;
   resize: vertical;
   min-height: 4em;
 }

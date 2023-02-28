@@ -17,9 +17,10 @@ import {
   getTokenFromAddress,
   isTransactionLoading,
   tokenAddressMap,
+  tokenDecimalsMap,
 } from "../../../../blockchain/stark-constants";
 import { TxToastManager } from "../../../../blockchain/txToastManager";
-import { BNtoNum, GetErrorText, NumToBN } from "../../../../blockchain/utils";
+import { BNtoNum, GetErrorText, NumToBN,etherToWeiBN } from "../../../../blockchain/utils";
 import MySpinner from "../../../mySpinner";
 
 const Repay = ({
@@ -87,7 +88,7 @@ const Repay = ({
     calls: {
       contractAddress: tokenAddressMap[asset.loanMarket] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(inputVal as number, 18), 0],
+      calldata: [diamondAddress, etherToWeiBN(inputVal as number, tokenAddressMap[asset.loanMarket]||"").toString(), 0],
     },
   });
 
@@ -102,7 +103,7 @@ const Repay = ({
       {
         contractAddress: tokenAddressMap[asset.loanMarket] as string,
         entrypoint: "approve",
-        calldata: [diamondAddress, NumToBN(inputVal as number, 18), 0],
+        calldata: [diamondAddress, etherToWeiBN(inputVal as number, tokenAddressMap[asset.loanMarket]||"").toString(), 0],
       },
       {
         contractAddress: diamondAddress,
@@ -110,7 +111,7 @@ const Repay = ({
         calldata: [
           tokenAddressMap[asset.loanMarket],
           asset.commitmentIndex,
-          NumToBN(inputVal as number, 18),
+          etherToWeiBN(inputVal as number, tokenAddressMap[asset.loanMarket]||"").toString(),
           0,
         ],
       }
@@ -121,7 +122,7 @@ const Repay = ({
         calldata: [
           tokenAddressMap[asset.loanMarket],
           asset.commitmentIndex,
-          NumToBN(inputVal as number, 18),
+          etherToWeiBN(inputVal as number, tokenAddressMap[asset.loanMarket]||"").toString(),
           0,
         ],
       }

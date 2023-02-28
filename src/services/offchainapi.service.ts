@@ -1,9 +1,18 @@
 import axios from "axios";
-import { getTokenFromAddress, tokenAddressMap } from "../blockchain/stark-constants";
-
+import {
+  getTokenFromAddress,
+  tokenAddressMap,
+} from "../blockchain/stark-constants";
+import OraclePrices from "./../../public/mock-data/OraclePrices.json";
+import Reserves from "./../../public/mock-data/Reserves.json";
 export default class OffchainAPI {
   // static ENDPOINT = 'http://52.77.185.41:3000'
-  static ENDPOINT = "https://offchainapi.testnet.starknet.hashstack.finance";
+  // static ENDPOINT = "https://offchainapi.testnet.starknet.hashstack.finance";
+  // static ENDPOINT = "http://offchainstarknettestnetstaging-api.eba-uf3qrhac.ap-southeast-1.elasticbeanstalk.com";
+  // static ENDPOINT =
+  //   "http://offchainstarknettestnetstaging-api.eba-uf3qrhac.ap-southeast-1.elasticbeanstalk.com";
+  static ENDPOINT =
+    "http://offchainstarknetmainnetprodapi-env.eba-zacgkgi6.ap-southeast-1.elasticbeanstalk.com";
   // static ENDPOINT = 'https://8992-106-51-78-197.in.ngrok.io'
   // static ENDPOINT = process.env.NEXT_PUBLIC_APP_ENV=='production' ?
   // 	'https://offchainapi.testnet.starknet.hashstack.finance' : 'http://localhost:3010'
@@ -11,7 +20,7 @@ export default class OffchainAPI {
   // static ENDPOINT =
   //     process.env.NODE_ENV === "development"
   //       ? "http://localhost:3010"
-  //       : "https://offchainapi.testnet.starknet.hashstack.finance";
+  //       : "https://offchainapi.testnet.starknet.hashstjack.finance";
 
   static async httpGet(route: string) {
     try {
@@ -116,9 +125,7 @@ export default class OffchainAPI {
           return true;
         }
         if (event.event === "WithdrawPartialLoan") {
-          return (
-            tokenAddressMap[token] === JSON.parse(event.eventInfo).market
-          );
+          return tokenAddressMap[token] === JSON.parse(event.eventInfo).market;
         }
         return true;
         // intentionally removing check. Further in flow, there is anyways loanId check
@@ -127,22 +134,27 @@ export default class OffchainAPI {
         // );
       })
       .map((event: any) => {
-        let value = JSON.parse(event.eventInfo).loanAmount
+        let value = JSON.parse(event.eventInfo).loanAmount;
         let displayToken = token;
         let showSign = false;
         let isNegative = false;
-        if (event.event === "RevertSushiSwapped" || event.event == 'SushiSwapped') {
-          value = 'all'
+        if (
+          event.event === "RevertSushiSwapped" ||
+          event.event == "SushiSwapped"
+        ) {
+          value = "all";
         }
-        if(event.event === 'AddCollateral') {
-          const collateralAddress = JSON.parse(event.eventInfo).collateralMarket
+        if (event.event === "AddCollateral") {
+          const collateralAddress = JSON.parse(
+            event.eventInfo
+          ).collateralMarket;
           displayToken = getTokenFromAddress(collateralAddress).name;
           value = JSON.parse(event.eventInfo).currentCollateralAmount;
-        } else if(event.event === 'LoanInterestDeduction') {
+        } else if (event.event === "LoanInterestDeduction") {
           value = JSON.parse(event.eventInfo).interestDeducted;
           showSign = true;
           isNegative = true;
-        } else if(event.event == 'WithdrawPartialLoan') {
+        } else if (event.event == "WithdrawPartialLoan") {
           value = JSON.parse(event.eventInfo).amount;
           showSign = true;
           isNegative = true;
@@ -189,55 +201,70 @@ export default class OffchainAPI {
     });
     const events = await OffchainAPI.httpPost(route, data, "repaid", token);
     return events
-    .filter((event: any) => {
-      console.log(event.event);
-      if (event.event === "RevertSushiSwapped") {
+      .filter((event: any) => {
+        console.log(event.event);
+        if (event.event === "RevertSushiSwapped") {
+          return true;
+        }
+        if (event.event === "WithdrawPartialLoan") {
+          return tokenAddressMap[token] === JSON.parse(event.eventInfo).market;
+        }
         return true;
-      }
-      if (event.event === "WithdrawPartialLoan") {
-        return (
-          tokenAddressMap[token] === JSON.parse(event.eventInfo).market
-        );
-      }
-      return true;
-      // intentionally removing check. Further in flow, there is anyways loanId check
-      // return (
-      //   tokenAddressMap[token] === JSON.parse(event.eventInfo).loanMarket
-      // );
-    })
-    .map((event: any) => {
-      let value = JSON.parse(event.eventInfo).loanAmount
-      let displayToken = token;
-      let showSign = false;
-      let isNegative = false;
-      if (event.event === "RevertSushiSwapped" || event.event == 'SushiSwapped') {
-        value = 'all'
-      }
-      if(event.event === 'AddCollateral') {
-        const collateralAddress = JSON.parse(event.eventInfo).collateralMarket
-        displayToken = getTokenFromAddress(collateralAddress).name;
-        value = JSON.parse(event.eventInfo).currentCollateralAmount;
-      } else if(event.event === 'LoanInterestDeduction') {
-        value = JSON.parse(event.eventInfo).interestDeducted;
-        showSign = true;
-        isNegative = true;
-      } else if(event.event == 'WithdrawPartialLoan') {
-        value = JSON.parse(event.eventInfo).amount;
-        showSign = true;
-        isNegative = true;
-      } else if(event.event == 'LoanRepaid') {
-        value = '0';
-      }
-      return {
-        txnHash: event.txHash,
-        actionType: event.event,
-        date: event.createdon,
-        value,
-        tokenName: displayToken,
-        showSign,
-        isNegative,
-        id: event.loanId,
-      };
-    });
+        // intentionally removing check. Further in flow, there is anyways loanId check
+        // return (
+        //   tokenAddressMap[token] === JSON.parse(event.eventInfo).loanMarket
+        // );
+      })
+      .map((event: any) => {
+        let value = JSON.parse(event.eventInfo).loanAmount;
+        let displayToken = token;
+        let showSign = false;
+        let isNegative = false;
+        if (
+          event.event === "RevertSushiSwapped" ||
+          event.event == "SushiSwapped"
+        ) {
+          value = "all";
+        }
+        if (event.event === "AddCollateral") {
+          const collateralAddress = JSON.parse(
+            event.eventInfo
+          ).collateralMarket;
+          displayToken = getTokenFromAddress(collateralAddress).name;
+          value = JSON.parse(event.eventInfo).currentCollateralAmount;
+        } else if (event.event === "LoanInterestDeduction") {
+          value = JSON.parse(event.eventInfo).interestDeducted;
+          showSign = true;
+          isNegative = true;
+        } else if (event.event == "WithdrawPartialLoan") {
+          value = JSON.parse(event.eventInfo).amount;
+          showSign = true;
+          isNegative = true;
+        } else if (event.event == "LoanRepaid") {
+          value = "0";
+        }
+        return {
+          txnHash: event.txHash,
+          actionType: event.event,
+          date: event.createdon,
+          value,
+          tokenName: displayToken,
+          showSign,
+          isNegative,
+          id: event.loanId,
+        };
+      });
+  }
+
+  static async getOraclePrices() {
+    let route = `/oracle-prices`;
+    return OffchainAPI.httpGet(route);
+    // return OraclePrices;
+  }
+
+  static async getReserves() {
+    let route = `/reserves`;
+    return OffchainAPI.httpGet(route);
+    // return Reserves;
   }
 }

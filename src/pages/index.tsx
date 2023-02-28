@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import axios from "axios";
+import Ellipse1 from "../assets/images/Ellipse 59.svg";
 import {
   Container,
   Row,
@@ -12,7 +12,11 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
+  NavLink,
+  NavItem,
+  Nav,
 } from "reactstrap";
+import Image from "next/image";
 import classnames from "classnames";
 import "react-toastify/dist/ReactToastify.css";
 import { toast, ToastContainer } from "react-toastify";
@@ -26,26 +30,53 @@ const TxHistoryTable = loadable(
 );
 
 import ProtocolStats from "../components/dashboard/protocol-stats";
+
 import RepaidLoansTab from "../components/passbook/active-tabs/repaid-loans";
 import ActiveLoansTab from "../components/passbook/active-tabs/active-loans";
 import ActiveDepositsTab from "../components/passbook/active-tabs/active-deposits";
+import BorrowTab from "../components/passbook/borrow-section/borrow";
 import DashboardMenu from "../components/dashboard/dashboard-menu";
 import PassbookMenu from "../components/passbook/passbook-menu";
 import Liquidation from "../components/liquidation/liquidation";
 import LoanBorrowCommitment from "../components/dashboard/loanborrow-commitment";
 import OffchainAPI from "../services/offchainapi.service";
+
+import arrowDown from "../assets/images/arrowDown.svg";
 import {
   getCommitmentIndex,
   getCommitmentNameFromIndexDeposit,
   getCommitmentNameFromIndexLoan,
   getTokenFromAddress,
+  tokenDecimalsMap,
 } from "../blockchain/stark-constants";
 import BigNumber from "bignumber.js";
 import { useAccount, useStarknet } from "@starknet-react/core";
 import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
 import { number } from "starknet";
 import { assert } from "console";
-import Script from 'next/script'
+import Script from "next/script";
+import StatsBoard from "../components/dashboard/stats";
+import connectWalletArrowDown from "../assets/images/connectWalletArrowDown.svg";
+import SpendLoan from "../components/passbook/Spend-loans/spendLoan";
+import SpendLoanNav from "../components/passbook/Spend-loans/spendLoan-navbar";
+// import YourSupplyBody from "../components/dashboard/supply";
+import { TabContext } from "../hooks/contextHooks/TabContext";
+import DashboardLiquid from "../components/dashboard/DashboardLiquid";
+import ToastModal from "../components/toastModals/customToastModal";
+
+import useMaxloan from "../blockchain/hooks/Max_loan_given_collat";
+import { BNtoNum, GetErrorText, NumToBN } from "../blockchain/utils";
+import Crossimg from "../../public/cross.svg";
+import Chart from "../components/charts/Chart";
+import Chart2 from "../components/charts/Chart2";
+import BarChartComponent from "../components/charts/barChart";
+import DownArrow from "../assets/images/ArrowDownDark.svg";
+import UpArrow from "../assets/images/ArrowUpDark.svg";
+import YourMatrics from "../components/matrics/yourMatrics";
+import ProtocolMatrics from "../components/matrics/protocolMatrix";
+import MySpinner from "../components/mySpinner";
+import { NumericFormat } from "react-number-format";
+// import App from "./Chart"
 
 interface IDeposit {
   amount: string;
@@ -71,10 +102,13 @@ interface ILoans {
   debtCategory: number | undefined;
   loanId: number;
   isSwapped: boolean;
-  state: number;
+  state: string;
+  stateType: number;
   currentLoanMarket: string | undefined;
   currentLoanAmount: number;
 }
+
+const loanTypes = ["Repaid", "Active"];
 
 const Dashboard = () => {
   const [isLoading, setIsLoading] = useState(true);
@@ -89,10 +123,11 @@ const Dashboard = () => {
   const [withdrawDepositTransactionDone, setWithdrawDepositTransactionDone] =
     useState(false);
 
-  const [customActiveTab, setCustomActiveTab] = useState("1");
+  // const [customActiveTab, setCustomActiveTab] = useState("1");
   // const [customActiveTabs, setCustomActiveTabs] = useState("1");
   const [loanActionTab, setLoanActionTab] = useState("0");
   const [passbookStatus, setPassbookStatus] = useState("ActiveDeposit");
+  
 
   const [modal_repay_loan, setmodal_repay_loan] = useState(false);
   const [modal_withdraw_loan, setmodal_withdraw_loan] = useState(false);
@@ -106,11 +141,6 @@ const Dashboard = () => {
   const [modal_withdraw_active_deposit, setmodal_withdraw_active_deposit] =
     useState(false);
 
-  const [loanOption, setLoanOption] = useState();
-  const [swapOption, setSwapOption] = useState();
-  const [loanCommitement, setLoanCommitement] = useState();
-
-  const [collateralOption, setCollateralOption] = useState();
   const [depositInterestChange, setDepositInterestChange] = useState("NONE");
   const [borrowInterestChange, setBorrowInterestChange] = useState("NONE");
 
@@ -127,21 +157,26 @@ const Dashboard = () => {
   const [index, setIndex] = useState("1");
   const { account: starknetAccount, address: _account } = useAccount();
   const [account, setAccount] = useState<string>("");
+  // const [totalBorrowApr, setTotalBorrowApr] = useState(0);
+  const [netBorrowedApr, setNetBorrowedApr] = useState(0);
+  const [netAprEarned, setNetAprEarned] = useState(0);
+  const [oracleAndFairPrices, setOracleAndFairPrices] = useState<any>();
 
   useEffect(() => {
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
   }, [_account]);
 
-  const [uf, setUf] = useState(null);
-  const [txHistoryData, setTxHistoryData] = useState(null);
-  const [totalUsers, setTotalUsers] = useState(null);
-  const [dominantMarket, setDominantMarket] = useState("");
+  const { customActiveTab, toggleCustom } = useContext(TabContext);
 
-  const [collateral_active_loan, setCollateralActiveLoan] = useState(true);
-  const [repay_active_loan, setReapyActiveLoan] = useState(false);
-  const [withdraw_active_loan, setWithdrawActiveLoan] = useState(false);
-  const [swap_active_loan, setSwapActiveLoan] = useState(true);
-  const [swap_to_active_loan, setSwapToActiveLoan] = useState(false);
+  const [reserves, setReserves] = useState();
+
+  const [typeOfLoans, setTypeOfLoans] = useState("Active");
+  const [isDropDownOpenTypeOfLoans, setIsDropDownOpenTypeOfLoans] =
+    useState(false);
+  const [typeOfLoansDropDownArrowType, setTypeOfLoansDropDownArrowType] =
+    useState(DownArrow);
+  const [filteredLoans, setFilteredLoans] = useState<ILoans[]>([]);
+  const [ActiveRepaytab, setActiveRepaytab] = useState("Active")
 
   function toggle(newIndex: string) {
     if (newIndex === index) {
@@ -151,24 +186,74 @@ const Dashboard = () => {
     }
   }
 
-  let utilizationFactor;
+  useEffect(() => {
+    const getReserves = async () => {
+      const res = await OffchainAPI.getReserves();
+      setReserves(res?.reserves);
+    };
+    getReserves();
+  }, []);
+
+  useEffect(() => {
+    const getPrices = () => {
+      OffchainAPI.getOraclePrices().then((prices) => {
+        console.log("prices", prices);
+        setOracleAndFairPrices(prices);
+      });
+    };
+    getPrices();
+  }, []);
+
+  useEffect(() => {
+    if (!oracleAndFairPrices || !activeLoansData) return;
+    calculateNetBorrowedApr();
+  }, [activeLoansData, oracleAndFairPrices]);
+
+  useEffect(() => {
+    if (!oracleAndFairPrices || !activeDepositsData) return;
+    calculateNetAprEarned();
+  }, [activeDepositsData, oracleAndFairPrices]);
+
+  const calculateNetAprEarned = () => {
+    let sum = 0;
+    for (let i = 0; i < oracleAndFairPrices?.oraclePrices?.length; i++) {
+      activeDepositsData.map((item: any, index: number) => {
+        if (item.market === oracleAndFairPrices?.oraclePrices[i].name) {
+          sum +=
+            ((Number(item.acquiredYield) + Number(item.interestPaid)) /
+              10 ** Number(tokenDecimalsMap[item.market])) *
+            oracleAndFairPrices?.oraclePrices[i].price;
+        }
+      });
+    }
+    console.log("net apr earned", sum);
+    setNetAprEarned(sum);
+  };
+
+  const calculateNetBorrowedApr = () => {
+    let sum = 0;
+    for (let i = 0; i < oracleAndFairPrices?.oraclePrices?.length; i++) {
+      activeLoansData.map((item: any) => {
+        if (
+          item.loanMarket === oracleAndFairPrices?.oraclePrices[i].name &&
+          !["REPAID", "LIQUIDATED"].includes(item.state)
+        ) {
+          sum +=
+            ((Number(item.interestPaid) + Number(item.interest)) /
+              10 ** Number(tokenDecimalsMap[item.loanMarket])) *
+            oracleAndFairPrices?.oraclePrices[i].price;
+        }
+      });
+    }
+    console.log("net borrow apr earned", sum);
+    setNetBorrowedApr(sum.toFixed(2));
+  };
 
   const onLoansData = async (loansData: any[]) => {
     console.log("Loans: ", loansData);
     const loans: ILoans[] = [];
     for (let i = 0; i < loansData.length; ++i) {
       let loanData = loansData[i];
-      const cdr = new BigNumber(loanData.collateralAmount)
-        .div(new BigNumber(loanData.loanAmount))
-        .toNumber();
-      let debtCategory;
-      if (cdr >= 1) {
-        debtCategory = 1;
-      } else if (cdr >= 0.5 && cdr < 1) {
-        debtCategory = 2;
-      } else if (cdr >= 0.333 && cdr < 0.5) {
-        debtCategory = 3;
-      }
       let temp_len = {
         loanMarket: getTokenFromAddress(loanData.loanMarket)?.name,
         loanMarketAddress: loanData.loanMarket,
@@ -177,42 +262,73 @@ const Dashboard = () => {
         commitmentIndex: getCommitmentIndex(loanData.commitment) as number,
         collateralMarket: getTokenFromAddress(loanData.collateralMarket)?.name, // 4 Collateral Market
         collateralAmount: Number(loanData.collateralAmount), // 5 Collateral Amount
-        loanInterest: Number(loanData.interest), //loan interest
+        interestPaid: Number(loanData.interestPaid), //loan interest
+        interest: Number(loanData.interest),
         interestRate: 0,
+        openLoanAmount: Number(loanData.openLoanAmount), // Open Loan Amount
         //interest market will always be same as loan market
         account,
-        cdr,
-        debtCategory,
+        cdr: loanData.cdr,
+        debtCategory: loanData.dc,
         loanId: loanData.loanId,
         isSwapped: loanData.state == "SWAPPED", // Swap status
-        state:
+        state: loanData.state,
+        stateType:
           loanData.state == "REPAID" || loanData.state == "LIQUIDATED" ? 1 : 0, // Repay status
         currentLoanMarket: getTokenFromAddress(
           loanData.currentMarket || loanData.loanMarket
         )?.name, // Borrow market(current)
-        currentLoanAmount: Number(
+        currentLoanAmount:
           loanData.currentAmount != "0"
             ? loanData.currentAmount
-            : loanData.openLoanAmount
-        ), // Borrow amount(current)
+            : loanData.openLoanAmount, // Borrow amount(current)
         timestamp: loanData.time,
+        l3App:
+          loanData.l3Id === "jedi_swap"
+            ? "jediSwap"
+            : loanData.l3Id === "my_swap"
+            ? "mySwap"
+            : null,
         //get apr is for loans apr
       };
       loans.push(JSON.parse(JSON.stringify(temp_len)));
 
-      setActiveLoansData(
-        loans.filter((asset) => {
-          return asset.state === 0;
-        })
-      );
+      setActiveLoansData(loans);
+      console.log("loans: " + loans);
       setRepaidLoansData(
         loans.filter((asset) => {
           console.log(asset, "testasset");
-          return asset.state === 1;
+          return asset.state === "REPAID";
+        })
+      );
+      setFilteredLoans(
+        activeLoansData.filter((loan) => {
+          return loan.state !== "REPAID" && loan.state !== "LIQUIDATED";
         })
       );
     }
   };
+console.log("Repaid loans data",repaidLoansData);
+
+  useEffect(() => {
+    let validTypes = ["REPAID", "SWAPPED", "OPEN"];
+    if (typeOfLoans === "Repaid") {
+      setFilteredLoans(
+        activeLoansData.filter((loan) => {
+          return (
+            loan.state === typeOfLoans.toUpperCase() &&
+            loan.collateralAmount > 0
+          );
+        })
+      );
+      return;
+    }
+    setFilteredLoans(
+      activeLoansData.filter((loan) => {
+        return loan.state !== "REPAID" && loan.state !== "LIQUIDATED";
+      })
+    );
+  }, [typeOfLoans, activeLoansData]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -235,6 +351,7 @@ const Dashboard = () => {
       );
   }, [
     // account,
+    account,
     passbookStatus,
     customActiveTab,
     isTransactionDone,
@@ -243,6 +360,7 @@ const Dashboard = () => {
 
   const onDepositData = async (depositsData: any[]) => {
     let deposits: any[] = [];
+    console.log("depositdata", depositsData);
     for (let i = 0; i < depositsData.length; i++) {
       let deposit: any = depositsData[i];
       console.log(deposit);
@@ -266,7 +384,8 @@ const Dashboard = () => {
         commitmentIndex: Number(deposit.commitment),
         market: getTokenFromAddress(deposit.market as string)?.name,
         marketAddress: deposit.market as string,
-        acquiredYield: Number(0), // deposit interest
+        acquiredYield: Number(0), // deposit interest TODO: FORMULA
+        interestPaid: deposit.interestPaid, // deposit interest
         interestRate: 0,
         depositId: deposit.depositId,
         timestamp: deposit.createdAtOnChain,
@@ -277,50 +396,48 @@ const Dashboard = () => {
       console.log("on deposit", i, myDepString);
       deposits.push(JSON.parse(myDepString));
     }
+    console.log("depositsxyz", deposits);
     let nonZeroDeposits = deposits.filter(function (el) {
       console.log(el.amount, "deposits123");
       return el.amount !== "0";
     });
-    console.log({ nonZeroDeposits });
     setActiveDepositsData(nonZeroDeposits);
   };
 
   useEffect(() => {
     !isTransactionDone &&
       account &&
-      OffchainAPI.getActiveDeposits(account).then(
-        (deposits) => {
-          console.log(deposits);
-          onDepositData(deposits);
-          setIsLoading(false);
-        },
-        (err) => {
-          setIsLoading(false);
-          setActiveDepositsData([]);
-          console.log(err);
-        }
-      );
-  }, [
-    // account,
-    passbookStatus,
-    customActiveTab,
-    isTransactionDone,
-  ]);
+      OffchainAPI.getActiveDeposits(account)
+        .then(
+          (deposits) => {
+            onDepositData(deposits);
+            setIsLoading(false);
+          },
+          (err) => {
+            setIsLoading(false);
+            setActiveDepositsData([]);
+            console.log(err);
+          }
+        )
+        .catch((error) => {
+          console.log("error in getting deposits", error);
+        });
+  }, [account, passbookStatus, customActiveTab, isTransactionDone]);
 
   useEffect(() => {
     setTimeout(() => {
       setIsLoading(false);
     }, 100);
-    if (customActiveTab == "3") {
+    if (customActiveTab == "6") {
       navigateLoansToLiquidate(liquidationIndex);
     }
   }, [customActiveTab]); //only call this when custom active tab changes
 
-  const toggleCustom = (tab: any) => {
-    if (customActiveTab !== tab) {
-      setCustomActiveTab(tab);
-    }
-  };
+  // const toggleCustom = (tab: any) => {
+  //   if (customActiveTab !== tab) {
+  //     setCustomActiveTab(tab);
+  //   }
+  // };
 
   const toggleCustoms = (tab: any) => {
     if (customActiveTabs !== tab) {
@@ -398,11 +515,11 @@ const Dashboard = () => {
   };
 
   const onLiquidationsData = async (liquidationsData: any[]) => {
-    console.log("onLiquidationsData in", liquidationsData);
     const liquidations: any[] = [];
     for (let i = 0; i < liquidationsData.length; i++) {
-      let loan = liquidationsData[i];
-      liquidations.push({
+      const loan = liquidationsData[i];
+      console.log("loan in liquidation", loan);
+      let myLiquidableLoan = {
         loanOwner: loan.account,
         loanMarket: getTokenFromAddress(loan.loanMarket)?.name,
         commitment: getCommitmentNameFromIndexDeposit(loan.commitment),
@@ -411,20 +528,23 @@ const Dashboard = () => {
         collateralAmount: loan.collateralAmount,
         isLiquidationDone: false,
         id: loan.loanId,
-      });
+      };
+      let myLoanString = JSON.stringify(myLiquidableLoan);
+      liquidations.push(JSON.parse(myLoanString));
     }
-
     // getting the unique liquidable loans by filtering laonMarket and Commitment
-    const uniqueLiquidableLoans = liquidations.filter(
-      (loan, index, self) =>
-        index ===
-        self.findIndex(
-          (t) =>
-            t.loanMarket === loan.loanMarket && t.commitment === loan.commitment
-        )
-    );
-
-    setActiveLiquidationsData(uniqueLiquidableLoans);
+    // const uniqueLiquidableLoans = liquidations.filter(
+    //   (loan, index, self) =>
+    //     index ===
+    //     self.findIndex(
+    //       (t) =>
+    //         t.loanMarket === loan.loanMarket && t.commitment === loan.commitment
+    //     )
+    // );
+    // console.log("uni liquida", uniqueLiquidableLoans);
+    // setActiveLiquidationsData(uniqueLiquidableLoans);
+    console.log("onLiquidationsData in", liquidationsData, liquidations);
+    setActiveLiquidationsData(liquidations);
   };
 
   const navigateLoansToLiquidate = async (liquidationIndex: any) => {
@@ -442,35 +562,15 @@ const Dashboard = () => {
         }
       );
   };
-
-  // const getPassbookTable = (passbookStatus: string) => {
-  //   switch (passbookStatus) {
-  //     case "ActiveDeposit":
-  //       <ActiveDepositTable activeDepositsData={activeDepositsData} />;
-  //       break;
-
-  //     case "ActiveLoan": //
-  //       <ActiveLoansTable activeLoansData={activeLoansData} />;
-  //       break;
-
-  //     case "RepaidLoan":
-  //       <RepaidLoanTable repaidLoansData={repaidLoansData} />;
-  //       break;
-
-  //     default:
-  //       return null;
-  //   }
-  // };
-  //here
-
   const getActionTabs = (customActiveTab: string) => {
     console.log("blockchain activedepoist", activeDepositsData);
     console.log("blockchain activeloans", activeLoansData);
-    // console.log("customActiveTabs: ", customActiveTabs);
+    console.log("customActiveTab: ", customActiveTab);
     switch (customActiveTab) {
       case "1":
         return (
           <ActiveDepositsTab
+            reserves={reserves}
             activeDepositsData={activeDepositsData}
             modal_add_active_deposit={modal_add_active_deposit}
             tog_add_active_deposit={tog_add_active_deposit}
@@ -489,7 +589,7 @@ const Dashboard = () => {
       case "2": //
         return (
           <ActiveLoansTab
-            activeLoansData={activeLoansData}
+            activeLoansData={filteredLoans}
             customActiveTabs={customActiveTabs}
             isTransactionDone={isTransactionDone}
             depositRequestSel={depositRequestSel}
@@ -511,6 +611,26 @@ const Dashboard = () => {
       default:
         return null;
     }
+  };
+
+  const borrowActionTabs = () => {
+    return (
+      typeOfLoans === "Active"? 
+      <BorrowTab
+      activeLoansData={filteredLoans}
+      customActiveTabs={customActiveTabs}
+      isTransactionDone={isTransactionDone}
+      depositRequestSel={depositRequestSel}
+      removeBodyCss={removeBodyCss}
+      setCustomActiveTabs={setCustomActiveTabs}
+      fairPriceArray={oracleAndFairPrices?.fairPrices}
+    />
+    :  <RepaidLoansTab
+    repaidLoansData={repaidLoansData}
+    customActiveTabs={customActiveTab}
+  />
+     
+    );
   };
 
   function incorrectChain() {
@@ -535,63 +655,380 @@ const Dashboard = () => {
     );
   }
 
-  function dashboardUI() {
+  function DashboardUI() {
+    const [totalBorrowAssets, setTotalBorrowAssets] = useState();
+    const [totalSupplyDash, setTotalSupplyDash] = useState();
+
     return (
-      <Container fluid>
-        {/* Protocol Stats */}
-        <ProtocolStats />
-        <Row>
-          <Col xl={"12"}>
-            <Card style={{ height: "35rem", overflowY: "scroll" }}>
-              <CardBody>
-                <Row>
-                  {/* Dashboard Menu Panes */}
+      <div style={{ width: "100%", backgroundColor: "#1C202", height: "100%" }}>
+        {customActiveTab === "1" ? (
+          <StatsBoard
+            setTotalBorrowAssets={setTotalBorrowAssets}
+            setTotalSupplyDash={setTotalSupplyDash}
+            depositsArray={activeDepositsData}
+            loansArray={activeLoansData}
+          />
+        ) : null}
+        <Container fluid>
+          <Row>
+            <Col xl={"12"}>
+              {/* <Card style={{ height: "35rem", overflowY: "scroll" }}> */}
+              <div style={{ margin: "1px 5px 5px 14px" }}>
+                {customActiveTab === "2" ||
+                customActiveTab === "3" ||
+                customActiveTab === "4" ? (
+                  <div style={{ marginTop: "90px" }}>
+                    <DashboardMenu
+                      margin={"0px"}
+                      customActiveTab={customActiveTab}
+                      toggleCustom={toggleCustom}
+                      account={account as string}
+                    />
+                  </div>
+                ) : customActiveTab === "1" ? (
                   <DashboardMenu
+                    margin={"30px"}
                     customActiveTab={customActiveTab}
                     toggleCustom={toggleCustom}
                     account={account as string}
                   />
-
-                  {/* ----------------- PASSBOOK MENU TOGGLES -------------------- */}
-                  <Col xl="5">
-                    {customActiveTab === "2" && (
-                      <PassbookMenu
-                        account={account as string}
-                        customActiveTabs={customActiveTabs}
-                        toggleCustoms={toggleCustoms}
-                      />
-                    )}
-                  </Col>
-                </Row>
-
-                {/* ----------------- PASSBOOK BODY -------------------- */}
-                <Row>
-                  <div>
-                    <Col lg={12}>
-                      {customActiveTab === "2" &&
-                        getActionTabs(customActiveTabs)}
-                      {/* {getPassbookTable(passbookStatus)} */}
-                    </Col>
-                  </div>
-                </Row>
-
-                <TabContent activeTab={customActiveTab} className="p-1">
-                  {/* ------------------------------------- DASHBOARD ----------------------------- */}
-                  <LoanBorrowCommitment isLoading={isLoading} />
-
-                  {/* -------------------------------------- PASSBOOK ----------------------------- */}
-
-                  {/* -------------------------------------- LIQUIDATION ----------------------------- */}
-                  <Liquidation
-                    activeLiquidationsData={activeLiquidationsData}
-                    isTransactionDone={isTransactionDone}
+                ) : null}
+              </div>
+              <div style={{ margin: "1px 5px 10px 14px" }}>
+                {customActiveTab === "6" ? (
+                  <DashboardLiquid
+                    customActiveTab={customActiveTab}
+                    toggleCustom={toggleCustom}
+                    account={account as string}
                   />
-                </TabContent>
-              </CardBody>
-            </Card>
-          </Col>
-        </Row>
-      </Container>
+                ) : (
+                  <div></div>
+                )}
+              </div>
+              {customActiveTab === "3" ||
+              customActiveTab === "4" ||
+              customActiveTab === "2" ? (
+                <>
+                  <div
+                    style={{
+                      display: "flex",
+                      margin: "10px 18px",
+                      color: "white",
+                      fontSize: "10px",
+                    }}
+                  >
+                    {customActiveTab === "4" ? (
+                      <>
+                        <div style={{ width: "7%" }}>
+                          <div style={{ color: "#8C8C8C" }}>Total Borrow</div>
+                          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                            {totalBorrowAssets !== undefined ? (
+                              <NumericFormat
+                                displayType="text"
+                                value={totalBorrowAssets.toFixed(2)}
+                                thousandSeparator=","
+                                prefix={"$"}
+                              />
+                            ) : (
+                              <MySpinner />
+                            )}
+                          </div>
+                        </div>
+                        <div style={{ width: "7%" }}>
+                          <div style={{ color: "#8C8C8C" }}>APR Earned</div>
+                          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                            {/* $8,932.14 */}${netAprEarned}
+                          </div>
+                        </div>
+                      </>
+                    ) : customActiveTab === "3" ? (
+                      <>
+                        <div style={{ width: "8%" }}>
+                          <div style={{ color: "#8C8C8C" }}>Total Supply</div>
+                          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                            {totalSupplyDash !== undefined ? (
+                              <NumericFormat
+                                displayType="text"
+                                value={totalSupplyDash.toFixed(2)}
+                                thousandSeparator=","
+                                prefix={"$"}
+                              />
+                            ) : (
+                              <MySpinner />
+                            )}
+                          </div>
+                        </div>
+                        <div style={{ width: "7%" }}>
+                          <div style={{ color: "#8C8C8C" }}>APR Earned</div>
+                          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                            {/* $8,932.14 */}${netAprEarned}
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <div style={{ width: "8%" }}>
+                          <div style={{ color: "#8C8C8C" }}>
+                            Total Borrow Assets
+                          </div>
+                          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                            {totalBorrowAssets !== undefined ? (
+                              <NumericFormat
+                                displayType="text"
+                                value={totalBorrowAssets.toFixed(2)}
+                                thousandSeparator=","
+                                prefix={"$"}
+                              />
+                            ) : (
+                              <MySpinner />
+                            )}
+                          </div>
+                        </div>
+                        <div style={{ width: "7%" }}>
+                          <div style={{ color: "#8C8C8C" }}>Net Borrow APR</div>
+                          <div style={{ fontSize: "16px", fontWeight: "500" }}>
+                            {/* $8,932.14 */}${netBorrowedApr}
+                          </div>
+                        </div>
+                      </>
+                    )}
+                  </div>
+                  {customActiveTab === "4" ? (
+                    <div
+                      style={{
+                        position: "absolute",
+                        zIndex: "3",
+                        right: "80px",
+                        top: "60px",
+                      }}
+                    >
+                      <button
+                        style={{
+                          marginTop: "40px",
+                          color: "white",
+                          backgroundColor: "rgb(57, 61, 79)",
+                          padding: "6px 8px 6px 10px",
+                          borderRadius: "5px",
+                          display: "flex",
+                          width: "105px",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                          border: "none",
+                        }}
+                        onClick={() => {
+                          setTypeOfLoansDropDownArrowType(
+                            isDropDownOpenTypeOfLoans ? DownArrow : UpArrow
+                          );
+                          setIsDropDownOpenTypeOfLoans(
+                            !isDropDownOpenTypeOfLoans
+                          );
+                        }}
+                      >
+                        {typeOfLoans}&nbsp;&nbsp;&nbsp;
+                        <Image
+                          src={typeOfLoansDropDownArrowType}
+                          alt="Picture of the author"
+                          width="14px"
+                          height="14px"
+                        />
+                      </button>
+
+                      {isDropDownOpenTypeOfLoans ? (
+                        <>
+                          <div
+                            style={{
+                              borderRadius: "5px",
+                              position: "absolute",
+                              zIndex: "100",
+                              top: "31px",
+                              right: "0px",
+                              width: "105px",
+                              margin: "0px auto",
+                              marginBottom: "20px",
+                              padding: "5px 10px",
+                              backgroundColor: "#393D4F",
+                              // boxShadow: "0px 0px 10px rgb(57, 61, 79)",
+                            }}
+                          >
+                            {loanTypes.map((type, index) => {
+                              return (
+                                <div
+                                  key={index}
+                                  style={{
+                                    margin: "10px 0",
+                                    cursor: "pointer",
+                                    display: "flex",
+                                    alignItems: "center",
+                                    fontSize: "0.8rem",
+                                    color: "#6F6F6F",
+                                  }}
+                                  onClick={() => {
+                                    setTypeOfLoans(type);
+                                    setTypeOfLoansDropDownArrowType(DownArrow);
+                                    setIsDropDownOpenTypeOfLoans(false);
+                                    setActiveRepaytab(type)
+                                  }}
+                                >
+                                  {type}
+                                </div>
+                              );
+                            })}
+                          </div>
+                        </>
+                      ) : (
+                        <></>
+                      )}
+                    </div>
+                  ) : null}
+                </>
+              ) : null}
+              {customActiveTab === "7" ? (
+                <div style={{ marginTop: "130px" }}>
+                  <YourMatrics />
+                </div>
+              ) : null}
+
+              {customActiveTab === "8" ? (
+                <div style={{ marginTop: "130px" }}>
+                  <ProtocolMatrics />
+                </div>
+              ) : null}
+
+              {customActiveTab === "1" ||
+              customActiveTab === "3" ||
+              customActiveTab === "4" ? (
+                <Card
+                  style={{
+                    height: "76vh",
+                    maxHeight: "36rem",
+                    border: "none",
+                    boxShadow:
+                      "5px 10px 5px -5px rgba(20, 23, 38, 0.15), 5px 5px 5px -5px rgba(20, 23, 38, 0.3)",
+                  }}
+                >
+                  <CardBody
+                    style={{
+                      overflowX: "hidden",
+                      backgroundColor: "#2A2E3F",
+                      border: "none",
+                      boxShadow:
+                        "5px 10px 5px -5px rgba(20, 23, 38, 0.15), 5px 5px 5px -5px rgba(20, 23, 38, 0.3)",
+                    }}
+                  >
+                    {console.log(
+                      "depositDatall",
+                      activeDepositsData,
+                      activeLoansData
+                    )}{" "}
+                    {customActiveTab === "1" ? (
+                      activeDepositsData && activeLoansData?
+                      <LoanBorrowCommitment
+                        reserves={reserves}
+                        isLoading={isLoading}
+                        activeDepositsData={activeDepositsData}
+                        activeLoansData={filteredLoans}
+                      />
+                      :"This is it"
+                  
+                    ) : null}
+                    <Row>
+                      <div>
+                        <Col lg={12}>
+                          {customActiveTab === "3"
+                            ? getActionTabs(customActiveTabs)
+                            : null}
+                        </Col>
+                      </div>
+                    </Row>
+                    <Row>
+                      <div>
+                        <Col lg={12}>
+                          {customActiveTab === "4" ? borrowActionTabs() : null}
+                        </Col>
+                      </div>
+                    </Row>
+                  </CardBody>
+                </Card>
+              ) : (
+                <>
+                  <TabContent activeTab={customActiveTab} className="p-1">
+                    <Row>
+                      <div>
+                        <Col lg={12}>
+                          {customActiveTab === "6" ? (
+                            <div style={{ color: "black", marginTop: "30px" }}>
+                              <Liquidation
+                                activeLiquidationsData={activeLiquidationsData}
+                                isTransactionDone={isTransactionDone}
+                              />
+                            </div>
+                          ) : null}
+                        </Col>
+                      </div>
+                    </Row>
+                  </TabContent>
+                </>
+              )}
+
+              {customActiveTab === "2" ? (
+                <>
+                  {" "}
+                  <Card
+                    style={{
+                      height: "15rem",
+                      overflowY: "scroll",
+                    }}
+                  >
+                    <CardBody
+                      style={{
+                        backgroundColor: "rgb(42, 46, 63)",
+                        overflowX: "hidden",
+                        marginTop: "-20px",
+                      }}
+                    >
+                      <Row
+                        style={{
+                          height: "40px",
+                        }}
+                      >
+                        {customActiveTab === "2" ? (
+                          <SpendLoan
+                            activeLoansData={activeLoansData.filter(
+                              (loan) => loan.state === "OPEN"
+                            )}
+                          />
+                        ) : null}
+                      </Row>
+                    </CardBody>
+                  </Card>
+                  <div
+                    style={{
+                      margin: "10px 0",
+                      color: "#8B8B8B",
+                    }}
+                  >
+                    &nbsp; &nbsp; Only unspent loans are displayed here. For
+                    comprehensive list of active loansgo to{" "}
+                    <u
+                      style={{ cursor: "pointer", color: "white" }}
+                      onClick={() => {
+                        toggleCustom("4");
+                      }}
+                    >
+                      your borrow
+                    </u>
+                  </div>
+                  <SpendLoanNav
+                    activeLoansData={activeLoansData.filter(
+                      (loan) => loan.state === "OPEN"
+                    )}
+                  />
+                </>
+              ) : null}
+            </Col>
+          </Row>
+        </Container>
+      </div>
     );
   }
 
@@ -626,7 +1063,7 @@ const Dashboard = () => {
   return (
     <React.Fragment>
       <Head>
-        <title>Hashstack | Starknet testnet</title>
+        <title>Hashstack | Starknet</title>
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
 
@@ -658,10 +1095,9 @@ const Dashboard = () => {
               })(window, document, "clarity", "script", "f0nuusees0");
             }
           `}
-      </Script>
-
-      {/* zk.hashstack.finance */}
-      {/* <Script id="microsoft-clarity-zk" strategy="afterInteractive">
+        </Script>
+        {/* zk.hashstack.finance */}
+        {/* <Script id="microsoft-clarity-zk" strategy="afterInteractive">
           {`
             if (!window.location.host.includes('localhost')) {
               (function(c,l,a,r,i,t,y){
@@ -672,26 +1108,39 @@ const Dashboard = () => {
             }
           `}
       </Script> */}
-
-      <div className="page-content" style={{ marginTop: "0px" }}>
-        {/* <MetaTags>
+        <div
+          className="page-content"
+          style={{
+            marginTop: "0px",
+            zIndex: "100",
+            backgroundColor: "#1C202F",
+          }}
+        >
+          {/* <MetaTags>
           <title>Hashstack Finance</title>
         </MetaTags> */}
-        {/* {maintenance()} */}
+          {/* {maintenance()} */}
 
-        {/* <Banner /> */}
-        {!starknetAccount ? (
+          {DashboardUI()}
+          {/* <Banner /> */}
+          {/* {!starknetAccount ? (
           <h3>Loading...</h3>
         ) : !isCorrectNetwork() ? (
           incorrectChain()
         ) : (
           dashboardUI()
-        )}
-
-        {/* <Analytics></Analytics>
+        )} */}
+          {/* <Analytics></Analytics>
             {props.children} */}
+        </div>
+        {/* <ToastModal
+        bool={false}
+        heading="Transaction Complete"
+        desc="Copy Transaction Hash"
+      /> */}
+        {/* // </React.Fragment> */}
       </div>
-    </React.Fragment>
+    </>
   );
 };
 

@@ -3,60 +3,79 @@ import {
   useStarknet,
   useStarknetExecute,
 } from "@starknet-react/core";
-import { exec } from "child_process";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { number } from "starknet";
-import deposit from "../../../components/deposit";
-import { tokenAddressMap } from "../../stark-constants";
-import { GetErrorText, NumToBN } from "../../utils";
+import { tokenAddressMap, tokenDecimalsMap } from "../../stark-constants";
+import { GetErrorText, NumToBN,etherToWeiBN } from "../../utils";
 
 const useWithdrawDeposit = (
-  _token: any,
-  _diamondAddress: string,
-  _depositId: number
+  asset: any,
+  diamondAddress: string,
 ) => {
-  const [token, setToken] = useState("");
-  const [diamondAddress, setDiamondAddress] = useState("");
   const [withdrawAmount, setWithdrawAmount] = useState<number>();
-  const [depositId, setDepositId] = useState<number>();
-  useEffect(() => {
-    setToken(_token.market);
-    setDiamondAddress(_diamondAddress);
-    setDepositId(_depositId);
-  }, [_token.market, _diamondAddress, _depositId]);
-
   const [transWithdraw, setTransWithdraw] = useState('');
 
+  const [toastDepWithdrawParam, setDepWithdrawToastParam] = useState({});
+  const [isDepWithdrawToastOpen, setIsDepWithdrawToastOpen] = useState(false);
+
+
   const {
-    data: dataDeposit,
-    loading: loadingDeposit,
-    error: errorDeposit,
-    reset: resetDeposit,
-    execute: executeDeposit,
+    data: dataWithdrawDeposit,
+    loading: loadingWithdrawDeposit,
+    error: errorWithdrawDeposit,
+    reset: resetWithdrawDeposit,
+    execute: executeWithdrawDep,
   } = useStarknetExecute({
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "withdraw_deposit",
-      calldata: [depositId, NumToBN(withdrawAmount as number, 18), 0],
+      calldata: [asset.depositId, etherToWeiBN(withdrawAmount as number, tokenAddressMap[asset.market]||"").toString(), 0],
     },
   });
 
-  const withdrawDeposit = async () => {
-    console.log(`${withdrawAmount} ${depositId} ${diamondAddress}`);
+  const handleWithdrawDeposit = async () => {
+    console.log(`${withdrawAmount} ${asset.depositId} ${diamondAddress}`);
     try {
-      const val = await executeDeposit();
+      const val = await executeWithdrawDep();
       setTransWithdraw(val.transaction_hash);
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash", 
+        textToCopy: val.transaction_hash,
+      };
+      setDepWithdrawToastParam(toastParamValue);
+      setIsDepWithdrawToastOpen(true);
     } catch(err) {
       console.log(err, 'withdraw deposit')
+      const toastParamValue = {
+        success: false,
+        heading: "Deposit Transaction Failed",
+        desc: "Copy the error", 
+        textToCopy: err,
+      };
+      setDepWithdrawToastParam(toastParamValue);
+      setIsDepWithdrawToastOpen(true);
+      toast.error(`${GetErrorText(`Withdraw for ID:${asset.depositId} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
     }
   };
 
   return {
-    withdrawDeposit,
+    handleWithdrawDeposit,
     setWithdrawAmount,
     withdrawAmount,
-    transWithdraw
+    transWithdraw,
+    executeWithdrawDep,
+    loadingWithdrawDeposit,
+    errorWithdrawDeposit,
+
+    isDepWithdrawToastOpen, 
+    setIsDepWithdrawToastOpen, 
+    toastDepWithdrawParam,
   };
 };
 
