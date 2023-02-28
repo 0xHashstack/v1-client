@@ -79,7 +79,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                   // @todo to move this to env variables
                   new RpcProvider({
                     nodeUrl:
-                      "https://starknet-goerli2.infura.io/v3/3274a9630231466681b6300375f517f2",
+                      "https://starknet-goerli.infura.io/v3/3274a9630231466681b6300375f517f2",
                   })
                 }
               >

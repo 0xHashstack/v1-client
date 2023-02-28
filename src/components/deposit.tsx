@@ -316,9 +316,7 @@ let Deposit: any = ({
     abi: DepositAbi as Abi,
     address: diamondAddress,
   });
-  const provider = new Provider({
-    sequencer: { baseUrl: "https://alpha4-2.starknet.io" },
-  });
+
   const depositContract2 = new Contract(
     DepositAbi as Abi,
     diamondAddress,
