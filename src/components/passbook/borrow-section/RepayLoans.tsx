@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import {
     Button,
     Col,
@@ -11,12 +11,19 @@ import {
     Table,
     UncontrolledAccordion,
   } from "reactstrap";
-  import { EventMap } from '../../../blockchain/constants';
+  // import { EventMap } from '../../../blockchain/constants';
 import { tokenAddressMap } from '../../../blockchain/stark-constants';
 import { weiToEtherNumber } from '../../../blockchain/utils';
+import {
+  CoinClassNames,
+  EventMap,
+  MinimumAmount,
+} from "../../../blockchain/constants";
 
-const RepayLoans = ({asset}:{asset:any}) => {
-    console.log(asset);
+const RepayLoans = ({assets}:{assets:any}) => {
+
+ console.log(assets);
+ 
     
   return (
     <>
@@ -37,17 +44,17 @@ const RepayLoans = ({asset}:{asset:any}) => {
           }}
         >
           <Col style={{ marginLeft: "-10px", textAlign: "left" }}>
-            ID {asset.loanId}
+            ID {assets.loanId}
           </Col>
 
           <Col>
             <div style={{ marginTop: "10px" }}>
               <img
                 src={
-                  asset
+                  assets
                     ? CoinClassNames[
-                    EventMap[asset.loanMarket.toUpperCase()]
-                    ] || asset.loanMarket.toUpperCase()
+                    EventMap[assets.loanMarket.toUpperCase()]
+                    ] || assets.loanMarket.toUpperCase()
                     : null
                 }
                 height="15px"
@@ -60,7 +67,7 @@ const RepayLoans = ({asset}:{asset:any}) => {
                 }}
               >
                 &nbsp; &nbsp;
-                {EventMap[asset.loanMarket.toUpperCase()]}
+                {EventMap[assets.loanMarket.toUpperCase()]}
               </div>{" "}
             </div>
           </Col>
@@ -69,17 +76,17 @@ const RepayLoans = ({asset}:{asset:any}) => {
             <div>
               <img
                 src={
-                  asset
+                  assets
                     ? CoinClassNames[
-                    EventMap[asset.loanMarket.toUpperCase()]
-                    ] || asset.loanMarket.toUpperCase()
+                    EventMap[assets.loanMarket.toUpperCase()]
+                    ] || assets.loanMarket.toUpperCase()
                     : null
                 }
                 height="15px"
               />
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
-                {parseFloat(weiToEtherNumber(asset.loanAmount,tokenAddressMap[asset.loanMarket]||"").toString())}
+                {parseFloat(weiToEtherNumber(assets.loanAmount,tokenAddressMap[assets.loanMarket]||"").toString())}
               </span>
             </div>
           </Col>
@@ -88,9 +95,9 @@ const RepayLoans = ({asset}:{asset:any}) => {
             <div
               style={{ fontSize: "14px", fontWeight: "600", width: "110px" }}
             >
-              {parseFloat(weiToEtherNumber(asset.interestPaid,tokenAddressMap[asset.loanMarket]||"").toString()).toFixed(6)}
+              {parseFloat(weiToEtherNumber(assets.interestPaid,tokenAddressMap[assets.loanMarket]||"").toString()).toFixed(6)}
               &nbsp;
-              {EventMap[asset.loanMarket.toUpperCase()]}
+              {EventMap[assets.loanMarket.toUpperCase()]}
             </div>
             <div
               className="mr-6"
@@ -105,23 +112,23 @@ const RepayLoans = ({asset}:{asset:any}) => {
                   color: "#8B8B8B",
                 }}
               >
-                {parseFloat(currentBorrowInterest).toFixed(2)}% APR
+                {/* {parseFloat(currentBorrowInterest).toFixed(2)}% APR */}
               </div>
             </div>
           </Col>
 
           <Col style={{ marginLeft: "-8px" }}>0.00</Col>
 
-          <Col>{asset?.commitment}</Col>
+          <Col>{assets?.commitment}</Col>
 
           <Col>
             <div>
               <img
                 src={
-                  asset
+                  assets
                     ? CoinClassNames[
-                    EventMap[asset.collateralMarket.toUpperCase()]
-                    ] || asset.collateralMarket.toUpperCase()
+                    EventMap[assets.collateralMarket.toUpperCase()]
+                    ] || assets.collateralMarket.toUpperCase()
                     : null
                 }
                 height="15px"
@@ -134,7 +141,7 @@ const RepayLoans = ({asset}:{asset:any}) => {
                 }}
               >
                 &nbsp; &nbsp;
-                {EventMap[asset.collateralMarket.toUpperCase()]}
+                {EventMap[assets.collateralMarket.toUpperCase()]}
               </div>
             </div>
           </Col>
@@ -143,17 +150,17 @@ const RepayLoans = ({asset}:{asset:any}) => {
             <div>
               <img
                 src={
-                  asset
+                  assets
                     ? CoinClassNames[
-                    EventMap[asset.collateralMarket.toUpperCase()]
-                    ] || asset.collateralMarket.toUpperCase()
+                    EventMap[assets.collateralMarket.toUpperCase()]
+                    ] || assets.collateralMarket.toUpperCase()
                     : null
                 }
                 height="15px"
               />
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
-                {parseFloat(weiToEtherNumber(asset.collateralAmount,tokenAddressMap[asset.collateralMarket]||"" ).toString())}
+                {parseFloat(weiToEtherNumber(assets.collateralAmount,tokenAddressMap[assets.collateralMarket]||"" ).toString())}
               </span>
             </div>
           </Col>
