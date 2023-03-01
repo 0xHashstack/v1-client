@@ -106,7 +106,7 @@ export const depositInterestAccrued = (asset: any, historicalData: any[]) => {
           marketCommitmentSpecificData[index - 1].timestamp - entry.timestamp;
       }
       // amount * difference/seconds in year * rate/100
-      let rate = new BigNumber(parseFloat(entry.apr100x) / 100);
+      let rate = new BigNumber(parseFloat(entry?.apr100x) / 100);
       //   let rate = new BigNumber(parseFloat("200") / 100);
       let timeDifference_bn = new BigNumber(timeDifference);
       let amount_bn = new BigNumber(asset.amount);
@@ -138,7 +138,7 @@ export const currentDepositInterestRate = (asset: any, historicalAPRs: any) => {
     );
   });
   const aprWithMultiplier =
-    marketHistoricalAPRs[marketHistoricalAPRs.length - 1].apr100x;
+    marketHistoricalAPRs[marketHistoricalAPRs.length - 1]?.apr100x;
   const multiplier = new BigNumber("100");
   const aprWithMultiplierBigNumber = new BigNumber(aprWithMultiplier);
   const aprBigNumber = aprWithMultiplierBigNumber.dividedBy(multiplier);
@@ -151,7 +151,7 @@ export const currentBorrowInterestRate = (asset: any, historicalAPRs: any) => {
     asset.commitmentIndex
   }`;
   console.log("currentBorrowInterestRate", key);
-  return (historicalAPRs[key].borrowAPR.apr100x / 100).toFixed(2);
+  return (historicalAPRs[key]?.borrowAPR?.apr100x / 100).toFixed(2);
   // const marketHistoricalAPRs = historicalAPRs.filter((aprRecords: any) => {
   //   return (
   //     aprRecords.market === asset.loanMarketAddress &&
