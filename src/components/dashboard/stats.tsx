@@ -24,13 +24,14 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any, setTotalBorro
   const [loans, setLoans] = useState<any>();
   const [netWorth, setNetWorth] = useState(0);
   const [reserves, setReserves] = useState(0);
+
   const rates = {
     USDT: 0,
     BTC: 0,
     ETH: 0,
     USDC: 0,
   };
-
+  let reservesAmount = 0;
   useEffect(() => {
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
   }, [_account]);
@@ -92,14 +93,14 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any, setTotalBorro
         setTotalSupplyDash(supply);
 
         const getReserves = async () => {
-          let reservesAmount = 0;
+      
           const res: any = await OffchainAPI.getReserves();
-          for (let token in res?.reserves?.deposits) {
-            if (token == val.oraclePrices[i].name) {
-              reservesAmount +=
-                res?.reserves.deposits[token] * val.oraclePrices[i].price;
+            for (let token in res?.reserves?.deposits) {
+
+            if (token === val.oraclePrices[i].name) {
+                reservesAmount += res.reserves.deposits[token]*val.oraclePrices[i].price;
             }
-          }
+            }
           setTotalReserves(reservesAmount);
 
           let borrowedAmount = 0;
