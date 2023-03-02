@@ -49,6 +49,7 @@ import { GetErrorText, NumToBN,etherToWeiBN } from "../../../blockchain/utils";
 import { toast } from "react-toastify";
 import classnames from "classnames";
 import ToastModal from "../../toastModals/customToastModal";
+import SupplyModal from "../../Modals/SupplyModal";
 
 const ActiveDepositsTab = ({
   reserves,
@@ -414,8 +415,50 @@ const ActiveDepositsTab = ({
                 <u>Purchase or Supply assets.</u>
               </div>
             </div>
-
-            <Modal
+            
+            <SupplyModal 
+       modal_deposit ={modal_deposit}
+       accountAddress={account}
+       toggleDropdown={toggleDropdown}
+       tokenName={tokenName}
+       setmodal_deposit={setmodal_deposit}
+       tog_center={tog_center}
+       setCommitmentDropDown={setCommitmentDropDown}
+       commitmentDropDown={commitmentDropDown}
+       setCommitmentArrow={setCommitmentArrow}
+       commitmentValue={commitmentValue}
+       dropDown={dropDown}
+       Coins={Coins}
+       setTokenName={setTokenName}
+       setDropDown={setDropDown}
+       setDropDownArrow={setDropDownArrow}
+       setAsset={setAsset}
+       handleBalanceChange={handleBalanceChange}
+       handleCommitChange={handleCommitChange}
+       setCommitmentValue={setCommitmentValue}
+       handleMax={handleMax}
+       setDepositAmount={setDepositAmount}
+       handleDepositAmountChange={handleDepositAmountChange}
+       depositAmount={depositAmount}
+       Downarrow={arrowDown}
+       asset={asset}
+       isInvalid={isInvalid}
+       dataBalance={dataBalance}
+       value={value}
+       setValue={setValue}
+       commitmentArrow={commitmentArrow}
+       depositLoanRates={depositLoanRates}
+       commitPeriod={commitPeriod}
+       reserves={reserves}
+       loadingApprove ={loadingApprove}
+       loadingDeposit ={loadingDeposit}
+       handleDeposit={handleDeposit}
+       requestDepositTransactionReceipt={requestDepositTransactionReceipt}
+       isToastOpen={isToastOpen}
+       setIsToastOpen={setIsToastOpen}
+       toastParam={toastParam}
+       />
+            {/* <Modal
               style={{ width: "548px", height: "603px" }}
               isOpen={modal_deposit}
               toggle={() => {
@@ -956,7 +999,7 @@ const ActiveDepositsTab = ({
               />
             ) : (
               <></>
-            )}
+            )} */}
           </>
         )}
       </UncontrolledAccordion>

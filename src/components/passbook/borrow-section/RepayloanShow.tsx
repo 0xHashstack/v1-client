@@ -11,7 +11,6 @@ import {
     Row,
     Table,
   } from "reactstrap";
-import RepaidLoan from '../active-tabs/repaid-loans/repaid-loan';
 import RepayLoans from './RepayLoans';
 import { EventMap } from '../../../blockchain/constants';
 
@@ -30,6 +29,7 @@ const RepayloanShow = ({repaidLoansData}:{repaidLoansData:any}) => {
                         marginLeft: "20px",
                     }}
                 >
+                    
                     <Table>
                         {/* <Table className="table table-nowrap  mb-0"> */}
                         <Row
@@ -98,8 +98,10 @@ const RepayloanShow = ({repaidLoansData}:{repaidLoansData:any}) => {
                     </Table>
                     {repaidLoansData.map((key:any,assets:any)=>{
                         console.log(assets);
-                        
-                        <RepayLoans key={key} asset={assets}/>
+                        console.log(key);
+                        return(
+                        <RepayLoans key={key} assets={assets} />
+                        )
                     })}
                 </UncontrolledAccordion>
             </div>
