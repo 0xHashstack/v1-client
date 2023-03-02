@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Link from "next/link";
 import { Modal, Form, Row, Navbar } from "reactstrap";
 import arrowDown from "../../assets/images/ArrowDownDark.svg";
@@ -18,14 +18,20 @@ import contributeEarnIcon from "../../assets/images/contributeEarnIcon.svg";
 import tickMark from "../../assets/images/tickMark.svg";
 import moreIcon from "../../assets/images/moreIcon.svg";
 import "react-toastify/dist/ReactToastify.css";
-import { useConnectors, useAccount } from "@starknet-react/core";
+import {
+  useConnectors,
+  useAccount,
+  useTransactionManager,
+  useBlock,
+} from "@starknet-react/core";
 import "react-toastify/dist/ReactToastify.css";
 import "./header.module.scss";
 import Image from "next/image";
 import { useDisconnect } from "wagmi";
 import EthWalletButton from "./ethConnectWalletButton";
 import { TabContext } from "../../hooks/contextHooks/TabContext";
-
+import OffchainAPI from "../../services/offchainapi.service";
+import { toast } from "react-toastify";
 
 const SecondaryHeader = ({
   handleDisconnectWallet,
@@ -81,6 +87,7 @@ const SecondaryHeader = ({
       id: 9,
     },
   ];
+  const { transactions } = useTransactionManager();
   const [selectLanguage, setSelectLanguage] = useState(false);
   const [connectWallet, setConnectWallet] = useState(false);
   const { available, connect } = useConnectors();
@@ -89,6 +96,7 @@ const SecondaryHeader = ({
   const [settingDropDown, setSettingDropDown] = useState(false);
   const [dropDownOpen, setdropDownOpen] = useState(false);
   const [liquidateDropDown, setLiquidateDropDown] = useState(false);
+  const [offchainCurrentBlock, setOffchainCurrentBlock] = useState("");
   const [networkSelected, setnetworkSelected] = useState({
     network: "",
     starknet: false,
@@ -101,6 +109,7 @@ const SecondaryHeader = ({
     direction: { connectWalletArrowDown },
   });
 
+  const { data: blockInfo } = useBlock();
   const states = ["1", "2", "3", "4", "5", "7"];
 
   // Context Hook For Tabcontex
@@ -116,11 +125,35 @@ const SecondaryHeader = ({
   function removeBodyCss() {
     document.body.classList.add("no_padding");
   }
-   const toggleDropdown = () => {
+  const toggleDropdown = () => {
     setdropDownOpen(!dropDownOpen);
     setDropDownArrow(dropDownOpen ? arrowDown : arrowUp);
     // disconnectEvent(), connect(connector);
   };
+
+  useEffect(() => {
+    console.log("here");
+    if (
+      transactions.length > 0 &&
+      transactions[transactions.length - 1]?.status === "ACCEPTED_ON_L2"
+    ) {
+      toast.success(`Token received!`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+    }
+
+    OffchainAPI.getDashboardStats().then(
+      (stats) => {
+        setOffchainCurrentBlock(stats.lastProcessedBlock?.blockNumber);
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+
+    console.log("transactions:::::::::", transactions);
+  }, [transactions, blockInfo]);
 
   // function handleButtonConnectWallet() {
   //   setSettingDropDown(false);
@@ -145,8 +178,6 @@ const SecondaryHeader = ({
   //   setConnectWallet(!connectWallet);
   //   removeBodyCss();
   // }
-
- 
 
   // const disconnectEvent = () => {
   //   if (evmAddress) {
@@ -181,6 +212,25 @@ const SecondaryHeader = ({
         backgroundColor: "#1C202F",
       }}
     >
+      <Row
+        style={{
+          marginTop: "5px",
+          position: "fixed",
+          bottom: "10px",
+          left: "25px",
+          backgroundColor: "#1D2130",
+          borderRadius: "5px",
+          zIndex: "200  ",
+        }}
+      >
+        <div
+          style={{ display: "flex", padding: "5px 10px", alignItems: "center" }}
+        >
+          <div>Latest synced block:&nbsp;&nbsp;</div>
+          <div style={{ opacity: 0.6 }}>{offchainCurrentBlock}</div>
+          <div className="green-circle"></div>
+        </div>
+      </Row>
       <Row>
         <Navbar
           style={{
@@ -250,7 +300,8 @@ const SecondaryHeader = ({
                   height="15px"
                   style={{ cursor: "pointer" }}
                 />
-                &nbsp;&nbsp;<span style={{ fontSize: "larger"}} >Dashboard</span>
+                &nbsp;&nbsp;
+                <span style={{ fontSize: "larger" }}>Dashboard</span>
               </span>
             </label>
 
@@ -280,7 +331,8 @@ const SecondaryHeader = ({
                   height="15px"
                   style={{ cursor: "pointer" }}
                 />
-                &nbsp;&nbsp;<span  style={{fontSize: "larger"}}> Contribute-2-Earn </span>
+                &nbsp;&nbsp;
+                <span style={{ fontSize: "larger" }}> Contribute-2-Earn </span>
               </span>
             </label>
 
@@ -314,13 +366,13 @@ const SecondaryHeader = ({
                   height="15px"
                   style={{ cursor: "pointer" }}
                 />
-                &nbsp;&nbsp; <span  style={{fontSize: "larger"}}>More </span>
+                &nbsp;&nbsp; <span style={{ fontSize: "larger" }}>More </span>
               </span>
             </label>
           </div>
 
-           <div className="d-flex flex-wrap gap-4 ">
-           {/* <Modal
+          <div className="d-flex flex-wrap gap-4 ">
+            {/* <Modal
               isOpen={connectWallet && !account}
               toggle={() => {
                 handleButtonConnectWallet();
@@ -439,7 +491,7 @@ const SecondaryHeader = ({
                     </label>
 
                     {/* <a href={networkSelected.redirectLink} target=""> */}
-                   {/*} <label
+            {/*} <label
                       onClick={handleConnectBraavosWallet}
                       style={{
                         backgroundColor: "#2A2E3F",
@@ -479,7 +531,7 @@ const SecondaryHeader = ({
                       </div>
                     </label>
                     {/* </a> */}
-                    {/* <EthWalletButton />
+            {/* <EthWalletButton />
                   </div>
 
                   <p style={{ fontSize: "14px" }}>
@@ -509,7 +561,7 @@ const SecondaryHeader = ({
                   </p>
                 </Form>
               </div>
-            </Modal> */} 
+            </Modal> */}
 
             <div style={{ display: "flex", gap: "20px" }}>
               <label
@@ -542,7 +594,8 @@ const SecondaryHeader = ({
                     height="15px"
                     style={{ cursor: "pointer" }}
                   />
-                  &nbsp;&nbsp;&nbsp; <span  style={{fontSize: "larger"}}>Transfer Deposit</span>
+                  &nbsp;&nbsp;&nbsp;{" "}
+                  <span style={{ fontSize: "larger" }}>Transfer Deposit</span>
                 </span>
               </label>
 
@@ -581,7 +634,7 @@ const SecondaryHeader = ({
                         height="18px"
                         style={{ cursor: "pointer" }}
                       />
-                      <div  style={{fontSize: "larger"}}>
+                      <div style={{ fontSize: "larger" }}>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         {`${account.substring(0, 3)}...${account.substring(
                           account.length - 10,
@@ -642,7 +695,6 @@ const SecondaryHeader = ({
           </div>
         </Navbar>
       </Row>
-
       {liquidateDropDown ? (
         <label
           style={{
@@ -665,7 +717,6 @@ const SecondaryHeader = ({
           Liquidate
         </label>
       ) : null}
-
       {account && connectWalletArrowState.bool ? (
         <div style={{ zIndex: "1000" }}>
           <div
@@ -757,7 +808,6 @@ const SecondaryHeader = ({
       ) : (
         <></>
       )}
-
       {settingDropDown && !selectLanguage ? (
         <div style={{ zIndex: "1000" }}>
           <div
@@ -826,7 +876,6 @@ const SecondaryHeader = ({
       ) : (
         <></>
       )}
-
       {selectLanguage ? (
         <div style={{ zIndex: "1000" }}>
           <div

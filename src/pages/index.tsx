@@ -128,7 +128,6 @@ const Dashboard = () => {
   // const [customActiveTabs, setCustomActiveTabs] = useState("1");
   const [loanActionTab, setLoanActionTab] = useState("0");
   const [passbookStatus, setPassbookStatus] = useState("ActiveDeposit");
-  
 
   const [modal_repay_loan, setmodal_repay_loan] = useState(false);
   const [modal_withdraw_loan, setmodal_withdraw_loan] = useState(false);
@@ -177,7 +176,7 @@ const Dashboard = () => {
   const [typeOfLoansDropDownArrowType, setTypeOfLoansDropDownArrowType] =
     useState(DownArrow);
   const [filteredLoans, setFilteredLoans] = useState<ILoans[]>([]);
-  const [ActiveRepaytab, setActiveRepaytab] = useState("Active")
+  const [ActiveRepaytab, setActiveRepaytab] = useState("Active");
 
   function toggle(newIndex: string) {
     if (newIndex === index) {
@@ -309,7 +308,7 @@ const Dashboard = () => {
       );
     }
   };
-console.log("Repaid loans data",repaidLoansData);
+  console.log("Repaid loans data", repaidLoansData);
 
   useEffect(() => {
     let validTypes = ["REPAID", "SWAPPED", "OPEN"];
@@ -616,27 +615,24 @@ console.log("Repaid loans data",repaidLoansData);
 
   const borrowActionTabs = () => {
     console.log(repaidLoansData);
-    
-    return (
-      typeOfLoans === "Active"? 
+
+    return typeOfLoans === "Active" ? (
       <BorrowTab
-      activeLoansData={filteredLoans}
-      customActiveTabs={customActiveTabs}
-      isTransactionDone={isTransactionDone}
-      depositRequestSel={depositRequestSel}
-      removeBodyCss={removeBodyCss}
-      setCustomActiveTabs={setCustomActiveTabs}
-      fairPriceArray={oracleAndFairPrices?.fairPrices}
-    />
-    : <RepayloanShow 
-    repaidLoansData={repaidLoansData}
-    />
+        activeLoansData={filteredLoans}
+        customActiveTabs={customActiveTabs}
+        isTransactionDone={isTransactionDone}
+        depositRequestSel={depositRequestSel}
+        removeBodyCss={removeBodyCss}
+        setCustomActiveTabs={setCustomActiveTabs}
+        fairPriceArray={oracleAndFairPrices?.fairPrices}
+      />
+    ) : (
+      <RepayloanShow repaidLoansData={repaidLoansData} />
+    );
     // :  <RepaidLoansTab
     // repaidLoansData={repaidLoansData}
     // customActiveTabs={customActiveTab}
-  // />
-     
-    );
+    // />
   };
 
   function incorrectChain() {
@@ -872,7 +868,7 @@ console.log("Repaid loans data",repaidLoansData);
                                     setTypeOfLoans(type);
                                     setTypeOfLoansDropDownArrowType(DownArrow);
                                     setIsDropDownOpenTypeOfLoans(false);
-                                    setActiveRepaytab(type)
+                                    setActiveRepaytab(type);
                                   }}
                                 >
                                   {type}
@@ -905,7 +901,7 @@ console.log("Repaid loans data",repaidLoansData);
               customActiveTab === "4" ? (
                 <Card
                   style={{
-                    height: "76vh",
+                    height: "75vh",
                     maxHeight: "36rem",
                     border: "none",
                     boxShadow:
@@ -927,15 +923,16 @@ console.log("Repaid loans data",repaidLoansData);
                       activeLoansData
                     )}{" "}
                     {customActiveTab === "1" ? (
-                      activeDepositsData && activeLoansData?
-                      <LoanBorrowCommitment
-                        reserves={reserves}
-                        isLoading={isLoading}
-                        activeDepositsData={activeDepositsData}
-                        activeLoansData={filteredLoans}
-                      />
-                      :"This is it"
-                  
+                      activeDepositsData && activeLoansData ? (
+                        <LoanBorrowCommitment
+                          reserves={reserves}
+                          isLoading={isLoading}
+                          activeDepositsData={activeDepositsData}
+                          activeLoansData={filteredLoans}
+                        />
+                      ) : (
+                        "This is it"
+                      )
                     ) : null}
                     <Row>
                       <div>
