@@ -17,10 +17,11 @@ import {
   ERC20Abi,
   getTokenFromName,
   isTransactionLoading,
-  LiquidateAbi
+  LiquidateAbi,
+  tokenAddressMap
 } from "../../blockchain/stark-constants";
 import { TxToastManager } from "../../blockchain/txToastManager";
-import { BNtoNum } from "../../blockchain/utils";
+import { BNtoNum, weiToEtherNumber } from "../../blockchain/utils";
 import MySpinner from "../mySpinner";
 
 const LiquidationButton = ({
@@ -313,6 +314,7 @@ const Liquidation = ({
   activeLiquidationsData: any;
   isTransactionDone: any;
 }) => {
+  
   return (
     <TabPane tabId="3">
       <div
@@ -331,7 +333,7 @@ const Liquidation = ({
               <th scope="col">Converted Market </th>
               <th scope="col">Amount</th>
               <th scope="col">Current Discount</th>
-              {/* <th scope="col" colSpan={2}>Interest Earned</th> */}
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -357,7 +359,9 @@ const Liquidation = ({
                     </th>
                     <td>
                       <div>
-                        {BNtoNum(Number(asset.loanAmount))}
+                        {/* {console.log(asset.loanAmount)} */}
+                        {weiToEtherNumber(asset.loanAmount,tokenAddressMap[asset.loanMarket]||"")}
+                        {/* {BNtoNum(Number(asset.loanAmount))} */}
                         <div>
                           <img
                             style={{ scale: "0.7" }}
