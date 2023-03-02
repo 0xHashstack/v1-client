@@ -25,9 +25,20 @@ import {
 import { SequencerProvider, RpcProvider } from "starknet";
 import ErrorBoundary from "../components/ErrorComponent";
 import { IdentifierProvider } from "../blockchain/hooks/context/identifierContext";
-import ConnectionDetails from "../components/walletIdentifier/connectionDashboard";
-import ConnectWalletModal from "../components/layout/connectWalletModal";
+import * as amplitude from "@amplitude/analytics-browser";
 
+/* Initializing amplitude analytics */
+
+amplitude.init("0c6ca142b8f758aec64963ebdea8fdb1", undefined, {
+  defaultTracking: {
+    sessions: true,
+    pageViews: true,
+    formInteractions: true,
+    fileDownloads: true,
+  },
+});
+
+/******************************************************************/
 
 const { chains, provider } = configureChains(
   [mainnet, goerli],
