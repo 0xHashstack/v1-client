@@ -64,7 +64,6 @@ let DashboardTBody: any = ({
   if (isloading) {
   
     return (
-      // <tr align="center">
       
       <tr>
         <td colSpan={6}>

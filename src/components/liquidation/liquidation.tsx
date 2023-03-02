@@ -152,7 +152,7 @@ const LiquidationButton = ({
     },
   });
   console.log("isLiquid",is_liquidable);
-  console.log(BNtoNum(is_liquidable));
+  // console.log(BNtoNum(is_liquidable));
 
   function handleToast(isError: boolean, tag: string, msg: string) {
     if (!isError) {

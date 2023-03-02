@@ -329,6 +329,7 @@ const ConnectWalletModal = () => {
             <a
               href="https://braavos.app/"
               target="_blank"
+              rel="noreferrer"
               style={{ color: "#2563EB" }}
             >
               terms of service & disclaimer
