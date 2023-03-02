@@ -488,7 +488,7 @@ const ActiveDeposit = ({
               />
               &nbsp;&nbsp;
               <span style={{ fontSize: "15px", fontWeight: "600" }}>
-                {BNtoNum(Number(assetParam.amount))}
+                {weiToEtherNumber(assetParam.amount,tokenAddressMap[assetParam.market]||"")}
               </span>
             </div>
           </Col>

@@ -1090,7 +1090,7 @@ const BorrowData = ({
               />
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
-                {parseFloat(BNtoNum(Number(assetParam.loanAmount)))}
+                {parseFloat(weiToEtherNumber(assetParam.loanAmount,tokenAddressMap[assetParam.loanMarket]||"").toString())}
               </span>
             </div>
           </Col>
@@ -1099,7 +1099,7 @@ const BorrowData = ({
             <div
               style={{ fontSize: "14px", fontWeight: "600", width: "110px" }}
             >
-              {parseFloat(BNtoNum(Number(assetParam.interestPaid))).toFixed(6)}
+              {parseFloat(weiToEtherNumber(assetParam.interestPaid,tokenAddressMap[assetParam.loanMarket]||"").toString()).toFixed(6)}
               &nbsp;
               {EventMap[assetParam.loanMarket.toUpperCase()]}
             </div>
@@ -1164,7 +1164,7 @@ const BorrowData = ({
               />
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
-                {parseFloat(BNtoNum(Number(assetParam.collateralAmount)))}
+                {parseFloat(weiToEtherNumber(assetParam.collateralAmount,tokenAddressMap[assetParam.collateralMarket]||"" ).toString())}
               </span>
             </div>
           </Col>
@@ -1872,7 +1872,7 @@ const BorrowData = ({
                               }}
                             >
                               &nbsp;
-                              {parseFloat(BNtoNum(Number(asset.loanAmount)))}{" "}
+                              {parseFloat(weiToEtherNumber(asset.loanAmount,tokenAddressMap[asset.loanMarket]||"").toString())}{" "}
                               {/* {asset.loanMarket} */}
                             </span>
                           </div>
@@ -1906,7 +1906,7 @@ const BorrowData = ({
                               }}
                             >
                               &nbsp;
-                              {parseFloat(BNtoNum(Number(asset.openLoanAmount)))}{" "}
+                              {parseFloat(weiToEtherNumber(asset.openLoanAmount,tokenAddressMap[asset.loanMarket]||"").toString())}{" "}
                               {/* {asset.loanMarket} */}
                             </span>
                           </div>
@@ -2481,7 +2481,7 @@ const BorrowData = ({
                             }}
                           >
                             &nbsp;
-                            {parseFloat(BNtoNum(Number(asset.loanAmount)))}{" "}
+                            {parseFloat(weiToEtherNumber(asset.loanAmount,tokenAddressMap[asset.loanMarket]||"").toString())}{" "}
                             {asset.loanMarket}
                           </span>
                         </div>
@@ -2766,7 +2766,7 @@ const BorrowData = ({
                             >
                               &nbsp;{" "}
                               {parseFloat(
-                                BNtoNum(Number(asset.collateralAmount))
+                                weiToEtherNumber(asset.collateralAmount,tokenAddressMap[asset.collateralMarket]||"").toString()
                               )}
                             </span>
                           </div>
@@ -3327,7 +3327,7 @@ const BorrowData = ({
                           style={{ marginTop: "-2px" }}
                           width="11px"
                         />
-                        &nbsp;<div>{BNtoNum(asset.collateralAmount)}</div>
+                        &nbsp;<div>{weiToEtherNumber(asset.collateralAmount,asset.collateralMarket)}</div>
                       </div>
                     </div>
                     <div
@@ -3557,7 +3557,7 @@ const BorrowData = ({
                           style={{ marginTop: "-2px" }}
                           width="11px"
                         />
-                        &nbsp;<div>{BNtoNum(asset.collateralAmount)}</div>
+                        &nbsp;<div>{weiToEtherNumber(asset.collateralAmount,asset.collateralMarket)}</div>
                       </div>
                     </div>
                     <div

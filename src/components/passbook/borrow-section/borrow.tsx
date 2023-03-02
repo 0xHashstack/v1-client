@@ -30,7 +30,7 @@ import {
 } from "../../../blockchain/stark-constants";
 import starknetLogo from "../../../assets/images/starknetLogo.svg";
 import Slider from "react-custom-slider";
-import { BNtoNum, GetErrorText, NumToBN } from "../../../blockchain/utils";
+import { BNtoNum, etherToWeiBN, GetErrorText, NumToBN } from "../../../blockchain/utils";
 import { getPrice } from "../../../blockchain/priceFeed";
 import { TxToastManager } from "../../../blockchain/txToastManager";
 import BorrowData from "./borrow-data";
@@ -125,6 +125,7 @@ const BorrowTab = ({
   const [token, setToken] = useState(getTokenFromName("BTC"));
   const [loanActionTab, setLoanActionTab] = useState("0");
   const { address: account } = useAccount();
+  const [loanmarketforpartial, setloanmarketforpartial] = useState("")
 
   const [handleRepayTransactionDone, setHandleRepayTransactionDone] =
     useState(false);
@@ -204,7 +205,7 @@ const BorrowTab = ({
         entrypoint: "approve",
         calldata: [
           diamondAddress,
-          NumToBN(borrowParams.collateralAmount as number, 18),
+          etherToWeiBN(borrowParams.collateralAmount as number, tokenAddressMap[borrowParams.collateralMarket || ""] || "").toString(),
           0,
         ],
       },
@@ -213,17 +214,17 @@ const BorrowTab = ({
         entrypoint: "loan_request",
         calldata: [
           tokenAddressMap[tokenName],
-          NumToBN(
+          etherToWeiBN(
             borrowParams.loanAmount as number,
-            tokenDecimalsMap[tokenName]
-          ),
+            tokenAddressMap[tokenName]||""
+          ).toString(),
           0,
           borrowParams.commitBorrowPeriod,
           tokenAddressMap[borrowParams.collateralMarket as string],
-          NumToBN(
+          etherToWeiBN(
             borrowParams.collateralAmount as number,
-            tokenDecimalsMap[borrowParams.collateralMarket as string]
-          ),
+            tokenAddressMap[borrowParams.collateralMarket as string]||""
+          ).toString(),
           0,
         ],
       },
@@ -428,7 +429,7 @@ const BorrowTab = ({
     calls: {
       contractAddress: tokenAddressMap[marketToAddCollateral] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, NumToBN(inputVal1 as number, 18), 0],
+      calldata: [diamondAddress, etherToWeiBN(inputVal1 as number, tokenAddressMap[marketToAddCollateral]||"").toString(), 0],
     },
   });
 
@@ -447,7 +448,7 @@ const BorrowTab = ({
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "withdraw_partial_loan",
-      calldata: [loanId, NumToBN(inputVal1 as number, 18), 0],
+      calldata: [loanId, etherToWeiBN(inputVal1 as number, tokenAddressMap[loanmarketforpartial]||"").toString(), 0],
     },
   });
   /* ============================== Swap To Secondary Market ============================ */
@@ -466,6 +467,7 @@ const BorrowTab = ({
   });
 
   const handleWithdrawLoan = async (asset: any) => {
+    setloanmarketforpartial(asset.loanMarket)
     if (asset.isSwapped) {
       toast.error(`${GetErrorText(`Cannot withdraw swapped loan`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
