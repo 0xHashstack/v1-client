@@ -12,13 +12,16 @@ import { Button, Table, Spinner, TabPane } from "reactstrap";
 import { Abi, number, uint256 } from "starknet";
 import { CoinClassNames, EventMap } from "../../blockchain/constants";
 import {
+  ComptrollerAbi,
   diamondAddress,
   ERC20Abi,
   getTokenFromName,
   isTransactionLoading,
+  LiquidateAbi,
+  tokenAddressMap
 } from "../../blockchain/stark-constants";
 import { TxToastManager } from "../../blockchain/txToastManager";
-import { BNtoNum } from "../../blockchain/utils";
+import { BNtoNum, weiToEtherNumber } from "../../blockchain/utils";
 import MySpinner from "../mySpinner";
 
 const LiquidationButton = ({
@@ -78,6 +81,12 @@ const LiquidationButton = ({
     abi: ERC20Abi as Abi,
     address: loanTokenAddress,
   });
+ 
+  const { contract: loanContract } = useContract({
+    abi: LiquidateAbi as Abi,
+    address: diamondAddress,
+  });
+ 
 
   const {
     data: dataAllowance,
@@ -101,11 +110,16 @@ const LiquidationButton = ({
     reset: resetToken,
     execute: approveToken,
   } = useStarknetExecute({
-    calls: {
+    calls:[ {
       contractAddress: loanTokenAddress,
       entrypoint: "approve",
       calldata: [diamondAddress, loan.loanAmount, 0],
     },
+     {
+      contractAddress: diamondAddress,
+      entrypoint: "liquidate",
+      calldata: [loan.id],
+    }]
   });
 
   const {
@@ -118,9 +132,27 @@ const LiquidationButton = ({
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "liquidate",
-      calldata: [loan.id],
+      calldata: [(loan.id).toString()],
     },
   });
+  
+  
+
+  const {
+    data: is_liquidable,
+    loading: loadingliquidable,
+    error: errorliquidable,
+    refresh: refreshliquidable,
+  } = useStarknetCall({
+    contract: loanContract,
+    method: "is_loan_liquidable",
+    args: [loan.id],
+    options: {
+      watch: true,
+    },
+  });
+  console.log("isLiquid",is_liquidable);
+  console.log(BNtoNum(is_liquidable));
 
   function handleToast(isError: boolean, tag: string, msg: string) {
     if (!isError) {
@@ -212,12 +244,13 @@ const LiquidationButton = ({
       setLoadingMsg("Liquidating...");
     }
   }, [dataLiquidate, liquidate, errorLiquidate]);
-
+   
   return (
     <>
       {loadingMsg ? <>{loadingMsg}</> : <></>}
       {shouldApprove ? (
         <Button
+          disabled={BNtoNum(is_liquidable) === "1"? false :true}
           // className="text-muted"
           color="light"
           style={{ color: "white", backgroundColor: "rgb(57, 61, 79)" }}
@@ -225,17 +258,21 @@ const LiquidationButton = ({
           onClick={async () => {
             // reset()
             try {
-              const val = await approveToken();
+              const val = await approveToken() ;
               setTransApprove(val.transaction_hash);
             } catch (err) {
-              console.log(err, "err approve for liquidation");
+              console.log(err, "err approve for liquidation or Liquidation");
             }
           }}
         >
-          {isTransactionLoading(approveTransactionReceipt) ? (
-            <MySpinner text="Approving token" />
+          {isTransactionLoading(approveTransactionReceipt) && isTransactionLoading(liquidateTransactionReceipt) ? (
+            <MySpinner text="Approving & Liquidating token" />
           ) : (
-            <>Approve</>
+              
+            <>
+            {BNtoNum(is_liquidable) === "1"?  "Approve & Liquidate": "Not Liquidable"}
+           
+            </>
           )}
         </Button>
       ) : (
@@ -277,6 +314,7 @@ const Liquidation = ({
   activeLiquidationsData: any;
   isTransactionDone: any;
 }) => {
+  
   return (
     <TabPane tabId="3">
       <div
@@ -295,7 +333,7 @@ const Liquidation = ({
               <th scope="col">Converted Market </th>
               <th scope="col">Amount</th>
               <th scope="col">Current Discount</th>
-              {/* <th scope="col" colSpan={2}>Interest Earned</th> */}
+              <th scope="col">Actions</th>
             </tr>
           </thead>
           <tbody>
@@ -321,7 +359,9 @@ const Liquidation = ({
                     </th>
                     <td>
                       <div>
-                        {BNtoNum(Number(asset.loanAmount))}
+                        {/* {console.log(asset.loanAmount)} */}
+                        {weiToEtherNumber(asset.loanAmount,tokenAddressMap[asset.loanMarket]||"")}
+                        {/* {BNtoNum(Number(asset.loanAmount))} */}
                         <div>
                           <img
                             style={{ scale: "0.7" }}

@@ -3,6 +3,7 @@ import * as DeployDetailsProd from "../../contracts_addresses_prod_goerli2.json"
 // import * as DeployDetails from "../../../zkOpen/contract_addresses.json";
 import ERC20Abi from "../../ABIs/erc20_abi.json";
 import ComptrollerAbi from "../../ABIs/comptroller_abi.json";
+import LiquidateAbi from "../../ABIs/liquidation_abi.json"
 import { number } from "starknet";
 import {
   UseTransactionReceiptResult,
@@ -155,4 +156,4 @@ export const getCommitmentIndexStringFromNameLoan = (name: string) => {
 export const getCommitmentIndex = (index: string) => {
   return parseInt(index);
 };
-export { ERC20Abi, ComptrollerAbi, contractsEnv };
+export { ERC20Abi, ComptrollerAbi, contractsEnv,LiquidateAbi };
