@@ -35,13 +35,13 @@
         {
             "name": "BTC",
             "address": "0x5b2a7c089e36c6caf4724d2df5bd7687fcdc9bd76d280ecb1e411410811b54e",
-            "price": 0,
+            "price": 23844,
             "lastUpdated": "2023-02-14T16:06:01.712Z"
         },
         {
             "name": "ETH",
             "address": "0x2aafa44aeade8d4e4c048970151ebe47f79ef89c95d06a6eeb2ec076588bf27",
-            "price": 13810.9199,
+            "price": 1600,
             "lastUpdated": "2023-02-14T16:06:01.715Z"
         },
         {
@@ -59,7 +59,7 @@
         {
             "name": "DAI",
             "address": "0x5480dda623bd1fc409d46fd538df7aa44f826f05cbcc49c129f86ec3092dc39",
-            "price": 35.90839174,
+            "price": 0.99,
             "lastUpdated": "2023-02-14T16:06:01.724Z"
         }
     ]

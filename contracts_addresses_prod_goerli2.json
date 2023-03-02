@@ -224,5 +224,93 @@
     "STORK_PROXY_ADDRESS": "0x56e92604f6491f26a8af991b636f70f4c9fc07503d881202657b1926a06a318",
     "SWAP_ROUTER_ADDRESS": "0x33daf84f0aad8d07f298d30e41ab549e2d2aa4f6145a25c668020b00093900f",
     "FAUCET_ADDRESS": "0x0d6bcd5bd11de9611ea907d8413bcd95b120b521e65a7b4424a26f4abe43b90"
+  },
+  "mainnet": {
+    "DIAMOND_ADDRESS": "0x3dcf5c72ba60eb7b2fe151032769d49dd3df6b04fa3141dffd6e2aa162b7a6e",
+    "L3_DIAMOND_ADDRESS": "0x253bc2e5399c56121491559813d8a854718473eb2d31a6ca4624dc715ac6fe9",
+    "TOKENS": [
+      {
+        "name": "BTC",
+        "symbol": "WBTC",
+        "decimals": 8,
+        "minDeposit": 0.0005,
+        "maxDeposit": 0.001,
+        "minLoan": 0.0015,
+        "maxLoan": 0.005,
+        "address": "0x03fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac",
+        "CEXSymbol": "BTCUSDT",
+        "pontis_key": "18669995996566340",
+        "mockPrice": 23000,
+        "NETWORK_TOKEN_ADDRESS": "0x03fe2b97c1fd336e750087d68b9b867997fd64a2661ff3ca5a7c771641e8e7ac",
+        "ethereumAddress": "0x2260fac5e5542a773aa44fbcfedf7c193bc2c599"
+      },
+      {
+        "name": "ETH",
+        "symbol": "ETH",
+        "decimals": 18,
+        "minDeposit": 0.00625,
+        "maxDeposit": 0.0625,
+        "minLoan": 0.018,
+        "maxLoan": 0.18,
+        "address": "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+        "CEXSymbol": "ETHUSDT",
+        "pontis_key": "19514442401534788",
+        "mockPrice": 1600,
+        "NETWORK_TOKEN_ADDRESS": "0x049d36570d4e46f48e99674bd3fcc84644ddd6b96f7c741b1562b82f9e004dc7",
+        "ethereumAddress": "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+      },
+      {
+        "name": "USDT",
+        "symbol": "USDT",
+        "decimals": 6,
+        "minDeposit": 10,
+        "maxDeposit": 100,
+        "minLoan": 30,
+        "maxLoan": 300,
+        "address": "0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8",
+        "CEXSymbol": null,
+        "pontis_key": "6148333044652921668",
+        "mockPrice": 1,
+        "NETWORK_TOKEN_ADDRESS": "0x068f5c6a61780768455de69077e07e89787839bf8166decfbf92b645209c0fb8",
+        "ethereumAddress": "0xdac17f958d2ee523a2206206994597c13d831ec7"
+      },
+      {
+        "name": "USDC",
+        "symbol": "USDC",
+        "decimals": 6,
+        "minDeposit": 10,
+        "maxDeposit": 100,
+        "minLoan": 30,
+        "maxLoan": 300,
+        "address": "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+        "CEXSymbol": "USDCUSDT",
+        "pontis_key": "6148332971638477636",
+        "mockPrice": 1,
+        "NETWORK_TOKEN_ADDRESS": "0x053c91253bc9682c04929ca02ed00b3e423f6710d2ee7e0d5ebb06f3ecf368a8",
+        "ethereumAddress": "0xa0b86991c6218b36c1d19d4a2e9eb0ce3606eb48"
+      },
+      {
+        "name": "DAI",
+        "symbol": "DAI",
+        "decimals": 18,
+        "minDeposit": 10,
+        "maxDeposit": 100,
+        "minLoan": 30,
+        "maxLoan": 300,
+        "address": "0x00da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+        "CEXSymbol": "USDTDAI",
+        "pontis_key": "19212080998863684",
+        "mockPrice": 1,
+        "NETWORK_TOKEN_ADDRESS": "0x00da114221cb83fa859dbdb4c44beeaa0bb37c7537ad5ae66fe5e0efd20e6eb3",
+        "ethereumAddress": "0x6b175474e89094c44da98b954eedeac495271d0f"
+      }
+    ],
+    "EMPIRIC_PROXY_ADDRESS": "0x346c57f094d641ad94e43468628d8e9c574dcb2803ec372576ccc60a40be2c4",
+    "SWAP_ROUTER_ADDRESS": "0x41fd22b238fa21cfcf5dd45a8548974d8263b3a531a60388411c5e230f97023",
+    "MYSWAP_ROUTER_ADDRESS": "0x10884171baf1914edc28d7afb619b40a4051cfae78a094a55d230f19e944a28",
+    "FAUCET_ADDRESS": "0",
+    "INTEGRATIONS": {
+      "SWAPS": []
+    }
   }
 }

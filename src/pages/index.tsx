@@ -1061,31 +1061,40 @@ console.log("Repaid loans data",repaidLoansData);
   }
 
   return (
-    <React.Fragment>
-      <Head>
-        <title>Hashstack | Starknet</title>
-        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
-      </Head>
+    // <React.Fragment>
+    <>
+      <div
+        style={{
+          backgroundColor: "#1C202F",
+        }}
+      >
+        <Head>
+          <title>Hashstack | Starknet testnet</title>
+          <meta
+            name="viewport"
+            content="initial-scale=1.0, width=device-width"
+          />
+        </Head>
 
-      {/* Google analytics */}
-      <Script id="google-analytics-zk" strategy="afterInteractive">
-        {`
-          <!-- Google tag (gtag.js) -->
-          <script async src="https://www.googletagmanager.com/gtag/js?id=G-KVDQT1MBVW"></script>
-          <script>
-            if (window.location.host.includes('zk.hashstack.finance')) {
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-            
-              gtag('config', 'G-KVDQT1MBVW');
-            }
-          </script>
-        `}
-      </Script>
+        {/* Google analytics */}
+        {/* <Script id="google-analytics-zk" strategy="afterInteractive">
+          {`
+            <!-- Google tag (gtag.js) -->
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-KVDQT1MBVW"></script>
+            <script>
+              if (window.location.host.includes('zk.hashstack.finance')) {
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+              
+                gtag('config', 'G-KVDQT1MBVW');
+              }
+            </script>
+          `}
+        </Script> */}
 
-      {/* testnet.hashstack.finance */}
-      <Script id="microsoft-clarity-testnet" strategy="afterInteractive">
+        {/* testnet.hashstack.finance */}
+        <Script id="microsoft-clarity-testnet" strategy="afterInteractive">
           {`
             if (!window.location.host.includes('localhost')) {
               (function(c,l,a,r,i,t,y){
@@ -1138,9 +1147,9 @@ console.log("Repaid loans data",repaidLoansData);
         heading="Transaction Complete"
         desc="Copy Transaction Hash"
       /> */}
-    </React.Fragment>
-      // </div>
-    // </>
+        {/* // </React.Fragment> */}
+      </div>
+    </>
   );
 };
 

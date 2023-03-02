@@ -77,9 +77,10 @@ function MyApp({ Component, pageProps }: AppProps) {
                 autoConnect
                 defaultProvider={
                   // @todo to move this to env variables
+                  // @Rajeebs's Infura project
                   new RpcProvider({
                     nodeUrl:
-                      "https://starknet-goerli.infura.io/v3/3274a9630231466681b6300375f517f2",
+                      "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
                   })
                 }
               >

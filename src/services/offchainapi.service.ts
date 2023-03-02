@@ -259,7 +259,9 @@ export default class OffchainAPI {
   static async getOraclePrices() {
     let route = `/oracle-prices`;
     return OffchainAPI.httpGet(route);
-    // return OraclePrices;
+    // return async () => {
+    //   return OraclePrices;
+    // }
   }
 
   static async getReserves() {
