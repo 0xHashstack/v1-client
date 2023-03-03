@@ -161,6 +161,7 @@ const Dashboard = () => {
   const [netBorrowedApr, setNetBorrowedApr] = useState(0);
   const [netAprEarned, setNetAprEarned] = useState(0);
   const [oracleAndFairPrices, setOracleAndFairPrices] = useState<any>();
+  const [offchainCurrentBlock, setOffchainCurrentBlock] = useState("");
 
   useEffect(() => {
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
@@ -185,6 +186,14 @@ const Dashboard = () => {
       setIndex(newIndex);
     }
   }
+  OffchainAPI.getDashboardStats().then(
+    (stats) => {
+      setOffchainCurrentBlock(stats.lastProcessedBlock?.blockNumber);
+    },
+    (err) => {
+      console.error(err);
+    }
+  );
 
   useEffect(() => {
     const getReserves = async () => {
@@ -659,7 +668,7 @@ const Dashboard = () => {
     );
   }
 
-  function DashboardUI() {
+ const DashboardUI =()=> {
     const [totalBorrowAssets, setTotalBorrowAssets] = useState();
     const [totalSupplyDash, setTotalSupplyDash] = useState();
 
@@ -1039,10 +1048,12 @@ const Dashboard = () => {
 
   function isCorrectNetwork() {
     return (
-      starknetAccount?.baseUrl.includes("alpha4-1.starknet.io") ||
+      starknetAccount?.baseUrl.includes("alpha4-2.starknet.io") ||
       starknetAccount?.baseUrl.includes("localhost")
     );
   }
+  console.log("starknet",starknetAccount);
+  
 
   function maintenance() {
     return (
@@ -1117,15 +1128,55 @@ const Dashboard = () => {
         </MetaTags> */}
           {/* {maintenance()} */}
 
-          {DashboardUI()}
+          {/* {DashboardUI()}
+          <Row
+        style={{
+          marginTop: "5px",
+          position: "relative",
+          bottom: "0px",
+          left: "85%",
+          backgroundColor: "transparent",
+          borderRadius: "5px",
+          zIndex: "200  ",
+        }}
+      >
+        <div
+          style={{ display: "flex", padding: "5px 10px", alignItems: "center" }}
+        >
+          <div>Latest synced block:&nbsp;&nbsp;</div>
+          <div style={{ opacity: 0.6 }}>{offchainCurrentBlock}</div>
+          <div style={{ marginLeft: "5px" }} className="green-circle"></div>
+        </div>
+      </Row> */}
           {/* <Banner /> */}
-          {/* {!starknetAccount ? (
+          {!starknetAccount ? (
           <h3>Loading...</h3>
         ) : !isCorrectNetwork() ? (
           incorrectChain()
         ) : (
-          DashboardUI()
-        )} */}
+          <>
+          <DashboardUI/>
+          <Row
+        style={{
+          marginTop: "5px",
+          position: "relative",
+          bottom: "0px",
+          left: "85%",
+          backgroundColor: "transparent",
+          borderRadius: "5px",
+          zIndex: "200  ",
+        }}
+      >
+        <div
+          style={{ display: "flex", padding: "5px 10px", alignItems: "center" }}
+        >
+          <div>Latest synced block:&nbsp;&nbsp;</div>
+          <div style={{ opacity: 0.6 }}>{offchainCurrentBlock}</div>
+          <div style={{ marginLeft: "5px" }} className="green-circle"></div>
+        </div>
+      </Row>
+      </>
+        )}
           {/* <Analytics></Analytics>
             {props.children} */}
         </div>

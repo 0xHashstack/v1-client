@@ -212,25 +212,7 @@ const SecondaryHeader = ({
         backgroundColor: "#1C202F",
       }}
     >
-      <Row
-        style={{
-          marginTop: "5px",
-          position: "fixed",
-          bottom: "10px",
-          left: "25px",
-          backgroundColor: "#1D2130",
-          borderRadius: "5px",
-          zIndex: "200  ",
-        }}
-      >
-        <div
-          style={{ display: "flex", padding: "5px 10px", alignItems: "center" }}
-        >
-          <div>Latest synced block:&nbsp;&nbsp;</div>
-          <div style={{ opacity: 0.6 }}>{offchainCurrentBlock}</div>
-          <div style={{ marginLeft: "5px" }} className="green-circle"></div>
-        </div>
-      </Row>
+     
       <Row>
         <Navbar
           style={{
