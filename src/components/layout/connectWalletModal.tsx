@@ -224,7 +224,7 @@ const ConnectWalletModal = () => {
                         color: "#ADB5BD",
                       }}
                     >
-                      &nbsp;Ethereum (Comming Soon)
+                      &nbsp;Ethereum (Coming Soon)
                     </div>
                   </div>
                 </>

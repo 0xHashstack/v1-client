@@ -641,18 +641,20 @@ const Dashboard = () => {
         style={{
           padding: "20px",
           textAlign: "center",
+          marginTop:"100px"
         }}
       >
         <p
           style={{
-            color: "#efb90b",
+            color: "white",
             fontSize: "25px",
+            zIndex:"100"
           }}
         >
-          Please switch to Goerli 2 network and refresh
+          Please switch to Starknet Mainnet and refresh
         </p>
-        Currently connected to: {starknetAccount?.baseUrl}. The base url should
-        be `https://alpha4-2.starknet.io` in your wallet for Goerli 2 network.
+        {/* Currently connected to: {starknetAccount?.baseUrl}. The base url should
+        be `https://alpha4-2.starknet.io` in your wallet for Goerli 2 network. */}
       </div>
     );
   }
@@ -1037,7 +1039,7 @@ const Dashboard = () => {
 
   function isCorrectNetwork() {
     return (
-      starknetAccount?.baseUrl.includes("alpha4-2.starknet.io") ||
+      starknetAccount?.baseUrl.includes("alpha4-1.starknet.io") ||
       starknetAccount?.baseUrl.includes("localhost")
     );
   }
@@ -1122,7 +1124,7 @@ const Dashboard = () => {
         ) : !isCorrectNetwork() ? (
           incorrectChain()
         ) : (
-          dashboardUI()
+          DashboardUI()
         )} */}
           {/* <Analytics></Analytics>
             {props.children} */}

@@ -351,7 +351,7 @@ const BorrowModal: any = ({
                         100,
                     });
                   }
-                  {console.log("assets",tokenName);
+                  {console.log("assets",asset);
                   }
                   setValue(value);
                 }}
