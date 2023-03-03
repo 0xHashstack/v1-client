@@ -100,9 +100,17 @@ const DashboardTokens = ({
               ></Image>
               &nbsp;&nbsp;&nbsp;
             </div>
-            <span style={{ textAlign: "left", marginTop: "5px" }}>
+            <span style={{ textAlign: "left", marginTop: "7px" }}>
               {coin.name}
-              <div style={{ fontSize: "9px", color: "#8C8C8C", width: "60px" }}>
+              <div
+                style={{
+                  fontSize: "9px",
+                  color: "#8C8C8C",
+                  width: "60px",
+                  display: "flex",
+                  alignItems: "center",
+                }}
+              >
                 Wallet Bal &nbsp;
                 {dataBalance ? (
                   (

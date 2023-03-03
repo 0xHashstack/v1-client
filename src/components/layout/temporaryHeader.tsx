@@ -228,7 +228,7 @@ const SecondaryHeader = ({
         >
           <div>Latest synced block:&nbsp;&nbsp;</div>
           <div style={{ opacity: 0.6 }}>{offchainCurrentBlock}</div>
-          <div className="green-circle"></div>
+          <div style={{ marginLeft: "5px" }} className="green-circle"></div>
         </div>
       </Row>
       <Row>
@@ -355,6 +355,11 @@ const SecondaryHeader = ({
                   alignItems: "center",
                 }}
                 onClick={() => {
+                  setSettingDropDown(false);
+                  setConnectWalletArrowState({
+                    bool: false,
+                    direction: { connectWalletArrowDown },
+                  });
                   setLiquidateDropDown(!liquidateDropDown);
                 }}
               >
@@ -371,8 +376,7 @@ const SecondaryHeader = ({
             </label>
           </div>
 
-           <div className="d-flex flex-wrap gap-4 ">
-
+          <div className="d-flex flex-wrap gap-4 ">
             <div style={{ display: "flex", gap: "20px" }}>
               <label
                 style={{
@@ -470,6 +474,8 @@ const SecondaryHeader = ({
                   )}
                   <Image
                     onClick={() => {
+                      setLiquidateDropDown(false);
+                      setSettingDropDown(false);
                       setConnectWallet(false);
                       setConnectWalletArrowState({
                         bool: !connectWalletArrowState.bool,
@@ -486,6 +492,7 @@ const SecondaryHeader = ({
               </label>
               <Image
                 onClick={() => {
+                  setLiquidateDropDown(false);
                   setSettingDropDown(!settingDropDown);
                   setConnectWalletArrowState({
                     bool: false,
@@ -513,7 +520,7 @@ const SecondaryHeader = ({
             backgroundColor: "#1D2130",
             position: "absolute",
             top: "56px",
-            left: "515px",
+            left: "535px",
             padding: "10px",
             cursor: "pointer",
             color: "white",
