@@ -650,14 +650,14 @@ const Dashboard = () => {
         style={{
           padding: "20px",
           textAlign: "center",
-          marginTop:"100px"
+          marginTop: "100px",
         }}
       >
         <p
           style={{
             color: "white",
             fontSize: "25px",
-            zIndex:"100"
+            zIndex: "100",
           }}
         >
           Please switch to Starknet Mainnet and refresh
@@ -668,7 +668,7 @@ const Dashboard = () => {
     );
   }
 
- const DashboardUI =()=> {
+  const DashboardUI = () => {
     const [totalBorrowAssets, setTotalBorrowAssets] = useState();
     const [totalSupplyDash, setTotalSupplyDash] = useState();
 
@@ -912,7 +912,7 @@ const Dashboard = () => {
               customActiveTab === "4" ? (
                 <Card
                   style={{
-                    height: "75vh",
+                    height: "77vh",
                     maxHeight: "36rem",
                     border: "none",
                     boxShadow:
@@ -932,8 +932,7 @@ const Dashboard = () => {
                       "depositDatall",
                       activeDepositsData,
                       activeLoansData
-                    )} */}
-                    {" "}
+                    )} */}{" "}
                     {customActiveTab === "1" ? (
                       activeDepositsData && activeLoansData ? (
                         <LoanBorrowCommitment
@@ -1045,7 +1044,7 @@ const Dashboard = () => {
         </Container>
       </div>
     );
-  }
+  };
 
   function isCorrectNetwork() {
     return (
@@ -1054,7 +1053,6 @@ const Dashboard = () => {
     );
   }
   // console.log("starknet",starknetAccount);
-  
 
   function maintenance() {
     return (
@@ -1169,33 +1167,40 @@ const Dashboard = () => {
       </Row> */}
           {/* <Banner /> */}
           {!starknetAccount ? (
-          <h3>Loading...</h3>
-        ) : !isCorrectNetwork() ? (
-          incorrectChain()
-        ) : (
-          <>
-          <DashboardUI/>
-          <Row
-        style={{
-          marginTop: "5px",
-          position: "relative",
-          bottom: "0px",
-          left: "85%",
-          backgroundColor: "transparent",
-          borderRadius: "5px",
-          zIndex: "200  ",
-        }}
-      >
-        <div
-          style={{ display: "flex", padding: "5px 10px", alignItems: "center" }}
-        >
-          <div>Latest synced block:&nbsp;&nbsp;</div>
-          <div style={{ opacity: 0.6 }}>{offchainCurrentBlock}</div>
-          <div style={{ marginLeft: "5px" }} className="green-circle"></div>
-        </div>
-      </Row>
-      </>
-        )}
+            <h3>Loading...</h3>
+          ) : !isCorrectNetwork() ? (
+            incorrectChain()
+          ) : (
+            <>
+              <DashboardUI />
+              <Row
+                style={{
+                  marginTop: "5px",
+                  position: "relative",
+                  bottom: "0px",
+                  left: "85%",
+                  backgroundColor: "transparent",
+                  borderRadius: "5px",
+                  zIndex: "200  ",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    padding: "5px 10px",
+                    alignItems: "center",
+                  }}
+                >
+                  <div>Latest synced block:&nbsp;&nbsp;</div>
+                  <div style={{ opacity: 0.6 }}>{offchainCurrentBlock}</div>
+                  <div
+                    style={{ marginLeft: "5px" }}
+                    className="green-circle"
+                  ></div>
+                </div>
+              </Row>
+            </>
+          )}
           {/* <Analytics></Analytics>
             {props.children} */}
         </div>

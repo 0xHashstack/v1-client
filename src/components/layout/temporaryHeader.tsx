@@ -212,7 +212,6 @@ const SecondaryHeader = ({
         backgroundColor: "#1C202F",
       }}
     >
-     
       <Row>
         <Navbar
           style={{
@@ -246,7 +245,13 @@ const SecondaryHeader = ({
             >
               <Link href="/">
                 <div>
-                  <Image src={hashstackLogo} alt="Navbar Logo" height="40px" width={"177px"} />
+                  <img
+                    style={{ marginLeft: "20px" }}
+                    src="./hashstackLogo.svg"
+                    alt="Navbar Logo"
+                    height="40px"
+                    width={"177px"}
+                  />
                 </div>
               </Link>
             </div>
@@ -472,7 +477,7 @@ const SecondaryHeader = ({
                   />
                 </span>
               </label>
-              <Image
+              <img
                 onClick={() => {
                   setLiquidateDropDown(false);
                   setSettingDropDown(!settingDropDown);
@@ -481,13 +486,13 @@ const SecondaryHeader = ({
                     direction: { connectWalletArrowDown },
                   });
                 }}
-                src={settingIcon}
+                src="./settingIcon.svg"
                 alt="Picture of the author"
                 width="25px"
                 height="25px"
                 style={{
                   cursor: "pointer",
-                  // marginRight: "10px",
+                  marginTop: "10px",
                 }}
               />
               <div></div>
