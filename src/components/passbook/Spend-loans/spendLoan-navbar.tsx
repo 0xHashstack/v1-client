@@ -58,7 +58,7 @@ const Coins: ICoin[] = [
 
 const SpendLoanNav = ({ activeLoansData }) => {
   const [tokenName, setTokenName] = useState("BTC");
-  const { title, setTitle, selectedLoan, setSelectedLoan } =
+  const { title, setTitle, selectedLoan, setSelectedLoan,modal_deposit,setmodal_deposit,appsImage, setAppsImage } =
     useContext(TabContext);
   const {
     executeJediSwap,
@@ -118,7 +118,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
   const [isCollateralActions, setIsCollateralActions] = useState(false);
   const [isSelfLiquidate, setIsSelfLiquidate] = useState(false);
   const [customActiveTab, setCustomActiveTab] = useState("1");
-  const [modal_deposit, setmodal_deposit] = useState(false);
+  
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
   const [dappDownArrow, setDappDownArrow] = useState(arrowDown);
@@ -127,7 +127,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
   const [idDropDown, setIdDropDown] = useState(false);
   const [idDropDownArrow, setIdDropDownArrow] = useState(arrowDown);
 
-  const [appsImage, setAppsImage] = useState("yagi");
+
 
   const [borrowInterest, setBorrowInterest] = useState<string>("");
   const [currentBorrowInterest, setCurrentBorrowInterest] = useState<string>();
@@ -360,7 +360,10 @@ const SpendLoanNav = ({ activeLoansData }) => {
   ]);
 
   const tog_center = async () => {
+    console.log("Here hai apun");
     setmodal_deposit(!modal_deposit);
+    console.log(modal_deposit);
+    
     // removeBodyCss();
   };
 
@@ -443,7 +446,6 @@ const SpendLoanNav = ({ activeLoansData }) => {
               setTitle({
                 label: "Stake",
               });
-              setSpendLoan("1");
             }}
           >
             <NavLink
@@ -455,7 +457,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                   "5px 10px 5px -5px rgba(20, 23, 38, 0.15), 5px 5px 5px -5px rgba(20, 23, 38, 0.3)",
               }}
               className={classnames({
-                active: SpendLoan === "1",
+                active: title.label === "Stake",
               })}
             >
               <span className="d-none d-sm-block">Stake</span>
@@ -467,7 +469,6 @@ const SpendLoanNav = ({ activeLoansData }) => {
               setTitle({
                 label: "Swap",
               });
-              setSpendLoan("2");
             }}
           >
             <NavLink
@@ -479,7 +480,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                   "5px 10px 5px -5px rgba(20, 23, 38, 0.15), 5px 5px 5px -5px rgba(20, 23, 38, 0.3)",
               }}
               className={classnames({
-                active: SpendLoan === "2",
+                active: title.label === "Swap",
               })}
             >
               <span className="d-none d-sm-block">Swap</span>
@@ -491,7 +492,6 @@ const SpendLoanNav = ({ activeLoansData }) => {
               setTitle({
                 label: "Trade",
               });
-              setSpendLoan("3");
             }}
           >
             <NavLink
@@ -503,7 +503,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                   "5px 10px 5px -5px rgba(20, 23, 38, 0.15), 5px 5px 5px -5px rgba(20, 23, 38, 0.3)",
               }}
               className={classnames({
-                active: SpendLoan === "3",
+                active: title.label === "Trade",
               })}
             >
               <span className="d-none d-sm-block">Trade</span>
@@ -540,7 +540,9 @@ const SpendLoanNav = ({ activeLoansData }) => {
                 key={index}
                 onClick={() => {
                   if (!activeLoansData) return;
+ 
                   setmodal_deposit(true);
+                  // tog_center()
                   if (!selectedLoan) setSelectedLoan(activeLoansData?.[0]);
                   setAppsImage(dapp.name);
                   setTitle({
@@ -903,6 +905,21 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                         setSelectedLoan(loan);
                                         setIdDropDownArrow(arrowDown);
                                         setIdDropDown(!idDropDown);
+                                        setTokenName((prev) => {
+                                          if (appsImage === "jediSwap") {
+                                            return getTokenFromAddress(
+                                              supportedPoolsJediSwap.get(
+                                                tokenAddressMap[loan.loanMarket]
+                                              )[0] as string
+                                            ).name;
+                                          } else if (appsImage === "mySwap") {
+                                            return getTokenFromAddress(
+                                              supportedPoolsMySwap.get(
+                                                tokenAddressMap[loan.loanMarket]
+                                              )[0] as string
+                                            ).name;
+                                          } else return prev;
+                                        });
                                       }}
                                     >
                                       {`Borrow ID: ${loan.loanId}`}

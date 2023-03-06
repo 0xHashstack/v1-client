@@ -18,7 +18,8 @@ export function TabsProvider({ children }) {
   const [title, setTitle] = useState({
     label: "None",
   });
-
+  const [modal_deposit, setmodal_deposit] = useState(false);
+  const [appsImage, setAppsImage] = useState("yagi");
   return (
     <TabContext.Provider
       value={{
@@ -29,6 +30,10 @@ export function TabsProvider({ children }) {
         setSelectedLoan,
         title,
         setTitle,
+        modal_deposit,
+        setmodal_deposit,
+        appsImage,
+         setAppsImage
       }}
     >
       {children}
