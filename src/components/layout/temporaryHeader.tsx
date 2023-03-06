@@ -3,16 +3,9 @@ import Link from "next/link";
 import { Modal, Form, Row, Navbar } from "reactstrap";
 import arrowDown from "../../assets/images/ArrowDownDark.svg";
 import arrowUp from "../../assets/images/ArrowUpDark.svg";
-import starknetLogo from "../../assets/images/starknetLogo.svg";
-import ethLogo from "../../assets/images/ethLogo.svg";
-import braavosWallet from "../../assets/images/braavosWallet.svg";
-import crossButton from "../../assets/images/crossButton.svg";
-import hashstackLogo from "../../assets/images/hashstackLogo.svg";
-import connectWalletArrowDown from "../../assets/images/connectWalletArrowDown.svg";
 import starknetLogoBordered from "../../assets/images/starknetLogoBordered.svg";
 import transferDeposit from "../../assets/images/transferDeposit.svg";
 import languageArrow from "../../assets/images/languageArrow.svg";
-import settingIcon from "../../assets/images/settingIcon.svg";
 import dashboardIcon from "../../assets/images/dashboardIcon.svg";
 import contributeEarnIcon from "../../assets/images/contributeEarnIcon.svg";
 import tickMark from "../../assets/images/tickMark.svg";
@@ -28,7 +21,6 @@ import "react-toastify/dist/ReactToastify.css";
 import "./header.module.scss";
 import Image from "next/image";
 import { useDisconnect } from "wagmi";
-import EthWalletButton from "./ethConnectWalletButton";
 import { TabContext } from "../../hooks/contextHooks/TabContext";
 import OffchainAPI from "../../services/offchainapi.service";
 import { toast } from "react-toastify";
@@ -106,7 +98,7 @@ const SecondaryHeader = ({
   });
   const [connectWalletArrowState, setConnectWalletArrowState] = useState({
     bool: false,
-    direction: { connectWalletArrowDown },
+    direction: "./connectWalletArrowDown.svg",
   });
 
   const { data: blockInfo } = useBlock();
@@ -345,7 +337,7 @@ const SecondaryHeader = ({
                   setSettingDropDown(false);
                   setConnectWalletArrowState({
                     bool: false,
-                    direction: { connectWalletArrowDown },
+                    direction: "./connectWalletArrowDown.svg",
                   });
                   setLiquidateDropDown(!liquidateDropDown);
                 }}
@@ -447,7 +439,6 @@ const SecondaryHeader = ({
                     </>
                   ) : (
                     <>
-                      {" "}
                       <span
                         style={{
                           display: "flex",
@@ -459,18 +450,18 @@ const SecondaryHeader = ({
                       </span>
                     </>
                   )}
-                  <Image
+                  <img
                     onClick={() => {
                       setLiquidateDropDown(false);
                       setSettingDropDown(false);
                       setConnectWallet(false);
                       setConnectWalletArrowState({
                         bool: !connectWalletArrowState.bool,
-                        direction: { connectWalletArrowDown },
+                        direction: "./connectWalletArrowDown.svg",
                       });
                     }}
-                    src={connectWalletArrowDown}
-                    alt="Picture of the author"
+                    src="./connectWalletArrowDown.svg"
+                    alt="arrow"
                     width="14px"
                     height="14px"
                     style={{ cursor: "pointer" }}
@@ -483,7 +474,7 @@ const SecondaryHeader = ({
                   setSettingDropDown(!settingDropDown);
                   setConnectWalletArrowState({
                     bool: false,
-                    direction: { connectWalletArrowDown },
+                    direction: "./connectWalletArrowDown.svg",
                   });
                 }}
                 src="./settingIcon.svg"
@@ -548,7 +539,7 @@ const SecondaryHeader = ({
                 style={{
                   marginLeft: "100px",
                   marginBottom: "10px",
-                  padding: "7px 6px",
+                  padding: "7px 8px",
                   borderRadius: "5px",
                   backgroundColor: "rgb(57, 61, 79)",
                   color: "white",
@@ -562,7 +553,7 @@ const SecondaryHeader = ({
               <button
                 style={{
                   marginLeft: "89px",
-                  padding: "7px 6px",
+                  padding: "7px 8px",
                   borderRadius: "5px",
                   backgroundColor: "rgb(57, 61, 79)",
                   color: "white",

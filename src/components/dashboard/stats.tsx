@@ -198,7 +198,12 @@ const StatsBoard = (result: {
         <img
           src="./statsIcon.svg"
           alt="Navbar Logo"
-          style={{ marginLeft: "20px", cursor: "pointer", marginTop: "20px" }}
+          style={{
+            marginLeft: "20px",
+            cursor: "pointer",
+            marginTop: "20px",
+            zIndex: "2",
+          }}
           height={24}
           width={24}
           onClick={() => {
@@ -272,7 +277,12 @@ const StatsBoard = (result: {
         <img
           src="./statsIcon.svg"
           alt="Navbar Logo"
-          style={{ marginLeft: "20px", cursor: "pointer", marginTop: "20px" }}
+          style={{
+            marginLeft: "20px",
+            cursor: "pointer",
+            marginTop: "20px",
+            zIndex: "2",
+          }}
           height={24}
           width={24}
           onClick={() => {
