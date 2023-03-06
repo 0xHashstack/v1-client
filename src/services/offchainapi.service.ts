@@ -15,8 +15,8 @@ export default class OffchainAPI {
   //   "http://offchainstarknetmainnetprodapi-env.eba-zacgkgi6.ap-southeast-1.elasticbeanstalk.com";
 
   static ENDPOINT =
-    "http://offchainstarknetmainnetprodapi-env.eba-zacgkgi6.ap-southeast-1.elasticbeanstalk.com";
-  // "http://localhost:3000"
+    "https://offchainapi.mainnet.starknet.hashstack.finance";
+    // "http://localhost:3000"
   // static ENDPOINT = 'https://8992-106-51-78-197.in.ngrok.io'
   // static ENDPOINT = process.env.NEXT_PUBLIC_APP_ENV=='production' ?
   // 	'https://offchainapi.testnet.starknet.hashstack.finance' : 'http://localhost:3010'
@@ -263,7 +263,9 @@ export default class OffchainAPI {
   static async getOraclePrices() {
     let route = `/oracle-prices`;
     return OffchainAPI.httpGet(route);
-    // return OraclePrices;
+    // return async () => {
+    //   return OraclePrices;
+    // }
   }
 
   static async getReserves() {
