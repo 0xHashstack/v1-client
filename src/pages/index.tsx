@@ -348,7 +348,7 @@ const Dashboard = () => {
       account &&
       OffchainAPI.getLoans(account).then(
         (loans) => {
-          // console.log("loans:", loans);
+          console.log("loans:", loans);
           onLoansData(loans);
           setIsLoading(false);
         },

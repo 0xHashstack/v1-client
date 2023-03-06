@@ -411,7 +411,7 @@ let Borrow: any = ({
       const Data = dataMaxLoan?.max_loan_amount
         ? weiToEtherNumber(
             uint256.uint256ToBN(dataMaxLoan?.max_loan_amount).toString(), 
-            tokenAddressMap[asset]
+            tokenAddressMap[asset]||""
           )
         : "0";
       setMaxloanData(Data);
