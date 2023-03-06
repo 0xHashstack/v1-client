@@ -489,18 +489,21 @@ const BorrowData = ({
     //   getTokenFromName(asset.loanMarket)?.name,
     //   getTokenFromName(marketTokenName)?.name
     // );
-    // console.log(
-    //   "getAmountOutDataJediSwap",
-    //   getAmountOutData,
-    //   getAmountOutData?.amount_to
-    //     ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
-    //     : "NA",
-    //   loadingGetAmountOut,
-    //   errorGetAmountOut
-    // );
+    console.log(
+      "getAmountOutDataJediSwap",
+      getAmountOutData,
+      getAmountOutData?.amount_to
+        ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
+        : "NA",
+      loadingGetAmountOut,
+      errorGetAmountOut
+    );
+    const decimalsDeficit = 18 - tokenDecimalsMap[marketTokenName];
     const amount = getAmountOutData?.amount_to
-      ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
+      ? uint256.uint256ToBN(getAmountOutData?.amount_to)
+      .mul(number.toBN(10).pow(number.toBN(decimalsDeficit))).toString()
       : "NA";
+    console.log("mmmmmmmm", amount)
     setTotalAmountOutJediSwap(amount);
   }, [getAmountOutData, loadingGetAmountOut, errorGetAmountOut]);
 
@@ -550,8 +553,10 @@ const BorrowData = ({
     //   loadingGetAmountOutMySwap,
     //   errorGetAmountOutMySwap
     // );
+    const decimalsDeficit = 18 - tokenDecimalsMap[marketTokenName];
     const amount = getAmountOutDataMySwap?.amount_to
-      ? uint256.uint256ToBN(getAmountOutDataMySwap?.amount_to).toString()
+      ? uint256.uint256ToBN(getAmountOutDataMySwap?.amount_to)
+      .mul(number.toBN(10).pow(number.toBN(decimalsDeficit))).toString()
       : "NA";
     setTotalAmountOutmySwap(amount);
   }, [
@@ -826,6 +831,13 @@ const BorrowData = ({
       return;
     }
   };
+
+  const changeTo18Decimals = (value: any, market: any) => {
+    if(!tokenDecimalsMap[market]) return value;
+    const decimalsDeficit = 18 - tokenDecimalsMap[market];
+    console.log('changeTo18Decimals', value, market, decimalsDeficit)
+    return number.toBN(value).mul(number.toBN(10**decimalsDeficit)).toString();
+  }
 
   const toggleyagi = () => {
     setYagidrop(!Yagidrop);
@@ -3167,13 +3179,15 @@ const BorrowData = ({
                         {/* * TODO: Adjust for token Decimals */}
                         {appsImage === "mySwap" ? (
                           totalAmountOutmySwap !== "NA" ? (
-                            totalAmountOutmySwap > asset?.currenLoanAmount ? (
+                            totalAmountOutmySwap >  changeTo18Decimals(asset?.currentLoanAmount, asset.loanMarket) ? (
                               `1 ${asset.loanMarket} = ${(
-                                totalAmountOutmySwap / asset.currentLoanAmount
+                                number.toBN(totalAmountOutmySwap).mul(number.toBN(100))
+                                .div(number.toBN(changeTo18Decimals(asset.currentLoanAmount, asset.loanMarket))).toNumber() / 100
                               ).toFixed(4)} ${marketTokenName}`
                             ) : (
                               `1 ${marketTokenName} = ${(
-                                asset.currentLoanAmount / totalAmountOutmySwap
+                                number.toBN(changeTo18Decimals(asset?.currentLoanAmount, asset.loanMarket))
+                                .mul(number.toBN(100)).div(number.toBN(totalAmountOutmySwap)).toNumber() / 100
                               ).toFixed(4)} ${asset.loanMarket}`
                             )
                           ) : (
@@ -3181,13 +3195,15 @@ const BorrowData = ({
                           )
                         ) : appsImage === "jediSwap" ? (
                           totalAmountOutJediSwap !== "NA" ? (
-                            totalAmountOutJediSwap > asset?.currenLoanAmount ? (
+                            totalAmountOutJediSwap > changeTo18Decimals(asset?.currentLoanAmount, asset.loanMarket) ? (
                               `1 ${asset.loanMarket} = ${(
-                                totalAmountOutJediSwap / asset.currentLoanAmount
+                                number.toBN(totalAmountOutJediSwap).mul(number.toBN(100))
+                                .div(number.toBN(changeTo18Decimals(asset.currentLoanAmount, asset.loanMarket))).toNumber() / 100
                               ).toFixed(4)} ${marketTokenName}`
                             ) : (
                               `1 ${marketTokenName} = ${(
-                                asset.currentLoanAmount / totalAmountOutJediSwap
+                                number.toBN(changeTo18Decimals(asset?.currentLoanAmount, asset.loanMarket))
+                                .mul(number.toBN(100)).div(number.toBN(totalAmountOutJediSwap)).toNumber() / 100
                               ).toFixed(4)} ${asset.loanMarket}`
                             )
                           ) : (
