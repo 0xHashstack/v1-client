@@ -13,32 +13,24 @@ export function TabsProvider({ children }) {
       setCustomActiveTab(tab);
     }
   };
-
+  const [totalSupplyDash, setTotalSupplyDash] = useState();
+  const [totalBorrowAssets, setTotalBorrowAssets] = useState();
   const [selectedLoan, setSelectedLoan] = useState();
   const [title, setTitle] = useState({
     label: "None",
   });
-  const [modal_deposit, setmodal_deposit] = useState(false);
-  const [appsImage, setAppsImage] = useState("yagi");
-  const [totalBorrowAssets, setTotalBorrowAssets] = useState();
-  const [totalSupplyDash, setTotalSupplyDash] = useState();
   return (
     <TabContext.Provider
       value={{
         customActiveTab,
         setCustomActiveTab,
         toggleCustom,
-        selectedLoan,
-        setSelectedLoan,
+        selectedLoan, setSelectedLoan,
         title,
         setTitle,
-        modal_deposit,
-        setmodal_deposit,
-        appsImage,
-         setAppsImage,
-         totalBorrowAssets,
-          setTotalBorrowAssets,
-          totalSupplyDash, setTotalSupplyDash
+        totalBorrowAssets, setTotalBorrowAssets,
+        totalSupplyDash, setTotalSupplyDash
+      
       }}
     >
       {children}

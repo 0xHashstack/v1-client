@@ -118,11 +118,13 @@ const Dashboard = () => {
   const [repaidLoansData, setRepaidLoansData] = useState<ILoans[]>([]);
   const [activeLiquidationsData, setActiveLiquidationsData] = useState<any>([]);
   const [isTransactionDone, setIsTransactionDone] = useState(false);
+ 
 
   const [handleDepositTransactionDone, setHandleDepositTransactionDone] =
     useState(false);
   const [withdrawDepositTransactionDone, setWithdrawDepositTransactionDone] =
     useState(false);
+   
 
   // const [customActiveTab, setCustomActiveTab] = useState("1");
   // const [customActiveTabs, setCustomActiveTabs] = useState("1");
@@ -162,6 +164,7 @@ const Dashboard = () => {
   const [netAprEarned, setNetAprEarned] = useState(0);
   const [oracleAndFairPrices, setOracleAndFairPrices] = useState<any>();
   const [offchainCurrentBlock, setOffchainCurrentBlock] = useState("");
+  const [modal_deposit, setmodal_deposit] = useState(false);
 
   useEffect(() => {
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
@@ -1037,6 +1040,8 @@ const Dashboard = () => {
                     activeLoansData={activeLoansData.filter(
                       (loan) => loan.state === "OPEN"
                     )}
+                    modal_deposit={modal_deposit}
+                     setmodal_deposit={setmodal_deposit}
                   />
                 </>
               ) : null}

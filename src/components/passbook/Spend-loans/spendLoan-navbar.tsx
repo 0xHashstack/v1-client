@@ -47,6 +47,7 @@ import useMySwap from "../../../blockchain/hooks/SpendBorrow/useMySwap";
 import ToastModal from "../../toastModals/customToastModal";
 import MySpinner from "../../mySpinner";
 import { number } from "starknet";
+import {SecTabContext} from "../../../hooks/contextHooks/SecTabContext"
 
 const Coins: ICoin[] = [
   { name: "USDT", icon: "mdi-bitcoin" },
@@ -56,10 +57,15 @@ const Coins: ICoin[] = [
   { name: "DAI", icon: "mdi-dai" },
 ];
 
-const SpendLoanNav = ({ activeLoansData }) => {
-  const [tokenName, setTokenName] = useState("BTC");
-  const { title, setTitle, selectedLoan, setSelectedLoan,modal_deposit,setmodal_deposit,appsImage, setAppsImage } =
-    useContext(TabContext);
+const SpendLoanNav = ({ activeLoansData,modal_deposit, setmodal_deposit }) => {
+
+    const {selectedLoan, setSelectedLoan,setTitle,title} = useContext(TabContext)
+    // const {appsImage, setAppsImage} = 
+    // const [modal_deposit, setmodal_deposit] = useState(false);
+    const {appsImage, setAppsImage} = useContext(SecTabContext);
+    const [tokenName, setTokenName] = useState("BTC");
+ 
+   
   const {
     executeJediSwap,
     dataJediSwap,
@@ -115,9 +121,9 @@ const SpendLoanNav = ({ activeLoansData }) => {
 
   const { address: account } = useAccount();
 
-  const [isCollateralActions, setIsCollateralActions] = useState(false);
-  const [isSelfLiquidate, setIsSelfLiquidate] = useState(false);
-  const [customActiveTab, setCustomActiveTab] = useState("1");
+  // const [isCollateralActions, setIsCollateralActions] = useState(false);
+  // const [isSelfLiquidate, setIsSelfLiquidate] = useState(false);
+  // const [customActiveTab, setCustomActiveTab] = useState("1");
   
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
@@ -129,11 +135,11 @@ const SpendLoanNav = ({ activeLoansData }) => {
 
 
 
-  const [borrowInterest, setBorrowInterest] = useState<string>("");
-  const [currentBorrowInterest, setCurrentBorrowInterest] = useState<string>();
+  // const [borrowInterest, setBorrowInterest] = useState<string>("");
+  // const [currentBorrowInterest, setCurrentBorrowInterest] = useState<string>();
 
-  const [selection, setSelection] = useState("Withdraw Partial Borrow");
-  const [selectionTwo, setSelectionTwo] = useState("Add Collateral");
+  // const [selection, setSelection] = useState("Withdraw Partial Borrow");
+  // const [selectionTwo, setSelectionTwo] = useState("Add Collateral");
 
   const [poolId, setPoolId] = useState(0);
 
@@ -143,7 +149,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
   const [value, setValue] = useState(0);
   const [commitPeriod, setCommitPeriod] = useState(0);
   // const [transDeposit, setTransDeposit] = useState("");
-  const [SpendLoan, setSpendLoan] = useState<any>();
+  // const [SpendLoan, setSpendLoan] = useState<any>();
   const dappsArray = [
     { name: "jediSwap", supportedActions: ["Swap"] },
     { name: "mySwap", supportedActions: ["Swap"] },
@@ -548,13 +554,13 @@ const SpendLoanNav = ({ activeLoansData }) => {
                   setTitle({
                     label: dapp.supportedActions[0],
                   });
-                  setSpendLoan(
-                    dapp.supportedActions[0] === "Swap"
-                      ? "2"
-                      : dapp.supportedActions[0] === "Stake"
-                      ? "1"
-                      : "3"
-                  );
+                  // setSpendLoan(
+                  //   dapp.supportedActions[0] === "Swap"
+                  //     ? "2"
+                  //     : dapp.supportedActions[0] === "Stake"
+                  //     ? "1"
+                  //     : "3"
+                  // );
                 }}
               >
                 <img
