@@ -15,6 +15,7 @@ export function TabsProvider({ children }) {
   };
 
   const [selectedLoan, setSelectedLoan] = useState();
+  const [tokenName, setTokenName] = useState("BTC");
   const [title, setTitle] = useState({
     label: "None",
   });
@@ -33,7 +34,9 @@ export function TabsProvider({ children }) {
         modal_deposit,
         setmodal_deposit,
         appsImage,
-         setAppsImage
+        setAppsImage,
+        tokenName, 
+        setTokenName
       }}
     >
       {children}

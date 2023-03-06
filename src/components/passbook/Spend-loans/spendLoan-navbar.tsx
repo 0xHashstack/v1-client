@@ -57,9 +57,18 @@ const Coins: ICoin[] = [
 ];
 
 const SpendLoanNav = ({ activeLoansData }) => {
-  const [tokenName, setTokenName] = useState("BTC");
-  const { title, setTitle, selectedLoan, setSelectedLoan,modal_deposit,setmodal_deposit,appsImage, setAppsImage } =
-    useContext(TabContext);
+  const { 
+    title, 
+    setTitle, 
+    selectedLoan, 
+    setSelectedLoan,
+    modal_deposit,
+    setmodal_deposit,
+    appsImage, 
+    setAppsImage, 
+    tokenName, 
+    setTokenName
+  } = useContext(TabContext);
   const {
     executeJediSwap,
     dataJediSwap,
@@ -225,6 +234,13 @@ const SpendLoanNav = ({ activeLoansData }) => {
     ],
   });
 
+  const changeTo18Decimals = (value: any, market: any) => {
+    if(!tokenDecimalsMap[market]) return value;
+    const decimalsDeficit = 18 - tokenDecimalsMap[market];
+    console.log('changeTo18Decimals', value, market, decimalsDeficit)
+    return number.toBN(value).mul(number.toBN(10**decimalsDeficit)).toString();
+  }
+
   const requestDepositTransactionReceipt = useTransactionReceipt({
     hash: transDeposit,
     watch: true,
@@ -297,8 +313,10 @@ const SpendLoanNav = ({ activeLoansData }) => {
     //   loadingGetAmountOut,
     //   errorGetAmountOut
     // );
+    const decimalsDeficit = 18 - tokenDecimalsMap[tokenName];
     const amount = getAmountOutData?.amount_to
-      ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
+      ? uint256.uint256ToBN(getAmountOutData?.amount_to)
+      .mul(number.toBN(10).pow(number.toBN(decimalsDeficit))).toString()
       : "NA";
     setTotalAmountOutJediSwap(amount);
   }, [getAmountOutData, loadingGetAmountOut, errorGetAmountOut]);
@@ -349,8 +367,10 @@ const SpendLoanNav = ({ activeLoansData }) => {
     //   loadingGetAmountOutMySwap,
     //   errorGetAmountOutMySwap
     // );
+    const decimalsDeficit = 18 - tokenDecimalsMap[tokenName];
     const amount = getAmountOutDataMySwap?.amount_to
-      ? uint256.uint256ToBN(getAmountOutDataMySwap?.amount_to).toString()
+      ? uint256.uint256ToBN(getAmountOutDataMySwap?.amount_to)
+      .mul(number.toBN(10).pow(number.toBN(decimalsDeficit))).toString()
       : "NA";
     setTotalAmountOutmySwap(amount);
   }, [
@@ -544,6 +564,21 @@ const SpendLoanNav = ({ activeLoansData }) => {
                   setmodal_deposit(true);
                   // tog_center()
                   if (!selectedLoan) setSelectedLoan(activeLoansData?.[0]);
+                  setTokenName((prev) => {
+                    if (dapp.name === "jediSwap") {
+                      return getTokenFromAddress(
+                        supportedPoolsJediSwap.get(
+                          tokenAddressMap[selectedLoan.loanMarket]
+                        )?.[0] as string
+                      ).name;
+                    } else if (dapp.name === "mySwap") {
+                      return getTokenFromAddress(
+                        supportedPoolsMySwap.get(
+                          tokenAddressMap[selectedLoan.loanMarket]
+                        )?.[0] as string
+                      ).name;
+                    } else return prev;
+                  });
                   setAppsImage(dapp.name);
                   setTitle({
                     label: dapp.supportedActions[0],
@@ -1231,14 +1266,14 @@ const SpendLoanNav = ({ activeLoansData }) => {
                         {appsImage === "mySwap" ? (
                           totalAmountOutmySwap !== "NA" ? (
                             totalAmountOutmySwap >
-                            selectedLoan?.currenLoanAmount ? (
+                            changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan.loanMarket) ? (
                               `1 ${selectedLoan?.loanMarket} = ${(
                                 totalAmountOutmySwap /
-                                selectedLoan.currentLoanAmount
+                                changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan.loanMarket)
                               ).toFixed(4)} ${tokenName}`
                             ) : (
                               `1 ${tokenName} = ${(
-                                selectedLoan?.currentLoanAmount /
+                                changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan.loanMarket) /
                                 totalAmountOutmySwap
                               ).toFixed(4)} ${selectedLoan?.loanMarket}`
                             )
@@ -1248,14 +1283,14 @@ const SpendLoanNav = ({ activeLoansData }) => {
                         ) : appsImage === "jediSwap" ? (
                           totalAmountOutJediSwap !== "NA" ? (
                             totalAmountOutJediSwap >
-                            selectedLoan?.currenLoanAmount ? (
+                            changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan.loanMarket) ? (
                               `1 ${selectedLoan?.loanMarket} = ${(
                                 totalAmountOutJediSwap /
-                                selectedLoan?.currentLoanAmount
+                                changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan.loanMarket)
                               ).toFixed(4)} ${tokenName}`
                             ) : (
                               `1 ${tokenName} = ${(
-                                selectedLoan?.currentLoanAmount /
+                                changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan.loanMarket) /
                                 totalAmountOutJediSwap
                               ).toFixed(4)} ${selectedLoan?.loanMarket}`
                             )
