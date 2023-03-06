@@ -324,6 +324,7 @@ const BorrowData = ({
     { name: "mySwap", supportedActions: ["Swap"] },
     { name: "yagi", supportedActions: ["Stake"] },
   ];
+// console.log("amsset",asset);
 
   const [yagiDownArrow, setyagiDownArrow] = useState(Downarrow);
   const [yagiselection, setyagiselection] = useState("0");
@@ -1090,7 +1091,8 @@ const BorrowData = ({
               />
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
-                {parseFloat(weiToEtherNumber(assetParam.loanAmount,tokenAddressMap[assetParam.loanMarket]||"").toString())}
+               
+                {weiToEtherNumber((assetParam.loanAmount).toString(),tokenAddressMap[assetParam.loanMarket]?.toString()||"").toString()}
               </span>
             </div>
           </Col>
@@ -1099,7 +1101,7 @@ const BorrowData = ({
             <div
               style={{ fontSize: "14px", fontWeight: "600", width: "110px" }}
             >
-              {parseFloat(weiToEtherNumber(assetParam.interestPaid,tokenAddressMap[assetParam.loanMarket]||"").toString()).toFixed(6)}
+              {parseFloat(weiToEtherNumber((assetParam.interestPaid).toString(),tokenAddressMap[assetParam.loanMarket]||"").toString()).toFixed(6)}
               &nbsp;
               {EventMap[assetParam.loanMarket.toUpperCase()]}
             </div>
@@ -1164,7 +1166,7 @@ const BorrowData = ({
               />
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
-                {parseFloat(weiToEtherNumber(assetParam.collateralAmount,tokenAddressMap[assetParam.collateralMarket]||"" ).toString())}
+                {parseFloat(weiToEtherNumber((assetParam.collateralAmount).toString(),tokenAddressMap[assetParam.collateralMarket]||"" ).toString())}
               </span>
             </div>
           </Col>
@@ -1872,7 +1874,7 @@ const BorrowData = ({
                               }}
                             >
                               &nbsp;
-                              {parseFloat(weiToEtherNumber(asset.loanAmount,tokenAddressMap[asset.loanMarket]||"").toString())}{" "}
+                              {parseFloat(weiToEtherNumber((asset.loanAmount).toString(),tokenAddressMap[asset.loanMarket]||"").toString())}{" "}
                               {/* {asset.loanMarket} */}
                             </span>
                           </div>
@@ -1906,7 +1908,7 @@ const BorrowData = ({
                               }}
                             >
                               &nbsp;
-                              {parseFloat(weiToEtherNumber(asset.openLoanAmount,tokenAddressMap[asset.loanMarket]||"").toString())}{" "}
+                              {parseFloat(weiToEtherNumber((asset.openLoanAmount).toString(),tokenAddressMap[asset.loanMarket]||"").toString())}{" "}
                               {/* {asset.loanMarket} */}
                             </span>
                           </div>
@@ -2223,8 +2225,8 @@ const BorrowData = ({
                                         )
                                         : 0;
                                       amount = weiToEtherNumber(
-                                        amount,
-                                        asset.loanMarket
+                                        amount.toString(),
+                                        tokenAddressMap[asset.loanMarket]?.toString()||""
                                       );
                                       setRepayAmount(amount);
                                       setValue(100);
@@ -2481,7 +2483,7 @@ const BorrowData = ({
                             }}
                           >
                             &nbsp;
-                            {parseFloat(weiToEtherNumber(asset.loanAmount,tokenAddressMap[asset.loanMarket]||"").toString())}{" "}
+                            {parseFloat(weiToEtherNumber((asset.loanAmount).toString(),tokenAddressMap[asset.loanMarket]||"").toString())}{" "}
                             {asset.loanMarket}
                           </span>
                         </div>
@@ -2607,8 +2609,9 @@ const BorrowData = ({
                                       )
                                       : 0;
                                     amount = weiToEtherNumber(
-                                      amount,
-                                      asset.collateralMarket
+                                      amount.toString(),
+                                      tokenAddressMap[asset.collateralMarket].toString()||""
+                                      
                                     );
                                     setAddCollateralAmount(amount);
                                     setValue(100);
@@ -2766,7 +2769,7 @@ const BorrowData = ({
                             >
                               &nbsp;{" "}
                               {parseFloat(
-                                weiToEtherNumber(asset.collateralAmount,tokenAddressMap[asset.collateralMarket]||"").toString()
+                                weiToEtherNumber((asset.collateralAmount).toString(),tokenAddressMap[asset.collateralMarket]||"").toString()
                               )}
                             </span>
                           </div>
@@ -3327,7 +3330,7 @@ const BorrowData = ({
                           style={{ marginTop: "-2px" }}
                           width="11px"
                         />
-                        &nbsp;<div>{weiToEtherNumber(asset.collateralAmount,asset.collateralMarket)}</div>
+                        &nbsp;<div>{weiToEtherNumber((asset.collateralAmount).toString(),asset.collateralMarket)}</div>
                       </div>
                     </div>
                     <div
@@ -3557,7 +3560,7 @@ const BorrowData = ({
                           style={{ marginTop: "-2px" }}
                           width="11px"
                         />
-                        &nbsp;<div>{weiToEtherNumber(asset.collateralAmount,asset.collateralMarket)}</div>
+                        &nbsp;<div>{weiToEtherNumber((asset.collateralAmount).toString(),asset.collateralMarket)}</div>
                       </div>
                     </div>
                     <div
