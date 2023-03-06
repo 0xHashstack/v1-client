@@ -585,14 +585,15 @@ const SecondaryHeader = ({
                   }}
                 >
                   <img src="./green.svg" />
-                  {/* <div>{networkSelected.network} </div> */}
+
                   <div> Starknet </div>
-                  <Image
-                    src={dropDownArrow}
+                  <img
+                    src={`${dropDownArrow}`}
                     alt="Picture of the author"
                     width="14px"
                     height="14px"
                     style={{
+                      marginTop: "3px",
                       cursor: "pointer",
                     }}
                   />
@@ -655,12 +656,13 @@ const SecondaryHeader = ({
                   >
                     {languageChosen}
                   </div>
-                  <Image
-                    src={languageArrow}
+                  <img
+                    src={`${languageArrow}`}
                     alt="Picture of the author"
                     width="5px"
-                    height="5px"
+                    height="10px"
                     style={{
+                      marginTop: "5px",
                       cursor: "pointer",
                     }}
                   />
