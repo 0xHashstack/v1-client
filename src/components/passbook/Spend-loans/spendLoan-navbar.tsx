@@ -865,7 +865,7 @@ const SpendLoanNav = ({ activeLoansData,modal_deposit, setmodal_deposit }) => {
                               }}
                             >
                               {labels.map((word, index, labels) => {
-                                if (title.label === word) {
+                                if (title.label === word ) {
                                   return <></>;
                                 }
                                 return (
@@ -873,14 +873,16 @@ const SpendLoanNav = ({ activeLoansData,modal_deposit, setmodal_deposit }) => {
                                     <div
                                       style={{
                                         margin: "10px 0",
-                                        cursor: "pointer",
+                                        cursor: word !== "Trade"?"pointer":"",
                                         display: "flex",
                                         alignItems: "center",
                                         fontSize: "14px",
                                       }}
                                       key={index}
-                                      onClick={() => {
-                                        setTitle({ label: word });
+                                     
+                                      onClick={() => {{
+                                        if (word !== "Trade") {
+                                          setTitle({ label: word });
                                         setDropDownTwo(!dropDownTwo);
                                         setStakeDropDownArrow(arrowDown);
                                         setAppsImage((prev) =>
@@ -890,7 +892,9 @@ const SpendLoanNav = ({ activeLoansData,modal_deposit, setmodal_deposit }) => {
                                             ? "yagi"
                                             : prev
                                         );
+                                        }
                                       }}
+                                      }
                                     >
                                       {word}
                                     </div>{" "}
