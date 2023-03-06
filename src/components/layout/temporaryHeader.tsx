@@ -246,7 +246,7 @@ const SecondaryHeader = ({
             >
               <Link href="/">
                 <div>
-                  <Image src={hashstackLogo} alt="Navbar Logo" height="40px" />
+                  <Image src={hashstackLogo} alt="Navbar Logo" height="40px" width={"177px"} />
                 </div>
               </Link>
             </div>

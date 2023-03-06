@@ -25,18 +25,19 @@ import {
 import { SequencerProvider, RpcProvider } from "starknet";
 import ErrorBoundary from "../components/ErrorComponent";
 import { IdentifierProvider } from "../blockchain/hooks/context/identifierContext";
-import * as amplitude from "@amplitude/analytics-browser";
 
-/* Initializing amplitude analytics */
-
-amplitude.init("0c6ca142b8f758aec64963ebdea8fdb1", undefined, {
-  defaultTracking: {
-    sessions: true,
-    pageViews: true,
-    formInteractions: true,
-    fileDownloads: true,
-  },
-});
+if (typeof window !== 'undefined') {
+  const amplitude = require("@amplitude/analytics-browser");
+  /* Initializing amplitude analytics */
+  amplitude.init("0c6ca142b8f758aec64963ebdea8fdb1", undefined, {
+    defaultTracking: {
+      sessions: true,
+      pageViews: true,
+      formInteractions: true,
+      fileDownloads: true,
+    },
+  });
+}
 
 /******************************************************************/
 

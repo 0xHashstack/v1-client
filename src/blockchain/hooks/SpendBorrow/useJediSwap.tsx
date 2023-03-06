@@ -6,6 +6,7 @@ import JediSwapAbi from "../../../../starknet-artifacts/contracts/integrations/m
 import { Abi } from "starknet";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { map } from "lodash";
 
 const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
 
@@ -32,11 +33,18 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
     }
   })
 
+  function getMapArr(map: any, firstVal: any) {
+    if (map.get(firstVal)) {
+      return map.get(firstVal);
+    }
+    return []
+  }
+
   useEffect(() => {
 
     const setValue = (map: Map<string, Array<string>>, firstVal: string, secondVal: string) => {
       if(map.get(firstVal))
-        map.set(firstVal, [...map.get(firstVal), secondVal]);
+        map.set(firstVal, [...getMapArr(map, firstVal), secondVal]);
       else map.set(firstVal, [secondVal]);
     }
 

@@ -1048,7 +1048,7 @@ const Dashboard = () => {
 
   function isCorrectNetwork() {
     return (
-      starknetAccount?.baseUrl.includes("alpha4-2.starknet.io") ||
+      starknetAccount?.baseUrl.includes("alpha-mainnet.starknet.io") ||
       starknetAccount?.baseUrl.includes("localhost")
     );
   }
