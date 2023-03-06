@@ -21,6 +21,8 @@ export function TabsProvider({ children }) {
   });
   const [modal_deposit, setmodal_deposit] = useState(false);
   const [appsImage, setAppsImage] = useState("yagi");
+  const [totalBorrowAssets, setTotalBorrowAssets] = useState();
+  const [totalSupplyDash, setTotalSupplyDash] = useState();
   return (
     <TabContext.Provider
       value={{
@@ -36,7 +38,10 @@ export function TabsProvider({ children }) {
         appsImage,
         setAppsImage,
         tokenName, 
-        setTokenName
+        setTokenName,
+         totalBorrowAssets,
+          setTotalBorrowAssets,
+          totalSupplyDash, setTotalSupplyDash
       }}
     >
       {children}
