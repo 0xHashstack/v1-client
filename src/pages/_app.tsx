@@ -25,18 +25,19 @@ import {
 import { SequencerProvider, RpcProvider } from "starknet";
 import ErrorBoundary from "../components/ErrorComponent";
 import { IdentifierProvider } from "../blockchain/hooks/context/identifierContext";
-import * as amplitude from "@amplitude/analytics-browser";
 
-/* Initializing amplitude analytics */
-
-amplitude.init("0c6ca142b8f758aec64963ebdea8fdb1", undefined, {
-  defaultTracking: {
-    sessions: true,
-    pageViews: true,
-    formInteractions: true,
-    fileDownloads: true,
-  },
-});
+if (typeof window !== 'undefined') {
+  const amplitude = require("@amplitude/analytics-browser");
+  /* Initializing amplitude analytics */
+  amplitude.init("0c6ca142b8f758aec64963ebdea8fdb1", undefined, {
+    defaultTracking: {
+      sessions: true,
+      pageViews: true,
+      formInteractions: true,
+      fileDownloads: true,
+    },
+  });
+}
 
 /******************************************************************/
 
@@ -88,9 +89,10 @@ function MyApp({ Component, pageProps }: AppProps) {
                 autoConnect
                 defaultProvider={
                   // @todo to move this to env variables
+                  // @Rajeebs's Infura project
                   new RpcProvider({
                     nodeUrl:
-                      "https://starknet-goerli.infura.io/v3/3274a9630231466681b6300375f517f2",
+                      "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
                   })
                 }
               >
