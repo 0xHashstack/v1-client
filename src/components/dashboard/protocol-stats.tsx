@@ -12,7 +12,7 @@ const ProtocolStats = () => {
 	useEffect(() => {
 		OffchainAPI.getDashboardStats().then(
 			(stats) => {
-				console.log('dashboard stats:', stats);
+				// console.log('dashboard stats:', stats);
         setTvl(stats.tvl);
         setTotalUsers(stats.totalUsers);
 
@@ -23,12 +23,12 @@ const ProtocolStats = () => {
           stats.tvlByToken.USDT.tvl, 
           stats.tvlByToken.BNB.tvl
         )
-        console.log("dominant amount", dominantAmount)
+        // console.log("dominant amount", dominantAmount)
 
         for (const property in stats.tvlByToken) {
-          console.log(`${property}: ${stats.tvlByToken[property].tvl}`);
+          // console.log(`${property}: ${stats.tvlByToken[property].tvl}`);
           if(stats.tvlByToken[property].tvl === dominantAmount){
-            console.log("dominant market", getTokenFromAddress(stats.tvlByToken[property].address)?.name);
+            // console.log("dominant market", getTokenFromAddress(stats.tvlByToken[property].address)?.name);
             setDominantMarket(getTokenFromAddress(stats.tvlByToken[property].address)?.name || 'NA')
           }
         }

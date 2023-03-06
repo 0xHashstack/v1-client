@@ -212,7 +212,7 @@ const ActiveDepositsTab = ({
 
   useEffect(() => {
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
-      console.log("got them", val);
+      // console.log("got them", val);
       setDepositLoanRates(val);
     });
   }, []);
@@ -297,7 +297,7 @@ const ActiveDepositsTab = ({
       let val = await executeDeposit();
       setTransDeposit(val.transaction_hash);
     } catch (err) {
-      console.log(err, "err deposit");
+      // console.log(err, "err deposit");
     }
     if (errorDeposit) {
       toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {

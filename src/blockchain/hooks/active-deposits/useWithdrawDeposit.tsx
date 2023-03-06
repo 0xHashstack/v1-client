@@ -35,7 +35,7 @@ const useWithdrawDeposit = (
   });
 
   const handleWithdrawDeposit = async () => {
-    console.log(`${withdrawAmount} ${asset.depositId} ${diamondAddress}`);
+    // console.log(`${withdrawAmount} ${asset.depositId} ${diamondAddress}`);
     try {
       const val = await executeWithdrawDep();
       setTransWithdraw(val.transaction_hash);
@@ -48,7 +48,7 @@ const useWithdrawDeposit = (
       setDepWithdrawToastParam(toastParamValue);
       setIsDepWithdrawToastOpen(true);
     } catch(err) {
-      console.log(err, 'withdraw deposit')
+      // console.log(err, 'withdraw deposit')
       const toastParamValue = {
         success: false,
         heading: "Deposit Transaction Failed",

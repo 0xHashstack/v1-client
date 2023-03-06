@@ -89,10 +89,10 @@ const PrimaryHeader = ({
       }
     );
 
-    console.log("transactions:::::::::", transactions);
+    // console.log("transactions:::::::::", transactions);
   }, [transactions, blockInfo]);
 
-  console.log(available);
+  // console.log(available);
 
   const Tokens = ["USDT", "USDC", "BTC", "BNB"];
   const options = [
@@ -106,7 +106,7 @@ const PrimaryHeader = ({
 
   const handleChange = (network: any) => {
     setSelected(network);
-    console.log("network selected --> ", network);
+    // console.log("network selected --> ", network);
   };
 
   const toggleDropdown = () => {

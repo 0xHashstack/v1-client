@@ -100,7 +100,7 @@ let Deposit: any = ({
 
   useEffect(() => {
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
-      console.log("deposit rates in supply", val);
+      // console.log("deposit rates in supply", val);
       setDepositLoanRates(val);
     });
   }, [asset]);
@@ -253,7 +253,7 @@ let Deposit: any = ({
   const handleBalanceChange = async () => {
     const allow = await refreshAllowance();
     const bal = await refreshBalance();
-    console.log("updated on toggle", allow, bal, asset);
+    // console.log("updated on toggle", allow, bal, asset);
   };
 
   const handleMax = async () => {
@@ -289,15 +289,15 @@ let Deposit: any = ({
 
   const getGas = async () => {
     try {
-      console.log(
-        "gas tokenAddressMap[asset]",
-        tokenAddressMap[asset],
-        diamondAddress,
-        commitPeriod,
-        depositAmount,
-        depositContract
-      );
-      console.log("provider", depositContract?.providerOrAccount, userAccount);
+      // console.log(
+      //   "gas tokenAddressMap[asset]",
+      //   tokenAddressMap[asset],
+      //   diamondAddress,
+      //   commitPeriod,
+      //   depositAmount,
+      //   depositContract
+      // );
+      // console.log("provider", depositContract?.providerOrAccount, userAccount);
 
       let call = depositContract?.populate("deposit_request", [
         tokenAddressMap[asset],
@@ -311,10 +311,10 @@ let Deposit: any = ({
         throw new Error("call undefined");
       } else {
         let gas = await userAccount?.estimateFee([call]);
-        console.log("gas for deposit", gas);
+        // console.log("gas for deposit", gas);
       }
     } catch (error) {
-      console.log("query gas error", diamondAddress, error);
+      // console.log("query gas error", diamondAddress, error);
     }
   };
 
@@ -351,7 +351,7 @@ let Deposit: any = ({
       setToastParam(toastParamValue);
       setIsToastOpen(true);
     } catch (err) {
-      console.log(err, "err deposit");
+      // console.log(err, "err deposit");
       const toastParamValue = {
         success: false,
         heading: "Deposit Transaction Failed",
@@ -374,7 +374,7 @@ let Deposit: any = ({
         let data: any = dataAllowance;
         let _allowanceBN = uint256.uint256ToBN(data.remaining);
         const _allowance = ethers.utils.formatEther(_allowanceBN.toString());
-        // console.log('deposit allowance', token?.name, _allowance, depositAmount)
+        // // console.log('deposit allowance', token?.name, _allowance, depositAmount)
         setAllowance(Number(_allowance));
       } else if (errorAllowance) {
         // handleToast(true, "Check allowance", errorAllowance)

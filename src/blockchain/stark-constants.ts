@@ -35,7 +35,7 @@ for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
 
 export const getTokenFromName = (name: string) => {
   let something = contractsEnv.TOKENS.map((item) => item.name);
-  console.log(something);
+  // console.log(something);
   let index = contractsEnv.TOKENS.map((item) => item.name).indexOf(name);
   return contractsEnv.TOKENS[index];
   //   if (process.env.NODE_ENV === "development") {
@@ -104,7 +104,7 @@ export const l3DiamondAddress: string = contractsEnv.L3_DIAMOND_ADDRESS;
 export const getTokenFromAddress = (address: string) => {
   let index = contractsEnv.TOKENS.map((item) => item.address).indexOf(address);
   let token = contractsEnv.TOKENS[index];
-  console.log("getTokenFromAddress", address, token);
+  // console.log("getTokenFromAddress", address, token);
   return token;
 };
 

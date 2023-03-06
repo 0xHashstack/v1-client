@@ -15,11 +15,11 @@ import {
 import { TxToastManager } from "../txToastManager";
 
 const useGetToken = ({ token }: { token: string }) => {
-  console.log("get token", token);
+  // console.log("get token", token);
   const [_account, setAccount] = useState<string>("");
 
   // useEffect(() => {
-  //   console.log(number.toHex(number.toBN(number.toFelt(_account || ""))));
+  //   // console.log(number.toHex(number.toBN(number.toFelt(_account || ""))));
   //   setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
   // }, [account]);
 
@@ -39,7 +39,7 @@ const useGetToken = ({ token }: { token: string }) => {
 
   // useEffect(() => {
   //   // TxToastManager.handleTxToast(`Mint Testnet tokens: ${token}`);
-  //   console.log(errorToken);
+  //   // console.log(errorToken);
   // }, [errorToken]);
 
   const handleGetToken = async () => {
@@ -52,7 +52,7 @@ const useGetToken = ({ token }: { token: string }) => {
         "error",
         "REJECTED"
       );
-      console.log(err, "err get token");
+      // console.log(err, "err get token");
     }
   };
 

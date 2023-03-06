@@ -313,10 +313,10 @@ const BorrowTab = ({
     useMaxloan(tokenName, asset, Number(borrowParams.collateralAmount));
   let l = setTimeout(() => {
     if (loadingMaxLoan === false && !errorMaxLoan) {
-      console.log(
-        "printing",
-        Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1))
-      );
+      // console.log(
+      //   "printing",
+      //   Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1))
+      // );
       const Data = Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1));
       setMaxloanData(Data);
     }
@@ -367,7 +367,7 @@ const BorrowTab = ({
   };
 
   const handleLoanInputChange = async (e: any) => {
-    console.log("asset ajeeb", e.target.value);
+    // console.log("asset ajeeb", e.target.value);
     setBorrowParams({
       ...borrowParams,
       loanAmount: e.target.value,
@@ -490,10 +490,10 @@ const BorrowTab = ({
     }
 
     if (!inputVal1 && !loanId && !diamondAddress) {
-      console.log("error");
+      // console.log("error");
       return;
     }
-    console.log(diamondAddress, loanId, inputVal1);
+    // console.log(diamondAddress, loanId, inputVal1);
 
     try {
       const val = await executeWithdraw();
@@ -537,12 +537,12 @@ const BorrowTab = ({
 
   useEffect(() => {
     if (!borrowParams.loanAmount || !borrowParams.collateralAmount) return;
-    console.log(
-      "debt category",
-      BNtoNum(dataDebtCategory?.debt_category, 0),
-      errorDebtCategory,
-      loadingDebtCategory
-    );
+    // console.log(
+    //   "debt category",
+    //   BNtoNum(dataDebtCategory?.debt_category, 0),
+    //   errorDebtCategory,
+    //   loadingDebtCategory
+    // );
     if (loadingDebtCategory === false && !errorDebtCategory)
       setDebtCategory(BNtoNum(dataDebtCategory?.debt_category, 0));
   }, [errorDebtCategory, dataDebtCategory, loadingDebtCategory]);
@@ -593,9 +593,9 @@ const BorrowTab = ({
   };
 
   const handleSwap = async () => {
-    console.log(swapMarket, " ", loanId, " ", diamondAddress);
+    // console.log(swapMarket, " ", loanId, " ", diamondAddress);
     if (!swapMarket && !loanId && !diamondAddress) {
-      console.log("error");
+      // console.log("error");
       return;
     }
 
@@ -608,7 +608,7 @@ const BorrowTab = ({
       }
     }
     if (errorSwapToMarket) {
-      console.log(errorSwapToMarket);
+      // console.log(errorSwapToMarket);
       toast.error(`${GetErrorText(`Swap to ${swapMarket} failed`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
@@ -680,7 +680,7 @@ const BorrowTab = ({
       setToastParam(toastParamValue);
       setIsToastOpen(true);
     } catch (err) {
-      console.log(err, "err borrow");
+      // console.log(err, "err borrow");
       const toastParamValue = {
         success: false,
         heading: "Borrow Transaction Failed",
@@ -794,7 +794,7 @@ const BorrowTab = ({
             </Table>
 
             {activeLoansData.map((asset, key, allAssets) => {
-              console.log("activeLoansData", asset);
+              // console.log("activeLoansData", asset);
               return (
                 <BorrowData
                   allAssets={allAssets}
@@ -868,7 +868,7 @@ const BorrowTab = ({
                 <u>Purchase or Supply assets.</u>
               </div>
             </div>
-            {console.log("Borrasset",asset)
+            {// console.log("Borrasset",asset)
             }
             <BorrowModal
               modal_borrow={modal_borrow}

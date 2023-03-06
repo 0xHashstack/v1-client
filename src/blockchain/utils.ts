@@ -45,10 +45,10 @@ export const GetErrorText = (err: any) => {
   if (err.code === Logger.errors.CALL_EXCEPTION)
     return `Transaction failed! \n ${err.transactionHash}`;
   if (err.data) {
-    console.log(1);
+    // console.log(1);
     return err.data.message;
   } else if (err.message) {
-    console.log("Erro: ", err.message);
+    // console.log("Erro: ", err.message);
     return err.message;
   } else if (typeof err == "string") {
     return err;
@@ -146,11 +146,11 @@ export const currentDepositInterestRate = (asset: any, historicalAPRs: any) => {
 };
 
 export const currentBorrowInterestRate = (asset: any, historicalAPRs: any) => {
-  console.log(historicalAPRs, asset);
+  // console.log(historicalAPRs, asset);
   let key = `${getTokenFromName(asset.loanMarket).address}__${
     asset.commitmentIndex
   }`;
-  console.log("currentBorrowInterestRate", key);
+  // console.log("currentBorrowInterestRate", key);
   return (historicalAPRs[key]?.borrowAPR?.apr100x / 100).toFixed(2);
   // const marketHistoricalAPRs = historicalAPRs.filter((aprRecords: any) => {
   //   return (

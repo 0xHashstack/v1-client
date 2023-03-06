@@ -14,7 +14,7 @@ const useMaxloan = (
     address: diamondAddress,
   });
 
-  console.log("useMaxLoan", market, collateral_market, collateral_amount);
+  // console.log("useMaxLoan", market, collateral_market, collateral_amount);
   const {
     data: dataMaxLoan,
     error: errorMaxLoan,

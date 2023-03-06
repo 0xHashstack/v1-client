@@ -27,7 +27,7 @@ const LoanBorrowCommitment = ({
     );
     setBorrowCommitment(getCommitmentIndexStringFromNameLoan("NONE") as string);
   }, []);
-  console.log(depositCommitment, borrowCommitment);
+  // console.log(depositCommitment, borrowCommitment);
 
   return (
     <div style={{}}>

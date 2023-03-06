@@ -132,7 +132,7 @@ const SecondaryHeader = ({
   };
 
   useEffect(() => {
-    console.log("here");
+    // console.log("here");
     if (
       transactions.length > 0 &&
       transactions[transactions.length - 1]?.status === "ACCEPTED_ON_L2"
@@ -152,7 +152,7 @@ const SecondaryHeader = ({
       }
     );
 
-    console.log("transactions:::::::::", transactions);
+    // console.log("transactions:::::::::", transactions);
   }, [transactions, blockInfo]);
 
   // function handleButtonConnectWallet() {

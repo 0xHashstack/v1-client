@@ -15,11 +15,11 @@ export class TxToastManager {
     const hash = receipt.data?.transaction_hash;
     if (!hash) return;
     let hasToast = this.txToastMap[hash];
-    console.log("handleTxToast", hash, {
-      hash,
-      hasToast,
-      data: receipt.data,
-    });
+    // console.log("handleTxToast", hash, {
+    //   hash,
+    //   hasToast,
+    //   data: receipt.data,
+    // });
     if (receipt.data?.status == "RECEIVED") {
       let msg = (
         <p style={{ margin: 0 }}>
@@ -79,13 +79,13 @@ export class TxToastManager {
     timeout = 5000,
     progress = 1
   ) {
-    console.log("_showToast", {
-      hash,
-      existingId,
-      message,
-      type,
-      status,
-    });
+    // console.log("_showToast", {
+    //   hash,
+    //   existingId,
+    //   message,
+    //   type,
+    //   status,
+    // });
     let options: ToastOptions = {
       type,
       toastId: hash,

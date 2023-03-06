@@ -96,7 +96,7 @@ let Borrow: any = ({
   depositLoanRates: IDepositLoanRates;
   fairPriceArray: any;
 }) => {
-  console.log("the asset you get from borrow popup", assetParam);
+  // console.log("the asset you get from borrow popup", assetParam);
   const Coins: ICoin[] = [
     { name: "USDT", icon: "mdi-bitcoin" },
     { name: "USDC", icon: "mdi-ethereum" },
@@ -189,17 +189,17 @@ let Borrow: any = ({
   useEffect(() => {
     setToken(getTokenFromName(asset));
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
-      console.log("loan rates", val);
+      // console.log("loan rates", val);
       setDepositLoanRates(val);
     });
   }, [asset]);
 
   useEffect(() => {
-    console.log(
-      "approve tx receipt",
-      approveTransactionReceipt.data?.transaction_hash,
-      approveTransactionReceipt
-    );
+    // console.log(
+    //   "approve tx receipt",
+    //   approveTransactionReceipt.data?.transaction_hash,
+    //   approveTransactionReceipt
+    // );
     if (!isValid()) return;
     TxToastManager.handleTxToast(
       approveTransactionReceipt,
@@ -209,11 +209,11 @@ let Borrow: any = ({
   }, [approveTransactionReceipt]);
 
   useEffect(() => {
-    console.log(
-      "borrow tx receipt",
-      requestBorrowTransactionReceipt.data?.transaction_hash,
-      requestBorrowTransactionReceipt
-    );
+    // console.log(
+    //   "borrow tx receipt",
+    //   requestBorrowTransactionReceipt.data?.transaction_hash,
+    //   requestBorrowTransactionReceipt
+    // );
     if (!isValid()) return;
     if (borrowParams.loanAmount)
       TxToastManager.handleTxToast(
@@ -252,12 +252,12 @@ let Borrow: any = ({
 
   useEffect(() => {
     if (!borrowParams.loanAmount || !borrowParams.collateralAmount) return;
-    console.log(
-      "debt category",
-      BNtoNum(dataDebtCategory?.debt_category, 0),
-      errorDebtCategory,
-      loadingDebtCategory
-    );
+    // console.log(
+    //   "debt category",
+    //   BNtoNum(dataDebtCategory?.debt_category, 0),
+    //   errorDebtCategory,
+    //   loadingDebtCategory
+    // );
     if (loadingDebtCategory === false && !errorDebtCategory)
       setDebtCategory(BNtoNum(dataDebtCategory?.debt_category, 0));
   }, [errorDebtCategory, dataDebtCategory, loadingDebtCategory]);
@@ -387,7 +387,7 @@ let Borrow: any = ({
     };
   };
 
-  console.log(borrowParams.collateralAmount);
+  // console.log(borrowParams.collateralAmount);
   // {borrowParams.collateralAmount ?(
   // @todo Write a standard function to convert the number to BN with decimal adjusted
   const { dataMaxLoan, errorMaxLoan, loadingMaxLoan, refreshMaxLoan } =
@@ -401,13 +401,13 @@ let Borrow: any = ({
     );
   useEffect(() => {
     if (loadingMaxLoan === false && !errorMaxLoan) {
-      console.log(
-        "printing",
-        dataMaxLoan,
-        errorMaxLoan,
-        loadingMaxLoan,
-        Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1))
-      );
+      // console.log(
+      //   "printing",
+      //   dataMaxLoan,
+      //   errorMaxLoan,
+      //   loadingMaxLoan,
+      //   Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1))
+      // );
       const Data = dataMaxLoan?.max_loan_amount
         ? weiToEtherNumber(
             uint256.uint256ToBN(dataMaxLoan?.max_loan_amount).toString()
@@ -422,7 +422,7 @@ let Borrow: any = ({
       const val = await ApproveToken();
       setTransApprove(val.transaction_hash);
     } catch (err) {
-      console.log(err, "err approve token borrow");
+      // console.log(err, "err approve token borrow");
     }
   };
 
@@ -451,7 +451,7 @@ let Borrow: any = ({
   };
 
   const handleLoanInputChange = async (e: any) => {
-    console.log("asset ajeeb", e.target.value);
+    // console.log("asset ajeeb", e.target.value);
     setBorrowParams({
       ...borrowParams,
       loanAmount: e.target.value,
@@ -538,7 +538,7 @@ let Borrow: any = ({
       setToastParam(toastParamValue);
       setIsToastOpen(true);
     } catch (err) {
-      console.log(err, "err borrow");
+      // console.log(err, "err borrow");
       const toastParamValue = {
         success: false,
         heading: "Borrow Transaction Failed",
@@ -570,30 +570,30 @@ let Borrow: any = ({
   });
 
   useEffect(() => {
-    console.log(
-      "check borrow allownace",
-      token?.name,
-      borrowParams.collateralMarket,
-      {
-        dataAllowance,
-        remaining: dataAllowance
-          ? uint256.uint256ToBN(dataAllowance[0]).toString()
-          : "0",
-        errorAllowance,
-        refreshAllowance,
-        loadingAllowance,
-      }
-    );
+    // console.log(
+      // "check borrow allownace",
+      // token?.name,
+      // borrowParams.collateralMarket,
+      // {
+      //   dataAllowance,
+      //   remaining: dataAllowance
+      //     ? uint256.uint256ToBN(dataAllowance[0]).toString()
+      //     : "0",
+      //   errorAllowance,
+      //   refreshAllowance,
+      //   loadingAllowance,
+      // }
+    // );
     if (!loadingAllowance) {
       if (dataAllowance) {
         let data: any = dataAllowance;
         let _allowance = uint256.uint256ToBN(data.remaining);
-        console.log(
-          "borrow allowance",
-          token?.name,
-          _allowance.toString(),
-          borrowParams
-        );
+        // console.log(
+        //   "borrow allowance",
+        //   token?.name,
+        //   _allowance.toString(),
+        //   borrowParams
+        // );
         setAllowance(Number(uint256.uint256ToBN(dataAllowance[0])) / 10 ** 18);
       } else if (errorAllowance) {
         // handleToast(true, "Check allowance", errorAllowance)
@@ -616,12 +616,12 @@ let Borrow: any = ({
   }
   // function isValidLoanAmount
   function isValid() {
-    console.log(
-      "collateral amount",
-      isValidColleteralAmount(),
-      "loan amount",
-      isLoanAmountValid()
-    );
+    // console.log(
+    //   "collateral amount",
+    //   isValidColleteralAmount(),
+    //   "loan amount",
+    //   isLoanAmountValid()
+    // );
     return isValidColleteralAmount() && isLoanAmountValid();
   }
 

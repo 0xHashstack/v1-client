@@ -32,15 +32,15 @@ const SwapToLoan = ({ asset, setRevertSwapTransactionReceipt }: { asset: any, se
 	const revertSwapTransactionReceipt = useTransactionReceipt({hash: transRevertSwap, watch: true})
 
 	useEffect(() => {
-		console.log('revert swap tx receipt', revertSwapTransactionReceipt.data?.transaction_hash, revertSwapTransactionReceipt);
+		// console.log('revert swap tx receipt', revertSwapTransactionReceipt.data?.transaction_hash, revertSwapTransactionReceipt);
 		TxToastManager.handleTxToast(revertSwapTransactionReceipt, `Revert Loan to ${asset.loanMarket}`)
     setRevertSwapTransactionReceipt(revertSwapTransactionReceipt)
 	}, [revertSwapTransactionReceipt])
 
   const handleSwapToLoan = async () => {
-    console.log(loanId, " ", diamondAddress);
+    // console.log(loanId, " ", diamondAddress);
     if (!loanId && !diamondAddress) {
-      console.log("error");
+      // console.log("error");
       return;
     }
     
@@ -48,7 +48,7 @@ const SwapToLoan = ({ asset, setRevertSwapTransactionReceipt }: { asset: any, se
       const val = await executeSwapToLoan();
       setTransRevertSwap(val.transaction_hash)
     } catch(err) {
-      console.log(err, 'err swap loan')
+      // console.log(err, 'err swap loan')
     }
   };
   useEffect(() => {});

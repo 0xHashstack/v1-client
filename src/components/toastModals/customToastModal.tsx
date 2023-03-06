@@ -26,7 +26,7 @@ const ToastModal = ({
       setShowOnCopy(true);
       setTimeout(() => setShowOnCopy(false), 1000);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 

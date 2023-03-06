@@ -107,20 +107,20 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
   });
 
   useEffect(() => {
-    console.log("check allownace", {
-      dataAllowance,
-      errorAllowance,
-      refreshAllowance,
-      loadingAllowance,
-    });
+    // console.log("check allownace", {
+    //   dataAllowance,
+    //   errorAllowance,
+    //   refreshAllowance,
+    //   loadingAllowance,
+    // });
     if (dataAllowance) {
-      console.log("yo", Number(BNtoNum(dataAllowance[0]?.low, 18)));
+      // console.log("yo", Number(BNtoNum(dataAllowance[0]?.low, 18)));
     }
     if (!loadingAllowance) {
       if (dataAllowance) {
         let data: any = dataAllowance;
         let _allowance = uint256.uint256ToBN(data.remaining);
-        // console.log({ _allowance: _allowance.toString(), depositAmount });
+        // // console.log({ _allowance: _allowance.toString(), depositAmount });
         setAllowance(Number(weiToEtherNumber(dataAllowance[0]?.low, tokenAddressMap[asset.loanMarket]|| "").toString()));
         if (allowanceVal > (repayAmount as number)) {
           setAllowed(true);
@@ -140,7 +140,7 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
       const val = await executeApprove();
       setTransApprove(val.transaction_hash);
     } catch (err) {
-      console.log(err, "err approve token repay");
+      // console.log(err, "err approve token repay");
     }
   };
 

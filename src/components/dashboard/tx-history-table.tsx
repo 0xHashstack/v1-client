@@ -49,7 +49,7 @@ const TxHistoryTable = ({
   //         number.toHex(number.toBN(number.toFelt(account || ""))),
   //         market
   //       );
-  //       console.log("tx history:", events);
+  //       // console.log("tx history:", events);
   //     } else if (type === "loans") {
   //       events = await OffchainAPI.getTransactionEventsActiveLoans(
   //         number.toHex(number.toBN(number.toFelt(account || ""))),
@@ -61,32 +61,32 @@ const TxHistoryTable = ({
   //         market
   //       );
   //     }
-  //     console.log("history", type, events);
+  //     // console.log("history", type, events);
   //     setTxHistoryData(events);
   //     setLoading(false);
   //   } catch (err) {
-  //     console.log("error fetch history", err);
+  //     // console.log("error fetch history", err);
   //     toast.error("Could not fetch history");
   //     setLoading(false);
   //   }
   // }
 
   // function hasTx(tx: string) {
-  //   console.log("history: check for tx", tx);
+  //   // console.log("history: check for tx", tx);
   //   for (let i = 0; i < txHistoryData.length; ++i) {
   //     let history = txHistoryData[i];
-  //     console.log("historymatch", history.txnHash, tx, history.txnHash == tx);
+  //     // console.log("historymatch", history.txnHash, tx, history.txnHash == tx);
   //     if (history.txnHash == tx) return true;
   //   }
   //   return false;
   // }
 
   // useEffect(() => {
-  //   console.log("history: lookingForTxs change", lookingForTxs);
+  //   // console.log("history: lookingForTxs change", lookingForTxs);
   // }, [lookingForTxs]);
 
   // async function lookForTransaction(tx: string, retry = 0) {
-  //   console.log("history: lookForTransaction", lookingForTxs, { retry });
+  //   // console.log("history: lookForTransaction", lookingForTxs, { retry });
   //   if (lookingForTxs[tx]) return;
   //   if (Object.keys(lookingForTxs).includes(tx) && retry == 0) {
   //     return;
@@ -105,7 +105,7 @@ const TxHistoryTable = ({
 
   // useEffect(() => {
   //   // const _account = ;
-  //   console.log(type);
+  //   // console.log(type);
   //   refreshHistory();
   // }, [type, account, market]);
 
@@ -132,7 +132,7 @@ const TxHistoryTable = ({
   // }, [txHistoryData]);
 
   const renderTableData = () => {
-    console.log("renderTableDat:", txHistoryData);
+    // console.log("renderTableDat:", txHistoryData);
     function getTokenName(tokenName: string) {
       return tokenName ? tokenName : ''
     }
@@ -146,7 +146,7 @@ const TxHistoryTable = ({
       txHistoryData &&
       txHistoryData
         .filter((txEntry) => {
-          console.log(txEntry, asset, txEntry.id === asset.loanId, txEntry);
+          // console.log(txEntry, asset, txEntry.id === asset.loanId, txEntry);
           if (type === "deposits") {
             return txEntry.id === asset.depositId;
           } else if (type === "loans") {
@@ -192,8 +192,8 @@ const TxHistoryTable = ({
         })
     );
   };
-  // console.log(asset, type, market, observables);
-  // console.log(asset.depositId);
+  // // console.log(asset, type, market, observables);
+  // // console.log(asset.depositId);
 
   // return (
   //   <div className="table-responsive">

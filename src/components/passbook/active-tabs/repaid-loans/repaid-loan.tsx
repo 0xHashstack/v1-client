@@ -36,8 +36,8 @@ const RepaidLoan = ({
   const handleWithdrawCollateral = async (handleWithdrawCollateral: any) => {
     await handleWithdrawCollateral();
   };
-  console.log("Repayed loan asset",asset);
-  console.log("Custom active tab",customActiveTabs);
+  // console.log("Repayed loan asset",asset);
+  // console.log("Custom active tab",customActiveTabs);
   
   
   return (

@@ -84,7 +84,7 @@ const ActiveDeposit = ({
   allAssets: any;
 }) => {
   const [asset, setAsset] = useState(assetParam);
-  console.log("your supply action asset", asset);
+  // console.log("your supply action asset", asset);
   const {
     // DepositAmount,
     handleApprove,
@@ -243,7 +243,7 @@ const ActiveDeposit = ({
 
   useEffect(() => {
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
-      console.log("loan rates", val);
+      // console.log("loan rates", val);
       setDepositLoanRates(val);
     });
   }, [asset]);
@@ -310,7 +310,7 @@ const ActiveDeposit = ({
       );
     else {
       setWithdrawAmount((Number(asset.amount) + Number(asset.acquiredYield))/ 10 ** (tokenDecimalsMap[tokenName] || 18));
-      console.log("max clicked", asset);
+      // console.log("max clicked", asset);
     }
   };
 
@@ -364,7 +364,7 @@ const ActiveDeposit = ({
       setIsToastOpen(true);
       setTransDeposit(val.transaction_hash);
     } catch (err) {
-      console.log(err, "err deposit");
+      // console.log(err, "err deposit");
       const toastParamValue = {
         success: false,
         heading: "Deposit Transaction Failed",
@@ -381,11 +381,11 @@ const ActiveDeposit = ({
   };
 
   useEffect(() => {
-    console.log(
-      "approve tx receipt",
-      approveTransactionReceipt.data?.transaction_hash,
-      approveTransactionReceipt
-    );
+    // console.log(
+    //   "approve tx receipt",
+    //   approveTransactionReceipt.data?.transaction_hash,
+    //   approveTransactionReceipt
+    // );
     TxToastManager.handleTxToast(
       approveTransactionReceipt,
       `Add Deposit: Approve ${Number(depositAmount)?.toFixed(4)} ${
@@ -396,11 +396,11 @@ const ActiveDeposit = ({
   }, [approveTransactionReceipt]);
 
   useEffect(() => {
-    console.log(
-      "borrow tx receipt",
-      addDepositTransactionReceipt.data?.transaction_hash,
-      addDepositTransactionReceipt
-    );
+    // console.log(
+    //   "borrow tx receipt",
+    //   addDepositTransactionReceipt.data?.transaction_hash,
+    //   addDepositTransactionReceipt
+    // );
     TxToastManager.handleTxToast(
       addDepositTransactionReceipt,
       `Deposit ${Number(depositAmount)?.toFixed(4)} ${asset.market}`
@@ -409,11 +409,11 @@ const ActiveDeposit = ({
 
   useEffect(() => {
     if (!withdrawAmount) return;
-    console.log(
-      "borrow tx receipt",
-      withdrawTransactionReceipt.data?.transaction_hash,
-      withdrawTransactionReceipt
-    );
+    // console.log(
+    //   "borrow tx receipt",
+    //   withdrawTransactionReceipt.data?.transaction_hash,
+    //   withdrawTransactionReceipt
+    // );
     TxToastManager.handleTxToast(
       withdrawTransactionReceipt,
       `Withdraw ${Number(withdrawAmount)?.toFixed(4)} ${asset.market}`
@@ -424,7 +424,7 @@ const ActiveDeposit = ({
     const currentBalance =
       parseFloat(weiToEtherNumber(asset.amount,tokenAddressMap[asset.market]||"").toString()) +
       parseFloat(weiToEtherNumber(asset.acquiredYield,tokenAddressMap[asset.market]||"").toString());
-    console.log("currentBalance", (value / 100) * currentBalance);
+    // console.log("currentBalance", (value / 100) * currentBalance);
     setWithdrawAmount((value / 100) * currentBalance);
   }, [value]);
 

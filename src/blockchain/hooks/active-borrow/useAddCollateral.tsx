@@ -15,7 +15,7 @@ const useAddCollateral = (diamondAddress: string, asset: any) => {
 
 
     useEffect(() => {
-        console.log('withdraw col tx receipt', withdrawCollateralTransactionReceipt.data?.transaction_hash, withdrawCollateralTransactionReceipt);
+        // console.log('withdraw col tx receipt', withdrawCollateralTransactionReceipt.data?.transaction_hash, withdrawCollateralTransactionReceipt);
         TxToastManager.handleTxToast(withdrawCollateralTransactionReceipt, `Withdraw collateral`, true)
     }, [withdrawCollateralTransactionReceipt])
 
@@ -53,7 +53,7 @@ const useAddCollateral = (diamondAddress: string, asset: any) => {
             });
             return;
         }
-        console.log(`${asset.loanId} ${diamondAddress}`);
+        // console.log(`${asset.loanId} ${diamondAddress}`);
         try {
             const val = await executeAddCollateral();
             const toastParamValue = {
@@ -65,7 +65,7 @@ const useAddCollateral = (diamondAddress: string, asset: any) => {
             setToastAddcollatParam(toastParamValue);
             setIsToastAddcollatOpen(true);
         } catch (err) {
-            console.log(err, 'add collateral')
+            // console.log(err, 'add collateral')
             const toastParamValue = {
                 success: false,
                 heading: "Add Collateral Failed",

@@ -161,7 +161,7 @@ const BorrowModal: any = ({
   borrowDropDown: any;
   toastParam: any;
 }) => {
-  console.log("Thisasset",asset);
+  // console.log("Thisasset",asset);
   
   return (
     <Modal
@@ -351,7 +351,7 @@ const BorrowModal: any = ({
                         100,
                     });
                   }
-                  {console.log("assets",asset);
+                  {// console.log("assets",asset);
                   }
                   setValue(value);
                 }}

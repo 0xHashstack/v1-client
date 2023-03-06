@@ -30,8 +30,8 @@ const RepaidLoansTab = ({
   repaidLoansData: any;
   customActiveTabs: any;
 }) => {
-  console.log("inside repay: ", customActiveTabs);
-  console.log("repayedss loans damta",repaidLoansData);
+  // console.log("inside repay: ", customActiveTabs);
+  // console.log("repayedss loans damta",repaidLoansData);
   
 
   return (
@@ -49,7 +49,7 @@ const RepaidLoansTab = ({
 
       {Array.isArray(repaidLoansData) && repaidLoansData.length > 0 ? (
         repaidLoansData.map((asset, key) => {
-          console.log(asset);
+          // console.log(asset);
           return (
             <RepaidLoan
               key={key}

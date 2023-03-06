@@ -15,7 +15,7 @@ import RepayLoans from './RepayLoans';
 import { EventMap } from '../../../blockchain/constants';
 
 const RepayloanShow = ({repaidLoansData}:{repaidLoansData:any}) => {
-    console.log(repaidLoansData);
+    // console.log(repaidLoansData);
     
     return (
         <>
@@ -97,8 +97,8 @@ const RepayloanShow = ({repaidLoansData}:{repaidLoansData:any}) => {
                         {/* </Table> */}
                     </Table>
                     {repaidLoansData.map((key:any,assets:any)=>{
-                        console.log(assets);
-                        console.log(key);
+                        // console.log(assets);
+                        // console.log(key);
                         return(
                         <RepayLoans key={key} assets={assets} />
                         )
