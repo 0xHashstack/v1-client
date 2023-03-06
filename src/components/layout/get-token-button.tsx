@@ -37,7 +37,7 @@ const GetTokenButton = ({ token, idx }: { token: string; idx: number }) => {
       } else {
       }
     } catch (err) {
-      console.log(err, "err get tokens");
+      // console.log(err, "err get tokens");
     }
   };
 

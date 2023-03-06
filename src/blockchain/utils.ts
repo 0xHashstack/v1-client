@@ -45,10 +45,10 @@ export const GetErrorText = (err: any) => {
   if (err.code === Logger.errors.CALL_EXCEPTION)
     return `Transaction failed! \n ${err.transactionHash}`;
   if (err.data) {
-    console.log(1);
+    // console.log(1);
     return err.data.message;
   } else if (err.message) {
-    console.log("Erro: ", err.message);
+    // console.log("Erro: ", err.message);
     return err.message;
   } else if (typeof err == "string") {
     return err;
@@ -146,11 +146,11 @@ export const currentDepositInterestRate = (asset: any, historicalAPRs: any) => {
 };
 
 export const currentBorrowInterestRate = (asset: any, historicalAPRs: any) => {
-  console.log(historicalAPRs, asset);
+  // console.log(historicalAPRs, asset);
   let key = `${getTokenFromName(asset.loanMarket).address}__${
     asset.commitmentIndex
   }`;
-  console.log("currentBorrowInterestRate", key);
+  // console.log("currentBorrowInterestRate", key);
   return (historicalAPRs[key]?.borrowAPR?.apr100x / 100).toFixed(2);
   // const marketHistoricalAPRs = historicalAPRs.filter((aprRecords: any) => {
   //   return (
@@ -169,7 +169,11 @@ export const currentBorrowInterestRate = (asset: any, historicalAPRs: any) => {
 
 export const etherToWeiBN = (amount: number, tokenAddress: string) => {
   const token = getTokenFromAddress(tokenAddress);
-  const decimals = token?.decimals || 18; // @todo should avoid using 18 default
+  if(!token) {
+    // alert(`Token not found ${tokenAddress}`);
+    return 0;
+  }
+  const decimals = token.decimals; // @todo should avoid using 18 default
   const factor = 1000_000;
   const amountBN = number
     .toBN(amount * factor)
@@ -183,7 +187,8 @@ export const weiToEtherNumber = (amount: string, tokenAddress: string) => {
   const decimals = token?.decimals || 18; // @todo should avoid using 18 default
   const factor = 1000_000;
   const amountBN = number
-    .toBN(amount).mul(number.toBN(factor))
+    .toBN(amount)
+    .mul(number.toBN(factor))
     .div(number.toBN(10).pow(number.toBN(decimals)));
   return amountBN.toNumber() / factor;
-}
+};

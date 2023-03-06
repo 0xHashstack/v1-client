@@ -3,6 +3,8 @@ module.exports = {
 	reactStrictMode: true,
 	swcMinify: true,
 };
+const withPlugins = require('next-compose-plugins');
+const withOptimizedImages = require('next-optimized-images');
 const path = require('path');
 const withSass = require('@zeit/next-sass');
 module.exports = withSass({
@@ -18,7 +20,8 @@ module.exports = {
 	},
 };
 
-module.exports = {
+
+let config = {
 	eslint: {
 		// Warning: This allows production builds to successfully complete even if
 		// your project has ESLint errors.
@@ -32,7 +35,13 @@ module.exports = {
 		// !! WARN !!
 		ignoreBuildErrors: true,
 	},
-	images: {
-    unoptimized: true,
-  },
 };
+
+if (process.env.NEXT_PUBLIC_APP_ENV == 'production') {
+	module.exports = withOptimizedImages({...config, images: {
+		unoptimized: true,
+	}});
+} else {
+	module.exports = config;
+}
+

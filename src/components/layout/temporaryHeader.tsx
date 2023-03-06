@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import Link from "next/link";
 import { Modal, Form, Row, Navbar } from "reactstrap";
 import arrowDown from "../../assets/images/ArrowDownDark.svg";
@@ -18,14 +18,20 @@ import contributeEarnIcon from "../../assets/images/contributeEarnIcon.svg";
 import tickMark from "../../assets/images/tickMark.svg";
 import moreIcon from "../../assets/images/moreIcon.svg";
 import "react-toastify/dist/ReactToastify.css";
-import { useConnectors, useAccount } from "@starknet-react/core";
+import {
+  useConnectors,
+  useAccount,
+  useTransactionManager,
+  useBlock,
+} from "@starknet-react/core";
 import "react-toastify/dist/ReactToastify.css";
 import "./header.module.scss";
 import Image from "next/image";
 import { useDisconnect } from "wagmi";
 import EthWalletButton from "./ethConnectWalletButton";
 import { TabContext } from "../../hooks/contextHooks/TabContext";
-
+import OffchainAPI from "../../services/offchainapi.service";
+import { toast } from "react-toastify";
 
 const SecondaryHeader = ({
   handleDisconnectWallet,
@@ -81,6 +87,7 @@ const SecondaryHeader = ({
       id: 9,
     },
   ];
+  const { transactions } = useTransactionManager();
   const [selectLanguage, setSelectLanguage] = useState(false);
   const [connectWallet, setConnectWallet] = useState(false);
   const { available, connect } = useConnectors();
@@ -89,6 +96,7 @@ const SecondaryHeader = ({
   const [settingDropDown, setSettingDropDown] = useState(false);
   const [dropDownOpen, setdropDownOpen] = useState(false);
   const [liquidateDropDown, setLiquidateDropDown] = useState(false);
+  const [offchainCurrentBlock, setOffchainCurrentBlock] = useState("");
   const [networkSelected, setnetworkSelected] = useState({
     network: "",
     starknet: false,
@@ -101,6 +109,7 @@ const SecondaryHeader = ({
     direction: { connectWalletArrowDown },
   });
 
+  const { data: blockInfo } = useBlock();
   const states = ["1", "2", "3", "4", "5", "7"];
 
   // Context Hook For Tabcontex
@@ -116,11 +125,35 @@ const SecondaryHeader = ({
   function removeBodyCss() {
     document.body.classList.add("no_padding");
   }
-   const toggleDropdown = () => {
+  const toggleDropdown = () => {
     setdropDownOpen(!dropDownOpen);
     setDropDownArrow(dropDownOpen ? arrowDown : arrowUp);
     // disconnectEvent(), connect(connector);
   };
+
+  useEffect(() => {
+    // console.log("here");
+    if (
+      transactions.length > 0 &&
+      transactions[transactions.length - 1]?.status === "ACCEPTED_ON_L2"
+    ) {
+      toast.success(`Token received!`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+    }
+
+    OffchainAPI.getDashboardStats().then(
+      (stats) => {
+        setOffchainCurrentBlock(stats.lastProcessedBlock?.blockNumber);
+      },
+      (err) => {
+        console.error(err);
+      }
+    );
+
+    // console.log("transactions:::::::::", transactions);
+  }, [transactions, blockInfo]);
 
   // function handleButtonConnectWallet() {
   //   setSettingDropDown(false);
@@ -145,8 +178,6 @@ const SecondaryHeader = ({
   //   setConnectWallet(!connectWallet);
   //   removeBodyCss();
   // }
-
- 
 
   // const disconnectEvent = () => {
   //   if (evmAddress) {
@@ -214,7 +245,13 @@ const SecondaryHeader = ({
             >
               <Link href="/">
                 <div>
-                  <Image src={hashstackLogo} alt="Navbar Logo" height="40px" />
+                  <img
+                    style={{ marginLeft: "20px" }}
+                    src="./hashstackLogo.svg"
+                    alt="Navbar Logo"
+                    height="40px"
+                    width={"177px"}
+                  />
                 </div>
               </Link>
             </div>
@@ -250,7 +287,8 @@ const SecondaryHeader = ({
                   height="15px"
                   style={{ cursor: "pointer" }}
                 />
-                &nbsp;&nbsp;<span style={{ fontSize: "larger"}} >Dashboard</span>
+                &nbsp;&nbsp;
+                <span style={{ fontSize: "larger" }}>Dashboard</span>
               </span>
             </label>
 
@@ -280,7 +318,8 @@ const SecondaryHeader = ({
                   height="15px"
                   style={{ cursor: "pointer" }}
                 />
-                &nbsp;&nbsp;<span  style={{fontSize: "larger"}}> Contribute-2-Earn </span>
+                &nbsp;&nbsp;
+                <span style={{ fontSize: "larger" }}> Contribute-2-Earn </span>
               </span>
             </label>
 
@@ -303,6 +342,11 @@ const SecondaryHeader = ({
                   alignItems: "center",
                 }}
                 onClick={() => {
+                  setSettingDropDown(false);
+                  setConnectWalletArrowState({
+                    bool: false,
+                    direction: { connectWalletArrowDown },
+                  });
                   setLiquidateDropDown(!liquidateDropDown);
                 }}
               >
@@ -314,203 +358,12 @@ const SecondaryHeader = ({
                   height="15px"
                   style={{ cursor: "pointer" }}
                 />
-                &nbsp;&nbsp; <span  style={{fontSize: "larger"}}>More </span>
+                &nbsp;&nbsp; <span style={{ fontSize: "larger" }}>More </span>
               </span>
             </label>
           </div>
 
-           <div className="d-flex flex-wrap gap-4 ">
-           {/* <Modal
-              isOpen={connectWallet && !account}
-              toggle={() => {
-                handleButtonConnectWallet();
-              }}
-              centered
-            >
-              <div
-                className="modal-body"
-                style={{
-                  backgroundColor: "#1D2131",
-                  color: "white",
-                  padding: "40px",
-                }}
-              >
-                <Form>
-                  <span
-                    style={{
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                      color: "black",
-                    }}
-                  >
-                    <h4 style={{ color: "white", paddingBottom: "10px" }}>
-                      Connect a wallet
-                    </h4>
-                    <div style={{ marginTop: "-10px", cursor: "pointer" }}>
-                      <img
-                        src="./cross.svg"
-                        onClick={() => {
-                          setConnectWallet(false);
-                        }}
-                        style={{ marginTop: "5px", cursor: "pointer" }}
-                        height="15px"
-                      />
-                    </div>
-                  </span>
-                  <div>
-                    <label
-                      style={{
-                        width: "100%",
-                        marginBottom: "10px",
-                        padding: "15px 10px",
-                        fontSize: "18px",
-                        borderRadius: "5px",
-                        border: "1px solid #393D4F",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <div>{network}</div>
-                        <div
-                          style={{
-                            marginRight: "20px",
-                            marginTop: "3px",
-                            marginBottom: "0",
-                            cursor: "pointer",
-                          }}
-                        >
-                          <Image
-                            onClick={toggleDropdown}
-                            src={dropDownArrow}
-                            alt="Picture of the author"
-                            width="14px"
-                            height="14px"
-                          />
-                        </div>
-                      </div>
-                      {dropDownOpen ? (
-                        <>
-                          <hr />
-                          <div
-                            onClick={selectStarKnetNetwork}
-                            style={{
-                              display: "flex",
-                              marginBottom: "10px",
-                              cursor: "pointer",
-                            }}
-                          >
-                            <Image
-                              src={starknetLogo}
-                              alt="Picture of the author"
-                              width="15px"
-                              height="15px"
-                            />
-                            <div style={{ fontSize: "15px", marginTop: "1px" }}>
-                              &nbsp;Starknet
-                            </div>
-                          </div>
-                          <div style={{ display: "flex" }}>
-                            <Image
-                              src={ethLogo}
-                              alt="Picture of the author"
-                              width="15px"
-                              height="15px"
-                            />
-                            <div
-                              style={{
-                                fontSize: "15px",
-                                marginTop: "1px",
-                                color: "#ADB5BD",
-                              }}
-                            >
-                              &nbsp;Ethereum (Comming Soon)
-                            </div>
-                          </div>
-                        </>
-                      ) : (
-                        <></>
-                      )}
-                    </label>
-
-                    {/* <a href={networkSelected.redirectLink} target=""> */}
-                   {/*} <label
-                      onClick={handleConnectBraavosWallet}
-                      style={{
-                        backgroundColor: "#2A2E3F",
-                        width: "100%",
-                        marginBottom: "10px",
-                        padding: "15px 10px",
-                        fontSize: "18px",
-                        borderRadius: "5px",
-                        border: "2px solid #00000050",
-                        cursor: "pointer",
-                      }}
-                    >
-                      <div
-                        style={{
-                          display: "flex",
-                          justifyContent: "space-between",
-                          alignItems: "center",
-                        }}
-                      >
-                        <div
-                          style={{
-                            fontSize: "15px",
-                            marginTop: "6px",
-                            color: "#FFF",
-                          }}
-                        >
-                          &nbsp;{networkSelected.walletName} Wallet
-                        </div>
-                        <div style={{ marginRight: "10px", marginTop: "2px" }}>
-                          <Image
-                            src={braavosWallet}
-                            alt="Picture of the author"
-                            width="25px"
-                            height="25px"
-                          />
-                        </div>
-                      </div>
-                    </label>
-                    {/* </a> */}
-                    {/* <EthWalletButton />
-                  </div>
-
-                  <p style={{ fontSize: "14px" }}>
-                    By connecting your wallet, you agree to Hashstack’s &nbsp;
-                    <br />
-                    <a
-                      href="https://braavos.app/"
-                      target="_blank"
-                      style={{ color: "#2563EB" }}
-                    >
-                      terms of service & disclaimer
-                    </a>
-                  </p>
-                  <p style={{ fontSize: "10px", color: "#8C8C8C" }}>
-                    This mainnet is currently in alpha with limitations on the
-                    maximum supply & borrow amount. This is done in
-                    consideration of the current network and liquidity
-                    constraints of the Starknet. We urge the users to use the
-                    dapp with caution. Hashstack will not cover any accidental
-                    loss of user funds.
-                    <br />
-                    <br />
-                    Wallets are provided by External Providers and by selecting
-                    you agree to Terms of those Providers. Your access to the
-                    wallet might be reliant on the External Provider being
-                    operational.
-                  </p>
-                </Form>
-              </div>
-            </Modal> */} 
-
+          <div className="d-flex flex-wrap gap-4 ">
             <div style={{ display: "flex", gap: "20px" }}>
               <label
                 style={{
@@ -542,7 +395,8 @@ const SecondaryHeader = ({
                     height="15px"
                     style={{ cursor: "pointer" }}
                   />
-                  &nbsp;&nbsp;&nbsp; <span  style={{fontSize: "larger"}}>Transfer Deposit</span>
+                  &nbsp;&nbsp;&nbsp;{" "}
+                  <span style={{ fontSize: "larger" }}>Transfer Deposit</span>
                 </span>
               </label>
 
@@ -576,12 +430,13 @@ const SecondaryHeader = ({
                         // onClick={() => {
                         //   setConnectWallet(false);
                         // }}
+                        alt=""
                         src={starknetLogoBordered}
                         width="18px"
                         height="18px"
                         style={{ cursor: "pointer" }}
                       />
-                      <div  style={{fontSize: "larger"}}>
+                      <div style={{ fontSize: "larger" }}>
                         &nbsp;&nbsp;&nbsp;&nbsp;
                         {`${account.substring(0, 3)}...${account.substring(
                           account.length - 10,
@@ -606,6 +461,8 @@ const SecondaryHeader = ({
                   )}
                   <Image
                     onClick={() => {
+                      setLiquidateDropDown(false);
+                      setSettingDropDown(false);
                       setConnectWallet(false);
                       setConnectWalletArrowState({
                         bool: !connectWalletArrowState.bool,
@@ -620,21 +477,22 @@ const SecondaryHeader = ({
                   />
                 </span>
               </label>
-              <Image
+              <img
                 onClick={() => {
+                  setLiquidateDropDown(false);
                   setSettingDropDown(!settingDropDown);
                   setConnectWalletArrowState({
                     bool: false,
                     direction: { connectWalletArrowDown },
                   });
                 }}
-                src={settingIcon}
+                src="./settingIcon.svg"
                 alt="Picture of the author"
                 width="25px"
                 height="25px"
                 style={{
                   cursor: "pointer",
-                  // marginRight: "10px",
+                  marginTop: "10px",
                 }}
               />
               <div></div>
@@ -642,7 +500,6 @@ const SecondaryHeader = ({
           </div>
         </Navbar>
       </Row>
-
       {liquidateDropDown ? (
         <label
           style={{
@@ -650,7 +507,7 @@ const SecondaryHeader = ({
             backgroundColor: "#1D2130",
             position: "absolute",
             top: "56px",
-            left: "515px",
+            left: "535px",
             padding: "10px",
             cursor: "pointer",
             color: "white",
@@ -665,7 +522,6 @@ const SecondaryHeader = ({
           Liquidate
         </label>
       ) : null}
-
       {account && connectWalletArrowState.bool ? (
         <div style={{ zIndex: "1000" }}>
           <div
@@ -757,7 +613,6 @@ const SecondaryHeader = ({
       ) : (
         <></>
       )}
-
       {settingDropDown && !selectLanguage ? (
         <div style={{ zIndex: "1000" }}>
           <div
@@ -826,7 +681,6 @@ const SecondaryHeader = ({
       ) : (
         <></>
       )}
-
       {selectLanguage ? (
         <div style={{ zIndex: "1000" }}>
           <div

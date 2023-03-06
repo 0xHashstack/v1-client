@@ -41,15 +41,15 @@ const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
       else map.set(firstVal, [secondVal]);
     }
 
-    console.log("loading jedi", loadingMySwapSupportedPools);
+    // console.log("loading jedi", loadingMySwapSupportedPools);
     const poolsData = new Map();
     const poolIdtoTokensMap = new Map();
     if (!loadingMySwapSupportedPools) {
-      console.log(
-        "MySwapSupportedPoolsData",
-        mySwapSupportedPoolsData,
-        errorMySwapSupportedPools
-      );
+      // console.log(
+      //   "MySwapSupportedPoolsData",
+      //   mySwapSupportedPoolsData,
+      //   errorMySwapSupportedPools
+      // );
       const pools = mySwapSupportedPoolsData?.pools;
       for(let i = 0; i<pools?.length; i++) {
         const firstTokenAddress = number.toHex(pools[i].tokenA)
@@ -59,7 +59,7 @@ const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
         setValue(poolsData, secondTokenAddress, firstTokenAddress);
         poolIdtoTokensMap.set(poolId, [firstTokenAddress, secondTokenAddress])
       }
-      console.log("pooldata myswap", poolsData);
+      // console.log("pooldata myswap", poolsData);
       setSupportedPoolsMySwap(poolsData)
       setPoolIdtoTokens(poolIdtoTokensMap)
     }
@@ -96,7 +96,7 @@ const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
       setToastMyswapParam(toastParamValue);
       setIsToastMyswapOpen(true);
       } catch (err) {
-        console.log(err, "err repay");
+        // console.log(err, "err repay");
         const toastParamValue = {
           success: false,
           heading: "Swap Transaction Failed",

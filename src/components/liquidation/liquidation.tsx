@@ -51,11 +51,11 @@ const LiquidationButton = ({
   });
 
   useEffect(() => {
-    console.log(
-      "approve tx receipt",
-      approveTransactionReceipt.data?.transaction_hash,
-      approveTransactionReceipt
-    );
+    // console.log(
+    //   "approve tx receipt",
+    //   approveTransactionReceipt.data?.transaction_hash,
+    //   approveTransactionReceipt
+    // );
     TxToastManager.handleTxToast(
       approveTransactionReceipt,
       `Liquidate: Approve ${loan.loanMarket}`,
@@ -64,11 +64,11 @@ const LiquidationButton = ({
   }, [approveTransactionReceipt]);
 
   useEffect(() => {
-    console.log(
-      "liquidate tx receipt",
-      liquidateTransactionReceipt.data?.transaction_hash,
-      liquidateTransactionReceipt
-    );
+    // console.log(
+    //   "liquidate tx receipt",
+    //   liquidateTransactionReceipt.data?.transaction_hash,
+    //   liquidateTransactionReceipt
+    // );
     TxToastManager.handleTxToast(liquidateTransactionReceipt, `Liquidate loan`);
   }, [liquidateTransactionReceipt]);
 
@@ -151,8 +151,8 @@ const LiquidationButton = ({
       watch: true,
     },
   });
-  console.log("isLiquid",is_liquidable);
-  console.log(BNtoNum(is_liquidable));
+  // console.log("isLiquid",is_liquidable);
+  // // console.log(BNtoNum(is_liquidable));
 
   function handleToast(isError: boolean, tag: string, msg: string) {
     if (!isError) {
@@ -170,20 +170,20 @@ const LiquidationButton = ({
 
   // check allowance
   useEffect(() => {
-    console.log("check allownace", {
-      dataAllowance,
-      loadingAllowance,
-      errorAllowance,
-      refreshAllowance,
-    });
+    // console.log("check allownace", {
+    //   dataAllowance,
+    //   loadingAllowance,
+    //   errorAllowance,
+    //   refreshAllowance,
+    // });
     if (!loadingAllowance) {
       if (dataAllowance) {
         let data: any = dataAllowance;
         let _allowance = uint256.uint256ToBN(data.remaining);
-        console.log({
-          _allowance: _allowance.toString(),
-          loanAmount: loan.loanAmount,
-        });
+        // console.log({
+        //   _allowance: _allowance.toString(),
+        //   loanAmount: loan.loanAmount,
+        // });
         if (_allowance.gte(number.toBN(loan.loanAmount))) {
           setCanLiquidate(true);
           setLoadingMsg("");
@@ -200,12 +200,12 @@ const LiquidationButton = ({
   }, [dataAllowance, loadingAllowance, errorAllowance, refreshAllowance]);
 
   useEffect(() => {
-    console.log("check token approve", {
-      dataToken,
-      loadingToken,
-      errorToken,
-      loanId: loan,
-    });
+    // console.log("check token approve", {
+    //   dataToken,
+    //   loadingToken,
+    //   errorToken,
+    //   loanId: loan,
+    // });
     if (!loadingToken) {
       if (dataToken) {
         refreshAllowance();
@@ -222,13 +222,13 @@ const LiquidationButton = ({
   }, [dataToken, loadingToken, errorToken]);
 
   useEffect(() => {
-    console.log("handleLiquidation", {
-      dataLiquidate,
-      liquidate,
-      errorLiquidate,
-      reset,
-      loanId: loan,
-    });
+    // console.log("handleLiquidation", {
+    //   dataLiquidate,
+    //   liquidate,
+    //   errorLiquidate,
+    //   reset,
+    //   loanId: loan,
+    // });
     if (!liquidating) {
       if (loadingMsg == "Liquidating...") {
         if (dataLiquidate) {
@@ -261,7 +261,7 @@ const LiquidationButton = ({
               const val = await approveToken() ;
               setTransApprove(val.transaction_hash);
             } catch (err) {
-              console.log(err, "err approve for liquidation or Liquidation");
+              // console.log(err, "err approve for liquidation or Liquidation");
             }
           }}
         >
@@ -290,7 +290,7 @@ const LiquidationButton = ({
               const val = await liquidate();
               setTransLiquidate(val.transaction_hash);
             } catch (err) {
-              console.log(err, "err liquidation");
+              // console.log(err, "err liquidation");
             }
           }}
         >
@@ -340,7 +340,7 @@ const Liquidation = ({
             {Array.isArray(activeLiquidationsData) &&
             activeLiquidationsData.length > 0 ? (
               activeLiquidationsData.map((asset, key) => {
-                console.log("asset in li", asset);
+                // console.log("asset in li", asset);
                 return (
                   <tr key={key} style={{ color: "white" }}>
                     <th scope="row">
@@ -359,7 +359,7 @@ const Liquidation = ({
                     </th>
                     <td>
                       <div>
-                        {/* {console.log(asset.loanAmount)} */}
+                        {/* {// console.log(asset.loanAmount)} */}
                         {weiToEtherNumber(asset.loanAmount,tokenAddressMap[asset.loanMarket]||"")}
                         {/* {BNtoNum(Number(asset.loanAmount))} */}
                         <div>
@@ -399,7 +399,7 @@ const Liquidation = ({
                     <td>
                       <div>
                         {/* {EventMap[asset.commitment]}
-                      {console.log(EventMap[asset.commitment])
+                      {// console.log(EventMap[asset.commitment])
                       } Risk Premium value */}
                         N/A
                       </div>
@@ -407,7 +407,7 @@ const Liquidation = ({
                     <td>
                       <div>
                         {/* {EventMap[asset.commitment]}
-                      {console.log(EventMap[asset.commitment])
+                      {// console.log(EventMap[asset.commitment])
                       } Debt Converted*/}
                         NO
                       </div>
@@ -415,7 +415,7 @@ const Liquidation = ({
                     <td>
                       <div>
                         {/* {EventMap[asset.commitment]}
-                      {console.log(EventMap[asset.commitment])
+                      {// console.log(EventMap[asset.commitment])
                       } Converted Market*/}
                         {/* <img
                         src={
@@ -430,7 +430,7 @@ const Liquidation = ({
                     <td>
                       <div>
                         {/* {EventMap[asset.commitment]}
-                      {console.log(EventMap[asset.commitment])
+                      {// console.log(EventMap[asset.commitment])
                       } Amount*/}
                         -
                       </div>
@@ -438,7 +438,7 @@ const Liquidation = ({
                     <td>
                       <div>
                         {/* {EventMap[asset.commitment]}
-                      {console.log(EventMap[asset.commitment])
+                      {// console.log(EventMap[asset.commitment])
                       } Amount*/}
                         10%
                       </div>

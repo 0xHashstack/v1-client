@@ -11,6 +11,9 @@ export default class OffchainAPI {
   // static ENDPOINT = "http://offchainstarknettestnetstaging-api.eba-uf3qrhac.ap-southeast-1.elasticbeanstalk.com";
   // static ENDPOINT =
   //   "http://offchainstarknettestnetstaging-api.eba-uf3qrhac.ap-southeast-1.elasticbeanstalk.com";
+  // static ENDPOINT =
+  //   "http://offchainstarknetmainnetprodapi-env.eba-zacgkgi6.ap-southeast-1.elasticbeanstalk.com";
+
   static ENDPOINT =
     "https://offchainapi.mainnet.starknet.hashstack.finance";
     // "http://localhost:3000"
@@ -51,7 +54,7 @@ export default class OffchainAPI {
       });
       return res.data;
     } catch (err) {
-      console.log(err);
+      // console.log(err);
     }
   }
 
@@ -89,7 +92,7 @@ export default class OffchainAPI {
       events: ["NewDeposit", "AddDeposit", "WithdrawDeposit"],
     });
     const events = await OffchainAPI.httpPost(route, data, "deposits", token);
-    console.log("getTransactionEventsActiveDeposits", events);
+    // console.log("getTransactionEventsActiveDeposits", events);
     return events
       .filter((event: any) => {
         return tokenAddressMap[token] === JSON.parse(event.eventInfo).market;
@@ -121,7 +124,7 @@ export default class OffchainAPI {
     const events = await OffchainAPI.httpPost(route, data, "loans", token);
     return events
       .filter((event: any) => {
-        console.log(event.event);
+        // console.log(event.event);
         if (event.event === "RevertSushiSwapped") {
           return true;
         }
@@ -203,7 +206,7 @@ export default class OffchainAPI {
     const events = await OffchainAPI.httpPost(route, data, "repaid", token);
     return events
       .filter((event: any) => {
-        console.log(event.event);
+        // console.log(event.event);
         if (event.event === "RevertSushiSwapped") {
           return true;
         }

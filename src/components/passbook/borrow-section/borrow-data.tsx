@@ -160,7 +160,7 @@ const BorrowData = ({
   revertSwapTransactionReceipt: any;
 }) => {
   const [asset, setAsset] = useState(assetParam);
-  console.log("asset borrow data", asset);
+  // console.log("asset borrow data", asset);
   const [marketTokenName, setMarketTokenName] = useState("USDT");
 
   useEffect(() => {
@@ -333,11 +333,11 @@ const BorrowData = ({
   const [Yagidrop, setYagidrop] = useState(false);
 
   useEffect(() => {
-    console.log(
-      "repay tx receipt",
-      repayTransactionReceipt.data?.transaction_hash,
-      repayTransactionReceipt
-    );
+    // // console.log(
+    //   "repay tx receipt",
+    //   repayTransactionReceipt.data?.transaction_hash,
+    //   repayTransactionReceipt
+    // );
     TxToastManager.handleTxToast(
       repayTransactionReceipt,
       `Repay ${asset.loanMarket} Loan`
@@ -392,7 +392,7 @@ const BorrowData = ({
         tokens.includes(tokenAddressMap[marketTokenName])
       ) {
         currentPoolId = poolId;
-        console.log("poolId", poolId);
+        // console.log("poolId", poolId);
         break;
       }
     }
@@ -405,15 +405,15 @@ const BorrowData = ({
       l3DiamondAddress,
   });
 
-  console.log(
-    "borrowdata",
-    tokenAddressMap[asset.loanMarket],
-    tokenAddressMap[marketTokenName],
-    uint256.uint256ToBN(asset.currentLoanAmount || "0")
-  );
+  // console.log(
+  //   "borrowdata",
+  //   tokenAddressMap[asset.loanMarket],
+  //   tokenAddressMap[marketTokenName],
+  //   uint256.uint256ToBN(asset.currentLoanAmount || "0")
+  // );
   const getAmount = () => {
     let amountOut = asset.currentLoanAmount || "0";
-    console.log("getAmount", amountOut);
+    // console.log("getAmount", amountOut);
     return amountOut;
   };
 
@@ -445,12 +445,12 @@ const BorrowData = ({
   });
 
   useEffect(() => {
-    console.log(
-      "partialWithdraw",
-      partialWithdrawData,
-      partialWithdrawLoading,
-      partialWithdrawError
-    );
+    // console.log(
+    //   "partialWithdraw",
+    //   partialWithdrawData,
+    //   partialWithdrawLoading,
+    //   partialWithdrawError
+    // );
     const amount = partialWithdrawData
       ? uint256.uint256ToBN(partialWithdrawData.amount).toString()
       : "0";
@@ -480,23 +480,23 @@ const BorrowData = ({
   });
 
   useEffect(() => {
-    console.log(
-      "getamount",
-      tokenAddressMap[asset.loanMarket],
-      tokenAddressMap[marketTokenName],
-      asset.currentLoanAmount || "0",
-      getTokenFromName(asset.loanMarket)?.name,
-      getTokenFromName(marketTokenName)?.name
-    );
-    console.log(
-      "getAmountOutDataJediSwap",
-      getAmountOutData,
-      getAmountOutData?.amount_to
-        ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
-        : "NA",
-      loadingGetAmountOut,
-      errorGetAmountOut
-    );
+    // console.log(
+    //   "getamount",
+    //   tokenAddressMap[asset.loanMarket],
+    //   tokenAddressMap[marketTokenName],
+    //   asset.currentLoanAmount || "0",
+    //   getTokenFromName(asset.loanMarket)?.name,
+    //   getTokenFromName(marketTokenName)?.name
+    // );
+    // console.log(
+    //   "getAmountOutDataJediSwap",
+    //   getAmountOutData,
+    //   getAmountOutData?.amount_to
+    //     ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
+    //     : "NA",
+    //   loadingGetAmountOut,
+    //   errorGetAmountOut
+    // );
     const amount = getAmountOutData?.amount_to
       ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
       : "NA";
@@ -532,23 +532,23 @@ const BorrowData = ({
   });
 
   useEffect(() => {
-    console.log(
-      "getamountmyswap",
-      tokenAddressMap[asset.loanMarket],
-      tokenAddressMap[marketTokenName],
-      asset.currentLoanAmount || "0",
-      getTokenFromName(asset.loanMarket)?.name,
-      getTokenFromName(marketTokenName)?.name
-    );
-    console.log(
-      "getAmountOutDataMyswap",
-      getAmountOutDataMySwap,
-      getAmountOutDataMySwap?.amount_to
-        ? uint256.uint256ToBN(getAmountOutDataMySwap?.amount_to).toString()
-        : "NA",
-      loadingGetAmountOutMySwap,
-      errorGetAmountOutMySwap
-    );
+    // console.log(
+    //   "getamountmyswap",
+    //   tokenAddressMap[asset.loanMarket],
+    //   tokenAddressMap[marketTokenName],
+    //   asset.currentLoanAmount || "0",
+    //   getTokenFromName(asset.loanMarket)?.name,
+    //   getTokenFromName(marketTokenName)?.name
+    // );
+    // console.log(
+    //   "getAmountOutDataMyswap",
+    //   getAmountOutDataMySwap,
+    //   getAmountOutDataMySwap?.amount_to
+    //     ? uint256.uint256ToBN(getAmountOutDataMySwap?.amount_to).toString()
+    //     : "NA",
+    //   loadingGetAmountOutMySwap,
+    //   errorGetAmountOutMySwap
+    // );
     const amount = getAmountOutDataMySwap?.amount_to
       ? uint256.uint256ToBN(getAmountOutDataMySwap?.amount_to).toString()
       : "NA";
@@ -646,7 +646,7 @@ const BorrowData = ({
       setToastParam(toastParamValue);
       setIsToastOpen(true);
     } catch (err) {
-      console.log(err, "withdraw collateral");
+      // console.log(err, "withdraw collateral");
       const toastParamValue = {
         success: false,
         heading: "Withdraw Collateral Failed",
@@ -713,7 +713,7 @@ const BorrowData = ({
       setToastParam(toastParamValue);
       setIsToastOpen(true);
     } catch (err) {
-      console.log(err, "err repay");
+      // console.log(err, "err repay");
       const toastParamValue = {
         success: false,
         heading: "Withdraw Transaction Failed",
@@ -745,7 +745,7 @@ const BorrowData = ({
       setToastParam(toastParamValue);
       setIsToastOpen(true);
     } catch (err) {
-      console.log("err self liquidate", err);
+      // console.log("err self liquidate", err);
       const toastParamValue = {
         success: false,
         heading: "Self Liquidate Transaction Failed",
@@ -806,7 +806,7 @@ const BorrowData = ({
       setToastParam(toastParamValue);
       setIsToastOpen(true);
     } catch (err) {
-      console.log(err, "err repay");
+      // console.log(err, "err repay");
       const toastParamValue = {
         success: false,
         heading: "Repay Transaction Failed",
@@ -916,7 +916,7 @@ const BorrowData = ({
       let val = await executeDeposit();
       // setTransDeposit(val.transaction_hash);
     } catch (err) {
-      console.log(err, "err deposit");
+      // console.log(err, "err deposit");
     }
     if (errorDeposit) {
       toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
@@ -994,11 +994,11 @@ const BorrowData = ({
         // @todo this is actually recent aprs
         currentBorrowInterestRate(asset, historicalAPRs)
       );
-      console.log("currentBorrowInterest", currentBorrowInterest);
+      // console.log("currentBorrowInterest", currentBorrowInterest);
     }
-    console.log("currentBorrowInterest", asset, historicalAPRs);
+    // console.log("currentBorrowInterest", asset, historicalAPRs);
   }, [asset, historicalAPRs]);
-   console.log("look here",asset);
+   // console.log("look here",asset);
 
   return (
     <div key={key} style={{ borderTop: "5px" }}>

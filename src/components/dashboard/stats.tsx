@@ -8,29 +8,40 @@ import { number } from "starknet";
 import { useAccount } from "@starknet-react/core";
 import { tokenDecimalsMap } from "../../blockchain/stark-constants";
 import MySpinner from "../mySpinner";
-import {NumericFormat} from 'react-number-format';
+import { NumericFormat } from "react-number-format";
 
-const StatsBoard = (result: { depositsArray: any; loansArray: any, setTotalBorrowAssets: any, setTotalSupplyDash: any }) => {
+const StatsBoard = (result: {
+  depositsArray: any;
+  loansArray: any;
+  setTotalBorrowAssets: any;
+  setTotalSupplyDash: any;
+}) => {
   const { account: starknetAccount, address: _account } = useAccount();
   const [totalSupply, setTotalSupply] = useState(0);
   const [yourBorrow, setYourBorrow] = useState(0);
   const [totalReserves, setTotalReserves] = useState(0);
   const [availableReserves, setAvailableReserves] = useState(0);
   const [account, setAccount] = useState<string>("");
-  const { depositsArray, loansArray, setTotalBorrowAssets, setTotalSupplyDash } = result;
+  const {
+    depositsArray,
+    loansArray,
+    setTotalBorrowAssets,
+    setTotalSupplyDash,
+  } = result;
   const { customActiveTab, toggleCustom } = useContext(TabContext);
   const [oraclePrices, setOraclePrices] = useState<any>();
   const [deposits, setDeposits] = useState<any>();
   const [loans, setLoans] = useState<any>();
   const [netWorth, setNetWorth] = useState(0);
   const [reserves, setReserves] = useState(0);
+
   const rates = {
     USDT: 0,
     BTC: 0,
     ETH: 0,
     USDC: 0,
   };
-
+  let reservesAmount = 0;
   useEffect(() => {
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
   }, [_account]);
@@ -92,12 +103,11 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any, setTotalBorro
         setTotalSupplyDash(supply);
 
         const getReserves = async () => {
-          let reservesAmount = 0;
           const res: any = await OffchainAPI.getReserves();
           for (let token in res?.reserves?.deposits) {
-            if (token == val.oraclePrices[i].name) {
+            if (token === val.oraclePrices[i].name) {
               reservesAmount +=
-                res?.reserves.deposits[token] * val.oraclePrices[i].price;
+                res.reserves.deposits[token] * val.oraclePrices[i].price;
             }
           }
           setTotalReserves(reservesAmount);
@@ -143,16 +153,28 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any, setTotalBorro
         <div className="">
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>Net Worth</p>
           <h4>
-            {netWorth !== undefined ? 
-            <NumericFormat displayType="text" value={netWorth.toFixed(2)}  thousandSeparator="," prefix={'$'} />
-            : <MySpinner />}
+            {netWorth !== undefined ? (
+              <NumericFormat
+                displayType="text"
+                value={netWorth.toFixed(2)}
+                thousandSeparator=","
+                prefix={"$"}
+              />
+            ) : (
+              <MySpinner />
+            )}
           </h4>
         </div>
         <div className="">
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>Your Supply</p>
           <h4>
             {totalSupply !== undefined ? (
-              <NumericFormat displayType="text" value={totalSupply.toFixed(2)}  thousandSeparator="," prefix={'$'} />
+              <NumericFormat
+                displayType="text"
+                value={totalSupply.toFixed(2)}
+                thousandSeparator=","
+                prefix={"$"}
+              />
             ) : (
               <MySpinner />
             )}
@@ -162,16 +184,21 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any, setTotalBorro
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>Your Borrow</p>
           <h4>
             {yourBorrow !== undefined ? (
-              <NumericFormat displayType="text" value={yourBorrow.toFixed(2)}  thousandSeparator="," prefix={'$'} />
+              <NumericFormat
+                displayType="text"
+                value={yourBorrow.toFixed(2)}
+                thousandSeparator=","
+                prefix={"$"}
+              />
             ) : (
               <MySpinner />
             )}
           </h4>
         </div>
-        <Image
-          src={statsIcon}
+        <img
+          src="./statsIcon.svg"
           alt="Navbar Logo"
-          style={{ marginLeft: "20px", cursor: "pointer" }}
+          style={{ marginLeft: "20px", cursor: "pointer", marginTop: "20px" }}
           height={24}
           width={24}
           onClick={() => {
@@ -198,12 +225,15 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any, setTotalBorro
         <div className="Net Worth">
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>
             Total Reserves
-           
           </p>
           <h4>
             {totalReserves !== undefined ? (
-              
-              <NumericFormat displayType="text" value={totalReserves.toFixed(2)}  thousandSeparator="," prefix={'$'} />
+              <NumericFormat
+                displayType="text"
+                value={totalReserves.toFixed(2)}
+                thousandSeparator=","
+                prefix={"$"}
+              />
             ) : (
               <MySpinner />
             )}
@@ -215,7 +245,12 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any, setTotalBorro
           </p>
           <h4>
             {availableReserves !== undefined ? (
-              <NumericFormat displayType="text" value={availableReserves.toFixed(2)}  thousandSeparator="," prefix={'$'} />
+              <NumericFormat
+                displayType="text"
+                value={availableReserves.toFixed(2)}
+                thousandSeparator=","
+                prefix={"$"}
+              />
             ) : (
               <MySpinner />
             )}
@@ -234,10 +269,10 @@ const StatsBoard = (result: { depositsArray: any; loansArray: any, setTotalBorro
           </h4>
         </div>
 
-        <Image
-          src={statsIcon}
+        <img
+          src="./statsIcon.svg"
           alt="Navbar Logo"
-          style={{ marginLeft: "20px", cursor: "pointer" }}
+          style={{ marginLeft: "20px", cursor: "pointer", marginTop: "20px" }}
           height={24}
           width={24}
           onClick={() => {

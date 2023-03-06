@@ -32,9 +32,9 @@ jobs:
       - name: Install dependencies
         run: yarn
       - name: Build
-        run: yarn build
+        run: NEXT_PUBLIC_APP_ENV=production yarn build
       - name: Export
-        run: yarn export
+        run: NEXT_PUBLIC_APP_ENV=production yarn export
 
         # Deploys to 
         # http://starknetdev.hashstack.finance

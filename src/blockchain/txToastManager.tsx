@@ -15,11 +15,11 @@ export class TxToastManager {
     const hash = receipt.data?.transaction_hash;
     if (!hash) return;
     let hasToast = this.txToastMap[hash];
-    console.log("handleTxToast", hash, {
-      hash,
-      hasToast,
-      data: receipt.data,
-    });
+    // console.log("handleTxToast", hash, {
+    //   hash,
+    //   hasToast,
+    //   data: receipt.data,
+    // });
     if (receipt.data?.status == "RECEIVED") {
       let msg = (
         <p style={{ margin: 0 }}>
@@ -33,7 +33,7 @@ export class TxToastManager {
         </p>
       );
       this._showToast(hash, hasToast, msg, "default", receipt.data?.status, 0);
-    } else if (receipt.data?.status == "PENDING" && !onlyL2Confirm) {
+    } else if (receipt.data?.status == "PENDING") {
       // Read: https://community.starknet.io/t/cairo-v0-6-2-api-change-pending-block/195
 
       // let msg = (<p style={{margin: 0}}>
@@ -42,9 +42,11 @@ export class TxToastManager {
       //     </p>)
       // this._showToast(hash, hasToast,msg, 'default', receipt.data?.status, 0, 0.7)
       this._showToast(hash, hasToast, purpose, "success", receipt.data?.status);
-    } else if (receipt.data?.status == "ACCEPTED_ON_L2") {
-      this._showToast(hash, hasToast, purpose, "success", receipt.data?.status);
-    } else if (receipt.data?.status == "REJECTED") {
+    } 
+    // else if (receipt.data?.status == "ACCEPTED_ON_L2") {
+    //   this._showToast(hash, hasToast, purpose, "success", receipt.data?.status);
+    // } 
+    else if (receipt.data?.status == "REJECTED") {
       this._showToast(hash, hasToast, purpose, "error", receipt.data?.status);
     }
   }
@@ -79,13 +81,13 @@ export class TxToastManager {
     timeout = 5000,
     progress = 1
   ) {
-    console.log("_showToast", {
-      hash,
-      existingId,
-      message,
-      type,
-      status,
-    });
+    // console.log("_showToast", {
+    //   hash,
+    //   existingId,
+    //   message,
+    //   type,
+    //   status,
+    // });
     let options: ToastOptions = {
       type,
       toastId: hash,

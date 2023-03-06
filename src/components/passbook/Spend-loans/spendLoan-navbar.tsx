@@ -239,7 +239,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
         tokens.includes(tokenAddressMap[tokenName])
       ) {
         currentPoolId = poolId;
-        console.log("poolId", poolId);
+        // console.log("poolId", poolId);
         break;
       }
     }
@@ -254,7 +254,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
 
   const getAmount = () => {
     let amountOut = selectedLoan?.currentLoanAmount || "0";
-    console.log("getAmount", amountOut);
+    // console.log("getAmount", amountOut);
     return amountOut;
   };
 
@@ -280,23 +280,23 @@ const SpendLoanNav = ({ activeLoansData }) => {
   });
 
   useEffect(() => {
-    console.log(
-      "getamount",
-      tokenAddressMap[selectedLoan?.loanMarket],
-      tokenAddressMap[tokenName],
-      selectedLoan?.currentLoanAmount || "0",
-      getTokenFromName(selectedLoan?.loanMarket)?.name,
-      getTokenFromName(tokenName)?.name
-    );
-    console.log(
-      "getAmountOutDataJediSwap",
-      getAmountOutData,
-      getAmountOutData?.amount_to
-        ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
-        : "NA",
-      loadingGetAmountOut,
-      errorGetAmountOut
-    );
+    // console.log(
+    //   "getamount",
+    //   tokenAddressMap[selectedLoan?.loanMarket],
+    //   tokenAddressMap[tokenName],
+    //   selectedLoan?.currentLoanAmount || "0",
+    //   getTokenFromName(selectedLoan?.loanMarket)?.name,
+    //   getTokenFromName(tokenName)?.name
+    // );
+    // console.log(
+    //   "getAmountOutDataJediSwap",
+    //   getAmountOutData,
+    //   getAmountOutData?.amount_to
+    //     ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
+    //     : "NA",
+    //   loadingGetAmountOut,
+    //   errorGetAmountOut
+    // );
     const amount = getAmountOutData?.amount_to
       ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
       : "NA";
@@ -332,23 +332,23 @@ const SpendLoanNav = ({ activeLoansData }) => {
   });
 
   useEffect(() => {
-    console.log(
-      "getamountmyswap",
-      tokenAddressMap[selectedLoan?.loanMarket],
-      tokenAddressMap[tokenName],
-      selectedLoan?.currentLoanAmount || "0",
-      getTokenFromName(selectedLoan?.loanMarket)?.name,
-      getTokenFromName(tokenName)?.name
-    );
-    console.log(
-      "getAmountOutDataMyswap",
-      getAmountOutDataMySwap,
-      getAmountOutDataMySwap?.amount_to
-        ? uint256.uint256ToBN(getAmountOutDataMySwap?.amount_to).toString()
-        : "NA",
-      loadingGetAmountOutMySwap,
-      errorGetAmountOutMySwap
-    );
+    // console.log(
+    //   "getamountmyswap",
+    //   tokenAddressMap[selectedLoan?.loanMarket],
+    //   tokenAddressMap[tokenName],
+    //   selectedLoan?.currentLoanAmount || "0",
+    //   getTokenFromName(selectedLoan?.loanMarket)?.name,
+    //   getTokenFromName(tokenName)?.name
+    // );
+    // console.log(
+    //   "getAmountOutDataMyswap",
+    //   getAmountOutDataMySwap,
+    //   getAmountOutDataMySwap?.amount_to
+    //     ? uint256.uint256ToBN(getAmountOutDataMySwap?.amount_to).toString()
+    //     : "NA",
+    //   loadingGetAmountOutMySwap,
+    //   errorGetAmountOutMySwap
+    // );
     const amount = getAmountOutDataMySwap?.amount_to
       ? uint256.uint256ToBN(getAmountOutDataMySwap?.amount_to).toString()
       : "NA";

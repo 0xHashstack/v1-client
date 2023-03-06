@@ -128,7 +128,6 @@ const Dashboard = () => {
   // const [customActiveTabs, setCustomActiveTabs] = useState("1");
   const [loanActionTab, setLoanActionTab] = useState("0");
   const [passbookStatus, setPassbookStatus] = useState("ActiveDeposit");
-  
 
   const [modal_repay_loan, setmodal_repay_loan] = useState(false);
   const [modal_withdraw_loan, setmodal_withdraw_loan] = useState(false);
@@ -162,6 +161,7 @@ const Dashboard = () => {
   const [netBorrowedApr, setNetBorrowedApr] = useState(0);
   const [netAprEarned, setNetAprEarned] = useState(0);
   const [oracleAndFairPrices, setOracleAndFairPrices] = useState<any>();
+  const [offchainCurrentBlock, setOffchainCurrentBlock] = useState("");
 
   useEffect(() => {
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
@@ -177,7 +177,7 @@ const Dashboard = () => {
   const [typeOfLoansDropDownArrowType, setTypeOfLoansDropDownArrowType] =
     useState(DownArrow);
   const [filteredLoans, setFilteredLoans] = useState<ILoans[]>([]);
-  const [ActiveRepaytab, setActiveRepaytab] = useState("Active")
+  const [ActiveRepaytab, setActiveRepaytab] = useState("Active");
 
   function toggle(newIndex: string) {
     if (newIndex === index) {
@@ -186,6 +186,14 @@ const Dashboard = () => {
       setIndex(newIndex);
     }
   }
+  OffchainAPI.getDashboardStats().then(
+    (stats) => {
+      setOffchainCurrentBlock(stats.lastProcessedBlock?.blockNumber);
+    },
+    (err) => {
+      console.error(err);
+    }
+  );
 
   useEffect(() => {
     const getReserves = async () => {
@@ -198,7 +206,7 @@ const Dashboard = () => {
   useEffect(() => {
     const getPrices = () => {
       OffchainAPI.getOraclePrices().then((prices) => {
-        console.log("prices", prices);
+        // console.log("prices", prices);
         setOracleAndFairPrices(prices);
       });
     };
@@ -227,7 +235,7 @@ const Dashboard = () => {
         }
       });
     }
-    console.log("net apr earned", sum);
+    // console.log("net apr earned", sum);
     setNetAprEarned(sum);
   };
 
@@ -246,12 +254,12 @@ const Dashboard = () => {
         }
       });
     }
-    console.log("net borrow apr earned", sum);
+    // console.log("net borrow apr earned", sum);
     setNetBorrowedApr(sum.toFixed(2));
   };
 
   const onLoansData = async (loansData: any[]) => {
-    console.log("Loans: ", loansData);
+    // console.log("Loans: ", loansData);
     const loans: ILoans[] = [];
     for (let i = 0; i < loansData.length; ++i) {
       let loanData = loansData[i];
@@ -295,10 +303,10 @@ const Dashboard = () => {
       loans.push(JSON.parse(JSON.stringify(temp_len)));
 
       setActiveLoansData(loans);
-      console.log("loans: " + loans);
+      // console.log("loans: " + loans);
       setRepaidLoansData(
         loans.filter((asset) => {
-          console.log(asset, "testasset");
+          // console.log(asset, "testasset");
           return asset.state === "REPAID";
         })
       );
@@ -309,7 +317,7 @@ const Dashboard = () => {
       );
     }
   };
-console.log("Repaid loans data",repaidLoansData);
+  // console.log("Repaid loans data", repaidLoansData);
 
   useEffect(() => {
     let validTypes = ["REPAID", "SWAPPED", "OPEN"];
@@ -335,19 +343,19 @@ console.log("Repaid loans data",repaidLoansData);
     setTimeout(() => {
       setIsLoading(false);
     }, 100);
-    console.log("useEffect", isTransactionDone, account);
+    // console.log("useEffect", isTransactionDone, account);
     !isTransactionDone &&
       account &&
       OffchainAPI.getLoans(account).then(
         (loans) => {
-          console.log("loans:", loans);
+          // console.log("loans:", loans);
           onLoansData(loans);
           setIsLoading(false);
         },
         (err) => {
           setIsLoading(false);
           setActiveLoansData([]);
-          console.log(err);
+          // console.log(err);
         }
       );
   }, [
@@ -361,21 +369,21 @@ console.log("Repaid loans data",repaidLoansData);
 
   const onDepositData = async (depositsData: any[]) => {
     let deposits: any[] = [];
-    console.log("depositdata", depositsData);
+    // console.log("depositdata", depositsData);
     for (let i = 0; i < depositsData.length; i++) {
       let deposit: any = depositsData[i];
-      console.log(deposit);
+      // console.log(deposit);
       // let interest = await wrapper
       //   ?.getDepositInstance()
       //   .getDepositInterest(account, i + 1)
       // let interestAPR = await wrapper
       //   ?.getComptrollerInstance()
       //   .getsavingsAPR(depositsData.market[i], depositsData.commitment[i])
-      console.log(
-        "gettokenfrom address",
-        getTokenFromAddress(deposit.market as string),
-        deposit.market
-      );
+      // console.log(
+      //   "gettokenfrom address",
+      //   getTokenFromAddress(deposit.market as string),
+      //   deposit.market
+      // );
       let myDep = {
         amount: deposit.amount.toString(),
         account,
@@ -394,12 +402,12 @@ console.log("Repaid loans data",repaidLoansData);
 
       // VT: had to stringify and append due to a weird bug that was updating data randomly after append
       let myDepString = JSON.stringify(myDep);
-      console.log("on deposit", i, myDepString);
+      // console.log("on deposit", i, myDepString);
       deposits.push(JSON.parse(myDepString));
     }
-    console.log("depositsxyz", deposits);
+    // console.log("depositsxyz", deposits);
     let nonZeroDeposits = deposits.filter(function (el) {
-      console.log(el.amount, "deposits123");
+      // console.log(el.amount, "deposits123");
       return el.amount !== "0";
     });
     setActiveDepositsData(nonZeroDeposits);
@@ -417,11 +425,11 @@ console.log("Repaid loans data",repaidLoansData);
           (err) => {
             setIsLoading(false);
             setActiveDepositsData([]);
-            console.log(err);
+            // console.log(err);
           }
         )
         .catch((error) => {
-          console.log("error in getting deposits", error);
+          // console.log("error in getting deposits", error);
         });
   }, [account, passbookStatus, customActiveTab, isTransactionDone]);
 
@@ -519,7 +527,7 @@ console.log("Repaid loans data",repaidLoansData);
     const liquidations: any[] = [];
     for (let i = 0; i < liquidationsData.length; i++) {
       const loan = liquidationsData[i];
-      console.log("loan in liquidation", loan);
+      // console.log("loan in liquidation", loan);
       let myLiquidableLoan = {
         loanOwner: loan.account,
         loanMarket: getTokenFromAddress(loan.loanMarket)?.name,
@@ -542,9 +550,9 @@ console.log("Repaid loans data",repaidLoansData);
     //         t.loanMarket === loan.loanMarket && t.commitment === loan.commitment
     //     )
     // );
-    // console.log("uni liquida", uniqueLiquidableLoans);
+    // // console.log("uni liquida", uniqueLiquidableLoans);
     // setActiveLiquidationsData(uniqueLiquidableLoans);
-    console.log("onLiquidationsData in", liquidationsData, liquidations);
+    // console.log("onLiquidationsData in", liquidationsData, liquidations);
     setActiveLiquidationsData(liquidations);
   };
 
@@ -559,14 +567,14 @@ console.log("Repaid loans data",repaidLoansData);
         (err) => {
           setIsLoading(false);
           setActiveLiquidationsData([]);
-          console.log(err);
+          // console.log(err);
         }
       );
   };
   const getActionTabs = (customActiveTab: string) => {
-    console.log("blockchain activedepoist", activeDepositsData);
-    console.log("blockchain activeloans", activeLoansData);
-    console.log("customActiveTab: ", customActiveTab);
+    // console.log("blockchain activedepoist", activeDepositsData);
+    // console.log("blockchain activeloans", activeLoansData);
+    // console.log("customActiveTab: ", customActiveTab);
     switch (customActiveTab) {
       case "1":
         return (
@@ -615,28 +623,25 @@ console.log("Repaid loans data",repaidLoansData);
   };
 
   const borrowActionTabs = () => {
-    console.log(repaidLoansData);
-    
-    return (
-      typeOfLoans === "Active"? 
+    // console.log(repaidLoansData);
+
+    return typeOfLoans === "Active" ? (
       <BorrowTab
-      activeLoansData={filteredLoans}
-      customActiveTabs={customActiveTabs}
-      isTransactionDone={isTransactionDone}
-      depositRequestSel={depositRequestSel}
-      removeBodyCss={removeBodyCss}
-      setCustomActiveTabs={setCustomActiveTabs}
-      fairPriceArray={oracleAndFairPrices?.fairPrices}
-    />
-    : <RepayloanShow 
-    repaidLoansData={repaidLoansData}
-    />
+        activeLoansData={filteredLoans}
+        customActiveTabs={customActiveTabs}
+        isTransactionDone={isTransactionDone}
+        depositRequestSel={depositRequestSel}
+        removeBodyCss={removeBodyCss}
+        setCustomActiveTabs={setCustomActiveTabs}
+        fairPriceArray={oracleAndFairPrices?.fairPrices}
+      />
+    ) : (
+      <RepayloanShow repaidLoansData={repaidLoansData} />
+    );
     // :  <RepaidLoansTab
     // repaidLoansData={repaidLoansData}
     // customActiveTabs={customActiveTab}
-  // />
-     
-    );
+    // />
   };
 
   function incorrectChain() {
@@ -645,23 +650,25 @@ console.log("Repaid loans data",repaidLoansData);
         style={{
           padding: "20px",
           textAlign: "center",
+          marginTop: "100px",
         }}
       >
         <p
           style={{
-            color: "#efb90b",
+            color: "white",
             fontSize: "25px",
+            zIndex: "100",
           }}
         >
-          Please switch to Goerli 2 network and refresh
+          Please switch to Starknet Mainnet and refresh
         </p>
-        Currently connected to: {starknetAccount?.baseUrl}. The base url should
-        be `https://alpha4-2.starknet.io` in your wallet for Goerli 2 network.
+        {/* Currently connected to: {starknetAccount?.baseUrl}. The base url should
+        be `https://alpha4-2.starknet.io` in your wallet for Goerli 2 network. */}
       </div>
     );
   }
 
-  function DashboardUI() {
+  const DashboardUI = () => {
     const [totalBorrowAssets, setTotalBorrowAssets] = useState();
     const [totalSupplyDash, setTotalSupplyDash] = useState();
 
@@ -872,7 +879,7 @@ console.log("Repaid loans data",repaidLoansData);
                                     setTypeOfLoans(type);
                                     setTypeOfLoansDropDownArrowType(DownArrow);
                                     setIsDropDownOpenTypeOfLoans(false);
-                                    setActiveRepaytab(type)
+                                    setActiveRepaytab(type);
                                   }}
                                 >
                                   {type}
@@ -905,7 +912,7 @@ console.log("Repaid loans data",repaidLoansData);
               customActiveTab === "4" ? (
                 <Card
                   style={{
-                    height: "76vh",
+                    height: "77vh",
                     maxHeight: "36rem",
                     border: "none",
                     boxShadow:
@@ -921,21 +928,22 @@ console.log("Repaid loans data",repaidLoansData);
                         "5px 10px 5px -5px rgba(20, 23, 38, 0.15), 5px 5px 5px -5px rgba(20, 23, 38, 0.3)",
                     }}
                   >
-                    {console.log(
+                    {/* {// console.log(
                       "depositDatall",
                       activeDepositsData,
                       activeLoansData
-                    )}{" "}
+                    )} */}{" "}
                     {customActiveTab === "1" ? (
-                      activeDepositsData && activeLoansData?
-                      <LoanBorrowCommitment
-                        reserves={reserves}
-                        isLoading={isLoading}
-                        activeDepositsData={activeDepositsData}
-                        activeLoansData={filteredLoans}
-                      />
-                      :"This is it"
-                  
+                      activeDepositsData && activeLoansData ? (
+                        <LoanBorrowCommitment
+                          reserves={reserves}
+                          isLoading={isLoading}
+                          activeDepositsData={activeDepositsData}
+                          activeLoansData={filteredLoans}
+                        />
+                      ) : (
+                        "This is it"
+                      )
                     ) : null}
                     <Row>
                       <div>
@@ -1036,14 +1044,15 @@ console.log("Repaid loans data",repaidLoansData);
         </Container>
       </div>
     );
-  }
+  };
 
   function isCorrectNetwork() {
     return (
-      starknetAccount?.baseUrl.includes("alpha4-2.starknet.io") ||
+      starknetAccount?.baseUrl.includes("alpha-mainnet.starknet.io") ||
       starknetAccount?.baseUrl.includes("localhost")
     );
   }
+  // console.log("starknet",starknetAccount);
 
   function maintenance() {
     return (
@@ -1136,15 +1145,62 @@ console.log("Repaid loans data",repaidLoansData);
         </MetaTags> */}
           {/* {maintenance()} */}
 
-          {DashboardUI()}
+          {/* {DashboardUI()}
+          <Row
+        style={{
+          marginTop: "5px",
+          position: "relative",
+          bottom: "0px",
+          left: "85%",
+          backgroundColor: "transparent",
+          borderRadius: "5px",
+          zIndex: "200  ",
+        }}
+      >
+        <div
+          style={{ display: "flex", padding: "5px 10px", alignItems: "center" }}
+        >
+          <div>Latest synced block:&nbsp;&nbsp;</div>
+          <div style={{ opacity: 0.6 }}>{offchainCurrentBlock}</div>
+          <div style={{ marginLeft: "5px" }} className="green-circle"></div>
+        </div>
+      </Row> */}
           {/* <Banner /> */}
-          {/* {!starknetAccount ? (
-          <h3>Loading...</h3>
-        ) : !isCorrectNetwork() ? (
-          incorrectChain()
-        ) : (
-          dashboardUI()
-        )} */}
+          {!starknetAccount ? (
+            <h3>Loading...</h3>
+          ) : !isCorrectNetwork() ? (
+            incorrectChain()
+          ) : (
+            <>
+              <DashboardUI />
+              <Row
+                style={{
+                  marginTop: "5px",
+                  position: "relative",
+                  bottom: "0px",
+                  left: "85%",
+                  backgroundColor: "transparent",
+                  borderRadius: "5px",
+                  zIndex: "200  ",
+                }}
+              >
+                <div
+                  style={{
+                    display: "flex",
+                    padding: "5px 10px",
+                    alignItems: "center",
+                  }}
+                >
+                  <div>Latest synced block:&nbsp;&nbsp;</div>
+                  <div style={{ opacity: 0.6 }}>{offchainCurrentBlock}</div>
+                  <div
+                    style={{ marginLeft: "5px" }}
+                    className="green-circle"
+                  ></div>
+                </div>
+              </Row>
+            </>
+          )}
           {/* <Analytics></Analytics>
             {props.children} */}
         </div>

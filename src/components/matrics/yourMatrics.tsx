@@ -224,7 +224,7 @@ const YourMatrics = () => {
                       fontSize: "13px",
                     }}
                   >
-                    Rffective Borrow Apr
+                    Effective Borrow Apr
                   </span>
                   <div style={{ fontSize: "25px" }}>15.5 %</div>
                 </div>

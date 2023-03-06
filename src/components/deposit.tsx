@@ -1,42 +1,19 @@
 import { useState, useContext, useEffect, useCallback } from "react";
-import {
-  Col,
-  Button,
-  Form,
-  Input,
-  Modal,
-  Spinner,
-  InputGroup,
-  FormGroup,
-  UncontrolledAlert,
-  FormText,
-  FormFeedback,
-  Label,
-  NavLink,
-} from "reactstrap";
-// import { estimateFee } from "starknet/account";
+import { NavLink } from "reactstrap";
 
 import DepositAbi from "../../ABIs/deposit_abi.json";
-
-import Slider from "react-custom-slider";
-
-import RangeSlider from "react-bootstrap-range-slider";
-import arrowDown from "../assets/images/ArrowDownDark.svg";
-import arrowUp from "../assets/images/ArrowUpDark.svg";
 import { MinimumAmount } from "../blockchain/constants";
 import BigNumber, { ethers } from "ethers";
 
 import {
   diamondAddress,
   ERC20Abi,
-  getTokenFromAddress,
   getTokenFromName,
-  isTransactionLoading,
   tokenAddressMap,
   tokenDecimalsMap,
 } from "../blockchain/stark-constants";
 
-import { BNtoNum, etherToWeiBN, GetErrorText, NumToBN } from "../blockchain/utils";
+import { etherToWeiBN, GetErrorText } from "../blockchain/utils";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React from "react";
@@ -44,32 +21,18 @@ import React from "react";
 import {
   useAccount,
   useContract,
-  useStarknet,
   useStarknetCall,
   useStarknetExecute,
-  useStarknetInvoke,
   useTransactionReceipt,
-  useTransactions,
 } from "@starknet-react/core";
-import dropDownArrow from "../public/drop-down-arrow.svg";
-import {
-  Abi,
-  Contract,
-  uint256,
-  number,
-  Provider,
-  Account,
-  ec,
-} from "starknet";
+import { Abi, Contract, uint256 } from "starknet";
+
 import { TxToastManager } from "../blockchain/txToastManager";
-import MySpinner from "./mySpinner";
-import Image from "next/image";
 import classnames from "classnames";
 import OffchainAPI from "../services/offchainapi.service";
 import Downarrow from "../assets/images/ArrowDownDark.svg";
 import UpArrow from "../assets/images/ArrowUpDark.svg";
-import ToastModal from "./toastModals/customToastModal";
-import SupplyModal from "./Modals/SupplyModal";
+import SupplyModal from "./modals/supplyModal";
 
 interface ICoin {
   name: string;
@@ -96,7 +59,6 @@ let Deposit: any = ({
   const [asset, setAsset] = useState(assetParam);
   const [value, setValue] = useState<any>(0);
   const [tokenName, setTokenName] = useState(asset);
-  const [tokenIcon, setTokenIcon] = useState("mdi-bitcoin");
 
   const [token, setToken] = useState(getTokenFromName(asset));
   const [dropDown, setDropDown] = useState(false);
@@ -114,9 +76,6 @@ let Deposit: any = ({
 
   const [depositAmount, setDepositAmount] = useState<any>();
   const [commitPeriod, setCommitPeriod] = useState(0);
-
-  const [isLoadingApprove, setLoadingApprove] = useState(false);
-  const [isLoadingDeposit, setLoadingDeposit] = useState(false);
 
   const [allowanceVal, setAllowance] = useState(0);
 
@@ -141,13 +100,12 @@ let Deposit: any = ({
 
   useEffect(() => {
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
-      console.log("deposit rates in supply", val);
+      // console.log("deposit rates in supply", val);
       setDepositLoanRates(val);
     });
   }, [asset]);
 
   useEffect(() => {
-    // console.log('approve tx receipt', approveTransactionReceipt.data?.transaction_hash, approveTransactionReceipt);
     TxToastManager.handleTxToast(
       approveTransactionReceipt,
       `Deposit: Approve ${token?.name}`,
@@ -156,7 +114,6 @@ let Deposit: any = ({
   }, [approveTransactionReceipt]);
 
   useEffect(() => {
-    // console.log('deposit tx receipt', requestDepositTransactionReceipt.data?.transaction_hash, requestDepositTransactionReceipt);
     TxToastManager.handleTxToast(
       requestDepositTransactionReceipt,
       `Deposit ${token?.name}`
@@ -194,7 +151,11 @@ let Deposit: any = ({
     calls: {
       contractAddress: tokenAddressMap[asset] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, etherToWeiBN(depositAmount, tokenAddressMap[asset]||"").toString(), 0],
+      calldata: [
+        diamondAddress,
+        etherToWeiBN(depositAmount, tokenAddressMap[asset] || "").toString(),
+        0,
+      ],
     },
   });
 
@@ -210,7 +171,11 @@ let Deposit: any = ({
       {
         contractAddress: tokenAddressMap[asset] as string,
         entrypoint: "approve",
-        calldata: [diamondAddress, etherToWeiBN(depositAmount, tokenAddressMap[asset] || "").toString(), 0],
+        calldata: [
+          diamondAddress,
+          etherToWeiBN(depositAmount, tokenAddressMap[asset] || "").toString(),
+          0,
+        ],
       },
       {
         contractAddress: diamondAddress,
@@ -288,19 +253,17 @@ let Deposit: any = ({
   const handleBalanceChange = async () => {
     const allow = await refreshAllowance();
     const bal = await refreshBalance();
-    console.log("updated on toggle", allow, bal, asset);
+    // console.log("updated on toggle", allow, bal, asset);
   };
 
   const handleMax = async () => {
     setDepositAmount(
-      (Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-        10 ** (tokenDecimalsMap[asset] || 18)).toFixed(4)
+      (
+        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+        10 ** (tokenDecimalsMap[asset] || 18)
+      ).toFixed(4)
     );
     setValue(100);
-  };
-
-  const handleMin = async () => {
-    setDepositAmount(MinimumAmount[asset]);
   };
 
   function removeBodyCss() {
@@ -310,7 +273,6 @@ let Deposit: any = ({
   const toggleDropdown = async () => {
     setDropDown(!dropDown);
     setDropDownArrow(dropDown ? Downarrow : UpArrow);
-    // disconnectEvent(), connect(connector);
   };
 
   const { account: userAccount } = useAccount();
@@ -319,42 +281,40 @@ let Deposit: any = ({
     address: diamondAddress,
   });
 
-  const depositContract2 = new Contract(
+  const depositContract2: any = new Contract(
     DepositAbi as Abi,
     diamondAddress,
     depositContract2?.providerOrAccount
   );
 
   const getGas = async () => {
-    // const amount = uint256.bnToUint256(NumToBN(depositAmount, 18));
     try {
-      console.log(
-        "gas tokenAddressMap[asset]",
-        tokenAddressMap[asset],
-        diamondAddress,
-        commitPeriod,
-        depositAmount,
-        depositContract
-      );
-      console.log("provider", depositContract?.providerOrAccount, userAccount);
+      // console.log(
+      //   "gas tokenAddressMap[asset]",
+      //   tokenAddressMap[asset],
+      //   diamondAddress,
+      //   commitPeriod,
+      //   depositAmount,
+      //   depositContract
+      // );
+      // console.log("provider", depositContract?.providerOrAccount, userAccount);
 
       let call = depositContract?.populate("deposit_request", [
         tokenAddressMap[asset],
         commitPeriod,
-        [etherToWeiBN(depositAmount, tokenAddressMap[asset]||"").toString(), 0],
+        [
+          etherToWeiBN(depositAmount, tokenAddressMap[asset] || "").toString(),
+          0,
+        ],
       ]);
       if (!call) {
         throw new Error("call undefined");
       } else {
         let gas = await userAccount?.estimateFee([call]);
-        // let gas = await depositContract?.estimateFee.withdraw_deposit(
-        //     1,
-        //     [NumToBN(depositAmount, 18), 0]
-        // );
-        console.log("gas for deposit", gas);
+        // console.log("gas for deposit", gas);
       }
     } catch (error) {
-      console.log("query gas error", diamondAddress, error);
+      // console.log("query gas error", diamondAddress, error);
     }
   };
 
@@ -391,7 +351,7 @@ let Deposit: any = ({
       setToastParam(toastParamValue);
       setIsToastOpen(true);
     } catch (err) {
-      console.log(err, "err deposit");
+      // console.log(err, "err deposit");
       const toastParamValue = {
         success: false,
         heading: "Deposit Transaction Failed",
@@ -414,7 +374,7 @@ let Deposit: any = ({
         let data: any = dataAllowance;
         let _allowanceBN = uint256.uint256ToBN(data.remaining);
         const _allowance = ethers.utils.formatEther(_allowanceBN.toString());
-        // console.log('deposit allowance', token?.name, _allowance, depositAmount)
+        // // console.log('deposit allowance', token?.name, _allowance, depositAmount)
         setAllowance(Number(_allowance));
       } else if (errorAllowance) {
         // handleToast(true, "Check allowance", errorAllowance)
@@ -455,48 +415,48 @@ let Deposit: any = ({
           Supply
         </NavLink>
       </div>
-       <SupplyModal 
-       modal_deposit ={modal_deposit}
-       accountAddress={accountAddress}
-       toggleDropdown={toggleDropdown}
-       tokenName={tokenName}
-       setmodal_deposit={setmodal_deposit}
-       tog_center={tog_center}
-       setCommitmentDropDown={setCommitmentDropDown}
-       commitmentDropDown={commitmentDropDown}
-       setCommitmentArrow={setCommitmentArrow}
-       commitmentValue={commitmentValue}
-       dropDown={dropDown}
-       Coins={Coins}
-       setTokenName={setTokenName}
-       setDropDown={setDropDown}
-       setDropDownArrow={setDropDownArrow}
-       setAsset={setAsset}
-       handleBalanceChange={handleBalanceChange}
-       handleCommitChange={handleCommitChange}
-       setCommitmentValue={setCommitmentValue}
-       handleMax={handleMax}
-       setDepositAmount={setDepositAmount}
-       handleDepositAmountChange={handleDepositAmountChange}
-       depositAmount={depositAmount}
-       Downarrow={Downarrow}
-       asset={asset}
-       isInvalid={isInvalid}
-       dataBalance={dataBalance}
-       value={value}
-       setValue={setValue}
-       commitmentArrow={commitmentArrow}
-       depositLoanRates={depositLoanRates}
-       commitPeriod={commitPeriod}
-       reserves={reserves}
-       loadingApprove ={loadingApprove}
-       loadingDeposit ={loadingDeposit}
-       handleDeposit={handleDeposit}
-       requestDepositTransactionReceipt={requestDepositTransactionReceipt}
-       isToastOpen={isToastOpen}
-       setIsToastOpen={setIsToastOpen}
-       toastParam={toastParam}
-       />
+      <SupplyModal
+        modal_deposit={modal_deposit}
+        accountAddress={accountAddress}
+        toggleDropdown={toggleDropdown}
+        tokenName={tokenName}
+        setmodal_deposit={setmodal_deposit}
+        tog_center={tog_center}
+        setCommitmentDropDown={setCommitmentDropDown}
+        commitmentDropDown={commitmentDropDown}
+        setCommitmentArrow={setCommitmentArrow}
+        commitmentValue={commitmentValue}
+        dropDown={dropDown}
+        Coins={Coins}
+        setTokenName={setTokenName}
+        setDropDown={setDropDown}
+        setDropDownArrow={setDropDownArrow}
+        setAsset={setAsset}
+        handleBalanceChange={handleBalanceChange}
+        handleCommitChange={handleCommitChange}
+        setCommitmentValue={setCommitmentValue}
+        handleMax={handleMax}
+        setDepositAmount={setDepositAmount}
+        handleDepositAmountChange={handleDepositAmountChange}
+        depositAmount={depositAmount}
+        Downarrow={Downarrow}
+        asset={asset}
+        isInvalid={isInvalid}
+        dataBalance={dataBalance}
+        value={value}
+        setValue={setValue}
+        commitmentArrow={commitmentArrow}
+        depositLoanRates={depositLoanRates}
+        commitPeriod={commitPeriod}
+        reserves={reserves}
+        loadingApprove={loadingApprove}
+        loadingDeposit={loadingDeposit}
+        handleDeposit={handleDeposit}
+        requestDepositTransactionReceipt={requestDepositTransactionReceipt}
+        isToastOpen={isToastOpen}
+        setIsToastOpen={setIsToastOpen}
+        toastParam={toastParam}
+      />
     </div>
   );
 };

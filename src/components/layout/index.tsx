@@ -30,14 +30,14 @@ const Layout = (props: any) => {
   const [isTransactionDone, setIsTransactionDone] = useState(false);
 
   const handleDisconnectWallet = () => {
-    console.log(`should disconnect wallet`);
+    // console.log(`should disconnect wallet`);
     disconnect();
   };
 
   const handleConnectWallet = (connector: Connector) => {
     if (connector) {
-      console.log(connector);
-      console.log(connect);
+      // console.log(connector);
+      // console.log(connect);
       connect(connector);
     }
   };
@@ -58,7 +58,7 @@ const Layout = (props: any) => {
       document.getElementById("preloader")!.style.display = "none";
       document.getElementById("status")!.style.display = "none";
     }
-    console.log(account);
+    // console.log(account);
     return () => clearTimeout(timer);
   }, [isPreloader]);
 

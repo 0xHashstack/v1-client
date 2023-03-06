@@ -22,7 +22,7 @@ import {
 
 const RepayLoans = ({assets}:{assets:any}) => {
 
- console.log(assets);
+ // console.log(assets);
  
     
   return (

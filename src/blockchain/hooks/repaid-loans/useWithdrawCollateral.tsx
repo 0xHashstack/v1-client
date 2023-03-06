@@ -18,7 +18,7 @@ const useWithdrawCollateral = (_diamondAddress: string, _loanId: number) => {
 
 
   useEffect(() => {
-    console.log('withdraw col tx receipt', withdrawCollateralTransactionReceipt.data?.transaction_hash, withdrawCollateralTransactionReceipt);
+    // console.log('withdraw col tx receipt', withdrawCollateralTransactionReceipt.data?.transaction_hash, withdrawCollateralTransactionReceipt);
     TxToastManager.handleTxToast(withdrawCollateralTransactionReceipt, `Withdraw collateral`, true)
   }, [withdrawCollateralTransactionReceipt])
 

@@ -6,6 +6,7 @@ import JediSwapAbi from "../../../../starknet-artifacts/contracts/integrations/m
 import { Abi } from "starknet";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
+import { map } from "lodash";
 
 const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
 
@@ -32,22 +33,29 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
     }
   })
 
+  function getMapArr(map: any, firstVal: any) {
+    if (map.get(firstVal)) {
+      return map.get(firstVal);
+    }
+    return []
+  }
+
   useEffect(() => {
 
     const setValue = (map: Map<string, Array<string>>, firstVal: string, secondVal: string) => {
       if(map.get(firstVal))
-        map.set(firstVal, [...map.get(firstVal), secondVal]);
+        map.set(firstVal, [...getMapArr(map, firstVal), secondVal]);
       else map.set(firstVal, [secondVal]);
     }
 
-    console.log("loading jedi", loadingJediSwapSupportedPools);
+    // console.log("loading jedi", loadingJediSwapSupportedPools);
     const poolsData = new Map();
     if (!loadingJediSwapSupportedPools) {
-      console.log(
-        "jediSwapSupportedPoolsData",
-        jediSwapSupportedPoolsData,
-        errorJediSwapSupportedPools
-      );
+      // console.log(
+      //   "jediSwapSupportedPoolsData",
+      //   jediSwapSupportedPoolsData,
+      //   errorJediSwapSupportedPools
+      // );
       const pools = jediSwapSupportedPoolsData?.pools;
       for(let i = 0; i<pools?.length; i++) {
         const firstTokenAddress = number.toHex(pools[i].tokenA)
@@ -55,7 +63,7 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
         setValue(poolsData, firstTokenAddress, secondTokenAddress);
         setValue(poolsData, secondTokenAddress, firstTokenAddress);
       }
-      console.log("pooldata jediswap", poolsData);
+      // console.log("pooldata jediswap", poolsData);
       setSupportedPoolsJediSwap(poolsData);
     }
   }, [
@@ -90,7 +98,7 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
     setToastJediswapParam(toastParamValue);
     setIsToastJediswapOpen(true);
     } catch (err) {
-      console.log(err, "err repay");
+      // console.log(err, "err repay");
       const toastParamValue = {
         success: false,
         heading: "Swap Transaction Failed",

@@ -55,7 +55,7 @@ const AddToCollateral = ({
   });
 
   useEffect(() => {
-    // console.log(
+    // // console.log(
     //   "approve tx receipt",
     //   approveTransactionReceipt.data?.transaction_hash,
     //   approveTransactionReceipt
@@ -68,7 +68,7 @@ const AddToCollateral = ({
   }, [approveTransactionReceipt]);
 
   useEffect(() => {
-    // console.log(
+    // // console.log(
     //   "add col tx receipt",
     //   addCollateralTransactionReceipt.data?.transaction_hash,
     //   addCollateralTransactionReceipt
@@ -127,20 +127,20 @@ const AddToCollateral = ({
   });
 
   useEffect(() => {
-    // console.log("check allownace", {
+    // // console.log("check allownace", {
     //   dataAllowance,
     //   errorAllowance,
     //   refreshAllowance,
     //   loadingAllowance,
     // });
     if (dataAllowance) {
-      console.log("yo", Number(BNtoNum(dataAllowance[0]?.low, 18)), inputVal);
+      // console.log("yo", Number(BNtoNum(dataAllowance[0]?.low, 18)), inputVal);
     }
     if (!loadingAllowance) {
       if (dataAllowance) {
         let data: any = dataAllowance;
         let _allowance = uint256.uint256ToBN(data.remaining);
-        console.log(Number(BNtoNum(dataAllowance[0]?.low, 18)));
+        // console.log(Number(BNtoNum(dataAllowance[0]?.low, 18)));
         setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
         if (allowanceVal > (inputVal as number)) {
           setAllowed(true);
@@ -160,7 +160,7 @@ const AddToCollateral = ({
       const val = await executeApprove();
       setTransApprove(val.transaction_hash);
     } catch (err) {
-      console.log(err, "err approve token add collateral");
+      // console.log(err, "err approve token add collateral");
     }
   };
 
@@ -180,19 +180,19 @@ const AddToCollateral = ({
       });
       return;
     }
-    // console.log(diamondAddress, inputVal);
+    // // console.log(diamondAddress, inputVal);
     // await handleApprove();
     // run deposit function
 
-    // console.log("allowance", BNtoNum(dataAllowance[0]?.low, 18).toString());
-    // console.log("amountin -: ", inputVal);
+    // // console.log("allowance", BNtoNum(dataAllowance[0]?.low, 18).toString());
+    // // console.log("amountin -: ", inputVal);
 
     // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
     try {
       const val = await executeAddCollateral();
       setTransAddcollateral(val.transaction_hash);
     } catch (err) {
-      console.log(err, "err add collateral");
+      // console.log(err, "err add collateral");
     }
   };
 
@@ -211,8 +211,8 @@ const AddToCollateral = ({
             }
             onChange={(event) => {
               setInputVal(parseFloat(event.target.value));
-              console.log(parseFloat(event.target.value));
-              console.log(allowanceVal);
+              // console.log(parseFloat(event.target.value));
+              // console.log(allowanceVal);
 
               setMarketToAddCollateral(
                 getTokenFromName(asset.collateralMarket as string).address

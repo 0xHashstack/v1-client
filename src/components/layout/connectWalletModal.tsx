@@ -28,12 +28,12 @@ const ConnectWalletModal = () => {
   });
   const { address: account } = useAccount();
   const { available, connect } = useConnectors();
-  console.log(available);
+  // console.log(available);
 
   function handleButtonConnectWallet() {
     available.length > 0
       ? available.map((connector) => {
-        console.log(connector);
+        // console.log(connector);
 
         setnetworkSelected({
           network: "Starknet",
@@ -79,7 +79,7 @@ const ConnectWalletModal = () => {
     {
       available.length > 0
         ? available.map((connector, id) => {
-          // console.log(id);
+          // // console.log(id);
           if (network === "Starknet" && id === 0) {
             disconnectEvent(), connect(connector);
           }
@@ -92,7 +92,7 @@ const ConnectWalletModal = () => {
     {
       available.length > 0
         ? available.map((connector, id) => {
-          // console.log(id);
+          // // console.log(id);
           if (network === "Starknet" && id === 1) {
             disconnectEvent(), connect(connector);
           }
@@ -224,7 +224,7 @@ const ConnectWalletModal = () => {
                         color: "#ADB5BD",
                       }}
                     >
-                      &nbsp;Ethereum (Comming Soon)
+                      &nbsp;Ethereum (Coming Soon)
                     </div>
                   </div>
                 </>
@@ -329,6 +329,7 @@ const ConnectWalletModal = () => {
             <a
               href="https://braavos.app/"
               target="_blank"
+              rel="noreferrer"
               style={{ color: "#2563EB" }}
             >
               terms of service & disclaimer

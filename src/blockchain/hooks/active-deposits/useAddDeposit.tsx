@@ -58,20 +58,20 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 	});
 
 	useEffect(() => {
-		console.log('check allownace', {
-			dataAllowance,
-			errorAllowance,
-			refreshAllowance,
-			loadingAllowance,
-		});
+		// // console.log('check allownace', {
+		// 	dataAllowance,
+		// 	errorAllowance,
+		// 	refreshAllowance,
+		// 	loadingAllowance,
+		// });
 		if (dataAllowance) {
-			console.log('yo', Number(BNtoNum(dataAllowance[0]?.low, 18)));
+			// console.log('yo', Number(BNtoNum(dataAllowance[0]?.low, 18)));
 		}
 		if (!loadingAllowance) {
 			if (dataAllowance) {
 				let data: any = dataAllowance;
 				let _allowance = uint256.uint256ToBN(data.remaining);
-				// console.log({ _allowance: _allowance.toString(), depositAmount });
+				// // console.log({ _allowance: _allowance.toString(), depositAmount });
 				setAllowance(Number(weiToEtherNumber(dataAllowance[0]?.low, tokenAddressMap[token]||"").toString()));
 				if (allowanceVal > (depositAmount as number)) {
 					setAllowed(true);
@@ -131,7 +131,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 			const val = await executeApprove();
 			setTransApprove(val.transaction_hash)
 		} catch(err) {
-			console.log(err, 'err approve for add deposit')
+			// console.log(err, 'err approve for add deposit')
 		}
 	};
 
@@ -156,12 +156,12 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 			});
 			return;
 		}
-		console.log(diamondAddress, depositAmount);
+		// console.log(diamondAddress, depositAmount);
 		try {
 			let tx = await executeDeposit();
 			setTransDeposit(tx.transaction_hash);
 		} catch(err) {
-			console.log(err, 'err add deposit')
+			// console.log(err, 'err add deposit')
 		}
 		if (errorDeposit) {
 			toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {

@@ -55,11 +55,11 @@ const Repay = ({
   });
 
   useEffect(() => {
-    console.log(
-      "approve tx receipt",
-      approveTransactionReceipt.data?.transaction_hash,
-      approveTransactionReceipt
-    );
+    // // console.log(
+    //   "approve tx receipt",
+    //   approveTransactionReceipt.data?.transaction_hash,
+    //   approveTransactionReceipt
+    // );
     TxToastManager.handleTxToast(
       approveTransactionReceipt,
       `Repay: Approve ${asset.loanMarket}`,
@@ -68,11 +68,11 @@ const Repay = ({
   }, [approveTransactionReceipt]);
 
   useEffect(() => {
-    console.log(
-      "repay tx receipt",
-      repayTransactionReceipt.data?.transaction_hash,
-      repayTransactionReceipt
-    );
+    // // console.log(
+    //   "repay tx receipt",
+    //   repayTransactionReceipt.data?.transaction_hash,
+    //   repayTransactionReceipt
+    // );
     TxToastManager.handleTxToast(
       repayTransactionReceipt,
       `Repay ${asset.loanMarket} Loan`
@@ -133,20 +133,20 @@ const Repay = ({
   });
 
   useEffect(() => {
-    console.log("check allownace", {
-      dataAllowance,
-      errorAllowance,
-      refreshAllowance,
-      loadingAllowance,
-    });
+    // console.log("check allownace", {
+    //   dataAllowance,
+    //   errorAllowance,
+    //   refreshAllowance,
+    //   loadingAllowance,
+    // });
     if (dataAllowance) {
-      console.log("yo", Number(BNtoNum(dataAllowance[0]?.low, 18)));
+      // console.log("yo", Number(BNtoNum(dataAllowance[0]?.low, 18)));
     }
     if (!loadingAllowance) {
       if (dataAllowance) {
         let data: any = dataAllowance;
         let _allowance = uint256.uint256ToBN(data.remaining);
-        // console.log({ _allowance: _allowance.toString(), depositAmount });
+        // // console.log({ _allowance: _allowance.toString(), depositAmount });
         setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
         if (allowanceVal > (inputVal as number)) {
           setAllowed(true);
@@ -166,7 +166,7 @@ const Repay = ({
       const val = await executeApprove();
       setTransApprove(val.transaction_hash);
     } catch (err) {
-      console.log(err, "err approve token repay");
+      // console.log(err, "err approve token repay");
     }
   };
 
@@ -195,12 +195,12 @@ const Repay = ({
       );
       return;
     }
-    console.log(diamondAddress, inputVal);
+    // console.log(diamondAddress, inputVal);
     // await handleApprove();
     // run deposit function
 
-    // console.log("allowance", BNtoNum(dataAllowance[0]?.low, 18).toString());
-    // console.log("amountin -: ", inputVal);
+    // // console.log("allowance", BNtoNum(dataAllowance[0]?.low, 18).toString());
+    // // console.log("amountin -: ", inputVal);
 
     // setAllowance(Number(BNtoNum(dataAllowance[0]?.low, 18)));
 
@@ -208,7 +208,7 @@ const Repay = ({
       const val = await executeRepay();
       setTransRepay(val.transaction_hash);
     } catch (err) {
-      console.log(err, "err repay");
+      // console.log(err, "err repay");
     }
   };
 

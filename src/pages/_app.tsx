@@ -15,8 +15,8 @@ import store from "../store";
 import "../assets/scss/theme.scss";
 import "./scrollbar.css";
 import { TabsProvider } from "../hooks/contextHooks/TabContext";
-import Ellipse1 from "../assets/images/Ellipse 59.svg";
-import Ellipse2 from "../assets/images/Ellipse 60.svg";
+// import Ellipse1 from "../assets/images/Ellipse 59.svg";
+// import Ellipse2 from "../assets/images/Ellipse 60.svg";
 import {
   InjectedConnector,
   StarknetProvider,
@@ -25,9 +25,21 @@ import {
 import { SequencerProvider, RpcProvider } from "starknet";
 import ErrorBoundary from "../components/ErrorComponent";
 import { IdentifierProvider } from "../blockchain/hooks/context/identifierContext";
-import ConnectionDetails from "../components/walletIdentifier/connectionDashboard";
-import ConnectWalletModal from "../components/layout/connectWalletModal";
 
+if (typeof window !== "undefined") {
+  const amplitude = require("@amplitude/analytics-browser");
+  /* Initializing amplitude analytics */
+  amplitude.init("0c6ca142b8f758aec64963ebdea8fdb1", undefined, {
+    defaultTracking: {
+      sessions: true,
+      pageViews: true,
+      formInteractions: true,
+      fileDownloads: true,
+    },
+  });
+}
+
+/******************************************************************/
 
 const { chains, provider } = configureChains(
   [mainnet, goerli],
@@ -51,10 +63,16 @@ function MyApp({ Component, pageProps }: AppProps) {
     new InjectedConnector({ options: { id: "argentX" } }),
   ];
   return (
-    <div style={{ backgroundColor: "#1C202F", height: "100vh" }}>
+    <div
+      style={{
+        backgroundColor: "#1C202F",
+        height: "100vh",
+        overflowY: "scroll",
+      }}
+    >
       <div style={{ position: "fixed", bottom: "0px", left: "0px" }}>
         <img
-          src={`${Ellipse1.src}`}
+          src="./Ellipse 59.svg"
           alt="ellipse"
           width="750px"
           height="750px"
@@ -62,7 +80,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       </div>
       <div style={{ position: "fixed", bottom: "0px", right: "0px" }}>
         <img
-          src={`${Ellipse2.src}`}
+          src="./Ellipse 60.svg"
           alt="ellipse"
           width="800px"
           height="800px"

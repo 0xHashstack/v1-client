@@ -99,7 +99,7 @@ const ActiveLoansTab = ({
     };
   }
   useEffect(() => {
-    // console.log(
+    // // console.log(
     //   "withdraw tx receipt",
     //   withdrawLoanTransactionReceipt.data?.transaction_hash,
     //   withdrawLoanTransactionReceipt
@@ -111,7 +111,7 @@ const ActiveLoansTab = ({
   }, [withdrawLoanTransactionReceipt]);
 
   useEffect(() => {
-    // console.log(
+    // // console.log(
     //   "swap loan tx receipt",
     //   swapLoanToSecondaryTransactionReceipt.data?.transaction_hash,
     //   swapLoanToSecondaryTransactionReceipt
@@ -127,7 +127,7 @@ const ActiveLoansTab = ({
   useEffect(() => {
     OffchainAPI.getHistoricalBorrowRates().then((val) => {
       setHistoricalAPRs(val);
-      console.log(val);
+      // console.log(val);
     });
   }, []);
 
@@ -269,10 +269,10 @@ const ActiveLoansTab = ({
     }
 
     if (!inputVal1 && !loanId && !diamondAddress) {
-      console.log("error");
+      // console.log("error");
       return;
     }
-    console.log(diamondAddress, loanId, inputVal1);
+    // console.log(diamondAddress, loanId, inputVal1);
 
     try {
       const val = await executeWithdraw();
@@ -293,9 +293,9 @@ const ActiveLoansTab = ({
   };
 
   const handleSwap = async () => {
-    console.log(swapMarket, " ", loanId, " ", diamondAddress);
+    // console.log(swapMarket, " ", loanId, " ", diamondAddress);
     if (!swapMarket && !loanId && !diamondAddress) {
-      console.log("error");
+      // console.log("error");
       return;
     }
 
@@ -308,7 +308,7 @@ const ActiveLoansTab = ({
       }
     }
     if (errorSwapToMarket) {
-      console.log(errorSwapToMarket);
+      // console.log(errorSwapToMarket);
       toast.error(`${GetErrorText(`Swap to ${swapMarket} failed`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
@@ -337,7 +337,7 @@ const ActiveLoansTab = ({
     const maxPermisableWithdrawal = maxPermisableUSD / loanPrice;
 
     setInputVal1(maxPermisableWithdrawal);
-    // console.log("max loan withdrawal", maxPermisableWithdrawal);
+    // // console.log("max loan withdrawal", maxPermisableWithdrawal);
     setLoading(false);
   };
 

@@ -44,7 +44,7 @@ let DashboardTBody: any = ({
 
   useEffect(() => {
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
-      console.log("got them", val);
+      // console.log("got them", val);
       setDepositLoanRates(val);
     });
   }, []);
@@ -52,19 +52,18 @@ let DashboardTBody: any = ({
   useEffect(() => {
     const getPrices = () => {
       OffchainAPI.getOraclePrices().then((prices) => {
-        console.log("prices", prices);
+        // console.log("prices", prices);
         setOracleAndFairPrices(prices);
       });
     };
     getPrices();
   }, []);
 
-  console.log(isloading);
+  // console.log(isloading);
   
   if (isloading) {
   
     return (
-      // <tr align="center">
       
       <tr>
         <td colSpan={6}>
@@ -84,13 +83,13 @@ let DashboardTBody: any = ({
         coin.name,
         oracleAndFairPrices?.fairPrices
       );
-      console.log(
-        "prices process",
-        oraclePriceForCoin,
-        fairPriceForCoin,
-        coin.name
-      );
-      console.log(coin);
+      // console.log(
+      //   "prices process",
+      //   oraclePriceForCoin,
+      //   fairPriceForCoin,
+      //   coin.name
+      // );
+      // console.log(coin);
       
       return (
         <>

@@ -42,7 +42,7 @@ const useRevertSpend = (diamondAddress: string, asset: any) => {
             setToastRevertSpendParam(toastParamValue);
             setIsToastRevertSpendOpen(true);
         } catch (err) {
-            console.log(err, "err repay");
+            // console.log(err, "err repay");
             const toastParamValue = {
                 success: false,
                 heading: "Rever Spend Failed",
