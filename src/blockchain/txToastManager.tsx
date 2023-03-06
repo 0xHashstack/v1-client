@@ -33,7 +33,7 @@ export class TxToastManager {
         </p>
       );
       this._showToast(hash, hasToast, msg, "default", receipt.data?.status, 0);
-    } else if (receipt.data?.status == "PENDING" && !onlyL2Confirm) {
+    } else if (receipt.data?.status == "PENDING") {
       // Read: https://community.starknet.io/t/cairo-v0-6-2-api-change-pending-block/195
 
       // let msg = (<p style={{margin: 0}}>
@@ -42,9 +42,11 @@ export class TxToastManager {
       //     </p>)
       // this._showToast(hash, hasToast,msg, 'default', receipt.data?.status, 0, 0.7)
       this._showToast(hash, hasToast, purpose, "success", receipt.data?.status);
-    } else if (receipt.data?.status == "ACCEPTED_ON_L2") {
-      this._showToast(hash, hasToast, purpose, "success", receipt.data?.status);
-    } else if (receipt.data?.status == "REJECTED") {
+    } 
+    // else if (receipt.data?.status == "ACCEPTED_ON_L2") {
+    //   this._showToast(hash, hasToast, purpose, "success", receipt.data?.status);
+    // } 
+    else if (receipt.data?.status == "REJECTED") {
       this._showToast(hash, hasToast, purpose, "error", receipt.data?.status);
     }
   }

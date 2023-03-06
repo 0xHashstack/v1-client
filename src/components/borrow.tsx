@@ -393,24 +393,25 @@ let Borrow: any = ({
   const { dataMaxLoan, errorMaxLoan, loadingMaxLoan, refreshMaxLoan } =
     useMaxloan(
       asset,
-      tokenName,
+      borrowParams.collateralMarket,
       etherToWeiBN(
         borrowParams.collateralAmount as number,
-        borrowParams.collateralMarket as string
+        tokenAddressMap[borrowParams.collateralMarket as string]
       ).toString()
     );
   useEffect(() => {
     if (loadingMaxLoan === false && !errorMaxLoan) {
-      // console.log(
-      //   "printing",
-      //   dataMaxLoan,
-      //   errorMaxLoan,
-      //   loadingMaxLoan,
-      //   Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1))
-      // );
+      console.log(
+        "printing",
+        dataMaxLoan,
+        errorMaxLoan,
+        loadingMaxLoan,
+        Number(BNtoNum(dataMaxLoan?.max_loan_amount.low, 1))
+      );
       const Data = dataMaxLoan?.max_loan_amount
         ? weiToEtherNumber(
-            uint256.uint256ToBN(dataMaxLoan?.max_loan_amount).toString()
+            uint256.uint256ToBN(dataMaxLoan?.max_loan_amount).toString(), 
+            tokenAddressMap[asset]
           )
         : "0";
       setMaxloanData(Data);
