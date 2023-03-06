@@ -448,6 +448,9 @@ const BorrowData = ({
   useEffect(() => {
     // console.log(
     //   "partialWithdraw",
+    //   partialWithdrawData
+    //   ? uint256.uint256ToBN(partialWithdrawData.amount).toString()
+    //   : "0",
     //   partialWithdrawData,
     //   partialWithdrawLoading,
     //   partialWithdrawError
@@ -455,7 +458,7 @@ const BorrowData = ({
     const amount = partialWithdrawData
       ? uint256.uint256ToBN(partialWithdrawData.amount).toString()
       : "0";
-    const amountWei = weiToEtherNumber(amount, asset.loanMarket);
+    const amountWei = weiToEtherNumber(amount, tokenAddressMap[asset.loanMarket]);
     setMaxPartialWithdrawAmount(amountWei);
   }, [partialWithdrawData, partialWithdrawLoading, partialWithdrawError]);
 
