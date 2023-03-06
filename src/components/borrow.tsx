@@ -322,7 +322,7 @@ let Borrow: any = ({
           tokenAddressMap[borrowParams.collateralMarket as string],
           etherToWeiBN(
             borrowParams.collateralAmount as number,
-            tokenAddressMap[asset] || ""
+            tokenAddressMap[borrowParams.collateralMarket]
           ).toString(),
           0,
         ],
@@ -607,7 +607,7 @@ let Borrow: any = ({
     return (
       Number(borrowParams.collateralAmount) <=
       Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-        10 ** (tokenDecimalsMap[borrowParams?.collateralMarket as string] || 18)
+        10 ** (tokenDecimalsMap[borrowParams?.collateralMarket as string])
     );
   }
 
@@ -617,13 +617,16 @@ let Borrow: any = ({
   }
   // function isValidLoanAmount
   function isValid() {
-    // console.log(
-    //   "collateral amount",
-    //   isValidColleteralAmount(),
-    //   "loan amount",
-    //   isLoanAmountValid()
-    // );
-    return isValidColleteralAmount() && isLoanAmountValid();
+    console.log(
+      "collateral amount",
+      `${borrowParams.collateralAmount}`,
+      isValidColleteralAmount(),
+      "loan amount",
+      `${borrowParams.loanAmount}`,
+      `${MinimumAmount[asset]}`,
+      isLoanAmountValid()
+    );
+    return isLoanAmountValid();
   }
 
   return (
