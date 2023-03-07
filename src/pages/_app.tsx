@@ -17,6 +17,7 @@ import "./scrollbar.css";
 import { TabsProvider } from "../hooks/contextHooks/TabContext";
 // import Ellipse1 from "../assets/images/Ellipse 59.svg";
 // import Ellipse2 from "../assets/images/Ellipse 60.svg";
+import {SecTabsProvider} from "../hooks/contextHooks/SecTabContext"
 import {
   InjectedConnector,
   StarknetProvider,
@@ -104,6 +105,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               >
                 <Provider store={store}>
                   <DetailsProvider>
+                    <SecTabsProvider>
                     <TabsProvider>
                       {/* <ConnectionDetails /> */}
                       <Layout>
@@ -111,6 +113,7 @@ function MyApp({ Component, pageProps }: AppProps) {
                       </Layout>
                       <ToastContainer />
                     </TabsProvider>
+                    </SecTabsProvider>
                   </DetailsProvider>
                 </Provider>
               </StarknetProvider>

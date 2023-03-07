@@ -118,11 +118,13 @@ const Dashboard = () => {
   const [repaidLoansData, setRepaidLoansData] = useState<ILoans[]>([]);
   const [activeLiquidationsData, setActiveLiquidationsData] = useState<any>([]);
   const [isTransactionDone, setIsTransactionDone] = useState(false);
+ 
 
   const [handleDepositTransactionDone, setHandleDepositTransactionDone] =
     useState(false);
   const [withdrawDepositTransactionDone, setWithdrawDepositTransactionDone] =
     useState(false);
+   
 
   // const [customActiveTab, setCustomActiveTab] = useState("1");
   // const [customActiveTabs, setCustomActiveTabs] = useState("1");
@@ -162,12 +164,13 @@ const Dashboard = () => {
   const [netAprEarned, setNetAprEarned] = useState(0);
   const [oracleAndFairPrices, setOracleAndFairPrices] = useState<any>();
   const [offchainCurrentBlock, setOffchainCurrentBlock] = useState("");
+  const [modal_deposit, setmodal_deposit] = useState(false);
 
   useEffect(() => {
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
   }, [_account]);
 
-  const { customActiveTab, toggleCustom } = useContext(TabContext);
+  const { customActiveTab, toggleCustom ,totalBorrowAssets, setTotalBorrowAssets,totalSupplyDash, setTotalSupplyDash} = useContext(TabContext);
 
   const [reserves, setReserves] = useState();
 
@@ -669,8 +672,8 @@ const Dashboard = () => {
   }
 
   const DashboardUI = () => {
-    const [totalBorrowAssets, setTotalBorrowAssets] = useState();
-    const [totalSupplyDash, setTotalSupplyDash] = useState();
+
+   
 
     return (
       <div style={{ width: "100%", backgroundColor: "#1C202", height: "100%" }}>
@@ -736,9 +739,10 @@ const Dashboard = () => {
                           <div style={{ color: "#8C8C8C" }}>Total Borrow</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
                             {totalBorrowAssets !== undefined ? (
+                               
                               <NumericFormat
                                 displayType="text"
-                                value={totalBorrowAssets.toFixed(2)}
+                                value={totalBorrowAssets.toFixed("2")}
                                 thousandSeparator=","
                                 prefix={"$"}
                               />
@@ -1036,6 +1040,8 @@ const Dashboard = () => {
                     activeLoansData={activeLoansData.filter(
                       (loan) => loan.state === "OPEN"
                     )}
+                    modal_deposit={modal_deposit}
+                     setmodal_deposit={setmodal_deposit}
                   />
                 </>
               ) : null}
