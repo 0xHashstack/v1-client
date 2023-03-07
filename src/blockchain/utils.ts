@@ -184,7 +184,12 @@ export const etherToWeiBN = (amount: number, tokenAddress: string) => {
 
 export const weiToEtherNumber = (amount: string, tokenAddress: string) => {
   const token = getTokenFromAddress(tokenAddress);
-  const decimals = token?.decimals || 18; // @todo should avoid using 18 default
+  if(!token) {
+    // alert(`Token not found ${tokenAddress}`);
+    console.log(`Token not found ${tokenAddress}`);
+    return 0;
+  }
+  const decimals = token?.decimals; // @todo should avoid using 18 default
   const factor = 1000_000;
   const amountBN = number
     .toBN(amount)

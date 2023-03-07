@@ -13,22 +13,25 @@ export function TabsProvider({ children }) {
       setCustomActiveTab(tab);
     }
   };
-
+  const [totalSupplyDash, setTotalSupplyDash] = useState();
+  const [totalBorrowAssets, setTotalBorrowAssets] = useState();
   const [selectedLoan, setSelectedLoan] = useState();
+  const [tokenName, setTokenName] = useState("BTC");
   const [title, setTitle] = useState({
     label: "None",
   });
-
   return (
     <TabContext.Provider
       value={{
         customActiveTab,
         setCustomActiveTab,
         toggleCustom,
-        selectedLoan,
-        setSelectedLoan,
+        selectedLoan, setSelectedLoan,
         title,
         setTitle,
+        totalBorrowAssets, setTotalBorrowAssets,
+        totalSupplyDash, setTotalSupplyDash
+      
       }}
     >
       {children}

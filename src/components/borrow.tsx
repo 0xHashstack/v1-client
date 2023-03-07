@@ -224,7 +224,7 @@ let Borrow: any = ({
 
   /* ======================== Get Debt Category ======================== */
 
-  const [debtCategory, setDebtCategory] = useState<any>(0);
+  const [debtCategory, setDebtCategory] = useState<any>('N/A');
 
   const { contract: loanContract } = useContract({
     address: diamondAddress,
@@ -242,8 +242,8 @@ let Borrow: any = ({
     args: [
       tokenAddressMap[asset],
       tokenAddressMap[borrowParams.collateralMarket || ""],
-      [Number(borrowParams.loanAmount as string), 0],
-      [Number(borrowParams.collateralAmount as string), 0],
+      [etherToWeiBN(borrowParams.loanAmount as string, tokenAddressMap[asset]), 0],
+      [etherToWeiBN(borrowParams.collateralAmount as string, tokenAddressMap[borrowParams.collateralMarket]), 0],
     ],
     options: {
       watch: true,
@@ -322,7 +322,7 @@ let Borrow: any = ({
           tokenAddressMap[borrowParams.collateralMarket as string],
           etherToWeiBN(
             borrowParams.collateralAmount as number,
-            tokenAddressMap[asset] || ""
+            tokenAddressMap[borrowParams.collateralMarket]
           ).toString(),
           0,
         ],
@@ -607,7 +607,7 @@ let Borrow: any = ({
     return (
       Number(borrowParams.collateralAmount) <=
       Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-        10 ** (tokenDecimalsMap[borrowParams?.collateralMarket as string] || 18)
+        10 ** (tokenDecimalsMap[borrowParams?.collateralMarket as string])
     );
   }
 
@@ -617,13 +617,16 @@ let Borrow: any = ({
   }
   // function isValidLoanAmount
   function isValid() {
-    // console.log(
-    //   "collateral amount",
-    //   isValidColleteralAmount(),
-    //   "loan amount",
-    //   isLoanAmountValid()
-    // );
-    return isValidColleteralAmount() && isLoanAmountValid();
+    console.log(
+      "collateral amount",
+      `${borrowParams.collateralAmount}`,
+      isValidColleteralAmount(),
+      "loan amount",
+      `${borrowParams.loanAmount}`,
+      `${MinimumAmount[asset]}`,
+      isLoanAmountValid()
+    );
+    return isLoanAmountValid();
   }
 
   return (

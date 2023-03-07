@@ -47,6 +47,7 @@ import useMySwap from "../../../blockchain/hooks/SpendBorrow/useMySwap";
 import ToastModal from "../../toastModals/customToastModal";
 import MySpinner from "../../mySpinner";
 import { number } from "starknet";
+import {SecTabContext} from "../../../hooks/contextHooks/SecTabContext"
 
 const Coins: ICoin[] = [
   { name: "USDT", icon: "mdi-bitcoin" },
@@ -56,10 +57,15 @@ const Coins: ICoin[] = [
   { name: "DAI", icon: "mdi-dai" },
 ];
 
-const SpendLoanNav = ({ activeLoansData }) => {
-  const [tokenName, setTokenName] = useState("BTC");
-  const { title, setTitle, selectedLoan, setSelectedLoan } =
-    useContext(TabContext);
+const SpendLoanNav = ({ activeLoansData,modal_deposit, setmodal_deposit }) => {
+
+    const {selectedLoan, setSelectedLoan,setTitle,title} = useContext(TabContext)
+    // const {appsImage, setAppsImage} = 
+    // const [modal_deposit, setmodal_deposit] = useState(false);
+    const {appsImage, setAppsImage} = useContext(SecTabContext);
+    const [tokenName, setTokenName] = useState("BTC");
+ 
+   
   const {
     executeJediSwap,
     dataJediSwap,
@@ -115,10 +121,10 @@ const SpendLoanNav = ({ activeLoansData }) => {
 
   const { address: account } = useAccount();
 
-  const [isCollateralActions, setIsCollateralActions] = useState(false);
-  const [isSelfLiquidate, setIsSelfLiquidate] = useState(false);
-  const [customActiveTab, setCustomActiveTab] = useState("1");
-  const [modal_deposit, setmodal_deposit] = useState(false);
+  // const [isCollateralActions, setIsCollateralActions] = useState(false);
+  // const [isSelfLiquidate, setIsSelfLiquidate] = useState(false);
+  // const [customActiveTab, setCustomActiveTab] = useState("1");
+  
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
   const [dappDownArrow, setDappDownArrow] = useState(arrowDown);
@@ -127,13 +133,13 @@ const SpendLoanNav = ({ activeLoansData }) => {
   const [idDropDown, setIdDropDown] = useState(false);
   const [idDropDownArrow, setIdDropDownArrow] = useState(arrowDown);
 
-  const [appsImage, setAppsImage] = useState("yagi");
 
-  const [borrowInterest, setBorrowInterest] = useState<string>("");
-  const [currentBorrowInterest, setCurrentBorrowInterest] = useState<string>();
 
-  const [selection, setSelection] = useState("Withdraw Partial Borrow");
-  const [selectionTwo, setSelectionTwo] = useState("Add Collateral");
+  // const [borrowInterest, setBorrowInterest] = useState<string>("");
+  // const [currentBorrowInterest, setCurrentBorrowInterest] = useState<string>();
+
+  // const [selection, setSelection] = useState("Withdraw Partial Borrow");
+  // const [selectionTwo, setSelectionTwo] = useState("Add Collateral");
 
   const [poolId, setPoolId] = useState(0);
 
@@ -143,7 +149,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
   const [value, setValue] = useState(0);
   const [commitPeriod, setCommitPeriod] = useState(0);
   // const [transDeposit, setTransDeposit] = useState("");
-  const [SpendLoan, setSpendLoan] = useState<any>();
+  // const [SpendLoan, setSpendLoan] = useState<any>();
   const dappsArray = [
     { name: "jediSwap", supportedActions: ["Swap"] },
     { name: "mySwap", supportedActions: ["Swap"] },
@@ -225,6 +231,13 @@ const SpendLoanNav = ({ activeLoansData }) => {
     ],
   });
 
+  const changeTo18Decimals = (value: any, market: any) => {
+    if(!tokenDecimalsMap[market]) return value;
+    const decimalsDeficit = 18 - tokenDecimalsMap[market];
+    console.log('changeTo18Decimals', value, market, decimalsDeficit)
+    return number.toBN(value).mul(number.toBN(10**decimalsDeficit)).toString();
+  }
+
   const requestDepositTransactionReceipt = useTransactionReceipt({
     hash: transDeposit,
     watch: true,
@@ -297,8 +310,10 @@ const SpendLoanNav = ({ activeLoansData }) => {
     //   loadingGetAmountOut,
     //   errorGetAmountOut
     // );
+    const decimalsDeficit = 18 - tokenDecimalsMap[tokenName];
     const amount = getAmountOutData?.amount_to
-      ? uint256.uint256ToBN(getAmountOutData?.amount_to).toString()
+      ? uint256.uint256ToBN(getAmountOutData?.amount_to)
+      .mul(number.toBN(10).pow(number.toBN(decimalsDeficit))).toString()
       : "NA";
     setTotalAmountOutJediSwap(amount);
   }, [getAmountOutData, loadingGetAmountOut, errorGetAmountOut]);
@@ -349,8 +364,10 @@ const SpendLoanNav = ({ activeLoansData }) => {
     //   loadingGetAmountOutMySwap,
     //   errorGetAmountOutMySwap
     // );
+    const decimalsDeficit = 18 - tokenDecimalsMap[tokenName];
     const amount = getAmountOutDataMySwap?.amount_to
-      ? uint256.uint256ToBN(getAmountOutDataMySwap?.amount_to).toString()
+      ? uint256.uint256ToBN(getAmountOutDataMySwap?.amount_to)
+      .mul(number.toBN(10).pow(number.toBN(decimalsDeficit))).toString()
       : "NA";
     setTotalAmountOutmySwap(amount);
   }, [
@@ -360,7 +377,10 @@ const SpendLoanNav = ({ activeLoansData }) => {
   ]);
 
   const tog_center = async () => {
+    console.log("Here hai apun");
     setmodal_deposit(!modal_deposit);
+    console.log(modal_deposit);
+    
     // removeBodyCss();
   };
 
@@ -443,7 +463,6 @@ const SpendLoanNav = ({ activeLoansData }) => {
               setTitle({
                 label: "Stake",
               });
-              setSpendLoan("1");
             }}
           >
             <NavLink
@@ -455,7 +474,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                   "5px 10px 5px -5px rgba(20, 23, 38, 0.15), 5px 5px 5px -5px rgba(20, 23, 38, 0.3)",
               }}
               className={classnames({
-                active: SpendLoan === "1",
+                active: title.label === "Stake",
               })}
             >
               <span className="d-none d-sm-block">Stake</span>
@@ -467,7 +486,6 @@ const SpendLoanNav = ({ activeLoansData }) => {
               setTitle({
                 label: "Swap",
               });
-              setSpendLoan("2");
             }}
           >
             <NavLink
@@ -479,7 +497,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                   "5px 10px 5px -5px rgba(20, 23, 38, 0.15), 5px 5px 5px -5px rgba(20, 23, 38, 0.3)",
               }}
               className={classnames({
-                active: SpendLoan === "2",
+                active: title.label === "Swap",
               })}
             >
               <span className="d-none d-sm-block">Swap</span>
@@ -491,7 +509,6 @@ const SpendLoanNav = ({ activeLoansData }) => {
               setTitle({
                 label: "Trade",
               });
-              setSpendLoan("3");
             }}
           >
             <NavLink
@@ -503,7 +520,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                   "5px 10px 5px -5px rgba(20, 23, 38, 0.15), 5px 5px 5px -5px rgba(20, 23, 38, 0.3)",
               }}
               className={classnames({
-                active: SpendLoan === "3",
+                active: title.label === "Trade",
               })}
             >
               <span className="d-none d-sm-block">Trade</span>
@@ -540,19 +557,36 @@ const SpendLoanNav = ({ activeLoansData }) => {
                 key={index}
                 onClick={() => {
                   if (!activeLoansData) return;
+ 
                   setmodal_deposit(true);
+                  // tog_center()
                   if (!selectedLoan) setSelectedLoan(activeLoansData?.[0]);
+                  setTokenName((prev) => {
+                    if (dapp.name === "jediSwap") {
+                      return getTokenFromAddress(
+                        supportedPoolsJediSwap.get(
+                          tokenAddressMap[selectedLoan.loanMarket]
+                        )?.[0] as string
+                      ).name;
+                    } else if (dapp.name === "mySwap") {
+                      return getTokenFromAddress(
+                        supportedPoolsMySwap.get(
+                          tokenAddressMap[selectedLoan.loanMarket]
+                        )?.[0] as string
+                      ).name;
+                    } else return prev;
+                  });
                   setAppsImage(dapp.name);
                   setTitle({
                     label: dapp.supportedActions[0],
                   });
-                  setSpendLoan(
-                    dapp.supportedActions[0] === "Swap"
-                      ? "2"
-                      : dapp.supportedActions[0] === "Stake"
-                      ? "1"
-                      : "3"
-                  );
+                  // setSpendLoan(
+                  //   dapp.supportedActions[0] === "Swap"
+                  //     ? "2"
+                  //     : dapp.supportedActions[0] === "Stake"
+                  //     ? "1"
+                  //     : "3"
+                  // );
                 }}
               >
                 <img
@@ -831,7 +865,7 @@ const SpendLoanNav = ({ activeLoansData }) => {
                               }}
                             >
                               {labels.map((word, index, labels) => {
-                                if (title.label === word) {
+                                if (title.label === word ) {
                                   return <></>;
                                 }
                                 return (
@@ -839,14 +873,16 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                     <div
                                       style={{
                                         margin: "10px 0",
-                                        cursor: "pointer",
+                                        cursor: word !== "Trade"?"pointer":"",
                                         display: "flex",
                                         alignItems: "center",
                                         fontSize: "14px",
                                       }}
                                       key={index}
-                                      onClick={() => {
-                                        setTitle({ label: word });
+                                     
+                                      onClick={() => {{
+                                        if (word !== "Trade") {
+                                          setTitle({ label: word });
                                         setDropDownTwo(!dropDownTwo);
                                         setStakeDropDownArrow(arrowDown);
                                         setAppsImage((prev) =>
@@ -856,7 +892,9 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                             ? "yagi"
                                             : prev
                                         );
+                                        }
                                       }}
+                                      }
                                     >
                                       {word}
                                     </div>{" "}
@@ -903,6 +941,21 @@ const SpendLoanNav = ({ activeLoansData }) => {
                                         setSelectedLoan(loan);
                                         setIdDropDownArrow(arrowDown);
                                         setIdDropDown(!idDropDown);
+                                        setTokenName((prev) => {
+                                          if (appsImage === "jediSwap") {
+                                            return getTokenFromAddress(
+                                              supportedPoolsJediSwap.get(
+                                                tokenAddressMap[loan.loanMarket]
+                                              )[0] as string
+                                            ).name;
+                                          } else if (appsImage === "mySwap") {
+                                            return getTokenFromAddress(
+                                              supportedPoolsMySwap.get(
+                                                tokenAddressMap[loan.loanMarket]
+                                              )[0] as string
+                                            ).name;
+                                          } else return prev;
+                                        });
                                       }}
                                     >
                                       {`Borrow ID: ${loan.loanId}`}
@@ -1214,14 +1267,14 @@ const SpendLoanNav = ({ activeLoansData }) => {
                         {appsImage === "mySwap" ? (
                           totalAmountOutmySwap !== "NA" ? (
                             totalAmountOutmySwap >
-                            selectedLoan?.currenLoanAmount ? (
+                            changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan.loanMarket) ? (
                               `1 ${selectedLoan?.loanMarket} = ${(
                                 totalAmountOutmySwap /
-                                selectedLoan.currentLoanAmount
+                                changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan.loanMarket)
                               ).toFixed(4)} ${tokenName}`
                             ) : (
                               `1 ${tokenName} = ${(
-                                selectedLoan?.currentLoanAmount /
+                                changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan.loanMarket) /
                                 totalAmountOutmySwap
                               ).toFixed(4)} ${selectedLoan?.loanMarket}`
                             )
@@ -1231,14 +1284,14 @@ const SpendLoanNav = ({ activeLoansData }) => {
                         ) : appsImage === "jediSwap" ? (
                           totalAmountOutJediSwap !== "NA" ? (
                             totalAmountOutJediSwap >
-                            selectedLoan?.currenLoanAmount ? (
+                            changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan.loanMarket) ? (
                               `1 ${selectedLoan?.loanMarket} = ${(
                                 totalAmountOutJediSwap /
-                                selectedLoan?.currentLoanAmount
+                                changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan.loanMarket)
                               ).toFixed(4)} ${tokenName}`
                             ) : (
                               `1 ${tokenName} = ${(
-                                selectedLoan?.currentLoanAmount /
+                                changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan.loanMarket) /
                                 totalAmountOutJediSwap
                               ).toFixed(4)} ${selectedLoan?.loanMarket}`
                             )
