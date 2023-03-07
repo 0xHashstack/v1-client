@@ -562,7 +562,7 @@ const SupplyModal = ({
                               getTokenFromName(asset as string)?.address
                             }__${commitPeriod}`
                           ]?.depositAPR?.apr100x as string
-                        )} %`
+                        ) / 100} %`
                       ) : (
                         <MySpinner />
                       )}
