@@ -3,7 +3,7 @@ name: Build & deploy
 on:
   push:
     branches:
-      - production
+      - mainnet
 
 jobs:
   deploy:
