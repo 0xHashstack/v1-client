@@ -145,8 +145,8 @@ const ConnectWalletModal = () => {
             <label
               style={{
                 width: "100%",
-                marginBottom: "10px",
-                padding: "15px 10px",
+                marginBottom: "7px",
+                padding: "15px 15px",
                 fontSize: "18px",
                 borderRadius: "5px",
                 border: "1px solid #393D4F",
@@ -239,7 +239,7 @@ const ConnectWalletModal = () => {
               style={{
                 backgroundColor: "#2A2E3F",
                 width: "100%",
-                marginBottom: "10px",
+                marginBottom: "5px",
                 padding: "15px 10px",
                 fontSize: "18px",
                 borderRadius: "5px",
@@ -280,7 +280,7 @@ const ConnectWalletModal = () => {
               style={{
                 backgroundColor: "#2A2E3F",
                 width: "100%",
-                marginBottom: "10px",
+                marginBottom: "5px",
                 padding: "15px 10px",
                 fontSize: "18px",
                 borderRadius: "5px",
