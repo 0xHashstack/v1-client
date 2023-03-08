@@ -11,6 +11,7 @@ import starknetLogo from "../../assets/images/starknetLogo.svg";
 import { useDisconnect } from "wagmi";
 import ethLogo from "../../assets/images/ethLogo.svg";
 import ArgentXlogo from "../../assets/images/ArgentXlogo.svg"
+import { useEffect } from "react";
 
 const ConnectWalletModal = () => {
   const [connectWallet, setConnectWallet] = useState(false);
@@ -28,33 +29,34 @@ const ConnectWalletModal = () => {
   });
   const { address: account } = useAccount();
   const { available, connect } = useConnectors();
+  
   // console.log(available);
 
-  function handleButtonConnectWallet() {
-    available.length > 0
-      ? available.map((connector) => {
-        // console.log(connector);
+  // function handleButtonConnectWallet() {
+  //   available.length > 0
+  //     ? available.map((connector) => {
+  //       // console.log(connector);
 
-        setnetworkSelected({
-          network: "Starknet",
-          starknet: true,
-          walletName: "Braavos",
-          walletLogo: braavosWallet,
-          redirectLink: "/",
-        });
-      })
-      : setnetworkSelected({
-        network: "",
-        starknet: true,
-        walletName: "Download Braavos",
-        walletLogo: braavosWallet,
-        redirectLink: "https://braavos.app/",
-      });
-    // setNetwork("Select Network");
-    setConnectWallet(!connectWallet);
-    // removeBodyCss();
-  }
-
+  //       setnetworkSelected({
+  //         network: "Starknet",
+  //         starknet: true,
+  //         walletName: "Braavos",
+  //         walletLogo: braavosWallet,
+  //         redirectLink: "/",
+  //       });
+  //     })
+  //     : setnetworkSelected({
+  //       network: "",
+  //       starknet: true,
+  //       walletName: "Download Braavos",
+  //       walletLogo: braavosWallet,
+  //       redirectLink: "https://braavos.app/",
+  //     });
+  //   // setNetwork("Select Network");
+  //   setConnectWallet(!connectWallet);
+  //   // removeBodyCss();
+  // }
+  
   const selectStarKnetNetwork = () => {
     {
       setNetwork("Starknet");
@@ -104,9 +106,9 @@ const ConnectWalletModal = () => {
   return (
     <Modal
       isOpen={true}
-      toggle={() => {
-        handleButtonConnectWallet();
-      }}
+      // toggle={() => {
+      //   handleButtonConnectWallet();
+      // }}
       centered
     >
       <div
@@ -264,7 +266,7 @@ const ConnectWalletModal = () => {
                     color: "#FFF",
                   }}
                 >
-                  &nbsp;{networkSelected.walletName} Wallet
+                  &nbsp; Braavos Wallet
                 </div>
                 <div style={{ marginRight: "10px", marginTop: "2px" }}>
                   <img
@@ -306,7 +308,7 @@ const ConnectWalletModal = () => {
                   }}
                 >
                   {/* &nbsp;{networkSelected.walletName} Wallet */}
-                  &nbsp;Argent X Wallet
+                  &nbsp; Argent X Wallet
 
                 </div>
                 <div style={{ marginRight: "10px", marginTop: "2px" }}>
