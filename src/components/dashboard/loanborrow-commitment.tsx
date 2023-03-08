@@ -87,9 +87,10 @@ const LoanBorrowCommitment = ({
                       padding: "4px 8px ",
                       fontSize: "12px",
                       backgroundColor: "#393D4F",
+                      cursor:"pointer"
                     }}
                   >
-                    <option value={"NONE"}>Flexible</option>
+                    <option value={"NONE"} >Flexible</option>
                     <option value={"TWOWEEKS"}>Two Weeks</option>
                     <option value={"ONEMONTH"}>One Month</option>
                     <option value={"THREEMONTHS"}>Three Month</option>
@@ -117,6 +118,7 @@ const LoanBorrowCommitment = ({
                       padding: "4px 8px",
                       fontSize: "12px",
                       backgroundColor: "#393D4F",
+                      cursor:"pointer"
                     }}
                   >
                     <option value={"NONE"}>Flexible</option>

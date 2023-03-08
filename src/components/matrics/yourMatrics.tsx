@@ -140,7 +140,7 @@ const YourMatrics = () => {
                     <img
                       src="./BTC.svg"
                       alt="BTC"
-                      style={{ height: "30px", width: "30px" }}
+                      style={{ height: "25px", width: "25px" }}
                     />
                   </div>
 
@@ -163,7 +163,7 @@ const YourMatrics = () => {
                     <img
                       src="./USDT.svg"
                       alt="BTC"
-                      style={{ height: "30px", width: "30px" }}
+                      style={{ height: "25px", width: "25px" }}
                     />
                   </div>
 
@@ -186,7 +186,7 @@ const YourMatrics = () => {
                     <img
                       src="./USDC.svg"
                       alt="BTC"
-                      style={{ height: "30px", width: "30px" }}
+                      style={{ height: "25px", width: "25px" }}
                     />
                   </div>
                 </div>
@@ -290,7 +290,7 @@ const YourMatrics = () => {
                     <img
                       src="./BTC.svg"
                       alt="BTC"
-                      style={{ height: "30px", width: "30px" }}
+                      style={{ height: "25px", width: "25px" }}
                     />
                   </div>
 
@@ -313,7 +313,7 @@ const YourMatrics = () => {
                     <img
                       src="./USDT.svg"
                       alt="BTC"
-                      style={{ height: "30px", width: "30px" }}
+                      style={{ height: "25px", width: "25px" }}
                     />
                   </div>
 
@@ -336,7 +336,7 @@ const YourMatrics = () => {
                     <img
                       src="./USDC.svg"
                       alt="BTC"
-                      style={{ height: "30px", width: "30px" }}
+                      style={{ height: "25px", width: "25px" }}
                     />
                   </div>
                 </div>

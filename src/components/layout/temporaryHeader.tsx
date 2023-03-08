@@ -503,6 +503,8 @@ const SecondaryHeader = ({
             cursor: "pointer",
             color: "white",
             fontSize: "13px",
+            boxShadow: "4px 4px 5px rgb(0 0 0 / 25%)",
+            borderRadius: "7px",
           }}
           onClick={() => {
             toggleCustom("6");

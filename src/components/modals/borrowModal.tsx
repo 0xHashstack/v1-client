@@ -233,8 +233,8 @@ const BorrowModal: any = ({
                   {" "}
                   <img
                     src={`./${tokenName}.svg`}
-                    width="24px"
-                    height="24px"
+                    width="18px"
+                    height="18px"
                   ></img>
                   &nbsp;&nbsp;{tokenName}
                 </div>
