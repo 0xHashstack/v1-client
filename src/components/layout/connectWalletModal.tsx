@@ -161,13 +161,15 @@ const ConnectWalletModal = () => {
               >
                 <div style={{
                   display: "flex",
+                  alignItems:"center"
                 }}>
+               
                   {network === "Starknet" ? (
-                    <Image
-                      src={starknetLogo}
+                    <img
+                      src={starknetLogo.src}
                       alt="Picture of the author"
-                      width="15px"
-                      height="15px"
+                      width="22px"
+                      height="22px"
                     />
                   ) : null}
                   <div style={{marginLeft: "8px"}}>{network}</div>
@@ -198,10 +200,11 @@ const ConnectWalletModal = () => {
                       display: "flex",
                       marginBottom: "10px",
                       cursor: "pointer",
+                      alignItems:"center"
                     }}
                   >
-                    <Image
-                      src={starknetLogo}
+                    <img
+                      src={starknetLogo.src}
                       alt="Picture of the author"
                       width="15px"
                       height="15px"
@@ -210,9 +213,9 @@ const ConnectWalletModal = () => {
                       &nbsp;Starknet
                     </div>
                   </div>
-                  <div style={{ display: "flex" }}>
-                    <Image
-                      src={ethLogo}
+                  <div style={{ display: "flex" ,alignItems:"center"}}>
+                    <img
+                      src={ethLogo.src}
                       alt="Picture of the author"
                       width="15px"
                       height="15px"
@@ -264,8 +267,8 @@ const ConnectWalletModal = () => {
                   &nbsp;{networkSelected.walletName} Wallet
                 </div>
                 <div style={{ marginRight: "10px", marginTop: "2px" }}>
-                  <Image
-                    src={braavosWallet}
+                  <img
+                    src={braavosWallet.src}
                     alt="Picture of the author"
                     width="25px"
                     height="25px"
@@ -307,8 +310,8 @@ const ConnectWalletModal = () => {
 
                 </div>
                 <div style={{ marginRight: "10px", marginTop: "2px" }}>
-                  <Image
-                    src={ArgentXlogo}
+                  <img
+                    src={ArgentXlogo.src}
                     alt="Picture of the author"
                     width="25px"
                     height="25px"
