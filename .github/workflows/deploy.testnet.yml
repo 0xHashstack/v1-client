@@ -3,7 +3,7 @@ name: Build & deploy
 on:
   push:
     branches:
-      - mainnet
+      - testnet
 
 jobs:
   deploy:
@@ -34,7 +34,7 @@ jobs:
       - name: Export
         run: NEXT_PUBLIC_APP_ENV=production yarn export
       - name: Deploy
-        run: aws s3 sync ./out s3://www.app.hashstack.finance
+        run: aws s3 sync ./out s3://starknet.hashstack.finance
         
       - name: Invalidate CloudFront
         uses: chetan/invalidate-cloudfront-action@v2
