@@ -712,7 +712,7 @@ const BorrowData = ({
     }
     try {
       const val = await executeWithdrawPartialBorrow();
-      setTransRepayHash(val.transaction_hash);
+      setTransWithdrawPartialBorrowHash(val.transaction_hash);
       const toastParamValue = {
         success: true,
         heading: "Success",
