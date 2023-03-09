@@ -21,7 +21,7 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React from "react";
 import "react-toastify/dist/ReactToastify.css";
-import { BorrowInterestRates, MinimumAmount } from "../blockchain/constants";
+import { BorrowInterestRates, MinimumAmount, MinimumBorrowAmount } from "../blockchain/constants";
 import {
   useAccount,
   useContract,
@@ -497,6 +497,7 @@ let Borrow: any = ({
         Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
         10 ** (tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18),
     });
+    setValue(100);
     await refreshAllowance();
   };
 
@@ -613,7 +614,7 @@ let Borrow: any = ({
 
   function isLoanAmountValid() {
     if (!borrowParams.loanAmount) return false;
-    return borrowParams.loanAmount >= MinimumAmount[asset];
+    return borrowParams.loanAmount >= MinimumBorrowAmount[asset];
   }
   // function isValidLoanAmount
   function isValid() {
@@ -623,7 +624,7 @@ let Borrow: any = ({
       isValidColleteralAmount(),
       "loan amount",
       `${borrowParams.loanAmount}`,
-      `${MinimumAmount[asset]}`,
+      `${MinimumBorrowAmount[asset]}`,
       isLoanAmountValid()
     );
     return isLoanAmountValid();

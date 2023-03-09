@@ -192,8 +192,8 @@ const SupplyModal = ({
                       {" "}
                       <img
                         src={`./${tokenName}.svg`}
-                        width="24px"
-                        height="24px"
+                        width="18px"
+                        height="18px"
                       ></img>
                       &nbsp;&nbsp;{tokenName}
                     </div>
@@ -562,7 +562,7 @@ const SupplyModal = ({
                               getTokenFromName(asset as string)?.address
                             }__${commitPeriod}`
                           ]?.depositAPR?.apr100x as string
-                        )} %`
+                        ) / 100} %`
                       ) : (
                         <MySpinner />
                       )}
@@ -617,10 +617,10 @@ const SupplyModal = ({
                 <Button
                   color="white"
                   style={{
-                    backgroundColor: "rgb(57, 61, 79)",
-                    color: "white",
-                    padding: "10px 0",
                     boxShadow: "rgba(0, 0, 0, 0.5) 3.4px 3.4px 5.2px 0px",
+                    border: "none",
+                    padding: "12px 0",
+                    backgroundColor: "rgb(57, 61, 79)",
                   }}
                   className="w-md"
                   disabled={
