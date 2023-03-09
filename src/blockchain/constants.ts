@@ -310,7 +310,7 @@ export const MinimumAmount: IMinimumAmount = {
 };
 
 export const MinimumBorrowAmount: IMinimumAmount = {
-  USDT: 3O,
+  USDT: 30,
   USDC: 30,
   BTC: 0.0015,
   ETH: 0.018, 
