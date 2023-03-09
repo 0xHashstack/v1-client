@@ -36,7 +36,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 	useEffect(() => {
 		setToken(_token.market);
 		setDiamondAddress(_diamondAddress);
-	}, [_diamondAddress, _token.market]);
+	}, [_diamondAddress, _token?.market]);
 
 	const { contract } = useContract({
 		abi: ERC20Abi as Abi,

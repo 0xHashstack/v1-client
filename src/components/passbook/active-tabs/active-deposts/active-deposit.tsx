@@ -300,6 +300,19 @@ const ActiveDeposit = ({
 
   const handleWithdrawAmountChange = (e: any) => {
     setWithdrawAmount(e.target.value);
+    const available = Number(
+      asset?.amount /
+        10 ** (tokenDecimalsMap[tokenName] || 18)
+    )
+    if(!available) return;
+    var percentage = (e.target.value / available) * 100;
+    percentage = Math.max(0, percentage);
+    if (percentage > 100) {
+      setValue("Greater than 100");
+      return;
+    }
+    percentage = Math.round(percentage * 100) / 100;
+    setValue(percentage);
   };
 
   const handleMax = () => {
@@ -312,6 +325,8 @@ const ActiveDeposit = ({
       setWithdrawAmount((Number(asset.amount) + Number(asset.acquiredYield))/ 10 ** (tokenDecimalsMap[tokenName] || 18));
       // console.log("max clicked", asset);
     }
+    console.log("max clicked");
+    setValue(100)
   };
 
   function isInvalid() {

@@ -497,6 +497,7 @@ let Borrow: any = ({
         Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
         10 ** (tokenDecimalsMap[borrowParams.collateralMarket || ""] || 18),
     });
+    setValue(100);
     await refreshAllowance();
   };
 
