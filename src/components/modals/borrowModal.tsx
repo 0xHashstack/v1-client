@@ -25,6 +25,7 @@ import UpArrow from "../../assets/images/ArrowUpDark.svg";
 import OffchainAPI from "../../services/offchainapi.service";
 import MySpinner from "../mySpinner";
 import { uint256 } from "starknet";
+import { MinimumBorrowAmount } from "../../blockchain/constants";
 
 interface IBorrowParams {
   loanAmount: number | null;
@@ -668,9 +669,9 @@ const BorrowModal: any = ({
                   id="loan-amount"
                   type="number"
                   className="form-control"
-                  placeholder={`Minimum amount = ${MinimumAmount[asset]}`}
-                  min={MinimumAmount[asset]}
-                  value={borrowParams.loanAmount as number}
+                  placeholder={`Minimum amount = ${MinimumBorrowAmount[asset]}`}
+                  min={MinimumBorrowAmount[asset]}
+                  value={borrowParams.loanAmount}
                   onChange={handleLoanInputChange}
                   valid={isLoanAmountValid()}
                 />

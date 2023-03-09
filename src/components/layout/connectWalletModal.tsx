@@ -81,8 +81,8 @@ const ConnectWalletModal = () => {
     {
       available.length > 0
         ? available.map((connector, id) => {
-          // // console.log(id);
-          if (network === "Starknet" && id === 0) {
+          // console.log(id,connector.options.id);
+          if (network === "Starknet" && connector.options.id === "braavos") {
             disconnectEvent(), connect(connector);
           }
         })
@@ -95,7 +95,7 @@ const ConnectWalletModal = () => {
       available.length > 0
         ? available.map((connector, id) => {
           // // console.log(id);
-          if (network === "Starknet" && id === 1) {
+          if (network === "Starknet" && connector.options.id === "argentX") {
             disconnectEvent(), connect(connector);
           }
 
@@ -168,7 +168,7 @@ const ConnectWalletModal = () => {
                
                   {network === "Starknet" ? (
                     <img
-                      src={starknetLogo.src}
+                      src="./starknetconnectlogo.svg"
                       alt="Picture of the author"
                       width="22px"
                       height="22px"
@@ -206,7 +206,7 @@ const ConnectWalletModal = () => {
                     }}
                   >
                     <img
-                      src={starknetLogo.src}
+                      src="./starknetconnectlogo.svg"
                       alt="Picture of the author"
                       width="15px"
                       height="15px"
@@ -217,7 +217,7 @@ const ConnectWalletModal = () => {
                   </div>
                   <div style={{ display: "flex" ,alignItems:"center"}}>
                     <img
-                      src={ethLogo.src}
+                      src="./ethconnectlogo.svg"
                       alt="Picture of the author"
                       width="15px"
                       height="15px"
@@ -270,7 +270,7 @@ const ConnectWalletModal = () => {
                 </div>
                 <div style={{ marginRight: "10px", marginTop: "2px" }}>
                   <img
-                    src={braavosWallet.src}
+                    src="./braavosWallet.svg"
                     alt="Picture of the author"
                     width="25px"
                     height="25px"
@@ -313,7 +313,7 @@ const ConnectWalletModal = () => {
                 </div>
                 <div style={{ marginRight: "10px", marginTop: "2px" }}>
                   <img
-                    src={ArgentXlogo.src}
+                    src="./ArgentXlogo.svg"
                     alt="Picture of the author"
                     width="25px"
                     height="25px"

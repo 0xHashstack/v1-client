@@ -349,7 +349,7 @@ const Dashboard = () => {
     // console.log("useEffect", isTransactionDone, account);
     !isTransactionDone &&
       account &&
-      OffchainAPI.getLoans("0x5b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864").then(
+      OffchainAPI.getLoans(account).then(
         (loans) => {
           console.log("loans:", loans);
           onLoansData(loans);
@@ -419,7 +419,7 @@ const Dashboard = () => {
   useEffect(() => {
     !isTransactionDone &&
       account &&
-      OffchainAPI.getActiveDeposits("0x5b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864")
+      OffchainAPI.getActiveDeposits(account)
         .then(
           (deposits) => {
             onDepositData(deposits);
