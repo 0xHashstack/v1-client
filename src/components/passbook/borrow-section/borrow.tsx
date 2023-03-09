@@ -46,7 +46,7 @@ import UpArrow from "../../../assets/images/ArrowUpDark.svg";
 import { Abi, uint256 } from "starknet";
 import { ICoin } from "../../dashboard/dashboard-body";
 import MySpinner from "../../mySpinner";
-import { MinimumAmount } from "../../../blockchain/constants";
+import { MinimumAmount, MinimumBorrowAmount } from "../../../blockchain/constants";
 import useMaxloan from "../../../blockchain/hooks/Max_loan_given_collat";
 import ToastModal from "../../toastModals/customToastModal";
 import loanABI from "../../../../starknet-artifacts/contracts/modules/loan.cairo/loan_abi.json";
@@ -635,7 +635,7 @@ const BorrowTab = ({
 
   function isLoanAmountValid() {
     if (!borrowParams.loanAmount) return false;
-    return borrowParams.loanAmount >= MinimumAmount[asset];
+    return borrowParams.loanAmount >= MinimumBorrowAmount[asset];
   }
 
   function isValid() {

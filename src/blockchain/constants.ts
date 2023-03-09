@@ -309,4 +309,12 @@ export const MinimumAmount: IMinimumAmount = {
   DAI: 10,
 };
 
+export const MinimumBorrowAmount: IMinimumAmount = {
+  USDT: 3O,
+  USDC: 30,
+  BTC: 0.0015,
+  ETH: 0.018, 
+  DAI: 30,
+};
+
 export const starknetMarketAddress: IAddress = {};
