@@ -66,7 +66,7 @@ export const tokenDecimalsMap: ItokenDecimalsMap = {
 export function isTransactionLoading(receipt: UseTransactionReceiptResult) {
   // if(receipt.loading)
   // 	return true
-  if (receipt.data?.status == "RECEIVED" || receipt.data?.status == "PENDING")
+  if (receipt.data?.status == "RECEIVED")
     return true;
 }
 
