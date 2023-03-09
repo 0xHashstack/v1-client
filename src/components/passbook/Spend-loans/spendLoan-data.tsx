@@ -78,7 +78,7 @@ const SpendLoanData = ({ loan }) => {
             >
               {(
                 loan.collateralAmount /
-                10 ** (tokenDecimalsMap[loan?.loanMarket] || 18)
+                10 ** (tokenDecimalsMap[loan?.collateralMarket])
               ).toFixed(4)}
             </span>
           </Col>

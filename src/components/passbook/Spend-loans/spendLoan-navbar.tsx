@@ -565,13 +565,13 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                     if (dapp.name === "jediSwap") {
                       return getTokenFromAddress(
                         supportedPoolsJediSwap.get(
-                          tokenAddressMap[selectedLoan.loanMarket]
+                          tokenAddressMap[selectedLoan?.loanMarket]
                         )?.[0] as string
                       ).name;
                     } else if (dapp.name === "mySwap") {
                       return getTokenFromAddress(
                         supportedPoolsMySwap.get(
-                          tokenAddressMap[selectedLoan.loanMarket]
+                          tokenAddressMap[selectedLoan?.loanMarket]
                         )?.[0] as string
                       ).name;
                     } else return prev;
