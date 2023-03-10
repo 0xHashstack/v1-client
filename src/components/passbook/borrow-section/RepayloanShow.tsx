@@ -96,11 +96,11 @@ const RepayloanShow = ({repaidLoansData}:{repaidLoansData:any}) => {
                         </Row>
                         {/* </Table> */}
                     </Table>
-                    {repaidLoansData.map((key:any,assets:any)=>{
+                    {repaidLoansData.map((asset:any, key:any)=>{
                         // console.log(assets);
                         // console.log(key);
                         return(
-                        <RepayLoans key={key} assets={assets} />
+                        <RepayLoans key={key} asset={asset} />
                         )
                     })}
                 </UncontrolledAccordion>

@@ -354,7 +354,7 @@ const Dashboard = () => {
     // console.log("useEffect", isTransactionDone, account);
     !isTransactionDone &&
       account &&
-      OffchainAPI.getLoans(account).then(
+      OffchainAPI.getLoans("0x5095078578a59f8a9c17df97188db1b59574c6d4836dd3e705fe8537624228a").then(
         (loans) => {
           console.log("loans:", loans);
           onLoansData(loans);
@@ -425,7 +425,7 @@ const Dashboard = () => {
   useEffect(() => {
     !isTransactionDone &&
       account &&
-      OffchainAPI.getActiveDeposits(account)
+      OffchainAPI.getActiveDeposits("0x1caf85dbb2e8c6d551f7d94d5acc9f854680ec060f7a808f0901915ad19a127")
         .then(
           (deposits) => {
             onDepositData(deposits);
@@ -569,7 +569,7 @@ const Dashboard = () => {
   const navigateLoansToLiquidate = async (liquidationIndex: any) => {
     !isTransactionDone &&
       account &&
-      OffchainAPI.getLiquidableLoans(account).then(
+      OffchainAPI.getLiquidableLoans("0x1caf85dbb2e8c6d551f7d94d5acc9f854680ec060f7a808f0901915ad19a127").then(
         (loans) => {
           onLiquidationsData(loans);
           setIsLoading(false);
