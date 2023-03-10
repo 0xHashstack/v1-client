@@ -13,17 +13,27 @@ import {
   } from "reactstrap";
   // import { EventMap } from '../../../blockchain/constants';
 import { tokenAddressMap } from '../../../blockchain/stark-constants';
-import { weiToEtherNumber } from '../../../blockchain/utils';
+import { borrowInterestAccrued, currentBorrowInterestRate, weiToEtherNumber } from '../../../blockchain/utils';
 import {
   CoinClassNames,
   EventMap,
   MinimumAmount,
 } from "../../../blockchain/constants";
 
-const RepayLoans = ({asset}:{asset:any}) => {
+const RepayLoans = ({asset, historicalAPRs}:{asset:any, historicalAPRs: any}) => {
 
- // console.log(asset);
- 
+  const [currentBorrowInterest, setCurrentBorrowInterest] = useState<any>();
+
+  useEffect(() => {
+    if (asset && historicalAPRs) {
+      setCurrentBorrowInterest(
+        // @todo this is actually recent aprs
+        currentBorrowInterestRate(asset, historicalAPRs)
+      );
+      // console.log("currentBorrowInterest", currentBorrowInterest);
+    }
+    // console.log("currentBorrowInterest", asset, historicalAPRs);
+  }, [asset, historicalAPRs]);
     
   return (
     <>
@@ -112,7 +122,7 @@ const RepayLoans = ({asset}:{asset:any}) => {
                   color: "#8B8B8B",
                 }}
               >
-                {/* {parseFloat(currentBorrowInterest).toFixed(2)}% APR */}
+                {parseFloat(currentBorrowInterest).toFixed(2)}% APR
               </div>
             </div>
           </Col>

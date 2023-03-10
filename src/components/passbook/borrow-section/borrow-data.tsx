@@ -1051,7 +1051,7 @@ const BorrowData = ({
                 }}
               >
                 &nbsp; &nbsp;
-                {EventMap[assetParam.loanMarketSymbol.toUpperCase()]}
+                {assetParam?.loanMarketSymbol}
               </div>{" "}
               {["SWAPPED", "STAKED", "TRADED"].includes(assetParam.state) ? (
                 <div
@@ -1141,7 +1141,7 @@ const BorrowData = ({
                 src={
                   assetParam
                     ? CoinClassNames[
-                    EventMap[assetParam.collateralMarket.toUpperCase()]
+                    EventMap[assetParam?.collateralMarket.toUpperCase()]
                     ] || assetParam.collateralMarket.toUpperCase()
                     : null
                 }
@@ -1155,7 +1155,7 @@ const BorrowData = ({
                 }}
               >
                 &nbsp; &nbsp;
-                {EventMap[assetParam.collateralMarket.toUpperCase()]}
+                {assetParam?.collateralMarketSymbol}
               </div>
             </div>
           </Col>
@@ -1166,8 +1166,8 @@ const BorrowData = ({
                 src={
                   asset
                     ? CoinClassNames[
-                    EventMap[assetParam.collateralMarket.toUpperCase()]
-                    ] || assetParam.collateralMarket.toUpperCase()
+                    EventMap[assetParam?.collateralMarket.toUpperCase()]
+                    ] || assetParam?.collateralMarket.toUpperCase()
                     : null
                 }
                 height="15px"

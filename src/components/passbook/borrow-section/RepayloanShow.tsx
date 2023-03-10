@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { UncontrolledAccordion } from 'reactstrap'
 import {
     Button,
@@ -10,13 +10,21 @@ import {
     Modal,
     Row,
     Table,
-  } from "reactstrap";
+} from "reactstrap";
 import RepayLoans from './RepayLoans';
 import { EventMap } from '../../../blockchain/constants';
+import OffchainAPI from '../../../services/offchainapi.service';
 
-const RepayloanShow = ({repaidLoansData}:{repaidLoansData:any}) => {
+const RepayloanShow = ({ repaidLoansData }: { repaidLoansData: any }) => {
     // console.log(repaidLoansData);
-    
+    const [historicalAPRs, setHistoricalAPRs] = useState();
+    useEffect(() => {
+        OffchainAPI.getProtocolDepositLoanRates().then((val) => {
+            setHistoricalAPRs(val);
+        });
+    }, []);
+
+
     return (
         <>
             <div className="table-responsive  mt-3" style={{ overflow: "hidden" }}>
@@ -29,7 +37,7 @@ const RepayloanShow = ({repaidLoansData}:{repaidLoansData:any}) => {
                         marginLeft: "20px",
                     }}
                 >
-                    
+
                     <Table>
                         {/* <Table className="table table-nowrap  mb-0"> */}
                         <Row
@@ -96,11 +104,9 @@ const RepayloanShow = ({repaidLoansData}:{repaidLoansData:any}) => {
                         </Row>
                         {/* </Table> */}
                     </Table>
-                    {repaidLoansData.map((asset:any, key:any)=>{
-                        // console.log(assets);
-                        // console.log(key);
-                        return(
-                        <RepayLoans key={key} asset={asset} />
+                    {repaidLoansData.map((asset: any, key: any) => {
+                        return (
+                            <RepayLoans key={key} asset={asset} historicalAPRs={historicalAPRs} />
                         )
                     })}
                 </UncontrolledAccordion>
