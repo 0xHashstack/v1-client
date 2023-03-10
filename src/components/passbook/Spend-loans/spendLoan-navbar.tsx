@@ -305,7 +305,7 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
     //   errorGetAmountOut
     // );
     const decimalsDeficit = 18 - tokenDecimalsMap[tokenName];
-    const amount = getAmountOutData?.amount_to
+    const amount = getAmountOutData?.amount_to 
       ? uint256.uint256ToBN(getAmountOutData?.amount_to)
         .mul(number.toBN(10).pow(number.toBN(decimalsDeficit))).toString()
       : "NA";
@@ -1167,7 +1167,7 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                       width="18px"
                                       height="20px"
                                     ></img>
-                                    <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                                    <div>&nbsp;&nbsp;&nbsp;{coin.symbol}</div>
                                   </div>
                                   {index < supportedMarkets?.length ? (
                                     <hr />
