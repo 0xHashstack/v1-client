@@ -44,6 +44,7 @@ let Deposit: any = ({
   reserves,
   asset: assetParam,
   depositLoanRates: depositLoanRatesParam,
+  assetSymbol: assetSymbolParam,
 }: {
   reserves: any;
   asset: string;
@@ -52,7 +53,8 @@ let Deposit: any = ({
 
   const [asset, setAsset] = useState(assetParam);
   const [value, setValue] = useState<any>(0);
-  const [tokenName, setTokenName] = useState(asset);
+  const [tokenName, setTokenName] = useState(assetParam);
+  const [tokenSymbol, setTokenSymbol] = useState(assetSymbolParam);
 
   const [token, setToken] = useState(getTokenFromName(asset));
   const [dropDown, setDropDown] = useState(false);
@@ -414,6 +416,9 @@ let Deposit: any = ({
         accountAddress={accountAddress}
         toggleDropdown={toggleDropdown}
         tokenName={tokenName}
+        setTokenName={setTokenName}
+        tokenSymbol={tokenSymbol}
+        setTokenSymbol={setTokenSymbol}
         setmodal_deposit={setmodal_deposit}
         tog_center={tog_center}
         setCommitmentDropDown={setCommitmentDropDown}
@@ -422,7 +427,6 @@ let Deposit: any = ({
         commitmentValue={commitmentValue}
         dropDown={dropDown}
         Coins={Coins}
-        setTokenName={setTokenName}
         setDropDown={setDropDown}
         setDropDownArrow={setDropDownArrow}
         setAsset={setAsset}

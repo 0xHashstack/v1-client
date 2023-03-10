@@ -56,7 +56,8 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
   // const {appsImage, setAppsImage} = 
   // const [modal_deposit, setmodal_deposit] = useState(false);
   const { appsImage, setAppsImage } = useContext(SecTabContext);
-  const [tokenName, setTokenName] = useState("BTC");
+  const [tokenName, setTokenName] = useState("USDC");
+  const [tokenSymbol, setTokenSymbol] = useState("USDC");
 
 
   const {
@@ -556,17 +557,21 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                   if (!selectedLoan) setSelectedLoan(activeLoansData?.[0]);
                   setTokenName((prev) => {
                     if (dapp.name === "jediSwap") {
-                      return getTokenFromAddress(
+                      const token = getTokenFromAddress(
                         supportedPoolsJediSwap.get(
                           tokenAddressMap[selectedLoan?.loanMarket]
                         )?.[0] as string
-                      )?.symbol;
+                      );
+                      setTokenSymbol(token?.symbol);
+                      return token?.name;
                     } else if (dapp.name === "mySwap") {
-                      return getTokenFromAddress(
+                      const token = getTokenFromAddress(
                         supportedPoolsMySwap.get(
                           tokenAddressMap[selectedLoan?.loanMarket]
                         )?.[0] as string
-                      )?.symbol;
+                      );
+                      setTokenSymbol(token?.symbol);
+                      return token?.name;
                     } else return prev;
                   });
                   setAppsImage(dapp.name);
@@ -799,21 +804,25 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                         toggleDappDropdown();
                                         setTokenName((prev) => {
                                           if (dapp.name === "jediSwap") {
-                                            return getTokenFromAddress(
+                                            const token = getTokenFromAddress(
                                               supportedPoolsJediSwap?.get(
                                                 tokenAddressMap[
                                                 selectedLoan?.loanMarket
                                                 ]
                                               )?.[0] as string
-                                            )?.symbol;
+                                            );
+                                            setTokenSymbol(token?.symbol);
+                                            return token?.name;
                                           } else if (dapp.name === "mySwap") {
-                                            return getTokenFromAddress(
+                                            const token = getTokenFromAddress(
                                               supportedPoolsMySwap?.get(
                                                 tokenAddressMap[
                                                 selectedLoan?.loanMarket
                                                 ]
                                               )?.[0] as string
-                                            )?.symbol;
+                                            );
+                                            setTokenSymbol(token?.symbol);
+                                            return token?.name;
                                           } else return prev;
                                         });
                                       }}
@@ -936,17 +945,21 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                         setIdDropDown(!idDropDown);
                                         setTokenName((prev) => {
                                           if (appsImage === "jediSwap") {
-                                            return getTokenFromAddress(
+                                            const token = getTokenFromAddress(
                                               supportedPoolsJediSwap.get(
                                                 tokenAddressMap[loan.loanMarket]
                                               )[0] as string
-                                            )?.symbol;
+                                            );
+                                            setTokenSymbol(token?.symbol);
+                                            return token?.name;
                                           } else if (appsImage === "mySwap") {
-                                            return getTokenFromAddress(
+                                            const token = getTokenFromAddress(
                                               supportedPoolsMySwap.get(
                                                 tokenAddressMap[loan.loanMarket]
                                               )[0] as string
-                                            )?.symbol;
+                                            );
+                                            setTokenSymbol(token?.symbol);
+                                            return token?.name;
                                           } else return prev;
                                         });
                                       }}
@@ -1076,7 +1089,7 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                               width="24px"
                               height="24px"
                             ></img>
-                            &nbsp;&nbsp;{tokenName}
+                            &nbsp;&nbsp;{tokenSymbol}
                           </div>
                           <div
                             style={{
@@ -1143,6 +1156,7 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                     key={index}
                                     onClick={() => {
                                       setTokenName(`${coin.name}`);
+                                      setTokenSymbol(`${coin.symbol}`);
                                       setDropDown(false);
                                       setDropDownArrow(arrowDown);
                                       handleBalanceChange();
@@ -1273,15 +1287,15 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                           totalAmountOutmySwap !== "NA" ? (
                             totalAmountOutmySwap >
                               changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan.loanMarket) ? (
-                              `1 ${selectedLoan?.loanMarket} = ${(
+                              `1 ${selectedLoan?.loanMarketSymbol} = ${(
                                 totalAmountOutmySwap /
                                 changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan.loanMarket)
-                              ).toFixed(4)} ${tokenName}`
+                              ).toFixed(4)} ${tokenSymbol}`
                             ) : (
-                              `1 ${tokenName} = ${(
+                              `1 ${tokenSymbol} = ${(
                                 changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan.loanMarket) /
                                 totalAmountOutmySwap
-                              ).toFixed(4)} ${selectedLoan?.loanMarket}`
+                              ).toFixed(4)} ${selectedLoan?.loanMarketSymbol}`
                             )
                           ) : (
                             <MySpinner />
@@ -1290,15 +1304,15 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                           totalAmountOutJediSwap !== "NA" ? (
                             totalAmountOutJediSwap >
                               changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan?.loanMarket) ? (
-                              `1 ${selectedLoan?.loanMarket} = ${(
+                              `1 ${selectedLoan?.loanMarketSymbol} = ${(
                                 totalAmountOutJediSwap /
                                 changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan?.loanMarket)
-                              ).toFixed(4)} ${tokenName}`
+                              ).toFixed(4)} ${tokenSymbol}`
                             ) : (
-                              `1 ${tokenName} = ${(
+                              `1 ${tokenSymbol} = ${(
                                 changeTo18Decimals(selectedLoan?.currentLoanAmount, selectedLoan?.loanMarket) /
                                 totalAmountOutJediSwap
-                              ).toFixed(4)} ${selectedLoan?.loanMarket}`
+                              ).toFixed(4)} ${selectedLoan?.loanMarketSymbol}`
                             )
                           ) : (
                             <MySpinner />

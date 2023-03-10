@@ -52,6 +52,13 @@ const BorrowModal: any = ({
   account,
   toggleDropdown,
   tokenName,
+  setTokenName,
+  tokenSymbol, 
+  setTokenSymbol,
+  borrowTokenName,
+  setBorrowTokenName,
+  borrowTokenSymbol,
+  setBorrowTokenSymbol,
   setmodal_borrow,
   tog_borrow,
   setCommitmentDropDown,
@@ -60,7 +67,6 @@ const BorrowModal: any = ({
   commitmentValue,
   dropDown,
   Coins,
-  setTokenName,
   setDropDown,
   setDropDownArrow,
   setAsset,
@@ -100,8 +106,6 @@ const BorrowModal: any = ({
   handleCommitmentChange,
   setBorrowArrow,
   setBorrowDropDown,
-  setBorrowTokenName,
-  borrowTokenName,
   borrowDropDown,
   toastParam,
 }: {
@@ -109,6 +113,13 @@ const BorrowModal: any = ({
   account: any;
   toggleDropdown: any;
   tokenName: any;
+  setTokenName: any;
+  tokenSymbol: any;
+  setTokenSymbol: any;
+  borrowTokenName: any;
+  setBorrowTokenName: any;
+  borrowTokenSymbol: any;
+  setBorrowTokenSymbol: any;
   setmodal_borrow: any;
   tog_borrow: any;
   setCommitmentDropDown: any;
@@ -117,7 +128,6 @@ const BorrowModal: any = ({
   commitmentValue: any;
   dropDown: any;
   Coins: any;
-  setTokenName: any;
   setDropDown: any;
   setDropDownArrow: any;
   borrowParams: any;
@@ -157,8 +167,6 @@ const BorrowModal: any = ({
   handleCommitmentChange: any;
   setBorrowArrow: any;
   setBorrowDropDown: any;
-  setBorrowTokenName: any;
-  borrowTokenName: any;
   borrowDropDown: any;
   toastParam: any;
 }) => {
@@ -237,7 +245,7 @@ const BorrowModal: any = ({
                     width="18px"
                     height="18px"
                   ></img>
-                  &nbsp;&nbsp;{tokenName}
+                  &nbsp;&nbsp;{tokenSymbol}
                 </div>
                 <div
                   style={{
@@ -321,7 +329,7 @@ const BorrowModal: any = ({
               ) : (
                 <MySpinner />
               )}
-              <div style={{ color: "#76809D" }}>&nbsp;{tokenName} </div>
+              <div style={{ color: "#76809D" }}>&nbsp;{tokenSymbol} </div>
             </div>
             <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
               <Slider
@@ -402,6 +410,7 @@ const BorrowModal: any = ({
                           }}
                           onClick={() => {
                             setTokenName(`${coin.name}`);
+                            setTokenSymbol(`${coin.symbol}`)
                             setDropDown(false);
                             setDropDownArrow(Downarrow);
                             handleCollateralChange(`${coin.name}`);
@@ -412,7 +421,7 @@ const BorrowModal: any = ({
                             width="15px"
                             height="15px"
                           ></img>
-                          <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                          <div>&nbsp;&nbsp;&nbsp;{coin.symbol}</div>
                         </div>
                         {coin.name !== "DAI" ? <hr /> : null}
                       </>
@@ -455,6 +464,7 @@ const BorrowModal: any = ({
                           }}
                           onClick={() => {
                             setBorrowTokenName(`${coin.name}`);
+                            setBorrowTokenSymbol(`${coin.symbol}`)
                             setBorrowDropDown(false);
                             setBorrowArrow(Downarrow);
                             setAsset(`${coin.name}`);
@@ -465,7 +475,7 @@ const BorrowModal: any = ({
                             width="15px"
                             height="15px"
                           ></img>
-                          <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                          <div>&nbsp;&nbsp;&nbsp;{coin.symbol}</div>
                         </div>
                         {coin.name !== "DAI" ? <hr /> : null}
                       </>
@@ -567,7 +577,7 @@ const BorrowModal: any = ({
                     width="24px"
                     height="24px"
                   ></img>
-                  &nbsp;&nbsp;{borrowTokenName}
+                  &nbsp;&nbsp;{borrowTokenSymbol}
                 </div>
                 <div
                   style={{

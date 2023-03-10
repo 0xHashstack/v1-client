@@ -87,6 +87,7 @@ export interface IDepositLoanRates {
 
 let Borrow: any = ({
   asset: assetParam,
+  assetSymbol: assetSymbolParam,
   title,
   depositLoanRates: depositLoanRatesParam,
   fairPriceArray,
@@ -100,8 +101,10 @@ let Borrow: any = ({
 
   const [value, setValue] = useState<any>(0);
   const [asset, setAsset] = useState(assetParam);
-  const [tokenName, setTokenName] = useState(asset);
-  const [borrowTokenName, setBorrowTokenName] = useState(asset);
+  const [tokenName, setTokenName] = useState(assetParam);
+  const [tokenSymbol, setTokenSymbol] = useState(assetSymbolParam);
+  const [borrowTokenName, setBorrowTokenName] = useState(assetParam);
+  const [borrowTokenSymbol, setBorrowTokenSymbol] = useState(assetSymbolParam);
   const [token, setToken] = useState(getTokenFromName(asset));
   const [modal_borrow, setmodal_borrow] = useState(false);
   const [allowanceVal, setAllowance] = useState(0);
@@ -652,6 +655,13 @@ let Borrow: any = ({
         account={account}
         toggleDropdown={toggleDropdown}
         tokenName={tokenName}
+        setTokenName={setTokenName}
+        tokenSymbol={tokenSymbol}
+        borrowTokenName={borrowTokenName}
+        setBorrowTokenName={setBorrowTokenName}
+        borrowTokenSymbol={borrowTokenSymbol}
+        setBorrowTokenSymbol={setBorrowTokenSymbol}
+        setTokenSymbol={setTokenSymbol}
         setmodal_borrow={setmodal_borrow}
         tog_borrow={tog_borrow}
         setCommitmentDropDown={setCommitmentDropDown}
@@ -660,7 +670,6 @@ let Borrow: any = ({
         commitmentValue={commitmentValue}
         dropDown={dropDown}
         Coins={Coins}
-        setTokenName={setTokenName}
         setDropDown={setDropDown}
         setDropDownArrow={setDropDownArrow}
         setAsset={setAsset}
@@ -700,8 +709,6 @@ let Borrow: any = ({
         handleCommitmentChange={handleCommitmentChange}
         setBorrowArrow={setBorrowArrow}
         setBorrowDropDown={setBorrowDropDown}
-        setBorrowTokenName={setBorrowTokenName}
-        borrowTokenName={borrowTokenName}
         borrowDropDown={borrowDropDown}
         toastParam={toastParam}
       />

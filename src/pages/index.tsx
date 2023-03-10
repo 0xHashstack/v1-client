@@ -292,6 +292,9 @@ const Dashboard = () => {
         currentLoanMarket: getTokenFromAddress(
           loanData.currentMarket || loanData.loanMarket
         )?.name, // Borrow market(current)
+        currentLoanMarketSymbol: getTokenFromAddress(
+          loanData.currentMarket || loanData.loanMarket
+        )?.symbol,
         currentLoanAmount:
           loanData.currentAmount != "0"
             ? loanData.currentAmount
