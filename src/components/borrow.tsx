@@ -53,7 +53,7 @@ import { ceil, round } from "../services/utils.service";
 
 // import Downarrow from "../assets/images/Downarrow.svg";
 // import UpArrow from "../assets/images/UpArrow.svg";
-import { ICoin } from "./dashboard/dashboard-body";
+import { Coins, ICoin } from "./dashboard/dashboard-body";
 import Downarrow from "../assets/images/ArrowDownDark.svg";
 import UpArrow from "../assets/images/ArrowUpDark.svg";
 import _ from "lodash";
@@ -97,13 +97,6 @@ let Borrow: any = ({
   fairPriceArray: any;
 }) => {
   // console.log("the asset you get from borrow popup", assetParam);
-  const Coins: ICoin[] = [
-    { name: "USDT", icon: "mdi-bitcoin" },
-    { name: "USDC", icon: "mdi-ethereum" },
-    { name: "BTC", icon: "mdi-bitcoin" },
-    { name: "ETH", icon: "mdi-ethereum" },
-    { name: "DAI", icon: "mdi-dai" },
-  ];
 
   const [value, setValue] = useState<any>(0);
   const [asset, setAsset] = useState(assetParam);

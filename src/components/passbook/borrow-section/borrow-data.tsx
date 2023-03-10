@@ -167,14 +167,6 @@ const BorrowData = ({
     setAsset(assetParam);
   }, [assetParam]);
 
-  const Coins: ICoin[] = [
-    { name: "USDT", icon: "mdi-bitcoin" },
-    { name: "USDC", icon: "mdi-ethereum" },
-    { name: "BTC", icon: "mdi-bitcoin" },
-    { name: "ETH", icon: "mdi-ethereum" },
-    { name: "DAI", icon: "mdi-dai" },
-  ];
-
   const {
     handleDepositAmount,
     handleApprove,

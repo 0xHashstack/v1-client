@@ -24,7 +24,7 @@ import useAddDeposit from "../../../blockchain/hooks/active-deposits/useAddDepos
 import Image from "next/image";
 import arrowDown from "../../../assets/images/ArrowDownDark.svg";
 import arrowUp from "../../../assets/images/ArrowUpDark.svg";
-import { ICoin } from "../../dashboard/dashboard-body";
+import { Coins, ICoin } from "../../dashboard/dashboard-body";
 import { Abi, uint256 } from "starknet";
 import { toast } from "react-toastify";
 import classnames from "classnames";
@@ -49,13 +49,6 @@ import MySpinner from "../../mySpinner";
 import { number } from "starknet";
 import { SecTabContext } from "../../../hooks/contextHooks/SecTabContext"
 
-const Coins: ICoin[] = [
-  { name: "USDT", icon: "mdi-bitcoin" },
-  { name: "USDC", icon: "mdi-ethereum" },
-  { name: "BTC", icon: "mdi-bitcoin" },
-  { name: "ETH", icon: "mdi-ethereum" },
-  { name: "DAI", icon: "mdi-dai" },
-];
 
 const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
 
@@ -567,13 +560,13 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                         supportedPoolsJediSwap.get(
                           tokenAddressMap[selectedLoan?.loanMarket]
                         )?.[0] as string
-                      ).name;
+                      )?.symbol;
                     } else if (dapp.name === "mySwap") {
                       return getTokenFromAddress(
                         supportedPoolsMySwap.get(
                           tokenAddressMap[selectedLoan?.loanMarket]
                         )?.[0] as string
-                      ).name;
+                      )?.symbol;
                     } else return prev;
                   });
                   setAppsImage(dapp.name);
@@ -812,7 +805,7 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                                 selectedLoan?.loanMarket
                                                 ]
                                               )?.[0] as string
-                                            )?.name;
+                                            )?.symbol;
                                           } else if (dapp.name === "mySwap") {
                                             return getTokenFromAddress(
                                               supportedPoolsMySwap?.get(
@@ -820,7 +813,7 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                                 selectedLoan?.loanMarket
                                                 ]
                                               )?.[0] as string
-                                            )?.name;
+                                            )?.symbol;
                                           } else return prev;
                                         });
                                       }}
@@ -947,13 +940,13 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                               supportedPoolsJediSwap.get(
                                                 tokenAddressMap[loan.loanMarket]
                                               )[0] as string
-                                            ).name;
+                                            )?.symbol;
                                           } else if (appsImage === "mySwap") {
                                             return getTokenFromAddress(
                                               supportedPoolsMySwap.get(
                                                 tokenAddressMap[loan.loanMarket]
                                               )[0] as string
-                                            ).name;
+                                            )?.symbol;
                                           } else return prev;
                                         });
                                       }}
@@ -1019,7 +1012,7 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                               </span>}
                               &nbsp;&nbsp;
                               <span style={{ color: "white" }}>
-                                {selectedLoan?.loanMarket}
+                                {selectedLoan?.loanMarketSymbol}
                               </span>
                             </div>
                           </div>
@@ -1043,7 +1036,7 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                             ).toFixed(4) || 0 : <span style={{ color: "white" }}>
                               N/A
                             </span>}
-                            &nbsp;{selectedLoan?.loanMarket}
+                            &nbsp;{selectedLoan?.loanMarketSymbol}
                           </div>
                         </div>
                       </label>

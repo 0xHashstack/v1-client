@@ -33,6 +33,7 @@ import OffchainAPI from "../services/offchainapi.service";
 import Downarrow from "../assets/images/ArrowDownDark.svg";
 import UpArrow from "../assets/images/ArrowUpDark.svg";
 import SupplyModal from "./modals/supplyModal";
+import { Coins } from "./dashboard/dashboard-body";
 
 interface ICoin {
   name: string;
@@ -48,13 +49,6 @@ let Deposit: any = ({
   asset: string;
   depositLoanRates: any;
 }) => {
-  const Coins: ICoin[] = [
-    { name: "USDT", icon: "mdi-bitcoin" },
-    { name: "USDC", icon: "mdi-ethereum" },
-    { name: "BTC", icon: "mdi-bitcoin" },
-    { name: "ETH", icon: "mdi-ethereum" },
-    { name: "DAI", icon: "mdi-dai" },
-  ];
 
   const [asset, setAsset] = useState(assetParam);
   const [value, setValue] = useState<any>(0);

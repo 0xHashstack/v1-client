@@ -29,7 +29,7 @@ const ProtocolStats = () => {
           // console.log(`${property}: ${stats.tvlByToken[property].tvl}`);
           if(stats.tvlByToken[property].tvl === dominantAmount){
             // console.log("dominant market", getTokenFromAddress(stats.tvlByToken[property].address)?.name);
-            setDominantMarket(getTokenFromAddress(stats.tvlByToken[property].address)?.name || 'NA')
+            setDominantMarket(getTokenFromAddress(stats.tvlByToken[property].address)?.symbol || 'NA')
           }
         }
 			},

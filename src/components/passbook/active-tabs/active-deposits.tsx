@@ -42,7 +42,7 @@ import {
   useTransactionReceipt,
 } from "@starknet-react/core";
 import { Abi, uint256 } from "starknet";
-import { ICoin } from "../../dashboard/dashboard-body";
+import { Coins, ICoin } from "../../dashboard/dashboard-body";
 import { MinimumAmount } from "../../../blockchain/constants";
 import MySpinner from "../../mySpinner";
 import { GetErrorText, NumToBN, etherToWeiBN } from "../../../blockchain/utils";
@@ -78,13 +78,6 @@ const ActiveDepositsTab = ({
   isTransactionDone: any;
   inputVal1: any;
 }) => {
-  const Coins: ICoin[] = [
-    { name: "USDT", icon: "mdi-bitcoin" },
-    { name: "USDC", icon: "mdi-ethereum" },
-    { name: "BTC", icon: "mdi-bitcoin" },
-    { name: "ETH", icon: "mdi-ethereum" },
-    { name: "DAI", icon: "mdi-dai" },
-  ];
   const [asset, setAsset] = useState<any>();
   const [historicalAPRs, setHistoricalAPRs] = useState();
   const [tokenName, setTokenName] = useState("BTC");

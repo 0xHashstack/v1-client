@@ -66,7 +66,7 @@ import {
   useStarknetExecute,
 } from "@starknet-react/core";
 import { Abi, uint256 } from "starknet";
-import { ICoin } from "../../../dashboard/dashboard-body";
+import { Coins, ICoin } from "../../../dashboard/dashboard-body";
 import { GetErrorText, NumToBN,etherToWeiBN } from "../../../../blockchain/utils";
 import classnames from "classnames";
 import { IDepositLoanRates } from "../../../borrow";
@@ -122,13 +122,6 @@ const ActiveDeposit = ({
     watch: true,
   });
 
-  const Coins: ICoin[] = [
-    { name: "USDT", icon: "mdi-bitcoin" },
-    { name: "USDC", icon: "mdi-ethereum" },
-    { name: "BTC", icon: "mdi-bitcoin" },
-    { name: "ETH", icon: "mdi-ethereum" },
-    { name: "DAI", icon: "mdi-dai" },
-  ];
 
   const [tokenName, setTokenName] = useState<string>(asset.market);
   const [depositLoanRates, setDepositLoanRates] = useState<IDepositLoanRates>();
