@@ -349,12 +349,12 @@ const Liquidation = ({
                           <img
                             src={
                               CoinClassNames[
-                                EventMap[asset.loanMarket.toUpperCase()]
-                              ] || asset.loanMarket.toUpperCase()
+                                EventMap[asset?.loanMarket?.toUpperCase()]
+                              ] || asset?.loanMarket?.toUpperCase()
                             }
                           />
                         </div>
-                        <span>{EventMap[asset.loanMarketSymbol.toUpperCase()]}</span>
+                        <span>{EventMap[asset.loanMarketSymbol?.toUpperCase()]}</span>
                       </div>
                     </th>
                     <td>
@@ -367,12 +367,12 @@ const Liquidation = ({
                             style={{ scale: "0.7" }}
                             src={
                               CoinClassNames[
-                                EventMap[asset.loanMarket.toUpperCase()]
-                              ] || asset.collateralMarket.toUpperCase()
+                                EventMap[asset.loanMarket?.toUpperCase()]
+                              ] || asset?.collateralMarket?.toUpperCase()
                             }
                           />
                           <span style={{ scale: "0.7" }}>
-                            {EventMap[asset.loanMarket.toUpperCase()]}
+                            {EventMap[asset.loanMarket?.toUpperCase()]}
                           </span>
                         </div>
                       </div>
@@ -383,13 +383,13 @@ const Liquidation = ({
                           <img
                             src={
                               CoinClassNames[
-                                EventMap[asset.collateralMarket.toUpperCase()]
-                              ] || asset.collateralMarket.toUpperCase()
+                                EventMap[asset?.collateralMarket?.toUpperCase()]
+                              ] || asset?.collateralMarket?.toUpperCase()
                             }
                           />
                         </div>
                         <span>
-                          {EventMap[asset.collateralMarketSymbol.toUpperCase()]}
+                          {EventMap[asset.collateralMarketSymbol?.toUpperCase()]}
                         </span>
                       </div>
                     </th>
@@ -420,8 +420,8 @@ const Liquidation = ({
                         {/* <img
                         src={
                           CoinClassNames[
-                            EventMap[asset.collateralMarket.toUpperCase()]
-                          ] || asset.collateralMarket.toUpperCase()
+                            EventMap[asset.collateralMarket?.toUpperCase()]
+                          ] || asset.collateralMarket?.toUpperCase()
                         }
                       /> */}
                         -
