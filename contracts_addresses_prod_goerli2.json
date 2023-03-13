@@ -246,7 +246,7 @@
       },
       {
         "name": "ETH",
-        "symbol": "ETH",
+        "symbol": "WETH",
         "decimals": 18,
         "minDeposit": 0.00625,
         "maxDeposit": 0.0625,

@@ -42,7 +42,7 @@ const DashboardTokens = ({
 }) => {
   useEffect(() => {
     console.log(
-      `%c Protocol deposit ${depositCommitment} ${borrowCommitment} ${coin.name}`,
+      `%c Protocol deposit ${depositCommitment} ${borrowCommitment} ${coin.symbol}`,
       "background: #222; color: #bada55"
     );
   }, []);
@@ -76,7 +76,7 @@ const DashboardTokens = ({
         color: "white",
         height: "20px",
         borderBottom:
-          coin.name === "DAI" ? "1px solid #2A2E3F" : "1px solid #252335",
+          coin.symbol === "DAI" ? "1px solid #2A2E3F" : "1px solid #252335",
         textAlign: "left",
       }}
     >
@@ -101,7 +101,7 @@ const DashboardTokens = ({
               &nbsp;&nbsp;&nbsp;
             </div>
             <span style={{ textAlign: "left", marginTop: "7px" }}>
-              {coin.name}
+              {coin.symbol}
               <div
                 style={{
                   fontSize: "9px",
@@ -172,11 +172,13 @@ const DashboardTokens = ({
           <Deposit
             reserves={reserves}
             asset={coin.name}
+            assetSymbol={coin.symbol}
             depositLoanRates={depositLoanRates}
           />
           <Borrow
             reserves={reserves}
             asset={coin.name}
+            assetSymbol={coin.symbol}
             title={coin.name}
             depositLoanRates={depositLoanRates}
             fairPriceArray={fairPriceArray}

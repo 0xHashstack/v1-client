@@ -66,7 +66,7 @@ import Image from "next/image";
 import Slider from "react-custom-slider";
 import Downarrow from "../../../assets/images/ArrowDownDark.svg";
 import UpArrow from "../../../assets/images/ArrowUpDark.svg";
-import { ICoin } from "../../dashboard/dashboard-body";
+import { Coins, ICoin } from "../../dashboard/dashboard-body";
 import { Abi, uint256, number } from "starknet";
 import useAddDeposit from "../../../blockchain/hooks/active-deposits/useAddDeposit";
 import { toast } from "react-toastify";
@@ -162,18 +162,11 @@ const BorrowData = ({
   const [asset, setAsset] = useState(assetParam);
   // console.log("asset borrow data", asset);
   const [marketTokenName, setMarketTokenName] = useState("USDT");
+  const [marketTokenSymbol, setMarketTokenSymbol] = useState("USDT");
 
   useEffect(() => {
     setAsset(assetParam);
   }, [assetParam]);
-
-  const Coins: ICoin[] = [
-    { name: "USDT", icon: "mdi-bitcoin" },
-    { name: "USDC", icon: "mdi-ethereum" },
-    { name: "BTC", icon: "mdi-bitcoin" },
-    { name: "ETH", icon: "mdi-ethereum" },
-    { name: "DAI", icon: "mdi-dai" },
-  ];
 
   const {
     handleDepositAmount,
@@ -712,7 +705,7 @@ const BorrowData = ({
     }
     try {
       const val = await executeWithdrawPartialBorrow();
-      setTransRepayHash(val.transaction_hash);
+      setTransWithdrawPartialBorrowHash(val.transaction_hash);
       const toastParamValue = {
         success: true,
         heading: "Success",
@@ -1058,7 +1051,7 @@ const BorrowData = ({
                 }}
               >
                 &nbsp; &nbsp;
-                {EventMap[assetParam.loanMarket.toUpperCase()]}
+                {assetParam?.loanMarketSymbol}
               </div>{" "}
               {["SWAPPED", "STAKED", "TRADED"].includes(assetParam.state) ? (
                 <div
@@ -1118,7 +1111,7 @@ const BorrowData = ({
             >
               {parseFloat(weiToEtherNumber((assetParam.interestPaid).toString(),tokenAddressMap[assetParam.loanMarket]||"").toString()).toFixed(6)}
               &nbsp;
-              {EventMap[assetParam.loanMarket.toUpperCase()]}
+              {EventMap[assetParam.loanMarketSymbol.toUpperCase()]}
             </div>
             <div
               className="mr-6"
@@ -1148,7 +1141,7 @@ const BorrowData = ({
                 src={
                   assetParam
                     ? CoinClassNames[
-                    EventMap[assetParam.collateralMarket.toUpperCase()]
+                    EventMap[assetParam?.collateralMarket.toUpperCase()]
                     ] || assetParam.collateralMarket.toUpperCase()
                     : null
                 }
@@ -1162,7 +1155,7 @@ const BorrowData = ({
                 }}
               >
                 &nbsp; &nbsp;
-                {EventMap[assetParam.collateralMarket.toUpperCase()]}
+                {assetParam?.collateralMarketSymbol}
               </div>
             </div>
           </Col>
@@ -1173,8 +1166,8 @@ const BorrowData = ({
                 src={
                   asset
                     ? CoinClassNames[
-                    EventMap[assetParam.collateralMarket.toUpperCase()]
-                    ] || assetParam.collateralMarket.toUpperCase()
+                    EventMap[assetParam?.collateralMarket.toUpperCase()]
+                    ] || assetParam?.collateralMarket.toUpperCase()
                     : null
                 }
                 height="15px"
@@ -1847,7 +1840,7 @@ const BorrowData = ({
                             ></img>
                             &nbsp;
                             <div style={{ color: "white" }}>
-                              {asset.loanMarket}
+                              {asset.loanMarketSymbol}
                             </div>
                           </span>
                         </div>
@@ -2056,7 +2049,7 @@ const BorrowData = ({
                                     src={`./${asset.currentLoanMarket}.svg`}
                                     height="15px"
                                   />
-                                  &nbsp; {asset.currentLoanMarket}
+                                  &nbsp; {asset.currentLoanMarketSymbol}
                                 </span>
                               </div>
                             </>
@@ -2146,7 +2139,7 @@ const BorrowData = ({
                                     src={`./${asset.currentLoanMarket}.svg`}
                                     height="15px"
                                   />
-                                  &nbsp; {asset.currentLoanMarket}
+                                  &nbsp; {asset.currentLoanMarketSymbol}
                                 </span>
                               </div>
 
@@ -2212,7 +2205,7 @@ const BorrowData = ({
                                   }}
                                   type="number"
                                   className="form-control"
-                                  placeholder={`Amount in ${asset.loanMarket}`}
+                                  placeholder={`Amount in ${asset.loanMarketSymbol}`}
                                   id="amount"
                                   onChange={(e) => {
                                     if (selection === "Repay Borrow")
@@ -2303,7 +2296,7 @@ const BorrowData = ({
                                   <MySpinner />
                                 )}
                                 <div style={{ color: "#76809D" }}>
-                                  &nbsp;{asset.loanMarket}
+                                  &nbsp;{asset.loanMarketSymbol}
                                 </div>
                               </div>
 
@@ -2464,7 +2457,7 @@ const BorrowData = ({
                             ></img>
                             &nbsp;
                             <div style={{ color: "white" }}>
-                              {asset.loanMarket}
+                              {asset.loanMarketSymbol}
                             </div>
                           </span>
                         </div>
@@ -2499,7 +2492,7 @@ const BorrowData = ({
                           >
                             &nbsp;
                             {parseFloat(weiToEtherNumber((asset.loanAmount).toString(),tokenAddressMap[asset.loanMarket]||"").toString())}{" "}
-                            {asset.loanMarket}
+                            {asset.loanMarketSymbol}
                           </span>
                         </div>
                       </div>
@@ -2572,7 +2565,7 @@ const BorrowData = ({
                             />
                             &nbsp;
                             <div style={{ color: "white" }}>
-                              {asset.collateralMarket}
+                              {asset.collateralMarketSymbol}
                             </div>
                           </span>
                         </div>
@@ -2606,7 +2599,7 @@ const BorrowData = ({
                                   className="form-control"
                                   id="amount"
                                   min={MinimumAmount[asset]}
-                                  placeholder={`Amount in ${asset.collateralMarket}`}
+                                  placeholder={`Amount in ${asset.collateralMarketSymbol}`}
                                   onChange={
                                     handleCollateralInputChangeAddCollateralAction
                                   }
@@ -2673,9 +2666,6 @@ const BorrowData = ({
                                 ) : (
                                   <MySpinner />
                                 )}
-                                {/* <div style={{ color: "#76809D" }}>
-                                  &nbsp;{asset}{" "}
-                                </div> */}
                               </div>
 
                               <div
@@ -2991,6 +2981,7 @@ const BorrowData = ({
                               }}
                               onClick={() => {
                                 setMarketTokenName(`${coin.name}`);
+                                setMarketTokenSymbol(`${coin.symbol}`);
                                 setMarketDropDown(false);
                                 setDropDownArrowThree(Downarrow);
                                 handleLoanMarketBalanceChange();
@@ -3001,7 +2992,7 @@ const BorrowData = ({
                                 width="16px"
                               // height="30px"
                               ></img>
-                              <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                              <div>&nbsp;&nbsp;&nbsp;{coin.symbol}</div>
                             </div>
                             {index < supportedMarkets?.length ? <hr /> : null}
                           </>
@@ -3127,7 +3118,7 @@ const BorrowData = ({
                               width="24px"
                               height="24px"
                             ></img>
-                            &nbsp;&nbsp;{marketTokenName}
+                            &nbsp;&nbsp;{marketTokenSymbol}
                           </div>
                           <div
                             style={{
@@ -3569,11 +3560,6 @@ const BorrowData = ({
                         Estimated collateral return:
                       </div>
                       <div style={{ display: "flex" }}>
-                        {/* <img
-                          src="./LabelIcon.svg"
-                          style={{ marginTop: "-2px" }}
-                        />
-                        &nbsp;<div>1</div> */}
                         <img
                           src={`./${asset.collateralMarket}.svg`}
                           style={{ marginTop: "-2px" }}

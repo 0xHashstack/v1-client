@@ -268,11 +268,13 @@ const Dashboard = () => {
       let loanData = loansData[i];
       let temp_len = {
         loanMarket: getTokenFromAddress(loanData.loanMarket)?.name,
+        loanMarketSymbol: getTokenFromAddress(loanData.loanMarket)?.symbol,
         loanMarketAddress: loanData.loanMarket,
-        loanAmount: Number(loanData.loanAmount), // 2 Amount
-        commitment: getCommitmentNameFromIndexLoan(loanData.commitment), // 3  Commitment
+        loanAmount: Number(loanData.loanAmount), //  Amount
+        commitment: getCommitmentNameFromIndexLoan(loanData.commitment), //  Commitment
         commitmentIndex: getCommitmentIndex(loanData.commitment) as number,
-        collateralMarket: getTokenFromAddress(loanData.collateralMarket)?.name, // 4 Collateral Market
+        collateralMarket: getTokenFromAddress(loanData.collateralMarket)?.name, //  Collateral Market
+        collateralMarketSymbol: getTokenFromAddress(loanData.collateralMarket)?.symbol,
         collateralAmount: Number(loanData.collateralAmount), // 5 Collateral Amount
         interestPaid: Number(loanData.interestPaid), //loan interest
         interest: Number(loanData.interest),
@@ -290,6 +292,9 @@ const Dashboard = () => {
         currentLoanMarket: getTokenFromAddress(
           loanData.currentMarket || loanData.loanMarket
         )?.name, // Borrow market(current)
+        currentLoanMarketSymbol: getTokenFromAddress(
+          loanData.currentMarket || loanData.loanMarket
+        )?.symbol,
         currentLoanAmount:
           loanData.currentAmount != "0"
             ? loanData.currentAmount
@@ -395,6 +400,7 @@ const Dashboard = () => {
         ),
         commitmentIndex: Number(deposit.commitment),
         market: getTokenFromAddress(deposit.market as string)?.name,
+        marketSymbol: getTokenFromAddress(deposit.market as string)?.symbol,
         marketAddress: deposit.market as string,
         acquiredYield: Number(0), // deposit interest TODO: FORMULA
         interestPaid: deposit.interestPaid, // deposit interest
@@ -407,7 +413,7 @@ const Dashboard = () => {
       let myDepString = JSON.stringify(myDep);
       // console.log("on deposit", i, myDepString);
       deposits.push(JSON.parse(myDepString));
-    }
+    } 
     // console.log("depositsxyz", deposits);
     let nonZeroDeposits = deposits.filter(function (el) {
       // console.log(el.amount, "deposits123");
@@ -537,6 +543,7 @@ const Dashboard = () => {
         commitment: getCommitmentNameFromIndexDeposit(loan.commitment),
         loanAmount: loan.loanAmount,
         collateralMarket: getTokenFromAddress(loan.collateralMarket)?.name,
+        collateralMarketSymbol: getTokenFromAddress(loan.collateralMarket)?.symbol,
         collateralAmount: loan.collateralAmount,
         isLiquidationDone: false,
         id: loan.loanId,

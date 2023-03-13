@@ -44,7 +44,7 @@ import Image from "next/image";
 import Downarrow from "../../../assets/images/ArrowDownDark.svg";
 import UpArrow from "../../../assets/images/ArrowUpDark.svg";
 import { Abi, uint256 } from "starknet";
-import { ICoin } from "../../dashboard/dashboard-body";
+import { Coins, ICoin } from "../../dashboard/dashboard-body";
 import MySpinner from "../../mySpinner";
 import { MinimumAmount, MinimumBorrowAmount } from "../../../blockchain/constants";
 import useMaxloan from "../../../blockchain/hooks/Max_loan_given_collat";
@@ -93,13 +93,6 @@ const BorrowTab = ({
       };
     };
   }
-  const Coins: ICoin[] = [
-    { name: "USDT", icon: "mdi-bitcoin" },
-    { name: "USDC", icon: "mdi-ethereum" },
-    { name: "BTC", icon: "mdi-bitcoin" },
-    { name: "ETH", icon: "mdi-ethereum" },
-    { name: "DAI", icon: "mdi-dai" },
-  ];
 
   // const loanTypes = ["Repaid", "Active"];
   // const [typeOfLoansDropDownArrowType, setTypeOfLoansDropDownArrowType] =
@@ -876,6 +869,7 @@ const BorrowTab = ({
               account={account}
               toggleDropdown={toggleDropdown}
               tokenName={tokenName}
+              setTokenName={setTokenName}
               setmodal_borrow={setmodal_borrow}
               tog_borrow={tog_borrow}
               setCommitmentDropDown={setCommitmentDropDown}
@@ -884,7 +878,6 @@ const BorrowTab = ({
               commitmentValue={commitmentValue}
               dropDown={dropDown}
               Coins={Coins}
-              setTokenName={setTokenName}
               setDropDown={setDropDown}
               setDropDownArrow={setDropDownArrow}
               setAsset={setAsset}

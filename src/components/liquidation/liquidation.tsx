@@ -58,7 +58,7 @@ const LiquidationButton = ({
     // );
     TxToastManager.handleTxToast(
       approveTransactionReceipt,
-      `Liquidate: Approve ${loan.loanMarket}`,
+      `Liquidate: Approve ${loan?.loanMarketSymbol}`,
       true
     );
   }, [approveTransactionReceipt]);
@@ -354,7 +354,7 @@ const Liquidation = ({
                             }
                           />
                         </div>
-                        <span>{EventMap[asset.loanMarket.toUpperCase()]}</span>
+                        <span>{EventMap[asset.loanMarketSymbol.toUpperCase()]}</span>
                       </div>
                     </th>
                     <td>
@@ -389,7 +389,7 @@ const Liquidation = ({
                           />
                         </div>
                         <span>
-                          {EventMap[asset.collateralMarket.toUpperCase()]}
+                          {EventMap[asset.collateralMarketSymbol.toUpperCase()]}
                         </span>
                       </div>
                     </th>

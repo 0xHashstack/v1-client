@@ -66,7 +66,7 @@ import {
   useStarknetExecute,
 } from "@starknet-react/core";
 import { Abi, uint256 } from "starknet";
-import { ICoin } from "../../../dashboard/dashboard-body";
+import { Coins, ICoin } from "../../../dashboard/dashboard-body";
 import { GetErrorText, NumToBN,etherToWeiBN } from "../../../../blockchain/utils";
 import classnames from "classnames";
 import { IDepositLoanRates } from "../../../borrow";
@@ -122,15 +122,9 @@ const ActiveDeposit = ({
     watch: true,
   });
 
-  const Coins: ICoin[] = [
-    { name: "USDT", icon: "mdi-bitcoin" },
-    { name: "USDC", icon: "mdi-ethereum" },
-    { name: "BTC", icon: "mdi-bitcoin" },
-    { name: "ETH", icon: "mdi-ethereum" },
-    { name: "DAI", icon: "mdi-dai" },
-  ];
 
   const [tokenName, setTokenName] = useState<string>(asset.market);
+  const [tokenSymbol, setTokenSymbol] = useState<string>(asset.marketSymbol);
   const [depositLoanRates, setDepositLoanRates] = useState<IDepositLoanRates>();
   const [customActiveTab, setCustomActiveTab] = useState("1");
   const [modal_deposit, setmodal_deposit] = useState(false);
@@ -483,7 +477,7 @@ const ActiveDeposit = ({
                 }}
               >
                 &nbsp;
-                {EventMap[assetParam.market.toUpperCase()]}
+                {assetParam.marketSymbol.toUpperCase()}
               </div>
             </div>
             <CardTitle tag="h5"></CardTitle>
@@ -523,7 +517,7 @@ const ActiveDeposit = ({
                         <MySpinner />
                       )} */}
               &nbsp;
-              {EventMap[assetParam.market.toUpperCase()]}
+              {assetParam.marketSymbol.toUpperCase()}
             </div>
             <div
               className="mr-6"
@@ -704,7 +698,7 @@ const ActiveDeposit = ({
                         height="13px"
                       ></img>
                       &nbsp;
-                      <div style={{ color: "white" }}>{tokenName}</div>
+                      <div style={{ color: "white" }}>{tokenSymbol}</div>
                     </span>
                   </div>
                 </div>
@@ -741,6 +735,7 @@ const ActiveDeposit = ({
                             }}
                             onClick={() => {
                               setTokenName(`${coin.name}`);
+                              setTokenSymbol(`${coin.symbol}`)
                               setDropDown(false);
                               setDropDownArrow(arrowDown);
                               handleBalanceChange();
@@ -751,7 +746,7 @@ const ActiveDeposit = ({
                               width="24px"
                               height="24px"
                             ></img>
-                            <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                            <div>&nbsp;&nbsp;&nbsp;{coin.symbol}</div>
                           </div>
                         );
                       })}
@@ -778,8 +773,8 @@ const ActiveDeposit = ({
                         id="amount"
                         placeholder={
                           customActiveTab === "1"
-                            ? `Minimum ${MinimumAmount[tokenName]} ${tokenName}`
-                            : `Amount in ${tokenName}`
+                            ? `Minimum ${MinimumAmount[tokenName]} ${tokenSymbol}`
+                            : `Amount in ${tokenSymbol}`
                         }
                         onChange={(e) => {
                           if (customActiveTab === "1")
@@ -846,7 +841,7 @@ const ActiveDeposit = ({
                       ) : (
                         <MySpinner />
                       )}
-                      <div style={{ color: "#76809D" }}>&nbsp;{tokenName} </div>
+                      <div style={{ color: "#76809D" }}>&nbsp;{tokenSymbol} </div>
                     </div>
 
                     <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
@@ -1168,6 +1163,7 @@ const ActiveDeposit = ({
                     onClick={() => {
                       setAsset(asset);
                       setTokenName(asset.market);
+                      setTokenSymbol(asset.marketSymbol);
                       setIdDropDown(!idDropDown);
                       setIdDropDownArrow(Downarrow);
                     }}
