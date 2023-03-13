@@ -943,7 +943,7 @@ const Dashboard = () => {
                                     display: "flex",
                                     alignItems: "center",
                                     fontSize: "0.8rem",
-                                    color: "#6F6F6F",
+                                    color: "white",
                                   }}
                                   onClick={() => {
                                     setTypeOfLoans(type);
