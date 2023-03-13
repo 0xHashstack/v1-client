@@ -26955,7 +26955,7 @@
                     },
                     "created_at": {
                         "cairo_type": "felt",
-                        "offset": 12
+                        "offset": 13
                     },
                     "current_amount": {
                         "cairo_type": "starkware.cairo.common.uint256.Uint256",
@@ -26967,15 +26967,19 @@
                     },
                     "debt_category": {
                         "cairo_type": "felt",
-                        "offset": 9
+                        "offset": 10
                     },
                     "id": {
                         "cairo_type": "felt",
                         "offset": 0
                     },
+                    "is_loan_withdrawn": {
+                        "cairo_type": "felt",
+                        "offset": 9
+                    },
                     "l3_integration": {
                         "cairo_type": "felt",
-                        "offset": 11
+                        "offset": 12
                     },
                     "market": {
                         "cairo_type": "felt",
@@ -26987,10 +26991,10 @@
                     },
                     "state": {
                         "cairo_type": "felt",
-                        "offset": 10
+                        "offset": 11
                     }
                 },
-                "size": 13,
+                "size": 14,
                 "type": "struct"
             },
             "contracts.storages.loan_store.Uint256": {
