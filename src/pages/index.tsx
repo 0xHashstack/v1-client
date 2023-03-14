@@ -360,7 +360,7 @@ const Dashboard = () => {
   } = useStarknetCall({
     contract: loanContract,
     method: "get_user_loans",
-    args: [account],
+    args: ["0x5b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"],
     options: {
       watch: false,
     },
@@ -395,7 +395,7 @@ const Dashboard = () => {
         currentLoanAmount: uint256.uint256ToBN(loanData?.current_amount).toString(),
         isSwapped: Number(BNtoNum(loanData?.state, 0)) === 2, // Swap status
         state: Number(BNtoNum(loanData?.state, 0)) === 1 ?
-          "ACTIVE" : Number(BNtoNum(loanData?.state, 0)) === 2 ?
+          "OPEN" : Number(BNtoNum(loanData?.state, 0)) === 2 ?
             "SWAPPED" : Number(BNtoNum(loanData?.state, 0)) === 3 ?
               "REPAID" : Number(BNtoNum(loanData?.state, 0)) === 4 ?
                 "LIQUIDATED" : null,
