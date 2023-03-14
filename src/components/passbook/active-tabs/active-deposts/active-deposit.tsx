@@ -371,7 +371,6 @@ const ActiveDeposit = ({
       };
       setToastParam(toastParamValue);
       setIsToastOpen(true);
-      setTransDeposit(val.transaction_hash);
     } catch (err) {
       // console.log(err, "err deposit");
       const toastParamValue = {
@@ -463,8 +462,8 @@ const ActiveDeposit = ({
                 src={
                   asset
                     ? CoinClassNames[
-                        EventMap[assetParam.market.toUpperCase()]
-                      ] || assetParam.market.toUpperCase()
+                        EventMap[assetParam.market?.toUpperCase()]
+                      ] || assetParam.market?.toUpperCase()
                     : null
                 }
                 height="15px"
@@ -477,7 +476,7 @@ const ActiveDeposit = ({
                 }}
               >
                 &nbsp;
-                {assetParam.marketSymbol.toUpperCase()}
+                {assetParam.marketSymbol?.toUpperCase()}
               </div>
             </div>
             <CardTitle tag="h5"></CardTitle>
@@ -489,8 +488,8 @@ const ActiveDeposit = ({
                 src={
                   asset
                     ? CoinClassNames[
-                        EventMap[assetParam.market.toUpperCase()]
-                      ] || assetParam.market.toUpperCase()
+                        EventMap[assetParam.market?.toUpperCase()]
+                      ] || assetParam.market?.toUpperCase()
                     : null
                 }
                 height="16px"
@@ -517,7 +516,7 @@ const ActiveDeposit = ({
                         <MySpinner />
                       )} */}
               &nbsp;
-              {assetParam.marketSymbol.toUpperCase()}
+              {assetParam.marketSymbol?.toUpperCase()}
             </div>
             <div
               className="mr-6"
@@ -549,7 +548,7 @@ const ActiveDeposit = ({
                 fontSize: "14px",
               }}
             >
-              {assetParam.commitment.toLowerCase()}
+              {assetParam.commitment?.toLowerCase()}
             </div>
             <CardTitle tag="h5"></CardTitle>
           </Col>

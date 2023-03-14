@@ -146,8 +146,8 @@ const ActiveLoan = ({
                       <img
                         src={
                           CoinClassNames[
-                            EventMap[asset.loanMarket.toUpperCase()]
-                          ] || asset.loanMarket.toUpperCase()
+                            EventMap[asset.loanMarket?.toUpperCase()]
+                          ] || asset.loanMarket?.toUpperCase()
                         }
                         height="18px"
                       />
@@ -161,7 +161,7 @@ const ActiveLoan = ({
                         // align="right"
                       >
                         &nbsp; &nbsp;
-                        {EventMap[asset.loanMarket.toUpperCase()]}
+                        {EventMap[asset.loanMarket?.toUpperCase()]}
                       </div>
                     </div>
                     <CardTitle tag="h5"></CardTitle>
@@ -201,7 +201,7 @@ const ActiveLoan = ({
                           BNtoNum(Number(asset.loanInterest))
                         ).toFixed(6)}
                         &nbsp;
-                        {EventMap[asset.loanMarket.toUpperCase()]}
+                        {EventMap[asset.loanMarket?.toUpperCase()]}
                       </div>
                     </div>
                     <CardTitle tag="h5"></CardTitle>
@@ -227,8 +227,8 @@ const ActiveLoan = ({
                       <img
                         src={
                           CoinClassNames[
-                            EventMap[asset.collateralMarket.toUpperCase()]
-                          ] || asset.collateralMarket.toUpperCase()
+                            EventMap[asset.collateralMarket?.toUpperCase()]
+                          ] || asset.collateralMarket?.toUpperCase()
                         }
                         height="18px"
                       />
@@ -242,7 +242,7 @@ const ActiveLoan = ({
                         // align="right"
                       >
                         &nbsp; &nbsp;
-                        {EventMap[asset.collateralMarket.toUpperCase()]}
+                        {EventMap[asset.collateralMarket?.toUpperCase()]}
                       </div>
                     </div>
                     <CardTitle tag="h5"></CardTitle>
@@ -250,7 +250,7 @@ const ActiveLoan = ({
                       <span style={{ fontSize: "14px" }}>
                         &nbsp; &nbsp;&nbsp;{" "}
                         {parseFloat(
-                          BNtoNum(Number(asset.collateralAmount))
+                          BNtoNum(Number(asset?.collateralAmount))
                         ).toFixed(6)}
                       </span>
                       &nbsp; &nbsp;
@@ -266,8 +266,8 @@ const ActiveLoan = ({
                       <img
                         src={
                           CoinClassNames[
-                            EventMap[asset.currentLoanMarket.toUpperCase()]
-                          ] || asset.currentLoanMarket.toUpperCase()
+                            EventMap[asset.currentLoanMarket?.toUpperCase()]
+                          ] || asset.currentLoanMarket?.toUpperCase()
                         }
                         height="18px"
                       />
@@ -281,7 +281,7 @@ const ActiveLoan = ({
                         // align="right"
                       >
                         &nbsp; &nbsp;
-                        {EventMap[asset.currentLoanMarket.toUpperCase()]}
+                        {EventMap[asset.currentLoanMarket?.toUpperCase()]}
                       </div>
                     </div>
                     <CardTitle tag="h5"></CardTitle>
@@ -290,7 +290,7 @@ const ActiveLoan = ({
                       <span style={{ fontSize: "14px" }}>
                         &nbsp; &nbsp;&nbsp;{" "}
                         {parseFloat(
-                          BNtoNum(Number(asset.currentLoanAmount))
+                          BNtoNum(Number(asset?.currentLoanAmount))
                         ).toFixed(6)}
                       </span>
                       &nbsp; &nbsp;

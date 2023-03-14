@@ -96,28 +96,33 @@
                 "type": "Uint256"
             },
             {
-                "name": "debt_category",
+                "name": "is_loan_withdrawn",
                 "offset": 9,
                 "type": "felt"
             },
             {
-                "name": "state",
+                "name": "debt_category",
                 "offset": 10,
                 "type": "felt"
             },
             {
-                "name": "l3_integration",
+                "name": "state",
                 "offset": 11,
                 "type": "felt"
             },
             {
-                "name": "created_at",
+                "name": "l3_integration",
                 "offset": 12,
+                "type": "felt"
+            },
+            {
+                "name": "created_at",
+                "offset": 13,
                 "type": "felt"
             }
         ],
         "name": "Loan",
-        "size": 13,
+        "size": 14,
         "type": "struct"
     },
     {
@@ -323,6 +328,45 @@
         ],
         "keys": [],
         "name": "savings_apr_update",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "market_utilised_borrow_amt",
+                "type": "Uint256"
+            },
+            {
+                "name": "market_reserves_deposit_amt",
+                "type": "Uint256"
+            },
+            {
+                "name": "utilisation_factor",
+                "type": "Uint256"
+            },
+            {
+                "name": "vrf_number",
+                "type": "felt"
+            },
+            {
+                "name": "correlation_factor",
+                "type": "felt"
+            },
+            {
+                "name": "base_deposit_interest",
+                "type": "felt"
+            },
+            {
+                "name": "base_borrow_interest",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "dial_parameters",
         "type": "event"
     },
     {

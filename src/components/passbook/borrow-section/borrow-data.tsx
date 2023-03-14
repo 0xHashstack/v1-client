@@ -725,7 +725,7 @@ const BorrowData = ({
       setToastParam(toastParamValue);
       setIsToastOpen(true);
       toast.error(
-        `${GetErrorText(`Repay for Loan ID${asset.loanId} failed`)}`,
+        `${GetErrorText(`Withdraw Partial for Loan ID${asset.loanId} failed`)}`,
         {
           position: toast.POSITION.BOTTOM_RIGHT,
           closeOnClick: true,
@@ -1037,8 +1037,8 @@ const BorrowData = ({
                 src={
                   assetParam
                     ? CoinClassNames[
-                    EventMap[assetParam.loanMarket.toUpperCase()]
-                    ] || assetParam.loanMarket.toUpperCase()
+                    EventMap[assetParam.loanMarket?.toUpperCase()]
+                    ] || assetParam.loanMarket?.toUpperCase()
                     : null
                 }
                 height="15px"
@@ -1091,8 +1091,8 @@ const BorrowData = ({
                 src={
                   asset
                     ? CoinClassNames[
-                    EventMap[assetParam.loanMarket.toUpperCase()]
-                    ] || assetParam.loanMarket.toUpperCase()
+                    EventMap[assetParam?.loanMarket?.toUpperCase()]
+                    ] || assetParam?.loanMarket?.toUpperCase()
                     : null
                 }
                 height="15px"
@@ -1100,7 +1100,7 @@ const BorrowData = ({
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
                
-                {weiToEtherNumber((assetParam.loanAmount).toString(),tokenAddressMap[assetParam.loanMarket]?.toString()||"").toString()}
+                {weiToEtherNumber((assetParam?.loanAmount).toString(),tokenAddressMap[assetParam?.loanMarket]?.toString()||"").toString()}
               </span>
             </div>
           </Col>
@@ -1109,9 +1109,9 @@ const BorrowData = ({
             <div
               style={{ fontSize: "14px", fontWeight: "600", width: "110px" }}
             >
-              {parseFloat(weiToEtherNumber((assetParam.interestPaid).toString(),tokenAddressMap[assetParam.loanMarket]||"").toString()).toFixed(6)}
+              {parseFloat(weiToEtherNumber((assetParam?.interestPaid).toString(),tokenAddressMap[assetParam?.loanMarket]||"").toString()).toFixed(6)}
               &nbsp;
-              {EventMap[assetParam.loanMarketSymbol.toUpperCase()]}
+              {EventMap[assetParam.loanMarketSymbol?.toUpperCase()]}
             </div>
             <div
               className="mr-6"
@@ -1141,8 +1141,8 @@ const BorrowData = ({
                 src={
                   assetParam
                     ? CoinClassNames[
-                    EventMap[assetParam?.collateralMarket.toUpperCase()]
-                    ] || assetParam.collateralMarket.toUpperCase()
+                    EventMap[assetParam?.collateralMarket?.toUpperCase()]
+                    ] || assetParam.collateralMarket?.toUpperCase()
                     : null
                 }
                 height="15px"
@@ -1166,8 +1166,8 @@ const BorrowData = ({
                 src={
                   asset
                     ? CoinClassNames[
-                    EventMap[assetParam?.collateralMarket.toUpperCase()]
-                    ] || assetParam?.collateralMarket.toUpperCase()
+                    EventMap[assetParam?.collateralMarket?.toUpperCase()]
+                    ] || assetParam?.collateralMarket?.toUpperCase()
                     : null
                 }
                 height="15px"

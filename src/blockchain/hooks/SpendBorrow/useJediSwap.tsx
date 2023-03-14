@@ -51,11 +51,11 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
     // console.log("loading jedi", loadingJediSwapSupportedPools);
     const poolsData = new Map();
     if (!loadingJediSwapSupportedPools) {
-      // console.log(
-      //   "jediSwapSupportedPoolsData",
-      //   jediSwapSupportedPoolsData,
-      //   errorJediSwapSupportedPools
-      // );
+      console.log(
+        "jediSwapSupportedPoolsData",
+        jediSwapSupportedPoolsData,
+        errorJediSwapSupportedPools
+      );
       const pools = jediSwapSupportedPoolsData?.pools;
       for(let i = 0; i<pools?.length; i++) {
         const firstTokenAddress = number.toHex(pools[i].tokenA)
