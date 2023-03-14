@@ -360,7 +360,7 @@ const Dashboard = () => {
   } = useStarknetCall({
     contract: loanContract,
     method: "get_user_loans",
-    args: ["0x5b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"],
+    args: [account],
     options: {
       watch: false,
     },
