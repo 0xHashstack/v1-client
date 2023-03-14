@@ -20,7 +20,7 @@ import {
   NavLink,
 } from "reactstrap";
 import useAddDeposit from "../../../blockchain/hooks/active-deposits/useAddDeposit";
-
+import Tooltip from '@mui/material/Tooltip';
 import Image from "next/image";
 import arrowDown from "../../../assets/images/ArrowDownDark.svg";
 import arrowUp from "../../../assets/images/ArrowUpDark.svg";
@@ -587,11 +587,13 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                   // );
                 }}
               >
+             <Tooltip title={dapp.name} arrow>
                 <img
                   src={`./dapps/${dapp.name}.svg`}
                   height="90px"
                   style={{ cursor: "pointer" }}
                 />
+                </Tooltip>
               </div>
             );
           }
@@ -870,6 +872,7 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                 }
                                 return (
                                   <>
+
                                     <div
                                       style={{
                                         margin: "10px 0",
@@ -899,7 +902,9 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                       }
                                     >
                                       {word}
-                                    </div>{" "}
+                                    </div>
+                                    {" "}
+                                   
                                     {index < labels.length - 1 ? <hr /> : null}
                                   </>
                                 );

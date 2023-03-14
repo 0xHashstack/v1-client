@@ -26,6 +26,7 @@ import OffchainAPI from "../../services/offchainapi.service";
 import MySpinner from "../mySpinner";
 import { uint256 } from "starknet";
 import { MinimumBorrowAmount } from "../../blockchain/constants";
+import { Tooltip } from "@mui/material";
 
 interface IBorrowParams {
   loanAmount: number | null;
@@ -732,24 +733,29 @@ const BorrowModal: any = ({
                       gap: "3px",
                     }}
                   >
+                    <Tooltip title='mySwap' arrow>
                     <img
                       src="./mySwapSmallIcon.svg"
                       alt="Icon 1"
                       width="15px"
                       height="15px"
-                    />{" "}
+                    />
+                    </Tooltip>
+                    {" "}
+                    <Tooltip title='jediSwap' arrow>
                     <img
                       src="./jediSwapSmallIcon.svg"
                       alt="Icon 2"
                       width="15px"
                       height="15px"
-                    />{" "}
+                    /></Tooltip>{" "}
+                    <Tooltip title='yagi' arrow>
                     <img
                       src="./yagiSmallIcon.svg"
                       alt="Icon 3"
                       width="15px"
                       height="15px"
-                    />{" "}
+                    /></Tooltip>{" "}
                   </div>
                 </div>
                 <div
