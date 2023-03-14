@@ -5,15 +5,16 @@ import DashboardTokens from "./dashboard-tokens";
 import Typewriter from "typewriter-effect"
 export interface ICoin {
   name: string;
+  symbol: string;
   icon: string;
 }
 
-const Coins: ICoin[] = [
-  { name: "USDT", icon: "mdi-bitcoin" },
-  { name: "USDC", icon: "mdi-ethereum" },
-  { name: "BTC", icon: "mdi-bitcoin" },
-  { name: "ETH", icon: "mdi-ethereum" },
-  { name: "DAI", icon: "mdi-dai" },
+export const Coins: ICoin[] = [
+  { name: "USDT", icon: "mdi-bitcoin", symbol: "USDT" },
+  { name: "USDC", icon: "mdi-ethereum", symbol: "USDC" },
+  { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" },
+  { name: "ETH", icon: "mdi-ethereum", symbol: "WETH" },
+  { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
 ];
 
 let DashboardTBody: any = ({

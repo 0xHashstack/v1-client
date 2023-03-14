@@ -8,6 +8,7 @@ const ProtocolStats = () => {
   const [tvl, setTvl] = useState(0);
   const [totalUsers, setTotalUsers] = useState();
   const [domianatMarket, setDominantMarket] = useState('');
+  const [dominantSymbol, setDominantSymbol] = useState('');
 
 	useEffect(() => {
 		OffchainAPI.getDashboardStats().then(
@@ -28,8 +29,8 @@ const ProtocolStats = () => {
         for (const property in stats.tvlByToken) {
           // console.log(`${property}: ${stats.tvlByToken[property].tvl}`);
           if(stats.tvlByToken[property].tvl === dominantAmount){
-            // console.log("dominant market", getTokenFromAddress(stats.tvlByToken[property].address)?.name);
             setDominantMarket(getTokenFromAddress(stats.tvlByToken[property].address)?.name || 'NA')
+            setDominantSymbol(getTokenFromAddress(stats.tvlByToken[property].address)?.symbol || 'NA')
           }
         }
 			},
@@ -119,7 +120,7 @@ const ProtocolStats = () => {
 						</div>
 						<CardTitle tag='h5'></CardTitle>
 						<CardSubtitle className='mb-2 text-muted' tag='h2' align='right'>
-							{domianatMarket ? domianatMarket : <MySpinner size='lg' text=''/>}
+							{domianatMarketSymbol ? domianatMarketSymbol : <MySpinner size='lg' text=''/>}
 						</CardSubtitle>
 					</CardBody>
 				</Card>

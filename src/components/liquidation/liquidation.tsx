@@ -58,7 +58,7 @@ const LiquidationButton = ({
     // );
     TxToastManager.handleTxToast(
       approveTransactionReceipt,
-      `Liquidate: Approve ${loan.loanMarket}`,
+      `Liquidate: Approve ${loan?.loanMarketSymbol}`,
       true
     );
   }, [approveTransactionReceipt]);
@@ -349,30 +349,30 @@ const Liquidation = ({
                           <img
                             src={
                               CoinClassNames[
-                                EventMap[asset.loanMarket.toUpperCase()]
-                              ] || asset.loanMarket.toUpperCase()
+                                EventMap[asset?.loanMarket?.toUpperCase()]
+                              ] || asset?.loanMarket?.toUpperCase()
                             }
                           />
                         </div>
-                        <span>{EventMap[asset.loanMarket.toUpperCase()]}</span>
+                        <span>{EventMap[asset.loanMarketSymbol?.toUpperCase()]}</span>
                       </div>
                     </th>
                     <td>
                       <div>
                         {/* {// console.log(asset.loanAmount)} */}
-                        {weiToEtherNumber(asset.loanAmount,tokenAddressMap[asset.loanMarket]||"")}
+                        {weiToEtherNumber((asset.loanAmount).toString(),tokenAddressMap[asset.loanMarket]||"")}
                         {/* {BNtoNum(Number(asset.loanAmount))} */}
                         <div>
                           <img
                             style={{ scale: "0.7" }}
                             src={
                               CoinClassNames[
-                                EventMap[asset.loanMarket.toUpperCase()]
-                              ] || asset.collateralMarket.toUpperCase()
+                                EventMap[asset.loanMarket?.toUpperCase()]
+                              ] || asset?.loanMarket?.toUpperCase()
                             }
                           />
                           <span style={{ scale: "0.7" }}>
-                            {EventMap[asset.loanMarket.toUpperCase()]}
+                            {asset.loanMarketSymbol?.toUpperCase()}
                           </span>
                         </div>
                       </div>
@@ -383,18 +383,18 @@ const Liquidation = ({
                           <img
                             src={
                               CoinClassNames[
-                                EventMap[asset.collateralMarket.toUpperCase()]
-                              ] || asset.collateralMarket.toUpperCase()
+                                EventMap[asset?.collateralMarket?.toUpperCase()]
+                              ] || asset?.collateralMarket?.toUpperCase()
                             }
                           />
                         </div>
                         <span>
-                          {EventMap[asset.collateralMarket.toUpperCase()]}
+                          {asset?.collateralMarketSymbol?.toUpperCase()}
                         </span>
                       </div>
                     </th>
                     <td>
-                      <div>{BNtoNum(Number(asset.collateralAmount))}</div>
+                      <div>{weiToEtherNumber((asset?.collateralAmount).toString(),tokenAddressMap[asset?.collateralMarket]?.toString()||"")?.toString()}</div>
                     </td>
                     <td>
                       <div>
@@ -406,10 +406,7 @@ const Liquidation = ({
                     </td>
                     <td>
                       <div>
-                        {/* {EventMap[asset.commitment]}
-                      {// console.log(EventMap[asset.commitment])
-                      } Debt Converted*/}
-                        NO
+                        {asset?.openLoanAmount == '0' ? "Yes" : "No"}
                       </div>
                     </td>
                     <td>
@@ -420,8 +417,8 @@ const Liquidation = ({
                         {/* <img
                         src={
                           CoinClassNames[
-                            EventMap[asset.collateralMarket.toUpperCase()]
-                          ] || asset.collateralMarket.toUpperCase()
+                            EventMap[asset.collateralMarket?.toUpperCase()]
+                          ] || asset.collateralMarket?.toUpperCase()
                         }
                       /> */}
                         -

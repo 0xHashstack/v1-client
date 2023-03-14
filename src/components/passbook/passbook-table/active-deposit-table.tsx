@@ -31,12 +31,12 @@ const ActiveDepositTable = ({
                       <img
                         src={
                           CoinClassNames[
-                            EventMap[asset.market.toUpperCase()]
-                          ] || asset.market.toUpperCase()
+                            EventMap[asset.market?.toUpperCase()]
+                          ] || asset.market?.toUpperCase()
                         }
                       />
                     </div>
-                    <span>{EventMap[asset.market.toUpperCase()]}</span>
+                    <span>{EventMap[asset.market?.toUpperCase()]}</span>
                   </div>
                 </th>
                 <td>

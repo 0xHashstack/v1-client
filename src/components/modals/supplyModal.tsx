@@ -50,6 +50,9 @@ const SupplyModal = ({
   accountAddress,
   toggleDropdown,
   tokenName,
+  setTokenName,
+  tokenSymbol, 
+  setTokenSymbol,
   setmodal_deposit,
   tog_center,
   setCommitmentDropDown,
@@ -58,7 +61,6 @@ const SupplyModal = ({
   commitmentValue,
   dropDown,
   Coins,
-  setTokenName,
   setDropDown,
   setDropDownArrow,
   setAsset,
@@ -91,6 +93,9 @@ const SupplyModal = ({
   accountAddress: any;
   toggleDropdown: any;
   tokenName: any;
+  setTokenName: any;
+  tokenSymbol: any;
+  setTokenSymbol: any;
   setmodal_deposit: any;
   tog_center: any;
   setCommitmentDropDown: any;
@@ -99,7 +104,6 @@ const SupplyModal = ({
   commitmentValue: any;
   dropDown: any;
   Coins: any;
-  setTokenName: any;
   setDropDown: any;
   setDropDownArrow: any;
   setAsset: any;
@@ -195,7 +199,7 @@ const SupplyModal = ({
                         width="18px"
                         height="18px"
                       ></img>
-                      &nbsp;&nbsp;{tokenName}
+                      &nbsp;&nbsp;{tokenSymbol}
                     </div>
                     <div
                       style={{
@@ -308,6 +312,7 @@ const SupplyModal = ({
                               }}
                               onClick={() => {
                                 setTokenName(`${coin.name}`);
+                                setTokenSymbol(`${coin.symbol}`);
                                 setDropDown(false);
                                 setDropDownArrow(Downarrow);
                                 setAsset(`${coin.name}`);
@@ -321,7 +326,7 @@ const SupplyModal = ({
                                 height="15px"
                                 alt="coin image"
                               />
-                              <div>&nbsp;&nbsp;&nbsp;{coin.name}</div>
+                              <div>&nbsp;&nbsp;&nbsp;{coin.symbol}</div>
                             </div>
                             {coin.name !== "DAI" ? <hr /> : null}
                           </>

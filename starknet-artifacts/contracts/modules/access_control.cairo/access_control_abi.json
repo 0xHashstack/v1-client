@@ -105,6 +105,12 @@
         "type": "function"
     },
     {
+        "inputs": [],
+        "name": "initialise_roles_admin",
+        "outputs": [],
+        "type": "function"
+    },
+    {
         "inputs": [
             {
                 "name": "address",
