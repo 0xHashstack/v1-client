@@ -96,28 +96,33 @@
                 "type": "Uint256"
             },
             {
-                "name": "debt_category",
+                "name": "is_loan_withdrawn",
                 "offset": 9,
                 "type": "felt"
             },
             {
-                "name": "state",
+                "name": "debt_category",
                 "offset": 10,
                 "type": "felt"
             },
             {
-                "name": "l3_integration",
+                "name": "state",
                 "offset": 11,
                 "type": "felt"
             },
             {
-                "name": "created_at",
+                "name": "l3_integration",
                 "offset": 12,
+                "type": "felt"
+            },
+            {
+                "name": "created_at",
+                "offset": 13,
                 "type": "felt"
             }
         ],
         "name": "Loan",
-        "size": 13,
+        "size": 14,
         "type": "struct"
     },
     {

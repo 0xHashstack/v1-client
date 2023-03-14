@@ -12,16 +12,16 @@
                     "__main__",
                     "__main__._get_l3_usd_value"
                 ],
-                "end_pc": 275,
+                "end_pc": 281,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 15,
-                        "offset": 251
+                        "offset": 259
                     },
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 272,
+                "start_pc": 278,
                 "value": "L3 integration address not set"
             },
             {
@@ -29,16 +29,16 @@
                     "__main__",
                     "__main__._get_l3_usd_value"
                 ],
-                "end_pc": 278,
+                "end_pc": 284,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 15,
-                        "offset": 254
+                        "offset": 262
                     },
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 275,
+                "start_pc": 281,
                 "value": "L3 integration selector not set"
             },
             {
@@ -46,16 +46,16 @@
                     "__main__",
                     "__main__._get_l3_usd_value"
                 ],
-                "end_pc": 291,
+                "end_pc": 297,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 15,
-                        "offset": 271
+                        "offset": 279
                     },
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 289,
+                "start_pc": 295,
                 "value": "Unexpected output size: l3_usd_value"
             }
         ],
@@ -249,21 +249,27 @@
             "0x1104800180018000",
             "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffa8",
             "0x48127ffe7fff8000",
+            "0x482480017fa38000",
+            "0xd",
+            "0x1104800180018000",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffa3",
+            "0x48127ffe7fff8000",
+            "0x48127f9a7fff8000",
+            "0x48127f9a7fff8000",
             "0x48127fa17fff8000",
-            "0x48127fa17fff8000",
-            "0x48127fa87fff8000",
-            "0x48127fae7fff8000",
-            "0x48127fb47fff8000",
-            "0x48127fba7fff8000",
-            "0x48127fc07fff8000",
-            "0x48127fc67fff8000",
-            "0x48127fcc7fff8000",
-            "0x48127fd27fff8000",
-            "0x48127fd87fff8000",
-            "0x48127fde7fff8000",
-            "0x48127fe47fff8000",
-            "0x48127fea7fff8000",
-            "0x48127ff07fff8000",
+            "0x48127fa77fff8000",
+            "0x48127fad7fff8000",
+            "0x48127fb37fff8000",
+            "0x48127fb97fff8000",
+            "0x48127fbf7fff8000",
+            "0x48127fc57fff8000",
+            "0x48127fcb7fff8000",
+            "0x48127fd17fff8000",
+            "0x48127fd77fff8000",
+            "0x48127fdd7fff8000",
+            "0x48127fe37fff8000",
+            "0x48127fe97fff8000",
+            "0x48127fef7fff8000",
             "0x208b7fff7fff7ffe",
             "0x480a7ffc7fff8000",
             "0x480a7ffd7fff8000",
@@ -277,7 +283,7 @@
             "0x480a7ffb7fff8000",
             "0x48127ffe7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff8a",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff84",
             "0x48127ffe7fff8000",
             "0x48127ff57fff8000",
             "0x48127ff57fff8000",
@@ -288,14 +294,14 @@
             "0x35ddd8188986f63ef5046eb0c62e33a3a8e97e57c95f6861b417deee3cb6432",
             "0x480a7ffc7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff25",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff1f",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff22",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff1c",
             "0x480a7ffb7fff8000",
             "0x48127ffe7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff36",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff30",
             "0x48127fe17fff8000",
             "0x48127ffd7fff8000",
             "0x48127ffd7fff8000",
@@ -309,7 +315,7 @@
             "0x480a7ff97fff8000",
             "0x48127ffe7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff6a",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff64",
             "0x48127ffe7fff8000",
             "0x48127ff57fff8000",
             "0x48127ff57fff8000",
@@ -322,10 +328,10 @@
             "0x480a7ffb7fff8000",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff73",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff6d",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
             "0x1104800180018000",
             "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffc9",
             "0x48127ffc7fff8000",
@@ -338,13 +344,13 @@
             "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffdf",
             "0x48127fbb7fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffef9",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffef3",
             "0x48127ffc7fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffef6",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffef0",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffeeb",
-            "0x400080007fff7f8f",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffee5",
+            "0x400080007fff7f8e",
             "0x48127ff37fff8000",
             "0x48127fb17fff8000",
             "0x48127ff47fff8000",
@@ -352,7 +358,7 @@
             "0x1",
             "0x48127ffb7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff25",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff1f",
             "0x400680017fff7ffe",
             "0x3",
             "0x400180007fff8000",
@@ -373,7 +379,7 @@
                 "autogen/starknet/storage_var/l3_integration_address/decl.cairo": "namespace l3_integration_address {\n    from starkware.starknet.common.storage import normalize_address\n    from starkware.starknet.common.syscalls import storage_read, storage_write\n    from starkware.cairo.common.cairo_builtins import HashBuiltin\n    from starkware.cairo.common.hash import hash2\n\n    func addr{pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (res: felt) {\n        let res = 0;\n        call hash2;\n        call normalize_address;\n    }\n\n    func read{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (\n        address: felt\n    ) {\n        let storage_addr = 0;\n        call addr;\n        call storage_read;\n    }\n\n    func write{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(value: felt) {\n        let storage_addr = 0;\n        call addr;\n        call storage_write;\n    }\n}",
                 "autogen/starknet/storage_var/l3_integration_address/impl.cairo": "namespace l3_integration_address {\n    from starkware.starknet.common.storage import normalize_address\n    from starkware.starknet.common.syscalls import storage_read, storage_write\n    from starkware.cairo.common.cairo_builtins import HashBuiltin\n    from starkware.cairo.common.hash import hash2\n\n    func addr{pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (res: felt) {\n        let res = 1521085648899414168081627617809255971997005765443876152231774855657854539197;\n        return (res=res);\n    }\n\n    func read{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}() -> (\n        address: felt\n    ) {\n        let (storage_addr) = addr();\n        let (__storage_var_temp0) = storage_read(address=storage_addr + 0);\n\n        tempvar syscall_ptr = syscall_ptr;\n        tempvar pedersen_ptr = pedersen_ptr;\n        tempvar range_check_ptr = range_check_ptr;\n        tempvar __storage_var_temp0: felt = __storage_var_temp0;\n        return ([cast(&__storage_var_temp0, felt*)],);\n    }\n\n    func write{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(value: felt) {\n        let (storage_addr) = addr();\n        storage_write(address=storage_addr + 0, value=[cast(&value, felt) + 0]);\n        return ();\n    }\n}",
                 "autogen/starknet/storage_var/loan_records/decl.cairo": "namespace loan_records {\n    from starkware.starknet.common.storage import normalize_address\n    from starkware.starknet.common.syscalls import storage_read, storage_write\n    from starkware.cairo.common.cairo_builtins import HashBuiltin\n    from starkware.cairo.common.hash import hash2\n\n    func addr{pedersen_ptr: HashBuiltin*, range_check_ptr}(loan_id: felt) -> (res: felt) {\n        let res = 0;\n        call hash2;\n        call normalize_address;\n    }\n\n    func read{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(loan_id: felt) -> (\n        loan: Loan\n    ) {\n        let storage_addr = 0;\n        call addr;\n        call storage_read;\n    }\n\n    func write{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(\n        loan_id: felt, value: Loan\n    ) {\n        let storage_addr = 0;\n        call addr;\n        call storage_write;\n    }\n}",
-                "autogen/starknet/storage_var/loan_records/impl.cairo": "namespace loan_records {\n    from starkware.starknet.common.storage import normalize_address\n    from starkware.starknet.common.syscalls import storage_read, storage_write\n    from starkware.cairo.common.cairo_builtins import HashBuiltin\n    from starkware.cairo.common.hash import hash2\n\n    func addr{pedersen_ptr: HashBuiltin*, range_check_ptr}(loan_id: felt) -> (res: felt) {\n        let res = 877467160753539620248612475864938335137858660269910977082309834132099448710;\n        let (res) = hash2{hash_ptr=pedersen_ptr}(res, cast(&loan_id, felt*)[0]);\n        let (res) = normalize_address(addr=res);\n        return (res=res);\n    }\n\n    func read{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(loan_id: felt) -> (\n        loan: Loan\n    ) {\n        let (storage_addr) = addr(loan_id);\n        let (__storage_var_temp0) = storage_read(address=storage_addr + 0);\n        let (__storage_var_temp1) = storage_read(address=storage_addr + 1);\n        let (__storage_var_temp2) = storage_read(address=storage_addr + 2);\n        let (__storage_var_temp3) = storage_read(address=storage_addr + 3);\n        let (__storage_var_temp4) = storage_read(address=storage_addr + 4);\n        let (__storage_var_temp5) = storage_read(address=storage_addr + 5);\n        let (__storage_var_temp6) = storage_read(address=storage_addr + 6);\n        let (__storage_var_temp7) = storage_read(address=storage_addr + 7);\n        let (__storage_var_temp8) = storage_read(address=storage_addr + 8);\n        let (__storage_var_temp9) = storage_read(address=storage_addr + 9);\n        let (__storage_var_temp10) = storage_read(address=storage_addr + 10);\n        let (__storage_var_temp11) = storage_read(address=storage_addr + 11);\n        let (__storage_var_temp12) = storage_read(address=storage_addr + 12);\n\n        tempvar syscall_ptr = syscall_ptr;\n        tempvar pedersen_ptr = pedersen_ptr;\n        tempvar range_check_ptr = range_check_ptr;\n        tempvar __storage_var_temp0: felt = __storage_var_temp0;\n        tempvar __storage_var_temp1: felt = __storage_var_temp1;\n        tempvar __storage_var_temp2: felt = __storage_var_temp2;\n        tempvar __storage_var_temp3: felt = __storage_var_temp3;\n        tempvar __storage_var_temp4: felt = __storage_var_temp4;\n        tempvar __storage_var_temp5: felt = __storage_var_temp5;\n        tempvar __storage_var_temp6: felt = __storage_var_temp6;\n        tempvar __storage_var_temp7: felt = __storage_var_temp7;\n        tempvar __storage_var_temp8: felt = __storage_var_temp8;\n        tempvar __storage_var_temp9: felt = __storage_var_temp9;\n        tempvar __storage_var_temp10: felt = __storage_var_temp10;\n        tempvar __storage_var_temp11: felt = __storage_var_temp11;\n        tempvar __storage_var_temp12: felt = __storage_var_temp12;\n        return ([cast(&__storage_var_temp0, Loan*)],);\n    }\n\n    func write{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(\n        loan_id: felt, value: Loan\n    ) {\n        let (storage_addr) = addr(loan_id);\n        storage_write(address=storage_addr + 0, value=[cast(&value, felt) + 0]);\n        storage_write(address=storage_addr + 1, value=[cast(&value, felt) + 1]);\n        storage_write(address=storage_addr + 2, value=[cast(&value, felt) + 2]);\n        storage_write(address=storage_addr + 3, value=[cast(&value, felt) + 3]);\n        storage_write(address=storage_addr + 4, value=[cast(&value, felt) + 4]);\n        storage_write(address=storage_addr + 5, value=[cast(&value, felt) + 5]);\n        storage_write(address=storage_addr + 6, value=[cast(&value, felt) + 6]);\n        storage_write(address=storage_addr + 7, value=[cast(&value, felt) + 7]);\n        storage_write(address=storage_addr + 8, value=[cast(&value, felt) + 8]);\n        storage_write(address=storage_addr + 9, value=[cast(&value, felt) + 9]);\n        storage_write(address=storage_addr + 10, value=[cast(&value, felt) + 10]);\n        storage_write(address=storage_addr + 11, value=[cast(&value, felt) + 11]);\n        storage_write(address=storage_addr + 12, value=[cast(&value, felt) + 12]);\n        return ();\n    }\n}"
+                "autogen/starknet/storage_var/loan_records/impl.cairo": "namespace loan_records {\n    from starkware.starknet.common.storage import normalize_address\n    from starkware.starknet.common.syscalls import storage_read, storage_write\n    from starkware.cairo.common.cairo_builtins import HashBuiltin\n    from starkware.cairo.common.hash import hash2\n\n    func addr{pedersen_ptr: HashBuiltin*, range_check_ptr}(loan_id: felt) -> (res: felt) {\n        let res = 877467160753539620248612475864938335137858660269910977082309834132099448710;\n        let (res) = hash2{hash_ptr=pedersen_ptr}(res, cast(&loan_id, felt*)[0]);\n        let (res) = normalize_address(addr=res);\n        return (res=res);\n    }\n\n    func read{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(loan_id: felt) -> (\n        loan: Loan\n    ) {\n        let (storage_addr) = addr(loan_id);\n        let (__storage_var_temp0) = storage_read(address=storage_addr + 0);\n        let (__storage_var_temp1) = storage_read(address=storage_addr + 1);\n        let (__storage_var_temp2) = storage_read(address=storage_addr + 2);\n        let (__storage_var_temp3) = storage_read(address=storage_addr + 3);\n        let (__storage_var_temp4) = storage_read(address=storage_addr + 4);\n        let (__storage_var_temp5) = storage_read(address=storage_addr + 5);\n        let (__storage_var_temp6) = storage_read(address=storage_addr + 6);\n        let (__storage_var_temp7) = storage_read(address=storage_addr + 7);\n        let (__storage_var_temp8) = storage_read(address=storage_addr + 8);\n        let (__storage_var_temp9) = storage_read(address=storage_addr + 9);\n        let (__storage_var_temp10) = storage_read(address=storage_addr + 10);\n        let (__storage_var_temp11) = storage_read(address=storage_addr + 11);\n        let (__storage_var_temp12) = storage_read(address=storage_addr + 12);\n        let (__storage_var_temp13) = storage_read(address=storage_addr + 13);\n\n        tempvar syscall_ptr = syscall_ptr;\n        tempvar pedersen_ptr = pedersen_ptr;\n        tempvar range_check_ptr = range_check_ptr;\n        tempvar __storage_var_temp0: felt = __storage_var_temp0;\n        tempvar __storage_var_temp1: felt = __storage_var_temp1;\n        tempvar __storage_var_temp2: felt = __storage_var_temp2;\n        tempvar __storage_var_temp3: felt = __storage_var_temp3;\n        tempvar __storage_var_temp4: felt = __storage_var_temp4;\n        tempvar __storage_var_temp5: felt = __storage_var_temp5;\n        tempvar __storage_var_temp6: felt = __storage_var_temp6;\n        tempvar __storage_var_temp7: felt = __storage_var_temp7;\n        tempvar __storage_var_temp8: felt = __storage_var_temp8;\n        tempvar __storage_var_temp9: felt = __storage_var_temp9;\n        tempvar __storage_var_temp10: felt = __storage_var_temp10;\n        tempvar __storage_var_temp11: felt = __storage_var_temp11;\n        tempvar __storage_var_temp12: felt = __storage_var_temp12;\n        tempvar __storage_var_temp13: felt = __storage_var_temp13;\n        return ([cast(&__storage_var_temp0, Loan*)],);\n    }\n\n    func write{syscall_ptr: felt*, pedersen_ptr: HashBuiltin*, range_check_ptr}(\n        loan_id: felt, value: Loan\n    ) {\n        let (storage_addr) = addr(loan_id);\n        storage_write(address=storage_addr + 0, value=[cast(&value, felt) + 0]);\n        storage_write(address=storage_addr + 1, value=[cast(&value, felt) + 1]);\n        storage_write(address=storage_addr + 2, value=[cast(&value, felt) + 2]);\n        storage_write(address=storage_addr + 3, value=[cast(&value, felt) + 3]);\n        storage_write(address=storage_addr + 4, value=[cast(&value, felt) + 4]);\n        storage_write(address=storage_addr + 5, value=[cast(&value, felt) + 5]);\n        storage_write(address=storage_addr + 6, value=[cast(&value, felt) + 6]);\n        storage_write(address=storage_addr + 7, value=[cast(&value, felt) + 7]);\n        storage_write(address=storage_addr + 8, value=[cast(&value, felt) + 8]);\n        storage_write(address=storage_addr + 9, value=[cast(&value, felt) + 9]);\n        storage_write(address=storage_addr + 10, value=[cast(&value, felt) + 10]);\n        storage_write(address=storage_addr + 11, value=[cast(&value, felt) + 11]);\n        storage_write(address=storage_addr + 12, value=[cast(&value, felt) + 12]);\n        storage_write(address=storage_addr + 13, value=[cast(&value, felt) + 13]);\n        return ();\n    }\n}"
             },
             "instruction_locations": {
                 "0": {
@@ -3715,13 +3721,25 @@
                                 },
                                 "parent_location": [
                                     {
-                                        "end_col": 42,
-                                        "end_line": 32,
+                                        "end_col": 37,
+                                        "end_line": 348,
                                         "input_file": {
-                                            "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
+                                            "filename": "/Users/venkatkunisetty/cairo_venv/lib/python3.9/site-packages/starkware/starknet/common/syscalls.cairo"
                                         },
-                                        "start_col": 31,
-                                        "start_line": 32
+                                        "parent_location": [
+                                            {
+                                                "end_col": 77,
+                                                "end_line": 31,
+                                                "input_file": {
+                                                    "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
+                                                },
+                                                "start_col": 38,
+                                                "start_line": 31
+                                            },
+                                            "While trying to retrieve the implicit argument 'syscall_ptr' in:"
+                                        ],
+                                        "start_col": 19,
+                                        "start_line": 348
                                     },
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
@@ -3735,6 +3753,84 @@
                     }
                 },
                 "185": {
+                    "accessible_scopes": [
+                        "contracts.storages.loan_store",
+                        "contracts.storages.loan_store.loan_records",
+                        "contracts.storages.loan_store.loan_records.read"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 76,
+                        "end_line": 31,
+                        "input_file": {
+                            "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
+                        },
+                        "start_col": 59,
+                        "start_line": 31
+                    }
+                },
+                "187": {
+                    "accessible_scopes": [
+                        "contracts.storages.loan_store",
+                        "contracts.storages.loan_store.loan_records",
+                        "contracts.storages.loan_store.loan_records.read"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 77,
+                        "end_line": 31,
+                        "input_file": {
+                            "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
+                        },
+                        "start_col": 38,
+                        "start_line": 31
+                    }
+                },
+                "189": {
+                    "accessible_scopes": [
+                        "contracts.storages.loan_store",
+                        "contracts.storages.loan_store.loan_records",
+                        "contracts.storages.loan_store.loan_records.read"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 37,
+                        "end_line": 348,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/cairo_venv/lib/python3.9/site-packages/starkware/starknet/common/syscalls.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 77,
+                                "end_line": 31,
+                                "input_file": {
+                                    "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
+                                },
+                                "parent_location": [
+                                    {
+                                        "end_col": 42,
+                                        "end_line": 33,
+                                        "input_file": {
+                                            "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
+                                        },
+                                        "start_col": 31,
+                                        "start_line": 33
+                                    },
+                                    "While expanding the reference 'syscall_ptr' in:"
+                                ],
+                                "start_col": 38,
+                                "start_line": 31
+                            },
+                            "While trying to update the implicit return value 'syscall_ptr' in:"
+                        ],
+                        "start_col": 19,
+                        "start_line": 348
+                    }
+                },
+                "190": {
                     "accessible_scopes": [
                         "contracts.storages.loan_store",
                         "contracts.storages.loan_store.loan_records",
@@ -3758,12 +3854,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 44,
-                                        "end_line": 33,
+                                        "end_line": 34,
                                         "input_file": {
                                             "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
                                         },
                                         "start_col": 32,
-                                        "start_line": 33
+                                        "start_line": 34
                                     },
                                     "While expanding the reference 'pedersen_ptr' in:"
                                 ],
@@ -3776,7 +3872,7 @@
                         "start_line": 7
                     }
                 },
-                "186": {
+                "191": {
                     "accessible_scopes": [
                         "contracts.storages.loan_store",
                         "contracts.storages.loan_store.loan_records",
@@ -3800,12 +3896,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 50,
-                                        "end_line": 34,
+                                        "end_line": 35,
                                         "input_file": {
                                             "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
                                         },
                                         "start_col": 35,
-                                        "start_line": 34
+                                        "start_line": 35
                                     },
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
@@ -3818,7 +3914,7 @@
                         "start_line": 7
                     }
                 },
-                "187": {
+                "192": {
                     "accessible_scopes": [
                         "contracts.storages.loan_store",
                         "contracts.storages.loan_store.loan_records",
@@ -3835,12 +3931,12 @@
                         "parent_location": [
                             {
                                 "end_col": 64,
-                                "end_line": 35,
+                                "end_line": 36,
                                 "input_file": {
                                     "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
                                 },
                                 "start_col": 45,
-                                "start_line": 35
+                                "start_line": 36
                             },
                             "While expanding the reference '__storage_var_temp0' in:"
                         ],
@@ -3848,7 +3944,7 @@
                         "start_line": 18
                     }
                 },
-                "188": {
+                "193": {
                     "accessible_scopes": [
                         "contracts.storages.loan_store",
                         "contracts.storages.loan_store.loan_records",
@@ -3865,12 +3961,12 @@
                         "parent_location": [
                             {
                                 "end_col": 64,
-                                "end_line": 36,
+                                "end_line": 37,
                                 "input_file": {
                                     "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
                                 },
                                 "start_col": 45,
-                                "start_line": 36
+                                "start_line": 37
                             },
                             "While expanding the reference '__storage_var_temp1' in:"
                         ],
@@ -3878,7 +3974,7 @@
                         "start_line": 19
                     }
                 },
-                "189": {
+                "194": {
                     "accessible_scopes": [
                         "contracts.storages.loan_store",
                         "contracts.storages.loan_store.loan_records",
@@ -3895,12 +3991,12 @@
                         "parent_location": [
                             {
                                 "end_col": 64,
-                                "end_line": 37,
+                                "end_line": 38,
                                 "input_file": {
                                     "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
                                 },
                                 "start_col": 45,
-                                "start_line": 37
+                                "start_line": 38
                             },
                             "While expanding the reference '__storage_var_temp2' in:"
                         ],
@@ -3908,7 +4004,7 @@
                         "start_line": 20
                     }
                 },
-                "190": {
+                "195": {
                     "accessible_scopes": [
                         "contracts.storages.loan_store",
                         "contracts.storages.loan_store.loan_records",
@@ -3925,12 +4021,12 @@
                         "parent_location": [
                             {
                                 "end_col": 64,
-                                "end_line": 38,
+                                "end_line": 39,
                                 "input_file": {
                                     "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
                                 },
                                 "start_col": 45,
-                                "start_line": 38
+                                "start_line": 39
                             },
                             "While expanding the reference '__storage_var_temp3' in:"
                         ],
@@ -3938,7 +4034,7 @@
                         "start_line": 21
                     }
                 },
-                "191": {
+                "196": {
                     "accessible_scopes": [
                         "contracts.storages.loan_store",
                         "contracts.storages.loan_store.loan_records",
@@ -3955,12 +4051,12 @@
                         "parent_location": [
                             {
                                 "end_col": 64,
-                                "end_line": 39,
+                                "end_line": 40,
                                 "input_file": {
                                     "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
                                 },
                                 "start_col": 45,
-                                "start_line": 39
+                                "start_line": 40
                             },
                             "While expanding the reference '__storage_var_temp4' in:"
                         ],
@@ -3968,7 +4064,7 @@
                         "start_line": 22
                     }
                 },
-                "192": {
+                "197": {
                     "accessible_scopes": [
                         "contracts.storages.loan_store",
                         "contracts.storages.loan_store.loan_records",
@@ -3985,12 +4081,12 @@
                         "parent_location": [
                             {
                                 "end_col": 64,
-                                "end_line": 40,
+                                "end_line": 41,
                                 "input_file": {
                                     "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
                                 },
                                 "start_col": 45,
-                                "start_line": 40
+                                "start_line": 41
                             },
                             "While expanding the reference '__storage_var_temp5' in:"
                         ],
@@ -3998,7 +4094,7 @@
                         "start_line": 23
                     }
                 },
-                "193": {
+                "198": {
                     "accessible_scopes": [
                         "contracts.storages.loan_store",
                         "contracts.storages.loan_store.loan_records",
@@ -4015,12 +4111,12 @@
                         "parent_location": [
                             {
                                 "end_col": 64,
-                                "end_line": 41,
+                                "end_line": 42,
                                 "input_file": {
                                     "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
                                 },
                                 "start_col": 45,
-                                "start_line": 41
+                                "start_line": 42
                             },
                             "While expanding the reference '__storage_var_temp6' in:"
                         ],
@@ -4028,7 +4124,7 @@
                         "start_line": 24
                     }
                 },
-                "194": {
+                "199": {
                     "accessible_scopes": [
                         "contracts.storages.loan_store",
                         "contracts.storages.loan_store.loan_records",
@@ -4045,12 +4141,12 @@
                         "parent_location": [
                             {
                                 "end_col": 64,
-                                "end_line": 42,
+                                "end_line": 43,
                                 "input_file": {
                                     "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
                                 },
                                 "start_col": 45,
-                                "start_line": 42
+                                "start_line": 43
                             },
                             "While expanding the reference '__storage_var_temp7' in:"
                         ],
@@ -4058,7 +4154,7 @@
                         "start_line": 25
                     }
                 },
-                "195": {
+                "200": {
                     "accessible_scopes": [
                         "contracts.storages.loan_store",
                         "contracts.storages.loan_store.loan_records",
@@ -4075,12 +4171,12 @@
                         "parent_location": [
                             {
                                 "end_col": 64,
-                                "end_line": 43,
+                                "end_line": 44,
                                 "input_file": {
                                     "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
                                 },
                                 "start_col": 45,
-                                "start_line": 43
+                                "start_line": 44
                             },
                             "While expanding the reference '__storage_var_temp8' in:"
                         ],
@@ -4088,7 +4184,7 @@
                         "start_line": 26
                     }
                 },
-                "196": {
+                "201": {
                     "accessible_scopes": [
                         "contracts.storages.loan_store",
                         "contracts.storages.loan_store.loan_records",
@@ -4105,12 +4201,12 @@
                         "parent_location": [
                             {
                                 "end_col": 64,
-                                "end_line": 44,
+                                "end_line": 45,
                                 "input_file": {
                                     "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
                                 },
                                 "start_col": 45,
-                                "start_line": 44
+                                "start_line": 45
                             },
                             "While expanding the reference '__storage_var_temp9' in:"
                         ],
@@ -4118,7 +4214,7 @@
                         "start_line": 27
                     }
                 },
-                "197": {
+                "202": {
                     "accessible_scopes": [
                         "contracts.storages.loan_store",
                         "contracts.storages.loan_store.loan_records",
@@ -4135,12 +4231,12 @@
                         "parent_location": [
                             {
                                 "end_col": 66,
-                                "end_line": 45,
+                                "end_line": 46,
                                 "input_file": {
                                     "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
                                 },
                                 "start_col": 46,
-                                "start_line": 45
+                                "start_line": 46
                             },
                             "While expanding the reference '__storage_var_temp10' in:"
                         ],
@@ -4148,7 +4244,7 @@
                         "start_line": 28
                     }
                 },
-                "198": {
+                "203": {
                     "accessible_scopes": [
                         "contracts.storages.loan_store",
                         "contracts.storages.loan_store.loan_records",
@@ -4165,12 +4261,12 @@
                         "parent_location": [
                             {
                                 "end_col": 66,
-                                "end_line": 46,
+                                "end_line": 47,
                                 "input_file": {
                                     "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
                                 },
                                 "start_col": 46,
-                                "start_line": 46
+                                "start_line": 47
                             },
                             "While expanding the reference '__storage_var_temp11' in:"
                         ],
@@ -4178,7 +4274,7 @@
                         "start_line": 29
                     }
                 },
-                "199": {
+                "204": {
                     "accessible_scopes": [
                         "contracts.storages.loan_store",
                         "contracts.storages.loan_store.loan_records",
@@ -4195,12 +4291,12 @@
                         "parent_location": [
                             {
                                 "end_col": 66,
-                                "end_line": 47,
+                                "end_line": 48,
                                 "input_file": {
                                     "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
                                 },
                                 "start_col": 46,
-                                "start_line": 47
+                                "start_line": 48
                             },
                             "While expanding the reference '__storage_var_temp12' in:"
                         ],
@@ -4208,7 +4304,37 @@
                         "start_line": 30
                     }
                 },
-                "200": {
+                "205": {
+                    "accessible_scopes": [
+                        "contracts.storages.loan_store",
+                        "contracts.storages.loan_store.loan_records",
+                        "contracts.storages.loan_store.loan_records.read"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 34,
+                        "end_line": 31,
+                        "input_file": {
+                            "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 66,
+                                "end_line": 49,
+                                "input_file": {
+                                    "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
+                                },
+                                "start_col": 46,
+                                "start_line": 49
+                            },
+                            "While expanding the reference '__storage_var_temp13' in:"
+                        ],
+                        "start_col": 14,
+                        "start_line": 31
+                    }
+                },
+                "206": {
                     "accessible_scopes": [
                         "contracts.storages.loan_store",
                         "contracts.storages.loan_store.loan_records",
@@ -4218,15 +4344,15 @@
                     "hints": [],
                     "inst": {
                         "end_col": 55,
-                        "end_line": 48,
+                        "end_line": 50,
                         "input_file": {
                             "filename": "autogen/starknet/storage_var/loan_records/impl.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 48
+                        "start_line": 50
                     }
                 },
-                "201": {
+                "207": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.l3_integration_address",
@@ -4268,7 +4394,7 @@
                         "start_line": 7
                     }
                 },
-                "202": {
+                "208": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.l3_integration_address",
@@ -4310,7 +4436,7 @@
                         "start_line": 7
                     }
                 },
-                "203": {
+                "209": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.l3_integration_address",
@@ -4340,7 +4466,7 @@
                         "start_line": 8
                     }
                 },
-                "205": {
+                "211": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.l3_integration_address",
@@ -4358,7 +4484,7 @@
                         "start_line": 9
                     }
                 },
-                "206": {
+                "212": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.l3_integration_address",
@@ -4400,7 +4526,7 @@
                         "start_line": 12
                     }
                 },
-                "207": {
+                "213": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.l3_integration_address",
@@ -4442,7 +4568,7 @@
                         "start_line": 12
                     }
                 },
-                "208": {
+                "214": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.l3_integration_address",
@@ -4460,7 +4586,7 @@
                         "start_line": 15
                     }
                 },
-                "210": {
+                "216": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.l3_integration_address",
@@ -4502,7 +4628,7 @@
                         "start_line": 12
                     }
                 },
-                "211": {
+                "217": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.l3_integration_address",
@@ -4532,7 +4658,7 @@
                         "start_line": 15
                     }
                 },
-                "212": {
+                "218": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.l3_integration_address",
@@ -4550,7 +4676,7 @@
                         "start_line": 16
                     }
                 },
-                "214": {
+                "220": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.l3_integration_address",
@@ -4592,7 +4718,7 @@
                         "start_line": 348
                     }
                 },
-                "215": {
+                "221": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.l3_integration_address",
@@ -4634,7 +4760,7 @@
                         "start_line": 7
                     }
                 },
-                "216": {
+                "222": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.l3_integration_address",
@@ -4676,7 +4802,7 @@
                         "start_line": 7
                     }
                 },
-                "217": {
+                "223": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.l3_integration_address",
@@ -4706,7 +4832,7 @@
                         "start_line": 16
                     }
                 },
-                "218": {
+                "224": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.l3_integration_address",
@@ -4724,7 +4850,7 @@
                         "start_line": 22
                     }
                 },
-                "219": {
+                "225": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -4754,7 +4880,7 @@
                         "start_line": 7
                     }
                 },
-                "220": {
+                "226": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -4784,7 +4910,7 @@
                         "start_line": 10
                     }
                 },
-                "222": {
+                "228": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -4802,7 +4928,7 @@
                         "start_line": 11
                     }
                 },
-                "223": {
+                "229": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -4820,7 +4946,7 @@
                         "start_line": 11
                     }
                 },
-                "225": {
+                "231": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -4838,7 +4964,7 @@
                         "start_line": 12
                     }
                 },
-                "226": {
+                "232": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -4856,7 +4982,7 @@
                         "start_line": 12
                     }
                 },
-                "228": {
+                "234": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -4898,7 +5024,7 @@
                         "start_line": 7
                     }
                 },
-                "229": {
+                "235": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -4928,7 +5054,7 @@
                         "start_line": 12
                     }
                 },
-                "230": {
+                "236": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -4946,7 +5072,7 @@
                         "start_line": 13
                     }
                 },
-                "232": {
+                "238": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -4988,7 +5114,7 @@
                         "start_line": 12
                     }
                 },
-                "233": {
+                "239": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -5042,7 +5168,7 @@
                         "start_line": 12
                     }
                 },
-                "234": {
+                "240": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -5072,7 +5198,7 @@
                         "start_line": 13
                     }
                 },
-                "235": {
+                "241": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -5090,7 +5216,7 @@
                         "start_line": 14
                     }
                 },
-                "236": {
+                "242": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -5132,7 +5258,7 @@
                         "start_line": 17
                     }
                 },
-                "237": {
+                "243": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -5174,7 +5300,7 @@
                         "start_line": 17
                     }
                 },
-                "238": {
+                "244": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -5204,7 +5330,7 @@
                         "start_line": 18
                     }
                 },
-                "239": {
+                "245": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -5234,7 +5360,7 @@
                         "start_line": 18
                     }
                 },
-                "240": {
+                "246": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -5252,7 +5378,7 @@
                         "start_line": 20
                     }
                 },
-                "242": {
+                "248": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -5294,7 +5420,7 @@
                         "start_line": 17
                     }
                 },
-                "243": {
+                "249": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -5324,7 +5450,7 @@
                         "start_line": 20
                     }
                 },
-                "244": {
+                "250": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -5342,7 +5468,7 @@
                         "start_line": 21
                     }
                 },
-                "246": {
+                "252": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -5384,7 +5510,7 @@
                         "start_line": 348
                     }
                 },
-                "247": {
+                "253": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -5426,7 +5552,7 @@
                         "start_line": 7
                     }
                 },
-                "248": {
+                "254": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -5468,7 +5594,7 @@
                         "start_line": 7
                     }
                 },
-                "249": {
+                "255": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -5498,7 +5624,7 @@
                         "start_line": 21
                     }
                 },
-                "250": {
+                "256": {
                     "accessible_scopes": [
                         "contracts.storages.open_store",
                         "contracts.storages.open_store.integration_mapping",
@@ -5516,7 +5642,7 @@
                         "start_line": 27
                     }
                 },
-                "251": {
+                "257": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -5533,7 +5659,7 @@
                         "start_line": 43
                     }
                 },
-                "253": {
+                "259": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -5574,7 +5700,7 @@
                         "start_line": 40
                     }
                 },
-                "254": {
+                "260": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -5615,7 +5741,7 @@
                         "start_line": 40
                     }
                 },
-                "255": {
+                "261": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -5656,7 +5782,7 @@
                         "start_line": 40
                     }
                 },
-                "256": {
+                "262": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -5685,7 +5811,7 @@
                         "start_line": 41
                     }
                 },
-                "257": {
+                "263": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -5702,7 +5828,7 @@
                         "start_line": 45
                     }
                 },
-                "259": {
+                "265": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -5755,7 +5881,7 @@
                         "start_line": 13
                     }
                 },
-                "260": {
+                "266": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -5808,7 +5934,7 @@
                         "start_line": 13
                     }
                 },
-                "261": {
+                "267": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -5861,7 +5987,7 @@
                         "start_line": 13
                     }
                 },
-                "262": {
+                "268": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -5878,7 +6004,7 @@
                         "start_line": 46
                     }
                 },
-                "264": {
+                "270": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -5931,7 +6057,7 @@
                         "start_line": 13
                     }
                 },
-                "265": {
+                "271": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -5984,7 +6110,7 @@
                         "start_line": 13
                     }
                 },
-                "266": {
+                "272": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6037,7 +6163,7 @@
                         "start_line": 13
                     }
                 },
-                "267": {
+                "273": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6066,7 +6192,7 @@
                         "start_line": 41
                     }
                 },
-                "268": {
+                "274": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6083,7 +6209,7 @@
                         "start_line": 48
                     }
                 },
-                "270": {
+                "276": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6100,7 +6226,7 @@
                         "start_line": 48
                     }
                 },
-                "272": {
+                "278": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6129,7 +6255,7 @@
                         "start_line": 46
                     }
                 },
-                "273": {
+                "279": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6146,7 +6272,7 @@
                         "start_line": 51
                     }
                 },
-                "275": {
+                "281": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6175,7 +6301,7 @@
                         "start_line": 48
                     }
                 },
-                "276": {
+                "282": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6192,7 +6318,7 @@
                         "start_line": 55
                     }
                 },
-                "278": {
+                "284": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6209,7 +6335,7 @@
                         "start_line": 58
                     }
                 },
-                "280": {
+                "286": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6226,7 +6352,7 @@
                         "start_line": 59
                     }
                 },
-                "281": {
+                "287": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6279,7 +6405,7 @@
                         "start_line": 15
                     }
                 },
-                "282": {
+                "288": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6308,7 +6434,7 @@
                         "start_line": 46
                     }
                 },
-                "283": {
+                "289": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6337,7 +6463,7 @@
                         "start_line": 48
                     }
                 },
-                "284": {
+                "290": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6366,7 +6492,7 @@
                         "start_line": 60
                     }
                 },
-                "286": {
+                "292": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6395,7 +6521,7 @@
                         "start_line": 58
                     }
                 },
-                "287": {
+                "293": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6412,7 +6538,7 @@
                         "start_line": 62
                     }
                 },
-                "289": {
+                "295": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6429,7 +6555,7 @@
                         "start_line": 71
                     }
                 },
-                "291": {
+                "297": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6446,7 +6572,7 @@
                         "start_line": 74
                     }
                 },
-                "292": {
+                "298": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6463,7 +6589,7 @@
                         "start_line": 74
                     }
                 },
-                "293": {
+                "299": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6480,7 +6606,7 @@
                         "start_line": 78
                     }
                 },
-                "294": {
+                "300": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6533,7 +6659,7 @@
                         "start_line": 42
                     }
                 },
-                "295": {
+                "301": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6586,7 +6712,7 @@
                         "start_line": 15
                     }
                 },
-                "296": {
+                "302": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6639,7 +6765,7 @@
                         "start_line": 15
                     }
                 },
-                "297": {
+                "303": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6668,7 +6794,7 @@
                         "start_line": 74
                     }
                 },
-                "298": {
+                "304": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6697,7 +6823,7 @@
                         "start_line": 74
                     }
                 },
-                "299": {
+                "305": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6726,7 +6852,7 @@
                         "start_line": 78
                     }
                 },
-                "300": {
+                "306": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_l3_usd_value"
@@ -6997,7 +7123,7 @@
             },
             "__main__._get_l3_usd_value": {
                 "decorators": [],
-                "pc": 251,
+                "pc": 257,
                 "type": "function"
             },
             "__main__._get_l3_usd_value.Args": {
@@ -7304,7 +7430,7 @@
                     },
                     "created_at": {
                         "cairo_type": "felt",
-                        "offset": 12
+                        "offset": 13
                     },
                     "current_amount": {
                         "cairo_type": "starkware.cairo.common.uint256.Uint256",
@@ -7316,15 +7442,19 @@
                     },
                     "debt_category": {
                         "cairo_type": "felt",
-                        "offset": 9
+                        "offset": 10
                     },
                     "id": {
                         "cairo_type": "felt",
                         "offset": 0
                     },
+                    "is_loan_withdrawn": {
+                        "cairo_type": "felt",
+                        "offset": 9
+                    },
                     "l3_integration": {
                         "cairo_type": "felt",
-                        "offset": 11
+                        "offset": 12
                     },
                     "market": {
                         "cairo_type": "felt",
@@ -7336,10 +7466,10 @@
                     },
                     "state": {
                         "cairo_type": "felt",
-                        "offset": 10
+                        "offset": 11
                     }
                 },
-                "size": 13,
+                "size": 14,
                 "type": "struct"
             },
             "contracts.storages.loan_store.Uint256": {
@@ -7944,6 +8074,92 @@
                 "destination": "starkware.starknet.common.syscalls.storage_write",
                 "type": "alias"
             },
+            "contracts.storages.loan_store.user_loan_ids": {
+                "type": "namespace"
+            },
+            "contracts.storages.loan_store.user_loan_ids.Args": {
+                "full_name": "contracts.storages.loan_store.user_loan_ids.Args",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "contracts.storages.loan_store.user_loan_ids.HashBuiltin": {
+                "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids.ImplicitArgs": {
+                "full_name": "contracts.storages.loan_store.user_loan_ids.ImplicitArgs",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "contracts.storages.loan_store.user_loan_ids.Return": {
+                "cairo_type": "()",
+                "type": "type_definition"
+            },
+            "contracts.storages.loan_store.user_loan_ids.SIZEOF_LOCALS": {
+                "type": "const",
+                "value": 0
+            },
+            "contracts.storages.loan_store.user_loan_ids.hash2": {
+                "destination": "starkware.cairo.common.hash.hash2",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids.normalize_address": {
+                "destination": "starkware.starknet.common.storage.normalize_address",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids.storage_read": {
+                "destination": "starkware.starknet.common.syscalls.storage_read",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids.storage_write": {
+                "destination": "starkware.starknet.common.syscalls.storage_write",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len": {
+                "type": "namespace"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.Args": {
+                "full_name": "contracts.storages.loan_store.user_loan_ids_len.Args",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.HashBuiltin": {
+                "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.ImplicitArgs": {
+                "full_name": "contracts.storages.loan_store.user_loan_ids_len.ImplicitArgs",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.Return": {
+                "cairo_type": "()",
+                "type": "type_definition"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.SIZEOF_LOCALS": {
+                "type": "const",
+                "value": 0
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.hash2": {
+                "destination": "starkware.cairo.common.hash.hash2",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.normalize_address": {
+                "destination": "starkware.starknet.common.storage.normalize_address",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.storage_read": {
+                "destination": "starkware.starknet.common.syscalls.storage_read",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.storage_write": {
+                "destination": "starkware.starknet.common.syscalls.storage_write",
+                "type": "alias"
+            },
             "contracts.storages.loan_store.user_loans": {
                 "type": "namespace"
             },
@@ -8461,7 +8677,7 @@
             },
             "contracts.storages.open_store.integration_mapping.addr": {
                 "decorators": [],
-                "pc": 219,
+                "pc": 225,
                 "type": "function"
             },
             "contracts.storages.open_store.integration_mapping.addr.Args": {
@@ -8512,7 +8728,7 @@
             },
             "contracts.storages.open_store.integration_mapping.read": {
                 "decorators": [],
-                "pc": 236,
+                "pc": 242,
                 "type": "function"
             },
             "contracts.storages.open_store.integration_mapping.read.Args": {
@@ -8766,7 +8982,7 @@
             },
             "contracts.storages.open_store.l3_integration_address.addr": {
                 "decorators": [],
-                "pc": 201,
+                "pc": 207,
                 "type": "function"
             },
             "contracts.storages.open_store.l3_integration_address.addr.Args": {
@@ -8808,7 +9024,7 @@
             },
             "contracts.storages.open_store.l3_integration_address.read": {
                 "decorators": [],
-                "pc": 206,
+                "pc": 212,
                 "type": "function"
             },
             "contracts.storages.open_store.l3_integration_address.read.Args": {
