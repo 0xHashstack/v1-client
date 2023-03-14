@@ -168,8 +168,41 @@ const Dashboard = () => {
   const [offchainCurrentBlock, setOffchainCurrentBlock] = useState("");
   const [modal_deposit, setmodal_deposit] = useState(false);
 
+  // isWhitelisted is use to redirect users who are not whitelisted
+  const [isWhitelisted, setIsWhitelisted] = useState(0);
+  const [isWaitlisted, setIsWaitlisted] = useState(0);
+
+  let [timer, setTimer] = useState(3);
+
+
+  const checkDB = async () => {
+
+    try {
+      //Whitelist check [correct check, ensure this is used on mainnet]
+      const whitelistStatus = await OffchainAPI.getWhitelistData(_account?_account:"");
+
+      //Waitlist check [I waitlisted my address for testing]
+      //const whitelistStatus = await OffchainAPI.getWhitelistData("0x04ed937e802b1599a8d3b5dc93cf45f627d413e2d03e018c1da9f62062f7dfc8");
+
+      //Redirect check [Non existential address]
+      //const whitelistStatus = await OffchainAPI.getWhitelistData("0x04ed93802b1599a8d3b5dc93cf45f627d413e2d03e018c1da9f62062f7dfc8");
+      
+      
+      if (whitelistStatus.isWhitelistedStatus == "Selected") {
+        setIsWhitelisted(1);
+      }
+      else if(whitelistStatus.isWhitelistedStatus == "Waitlist"){
+        setIsWaitlisted(1);        
+      }  
+    } catch (error) {
+      console.log(error);
+    }
+
+  }
+
   useEffect(() => {
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
+    checkDB();    
   }, [_account]);
 
   const { customActiveTab, toggleCustom, totalBorrowAssets, setTotalBorrowAssets, totalSupplyDash, setTotalSupplyDash } = useContext(TabContext);
@@ -739,10 +772,36 @@ const Dashboard = () => {
     );
   }
 
-  const DashboardUI = () => {
+  // Waitlist UI  
+  const WaitlistUI = () => {    
+    return(<p style={{zIndex : "1000", marginTop: "200px", marginBottom: "400px", textAlign: "center", verticalAlign: "text-bottom", fontSize: "40px", color: "white"}}>You're already in the queue</p>)
+  }
 
+  // Timer logic
+  const showTimer = async () => {
+    if(timer >= 1){            
+      setTimer(--timer);
+    }    
+    else {  
+      if(isWaitlisted!=1 && isWhitelisted!=1){
+        window.location.href = "https://spearmint.xyz/p/hashstack";
+      }      
+    }
+    
+    return(null);
+  }
 
+  
+  // Spearmint redirect UI
+  const SpearmintRedirectUI = () => {
+    console.log("Inside redirection UI")
+    setTimeout(showTimer, 1200)    
+    return(<span>
+      <p style={{zIndex : "1000", marginTop: "200px", marginBottom: "350px", textAlign: "center", verticalAlign: "text-bottom", fontSize: "40px", color: "white"}}>Only registered users are allowed to access the mainnet. You're redirected to the waitlist page in {timer} seconds</p>      
+    </span>);
+  }
 
+  const DashboardUI = () => {    
     return (
       <div style={{ width: "100%", backgroundColor: "#1C202", height: "100%" }}>
         {customActiveTab === "1" ? (
@@ -1246,7 +1305,7 @@ const Dashboard = () => {
             incorrectChain()
           ) : (
             <>
-              <DashboardUI />
+              {isWhitelisted ? <DashboardUI />: isWaitlisted? <WaitlistUI/> :<SpearmintRedirectUI />}
               <Row
                 style={{
                   marginTop: "5px",
