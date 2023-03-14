@@ -2876,14 +2876,14 @@ const BorrowData = ({
                         {!isCollateralActions ? (
                           <>
                             <div style={{ display: "block" }}>
-                              <div
+                              {/* <div
                                 onClick={() => {
                                   selectionAction("Self Liquidate");
                                 }}
                               >
                                 &nbsp;Self Liquidate
-                              </div>
-                              <hr style={{ width: "390px" }} />
+                              </div> */}
+                              {/* <hr style={{ width: "390px" }} /> */}
                               <div
                                 onClick={() => {
                                   selectionAction("Spend Borrow");
