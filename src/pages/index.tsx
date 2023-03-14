@@ -604,7 +604,9 @@ const Dashboard = () => {
       let myLiquidableLoan = {
         loanOwner: loan.account,
         loanMarket: getTokenFromAddress(loan.loanMarket)?.name,
+        loanMarketSymbol: getTokenFromAddress(loan.loanMarket)?.symbol,
         commitment: getCommitmentNameFromIndexDeposit(loan.commitment),
+        openLoanAmount: loan.openLoanAmount,
         loanAmount: loan.loanAmount,
         collateralMarket: getTokenFromAddress(loan.collateralMarket)?.name,
         collateralMarketSymbol: getTokenFromAddress(loan.collateralMarket)?.symbol,

@@ -360,7 +360,7 @@ const Liquidation = ({
                     <td>
                       <div>
                         {/* {// console.log(asset.loanAmount)} */}
-                        {weiToEtherNumber(asset.loanAmount,tokenAddressMap[asset.loanMarket]||"")}
+                        {weiToEtherNumber((asset.loanAmount).toString(),tokenAddressMap[asset.loanMarket]||"")}
                         {/* {BNtoNum(Number(asset.loanAmount))} */}
                         <div>
                           <img
@@ -368,11 +368,11 @@ const Liquidation = ({
                             src={
                               CoinClassNames[
                                 EventMap[asset.loanMarket?.toUpperCase()]
-                              ] || asset?.collateralMarket?.toUpperCase()
+                              ] || asset?.loanMarket?.toUpperCase()
                             }
                           />
                           <span style={{ scale: "0.7" }}>
-                            {EventMap[asset.loanMarket?.toUpperCase()]}
+                            {asset.loanMarketSymbol?.toUpperCase()}
                           </span>
                         </div>
                       </div>
@@ -389,12 +389,12 @@ const Liquidation = ({
                           />
                         </div>
                         <span>
-                          {EventMap[asset.collateralMarketSymbol?.toUpperCase()]}
+                          {asset?.collateralMarketSymbol?.toUpperCase()}
                         </span>
                       </div>
                     </th>
                     <td>
-                      <div>{BNtoNum(Number(asset.collateralAmount))}</div>
+                      <div>{weiToEtherNumber((asset?.collateralAmount).toString(),tokenAddressMap[asset?.collateralMarket]?.toString()||"")?.toString()}</div>
                     </td>
                     <td>
                       <div>
@@ -406,10 +406,7 @@ const Liquidation = ({
                     </td>
                     <td>
                       <div>
-                        {/* {EventMap[asset.commitment]}
-                      {// console.log(EventMap[asset.commitment])
-                      } Debt Converted*/}
-                        NO
+                        {asset?.openLoanAmount == '0' ? "Yes" : "No"}
                       </div>
                     </td>
                     <td>
