@@ -125,6 +125,7 @@ const Dashboard = () => {
   const [repaidLoansData, setRepaidLoansData] = useState<ILoans[]>([]);
   const [activeLiquidationsData, setActiveLiquidationsData] = useState<any>([]);
   const [isTransactionDone, setIsTransactionDone] = useState(false);
+  const [tempValue, setTempValue] = useState();
 
   const [handleDepositTransactionDone, setHandleDepositTransactionDone] =
     useState(false);
@@ -177,6 +178,13 @@ const Dashboard = () => {
 
   let [timer, setTimer] = useState(3);
 
+  useEffect(() => {
+    OffchainAPI.getProtocolDepositLoanRates().then((val) => {
+      // console.log("got them", val);
+      setTempValue(val);
+    });
+  }, []);
+
   const checkDB = async () => {
     try {
       //Whitelist check [correct check, ensure this is used on mainnet]
@@ -202,16 +210,16 @@ const Dashboard = () => {
 
   useEffect(() => {
     //0x05b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864
-    setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
-    // setAccount(
-    //   number.toHex(
-    //     number.toBN(
-    //       number.toFelt(
-    //         "0x05b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"
-    //       )
-    //     )
-    //   )
-    // );
+    // setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
+    setAccount(
+      number.toHex(
+        number.toBN(
+          number.toFelt(
+            "0x5b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"
+          )
+        )
+      )
+    );
     checkDB();
   }, [_account]);
 
@@ -222,6 +230,9 @@ const Dashboard = () => {
     setTotalBorrowAssets,
     totalSupplyDash,
     setTotalSupplyDash,
+    seteffectiveapr,
+    loandepositrate,
+    setNetEarnedApr,
   } = useContext(TabContext);
 
   const [reserves, setReserves] = useState();
@@ -292,7 +303,42 @@ const Dashboard = () => {
     }
     // console.log("net apr earned", sum);
     setNetAprEarned(sum);
+    setNetEarnedApr(sum);
   };
+
+  const EffectiveApr = () => {
+    let sum1 = 0;
+    let sum2 = 0;
+    for (let i = 0; i < oracleAndFairPrices?.oraclePrices?.length; i++) {
+      activeLoansData.map((item: any) => {
+        if (
+          item.loanMarket === oracleAndFairPrices?.oraclePrices[i].name &&
+          !["REPAID", "LIQUIDATED"].includes(item.state)
+        ) {
+          console.log("JJ", tempValue);
+
+          sum1 +=
+            (Number(item.loanAmount) *
+              Number(oracleAndFairPrices?.oraclePrices[i].price) *
+              Number(
+                tempValue[`${item.loanMarketAddress}__${item.commitmentIndex}`]
+                  ?.borrowAPR?.apr100x
+              )) /
+            100;
+
+          sum2 +=
+            Number(item.loanAmount) *
+            Number(oracleAndFairPrices?.oraclePrices[i].price);
+        }
+      });
+    }
+    seteffectiveapr(Number(sum1) / Number(sum2));
+    console.log(sum1, sum2);
+  };
+
+  useEffect(() => {
+    EffectiveApr();
+  }, [activeDepositsData, oracleAndFairPrices]);
 
   const calculateNetBorrowedApr = () => {
     let sum = 0;
@@ -379,8 +425,11 @@ const Dashboard = () => {
           .toString(),
         isWithdrawn: Number(BNtoNum(loanData?.is_loan_withdrawn, 0)) === 1,
         timelockDuration: Number(BNtoNum(collateralData?.timelock_validity, 0)), // Time lock duration for collateral
-        timelockActivationTime: Number(BNtoNum(collateralData?.activation_time, 0)), // when was time lock applied
-        isTimelockActivated: Number(BNtoNum(collateralData?.is_timelock_activated, 0)) === 1, // time-lock applied currently or not
+        timelockActivationTime: Number(
+          BNtoNum(collateralData?.activation_time, 0)
+        ), // when was time lock applied
+        isTimelockActivated:
+          Number(BNtoNum(collateralData?.is_timelock_activated, 0)) === 1, // time-lock applied currently or not
         isSwapped: Number(BNtoNum(loanData?.state, 0)) === 2, // Swap status
         state:
           Number(BNtoNum(loanData?.state, 0)) === 1
@@ -399,10 +448,14 @@ const Dashboard = () => {
             : 0, // Repay status
         interest: Number(0),
         interestPaid: Number(0),
-        l3App: (number.toBN(loanData?.l3_integration).toString() === "1962660952167394271600" ?
-          "jediSwap" : number.toBN(loanData?.l3_integration, 0).toString() === "30814223327519088" ?
-            "mySwap" : null
-        ),
+        l3App:
+          number.toBN(loanData?.l3_integration).toString() ===
+          "1962660952167394271600"
+            ? "jediSwap"
+            : number.toBN(loanData?.l3_integration, 0).toString() ===
+              "30814223327519088"
+            ? "mySwap"
+            : null,
         // cdr: BNtoNum(loanData?.debt_category, 0),
         // interestPaid: Number(loanData.interestPaid), //loan interest
         // interest: Number(loanData.interest),
@@ -429,21 +482,21 @@ const Dashboard = () => {
   }
 
   async function get_user_loans() {
-    let provider = new RpcProvider({ nodeUrl: "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c" })
+    let provider = new RpcProvider({
+      nodeUrl:
+        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
+    });
     const MySwap = new Contract(loanAbi, diamondAddress, provider);
-    const res = await MySwap.call('get_user_loans', [account]);
+    const res = await MySwap.call("get_user_loans", [account]);
     parseLoansData(res?.loan_records_arr, res?.collateral_records_arr);
-    console.log(res)
+    console.log(res);
   }
 
   useEffect(() => {
-    if (account)
-      get_user_loans();
+    if (account) get_user_loans();
   }, [account, customActiveTab]);
 
-
   /*============================== Get Deposits from the blockchain ====================================*/
-
 
   function parseDepositsData(depositsData: any[]) {
     let deposits: any[] = [];
@@ -465,8 +518,10 @@ const Dashboard = () => {
         acquiredYield: Number(0), // deposit interest TODO: FORMULA
         interestPaid: Number(0), // deposit interest TODO: FORMULA
 
-        isTimelockApplicable: Number(BNtoNum(deposit?.is_timelock_applicable, 0)) === 1,
-        isTimelockActivated: Number(BNtoNum(deposit?.is_timelock_activated, 0)) === 1,
+        isTimelockApplicable:
+          Number(BNtoNum(deposit?.is_timelock_applicable, 0)) === 1,
+        isTimelockActivated:
+          Number(BNtoNum(deposit?.is_timelock_activated, 0)) === 1,
         timelockActivationTime: Number(BNtoNum(deposit?.activation_time, 0)),
         timelockDuration: Number(BNtoNum(deposit?.timelock_validity, 0)),
 
@@ -484,17 +539,18 @@ const Dashboard = () => {
   }
 
   async function get_user_deposits() {
-    let provider = new RpcProvider({ nodeUrl: "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c" })
+    let provider = new RpcProvider({
+      nodeUrl:
+        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
+    });
     const Deposit = new Contract(depositAbi, diamondAddress, provider);
-    const res = await Deposit.call('get_user_deposits', [ account ]);
+    const res = await Deposit.call("get_user_deposits", [account]);
     parseDepositsData(res?.deposit_records_arr);
   }
 
   useEffect(() => {
-    if (account)
-      get_user_deposits();
+    if (account) get_user_deposits();
   }, [account, customActiveTab, isTransactionDone]);
-
 
   useEffect(() => {
     setTimeout(() => {
@@ -598,7 +654,7 @@ const Dashboard = () => {
         loanMarketSymbol: getTokenFromAddress(loan.loanMarket)?.symbol,
         loanAmount: loan.loanAmount,
         openLoanAmount: loan.openLoanAmount,
-        
+
         commitment: getCommitmentNameFromIndexDeposit(loan.commitment),
 
         currentMarket: getTokenFromAddress(loan.currentMarket)?.name,
@@ -769,7 +825,6 @@ const Dashboard = () => {
 
     return null;
   };
-
 
   // Spearmint redirect UI
   const SpearmintRedirectUI = () => {

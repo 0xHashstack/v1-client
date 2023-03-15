@@ -28,7 +28,8 @@ const StatsBoard = (result: {
     setTotalBorrowAssets,
     setTotalSupplyDash,
   } = result;
-  const { customActiveTab, toggleCustom } = useContext(TabContext);
+  const { customActiveTab, toggleCustom, setYourBorrows, setYourSupply } =
+    useContext(TabContext);
   const [oraclePrices, setOraclePrices] = useState<any>();
   const [deposits, setDeposits] = useState<any>();
   const [loans, setLoans] = useState<any>();
@@ -101,6 +102,8 @@ const StatsBoard = (result: {
 
         setTotalBorrowAssets(borrow);
         setTotalSupplyDash(supply);
+        setYourBorrows(borrow);
+        setYourSupply(supply);
 
         const getReserves = async () => {
           const res: any = await OffchainAPI.getReserves();
