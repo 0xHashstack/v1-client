@@ -5,10 +5,13 @@
         "Eligible": "You can withdraw only once"
     }, 
     "Revert Spend" : {
-        "Spent" : "Cannot revert spend as your loan is spent"
+        "Not Spent" : "Cannot revert spend as your loan is not spent"
     },
     "Withdraw Collateral": {
         "Not Repaid": "Cannot withdraw collateral as your loan is not repaid", 
         "Timelock": "Cannot withdraw collateral as your timelock is not over. You can withdraw after"
+    }, 
+    "Spend": {
+        "Spent": "Cannot Spend as you have already spent your loan"
     }
 }

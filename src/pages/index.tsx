@@ -201,8 +201,8 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
-    // setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
-    setAccount(number.toHex(number.toBN(number.toFelt("0x5095078578a59f8a9c17df97188db1b59574c6d4836dd3e705fe8537624228a"))));
+    setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
+    // setAccount(number.toHex(number.toBN(number.toFelt("0x5095078578a59f8a9c17df97188db1b59574c6d4836dd3e705fe8537624228a"))));
     checkDB();
   }, [_account]);
 
