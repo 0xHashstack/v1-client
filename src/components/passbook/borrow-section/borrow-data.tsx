@@ -286,7 +286,7 @@ const BorrowData = ({
   const [dropDownArrowTwo, setDropDownArrowTwo] = useState(Downarrow);
   const [dropDownArrowThree, setDropDownArrowThree] = useState(Downarrow);
   const [marketDropDown, setMarketDropDown] = useState(false);
-  const [actionLabel, setActionLabel] = useState("Stake");
+  const [actionLabel, setActionLabel] = useState("Swap");
   const [maxPartialWithdrawAmount, setMaxPartialWithdrawAmount] = useState(0);
   const [borrowInterest, setBorrowInterest] = useState<string>("");
   const [currentBorrowInterest, setCurrentBorrowInterest] = useState<any>();
@@ -304,8 +304,7 @@ const BorrowData = ({
   const [toastParam, setToastParam] = useState({});
   const [isToastOpen, setIsToastOpen] = useState(false);
 
-  const [appsImage, setappsImage] = useState("yagi");
-  const apps = ["mySwap", "jediSwap", "yagi"];
+  const [appsImage, setappsImage] = useState("jediSwap");
 
   const [poolId, setPoolId] = useState(0);
 
@@ -2852,7 +2851,6 @@ const BorrowData = ({
                       <div
                         style={{
                           margin: "10px 0",
-                          cursor: "pointer",
                           display: "flex",
                           alignItems: "center",
                           fontSize: "16px",
@@ -2863,26 +2861,51 @@ const BorrowData = ({
                             <div style={{ display: "block" }}>
                               <div
                                 onClick={() => {
-                                  handleAction("Stake");
-                                }}
-                              >
-                                &nbsp;Stake
-                              </div>
-                              <hr style={{ width: "78px" }} />
-                              <div
-                                onClick={() => {
                                   handleAction("Swap");
                                 }}
+                                style={{ cursor: "pointer" }}
                               >
                                 &nbsp;Swap
                               </div>
                               <hr style={{ width: "78px" }} />
                               <div
-                                onClick={() => {
-                                  handleAction("Trade");
-                                }}
+                              // onClick={() => {
+                              //   handleAction("Stake");
+                              // }}
                               >
-                                &nbsp;Trade
+                                <div
+                                  style={{ display: "block", opacity: "0.5" }}
+                                >
+                                  Stake
+                                  <div
+                                    style={{
+                                      fontSize: "10px",
+                                      color: "#8B8B8B",
+                                    }}
+                                  >
+                                    coming soon
+                                  </div>
+                                </div>
+                              </div>
+                              <hr style={{ width: "78px" }} />
+                              <div
+                              // onClick={() => {
+                              //   handleAction("Trade");
+                              // }}
+                              >
+                                <div
+                                  style={{ display: "block", opacity: "0.5" }}
+                                >
+                                  Trade
+                                  <div
+                                    style={{
+                                      fontSize: "10px",
+                                      color: "#8B8B8B",
+                                    }}
+                                  >
+                                    coming soon
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </>

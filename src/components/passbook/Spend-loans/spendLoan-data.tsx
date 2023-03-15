@@ -48,7 +48,7 @@ const SpendLoanData = ({ loan }) => {
             sethover(false);
           }}
         >
-          <Col>ID{loan.loanId}</Col>
+          <Col>ID{loan.loanId}</Col>               
           <Col>
             <img src={`./${loan.loanMarket}.svg`} height="15px" />
             &nbsp;&nbsp;{loan.loanMarketSymbol}
