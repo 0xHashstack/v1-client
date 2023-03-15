@@ -404,7 +404,7 @@ const BorrowData = ({
   //   uint256.uint256ToBN(asset.currentLoanAmount || "0")
   // );
   const getAmount = () => {
-    let amountOut = asset.currentLoanAmount || "0";
+    let amountOut = asset?.openLoanAmount || "0";
     // console.log("getAmount", amountOut);
     return amountOut;
   };
@@ -450,8 +450,8 @@ const BorrowData = ({
       ? uint256.uint256ToBN(partialWithdrawData.amount).toString()
       : "0";
     const amountWei = weiToEtherNumber(
-      amount,
-      tokenAddressMap[asset.loanMarket]
+      (amount).toString(),
+      tokenAddressMap[asset?.loanMarket]
     );
     setMaxPartialWithdrawAmount(amountWei);
   }, [partialWithdrawData, partialWithdrawLoading, partialWithdrawError]);
@@ -470,7 +470,7 @@ const BorrowData = ({
       // uint256.bnToUint256(number.toBN("10").pow(number.toBN("25"))),
       tokenAddressMap[asset.loanMarket],
       tokenAddressMap[marketTokenName],
-      uint256.bnToUint256(number.toBN(getAmount().toString())),
+      uint256.bnToUint256(number.toBN(getAmount()?.toString())),
     ],
     options: {
       watch: true,
@@ -502,7 +502,6 @@ const BorrowData = ({
           .mul(number.toBN(10).pow(number.toBN(decimalsDeficit)))
           .toString()
       : "NA";
-    console.log("mmmmmmmm", amount);
     setTotalAmountOutJediSwap(amount);
   }, [getAmountOutData, loadingGetAmountOut, errorGetAmountOut]);
 
