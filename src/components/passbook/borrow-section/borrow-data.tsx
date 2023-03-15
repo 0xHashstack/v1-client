@@ -317,6 +317,9 @@ const BorrowData = ({
   const [showNoteForSpendBorrow, setShowNoteForSpendBorrow] = useState(false);
   const [spendBorrowNote, setSpendBorrowNote] = useState("");
 
+  const [showNoteForWithdrawCollateral, setShowNoteForWithdrawCollateral] = useState(false);
+  const [withdrawCollateralNote, setWithdrawCollateralNote] = useState("");
+
   const dappsArray = [
     { name: "jediSwap", supportedActions: ["Swap"] },
     { name: "mySwap", supportedActions: ["Swap"] },
@@ -848,13 +851,21 @@ const BorrowData = ({
 
   useEffect(() => {
     getNoteForSpendBorrow();
+    getNoteForWithdrawCollateral();
   }, [asset])
 
   const getNoteForSpendBorrow = () => {
     if (asset?.isSwapped) {
       setSpendBorrowNote(UserInformation?.Spend?.Spent);
+      setShowNoteForSpendBorrow(true);
     }
-    setShowNoteForSpendBorrow(asset?.isSwapped);
+  }
+
+  const getNoteForWithdrawCollateral = () => {
+    if (asset?.state === "REPAID") {
+      setShowNoteForWithdrawCollateral(true);
+      setWithdrawCollateralNote(UserInformation?.WithdrawCollateral?.NotRepaid);
+    }
   }
 
   const toggleyagi = () => {
