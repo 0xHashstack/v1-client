@@ -619,12 +619,12 @@ const SupplyModal = ({
                     </div>
                   </div>
                 </div>
-                <div style={{backgroundColor:"#393D4F",borderRadius:"5px",padding:"10px"}}>
+                {/* <div style={{backgroundColor:"#393D4F",borderRadius:"5px",padding:"10px"}}>
                   <span style={{fontWeight:"200px"}}>
                     Note : 
                   </span>
                      This is the note where you are supposed to do some information of the given user and something
-                </div>
+                </div> */}
                 <br/>
                 <Button
                   color="white"

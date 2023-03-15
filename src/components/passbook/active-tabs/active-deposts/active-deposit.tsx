@@ -152,7 +152,7 @@ const ActiveDeposit = ({
 
   const getNoteForDeposit = () => {
     if (asset?.commitmentIndex !== 0) {
-      const commitmentDuration = asset?.commitmentIndex === 1 ? 14 * 24 * 3660
+      const commitmentDuration = asset?.commitmentIndex === 1 ? 14 * 24 * 3600
       : (asset?.commitmentIndex) === "2" ? 30 * 24 * 3600
       : (asset?.commitmentIndex) === "3" ? 90 * 24 * 3600 : 0;
       const commitmenntEndtime = new Date(asset?.depositCreationTime * 1000 + commitmentDuration * 1000);
@@ -1139,7 +1139,7 @@ const ActiveDeposit = ({
                         0.02%
                       </div>
                     </div>
-                    {asset.commitment !== "NONE" ? (
+                    {asset.commitment !== "NONE" && showNoteForDeposit ? (
                       <div
                         style={{
                           margin: "3px 0",
@@ -1148,11 +1148,11 @@ const ActiveDeposit = ({
                         <div style={{ padding: "15px" }}></div>
                         <div style={{ color: "#6F6F6F" }}>
                           You Are Pre-Closing This Supply Earlier Than Its
-                          Minumum Commitment Period. A Timelock Of 3 Days Is
+                          Minumum Commitment Period. A Timelock Of 3 Days is
                           Applied On Such Withdrawals. When You Place Withdrawal
-                          Requests.The Timelock is Activated. It Will Be
+                          Requests, the Timelock is Activated. It Will Be
                           Processed On Your Second Attempt To Withdraw
-                          Supply.After The Timelock Expiry In 72hrs
+                          Supply after the Timelock Expiry in 72hrs
                         </div>
                       </div>
                     ) : (
@@ -1164,7 +1164,7 @@ const ActiveDeposit = ({
                   customActiveTab === "2" && showNoteForDeposit ? (
                   <div style={{ backgroundColor: "#393D4F", borderRadius: "5px", padding: "10px", fontSize: "13px" }}>
                     <span style={{ fontWeight: "200px" }}>
-                      Note :
+                      Note :{" "}
                     </span>
                     {noteForDeposit}
                   </div>
