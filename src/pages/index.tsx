@@ -356,8 +356,8 @@ const Dashboard = () => {
           Number(BNtoNum(loanData?.state, 0)) === 3 || Number(BNtoNum(loanData?.state, 0)) === 4 ? 1 : 0, // Repay status
         interest: Number(0),
         interestPaid: Number(0),
-        l3App: (BNtoNum(loanData?.l3_integration, 0).toString() === "1962660952167394271600" ?
-          "jediSwap" : BNtoNum(loanData?.l3_integration, 0).toString() === "30814223327519088" ?
+        l3App: (number.toBN(loanData?.l3_integration).toString() === "1962660952167394271600" ?
+          "jediSwap" : number.toBN(loanData?.l3_integration, 0).toString() === "30814223327519088" ?
             "mySwap" : null
         ),
         // cdr: BNtoNum(loanData?.debt_category, 0),
@@ -365,7 +365,6 @@ const Dashboard = () => {
         // interest: Number(loanData.interest),
 
         //get apr is for loans apr
-
       };
       loans.push(JSON.parse(JSON.stringify(temp_len)));
     }
