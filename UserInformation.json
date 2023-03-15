@@ -9,7 +9,7 @@
     },
     "WithdrawCollateral": {
         "NotRepaid": "Cannot withdraw collateral as your loan is not repaid", 
-        "Timelock": "Cannot withdraw collateral as your timelock is not over. You can withdraw after"
+        "TimelockNotExpired": "Cannot withdraw collateral as your timelock is not over. You can withdraw after "
     }, 
     "Spend": {
         "Spent": "Cannot Spend as you have already spent your loan"
