@@ -439,8 +439,6 @@ const Dashboard = () => {
   useEffect(() => {
     if (account)
       get_user_loans();
-  }, [account, customActiveTab, isTransactionDone]);
-
   }, [account, customActiveTab]);
 
 

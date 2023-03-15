@@ -846,6 +846,17 @@ const BorrowData = ({
       .toString();
   };
 
+  useEffect(() => {
+    getNoteForSpendBorrow();
+  }, [asset])
+
+  const getNoteForSpendBorrow = () => {
+    if (asset?.isSwapped) {
+      setSpendBorrowNote(UserInformation?.Spend?.Spent);
+    }
+    setShowNoteForSpendBorrow(asset?.isSwapped);
+  }
+
   const toggleyagi = () => {
     setYagidrop(!Yagidrop);
     setyagiDownArrow(Yagidrop ? Downarrow : UpArrow);
@@ -1164,16 +1175,17 @@ const BorrowData = ({
 
           <Col>
             <div>
-              <img
-                src={
-                  assetParam
-                    ? CoinClassNames[
-                        EventMap[assetParam?.collateralMarket?.toUpperCase()]
-                      ] || assetParam.collateralMarket?.toUpperCase()
-                    : null
-                }
-                height="15px"
-              />
+              {
+                assetParam?.l3App ? (
+                  <img
+                    src={
+                      assetParam
+                        ? `./${assetParam?.l3App}SmallIcon.svg` : null
+                    }
+                    height="22px"
+                  />
+                ): "-"
+              }
             </div>
           </Col>
 
@@ -3471,7 +3483,7 @@ const BorrowData = ({
                         DC{asset.debtCategory}
                       </div>
                     </div>
-                    {/* <div
+                    <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -3710,7 +3722,7 @@ const BorrowData = ({
                         {TransactionFees?.loan?.SelfLiquidationFee}%
                       </div>
                     </div>
-                    {/* <div
+                     <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
