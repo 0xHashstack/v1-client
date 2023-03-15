@@ -318,7 +318,7 @@ const Dashboard = () => {
           console.log("JJ", tempValue);
 
           sum1 +=
-            (Number(item.loanAmount) *
+            (Number(item.loanAmount/ (10 ** tokenDecimalsMap[item.loanMarket])) *
               Number(oracleAndFairPrices?.oraclePrices[i].price) *
               Number(
                 tempValue[`${item.loanMarketAddress}__${item.commitmentIndex}`]
@@ -327,7 +327,7 @@ const Dashboard = () => {
             100;
 
           sum2 +=
-            Number(item.loanAmount) *
+            Number(item.loanAmount / (10 ** tokenDecimalsMap[item.loanMarket])) *
             Number(oracleAndFairPrices?.oraclePrices[i].price);
         }
       });
