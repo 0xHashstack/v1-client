@@ -326,6 +326,9 @@ const BorrowData = ({
   const [showNoteForWithdrawPartialBorrow, setShowNoteForWithdrawPartialBorrow] = useState(false);
   const [withdrawPartialBorrowNote, setWithdrawPartialBorrowNote] = useState("");
 
+  const [showNoteForRepay, setShowNoteForRepay] = useState(false);
+  const [repayNote, setRepayNote] = useState("");
+
 
 
   const dappsArray = [
@@ -862,14 +865,16 @@ const BorrowData = ({
     getNoteForWithdrawCollateral();
     getNoteForRevertSpend();
     getNoteForWithdrawPartialBorrow();
+    getNoteRepay();
   }, [asset])
 
   const getNoteForSpendBorrow = () => {
     if (asset?.isSwapped) {
+      setShowNoteForSpendBorrow(true);
       setSpendBorrowNote(UserInformation?.Spend?.Spent);
     }
     else
-      setShowNoteForSpendBorrow(asset?.isSwapped);
+      setShowNoteForSpendBorrow(false);
   }
 
   const getNoteForWithdrawCollateral = () => {
@@ -891,20 +896,20 @@ const BorrowData = ({
   }
 
   const getNoteForRevertSpend = () => {
-    if(asset?.state === "OPEN") {
+    if (asset?.state === "OPEN") {
       setShowNoteForRevertSpend(true);
       setRevertSpendNote(UserInformation?.RevertSpend?.NotSpent);
     }
-    else 
+    else
       setShowNoteForRevertSpend(false);
   }
 
   const getNoteForWithdrawPartialBorrow = () => {
-    if(asset?.isWithdrawn) {
+    if (asset?.isWithdrawn) {
       setShowNoteForWithdrawPartialBorrow(true);
       setWithdrawPartialBorrowNote(UserInformation?.WithdrawPartialBorrow?.Withdrawn);
     }
-    else if(asset?.isSwapped) {
+    else if (asset?.isSwapped) {
       setShowNoteForWithdrawPartialBorrow(true);
       setWithdrawPartialBorrowNote(UserInformation?.WithdrawPartialBorrow?.Spent);
     }
@@ -912,6 +917,26 @@ const BorrowData = ({
       setShowNoteForWithdrawPartialBorrow(true);
       setWithdrawPartialBorrowNote(UserInformation?.WithdrawPartialBorrow?.Eligible);
     }
+  }
+
+  const getNoteRepay = () => {
+    if (asset?.commitmentIndex !== 0) {
+      const commitmentDuration = 30 * 24 * 3600;
+      const commitmenntEndtime = new Date(asset?.loanCreationTime * 1000 + commitmentDuration * 1000);
+      const currentTime = new Date();
+
+      const diff = Math.abs(commitmenntEndtime.getTime() - currentTime.getTime());
+      const diffDays = Math.floor(diff / (1000 * 3600 * 24))
+      const diffHours = Math.max(Math.floor((diff % (1000 * 3600 * 24)) / (1000 * 3600)), 1);
+      if (diff > 0) {
+        setShowNoteForRepay(true);
+        setRepayNote(UserInformation?.Repay?.CommitmentNotExpired + diffDays + " days " + diffHours + `${diffHours > 1 ? ' hours' : ' hour'}` + " more for commitment to end");
+      }
+      else
+        setShowNoteForRepay(false);
+    }
+    else 
+      setShowNoteForRepay(false);
   }
 
   const toggleyagi = () => {
@@ -1182,10 +1207,10 @@ const BorrowData = ({
                   }}
                 >
                   {`${assetParam.state === "SWAPPED"
-                      ? "Swapped"
-                      : assetParam.state === "STAKED"
-                        ? "Staked"
-                        : "Traded"
+                    ? "Swapped"
+                    : assetParam.state === "STAKED"
+                      ? "Staked"
+                      : "Traded"
                     }`}
                 </div>
               ) : (
@@ -1859,9 +1884,9 @@ const BorrowData = ({
                                   <img
                                     src={`./${appsImage}.svg`}
                                     width={`${appsImage === "mySwap" ||
-                                        appsImage === "yagi"
-                                        ? "60px"
-                                        : "100px"
+                                      appsImage === "yagi"
+                                      ? "60px"
+                                      : "100px"
                                       }`}
                                     height="30px"
                                   ></img>
@@ -2367,8 +2392,8 @@ const BorrowData = ({
                                     background: "#1D2131",
                                     color: "rgb(111, 111, 111)",
                                     border: `1px solid ${!(!repayAmount || repayAmount <= 0)
-                                        ? "#34c38f"
-                                        : "rgb(57, 61, 79)"
+                                      ? "#34c38f"
+                                      : "rgb(57, 61, 79)"
                                       }`,
                                     borderLeft: "none",
                                   }}
@@ -2753,8 +2778,8 @@ const BorrowData = ({
                                     background: "#1D2131",
                                     color: "rgb(111, 111, 111)",
                                     border: `1px solid ${!isInvalid() === true
-                                        ? "#34c38f"
-                                        : "rgb(57, 61, 79)"
+                                      ? "#34c38f"
+                                      : "rgb(57, 61, 79)"
                                       }`,
                                     borderLeft: "none",
                                   }}
@@ -3579,6 +3604,19 @@ const BorrowData = ({
                       </div>
                     </div>
                   </div>
+                  {
+                    showNoteForRepay ?
+                      (
+                        <div style={{ backgroundColor: "#393D4F", borderRadius: "5px", padding: "10px", fontSize: "13px" }}>
+                          <span style={{ fontWeight: "200px" }}>
+                            Note : {" "}
+                          </span>
+                          {repayNote}
+                        </div>
+                      )
+                      :
+                      null
+                  }
                   <br />
                   <Button
                     color="primary"
@@ -3819,6 +3857,19 @@ const BorrowData = ({
                       </div>
                     </div>
                   </div>
+                  {
+                    showNoteForRepay ?
+                      (
+                        <div style={{ backgroundColor: "#393D4F", borderRadius: "5px", padding: "10px", fontSize: "13px" }}>
+                          <span style={{ fontWeight: "200px" }}>
+                            Note : {" "}
+                          </span>
+                          {repayNote}
+                        </div>
+                      )
+                      :
+                      null
+                  }
                   <br />
                   <Button
                     color="primary"

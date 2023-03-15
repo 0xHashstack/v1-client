@@ -13,5 +13,8 @@
     }, 
     "Spend": {
         "Spent": "Cannot Spend as you have already spent your loan"
+    }, 
+    "Repay": {
+        "CommitmentNotExpired": "You are preclosing your loan, encurring a fee. You have "
     }
 }

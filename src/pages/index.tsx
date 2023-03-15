@@ -368,7 +368,7 @@ const Dashboard = () => {
           .toString(), // 5 Collateral Amount
         interestRate: 0,
         debtCategory: BNtoNum(loanData?.debt_category, 0),
-        timestamp: Number(loanData?.created_at),
+        loanCreationTime: Number(loanData?.created_at),
         openLoanAmount:
           number.toHex(loanData?.market) ===
           number.toHex(loanData?.current_market)
