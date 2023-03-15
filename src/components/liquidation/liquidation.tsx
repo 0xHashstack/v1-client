@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { Button, Table, Spinner, TabPane } from "reactstrap";
 import { Abi, number, uint256 } from "starknet";
 import { CoinClassNames, EventMap } from "../../blockchain/constants";
+import { NumericFormat } from "react-number-format";
 import {
   ComptrollerAbi,
   diamondAddress,
@@ -18,7 +19,8 @@ import {
   getTokenFromName,
   isTransactionLoading,
   LiquidateAbi,
-  tokenAddressMap
+  tokenAddressMap,
+  tokenDecimalsMap
 } from "../../blockchain/stark-constants";
 import { TxToastManager } from "../../blockchain/txToastManager";
 import { BNtoNum, weiToEtherNumber } from "../../blockchain/utils";
@@ -339,7 +341,9 @@ const Liquidation = ({
             {Array.isArray(activeLiquidationsData) &&
             activeLiquidationsData.length > 0 ? (
               activeLiquidationsData.map((asset, key) => {
-                // console.log("asset in li", asset);
+                console.log("asset in li", asset);
+
+                const Discount = ((Number(asset.collateralAmount)/10**tokenDecimalsMap[asset.collateralMarket.toString()] + (Number(asset.currentAmount)/10**tokenDecimalsMap[asset.collateralMarket.toString()] - Number(asset.openLoanAmount)/10**tokenDecimalsMap[asset.loanMarket.toString()]))/Number(asset.openLoanAmount)/10**tokenDecimalsMap[asset.loanMarket.toString()])*100;
                 return (
                   <tr key={key} style={{ color: "white" }}>
                     {/* <th scope="row">
@@ -435,7 +439,18 @@ const Liquidation = ({
                         {/* {EventMap[asset.commitment]}
                       {// console.log(EventMap[asset.commitment])
                       } Amount*/}
-                        10%
+                      {}
+                        {/* 10% */}
+                        {Discount !== undefined ? (
+                      <NumericFormat
+                        displayType="text"
+                        value={Discount.toFixed(2)}
+                        thousandSeparator=","
+                        suffix="%"
+                      />
+                    ) : (
+                      <MySpinner />
+                    )}
                       </div>
                     </td>
                     <td>
