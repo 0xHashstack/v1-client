@@ -53,7 +53,7 @@ import {
 import BigNumber from "bignumber.js";
 import { useAccount, useContract, useStarknet, useStarknetCall } from "@starknet-react/core";
 import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
-import { Abi, number, uint256 } from "starknet";
+import { Abi, Contract, number, RpcProvider, uint256 } from "starknet";
 import { assert } from "console";
 import depositAbi from "../../starknet-artifacts/contracts/modules/deposit.cairo/deposit_abi.json";
 import loanAbi from "../../starknet-artifacts/contracts/modules/loan.cairo/loan_abi.json";
@@ -295,71 +295,6 @@ const Dashboard = () => {
     // console.log("net borrow apr earned", sum);
     setNetBorrowedApr(sum.toFixed(2));
   };
-  //   // console.log("Loans: ", loansData);
-  //   const loans: ILoans[] = [];
-  //   for (let i = 0; i < loansData.length; ++i) {
-  //     let loanData = loansData[i];
-  //     let temp_len = {
-  //       loanMarket: getTokenFromAddress(loanData.loanMarket)?.name,
-  //       loanMarketSymbol: getTokenFromAddress(loanData.loanMarket)?.symbol,
-  //       loanMarketAddress: loanData.loanMarket,
-  //       loanAmount: Number(loanData.loanAmount), //  Amount
-  //       commitment: getCommitmentNameFromIndexLoan(loanData.commitment), //  Commitment
-  //       commitmentIndex: getCommitmentIndex(loanData.commitment) as number,
-  //       collateralMarket: getTokenFromAddress(loanData.collateralMarket)?.name, //  Collateral Market
-  //       collateralMarketSymbol: getTokenFromAddress(loanData.collateralMarket)?.symbol,
-  //       collateralAmount: Number(loanData.collateralAmount), // 5 Collateral Amount
-  //       interestPaid: Number(loanData.interestPaid), //loan interest
-  //       interest: Number(loanData.interest),
-  //       interestRate: 0,
-  //       openLoanAmount: Number(loanData.openLoanAmount), // Open Loan Amount
-  //       //interest market will always be same as loan market
-  //       account,
-  //       cdr: loanData.cdr,
-  //       debtCategory: loanData.dc,
-  //       loanId: loanData.loanId,
-  //       isSwapped: loanData.state == "SWAPPED", // Swap status
-  //       state: loanData.state,
-  //       stateType:
-  //         loanData.state == "REPAID" || loanData.state == "LIQUIDATED" ? 1 : 0, // Repay status
-  //       currentLoanMarket: getTokenFromAddress(
-  //         loanData.currentMarket || loanData.loanMarket
-  //       )?.name, // Borrow market(current)
-  //       currentLoanMarketSymbol: getTokenFromAddress(
-  //         loanData.currentMarket || loanData.loanMarket
-  //       )?.symbol,
-  //       currentLoanAmount:
-  //         loanData.currentAmount != "0"
-  //           ? loanData.currentAmount
-  //           : loanData.openLoanAmount, // Borrow amount(current)
-  //       timestamp: loanData.time,
-  //       l3App:
-  //         loanData.l3Id === "jedi_swap"
-  //           ? "jediSwap"
-  //           : loanData.l3Id === "my_swap"
-  //             ? "mySwap"
-  //             : null,
-  //       //get apr is for loans apr
-  //     };
-  //     loans.push(JSON.parse(JSON.stringify(temp_len)));
-
-  //     setActiveLoansData(loans);
-  //     // console.log("loans: " + loans);
-  //     setRepaidLoansData(
-  //       loans.filter((asset) => {
-  //         // console.log(asset, "testasset");
-  //         return asset.state === "REPAID";
-  //       })
-  //     );
-  //     setFilteredLoans(
-  //       activeLoansData.filter((loan) => {
-  //         return loan.state !== "REPAID" && loan.state !== "LIQUIDATED";
-  //       })
-  //     );
-  //   }
-  // };
-  // console.log("Repaid loans data", repaidLoansData);
-
   useEffect(() => {
     let validTypes = ["REPAID", "SWAPPED", "OPEN"];
     if (typeOfLoans === "Repaid") {
@@ -379,25 +314,6 @@ const Dashboard = () => {
       })
     );
   }, [typeOfLoans, activeLoansData]);
-
-  const { contract: loanContract } = useContract({
-    abi: loanAbi as Abi,
-    address: diamondAddress,
-  });
-
-  const {
-    data: dataLoan,
-    loading: loadingLoan,
-    error: errorLoan,
-    refresh: refreshLoan,
-  } = useStarknetCall({
-    contract: loanContract,
-    method: "get_user_loans",
-    args: [account],
-    options: {
-      watch: false,
-    },
-  });
 
   function parseLoansData(loansData: any, collateralsData: any) {
     const loans: ILoans[] = [];
@@ -470,36 +386,22 @@ const Dashboard = () => {
     console.log("parsed loans data", loans);
   }
 
-  useEffect(() => {
-    console.log("loan collateral record", dataLoan)
-    !isTransactionDone &&
-      account ?
-      parseLoansData(dataLoan?.loan_records_arr, dataLoan?.collateral_records_arr) : null;
+  async function get_user_loans() {
+    let provider = new RpcProvider({ nodeUrl: "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c" })
+    const MySwap = new Contract(loanAbi, diamondAddress, provider);
+    const res = await MySwap.call('get_user_loans', [account]);
+    parseLoansData(res?.loan_records_arr, res?.collateral_records_arr);
+    console.log(res)
+  }
 
-  }, [account, passbookStatus, customActiveTab, isTransactionDone, dataLoan, loadingLoan, errorLoan]);
+  useEffect(() => {
+    if (account)
+      get_user_loans();
+  }, [account, customActiveTab, isTransactionDone]);
 
 
   /*============================== Get Deposits from the blockchain ====================================*/
 
-
-  const { contract: depositContract } = useContract({
-    abi: depositAbi as Abi,
-    address: diamondAddress,
-  });
-
-  const {
-    data: dataDeposit,
-    loading: loadingDeposit,
-    error: errorDeposit,
-    refresh: refreshDeposit,
-  } = useStarknetCall({
-    contract: depositContract,
-    method: "get_user_deposits",
-    args: [account],
-    options: {
-      watch: false,
-    },
-  });
 
   function parseDepositsData(depositsData: any[]) {
     let deposits: any[] = [];
@@ -536,17 +438,17 @@ const Dashboard = () => {
     setActiveDepositsData(nonZeroDeposits);
   }
 
-  useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 100);
-    console.log("useEffect", isTransactionDone, account);
-    !isTransactionDone &&
-      account &&
-      !loadingDeposit ?
-      parseDepositsData(dataDeposit?.deposit_records_arr) : null;
+  async function get_user_deposits() {
+    let provider = new RpcProvider({ nodeUrl: "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c" })
+    const Deposit = new Contract(depositAbi, diamondAddress, provider);
+    const res = await Deposit.call('get_user_deposits', [ account ]);
+    parseDepositsData(res?.deposit_records_arr);
+  }
 
-  }, [account, passbookStatus, isTransactionDone, loadingDeposit, dataDeposit, errorDeposit]);
+  useEffect(() => {
+    if (account)
+      get_user_deposits();
+  }, [account, customActiveTab, isTransactionDone]);
 
 
   useEffect(() => {
