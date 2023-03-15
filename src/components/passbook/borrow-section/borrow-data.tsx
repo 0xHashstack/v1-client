@@ -316,6 +316,7 @@ const BorrowData = ({
 
   /** Note show states */
   const [showNoteForSpendBorrow, setShowNoteForSpendBorrow] = useState(false);
+  const [spendBorrowNote, setSpendBorrowNote] = useState("");
 
   const dappsArray = [
     { name: "jediSwap", supportedActions: ["Swap"] },
@@ -366,7 +367,7 @@ const BorrowData = ({
       watch: true,
     },
   });
-  
+
   const {
     data: collateralMarketAllowance,
     loading: loadingCollateralMarketAllowance,
@@ -847,10 +848,10 @@ const BorrowData = ({
   }, [asset])
 
   const getNoteForSpendBorrow = () => {
-    if(asset?.isSwapped) {
-      return UserInformation?.Spend?.Spent;
+    if (asset?.isSwapped) {
+      setSpendBorrowNote(UserInformation?.Spend?.Spent);
     }
-    setShowNoteForSpendBorrow(true);
+    setShowNoteForSpendBorrow(asset?.isSwapped);
   }
 
 
@@ -3195,7 +3196,7 @@ const BorrowData = ({
                       >
                         {/* 1 BTC = 21,000 USDT */}
                         {/* * TODO: Adjust for token Decimals */}
-                        {appsImage === "mySwap" ? (
+                        {asset ? ((appsImage === "mySwap" ? (
                           totalAmountOutmySwap !== "NA" ? (
                             totalAmountOutmySwap > changeTo18Decimals(asset?.currentLoanAmount, asset.loanMarket) ? (
                               `1 ${asset.loanMarket} = ${(
@@ -3221,13 +3222,15 @@ const BorrowData = ({
                             ) : (
                               `1 ${marketTokenName} = ${(
                                 number.toBN(changeTo18Decimals(asset?.currentLoanAmount, asset.loanMarket))
-                                  .mul(number.toBN(100)).div(number.toBN(totalAmountOutJediSwap)).toNumber() / 100
-                              ).toFixed(4)} ${asset.loanMarket}`
+                                  ?.mul(number.toBN(100))?.div(number?.toBN(totalAmountOutJediSwap))?.toNumber() / 100
+                              )?.toFixed(4)} ${asset?.loanMarket}`
                             )
                           ) : (
                             <MySpinner />
                           )
                         ) : (
+                          "-"
+                        ))) : (
                           "-"
                         )}
                       </div>
@@ -3269,13 +3272,19 @@ const BorrowData = ({
                       </div>
                     </div>
                   </div>
-                  {/* {showNoteForSpendBorrow ?
-                   <div style={{ backgroundColor: "#393D4F", borderRadius: "5px", padding: "10px", fontSize: "13px" }}>
-                    <span style={{ fontWeight: "200px" }}>
-                      Note :
-                    </span>
-                    getNoteForSpendBorrow()
-                  </div> : null} */}
+                  {
+                    showNoteForSpendBorrow ?
+                      (
+                        <div style={{ backgroundColor: "#393D4F", borderRadius: "5px", padding: "10px", fontSize: "13px" }}>
+                          <span style={{ fontWeight: "200px" }}>
+                            Note : {" "}
+                          </span>
+                          {spendBorrowNote}
+                        </div>
+                      )
+                    : 
+                      null
+                  }
                   <br />
                   <Button
                     color="primary"
