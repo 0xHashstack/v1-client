@@ -202,16 +202,16 @@ const Dashboard = () => {
 
   useEffect(() => {
     //0x05b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864
-    // setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
-    setAccount(
-      number.toHex(
-        number.toBN(
-          number.toFelt(
-            "0x05b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"
-          )
-        )
-      )
-    );
+    setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
+    // setAccount(
+    //   number.toHex(
+    //     number.toBN(
+    //       number.toFelt(
+    //         "0x05b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"
+    //       )
+    //     )
+    //   )
+    // );
     checkDB();
   }, [_account]);
 
@@ -470,7 +470,7 @@ const Dashboard = () => {
         timelockActivationTime: Number(BNtoNum(deposit?.activation_time, 0)),
         timelockDuration: Number(BNtoNum(deposit?.timelock_validity, 0)),
 
-        timestamp: Number(deposit.created_at),
+        depositCreationTime: Number(deposit.created_at),
       };
       // VT: had to stringify and append due to a weird bug that was updating data randomly after append
       let myDepString = JSON.stringify(myDep);

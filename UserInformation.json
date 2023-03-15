@@ -16,5 +16,8 @@
     }, 
     "Repay": {
         "CommitmentNotExpired": "You are preclosing your loan, encurring a fee. You have "
+    }, 
+    "WithdrawDeposit": {
+        "CommitmentNotExpired": "You are preclosing your deposit, encurring a fee. You have "
     }
 }
