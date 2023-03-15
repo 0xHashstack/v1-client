@@ -306,7 +306,6 @@ const BorrowData = ({
   const [isToastOpen, setIsToastOpen] = useState(false);
 
   const [appsImage, setappsImage] = useState("yagi");
-  const apps = ["mySwap", "jediSwap", "yagi"];
 
   const [poolId, setPoolId] = useState(0);
 
@@ -323,6 +322,7 @@ const BorrowData = ({
     { name: "mySwap", supportedActions: ["Swap"] },
     { name: "yagi", supportedActions: ["Stake"] },
   ];
+  // console.log("amsset",asset);
 
   const [yagiDownArrow, setyagiDownArrow] = useState(Downarrow);
   const [yagiselection, setyagiselection] = useState("0");
@@ -399,8 +399,7 @@ const BorrowData = ({
 
   const { contract: l3JediContract } = useContract({
     abi: JediSwapAbi as Abi,
-    address:
-      l3DiamondAddress,
+    address: l3DiamondAddress,
   });
 
   // console.log(
@@ -410,7 +409,7 @@ const BorrowData = ({
   //   uint256.uint256ToBN(asset.currentLoanAmount || "0")
   // );
   const getAmount = () => {
-    let amountOut = asset.currentLoanAmount || "0";
+    let amountOut = asset?.openLoanAmount || "0";
     // console.log("getAmount", amountOut);
     return amountOut;
   };
@@ -418,7 +417,7 @@ const BorrowData = ({
   const handleMax = async () => {
     setDepositAmount(
       Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-      10 ** (tokenDecimalsMap[asset] || 18)
+        10 ** (tokenDecimalsMap[asset] || 18)
     );
     setValue(100);
   };
@@ -455,7 +454,10 @@ const BorrowData = ({
     const amount = partialWithdrawData
       ? uint256.uint256ToBN(partialWithdrawData?.amount).toString()
       : "0";
-    const amountWei = weiToEtherNumber(amount, tokenAddressMap[asset.loanMarket]);
+    const amountWei = weiToEtherNumber(
+      (amount).toString(),
+      tokenAddressMap[asset?.loanMarket]
+    );
     setMaxPartialWithdrawAmount(amountWei);
   }, [partialWithdrawData, partialWithdrawLoading, partialWithdrawError]);
 
@@ -473,7 +475,7 @@ const BorrowData = ({
       // uint256.bnToUint256(number.toBN("10").pow(number.toBN("25"))),
       tokenAddressMap[asset.loanMarket],
       tokenAddressMap[marketTokenName],
-      uint256.bnToUint256(number.toBN(getAmount().toString())),
+      uint256.bnToUint256(number.toBN(getAmount()?.toString())),
     ],
     options: {
       watch: true,
@@ -500,17 +502,17 @@ const BorrowData = ({
     );
     const decimalsDeficit = 18 - tokenDecimalsMap[marketTokenName];
     const amount = getAmountOutData?.amount_to
-      ? uint256.uint256ToBN(getAmountOutData?.amount_to)
-        .mul(number.toBN(10).pow(number.toBN(decimalsDeficit))).toString()
+      ? uint256
+          .uint256ToBN(getAmountOutData?.amount_to)
+          .mul(number.toBN(10).pow(number.toBN(decimalsDeficit)))
+          .toString()
       : "NA";
-    console.log("mmmmmmmm", amount)
     setTotalAmountOutJediSwap(amount);
   }, [getAmountOutData, loadingGetAmountOut, errorGetAmountOut]);
 
   const { contract: l3MySwapContract } = useContract({
     abi: MySwapAbi as Abi,
-    address:
-      l3DiamondAddress,
+    address: l3DiamondAddress,
   });
 
   const {
@@ -555,8 +557,10 @@ const BorrowData = ({
     // );
     const decimalsDeficit = 18 - tokenDecimalsMap[marketTokenName];
     const amount = getAmountOutDataMySwap?.amount_to
-      ? uint256.uint256ToBN(getAmountOutDataMySwap?.amount_to)
-        .mul(number.toBN(10).pow(number.toBN(decimalsDeficit))).toString()
+      ? uint256
+          .uint256ToBN(getAmountOutDataMySwap?.amount_to)
+          .mul(number.toBN(10).pow(number.toBN(decimalsDeficit)))
+          .toString()
       : "NA";
     setTotalAmountOutmySwap(amount);
   }, [
@@ -678,8 +682,8 @@ const BorrowData = ({
       appsImage === "mySwap"
         ? handleMySwap()
         : appsImage === "jediSwap"
-          ? handleJediSwap()
-          : null;
+        ? handleJediSwap()
+        : null;
     } else return null;
   };
 
@@ -835,29 +839,12 @@ const BorrowData = ({
   const changeTo18Decimals = (value: any, market: any) => {
     if (!tokenDecimalsMap[market]) return value;
     const decimalsDeficit = 18 - tokenDecimalsMap[market];
-    console.log('changeTo18Decimals', value, market, decimalsDeficit)
-    return number.toBN(value).mul(number.toBN(10 ** decimalsDeficit)).toString();
-  }
-
-
-
-  /** Get Note functions below */
-
-  useEffect(() => {
-    getNoteForSpendBorrow();
-  }, [asset])
-
-  const getNoteForSpendBorrow = () => {
-    if (asset?.isSwapped) {
-      setSpendBorrowNote(UserInformation?.Spend?.Spent);
-    }
-    setShowNoteForSpendBorrow(asset?.isSwapped);
-  }
-
-
-
-
-
+    console.log("changeTo18Decimals", value, market, decimalsDeficit);
+    return number
+      .toBN(value)
+      .mul(number.toBN(10 ** decimalsDeficit))
+      .toString();
+  };
 
   const toggleyagi = () => {
     setYagidrop(!Yagidrop);
@@ -898,10 +885,10 @@ const BorrowData = ({
     return (
       depositAmount < MinimumAmount[asset.loanMarket] ||
       depositAmount >
-      Number(
-        uint256.uint256ToBN(loanMarketBalance ? loanMarketBalance[0] : 0)
-      ) /
-      10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18)
+        Number(
+          uint256.uint256ToBN(loanMarketBalance ? loanMarketBalance[0] : 0)
+        ) /
+          10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18)
     );
   }
 
@@ -1055,7 +1042,7 @@ const BorrowData = ({
             ID{assetParam.loanId}
           </Col>
 
-          <Col>
+          {/* <Col>
             <div style={{ marginTop: "10px" }}>
               <img
                 src={
@@ -1091,23 +1078,12 @@ const BorrowData = ({
                       ? "Staked"
                       : "Traded"
                     }`}
-                  {/* <img
-                    style={{ marginLeft: "25px" }}
-                    src={`./${asset.state === "SWAPPED"
-                      ? "swap"
-                      : asset.state === "STAKED"
-                        ? "stake"
-                        : "trade"
-                      }.svg`}
-                    height="15px"
-                  /> */}
                 </div>
               ) : (
                 <></>
               )}
             </div>
-            <CardTitle tag="h5"></CardTitle>
-          </Col>
+          </Col> */}
 
           <Col className="mr-4 ">
             <div>
@@ -1115,17 +1091,39 @@ const BorrowData = ({
                 src={
                   asset
                     ? CoinClassNames[
-                    EventMap[assetParam?.loanMarket?.toUpperCase()]
-                    ] || assetParam?.loanMarket?.toUpperCase()
+                        EventMap[assetParam?.loanMarket?.toUpperCase()]
+                      ] || assetParam?.loanMarket?.toUpperCase()
                     : null
                 }
                 height="15px"
+                style={{ marginTop: "-5px" }}
               />
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
-
-                {weiToEtherNumber((assetParam?.loanAmount).toString(), tokenAddressMap[assetParam?.loanMarket]?.toString() || "").toString()}
+                {weiToEtherNumber(
+                  (assetParam?.loanAmount).toString(),
+                  tokenAddressMap[assetParam?.loanMarket]?.toString() || ""
+                ).toString()}
               </span>
+              {["SWAPPED", "STAKED", "TRADED"].includes(assetParam.state) ? (
+                <div
+                  style={{
+                    marginLeft: "25px",
+                    fontSize: "12px",
+                    color: "rgb(139, 139, 139)",
+                  }}
+                >
+                  {`${
+                    assetParam.state === "SWAPPED"
+                      ? "Swapped"
+                      : assetParam.state === "STAKED"
+                      ? "Staked"
+                      : "Traded"
+                  }`}
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </Col>
 
@@ -1133,7 +1131,12 @@ const BorrowData = ({
             <div
               style={{ fontSize: "14px", fontWeight: "600", width: "110px" }}
             >
-              {parseFloat(weiToEtherNumber((assetParam?.interestPaid).toString(), tokenAddressMap[assetParam?.loanMarket] || "").toString()).toFixed(6)}
+              {parseFloat(
+                weiToEtherNumber(
+                  (assetParam?.interestPaid).toString(),
+                  tokenAddressMap[assetParam?.loanMarket] || ""
+                ).toString()
+              ).toFixed(6)}
               &nbsp;
               {EventMap[assetParam.loanMarketSymbol?.toUpperCase()]}
             </div>
@@ -1165,22 +1168,12 @@ const BorrowData = ({
                 src={
                   assetParam
                     ? CoinClassNames[
-                    EventMap[assetParam?.collateralMarket?.toUpperCase()]
-                    ] || assetParam.collateralMarket?.toUpperCase()
+                        EventMap[assetParam?.collateralMarket?.toUpperCase()]
+                      ] || assetParam.collateralMarket?.toUpperCase()
                     : null
                 }
                 height="15px"
               />
-              <div
-                className="mr-6"
-                style={{
-                  display: "inline-block",
-                  fontSize: "13px",
-                }}
-              >
-                &nbsp; &nbsp;
-                {assetParam?.collateralMarketSymbol}
-              </div>
             </div>
           </Col>
 
@@ -1190,15 +1183,21 @@ const BorrowData = ({
                 src={
                   asset
                     ? CoinClassNames[
-                    EventMap[assetParam?.collateralMarket?.toUpperCase()]
-                    ] || assetParam?.collateralMarket?.toUpperCase()
+                        EventMap[assetParam?.collateralMarket?.toUpperCase()]
+                      ] || assetParam?.collateralMarket?.toUpperCase()
                     : null
                 }
                 height="15px"
+                style={{ marginTop: "-5px" }}
               />
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
-                {parseFloat(weiToEtherNumber((assetParam.collateralAmount).toString(), tokenAddressMap[assetParam.collateralMarket] || "").toString())}
+                {parseFloat(
+                  weiToEtherNumber(
+                    assetParam.collateralAmount.toString(),
+                    tokenAddressMap[assetParam.collateralMarket] || ""
+                  ).toString()
+                )}
               </span>
             </div>
           </Col>
@@ -1304,7 +1303,7 @@ const BorrowData = ({
                                       </NavLink>
                                     </NavItem>
                                   ) : // </>
-                                    null}
+                                  null}
                                 </Nav>
                               )}
                             </Col>
@@ -1503,7 +1502,7 @@ const BorrowData = ({
                                       onChange={(e) => {
                                         setSwapMarket(
                                           tokenAddressMap[
-                                          e.target.value as string
+                                            e.target.value as string
                                           ] as string
                                         );
                                         setLoanId(asset.loanId);
@@ -1788,12 +1787,20 @@ const BorrowData = ({
                             >
                               <div>
                                 &nbsp;&nbsp;
-                                <img
-                                  src={`./${appsImage}.svg`}
-                                  width={`${appsImage === "mySwap" ? "60px" : "100px"
+                                {appsImage ? (
+                                  <img
+                                    src={`./${appsImage}.svg`}
+                                    width={`${
+                                      appsImage === "mySwap" ||
+                                      appsImage === "yagi"
+                                        ? "60px"
+                                        : "100px"
                                     }`}
-                                  height="30px"
-                                ></img>
+                                    height="30px"
+                                  ></img>
+                                ) : (
+                                  <>No dApps available</>
+                                )}
                               </div>
                               <div
                                 style={{
@@ -1802,13 +1809,17 @@ const BorrowData = ({
                                   cursor: "pointer",
                                 }}
                               >
-                                <Image
-                                  onClick={toggleyagi}
-                                  src={yagiDownArrow}
-                                  alt="Picture of the author"
-                                  width="14px"
-                                  height="14px"
-                                />
+                                {appsImage ? (
+                                  <Image
+                                    onClick={toggleyagi}
+                                    src={yagiDownArrow}
+                                    alt="Picture of the author"
+                                    width="14px"
+                                    height="14px"
+                                  />
+                                ) : (
+                                  <></>
+                                )}
                               </div>
                             </div>
                           </label>
@@ -1819,7 +1830,7 @@ const BorrowData = ({
                     <br />
 
                     {selection === "Spend Borrow" &&
-                      (actionLabel === "Swap" || actionLabel === "Trade") ? (
+                    (actionLabel === "Swap" || actionLabel === "Trade") ? (
                       <div
                         style={{
                           display: "flex",
@@ -1878,6 +1889,7 @@ const BorrowData = ({
                         }}
                       ></div>
                     </div>
+
                     {selection !== "Spend Borrow" ? (
                       <div
                         style={{
@@ -1906,13 +1918,18 @@ const BorrowData = ({
                               }}
                             >
                               &nbsp;
-                              {parseFloat(weiToEtherNumber((asset.loanAmount).toString(), tokenAddressMap[asset.loanMarket] || "").toString())}{" "}
+                              {parseFloat(
+                                weiToEtherNumber(
+                                  asset.loanAmount.toString(),
+                                  tokenAddressMap[asset.loanMarket] || ""
+                                ).toString()
+                              )}{" "}
                               {/* {asset.loanMarket} */}
                             </span>
                           </div>
                         </div>
                       </div>
-                    ) :
+                    ) : (
                       <div
                         style={{
                           display: "flex",
@@ -1940,14 +1957,18 @@ const BorrowData = ({
                               }}
                             >
                               &nbsp;
-                              {parseFloat(weiToEtherNumber((asset.openLoanAmount).toString(), tokenAddressMap[asset.loanMarket] || "").toString())}{" "}
+                              {parseFloat(
+                                weiToEtherNumber(
+                                  asset.openLoanAmount.toString(),
+                                  tokenAddressMap[asset.loanMarket] || ""
+                                ).toString()
+                              )}{" "}
                               {/* {asset.loanMarket} */}
                             </span>
                           </div>
                         </div>
                       </div>
-                    }
-
+                    )}
 
                     {selection === "Self Liquidate" ? (
                       <div
@@ -2186,11 +2207,13 @@ const BorrowData = ({
                                   }}
                                 >
                                   &nbsp;
-                                  {(asset.currentLoanAmount /
+                                  {(
+                                    asset.currentLoanAmount /
                                     (10 **
                                       tokenDecimalsMap[
-                                      asset.currentLoanMarket
-                                      ] || 18)).toFixed(6)}
+                                        asset.currentLoanMarket
+                                      ] || 18)
+                                  ).toFixed(6)}
                                 </span>
                               </div>
                             </>
@@ -2200,7 +2223,7 @@ const BorrowData = ({
                     ) : null}
 
                     {selection === "Repay Borrow" ||
-                      selection === "Withdraw Partial Borrow" ? (
+                    selection === "Withdraw Partial Borrow" ? (
                       <>
                         {" "}
                         <div
@@ -2254,12 +2277,14 @@ const BorrowData = ({
                                     if (selection === "Repay Borrow") {
                                       let amount = loanMarketBalance?.length
                                         ? uint256.uint256ToBN(
-                                          loanMarketBalance[0]
-                                        )
+                                            loanMarketBalance[0]
+                                          )
                                         : 0;
                                       amount = weiToEtherNumber(
                                         amount.toString(),
-                                        tokenAddressMap[asset.loanMarket]?.toString() || ""
+                                        tokenAddressMap[
+                                          asset.loanMarket
+                                        ]?.toString() || ""
                                       );
                                       setRepayAmount(amount);
                                       setValue(100);
@@ -2274,10 +2299,11 @@ const BorrowData = ({
                                   style={{
                                     background: "#1D2131",
                                     color: "rgb(111, 111, 111)",
-                                    border: `1px solid ${!(!repayAmount || repayAmount <= 0)
-                                      ? "#34c38f"
-                                      : "rgb(57, 61, 79)"
-                                      }`,
+                                    border: `1px solid ${
+                                      !(!repayAmount || repayAmount <= 0)
+                                        ? "#34c38f"
+                                        : "rgb(57, 61, 79)"
+                                    }`,
                                     borderLeft: "none",
                                   }}
                                 >
@@ -2302,9 +2328,11 @@ const BorrowData = ({
                                 )}
 
                                 {selection === "Withdraw Partial Borrow" ? (
-                                  (asset.openLoanAmount /
+                                  (
+                                    asset.openLoanAmount /
                                     10 **
-                                    (tokenDecimalsMap[asset.loanMarket] || 18)).toFixed(4)
+                                      (tokenDecimalsMap[asset.loanMarket] || 18)
+                                  ).toFixed(4)
                                 ) : loanMarketAllowance ? (
                                   (
                                     Number(
@@ -2313,9 +2341,9 @@ const BorrowData = ({
                                       )
                                     ) /
                                     10 **
-                                    (tokenDecimalsMap[
-                                      asset?.loanMarket as string
-                                    ] || 18)
+                                      (tokenDecimalsMap[
+                                        asset?.loanMarket as string
+                                      ] || 18)
                                   ).toFixed(4)
                                 ) : (
                                   <MySpinner />
@@ -2352,10 +2380,10 @@ const BorrowData = ({
                                             )
                                           ) /
                                             10 **
-                                            tokenDecimalsMap[
-                                            asset.loanMarket
-                                            ])) /
-                                        100
+                                              tokenDecimalsMap[
+                                                asset.loanMarket
+                                              ])) /
+                                          100
                                       );
                                       setValue(value);
                                     }}
@@ -2380,17 +2408,17 @@ const BorrowData = ({
 
                               {repayAmount !== 0 &&
                                 repayAmount >
-                                Number(
-                                  uint256.uint256ToBN(
-                                    loanMarketBalance
-                                      ? loanMarketBalance[0]
-                                      : 0
-                                  )
-                                ) /
-                                10 **
-                                (tokenDecimalsMap[
-                                  asset?.loanMarket as string
-                                ] || 18) && (
+                                  Number(
+                                    uint256.uint256ToBN(
+                                      loanMarketBalance
+                                        ? loanMarketBalance[0]
+                                        : 0
+                                    )
+                                  ) /
+                                    10 **
+                                      (tokenDecimalsMap[
+                                        asset?.loanMarket as string
+                                      ] || 18) && (
                                   <FormText
                                     style={{ color: "#e97272 !important" }}
                                   >
@@ -2516,7 +2544,12 @@ const BorrowData = ({
                             }}
                           >
                             &nbsp;
-                            {parseFloat(weiToEtherNumber((asset.loanAmount).toString(), tokenAddressMap[asset.loanMarket] || "").toString())}{" "}
+                            {parseFloat(
+                              weiToEtherNumber(
+                                asset.loanAmount.toString(),
+                                tokenAddressMap[asset.loanMarket] || ""
+                              ).toString()
+                            )}{" "}
                             {asset.loanMarketSymbol}
                           </span>
                         </div>
@@ -2638,13 +2671,14 @@ const BorrowData = ({
                                   onClick={() => {
                                     let amount = collateralMarketBalance?.length
                                       ? uint256.uint256ToBN(
-                                        collateralMarketBalance[0]
-                                      )
+                                          collateralMarketBalance[0]
+                                        )
                                       : 0;
                                     amount = weiToEtherNumber(
                                       amount.toString(),
-                                      tokenAddressMap[asset.collateralMarket].toString() || ""
-
+                                      tokenAddressMap[
+                                        asset.collateralMarket
+                                      ].toString() || ""
                                     );
                                     setAddCollateralAmount(amount);
                                     setValue(100);
@@ -2652,10 +2686,11 @@ const BorrowData = ({
                                   style={{
                                     background: "#1D2131",
                                     color: "rgb(111, 111, 111)",
-                                    border: `1px solid ${!isInvalid() === true
-                                      ? "#34c38f"
-                                      : "rgb(57, 61, 79)"
-                                      }`,
+                                    border: `1px solid ${
+                                      !isInvalid() === true
+                                        ? "#34c38f"
+                                        : "rgb(57, 61, 79)"
+                                    }`,
                                     borderLeft: "none",
                                   }}
                                 >
@@ -2682,9 +2717,9 @@ const BorrowData = ({
                                       )
                                     ) /
                                     10 **
-                                    (tokenDecimalsMap[
-                                      asset?.collateralMarket as string
-                                    ] || 18)
+                                      (tokenDecimalsMap[
+                                        asset?.collateralMarket as string
+                                      ] || 18)
                                   )
                                     .toFixed(4)
                                     .toString()
@@ -2706,17 +2741,17 @@ const BorrowData = ({
 
                               {addCollateralAmount ? (
                                 addCollateralAmount >
-                                Number(
-                                  uint256.uint256ToBN(
-                                    collateralMarketBalance
-                                      ? collateralMarketBalance[0]
-                                      : 0
-                                  )
-                                ) /
-                                10 **
-                                (tokenDecimalsMap[
-                                  asset?.collateralMarket
-                                ] || 18) && (
+                                  Number(
+                                    uint256.uint256ToBN(
+                                      collateralMarketBalance
+                                        ? collateralMarketBalance[0]
+                                        : 0
+                                    )
+                                  ) /
+                                    10 **
+                                      (tokenDecimalsMap[
+                                        asset?.collateralMarket
+                                      ] || 18) && (
                                   <FormText
                                     style={{ color: "#e97272 !important" }}
                                   >
@@ -2757,10 +2792,10 @@ const BorrowData = ({
                                     )
                                   ) /
                                     10 **
-                                    (tokenDecimalsMap[
-                                      asset.collateralMarket
-                                    ] || 18))) /
-                                100
+                                      (tokenDecimalsMap[
+                                        asset.collateralMarket
+                                      ] || 18))) /
+                                  100
                               );
                               setValue(value);
                             }}
@@ -2799,7 +2834,10 @@ const BorrowData = ({
                             >
                               &nbsp;{" "}
                               {parseFloat(
-                                weiToEtherNumber((asset.collateralAmount).toString(), tokenAddressMap[asset.collateralMarket] || "").toString()
+                                weiToEtherNumber(
+                                  asset.collateralAmount.toString(),
+                                  tokenAddressMap[asset.collateralMarket] || ""
+                                ).toString()
                               )}
                             </span>
                           </div>
@@ -2829,7 +2867,6 @@ const BorrowData = ({
                       <div
                         style={{
                           margin: "10px 0",
-                          cursor: "pointer",
                           display: "flex",
                           alignItems: "center",
                           fontSize: "16px",
@@ -2837,21 +2874,33 @@ const BorrowData = ({
                       >
                         {!isCollateralActions ? (
                           <>
-                            <div style={{ display: "block" }}>
-                              <div
-                                onClick={() => {
-                                  handleAction("Stake");
-                                }}
-                              >
-                                &nbsp;Stake
-                              </div>
-                              <hr style={{ width: "78px" }} />
+                            <div
+                              style={{ display: "block", cursor: "pointer" }}
+                            >
                               <div
                                 onClick={() => {
                                   handleAction("Swap");
                                 }}
                               >
-                                &nbsp;Swap
+                                Swap
+                              </div>
+                              <hr style={{ width: "78px" }} />
+                              <div
+                                onClick={() => {
+                                  handleAction("Stake");
+                                }}
+                              >
+                                <div style={{ display: "block" }}>
+                                  Stake
+                                  <div
+                                    style={{
+                                      fontSize: "10px",
+                                      color: "#8B8B8B",
+                                    }}
+                                  >
+                                    Coming soon
+                                  </div>
+                                </div>
                               </div>
                               <hr style={{ width: "78px" }} />
                               <div
@@ -2859,7 +2908,17 @@ const BorrowData = ({
                                   handleAction("Trade");
                                 }}
                               >
-                                &nbsp;Trade
+                                <div style={{ display: "block" }}>
+                                  Trade
+                                  <div
+                                    style={{
+                                      fontSize: "10px",
+                                      color: "#8B8B8B",
+                                    }}
+                                  >
+                                    Coming soon
+                                  </div>
+                                </div>
                               </div>
                             </div>
                           </>
@@ -3015,7 +3074,7 @@ const BorrowData = ({
                               <img
                                 src={`./${coin.name}.svg`}
                                 width="16px"
-                              // height="30px"
+                                // height="30px"
                               ></img>
                               <div>&nbsp;&nbsp;&nbsp;{coin.symbol}</div>
                             </div>
@@ -3085,8 +3144,9 @@ const BorrowData = ({
                             >
                               <img
                                 src={`./${dapp.name}.svg`}
-                                width={`${dapp.name === "mySwap" ? "60px" : "100px"
-                                  }`}
+                                width={`${
+                                  dapp.name === "mySwap" ? "60px" : "100px"
+                                }`}
                                 height="30px"
                                 style={{ cursor: "pointer" }}
                               />
@@ -3103,7 +3163,7 @@ const BorrowData = ({
               </div>
 
               {selection === "Spend Borrow" &&
-                (actionLabel === "Swap" || actionLabel === "Trade") ? (
+              (actionLabel === "Swap" || actionLabel === "Trade") ? (
                 <FormGroup>
                   <div className="row mb-4">
                     <Col sm={12}>
@@ -3198,15 +3258,37 @@ const BorrowData = ({
                         {/* * TODO: Adjust for token Decimals */}
                         {asset ? ((appsImage === "mySwap" ? (
                           totalAmountOutmySwap !== "NA" ? (
-                            totalAmountOutmySwap > changeTo18Decimals(asset?.currentLoanAmount, asset.loanMarket) ? (
+                            totalAmountOutmySwap >
+                            changeTo18Decimals(
+                              asset?.currentLoanAmount,
+                              asset.loanMarket
+                            ) ? (
                               `1 ${asset.loanMarket} = ${(
-                                number.toBN(totalAmountOutmySwap).mul(number.toBN(100))
-                                  .div(number.toBN(changeTo18Decimals(asset.currentLoanAmount, asset.loanMarket))).toNumber() / 100
+                                number
+                                  .toBN(totalAmountOutmySwap)
+                                  .mul(number.toBN(100))
+                                  .div(
+                                    number.toBN(
+                                      changeTo18Decimals(
+                                        asset.currentLoanAmount,
+                                        asset.loanMarket
+                                      )
+                                    )
+                                  )
+                                  .toNumber() / 100
                               ).toFixed(4)} ${marketTokenName}`
                             ) : (
                               `1 ${marketTokenName} = ${(
-                                number.toBN(changeTo18Decimals(asset?.currentLoanAmount, asset.loanMarket))
-                                  .mul(number.toBN(100)).div(number.toBN(totalAmountOutmySwap)).toNumber() / 100
+                                number
+                                  .toBN(
+                                    changeTo18Decimals(
+                                      asset?.currentLoanAmount,
+                                      asset.loanMarket
+                                    )
+                                  )
+                                  .mul(number.toBN(100))
+                                  .div(number.toBN(totalAmountOutmySwap))
+                                  .toNumber() / 100
                               ).toFixed(4)} ${asset.loanMarket}`
                             )
                           ) : (
@@ -3214,16 +3296,38 @@ const BorrowData = ({
                           )
                         ) : appsImage === "jediSwap" ? (
                           totalAmountOutJediSwap !== "NA" ? (
-                            totalAmountOutJediSwap > changeTo18Decimals(asset?.currentLoanAmount, asset.loanMarket) ? (
+                            totalAmountOutJediSwap >
+                            changeTo18Decimals(
+                              asset?.currentLoanAmount,
+                              asset.loanMarket
+                            ) ? (
                               `1 ${asset.loanMarket} = ${(
-                                number.toBN(totalAmountOutJediSwap).mul(number.toBN(100))
-                                  .div(number.toBN(changeTo18Decimals(asset.currentLoanAmount, asset.loanMarket))).toNumber() / 100
+                                number
+                                  .toBN(totalAmountOutJediSwap)
+                                  .mul(number.toBN(100))
+                                  .div(
+                                    number.toBN(
+                                      changeTo18Decimals(
+                                        asset.currentLoanAmount,
+                                        asset.loanMarket
+                                      )
+                                    )
+                                  )
+                                  .toNumber() / 100
                               ).toFixed(4)} ${marketTokenName}`
                             ) : (
                               `1 ${marketTokenName} = ${(
-                                number.toBN(changeTo18Decimals(asset?.currentLoanAmount, asset.loanMarket))
-                                  ?.mul(number.toBN(100))?.div(number?.toBN(totalAmountOutJediSwap))?.toNumber() / 100
-                              )?.toFixed(4)} ${asset?.loanMarket}`
+                                number
+                                  .toBN(
+                                    changeTo18Decimals(
+                                      asset?.currentLoanAmount,
+                                      asset.loanMarket
+                                    )
+                                  )
+                                  .mul(number.toBN(100))
+                                  .div(number.toBN(totalAmountOutJediSwap))
+                                  .toNumber() / 100
+                              ).toFixed(4)} ${asset.loanMarket}`
                             )
                           ) : (
                             <MySpinner />
@@ -3306,7 +3410,15 @@ const BorrowData = ({
                       loadingApprove ||
                       isTransactionLoading(requestDepositTransactionReceipt)
                     ) ? (
-                      <>{selection}</>
+                      <div style={{ display: "block" }}>
+                        {selection}
+                        <div style={{ fontSize: "12px" }}>
+                          {actionLabel === "Trade" ||
+                          actionLabel === "Stake" ? (
+                            <div style={{ opacity: "0.5" }}>Coming soon</div>
+                          ) : null}
+                        </div>
+                      </div>
                     ) : (
                       <MySpinner text="Depositing token" />
                     )}
@@ -3383,7 +3495,7 @@ const BorrowData = ({
                         />
                         &nbsp;<div>{weiToEtherNumber((asset.collateralAmount).toString(),asset.collateralMarket)}</div>
                       </div>
-                    </div> */}
+                    </div>
                     <div
                       style={{
                         display: "flex",
@@ -3622,7 +3734,7 @@ const BorrowData = ({
                         />
                         &nbsp;<div>{weiToEtherNumber((asset.collateralAmount).toString(),asset.collateralMarket)}</div>
                       </div>
-                    </div> */}
+                    </div>
                     <div
                       style={{
                         display: "flex",

@@ -46,7 +46,10 @@ import UpArrow from "../../../assets/images/ArrowUpDark.svg";
 import { Abi, uint256 } from "starknet";
 import { Coins, ICoin } from "../../dashboard/dashboard-body";
 import MySpinner from "../../mySpinner";
-import { MinimumAmount, MinimumBorrowAmount } from "../../../blockchain/constants";
+import {
+  MinimumAmount,
+  MinimumBorrowAmount,
+} from "../../../blockchain/constants";
 import useMaxloan from "../../../blockchain/hooks/Max_loan_given_collat";
 import ToastModal from "../../toastModals/customToastModal";
 import loanABI from "../../../../starknet-artifacts/contracts/modules/loan.cairo/loan_abi.json";
@@ -736,14 +739,7 @@ const BorrowTab = ({
                 >
                   Borrow ID
                 </Col>
-                <Col
-                  style={{
-                    width: "100px",
-                    padding: "20px 10px",
-                  }}
-                >
-                  Market
-                </Col>
+
                 <Col style={{ width: "100px", padding: "20px 10px" }}>
                   Borrow Amount
                 </Col>
@@ -766,10 +762,12 @@ const BorrowTab = ({
                   MCP
                 </Col>
                 <Col
-                  scope="col"
-                  style={{ width: "100px", padding: "20px 10px" }}
+                  style={{
+                    width: "100px",
+                    padding: "20px 10px",
+                  }}
                 >
-                  Collateral Market
+                  Spent on
                 </Col>
                 <Col
                   scope="col"
@@ -862,7 +860,8 @@ const BorrowTab = ({
                 <u>Purchase or Supply assets.</u>
               </div>
             </div>
-            {// console.log("Borrasset",asset)
+            {
+              // console.log("Borrasset",asset)
             }
             <BorrowModal
               modal_borrow={modal_borrow}
