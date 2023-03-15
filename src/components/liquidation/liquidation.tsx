@@ -115,7 +115,7 @@ const LiquidationButton = ({
       entrypoint: "approve",
       calldata: [diamondAddress, loan.loanAmount, 0],
     },
-     {
+    {
       contractAddress: diamondAddress,
       entrypoint: "liquidate",
       calldata: [loan.id],

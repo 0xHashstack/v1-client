@@ -547,14 +547,22 @@ const Dashboard = () => {
       // console.log("loan in liquidation", loan);
       let myLiquidableLoan = {
         loanOwner: loan.account,
+
         loanMarket: getTokenFromAddress(loan.loanMarket)?.name,
         loanMarketSymbol: getTokenFromAddress(loan.loanMarket)?.symbol,
-        commitment: getCommitmentNameFromIndexDeposit(loan.commitment),
-        openLoanAmount: loan.openLoanAmount,
         loanAmount: loan.loanAmount,
+        openLoanAmount: loan.openLoanAmount,
+        
+        commitment: getCommitmentNameFromIndexDeposit(loan.commitment),
+
+        currentMarket: getTokenFromAddress(loan.currentMarket)?.name,
+        currentMarketSymbol: getTokenFromAddress(loan.currentMarket)?.symbol,
+        currentAmount: loan.currentAmount,
+
         collateralMarket: getTokenFromAddress(loan.collateralMarket)?.name,
         collateralMarketSymbol: getTokenFromAddress(loan.collateralMarket)?.symbol,
         collateralAmount: loan.collateralAmount,
+
         isLiquidationDone: false,
         id: loan.loanId,
       };
@@ -583,6 +591,7 @@ const Dashboard = () => {
         (loans) => {
           onLiquidationsData(loans);
           setIsLoading(false);
+          console.log("liquidable", loans);
         },
         (err) => {
           setIsLoading(false);
