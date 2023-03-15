@@ -323,6 +323,10 @@ const BorrowData = ({
   const [showNoteForRevertSpend, setShowNoteForRevertSpend] = useState(false);
   const [revertSpendNote, setRevertSpendNote] = useState("");
 
+  const [showNoteForWithdrawPartialBorrow, setShowNoteForWithdrawPartialBorrow] = useState(false);
+  const [withdrawPartialBorrowNote, setWithdrawPartialBorrowNote] = useState("");
+
+
 
   const dappsArray = [
     { name: "jediSwap", supportedActions: ["Swap"] },
@@ -857,6 +861,7 @@ const BorrowData = ({
     getNoteForSpendBorrow();
     getNoteForWithdrawCollateral();
     getNoteForRevertSpend();
+    getNoteForWithdrawPartialBorrow();
   }, [asset])
 
   const getNoteForSpendBorrow = () => {
@@ -892,6 +897,21 @@ const BorrowData = ({
     }
     else 
       setShowNoteForRevertSpend(false);
+  }
+
+  const getNoteForWithdrawPartialBorrow = () => {
+    if(asset?.isWithdrawn) {
+      setShowNoteForWithdrawPartialBorrow(true);
+      setWithdrawPartialBorrowNote(UserInformation?.WithdrawPartialBorrow?.Withdrawn);
+    }
+    else if(asset?.isSwapped) {
+      setShowNoteForWithdrawPartialBorrow(true);
+      setWithdrawPartialBorrowNote(UserInformation?.WithdrawPartialBorrow?.Spent);
+    }
+    else {
+      setShowNoteForWithdrawPartialBorrow(true);
+      setWithdrawPartialBorrowNote(UserInformation?.WithdrawPartialBorrow?.Eligible);
+    }
   }
 
   const toggleyagi = () => {
@@ -3648,12 +3668,19 @@ const BorrowData = ({
                       </div>
                     </div>
                   </div>
-                  <div style={{ backgroundColor: "#393D4F", borderRadius: "5px", padding: "10px", fontSize: "13px" }}>
-                    <span style={{ fontWeight: "200px" }}>
-                      Note :
-                    </span>
-                    This is the note where you are supposed to do some information of the given user and something
-                  </div>
+                  {
+                    showNoteForWithdrawPartialBorrow ?
+                      (
+                        <div style={{ backgroundColor: "#393D4F", borderRadius: "5px", padding: "10px", fontSize: "13px" }}>
+                          <span style={{ fontWeight: "200px" }}>
+                            Note : {" "}
+                          </span>
+                          {withdrawPartialBorrowNote}
+                        </div>
+                      )
+                      :
+                      null
+                  }
                   <br />
                   <Button
                     color="primary"
