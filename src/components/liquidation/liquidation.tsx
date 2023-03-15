@@ -343,7 +343,10 @@ const Liquidation = ({
               activeLiquidationsData.map((asset, key) => {
                 console.log("asset in li", asset);
 
-                const Discount = ((Number(asset.collateralAmount)/10**tokenDecimalsMap[asset.collateralMarket.toString()] + (Number(asset.currentAmount)/10**tokenDecimalsMap[asset.collateralMarket.toString()] - Number(asset.openLoanAmount)/10**tokenDecimalsMap[asset.loanMarket.toString()]))/Number(asset.openLoanAmount)/10**tokenDecimalsMap[asset.loanMarket.toString()])*100;
+                
+                const Discount = ((Number(asset.collateralAmount)/10**tokenDecimalsMap[asset.collateralMarket.toString()] + (Number(asset.currentAmount)/10**tokenDecimalsMap[asset.collateralMarket.toString()] - Number(asset.openLoanAmount)/10**tokenDecimalsMap[asset.loanMarket.toString()]))/(Number(asset.openLoanAmount)/10**tokenDecimalsMap[asset.loanMarket.toString()]))*100;
+                console.log(tokenDecimalsMap[asset.loanMarket.toString()]);
+                
                 return (
                   <tr key={key} style={{ color: "white" }}>
                     {/* <th scope="row">
