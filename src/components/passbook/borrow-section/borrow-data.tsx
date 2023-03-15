@@ -286,7 +286,7 @@ const BorrowData = ({
   const [dropDownArrowTwo, setDropDownArrowTwo] = useState(Downarrow);
   const [dropDownArrowThree, setDropDownArrowThree] = useState(Downarrow);
   const [marketDropDown, setMarketDropDown] = useState(false);
-  const [actionLabel, setActionLabel] = useState("Swap");
+  const [actionLabel, setActionLabel] = useState("Stake");
   const [maxPartialWithdrawAmount, setMaxPartialWithdrawAmount] = useState(0);
   const [borrowInterest, setBorrowInterest] = useState<string>("");
   const [currentBorrowInterest, setCurrentBorrowInterest] = useState<any>();
@@ -304,7 +304,7 @@ const BorrowData = ({
   const [toastParam, setToastParam] = useState({});
   const [isToastOpen, setIsToastOpen] = useState(false);
 
-  const [appsImage, setappsImage] = useState("jediSwap");
+  const [appsImage, setappsImage] = useState("yagi");
 
   const [poolId, setPoolId] = useState(0);
 
@@ -1783,13 +1783,20 @@ const BorrowData = ({
                             >
                               <div>
                                 &nbsp;&nbsp;
-                                <img
-                                  src={`./${appsImage}.svg`}
-                                  width={`${
-                                    appsImage === "mySwap" ? "60px" : "100px"
-                                  }`}
-                                  height="30px"
-                                ></img>
+                                {appsImage ? (
+                                  <img
+                                    src={`./${appsImage}.svg`}
+                                    width={`${
+                                      appsImage === "mySwap" ||
+                                      appsImage === "yagi"
+                                        ? "60px"
+                                        : "100px"
+                                    }`}
+                                    height="30px"
+                                  ></img>
+                                ) : (
+                                  <>No dApps available</>
+                                )}
                               </div>
                               <div
                                 style={{
@@ -1798,13 +1805,17 @@ const BorrowData = ({
                                   cursor: "pointer",
                                 }}
                               >
-                                <Image
-                                  onClick={toggleyagi}
-                                  src={yagiDownArrow}
-                                  alt="Picture of the author"
-                                  width="14px"
-                                  height="14px"
-                                />
+                                {appsImage ? (
+                                  <Image
+                                    onClick={toggleyagi}
+                                    src={yagiDownArrow}
+                                    alt="Picture of the author"
+                                    width="14px"
+                                    height="14px"
+                                  />
+                                ) : (
+                                  <></>
+                                )}
                               </div>
                             </div>
                           </label>
@@ -2858,24 +2869,23 @@ const BorrowData = ({
                       >
                         {!isCollateralActions ? (
                           <>
-                            <div style={{ display: "block" }}>
+                            <div
+                              style={{ display: "block", cursor: "pointer" }}
+                            >
                               <div
                                 onClick={() => {
                                   handleAction("Swap");
                                 }}
-                                style={{ cursor: "pointer" }}
                               >
-                                &nbsp;Swap
+                                Swap
                               </div>
                               <hr style={{ width: "78px" }} />
                               <div
-                              // onClick={() => {
-                              //   handleAction("Stake");
-                              // }}
+                                onClick={() => {
+                                  handleAction("Stake");
+                                }}
                               >
-                                <div
-                                  style={{ display: "block", opacity: "0.5" }}
-                                >
+                                <div style={{ display: "block" }}>
                                   Stake
                                   <div
                                     style={{
@@ -2883,19 +2893,17 @@ const BorrowData = ({
                                       color: "#8B8B8B",
                                     }}
                                   >
-                                    coming soon
+                                    Coming soon
                                   </div>
                                 </div>
                               </div>
                               <hr style={{ width: "78px" }} />
                               <div
-                              // onClick={() => {
-                              //   handleAction("Trade");
-                              // }}
+                                onClick={() => {
+                                  handleAction("Trade");
+                                }}
                               >
-                                <div
-                                  style={{ display: "block", opacity: "0.5" }}
-                                >
+                                <div style={{ display: "block" }}>
                                   Trade
                                   <div
                                     style={{
@@ -2903,7 +2911,7 @@ const BorrowData = ({
                                       color: "#8B8B8B",
                                     }}
                                   >
-                                    coming soon
+                                    Coming soon
                                   </div>
                                 </div>
                               </div>
@@ -3381,7 +3389,15 @@ const BorrowData = ({
                       loadingApprove ||
                       isTransactionLoading(requestDepositTransactionReceipt)
                     ) ? (
-                      <>{selection}</>
+                      <div style={{ display: "block" }}>
+                        {selection}
+                        <div style={{ fontSize: "12px" }}>
+                          {actionLabel === "Trade" ||
+                          actionLabel === "Stake" ? (
+                            <div style={{ opacity: "0.5" }}>Coming soon</div>
+                          ) : null}
+                        </div>
+                      </div>
                     ) : (
                       <MySpinner text="Depositing token" />
                     )}

@@ -897,36 +897,37 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                     <div
                                       style={{
                                         margin: "10px 0",
-                                        cursor:
-                                          word !== "Trade" && word !== "Stake"
-                                            ? "pointer"
-                                            : "",
+                                        cursor: "pointer",
+                                        // cursor:
+                                        //   word !== "Trade" && word !== "Stake"
+                                        //     ? "pointer"
+                                        //     : "",
                                         display: "flex",
                                         alignItems: "center",
                                         fontSize: "14px",
-                                        opacity:
-                                          word === "Trade" || word === "Stake"
-                                            ? "0.7"
-                                            : "",
+                                        // opacity:
+                                        //   word === "Trade" || word === "Stake"
+                                        //     ? "0.7"
+                                        //     : "",
                                       }}
                                       key={index}
                                       onClick={() => {
                                         {
-                                          if (
-                                            word !== "Trade" &&
-                                            word !== "Stake"
-                                          ) {
-                                            setTitle({ label: word });
-                                            setDropDownTwo(!dropDownTwo);
-                                            setStakeDropDownArrow(arrowDown);
-                                            setAppsImage((prev: any) =>
-                                              word === "Swap"
-                                                ? "jediSwap"
-                                                : word === "Stake"
-                                                ? "yagi"
-                                                : prev
-                                            );
-                                          }
+                                          // if (
+                                          //   word !== "Trade" &&
+                                          //   word !== "Stake"
+                                          // ) {
+                                          setTitle({ label: word });
+                                          setDropDownTwo(!dropDownTwo);
+                                          setStakeDropDownArrow(arrowDown);
+                                          setAppsImage((prev: any) =>
+                                            word === "Swap"
+                                              ? "jediSwap"
+                                              : word === "Stake"
+                                              ? "yagi"
+                                              : prev
+                                          );
+                                          // }
                                         }
                                       }}
                                     >
@@ -1157,6 +1158,7 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                           </div>
                         </div>
                       </label>
+
                       {dropDown ? (
                         <>
                           <div
@@ -1433,15 +1435,30 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                   </div>
                   <Button
                     color="white"
-                    className="w-md"
-                    style={{ backgroundColor: "rgb(57, 61, 79)" }}
+                    // className="w-md"
+                    style={{
+                      backgroundColor: "rgb(57, 61, 79)",
+                      border: "none",
+                    }}
+                    // disabled={
+                    //   (appsImage === "mySwap" && loadingJediSwap) ||
+                    //   (appsImage === "jediSwap" && loadingMySwap)
+                    // }
                     disabled={
-                      (appsImage === "mySwap" && loadingJediSwap) ||
-                      (appsImage === "jediSwap" && loadingMySwap)
+                      title.label === "Trade" || title.label === "Stake"
+                        ? true
+                        : false
                     }
                     onClick={handleCTAButton}
                   >
-                    {title.label}
+                    <div style={{ display: "block" }}>
+                      {title.label}
+                      <div style={{ fontSize: "12px" }}>
+                        {title.label === "Trade" || title.label === "Stake" ? (
+                          <div style={{ opacity: "0.5" }}>Coming soon</div>
+                        ) : null}
+                      </div>
+                    </div>
                   </Button>
                 </div>
               </Form>
