@@ -532,6 +532,7 @@ const Dashboard = () => {
       deposits.push(JSON.parse(myDepString));
     }
     let nonZeroDeposits = deposits.filter(function (el) {
+      console.log("amount parse deposit", el.amount)
       return el.amount !== "0";
     });
     console.log("parsed deposit data", deposits);
