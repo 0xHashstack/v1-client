@@ -862,8 +862,9 @@ const BorrowData = ({
   const getNoteForSpendBorrow = () => {
     if (asset?.isSwapped) {
       setSpendBorrowNote(UserInformation?.Spend?.Spent);
-      setShowNoteForSpendBorrow(true);
     }
+    else
+      setShowNoteForSpendBorrow(asset?.isSwapped);
   }
 
   const getNoteForWithdrawCollateral = () => {
@@ -872,12 +873,15 @@ const BorrowData = ({
       setWithdrawCollateralNote(UserInformation?.WithdrawCollateral?.NotRepaid);
     }
     else if (asset?.state === "REPAID" && asset?.commitmentIndex !== 0 && asset?.isTimelockActivated) {
+      setShowNoteForWithdrawCollateral(true)
       const timeLockEndtime = new Date((asset?.timelockActivationTime + asset?.timelockDuration) * 1000);
       const currentTime = new Date();
       // subtract the times and show the difference in days
       const diff = Math.abs(timeLockEndtime.getTime() - currentTime.getTime());
       const diffHours = Math.ceil(diff / (1000 * 3600));
       setWithdrawCollateralNote(UserInformation?.WithdrawCollateral?.TimelockNotExpired + diffHours + " hours");
+    } else {
+      setShowNoteForWithdrawCollateral(false);
     }
   }
 
@@ -886,6 +890,8 @@ const BorrowData = ({
       setShowNoteForRevertSpend(true);
       setRevertSpendNote(UserInformation?.RevertSpend?.NotSpent);
     }
+    else 
+      setShowNoteForRevertSpend(false);
   }
 
   const toggleyagi = () => {
@@ -1214,7 +1220,7 @@ const BorrowData = ({
                     }
                     height="22px"
                   />
-                ) : "-"
+                ) : "--"
               }
             </div>
           </Col>
@@ -3509,7 +3515,7 @@ const BorrowData = ({
                         DC{asset.debtCategory}
                       </div>
                     </div>
-                    <div
+                    {/* <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -3533,7 +3539,7 @@ const BorrowData = ({
                         />
                         &nbsp;<div>{weiToEtherNumber((asset.collateralAmount).toString(), asset.collateralMarket)}</div>
                       </div>
-                    </div>
+                    </div> */}
                     <div
                       style={{
                         display: "flex",
@@ -3552,12 +3558,6 @@ const BorrowData = ({
                         Starknet
                       </div>
                     </div>
-                  </div>
-                  <div style={{ backgroundColor: "#393D4F", borderRadius: "5px", padding: "10px", fontSize: "13px" }}>
-                    <span style={{ fontWeight: "200px" }}>
-                      Note :
-                    </span>
-                    This is the note where you are supposed to do some information of the given user and something
                   </div>
                   <br />
                   <Button
@@ -3689,7 +3689,7 @@ const BorrowData = ({
                     style={{
                       marginBottom: "25px",
                       fontSize: "11px",
-                      marginTop: "-10px",
+                      marginTop: "0px",
                     }}
                   >
                     <div
@@ -3748,7 +3748,7 @@ const BorrowData = ({
                         {TransactionFees?.loan?.SelfLiquidationFee}%
                       </div>
                     </div>
-                    <div
+                    {/* <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -3772,7 +3772,7 @@ const BorrowData = ({
                         />
                         &nbsp;<div>{weiToEtherNumber((asset.collateralAmount).toString(), asset.collateralMarket)}</div>
                       </div>
-                    </div>
+                    </div> */}
                     <div
                       style={{
                         display: "flex",
@@ -3791,12 +3791,6 @@ const BorrowData = ({
                         Starknet
                       </div>
                     </div>
-                  </div>
-                  <div style={{ backgroundColor: "#393D4F", borderRadius: "5px", padding: "10px", fontSize: "13px" }}>
-                    <span style={{ fontWeight: "200px" }}>
-                      Note :
-                    </span>
-                    This is the note where you are supposed to do some information of the given user and something
                   </div>
                   <br />
                   <Button
