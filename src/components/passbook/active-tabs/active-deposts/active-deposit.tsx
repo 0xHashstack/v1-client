@@ -562,7 +562,7 @@ const ActiveDeposit = ({
               &nbsp;&nbsp;
               <span style={{ fontSize: "15px", fontWeight: "600" }}>
                 {weiToEtherNumber(
-                  assetParam.amount,
+                  (assetParam?.amount || '0').toString(),
                   tokenAddressMap[assetParam.market] || ""
                 )}
               </span>
