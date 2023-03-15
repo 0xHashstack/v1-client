@@ -2221,6 +2221,7 @@ const BorrowData = ({
                                   }
                                   valid={!(!repayAmount || repayAmount <= 0)}
                                 />
+                                
                                 <Button
                                   outline
                                   type="button"
@@ -3245,6 +3246,13 @@ const BorrowData = ({
                       </div>
                     </div>
                   </div>
+                  <div style={{backgroundColor:"#393D4F",borderRadius:"5px",padding:"10px",fontSize:"13px"}}>
+                  <span style={{fontWeight:"200px"}}>
+                    Note : 
+                  </span>
+                     This is the note where you are supposed to do some information of the given user and something
+                </div>
+                <br/>
                   <Button
                     color="primary"
                     className="w-md"
@@ -3362,6 +3370,13 @@ const BorrowData = ({
                       </div>
                     </div>
                   </div>
+                  <div style={{backgroundColor:"#393D4F",borderRadius:"5px",padding:"10px",fontSize:"13px"}}>
+                  <span style={{fontWeight:"200px"}}>
+                    Note : 
+                  </span>
+                     This is the note where you are supposed to do some information of the given user and something
+                </div>
+                <br/>
                   <Button
                     color="primary"
                     className="w-md"
@@ -3450,6 +3465,13 @@ const BorrowData = ({
                       </div>
                     </div>
                   </div>
+                  <div style={{backgroundColor:"#393D4F",borderRadius:"5px",padding:"10px",fontSize:"13px"}}>
+                  <span style={{fontWeight:"200px"}}>
+                    Note : 
+                  </span>
+                     This is the note where you are supposed to do some information of the given user and something
+                </div>
+                <br/>
                   <Button
                     color="primary"
                     className="w-md"
@@ -3587,6 +3609,13 @@ const BorrowData = ({
                       </div>
                     </div>
                   </div>
+                  <div style={{backgroundColor:"#393D4F",borderRadius:"5px",padding:"10px",fontSize:"13px"}}>
+                  <span style={{fontWeight:"200px"}}>
+                    Note : 
+                  </span>
+                     This is the note where you are supposed to do some information of the given user and something
+                </div>
+                <br/>
                   <Button
                     color="primary"
                     className="w-md"
@@ -3685,6 +3714,13 @@ const BorrowData = ({
                       </div>
                     </div>
                   </div>
+                  <div style={{backgroundColor:"#393D4F",borderRadius:"5px",padding:"10px",fontSize:"13px"}}>
+                  <span style={{fontWeight:"200px"}}>
+                    Note : 
+                  </span>
+                     This is the note where you are supposed to do some information of the given user and something
+                </div>
+                <br/>
                   <Button
                     color="primary"
                     className="w-md"
@@ -3786,6 +3822,13 @@ const BorrowData = ({
                       </div>
                     </div>
                   </div>
+                  <div style={{backgroundColor:"#393D4F",borderRadius:"5px",padding:"10px",fontSize:"13px"}}>
+                  <span style={{fontWeight:"200px"}}>
+                    Note : 
+                  </span>
+                     This is the note where you are supposed to do some information of the given user and something
+                </div>
+                <br/>
                   <Button
                     color="primary"
                     className="w-md"
@@ -3906,6 +3949,13 @@ const BorrowData = ({
                       </div>
                     </div>
                   </div>
+                  <div style={{backgroundColor:"#393D4F",borderRadius:"5px",padding:"10px",fontSize:"13px"}}>
+                  <span style={{fontWeight:"200px"}}>
+                    Note : 
+                  </span>
+                     This is the note where you are supposed to do some information of the given user and something
+                </div>
+                <br/>
 
                   <Button
                     color="primary"
