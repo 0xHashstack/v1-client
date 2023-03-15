@@ -2876,14 +2876,14 @@ const BorrowData = ({
                         {!isCollateralActions ? (
                           <>
                             <div style={{ display: "block" }}>
-                              {/* <div
+                              <div
                                 onClick={() => {
                                   selectionAction("Self Liquidate");
                                 }}
                               >
                                 &nbsp;Self Liquidate
-                              </div> */}
-                              {/* <hr style={{ width: "390px" }} /> */}
+                              </div>
+                              <hr style={{ width: "390px" }} />
                               <div
                                 onClick={() => {
                                   selectionAction("Spend Borrow");
@@ -3318,7 +3318,7 @@ const BorrowData = ({
                         DC{asset.debtCategory}
                       </div>
                     </div>
-                    <div
+                    {/* <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -3342,7 +3342,7 @@ const BorrowData = ({
                         />
                         &nbsp;<div>{weiToEtherNumber((asset.collateralAmount).toString(),asset.collateralMarket)}</div>
                       </div>
-                    </div>
+                    </div> */}
                     <div
                       style={{
                         display: "flex",
@@ -3543,7 +3543,7 @@ const BorrowData = ({
                         {TransactionFees?.loan?.SelfLiquidationFee}%
                       </div>
                     </div>
-                    <div
+                    {/* <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -3567,7 +3567,7 @@ const BorrowData = ({
                         />
                         &nbsp;<div>{weiToEtherNumber((asset.collateralAmount).toString(),asset.collateralMarket)}</div>
                       </div>
-                    </div>
+                    </div> */}
                     <div
                       style={{
                         display: "flex",
