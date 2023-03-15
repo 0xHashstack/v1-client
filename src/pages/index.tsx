@@ -179,21 +179,21 @@ const Dashboard = () => {
 
     try {
       //Whitelist check [correct check, ensure this is used on mainnet]
-      const whitelistStatus = await OffchainAPI.getWhitelistData(_account?_account:"");
+      const whitelistStatus = await OffchainAPI.getWhitelistData(_account ? _account : "");
 
       //Waitlist check [I waitlisted my address for testing]
       //const whitelistStatus = await OffchainAPI.getWhitelistData("0x04ed937e802b1599a8d3b5dc93cf45f627d413e2d03e018c1da9f62062f7dfc8");
 
       //Redirect check [Non existential address]
       //const whitelistStatus = await OffchainAPI.getWhitelistData("0x04ed93802b1599a8d3b5dc93cf45f627d413e2d03e018c1da9f62062f7dfc8");
-      
-      
+
+
       if (whitelistStatus.isWhitelistedStatus == "Selected") {
         setIsWhitelisted(1);
       }
-      else if(whitelistStatus.isWhitelistedStatus == "Waitlist"){
-        setIsWaitlisted(1);        
-      }  
+      else if (whitelistStatus.isWhitelistedStatus == "Waitlist") {
+        setIsWaitlisted(1);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -202,7 +202,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
-    checkDB();    
+    checkDB();
   }, [_account]);
 
   const { customActiveTab, toggleCustom, totalBorrowAssets, setTotalBorrowAssets, totalSupplyDash, setTotalSupplyDash } = useContext(TabContext);
@@ -418,7 +418,7 @@ const Dashboard = () => {
         commitmentIndex: getCommitmentIndex(BNtoNum(loanData?.commitment, 0)) as number,
         collateralMarket: getTokenFromAddress(number.toHex(collateralData?.market))?.name, //  Collateral Market
         collateralMarketSymbol: getTokenFromAddress(number.toHex(collateralData?.market))?.symbol,
-        collateralAmount: uint256.uint256ToBN(collateralData?.amount).toString(), // 5 Collateral Amount
+        collateralAmount: uint256.uint256ToBN(collateralData?.current_amount).toString(), // 5 Collateral Amount
         interestRate: 0,
         debtCategory: BNtoNum(loanData?.debt_category, 0),
         timestamp: Number(loanData?.created_at),
@@ -426,6 +426,10 @@ const Dashboard = () => {
           uint256.uint256ToBN(loanData?.current_amount).toString() :
           '0',
         currentLoanAmount: uint256.uint256ToBN(loanData?.current_amount).toString(),
+        isWithdrawn: Number(BNtoNum(loanData?.is_loan_withdrawn, 0)) === 1,
+        timelockDuration: Number(BNtoNum(collateralData?.timelock_validity, 0)), // Time lock duration for collateral
+        timelockActivationTime: Number(BNtoNum(collateralData?.activation_time, 0)), // when was time lock applied
+        isTimelockActivated: Number(BNtoNum(collateralData?.is_timelock_activated, 0)) === 1, // time-lock applied currently or not
         isSwapped: Number(BNtoNum(loanData?.state, 0)) === 2, // Swap status
         state: Number(BNtoNum(loanData?.state, 0)) === 1 ?
           "OPEN" : Number(BNtoNum(loanData?.state, 0)) === 2 ?
@@ -448,22 +452,22 @@ const Dashboard = () => {
 
       };
       loans.push(JSON.parse(JSON.stringify(temp_len)));
-
-      setActiveLoansData(loans);
-      // console.log("loans: " + loans);
-      setRepaidLoansData(
-        loans.filter((asset) => {
-          // console.log(asset, "testasset");
-          return asset.state === "REPAID";
-        })
-      );
-      setFilteredLoans(
-        activeLoansData.filter((loan) => {
-          return loan.state !== "REPAID" && loan.state !== "LIQUIDATED";
-        })
-      );
     }
-    // console.log("parsed loans data", loans);
+
+    setActiveLoansData(loans);
+    // console.log("loans: " + loans);
+    setRepaidLoansData(
+      loans.filter((asset) => {
+        // console.log(asset, "testasset");
+        return asset.state === "REPAID";
+      })
+    );
+    setFilteredLoans(
+      activeLoansData.filter((loan) => {
+        return loan.state !== "REPAID" && loan.state !== "LIQUIDATED";
+      })
+    );
+    console.log("parsed loans data", loans);
   }
 
   useEffect(() => {
@@ -513,6 +517,12 @@ const Dashboard = () => {
         depositId: Number(BNtoNum(deposit?.id, 0)),
         acquiredYield: Number(0), // deposit interest TODO: FORMULA
         interestPaid: Number(0), // deposit interest TODO: FORMULA
+
+        isTimelockApplicable: Number(BNtoNum(deposit?.is_timelock_applicable, 0)) === 1,
+        isTimelockActivated: Number(BNtoNum(deposit?.is_timelock_activated, 0)) === 1,
+        timelockActivationTime: Number(BNtoNum(deposit?.activation_time, 0)),
+        timelockDuration: Number(BNtoNum(deposit?.timelock_validity, 0)),
+
         timestamp: Number(deposit.created_at),
       };
       // VT: had to stringify and append due to a weird bug that was updating data randomly after append
@@ -773,35 +783,35 @@ const Dashboard = () => {
   }
 
   // Waitlist UI  
-  const WaitlistUI = () => {    
-    return(<p style={{zIndex : "1000", marginTop: "200px", marginBottom: "400px", textAlign: "center", verticalAlign: "text-bottom", fontSize: "40px", color: "white"}}>You're already in the queue</p>)
+  const WaitlistUI = () => {
+    return (<p style={{ zIndex: "1000", marginTop: "200px", marginBottom: "400px", textAlign: "center", verticalAlign: "text-bottom", fontSize: "40px", color: "white" }}>You're already in the queue</p>)
   }
 
   // Timer logic
   const showTimer = async () => {
-    if(timer >= 1){            
+    if (timer >= 1) {
       setTimer(--timer);
-    }    
-    else {  
-      if(isWaitlisted!=1 && isWhitelisted!=1){
-        window.location.href = "https://spearmint.xyz/p/hashstack";
-      }      
     }
-    
-    return(null);
+    else {
+      if (isWaitlisted != 1 && isWhitelisted != 1) {
+        window.location.href = "https://spearmint.xyz/p/hashstack";
+      }
+    }
+
+    return (null);
   }
 
-  
+
   // Spearmint redirect UI
   const SpearmintRedirectUI = () => {
     console.log("Inside redirection UI")
-    setTimeout(showTimer, 1200)    
-    return(<span>
-      <p style={{zIndex : "1000", marginTop: "200px", marginBottom: "350px", textAlign: "center", verticalAlign: "text-bottom", fontSize: "40px", color: "white"}}>Only registered users are allowed to access the mainnet. You're redirected to the waitlist page in {timer} seconds</p>      
+    setTimeout(showTimer, 1200)
+    return (<span>
+      <p style={{ zIndex: "1000", marginTop: "200px", marginBottom: "350px", textAlign: "center", verticalAlign: "text-bottom", fontSize: "40px", color: "white" }}>Only registered users are allowed to access the mainnet. You're redirected to the waitlist page in {timer} seconds</p>
     </span>);
   }
 
-  const DashboardUI = () => {    
+  const DashboardUI = () => {
     return (
       <div style={{ width: "100%", backgroundColor: "#1C202", height: "100%" }}>
         {customActiveTab === "1" ? (
@@ -1305,7 +1315,7 @@ const Dashboard = () => {
             incorrectChain()
           ) : (
             <>
-              {isWhitelisted ? <DashboardUI />: isWaitlisted? <WaitlistUI/> :<SpearmintRedirectUI />}
+              {isWhitelisted ? <DashboardUI /> : isWaitlisted ? <WaitlistUI /> : <SpearmintRedirectUI />}
               <Row
                 style={{
                   marginTop: "5px",
