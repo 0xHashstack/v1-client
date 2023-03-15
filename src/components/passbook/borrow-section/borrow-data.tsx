@@ -423,7 +423,7 @@ const BorrowData = ({
   //   uint256.uint256ToBN(asset.currentLoanAmount || "0")
   // );
   const getAmount = () => {
-    let amountOut = asset?.openLoanAmount || "0";
+    let amountOut = asset?.loanAmount || "0";
     // console.log("getAmount", amountOut);
     return amountOut;
   };
@@ -3349,7 +3349,7 @@ const BorrowData = ({
                           totalAmountOutmySwap !== "NA" ? (
                             totalAmountOutmySwap >
                               changeTo18Decimals(
-                                asset?.currentLoanAmount,
+                                asset?.loanAmount,
                                 asset.loanMarket
                               ) ? (
                               `1 ${asset.loanMarket} = ${(
@@ -3359,7 +3359,7 @@ const BorrowData = ({
                                   .div(
                                     number.toBN(
                                       changeTo18Decimals(
-                                        asset.currentLoanAmount,
+                                        asset.loanAmount,
                                         asset.loanMarket
                                       )
                                     )
@@ -3371,7 +3371,7 @@ const BorrowData = ({
                                 number
                                   .toBN(
                                     changeTo18Decimals(
-                                      asset?.currentLoanAmount,
+                                      asset?.loanAmount,
                                       asset.loanMarket
                                     )
                                   )
@@ -3387,7 +3387,7 @@ const BorrowData = ({
                           totalAmountOutJediSwap !== "NA" ? (
                             totalAmountOutJediSwap >
                               changeTo18Decimals(
-                                asset?.currentLoanAmount,
+                                asset?.loanAmount,
                                 asset.loanMarket
                               ) ? (
                               `1 ${asset.loanMarket} = ${(
@@ -3397,7 +3397,7 @@ const BorrowData = ({
                                   .div(
                                     number.toBN(
                                       changeTo18Decimals(
-                                        asset.currentLoanAmount,
+                                        asset.loanAmount,
                                         asset.loanMarket
                                       )
                                     )
@@ -3409,7 +3409,7 @@ const BorrowData = ({
                                 number
                                   .toBN(
                                     changeTo18Decimals(
-                                      asset?.currentLoanAmount,
+                                      asset?.loanAmount,
                                       asset.loanMarket
                                     )
                                   )
