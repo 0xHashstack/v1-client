@@ -320,6 +320,10 @@ const BorrowData = ({
   const [showNoteForWithdrawCollateral, setShowNoteForWithdrawCollateral] = useState(false);
   const [withdrawCollateralNote, setWithdrawCollateralNote] = useState("");
 
+  const [showNoteForRevertSpend, setShowNoteForRevertSpend] = useState(false);
+  const [revertSpendNote, setRevertSpendNote] = useState("");
+
+
   const dappsArray = [
     { name: "jediSwap", supportedActions: ["Swap"] },
     { name: "mySwap", supportedActions: ["Swap"] },
@@ -852,6 +856,7 @@ const BorrowData = ({
   useEffect(() => {
     getNoteForSpendBorrow();
     getNoteForWithdrawCollateral();
+    getNoteForRevertSpend();
   }, [asset])
 
   const getNoteForSpendBorrow = () => {
@@ -873,6 +878,13 @@ const BorrowData = ({
       const diff = Math.abs(timeLockEndtime.getTime() - currentTime.getTime());
       const diffHours = Math.ceil(diff / (1000 * 3600));
       setWithdrawCollateralNote(UserInformation?.WithdrawCollateral?.TimelockNotExpired + diffHours + " hours");
+    }
+  }
+
+  const getNoteForRevertSpend = () => {
+    if(asset?.state === "OPEN") {
+      setShowNoteForRevertSpend(true);
+      setRevertSpendNote(UserInformation?.RevertSpend?.NotSpent);
     }
   }
 
@@ -3885,12 +3897,19 @@ const BorrowData = ({
                       </div>
                     </div>
                   </div>
-                  <div style={{ backgroundColor: "#393D4F", borderRadius: "5px", padding: "10px", fontSize: "13px" }}>
-                    <span style={{ fontWeight: "200px" }}>
-                      Note :
-                    </span>
-                    This is the note where you are supposed to do some information of the given user and something
-                  </div>
+                  {
+                    showNoteForRevertSpend ?
+                      (
+                        <div style={{ backgroundColor: "#393D4F", borderRadius: "5px", padding: "10px", fontSize: "13px" }}>
+                          <span style={{ fontWeight: "200px" }}>
+                            Note : {" "}
+                          </span>
+                          {revertSpendNote}
+                        </div>
+                      )
+                      :
+                      null
+                  }
                   <br />
                   <Button
                     color="primary"
