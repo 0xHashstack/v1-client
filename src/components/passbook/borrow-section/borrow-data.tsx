@@ -1794,6 +1794,7 @@ const BorrowData = ({
                           border: "2px solid rgb(57, 61, 79)",
                           fontWeight: "200",
                         }}
+                        
                       >
                         <div
                           style={{
@@ -2953,6 +2954,8 @@ const BorrowData = ({
                         backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px rgb(57, 61, 79)",
                       }}
+                      onMouseLeave={()=>{setStakeDropDown(!stakeDropDown)
+                      setDropDownArrowTwo(Downarrow)}}
                     >
                       <div
                         style={{
@@ -3037,6 +3040,8 @@ const BorrowData = ({
                         backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px rgb(57, 61, 79)",
                       }}
+                      onMouseLeave={()=>{setDropDown(!dropDown)
+                      setDropDownArrow(Downarrow)}}
                     >
                       <div
                         style={{
@@ -3129,6 +3134,7 @@ const BorrowData = ({
                         backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px #00000020",
                       }}
+
                     >
                       {Coins.map((coin, index) => {
                         if (coin.name === marketTokenName) return <></>;
@@ -3193,6 +3199,8 @@ const BorrowData = ({
                         backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px #00000020",
                       }}
+                      onMouseLeave={()=>{setYagidrop(!Yagidrop)
+                      setyagiDownArrow(Downarrow)}}
                     >
                       {dappsArray.map((dapp, index) => {
                         if (
@@ -4242,7 +4250,7 @@ const BorrowData = ({
               ) : null}
             </Form>
           ) : (
-            <h2 style={{ color: "black" }}>Please connect your wallet</h2>
+            <h2 style={{ color: "white" }}>Please connect your wallet</h2>
           )}
         </div>
 

@@ -345,18 +345,26 @@ const ActiveDeposit = ({
   };
 
   const handleWithdrawAmountChange = (e: any) => {
-    setWithdrawAmount(e.target.value);
+    console.log(e.target.value);
+    setWithdrawAmount(e.target.value)
+    console.log("with",withdrawAmount);
+    
+    
     const available = Number(
-      asset?.amount / 10 ** (tokenDecimalsMap[tokenName] || 18)
+      asset.amount / 10 ** (tokenDecimalsMap[tokenName] || 18)
     );
+    console.log(available);
+    
     if (!available) return;
-    var percentage = (e.target.value / available) * 100;
+    var percentage = (e.target.value / 50) * 100;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setValue("Greater than 100");
       return;
     }
-    percentage = Math.round(percentage * 100) / 100;
+    // percentage = Math.round(percentage * 100) / 100;
+    console.log(percentage);
+    
     setValue(percentage);
   };
 
@@ -483,8 +491,9 @@ const ActiveDeposit = ({
     );
   }, [withdrawTransactionReceipt]);
 
-  useEffect(() => {
-    const currentBalance =
+ 
+  const onWithdrawSlider = (e:any)=>{
+     const currentBalance =
       parseFloat(
         weiToEtherNumber(
           asset.amount,
@@ -497,9 +506,9 @@ const ActiveDeposit = ({
           tokenAddressMap[asset.market] || ""
         ).toString()
       );
-    // console.log("currentBalance", (value / 100) * currentBalance);
-    setWithdrawAmount((value / 100) * currentBalance);
-  }, [value]);
+
+    setWithdrawAmount(e*currentBalance/100);
+  }
 
   return (
     <div style={{ borderTop: "5px" }}>
@@ -854,6 +863,8 @@ const ActiveDeposit = ({
                             ? depositAmount
                             : withdrawAmount
                         }
+                        
+                        // value={withdrawAmount}
                         valid={!isInvalid()}
                       // valid={false}
                       />
@@ -932,6 +943,7 @@ const ActiveDeposit = ({
                             100
                           );
                           setValue(value);
+                          onWithdrawSlider(value);
                         }}
                         valueRenderer={(value: any) => `${value}%`}
                         showValue={false}
@@ -1212,7 +1224,7 @@ const ActiveDeposit = ({
               </div>
             </Form>
           ) : (
-            <h2 style={{ color: "black" }}>Please connect your wallet</h2>
+            <h2 style={{ color: "white" }}>Please connect your wallet</h2>
           )}
         </div>
         {idDropDown ? (
@@ -1231,6 +1243,8 @@ const ActiveDeposit = ({
                 backgroundColor: "#393D4F",
                 // boxShadow: "0px 0px 10px rgb(57, 61, 79)",
               }}
+              onMouseLeave={()=>{setIdDropDown(!idDropDown)
+              setIdDropDownArrow(arrowDown)}}
             >
               {allAssets.map((asset, index) => {
                 return (
