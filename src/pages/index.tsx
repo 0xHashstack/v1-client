@@ -51,9 +51,14 @@ import {
   tokenDecimalsMap,
 } from "../blockchain/stark-constants";
 import BigNumber from "bignumber.js";
-import { useAccount, useContract, useStarknet, useStarknetCall } from "@starknet-react/core";
+import {
+  useAccount,
+  useContract,
+  useStarknet,
+  useStarknetCall,
+} from "@starknet-react/core";
 import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
-import { Abi, number, uint256 } from "starknet";
+import { Abi, Contract, number, RpcProvider, uint256 } from "starknet";
 import { assert } from "console";
 import depositAbi from "../../starknet-artifacts/contracts/modules/deposit.cairo/deposit_abi.json";
 import loanAbi from "../../starknet-artifacts/contracts/modules/loan.cairo/loan_abi.json";
@@ -120,13 +125,12 @@ const Dashboard = () => {
   const [repaidLoansData, setRepaidLoansData] = useState<ILoans[]>([]);
   const [activeLiquidationsData, setActiveLiquidationsData] = useState<any>([]);
   const [isTransactionDone, setIsTransactionDone] = useState(false);
-
+  const [tempValue, setTempValue] = useState();
 
   const [handleDepositTransactionDone, setHandleDepositTransactionDone] =
     useState(false);
   const [withdrawDepositTransactionDone, setWithdrawDepositTransactionDone] =
     useState(false);
-
 
   // const [customActiveTab, setCustomActiveTab] = useState("1");
   // const [customActiveTabs, setCustomActiveTabs] = useState("1");
@@ -174,38 +178,62 @@ const Dashboard = () => {
 
   let [timer, setTimer] = useState(3);
 
+  useEffect(() => {
+    OffchainAPI.getProtocolDepositLoanRates().then((val) => {
+      // console.log("got them", val);
+      setTempValue(val);
+    });
+  }, []);
 
   const checkDB = async () => {
-
     try {
       //Whitelist check [correct check, ensure this is used on mainnet]
-      const whitelistStatus = await OffchainAPI.getWhitelistData(_account?_account:"");
+      const whitelistStatus = await OffchainAPI.getWhitelistData(
+        _account ? _account : ""
+      );
 
       //Waitlist check [I waitlisted my address for testing]
       //const whitelistStatus = await OffchainAPI.getWhitelistData("0x04ed937e802b1599a8d3b5dc93cf45f627d413e2d03e018c1da9f62062f7dfc8");
 
       //Redirect check [Non existential address]
       //const whitelistStatus = await OffchainAPI.getWhitelistData("0x04ed93802b1599a8d3b5dc93cf45f627d413e2d03e018c1da9f62062f7dfc8");
-      
-      
+
       if (whitelistStatus.isWhitelistedStatus == "Selected") {
         setIsWhitelisted(1);
+      } else if (whitelistStatus.isWhitelistedStatus == "Waitlist") {
+        setIsWaitlisted(1);
       }
-      else if(whitelistStatus.isWhitelistedStatus == "Waitlist"){
-        setIsWaitlisted(1);        
-      }  
     } catch (error) {
       console.log(error);
     }
-
-  }
+  };
 
   useEffect(() => {
+    //0x05b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
-    checkDB();    
+    // setAccount(
+    //   number.toHex(
+    //     number.toBN(
+    //       number.toFelt(
+    //         "0x5b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"
+    //       )
+    //     )
+    //   )
+    // );
+    checkDB();
   }, [_account]);
 
-  const { customActiveTab, toggleCustom, totalBorrowAssets, setTotalBorrowAssets, totalSupplyDash, setTotalSupplyDash } = useContext(TabContext);
+  const {
+    customActiveTab,
+    toggleCustom,
+    totalBorrowAssets,
+    setTotalBorrowAssets,
+    totalSupplyDash,
+    setTotalSupplyDash,
+    seteffectiveapr,
+    loandepositrate,
+    setNetEarnedApr,
+  } = useContext(TabContext);
 
   const [reserves, setReserves] = useState();
 
@@ -275,7 +303,42 @@ const Dashboard = () => {
     }
     // console.log("net apr earned", sum);
     setNetAprEarned(sum);
+    setNetEarnedApr(sum);
   };
+
+  const EffectiveApr = () => {
+    let sum1 = 0;
+    let sum2 = 0;
+    for (let i = 0; i < oracleAndFairPrices?.oraclePrices?.length; i++) {
+      activeLoansData.map((item: any) => {
+        if (
+          item.loanMarket === oracleAndFairPrices?.oraclePrices[i].name &&
+          !["REPAID", "LIQUIDATED"].includes(item.state)
+        ) {
+          console.log("JJ", tempValue);
+
+          sum1 +=
+            (Number(item.loanAmount/ (10 ** tokenDecimalsMap[item.loanMarket])) *
+              Number(oracleAndFairPrices?.oraclePrices[i].price) *
+              Number(
+                tempValue[`${item.loanMarketAddress}__${item.commitmentIndex}`]
+                  ?.borrowAPR?.apr100x
+              )) /
+            100;
+
+          sum2 +=
+            Number(item.loanAmount / (10 ** tokenDecimalsMap[item.loanMarket])) *
+            Number(oracleAndFairPrices?.oraclePrices[i].price);
+        }
+      });
+    }
+    seteffectiveapr(Number(sum1) / Number(sum2));
+    console.log(sum1, sum2);
+  };
+
+  useEffect(() => {
+    EffectiveApr();
+  }, [activeDepositsData, oracleAndFairPrices]);
 
   const calculateNetBorrowedApr = () => {
     let sum = 0;
@@ -295,71 +358,6 @@ const Dashboard = () => {
     // console.log("net borrow apr earned", sum);
     setNetBorrowedApr(sum.toFixed(2));
   };
-  //   // console.log("Loans: ", loansData);
-  //   const loans: ILoans[] = [];
-  //   for (let i = 0; i < loansData.length; ++i) {
-  //     let loanData = loansData[i];
-  //     let temp_len = {
-  //       loanMarket: getTokenFromAddress(loanData.loanMarket)?.name,
-  //       loanMarketSymbol: getTokenFromAddress(loanData.loanMarket)?.symbol,
-  //       loanMarketAddress: loanData.loanMarket,
-  //       loanAmount: Number(loanData.loanAmount), //  Amount
-  //       commitment: getCommitmentNameFromIndexLoan(loanData.commitment), //  Commitment
-  //       commitmentIndex: getCommitmentIndex(loanData.commitment) as number,
-  //       collateralMarket: getTokenFromAddress(loanData.collateralMarket)?.name, //  Collateral Market
-  //       collateralMarketSymbol: getTokenFromAddress(loanData.collateralMarket)?.symbol,
-  //       collateralAmount: Number(loanData.collateralAmount), // 5 Collateral Amount
-  //       interestPaid: Number(loanData.interestPaid), //loan interest
-  //       interest: Number(loanData.interest),
-  //       interestRate: 0,
-  //       openLoanAmount: Number(loanData.openLoanAmount), // Open Loan Amount
-  //       //interest market will always be same as loan market
-  //       account,
-  //       cdr: loanData.cdr,
-  //       debtCategory: loanData.dc,
-  //       loanId: loanData.loanId,
-  //       isSwapped: loanData.state == "SWAPPED", // Swap status
-  //       state: loanData.state,
-  //       stateType:
-  //         loanData.state == "REPAID" || loanData.state == "LIQUIDATED" ? 1 : 0, // Repay status
-  //       currentLoanMarket: getTokenFromAddress(
-  //         loanData.currentMarket || loanData.loanMarket
-  //       )?.name, // Borrow market(current)
-  //       currentLoanMarketSymbol: getTokenFromAddress(
-  //         loanData.currentMarket || loanData.loanMarket
-  //       )?.symbol,
-  //       currentLoanAmount:
-  //         loanData.currentAmount != "0"
-  //           ? loanData.currentAmount
-  //           : loanData.openLoanAmount, // Borrow amount(current)
-  //       timestamp: loanData.time,
-  //       l3App:
-  //         loanData.l3Id === "jedi_swap"
-  //           ? "jediSwap"
-  //           : loanData.l3Id === "my_swap"
-  //             ? "mySwap"
-  //             : null,
-  //       //get apr is for loans apr
-  //     };
-  //     loans.push(JSON.parse(JSON.stringify(temp_len)));
-
-  //     setActiveLoansData(loans);
-  //     // console.log("loans: " + loans);
-  //     setRepaidLoansData(
-  //       loans.filter((asset) => {
-  //         // console.log(asset, "testasset");
-  //         return asset.state === "REPAID";
-  //       })
-  //     );
-  //     setFilteredLoans(
-  //       activeLoansData.filter((loan) => {
-  //         return loan.state !== "REPAID" && loan.state !== "LIQUIDATED";
-  //       })
-  //     );
-  //   }
-  // };
-  // console.log("Repaid loans data", repaidLoansData);
-
   useEffect(() => {
     let validTypes = ["REPAID", "SWAPPED", "OPEN"];
     if (typeOfLoans === "Repaid") {
@@ -380,164 +378,180 @@ const Dashboard = () => {
     );
   }, [typeOfLoans, activeLoansData]);
 
-  const { contract: loanContract } = useContract({
-    abi: loanAbi as Abi,
-    address: diamondAddress,
-  });
-
-  const {
-    data: dataLoan,
-    loading: loadingLoan,
-    error: errorLoan,
-    refresh: refreshLoan,
-  } = useStarknetCall({
-    contract: loanContract,
-    method: "get_user_loans",
-    args: [account],
-    options: {
-      watch: false,
-    },
-  });
-
   function parseLoansData(loansData: any, collateralsData: any) {
     const loans: ILoans[] = [];
     for (let i = 0; i < loansData?.length; ++i) {
       let loanData = loansData[i];
       let collateralData = collateralsData[i];
       let temp_len = {
-
         loanMarket: getTokenFromAddress(number.toHex(loanData?.market))?.name,
-        loanMarketSymbol: getTokenFromAddress(number.toHex(loanData?.market))?.symbol,
-        currentLoanMarket: getTokenFromAddress(number.toHex(loanData?.current_market))?.name, // Borrow market(current)
-        currentLoanMarketSymbol: getTokenFromAddress(number.toHex(loanData?.current_market))?.symbol,
+        loanMarketSymbol: getTokenFromAddress(number.toHex(loanData?.market))
+          ?.symbol,
+        currentLoanMarket: getTokenFromAddress(
+          number.toHex(loanData?.current_market)
+        )?.name, // Borrow market(current)
+        currentLoanMarketSymbol: getTokenFromAddress(
+          number.toHex(loanData?.current_market)
+        )?.symbol,
         loanMarketAddress: number.toHex(loanData?.market),
         loanAmount: uint256.uint256ToBN(loanData?.amount).toString(), //  Amount
         loanId: Number(BNtoNum(loanData?.id, 0)),
         account: number.toHex(loanData?.owner),
-        commitment: getCommitmentNameFromIndexLoan(Number(BNtoNum(loanData?.commitment, 0) as string).toString()), //  Commitment
-        commitmentIndex: getCommitmentIndex(BNtoNum(loanData?.commitment, 0)) as number,
-        collateralMarket: getTokenFromAddress(number.toHex(collateralData?.market))?.name, //  Collateral Market
-        collateralMarketSymbol: getTokenFromAddress(number.toHex(collateralData?.market))?.symbol,
-        collateralAmount: uint256.uint256ToBN(collateralData?.amount).toString(), // 5 Collateral Amount
+        commitment: getCommitmentNameFromIndexLoan(
+          Number(BNtoNum(loanData?.commitment, 0) as string).toString()
+        ), //  Commitment
+        commitmentIndex: getCommitmentIndex(
+          BNtoNum(loanData?.commitment, 0)
+        ) as number,
+        collateralMarket: getTokenFromAddress(
+          number.toHex(collateralData?.market)
+        )?.name, //  Collateral Market
+        collateralMarketSymbol: getTokenFromAddress(
+          number.toHex(collateralData?.market)
+        )?.symbol,
+        collateralAmount: uint256
+          .uint256ToBN(collateralData?.current_amount)
+          .toString(), // 5 Collateral Amount
         interestRate: 0,
         debtCategory: BNtoNum(loanData?.debt_category, 0),
-        timestamp: Number(loanData?.created_at),
-        openLoanAmount: number.toHex(loanData?.market) === number.toHex(loanData?.current_market) ?
-          uint256.uint256ToBN(loanData?.current_amount).toString() :
-          '0',
-        currentLoanAmount: uint256.uint256ToBN(loanData?.current_amount).toString(),
+        loanCreationTime: Number(loanData?.created_at),
+        openLoanAmount:
+          number.toHex(loanData?.market) ===
+          number.toHex(loanData?.current_market)
+            ? uint256.uint256ToBN(loanData?.current_amount).toString()
+            : "0",
+        currentLoanAmount: uint256
+          .uint256ToBN(loanData?.current_amount)
+          .toString(),
+        isWithdrawn: Number(BNtoNum(loanData?.is_loan_withdrawn, 0)) === 1,
+        timelockDuration: Number(BNtoNum(collateralData?.timelock_validity, 0)), // Time lock duration for collateral
+        timelockActivationTime: Number(
+          BNtoNum(collateralData?.activation_time, 0)
+        ), // when was time lock applied
+        isTimelockActivated:
+          Number(BNtoNum(collateralData?.is_timelock_activated, 0)) === 1, // time-lock applied currently or not
         isSwapped: Number(BNtoNum(loanData?.state, 0)) === 2, // Swap status
-        state: Number(BNtoNum(loanData?.state, 0)) === 1 ?
-          "OPEN" : Number(BNtoNum(loanData?.state, 0)) === 2 ?
-            "SWAPPED" : Number(BNtoNum(loanData?.state, 0)) === 3 ?
-              "REPAID" : Number(BNtoNum(loanData?.state, 0)) === 4 ?
-                "LIQUIDATED" : null,
+        state:
+          Number(BNtoNum(loanData?.state, 0)) === 1
+            ? "OPEN"
+            : Number(BNtoNum(loanData?.state, 0)) === 2
+            ? "SWAPPED"
+            : Number(BNtoNum(loanData?.state, 0)) === 3
+            ? "REPAID"
+            : Number(BNtoNum(loanData?.state, 0)) === 4
+            ? "LIQUIDATED"
+            : null,
         stateType:
-          Number(BNtoNum(loanData?.state, 0)) === 3 || Number(BNtoNum(loanData?.state, 0)) === 4 ? 1 : 0, // Repay status
+          Number(BNtoNum(loanData?.state, 0)) === 3 ||
+          Number(BNtoNum(loanData?.state, 0)) === 4
+            ? 1
+            : 0, // Repay status
         interest: Number(0),
         interestPaid: Number(0),
-        l3App: (BNtoNum(loanData?.l3_integration, 0).toString() === "1962660952167394271600" ?
-          "jediSwap" : BNtoNum(loanData?.l3_integration, 0).toString() === "30814223327519088" ?
-            "mySwap" : null
-        ),
+        l3App:
+          number.toBN(loanData?.l3_integration).toString() ===
+          "1962660952167394271600"
+            ? "jediSwap"
+            : number.toBN(loanData?.l3_integration, 0).toString() ===
+              "30814223327519088"
+            ? "mySwap"
+            : null,
         // cdr: BNtoNum(loanData?.debt_category, 0),
         // interestPaid: Number(loanData.interestPaid), //loan interest
         // interest: Number(loanData.interest),
 
         //get apr is for loans apr
-
       };
       loans.push(JSON.parse(JSON.stringify(temp_len)));
-
-      setActiveLoansData(loans);
-      // console.log("loans: " + loans);
-      setRepaidLoansData(
-        loans.filter((asset) => {
-          // console.log(asset, "testasset");
-          return asset.state === "REPAID";
-        })
-      );
-      setFilteredLoans(
-        activeLoansData.filter((loan) => {
-          return loan.state !== "REPAID" && loan.state !== "LIQUIDATED";
-        })
-      );
     }
-    // console.log("parsed loans data", loans);
+
+    setActiveLoansData(loans);
+    // console.log("loans: " + loans);
+    setRepaidLoansData(
+      loans.filter((asset) => {
+        // console.log(asset, "testasset");
+        return asset.state === "REPAID";
+      })
+    );
+    setFilteredLoans(
+      activeLoansData.filter((loan) => {
+        return loan.state !== "REPAID" && loan.state !== "LIQUIDATED";
+      })
+    );
+    console.log("parsed loans data", loans);
+  }
+
+  async function get_user_loans() {
+    let provider = new RpcProvider({
+      nodeUrl:
+        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
+    });
+    const MySwap = new Contract(loanAbi, diamondAddress, provider);
+    const res = await MySwap.call("get_user_loans", [account]);
+    parseLoansData(res?.loan_records_arr, res?.collateral_records_arr);
+    console.log(res);
   }
 
   useEffect(() => {
-    console.log("loan collateral record", dataLoan)
-    !isTransactionDone &&
-      account ?
-      parseLoansData(dataLoan?.loan_records_arr, dataLoan?.collateral_records_arr) : null;
-
-  }, [account, passbookStatus, customActiveTab, isTransactionDone, dataLoan, loadingLoan, errorLoan]);
-
+    if (account) get_user_loans();
+  }, [account, customActiveTab]);
 
   /*============================== Get Deposits from the blockchain ====================================*/
 
-
-  const { contract: depositContract } = useContract({
-    abi: depositAbi as Abi,
-    address: diamondAddress,
-  });
-
-  const {
-    data: dataDeposit,
-    loading: loadingDeposit,
-    error: errorDeposit,
-    refresh: refreshDeposit,
-  } = useStarknetCall({
-    contract: depositContract,
-    method: "get_user_deposits",
-    args: [account],
-    options: {
-      watch: false,
-    },
-  });
-
   function parseDepositsData(depositsData: any[]) {
     let deposits: any[] = [];
-    let deposit
+    let deposit;
     for (let i = 0; i < depositsData?.length; i++) {
       let deposit: any = depositsData?.[i];
       let myDep = {
         amount: uint256.uint256ToBN(deposit?.amount).toString(),
         market: getTokenFromAddress(number.toHex(deposit?.market))?.name,
         account: number.toHex(deposit?.owner),
-        commitment: getCommitmentNameFromIndexDeposit(Number(BNtoNum(deposit?.commitment, 0)).toString()),
+        commitment: getCommitmentNameFromIndexDeposit(
+          Number(BNtoNum(deposit?.commitment, 0)).toString()
+        ),
         commitmentIndex: Number(BNtoNum(deposit?.commitment, 0)),
-        marketSymbol: getTokenFromAddress(number.toHex(deposit?.market))?.symbol,
+        marketSymbol: getTokenFromAddress(number.toHex(deposit?.market))
+          ?.symbol,
         marketAddress: number.toHex(deposit?.market),
         depositId: Number(BNtoNum(deposit?.id, 0)),
         acquiredYield: Number(0), // deposit interest TODO: FORMULA
         interestPaid: Number(0), // deposit interest TODO: FORMULA
-        timestamp: Number(deposit.created_at),
+
+        isTimelockApplicable:
+          Number(BNtoNum(deposit?.is_timelock_applicable, 0)) === 1,
+        isTimelockActivated:
+          Number(BNtoNum(deposit?.is_timelock_activated, 0)) === 1,
+        timelockActivationTime: Number(BNtoNum(deposit?.activation_time, 0)),
+        timelockDuration: Number(BNtoNum(deposit?.timelock_validity, 0)),
+
+        depositCreationTime: Number(deposit.created_at),
       };
       // VT: had to stringify and append due to a weird bug that was updating data randomly after append
       let myDepString = JSON.stringify(myDep);
       deposits.push(JSON.parse(myDepString));
     }
     let nonZeroDeposits = deposits.filter(function (el) {
+      console.log("amount parse deposit", el.amount)
       return el.amount !== "0";
     });
     console.log("parsed deposit data", deposits);
     setActiveDepositsData(nonZeroDeposits);
   }
 
+  async function get_user_deposits() {
+    let provider = new RpcProvider({
+      nodeUrl:
+        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
+    });
+    const Deposit = new Contract(depositAbi, diamondAddress, provider);
+    const res = await Deposit.call("get_user_deposits", [account]);
+    parseDepositsData(res?.deposit_records_arr);
+  }
+
   useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 100);
-    console.log("useEffect", isTransactionDone, account);
-    !isTransactionDone &&
-      account &&
-      !loadingDeposit ?
-      parseDepositsData(dataDeposit?.deposit_records_arr) : null;
-
-  }, [account, passbookStatus, isTransactionDone, loadingDeposit, dataDeposit, errorDeposit]);
-
+    if (account) get_user_deposits();
+  }, [account, customActiveTab, isTransactionDone]);
 
   useEffect(() => {
     setTimeout(() => {
@@ -636,14 +650,23 @@ const Dashboard = () => {
       // console.log("loan in liquidation", loan);
       let myLiquidableLoan = {
         loanOwner: loan.account,
+
         loanMarket: getTokenFromAddress(loan.loanMarket)?.name,
         loanMarketSymbol: getTokenFromAddress(loan.loanMarket)?.symbol,
-        commitment: getCommitmentNameFromIndexDeposit(loan.commitment),
-        openLoanAmount: loan.openLoanAmount,
         loanAmount: loan.loanAmount,
+        openLoanAmount: loan.openLoanAmount,
+
+        commitment: getCommitmentNameFromIndexDeposit(loan.commitment),
+
+        currentMarket: getTokenFromAddress(loan.currentMarket)?.name,
+        currentMarketSymbol: getTokenFromAddress(loan.currentMarket)?.symbol,
+        currentAmount: loan.currentAmount,
+
         collateralMarket: getTokenFromAddress(loan.collateralMarket)?.name,
-        collateralMarketSymbol: getTokenFromAddress(loan.collateralMarket)?.symbol,
+        collateralMarketSymbol: getTokenFromAddress(loan.collateralMarket)
+          ?.symbol,
         collateralAmount: loan.collateralAmount,
+
         isLiquidationDone: false,
         id: loan.loanId,
       };
@@ -672,6 +695,7 @@ const Dashboard = () => {
         (loans) => {
           onLiquidationsData(loans);
           setIsLoading(false);
+          console.log("liquidable", loans);
         },
         (err) => {
           setIsLoading(false);
@@ -735,7 +759,6 @@ const Dashboard = () => {
     // console.log(repaidLoansData);
 
     return (
-
       <BorrowTab
         activeLoansData={filteredLoans}
         customActiveTabs={customActiveTabs}
@@ -745,7 +768,7 @@ const Dashboard = () => {
         setCustomActiveTabs={setCustomActiveTabs}
         fairPriceArray={oracleAndFairPrices?.fairPrices}
       />
-    )
+    );
   };
 
   function incorrectChain() {
@@ -772,36 +795,63 @@ const Dashboard = () => {
     );
   }
 
-  // Waitlist UI  
-  const WaitlistUI = () => {    
-    return(<p style={{zIndex : "1000", marginTop: "200px", marginBottom: "400px", textAlign: "center", verticalAlign: "text-bottom", fontSize: "40px", color: "white"}}>You're already in the queue</p>)
-  }
+  // Waitlist UI
+  const WaitlistUI = () => {
+    return (
+      <p
+        style={{
+          zIndex: "1000",
+          marginTop: "200px",
+          marginBottom: "400px",
+          textAlign: "center",
+          verticalAlign: "text-bottom",
+          fontSize: "40px",
+          color: "white",
+        }}
+      >
+        You're already in the queue
+      </p>
+    );
+  };
 
   // Timer logic
   const showTimer = async () => {
-    if(timer >= 1){            
+    if (timer >= 1) {
       setTimer(--timer);
-    }    
-    else {  
-      if(isWaitlisted!=1 && isWhitelisted!=1){
+    } else {
+      if (isWaitlisted != 1 && isWhitelisted != 1) {
         window.location.href = "https://spearmint.xyz/p/hashstack";
-      }      
+      }
     }
-    
-    return(null);
-  }
 
-  
+    return null;
+  };
+
   // Spearmint redirect UI
   const SpearmintRedirectUI = () => {
-    console.log("Inside redirection UI")
-    setTimeout(showTimer, 1200)    
-    return(<span>
-      <p style={{zIndex : "1000", marginTop: "200px", marginBottom: "350px", textAlign: "center", verticalAlign: "text-bottom", fontSize: "40px", color: "white"}}>Only registered users are allowed to access the mainnet. You're redirected to the waitlist page in {timer} seconds</p>      
-    </span>);
-  }
+    console.log("Inside redirection UI");
+    setTimeout(showTimer, 1200);
+    return (
+      <span>
+        <p
+          style={{
+            zIndex: "1000",
+            marginTop: "200px",
+            marginBottom: "350px",
+            textAlign: "center",
+            verticalAlign: "text-bottom",
+            fontSize: "40px",
+            color: "white",
+          }}
+        >
+          Only registered users are allowed to access the mainnet. You're
+          redirected to the waitlist page in {timer} seconds
+        </p>
+      </span>
+    );
+  };
 
-  const DashboardUI = () => {    
+  const DashboardUI = () => {
     return (
       <div style={{ width: "100%", backgroundColor: "#1C202", height: "100%" }}>
         {customActiveTab === "1" ? (
@@ -818,8 +868,8 @@ const Dashboard = () => {
               {/* <Card style={{ height: "35rem", overflowY: "scroll" }}> */}
               <div style={{ margin: "1px 5px 5px 14px" }}>
                 {customActiveTab === "2" ||
-                  customActiveTab === "3" ||
-                  customActiveTab === "4" ? (
+                customActiveTab === "3" ||
+                customActiveTab === "4" ? (
                   <div style={{ marginTop: "90px" }}>
                     <DashboardMenu
                       margin={"0px"}
@@ -849,8 +899,8 @@ const Dashboard = () => {
                 )}
               </div>
               {customActiveTab === "3" ||
-                customActiveTab === "4" ||
-                customActiveTab === "2" ? (
+              customActiveTab === "4" ||
+              customActiveTab === "2" ? (
                 <>
                   <div
                     style={{
@@ -866,7 +916,6 @@ const Dashboard = () => {
                           <div style={{ color: "#8C8C8C" }}>Total Borrow</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
                             {totalBorrowAssets !== undefined ? (
-
                               <NumericFormat
                                 displayType="text"
                                 value={totalBorrowAssets.toFixed("2")}
@@ -1039,8 +1088,8 @@ const Dashboard = () => {
               ) : null}
 
               {customActiveTab === "1" ||
-                customActiveTab === "3" ||
-                customActiveTab === "4" ? (
+              customActiveTab === "3" ||
+              customActiveTab === "4" ? (
                 <Card
                   style={{
                     height: "77vh",
@@ -1305,7 +1354,13 @@ const Dashboard = () => {
             incorrectChain()
           ) : (
             <>
-              {isWhitelisted ? <DashboardUI />: isWaitlisted? <WaitlistUI/> :<SpearmintRedirectUI />}
+              {isWhitelisted ? (
+                <DashboardUI />
+              ) : isWaitlisted ? (
+                <WaitlistUI />
+              ) : (
+                <SpearmintRedirectUI />
+              )}
               <Row
                 style={{
                   marginTop: "5px",

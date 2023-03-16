@@ -67,10 +67,15 @@ import {
 } from "@starknet-react/core";
 import { Abi, uint256 } from "starknet";
 import { Coins, ICoin } from "../../../dashboard/dashboard-body";
-import { GetErrorText, NumToBN,etherToWeiBN } from "../../../../blockchain/utils";
+import {
+  GetErrorText,
+  NumToBN,
+  etherToWeiBN,
+} from "../../../../blockchain/utils";
 import classnames from "classnames";
 import { IDepositLoanRates } from "../../../borrow";
 import ToastModal from "../../../toastModals/customToastModal";
+import UserInformation from "../../../../../UserInformation.json";
 
 const ActiveDeposit = ({
   reserves,
@@ -122,7 +127,6 @@ const ActiveDeposit = ({
     watch: true,
   });
 
-
   const [tokenName, setTokenName] = useState<string>(asset.market);
   const [tokenSymbol, setTokenSymbol] = useState<string>(asset.marketSymbol);
   const [depositLoanRates, setDepositLoanRates] = useState<IDepositLoanRates>();
@@ -138,6 +142,35 @@ const ActiveDeposit = ({
   const [supplyId, setSupplyId] = useState(asset.depositId);
   const [toastParam, setToastParam] = useState({});
   const [isToastOpen, setIsToastOpen] = useState(false);
+
+  const [showNoteForDeposit, setShowNoteForDeposit] = useState(false);
+  const [noteForDeposit, setNoteForDeposit] = useState("");
+
+  useEffect(() => {
+    getNoteForDeposit();
+  }, [asset])
+
+  const getNoteForDeposit = () => {
+    if (asset?.commitmentIndex !== 0) {
+      const commitmentDuration = asset?.commitmentIndex === 1 ? 14 * 24 * 3600
+      : (asset?.commitmentIndex) === "2" ? 30 * 24 * 3600
+      : (asset?.commitmentIndex) === "3" ? 90 * 24 * 3600 : 0;
+      const commitmenntEndtime = new Date(asset?.depositCreationTime * 1000 + commitmentDuration * 1000);
+      const currentTime = new Date();
+      const diff = Math.abs(commitmenntEndtime.getTime() - currentTime.getTime());
+      const diffDays = Math.floor(diff / (1000 * 3600 * 24))
+      const diffHours = Math.max(Math.floor((diff % (1000 * 3600 * 24)) / (1000 * 3600)), 1);
+      console.log("asset commitment index", asset?.commitmentIndex, asset?.depositCreationTime, diff);
+      if (diff > 0) {
+        setShowNoteForDeposit(true);
+        setNoteForDeposit(UserInformation?.WithdrawDeposit?.CommitmentNotExpired + diffDays + " days " + diffHours + `${diffHours > 1 ? ' hours' : ' hour'}` + " more for commitment to end");
+      }
+      else
+        setShowNoteForDeposit(false);
+    }
+    else 
+      setShowNoteForDeposit(false);
+  }
 
   const withdrawTransactionReceipt = useTransactionReceipt({
     hash: transWithdraw,
@@ -187,7 +220,14 @@ const ActiveDeposit = ({
     calls: {
       contractAddress: tokenAddressMap[tokenName] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, etherToWeiBN(depositAmount as number, tokenAddressMap[tokenName]||"").toString(), 0],
+      calldata: [
+        diamondAddress,
+        etherToWeiBN(
+          depositAmount as number,
+          tokenAddressMap[tokenName] || ""
+        ).toString(),
+        0,
+      ],
     },
   });
 
@@ -203,7 +243,10 @@ const ActiveDeposit = ({
         entrypoint: "approve",
         calldata: [
           diamondAddress,
-          etherToWeiBN(depositAmount as number, tokenAddressMap[tokenName]||"").toString(),
+          etherToWeiBN(
+            depositAmount as number,
+            tokenAddressMap[tokenName] || ""
+          ).toString(),
           0,
         ],
       },
@@ -213,7 +256,10 @@ const ActiveDeposit = ({
         calldata: [
           tokenAddressMap[tokenName],
           commitPeriod,
-          etherToWeiBN(depositAmount as number, tokenAddressMap[tokenName]||"").toString(),
+          etherToWeiBN(
+            depositAmount as number,
+            tokenAddressMap[tokenName] || ""
+          ).toString(),
           0,
         ],
       },
@@ -230,7 +276,13 @@ const ActiveDeposit = ({
       {
         contractAddress: diamondAddress,
         entrypoint: "withdraw_deposit",
-        calldata: [asset.depositId, etherToWeiBN(depositAmount as number, tokenAddressMap[asset]||"").toString()],
+        calldata: [
+          asset.depositId,
+          etherToWeiBN(
+            depositAmount as number,
+            tokenAddressMap[asset] || ""
+          ).toString(),
+        ],
       },
     ],
   });
@@ -295,10 +347,9 @@ const ActiveDeposit = ({
   const handleWithdrawAmountChange = (e: any) => {
     setWithdrawAmount(e.target.value);
     const available = Number(
-      asset?.amount /
-        10 ** (tokenDecimalsMap[tokenName] || 18)
-    )
-    if(!available) return;
+      asset?.amount / 10 ** (tokenDecimalsMap[tokenName] || 18)
+    );
+    if (!available) return;
     var percentage = (e.target.value / available) * 100;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
@@ -310,17 +361,20 @@ const ActiveDeposit = ({
   };
 
   const handleMax = () => {
-    if(customActiveTab === "1")
+    if (customActiveTab === "1")
       setDepositAmount(
         Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-          10 ** (tokenDecimalsMap[tokenName] || 18)
+        10 ** (tokenDecimalsMap[tokenName] || 18)
       );
     else {
-      setWithdrawAmount((Number(asset.amount) + Number(asset.acquiredYield))/ 10 ** (tokenDecimalsMap[tokenName] || 18));
+      setWithdrawAmount(
+        (Number(asset.amount) + Number(asset.acquiredYield)) /
+        10 ** (tokenDecimalsMap[tokenName] || 18)
+      );
       // console.log("max clicked", asset);
     }
     console.log("max clicked");
-    setValue(100)
+    setValue(100);
   };
 
   function isInvalid() {
@@ -329,14 +383,16 @@ const ActiveDeposit = ({
         !depositAmount ||
         depositAmount < MinimumAmount[tokenName] ||
         depositAmount >
-          Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-            10 ** (tokenDecimalsMap[tokenName] || 18)
+        Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
+        10 ** (tokenDecimalsMap[tokenName] || 18)
       );
     else
       return (
         !withdrawAmount ||
         withdrawAmount <= 0 ||
-        withdrawAmount > Number(uint256.uint256ToBN(asset.amount)) / 10 ** (tokenDecimalsMap[asset.market] || 18)
+        withdrawAmount >
+        Number(uint256.uint256ToBN(asset.amount)) /
+        10 ** (tokenDecimalsMap[asset.market] || 18)
       );
   }
 
@@ -396,8 +452,7 @@ const ActiveDeposit = ({
     // );
     TxToastManager.handleTxToast(
       approveTransactionReceipt,
-      `Add Deposit: Approve ${Number(depositAmount)?.toFixed(4)} ${
-        asset.market
+      `Add Deposit: Approve ${Number(depositAmount)?.toFixed(4)} ${asset.market
       }`,
       true
     );
@@ -430,8 +485,18 @@ const ActiveDeposit = ({
 
   useEffect(() => {
     const currentBalance =
-      parseFloat(weiToEtherNumber(asset.amount,tokenAddressMap[asset.market]||"").toString()) +
-      parseFloat(weiToEtherNumber(asset.acquiredYield,tokenAddressMap[asset.market]||"").toString());
+      parseFloat(
+        weiToEtherNumber(
+          asset.amount,
+          tokenAddressMap[asset.market] || ""
+        ).toString()
+      ) +
+      parseFloat(
+        weiToEtherNumber(
+          asset.acquiredYield,
+          tokenAddressMap[asset.market] || ""
+        ).toString()
+      );
     // console.log("currentBalance", (value / 100) * currentBalance);
     setWithdrawAmount((value / 100) * currentBalance);
   }, [value]);
@@ -451,12 +516,12 @@ const ActiveDeposit = ({
           style={{
             margin: "15px 0px 15px 20px",
             alignItems: "center",
-            gap: "20px",
+            gap: "80px",
           }}
         >
           <Col>{`ID${assetParam.depositId}` ?? "N/a"}</Col>
 
-          <Col style={{}}>
+          {/* <Col style={{}}>
             <div>
               <img
                 src={
@@ -480,7 +545,7 @@ const ActiveDeposit = ({
               </div>
             </div>
             <CardTitle tag="h5"></CardTitle>
-          </Col>
+          </Col> */}
 
           <Col className="mr-4 ">
             <div>
@@ -488,15 +553,18 @@ const ActiveDeposit = ({
                 src={
                   asset
                     ? CoinClassNames[
-                        EventMap[assetParam.market?.toUpperCase()]
-                      ] || assetParam.market?.toUpperCase()
+                    EventMap[assetParam.market?.toUpperCase()]
+                    ] || assetParam.market?.toUpperCase()
                     : null
                 }
                 height="16px"
               />
               &nbsp;&nbsp;
               <span style={{ fontSize: "15px", fontWeight: "600" }}>
-                {weiToEtherNumber(assetParam.amount,tokenAddressMap[assetParam.market]||"")}
+                {weiToEtherNumber(
+                  (assetParam?.amount || '0').toString(),
+                  tokenAddressMap[assetParam.market] || ""
+                )}
               </span>
             </div>
           </Col>
@@ -505,7 +573,7 @@ const ActiveDeposit = ({
               {assetParam &&
                 historicalAPRs &&
                 depositInterestAccrued(assetParam, historicalAPRs)}
-                {/* {depositLoanRates ? (
+              {/* {depositLoanRates ? (
                         `${parseFloat(
                           depositLoanRates[
                             `${getTokenFromName(asset as string)?.address
@@ -734,7 +802,7 @@ const ActiveDeposit = ({
                             }}
                             onClick={() => {
                               setTokenName(`${coin.name}`);
-                              setTokenSymbol(`${coin.symbol}`)
+                              setTokenSymbol(`${coin.symbol}`);
                               setDropDown(false);
                               setDropDownArrow(arrowDown);
                               handleBalanceChange();
@@ -787,7 +855,7 @@ const ActiveDeposit = ({
                             : withdrawAmount
                         }
                         valid={!isInvalid()}
-                        // valid={false}
+                      // valid={false}
                       />
                       <Button
                         outline
@@ -799,9 +867,8 @@ const ActiveDeposit = ({
                           background: "#1D2131",
                           color: "white",
 
-                          border: `1px solid ${
-                            !isInvalid() ? "#34c38f" : "rgb(57, 61, 79)"
-                          }`,
+                          border: `1px solid ${!isInvalid() ? "#34c38f" : "rgb(57, 61, 79)"
+                            }`,
                           borderLeft: "none",
                         }}
                       >
@@ -835,12 +902,14 @@ const ActiveDeposit = ({
                       ) : customActiveTab === "2" ? (
                         Number(
                           asset?.amount /
-                            10 ** (tokenDecimalsMap[tokenName] || 18)
+                          10 ** (tokenDecimalsMap[tokenName] || 18)
                         )
                       ) : (
                         <MySpinner />
                       )}
-                      <div style={{ color: "#76809D" }}>&nbsp;{tokenSymbol} </div>
+                      <div style={{ color: "#76809D" }}>
+                        &nbsp;{tokenSymbol}{" "}
+                      </div>
                     </div>
 
                     <div style={{ marginLeft: "-10px", marginTop: "15px" }}>
@@ -860,7 +929,7 @@ const ActiveDeposit = ({
                             (value *
                               (Number(uint256.uint256ToBN(dataBalance[0])) /
                                 10 ** (tokenDecimalsMap[tokenName] || 18))) /
-                              100
+                            100
                           );
                           setValue(value);
                         }}
@@ -880,28 +949,28 @@ const ActiveDeposit = ({
                     </div>
                     {customActiveTab === "1"
                       ? depositAmount !== 0 &&
-                        depositAmount >
-                          Number(
-                            uint256.uint256ToBN(
-                              dataBalance ? dataBalance[0] : 0
-                            )
-                          ) /
-                            10 ** (tokenDecimalsMap[tokenName] || 18) && (
-                          <FormText style={{ color: "#e97272 !important" }}>
-                            {`Amount is greater than your wallet balance`}
-                          </FormText>
+                      depositAmount >
+                      Number(
+                        uint256.uint256ToBN(
+                          dataBalance ? dataBalance[0] : 0
                         )
+                      ) /
+                      10 ** (tokenDecimalsMap[tokenName] || 18) && (
+                        <FormText style={{ color: "#e97272 !important" }}>
+                          {`Amount is greater than your wallet balance`}
+                        </FormText>
+                      )
                       : customActiveTab === "2" &&
-                        withdrawAmount !== 0 &&
-                        withdrawAmount >
-                          Number(
-                            asset?.amount /
-                              10 ** (tokenDecimalsMap[tokenName] || 18)
-                          ) && (
-                          <FormText style={{ color: "#e97272 !important" }}>
-                            {`Amount is greater than your available balance`}
-                          </FormText>
-                        )}
+                      withdrawAmount !== 0 &&
+                      withdrawAmount >
+                      Number(
+                        asset?.amount /
+                        10 ** (tokenDecimalsMap[tokenName] || 18)
+                      ) && (
+                        <FormText style={{ color: "#e97272 !important" }}>
+                          {`Amount is greater than your available balance`}
+                        </FormText>
+                      )}
                   </Col>
                 </div>
               </FormGroup>
@@ -951,8 +1020,7 @@ const ActiveDeposit = ({
                         {depositLoanRates && commitPeriod < 3 ? (
                           `${parseFloat(
                             depositLoanRates[
-                              `${
-                                getTokenFromName(tokenName).address
+                              `${getTokenFromName(tokenName).address
                               }__${commitPeriod}`
                             ]?.depositAPR?.apr100x as string
                           )} %`
@@ -1071,23 +1139,40 @@ const ActiveDeposit = ({
                         0.02%
                       </div>
                     </div>
-                    {asset.commitment !== "NONE" ? <div
-                      style={{
-                        margin: "3px 0",
-                      }}
-                    >
-                      <div style={{ padding: "15px" }}></div>
-                      <div style={{ color: "#6F6F6F" }}>
-                        You Are Pre-Closing This Supply Earlier Than Its Minumum
-                        Commitment Period. A Timelock Of 3 Days Is Applied On
-                        Such Withdrawals. When You Place Withdrawal Requests.The
-                        Timelock is Activated. It Will Be Processed On Your
-                        Second Attempt To Withdraw Supply.After The Timelock
-                        Expiry In 72hrs
+                    {asset.commitment !== "NONE" && showNoteForDeposit ? (
+                      <div
+                        style={{
+                          margin: "3px 0",
+                        }}
+                      >
+                        <div style={{ padding: "15px" }}></div>
+                        <div style={{ color: "#6F6F6F" }}>
+                          You Are Pre-Closing This Supply Earlier Than Its
+                          Minumum Commitment Period. A Timelock Of 3 Days is
+                          Applied On Such Withdrawals. When You Place Withdrawal
+                          Requests, the Timelock is Activated. It Will Be
+                          Processed On Your Second Attempt To Withdraw
+                          Supply after the Timelock Expiry in 72hrs
+                        </div>
                       </div>
-                    </div> : <></>}
+                    ) : (
+                      <></>
+                    )}
                   </div>
                 ) : null}
+                {
+                  customActiveTab === "2" && showNoteForDeposit ? (
+                  <div style={{ backgroundColor: "#393D4F", borderRadius: "5px", padding: "10px", fontSize: "13px" }}>
+                    <span style={{ fontWeight: "200px" }}>
+                      Note :{" "}
+                    </span>
+                    {noteForDeposit}
+                  </div>
+                  )
+                    :
+                  null
+                }
+                <br />
                 <Button
                   style={{
                     backgroundColor: "rgb(57, 61, 79)",

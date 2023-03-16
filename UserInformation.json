@@ -1,0 +1,23 @@
+{
+    "WithdrawPartialBorrow" : {
+        "Withdrawn": "Cannot withdraw as you have already withdrawn !!",
+        "Spent" : "Cannot withdraw as your loan is spent. You must revert spend to Withdraw",
+        "Eligible": "You can withdraw only once, choose amount cautiously !!"
+    }, 
+    "RevertSpend" : {
+        "NotSpent" : "Cannot revert spend as your loan is not spent"
+    },
+    "WithdrawCollateral": {
+        "NotRepaid": "Cannot withdraw collateral as your loan is not repaid", 
+        "TimelockNotExpired": "Cannot withdraw collateral as your timelock is not over. You can withdraw after "
+    }, 
+    "Spend": {
+        "Spent": "Cannot Spend as you have already spent your loan"
+    }, 
+    "Repay": {
+        "CommitmentNotExpired": "You are preclosing your loan, encurring a fee. You have "
+    }, 
+    "WithdrawDeposit": {
+        "CommitmentNotExpired": "You have "
+    }
+}

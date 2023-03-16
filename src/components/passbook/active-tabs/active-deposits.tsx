@@ -1,22 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  Button,
-  Col,
-  Form,
-  FormGroup,
-  FormText,
-  Input,
-  InputGroup,
-  Modal,
-  Nav,
-  NavItem,
-  NavLink,
-  Row,
-  Table,
-  UncontrolledAccordion,
-} from "reactstrap";
-
-import Slider from "react-custom-slider";
+import { Col, Row, Table, UncontrolledAccordion } from "reactstrap";
 import arrowDown from "../../../assets/images/ArrowDownDark.svg";
 import arrowUp from "../../../assets/images/ArrowUpDark.svg";
 
@@ -28,12 +11,8 @@ import {
   tokenDecimalsMap,
   getTokenFromName,
 } from "../../../blockchain/stark-constants";
-import TxHistoryTable from "../../dashboard/tx-history-table";
-import useAddDeposit from "../../../blockchain/hooks/active-deposits/useAddDeposit";
-import useWithdrawDeposit from "../../../blockchain/hooks/active-deposits/useWithdrawDeposit";
 import ActiveDeposit from "./active-deposts/active-deposit";
 import OffchainAPI from "../../../services/offchainapi.service";
-import Image from "next/image";
 import {
   useAccount,
   useContract,
@@ -44,11 +23,8 @@ import {
 import { Abi, uint256 } from "starknet";
 import { Coins, ICoin } from "../../dashboard/dashboard-body";
 import { MinimumAmount } from "../../../blockchain/constants";
-import MySpinner from "../../mySpinner";
 import { GetErrorText, NumToBN, etherToWeiBN } from "../../../blockchain/utils";
 import { toast } from "react-toastify";
-import classnames from "classnames";
-import ToastModal from "../../toastModals/customToastModal";
 import SupplyModal from "../../modals/supplyModal";
 
 const ActiveDepositsTab = ({
@@ -322,7 +298,7 @@ const ActiveDepositsTab = ({
         style={{
           margin: "10px",
           textAlign: "left",
-          marginLeft: "20px",
+          marginLeft: "0px",
         }}
       >
         {Array.isArray(activeDepositsData) && activeDepositsData.length > 0 ? (
@@ -335,7 +311,7 @@ const ActiveDepositsTab = ({
                   color: "rgb(140, 140, 140)",
                   fontWeight: "300",
                   alignItems: "center",
-                  gap: "30px",
+                  gap: "80px",
                   fontSize: "14px",
                 }}
               >
@@ -347,14 +323,14 @@ const ActiveDepositsTab = ({
                 >
                   Supply ID
                 </Col>
-                <Col
+                {/* <Col
                   style={{
                     width: "100px",
                     padding: "20px 10px",
                   }}
                 >
                   Market
-                </Col>
+                </Col> */}
                 <Col style={{ width: "100px", padding: "20px 10px" }}>
                   Supply Amount
                 </Col>
