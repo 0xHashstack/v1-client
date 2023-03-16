@@ -1,9 +1,18 @@
 import { useContext, useState } from "react";
 import { Card, CardBody, Col } from "reactstrap";
 import { TabContext } from "../../hooks/contextHooks/TabContext";
+import { NumericFormat } from "react-number-format";
+import MySpinner from "../mySpinner";
 
 const YourMatrics = () => {
-  const { customActiveTab, toggleCustom } = useContext(TabContext);
+  const {
+    customActiveTab,
+    toggleCustom,
+    YourSupply,
+    YourBorrows,
+    NetEarnedApr,
+    effectiveapr,
+  } = useContext(TabContext);
   const [CoinsSupplyMetrics, setCoinsSupplyMetrics] = useState("");
   const [CoinsBorrowMetrics, setCoinsBorrowMetrics] = useState("");
   return (
@@ -59,7 +68,19 @@ const YourMatrics = () => {
                   >
                     Total Supply
                   </span>
-                  <div style={{ fontSize: "25px" }}>$8935.5</div>
+                  <div style={{ fontSize: "25px" }}>
+                    {" "}
+                    {YourSupply !== undefined ? (
+                      <NumericFormat
+                        displayType="text"
+                        value={YourSupply.toFixed(2)}
+                        thousandSeparator=","
+                        prefix={"$"}
+                      />
+                    ) : (
+                      <MySpinner />
+                    )}
+                  </div>
                 </div>
                 <div
                   style={{
@@ -76,7 +97,7 @@ const YourMatrics = () => {
                   >
                     Total Apr Earned
                   </span>
-                  <div style={{ fontSize: "25px" }}>15.5 %</div>
+                  <div style={{ fontSize: "25px" }}> $ {NetEarnedApr}</div>
                 </div>
               </div>
               <div
@@ -209,7 +230,18 @@ const YourMatrics = () => {
                   >
                     Your Borrow
                   </span>
-                  <div style={{ fontSize: "25px" }}>$8935.5</div>
+                  <div style={{ fontSize: "25px" }}>
+                    {YourBorrows !== undefined ? (
+                      <NumericFormat
+                        displayType="text"
+                        value={YourBorrows.toFixed(2)}
+                        thousandSeparator=","
+                        prefix={"$"}
+                      />
+                    ) : (
+                      <MySpinner />
+                    )}
+                  </div>
                 </div>
                 <div
                   style={{
@@ -226,7 +258,18 @@ const YourMatrics = () => {
                   >
                     Effective Borrow Apr
                   </span>
-                  <div style={{ fontSize: "25px" }}>15.5 %</div>
+                  <div style={{ fontSize: "25px" }}>
+                    {effectiveapr !== undefined ? (
+                      <NumericFormat
+                        displayType="text"
+                        value={effectiveapr.toFixed(2)}
+                        thousandSeparator=","
+                        suffix="%"
+                      />
+                    ) : (
+                      <MySpinner />
+                    )}
+                  </div>
                 </div>
               </div>
               <div

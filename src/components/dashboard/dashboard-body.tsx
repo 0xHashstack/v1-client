@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Spinner } from "reactstrap";
 import OffchainAPI from "../../services/offchainapi.service";
 import DashboardTokens from "./dashboard-tokens";
-import Typewriter from "typewriter-effect"
+import Typewriter from "typewriter-effect";
+import { TabContext } from "../../hooks/contextHooks/TabContext";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -61,14 +62,11 @@ let DashboardTBody: any = ({
   }, []);
 
   // console.log(isloading);
-  
+
   if (isloading) {
-  
     return (
-      
       <tr>
         <td colSpan={6}>
-          
           <Spinner>Loading...</Spinner>
         </td>
       </tr>
@@ -91,7 +89,7 @@ let DashboardTBody: any = ({
       //   coin.name
       // );
       // console.log(coin);
-      
+
       return (
         <>
           <DashboardTokens

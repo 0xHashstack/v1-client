@@ -11,6 +11,7 @@ import { toast } from "react-toastify";
 import { Button, Table, Spinner, TabPane } from "reactstrap";
 import { Abi, number, uint256 } from "starknet";
 import { CoinClassNames, EventMap } from "../../blockchain/constants";
+import { NumericFormat } from "react-number-format";
 import {
   ComptrollerAbi,
   diamondAddress,
@@ -18,7 +19,8 @@ import {
   getTokenFromName,
   isTransactionLoading,
   LiquidateAbi,
-  tokenAddressMap
+  tokenAddressMap,
+  tokenDecimalsMap
 } from "../../blockchain/stark-constants";
 import { TxToastManager } from "../../blockchain/txToastManager";
 import { BNtoNum, weiToEtherNumber } from "../../blockchain/utils";
@@ -115,7 +117,7 @@ const LiquidationButton = ({
       entrypoint: "approve",
       calldata: [diamondAddress, loan.loanAmount, 0],
     },
-     {
+    {
       contractAddress: diamondAddress,
       entrypoint: "liquidate",
       calldata: [loan.id],
@@ -321,13 +323,12 @@ const Liquidation = ({
         className="table-responsive"
         style={{ backgroundColor: "rgb(42, 46, 63)" }}
       >
-        <Table className="table table-nowrap align-middle mb-0">
-          <thead>
+        <Table className="table table-nowrap align-middle mb-0" >
+          <thead style={{marginLeft:"20px"}}>
             <tr style={{ color: "rgb(140, 140, 140)" }}>
-              <th scope="col">Debt Market</th>
-              <th scope="col">Amount</th>
-              <th scope="col">Collateral Market</th>
-              <th scope="col">Collateral Balance</th>
+             <th scope="col">Borrow Id</th>
+              <th scope="col">Borrowed</th>
+              <th scope="col">Collateral</th>
               <th scope="col">Risk Premium</th>
               <th scope="col">Debt Converted</th>
               <th scope="col">Converted Market </th>
@@ -336,14 +337,16 @@ const Liquidation = ({
               <th scope="col">Actions</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody style={{marginLeft:"20px"}}>
             {Array.isArray(activeLiquidationsData) &&
             activeLiquidationsData.length > 0 ? (
               activeLiquidationsData.map((asset, key) => {
-                // console.log("asset in li", asset);
+                console.log("asset in li", asset);
+
+                const Discount = ((Number(asset.collateralAmount)/10**tokenDecimalsMap[asset.collateralMarket.toString()] + (Number(asset.currentAmount)/10**tokenDecimalsMap[asset.collateralMarket.toString()] - Number(asset.openLoanAmount)/10**tokenDecimalsMap[asset.loanMarket.toString()]))/Number(asset.openLoanAmount)/10**tokenDecimalsMap[asset.loanMarket.toString()])*100;
                 return (
                   <tr key={key} style={{ color: "white" }}>
-                    <th scope="row">
+                    {/* <th scope="row">
                       <div className="d-flex align-items-center">
                         <div className="avatar-xs me-3">
                           <img
@@ -354,15 +357,17 @@ const Liquidation = ({
                             }
                           />
                         </div>
-                        <span>{EventMap[asset.loanMarketSymbol?.toUpperCase()]}</span>
+                        <span>{asset.loanMarketSymbol?.toUpperCase()}</span>
                       </div>
-                    </th>
+                    </th> */}
+                    <td>
+                      ID{asset.id}
+                    </td>
                     <td>
                       <div>
                         {/* {// console.log(asset.loanAmount)} */}
-                        {weiToEtherNumber((asset.loanAmount).toString(),tokenAddressMap[asset.loanMarket]||"")}
+                        
                         {/* {BNtoNum(Number(asset.loanAmount))} */}
-                        <div>
                           <img
                             style={{ scale: "0.7" }}
                             src={
@@ -372,14 +377,14 @@ const Liquidation = ({
                             }
                           />
                           <span style={{ scale: "0.7" }}>
-                            {asset.loanMarketSymbol?.toUpperCase()}
+                          {weiToEtherNumber((asset.loanAmount).toString(),tokenAddressMap[asset.loanMarket]||"")}
                           </span>
-                        </div>
                       </div>
                     </td>
-                    <th scope="row">
+                    <th scope="row" >
+
                       <div className="d-flex align-items-center">
-                        <div className="avatar-xs me-3">
+                        <div>
                           <img
                             src={
                               CoinClassNames[
@@ -389,13 +394,10 @@ const Liquidation = ({
                           />
                         </div>
                         <span>
-                          {asset?.collateralMarketSymbol?.toUpperCase()}
+                        {weiToEtherNumber((asset?.collateralAmount).toString(),tokenAddressMap[asset?.collateralMarket]?.toString()||"")?.toString()}
                         </span>
                       </div>
                     </th>
-                    <td>
-                      <div>{weiToEtherNumber((asset?.collateralAmount).toString(),tokenAddressMap[asset?.collateralMarket]?.toString()||"")?.toString()}</div>
-                    </td>
                     <td>
                       <div>
                         {/* {EventMap[asset.commitment]}
@@ -437,7 +439,18 @@ const Liquidation = ({
                         {/* {EventMap[asset.commitment]}
                       {// console.log(EventMap[asset.commitment])
                       } Amount*/}
-                        10%
+                      {}
+                        {/* 10% */}
+                        {Discount !== undefined ? (
+                      <NumericFormat
+                        displayType="text"
+                        value={Discount.toFixed(2)}
+                        thousandSeparator=","
+                        suffix="%"
+                      />
+                    ) : (
+                      <MySpinner />
+                    )}
                       </div>
                     </td>
                     <td>
@@ -456,7 +469,7 @@ const Liquidation = ({
             )}
           </tbody>
         </Table>
-        {activeLiquidationsData.length ? (
+        {/* {activeLiquidationsData.length ? (
           <Button
             className="d-flex align-items-center"
             color="light"
@@ -474,7 +487,7 @@ const Liquidation = ({
           </Button>
         ) : (
           <></>
-        )}
+        )} */}
       </div>
     </TabPane>
   );
