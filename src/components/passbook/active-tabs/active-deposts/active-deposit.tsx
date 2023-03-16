@@ -109,6 +109,7 @@ const ActiveDeposit = ({
     handleWithdrawDeposit,
     withdrawAmount,
     setWithdrawAmount,
+    setWithdrawAllorNot,
     transWithdraw,
     loadingWithdrawDeposit,
     errorWithdrawDeposit,
@@ -371,6 +372,7 @@ const ActiveDeposit = ({
         (Number(asset.amount) + Number(asset.acquiredYield)) /
         10 ** (tokenDecimalsMap[tokenName] || 18)
       );
+      setWithdrawAllorNot(true);
       // console.log("max clicked", asset);
     }
     console.log("max clicked");
@@ -499,6 +501,8 @@ const ActiveDeposit = ({
       );
     // console.log("currentBalance", (value / 100) * currentBalance);
     setWithdrawAmount((value / 100) * currentBalance);
+    if(value  === 100) setWithdrawAllorNot(true);
+    else setWithdrawAllorNot(false);
   }, [value]);
 
   return (
