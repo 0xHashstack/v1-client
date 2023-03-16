@@ -57,6 +57,19 @@ export default class OffchainAPI {
     }
   }
 
+  static async postWhitelist(route: string) {
+    try {
+      let url = `${this.ENDPOINT}${route}`
+      let res = await axios({
+        method: "post",
+        url,
+      })
+      return res.data
+    } catch (err) {
+      // console.log(err);
+    }
+  }
+
   static getLoans(address: string) {
     let url = `/api/loans/${address}`
     return OffchainAPI.httpGet(url)
@@ -267,6 +280,13 @@ export default class OffchainAPI {
     let route = `/reserves`
     return OffchainAPI.httpGet(route)
     // return Reserves;
+  }
+
+  static async setWhitelistData(address: string) {
+    let route = `/api/add-whitelist-address/${address}`
+    // So many arguments not needed, just conforming to httpPost style. Only need to send account
+    await OffchainAPI.postWhitelist(route)
+    return null
   }
 
   static async getWhitelistData(address: string) {
