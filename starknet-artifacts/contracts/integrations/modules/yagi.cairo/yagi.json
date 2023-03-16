@@ -209,19 +209,19 @@
         "CONSTRUCTOR": [],
         "EXTERNAL": [
             {
-                "offset": "0x383",
+                "offset": "0x385",
                 "selector": "0xb327e0e7dfa45f7dcbdb0a3381adcadb190f73aba2a6d8fe1c194e11ce93b6"
             },
             {
-                "offset": "0x2f4",
+                "offset": "0x2f6",
                 "selector": "0xb970974c82b12adb083dd389cdd7dac0b5ba4c10e9ffe32ca53d70333e2d55"
             },
             {
-                "offset": "0x357",
+                "offset": "0x359",
                 "selector": "0xc8e29e3d7e88389eb75a4bdb128d92164f8d7811599bd883b7670e03b624df"
             },
             {
-                "offset": "0x3c0",
+                "offset": "0x3c2",
                 "selector": "0x1c70a3000ce5f05369c97b00a04dcaede47411edd41a935b70d0b48d3cfe34b"
             }
         ],
@@ -268,7 +268,7 @@
                     "contracts.integrations.libraries.lib_pricer",
                     "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
                 ],
-                "end_pc": 609,
+                "end_pc": 610,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 28,
@@ -277,7 +277,7 @@
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 606,
+                "start_pc": 607,
                 "value": "Direct Token Value: address is 0"
             },
             {
@@ -285,7 +285,7 @@
                     "contracts.integrations.libraries.lib_pricer",
                     "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
                 ],
-                "end_pc": 616,
+                "end_pc": 617,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 28,
@@ -294,7 +294,7 @@
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 614,
+                "start_pc": 615,
                 "value": "Direct Token Value: Open protocol address not set"
             },
             {
@@ -302,7 +302,7 @@
                     "contracts.integrations.libraries.lib_pricer",
                     "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
                 ],
-                "end_pc": 631,
+                "end_pc": 632,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 28,
@@ -311,7 +311,7 @@
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 616,
+                "start_pc": 617,
                 "value": "Open Interaction Error: asset_usd_value failed"
             },
             {
@@ -319,7 +319,7 @@
                     "contracts.integrations.libraries.lib_open_interaction",
                     "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
                 ],
-                "end_pc": 640,
+                "end_pc": 641,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 29,
@@ -328,7 +328,7 @@
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 638,
+                "start_pc": 639,
                 "value": "Direct Token Value: Open protocol address not set"
             },
             {
@@ -336,7 +336,7 @@
                     "contracts.integrations.libraries.lib_open_interaction",
                     "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
                 ],
-                "end_pc": 663,
+                "end_pc": 665,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 29,
@@ -345,7 +345,7 @@
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 640,
+                "start_pc": 641,
                 "value": "Open Interaction Error: get_loan failed"
             },
             {
@@ -353,7 +353,7 @@
                     "contracts.integrations.libraries.lib_open_interaction",
                     "contracts.integrations.libraries.lib_open_interaction.assert_only_open"
                 ],
-                "end_pc": 672,
+                "end_pc": 674,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 30,
@@ -362,7 +362,7 @@
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 671,
+                "start_pc": 673,
                 "value": "OpenOnly: Only open protocol can call"
             }
         ],
@@ -958,7 +958,7 @@
             "0x1104800180018000",
             "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffdfd",
             "0x482480017fff8000",
-            "0xd",
+            "0xe",
             "0x40307ffe7ffd7fff",
             "0x48127ffc7fff8000",
             "0x480a7ffb7fff8000",
@@ -975,19 +975,20 @@
             "0x4800800a7ff28000",
             "0x4800800b7ff18000",
             "0x4800800c7ff08000",
+            "0x4800800d7fef8000",
             "0x208b7fff7fff7ffe",
             "0x40780017fff7fff",
             "0x0",
             "0x480a7ffb7fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffdab",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffdaa",
             "0x480a7ff87fff8000",
             "0x480a7ff97fff8000",
             "0x480a7ffa7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffae",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffad",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffda4",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffda3",
             "0x48127ffa7fff8000",
             "0x48127ffb7fff8000",
             "0x48127ffb7fff8000",
@@ -995,7 +996,7 @@
             "0x480a7ffc7fff8000",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffb1",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffb0",
             "0x48127ffb7fff8000",
             "0x48127fdc7fff8000",
             "0x48127ffa7fff8000",
@@ -1009,40 +1010,41 @@
             "0x480a7ffb7fff8000",
             "0x480a7ffc7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff96",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff95",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd8c",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd8b",
             "0x48127ffa7fff8000",
             "0x48127ffb7fff8000",
             "0x48127ffb7fff8000",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffb6",
-            "0x48127ff17fff8000",
-            "0x48127fd47fff8000",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffb5",
             "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
+            "0x48127fd37fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
             "0x208b7fff7fff7ffe",
             "0x480a7ffb7fff8000",
             "0x480a7ffc7fff8000",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff78",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff76",
             "0x48127ffc7fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffdb3",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffdb1",
             "0x40127fff7fff7ff9",
             "0x48127ffe7fff8000",
             "0x48127ff67fff8000",
@@ -1057,56 +1059,56 @@
             "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffef",
             "0x48127ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffda4",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffda2",
             "0x48127ffe7fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffda8",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffda6",
             "0x48127ffe7fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffdac",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffdaa",
             "0x48127ffe7fff8000",
             "0x48127feb7fff8000",
             "0x48127feb7fff8000",
             "0x480a7ffc7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffc0",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffbf",
+            "0x48127fef7fff8000",
             "0x48127ff07fff8000",
-            "0x48127ff17fff8000",
-            "0x48127ff37fff8000",
-            "0x48127f9b7fff8000",
-            "0x48127fa07fff8000",
-            "0x48127ff57fff8000",
-            "0x48127ff57fff8000",
+            "0x48127ff27fff8000",
+            "0x48127f997fff8000",
+            "0x48127f9e7fff8000",
+            "0x48127ff47fff8000",
+            "0x48127ff47fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffede",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffedc",
             "0x48127ffd7fff8000",
-            "0x48127fd37fff8000",
-            "0x48127ffc7fff8000",
-            "0x48127fda7fff8000",
-            "0x48127fda7fff8000",
-            "0x48127f827fff8000",
             "0x48127fd27fff8000",
+            "0x48127ffc7fff8000",
+            "0x48127fd97fff8000",
+            "0x48127fd97fff8000",
+            "0x48127f807fff8000",
+            "0x48127fd17fff8000",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff07",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff05",
             "0x48127ffb7fff8000",
             "0x48127ffb7fff8000",
             "0x48127ffb7fff8000",
             "0x480a7ffc7fff8000",
             "0x480a7ffc7fff8000",
-            "0x48127f727fff8000",
-            "0x48127f727fff8000",
-            "0x48127f767fff8000",
-            "0x48127f767fff8000",
+            "0x48127f717fff8000",
+            "0x48127f717fff8000",
+            "0x48127f757fff8000",
+            "0x48127f757fff8000",
             "0x480a7ffd7fff8000",
             "0x48127ff47fff8000",
             "0x48127ff47fff8000",
             "0x480680017fff8000",
             "0x0",
-            "0x48127f207fff8000",
+            "0x48127f1e7fff8000",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffdf0",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffdee",
             "0x400b7ffc7fff8000",
             "0x400b7ffd7fff8001",
             "0x40137f7c7fff8002",
@@ -1156,16 +1158,16 @@
             "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff8c",
             "0x48127ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd41",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd3f",
             "0x48127ffe7fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd45",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd43",
             "0x48127ffe7fff8000",
             "0x48127ff17fff8000",
             "0x48127ff17fff8000",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd6b",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd69",
             "0x48127ff27fff8000",
             "0x48127ff27fff8000",
             "0x48127ff27fff8000",
@@ -1173,7 +1175,7 @@
             "0x48127ffb7fff8000",
             "0x48127ff27fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffed0",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffece",
             "0x48127ffb7fff8000",
             "0x48127ffb7fff8000",
             "0x48127ffb7fff8000",
@@ -1191,10 +1193,10 @@
             "0x48127f937fff8000",
             "0x48127f937fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd9b",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd99",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd4e",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd4c",
             "0x48127ff27fff8000",
             "0x48127ff37fff8000",
             "0x48127ff57fff8000",
@@ -1202,7 +1204,7 @@
             "0x48127eee7fff8000",
             "0x48127eee7fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffe49",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffe47",
             "0x400b7ffd7fff8000",
             "0x40137fdb7fff8001",
             "0x40137ed67fff8002",
@@ -1250,7 +1252,7 @@
             "0x480a7ffc7fff8000",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd16",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd14",
             "0x208b7fff7fff7ffe",
             "0x40780017fff7fff",
             "0x1",
@@ -1296,7 +1298,7 @@
             "0x480a7ffc7fff8000",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffce8",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffce6",
             "0x40137fff7fff8000",
             "0x40137ffb7fff8001",
             "0x40137ffc7fff8002",
@@ -1304,14 +1306,14 @@
             "0x48127ff37fff8000",
             "0x480a80007fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd69",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd67",
             "0x48127ffd7fff8000",
             "0x48127ffd7fff8000",
             "0x480a80007fff8000",
             "0x480a80017fff8000",
             "0x480a80027fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd76",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffd74",
             "0x48127ffc7fff8000",
             "0x48127fbe7fff8000",
             "0x48127ffb7fff8000",
@@ -1319,7 +1321,7 @@
             "0x48127ffa7fff8000",
             "0x48127ffa7fff8000",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffeab",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffeaa",
             "0x208b7fff7fff7ffe",
             "0x40780017fff7fff",
             "0x1",
@@ -1365,7 +1367,6 @@
                 "autogen/starknet/arg_processor/54e83e5ea2ad378780c80f9e709b4813cd1b54216adf11c8cdf75de62f25d7fd.cairo": "assert [__calldata_ptr] = loan_id;\nlet __calldata_ptr = __calldata_ptr + 1;\n",
                 "autogen/starknet/arg_processor/588bb9a94e9ddb9859419d942eacb6159d61b2b78d13d7717aa31f90667031f2.cairo": "assert [__return_value_ptr] = ret_value.current_market;\nlet __return_value_ptr = __return_value_ptr + 1;\n",
                 "autogen/starknet/arg_processor/6aa4accd2a180d358d9a2c3feca1310f4258cfe477e11f25dc6d4cb49fc1bbc7.cairo": "let __return_value_arg_assetTokenAddress = [__return_value_ptr];\nlet __return_value_ptr = __return_value_ptr + 1;\n",
-                "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo": "let __return_value_arg_loan_record = [\n    cast(__return_value_ptr, contracts.storages.loan_store.Loan*)];\nlet __return_value_ptr = __return_value_ptr + 13;\n",
                 "autogen/starknet/arg_processor/712c2a95dbae039e77112e72178da3f83d21edfc1285b387ccfa43e0f878d990.cairo": "assert [__calldata_ptr] = sender;\nlet __calldata_ptr = __calldata_ptr + 1;\n",
                 "autogen/starknet/arg_processor/74e9040bd5129070f459389aa09aef8ca8b41b4eeb8e209e9477a773e8b957cf.cairo": "// Create a reference to assets as felt*.\nlet __calldata_tmp: felt* = cast(&assets, felt*);\nassert [__calldata_ptr + 0] = [__calldata_tmp + 0];\nassert [__calldata_ptr + 1] = [__calldata_tmp + 1];\nlet __calldata_ptr = __calldata_ptr + 2;\n",
                 "autogen/starknet/arg_processor/77b2ab3000003dd0259c71b5e12b618c0825d9887c752ac8c50019dd4f8d171a.cairo": "let __return_value_arg_decimals = [__return_value_ptr];\nlet __return_value_ptr = __return_value_ptr + 1;\n",
@@ -1374,6 +1375,7 @@
                 "autogen/starknet/arg_processor/86b8ce991898641b73ad3eb5d907f86c73139c426526138c35901b17a2d6334d.cairo": "assert [__calldata_ptr] = spender;\nlet __calldata_ptr = __calldata_ptr + 1;\n",
                 "autogen/starknet/arg_processor/8c6320c80d2677b33e2e4b492695b6dadc86d94adac1e2136d54ff10e5893134.cairo": "// Create a reference to ret_value.revert_loan_result as felt*.\nlet __return_value_tmp: felt* = cast(&ret_value.revert_loan_result, felt*);\nassert [__return_value_ptr + 0] = [__return_value_tmp + 0];\nassert [__return_value_ptr + 1] = [__return_value_tmp + 1];\nassert [__return_value_ptr + 2] = [__return_value_tmp + 2];\nassert [__return_value_ptr + 3] = [__return_value_tmp + 3];\nlet __return_value_ptr = __return_value_ptr + 4;\n",
                 "autogen/starknet/arg_processor/8ca78f1082aaedcf62c13aff4dffe5943aa04164c60cb6d9f03916c0319201df.cairo": "let __return_value_arg_success = [__return_value_ptr];\nlet __return_value_ptr = __return_value_ptr + 1;\n",
+                "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo": "let __return_value_arg_loan_record = [\n    cast(__return_value_ptr, contracts.storages.loan_store.Loan*)];\nlet __return_value_ptr = __return_value_ptr + 14;\n",
                 "autogen/starknet/arg_processor/94cce1084239239be3b0da3736ae3dd3399f43016c01c790ba6951d6d0f1b193.cairo": "assert [__return_value_ptr] = ret_value.is_reverted;\nlet __return_value_ptr = __return_value_ptr + 1;\n",
                 "autogen/starknet/arg_processor/96447016176d161dae83f414c4d3e33e78856e0ef69bc33f8d419f1c9b90f9c5.cairo": "assert retdata_size = __return_value_actual_size;\n",
                 "autogen/starknet/arg_processor/9b895f84ddacbe4ee6312f7455ef73101a9608d1dc368d04c1c94cfd27f230ed.cairo": "assert [__return_value_ptr] = ret_value.created_at;\nlet __return_value_ptr = __return_value_ptr + 1;\n",
@@ -17041,7 +17043,7 @@
                         "end_col": 49,
                         "end_line": 3,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -17317,7 +17319,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -17371,7 +17373,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -17425,7 +17427,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -17479,7 +17481,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -17533,7 +17535,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -17587,7 +17589,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -17641,7 +17643,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -17695,7 +17697,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -17749,7 +17751,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -17803,7 +17805,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -17857,7 +17859,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -17911,7 +17913,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -17965,7 +17967,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -18016,6 +18018,60 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
+                        "end_col": 67,
+                        "end_line": 2,
+                        "input_file": {
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 26,
+                                "end_line": 97,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
+                                },
+                                "parent_location": [
+                                    {
+                                        "end_col": 51,
+                                        "end_line": 2,
+                                        "input_file": {
+                                            "filename": "autogen/starknet/contract_interface/IOpenProtocol/get_loan/448ffefed2af932aff303c6dfef0d1f4616f6389d86068fff661d731ac2d3124.cairo"
+                                        },
+                                        "parent_location": [
+                                            {
+                                                "end_col": 18,
+                                                "end_line": 96,
+                                                "input_file": {
+                                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
+                                                },
+                                                "start_col": 10,
+                                                "start_line": 96
+                                            },
+                                            "While handling contract interface function:"
+                                        ],
+                                        "start_col": 21,
+                                        "start_line": 2
+                                    },
+                                    "While expanding the reference '__return_value_arg_loan_record' in:"
+                                ],
+                                "start_col": 9,
+                                "start_line": 97
+                            },
+                            "While handling return value 'loan_record'"
+                        ],
+                        "start_col": 38,
+                        "start_line": 1
+                    }
+                },
+                "604": {
+                    "accessible_scopes": [
+                        "contracts.interfaces.IOpenProtocol",
+                        "contracts.interfaces.IOpenProtocol.IOpenProtocol",
+                        "contracts.interfaces.IOpenProtocol.IOpenProtocol.get_loan"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
                         "end_col": 54,
                         "end_line": 2,
                         "input_file": {
@@ -18037,7 +18093,7 @@
                         "start_line": 2
                     }
                 },
-                "604": {
+                "605": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
                         "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
@@ -18054,7 +18110,7 @@
                         "start_line": 26
                     }
                 },
-                "606": {
+                "607": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
                         "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
@@ -18083,7 +18139,7 @@
                         "start_line": 24
                     }
                 },
-                "607": {
+                "608": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
                         "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
@@ -18100,7 +18156,7 @@
                         "start_line": 29
                     }
                 },
-                "609": {
+                "610": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
                         "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
@@ -18141,7 +18197,7 @@
                         "start_line": 23
                     }
                 },
-                "610": {
+                "611": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
                         "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
@@ -18182,7 +18238,7 @@
                         "start_line": 23
                     }
                 },
-                "611": {
+                "612": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
                         "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
@@ -18223,7 +18279,7 @@
                         "start_line": 23
                     }
                 },
-                "612": {
+                "613": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
                         "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
@@ -18240,7 +18296,7 @@
                         "start_line": 33
                     }
                 },
-                "614": {
+                "615": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
                         "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
@@ -18257,7 +18313,7 @@
                         "start_line": 35
                     }
                 },
-                "616": {
+                "617": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
                         "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
@@ -18322,7 +18378,7 @@
                         "start_line": 13
                     }
                 },
-                "617": {
+                "618": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
                         "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
@@ -18387,7 +18443,7 @@
                         "start_line": 13
                     }
                 },
-                "618": {
+                "619": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
                         "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
@@ -18416,7 +18472,7 @@
                         "start_line": 33
                     }
                 },
-                "619": {
+                "620": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
                         "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
@@ -18442,35 +18498,6 @@
                             "While expanding the reference 'asset_address' in:"
                         ],
                         "start_col": 5,
-                        "start_line": 24
-                    }
-                },
-                "620": {
-                    "accessible_scopes": [
-                        "contracts.integrations.libraries.lib_pricer",
-                        "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 41,
-                        "end_line": 24,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 144,
-                                "end_line": 39,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
-                                },
-                                "start_col": 138,
-                                "start_line": 39
-                            },
-                            "While expanding the reference 'amount' in:"
-                        ],
-                        "start_col": 26,
                         "start_line": 24
                     }
                 },
@@ -18511,6 +18538,35 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
+                        "end_col": 41,
+                        "end_line": 24,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 144,
+                                "end_line": 39,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
+                                },
+                                "start_col": 138,
+                                "start_line": 39
+                            },
+                            "While expanding the reference 'amount' in:"
+                        ],
+                        "start_col": 26,
+                        "start_line": 24
+                    }
+                },
+                "623": {
+                    "accessible_scopes": [
+                        "contracts.integrations.libraries.lib_pricer",
+                        "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
                         "end_col": 145,
                         "end_line": 39,
                         "input_file": {
@@ -18520,7 +18576,7 @@
                         "start_line": 39
                     }
                 },
-                "624": {
+                "625": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
                         "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
@@ -18585,7 +18641,7 @@
                         "start_line": 1
                     }
                 },
-                "625": {
+                "626": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
                         "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
@@ -18638,7 +18694,7 @@
                         "start_line": 13
                     }
                 },
-                "626": {
+                "627": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
                         "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
@@ -18703,35 +18759,6 @@
                         "start_line": 1
                     }
                 },
-                "627": {
-                    "accessible_scopes": [
-                        "contracts.integrations.libraries.lib_pricer",
-                        "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 23,
-                        "end_line": 39,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 26,
-                                "end_line": 40,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
-                                },
-                                "start_col": 17,
-                                "start_line": 40
-                            },
-                            "While expanding the reference 'usd_value' in:"
-                        ],
-                        "start_col": 14,
-                        "start_line": 39
-                    }
-                },
                 "628": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
@@ -18769,6 +18796,35 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
+                        "end_col": 23,
+                        "end_line": 39,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 26,
+                                "end_line": 40,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_pricer.cairo"
+                                },
+                                "start_col": 17,
+                                "start_line": 40
+                            },
+                            "While expanding the reference 'usd_value' in:"
+                        ],
+                        "start_col": 14,
+                        "start_line": 39
+                    }
+                },
+                "630": {
+                    "accessible_scopes": [
+                        "contracts.integrations.libraries.lib_pricer",
+                        "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
                         "end_col": 33,
                         "end_line": 39,
                         "input_file": {
@@ -18790,7 +18846,7 @@
                         "start_line": 39
                     }
                 },
-                "630": {
+                "631": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_pricer",
                         "contracts.integrations.libraries.lib_pricer._direct_token_usd_value"
@@ -18807,7 +18863,7 @@
                         "start_line": 40
                     }
                 },
-                "631": {
+                "632": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
@@ -18824,7 +18880,7 @@
                         "start_line": 27
                     }
                 },
-                "633": {
+                "634": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
@@ -18865,7 +18921,7 @@
                         "start_line": 24
                     }
                 },
-                "634": {
+                "635": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
@@ -18906,7 +18962,7 @@
                         "start_line": 24
                     }
                 },
-                "635": {
+                "636": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
@@ -18947,7 +19003,7 @@
                         "start_line": 24
                     }
                 },
-                "636": {
+                "637": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
@@ -18964,7 +19020,7 @@
                         "start_line": 30
                     }
                 },
-                "638": {
+                "639": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
@@ -18981,7 +19037,7 @@
                         "start_line": 32
                     }
                 },
-                "640": {
+                "641": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
@@ -19046,7 +19102,7 @@
                         "start_line": 13
                     }
                 },
-                "641": {
+                "642": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
@@ -19111,7 +19167,7 @@
                         "start_line": 13
                     }
                 },
-                "642": {
+                "643": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
@@ -19140,7 +19196,7 @@
                         "start_line": 30
                     }
                 },
-                "643": {
+                "644": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
@@ -19169,7 +19225,7 @@
                         "start_line": 25
                     }
                 },
-                "644": {
+                "645": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
@@ -19186,7 +19242,7 @@
                         "start_line": 36
                     }
                 },
-                "646": {
+                "647": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
@@ -19251,7 +19307,7 @@
                         "start_line": 1
                     }
                 },
-                "647": {
+                "648": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
@@ -19304,7 +19360,7 @@
                         "start_line": 13
                     }
                 },
-                "648": {
+                "649": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
@@ -19367,35 +19423,6 @@
                         ],
                         "start_col": 35,
                         "start_line": 1
-                    }
-                },
-                "649": {
-                    "accessible_scopes": [
-                        "contracts.integrations.libraries.lib_open_interaction",
-                        "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 24,
-                        "end_line": 36,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 33,
-                                "end_line": 37,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
-                                },
-                                "start_col": 29,
-                                "start_line": 37
-                            },
-                            "While expanding the reference 'loan' in:"
-                        ],
-                        "start_col": 14,
-                        "start_line": 36
                     }
                 },
                 "650": {
@@ -19754,6 +19781,64 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
+                        "end_col": 24,
+                        "end_line": 36,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 33,
+                                "end_line": 37,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
+                                },
+                                "start_col": 29,
+                                "start_line": 37
+                            },
+                            "While expanding the reference 'loan' in:"
+                        ],
+                        "start_col": 14,
+                        "start_line": 36
+                    }
+                },
+                "663": {
+                    "accessible_scopes": [
+                        "contracts.integrations.libraries.lib_open_interaction",
+                        "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 24,
+                        "end_line": 36,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 33,
+                                "end_line": 37,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
+                                },
+                                "start_col": 29,
+                                "start_line": 37
+                            },
+                            "While expanding the reference 'loan' in:"
+                        ],
+                        "start_col": 14,
+                        "start_line": 36
+                    }
+                },
+                "664": {
+                    "accessible_scopes": [
+                        "contracts.integrations.libraries.lib_open_interaction",
+                        "contracts.integrations.libraries.lib_open_interaction._get_open_loan"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
                         "end_col": 35,
                         "end_line": 37,
                         "input_file": {
@@ -19763,7 +19848,7 @@
                         "start_line": 37
                     }
                 },
-                "663": {
+                "665": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction.assert_only_open"
@@ -19804,7 +19889,7 @@
                         "start_line": 42
                     }
                 },
-                "664": {
+                "666": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction.assert_only_open"
@@ -19845,7 +19930,7 @@
                         "start_line": 42
                     }
                 },
-                "665": {
+                "667": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction.assert_only_open"
@@ -19886,7 +19971,7 @@
                         "start_line": 42
                     }
                 },
-                "666": {
+                "668": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction.assert_only_open"
@@ -19903,7 +19988,7 @@
                         "start_line": 43
                     }
                 },
-                "668": {
+                "670": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction.assert_only_open"
@@ -19956,7 +20041,7 @@
                         "start_line": 13
                     }
                 },
-                "669": {
+                "671": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction.assert_only_open"
@@ -19973,7 +20058,7 @@
                         "start_line": 44
                     }
                 },
-                "671": {
+                "673": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction.assert_only_open"
@@ -19990,7 +20075,7 @@
                         "start_line": 46
                     }
                 },
-                "672": {
+                "674": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction.assert_only_open"
@@ -20043,7 +20128,7 @@
                         "start_line": 196
                     }
                 },
-                "673": {
+                "675": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction.assert_only_open"
@@ -20096,7 +20181,7 @@
                         "start_line": 13
                     }
                 },
-                "674": {
+                "676": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction.assert_only_open"
@@ -20149,7 +20234,7 @@
                         "start_line": 13
                     }
                 },
-                "675": {
+                "677": {
                     "accessible_scopes": [
                         "contracts.integrations.libraries.lib_open_interaction",
                         "contracts.integrations.libraries.lib_open_interaction.assert_only_open"
@@ -20166,7 +20251,7 @@
                         "start_line": 48
                     }
                 },
-                "676": {
+                "678": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20184,7 +20269,7 @@
                         "start_line": 29
                     }
                 },
-                "678": {
+                "680": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20226,7 +20311,7 @@
                         "start_line": 25
                     }
                 },
-                "679": {
+                "681": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20268,7 +20353,7 @@
                         "start_line": 25
                     }
                 },
-                "680": {
+                "682": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20310,7 +20395,7 @@
                         "start_line": 25
                     }
                 },
-                "681": {
+                "683": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20328,7 +20413,7 @@
                         "start_line": 30
                     }
                 },
-                "683": {
+                "685": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20382,7 +20467,7 @@
                         "start_line": 42
                     }
                 },
-                "684": {
+                "686": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20400,7 +20485,7 @@
                         "start_line": 32
                     }
                 },
-                "686": {
+                "688": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20454,7 +20539,7 @@
                         "start_line": 196
                     }
                 },
-                "687": {
+                "689": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20472,7 +20557,7 @@
                         "start_line": 33
                     }
                 },
-                "689": {
+                "691": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20526,7 +20611,7 @@
                         "start_line": 270
                     }
                 },
-                "690": {
+                "692": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20544,7 +20629,7 @@
                         "start_line": 34
                     }
                 },
-                "692": {
+                "694": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20598,7 +20683,7 @@
                         "start_line": 294
                     }
                 },
-                "693": {
+                "695": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20652,7 +20737,7 @@
                         "start_line": 42
                     }
                 },
-                "694": {
+                "696": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20706,7 +20791,7 @@
                         "start_line": 42
                     }
                 },
-                "695": {
+                "697": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20736,7 +20821,7 @@
                         "start_line": 26
                     }
                 },
-                "696": {
+                "698": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20754,7 +20839,7 @@
                         "start_line": 36
                     }
                 },
-                "698": {
+                "700": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20820,7 +20905,7 @@
                         "start_line": 24
                     }
                 },
-                "699": {
+                "701": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20886,7 +20971,7 @@
                         "start_line": 24
                     }
                 },
-                "700": {
+                "702": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20904,7 +20989,7 @@
                         "start_line": 41
                     }
                 },
-                "701": {
+                "703": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20934,7 +21019,7 @@
                         "start_line": 32
                     }
                 },
-                "702": {
+                "704": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -20964,43 +21049,43 @@
                         "start_line": 33
                     }
                 },
-                "703": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.deposit_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 42,
-                        "end_line": 44,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "start_col": 16,
-                        "start_line": 44
-                    }
-                },
-                "704": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.deposit_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 42,
-                        "end_line": 44,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "start_col": 16,
-                        "start_line": 44
-                    }
-                },
                 "705": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.deposit_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 42,
+                        "end_line": 44,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "start_col": 16,
+                        "start_line": 44
+                    }
+                },
+                "706": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.deposit_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 42,
+                        "end_line": 44,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "start_col": 16,
+                        "start_line": 44
+                    }
+                },
+                "707": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21018,7 +21103,7 @@
                         "start_line": 40
                     }
                 },
-                "707": {
+                "709": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21084,7 +21169,7 @@
                         "start_line": 1
                     }
                 },
-                "708": {
+                "710": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21138,7 +21223,7 @@
                         "start_line": 24
                     }
                 },
-                "709": {
+                "711": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21204,43 +21289,43 @@
                         "start_line": 1
                     }
                 },
-                "710": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.deposit_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 73,
-                        "end_line": 47,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "start_col": 47,
-                        "start_line": 47
-                    }
-                },
-                "711": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.deposit_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 73,
-                        "end_line": 47,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "start_col": 47,
-                        "start_line": 47
-                    }
-                },
                 "712": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.deposit_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 73,
+                        "end_line": 47,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "start_col": 47,
+                        "start_line": 47
+                    }
+                },
+                "713": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.deposit_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 73,
+                        "end_line": 47,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "start_col": 47,
+                        "start_line": 47
+                    }
+                },
+                "714": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21270,7 +21355,7 @@
                         "start_line": 33
                     }
                 },
-                "713": {
+                "715": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21288,7 +21373,7 @@
                         "start_line": 47
                     }
                 },
-                "714": {
+                "716": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21318,7 +21403,7 @@
                         "start_line": 27
                     }
                 },
-                "715": {
+                "717": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21336,7 +21421,7 @@
                         "start_line": 47
                     }
                 },
-                "717": {
+                "719": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21390,7 +21475,7 @@
                         "start_line": 17
                     }
                 },
-                "718": {
+                "720": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21444,7 +21529,7 @@
                         "start_line": 17
                     }
                 },
-                "719": {
+                "721": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21498,7 +21583,7 @@
                         "start_line": 17
                     }
                 },
-                "720": {
+                "722": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21528,7 +21613,7 @@
                         "start_line": 26
                     }
                 },
-                "721": {
+                "723": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21570,7 +21655,7 @@
                         "start_line": 26
                     }
                 },
-                "722": {
+                "724": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21600,7 +21685,7 @@
                         "start_line": 51
                     }
                 },
-                "723": {
+                "725": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21630,67 +21715,67 @@
                         "start_line": 52
                     }
                 },
-                "724": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.deposit_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 35,
-                        "end_line": 53,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 42,
-                                "end_line": 60,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "start_col": 31,
-                                "start_line": 60
-                            },
-                            "While expanding the reference 'yagi_record' in:"
-                        ],
-                        "start_col": 9,
-                        "start_line": 53
-                    }
-                },
-                "725": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.deposit_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 35,
-                        "end_line": 53,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 42,
-                                "end_line": 60,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "start_col": 31,
-                                "start_line": 60
-                            },
-                            "While expanding the reference 'yagi_record' in:"
-                        ],
-                        "start_col": 9,
-                        "start_line": 53
-                    }
-                },
                 "726": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.deposit_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 35,
+                        "end_line": 53,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 42,
+                                "end_line": 60,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "start_col": 31,
+                                "start_line": 60
+                            },
+                            "While expanding the reference 'yagi_record' in:"
+                        ],
+                        "start_col": 9,
+                        "start_line": 53
+                    }
+                },
+                "727": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.deposit_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 35,
+                        "end_line": 53,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 42,
+                                "end_line": 60,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "start_col": 31,
+                                "start_line": 60
+                            },
+                            "While expanding the reference 'yagi_record' in:"
+                        ],
+                        "start_col": 9,
+                        "start_line": 53
+                    }
+                },
+                "728": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21732,91 +21817,91 @@
                         "start_line": 27
                     }
                 },
-                "727": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.deposit_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 29,
-                        "end_line": 47,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 19,
-                                "end_line": 55,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "parent_location": [
-                                    {
-                                        "end_col": 42,
-                                        "end_line": 60,
-                                        "input_file": {
-                                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                        },
-                                        "start_col": 31,
-                                        "start_line": 60
-                                    },
-                                    "While expanding the reference 'yagi_record' in:"
-                                ],
-                                "start_col": 9,
-                                "start_line": 55
-                            },
-                            "While expanding the reference 'amount_out' in:"
-                        ],
-                        "start_col": 10,
-                        "start_line": 47
-                    }
-                },
-                "728": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.deposit_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 29,
-                        "end_line": 47,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 19,
-                                "end_line": 55,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "parent_location": [
-                                    {
-                                        "end_col": 42,
-                                        "end_line": 60,
-                                        "input_file": {
-                                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                        },
-                                        "start_col": 31,
-                                        "start_line": 60
-                                    },
-                                    "While expanding the reference 'yagi_record' in:"
-                                ],
-                                "start_col": 9,
-                                "start_line": 55
-                            },
-                            "While expanding the reference 'amount_out' in:"
-                        ],
-                        "start_col": 10,
-                        "start_line": 47
-                    }
-                },
                 "729": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.deposit_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 29,
+                        "end_line": 47,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 19,
+                                "end_line": 55,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "parent_location": [
+                                    {
+                                        "end_col": 42,
+                                        "end_line": 60,
+                                        "input_file": {
+                                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                        },
+                                        "start_col": 31,
+                                        "start_line": 60
+                                    },
+                                    "While expanding the reference 'yagi_record' in:"
+                                ],
+                                "start_col": 9,
+                                "start_line": 55
+                            },
+                            "While expanding the reference 'amount_out' in:"
+                        ],
+                        "start_col": 10,
+                        "start_line": 47
+                    }
+                },
+                "730": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.deposit_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 29,
+                        "end_line": 47,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 19,
+                                "end_line": 55,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "parent_location": [
+                                    {
+                                        "end_col": 42,
+                                        "end_line": 60,
+                                        "input_file": {
+                                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                        },
+                                        "start_col": 31,
+                                        "start_line": 60
+                                    },
+                                    "While expanding the reference 'yagi_record' in:"
+                                ],
+                                "start_col": 9,
+                                "start_line": 55
+                            },
+                            "While expanding the reference 'amount_out' in:"
+                        ],
+                        "start_col": 10,
+                        "start_line": 47
+                    }
+                },
+                "731": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21846,7 +21931,7 @@
                         "start_line": 56
                     }
                 },
-                "731": {
+                "733": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21888,7 +21973,7 @@
                         "start_line": 34
                     }
                 },
-                "732": {
+                "734": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21930,7 +22015,7 @@
                         "start_line": 27
                     }
                 },
-                "733": {
+                "735": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -21946,42 +22031,6 @@
                         },
                         "start_col": 5,
                         "start_line": 60
-                    }
-                },
-                "735": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.deposit_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 7,
-                        "end_line": 66,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "start_col": 5,
-                        "start_line": 62
-                    }
-                },
-                "736": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.deposit_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 7,
-                        "end_line": 66,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "start_col": 5,
-                        "start_line": 62
                     }
                 },
                 "737": {
@@ -22029,24 +22078,12 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
-                        "end_col": 28,
-                        "end_line": 62,
+                        "end_col": 7,
+                        "end_line": 66,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
                         },
-                        "parent_location": [
-                            {
-                                "end_col": 48,
-                                "end_line": 68,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "start_col": 31,
-                                "start_line": 68
-                            },
-                            "While expanding the reference 'spend_loan_result' in:"
-                        ],
-                        "start_col": 11,
+                        "start_col": 5,
                         "start_line": 62
                     }
                 },
@@ -22059,24 +22096,12 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
-                        "end_col": 28,
-                        "end_line": 62,
+                        "end_col": 7,
+                        "end_line": 66,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
                         },
-                        "parent_location": [
-                            {
-                                "end_col": 48,
-                                "end_line": 68,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "start_col": 31,
-                                "start_line": 68
-                            },
-                            "While expanding the reference 'spend_loan_result' in:"
-                        ],
-                        "start_col": 11,
+                        "start_col": 5,
                         "start_line": 62
                     }
                 },
@@ -22149,6 +22174,66 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
+                        "end_col": 28,
+                        "end_line": 62,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 48,
+                                "end_line": 68,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "start_col": 31,
+                                "start_line": 68
+                            },
+                            "While expanding the reference 'spend_loan_result' in:"
+                        ],
+                        "start_col": 11,
+                        "start_line": 62
+                    }
+                },
+                "744": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.deposit_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 28,
+                        "end_line": 62,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 48,
+                                "end_line": 68,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "start_col": 31,
+                                "start_line": 68
+                            },
+                            "While expanding the reference 'spend_loan_result' in:"
+                        ],
+                        "start_col": 11,
+                        "start_line": 62
+                    }
+                },
+                "745": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.deposit_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
                         "end_col": 50,
                         "end_line": 68,
                         "input_file": {
@@ -22158,7 +22243,7 @@
                         "start_line": 68
                     }
                 },
-                "744": {
+                "746": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22214,7 +22299,7 @@
                         "start_line": 4
                     }
                 },
-                "746": {
+                "748": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22245,7 +22330,7 @@
                         "start_line": 3
                     }
                 },
-                "747": {
+                "749": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22276,7 +22361,7 @@
                         "start_line": 4
                     }
                 },
-                "748": {
+                "750": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22307,7 +22392,7 @@
                         "start_line": 5
                     }
                 },
-                "749": {
+                "751": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22338,7 +22423,7 @@
                         "start_line": 6
                     }
                 },
-                "750": {
+                "752": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22393,7 +22478,7 @@
                         "start_line": 7
                     }
                 },
-                "752": {
+                "754": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22448,7 +22533,7 @@
                         "start_line": 1
                     }
                 },
-                "753": {
+                "755": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22479,7 +22564,7 @@
                         "start_line": 11
                     }
                 },
-                "754": {
+                "756": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22534,7 +22619,7 @@
                         "start_line": 5
                     }
                 },
-                "755": {
+                "757": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22565,7 +22650,7 @@
                         "start_line": 9
                     }
                 },
-                "756": {
+                "758": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22644,7 +22729,7 @@
                         "start_line": 2
                     }
                 },
-                "758": {
+                "760": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22675,7 +22760,7 @@
                         "start_line": 1
                     }
                 },
-                "759": {
+                "761": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22730,7 +22815,7 @@
                         "start_line": 1
                     }
                 },
-                "760": {
+                "762": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22785,7 +22870,7 @@
                         "start_line": 1
                     }
                 },
-                "761": {
+                "763": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22840,7 +22925,7 @@
                         "start_line": 1
                     }
                 },
-                "762": {
+                "764": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22895,7 +22980,7 @@
                         "start_line": 1
                     }
                 },
-                "763": {
+                "765": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22950,7 +23035,7 @@
                         "start_line": 1
                     }
                 },
-                "764": {
+                "766": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -22969,7 +23054,7 @@
                         "start_line": 25
                     }
                 },
-                "766": {
+                "768": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23024,7 +23109,7 @@
                         "start_line": 1
                     }
                 },
-                "767": {
+                "769": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23055,7 +23140,7 @@
                         "start_line": 2
                     }
                 },
-                "769": {
+                "771": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23110,7 +23195,7 @@
                         "start_line": 1
                     }
                 },
-                "770": {
+                "772": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23165,7 +23250,7 @@
                         "start_line": 1
                     }
                 },
-                "771": {
+                "773": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23220,7 +23305,7 @@
                         "start_line": 2
                     }
                 },
-                "772": {
+                "774": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23275,7 +23360,7 @@
                         "start_line": 2
                     }
                 },
-                "773": {
+                "775": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23330,7 +23415,7 @@
                         "start_line": 2
                     }
                 },
-                "774": {
+                "776": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23361,7 +23446,7 @@
                         "start_line": 1
                     }
                 },
-                "775": {
+                "777": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23379,7 +23464,7 @@
                         "start_line": 75
                     }
                 },
-                "777": {
+                "779": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23421,7 +23506,7 @@
                         "start_line": 72
                     }
                 },
-                "778": {
+                "780": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23463,7 +23548,7 @@
                         "start_line": 72
                     }
                 },
-                "779": {
+                "781": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23505,7 +23590,7 @@
                         "start_line": 72
                     }
                 },
-                "780": {
+                "782": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23523,7 +23608,7 @@
                         "start_line": 76
                     }
                 },
-                "782": {
+                "784": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23577,7 +23662,7 @@
                         "start_line": 42
                     }
                 },
-                "783": {
+                "785": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23595,7 +23680,7 @@
                         "start_line": 78
                     }
                 },
-                "785": {
+                "787": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23649,7 +23734,7 @@
                         "start_line": 196
                     }
                 },
-                "786": {
+                "788": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23667,7 +23752,7 @@
                         "start_line": 79
                     }
                 },
-                "788": {
+                "790": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23721,7 +23806,7 @@
                         "start_line": 270
                     }
                 },
-                "789": {
+                "791": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23775,7 +23860,7 @@
                         "start_line": 42
                     }
                 },
-                "790": {
+                "792": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23829,7 +23914,7 @@
                         "start_line": 42
                     }
                 },
-                "791": {
+                "793": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23859,7 +23944,7 @@
                         "start_line": 73
                     }
                 },
-                "792": {
+                "794": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23877,7 +23962,7 @@
                         "start_line": 81
                     }
                 },
-                "794": {
+                "796": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23931,7 +24016,7 @@
                         "start_line": 13
                     }
                 },
-                "795": {
+                "797": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -23985,7 +24070,7 @@
                         "start_line": 13
                     }
                 },
-                "796": {
+                "798": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24039,7 +24124,7 @@
                         "start_line": 13
                     }
                 },
-                "797": {
+                "799": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24069,7 +24154,7 @@
                         "start_line": 79
                     }
                 },
-                "798": {
+                "800": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24087,7 +24172,7 @@
                         "start_line": 85
                     }
                 },
-                "799": {
+                "801": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24105,7 +24190,7 @@
                         "start_line": 85
                     }
                 },
-                "800": {
+                "802": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24123,7 +24208,7 @@
                         "start_line": 84
                     }
                 },
-                "802": {
+                "804": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24177,7 +24262,7 @@
                         "start_line": 37
                     }
                 },
-                "803": {
+                "805": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24231,7 +24316,7 @@
                         "start_line": 37
                     }
                 },
-                "804": {
+                "806": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24285,7 +24370,7 @@
                         "start_line": 37
                     }
                 },
-                "805": {
+                "807": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24315,7 +24400,7 @@
                         "start_line": 73
                     }
                 },
-                "806": {
+                "808": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24345,7 +24430,7 @@
                         "start_line": 89
                     }
                 },
-                "807": {
+                "809": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24375,7 +24460,7 @@
                         "start_line": 90
                     }
                 },
-                "808": {
+                "810": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24405,67 +24490,67 @@
                         "start_line": 91
                     }
                 },
-                "809": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.revert_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 27,
-                        "end_line": 92,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 50,
-                                "end_line": 99,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "start_col": 31,
-                                "start_line": 99
-                            },
-                            "While expanding the reference 'updated_yagi_record' in:"
-                        ],
-                        "start_col": 9,
-                        "start_line": 92
-                    }
-                },
-                "810": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.revert_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 27,
-                        "end_line": 92,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 50,
-                                "end_line": 99,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "start_col": 31,
-                                "start_line": 99
-                            },
-                            "While expanding the reference 'updated_yagi_record' in:"
-                        ],
-                        "start_col": 9,
-                        "start_line": 92
-                    }
-                },
                 "811": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.revert_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 27,
+                        "end_line": 92,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 50,
+                                "end_line": 99,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "start_col": 31,
+                                "start_line": 99
+                            },
+                            "While expanding the reference 'updated_yagi_record' in:"
+                        ],
+                        "start_col": 9,
+                        "start_line": 92
+                    }
+                },
+                "812": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.revert_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 27,
+                        "end_line": 92,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 50,
+                                "end_line": 99,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "start_col": 31,
+                                "start_line": 99
+                            },
+                            "While expanding the reference 'updated_yagi_record' in:"
+                        ],
+                        "start_col": 9,
+                        "start_line": 92
+                    }
+                },
+                "813": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24495,91 +24580,91 @@
                         "start_line": 93
                     }
                 },
-                "812": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.revert_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 29,
-                        "end_line": 84,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 19,
-                                "end_line": 94,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "parent_location": [
-                                    {
-                                        "end_col": 50,
-                                        "end_line": 99,
-                                        "input_file": {
-                                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                        },
-                                        "start_col": 31,
-                                        "start_line": 99
-                                    },
-                                    "While expanding the reference 'updated_yagi_record' in:"
-                                ],
-                                "start_col": 9,
-                                "start_line": 94
-                            },
-                            "While expanding the reference 'amount_out' in:"
-                        ],
-                        "start_col": 10,
-                        "start_line": 84
-                    }
-                },
-                "813": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.revert_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 29,
-                        "end_line": 84,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 19,
-                                "end_line": 94,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "parent_location": [
-                                    {
-                                        "end_col": 50,
-                                        "end_line": 99,
-                                        "input_file": {
-                                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                        },
-                                        "start_col": 31,
-                                        "start_line": 99
-                                    },
-                                    "While expanding the reference 'updated_yagi_record' in:"
-                                ],
-                                "start_col": 9,
-                                "start_line": 94
-                            },
-                            "While expanding the reference 'amount_out' in:"
-                        ],
-                        "start_col": 10,
-                        "start_line": 84
-                    }
-                },
                 "814": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.revert_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 29,
+                        "end_line": 84,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 19,
+                                "end_line": 94,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "parent_location": [
+                                    {
+                                        "end_col": 50,
+                                        "end_line": 99,
+                                        "input_file": {
+                                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                        },
+                                        "start_col": 31,
+                                        "start_line": 99
+                                    },
+                                    "While expanding the reference 'updated_yagi_record' in:"
+                                ],
+                                "start_col": 9,
+                                "start_line": 94
+                            },
+                            "While expanding the reference 'amount_out' in:"
+                        ],
+                        "start_col": 10,
+                        "start_line": 84
+                    }
+                },
+                "815": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.revert_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 29,
+                        "end_line": 84,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 19,
+                                "end_line": 94,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "parent_location": [
+                                    {
+                                        "end_col": 50,
+                                        "end_line": 99,
+                                        "input_file": {
+                                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                        },
+                                        "start_col": 31,
+                                        "start_line": 99
+                                    },
+                                    "While expanding the reference 'updated_yagi_record' in:"
+                                ],
+                                "start_col": 9,
+                                "start_line": 94
+                            },
+                            "While expanding the reference 'amount_out' in:"
+                        ],
+                        "start_col": 10,
+                        "start_line": 84
+                    }
+                },
+                "816": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24609,7 +24694,7 @@
                         "start_line": 95
                     }
                 },
-                "816": {
+                "818": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24639,7 +24724,7 @@
                         "start_line": 96
                     }
                 },
-                "817": {
+                "819": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24669,7 +24754,7 @@
                         "start_line": 97
                     }
                 },
-                "818": {
+                "820": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24687,7 +24772,7 @@
                         "start_line": 99
                     }
                 },
-                "820": {
+                "822": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24717,7 +24802,7 @@
                         "start_line": 73
                     }
                 },
-                "821": {
+                "823": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24735,7 +24820,7 @@
                         "start_line": 101
                     }
                 },
-                "823": {
+                "825": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24801,7 +24886,7 @@
                         "start_line": 13
                     }
                 },
-                "824": {
+                "826": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24867,7 +24952,7 @@
                         "start_line": 13
                     }
                 },
-                "825": {
+                "827": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24885,7 +24970,7 @@
                         "start_line": 104
                     }
                 },
-                "826": {
+                "828": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24915,67 +25000,67 @@
                         "start_line": 78
                     }
                 },
-                "827": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.revert_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 29,
-                        "end_line": 84,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 26,
-                                "end_line": 106,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "start_col": 16,
-                                "start_line": 106
-                            },
-                            "While expanding the reference 'amount_out' in:"
-                        ],
-                        "start_col": 10,
-                        "start_line": 84
-                    }
-                },
-                "828": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.revert_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 29,
-                        "end_line": 84,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 26,
-                                "end_line": 106,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "start_col": 16,
-                                "start_line": 106
-                            },
-                            "While expanding the reference 'amount_out' in:"
-                        ],
-                        "start_col": 10,
-                        "start_line": 84
-                    }
-                },
                 "829": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.revert_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 29,
+                        "end_line": 84,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 26,
+                                "end_line": 106,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "start_col": 16,
+                                "start_line": 106
+                            },
+                            "While expanding the reference 'amount_out' in:"
+                        ],
+                        "start_col": 10,
+                        "start_line": 84
+                    }
+                },
+                "830": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.revert_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 29,
+                        "end_line": 84,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 26,
+                                "end_line": 106,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "start_col": 16,
+                                "start_line": 106
+                            },
+                            "While expanding the reference 'amount_out' in:"
+                        ],
+                        "start_col": 10,
+                        "start_line": 84
+                    }
+                },
+                "831": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -24991,42 +25076,6 @@
                         },
                         "start_col": 5,
                         "start_line": 103
-                    }
-                },
-                "831": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.revert_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 7,
-                        "end_line": 113,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "start_col": 5,
-                        "start_line": 109
-                    }
-                },
-                "832": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.revert_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 7,
-                        "end_line": 113,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "start_col": 5,
-                        "start_line": 109
                     }
                 },
                 "833": {
@@ -25066,6 +25115,42 @@
                     }
                 },
                 "835": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.revert_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 7,
+                        "end_line": 113,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "start_col": 5,
+                        "start_line": 109
+                    }
+                },
+                "836": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.revert_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 7,
+                        "end_line": 113,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "start_col": 5,
+                        "start_line": 109
+                    }
+                },
+                "837": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -25131,7 +25216,7 @@
                         "start_line": 1
                     }
                 },
-                "836": {
+                "838": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -25185,7 +25270,7 @@
                         "start_line": 13
                     }
                 },
-                "837": {
+                "839": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -25249,66 +25334,6 @@
                         ],
                         "start_col": 35,
                         "start_line": 1
-                    }
-                },
-                "838": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.revert_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 29,
-                        "end_line": 109,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 50,
-                                "end_line": 115,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "start_col": 32,
-                                "start_line": 115
-                            },
-                            "While expanding the reference 'revert_loan_result' in:"
-                        ],
-                        "start_col": 11,
-                        "start_line": 109
-                    }
-                },
-                "839": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.revert_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 29,
-                        "end_line": 109,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 50,
-                                "end_line": 115,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "start_col": 32,
-                                "start_line": 115
-                            },
-                            "While expanding the reference 'revert_loan_result' in:"
-                        ],
-                        "start_col": 11,
-                        "start_line": 109
                     }
                 },
                 "840": {
@@ -25380,6 +25405,66 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
+                        "end_col": 29,
+                        "end_line": 109,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 50,
+                                "end_line": 115,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "start_col": 32,
+                                "start_line": 115
+                            },
+                            "While expanding the reference 'revert_loan_result' in:"
+                        ],
+                        "start_col": 11,
+                        "start_line": 109
+                    }
+                },
+                "843": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.revert_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 29,
+                        "end_line": 109,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 50,
+                                "end_line": 115,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "start_col": 32,
+                                "start_line": 115
+                            },
+                            "While expanding the reference 'revert_loan_result' in:"
+                        ],
+                        "start_col": 11,
+                        "start_line": 109
+                    }
+                },
+                "844": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.revert_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
                         "end_col": 52,
                         "end_line": 115,
                         "input_file": {
@@ -25389,7 +25474,7 @@
                         "start_line": 115
                     }
                 },
-                "843": {
+                "845": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -25445,7 +25530,7 @@
                         "start_line": 4
                     }
                 },
-                "845": {
+                "847": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -25476,7 +25561,7 @@
                         "start_line": 3
                     }
                 },
-                "846": {
+                "848": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -25507,7 +25592,7 @@
                         "start_line": 4
                     }
                 },
-                "847": {
+                "849": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -25538,7 +25623,7 @@
                         "start_line": 5
                     }
                 },
-                "848": {
+                "850": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -25569,7 +25654,7 @@
                         "start_line": 6
                     }
                 },
-                "849": {
+                "851": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -25624,7 +25709,7 @@
                         "start_line": 7
                     }
                 },
-                "851": {
+                "853": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -25679,7 +25764,7 @@
                         "start_line": 1
                     }
                 },
-                "852": {
+                "854": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -25710,7 +25795,7 @@
                         "start_line": 11
                     }
                 },
-                "853": {
+                "855": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -25765,7 +25850,7 @@
                         "start_line": 5
                     }
                 },
-                "854": {
+                "856": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -25796,7 +25881,7 @@
                         "start_line": 9
                     }
                 },
-                "855": {
+                "857": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -25875,7 +25960,7 @@
                         "start_line": 2
                     }
                 },
-                "857": {
+                "859": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -25906,7 +25991,7 @@
                         "start_line": 1
                     }
                 },
-                "858": {
+                "860": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -25961,7 +26046,7 @@
                         "start_line": 1
                     }
                 },
-                "859": {
+                "861": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26016,7 +26101,7 @@
                         "start_line": 1
                     }
                 },
-                "860": {
+                "862": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26071,7 +26156,7 @@
                         "start_line": 1
                     }
                 },
-                "861": {
+                "863": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26126,7 +26211,7 @@
                         "start_line": 1
                     }
                 },
-                "862": {
+                "864": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26145,7 +26230,7 @@
                         "start_line": 72
                     }
                 },
-                "864": {
+                "866": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26200,7 +26285,7 @@
                         "start_line": 1
                     }
                 },
-                "865": {
+                "867": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26231,7 +26316,7 @@
                         "start_line": 2
                     }
                 },
-                "867": {
+                "869": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26286,7 +26371,7 @@
                         "start_line": 1
                     }
                 },
-                "868": {
+                "870": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26341,7 +26426,7 @@
                         "start_line": 1
                     }
                 },
-                "869": {
+                "871": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26396,7 +26481,7 @@
                         "start_line": 2
                     }
                 },
-                "870": {
+                "872": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26451,7 +26536,7 @@
                         "start_line": 2
                     }
                 },
-                "871": {
+                "873": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26506,7 +26591,7 @@
                         "start_line": 2
                     }
                 },
-                "872": {
+                "874": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26537,7 +26622,7 @@
                         "start_line": 1
                     }
                 },
-                "873": {
+                "875": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26579,7 +26664,7 @@
                         "start_line": 119
                     }
                 },
-                "874": {
+                "876": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26621,7 +26706,7 @@
                         "start_line": 119
                     }
                 },
-                "875": {
+                "877": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26663,7 +26748,7 @@
                         "start_line": 119
                     }
                 },
-                "876": {
+                "878": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26693,7 +26778,7 @@
                         "start_line": 120
                     }
                 },
-                "877": {
+                "879": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26711,7 +26796,7 @@
                         "start_line": 132
                     }
                 },
-                "879": {
+                "881": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26729,7 +26814,7 @@
                         "start_line": 144
                     }
                 },
-                "880": {
+                "882": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26785,7 +26870,7 @@
                         "start_line": 4
                     }
                 },
-                "882": {
+                "884": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26816,7 +26901,7 @@
                         "start_line": 1
                     }
                 },
-                "883": {
+                "885": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26847,7 +26932,7 @@
                         "start_line": 1
                     }
                 },
-                "884": {
+                "886": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26878,7 +26963,7 @@
                         "start_line": 1
                     }
                 },
-                "885": {
+                "887": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26909,7 +26994,7 @@
                         "start_line": 3
                     }
                 },
-                "886": {
+                "888": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26940,7 +27025,7 @@
                         "start_line": 4
                     }
                 },
-                "887": {
+                "889": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -26971,7 +27056,7 @@
                         "start_line": 1
                     }
                 },
-                "888": {
+                "890": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27002,7 +27087,7 @@
                         "start_line": 3
                     }
                 },
-                "889": {
+                "891": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27033,7 +27118,7 @@
                         "start_line": 4
                     }
                 },
-                "890": {
+                "892": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27064,7 +27149,7 @@
                         "start_line": 1
                     }
                 },
-                "891": {
+                "893": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27095,7 +27180,7 @@
                         "start_line": 1
                     }
                 },
-                "892": {
+                "894": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27126,7 +27211,7 @@
                         "start_line": 1
                     }
                 },
-                "893": {
+                "895": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27181,7 +27266,7 @@
                         "start_line": 2
                     }
                 },
-                "895": {
+                "897": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27236,7 +27321,7 @@
                         "start_line": 1
                     }
                 },
-                "896": {
+                "898": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27267,7 +27352,7 @@
                         "start_line": 11
                     }
                 },
-                "897": {
+                "899": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27322,7 +27407,7 @@
                         "start_line": 5
                     }
                 },
-                "898": {
+                "900": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27353,7 +27438,7 @@
                         "start_line": 9
                     }
                 },
-                "899": {
+                "901": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27432,7 +27517,7 @@
                         "start_line": 2
                     }
                 },
-                "901": {
+                "903": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27463,7 +27548,7 @@
                         "start_line": 1
                     }
                 },
-                "902": {
+                "904": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27518,7 +27603,7 @@
                         "start_line": 1
                     }
                 },
-                "903": {
+                "905": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27573,7 +27658,7 @@
                         "start_line": 1
                     }
                 },
-                "904": {
+                "906": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27628,7 +27713,7 @@
                         "start_line": 1
                     }
                 },
-                "905": {
+                "907": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27683,7 +27768,7 @@
                         "start_line": 1
                     }
                 },
-                "906": {
+                "908": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27702,7 +27787,7 @@
                         "start_line": 119
                     }
                 },
-                "908": {
+                "910": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27757,7 +27842,7 @@
                         "start_line": 1
                     }
                 },
-                "909": {
+                "911": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27788,7 +27873,7 @@
                         "start_line": 2
                     }
                 },
-                "911": {
+                "913": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27843,7 +27928,7 @@
                         "start_line": 1
                     }
                 },
-                "912": {
+                "914": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27898,7 +27983,7 @@
                         "start_line": 1
                     }
                 },
-                "913": {
+                "915": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -27953,7 +28038,7 @@
                         "start_line": 2
                     }
                 },
-                "914": {
+                "916": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28008,7 +28093,7 @@
                         "start_line": 2
                     }
                 },
-                "915": {
+                "917": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28063,7 +28148,7 @@
                         "start_line": 2
                     }
                 },
-                "916": {
+                "918": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28094,7 +28179,7 @@
                         "start_line": 1
                     }
                 },
-                "917": {
+                "919": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28112,7 +28197,7 @@
                         "start_line": 162
                     }
                 },
-                "919": {
+                "921": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28154,7 +28239,7 @@
                         "start_line": 158
                     }
                 },
-                "920": {
+                "922": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28196,7 +28281,7 @@
                         "start_line": 158
                     }
                 },
-                "921": {
+                "923": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28238,7 +28323,7 @@
                         "start_line": 158
                     }
                 },
-                "922": {
+                "924": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28268,7 +28353,7 @@
                         "start_line": 159
                     }
                 },
-                "923": {
+                "925": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28286,7 +28371,7 @@
                         "start_line": 163
                     }
                 },
-                "925": {
+                "927": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28304,43 +28389,43 @@
                         "start_line": 164
                     }
                 },
-                "926": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.get_usd_value_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 62,
-                        "end_line": 165,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "start_col": 5,
-                        "start_line": 165
-                    }
-                },
-                "927": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.get_usd_value_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 62,
-                        "end_line": 165,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "start_col": 5,
-                        "start_line": 165
-                    }
-                },
                 "928": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.get_usd_value_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 62,
+                        "end_line": 165,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "start_col": 5,
+                        "start_line": 165
+                    }
+                },
+                "929": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.get_usd_value_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 62,
+                        "end_line": 165,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "start_col": 5,
+                        "start_line": 165
+                    }
+                },
+                "930": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28406,7 +28491,7 @@
                         "start_line": 13
                     }
                 },
-                "929": {
+                "931": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28472,7 +28557,7 @@
                         "start_line": 13
                     }
                 },
-                "930": {
+                "932": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28502,7 +28587,7 @@
                         "start_line": 164
                     }
                 },
-                "931": {
+                "933": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28520,7 +28605,7 @@
                         "start_line": 166
                     }
                 },
-                "933": {
+                "935": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28598,7 +28683,7 @@
                         "start_line": 1
                     }
                 },
-                "934": {
+                "936": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28676,7 +28761,7 @@
                         "start_line": 1
                     }
                 },
-                "935": {
+                "937": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28706,67 +28791,67 @@
                         "start_line": 164
                     }
                 },
-                "936": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.get_usd_value_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 23,
-                        "end_line": 165,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 98,
-                                "end_line": 167,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "start_col": 86,
-                                "start_line": 167
-                            },
-                            "While expanding the reference 'token_amount' in:"
-                        ],
-                        "start_col": 11,
-                        "start_line": 165
-                    }
-                },
-                "937": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.get_usd_value_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 23,
-                        "end_line": 165,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 98,
-                                "end_line": 167,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "start_col": 86,
-                                "start_line": 167
-                            },
-                            "While expanding the reference 'token_amount' in:"
-                        ],
-                        "start_col": 11,
-                        "start_line": 165
-                    }
-                },
                 "938": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.get_usd_value_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 23,
+                        "end_line": 165,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 98,
+                                "end_line": 167,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "start_col": 86,
+                                "start_line": 167
+                            },
+                            "While expanding the reference 'token_amount' in:"
+                        ],
+                        "start_col": 11,
+                        "start_line": 165
+                    }
+                },
+                "939": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.get_usd_value_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 23,
+                        "end_line": 165,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 98,
+                                "end_line": 167,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "start_col": 86,
+                                "start_line": 167
+                            },
+                            "While expanding the reference 'token_amount' in:"
+                        ],
+                        "start_col": 11,
+                        "start_line": 165
+                    }
+                },
+                "940": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28784,7 +28869,7 @@
                         "start_line": 167
                     }
                 },
-                "940": {
+                "942": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28850,7 +28935,7 @@
                         "start_line": 1
                     }
                 },
-                "941": {
+                "943": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28904,7 +28989,7 @@
                         "start_line": 13
                     }
                 },
-                "942": {
+                "944": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -28970,7 +29055,7 @@
                         "start_line": 1
                     }
                 },
-                "943": {
+                "945": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29000,67 +29085,67 @@
                         "start_line": 166
                     }
                 },
-                "944": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.get_usd_value_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 42,
-                        "end_line": 167,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 113,
-                                "end_line": 168,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "start_col": 90,
-                                "start_line": 168
-                            },
-                            "While expanding the reference 'underlying_asset_amount' in:"
-                        ],
-                        "start_col": 10,
-                        "start_line": 167
-                    }
-                },
-                "945": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__",
-                        "__main__.get_usd_value_yagi"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 42,
-                        "end_line": 167,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 113,
-                                "end_line": 168,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
-                                },
-                                "start_col": 90,
-                                "start_line": 168
-                            },
-                            "While expanding the reference 'underlying_asset_amount' in:"
-                        ],
-                        "start_col": 10,
-                        "start_line": 167
-                    }
-                },
                 "946": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.get_usd_value_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 42,
+                        "end_line": 167,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 113,
+                                "end_line": 168,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "start_col": 90,
+                                "start_line": 168
+                            },
+                            "While expanding the reference 'underlying_asset_amount' in:"
+                        ],
+                        "start_col": 10,
+                        "start_line": 167
+                    }
+                },
+                "947": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__",
+                        "__main__.get_usd_value_yagi"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 42,
+                        "end_line": 167,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 113,
+                                "end_line": 168,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/modules/yagi.cairo"
+                                },
+                                "start_col": 90,
+                                "start_line": 168
+                            },
+                            "While expanding the reference 'underlying_asset_amount' in:"
+                        ],
+                        "start_col": 10,
+                        "start_line": 167
+                    }
+                },
+                "948": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29078,7 +29163,7 @@
                         "start_line": 168
                     }
                 },
-                "948": {
+                "950": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29096,7 +29181,7 @@
                         "start_line": 169
                     }
                 },
-                "949": {
+                "951": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29152,7 +29237,7 @@
                         "start_line": 4
                     }
                 },
-                "951": {
+                "953": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29183,7 +29268,7 @@
                         "start_line": 3
                     }
                 },
-                "952": {
+                "954": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29214,7 +29299,7 @@
                         "start_line": 4
                     }
                 },
-                "953": {
+                "955": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29245,7 +29330,7 @@
                         "start_line": 1
                     }
                 },
-                "954": {
+                "956": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29300,7 +29385,7 @@
                         "start_line": 2
                     }
                 },
-                "956": {
+                "958": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29355,7 +29440,7 @@
                         "start_line": 1
                     }
                 },
-                "957": {
+                "959": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29386,7 +29471,7 @@
                         "start_line": 11
                     }
                 },
-                "958": {
+                "960": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29441,7 +29526,7 @@
                         "start_line": 5
                     }
                 },
-                "959": {
+                "961": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29472,7 +29557,7 @@
                         "start_line": 9
                     }
                 },
-                "960": {
+                "962": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29551,7 +29636,7 @@
                         "start_line": 2
                     }
                 },
-                "962": {
+                "964": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29582,7 +29667,7 @@
                         "start_line": 1
                     }
                 },
-                "963": {
+                "965": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29637,7 +29722,7 @@
                         "start_line": 1
                     }
                 },
-                "964": {
+                "966": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29692,7 +29777,7 @@
                         "start_line": 1
                     }
                 },
-                "965": {
+                "967": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29747,7 +29832,7 @@
                         "start_line": 1
                     }
                 },
-                "966": {
+                "968": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29802,7 +29887,7 @@
                         "start_line": 1
                     }
                 },
-                "967": {
+                "969": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29821,7 +29906,7 @@
                         "start_line": 158
                     }
                 },
-                "969": {
+                "971": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29876,7 +29961,7 @@
                         "start_line": 1
                     }
                 },
-                "970": {
+                "972": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29907,7 +29992,7 @@
                         "start_line": 2
                     }
                 },
-                "972": {
+                "974": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -29962,7 +30047,7 @@
                         "start_line": 1
                     }
                 },
-                "973": {
+                "975": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -30017,7 +30102,7 @@
                         "start_line": 1
                     }
                 },
-                "974": {
+                "976": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -30072,7 +30157,7 @@
                         "start_line": 2
                     }
                 },
-                "975": {
+                "977": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -30127,7 +30212,7 @@
                         "start_line": 2
                     }
                 },
-                "976": {
+                "978": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -30182,7 +30267,7 @@
                         "start_line": 2
                     }
                 },
-                "977": {
+                "979": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__",
@@ -30416,7 +30501,7 @@
                     }
                 }
             ],
-            "744": [
+            "746": [
                 {
                     "accessible_scopes": [
                         "__main__",
@@ -30434,7 +30519,7 @@
                     }
                 }
             ],
-            "843": [
+            "845": [
                 {
                     "accessible_scopes": [
                         "__main__",
@@ -30452,7 +30537,7 @@
                     }
                 }
             ],
-            "880": [
+            "882": [
                 {
                     "accessible_scopes": [
                         "__main__",
@@ -30470,7 +30555,7 @@
                     }
                 }
             ],
-            "949": [
+            "951": [
                 {
                     "accessible_scopes": [
                         "__main__",
@@ -30558,7 +30643,7 @@
                 "decorators": [
                     "external"
                 ],
-                "pc": 676,
+                "pc": 678,
                 "type": "function"
             },
             "__main__.deposit_yagi.Args": {
@@ -30619,7 +30704,7 @@
                 "decorators": [
                     "view"
                 ],
-                "pc": 917,
+                "pc": 919,
                 "type": "function"
             },
             "__main__.get_usd_value_yagi.Args": {
@@ -30664,7 +30749,7 @@
                 "decorators": [
                     "external"
                 ],
-                "pc": 775,
+                "pc": 777,
                 "type": "function"
             },
             "__main__.revert_yagi.Args": {
@@ -30709,7 +30794,7 @@
                 "decorators": [
                     "view"
                 ],
-                "pc": 873,
+                "pc": 875,
                 "type": "function"
             },
             "__main__.view_details_yagi.Args": {
@@ -30758,7 +30843,7 @@
                 "decorators": [
                     "external"
                 ],
-                "pc": 756,
+                "pc": 758,
                 "type": "function"
             },
             "__wrappers__.deposit_yagi.Args": {
@@ -30787,7 +30872,7 @@
             },
             "__wrappers__.deposit_yagi_encode_return": {
                 "decorators": [],
-                "pc": 744,
+                "pc": 746,
                 "type": "function"
             },
             "__wrappers__.deposit_yagi_encode_return.Args": {
@@ -30827,7 +30912,7 @@
                 "decorators": [
                     "view"
                 ],
-                "pc": 960,
+                "pc": 962,
                 "type": "function"
             },
             "__wrappers__.get_usd_value_yagi.Args": {
@@ -30856,7 +30941,7 @@
             },
             "__wrappers__.get_usd_value_yagi_encode_return": {
                 "decorators": [],
-                "pc": 949,
+                "pc": 951,
                 "type": "function"
             },
             "__wrappers__.get_usd_value_yagi_encode_return.Args": {
@@ -30896,7 +30981,7 @@
                 "decorators": [
                     "external"
                 ],
-                "pc": 855,
+                "pc": 857,
                 "type": "function"
             },
             "__wrappers__.revert_yagi.Args": {
@@ -30925,7 +31010,7 @@
             },
             "__wrappers__.revert_yagi_encode_return": {
                 "decorators": [],
-                "pc": 843,
+                "pc": 845,
                 "type": "function"
             },
             "__wrappers__.revert_yagi_encode_return.Args": {
@@ -30965,7 +31050,7 @@
                 "decorators": [
                     "view"
                 ],
-                "pc": 899,
+                "pc": 901,
                 "type": "function"
             },
             "__wrappers__.view_details_yagi.Args": {
@@ -30994,7 +31079,7 @@
             },
             "__wrappers__.view_details_yagi_encode_return": {
                 "decorators": [],
-                "pc": 880,
+                "pc": 882,
                 "type": "function"
             },
             "__wrappers__.view_details_yagi_encode_return.Args": {
@@ -31806,7 +31891,7 @@
             },
             "contracts.integrations.libraries.lib_open_interaction._get_open_loan": {
                 "decorators": [],
-                "pc": 631,
+                "pc": 632,
                 "type": "function"
             },
             "contracts.integrations.libraries.lib_open_interaction._get_open_loan.Args": {
@@ -31857,7 +31942,7 @@
             },
             "contracts.integrations.libraries.lib_open_interaction.assert_only_open": {
                 "decorators": [],
-                "pc": 663,
+                "pc": 665,
                 "type": "function"
             },
             "contracts.integrations.libraries.lib_open_interaction.assert_only_open.Args": {
@@ -31955,7 +32040,7 @@
             },
             "contracts.integrations.libraries.lib_pricer._direct_token_usd_value": {
                 "decorators": [],
-                "pc": 604,
+                "pc": 605,
                 "type": "function"
             },
             "contracts.integrations.libraries.lib_pricer._direct_token_usd_value.Args": {
@@ -33362,7 +33447,7 @@
                     },
                     "created_at": {
                         "cairo_type": "felt",
-                        "offset": 12
+                        "offset": 13
                     },
                     "current_amount": {
                         "cairo_type": "starkware.cairo.common.uint256.Uint256",
@@ -33374,15 +33459,19 @@
                     },
                     "debt_category": {
                         "cairo_type": "felt",
-                        "offset": 9
+                        "offset": 10
                     },
                     "id": {
                         "cairo_type": "felt",
                         "offset": 0
                     },
+                    "is_loan_withdrawn": {
+                        "cairo_type": "felt",
+                        "offset": 9
+                    },
                     "l3_integration": {
                         "cairo_type": "felt",
-                        "offset": 11
+                        "offset": 12
                     },
                     "market": {
                         "cairo_type": "felt",
@@ -33394,10 +33483,10 @@
                     },
                     "state": {
                         "cairo_type": "felt",
-                        "offset": 10
+                        "offset": 11
                     }
                 },
-                "size": 13,
+                "size": 14,
                 "type": "struct"
             },
             "contracts.storages.loan_store.Uint256": {

@@ -285,6 +285,27 @@
         "type": "function"
     },
     {
+        "inputs": [
+            {
+                "name": "user",
+                "type": "felt"
+            }
+        ],
+        "name": "get_user_deposits",
+        "outputs": [
+            {
+                "name": "deposit_records_arr_len",
+                "type": "felt"
+            },
+            {
+                "name": "deposit_records_arr",
+                "type": "Deposit*"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
         "inputs": [],
         "name": "get_deposit_len",
         "outputs": [

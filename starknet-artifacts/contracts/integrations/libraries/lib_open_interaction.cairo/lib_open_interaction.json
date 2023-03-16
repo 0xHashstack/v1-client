@@ -50,7 +50,7 @@
                     "__main__",
                     "__main__._get_open_loan"
                 ],
-                "end_pc": 214,
+                "end_pc": 215,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 13,
@@ -59,7 +59,7 @@
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 212,
+                "start_pc": 213,
                 "value": "Direct Token Value: Open protocol address not set"
             },
             {
@@ -67,7 +67,7 @@
                     "__main__",
                     "__main__._get_open_loan"
                 ],
-                "end_pc": 237,
+                "end_pc": 239,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 13,
@@ -76,7 +76,7 @@
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 214,
+                "start_pc": 215,
                 "value": "Open Interaction Error: get_loan failed"
             },
             {
@@ -84,7 +84,7 @@
                     "__main__",
                     "__main__.assert_only_open"
                 ],
-                "end_pc": 246,
+                "end_pc": 248,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 14,
@@ -93,7 +93,7 @@
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 245,
+                "start_pc": 247,
                 "value": "OpenOnly: Only open protocol can call"
             },
             {
@@ -101,7 +101,7 @@
                     "__main__",
                     "__main__._get_myswap_pool_id"
                 ],
-                "end_pc": 257,
+                "end_pc": 259,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 15,
@@ -110,7 +110,7 @@
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 255,
+                "start_pc": 257,
                 "value": "_get_myswap_pool_id: Open protocol address not set"
             },
             {
@@ -118,7 +118,7 @@
                     "__main__",
                     "__main__._get_myswap_amount_out"
                 ],
-                "end_pc": 276,
+                "end_pc": 278,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 16,
@@ -127,7 +127,7 @@
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 274,
+                "start_pc": 276,
                 "value": "_get_myswap_amount_out: Open protocol address not set"
             },
             {
@@ -135,7 +135,7 @@
                     "__main__",
                     "__main__.is_primary_market_supported"
                 ],
-                "end_pc": 299,
+                "end_pc": 301,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 17,
@@ -144,7 +144,7 @@
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 297,
+                "start_pc": 299,
                 "value": "is_primary_market_supported: Open protocol address not set"
             },
             {
@@ -152,7 +152,7 @@
                     "__main__",
                     "__main__.is_secondary_market_supported"
                 ],
-                "end_pc": 317,
+                "end_pc": 319,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 18,
@@ -161,7 +161,7 @@
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 315,
+                "start_pc": 317,
                 "value": "is_secondary_market_supported: Open protocol address not set"
             },
             {
@@ -169,7 +169,7 @@
                     "__main__",
                     "__main__._is_pool_supported"
                 ],
-                "end_pc": 385,
+                "end_pc": 387,
                 "flow_tracking_data": {
                     "ap_tracking": {
                         "group": 19,
@@ -178,7 +178,7 @@
                     "reference_ids": {}
                 },
                 "name": "error_message",
-                "start_pc": 331,
+                "start_pc": 333,
                 "value": "Error: _is_pool_supported"
             }
         ],
@@ -245,7 +245,7 @@
             "0x1104800180018000",
             "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffd8",
             "0x482480017fff8000",
-            "0xd",
+            "0xe",
             "0x40307ffe7ffd7fff",
             "0x48127ffc7fff8000",
             "0x480a7ffb7fff8000",
@@ -262,11 +262,12 @@
             "0x4800800a7ff28000",
             "0x4800800b7ff18000",
             "0x4800800c7ff08000",
+            "0x4800800d7fef8000",
             "0x208b7fff7fff7ffe",
             "0x40780017fff7fff",
             "0x1",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffb3",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffb2",
             "0x40137fff7fff8000",
             "0x4003800080007ffc",
             "0x4003800180007ffd",
@@ -279,7 +280,7 @@
             "0x4828800080007ffc",
             "0x480a80007fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffb4",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffb3",
             "0x482480017fff8000",
             "0x1",
             "0x40307ffe7ffd7fff",
@@ -290,7 +291,7 @@
             "0x40780017fff7fff",
             "0x1",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff9b",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff9a",
             "0x40137fff7fff8000",
             "0x4003800080007ff9",
             "0x4003800180007ffa",
@@ -306,7 +307,7 @@
             "0x4828800080007ffc",
             "0x480a80007fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff99",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff98",
             "0x482480017fff8000",
             "0x2",
             "0x40307ffe7ffd7fff",
@@ -318,7 +319,7 @@
             "0x40780017fff7fff",
             "0x1",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff7f",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff7e",
             "0x40137fff7fff8000",
             "0x4003800080007ffd",
             "0x4826800180008000",
@@ -330,7 +331,7 @@
             "0x4828800080007ffc",
             "0x480a80007fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff81",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff80",
             "0x482480017fff8000",
             "0xb",
             "0x40307ffe7ffd7fff",
@@ -351,7 +352,7 @@
             "0x40780017fff7fff",
             "0x1",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff5e",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff5d",
             "0x40137fff7fff8000",
             "0x4003800080007ffc",
             "0x4003800180007ffd",
@@ -364,7 +365,7 @@
             "0x4828800080007ffc",
             "0x480a80007fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff5f",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff5e",
             "0x482480017fff8000",
             "0x3",
             "0x40307ffe7ffd7fff",
@@ -386,7 +387,7 @@
             "0x480a7ffb7fff8000",
             "0x48127ffe7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff5c",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff5b",
             "0x48127ffe7fff8000",
             "0x48127ff57fff8000",
             "0x48127ff57fff8000",
@@ -400,38 +401,39 @@
             "0x1104800180018000",
             "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffef",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff30",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff2f",
             "0x48127ffa7fff8000",
             "0x48127ffb7fff8000",
             "0x48127ffb7fff8000",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff50",
-            "0x48127ff17fff8000",
-            "0x48127fd47fff8000",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff4f",
             "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
-            "0x48127ff07fff8000",
+            "0x48127fd37fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
+            "0x48127fef7fff8000",
             "0x208b7fff7fff7ffe",
             "0x480a7ffb7fff8000",
             "0x480a7ffc7fff8000",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffd1",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffd0",
             "0x48127ffc7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff28",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff26",
             "0x40127fff7fff7ff9",
             "0x48127ffe7fff8000",
             "0x48127ff67fff8000",
@@ -441,16 +443,16 @@
             "0x480a7ffa7fff8000",
             "0x480a7ffb7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffc4",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffc3",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff05",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff03",
             "0x48127ffa7fff8000",
             "0x48127ffb7fff8000",
             "0x48127ffb7fff8000",
             "0x480a7ffc7fff8000",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff47",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff46",
             "0x48127ffd7fff8000",
             "0x48127fdf7fff8000",
             "0x48127ffc7fff8000",
@@ -460,9 +462,9 @@
             "0x480a7ff77fff8000",
             "0x480a7ff87fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffb1",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffffb0",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffef2",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffef0",
             "0x48127ffa7fff8000",
             "0x48127ffb7fff8000",
             "0x48127ffb7fff8000",
@@ -472,7 +474,7 @@
             "0x480a7ffc7fff8000",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff49",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff48",
             "0x48127ffc7fff8000",
             "0x48127fdb7fff8000",
             "0x48127ffb7fff8000",
@@ -483,15 +485,15 @@
             "0x480a7ffb7fff8000",
             "0x480a7ffc7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff9a",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff99",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffedb",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffed9",
             "0x48127ffa7fff8000",
             "0x48127ffb7fff8000",
             "0x48127ffb7fff8000",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff52",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff51",
             "0x48127ff37fff8000",
             "0x48127fd67fff8000",
             "0x48127ff27fff8000",
@@ -501,16 +503,16 @@
             "0x480a7ffa7fff8000",
             "0x480a7ffb7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff88",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff87",
             "0x1104800180018000",
-            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffec9",
+            "0x800000000000010fffffffffffffffffffffffffffffffffffffffffffffec7",
             "0x48127ffa7fff8000",
             "0x48127ffb7fff8000",
             "0x48127ffb7fff8000",
             "0x480a7ffc7fff8000",
             "0x480a7ffd7fff8000",
             "0x1104800180018000",
-            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff60",
+            "0x800000000000010ffffffffffffffffffffffffffffffffffffffffffffff5f",
             "0x48127ffb7fff8000",
             "0x48127fdd7fff8000",
             "0x48127ffa7fff8000",
@@ -590,9 +592,9 @@
                 "autogen/starknet/arg_processor/54e83e5ea2ad378780c80f9e709b4813cd1b54216adf11c8cdf75de62f25d7fd.cairo": "assert [__calldata_ptr] = loan_id;\nlet __calldata_ptr = __calldata_ptr + 1;\n",
                 "autogen/starknet/arg_processor/5f9f7d8c388f6ed461d60e51040e8e7a5972f9eaccd75da081d7e676c8eb51c7.cairo": "assert [__calldata_ptr] = token_b_address;\nlet __calldata_ptr = __calldata_ptr + 1;\n",
                 "autogen/starknet/arg_processor/6220d04b83874a8a30c920437b517d292687c04de2b10f7869874f83be2784d6.cairo": "assert [__calldata_ptr] = destination;\nlet __calldata_ptr = __calldata_ptr + 1;\n",
-                "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo": "let __return_value_arg_loan_record = [\n    cast(__return_value_ptr, contracts.storages.loan_store.Loan*)];\nlet __return_value_ptr = __return_value_ptr + 13;\n",
                 "autogen/starknet/arg_processor/7650db5f7dceb64051491c482fd77480269d8634ef74ad3490827a49f0a17df0.cairo": "assert [__calldata_ptr] = integration;\nlet __calldata_ptr = __calldata_ptr + 1;\n",
                 "autogen/starknet/arg_processor/86597b9a6bc38c268c00b0d404e0cb47371bcd3b389d26e24fb6b793ea00d687.cairo": "// Create a reference to amount_in as felt*.\nlet __calldata_tmp: felt* = cast(&amount_in, felt*);\nassert [__calldata_ptr + 0] = [__calldata_tmp + 0];\nassert [__calldata_ptr + 1] = [__calldata_tmp + 1];\nlet __calldata_ptr = __calldata_ptr + 2;\n",
+                "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo": "let __return_value_arg_loan_record = [\n    cast(__return_value_ptr, contracts.storages.loan_store.Loan*)];\nlet __return_value_ptr = __return_value_ptr + 14;\n",
                 "autogen/starknet/arg_processor/96447016176d161dae83f414c4d3e33e78856e0ef69bc33f8d419f1c9b90f9c5.cairo": "assert retdata_size = __return_value_actual_size;\n",
                 "autogen/starknet/arg_processor/accb388bcbbace5b6218198851efaad2a781c1339e305a37fab51afe90a3194a.cairo": "let __return_value_actual_size =  __return_value_ptr - cast(retdata, felt*);\n",
                 "autogen/starknet/arg_processor/d1c6be93107981722ada9a7664071cfebbd72979e756f994e22299247d5b2e2b.cairo": "assert [__calldata_ptr] = token_a_address;\nlet __calldata_ptr = __calldata_ptr + 1;\n",
@@ -1732,7 +1734,7 @@
                         "end_col": 49,
                         "end_line": 3,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -2008,7 +2010,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -2062,7 +2064,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -2116,7 +2118,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -2170,7 +2172,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -2224,7 +2226,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -2278,7 +2280,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -2332,7 +2334,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -2386,7 +2388,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -2440,7 +2442,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -2494,7 +2496,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -2548,7 +2550,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -2602,7 +2604,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -2656,7 +2658,7 @@
                         "end_col": 67,
                         "end_line": 2,
                         "input_file": {
-                            "filename": "autogen/starknet/arg_processor/6bdcad820a1973dbab186573e919a877b7bbd23166f0709f7aadfb54eeece571.cairo"
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
                         },
                         "parent_location": [
                             {
@@ -2707,6 +2709,60 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
+                        "end_col": 67,
+                        "end_line": 2,
+                        "input_file": {
+                            "filename": "autogen/starknet/arg_processor/930b9edd01a1874ea947e4ce6e95bb79c523f52724090c20e66170b453585335.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 26,
+                                "end_line": 97,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
+                                },
+                                "parent_location": [
+                                    {
+                                        "end_col": 51,
+                                        "end_line": 2,
+                                        "input_file": {
+                                            "filename": "autogen/starknet/contract_interface/IOpenProtocol/get_loan/448ffefed2af932aff303c6dfef0d1f4616f6389d86068fff661d731ac2d3124.cairo"
+                                        },
+                                        "parent_location": [
+                                            {
+                                                "end_col": 18,
+                                                "end_line": 96,
+                                                "input_file": {
+                                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
+                                                },
+                                                "start_col": 10,
+                                                "start_line": 96
+                                            },
+                                            "While handling contract interface function:"
+                                        ],
+                                        "start_col": 21,
+                                        "start_line": 2
+                                    },
+                                    "While expanding the reference '__return_value_arg_loan_record' in:"
+                                ],
+                                "start_col": 9,
+                                "start_line": 97
+                            },
+                            "While handling return value 'loan_record'"
+                        ],
+                        "start_col": 38,
+                        "start_line": 1
+                    }
+                },
+                "76": {
+                    "accessible_scopes": [
+                        "contracts.interfaces.IOpenProtocol",
+                        "contracts.interfaces.IOpenProtocol.IOpenProtocol",
+                        "contracts.interfaces.IOpenProtocol.IOpenProtocol.get_loan"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
                         "end_col": 54,
                         "end_line": 2,
                         "input_file": {
@@ -2728,7 +2784,7 @@
                         "start_line": 2
                     }
                 },
-                "76": {
+                "77": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -2758,7 +2814,7 @@
                         "start_line": 2
                     }
                 },
-                "78": {
+                "79": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -2788,7 +2844,7 @@
                         "start_line": 3
                     }
                 },
-                "80": {
+                "81": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -2818,7 +2874,7 @@
                         "start_line": 3
                     }
                 },
-                "81": {
+                "82": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -2848,7 +2904,7 @@
                         "start_line": 1
                     }
                 },
-                "82": {
+                "83": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -2878,7 +2934,7 @@
                         "start_line": 1
                     }
                 },
-                "83": {
+                "84": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -2932,7 +2988,7 @@
                         "start_line": 2
                     }
                 },
-                "85": {
+                "86": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -2998,7 +3054,7 @@
                         "start_line": 1
                     }
                 },
-                "86": {
+                "87": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3052,7 +3108,7 @@
                         "start_line": 2
                     }
                 },
-                "87": {
+                "88": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3082,7 +3138,7 @@
                         "start_line": 4
                     }
                 },
-                "89": {
+                "90": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3112,7 +3168,7 @@
                         "start_line": 5
                     }
                 },
-                "90": {
+                "91": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3166,7 +3222,7 @@
                         "start_line": 3
                     }
                 },
-                "91": {
+                "92": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3196,7 +3252,7 @@
                         "start_line": 2
                     }
                 },
-                "93": {
+                "94": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3274,7 +3330,7 @@
                         "start_line": 2
                     }
                 },
-                "95": {
+                "96": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3304,7 +3360,7 @@
                         "start_line": 1
                     }
                 },
-                "96": {
+                "97": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3394,7 +3450,7 @@
                         "start_line": 42
                     }
                 },
-                "97": {
+                "98": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3472,7 +3528,7 @@
                         "start_line": 1
                     }
                 },
-                "98": {
+                "99": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3526,7 +3582,7 @@
                         "start_line": 1
                     }
                 },
-                "99": {
+                "100": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3556,7 +3612,7 @@
                         "start_line": 2
                     }
                 },
-                "100": {
+                "101": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3586,7 +3642,7 @@
                         "start_line": 2
                     }
                 },
-                "102": {
+                "103": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3616,7 +3672,7 @@
                         "start_line": 3
                     }
                 },
-                "104": {
+                "105": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3646,7 +3702,7 @@
                         "start_line": 3
                     }
                 },
-                "105": {
+                "106": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3676,7 +3732,7 @@
                         "start_line": 1
                     }
                 },
-                "106": {
+                "107": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3706,7 +3762,7 @@
                         "start_line": 1
                     }
                 },
-                "107": {
+                "108": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3736,7 +3792,7 @@
                         "start_line": 3
                     }
                 },
-                "108": {
+                "109": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3766,7 +3822,7 @@
                         "start_line": 4
                     }
                 },
-                "109": {
+                "110": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3796,7 +3852,7 @@
                         "start_line": 1
                     }
                 },
-                "110": {
+                "111": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3850,7 +3906,7 @@
                         "start_line": 2
                     }
                 },
-                "112": {
+                "113": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3916,7 +3972,7 @@
                         "start_line": 1
                     }
                 },
-                "113": {
+                "114": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -3970,7 +4026,7 @@
                         "start_line": 2
                     }
                 },
-                "114": {
+                "115": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4000,7 +4056,7 @@
                         "start_line": 4
                     }
                 },
-                "116": {
+                "117": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4030,7 +4086,7 @@
                         "start_line": 5
                     }
                 },
-                "117": {
+                "118": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4084,7 +4140,7 @@
                         "start_line": 3
                     }
                 },
-                "118": {
+                "119": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4114,7 +4170,7 @@
                         "start_line": 2
                     }
                 },
-                "120": {
+                "121": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4192,7 +4248,7 @@
                         "start_line": 3
                     }
                 },
-                "122": {
+                "123": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4222,7 +4278,7 @@
                         "start_line": 1
                     }
                 },
-                "123": {
+                "124": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4312,7 +4368,7 @@
                         "start_line": 42
                     }
                 },
-                "124": {
+                "125": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4390,60 +4446,6 @@
                         "start_line": 1
                     }
                 },
-                "125": {
-                    "accessible_scopes": [
-                        "contracts.interfaces.IOpenProtocol",
-                        "contracts.interfaces.IOpenProtocol.IOpenProtocol",
-                        "contracts.interfaces.IOpenProtocol.IOpenProtocol.get_myswap_amount_out"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 71,
-                        "end_line": 2,
-                        "input_file": {
-                            "filename": "autogen/starknet/arg_processor/199577bf5717ee1dec03ab92431032e4b71e4c8e6ac6c489011e778c880d9bb6.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 29,
-                                "end_line": 175,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
-                                },
-                                "parent_location": [
-                                    {
-                                        "end_col": 47,
-                                        "end_line": 2,
-                                        "input_file": {
-                                            "filename": "autogen/starknet/contract_interface/IOpenProtocol/get_myswap_amount_out/f821d78822eee1ea69ff04154c69b6f7c4da3a07ddaf12598c7331e8e6766993.cairo"
-                                        },
-                                        "parent_location": [
-                                            {
-                                                "end_col": 31,
-                                                "end_line": 173,
-                                                "input_file": {
-                                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
-                                                },
-                                                "start_col": 10,
-                                                "start_line": 173
-                                            },
-                                            "While handling contract interface function:"
-                                        ],
-                                        "start_col": 19,
-                                        "start_line": 2
-                                    },
-                                    "While expanding the reference '__return_value_arg_amount_to' in:"
-                                ],
-                                "start_col": 11,
-                                "start_line": 175
-                            },
-                            "While handling return value 'amount_to'"
-                        ],
-                        "start_col": 36,
-                        "start_line": 1
-                    }
-                },
                 "126": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
@@ -4507,6 +4509,60 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
+                        "end_col": 71,
+                        "end_line": 2,
+                        "input_file": {
+                            "filename": "autogen/starknet/arg_processor/199577bf5717ee1dec03ab92431032e4b71e4c8e6ac6c489011e778c880d9bb6.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 29,
+                                "end_line": 175,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
+                                },
+                                "parent_location": [
+                                    {
+                                        "end_col": 47,
+                                        "end_line": 2,
+                                        "input_file": {
+                                            "filename": "autogen/starknet/contract_interface/IOpenProtocol/get_myswap_amount_out/f821d78822eee1ea69ff04154c69b6f7c4da3a07ddaf12598c7331e8e6766993.cairo"
+                                        },
+                                        "parent_location": [
+                                            {
+                                                "end_col": 31,
+                                                "end_line": 173,
+                                                "input_file": {
+                                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
+                                                },
+                                                "start_col": 10,
+                                                "start_line": 173
+                                            },
+                                            "While handling contract interface function:"
+                                        ],
+                                        "start_col": 19,
+                                        "start_line": 2
+                                    },
+                                    "While expanding the reference '__return_value_arg_amount_to' in:"
+                                ],
+                                "start_col": 11,
+                                "start_line": 175
+                            },
+                            "While handling return value 'amount_to'"
+                        ],
+                        "start_col": 36,
+                        "start_line": 1
+                    }
+                },
+                "128": {
+                    "accessible_scopes": [
+                        "contracts.interfaces.IOpenProtocol",
+                        "contracts.interfaces.IOpenProtocol.IOpenProtocol",
+                        "contracts.interfaces.IOpenProtocol.IOpenProtocol.get_myswap_amount_out"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
                         "end_col": 50,
                         "end_line": 2,
                         "input_file": {
@@ -4528,7 +4584,7 @@
                         "start_line": 2
                     }
                 },
-                "128": {
+                "129": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4558,7 +4614,7 @@
                         "start_line": 2
                     }
                 },
-                "130": {
+                "131": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4588,7 +4644,7 @@
                         "start_line": 3
                     }
                 },
-                "132": {
+                "133": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4618,7 +4674,7 @@
                         "start_line": 3
                     }
                 },
-                "133": {
+                "134": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4648,7 +4704,7 @@
                         "start_line": 1
                     }
                 },
-                "134": {
+                "135": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4702,7 +4758,7 @@
                         "start_line": 2
                     }
                 },
-                "136": {
+                "137": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4768,7 +4824,7 @@
                         "start_line": 1
                     }
                 },
-                "137": {
+                "138": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4822,7 +4878,7 @@
                         "start_line": 2
                     }
                 },
-                "138": {
+                "139": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4852,7 +4908,7 @@
                         "start_line": 4
                     }
                 },
-                "140": {
+                "141": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4882,7 +4938,7 @@
                         "start_line": 5
                     }
                 },
-                "141": {
+                "142": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4936,7 +4992,7 @@
                         "start_line": 3
                     }
                 },
-                "142": {
+                "143": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -4966,7 +5022,7 @@
                         "start_line": 2
                     }
                 },
-                "144": {
+                "145": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -5044,7 +5100,7 @@
                         "start_line": 3
                     }
                 },
-                "146": {
+                "147": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -5074,7 +5130,7 @@
                         "start_line": 1
                     }
                 },
-                "147": {
+                "148": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -5164,7 +5220,7 @@
                         "start_line": 42
                     }
                 },
-                "148": {
+                "149": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -5239,60 +5295,6 @@
                             "While handling contract interface function:"
                         ],
                         "start_col": 43,
-                        "start_line": 1
-                    }
-                },
-                "149": {
-                    "accessible_scopes": [
-                        "contracts.interfaces.IOpenProtocol",
-                        "contracts.interfaces.IOpenProtocol.IOpenProtocol",
-                        "contracts.interfaces.IOpenProtocol.IOpenProtocol.supported_market"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 69,
-                        "end_line": 2,
-                        "input_file": {
-                            "filename": "autogen/starknet/arg_processor/e6134b36dd1e418f3c6c69f3cbfccb47ad049369753109ad0521860cd1ae4018.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 25,
-                                "end_line": 180,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
-                                },
-                                "parent_location": [
-                                    {
-                                        "end_col": 41,
-                                        "end_line": 2,
-                                        "input_file": {
-                                            "filename": "autogen/starknet/contract_interface/IOpenProtocol/supported_market/f516291ddac92fdf8390beb2103fa708fd42ab08eaebc6c72186e30a5ea507ee.cairo"
-                                        },
-                                        "parent_location": [
-                                            {
-                                                "end_col": 26,
-                                                "end_line": 178,
-                                                "input_file": {
-                                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
-                                                },
-                                                "start_col": 10,
-                                                "start_line": 178
-                                            },
-                                            "While handling contract interface function:"
-                                        ],
-                                        "start_col": 16,
-                                        "start_line": 2
-                                    },
-                                    "While expanding the reference '__return_value_arg_market' in:"
-                                ],
-                                "start_col": 11,
-                                "start_line": 180
-                            },
-                            "While handling return value 'market'"
-                        ],
-                        "start_col": 33,
                         "start_line": 1
                     }
                 },
@@ -5845,6 +5847,60 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
+                        "end_col": 69,
+                        "end_line": 2,
+                        "input_file": {
+                            "filename": "autogen/starknet/arg_processor/e6134b36dd1e418f3c6c69f3cbfccb47ad049369753109ad0521860cd1ae4018.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 25,
+                                "end_line": 180,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
+                                },
+                                "parent_location": [
+                                    {
+                                        "end_col": 41,
+                                        "end_line": 2,
+                                        "input_file": {
+                                            "filename": "autogen/starknet/contract_interface/IOpenProtocol/supported_market/f516291ddac92fdf8390beb2103fa708fd42ab08eaebc6c72186e30a5ea507ee.cairo"
+                                        },
+                                        "parent_location": [
+                                            {
+                                                "end_col": 26,
+                                                "end_line": 178,
+                                                "input_file": {
+                                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
+                                                },
+                                                "start_col": 10,
+                                                "start_line": 178
+                                            },
+                                            "While handling contract interface function:"
+                                        ],
+                                        "start_col": 16,
+                                        "start_line": 2
+                                    },
+                                    "While expanding the reference '__return_value_arg_market' in:"
+                                ],
+                                "start_col": 11,
+                                "start_line": 180
+                            },
+                            "While handling return value 'market'"
+                        ],
+                        "start_col": 33,
+                        "start_line": 1
+                    }
+                },
+                "161": {
+                    "accessible_scopes": [
+                        "contracts.interfaces.IOpenProtocol",
+                        "contracts.interfaces.IOpenProtocol.IOpenProtocol",
+                        "contracts.interfaces.IOpenProtocol.IOpenProtocol.supported_market"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
                         "end_col": 44,
                         "end_line": 2,
                         "input_file": {
@@ -5866,7 +5922,7 @@
                         "start_line": 2
                     }
                 },
-                "161": {
+                "162": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -5896,7 +5952,7 @@
                         "start_line": 2
                     }
                 },
-                "163": {
+                "164": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -5926,7 +5982,7 @@
                         "start_line": 3
                     }
                 },
-                "165": {
+                "166": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -5956,7 +6012,7 @@
                         "start_line": 3
                     }
                 },
-                "166": {
+                "167": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -5986,7 +6042,7 @@
                         "start_line": 1
                     }
                 },
-                "167": {
+                "168": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -6016,7 +6072,7 @@
                         "start_line": 1
                     }
                 },
-                "168": {
+                "169": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -6070,7 +6126,7 @@
                         "start_line": 2
                     }
                 },
-                "170": {
+                "171": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -6136,7 +6192,7 @@
                         "start_line": 1
                     }
                 },
-                "171": {
+                "172": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -6190,7 +6246,7 @@
                         "start_line": 2
                     }
                 },
-                "172": {
+                "173": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -6220,7 +6276,7 @@
                         "start_line": 4
                     }
                 },
-                "174": {
+                "175": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -6250,7 +6306,7 @@
                         "start_line": 5
                     }
                 },
-                "175": {
+                "176": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -6304,7 +6360,7 @@
                         "start_line": 3
                     }
                 },
-                "176": {
+                "177": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -6334,7 +6390,7 @@
                         "start_line": 2
                     }
                 },
-                "178": {
+                "179": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -6412,7 +6468,7 @@
                         "start_line": 3
                     }
                 },
-                "180": {
+                "181": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -6442,7 +6498,7 @@
                         "start_line": 1
                     }
                 },
-                "181": {
+                "182": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -6532,7 +6588,7 @@
                         "start_line": 42
                     }
                 },
-                "182": {
+                "183": {
                     "accessible_scopes": [
                         "contracts.interfaces.IOpenProtocol",
                         "contracts.interfaces.IOpenProtocol.IOpenProtocol",
@@ -6607,60 +6663,6 @@
                             "While handling contract interface function:"
                         ],
                         "start_col": 53,
-                        "start_line": 1
-                    }
-                },
-                "183": {
-                    "accessible_scopes": [
-                        "contracts.interfaces.IOpenProtocol",
-                        "contracts.interfaces.IOpenProtocol.IOpenProtocol",
-                        "contracts.interfaces.IOpenProtocol.IOpenProtocol.secondary_supported_market"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 72,
-                        "end_line": 2,
-                        "input_file": {
-                            "filename": "autogen/starknet/arg_processor/265638bf6df680188c2548e9cf37986237fbde57abf32dae609da21dc5d2dcef.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 31,
-                                "end_line": 185,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
-                                },
-                                "parent_location": [
-                                    {
-                                        "end_col": 47,
-                                        "end_line": 2,
-                                        "input_file": {
-                                            "filename": "autogen/starknet/contract_interface/IOpenProtocol/secondary_supported_market/672c2a47184e2a06953ba43366bd314629da5bdbd1dd90f2b1364dbee86c2fc1.cairo"
-                                        },
-                                        "parent_location": [
-                                            {
-                                                "end_col": 36,
-                                                "end_line": 183,
-                                                "input_file": {
-                                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
-                                                },
-                                                "start_col": 10,
-                                                "start_line": 183
-                                            },
-                                            "While handling contract interface function:"
-                                        ],
-                                        "start_col": 19,
-                                        "start_line": 2
-                                    },
-                                    "While expanding the reference '__return_value_arg_l3_market' in:"
-                                ],
-                                "start_col": 11,
-                                "start_line": 185
-                            },
-                            "While handling return value 'l3_market'"
-                        ],
-                        "start_col": 36,
                         "start_line": 1
                     }
                 },
@@ -6781,6 +6783,60 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
+                        "end_col": 72,
+                        "end_line": 2,
+                        "input_file": {
+                            "filename": "autogen/starknet/arg_processor/265638bf6df680188c2548e9cf37986237fbde57abf32dae609da21dc5d2dcef.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 31,
+                                "end_line": 185,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
+                                },
+                                "parent_location": [
+                                    {
+                                        "end_col": 47,
+                                        "end_line": 2,
+                                        "input_file": {
+                                            "filename": "autogen/starknet/contract_interface/IOpenProtocol/secondary_supported_market/672c2a47184e2a06953ba43366bd314629da5bdbd1dd90f2b1364dbee86c2fc1.cairo"
+                                        },
+                                        "parent_location": [
+                                            {
+                                                "end_col": 36,
+                                                "end_line": 183,
+                                                "input_file": {
+                                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
+                                                },
+                                                "start_col": 10,
+                                                "start_line": 183
+                                            },
+                                            "While handling contract interface function:"
+                                        ],
+                                        "start_col": 19,
+                                        "start_line": 2
+                                    },
+                                    "While expanding the reference '__return_value_arg_l3_market' in:"
+                                ],
+                                "start_col": 11,
+                                "start_line": 185
+                            },
+                            "While handling return value 'l3_market'"
+                        ],
+                        "start_col": 36,
+                        "start_line": 1
+                    }
+                },
+                "187": {
+                    "accessible_scopes": [
+                        "contracts.interfaces.IOpenProtocol",
+                        "contracts.interfaces.IOpenProtocol.IOpenProtocol",
+                        "contracts.interfaces.IOpenProtocol.IOpenProtocol.secondary_supported_market"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
                         "end_col": 50,
                         "end_line": 2,
                         "input_file": {
@@ -6802,7 +6858,7 @@
                         "start_line": 2
                     }
                 },
-                "187": {
+                "188": {
                     "accessible_scopes": [
                         "contracts.integrations.storages.open_store",
                         "contracts.integrations.storages.open_store.open_protocol",
@@ -6844,7 +6900,7 @@
                         "start_line": 7
                     }
                 },
-                "188": {
+                "189": {
                     "accessible_scopes": [
                         "contracts.integrations.storages.open_store",
                         "contracts.integrations.storages.open_store.open_protocol",
@@ -6886,7 +6942,7 @@
                         "start_line": 7
                     }
                 },
-                "189": {
+                "190": {
                     "accessible_scopes": [
                         "contracts.integrations.storages.open_store",
                         "contracts.integrations.storages.open_store.open_protocol",
@@ -6916,7 +6972,7 @@
                         "start_line": 8
                     }
                 },
-                "191": {
+                "192": {
                     "accessible_scopes": [
                         "contracts.integrations.storages.open_store",
                         "contracts.integrations.storages.open_store.open_protocol",
@@ -6934,7 +6990,7 @@
                         "start_line": 9
                     }
                 },
-                "192": {
+                "193": {
                     "accessible_scopes": [
                         "contracts.integrations.storages.open_store",
                         "contracts.integrations.storages.open_store.open_protocol",
@@ -6976,7 +7032,7 @@
                         "start_line": 12
                     }
                 },
-                "193": {
+                "194": {
                     "accessible_scopes": [
                         "contracts.integrations.storages.open_store",
                         "contracts.integrations.storages.open_store.open_protocol",
@@ -7018,7 +7074,7 @@
                         "start_line": 12
                     }
                 },
-                "194": {
+                "195": {
                     "accessible_scopes": [
                         "contracts.integrations.storages.open_store",
                         "contracts.integrations.storages.open_store.open_protocol",
@@ -7036,7 +7092,7 @@
                         "start_line": 15
                     }
                 },
-                "196": {
+                "197": {
                     "accessible_scopes": [
                         "contracts.integrations.storages.open_store",
                         "contracts.integrations.storages.open_store.open_protocol",
@@ -7078,7 +7134,7 @@
                         "start_line": 12
                     }
                 },
-                "197": {
+                "198": {
                     "accessible_scopes": [
                         "contracts.integrations.storages.open_store",
                         "contracts.integrations.storages.open_store.open_protocol",
@@ -7108,7 +7164,7 @@
                         "start_line": 15
                     }
                 },
-                "198": {
+                "199": {
                     "accessible_scopes": [
                         "contracts.integrations.storages.open_store",
                         "contracts.integrations.storages.open_store.open_protocol",
@@ -7126,7 +7182,7 @@
                         "start_line": 16
                     }
                 },
-                "200": {
+                "201": {
                     "accessible_scopes": [
                         "contracts.integrations.storages.open_store",
                         "contracts.integrations.storages.open_store.open_protocol",
@@ -7168,7 +7224,7 @@
                         "start_line": 348
                     }
                 },
-                "201": {
+                "202": {
                     "accessible_scopes": [
                         "contracts.integrations.storages.open_store",
                         "contracts.integrations.storages.open_store.open_protocol",
@@ -7210,7 +7266,7 @@
                         "start_line": 7
                     }
                 },
-                "202": {
+                "203": {
                     "accessible_scopes": [
                         "contracts.integrations.storages.open_store",
                         "contracts.integrations.storages.open_store.open_protocol",
@@ -7252,7 +7308,7 @@
                         "start_line": 7
                     }
                 },
-                "203": {
+                "204": {
                     "accessible_scopes": [
                         "contracts.integrations.storages.open_store",
                         "contracts.integrations.storages.open_store.open_protocol",
@@ -7282,7 +7338,7 @@
                         "start_line": 16
                     }
                 },
-                "204": {
+                "205": {
                     "accessible_scopes": [
                         "contracts.integrations.storages.open_store",
                         "contracts.integrations.storages.open_store.open_protocol",
@@ -7300,7 +7356,7 @@
                         "start_line": 22
                     }
                 },
-                "205": {
+                "206": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_open_loan"
@@ -7317,7 +7373,7 @@
                         "start_line": 27
                     }
                 },
-                "207": {
+                "208": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_open_loan"
@@ -7358,7 +7414,7 @@
                         "start_line": 24
                     }
                 },
-                "208": {
+                "209": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_open_loan"
@@ -7399,7 +7455,7 @@
                         "start_line": 24
                     }
                 },
-                "209": {
+                "210": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_open_loan"
@@ -7440,7 +7496,7 @@
                         "start_line": 24
                     }
                 },
-                "210": {
+                "211": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_open_loan"
@@ -7457,7 +7513,7 @@
                         "start_line": 30
                     }
                 },
-                "212": {
+                "213": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_open_loan"
@@ -7474,7 +7530,7 @@
                         "start_line": 32
                     }
                 },
-                "214": {
+                "215": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_open_loan"
@@ -7539,7 +7595,7 @@
                         "start_line": 13
                     }
                 },
-                "215": {
+                "216": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_open_loan"
@@ -7604,7 +7660,7 @@
                         "start_line": 13
                     }
                 },
-                "216": {
+                "217": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_open_loan"
@@ -7633,7 +7689,7 @@
                         "start_line": 30
                     }
                 },
-                "217": {
+                "218": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_open_loan"
@@ -7662,7 +7718,7 @@
                         "start_line": 25
                     }
                 },
-                "218": {
+                "219": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_open_loan"
@@ -7679,7 +7735,7 @@
                         "start_line": 36
                     }
                 },
-                "220": {
+                "221": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_open_loan"
@@ -7744,7 +7800,7 @@
                         "start_line": 1
                     }
                 },
-                "221": {
+                "222": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_open_loan"
@@ -7797,7 +7853,7 @@
                         "start_line": 13
                     }
                 },
-                "222": {
+                "223": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_open_loan"
@@ -7860,35 +7916,6 @@
                         ],
                         "start_col": 35,
                         "start_line": 1
-                    }
-                },
-                "223": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__._get_open_loan"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 24,
-                        "end_line": 36,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 33,
-                                "end_line": 37,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
-                                },
-                                "start_col": 29,
-                                "start_line": 37
-                            },
-                            "While expanding the reference 'loan' in:"
-                        ],
-                        "start_col": 14,
-                        "start_line": 36
                     }
                 },
                 "224": {
@@ -8247,6 +8274,64 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
+                        "end_col": 24,
+                        "end_line": 36,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 33,
+                                "end_line": 37,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
+                                },
+                                "start_col": 29,
+                                "start_line": 37
+                            },
+                            "While expanding the reference 'loan' in:"
+                        ],
+                        "start_col": 14,
+                        "start_line": 36
+                    }
+                },
+                "237": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__._get_open_loan"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 24,
+                        "end_line": 36,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 33,
+                                "end_line": 37,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
+                                },
+                                "start_col": 29,
+                                "start_line": 37
+                            },
+                            "While expanding the reference 'loan' in:"
+                        ],
+                        "start_col": 14,
+                        "start_line": 36
+                    }
+                },
+                "238": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__._get_open_loan"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
                         "end_col": 35,
                         "end_line": 37,
                         "input_file": {
@@ -8256,7 +8341,7 @@
                         "start_line": 37
                     }
                 },
-                "237": {
+                "239": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.assert_only_open"
@@ -8297,7 +8382,7 @@
                         "start_line": 42
                     }
                 },
-                "238": {
+                "240": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.assert_only_open"
@@ -8338,7 +8423,7 @@
                         "start_line": 42
                     }
                 },
-                "239": {
+                "241": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.assert_only_open"
@@ -8379,7 +8464,7 @@
                         "start_line": 42
                     }
                 },
-                "240": {
+                "242": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.assert_only_open"
@@ -8396,7 +8481,7 @@
                         "start_line": 43
                     }
                 },
-                "242": {
+                "244": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.assert_only_open"
@@ -8449,7 +8534,7 @@
                         "start_line": 13
                     }
                 },
-                "243": {
+                "245": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.assert_only_open"
@@ -8466,7 +8551,7 @@
                         "start_line": 44
                     }
                 },
-                "245": {
+                "247": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.assert_only_open"
@@ -8483,7 +8568,7 @@
                         "start_line": 46
                     }
                 },
-                "246": {
+                "248": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.assert_only_open"
@@ -8536,7 +8621,7 @@
                         "start_line": 196
                     }
                 },
-                "247": {
+                "249": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.assert_only_open"
@@ -8589,7 +8674,7 @@
                         "start_line": 13
                     }
                 },
-                "248": {
+                "250": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.assert_only_open"
@@ -8642,7 +8727,7 @@
                         "start_line": 13
                     }
                 },
-                "249": {
+                "251": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.assert_only_open"
@@ -8659,7 +8744,7 @@
                         "start_line": 48
                     }
                 },
-                "250": {
+                "252": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_pool_id"
@@ -8700,7 +8785,7 @@
                         "start_line": 55
                     }
                 },
-                "251": {
+                "253": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_pool_id"
@@ -8741,7 +8826,7 @@
                         "start_line": 55
                     }
                 },
-                "252": {
+                "254": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_pool_id"
@@ -8782,7 +8867,7 @@
                         "start_line": 55
                     }
                 },
-                "253": {
+                "255": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_pool_id"
@@ -8799,7 +8884,7 @@
                         "start_line": 59
                     }
                 },
-                "255": {
+                "257": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_pool_id"
@@ -8816,7 +8901,7 @@
                         "start_line": 61
                     }
                 },
-                "257": {
+                "259": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_pool_id"
@@ -8881,7 +8966,7 @@
                         "start_line": 13
                     }
                 },
-                "258": {
+                "260": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_pool_id"
@@ -8946,7 +9031,7 @@
                         "start_line": 13
                     }
                 },
-                "259": {
+                "261": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_pool_id"
@@ -8975,7 +9060,7 @@
                         "start_line": 59
                     }
                 },
-                "260": {
+                "262": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_pool_id"
@@ -9004,7 +9089,7 @@
                         "start_line": 56
                     }
                 },
-                "261": {
+                "263": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_pool_id"
@@ -9033,7 +9118,7 @@
                         "start_line": 56
                     }
                 },
-                "262": {
+                "264": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_pool_id"
@@ -9050,7 +9135,7 @@
                         "start_line": 64
                     }
                 },
-                "264": {
+                "266": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_pool_id"
@@ -9115,7 +9200,7 @@
                         "start_line": 1
                     }
                 },
-                "265": {
+                "267": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_pool_id"
@@ -9168,7 +9253,7 @@
                         "start_line": 13
                     }
                 },
-                "266": {
+                "268": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_pool_id"
@@ -9233,7 +9318,7 @@
                         "start_line": 1
                     }
                 },
-                "267": {
+                "269": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_pool_id"
@@ -9262,7 +9347,7 @@
                         "start_line": 64
                     }
                 },
-                "268": {
+                "270": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_pool_id"
@@ -9279,7 +9364,7 @@
                         "start_line": 68
                     }
                 },
-                "269": {
+                "271": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_amount_out"
@@ -9320,7 +9405,7 @@
                         "start_line": 76
                     }
                 },
-                "270": {
+                "272": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_amount_out"
@@ -9361,7 +9446,7 @@
                         "start_line": 76
                     }
                 },
-                "271": {
+                "273": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_amount_out"
@@ -9402,7 +9487,7 @@
                         "start_line": 76
                     }
                 },
-                "272": {
+                "274": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_amount_out"
@@ -9419,7 +9504,7 @@
                         "start_line": 80
                     }
                 },
-                "274": {
+                "276": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_amount_out"
@@ -9436,7 +9521,7 @@
                         "start_line": 82
                     }
                 },
-                "276": {
+                "278": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_amount_out"
@@ -9501,7 +9586,7 @@
                         "start_line": 13
                     }
                 },
-                "277": {
+                "279": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_amount_out"
@@ -9566,7 +9651,7 @@
                         "start_line": 13
                     }
                 },
-                "278": {
+                "280": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_amount_out"
@@ -9595,7 +9680,7 @@
                         "start_line": 80
                     }
                 },
-                "279": {
+                "281": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_amount_out"
@@ -9624,7 +9709,7 @@
                         "start_line": 77
                     }
                 },
-                "280": {
+                "282": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_amount_out"
@@ -9653,65 +9738,65 @@
                         "start_line": 77
                     }
                 },
-                "281": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__._get_myswap_amount_out"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 57,
-                        "end_line": 77,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 28,
-                                "end_line": 89,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
-                                },
-                                "start_col": 19,
-                                "start_line": 89
-                            },
-                            "While expanding the reference 'amount_in' in:"
-                        ],
-                        "start_col": 39,
-                        "start_line": 77
-                    }
-                },
-                "282": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__._get_myswap_amount_out"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 57,
-                        "end_line": 77,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 28,
-                                "end_line": 89,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
-                                },
-                                "start_col": 19,
-                                "start_line": 89
-                            },
-                            "While expanding the reference 'amount_in' in:"
-                        ],
-                        "start_col": 39,
-                        "start_line": 77
-                    }
-                },
                 "283": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__._get_myswap_amount_out"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 57,
+                        "end_line": 77,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 28,
+                                "end_line": 89,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
+                                },
+                                "start_col": 19,
+                                "start_line": 89
+                            },
+                            "While expanding the reference 'amount_in' in:"
+                        ],
+                        "start_col": 39,
+                        "start_line": 77
+                    }
+                },
+                "284": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__._get_myswap_amount_out"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 57,
+                        "end_line": 77,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 28,
+                                "end_line": 89,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
+                                },
+                                "start_col": 19,
+                                "start_line": 89
+                            },
+                            "While expanding the reference 'amount_in' in:"
+                        ],
+                        "start_col": 39,
+                        "start_line": 77
+                    }
+                },
+                "285": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_amount_out"
@@ -9740,7 +9825,7 @@
                         "start_line": 77
                     }
                 },
-                "284": {
+                "286": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_amount_out"
@@ -9757,7 +9842,7 @@
                         "start_line": 85
                     }
                 },
-                "286": {
+                "288": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_amount_out"
@@ -9822,7 +9907,7 @@
                         "start_line": 1
                     }
                 },
-                "287": {
+                "289": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_amount_out"
@@ -9875,7 +9960,7 @@
                         "start_line": 13
                     }
                 },
-                "288": {
+                "290": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_amount_out"
@@ -9940,65 +10025,65 @@
                         "start_line": 1
                     }
                 },
-                "289": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__._get_myswap_amount_out"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 28,
-                        "end_line": 85,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 32,
-                                "end_line": 92,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
-                                },
-                                "start_col": 23,
-                                "start_line": 92
-                            },
-                            "While expanding the reference 'amount_to' in:"
-                        ],
-                        "start_col": 10,
-                        "start_line": 85
-                    }
-                },
-                "290": {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__._get_myswap_amount_out"
-                    ],
-                    "flow_tracking_data": null,
-                    "hints": [],
-                    "inst": {
-                        "end_col": 28,
-                        "end_line": 85,
-                        "input_file": {
-                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
-                        },
-                        "parent_location": [
-                            {
-                                "end_col": 32,
-                                "end_line": 92,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
-                                },
-                                "start_col": 23,
-                                "start_line": 92
-                            },
-                            "While expanding the reference 'amount_to' in:"
-                        ],
-                        "start_col": 10,
-                        "start_line": 85
-                    }
-                },
                 "291": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__._get_myswap_amount_out"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 28,
+                        "end_line": 85,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 32,
+                                "end_line": 92,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
+                                },
+                                "start_col": 23,
+                                "start_line": 92
+                            },
+                            "While expanding the reference 'amount_to' in:"
+                        ],
+                        "start_col": 10,
+                        "start_line": 85
+                    }
+                },
+                "292": {
+                    "accessible_scopes": [
+                        "__main__",
+                        "__main__._get_myswap_amount_out"
+                    ],
+                    "flow_tracking_data": null,
+                    "hints": [],
+                    "inst": {
+                        "end_col": 28,
+                        "end_line": 85,
+                        "input_file": {
+                            "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
+                        },
+                        "parent_location": [
+                            {
+                                "end_col": 32,
+                                "end_line": 92,
+                                "input_file": {
+                                    "filename": "/Users/venkatkunisetty/Desktop/zk-L3-integration/contracts/integrations/libraries/lib_open_interaction.cairo"
+                                },
+                                "start_col": 23,
+                                "start_line": 92
+                            },
+                            "While expanding the reference 'amount_to' in:"
+                        ],
+                        "start_col": 10,
+                        "start_line": 85
+                    }
+                },
+                "293": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._get_myswap_amount_out"
@@ -10015,7 +10100,7 @@
                         "start_line": 92
                     }
                 },
-                "292": {
+                "294": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_primary_market_supported"
@@ -10056,7 +10141,7 @@
                         "start_line": 98
                     }
                 },
-                "293": {
+                "295": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_primary_market_supported"
@@ -10097,7 +10182,7 @@
                         "start_line": 98
                     }
                 },
-                "294": {
+                "296": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_primary_market_supported"
@@ -10138,7 +10223,7 @@
                         "start_line": 98
                     }
                 },
-                "295": {
+                "297": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_primary_market_supported"
@@ -10155,7 +10240,7 @@
                         "start_line": 101
                     }
                 },
-                "297": {
+                "299": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_primary_market_supported"
@@ -10172,7 +10257,7 @@
                         "start_line": 103
                     }
                 },
-                "299": {
+                "301": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_primary_market_supported"
@@ -10237,7 +10322,7 @@
                         "start_line": 13
                     }
                 },
-                "300": {
+                "302": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_primary_market_supported"
@@ -10302,7 +10387,7 @@
                         "start_line": 13
                     }
                 },
-                "301": {
+                "303": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_primary_market_supported"
@@ -10331,7 +10416,7 @@
                         "start_line": 101
                     }
                 },
-                "302": {
+                "304": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_primary_market_supported"
@@ -10360,7 +10445,7 @@
                         "start_line": 99
                     }
                 },
-                "303": {
+                "305": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_primary_market_supported"
@@ -10377,7 +10462,7 @@
                         "start_line": 106
                     }
                 },
-                "305": {
+                "307": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_primary_market_supported"
@@ -10442,7 +10527,7 @@
                         "start_line": 1
                     }
                 },
-                "306": {
+                "308": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_primary_market_supported"
@@ -10495,7 +10580,7 @@
                         "start_line": 13
                     }
                 },
-                "307": {
+                "309": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_primary_market_supported"
@@ -10560,7 +10645,7 @@
                         "start_line": 1
                     }
                 },
-                "308": {
+                "310": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_primary_market_supported"
@@ -10577,7 +10662,7 @@
                         "start_line": 110
                     }
                 },
-                "309": {
+                "311": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_primary_market_supported"
@@ -10594,7 +10679,7 @@
                         "start_line": 110
                     }
                 },
-                "310": {
+                "312": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_secondary_market_supported"
@@ -10635,7 +10720,7 @@
                         "start_line": 117
                     }
                 },
-                "311": {
+                "313": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_secondary_market_supported"
@@ -10676,7 +10761,7 @@
                         "start_line": 117
                     }
                 },
-                "312": {
+                "314": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_secondary_market_supported"
@@ -10717,7 +10802,7 @@
                         "start_line": 117
                     }
                 },
-                "313": {
+                "315": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_secondary_market_supported"
@@ -10734,7 +10819,7 @@
                         "start_line": 120
                     }
                 },
-                "315": {
+                "317": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_secondary_market_supported"
@@ -10751,7 +10836,7 @@
                         "start_line": 122
                     }
                 },
-                "317": {
+                "319": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_secondary_market_supported"
@@ -10816,7 +10901,7 @@
                         "start_line": 13
                     }
                 },
-                "318": {
+                "320": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_secondary_market_supported"
@@ -10881,7 +10966,7 @@
                         "start_line": 13
                     }
                 },
-                "319": {
+                "321": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_secondary_market_supported"
@@ -10910,7 +10995,7 @@
                         "start_line": 120
                     }
                 },
-                "320": {
+                "322": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_secondary_market_supported"
@@ -10939,7 +11024,7 @@
                         "start_line": 118
                     }
                 },
-                "321": {
+                "323": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_secondary_market_supported"
@@ -10968,7 +11053,7 @@
                         "start_line": 118
                     }
                 },
-                "322": {
+                "324": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_secondary_market_supported"
@@ -10985,7 +11070,7 @@
                         "start_line": 125
                     }
                 },
-                "324": {
+                "326": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_secondary_market_supported"
@@ -11050,7 +11135,7 @@
                         "start_line": 1
                     }
                 },
-                "325": {
+                "327": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_secondary_market_supported"
@@ -11103,7 +11188,7 @@
                         "start_line": 13
                     }
                 },
-                "326": {
+                "328": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_secondary_market_supported"
@@ -11168,7 +11253,7 @@
                         "start_line": 1
                     }
                 },
-                "327": {
+                "329": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_secondary_market_supported"
@@ -11185,7 +11270,7 @@
                         "start_line": 130
                     }
                 },
-                "328": {
+                "330": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__.is_secondary_market_supported"
@@ -11202,7 +11287,7 @@
                         "start_line": 130
                     }
                 },
-                "329": {
+                "331": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11219,7 +11304,7 @@
                         "start_line": 141
                     }
                 },
-                "331": {
+                "333": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11260,7 +11345,7 @@
                         "start_line": 138
                     }
                 },
-                "332": {
+                "334": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11301,7 +11386,7 @@
                         "start_line": 138
                     }
                 },
-                "333": {
+                "335": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11342,7 +11427,7 @@
                         "start_line": 138
                     }
                 },
-                "334": {
+                "336": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11371,7 +11456,7 @@
                         "start_line": 139
                     }
                 },
-                "335": {
+                "337": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11388,7 +11473,7 @@
                         "start_line": 144
                     }
                 },
-                "337": {
+                "339": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11405,7 +11490,7 @@
                         "start_line": 145
                     }
                 },
-                "339": {
+                "341": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11422,7 +11507,7 @@
                         "start_line": 145
                     }
                 },
-                "341": {
+                "343": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11475,7 +11560,7 @@
                         "start_line": 98
                     }
                 },
-                "342": {
+                "344": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11528,7 +11613,7 @@
                         "start_line": 98
                     }
                 },
-                "343": {
+                "345": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11581,7 +11666,7 @@
                         "start_line": 98
                     }
                 },
-                "344": {
+                "346": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11610,7 +11695,7 @@
                         "start_line": 139
                     }
                 },
-                "345": {
+                "347": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11639,7 +11724,7 @@
                         "start_line": 139
                     }
                 },
-                "346": {
+                "348": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11656,7 +11741,7 @@
                         "start_line": 146
                     }
                 },
-                "348": {
+                "350": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11673,7 +11758,7 @@
                         "start_line": 147
                     }
                 },
-                "350": {
+                "352": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11690,7 +11775,7 @@
                         "start_line": 147
                     }
                 },
-                "352": {
+                "354": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11743,7 +11828,7 @@
                         "start_line": 117
                     }
                 },
-                "353": {
+                "355": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11796,7 +11881,7 @@
                         "start_line": 117
                     }
                 },
-                "354": {
+                "356": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11849,7 +11934,7 @@
                         "start_line": 117
                     }
                 },
-                "355": {
+                "357": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11866,7 +11951,7 @@
                         "start_line": 148
                     }
                 },
-                "357": {
+                "359": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11883,7 +11968,7 @@
                         "start_line": 148
                     }
                 },
-                "358": {
+                "360": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11936,7 +12021,7 @@
                         "start_line": 117
                     }
                 },
-                "359": {
+                "361": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -11989,7 +12074,7 @@
                         "start_line": 117
                     }
                 },
-                "360": {
+                "362": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12042,7 +12127,7 @@
                         "start_line": 117
                     }
                 },
-                "361": {
+                "363": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12071,7 +12156,7 @@
                         "start_line": 139
                     }
                 },
-                "362": {
+                "364": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12088,7 +12173,7 @@
                         "start_line": 152
                     }
                 },
-                "364": {
+                "366": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12105,7 +12190,7 @@
                         "start_line": 153
                     }
                 },
-                "366": {
+                "368": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12122,7 +12207,7 @@
                         "start_line": 153
                     }
                 },
-                "368": {
+                "370": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12175,7 +12260,7 @@
                         "start_line": 98
                     }
                 },
-                "369": {
+                "371": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12228,7 +12313,7 @@
                         "start_line": 98
                     }
                 },
-                "370": {
+                "372": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12281,7 +12366,7 @@
                         "start_line": 98
                     }
                 },
-                "371": {
+                "373": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12310,7 +12395,7 @@
                         "start_line": 139
                     }
                 },
-                "372": {
+                "374": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12339,7 +12424,7 @@
                         "start_line": 139
                     }
                 },
-                "373": {
+                "375": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12356,7 +12441,7 @@
                         "start_line": 154
                     }
                 },
-                "375": {
+                "377": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12373,7 +12458,7 @@
                         "start_line": 155
                     }
                 },
-                "377": {
+                "379": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12390,7 +12475,7 @@
                         "start_line": 155
                     }
                 },
-                "379": {
+                "381": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12443,7 +12528,7 @@
                         "start_line": 117
                     }
                 },
-                "380": {
+                "382": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12496,7 +12581,7 @@
                         "start_line": 117
                     }
                 },
-                "381": {
+                "383": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12549,7 +12634,7 @@
                         "start_line": 117
                     }
                 },
-                "382": {
+                "384": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12566,7 +12651,7 @@
                         "start_line": 156
                     }
                 },
-                "384": {
+                "386": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12583,7 +12668,7 @@
                         "start_line": 156
                     }
                 },
-                "385": {
+                "387": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12636,7 +12721,7 @@
                         "start_line": 117
                     }
                 },
-                "386": {
+                "388": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12689,7 +12774,7 @@
                         "start_line": 117
                     }
                 },
-                "387": {
+                "389": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12742,7 +12827,7 @@
                         "start_line": 117
                     }
                 },
-                "388": {
+                "390": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12759,7 +12844,7 @@
                         "start_line": 160
                     }
                 },
-                "390": {
+                "392": {
                     "accessible_scopes": [
                         "__main__",
                         "__main__._is_pool_supported"
@@ -12950,7 +13035,7 @@
             },
             "__main__._get_myswap_amount_out": {
                 "decorators": [],
-                "pc": 269,
+                "pc": 271,
                 "type": "function"
             },
             "__main__._get_myswap_amount_out.Args": {
@@ -13005,7 +13090,7 @@
             },
             "__main__._get_myswap_pool_id": {
                 "decorators": [],
-                "pc": 250,
+                "pc": 252,
                 "type": "function"
             },
             "__main__._get_myswap_pool_id.Args": {
@@ -13052,7 +13137,7 @@
             },
             "__main__._get_open_loan": {
                 "decorators": [],
-                "pc": 205,
+                "pc": 206,
                 "type": "function"
             },
             "__main__._get_open_loan.Args": {
@@ -13095,7 +13180,7 @@
             },
             "__main__._is_pool_supported": {
                 "decorators": [],
-                "pc": 329,
+                "pc": 331,
                 "type": "function"
             },
             "__main__._is_pool_supported.Args": {
@@ -13154,7 +13239,7 @@
             },
             "__main__.assert_only_open": {
                 "decorators": [],
-                "pc": 237,
+                "pc": 239,
                 "type": "function"
             },
             "__main__.assert_only_open.Args": {
@@ -13196,7 +13281,7 @@
             },
             "__main__.is_primary_market_supported": {
                 "decorators": [],
-                "pc": 292,
+                "pc": 294,
                 "type": "function"
             },
             "__main__.is_primary_market_supported.Args": {
@@ -13239,7 +13324,7 @@
             },
             "__main__.is_secondary_market_supported": {
                 "decorators": [],
-                "pc": 310,
+                "pc": 312,
                 "type": "function"
             },
             "__main__.is_secondary_market_supported.Args": {
@@ -13968,7 +14053,7 @@
             },
             "contracts.integrations.storages.open_store.open_protocol.addr": {
                 "decorators": [],
-                "pc": 187,
+                "pc": 188,
                 "type": "function"
             },
             "contracts.integrations.storages.open_store.open_protocol.addr.Args": {
@@ -14010,7 +14095,7 @@
             },
             "contracts.integrations.storages.open_store.open_protocol.read": {
                 "decorators": [],
-                "pc": 192,
+                "pc": 193,
                 "type": "function"
             },
             "contracts.integrations.storages.open_store.open_protocol.read.Args": {
@@ -14266,7 +14351,7 @@
             },
             "contracts.interfaces.IOpenProtocol.IOpenProtocol.get_myswap_amount_out": {
                 "decorators": [],
-                "pc": 100,
+                "pc": 101,
                 "type": "function"
             },
             "contracts.interfaces.IOpenProtocol.IOpenProtocol.get_myswap_amount_out.Args": {
@@ -14321,7 +14406,7 @@
             },
             "contracts.interfaces.IOpenProtocol.IOpenProtocol.get_myswap_pool_id": {
                 "decorators": [],
-                "pc": 76,
+                "pc": 77,
                 "type": "function"
             },
             "contracts.interfaces.IOpenProtocol.IOpenProtocol.get_myswap_pool_id.Args": {
@@ -14376,7 +14461,7 @@
             },
             "contracts.interfaces.IOpenProtocol.IOpenProtocol.secondary_supported_market": {
                 "decorators": [],
-                "pc": 161,
+                "pc": 162,
                 "type": "function"
             },
             "contracts.interfaces.IOpenProtocol.IOpenProtocol.secondary_supported_market.Args": {
@@ -14423,7 +14508,7 @@
             },
             "contracts.interfaces.IOpenProtocol.IOpenProtocol.supported_market": {
                 "decorators": [],
-                "pc": 128,
+                "pc": 129,
                 "type": "function"
             },
             "contracts.interfaces.IOpenProtocol.IOpenProtocol.supported_market.Args": {
@@ -14582,7 +14667,7 @@
                     },
                     "created_at": {
                         "cairo_type": "felt",
-                        "offset": 12
+                        "offset": 13
                     },
                     "current_amount": {
                         "cairo_type": "starkware.cairo.common.uint256.Uint256",
@@ -14594,15 +14679,19 @@
                     },
                     "debt_category": {
                         "cairo_type": "felt",
-                        "offset": 9
+                        "offset": 10
                     },
                     "id": {
                         "cairo_type": "felt",
                         "offset": 0
                     },
+                    "is_loan_withdrawn": {
+                        "cairo_type": "felt",
+                        "offset": 9
+                    },
                     "l3_integration": {
                         "cairo_type": "felt",
-                        "offset": 11
+                        "offset": 12
                     },
                     "market": {
                         "cairo_type": "felt",
@@ -14614,10 +14703,10 @@
                     },
                     "state": {
                         "cairo_type": "felt",
-                        "offset": 10
+                        "offset": 11
                     }
                 },
-                "size": 13,
+                "size": 14,
                 "type": "struct"
             },
             "contracts.storages.loan_store.Uint256": {

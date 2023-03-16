@@ -52,8 +52,8 @@ const RepaidLoan = ({
                     <img
                       src={
                         CoinClassNames[
-                          EventMap[asset.loanMarket.toUpperCase()]
-                        ] || asset.loanMarket.toUpperCase()
+                          EventMap[asset.loanMarket?.toUpperCase()]
+                        ] || asset.loanMarket?.toUpperCase()
                       }
                       height="18px"
                     />
@@ -67,7 +67,7 @@ const RepaidLoan = ({
                       // align="right"
                     >
                       &nbsp; &nbsp;
-                      {EventMap[asset.loanMarket.toUpperCase()]}
+                      {EventMap[asset.loanMarket?.toUpperCase()]}
                     </div>
                   </div>
                   <CardTitle tag="h5"></CardTitle>
@@ -83,8 +83,8 @@ const RepaidLoan = ({
                     <img
                       src={
                         CoinClassNames[
-                          EventMap[asset.collateralMarket.toUpperCase()]
-                        ] || asset.collateralMarket.toUpperCase()
+                          EventMap[asset.collateralMarket?.toUpperCase()]
+                        ] || asset.collateralMarket?.toUpperCase()
                       }
                       height="18px"
                     />
@@ -98,7 +98,7 @@ const RepaidLoan = ({
                       // align="right"
                     >
                       &nbsp; &nbsp;
-                      {EventMap[asset.collateralMarket.toUpperCase()]}
+                      {EventMap[asset.collateralMarket?.toUpperCase()]}
                     </div>
                   </div>
                   <CardTitle tag="h5"></CardTitle>

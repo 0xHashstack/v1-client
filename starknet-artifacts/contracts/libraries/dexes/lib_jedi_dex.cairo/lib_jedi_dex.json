@@ -23250,28 +23250,15 @@
                         "__main__._jedi_swap"
                     ],
                     "flow_tracking_data": null,
-                    "hints": [
-                        {
-                            "location": {
-                                "end_col": 61,
-                                "end_line": 68,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
-                                },
-                                "start_col": 9,
-                                "start_line": 68
-                            },
-                            "n_prefix_newlines": 0
-                        }
-                    ],
+                    "hints": [],
                     "inst": {
                         "end_col": 11,
-                        "end_line": 69,
+                        "end_line": 68,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 69
+                        "start_line": 68
                     }
                 },
                 "948": {
@@ -23304,12 +23291,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 47,
-                                                "end_line": 70,
+                                                "end_line": 69,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "start_col": 13,
-                                                "start_line": 70
+                                                "start_line": 69
                                             },
                                             "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                         ],
@@ -23371,12 +23358,12 @@
                                                         "parent_location": [
                                                             {
                                                                 "end_col": 47,
-                                                                "end_line": 70,
+                                                                "end_line": 69,
                                                                 "input_file": {
                                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                                 },
                                                                 "start_col": 13,
-                                                                "start_line": 70
+                                                                "start_line": 69
                                                             },
                                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                                         ],
@@ -23434,12 +23421,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 47,
-                                                "end_line": 70,
+                                                "end_line": 69,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "start_col": 13,
-                                                "start_line": 70
+                                                "start_line": 69
                                             },
                                             "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                         ],
@@ -23466,12 +23453,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 41,
-                        "end_line": 70,
+                        "end_line": 69,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 40,
-                        "start_line": 70
+                        "start_line": 69
                     }
                 },
                 "953": {
@@ -23483,12 +23470,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 44,
-                        "end_line": 70,
+                        "end_line": 69,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 43,
-                        "start_line": 70
+                        "start_line": 69
                     }
                 },
                 "955": {
@@ -23500,12 +23487,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 47,
-                        "end_line": 70,
+                        "end_line": 69,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 13,
-                        "start_line": 70
+                        "start_line": 69
                     }
                 },
                 "956": {
@@ -23514,20 +23501,7 @@
                         "__main__._jedi_swap"
                     ],
                     "flow_tracking_data": null,
-                    "hints": [
-                        {
-                            "location": {
-                                "end_col": 27,
-                                "end_line": 72,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
-                                },
-                                "start_col": 9,
-                                "start_line": 72
-                            },
-                            "n_prefix_newlines": 0
-                        }
-                    ],
+                    "hints": [],
                     "inst": {
                         "end_col": 33,
                         "end_line": 13,
@@ -23558,12 +23532,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 62,
-                                                        "end_line": 73,
+                                                        "end_line": 71,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                         },
                                                         "start_col": 9,
-                                                        "start_line": 73
+                                                        "start_line": 71
                                                     },
                                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                                 ],
@@ -23623,12 +23597,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 62,
-                                                        "end_line": 73,
+                                                        "end_line": 71,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                         },
                                                         "start_col": 9,
-                                                        "start_line": 73
+                                                        "start_line": 71
                                                     },
                                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                 ],
@@ -23667,12 +23641,12 @@
                         "parent_location": [
                             {
                                 "end_col": 34,
-                                "end_line": 73,
+                                "end_line": 71,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 24,
-                                "start_line": 73
+                                "start_line": 71
                             },
                             "While expanding the reference 'asset_from' in:"
                         ],
@@ -23696,12 +23670,12 @@
                         "parent_location": [
                             {
                                 "end_col": 50,
-                                "end_line": 73,
+                                "end_line": 71,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 36,
-                                "start_line": 73
+                                "start_line": 71
                             },
                             "While expanding the reference 'router_address' in:"
                         ],
@@ -23725,12 +23699,12 @@
                         "parent_location": [
                             {
                                 "end_col": 61,
-                                "end_line": 73,
+                                "end_line": 71,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 52,
-                                "start_line": 73
+                                "start_line": 71
                             },
                             "While expanding the reference 'amount_in' in:"
                         ],
@@ -23754,12 +23728,12 @@
                         "parent_location": [
                             {
                                 "end_col": 61,
-                                "end_line": 73,
+                                "end_line": 71,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 52,
-                                "start_line": 73
+                                "start_line": 71
                             },
                             "While expanding the reference 'amount_in' in:"
                         ],
@@ -23776,12 +23750,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 62,
-                        "end_line": 73,
+                        "end_line": 71,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 73
+                        "start_line": 71
                     }
                 },
                 "964": {
@@ -23790,20 +23764,7 @@
                         "__main__._jedi_swap"
                     ],
                     "flow_tracking_data": null,
-                    "hints": [
-                        {
-                            "location": {
-                                "end_col": 81,
-                                "end_line": 75,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
-                                },
-                                "start_col": 13,
-                                "start_line": 75
-                            },
-                            "n_prefix_newlines": 0
-                        }
-                    ],
+                    "hints": [],
                     "inst": {
                         "end_col": 32,
                         "end_line": 1,
@@ -23820,7 +23781,7 @@
                                 "parent_location": [
                                     {
                                         "end_col": 62,
-                                        "end_line": 73,
+                                        "end_line": 71,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
@@ -23841,12 +23802,12 @@
                                                         "parent_location": [
                                                             {
                                                                 "end_col": 14,
-                                                                "end_line": 78,
+                                                                "end_line": 75,
                                                                 "input_file": {
                                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                                 },
                                                                 "start_col": 58,
-                                                                "start_line": 76
+                                                                "start_line": 73
                                                             },
                                                             "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                                         ],
@@ -23861,7 +23822,7 @@
                                             "While expanding the reference 'syscall_ptr' in:"
                                         ],
                                         "start_col": 9,
-                                        "start_line": 73
+                                        "start_line": 71
                                     },
                                     "While trying to update the implicit return value 'syscall_ptr' in:"
                                 ],
@@ -23897,7 +23858,7 @@
                                 "parent_location": [
                                     {
                                         "end_col": 62,
-                                        "end_line": 73,
+                                        "end_line": 71,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
@@ -23918,12 +23879,12 @@
                                                         "parent_location": [
                                                             {
                                                                 "end_col": 14,
-                                                                "end_line": 78,
+                                                                "end_line": 75,
                                                                 "input_file": {
                                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                                 },
                                                                 "start_col": 58,
-                                                                "start_line": 76
+                                                                "start_line": 73
                                                             },
                                                             "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                         ],
@@ -23938,7 +23899,7 @@
                                             "While expanding the reference 'range_check_ptr' in:"
                                         ],
                                         "start_col": 9,
-                                        "start_line": 73
+                                        "start_line": 71
                                     },
                                     "While trying to update the implicit return value 'range_check_ptr' in:"
                                 ],
@@ -23967,12 +23928,12 @@
                         "parent_location": [
                             {
                                 "end_col": 31,
-                                "end_line": 77,
+                                "end_line": 74,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 17,
-                                "start_line": 77
+                                "start_line": 74
                             },
                             "While expanding the reference 'router_address' in:"
                         ],
@@ -23996,12 +23957,12 @@
                         "parent_location": [
                             {
                                 "end_col": 42,
-                                "end_line": 77,
+                                "end_line": 74,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 33,
-                                "start_line": 77
+                                "start_line": 74
                             },
                             "While expanding the reference 'amount_in' in:"
                         ],
@@ -24025,12 +23986,12 @@
                         "parent_location": [
                             {
                                 "end_col": 42,
-                                "end_line": 77,
+                                "end_line": 74,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 33,
-                                "start_line": 77
+                                "start_line": 74
                             },
                             "While expanding the reference 'amount_in' in:"
                         ],
@@ -24054,12 +24015,12 @@
                         "parent_location": [
                             {
                                 "end_col": 58,
-                                "end_line": 77,
+                                "end_line": 74,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 44,
-                                "start_line": 77
+                                "start_line": 74
                             },
                             "While expanding the reference 'min_amount_out' in:"
                         ],
@@ -24083,12 +24044,12 @@
                         "parent_location": [
                             {
                                 "end_col": 58,
-                                "end_line": 77,
+                                "end_line": 74,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 44,
-                                "start_line": 77
+                                "start_line": 74
                             },
                             "While expanding the reference 'min_amount_out' in:"
                         ],
@@ -24105,12 +24066,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 61,
-                        "end_line": 77,
+                        "end_line": 74,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 60,
-                        "start_line": 77
+                        "start_line": 74
                     }
                 },
                 "973": {
@@ -24129,12 +24090,12 @@
                         "parent_location": [
                             {
                                 "end_col": 67,
-                                "end_line": 77,
+                                "end_line": 74,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 63,
-                                "start_line": 77
+                                "start_line": 74
                             },
                             "While expanding the reference 'path' in:"
                         ],
@@ -24158,12 +24119,12 @@
                         "parent_location": [
                             {
                                 "end_col": 85,
-                                "end_line": 77,
+                                "end_line": 74,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 69,
-                                "start_line": 77
+                                "start_line": 74
                             },
                             "While expanding the reference 'contract_address' in:"
                         ],
@@ -24187,12 +24148,12 @@
                         "parent_location": [
                             {
                                 "end_col": 95,
-                                "end_line": 77,
+                                "end_line": 74,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 87,
-                                "start_line": 77
+                                "start_line": 74
                             },
                             "While expanding the reference 'deadline' in:"
                         ],
@@ -24209,12 +24170,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 14,
-                        "end_line": 78,
+                        "end_line": 75,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 58,
-                        "start_line": 76
+                        "start_line": 73
                     }
                 },
                 "979": {
@@ -24226,12 +24187,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 66,
-                        "end_line": 79,
+                        "end_line": 76,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 13,
-                        "start_line": 79
+                        "start_line": 76
                     }
                 },
                 "980": {
@@ -24243,12 +24204,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 66,
-                        "end_line": 79,
+                        "end_line": 76,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 13,
-                        "start_line": 79
+                        "start_line": 76
                     }
                 },
                 "981": {
@@ -24257,20 +24218,7 @@
                         "__main__._jedi_swap"
                     ],
                     "flow_tracking_data": null,
-                    "hints": [
-                        {
-                            "location": {
-                                "end_col": 84,
-                                "end_line": 80,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
-                                },
-                                "start_col": 13,
-                                "start_line": 80
-                            },
-                            "n_prefix_newlines": 0
-                        }
-                    ],
+                    "hints": [],
                     "inst": {
                         "end_col": 53,
                         "end_line": 1,
@@ -24287,7 +24235,7 @@
                                 "parent_location": [
                                     {
                                         "end_col": 14,
-                                        "end_line": 78,
+                                        "end_line": 75,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
@@ -24301,12 +24249,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 58,
-                                                        "end_line": 81,
+                                                        "end_line": 77,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                         },
                                                         "start_col": 13,
-                                                        "start_line": 81
+                                                        "start_line": 77
                                                     },
                                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                                 ],
@@ -24316,7 +24264,7 @@
                                             "While expanding the reference 'syscall_ptr' in:"
                                         ],
                                         "start_col": 58,
-                                        "start_line": 76
+                                        "start_line": 73
                                     },
                                     "While trying to update the implicit return value 'syscall_ptr' in:"
                                 ],
@@ -24373,12 +24321,12 @@
                                                         "parent_location": [
                                                             {
                                                                 "end_col": 58,
-                                                                "end_line": 81,
+                                                                "end_line": 77,
                                                                 "input_file": {
                                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                                 },
                                                                 "start_col": 13,
-                                                                "start_line": 81
+                                                                "start_line": 77
                                                             },
                                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                                         ],
@@ -24429,7 +24377,7 @@
                                 "parent_location": [
                                     {
                                         "end_col": 14,
-                                        "end_line": 78,
+                                        "end_line": 75,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
@@ -24443,12 +24391,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 58,
-                                                        "end_line": 81,
+                                                        "end_line": 77,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                         },
                                                         "start_col": 13,
-                                                        "start_line": 81
+                                                        "start_line": 77
                                                     },
                                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                 ],
@@ -24458,7 +24406,7 @@
                                             "While expanding the reference 'range_check_ptr' in:"
                                         ],
                                         "start_col": 58,
-                                        "start_line": 76
+                                        "start_line": 73
                                     },
                                     "While trying to update the implicit return value 'range_check_ptr' in:"
                                 ],
@@ -24480,12 +24428,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 56,
-                        "end_line": 81,
+                        "end_line": 77,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 32,
-                        "start_line": 81
+                        "start_line": 77
                     }
                 },
                 "985": {
@@ -24497,12 +24445,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 56,
-                        "end_line": 81,
+                        "end_line": 77,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 32,
-                        "start_line": 81
+                        "start_line": 77
                     }
                 },
                 "986": {
@@ -24514,12 +24462,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 58,
-                        "end_line": 81,
+                        "end_line": 77,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 13,
-                        "start_line": 81
+                        "start_line": 77
                     }
                 },
                 "987": {
@@ -24531,12 +24479,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 18,
-                        "end_line": 94,
+                        "end_line": 90,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 94
+                        "start_line": 90
                     }
                 },
                 "989": {
@@ -24548,12 +24496,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 31,
-                        "end_line": 95,
+                        "end_line": 91,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 95
+                        "start_line": 91
                     }
                 },
                 "990": {
@@ -24565,12 +24513,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 7,
-                        "end_line": 95,
+                        "end_line": 91,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 95
+                        "start_line": 91
                     }
                 },
                 "992": {
@@ -24582,36 +24530,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 45,
-                        "end_line": 91,
+                        "end_line": 87,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 45,
-                                "end_line": 91,
+                                "end_line": 87,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 39,
-                                        "end_line": 96,
+                                        "end_line": 92,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "start_col": 9,
-                                        "start_line": 96
+                                        "start_line": 92
                                     },
                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                 ],
                                 "start_col": 27,
-                                "start_line": 91
+                                "start_line": 87
                             },
                             "While expanding the reference 'syscall_ptr' in:"
                         ],
                         "start_col": 27,
-                        "start_line": 91
+                        "start_line": 87
                     }
                 },
                 "993": {
@@ -24623,36 +24571,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 73,
-                        "end_line": 91,
+                        "end_line": 87,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 73,
-                                "end_line": 91,
+                                "end_line": 87,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 39,
-                                        "end_line": 96,
+                                        "end_line": 92,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "start_col": 9,
-                                        "start_line": 96
+                                        "start_line": 92
                                     },
                                     "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                 ],
                                 "start_col": 47,
-                                "start_line": 91
+                                "start_line": 87
                             },
                             "While expanding the reference 'pedersen_ptr' in:"
                         ],
                         "start_col": 47,
-                        "start_line": 91
+                        "start_line": 87
                     }
                 },
                 "994": {
@@ -24664,36 +24612,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 90,
-                        "end_line": 91,
+                        "end_line": 87,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 90,
-                                "end_line": 91,
+                                "end_line": 87,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 39,
-                                        "end_line": 96,
+                                        "end_line": 92,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "start_col": 9,
-                                        "start_line": 96
+                                        "start_line": 92
                                     },
                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                 ],
                                 "start_col": 75,
-                                "start_line": 91
+                                "start_line": 87
                             },
                             "While expanding the reference 'range_check_ptr' in:"
                         ],
                         "start_col": 75,
-                        "start_line": 91
+                        "start_line": 87
                     }
                 },
                 "995": {
@@ -24705,24 +24653,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 57,
-                        "end_line": 92,
+                        "end_line": 88,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 37,
-                                "end_line": 96,
+                                "end_line": 92,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 28,
-                                "start_line": 96
+                                "start_line": 92
                             },
                             "While expanding the reference 'amount_in' in:"
                         ],
                         "start_col": 39,
-                        "start_line": 92
+                        "start_line": 88
                     }
                 },
                 "996": {
@@ -24734,24 +24682,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 57,
-                        "end_line": 92,
+                        "end_line": 88,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 37,
-                                "end_line": 96,
+                                "end_line": 92,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 28,
-                                "start_line": 96
+                                "start_line": 92
                             },
                             "While expanding the reference 'amount_in' in:"
                         ],
                         "start_col": 39,
-                        "start_line": 92
+                        "start_line": 88
                     }
                 },
                 "997": {
@@ -24763,12 +24711,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 39,
-                        "end_line": 96,
+                        "end_line": 92,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 96
+                        "start_line": 92
                     }
                 },
                 "998": {
@@ -24780,7 +24728,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 45,
-                        "end_line": 91,
+                        "end_line": 87,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
@@ -24794,12 +24742,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 58,
-                                        "end_line": 99,
+                                        "end_line": 95,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "start_col": 36,
-                                        "start_line": 99
+                                        "start_line": 95
                                     },
                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                 ],
@@ -24809,7 +24757,7 @@
                             "While expanding the reference 'syscall_ptr' in:"
                         ],
                         "start_col": 27,
-                        "start_line": 91
+                        "start_line": 87
                     }
                 },
                 "999": {
@@ -24821,12 +24769,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 58,
-                        "end_line": 99,
+                        "end_line": 95,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 36,
-                        "start_line": 99
+                        "start_line": 95
                     }
                 },
                 "1001": {
@@ -24838,12 +24786,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 38,
-                        "end_line": 100,
+                        "end_line": 96,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 31,
-                        "start_line": 100
+                        "start_line": 96
                     }
                 },
                 "1003": {
@@ -24855,12 +24803,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 27,
-                        "end_line": 100,
+                        "end_line": 96,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 10,
-                        "start_line": 100
+                        "start_line": 96
                     }
                 },
                 "1004": {
@@ -24872,12 +24820,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 32,
-                        "end_line": 101,
+                        "end_line": 97,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 101
+                        "start_line": 97
                     }
                 },
                 "1005": {
@@ -24889,12 +24837,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 34,
-                        "end_line": 102,
+                        "end_line": 98,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 102
+                        "start_line": 98
                     }
                 },
                 "1006": {
@@ -24913,7 +24861,7 @@
                         "parent_location": [
                             {
                                 "end_col": 58,
-                                "end_line": 99,
+                                "end_line": 95,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
@@ -24927,12 +24875,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 51,
-                                                "end_line": 104,
+                                                "end_line": 100,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "start_col": 28,
-                                                "start_line": 104
+                                                "start_line": 100
                                             },
                                             "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                         ],
@@ -24942,7 +24890,7 @@
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
                                 "start_col": 36,
-                                "start_line": 99
+                                "start_line": 95
                             },
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
@@ -24959,7 +24907,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 73,
-                        "end_line": 91,
+                        "end_line": 87,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
@@ -24973,12 +24921,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 51,
-                                        "end_line": 104,
+                                        "end_line": 100,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "start_col": 28,
-                                        "start_line": 104
+                                        "start_line": 100
                                     },
                                     "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                 ],
@@ -24988,7 +24936,7 @@
                             "While expanding the reference 'pedersen_ptr' in:"
                         ],
                         "start_col": 47,
-                        "start_line": 91
+                        "start_line": 87
                     }
                 },
                 "1008": {
@@ -25000,7 +24948,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 90,
-                        "end_line": 91,
+                        "end_line": 87,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
@@ -25014,12 +24962,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 51,
-                                        "end_line": 104,
+                                        "end_line": 100,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "start_col": 28,
-                                        "start_line": 104
+                                        "start_line": 100
                                     },
                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                 ],
@@ -25029,7 +24977,7 @@
                             "While expanding the reference 'range_check_ptr' in:"
                         ],
                         "start_col": 75,
-                        "start_line": 91
+                        "start_line": 87
                     }
                 },
                 "1009": {
@@ -25041,12 +24989,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 51,
-                        "end_line": 104,
+                        "end_line": 100,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 28,
-                        "start_line": 104
+                        "start_line": 100
                     }
                 },
                 "1011": {
@@ -25065,7 +25013,7 @@
                         "parent_location": [
                             {
                                 "end_col": 51,
-                                "end_line": 104,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
@@ -25079,12 +25027,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 51,
-                                                "end_line": 104,
+                                                "end_line": 100,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "start_col": 28,
-                                                "start_line": 104
+                                                "start_line": 100
                                             },
                                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                                         ],
@@ -25094,7 +25042,7 @@
                                     "While auto generating local variable for 'pedersen_ptr'."
                                 ],
                                 "start_col": 28,
-                                "start_line": 104
+                                "start_line": 100
                             },
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
@@ -25111,12 +25059,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 7,
-                        "end_line": 105,
+                        "end_line": 101,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 105
+                        "start_line": 101
                     }
                 },
                 "1014": {
@@ -25135,36 +25083,36 @@
                         "parent_location": [
                             {
                                 "end_col": 51,
-                                "end_line": 104,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 45,
-                                        "end_line": 91,
+                                        "end_line": 87,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 43,
-                                                "end_line": 106,
+                                                "end_line": 102,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "start_col": 9,
-                                                "start_line": 106
+                                                "start_line": 102
                                             },
                                             "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                         ],
                                         "start_col": 27,
-                                        "start_line": 91
+                                        "start_line": 87
                                     },
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
                                 "start_col": 28,
-                                "start_line": 104
+                                "start_line": 100
                             },
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
@@ -25188,7 +25136,7 @@
                         "parent_location": [
                             {
                                 "end_col": 51,
-                                "end_line": 104,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
@@ -25202,36 +25150,36 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 51,
-                                                "end_line": 104,
+                                                "end_line": 100,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "parent_location": [
                                                     {
                                                         "end_col": 73,
-                                                        "end_line": 91,
+                                                        "end_line": 87,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                         },
                                                         "parent_location": [
                                                             {
                                                                 "end_col": 43,
-                                                                "end_line": 106,
+                                                                "end_line": 102,
                                                                 "input_file": {
                                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                                 },
                                                                 "start_col": 9,
-                                                                "start_line": 106
+                                                                "start_line": 102
                                                             },
                                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                                         ],
                                                         "start_col": 47,
-                                                        "start_line": 91
+                                                        "start_line": 87
                                                     },
                                                     "While expanding the reference 'pedersen_ptr' in:"
                                                 ],
                                                 "start_col": 28,
-                                                "start_line": 104
+                                                "start_line": 100
                                             },
                                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                                         ],
@@ -25241,7 +25189,7 @@
                                     "While auto generating local variable for 'pedersen_ptr'."
                                 ],
                                 "start_col": 28,
-                                "start_line": 104
+                                "start_line": 100
                             },
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
@@ -25265,36 +25213,36 @@
                         "parent_location": [
                             {
                                 "end_col": 51,
-                                "end_line": 104,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 90,
-                                        "end_line": 91,
+                                        "end_line": 87,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 43,
-                                                "end_line": 106,
+                                                "end_line": 102,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "start_col": 9,
-                                                "start_line": 106
+                                                "start_line": 102
                                             },
                                             "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                         ],
                                         "start_col": 75,
-                                        "start_line": 91
+                                        "start_line": 87
                                     },
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 28,
-                                "start_line": 104
+                                "start_line": 100
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
@@ -25311,12 +25259,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 37,
-                        "end_line": 106,
+                        "end_line": 102,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 36,
-                        "start_line": 106
+                        "start_line": 102
                     }
                 },
                 "1019": {
@@ -25328,12 +25276,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 40,
-                        "end_line": 106,
+                        "end_line": 102,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 39,
-                        "start_line": 106
+                        "start_line": 102
                     }
                 },
                 "1021": {
@@ -25345,12 +25293,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 43,
-                        "end_line": 106,
+                        "end_line": 102,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 106
+                        "start_line": 102
                     }
                 },
                 "1022": {
@@ -25369,7 +25317,7 @@
                         "parent_location": [
                             {
                                 "end_col": 51,
-                                "end_line": 104,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
@@ -25390,12 +25338,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 10,
-                                                        "end_line": 112,
+                                                        "end_line": 108,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                         },
                                                         "start_col": 54,
-                                                        "start_line": 110
+                                                        "start_line": 106
                                                     },
                                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                                 ],
@@ -25410,7 +25358,7 @@
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
                                 "start_col": 28,
-                                "start_line": 104
+                                "start_line": 100
                             },
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
@@ -25434,7 +25382,7 @@
                         "parent_location": [
                             {
                                 "end_col": 51,
-                                "end_line": 104,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
@@ -25455,12 +25403,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 10,
-                                                        "end_line": 112,
+                                                        "end_line": 108,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                         },
                                                         "start_col": 54,
-                                                        "start_line": 110
+                                                        "start_line": 106
                                                     },
                                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                 ],
@@ -25475,7 +25423,7 @@
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 28,
-                                "start_line": 104
+                                "start_line": 100
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
@@ -25492,24 +25440,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 104,
+                        "end_line": 100,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 27,
-                                "end_line": 111,
+                                "end_line": 107,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 13,
-                                "start_line": 111
+                                "start_line": 107
                             },
                             "While expanding the reference 'router_address' in:"
                         ],
                         "start_col": 10,
-                        "start_line": 104
+                        "start_line": 100
                     }
                 },
                 "1025": {
@@ -25521,24 +25469,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 57,
-                        "end_line": 92,
+                        "end_line": 88,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 38,
-                                "end_line": 111,
+                                "end_line": 107,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 29,
-                                "start_line": 111
+                                "start_line": 107
                             },
                             "While expanding the reference 'amount_in' in:"
                         ],
                         "start_col": 39,
-                        "start_line": 92
+                        "start_line": 88
                     }
                 },
                 "1026": {
@@ -25550,24 +25498,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 57,
-                        "end_line": 92,
+                        "end_line": 88,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 38,
-                                "end_line": 111,
+                                "end_line": 107,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 29,
-                                "start_line": 111
+                                "start_line": 107
                             },
                             "While expanding the reference 'amount_in' in:"
                         ],
                         "start_col": 39,
-                        "start_line": 92
+                        "start_line": 88
                     }
                 },
                 "1027": {
@@ -25579,12 +25527,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 41,
-                        "end_line": 111,
+                        "end_line": 107,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 40,
-                        "start_line": 111
+                        "start_line": 107
                     }
                 },
                 "1029": {
@@ -25596,24 +25544,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 20,
-                        "end_line": 100,
+                        "end_line": 96,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 47,
-                                "end_line": 111,
+                                "end_line": 107,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 43,
-                                "start_line": 111
+                                "start_line": 107
                             },
                             "While expanding the reference 'path' in:"
                         ],
                         "start_col": 16,
-                        "start_line": 100
+                        "start_line": 96
                     }
                 },
                 "1030": {
@@ -25625,12 +25573,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 10,
-                        "end_line": 112,
+                        "end_line": 108,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 54,
-                        "start_line": 110
+                        "start_line": 106
                     }
                 },
                 "1032": {
@@ -25656,36 +25604,36 @@
                                 "parent_location": [
                                     {
                                         "end_col": 10,
-                                        "end_line": 112,
+                                        "end_line": 108,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 45,
-                                                "end_line": 91,
+                                                "end_line": 87,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "parent_location": [
                                                     {
                                                         "end_col": 54,
-                                                        "end_line": 113,
+                                                        "end_line": 109,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                         },
                                                         "start_col": 9,
-                                                        "start_line": 113
+                                                        "start_line": 109
                                                     },
                                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                                 ],
                                                 "start_col": 27,
-                                                "start_line": 91
+                                                "start_line": 87
                                             },
                                             "While expanding the reference 'syscall_ptr' in:"
                                         ],
                                         "start_col": 54,
-                                        "start_line": 110
+                                        "start_line": 106
                                     },
                                     "While trying to update the implicit return value 'syscall_ptr' in:"
                                 ],
@@ -25714,7 +25662,7 @@
                         "parent_location": [
                             {
                                 "end_col": 51,
-                                "end_line": 104,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
@@ -25728,36 +25676,36 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 51,
-                                                "end_line": 104,
+                                                "end_line": 100,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "parent_location": [
                                                     {
                                                         "end_col": 73,
-                                                        "end_line": 91,
+                                                        "end_line": 87,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                         },
                                                         "parent_location": [
                                                             {
                                                                 "end_col": 54,
-                                                                "end_line": 113,
+                                                                "end_line": 109,
                                                                 "input_file": {
                                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                                 },
                                                                 "start_col": 9,
-                                                                "start_line": 113
+                                                                "start_line": 109
                                                             },
                                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                                         ],
                                                         "start_col": 47,
-                                                        "start_line": 91
+                                                        "start_line": 87
                                                     },
                                                     "While expanding the reference 'pedersen_ptr' in:"
                                                 ],
                                                 "start_col": 28,
-                                                "start_line": 104
+                                                "start_line": 100
                                             },
                                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                                         ],
@@ -25767,7 +25715,7 @@
                                     "While auto generating local variable for 'pedersen_ptr'."
                                 ],
                                 "start_col": 28,
-                                "start_line": 104
+                                "start_line": 100
                             },
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
@@ -25798,36 +25746,36 @@
                                 "parent_location": [
                                     {
                                         "end_col": 10,
-                                        "end_line": 112,
+                                        "end_line": 108,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 90,
-                                                "end_line": 91,
+                                                "end_line": 87,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "parent_location": [
                                                     {
                                                         "end_col": 54,
-                                                        "end_line": 113,
+                                                        "end_line": 109,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                         },
                                                         "start_col": 9,
-                                                        "start_line": 113
+                                                        "start_line": 109
                                                     },
                                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                 ],
                                                 "start_col": 75,
-                                                "start_line": 91
+                                                "start_line": 87
                                             },
                                             "While expanding the reference 'range_check_ptr' in:"
                                         ],
                                         "start_col": 54,
-                                        "start_line": 110
+                                        "start_line": 106
                                     },
                                     "While trying to update the implicit return value 'range_check_ptr' in:"
                                 ],
@@ -25849,12 +25797,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 52,
-                        "end_line": 113,
+                        "end_line": 109,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 28,
-                        "start_line": 113
+                        "start_line": 109
                     }
                 },
                 "1036": {
@@ -25866,12 +25814,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 52,
-                        "end_line": 113,
+                        "end_line": 109,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 28,
-                        "start_line": 113
+                        "start_line": 109
                     }
                 },
                 "1037": {
@@ -25883,12 +25831,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 54,
-                        "end_line": 113,
+                        "end_line": 109,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 113
+                        "start_line": 109
                     }
                 },
                 "1038": {
@@ -25900,12 +25848,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 18,
-                        "end_line": 125,
+                        "end_line": 121,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 125
+                        "start_line": 121
                     }
                 },
                 "1040": {
@@ -25914,28 +25862,15 @@
                         "__main__._get_jedi_amounts_in"
                     ],
                     "flow_tracking_data": null,
-                    "hints": [
-                        {
-                            "location": {
-                                "end_col": 91,
-                                "end_line": 127,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
-                                },
-                                "start_col": 5,
-                                "start_line": 127
-                            },
-                            "n_prefix_newlines": 0
-                        }
-                    ],
+                    "hints": [],
                     "inst": {
                         "end_col": 31,
-                        "end_line": 128,
+                        "end_line": 123,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 128
+                        "start_line": 123
                     }
                 },
                 "1041": {
@@ -25947,12 +25882,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 7,
-                        "end_line": 128,
+                        "end_line": 123,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 128
+                        "start_line": 123
                     }
                 },
                 "1043": {
@@ -25964,36 +25899,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 45,
-                        "end_line": 122,
+                        "end_line": 118,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 45,
-                                "end_line": 122,
+                                "end_line": 118,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 39,
-                                        "end_line": 129,
+                                        "end_line": 124,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "start_col": 9,
-                                        "start_line": 129
+                                        "start_line": 124
                                     },
                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                 ],
                                 "start_col": 27,
-                                "start_line": 122
+                                "start_line": 118
                             },
                             "While expanding the reference 'syscall_ptr' in:"
                         ],
                         "start_col": 27,
-                        "start_line": 122
+                        "start_line": 118
                     }
                 },
                 "1044": {
@@ -26005,36 +25940,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 73,
-                        "end_line": 122,
+                        "end_line": 118,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 73,
-                                "end_line": 122,
+                                "end_line": 118,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 39,
-                                        "end_line": 129,
+                                        "end_line": 124,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "start_col": 9,
-                                        "start_line": 129
+                                        "start_line": 124
                                     },
                                     "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                 ],
                                 "start_col": 47,
-                                "start_line": 122
+                                "start_line": 118
                             },
                             "While expanding the reference 'pedersen_ptr' in:"
                         ],
                         "start_col": 47,
-                        "start_line": 122
+                        "start_line": 118
                     }
                 },
                 "1045": {
@@ -26046,36 +25981,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 90,
-                        "end_line": 122,
+                        "end_line": 118,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 90,
-                                "end_line": 122,
+                                "end_line": 118,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 39,
-                                        "end_line": 129,
+                                        "end_line": 124,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "start_col": 9,
-                                        "start_line": 129
+                                        "start_line": 124
                                     },
                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                 ],
                                 "start_col": 75,
-                                "start_line": 122
+                                "start_line": 118
                             },
                             "While expanding the reference 'range_check_ptr' in:"
                         ],
                         "start_col": 75,
-                        "start_line": 122
+                        "start_line": 118
                     }
                 },
                 "1046": {
@@ -26087,24 +26022,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 58,
-                        "end_line": 123,
+                        "end_line": 119,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 37,
-                                "end_line": 129,
+                                "end_line": 124,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 27,
-                                "start_line": 129
+                                "start_line": 124
                             },
                             "While expanding the reference 'amount_out' in:"
                         ],
                         "start_col": 39,
-                        "start_line": 123
+                        "start_line": 119
                     }
                 },
                 "1047": {
@@ -26116,24 +26051,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 58,
-                        "end_line": 123,
+                        "end_line": 119,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 37,
-                                "end_line": 129,
+                                "end_line": 124,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 27,
-                                "start_line": 129
+                                "start_line": 124
                             },
                             "While expanding the reference 'amount_out' in:"
                         ],
                         "start_col": 39,
-                        "start_line": 123
+                        "start_line": 119
                     }
                 },
                 "1048": {
@@ -26145,12 +26080,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 39,
-                        "end_line": 129,
+                        "end_line": 124,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 129
+                        "start_line": 124
                     }
                 },
                 "1049": {
@@ -26162,7 +26097,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 45,
-                        "end_line": 122,
+                        "end_line": 118,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
@@ -26176,12 +26111,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 51,
-                                        "end_line": 132,
+                                        "end_line": 127,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "start_col": 28,
-                                        "start_line": 132
+                                        "start_line": 127
                                     },
                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                 ],
@@ -26191,7 +26126,7 @@
                             "While expanding the reference 'syscall_ptr' in:"
                         ],
                         "start_col": 27,
-                        "start_line": 122
+                        "start_line": 118
                     }
                 },
                 "1050": {
@@ -26203,7 +26138,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 73,
-                        "end_line": 122,
+                        "end_line": 118,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
@@ -26217,12 +26152,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 51,
-                                        "end_line": 132,
+                                        "end_line": 127,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "start_col": 28,
-                                        "start_line": 132
+                                        "start_line": 127
                                     },
                                     "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                 ],
@@ -26232,7 +26167,7 @@
                             "While expanding the reference 'pedersen_ptr' in:"
                         ],
                         "start_col": 47,
-                        "start_line": 122
+                        "start_line": 118
                     }
                 },
                 "1051": {
@@ -26244,7 +26179,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 90,
-                        "end_line": 122,
+                        "end_line": 118,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
@@ -26258,12 +26193,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 51,
-                                        "end_line": 132,
+                                        "end_line": 127,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "start_col": 28,
-                                        "start_line": 132
+                                        "start_line": 127
                                     },
                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                 ],
@@ -26273,7 +26208,7 @@
                             "While expanding the reference 'range_check_ptr' in:"
                         ],
                         "start_col": 75,
-                        "start_line": 122
+                        "start_line": 118
                     }
                 },
                 "1052": {
@@ -26285,12 +26220,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 51,
-                        "end_line": 132,
+                        "end_line": 127,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 28,
-                        "start_line": 132
+                        "start_line": 127
                     }
                 },
                 "1054": {
@@ -26309,7 +26244,7 @@
                         "parent_location": [
                             {
                                 "end_col": 51,
-                                "end_line": 132,
+                                "end_line": 127,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
@@ -26323,12 +26258,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 51,
-                                                "end_line": 132,
+                                                "end_line": 127,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "start_col": 28,
-                                                "start_line": 132
+                                                "start_line": 127
                                             },
                                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                                         ],
@@ -26338,7 +26273,7 @@
                                     "While auto generating local variable for 'pedersen_ptr'."
                                 ],
                                 "start_col": 28,
-                                "start_line": 132
+                                "start_line": 127
                             },
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
@@ -26355,12 +26290,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 7,
-                        "end_line": 133,
+                        "end_line": 128,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 133
+                        "start_line": 128
                     }
                 },
                 "1057": {
@@ -26379,36 +26314,36 @@
                         "parent_location": [
                             {
                                 "end_col": 51,
-                                "end_line": 132,
+                                "end_line": 127,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 45,
-                                        "end_line": 122,
+                                        "end_line": 118,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 53,
-                                                "end_line": 134,
+                                                "end_line": 129,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "start_col": 9,
-                                                "start_line": 134
+                                                "start_line": 129
                                             },
                                             "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                         ],
                                         "start_col": 27,
-                                        "start_line": 122
+                                        "start_line": 118
                                     },
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
                                 "start_col": 28,
-                                "start_line": 132
+                                "start_line": 127
                             },
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
@@ -26432,7 +26367,7 @@
                         "parent_location": [
                             {
                                 "end_col": 51,
-                                "end_line": 132,
+                                "end_line": 127,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
@@ -26446,36 +26381,36 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 51,
-                                                "end_line": 132,
+                                                "end_line": 127,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "parent_location": [
                                                     {
                                                         "end_col": 73,
-                                                        "end_line": 122,
+                                                        "end_line": 118,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                         },
                                                         "parent_location": [
                                                             {
                                                                 "end_col": 53,
-                                                                "end_line": 134,
+                                                                "end_line": 129,
                                                                 "input_file": {
                                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                                 },
                                                                 "start_col": 9,
-                                                                "start_line": 134
+                                                                "start_line": 129
                                                             },
                                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                                         ],
                                                         "start_col": 47,
-                                                        "start_line": 122
+                                                        "start_line": 118
                                                     },
                                                     "While expanding the reference 'pedersen_ptr' in:"
                                                 ],
                                                 "start_col": 28,
-                                                "start_line": 132
+                                                "start_line": 127
                                             },
                                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                                         ],
@@ -26485,7 +26420,7 @@
                                     "While auto generating local variable for 'pedersen_ptr'."
                                 ],
                                 "start_col": 28,
-                                "start_line": 132
+                                "start_line": 127
                             },
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
@@ -26509,36 +26444,36 @@
                         "parent_location": [
                             {
                                 "end_col": 51,
-                                "end_line": 132,
+                                "end_line": 127,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 90,
-                                        "end_line": 122,
+                                        "end_line": 118,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 53,
-                                                "end_line": 134,
+                                                "end_line": 129,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "start_col": 9,
-                                                "start_line": 134
+                                                "start_line": 129
                                             },
                                             "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                         ],
                                         "start_col": 75,
-                                        "start_line": 122
+                                        "start_line": 118
                                     },
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 28,
-                                "start_line": 132
+                                "start_line": 127
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
@@ -26555,12 +26490,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 47,
-                        "end_line": 134,
+                        "end_line": 129,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 35,
-                        "start_line": 134
+                        "start_line": 129
                     }
                 },
                 "1062": {
@@ -26572,12 +26507,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 50,
-                        "end_line": 134,
+                        "end_line": 129,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 49,
-                        "start_line": 134
+                        "start_line": 129
                     }
                 },
                 "1064": {
@@ -26589,12 +26524,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 53,
-                        "end_line": 134,
+                        "end_line": 129,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 134
+                        "start_line": 129
                     }
                 },
                 "1065": {
@@ -26606,12 +26541,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 38,
-                        "end_line": 137,
+                        "end_line": 132,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 31,
-                        "start_line": 137
+                        "start_line": 132
                     }
                 },
                 "1067": {
@@ -26623,12 +26558,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 27,
-                        "end_line": 137,
+                        "end_line": 132,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 10,
-                        "start_line": 137
+                        "start_line": 132
                     }
                 },
                 "1068": {
@@ -26640,12 +26575,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 32,
-                        "end_line": 138,
+                        "end_line": 133,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 138
+                        "start_line": 133
                     }
                 },
                 "1069": {
@@ -26657,12 +26592,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 34,
-                        "end_line": 139,
+                        "end_line": 134,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 139
+                        "start_line": 134
                     }
                 },
                 "1070": {
@@ -26681,7 +26616,7 @@
                         "parent_location": [
                             {
                                 "end_col": 51,
-                                "end_line": 132,
+                                "end_line": 127,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
@@ -26702,12 +26637,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 6,
-                                                        "end_line": 143,
+                                                        "end_line": 138,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                         },
                                                         "start_col": 50,
-                                                        "start_line": 141
+                                                        "start_line": 136
                                                     },
                                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                                 ],
@@ -26722,7 +26657,7 @@
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
                                 "start_col": 28,
-                                "start_line": 132
+                                "start_line": 127
                             },
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
@@ -26746,7 +26681,7 @@
                         "parent_location": [
                             {
                                 "end_col": 51,
-                                "end_line": 132,
+                                "end_line": 127,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
@@ -26767,12 +26702,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 6,
-                                                        "end_line": 143,
+                                                        "end_line": 138,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                         },
                                                         "start_col": 50,
-                                                        "start_line": 141
+                                                        "start_line": 136
                                                     },
                                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                 ],
@@ -26787,7 +26722,7 @@
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 28,
-                                "start_line": 132
+                                "start_line": 127
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
@@ -26804,24 +26739,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 24,
-                        "end_line": 132,
+                        "end_line": 127,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 40,
-                                "end_line": 142,
+                                "end_line": 137,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 26,
-                                "start_line": 142
+                                "start_line": 137
                             },
                             "While expanding the reference 'router_address' in:"
                         ],
                         "start_col": 10,
-                        "start_line": 132
+                        "start_line": 127
                     }
                 },
                 "1073": {
@@ -26833,24 +26768,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 58,
-                        "end_line": 123,
+                        "end_line": 119,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 62,
-                                "end_line": 142,
+                                "end_line": 137,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 52,
-                                "start_line": 142
+                                "start_line": 137
                             },
                             "While expanding the reference 'amount_out' in:"
                         ],
                         "start_col": 39,
-                        "start_line": 123
+                        "start_line": 119
                     }
                 },
                 "1074": {
@@ -26862,24 +26797,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 58,
-                        "end_line": 123,
+                        "end_line": 119,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 62,
-                                "end_line": 142,
+                                "end_line": 137,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 52,
-                                "start_line": 142
+                                "start_line": 137
                             },
                             "While expanding the reference 'amount_out' in:"
                         ],
                         "start_col": 39,
-                        "start_line": 123
+                        "start_line": 119
                     }
                 },
                 "1075": {
@@ -26891,12 +26826,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 74,
-                        "end_line": 142,
+                        "end_line": 137,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 73,
-                        "start_line": 142
+                        "start_line": 137
                     }
                 },
                 "1077": {
@@ -26908,24 +26843,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 20,
-                        "end_line": 137,
+                        "end_line": 132,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 85,
-                                "end_line": 142,
+                                "end_line": 137,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
                                 "start_col": 81,
-                                "start_line": 142
+                                "start_line": 137
                             },
                             "While expanding the reference 'path' in:"
                         ],
                         "start_col": 16,
-                        "start_line": 137
+                        "start_line": 132
                     }
                 },
                 "1078": {
@@ -26937,12 +26872,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 6,
-                        "end_line": 143,
+                        "end_line": 138,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 50,
-                        "start_line": 141
+                        "start_line": 136
                     }
                 },
                 "1080": {
@@ -26954,12 +26889,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 48,
-                        "end_line": 145,
+                        "end_line": 140,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 145
+                        "start_line": 140
                     }
                 },
                 "1081": {
@@ -26971,12 +26906,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 48,
-                        "end_line": 145,
+                        "end_line": 140,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 145
+                        "start_line": 140
                     }
                 },
                 "1082": {
@@ -26985,20 +26920,7 @@
                         "__main__._get_jedi_amounts_in"
                     ],
                     "flow_tracking_data": null,
-                    "hints": [
-                        {
-                            "location": {
-                                "end_col": 99,
-                                "end_line": 146,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
-                                },
-                                "start_col": 5,
-                                "start_line": 146
-                            },
-                            "n_prefix_newlines": 0
-                        }
-                    ],
+                    "hints": [],
                     "inst": {
                         "end_col": 39,
                         "end_line": 1,
@@ -27015,36 +26937,36 @@
                                 "parent_location": [
                                     {
                                         "end_col": 6,
-                                        "end_line": 143,
+                                        "end_line": 138,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 45,
-                                                "end_line": 122,
+                                                "end_line": 118,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "parent_location": [
                                                     {
                                                         "end_col": 34,
-                                                        "end_line": 148,
+                                                        "end_line": 142,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                         },
                                                         "start_col": 5,
-                                                        "start_line": 148
+                                                        "start_line": 142
                                                     },
                                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                                 ],
                                                 "start_col": 27,
-                                                "start_line": 122
+                                                "start_line": 118
                                             },
                                             "While expanding the reference 'syscall_ptr' in:"
                                         ],
                                         "start_col": 50,
-                                        "start_line": 141
+                                        "start_line": 136
                                     },
                                     "While trying to update the implicit return value 'syscall_ptr' in:"
                                 ],
@@ -27073,7 +26995,7 @@
                         "parent_location": [
                             {
                                 "end_col": 51,
-                                "end_line": 132,
+                                "end_line": 127,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                 },
@@ -27087,36 +27009,36 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 51,
-                                                "end_line": 132,
+                                                "end_line": 127,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "parent_location": [
                                                     {
                                                         "end_col": 73,
-                                                        "end_line": 122,
+                                                        "end_line": 118,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                         },
                                                         "parent_location": [
                                                             {
                                                                 "end_col": 34,
-                                                                "end_line": 148,
+                                                                "end_line": 142,
                                                                 "input_file": {
                                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                                 },
                                                                 "start_col": 5,
-                                                                "start_line": 148
+                                                                "start_line": 142
                                                             },
                                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                                         ],
                                                         "start_col": 47,
-                                                        "start_line": 122
+                                                        "start_line": 118
                                                     },
                                                     "While expanding the reference 'pedersen_ptr' in:"
                                                 ],
                                                 "start_col": 28,
-                                                "start_line": 132
+                                                "start_line": 127
                                             },
                                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                                         ],
@@ -27126,7 +27048,7 @@
                                     "While auto generating local variable for 'pedersen_ptr'."
                                 ],
                                 "start_col": 28,
-                                "start_line": 132
+                                "start_line": 127
                             },
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
@@ -27157,36 +27079,36 @@
                                 "parent_location": [
                                     {
                                         "end_col": 6,
-                                        "end_line": 143,
+                                        "end_line": 138,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 90,
-                                                "end_line": 122,
+                                                "end_line": 118,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                 },
                                                 "parent_location": [
                                                     {
                                                         "end_col": 34,
-                                                        "end_line": 148,
+                                                        "end_line": 142,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                                                         },
                                                         "start_col": 5,
-                                                        "start_line": 148
+                                                        "start_line": 142
                                                     },
                                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                 ],
                                                 "start_col": 75,
-                                                "start_line": 122
+                                                "start_line": 118
                                             },
                                             "While expanding the reference 'range_check_ptr' in:"
                                         ],
                                         "start_col": 50,
-                                        "start_line": 141
+                                        "start_line": 136
                                     },
                                     "While trying to update the implicit return value 'range_check_ptr' in:"
                                 ],
@@ -27208,12 +27130,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 32,
-                        "end_line": 148,
+                        "end_line": 142,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 23,
-                        "start_line": 148
+                        "start_line": 142
                     }
                 },
                 "1086": {
@@ -27225,12 +27147,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 32,
-                        "end_line": 148,
+                        "end_line": 142,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 23,
-                        "start_line": 148
+                        "start_line": 142
                     }
                 },
                 "1087": {
@@ -27242,12 +27164,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 34,
-                        "end_line": 148,
+                        "end_line": 142,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/dexes/lib_jedi_dex.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 148
+                        "start_line": 142
                     }
                 }
             }
@@ -27692,112 +27614,6 @@
                         "reference_ids": {}
                     }
                 }
-            ],
-            "946": [
-                {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__._jedi_swap"
-                    ],
-                    "code": "print(\"jedi router address\", ids.router_address)",
-                    "flow_tracking_data": {
-                        "ap_tracking": {
-                            "group": 56,
-                            "offset": 43
-                        },
-                        "reference_ids": {
-                            "__main__._jedi_swap.router_address": 37
-                        }
-                    }
-                }
-            ],
-            "956": [
-                {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__._jedi_swap"
-                    ],
-                    "code": "print(\"hiiii\")",
-                    "flow_tracking_data": {
-                        "ap_tracking": {
-                            "group": 56,
-                            "offset": 43
-                        },
-                        "reference_ids": {}
-                    }
-                }
-            ],
-            "964": [
-                {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__._jedi_swap"
-                    ],
-                    "code": "print(\"amounts_in_____\", ids.amount_in.low, ids.amount_in.high)",
-                    "flow_tracking_data": {
-                        "ap_tracking": {
-                            "group": 56,
-                            "offset": 71
-                        },
-                        "reference_ids": {
-                            "__main__._jedi_swap.amount_in": 36
-                        }
-                    }
-                }
-            ],
-            "981": [
-                {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__._jedi_swap"
-                    ],
-                    "code": "print(\"amounts_out_____\", ids.amount_out.low, ids.amount_out.high)",
-                    "flow_tracking_data": {
-                        "ap_tracking": {
-                            "group": 57,
-                            "offset": 0
-                        },
-                        "reference_ids": {
-                            "__main__._jedi_swap.amount_out": 38
-                        }
-                    }
-                }
-            ],
-            "1040": [
-                {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__._get_jedi_amounts_in"
-                    ],
-                    "code": "print(\"_get_jedi_amounts_in amount_out \", ids.amount_out.low, ids.amount_out.high)",
-                    "flow_tracking_data": {
-                        "ap_tracking": {
-                            "group": 60,
-                            "offset": 4
-                        },
-                        "reference_ids": {
-                            "__main__._get_jedi_amounts_in.amount_out": 39
-                        }
-                    }
-                }
-            ],
-            "1082": [
-                {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__._get_jedi_amounts_in"
-                    ],
-                    "code": "print(\"_get_jedi_amounts_in amounts in \", ids.amount_in_temp.low, ids.amount_in_temp.high)",
-                    "flow_tracking_data": {
-                        "ap_tracking": {
-                            "group": 61,
-                            "offset": 0
-                        },
-                        "reference_ids": {
-                            "__main__._get_jedi_amounts_in.amount_in_temp": 40
-                        }
-                    }
-                }
             ]
         },
         "identifiers": {
@@ -27904,36 +27720,6 @@
                 "type": "const",
                 "value": 4
             },
-            "__main__._get_jedi_amounts_in.amount_in_temp": {
-                "cairo_type": "starkware.cairo.common.uint256.Uint256",
-                "full_name": "__main__._get_jedi_amounts_in.amount_in_temp",
-                "references": [
-                    {
-                        "ap_tracking_data": {
-                            "group": 61,
-                            "offset": 0
-                        },
-                        "pc": 1082,
-                        "value": "[cast(fp + 2, starkware.cairo.common.uint256.Uint256*)]"
-                    }
-                ],
-                "type": "reference"
-            },
-            "__main__._get_jedi_amounts_in.amount_out": {
-                "cairo_type": "starkware.cairo.common.uint256.Uint256",
-                "full_name": "__main__._get_jedi_amounts_in.amount_out",
-                "references": [
-                    {
-                        "ap_tracking_data": {
-                            "group": 60,
-                            "offset": 0
-                        },
-                        "pc": 1038,
-                        "value": "[cast(fp + (-4), starkware.cairo.common.uint256.Uint256*)]"
-                    }
-                ],
-                "type": "reference"
-            },
             "__main__._jedi_get_amount_out": {
                 "decorators": [],
                 "pc": 987,
@@ -28039,51 +27825,6 @@
             "__main__._jedi_swap.SIZEOF_LOCALS": {
                 "type": "const",
                 "value": 4
-            },
-            "__main__._jedi_swap.amount_in": {
-                "cairo_type": "starkware.cairo.common.uint256.Uint256",
-                "full_name": "__main__._jedi_swap.amount_in",
-                "references": [
-                    {
-                        "ap_tracking_data": {
-                            "group": 56,
-                            "offset": 0
-                        },
-                        "pc": 918,
-                        "value": "[cast(fp + (-6), starkware.cairo.common.uint256.Uint256*)]"
-                    }
-                ],
-                "type": "reference"
-            },
-            "__main__._jedi_swap.amount_out": {
-                "cairo_type": "starkware.cairo.common.uint256.Uint256",
-                "full_name": "__main__._jedi_swap.amount_out",
-                "references": [
-                    {
-                        "ap_tracking_data": {
-                            "group": 57,
-                            "offset": 0
-                        },
-                        "pc": 981,
-                        "value": "[cast(fp + 2, starkware.cairo.common.uint256.Uint256*)]"
-                    }
-                ],
-                "type": "reference"
-            },
-            "__main__._jedi_swap.router_address": {
-                "cairo_type": "felt",
-                "full_name": "__main__._jedi_swap.router_address",
-                "references": [
-                    {
-                        "ap_tracking_data": {
-                            "group": 56,
-                            "offset": 43
-                        },
-                        "pc": 945,
-                        "value": "[cast(ap + (-1), felt*)]"
-                    }
-                ],
-                "type": "reference"
             },
             "__main__.alloc": {
                 "destination": "starkware.cairo.common.alloc.alloc",
@@ -30357,7 +30098,7 @@
                     },
                     "created_at": {
                         "cairo_type": "felt",
-                        "offset": 12
+                        "offset": 13
                     },
                     "current_amount": {
                         "cairo_type": "starkware.cairo.common.uint256.Uint256",
@@ -30369,15 +30110,19 @@
                     },
                     "debt_category": {
                         "cairo_type": "felt",
-                        "offset": 9
+                        "offset": 10
                     },
                     "id": {
                         "cairo_type": "felt",
                         "offset": 0
                     },
+                    "is_loan_withdrawn": {
+                        "cairo_type": "felt",
+                        "offset": 9
+                    },
                     "l3_integration": {
                         "cairo_type": "felt",
-                        "offset": 11
+                        "offset": 12
                     },
                     "market": {
                         "cairo_type": "felt",
@@ -30389,10 +30134,10 @@
                     },
                     "state": {
                         "cairo_type": "felt",
-                        "offset": 10
+                        "offset": 11
                     }
                 },
-                "size": 13,
+                "size": 14,
                 "type": "struct"
             },
             "contracts.storages.loan_store.Uint256": {
@@ -30912,6 +30657,92 @@
                 "type": "alias"
             },
             "contracts.storages.loan_store.market_utilised_borrow.storage_write": {
+                "destination": "starkware.starknet.common.syscalls.storage_write",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids": {
+                "type": "namespace"
+            },
+            "contracts.storages.loan_store.user_loan_ids.Args": {
+                "full_name": "contracts.storages.loan_store.user_loan_ids.Args",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "contracts.storages.loan_store.user_loan_ids.HashBuiltin": {
+                "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids.ImplicitArgs": {
+                "full_name": "contracts.storages.loan_store.user_loan_ids.ImplicitArgs",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "contracts.storages.loan_store.user_loan_ids.Return": {
+                "cairo_type": "()",
+                "type": "type_definition"
+            },
+            "contracts.storages.loan_store.user_loan_ids.SIZEOF_LOCALS": {
+                "type": "const",
+                "value": 0
+            },
+            "contracts.storages.loan_store.user_loan_ids.hash2": {
+                "destination": "starkware.cairo.common.hash.hash2",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids.normalize_address": {
+                "destination": "starkware.starknet.common.storage.normalize_address",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids.storage_read": {
+                "destination": "starkware.starknet.common.syscalls.storage_read",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids.storage_write": {
+                "destination": "starkware.starknet.common.syscalls.storage_write",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len": {
+                "type": "namespace"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.Args": {
+                "full_name": "contracts.storages.loan_store.user_loan_ids_len.Args",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.HashBuiltin": {
+                "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.ImplicitArgs": {
+                "full_name": "contracts.storages.loan_store.user_loan_ids_len.ImplicitArgs",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.Return": {
+                "cairo_type": "()",
+                "type": "type_definition"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.SIZEOF_LOCALS": {
+                "type": "const",
+                "value": 0
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.hash2": {
+                "destination": "starkware.cairo.common.hash.hash2",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.normalize_address": {
+                "destination": "starkware.starknet.common.storage.normalize_address",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.storage_read": {
+                "destination": "starkware.starknet.common.syscalls.storage_read",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.storage_write": {
                 "destination": "starkware.starknet.common.syscalls.storage_write",
                 "type": "alias"
             },
@@ -36013,46 +35844,6 @@
                     },
                     "pc": 747,
                     "value": "[cast(fp + (-3), felt*)]"
-                },
-                {
-                    "ap_tracking_data": {
-                        "group": 56,
-                        "offset": 0
-                    },
-                    "pc": 918,
-                    "value": "[cast(fp + (-6), starkware.cairo.common.uint256.Uint256*)]"
-                },
-                {
-                    "ap_tracking_data": {
-                        "group": 56,
-                        "offset": 43
-                    },
-                    "pc": 945,
-                    "value": "[cast(ap + (-1), felt*)]"
-                },
-                {
-                    "ap_tracking_data": {
-                        "group": 57,
-                        "offset": 0
-                    },
-                    "pc": 981,
-                    "value": "[cast(fp + 2, starkware.cairo.common.uint256.Uint256*)]"
-                },
-                {
-                    "ap_tracking_data": {
-                        "group": 60,
-                        "offset": 0
-                    },
-                    "pc": 1038,
-                    "value": "[cast(fp + (-4), starkware.cairo.common.uint256.Uint256*)]"
-                },
-                {
-                    "ap_tracking_data": {
-                        "group": 61,
-                        "offset": 0
-                    },
-                    "pc": 1082,
-                    "value": "[cast(fp + 2, starkware.cairo.common.uint256.Uint256*)]"
                 }
             ]
         }

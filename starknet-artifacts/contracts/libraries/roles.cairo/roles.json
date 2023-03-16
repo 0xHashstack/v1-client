@@ -634,6 +634,10 @@
                 "destination": "starkware.starknet.common.syscalls.get_caller_address",
                 "type": "alias"
             },
+            "contracts.libraries.lib_access_control.ADMIN": {
+                "type": "const",
+                "value": 418296719726
+            },
             "contracts.libraries.lib_access_control.AccessControl": {
                 "destination": "openzeppelin.access.accesscontrol.library.AccessControl",
                 "type": "alias"
