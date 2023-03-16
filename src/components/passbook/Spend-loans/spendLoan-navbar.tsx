@@ -326,9 +326,9 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
     const decimalsDeficit = 18 - tokenDecimalsMap[tokenName];
     const amount = getAmountOutData?.amount_to
       ? uint256
-          .uint256ToBN(getAmountOutData?.amount_to)
-          .mul(number.toBN(10).pow(number.toBN(decimalsDeficit)))
-          .toString()
+        .uint256ToBN(getAmountOutData?.amount_to)
+        .mul(number.toBN(10).pow(number.toBN(decimalsDeficit)))
+        .toString()
       : "NA";
     setTotalAmountOutJediSwap(amount);
   }, [getAmountOutData, loadingGetAmountOut, errorGetAmountOut]);
@@ -381,9 +381,9 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
     const decimalsDeficit = 18 - tokenDecimalsMap[tokenName];
     const amount = getAmountOutDataMySwap?.amount_to
       ? uint256
-          .uint256ToBN(getAmountOutDataMySwap?.amount_to)
-          .mul(number.toBN(10).pow(number.toBN(decimalsDeficit)))
-          .toString()
+        .uint256ToBN(getAmountOutDataMySwap?.amount_to)
+        .mul(number.toBN(10).pow(number.toBN(decimalsDeficit)))
+        .toString()
       : "NA";
     setTotalAmountOutmySwap(amount);
   }, [
@@ -426,8 +426,8 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
       appsImage === "mySwap"
         ? handleMySwap()
         : appsImage === "jediSwap"
-        ? handleJediSwap()
-        : null;
+          ? handleJediSwap()
+          : null;
     } else return null;
   };
 
@@ -609,12 +609,12 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                   // );
                 }}
               >
-             <Tooltip title={dapp.name} arrow>
-                <img
-                  src={`./dapps/${dapp.name}.svg`}
-                  height="90px"
-                  style={{ cursor: "pointer" }}
-                />
+                <Tooltip title={dapp.name} arrow>
+                  <img
+                    src={`./dapps/${dapp.name}.svg`}
+                    height="90px"
+                    style={{ cursor: "pointer" }}
+                  />
                 </Tooltip>
               </div>
             );
@@ -762,13 +762,19 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                       >
                         <div>
                           &nbsp;&nbsp;
-                          <img
-                            src={`./${appsImage}.svg`}
-                            width={`${
-                              appsImage === "mySwap" ? "60px" : "100px"
-                            }`}
-                            height="30px"
-                          ></img>
+                          {appsImage ? (
+                            <img
+                              src={`./${appsImage}.svg`}
+                              width={`${appsImage === "mySwap" ||
+                                appsImage === "yagi"
+                                ? "60px"
+                                : "100px"
+                                }`}
+                              height="30px"
+                            ></img>
+                          ) : (
+                            <>No dApps available</>
+                          )}
                         </div>
                         <div
                           style={{
@@ -834,7 +840,7 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                             const token = getTokenFromAddress(
                                               supportedPoolsJediSwap?.get(
                                                 tokenAddressMap[
-                                                  selectedLoan?.loanMarket
+                                                selectedLoan?.loanMarket
                                                 ]
                                               )?.[0] as string
                                             );
@@ -844,7 +850,7 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                             const token = getTokenFromAddress(
                                               supportedPoolsMySwap?.get(
                                                 tokenAddressMap[
-                                                  selectedLoan?.loanMarket
+                                                selectedLoan?.loanMarket
                                                 ]
                                               )?.[0] as string
                                             );
@@ -856,11 +862,10 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                     >
                                       <img
                                         src={`./${dapp.name}.svg`}
-                                        width={`${
-                                          dapp.name === "mySwap"
+                                        width={`${dapp.name === "mySwap"
                                             ? "60px"
                                             : "100px"
-                                        }`}
+                                          }`}
                                         height="30px"
                                       ></img>
                                     </div>
@@ -931,8 +936,8 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                             word === "Swap"
                                               ? "jediSwap"
                                               : word === "Stake"
-                                              ? "yagi"
-                                              : prev
+                                                ? "yagi"
+                                                : ""
                                           );
                                           // }
                                         }
@@ -947,7 +952,7 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                               color: "#8B8B8B",
                                             }}
                                           >
-                                            coming soon
+                                            Coming soon
                                           </div>
                                         ) : (
                                           <></>
@@ -1101,8 +1106,8 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                               (
                                 selectedLoan?.currentLoanAmount /
                                 10 **
-                                  (tokenDecimalsMap[selectedLoan?.loanMarket] ||
-                                    18)
+                                (tokenDecimalsMap[selectedLoan?.loanMarket] ||
+                                  18)
                               ).toFixed(4) || 0
                             ) : (
                               <span style={{ color: "white" }}>N/A</span>
@@ -1195,11 +1200,11 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                               const supportedMarkets =
                                 appsImage === "jediSwap"
                                   ? supportedPoolsJediSwap?.get(
-                                      borrowMarketAddress
-                                    )
+                                    borrowMarketAddress
+                                  )
                                   : supportedPoolsMySwap?.get(
-                                      borrowMarketAddress
-                                    );
+                                    borrowMarketAddress
+                                  );
                               const isSupported = supportedMarkets?.includes(
                                 tokenAddressMap[coin.name]
                               );
@@ -1299,8 +1304,8 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                               (
                                 selectedLoan?.currentLoanAmount /
                                 10 **
-                                  (tokenDecimalsMap[selectedLoan?.loanMarket] ||
-                                    18)
+                                (tokenDecimalsMap[selectedLoan?.loanMarket] ||
+                                  18)
                               ).toFixed(4)
                             ) : (
                               <span style={{ color: "white" }}>N/A</span>
@@ -1350,10 +1355,10 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                           appsImage === "mySwap" ? (
                             totalAmountOutmySwap !== "NA" ? (
                               totalAmountOutmySwap >
-                              changeTo18Decimals(
-                                selectedLoan?.currentLoanAmount,
-                                selectedLoan.loanMarket
-                              ) ? (
+                                changeTo18Decimals(
+                                  selectedLoan?.currentLoanAmount,
+                                  selectedLoan.loanMarket
+                                ) ? (
                                 `1 ${selectedLoan?.loanMarketSymbol} = ${(
                                   totalAmountOutmySwap /
                                   changeTo18Decimals(
@@ -1375,10 +1380,10 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                           ) : appsImage === "jediSwap" ? (
                             totalAmountOutJediSwap !== "NA" ? (
                               totalAmountOutJediSwap >
-                              changeTo18Decimals(
-                                selectedLoan?.currentLoanAmount,
-                                selectedLoan?.loanMarket
-                              ) ? (
+                                changeTo18Decimals(
+                                  selectedLoan?.currentLoanAmount,
+                                  selectedLoan?.loanMarket
+                                ) ? (
                                 `1 ${selectedLoan?.loanMarketSymbol} = ${(
                                   totalAmountOutJediSwap /
                                   changeTo18Decimals(
@@ -1444,13 +1449,13 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                       </div>
                     </div>
                   </div>
-                  <div style={{backgroundColor:"#393D4F",borderRadius:"5px",padding:"10px",fontSize:"13px"}}>
-                  <span style={{fontWeight:"200px"}}>
-                    Note : 
-                  </span>
-                     This is the note where you are supposed to do some information of the given user and something
-                </div>
-                <br/>
+                  {/* <div style={{ backgroundColor: "#393D4F", borderRadius: "5px", padding: "10px", fontSize: "13px" }}>
+                    <span style={{ fontWeight: "200px" }}>
+                      Note :
+                    </span>
+                    This is the note where you are supposed to do some information of the given user and something
+                  </div> */}
+                  <br />
                   <Button
                     color="white"
                     // className="w-md"

@@ -359,54 +359,28 @@ const SupplyModal = ({
                       onMouseLeave={()=>{setCommitmentDropDown(!commitmentDropDown)
                       setCommitmentArrow(arrowDown)}}
                     >
-                      <div
-                        style={{
-                          fontSize: "15px",
-                          margin: "10px 0",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          setCommitmentValue("1 month");
-                          setCommitmentDropDown(false);
-                          setCommitmentArrow(Downarrow);
-                          handleCommitChange(2);
-                        }}
-                      >
-                        &nbsp;1 month
-                      </div>
-                      <hr />
-                      <div
-                        style={{
-                          fontSize: "15px",
-                          margin: "10px 0",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          setCommitmentValue("2 weeks");
-                          setCommitmentDropDown(false);
-                          setCommitmentArrow(Downarrow);
-                          handleCommitChange(1);
-                        }}
-                      >
-                        &nbsp;2 weeks
-                      </div>
-                      <hr />
-                      <div
-                        style={{
-                          fontSize: "15px",
-                          margin: "10px 0",
-                          cursor: "pointer",
-                        }}
-                        onClick={() => {
-                          setCommitmentValue("Flexible");
-                          setCommitmentDropDown(false);
-                          setCommitmentArrow(Downarrow);
-                          handleCommitChange(0);
-                        }}
-                      >
-                        &nbsp;Flexible
-                      </div>
-                      <hr />
+                      {(["Flexible", "2 weeks", "1 month", "3 months"].map((commit, index, arr) => {
+                        return (
+                          <>
+                            <div
+                              style={{
+                                fontSize: "15px",
+                                margin: "10px 0",
+                                cursor: "pointer",
+                              }}
+                              onClick={() => {
+                                setCommitmentValue(commit);
+                                setCommitmentDropDown(false);
+                                setCommitmentArrow(Downarrow);
+                                handleCommitChange(index);
+                              }}
+                            >
+                              &nbsp;{commit}
+                            </div>
+                            {arr.length == (index + 1) ? <></> : <hr />}
+                          </>
+                        )
+                      }))}
                     </div>
                   </>
                 ) : (
@@ -546,7 +520,7 @@ const SupplyModal = ({
                         color: "rgb(111, 111, 111)",
                       }}
                     >
-                      $ 0.50
+                      $ 1.00
                     </div>
                   </div>
                   <div
@@ -564,7 +538,7 @@ const SupplyModal = ({
                         color: "rgb(111, 111, 111)",
                       }}
                     >
-                      {depositLoanRates && commitPeriod < 3 ? (
+                      {depositLoanRates && commitPeriod < 4 ? (
                         `${parseFloat(
                           depositLoanRates[
                             `${

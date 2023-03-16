@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { number } from "starknet";
 import { tokenAddressMap, tokenDecimalsMap } from "../../stark-constants";
-import { GetErrorText, NumToBN,etherToWeiBN } from "../../utils";
+import { GetErrorText, NumToBN, etherToWeiBN } from "../../utils";
 
 const useWithdrawDeposit = (
   asset: any,
@@ -15,6 +15,7 @@ const useWithdrawDeposit = (
 ) => {
   const [withdrawAmount, setWithdrawAmount] = useState<number>();
   const [transWithdraw, setTransWithdraw] = useState('');
+  const [withdrawAllorNot, setWithdrawAllorNot] = useState(false);
 
   const [toastDepWithdrawParam, setDepWithdrawToastParam] = useState({});
   const [isDepWithdrawToastOpen, setIsDepWithdrawToastOpen] = useState(false);
@@ -34,10 +35,29 @@ const useWithdrawDeposit = (
     },
   });
 
+  const {
+    data: withdrawDepositAll,
+    loading: loadingWithdrawDepositAll,
+    error: errorWithdrawDepositAll,
+    reset: resetWithdrawDepositAll,
+    execute: executeWithdrawDepositAll
+  } = useStarknetExecute({
+    calls: {
+      contractAddress: diamondAddress,
+      entrypoint: "withdraw_all_deposit",
+      calldata: [asset.depositId],
+    }
+  });
+
   const handleWithdrawDeposit = async () => {
     // console.log(`${withdrawAmount} ${asset.depositId} ${diamondAddress}`);
+
     try {
-      const val = await executeWithdrawDep();
+      let val;
+      if (withdrawAllorNot) 
+        val = await executeWithdrawDepositAll();
+      else 
+        val = await executeWithdrawDep();
       setTransWithdraw(val.transaction_hash);
       const toastParamValue = {
         success: true,
@@ -68,6 +88,7 @@ const useWithdrawDeposit = (
     handleWithdrawDeposit,
     setWithdrawAmount,
     withdrawAmount,
+    setWithdrawAllorNot,
     transWithdraw,
     executeWithdrawDep,
     loadingWithdrawDeposit,

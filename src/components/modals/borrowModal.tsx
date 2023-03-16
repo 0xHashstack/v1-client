@@ -518,22 +518,6 @@ const BorrowModal: any = ({
                       cursor: "pointer",
                     }}
                     onClick={() => {
-                      setCommitmentValue("1 month");
-                      setCommitmentDropDown(false);
-                      setCommitmentArrow(Downarrow);
-                      handleCommitmentChange(1);
-                    }}
-                  >
-                    &nbsp;1 month
-                  </div>
-                  <hr />
-                  <div
-                    style={{
-                      fontSize: "15px",
-                      margin: "10px 0",
-                      cursor: "pointer",
-                    }}
-                    onClick={() => {
                       setCommitmentValue("Flexible");
                       setCommitmentDropDown(false);
                       setCommitmentArrow(Downarrow);
@@ -541,6 +525,22 @@ const BorrowModal: any = ({
                     }}
                   >
                     &nbsp;Flexible
+                  </div>
+                  <hr/>
+                  <div
+                    style={{
+                      fontSize: "15px",
+                      margin: "10px 0",
+                      cursor: "pointer",
+                    }}
+                    onClick={() => {
+                      setCommitmentValue("1 month");
+                      setCommitmentDropDown(false);
+                      setCommitmentArrow(Downarrow);
+                      handleCommitmentChange(1);
+                    }}
+                  >
+                    &nbsp;1 month
                   </div>
                 </div>
               </>
@@ -778,7 +778,7 @@ const BorrowModal: any = ({
                       color: "#6F6F6F",
                     }}
                   >
-                    NA
+                    $1.5
                   </div>
                 </div>
                 <div

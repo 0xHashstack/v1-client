@@ -109,6 +109,7 @@ const ActiveDeposit = ({
     handleWithdrawDeposit,
     withdrawAmount,
     setWithdrawAmount,
+    setWithdrawAllorNot,
     transWithdraw,
     loadingWithdrawDeposit,
     errorWithdrawDeposit,
@@ -379,6 +380,7 @@ const ActiveDeposit = ({
         (Number(asset.amount) + Number(asset.acquiredYield)) /
         10 ** (tokenDecimalsMap[tokenName] || 18)
       );
+      setWithdrawAllorNot(true);
       // console.log("max clicked", asset);
     }
     console.log("max clicked");
@@ -492,7 +494,7 @@ const ActiveDeposit = ({
   }, [withdrawTransactionReceipt]);
 
  
-  const onWithdrawSlider = (e:any)=>{
+  const onWithdrawSlider = (value:any)=>{
      const currentBalance =
       parseFloat(
         weiToEtherNumber(
@@ -508,6 +510,8 @@ const ActiveDeposit = ({
       );
 
     setWithdrawAmount(e*currentBalance/100);
+    if(value  === 100) setWithdrawAllorNot(true);
+    else setWithdrawAllorNot(false);
   }
 
   return (
@@ -571,7 +575,7 @@ const ActiveDeposit = ({
               &nbsp;&nbsp;
               <span style={{ fontSize: "15px", fontWeight: "600" }}>
                 {weiToEtherNumber(
-                  assetParam.amount,
+                  (assetParam?.amount || '0').toString(),
                   tokenAddressMap[assetParam.market] || ""
                 )}
               </span>
@@ -1029,7 +1033,7 @@ const ActiveDeposit = ({
                           color: "rgb(111, 111, 111)",
                         }}
                       >
-                        {depositLoanRates && commitPeriod < 3 ? (
+                        {depositLoanRates && commitPeriod < 4 ? (
                           `${parseFloat(
                             depositLoanRates[
                               `${getTokenFromName(tokenName).address

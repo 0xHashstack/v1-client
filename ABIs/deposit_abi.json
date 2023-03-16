@@ -232,6 +232,34 @@
                 "type": "felt"
             }
         ],
+        "name": "withdraw_all_deposit",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "deposit_min_amount",
+        "outputs": [
+            {
+                "name": "min_amount",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "deposit_id",
+                "type": "felt"
+            }
+        ],
         "name": "get_deposit",
         "outputs": [
             {
@@ -270,6 +298,39 @@
     {
         "inputs": [
             {
+                "name": "user",
+                "type": "felt"
+            }
+        ],
+        "name": "get_user_deposits",
+        "outputs": [
+            {
+                "name": "deposit_records_arr_len",
+                "type": "felt"
+            },
+            {
+                "name": "deposit_records_arr",
+                "type": "Deposit*"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_deposit_len",
+        "outputs": [
+            {
+                "name": "len",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
                 "name": "market",
                 "type": "felt"
             }
@@ -278,6 +339,27 @@
         "outputs": [
             {
                 "name": "reserve",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "name": "get_deposit_reserves_commitment",
+        "outputs": [
+            {
+                "name": "reserve_commitment",
                 "type": "Uint256"
             }
         ],
