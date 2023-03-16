@@ -1017,7 +1017,7 @@ const ActiveDeposit = ({
                           color: "rgb(111, 111, 111)",
                         }}
                       >
-                        {depositLoanRates && commitPeriod < 3 ? (
+                        {depositLoanRates && commitPeriod < 4 ? (
                           `${parseFloat(
                             depositLoanRates[
                               `${getTokenFromName(tokenName).address

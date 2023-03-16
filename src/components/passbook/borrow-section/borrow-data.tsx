@@ -162,8 +162,8 @@ const BorrowData = ({
 }) => {
   const [asset, setAsset] = useState(assetParam);
   console.log("asset borrow data", asset);
-  const [marketTokenName, setMarketTokenName] = useState("USDT");
-  const [marketTokenSymbol, setMarketTokenSymbol] = useState("USDT");
+  const [marketTokenName, setMarketTokenName] = useState("");
+  const [marketTokenSymbol, setMarketTokenSymbol] = useState("");
 
   useEffect(() => {
     setAsset(assetParam);
@@ -287,12 +287,12 @@ const BorrowData = ({
   const [dropDownArrowTwo, setDropDownArrowTwo] = useState(Downarrow);
   const [dropDownArrowThree, setDropDownArrowThree] = useState(Downarrow);
   const [marketDropDown, setMarketDropDown] = useState(false);
-  const [actionLabel, setActionLabel] = useState("Stake");
+  const [actionLabel, setActionLabel] = useState("Swap");
   const [maxPartialWithdrawAmount, setMaxPartialWithdrawAmount] = useState(0);
   const [borrowInterest, setBorrowInterest] = useState<string>("");
   const [currentBorrowInterest, setCurrentBorrowInterest] = useState<any>();
 
-  const [selection, setSelection] = useState("Spend Borrow");
+  const [selection, setSelection] = useState(asset?.isSwapped ? "Revert Spend" : "Spend Borrow");
   const [selectionTwo, setSelectionTwo] = useState("Add Collateral");
 
   const [idDropDown, setIdDropDown] = useState(false);
@@ -305,12 +305,12 @@ const BorrowData = ({
   const [toastParam, setToastParam] = useState({});
   const [isToastOpen, setIsToastOpen] = useState(false);
 
-  const [appsImage, setappsImage] = useState("yagi");
+  const [appsImage, setappsImage] = useState("mySwap");
 
   const [poolId, setPoolId] = useState(0);
 
-  const [totalAmountOutmySwap, setTotalAmountOutmySwap] = useState("N/A");
-  const [totalAmountOutJediSwap, setTotalAmountOutJediSwap] = useState("N/A");
+  const [totalAmountOutmySwap, setTotalAmountOutmySwap] = useState("NA");
+  const [totalAmountOutJediSwap, setTotalAmountOutJediSwap] = useState("NA");
 
 
   /** Note show states */
@@ -977,15 +977,55 @@ const BorrowData = ({
   function isInvalid() {
     return (
       depositAmount < MinimumAmount[asset.loanMarket] ||
-      depositAmount >
+      depositAmount > (
       Number(
         uint256.uint256ToBN(loanMarketBalance ? loanMarketBalance[0] : 0)
       ) /
-      10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18)
+      10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18))
     );
   }
 
-  const handleSliderValue = (e) => {
+  function isInvalidCollateralAmount() {
+    return (
+      !addCollateralAmount ||
+      addCollateralAmount <= 0 ||
+      addCollateralAmount > (
+      Number(
+        uint256.uint256ToBN(loanMarketBalance ? loanMarketBalance[0] : 0)
+      ) /
+      10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18))
+    );
+  }
+
+  function getSupportedTokens() {
+    let _coins = Coins.map((coin, index) => {
+      if (coin.name === asset?.loanMarket) return null;
+      const borrowMarketAddress =
+        tokenAddressMap[asset.loanMarket];
+      const supportedMarkets =
+        appsImage === "jediSwap"
+          ? supportedPoolsJediSwap?.get(borrowMarketAddress)
+          : supportedPoolsMySwap?.get(borrowMarketAddress);
+      const isSupported = supportedMarkets?.includes(
+        tokenAddressMap[coin.name]
+      );
+      if (!isSupported) return null;
+      return coin;
+    });
+    let _coins2: ICoin[] = _coins.filter((coin) => coin != null);
+    
+    return _coins2?.length ? _coins2 : [];
+  }
+
+  useEffect(() => {
+    let coins = getSupportedTokens();
+    if (coins.length && !marketTokenName) {
+      setMarketTokenName(coins[0].name);
+      setMarketTokenSymbol(coins[0].symbol);
+    }
+  }, [asset, supportedPoolsJediSwap, supportedPoolsMySwap]);
+
+  const handleSliderValue = (e: any) => {
     const balance =
       Number(
         uint256.uint256ToBN(loanMarketBalance ? loanMarketBalance[0] : 0)
@@ -1002,42 +1042,6 @@ const BorrowData = ({
     // Round off percentage to 2 decimal places
     percentage = Math.round(percentage * 100) / 100;
     setValue(percentage);
-  };
-
-  const handleDeposit = async (asset: string) => {
-    if (
-      !tokenAddressMap[asset] &&
-      !depositAmount &&
-      !diamondAddress &&
-      !commitPeriod
-    ) {
-      toast.error(`${GetErrorText(`Invalid request`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
-    if (depositAmount === 0) {
-      // approve the transfer
-      toast.error(`${GetErrorText(`Can't deposit 0 of ${asset}`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
-    try {
-      let val = await executeDeposit();
-      // setTransDeposit(val.transaction_hash);
-    } catch (err) {
-      // console.log(err, "err deposit");
-    }
-    if (errorDeposit) {
-      toast.error(`${GetErrorText(`Deposit for ${asset} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
-      return;
-    }
   };
 
   const selectionAction = (value: string) => {
@@ -1905,7 +1909,7 @@ const BorrowData = ({
                                   <Image
                                     onClick={toggleyagi}
                                     src={yagiDownArrow}
-                                    alt="Picture of the author"
+                                    alt="DApp"
                                     width="14px"
                                     height="14px"
                                   />
@@ -2738,7 +2742,8 @@ const BorrowData = ({
                         <FormGroup>
                           <div className="row mb-4" style={{ width: "440px" }}>
                             <Col sm={12}>
-                              <InputGroup>
+                              <InputGroup
+                              >
                                 <Input
                                   style={{
                                     backgroundColor: "#1D2131",
@@ -2753,7 +2758,7 @@ const BorrowData = ({
                                     handleCollateralInputChangeAddCollateralAction
                                   }
                                   value={addCollateralAmount}
-                                  valid={!isInvalid()}
+                                  valid={!isInvalidCollateralAmount()}
                                 />
                                 <Button
                                   outline
@@ -2777,7 +2782,7 @@ const BorrowData = ({
                                   style={{
                                     background: "#1D2131",
                                     color: "rgb(111, 111, 111)",
-                                    border: `1px solid ${!isInvalid() === true
+                                    border: `1px solid ${!isInvalidCollateralAmount() === true
                                       ? "#34c38f"
                                       : "rgb(57, 61, 79)"
                                       }`,
@@ -2823,7 +2828,7 @@ const BorrowData = ({
                                   fontSize: "10px",
                                   position: "absolute",
                                   right: "12px",
-                                  top: "80px",
+                                  top: "75px",
                                 }}
                               >
                                 {value}%
@@ -3130,47 +3135,37 @@ const BorrowData = ({
                         boxShadow: "0px 0px 10px #00000020",
                       }}
                     >
-                      {Coins.map((coin, index) => {
-                        if (coin.name === marketTokenName) return <></>;
-                        const borrowMarketAddress =
-                          tokenAddressMap[asset.loanMarket];
-                        const supportedMarkets =
-                          appsImage === "jediSwap"
-                            ? supportedPoolsJediSwap?.get(borrowMarketAddress)
-                            : supportedPoolsMySwap?.get(borrowMarketAddress);
-                        const isSupported = supportedMarkets?.includes(
-                          tokenAddressMap[coin.name]
-                        );
-                        if (!isSupported) return <></>;
-                        return (
-                          <>
-                            <div
-                              key={index}
-                              style={{
-                                margin: "10px 0",
-                                cursor: "pointer",
-                                display: "flex",
-                                alignItems: "center",
-                                fontSize: "16px",
-                              }}
-                              onClick={() => {
-                                setMarketTokenName(`${coin.name}`);
-                                setMarketTokenSymbol(`${coin.symbol}`);
-                                setMarketDropDown(false);
-                                setDropDownArrowThree(Downarrow);
-                                handleLoanMarketBalanceChange();
-                              }}
-                            >
-                              <img
-                                src={`./${coin.name}.svg`}
-                                width="16px"
-                              // height="30px"
-                              ></img>
-                              <div>&nbsp;&nbsp;&nbsp;{coin.symbol}</div>
-                            </div>
-                            {index < supportedMarkets?.length ? <hr /> : null}
-                          </>
-                        );
+                      {
+                        getSupportedTokens().map((coin, index, arr) => {
+                          return (
+                            <>
+                              <div
+                                key={index}
+                                style={{
+                                  margin: "10px 0",
+                                  cursor: "pointer",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  fontSize: "16px",
+                                }}
+                                onClick={() => {
+                                  setMarketTokenName(`${coin.name}`);
+                                  setMarketTokenSymbol(`${coin.symbol}`);
+                                  setMarketDropDown(false);
+                                  setDropDownArrowThree(Downarrow);
+                                  handleLoanMarketBalanceChange();
+                                }}
+                              >
+                                <img
+                                  src={`./${coin.name}.svg`}
+                                  width="16px"
+                                // height="30px"
+                                ></img>
+                                <div>&nbsp;&nbsp;&nbsp;{coin.symbol}</div>
+                              </div>
+                              {index < arr.length ? <hr /> : null}
+                            </>
+                          );
                       })}
                     </div>
                   </>
@@ -3285,15 +3280,18 @@ const BorrowData = ({
                             alignItems: "center",
                           }}
                         >
-                          <div>
-                            {" "}
-                            <img
-                              src={`./${marketTokenName}.svg`}
-                              width="24px"
-                              height="24px"
-                            ></img>
-                            &nbsp;&nbsp;{marketTokenSymbol}
-                          </div>
+                          {marketTokenName ? 
+                            (
+                              <div>
+                                {" "}
+                                <img
+                                  src={`./${marketTokenName}.svg`}
+                                  width="24px"
+                                  height="24px"
+                                ></img>
+                                &nbsp;&nbsp;{marketTokenSymbol}
+                              </div>
+                            ) : <span>Loading...</span>}
                           <div
                             style={{
                               marginRight: "20px",
@@ -3491,7 +3489,8 @@ const BorrowData = ({
                       (appsImage === "jediSwap" && loadingMySwap) ||
                       appsImage === "yagiLogo" ||
                       actionLabel === "Trade" ||
-                      actionLabel === "Stake"
+                      actionLabel === "Stake" ||
+                      showNoteForSpendBorrow
                     }
                     onClick={handleSpendBorrowCTAButton}
                   >
@@ -3504,12 +3503,12 @@ const BorrowData = ({
                         <div style={{ fontSize: "12px" }}>
                           {actionLabel === "Trade" ||
                             actionLabel === "Stake" ? (
-                            <div style={{ opacity: "0.5" }}>Coming soon</div>
+                            <div style={{ opacity: "0.5" }}>{actionLabel} coming soon</div>
                           ) : null}
                         </div>
                       </div>
                     ) : (
-                      <MySpinner text="Depositing token" />
+                      <MySpinner text="Spending borrow" />
                     )}
                   </Button>
                 </div>
@@ -3557,7 +3556,7 @@ const BorrowData = ({
                           color: "#6F6F6F",
                         }}
                       >
-                        DC{asset.debtCategory}
+                        DC{parseInt(asset.debtCategory)}
                       </div>
                     </div>
                     {/* <div
@@ -3639,7 +3638,7 @@ const BorrowData = ({
                     ) ? (
                       <>{selection}</>
                     ) : (
-                      <MySpinner text="Depositing token" />
+                      <MySpinner text="Repaying" />
                     )}
                   </Button>
                 </div>
@@ -3727,6 +3726,10 @@ const BorrowData = ({
                       backgroundColor: "rgb(57, 61, 79)",
                       border: "none",
                     }}
+                    disabled={
+                      asset?.isWithdrawn ||
+                      asset?.isSwapped
+                    }
                     // disabled={
                     //   // commitPeriod === undefined ||
                     //   // loadingApprove ||
@@ -3742,7 +3745,7 @@ const BorrowData = ({
                     ) ? (
                       <>{selection}</>
                     ) : (
-                      <MySpinner text="Depositing token" />
+                      <MySpinner text="Withdrawing" />
                     )}
                   </Button>
                 </div>
@@ -3886,7 +3889,7 @@ const BorrowData = ({
                     {!isTransactionLoading(requestDepositTransactionReceipt) ? (
                       <>{selection}</>
                     ) : (
-                      <MySpinner text="Depositing token" />
+                      <MySpinner text="Liquidating" />
                     )}
                   </Button>
 
@@ -3990,7 +3993,10 @@ const BorrowData = ({
                       backgroundColor: "rgb(57, 61, 79)",
                       border: "none",
                     }}
-                    disabled={loadingRevertSpend}
+                    disabled={
+                      loadingRevertSpend ||
+                      showNoteForRevertSpend
+                    }
                     onClick={handleRevertSpend}
                   >
                     {!isTransactionLoading(requestRevertSpendReceipt) ? (
@@ -4092,7 +4098,7 @@ const BorrowData = ({
                       border: "none",
                     }}
                     disabled={
-                      loadingApprove || loadingAddCollateral || isInvalid()
+                      loadingApprove || loadingAddCollateral || isInvalidCollateralAmount()
                     }
                     onClick={handleAddCollateral}
                   >
@@ -4102,7 +4108,7 @@ const BorrowData = ({
                     ) ? (
                       <>{selection}</>
                     ) : (
-                      <MySpinner text="Depositing token" />
+                      <MySpinner text="Adding Collateral" />
                     )}
                   </Button>
                 </div>
@@ -4197,11 +4203,11 @@ const BorrowData = ({
                       }}
                     >
                       <div style={{ padding: "15px" }}></div>
-                      <div style={{ color: "#6F6F6F", fontSize: "9px" }}>
+                      {/* <div style={{ color: "#6F6F6F", fontSize: "9px" }}>
                         A pre-closure charge is applied on your collateral,
                         since you are withdrawing the collateral of a pre-closed
                         borrow.
-                      </div>
+                      </div> */}
                     </div>
                   </div>
                   {
@@ -4226,7 +4232,7 @@ const BorrowData = ({
                       backgroundColor: "rgb(57, 61, 79)",
                       border: "none",
                     }}
-                    disabled={loadingApprove || loadingDeposit || isInvalid()}
+                    disabled={loadingApprove || loadingDeposit || isInvalid() || showNoteForWithdrawCollateral}
                     onClick={handleWithdrawCollateral}
                   >
                     {!(
@@ -4235,7 +4241,7 @@ const BorrowData = ({
                     ) ? (
                       <>{selection}</>
                     ) : (
-                      <MySpinner text="Depositing token" />
+                      <MySpinner text="Withdrawing Collateral" />
                     )}
                   </Button>
                 </div>

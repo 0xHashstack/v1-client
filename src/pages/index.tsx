@@ -487,7 +487,9 @@ const Dashboard = () => {
         "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
     });
     const MySwap = new Contract(loanAbi, diamondAddress, provider);
-    const res = await MySwap.call("get_user_loans", [account]);
+    const res = await MySwap.call("get_user_loans", [account], {
+      blockIdentifier: 'pending'
+    });
     parseLoansData(res?.loan_records_arr, res?.collateral_records_arr);
     console.log(res);
   }
@@ -499,6 +501,7 @@ const Dashboard = () => {
   /*============================== Get Deposits from the blockchain ====================================*/
 
   function parseDepositsData(depositsData: any[]) {
+    console.log('parseDeposisDatat', depositsData);
     let deposits: any[] = [];
     let deposit;
     for (let i = 0; i < depositsData?.length; i++) {
@@ -928,7 +931,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div style={{ width: "7%" }}>
-                          <div style={{ color: "#8C8C8C" }}>APR Earned</div>
+                          <div style={{ color: "#8C8C8C" }}>Interest</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
                             {/* $8,932.14 */}${netAprEarned}
                           </div>
@@ -952,7 +955,7 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div style={{ width: "7%" }}>
-                          <div style={{ color: "#8C8C8C" }}>APR Earned</div>
+                          <div style={{ color: "#8C8C8C" }}>Interest Earned</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
                             {/* $8,932.14 */}${netAprEarned}
                           </div>
