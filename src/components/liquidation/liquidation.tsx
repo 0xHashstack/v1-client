@@ -20,7 +20,7 @@ import {
   isTransactionLoading,
   LiquidateAbi,
   tokenAddressMap,
-  tokenDecimalsMap
+  tokenDecimalsMap,
 } from "../../blockchain/stark-constants";
 import { TxToastManager } from "../../blockchain/txToastManager";
 import { BNtoNum, weiToEtherNumber } from "../../blockchain/utils";
@@ -83,12 +83,11 @@ const LiquidationButton = ({
     abi: ERC20Abi as Abi,
     address: loanTokenAddress,
   });
- 
+
   const { contract: loanContract } = useContract({
     abi: LiquidateAbi as Abi,
     address: diamondAddress,
   });
- 
 
   const {
     data: dataAllowance,
@@ -112,16 +111,18 @@ const LiquidationButton = ({
     reset: resetToken,
     execute: approveToken,
   } = useStarknetExecute({
-    calls:[ {
-      contractAddress: loanTokenAddress,
-      entrypoint: "approve",
-      calldata: [diamondAddress, loan.loanAmount, 0],
-    },
-    {
-      contractAddress: diamondAddress,
-      entrypoint: "liquidate",
-      calldata: [loan.id],
-    }]
+    calls: [
+      {
+        contractAddress: loanTokenAddress,
+        entrypoint: "approve",
+        calldata: [diamondAddress, loan.loanAmount, 0],
+      },
+      {
+        contractAddress: diamondAddress,
+        entrypoint: "liquidate",
+        calldata: [loan.id],
+      },
+    ],
   });
 
   const {
@@ -134,11 +135,9 @@ const LiquidationButton = ({
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "liquidate",
-      calldata: [(loan.id).toString()],
+      calldata: [loan.id.toString()],
     },
   });
-  
-  
 
   const {
     data: is_liquidable,
@@ -246,13 +245,13 @@ const LiquidationButton = ({
       setLoadingMsg("Liquidating...");
     }
   }, [dataLiquidate, liquidate, errorLiquidate]);
-   
+
   return (
     <>
       {loadingMsg ? <>{loadingMsg}</> : <></>}
       {shouldApprove ? (
         <Button
-          disabled={BNtoNum(is_liquidable) === "1"? false :true}
+          disabled={BNtoNum(is_liquidable) === "1" ? false : true}
           // className="text-muted"
           color="light"
           style={{ color: "white", backgroundColor: "rgb(57, 61, 79)" }}
@@ -260,20 +259,21 @@ const LiquidationButton = ({
           onClick={async () => {
             // reset()
             try {
-              const val = await approveToken() ;
+              const val = await approveToken();
               setTransApprove(val.transaction_hash);
             } catch (err) {
               // console.log(err, "err approve for liquidation or Liquidation");
             }
           }}
         >
-          {isTransactionLoading(approveTransactionReceipt) && isTransactionLoading(liquidateTransactionReceipt) ? (
+          {isTransactionLoading(approveTransactionReceipt) &&
+          isTransactionLoading(liquidateTransactionReceipt) ? (
             <MySpinner text="Approving & Liquidating token" />
           ) : (
-              
             <>
-            {BNtoNum(is_liquidable) === "1"?  "Approve & Liquidate": "Not Liquidable"}
-           
+              {BNtoNum(is_liquidable) === "1"
+                ? "Approve & Liquidate"
+                : "Not Liquidable"}
             </>
           )}
         </Button>
@@ -310,40 +310,105 @@ const LiquidationButton = ({
 };
 
 const Liquidation = ({
+  oraclePrices,
   activeLiquidationsData,
   isTransactionDone,
 }: {
+  oraclePrices: any;
   activeLiquidationsData: any;
   isTransactionDone: any;
 }) => {
-  
+  console.log(oraclePrices);
+  const [oraclePricesArray, setOraclePricesArray] = useState<any>();
+  const [entity, setEntity] = useState<any>();
+
+  useEffect(() => {
+    setOraclePricesArray(oraclePrices);
+  }, [oraclePrices]);
+
+  async function parseOrcalePrice(token: string) {
+    console.log("hero", oraclePrices);
+    console.log("hero", token);
+    let price = 0;
+    if (oraclePricesArray !== undefined) {
+      for (let i = 0; i < oraclePricesArray?.length; i++) {
+        if (oraclePricesArray[i].name == token.toString()) {
+          price = oraclePricesArray[i].price;
+          console.log("hero", price);
+          return Number(price);
+        }
+      }
+    }
+  }
+
   return (
     <TabPane tabId="3">
       <div
         className="table-responsive"
-        style={{ backgroundColor: "rgb(42, 46, 63)" }}
+        style={{ backgroundColor: "rgb(42, 46, 63)", overflowX: "hidden" }}
       >
-        <Table className="table table-nowrap align-middle mb-0" >
-          <thead style={{marginLeft:"20px"}}>
+        <Table
+          className="table table-nowrap align-middle mb-0"
+          style={{ marginLeft: "60px", marginTop: "20px" }}
+        >
+          <thead style={{ marginLeft: "20px" }}>
             <tr style={{ color: "rgb(140, 140, 140)" }}>
-             <th scope="col">Borrow Id</th>
+              <th scope="col">Borrow Id</th>
               <th scope="col">Borrowed</th>
               <th scope="col">Collateral</th>
               <th scope="col">Risk Premium</th>
               <th scope="col">Debt Converted</th>
-              <th scope="col">Converted Market </th>
-              <th scope="col">Amount</th>
+              <th scope="col">Converted Amount </th>
               <th scope="col">Current Discount</th>
               <th scope="col">Actions</th>
             </tr>
           </thead>
-          <tbody style={{marginLeft:"20px"}}>
+          <tbody style={{ marginLeft: "20px" }}>
             {Array.isArray(activeLiquidationsData) &&
             activeLiquidationsData.length > 0 ? (
               activeLiquidationsData.map((asset, key) => {
-                console.log("asset in li", asset);
+                let actualLoanAmount = asset.openLoanAmount;
+                let actualMarket = asset.loanMarket;
+                let convertedAmount = 0;
+                console.log("harish", oraclePrices);
+                if (asset.currentMarket) {
+                  actualLoanAmount = asset.currentAmount;
+                  actualMarket = asset.currentMarket;
+                  convertedAmount =
+                    asset.currentAmount * parseOrcalePrice(asset.currentMarket);
+                }
 
-                const Discount = ((Number(asset.collateralAmount)/10**tokenDecimalsMap[asset.collateralMarket.toString()] + (Number(asset.currentAmount)/10**tokenDecimalsMap[asset.collateralMarket.toString()] - Number(asset.openLoanAmount)/10**tokenDecimalsMap[asset.loanMarket.toString()]))/Number(asset.openLoanAmount)/10**tokenDecimalsMap[asset.loanMarket.toString()])*100;
+                // const Discount =
+                //   (((((Number(asset.collateralAmount) *
+                //     parseOrcalePrice(oraclePrices, asset?.collateralMarket)) /
+                //     10 ** tokenDecimalsMap[asset.collateralMarket.toString()] +
+                //     ((Number(asset.currentAmount) *
+                //       parseOrcalePrice(oraclePrices, asset?.currentMarket)) /
+                //       10 **
+                //         tokenDecimalsMap[asset.collateralMarket.toString()] -
+                //       (Number(actualLoanAmount) *
+                //         parseOrcalePrice(oraclePrices, actualMarket)) /
+                //         10 ** tokenDecimalsMap[asset.loanMarket.toString()])) /
+                //     Number(actualLoanAmount)) *
+                //     parseOrcalePrice(oraclePrices, actualMarket)) /
+                //     10 ** tokenDecimalsMap[asset.loanMarket.toString()]) *
+                //   100;
+
+                // console.log("discount", Discount);
+                // console.log(
+                //   "discount",
+                //   (Number(asset.collateralAmount) /
+                //     10 ** tokenDecimalsMap[asset.collateralMarket.toString()] +
+                //     (Number(asset.currentAmount) /
+                //       10 **
+                //         tokenDecimalsMap[asset.collateralMarket.toString()] -
+                //       Number(asset.openLoanAmount) /
+                //         10 ** tokenDecimalsMap[asset.loanMarket.toString()])) /
+                //     (Number(asset.openLoanAmount) /
+                //       10 ** tokenDecimalsMap[asset.loanMarket.toString()])
+                // );
+                // console.log("discount", Discount);
+                console.log("discount", asset);
                 return (
                   <tr key={key} style={{ color: "white" }}>
                     {/* <th scope="row">
@@ -360,32 +425,33 @@ const Liquidation = ({
                         <span>{asset.loanMarketSymbol?.toUpperCase()}</span>
                       </div>
                     </th> */}
-                    <td>
-                      ID{asset.id}
-                    </td>
+                    <td>ID{asset.id}</td>
                     <td>
                       <div>
                         {/* {// console.log(asset.loanAmount)} */}
-                        
                         {/* {BNtoNum(Number(asset.loanAmount))} */}
-                          <img
-                            style={{ scale: "0.7" }}
-                            src={
-                              CoinClassNames[
-                                EventMap[asset.loanMarket?.toUpperCase()]
-                              ] || asset?.loanMarket?.toUpperCase()
-                            }
-                          />
-                          <span style={{ scale: "0.7" }}>
-                          {weiToEtherNumber((asset.loanAmount).toString(),tokenAddressMap[asset.loanMarket]||"")}
-                          </span>
+                        <img
+                          style={{ height: "18px" }}
+                          src={
+                            CoinClassNames[
+                              EventMap[asset.loanMarket?.toUpperCase()]
+                            ] || asset?.loanMarket?.toUpperCase()
+                          }
+                        />
+                        &nbsp;
+                        <span>
+                          {weiToEtherNumber(
+                            asset.loanAmount.toString(),
+                            tokenAddressMap[asset.loanMarket] || ""
+                          )}
+                        </span>
                       </div>
                     </td>
-                    <th scope="row" >
-
+                    <th scope="row">
                       <div className="d-flex align-items-center">
                         <div>
                           <img
+                            style={{ height: "18px" }}
                             src={
                               CoinClassNames[
                                 EventMap[asset?.collateralMarket?.toUpperCase()]
@@ -393,8 +459,14 @@ const Liquidation = ({
                             }
                           />
                         </div>
-                        <span>
-                        {weiToEtherNumber((asset?.collateralAmount).toString(),tokenAddressMap[asset?.collateralMarket]?.toString()||"")?.toString()}
+                        &nbsp;
+                        <span style={{ fontWeight: "300" }}>
+                          {weiToEtherNumber(
+                            (asset?.collateralAmount).toString(),
+                            tokenAddressMap[
+                              asset?.collateralMarket
+                            ]?.toString() || ""
+                          )?.toString()}
                         </span>
                       </div>
                     </th>
@@ -407,51 +479,32 @@ const Liquidation = ({
                       </div>
                     </td>
                     <td>
-                      <div>
-                        {asset?.openLoanAmount == '0' ? "Yes" : "No"}
-                      </div>
+                      <div>{asset?.openLoanAmount == "0" ? "Yes" : "No"}</div>
                     </td>
                     <td>
                       <div>
-                        {/* {EventMap[asset.commitment]}
-                      {// console.log(EventMap[asset.commitment])
-                      } Converted Market*/}
-                        {/* <img
-                        src={
-                          CoinClassNames[
-                            EventMap[asset.collateralMarket?.toUpperCase()]
-                          ] || asset.collateralMarket?.toUpperCase()
-                        }
-                      /> */}
-                        -
+                        {asset.currentMarket ? (
+                          <div
+                            style={{ display: "flex", alignItems: "center" }}
+                          >
+                            <img
+                              height="14px"
+                              src={
+                                CoinClassNames[
+                                  EventMap[asset.currentMarket?.toUpperCase()]
+                                ]
+                              }
+                            />
+                            &nbsp;
+                            {convertedAmount}
+                          </div>
+                        ) : (
+                          <>-</>
+                        )}
                       </div>
                     </td>
                     <td>
-                      <div>
-                        {/* {EventMap[asset.commitment]}
-                      {// console.log(EventMap[asset.commitment])
-                      } Amount*/}
-                        -
-                      </div>
-                    </td>
-                    <td>
-                      <div>
-                        {/* {EventMap[asset.commitment]}
-                      {// console.log(EventMap[asset.commitment])
-                      } Amount*/}
-                      {}
-                        {/* 10% */}
-                        {Discount !== undefined ? (
-                      <NumericFormat
-                        displayType="text"
-                        value={Discount.toFixed(2)}
-                        thousandSeparator=","
-                        suffix="%"
-                      />
-                    ) : (
-                      <MySpinner />
-                    )}
-                      </div>
+                      <div>-</div>
                     </td>
                     <td>
                       <LiquidationButton
