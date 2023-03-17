@@ -267,7 +267,7 @@ const LiquidationButton = ({
           }}
         >
           {isTransactionLoading(approveTransactionReceipt) &&
-          isTransactionLoading(liquidateTransactionReceipt) ? (
+            isTransactionLoading(liquidateTransactionReceipt) ? (
             <MySpinner text="Approving & Liquidating token" />
           ) : (
             <>
@@ -326,11 +326,9 @@ const Liquidation = ({
     setOraclePricesArray(oraclePrices);
   }, [oraclePrices]);
 
-  async function parseOrcalePrice(token: string) {
-    console.log("hero", oraclePrices);
-    console.log("hero", token);
+  function parseOrcalePrice(token: string) {
     let price = 0;
-    if (oraclePricesArray !== undefined) {
+    if (oraclePricesArray) {
       for (let i = 0; i < oraclePricesArray?.length; i++) {
         if (oraclePricesArray[i].name == token.toString()) {
           price = oraclePricesArray[i].price;
@@ -365,49 +363,20 @@ const Liquidation = ({
           </thead>
           <tbody style={{ marginLeft: "20px" }}>
             {Array.isArray(activeLiquidationsData) &&
-            activeLiquidationsData.length > 0 ? (
+              activeLiquidationsData.length > 0 ? (
               activeLiquidationsData.map((asset, key) => {
-                let actualLoanAmount = asset.openLoanAmount;
-                let actualMarket = asset.loanMarket;
-                let convertedAmount = 0;
-                console.log("harish", oraclePrices);
-                if (asset.currentMarket) {
-                  actualLoanAmount = asset.currentAmount;
-                  actualMarket = asset.currentMarket;
-                  convertedAmount =
-                    asset.currentAmount * parseOrcalePrice(asset.currentMarket);
-                }
+                let collateralUSDValue = weiToEtherNumber(asset?.collateralAmount?.toString(), tokenAddressMap?.[asset?.collateralMarket?.toString()]) * parseOrcalePrice(asset?.collateralMarket?.toString());
+                let loanUSDValue = weiToEtherNumber(asset?.loanAmount?.toString(), tokenAddressMap?.[asset?.loanMarket?.toString()]) * parseOrcalePrice(asset?.loanMarket?.toString());
 
-                // const Discount =
-                //   (((((Number(asset.collateralAmount) *
-                //     parseOrcalePrice(oraclePrices, asset?.collateralMarket)) /
-                //     10 ** tokenDecimalsMap[asset.collateralMarket.toString()] +
-                //     ((Number(asset.currentAmount) *
-                //       parseOrcalePrice(oraclePrices, asset?.currentMarket)) /
-                //       10 **
-                //         tokenDecimalsMap[asset.collateralMarket.toString()] -
-                //       (Number(actualLoanAmount) *
-                //         parseOrcalePrice(oraclePrices, actualMarket)) /
-                //         10 ** tokenDecimalsMap[asset.loanMarket.toString()])) /
-                //     Number(actualLoanAmount)) *
-                //     parseOrcalePrice(oraclePrices, actualMarket)) /
-                //     10 ** tokenDecimalsMap[asset.loanMarket.toString()]) *
-                //   100;
+                let currentUSDValue = 0;
+                if (asset.currentMarket)
+                  currentUSDValue = weiToEtherNumber(asset?.currentAmount?.toString(), tokenAddressMap?.[asset?.currentMarket?.toString() || ""]) * parseOrcalePrice(asset?.currentMarket?.toString() || "");
+                else
+                  currentUSDValue = weiToEtherNumber(asset?.openLoanAmount?.toString(), tokenAddressMap?.[asset?.loanMarket?.toString()]) * parseOrcalePrice(asset?.loanMarket?.toString());
 
-                // console.log("discount", Discount);
-                // console.log(
-                //   "discount",
-                //   (Number(asset.collateralAmount) /
-                //     10 ** tokenDecimalsMap[asset.collateralMarket.toString()] +
-                //     (Number(asset.currentAmount) /
-                //       10 **
-                //         tokenDecimalsMap[asset.collateralMarket.toString()] -
-                //       Number(asset.openLoanAmount) /
-                //         10 ** tokenDecimalsMap[asset.loanMarket.toString()])) /
-                //     (Number(asset.openLoanAmount) /
-                //       10 ** tokenDecimalsMap[asset.loanMarket.toString()])
-                // );
-                // console.log("discount", Discount);
+                let discount = 0;
+                discount = ((collateralUSDValue - loanUSDValue + currentUSDValue) / loanUSDValue) * 100;
+
                 console.log("discount", asset);
                 return (
                   <tr key={key} style={{ color: "white" }}>
@@ -434,7 +403,7 @@ const Liquidation = ({
                           style={{ height: "18px" }}
                           src={
                             CoinClassNames[
-                              EventMap[asset.loanMarket?.toUpperCase()]
+                            EventMap[asset.loanMarket?.toUpperCase()]
                             ] || asset?.loanMarket?.toUpperCase()
                           }
                         />
@@ -454,7 +423,7 @@ const Liquidation = ({
                             style={{ height: "18px" }}
                             src={
                               CoinClassNames[
-                                EventMap[asset?.collateralMarket?.toUpperCase()]
+                              EventMap[asset?.collateralMarket?.toUpperCase()]
                               ] || asset?.collateralMarket?.toUpperCase()
                             }
                           />
@@ -491,12 +460,12 @@ const Liquidation = ({
                               height="14px"
                               src={
                                 CoinClassNames[
-                                  EventMap[asset.currentMarket?.toUpperCase()]
+                                EventMap[asset.currentMarket?.toUpperCase()]
                                 ]
                               }
                             />
                             &nbsp;
-                            {convertedAmount}
+                            {weiToEtherNumber(asset?.currentAmount.toString(), tokenAddressMap[asset.currentMarket] || "")}
                           </div>
                         ) : (
                           <>-</>
@@ -504,7 +473,7 @@ const Liquidation = ({
                       </div>
                     </td>
                     <td>
-                      <div>-</div>
+                      <div>{discount.toFixed(2)}%</div>
                     </td>
                     <td>
                       <LiquidationButton
