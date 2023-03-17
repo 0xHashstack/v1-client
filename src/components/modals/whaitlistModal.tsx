@@ -5,9 +5,34 @@ import "react-toastify/dist/ReactToastify.css";
 import React from "react";
 
 import starknetLogoBordered from "../../assets/images/starknetLogoBordered.svg";
+import OffchainAPI from "../../services/offchainapi.service";
+
 
 const WhitelistModal = ({ accountAddress }: { accountAddress: any }) => {
   const [clicked, setClicked] = React.useState(false);
+  const [name, setName] = React.useState(null);
+  const [email, setEmail] = React.useState(null);
+
+
+  const postUserData = async () => {
+    setClicked(true);
+    let email = (document.getElementById("email") as HTMLInputElement).value;
+    let name = (document.getElementById("name") as HTMLInputElement).value;
+
+    try {
+    const result = await OffchainAPI.setWhitelistData(accountAddress, email, name);
+    console.log("whitelistSuccess?", result)      
+    } catch(err) {console.log("whitelist",err)}
+  }
+
+  const isName = () => {
+    return name;
+  }
+
+  const isEmail = () => {
+    return email;
+  }
+
 
   return (
     <>
@@ -21,7 +46,28 @@ const WhitelistModal = ({ accountAddress }: { accountAddress: any }) => {
           }}
         >
           {accountAddress ? (
-            <Form>
+            clicked? <Form>
+            <div>
+              <Col
+                sm={8}
+                style={{
+                  display: "flex",
+                  justifyContent: "space-between",
+                  width: "100%",
+                }}
+              >
+                <h5
+                  style={{
+                    color: "white",
+                    fontSize: "15px",
+                    textAlign: "center",
+                  }}
+                >
+                  You have been added in the queue. We will send you an email from allowlist@hashstack.finance when you are whitelisted
+                </h5>
+              </Col>
+            </div>
+          </Form> : <Form>
               <div>
                 <Col
                   sm={8}
@@ -51,6 +97,8 @@ const WhitelistModal = ({ accountAddress }: { accountAddress: any }) => {
                       marginTop: "10px",
                     }}
                     id="name"
+                    value = {name}
+                    onChange = {(e) => setName(e.target.value)}
                     placeholder={`What should we call you ?`}
                   />
                 </InputGroup>
@@ -62,6 +110,8 @@ const WhitelistModal = ({ accountAddress }: { accountAddress: any }) => {
                       height: "45px",
                     }}
                     id="email"
+                    value = {email}
+                    onChange = {(e) => setEmail(e.target.value)}
                     placeholder={`Your email address ?`}
                   />
                 </InputGroup>
@@ -123,7 +173,8 @@ const WhitelistModal = ({ accountAddress }: { accountAddress: any }) => {
 
                   <Button
                     color="white"
-                    // disabled={true}
+                    disabled={!isEmail() || !isName()? true : false}
+                    onClick={postUserData}
                     style={{
                       boxShadow: "rgba(0, 0, 0, 0.5) 3.4px 3.4px 5.2px 0px",
                       border: "none",
