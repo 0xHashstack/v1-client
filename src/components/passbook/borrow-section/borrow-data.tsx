@@ -4035,7 +4035,8 @@ const BorrowData = ({
                     }}
                     disabled={
                       loadingRevertSpend ||
-                      showNoteForRevertSpend
+                      showNoteForRevertSpend || 
+                      isTransactionLoading(requestRevertSpendReceipt)
                     }
                     onClick={handleRevertSpend}
                   >

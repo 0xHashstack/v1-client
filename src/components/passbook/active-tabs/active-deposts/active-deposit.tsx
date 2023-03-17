@@ -380,6 +380,8 @@ const ActiveDeposit = ({
     console.log(percentage);
     
     setValue(percentage);
+    if(percentage  === 100) setWithdrawAllorNot(true);
+    else setWithdrawAllorNot(false);
   };
 
   const handleMax = () => {
