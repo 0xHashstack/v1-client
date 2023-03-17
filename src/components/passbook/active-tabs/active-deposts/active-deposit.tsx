@@ -76,6 +76,7 @@ import classnames from "classnames";
 import { IDepositLoanRates } from "../../../borrow";
 import ToastModal from "../../../toastModals/customToastModal";
 import UserInformation from "../../../../../UserInformation.json";
+import { NumericFormat } from "react-number-format";
 
 const ActiveDeposit = ({
   reserves,
@@ -979,7 +980,7 @@ const ActiveDeposit = ({
                         top: "90px",
                       }}
                     >
-                      {value}%
+                      {value.toFixed(2)}%
                     </div>
                     {customActiveTab === "1"
                       ? depositAmount !== 0 &&
