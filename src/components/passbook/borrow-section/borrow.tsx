@@ -668,6 +668,7 @@ const BorrowTab = ({
     try {
       let val = await executeBorrow();
       setTransBorrow(val.transaction_hash);
+
       const toastParamValue = {
         success: true,
         heading: "Success",

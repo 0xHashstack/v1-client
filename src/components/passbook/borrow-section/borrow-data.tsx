@@ -207,7 +207,7 @@ const BorrowData = ({
     repayTransactionReceipt,
     errorRepay,
   } = useRepay(asset, diamondAddress);
-  const { executeSelfLiquidate, loadingSelfLiquidate, errorSelfLiquidate } =
+  const { executeSelfLiquidate, loadingSelfLiquidate, errorSelfLiquidate, setIsSelfLiquidateHash, selfLiquidateTransactionReceipt } =
     useRepay(asset, diamondAddress);
   const {
     executeWithdrawCollateral,
@@ -762,6 +762,7 @@ const BorrowData = ({
   const handleSelfLiquidate = async () => {
     try {
       const val = await executeSelfLiquidate();
+      setTransRepayHash(val.transaction_hash);
       const toastParamValue = {
         success: true,
         heading: "Success",
@@ -851,6 +852,16 @@ const BorrowData = ({
       return;
     }
   };
+
+
+  useEffect(() => {
+    TxToastManager.handleTxToast(
+      repayTransactionReceipt,
+      `Repay Loan ID ${asset?.loanId}`
+    );
+  }, [repayTransactionReceipt]);
+
+
 
   const changeTo18Decimals = (value: any, market: any) => {
     if (!tokenDecimalsMap[market]) return value;
@@ -3651,7 +3662,7 @@ const BorrowData = ({
                   >
                     {!(
                       loadingApprove ||
-                      isTransactionLoading(requestDepositTransactionReceipt)
+                      isTransactionLoading(repayTransactionReceipt)
                     ) ? (
                       <>{selection}</>
                     ) : (
@@ -4306,17 +4317,21 @@ const BorrowData = ({
                         setIdDropDown(false);
                         setMarketTokenName((prev) => {
                           if (appsImage === "jediSwap") {
-                            return getTokenFromAddress(
+                            const token = getTokenFromAddress(
                               supportedPoolsJediSwap.get(
                                 tokenAddressMap[eleAsset.loanMarket]
                               )[0] as string
-                            ).name;
+                            );
+                            setMarketTokenSymbol(token?.symbol);
+                            return token?.name;
                           } else if (appsImage === "mySwap") {
-                            return getTokenFromAddress(
+                            const token = getTokenFromAddress(
                               supportedPoolsMySwap.get(
                                 tokenAddressMap[eleAsset.loanMarket]
                               )[0] as string
-                            ).name;
+                            );
+                            setMarketTokenSymbol(token?.symbol);
+                            return token?.name;
                           } else return prev;
                         });
                       }}
