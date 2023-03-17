@@ -24,6 +24,7 @@ import { useDisconnect } from "wagmi";
 import { TabContext } from "../../hooks/contextHooks/TabContext";
 import OffchainAPI from "../../services/offchainapi.service";
 import { toast } from "react-toastify";
+import { stubFalse } from "lodash";
 
 const SecondaryHeader = ({
   handleDisconnectWallet,
@@ -510,13 +511,14 @@ const SecondaryHeader = ({
             toggleCustom("6");
             setLiquidateDropDown(false);
           }}
+          onMouseLeave={()=>{setLiquidateDropDown(false)}}
         >
           <img src="./money-recive.svg" style={{ marginRight: "5px  " }} />
           Liquidate
         </label>
       ) : null}
       {account && connectWalletArrowState.bool ? (
-        <div style={{ zIndex: "1000" }}>
+        <div style={{ zIndex: "1000" }} onMouseLeave={()=>{setConnectWalletArrowState({bool:false,direction:setConnectWalletArrowState.direction})}}>
           <div
             style={{
               position: "absolute",
@@ -608,7 +610,7 @@ const SecondaryHeader = ({
         <></>
       )}
       {settingDropDown && !selectLanguage ? (
-        <div style={{ zIndex: "1000" }}>
+        <div style={{ zIndex: "1000" }} onMouseLeave={()=>{setSettingDropDown(false)}}>
           <div
             style={{
               position: "absolute",
@@ -677,7 +679,7 @@ const SecondaryHeader = ({
         <></>
       )}
       {selectLanguage ? (
-        <div style={{ zIndex: "1000" }}>
+        <div style={{ zIndex: "1000" }} onMouseLeave={()=>{setSelectLanguage(false)}}>
           <div
             style={{
               position: "absolute",

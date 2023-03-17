@@ -20,18 +20,32 @@ export function TabsProvider({ children }) {
   const [title, setTitle] = useState({
     label: "None",
   });
+  const [YourSupply, setYourSupply] = useState(0);
+  const [YourBorrows, setYourBorrows] = useState(0);
+  const [NetEarnedApr, setNetEarnedApr] = useState(0);
+  const [effectiveapr, seteffectiveapr] = useState(0);
   return (
     <TabContext.Provider
       value={{
         customActiveTab,
         setCustomActiveTab,
         toggleCustom,
-        selectedLoan, setSelectedLoan,
+        selectedLoan,
+        setSelectedLoan,
         title,
         setTitle,
-        totalBorrowAssets, setTotalBorrowAssets,
-        totalSupplyDash, setTotalSupplyDash
-      
+        totalBorrowAssets,
+        setTotalBorrowAssets,
+        totalSupplyDash,
+        setTotalSupplyDash,
+        YourSupply,
+        setYourSupply,
+        YourBorrows,
+        setYourBorrows,
+        NetEarnedApr,
+        setNetEarnedApr,
+        effectiveapr,
+        seteffectiveapr,
       }}
     >
       {children}
