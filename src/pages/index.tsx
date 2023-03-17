@@ -798,61 +798,39 @@ const Dashboard = () => {
     );
   }
 
-  // Waitlist UI
-  const WaitlistUI = () => {
-    return (
-      <p
-        style={{
-          zIndex: "1000",
-          marginTop: "200px",
-          marginBottom: "400px",
-          textAlign: "center",
-          verticalAlign: "text-bottom",
-          fontSize: "40px",
-          color: "white",
-        }}
-      >
-        You're already in the queue
-      </p>
-    );
-  };
+
+  // Waitlist UI  
+  const WaitlistUI = () => {       
+    return(<p style={{zIndex : "1000", marginTop: "300px", marginBottom: "400px", textAlign: "center", verticalAlign: "text-bottom", fontSize: "40px", color: "white"}}>You are already in the queue</p>)
+  }
 
   // Timer logic
-  const showTimer = async () => {
-    if (timer >= 1) {
-      setTimer(--timer);
-    } else {
-      if (isWaitlisted != 1 && isWhitelisted != 1) {
-        window.location.href = "https://spearmint.xyz/p/hashstack";
-      }
-    }
+  // const showTimer = async () => {
+  //   if(timer >= 1){            
+  //     setTimer(--timer);
+  //   }    
+  //   else {  
+  //     if(isWaitlisted!=1 && isWhitelisted!=1){
+  //       window.location.href = "https://spearmint.xyz/p/hashstack";
+  //     }      
+  //   }
+    
+  //   return(null);
+  // }
 
-    return null;
-  };
+  const addToWhitelist = async() => {
+    await OffchainAPI.setWhitelistData(_account?_account:"");
+  } 
 
   // Spearmint redirect UI
-  const SpearmintRedirectUI = () => {
-    console.log("Inside redirection UI");
-    setTimeout(showTimer, 1200);
-    return (
-      <span>
-        <p
-          style={{
-            zIndex: "1000",
-            marginTop: "200px",
-            marginBottom: "350px",
-            textAlign: "center",
-            verticalAlign: "text-bottom",
-            fontSize: "40px",
-            color: "white",
-          }}
-        >
-          Only registered users are allowed to access the mainnet. You're
-          redirected to the waitlist page in {timer} seconds
-        </p>
-      </span>
-    );
-  };
+
+  const SpearmintRedirectUI = () => {    
+    addToWhitelist()
+    //setTimeout(showTimer, 1200)    
+    return(<span>
+      <p style={{zIndex : "1000", marginTop: "300px", marginBottom: "350px", textAlign: "center", verticalAlign: "text-bottom", fontSize: "40px", color: "white"}}>Only registered users are allowed to access the mainnet. You're being added to the waitlist now</p>      
+    </span>);
+  }
 
   const DashboardUI = () => {
     return (
@@ -1357,13 +1335,9 @@ const Dashboard = () => {
             incorrectChain()
           ) : (
             <>
-              {isWhitelisted ? (
-                <DashboardUI />
-              ) : isWaitlisted ? (
-                <WaitlistUI />
-              ) : (
-                <SpearmintRedirectUI />
-              )}
+
+              {isWhitelisted ? <DashboardUI />: isWaitlisted? <WaitlistUI/> : <SpearmintRedirectUI />}
+
               <Row
                 style={{
                   marginTop: "5px",
