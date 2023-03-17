@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Button, Table, Spinner, TabPane } from "reactstrap";
-import { Abi, number, uint256 } from "starknet";
+import { Abi, Contract, RpcProvider, number, uint256 } from "starknet";
 import { CoinClassNames, EventMap } from "../../blockchain/constants";
 import { NumericFormat } from "react-number-format";
 import {
@@ -51,7 +51,7 @@ const LiquidationButton = ({
     hash: transLiquidate,
     watch: true,
   });
-
+  
   useEffect(() => {
     // console.log(
     //   "approve tx receipt",
@@ -139,19 +139,19 @@ const LiquidationButton = ({
     },
   });
 
-  const {
-    data: is_liquidable,
-    loading: loadingliquidable,
-    error: errorliquidable,
-    refresh: refreshliquidable,
-  } = useStarknetCall({
-    contract: loanContract,
-    method: "is_loan_liquidable",
-    args: [loan.id],
-    options: {
-      watch: true,
-    },
-  });
+  // const {
+  //   data: is_liquidable,
+  //   loading: loadingliquidable,
+  //   error: errorliquidable,
+  //   refresh: refreshliquidable,
+  // } = useStarknetCall({
+  //   contract: loanContract,
+  //   method: "is_loan_liquidable",
+  //   args: [loan.id],
+  //   options: {
+  //     watch: true,
+  //   },
+  // });
   // console.log("isLiquid",is_liquidable);
   // // console.log(BNtoNum(is_liquidable));
 
@@ -222,6 +222,7 @@ const LiquidationButton = ({
     }
   }, [dataToken, loadingToken, errorToken]);
 
+ 
   useEffect(() => {
     // console.log("handleLiquidation", {
     //   dataLiquidate,
@@ -251,7 +252,7 @@ const LiquidationButton = ({
       {loadingMsg ? <>{loadingMsg}</> : <></>}
       {shouldApprove ? (
         <Button
-          disabled={BNtoNum(is_liquidable) === "1" ? false : true}
+          disabled={ false}
           // className="text-muted"
           color="light"
           style={{ color: "white", backgroundColor: "rgb(57, 61, 79)" }}
@@ -271,9 +272,7 @@ const LiquidationButton = ({
             <MySpinner text="Approving & Liquidating token" />
           ) : (
             <>
-              {BNtoNum(is_liquidable) === "1"
-                ? "Approve & Liquidate"
-                : "Not Liquidable"}
+             Approve & Liquidate
             </>
           )}
         </Button>
@@ -321,6 +320,8 @@ const Liquidation = ({
   console.log(oraclePrices);
   const [oraclePricesArray, setOraclePricesArray] = useState<any>();
   const [entity, setEntity] = useState<any>();
+  const [FilteredLiquid, setFilteredLiquid] = useState<any>()
+
 
   useEffect(() => {
     setOraclePricesArray(oraclePrices);
@@ -338,6 +339,47 @@ const Liquidation = ({
       }
     }
   }
+  useEffect(() => {
+    filteredLiquidationData();
+    // console.log("2");
+    
+  }, [activeLiquidationsData])
+  const { contract: loanContract } = useContract({
+    abi: LiquidateAbi as Abi,
+    address: diamondAddress,
+  });
+
+  async function is_loan_liquidable(Id) {
+    let provider = new RpcProvider({
+      nodeUrl:
+        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
+    });
+    const Liquidate = new Contract(LiquidateAbi, diamondAddress, provider);
+    const res = await Liquidate.call("is_loan_liquidable", [Id], {
+      blockIdentifier: "pending",
+    });
+    // console.log("here",BNtoNum(res,0) === "1.0000");
+    return (BNtoNum(res,0))
+
+  }
+  let Filterliq:any = [];
+  const filteredLiquidationData = async() =>{
+    
+    await activeLiquidationsData.map(async(asset,key)=>{
+        // console.log("aa",asset);
+        let x = await is_loan_liquidable(asset.id);
+        // console.log(x); 
+         if (x === "1.0000") {
+           Filterliq.push(asset)
+           setFilteredLiquid(Filterliq);
+          //  console.log("done",FilteredLiquid);
+          //  console.log("1")
+         }
+     })
+     
+  }
+
+  // console.log("yes",FilteredLiquid);
 
   return (
     <TabPane tabId="3">
@@ -362,9 +404,11 @@ const Liquidation = ({
             </tr>
           </thead>
           <tbody style={{ marginLeft: "20px" }}>
-            {Array.isArray(activeLiquidationsData) &&
-              activeLiquidationsData.length > 0 ? (
-              activeLiquidationsData.map((asset, key) => {
+            {Array.isArray(FilteredLiquid) &&
+              FilteredLiquid.length > 0 ? (
+                FilteredLiquid.map((asset, key) => {
+                  console.log(asset)
+                  
                 let collateralUSDValue = weiToEtherNumber(asset?.collateralAmount?.toString(), tokenAddressMap?.[asset?.collateralMarket?.toString()]) * parseOrcalePrice(asset?.collateralMarket?.toString());
                 let loanUSDValue = weiToEtherNumber(asset?.loanAmount?.toString(), tokenAddressMap?.[asset?.loanMarket?.toString()]) * parseOrcalePrice(asset?.loanMarket?.toString());
 
@@ -378,6 +422,8 @@ const Liquidation = ({
                 discount = ((collateralUSDValue - loanUSDValue + currentUSDValue) / loanUSDValue) * 100;
 
                 console.log("discount", asset);
+                // const t = true;
+                
                 return (
                   <tr key={key} style={{ color: "white" }}>
                     {/* <th scope="row">
@@ -486,9 +532,12 @@ const Liquidation = ({
               })
             ) : (
               <tr>
-                <td colSpan={5}>No Records Found.</td>
+                <td colSpan={5}>
+                  
+                  No Records Found.
+                  </td>
               </tr>
-            )}
+            ) }
           </tbody>
         </Table>
         {/* {activeLiquidationsData.length ? (

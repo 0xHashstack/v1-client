@@ -357,7 +357,7 @@ const ActiveDeposit = ({
     console.log(available);
     
     if (!available) return;
-    var percentage = (e.target.value / 50) * 100;
+    var percentage = (e.target.value / available) * 100;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setValue("Greater than 100");
