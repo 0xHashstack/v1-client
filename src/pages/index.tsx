@@ -58,7 +58,14 @@ import {
   useStarknetCall,
 } from "@starknet-react/core";
 import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
-import { Abi, Contract, number, RpcProvider, uint256 } from "starknet";
+import {
+  Abi,
+  Contract,
+  number,
+  RpcProvider,
+  uint256,
+  Provider,
+} from "starknet";
 import { assert } from "console";
 import depositAbi from "../../starknet-artifacts/contracts/modules/deposit.cairo/deposit_abi.json";
 import loanAbi from "../../starknet-artifacts/contracts/modules/loan.cairo/loan_abi.json";
@@ -85,6 +92,8 @@ import ProtocolMatrics from "../components/matrics/protocolMatrix";
 import MySpinner from "../components/mySpinner";
 import { NumericFormat } from "react-number-format";
 import WhitelistModal from "../components/modals/whaitlistModal";
+import ExistingWhitelistModal from "../components/modals/existingWaitlistModal";
+
 // import App from "./Chart"
 
 interface IDeposit {
@@ -486,9 +495,12 @@ const Dashboard = () => {
   }
 
   async function get_user_loans() {
-    let provider = new RpcProvider({
-      nodeUrl:
-        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
+    const provider = new Provider({
+      sequencer: {
+        baseUrl: "https://alpha-mainnet.starknet.io",
+        feederGatewayUrl: "feeder_gateway",
+        gatewayUrl: "gateway",
+      },
     });
     const MySwap = new Contract(loanAbi, diamondAddress, provider);
     const res = await MySwap.call("get_user_loans", [account], {
@@ -547,9 +559,12 @@ const Dashboard = () => {
   }
 
   async function get_user_deposits() {
-    let provider = new RpcProvider({
-      nodeUrl:
-        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
+    const provider = new Provider({
+      sequencer: {
+        baseUrl: "https://alpha-mainnet.starknet.io",
+        feederGatewayUrl: "feeder_gateway",
+        gatewayUrl: "gateway",
+      },
     });
     const Deposit = new Contract(depositAbi, diamondAddress, provider);
     const res = await Deposit.call("get_user_deposits", [account]);
@@ -805,19 +820,7 @@ const Dashboard = () => {
   // Waitlist UI
   const WaitlistUI = () => {
     return (
-      <p
-        style={{
-          zIndex: "1000",
-          marginTop: "300px",
-          marginBottom: "400px",
-          textAlign: "center",
-          verticalAlign: "text-bottom",
-          fontSize: "40px",
-          color: "white",
-        }}
-      >
-        You are already in the queue
-      </p>
+      <ExistingWhitelistModal accountAddress={account}/>
     );
   };
 
@@ -835,15 +838,15 @@ const Dashboard = () => {
   //   return(null);
   // }
 
-  const addToWhitelist = async () => {
-    await OffchainAPI.setWhitelistData(_account ? _account : "");
-    // await OffchainAPI.setWhitelistData("");
-  };
+  // const addToWhitelist = async () => {
+  //   // await OffchainAPI.setWhitelistData(_account ? _account : "");
+  //   // await OffchainAPI.setWhitelistData("");
+  // };
 
   // Spearmint redirect UI
 
   const SpearmintRedirectUI = () => {
-    addToWhitelist();
+    //addToWhitelist();
     //setTimeout(showTimer, 1200)
     return (
       <span>

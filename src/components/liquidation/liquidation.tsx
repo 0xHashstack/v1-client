@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Button, Table, Spinner, TabPane } from "reactstrap";
-import { Abi, Contract, RpcProvider, number, uint256 } from "starknet";
+import { Abi, Contract, RpcProvider, number, uint256, Provider } from "starknet";
 import { CoinClassNames, EventMap } from "../../blockchain/constants";
 import { NumericFormat } from "react-number-format";
 import {
@@ -350,10 +350,13 @@ const Liquidation = ({
   });
 
   async function is_loan_liquidable(Id) {
-    let provider = new RpcProvider({
-      nodeUrl:
-        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
-    });
+    const provider = new Provider({
+      sequencer: {
+        baseUrl: 'https://alpha-mainnet.starknet.io',
+        feederGatewayUrl: 'feeder_gateway',
+        gatewayUrl: 'gateway',
+      }
+    })
     const Liquidate = new Contract(LiquidateAbi, diamondAddress, provider);
     const res = await Liquidate.call("is_loan_liquidable", [Id], {
       blockIdentifier: "pending",
@@ -368,7 +371,7 @@ const Liquidation = ({
     await activeLiquidationsData.map(async(asset,key)=>{
         // console.log("aa",asset);
         let x = await is_loan_liquidable(asset.id);
-        console.log(x); 
+        // console.log(x); 
          if (x === "1") {
            Filterliq.push(asset)
            setFilteredLiquid(Filterliq);
