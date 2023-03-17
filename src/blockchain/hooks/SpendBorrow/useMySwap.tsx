@@ -1,4 +1,4 @@
-import { useContract, useStarknetCall, useStarknetExecute } from "@starknet-react/core";
+import { useContract, useStarknetCall, useStarknetExecute, useTransactionReceipt } from "@starknet-react/core";
 import { tokenAddressMap } from "../../stark-constants";
 import { GetErrorText, NumToBN } from "../../utils";
 import { toast } from "react-toastify";
@@ -7,12 +7,28 @@ import useMyAccount from "../walletDetails/getAddress";
 import { useEffect, useState } from "react";
 import { Abi, number } from "starknet";
 import { l3DiamondAddress } from "../../stark-constants";
+import { TxToastManager } from "../../txToastManager";
 
 const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
   const [toastMyswapParam, setToastMyswapParam] = useState({});
   const [isMyswapToastOpen, setIsToastMyswapOpen] = useState(false);
   const [poolIdtoTokens, setPoolIdtoTokens] = useState();
-  
+
+  const [transMySwapHash, setTransMySwapHash] = useState("");
+
+  const mySwapTransReceipt = useTransactionReceipt({
+    hash: transMySwapHash,
+    watch: true
+  })
+
+  useEffect(() => {
+    TxToastManager.handleTxToast(
+      mySwapTransReceipt,
+      `Spend Borrow: ${asset?.loanId}`,
+      true
+    );
+  }, [mySwapTransReceipt]);
+
   const [supportedPoolsMySwap, setSupportedPoolsMySwap] = useState();
 
   const { contract: l3Contract } = useContract({
@@ -36,7 +52,7 @@ const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
 
   useEffect(() => {
     const setValue = (map: Map<string, Array<string>>, firstVal: string, secondVal: string) => {
-      if(map.get(firstVal))
+      if (map.get(firstVal))
         map.set(firstVal, [...map.get(firstVal), secondVal]);
       else map.set(firstVal, [secondVal]);
     }
@@ -51,7 +67,7 @@ const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
       //   errorMySwapSupportedPools
       // );
       const pools = mySwapSupportedPoolsData?.pools;
-      for(let i = 0; i<pools?.length; i++) {
+      for (let i = 0; i < pools?.length; i++) {
         const firstTokenAddress = number.toHex(pools[i].tokenA)
         const secondTokenAddress = number.toHex(pools[i].tokenB);
         const poolId = pools[i].pool.toNumber();
@@ -71,65 +87,66 @@ const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
 
 
   const {
-		data: dataMySwap,
-		loading: loadingMySwap,
-		error: errorMySwap,
-		reset: resetMySwap,
-		execute: executeMySwap,
-	} = useStarknetExecute({
-		calls: {
-			contractAddress: diamondAddress,
-			entrypoint: 'interact_with_l3',
-			calldata: ["30814223327519088", 2, asset?.loanId, tokenAddressMap[toTokenName]],
-		},
-	});
+    data: dataMySwap,
+    loading: loadingMySwap,
+    error: errorMySwap,
+    reset: resetMySwap,
+    execute: executeMySwap,
+  } = useStarknetExecute({
+    calls: {
+      contractAddress: diamondAddress,
+      entrypoint: 'interact_with_l3',
+      calldata: ["30814223327519088", 2, asset?.loanId, tokenAddressMap[toTokenName]],
+    },
+  });
 
   const handleMySwap = async () => {
-      try {
-        const val = await executeMySwap();
-        const toastParamValue = {
-          success: true,
-          heading: "Success",
-          desc: "Copy the Transaction Hash",
-          textToCopy: val.transaction_hash,
+    try {
+      const val = await executeMySwap();
+      setTransMySwapHash(val.transaction_hash);
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash",
+        textToCopy: val.transaction_hash,
       };
       setToastMyswapParam(toastParamValue);
       setIsToastMyswapOpen(true);
-      } catch (err) {
-        // console.log(err, "err repay");
-        const toastParamValue = {
-          success: false,
-          heading: "Swap Transaction Failed",
-          desc: "Copy the error",
-          textToCopy: err,
+    } catch (err) {
+      // console.log(err, "err repay");
+      const toastParamValue = {
+        success: false,
+        heading: "Swap Transaction Failed",
+        desc: "Copy the error",
+        textToCopy: err,
       };
       setToastMyswapParam(toastParamValue);
       setIsToastMyswapOpen(true);
-        toast.error(`${GetErrorText(`Swap for Loan ID${asset.loanId} failed`)}`, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          closeOnClick: true,
-        });
-        return;
-      }
+      toast.error(`${GetErrorText(`Swap for Loan ID${asset.loanId} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
     }
+  }
 
   return {
-      executeMySwap, 
-      loadingMySwap, 
-      dataMySwap,
-      errorMySwap, 
-      handleMySwap,
+    executeMySwap,
+    loadingMySwap,
+    dataMySwap,
+    errorMySwap,
+    handleMySwap,
 
-      supportedPoolsMySwap,
-      loadingMySwapSupportedPools,
-      errorMySwapSupportedPools,
-      refreshMySwapSupportedPools,
-      mySwapSupportedPoolsData,
-      poolIdtoTokens,
+    supportedPoolsMySwap,
+    loadingMySwapSupportedPools,
+    errorMySwapSupportedPools,
+    refreshMySwapSupportedPools,
+    mySwapSupportedPoolsData,
+    poolIdtoTokens,
 
-      isMyswapToastOpen,
-      setIsToastMyswapOpen,
-      toastMyswapParam
+    isMyswapToastOpen,
+    setIsToastMyswapOpen,
+    toastMyswapParam
   }
 }
 
