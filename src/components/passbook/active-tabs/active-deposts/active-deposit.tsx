@@ -494,6 +494,7 @@ const ActiveDeposit = ({
   }, [withdrawTransactionReceipt]);
 
  
+
   const onWithdrawSlider = (value:any)=>{
      const currentBalance =
       parseFloat(
@@ -513,6 +514,7 @@ const ActiveDeposit = ({
     if(value  === 100) setWithdrawAllorNot(true);
     else setWithdrawAllorNot(false);
   }
+
 
   return (
     <div style={{ borderTop: "5px" }}>
