@@ -239,6 +239,7 @@ const BorrowData = ({
     loadingJediSwapSupportedPools,
     errorJediSwapSupportedPools,
     supportedPoolsJediSwap,
+    jediSwapTransReceipt,
 
     handleJediSwap,
     dataJediSwap,
@@ -254,6 +255,7 @@ const BorrowData = ({
     handleMySwap,
     loadingMySwap,
     errorMySwap,
+    mySwapTransReceipt,
     supportedPoolsMySwap,
     isMyswapToastOpen,
     setIsToastMyswapOpen,
@@ -3417,11 +3419,11 @@ const BorrowData = ({
                         {/* * TODO: Adjust for token Decimals */}
                         {asset ? ((appsImage === "mySwap" ? (
                           totalAmountOutmySwap !== "NA" ? (
-                            totalAmountOutmySwap >
-                              changeTo18Decimals(
+                            Number(totalAmountOutmySwap) >
+                              Number(changeTo18Decimals(
                                 asset?.loanAmount,
                                 asset.loanMarket
-                              ) ? (
+                              )) ? (
                               `1 ${asset.loanMarketSymbol} = ${(
                                 number
                                   .toBN(totalAmountOutmySwap)
@@ -3455,11 +3457,11 @@ const BorrowData = ({
                           )
                         ) : appsImage === "jediSwap" ? (
                           totalAmountOutJediSwap !== "NA" ? (
-                            totalAmountOutJediSwap >
-                              changeTo18Decimals(
+                            Number(totalAmountOutJediSwap) >
+                              Number(changeTo18Decimals(
                                 asset?.loanAmount,
                                 asset.loanMarket
-                              ) ? (
+                              )) ? (
                               `1 ${asset.loanMarketSymbol} = ${(
                                 number
                                   .toBN(totalAmountOutJediSwap)
@@ -3496,6 +3498,14 @@ const BorrowData = ({
                         ))) : (
                           "-"
                         )}
+
+                        {console.log("inequality", marketTokenSymbol, asset.loanMarketSymbol, totalAmountOutJediSwap, changeTo18Decimals(
+                          asset?.loanAmount,
+                          asset.loanMarket
+                        ), Number(totalAmountOutJediSwap) > Number(changeTo18Decimals(
+                          asset?.loanAmount,
+                          asset.loanMarket
+                        )))}
                       </div>
                     </div>
                     <div
@@ -3566,9 +3576,11 @@ const BorrowData = ({
                     }
                     onClick={handleSpendBorrowCTAButton}
                   >
-                    {!(
-                      loadingApprove ||
-                      !isTransactionLoading(requestDepositTransactionReceipt)
+                    {!(actionLabel === "Swap" &&
+                      (
+                        (appsImage === 'jediSwap' && isTransactionLoading(jediSwapTransReceipt))
+                        || (appsImage === "mySwap" && isTransactionLoading(mySwapTransReceipt))
+                      )
                     ) ? (
                       <div style={{ display: "block" }}>
                         {selection}
