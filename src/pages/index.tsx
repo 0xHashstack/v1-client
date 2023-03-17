@@ -85,6 +85,8 @@ import ProtocolMatrics from "../components/matrics/protocolMatrix";
 import MySpinner from "../components/mySpinner";
 import { NumericFormat } from "react-number-format";
 import WhitelistModal from "../components/modals/whaitlistModal";
+import ExistingWhitelistModal from "../components/modals/existingWaitlistModal";
+
 // import App from "./Chart"
 
 interface IDeposit {
@@ -805,19 +807,7 @@ const Dashboard = () => {
   // Waitlist UI
   const WaitlistUI = () => {
     return (
-      <p
-        style={{
-          zIndex: "1000",
-          marginTop: "300px",
-          marginBottom: "400px",
-          textAlign: "center",
-          verticalAlign: "text-bottom",
-          fontSize: "40px",
-          color: "white",
-        }}
-      >
-        You are already in the queue
-      </p>
+      <ExistingWhitelistModal accountAddress={account}/>
     );
   };
 
@@ -835,15 +825,15 @@ const Dashboard = () => {
   //   return(null);
   // }
 
-  const addToWhitelist = async () => {
-    await OffchainAPI.setWhitelistData(_account ? _account : "");
-    // await OffchainAPI.setWhitelistData("");
-  };
+  // const addToWhitelist = async () => {
+  //   // await OffchainAPI.setWhitelistData(_account ? _account : "");
+  //   // await OffchainAPI.setWhitelistData("");
+  // };
 
   // Spearmint redirect UI
 
   const SpearmintRedirectUI = () => {
-    addToWhitelist();
+    //addToWhitelist();
     //setTimeout(showTimer, 1200)
     return (
       <span>
