@@ -728,7 +728,7 @@ const BorrowTab = ({
                   color: "rgb(140, 140, 140)",
                   fontWeight: "300",
                   alignItems: "center",
-                  gap: "30px",
+                  gap: "10px",
                   fontSize: "14px",
                 }}
               >
@@ -776,6 +776,7 @@ const BorrowTab = ({
                 >
                   Collateral Amount
                 </Col>
+                <Col>Current denomination</Col>
                 <Col
                   scope="col"
                   style={{ width: "100px", padding: "20px 20px" }}
