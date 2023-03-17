@@ -812,6 +812,8 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                 backgroundColor: "#1D2131",
                                 boxShadow: "0px 0px 10px #00000020",
                               }}
+                              onMouseLeave={()=>{setDappDropdown(!dappDropdown)
+                              setDappDownArrow(arrowDown)}}
                             >
                               {dappsArray.map((dapp, index) => {
                                 if (
@@ -894,6 +896,8 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                 backgroundColor: "#1D2131",
                                 boxShadow: "0px 0px 10px #00000020",
                               }}
+                              onMouseLeave={()=>{setDropDownTwo(!dropDownTwo)
+                              setStakeDropDownArrow(arrowDown)}}
                             >
                               {labels.map((word, index, labels) => {
                                 // if (title.label === word) {
@@ -980,6 +984,8 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                 padding: "5px 10px",
                                 backgroundColor: "#393D4F",
                               }}
+                              onMouseLeave={()=>{setIdDropDown(!idDropDown)
+                              setIdDropDownArrow(arrowDown)}}
                             >
                               {activeLoansData.map(
                                 (loan: any, index: number) => {
@@ -1184,6 +1190,8 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                               backgroundColor: "#1D2131",
                               boxShadow: "0px 0px 10px #00000020",
                             }}
+                            onMouseLeave={()=>{setDropDown(!dropDown)
+                            setDropDownArrow(arrowDown)}}
                           >
                             {Coins.map((coin, index) => {
                               if (coin.name === tokenName) return <></>;

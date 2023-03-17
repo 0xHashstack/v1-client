@@ -207,7 +207,7 @@ const BorrowData = ({
     repayTransactionReceipt,
     errorRepay,
   } = useRepay(asset, diamondAddress);
-  const { executeSelfLiquidate, loadingSelfLiquidate, errorSelfLiquidate } =
+  const { executeSelfLiquidate, loadingSelfLiquidate, errorSelfLiquidate, setIsSelfLiquidateHash, selfLiquidateTransactionReceipt } =
     useRepay(asset, diamondAddress);
   const {
     executeWithdrawCollateral,
@@ -762,6 +762,7 @@ const BorrowData = ({
   const handleSelfLiquidate = async () => {
     try {
       const val = await executeSelfLiquidate();
+      setTransRepayHash(val.transaction_hash);
       const toastParamValue = {
         success: true,
         heading: "Success",
@@ -851,6 +852,16 @@ const BorrowData = ({
       return;
     }
   };
+
+
+  useEffect(() => {
+    TxToastManager.handleTxToast(
+      repayTransactionReceipt,
+      `Repay Loan ID ${asset?.loanId}`
+    );
+  }, [repayTransactionReceipt]);
+
+
 
   const changeTo18Decimals = (value: any, market: any) => {
     if (!tokenDecimalsMap[market]) return value;
@@ -1815,6 +1826,7 @@ const BorrowData = ({
                           border: "2px solid rgb(57, 61, 79)",
                           fontWeight: "200",
                         }}
+                        
                       >
                         <div
                           style={{
@@ -2975,6 +2987,8 @@ const BorrowData = ({
                         backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px rgb(57, 61, 79)",
                       }}
+                      onMouseLeave={()=>{setStakeDropDown(!stakeDropDown)
+                      setDropDownArrowTwo(Downarrow)}}
                     >
                       <div
                         style={{
@@ -3059,6 +3073,8 @@ const BorrowData = ({
                         backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px rgb(57, 61, 79)",
                       }}
+                      onMouseLeave={()=>{setDropDown(!dropDown)
+                      setDropDownArrow(Downarrow)}}
                     >
                       <div
                         style={{
@@ -3151,6 +3167,7 @@ const BorrowData = ({
                         backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px #00000020",
                       }}
+
                     >
                       {
                         getSupportedTokens().map((coin, index, arr) => {
@@ -3205,6 +3222,8 @@ const BorrowData = ({
                         backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px #00000020",
                       }}
+                      onMouseLeave={()=>{setYagidrop(!Yagidrop)
+                      setyagiDownArrow(Downarrow)}}
                     >
                       {dappsArray.map((dapp, index) => {
                         if (
@@ -3651,7 +3670,7 @@ const BorrowData = ({
                   >
                     {!(
                       loadingApprove ||
-                      isTransactionLoading(requestDepositTransactionReceipt)
+                      isTransactionLoading(repayTransactionReceipt)
                     ) ? (
                       <>{selection}</>
                     ) : (
@@ -4266,7 +4285,7 @@ const BorrowData = ({
               ) : null}
             </Form>
           ) : (
-            <h2 style={{ color: "black" }}>Please connect your wallet</h2>
+            <h2 style={{ color: "white" }}>Please connect your wallet</h2>
           )}
         </div>
 
@@ -4306,17 +4325,21 @@ const BorrowData = ({
                         setIdDropDown(false);
                         setMarketTokenName((prev) => {
                           if (appsImage === "jediSwap") {
-                            return getTokenFromAddress(
+                            const token = getTokenFromAddress(
                               supportedPoolsJediSwap.get(
                                 tokenAddressMap[eleAsset.loanMarket]
                               )[0] as string
-                            ).name;
+                            );
+                            setMarketTokenSymbol(token?.symbol);
+                            return token?.name;
                           } else if (appsImage === "mySwap") {
-                            return getTokenFromAddress(
+                            const token = getTokenFromAddress(
                               supportedPoolsMySwap.get(
                                 tokenAddressMap[eleAsset.loanMarket]
                               )[0] as string
-                            ).name;
+                            );
+                            setMarketTokenSymbol(token?.symbol);
+                            return token?.name;
                           } else return prev;
                         });
                       }}
