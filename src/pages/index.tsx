@@ -84,6 +84,7 @@ import YourMatrics from "../components/matrics/yourMatrics";
 import ProtocolMatrics from "../components/matrics/protocolMatrix";
 import MySpinner from "../components/mySpinner";
 import { NumericFormat } from "react-number-format";
+import WhitelistModal from "../components/modals/whaitlistModal";
 // import App from "./Chart"
 
 interface IDeposit {
@@ -187,10 +188,12 @@ const Dashboard = () => {
 
   const checkDB = async () => {
     try {
-      //Whitelist check [correct check, ensure this is used on mainnet]
+      // Whitelist check [correct check, ensure this is used on mainnet]
       const whitelistStatus = await OffchainAPI.getWhitelistData(
         _account ? _account : ""
       );
+
+      // const whitelistStatus = await OffchainAPI.getWhitelistData("");
 
       //Waitlist check [I waitlisted my address for testing]
       //const whitelistStatus = await OffchainAPI.getWhitelistData("0x04ed937e802b1599a8d3b5dc93cf45f627d413e2d03e018c1da9f62062f7dfc8");
@@ -799,39 +802,69 @@ const Dashboard = () => {
     );
   }
 
-
-  // Waitlist UI  
-  const WaitlistUI = () => {       
-    return(<p style={{zIndex : "1000", marginTop: "300px", marginBottom: "400px", textAlign: "center", verticalAlign: "text-bottom", fontSize: "40px", color: "white"}}>You are already in the queue</p>)
-  }
+  // Waitlist UI
+  const WaitlistUI = () => {
+    return (
+      <p
+        style={{
+          zIndex: "1000",
+          marginTop: "300px",
+          marginBottom: "400px",
+          textAlign: "center",
+          verticalAlign: "text-bottom",
+          fontSize: "40px",
+          color: "white",
+        }}
+      >
+        You are already in the queue
+      </p>
+    );
+  };
 
   // Timer logic
   // const showTimer = async () => {
-  //   if(timer >= 1){            
+  //   if(timer >= 1){
   //     setTimer(--timer);
-  //   }    
-  //   else {  
+  //   }
+  //   else {
   //     if(isWaitlisted!=1 && isWhitelisted!=1){
   //       window.location.href = "https://spearmint.xyz/p/hashstack";
-  //     }      
+  //     }
   //   }
-    
+
   //   return(null);
   // }
 
-  const addToWhitelist = async() => {
-    await OffchainAPI.setWhitelistData(_account?_account:"");
-  } 
+  const addToWhitelist = async () => {
+    await OffchainAPI.setWhitelistData(_account ? _account : "");
+    // await OffchainAPI.setWhitelistData("");
+  };
 
   // Spearmint redirect UI
 
-  const SpearmintRedirectUI = () => {    
-    addToWhitelist()
-    //setTimeout(showTimer, 1200)    
-    return(<span>
-      <p style={{zIndex : "1000", marginTop: "300px", marginBottom: "350px", textAlign: "center", verticalAlign: "text-bottom", fontSize: "40px", color: "white"}}>Only registered users are allowed to access the mainnet. You're being added to the waitlist now</p>      
-    </span>);
-  }
+  const SpearmintRedirectUI = () => {
+    addToWhitelist();
+    //setTimeout(showTimer, 1200)
+    return (
+      <span>
+        {/* <p
+          style={{
+            zIndex: "1000",
+            marginTop: "300px",
+            marginBottom: "350px",
+            textAlign: "center",
+            verticalAlign: "text-bottom",
+            fontSize: "40px",
+            color: "white",
+          }}
+        >
+          Only registered users are allowed to access the mainnet. You're being
+          added to the waitlist now
+        </p> */}
+        <WhitelistModal accountAddress={account} />
+      </span>
+    );
+  };
 
   const DashboardUI = () => {
     return (
@@ -1339,35 +1372,42 @@ const Dashboard = () => {
             incorrectChain()
           ) : (
             <>
+              {isWhitelisted ? (
+                <DashboardUI />
+              ) : isWaitlisted ? (
+                <WaitlistUI />
+              ) : (
+                <SpearmintRedirectUI />
+              )}
 
-              {isWhitelisted ? <DashboardUI />: isWaitlisted? <WaitlistUI/> : <SpearmintRedirectUI />}
-
-              <Row
-                style={{
-                  marginTop: "5px",
-                  position: "relative",
-                  bottom: "0px",
-                  left: "85%",
-                  backgroundColor: "transparent",
-                  borderRadius: "5px",
-                  zIndex: "200  ",
-                }}
-              >
-                <div
+              {isWhitelisted ? (
+                <Row
                   style={{
-                    display: "flex",
-                    padding: "5px 10px",
-                    alignItems: "center",
+                    marginTop: "15px",
+                    position: "relative",
+                    bottom: "0px",
+                    left: "85%",
+                    backgroundColor: "transparent",
+                    borderRadius: "5px",
+                    zIndex: "100",
                   }}
                 >
-                  <div>Latest synced block:&nbsp;&nbsp;</div>
-                  <div style={{ opacity: 0.6 }}>{offchainCurrentBlock}</div>
                   <div
-                    style={{ marginLeft: "5px" }}
-                    className="green-circle"
-                  ></div>
-                </div>
-              </Row>
+                    style={{
+                      display: "flex",
+                      padding: "5px 10px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div>Latest synced block:&nbsp;&nbsp;</div>
+                    <div style={{ opacity: 0.6 }}>{offchainCurrentBlock}</div>
+                    <div
+                      style={{ marginLeft: "5px" }}
+                      className="green-circle"
+                    ></div>
+                  </div>
+                </Row>
+              ) : null}
             </>
           )}
           {/* <Analytics></Analytics>

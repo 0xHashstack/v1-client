@@ -317,10 +317,7 @@ const SecondaryHeader = ({
                     style={{ cursor: "pointer" }}
                   />
                   &nbsp;&nbsp;
-                  <span style={{ fontSize: "larger" }}>
-                    {" "}
-                    Contribute-2-Earn{" "}
-                  </span>
+                  <span style={{ fontSize: "larger" }}>Contribute-2-Earn</span>
                 </span>
               </label>
             </a>
