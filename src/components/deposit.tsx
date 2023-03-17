@@ -76,15 +76,10 @@ let Deposit: any = ({
   const [allowanceVal, setAllowance] = useState(0);
 
   const { account, address: accountAddress, status } = useAccount();
-  const [transApprove, setTransApprove] = useState("");
   const [transDeposit, setTransDeposit] = useState("");
   const [toastParam, setToastParam] = useState({});
   const [isToastOpen, setIsToastOpen] = useState(false);
 
-  const approveTransactionReceipt = useTransactionReceipt({
-    hash: transApprove,
-    watch: true,
-  });
   const requestDepositTransactionReceipt = useTransactionReceipt({
     hash: transDeposit,
     watch: true,
@@ -100,14 +95,6 @@ let Deposit: any = ({
       setDepositLoanRates(val);
     });
   }, [asset]);
-
-  useEffect(() => {
-    TxToastManager.handleTxToast(
-      approveTransactionReceipt,
-      `Deposit: Approve ${token?.name}`,
-      true
-    );
-  }, [approveTransactionReceipt]);
 
   useEffect(() => {
     TxToastManager.handleTxToast(

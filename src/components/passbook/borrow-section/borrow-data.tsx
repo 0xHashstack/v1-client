@@ -3238,17 +3238,21 @@ const BorrowData = ({
                                 // setmodal_deposit(true);
                                 setMarketTokenName((prev) => {
                                   if (dapp.name === "jediSwap") {
-                                    return getTokenFromAddress(
+                                    const token = getTokenFromAddress(
                                       supportedPoolsJediSwap.get(
                                         tokenAddressMap[asset.loanMarket]
                                       )?.[0] as string
-                                    ).name;
+                                    );
+                                    setMarketTokenSymbol(token?.symbol);
+                                    return token?.name;
                                   } else if (dapp.name === "mySwap") {
-                                    return getTokenFromAddress(
+                                    const token = getTokenFromAddress(
                                       supportedPoolsMySwap.get(
                                         tokenAddressMap[asset.loanMarket]
                                       )?.[0] as string
-                                    ).name;
+                                    );
+                                    setMarketTokenSymbol(token?.symbol);
+                                    return token?.name;
                                   } else return prev;
                                 });
                                 setappsImage(dapp.name);

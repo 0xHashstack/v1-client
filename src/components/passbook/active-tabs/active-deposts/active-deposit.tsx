@@ -102,7 +102,8 @@ const ActiveDeposit = ({
     loadingApprove,
     loadingDeposit,
     transApprove,
-    transDeposit,
+    transAddDeposit,
+    setTransAddDeposit
   } = useAddDeposit(asset, diamondAddress);
 
   const {
@@ -117,14 +118,13 @@ const ActiveDeposit = ({
     setIsDepWithdrawToastOpen,
     toastDepWithdrawParam,
   } = useWithdrawDeposit(asset, diamondAddress);
-  const [action, setAction] = useState(false);
 
   const approveTransactionReceipt = useTransactionReceipt({
     hash: transApprove,
     watch: true,
   });
   const addDepositTransactionReceipt = useTransactionReceipt({
-    hash: transDeposit,
+    hash: transAddDeposit,
     watch: true,
   });
 
@@ -154,14 +154,13 @@ const ActiveDeposit = ({
   const getNoteForDeposit = () => {
     if (asset?.commitmentIndex !== 0) {
       const commitmentDuration = asset?.commitmentIndex === 1 ? 14 * 24 * 3600
-      : (asset?.commitmentIndex) === "2" ? 30 * 24 * 3600
-      : (asset?.commitmentIndex) === "3" ? 90 * 24 * 3600 : 0;
+      : (asset?.commitmentIndex) === 2 ? 30 * 24 * 3600
+      : (asset?.commitmentIndex) === 3 ? 90 * 24 * 3600 : 0;
       const commitmenntEndtime = new Date(asset?.depositCreationTime * 1000 + commitmentDuration * 1000);
       const currentTime = new Date();
       const diff = Math.abs(commitmenntEndtime.getTime() - currentTime.getTime());
       const diffDays = Math.floor(diff / (1000 * 3600 * 24))
       const diffHours = Math.max(Math.floor((diff % (1000 * 3600 * 24)) / (1000 * 3600)), 1);
-      console.log("asset commitment index", asset?.commitmentIndex, asset?.depositCreationTime, diff);
       if (diff > 0) {
         setShowNoteForDeposit(true);
         setNoteForDeposit(UserInformation?.WithdrawDeposit?.CommitmentNotExpired + diffDays + " days " + diffHours + `${diffHours > 1 ? ' hours' : ' hour'}` + " more for commitment to end");
@@ -295,10 +294,24 @@ const ActiveDeposit = ({
     });
   }, [asset]);
 
-  const requestDepositTransactionReceipt = useTransactionReceipt({
-    hash: transDeposit,
-    watch: true,
-  });
+  useEffect(() => {
+    TxToastManager.handleTxToast(
+      addDepositTransactionReceipt,
+      `Add Supply: Deposit ID: ${asset?.depositId}`,
+      true
+    );
+  }, [addDepositTransactionReceipt]);
+
+  useEffect(() => {
+    TxToastManager.handleTxToast(
+      withdrawTransactionReceipt,
+      `Add Supply: Deposit ID: ${asset?.depositId}`,
+      true
+    );
+  }, [withdrawTransactionReceipt]);
+
+
+
 
   const returnTransactionParameters = () => {
     let data, loading, reset, error;
@@ -421,6 +434,7 @@ const ActiveDeposit = ({
     }
     try {
       let val = await executeDeposit();
+      setTransAddDeposit(val.transaction_hash);
       const toastParamValue = {
         success: true,
         heading: "Success",
@@ -728,7 +742,7 @@ const ActiveDeposit = ({
                 </Col>
                 <div
                   style={{
-                    fontSize: "9px",
+                    fontSize: "11px",
                     paddingTop: "10px",
                     color: "rgb(111, 111, 111)",
                     display: "flex",
@@ -1027,7 +1041,7 @@ const ActiveDeposit = ({
                               `${getTokenFromName(tokenName).address
                               }__${commitPeriod}`
                             ]?.depositAPR?.apr100x as string
-                          )} %`
+                          ) / 100} %`
                         ) : (
                           <MySpinner />
                         )}
@@ -1199,10 +1213,11 @@ const ActiveDeposit = ({
                     else handleWithdrawDeposit(tokenName);
                   }}
                 >
-                  {!(
-                    loadingApprove ||
-                    isTransactionLoading(requestDepositTransactionReceipt)
-                  ) ? (
+                  {customActiveTab === "1" && !(
+                    isTransactionLoading(addDepositTransactionReceipt)
+                  ) || (customActiveTab === "2" && !(
+                    isTransactionLoading(withdrawTransactionReceipt)
+                  )) ? (
                     customActiveTab === "1" ? (
                       "Add Supply"
                     ) : customActiveTab === "2" ? (
@@ -1211,7 +1226,13 @@ const ActiveDeposit = ({
                       ""
                     )
                   ) : (
-                    <MySpinner text="Depositing token" />
+                    customActiveTab === "1" ? (
+                      <MySpinner text="Adding Supply" />
+                      ) : customActiveTab === "2" ? (
+                        <MySpinner text="Withdrawing Supply" />
+                    ) : (
+                      ""
+                    )
                   )}
                 </Button>
               </div>
@@ -1246,7 +1267,7 @@ const ActiveDeposit = ({
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
-                      fontSize: "0.6rem",
+                      fontSize: "0.7rem",
                       color: "#6F6F6F",
                     }}
                     onClick={() => {
