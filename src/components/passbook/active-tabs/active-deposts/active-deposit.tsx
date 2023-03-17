@@ -1135,7 +1135,8 @@ const ActiveDeposit = ({
                         0.1 %
                       </div>
                     </div>
-                    <div
+                    {asset.commitment !== "NONE" && showNoteForDeposit ?
+                     <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -1154,7 +1155,7 @@ const ActiveDeposit = ({
                       >
                         0.02%
                       </div>
-                    </div>
+                    </div>: null}
                     {asset.commitment !== "NONE" && showNoteForDeposit ? (
                       <div
                         style={{

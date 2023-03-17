@@ -285,36 +285,45 @@ const SecondaryHeader = ({
               </span>
             </label>
 
-            <label
-              style={{
-                padding: "10px",
-                fontSize: "12px",
-                borderRadius: "5px",
-                color: "#FFF",
-                cursor: "pointer",
-                marginBottom: "0px",
-              }}
-              className="button"
+            <a
+              href="https://hashstack.crew3.xyz/questboard"
+              target="_blank"
+              rel="noreferrer"
             >
-              <span
+              <label
                 style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  padding: "10px",
+                  fontSize: "12px",
+                  borderRadius: "5px",
+                  color: "#FFF",
+                  cursor: "pointer",
+                  marginBottom: "0px",
                 }}
+                className="button"
               >
-                {" "}
-                <Image
-                  src={contributeEarnIcon}
-                  alt="Picture of the author"
-                  width="15px"
-                  height="15px"
-                  style={{ cursor: "pointer" }}
-                />
-                &nbsp;&nbsp;
-                <span style={{ fontSize: "larger" }}> Contribute-2-Earn </span>
-              </span>
-            </label>
+                <span
+                  style={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                  }}
+                >
+                  {" "}
+                  <Image
+                    src={contributeEarnIcon}
+                    alt="Picture of the author"
+                    width="15px"
+                    height="15px"
+                    style={{ cursor: "pointer" }}
+                  />
+                  &nbsp;&nbsp;
+                  <span style={{ fontSize: "larger" }}>
+                    {" "}
+                    Contribute-2-Earn{" "}
+                  </span>
+                </span>
+              </label>
+            </a>
 
             <label
               style={{
@@ -358,7 +367,7 @@ const SecondaryHeader = ({
 
           <div className="d-flex flex-wrap gap-4 ">
             <div style={{ display: "flex", gap: "20px" }}>
-              <label
+              {/* <label
                 style={{
                   backgroundColor: "#2A2E3F",
                   padding: "13px 25px",
@@ -379,9 +388,6 @@ const SecondaryHeader = ({
                 >
                   {" "}
                   <Image
-                    // onClick={() => {
-                    //   setConnectWallet(false);
-                    // }}
                     src={transferDeposit}
                     alt="Picture of the author"
                     width="15px"
@@ -391,7 +397,7 @@ const SecondaryHeader = ({
                   &nbsp;&nbsp;&nbsp;{" "}
                   <span style={{ fontSize: "larger" }}>Transfer Deposit</span>
                 </span>
-              </label>
+              </label> */}
 
               <label
                 style={{
@@ -511,14 +517,24 @@ const SecondaryHeader = ({
             toggleCustom("6");
             setLiquidateDropDown(false);
           }}
-          onMouseLeave={()=>{setLiquidateDropDown(false)}}
+          onMouseLeave={() => {
+            setLiquidateDropDown(false);
+          }}
         >
           <img src="./money-recive.svg" style={{ marginRight: "5px  " }} />
           Liquidate
         </label>
       ) : null}
       {account && connectWalletArrowState.bool ? (
-        <div style={{ zIndex: "1000" }} onMouseLeave={()=>{setConnectWalletArrowState({bool:false,direction:setConnectWalletArrowState.direction})}}>
+        <div
+          style={{ zIndex: "1000" }}
+          onMouseLeave={() => {
+            setConnectWalletArrowState({
+              bool: false,
+              direction: setConnectWalletArrowState.direction,
+            });
+          }}
+        >
           <div
             style={{
               position: "absolute",
@@ -610,7 +626,12 @@ const SecondaryHeader = ({
         <></>
       )}
       {settingDropDown && !selectLanguage ? (
-        <div style={{ zIndex: "1000" }} onMouseLeave={()=>{setSettingDropDown(false)}}>
+        <div
+          style={{ zIndex: "1000" }}
+          onMouseLeave={() => {
+            setSettingDropDown(false);
+          }}
+        >
           <div
             style={{
               position: "absolute",
@@ -679,7 +700,12 @@ const SecondaryHeader = ({
         <></>
       )}
       {selectLanguage ? (
-        <div style={{ zIndex: "1000" }} onMouseLeave={()=>{setSelectLanguage(false)}}>
+        <div
+          style={{ zIndex: "1000" }}
+          onMouseLeave={() => {
+            setSelectLanguage(false);
+          }}
+        >
           <div
             style={{
               position: "absolute",

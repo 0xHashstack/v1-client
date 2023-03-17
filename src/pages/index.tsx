@@ -318,16 +318,16 @@ const Dashboard = () => {
           console.log("JJ", tempValue);
 
           sum1 +=
-            (Number(item.loanAmount/ (10 ** tokenDecimalsMap[item.loanMarket])) *
+            (Number(item.loanAmount / 10 ** tokenDecimalsMap[item.loanMarket]) *
               Number(oracleAndFairPrices?.oraclePrices[i].price) *
               Number(
-                tempValue[`${item.loanMarketAddress}__${item.commitmentIndex}`]
+                tempValue?.[`${item.loanMarketAddress}__${item.commitmentIndex}`]
                   ?.borrowAPR?.apr100x
               )) /
             100;
 
           sum2 +=
-            Number(item.loanAmount / (10 ** tokenDecimalsMap[item.loanMarket])) *
+            Number(item.loanAmount / 10 ** tokenDecimalsMap[item.loanMarket]) *
             Number(oracleAndFairPrices?.oraclePrices[i].price);
         }
       });
@@ -488,7 +488,7 @@ const Dashboard = () => {
     });
     const MySwap = new Contract(loanAbi, diamondAddress, provider);
     const res = await MySwap.call("get_user_loans", [account], {
-      blockIdentifier: 'pending'
+      blockIdentifier: "pending",
     });
     parseLoansData(res?.loan_records_arr, res?.collateral_records_arr);
     console.log(res);
@@ -501,7 +501,7 @@ const Dashboard = () => {
   /*============================== Get Deposits from the blockchain ====================================*/
 
   function parseDepositsData(depositsData: any[]) {
-    console.log('parseDeposisDatat', depositsData);
+    console.log("parseDeposisDatat", depositsData);
     let deposits: any[] = [];
     let deposit;
     for (let i = 0; i < depositsData?.length; i++) {
@@ -535,7 +535,7 @@ const Dashboard = () => {
       deposits.push(JSON.parse(myDepString));
     }
     let nonZeroDeposits = deposits.filter(function (el) {
-      console.log("amount parse deposit", el.amount)
+      console.log("amount parse deposit", el.amount);
       return el.amount !== "0";
     });
     console.log("parsed deposit data", deposits);
@@ -955,7 +955,9 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div style={{ width: "7%" }}>
-                          <div style={{ color: "#8C8C8C" }}>Interest Earned</div>
+                          <div style={{ color: "#8C8C8C" }}>
+                            Interest Earned
+                          </div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
                             {/* $8,932.14 */}${netAprEarned}
                           </div>
@@ -1063,7 +1065,7 @@ const Dashboard = () => {
                                     setTypeOfLoansDropDownArrowType(DownArrow);
                                     setIsDropDownOpenTypeOfLoans(false);
                                     setActiveRepaytab(type);
-                                  }}
+                                  }}             
                                 >
                                   {type}
                                 </div>
@@ -1155,6 +1157,7 @@ const Dashboard = () => {
                           {customActiveTab === "6" ? (
                             <div style={{ color: "black", marginTop: "30px" }}>
                               <Liquidation
+                                oraclePrices={oracleAndFairPrices?.oraclePrices}
                                 activeLiquidationsData={activeLiquidationsData}
                                 isTransactionDone={isTransactionDone}
                               />
