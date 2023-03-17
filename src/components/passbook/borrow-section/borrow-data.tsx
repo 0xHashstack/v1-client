@@ -1217,16 +1217,16 @@ const BorrowData = ({
   };
 
   useEffect(() => {
-    setBorrowInterest(borrowInterestAccrued(asset));
-    if (asset && historicalAPRs) {
+    setBorrowInterest(borrowInterestAccrued(assetParam));
+    if (assetParam && historicalAPRs) {
       setCurrentBorrowInterest(
         // @todo this is actually recent aprs
-        currentBorrowInterestRate(asset, historicalAPRs)
+        currentBorrowInterestRate(assetParam, historicalAPRs)
       );
       // console.log("currentBorrowInterest", currentBorrowInterest);
     }
     // console.log("currentBorrowInterest", asset, historicalAPRs);
-  }, [asset, historicalAPRs]);
+  }, [assetParam, historicalAPRs]);
   // console.log("look here",asset);
 
   return (

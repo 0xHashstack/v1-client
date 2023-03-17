@@ -106,16 +106,19 @@ const BorrowTab = ({
   const [value, setValue] = useState<any>(0);
   const [dropDown, setDropDown] = useState(false);
   const [dropDownArrow, setDropDownArrow] = useState(Downarrow);
-  const [asset, setAsset] = useState(assetParam);
+  const [asset, setAsset] = useState("BTC");
+
   const [commitmentValue, setCommitmentValue] = useState("Flexible");
   const [commitmentDropDown, setCommitmentDropDown] = useState(false);
   const [commitmentArrow, setCommitmentArrow] = useState(Downarrow);
   const [borrowParams, setBorrowParams] = useState<IBorrowParams>({
-    loanAmount: 0,
-    collateralAmount: 0,
+    loanAmount: null,
+    collateralAmount: null,
     commitBorrowPeriod: 0,
-    collateralMarket: null,
+    collateralMarket: "BTC",
   });
+
+  const [tokenSymbol, setTokenSymbol] = useState<string>("WBTC");
 
   const [modal_borrow, setmodal_borrow] = useState(false);
 
@@ -124,6 +127,7 @@ const BorrowTab = ({
 
   const [tokenName, setTokenName] = useState("BTC");
   const [borrowTokenName, setBorrowTokenName] = useState("BTC");
+  const [borrowTokenSymbol, setBorrowTokenSymbol] = useState("WBTC")
   const [token, setToken] = useState(getTokenFromName("BTC"));
   const [loanActionTab, setLoanActionTab] = useState("0");
   const { address: account } = useAccount();
@@ -922,6 +926,11 @@ const BorrowTab = ({
               borrowTokenName={borrowTokenName}
               borrowDropDown={borrowDropDown}
               toastParam={toastParam}
+              tokenSymbol ={tokenSymbol}
+              setTokenSymbol ={setTokenSymbol}
+              setBorrowTokenSymbol={setBorrowTokenSymbol}
+              borrowTokenSymbol ={borrowTokenSymbol}
+
             />
           </>
         )}
