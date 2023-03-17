@@ -213,16 +213,16 @@ const Dashboard = () => {
 
   useEffect(() => {
     //0x05b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864
-    // setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
-    setAccount(
-      number.toHex(
-        number.toBN(
-          number.toFelt(
-            "0x732f5f56f0a0a1888a9db1f35bc729595f6c62c492e08dffe9d5c71ab1a3532"
-          )
-        )
-      )
-    );
+    setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
+    // setAccount(
+    //   number.toHex(
+    //     number.toBN(
+    //       number.toFelt(
+    //         "0x732f5f56f0a0a1888a9db1f35bc729595f6c62c492e08dffe9d5c71ab1a3532"
+    //       )
+    //     )
+    //   )
+    // );
     checkDB();
   }, [_account]);
 
