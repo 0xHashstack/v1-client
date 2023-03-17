@@ -159,7 +159,7 @@ const StatsBoard = (result: {
         <div className="">
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>Net Worth</p>
           <h4>
-            {netWorth !== undefined && netWorth !== 0? (
+            {netWorth !== undefined ? (
               <NumericFormat
                 displayType="text"
                 value={netWorth.toFixed(2)}
@@ -174,7 +174,7 @@ const StatsBoard = (result: {
         <div className="">
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>Your Supply</p>
           <h4>
-            {totalSupply !== undefined  && totalSupply !== 0 ?(
+            {totalSupply !== undefined   ?(
               <NumericFormat
                 displayType="text"
                 value={totalSupply.toFixed(2)}
@@ -189,7 +189,7 @@ const StatsBoard = (result: {
         <div className="">
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>Your Borrow</p>
           <h4>
-            {yourBorrow !== undefined && yourBorrow !== 0? (
+            {yourBorrow !== undefined ? (
               <NumericFormat
                 displayType="text"
                 value={yourBorrow.toFixed(2)}
