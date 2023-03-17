@@ -58,7 +58,14 @@ import {
   useStarknetCall,
 } from "@starknet-react/core";
 import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
-import { Abi, Contract, number, RpcProvider, uint256, Provider } from "starknet";
+import {
+  Abi,
+  Contract,
+  number,
+  RpcProvider,
+  uint256,
+  Provider,
+} from "starknet";
 import { assert } from "console";
 import depositAbi from "../../starknet-artifacts/contracts/modules/deposit.cairo/deposit_abi.json";
 import loanAbi from "../../starknet-artifacts/contracts/modules/loan.cairo/loan_abi.json";
@@ -213,16 +220,16 @@ const Dashboard = () => {
 
   useEffect(() => {
     //0x05b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864
-    setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
-    // setAccount(
-    //   number.toHex(
-    //     number.toBN(
-    //       number.toFelt(
-    //         "0x5b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"
-    //       )
-    //     )
-    //   )
-    // );
+    // setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
+    setAccount(
+      number.toHex(
+        number.toBN(
+          number.toFelt(
+            "0x5b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"
+          )
+        )
+      )
+    );
     checkDB();
   }, [_account]);
 
@@ -488,11 +495,11 @@ const Dashboard = () => {
   async function get_user_loans() {
     const provider = new Provider({
       sequencer: {
-        baseUrl: 'https://alpha-mainnet.starknet.io',
-        feederGatewayUrl: 'feeder_gateway',
-        gatewayUrl: 'gateway',
-      }
-    })
+        baseUrl: "https://alpha-mainnet.starknet.io",
+        feederGatewayUrl: "feeder_gateway",
+        gatewayUrl: "gateway",
+      },
+    });
     const MySwap = new Contract(loanAbi, diamondAddress, provider);
     const res = await MySwap.call("get_user_loans", [account], {
       blockIdentifier: "pending",
@@ -552,11 +559,11 @@ const Dashboard = () => {
   async function get_user_deposits() {
     const provider = new Provider({
       sequencer: {
-        baseUrl: 'https://alpha-mainnet.starknet.io',
-        feederGatewayUrl: 'feeder_gateway',
-        gatewayUrl: 'gateway',
-      }
-    })
+        baseUrl: "https://alpha-mainnet.starknet.io",
+        feederGatewayUrl: "feeder_gateway",
+        gatewayUrl: "gateway",
+      },
+    });
     const Deposit = new Contract(depositAbi, diamondAddress, provider);
     const res = await Deposit.call("get_user_deposits", [account]);
     parseDepositsData(res?.deposit_records_arr);
