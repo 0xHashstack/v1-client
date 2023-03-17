@@ -244,6 +244,7 @@ const BorrowData = ({
     loadingJediSwapSupportedPools,
     errorJediSwapSupportedPools,
     supportedPoolsJediSwap,
+    jediSwapTransReceipt,
 
     handleJediSwap,
     dataJediSwap,
@@ -259,6 +260,7 @@ const BorrowData = ({
     handleMySwap,
     loadingMySwap,
     errorMySwap,
+    mySwapTransReceipt,
     supportedPoolsMySwap,
     isMyswapToastOpen,
     setIsToastMyswapOpen,
@@ -3495,89 +3497,95 @@ const BorrowData = ({
                       >
                         {/* 1 BTC = 21,000 USDT */}
                         {/* * TODO: Adjust for token Decimals */}
-                        {asset ? (
-                          appsImage === "mySwap" ? (
-                            totalAmountOutmySwap !== "NA" ? (
-                              totalAmountOutmySwap >
-                              changeTo18Decimals(
+                        {asset ? ((appsImage === "mySwap" ? (
+                          totalAmountOutmySwap !== "NA" ? (
+                            Number(totalAmountOutmySwap) >
+                              Number(changeTo18Decimals(
                                 asset?.loanAmount,
                                 asset.loanMarket
-                              ) ? (
-                                `1 ${asset.loanMarketSymbol} = ${(
-                                  number
-                                    .toBN(totalAmountOutmySwap)
-                                    .mul(number.toBN(100))
-                                    .div(
-                                      number.toBN(
-                                        changeTo18Decimals(
-                                          asset.loanAmount,
-                                          asset.loanMarket
-                                        )
-                                      )
-                                    )
-                                    .toNumber() / 100
-                                ).toFixed(4)} ${marketTokenSymbol}`
-                              ) : (
-                                `1 ${marketTokenSymbol} = ${(
-                                  number
-                                    .toBN(
+                              )) ? (
+                              `1 ${asset.loanMarketSymbol} = ${(
+                                number
+                                  .toBN(totalAmountOutmySwap)
+                                  .mul(number.toBN(100))
+                                  .div(
+                                    number.toBN(
                                       changeTo18Decimals(
-                                        asset?.loanAmount,
+                                        asset.loanAmount,
                                         asset.loanMarket
                                       )
                                     )
-                                    .mul(number.toBN(100))
-                                    .div(number.toBN(totalAmountOutmySwap))
-                                    .toNumber() / 100
-                                ).toFixed(4)} ${asset.loanMarketSymbol}`
-                              )
+                                  )
+                                  .toNumber() / 100
+                              ).toFixed(4)} ${marketTokenSymbol}`
                             ) : (
-                              <MySpinner />
-                            )
-                          ) : appsImage === "jediSwap" ? (
-                            totalAmountOutJediSwap !== "NA" ? (
-                              totalAmountOutJediSwap >
-                              changeTo18Decimals(
-                                asset?.loanAmount,
-                                asset.loanMarket
-                              ) ? (
-                                `1 ${asset.loanMarketSymbol} = ${(
-                                  number
-                                    .toBN(totalAmountOutJediSwap)
-                                    .mul(number.toBN(100))
-                                    .div(
-                                      number.toBN(
-                                        changeTo18Decimals(
-                                          asset.loanAmount,
-                                          asset.loanMarket
-                                        )
-                                      )
+                              `1 ${marketTokenSymbol} = ${(
+                                number
+                                  .toBN(
+                                    changeTo18Decimals(
+                                      asset?.loanAmount,
+                                      asset.loanMarket
                                     )
-                                    .toNumber() / 100
-                                ).toFixed(4)} ${marketTokenSymbol}`
-                              ) : (
-                                `1 ${marketTokenSymbol} = ${(
-                                  number
-                                    .toBN(
-                                      changeTo18Decimals(
-                                        asset?.loanAmount,
-                                        asset.loanMarket
-                                      )
-                                    )
-                                    .mul(number.toBN(100))
-                                    .div(number.toBN(totalAmountOutJediSwap))
-                                    .toNumber() / 100
-                                ).toFixed(4)} ${asset.loanMarketSymbol}`
-                              )
-                            ) : (
-                              <MySpinner />
+                                  )
+                                  .mul(number.toBN(100))
+                                  .div(number.toBN(totalAmountOutmySwap))
+                                  .toNumber() / 100
+                              ).toFixed(4)} ${asset.loanMarketSymbol}`
                             )
                           ) : (
-                            "-"
+                            <MySpinner />
+                          )
+                        ) : appsImage === "jediSwap" ? (
+                          totalAmountOutJediSwap !== "NA" ? (
+                            Number(totalAmountOutJediSwap) >
+                              Number(changeTo18Decimals(
+                                asset?.loanAmount,
+                                asset.loanMarket
+                              )) ? (
+                              `1 ${asset.loanMarketSymbol} = ${(
+                                number
+                                  .toBN(totalAmountOutJediSwap)
+                                  .mul(number.toBN(100))
+                                  .div(
+                                    number.toBN(
+                                      changeTo18Decimals(
+                                        asset.loanAmount,
+                                        asset.loanMarket
+                                      )
+                                    )
+                                  )
+                                  .toNumber() / 100
+                              ).toFixed(4)} ${marketTokenSymbol}`
+                            ) : (
+                              `1 ${marketTokenSymbol} = ${(
+                                number
+                                  .toBN(
+                                    changeTo18Decimals(
+                                      asset?.loanAmount,
+                                      asset.loanMarket
+                                    )
+                                  )
+                                  .mul(number.toBN(100))
+                                  .div(number.toBN(totalAmountOutJediSwap))
+                                  .toNumber() / 100
+                              ).toFixed(4)} ${asset.loanMarketSymbol}`
+                            )
+                          ) : (
+                            <MySpinner />
                           )
                         ) : (
                           "-"
+                        ))) : (
+                          "-"
                         )}
+
+                        {console.log("inequality", marketTokenSymbol, asset.loanMarketSymbol, totalAmountOutJediSwap, changeTo18Decimals(
+                          asset?.loanAmount,
+                          asset.loanMarket
+                        ), Number(totalAmountOutJediSwap) > Number(changeTo18Decimals(
+                          asset?.loanAmount,
+                          asset.loanMarket
+                        )))}
                       </div>
                     </div>
                     <div
@@ -3648,9 +3656,11 @@ const BorrowData = ({
                     }
                     onClick={handleSpendBorrowCTAButton}
                   >
-                    {!(
-                      loadingApprove ||
-                      !isTransactionLoading(requestDepositTransactionReceipt)
+                    {!(actionLabel === "Swap" &&
+                      (
+                        (appsImage === 'jediSwap' && isTransactionLoading(jediSwapTransReceipt))
+                        || (appsImage === "mySwap" && isTransactionLoading(mySwapTransReceipt))
+                      )
                     ) ? (
                       <div style={{ display: "block" }}>
                         {selection}

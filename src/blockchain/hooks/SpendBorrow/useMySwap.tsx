@@ -136,6 +136,7 @@ const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
     dataMySwap,
     errorMySwap,
     handleMySwap,
+    mySwapTransReceipt,
 
     supportedPoolsMySwap,
     loadingMySwapSupportedPools,
