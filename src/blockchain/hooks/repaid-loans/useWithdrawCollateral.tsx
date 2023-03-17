@@ -40,6 +40,8 @@ const useWithdrawCollateral = (_diamondAddress: string, _loanId: number) => {
     executeWithdrawCollateral,
     loadingWithdrawCollateral,
     errorWithdrawCollateral,
+    transWithdrawCollateral, 
+    setTransWithdrawCollateral
   };
 };
 

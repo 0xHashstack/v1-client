@@ -120,8 +120,6 @@ const BorrowData = ({
   swapLoanToSecondaryTransactionReceipt,
   setRevertSwapTransactionReceipt,
   // repayTransactionReceipt,
-  addCollateralTransactionReceipt,
-  revertSwapTransactionReceipt,
 }: {
   asset: any;
   allAssets: any;
@@ -213,6 +211,8 @@ const BorrowData = ({
     executeWithdrawCollateral,
     loadingWithdrawCollateral,
     errorWithdrawCollateral,
+    setTransWithdrawCollateral, 
+    transWithdrawCollateral
   } = useWithdrawCollateral(diamondAddress, asset.loanId);
   const {
     partialWithdrawAmount,
@@ -229,6 +229,7 @@ const BorrowData = ({
     errorAddCollateral,
     addCollateralAmount,
     setAddCollateralAmount,
+    addCollateralTransactionReceipt,
 
     isAddcollatToastOpen,
     setIsToastAddcollatOpen,
@@ -665,7 +666,7 @@ const BorrowData = ({
   const handleWithdrawCollateral = async () => {
     try {
       const val = await executeWithdrawCollateral();
-      // setTransWithdrawCollateral(val.transaction_hash);
+      setTransWithdrawCollateral(val.transaction_hash);
       const toastParamValue = {
         success: true,
         heading: "Success",
@@ -1022,7 +1023,7 @@ const BorrowData = ({
       addCollateralAmount <= 0 ||
       addCollateralAmount > (
         Number(
-          uint256.uint256ToBN(loanMarketBalance ? loanMarketBalance[0] : 0)
+          uint256.uint256ToBN(collateralMarketBalance ? collateralMarketBalance[0] : 0)
         ) /
         10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18))
     );
@@ -4188,8 +4189,7 @@ const BorrowData = ({
                     onClick={handleAddCollateral}
                   >
                     {!(
-                      loadingApprove ||
-                      isTransactionLoading(requestDepositTransactionReceipt)
+                      isTransactionLoading(addCollateralTransactionReceipt)
                     ) ? (
                       <>{selection}</>
                     ) : (
@@ -4323,7 +4323,7 @@ const BorrowData = ({
                   >
                     {!(
                       loadingApprove ||
-                      isTransactionLoading(requestDepositTransactionReceipt)
+                      isTransactionLoading(transWithdrawCollateral)
                     ) ? (
                       <>{selection}</>
                     ) : (
