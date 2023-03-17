@@ -181,7 +181,7 @@ const BorrowData = ({
     loadingApprove,
     loadingDeposit,
     transApprove,
-    transDeposit,
+    transAddDeposit,
   }: {
     handleDepositAmount: any;
     handleApprove: any;
@@ -194,7 +194,7 @@ const BorrowData = ({
     loadingApprove: any;
     loadingDeposit: any;
     transApprove: any;
-    transDeposit: any;
+    transAddDeposit: any;
   } = useAddDeposit(asset, diamondAddress);
 
   const {
@@ -634,7 +634,7 @@ const BorrowData = ({
   });
 
   const requestDepositTransactionReceipt = useTransactionReceipt({
-    hash: transDeposit,
+    hash: transAddDeposit,
     watch: true,
   });
 
@@ -3422,7 +3422,7 @@ const BorrowData = ({
                                 asset?.loanAmount,
                                 asset.loanMarket
                               ) ? (
-                              `1 ${asset.loanMarket} = ${(
+                              `1 ${asset.loanMarketSymbol} = ${(
                                 number
                                   .toBN(totalAmountOutmySwap)
                                   .mul(number.toBN(100))
@@ -3435,9 +3435,9 @@ const BorrowData = ({
                                     )
                                   )
                                   .toNumber() / 100
-                              ).toFixed(4)} ${marketTokenName}`
+                              ).toFixed(4)} ${marketTokenSymbol}`
                             ) : (
-                              `1 ${marketTokenName} = ${(
+                              `1 ${marketTokenSymbol} = ${(
                                 number
                                   .toBN(
                                     changeTo18Decimals(
@@ -3448,7 +3448,7 @@ const BorrowData = ({
                                   .mul(number.toBN(100))
                                   .div(number.toBN(totalAmountOutmySwap))
                                   .toNumber() / 100
-                              ).toFixed(4)} ${asset.loanMarket}`
+                              ).toFixed(4)} ${asset.loanMarketSymbol}`
                             )
                           ) : (
                             <MySpinner />
@@ -3460,7 +3460,7 @@ const BorrowData = ({
                                 asset?.loanAmount,
                                 asset.loanMarket
                               ) ? (
-                              `1 ${asset.loanMarket} = ${(
+                              `1 ${asset.loanMarketSymbol} = ${(
                                 number
                                   .toBN(totalAmountOutJediSwap)
                                   .mul(number.toBN(100))
@@ -3473,9 +3473,9 @@ const BorrowData = ({
                                     )
                                   )
                                   .toNumber() / 100
-                              ).toFixed(4)} ${marketTokenName}`
+                              ).toFixed(4)} ${marketTokenSymbol}`
                             ) : (
-                              `1 ${marketTokenName} = ${(
+                              `1 ${marketTokenSymbol} = ${(
                                 number
                                   .toBN(
                                     changeTo18Decimals(
@@ -3486,7 +3486,7 @@ const BorrowData = ({
                                   .mul(number.toBN(100))
                                   .div(number.toBN(totalAmountOutJediSwap))
                                   .toNumber() / 100
-                              ).toFixed(4)} ${asset.loanMarket}`
+                              ).toFixed(4)} ${asset.loanMarketSymbol}`
                             )
                           ) : (
                             <MySpinner />
@@ -3568,7 +3568,7 @@ const BorrowData = ({
                   >
                     {!(
                       loadingApprove ||
-                      isTransactionLoading(requestDepositTransactionReceipt)
+                      !isTransactionLoading(requestDepositTransactionReceipt)
                     ) ? (
                       <div style={{ display: "block" }}>
                         {selection}

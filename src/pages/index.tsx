@@ -58,7 +58,7 @@ import {
   useStarknetCall,
 } from "@starknet-react/core";
 import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
-import { Abi, Contract, number, RpcProvider, uint256 } from "starknet";
+import { Abi, Contract, number, RpcProvider, uint256, Provider } from "starknet";
 import { assert } from "console";
 import depositAbi from "../../starknet-artifacts/contracts/modules/deposit.cairo/deposit_abi.json";
 import loanAbi from "../../starknet-artifacts/contracts/modules/loan.cairo/loan_abi.json";
@@ -483,10 +483,13 @@ const Dashboard = () => {
   }
 
   async function get_user_loans() {
-    let provider = new RpcProvider({
-      nodeUrl:
-        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
-    });
+    const provider = new Provider({
+      sequencer: {
+        baseUrl: 'https://alpha-mainnet.starknet.io',
+        feederGatewayUrl: 'feeder_gateway',
+        gatewayUrl: 'gateway',
+      }
+    })
     const MySwap = new Contract(loanAbi, diamondAddress, provider);
     const res = await MySwap.call("get_user_loans", [account], {
       blockIdentifier: "pending",
@@ -544,10 +547,13 @@ const Dashboard = () => {
   }
 
   async function get_user_deposits() {
-    let provider = new RpcProvider({
-      nodeUrl:
-        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
-    });
+    const provider = new Provider({
+      sequencer: {
+        baseUrl: 'https://alpha-mainnet.starknet.io',
+        feederGatewayUrl: 'feeder_gateway',
+        gatewayUrl: 'gateway',
+      }
+    })
     const Deposit = new Contract(depositAbi, diamondAddress, provider);
     const res = await Deposit.call("get_user_deposits", [account]);
     parseDepositsData(res?.deposit_records_arr);
