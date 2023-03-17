@@ -330,7 +330,7 @@ const BorrowData = ({
   const [repayNote, setRepayNote] = useState("");
 
   const [showWithdrawCollateralPreclosureCharge, setShowCollateralPreclosureCharge] = useState(false);
-
+  const [DepositLoanRates, setDepositLoanRates] = useState()
 
 
   const dappsArray = [
@@ -346,6 +346,15 @@ const BorrowData = ({
   const { address: accountAddress, status } = useAccount();
 
   const [Yagidrop, setYagidrop] = useState(false);
+
+  useEffect(() => {
+    OffchainAPI.getProtocolDepositLoanRates().then((val) => {
+      // console.log("got them", val);
+      setDepositLoanRates(val);
+    });
+  }, []);
+  // console.log("dep",DepositLoanRates);
+  
 
   useEffect(() => {
     // // console.log(
@@ -3415,6 +3424,8 @@ const BorrowData = ({
                       >
                         {/* 1 BTC = 21,000 USDT */}
                         {/* * TODO: Adjust for token Decimals */}
+                        {console.log("heres", asset, totalAmountOutJediSwap)
+                        }
                         {asset ? ((appsImage === "mySwap" ? (
                           totalAmountOutmySwap !== "NA" ? (
                             totalAmountOutmySwap >
@@ -3460,6 +3471,7 @@ const BorrowData = ({
                                 asset?.loanAmount,
                                 asset.loanMarket
                               ) ? (
+
                               `1 ${asset.loanMarket} = ${(
                                 number
                                   .toBN(totalAmountOutJediSwap)
@@ -4141,7 +4153,20 @@ const BorrowData = ({
                           color: "#6F6F6F",
                         }}
                       >
-                        00.0%
+
+                       {DepositLoanRates  ? (
+                      `${
+                        parseFloat(
+                          DepositLoanRates[
+                            `${asset.loanMarketAddress}__${
+                              asset.commitmentIndex
+                            }`
+                          ]?.borrowAPR?.apr100x as string
+                        ) / 100
+                      } %`
+                    ) : (
+                      <MySpinner />
+                    )}
                       </div>
                     </div>
                     <div

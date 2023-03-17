@@ -132,6 +132,9 @@ const SupplyModal = ({
   setIsToastOpen: any;
   toastParam: any;
 }) => {
+  // console.log("coin",tokenSymbol);
+  
+  
   return (
     <>
       <Modal
@@ -300,6 +303,8 @@ const SupplyModal = ({
                       setDropDownArrow(Downarrow)}}
                     >
                       {Coins.map((coin, index) => {
+                        console.log("coin",coin);
+                        
                         if (coin.name === tokenName) return <></>;
                         return (
                           <>
