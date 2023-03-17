@@ -269,7 +269,7 @@ const StatsBoard = (result: {
             Asset utilisation rate
           </p>
           <h4>
-            {availableReserves !== undefined && totalReserves !== undefined ? (
+            {availableReserves && totalReserves ? (
               `${(100 * (1 - availableReserves / totalReserves)).toFixed(2)}%`
             ) : (
               <MySpinner />
