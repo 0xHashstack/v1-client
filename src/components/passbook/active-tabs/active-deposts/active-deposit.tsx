@@ -509,7 +509,7 @@ const ActiveDeposit = ({
         ).toString()
       );
 
-    setWithdrawAmount(e*currentBalance/100);
+    setWithdrawAmount(value*currentBalance/100);
     if(value  === 100) setWithdrawAllorNot(true);
     else setWithdrawAllorNot(false);
   }
