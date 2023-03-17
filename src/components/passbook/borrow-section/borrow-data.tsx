@@ -460,6 +460,7 @@ const BorrowData = ({
   useEffect(() => {
     // console.log(
     //   "partialWithdraw",
+    //   asset?.loanId,
     //   partialWithdrawData
     //   ? uint256.uint256ToBN(partialWithdrawData.amount).toString()
     //   : "0",
