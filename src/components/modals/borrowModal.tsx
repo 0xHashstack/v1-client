@@ -257,7 +257,7 @@ const BorrowModal: any = ({
                   }}
                 >
                   <Image
-                    src={dropDownArrow}
+                    src={dropDown?UpArrow:dropDownArrow}
                     alt="Picture of the author"
                     width="14px"
                     height="14px"
@@ -395,6 +395,7 @@ const BorrowModal: any = ({
                     backgroundColor: "#1D2131",
                     boxShadow: "0px 0px 10px #0020",
                   }}
+                  onMouseLeave={()=>{setDropDown(!dropDown)}}
                 >
                   {Coins.map((coin: any, index: number) => {
                     if (coin.name === tokenName) return <></>;
@@ -449,6 +450,8 @@ const BorrowModal: any = ({
                     backgroundColor: "#1D2131",
                     boxShadow: "0px 0px 10px #00000020",
                   }}
+                  onMouseLeave={()=>{setBorrowDropDown(!borrowDropDown)
+                  setBorrowArrow(dropDownArrow)}}
                 >
                   {Coins.map((coin: any, index: number) => {
                     if (coin.name === borrowTokenName) return <></>;
@@ -505,8 +508,9 @@ const BorrowModal: any = ({
                     backgroundColor: "#1D2131",
                     boxShadow: "0px 0px 10px #00000020",
                   }}
-                > 
-
+                  onMouseLeave={()=>{setCommitmentDropDown(!commitmentDropDown)
+                  setCommitmentArrow(Downarrow)}}
+                >
                   <div
                     style={{
                       fontSize: "15px",
@@ -975,7 +979,7 @@ const BorrowModal: any = ({
             </div>
           </Form>
         ) : (
-          <h2>Please connect your wallet</h2>
+          <h2 style={{color:"white"}}>Please connect your wallet</h2>
         )}
       </div>
       {isToastOpen ? (

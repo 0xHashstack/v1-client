@@ -46,7 +46,7 @@ const StatsBoard = (result: {
   useEffect(() => {
     setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
   }, [_account]);
-
+  let borrowedAmount = 0;
   useEffect(() => {
     if (!depositsArray || !loansArray) return;
     let supply = 0;
@@ -115,20 +115,23 @@ const StatsBoard = (result: {
           }
           setTotalReserves(reservesAmount);
 
-          let borrowedAmount = 0;
+          
           for (let token in res?.reserves?.loans) {
             if (token == val.oraclePrices[i].name) {
               borrowedAmount +=
-                res?.reserves.loans[token] * val.oraclePrices[i].price;
+                res.reserves.loans[token] * val.oraclePrices[i].price;
+                
             }
+            
           }
-          setAvailableReserves(reservesAmount - borrowedAmount);
+          setAvailableReserves(reservesAmount- borrowedAmount);
         };
 
         getReserves();
       }
     });
   }, [depositsArray, loansArray]);
+// console.log("set",availableReserves,totalReserves);
 
   return (
     <div
@@ -171,7 +174,7 @@ const StatsBoard = (result: {
         <div className="">
           <p style={{ marginBottom: "10px", color: "#8b8b8b" }}>Your Supply</p>
           <h4>
-            {totalSupply !== undefined ? (
+            {totalSupply !== undefined   ?(
               <NumericFormat
                 displayType="text"
                 value={totalSupply.toFixed(2)}
@@ -235,7 +238,7 @@ const StatsBoard = (result: {
             Total Reserves
           </p>
           <h4>
-            {totalReserves !== undefined ? (
+            {totalReserves !== undefined && totalReserves !== 0?  (
               <NumericFormat
                 displayType="text"
                 value={totalReserves.toFixed(2)}
@@ -252,7 +255,7 @@ const StatsBoard = (result: {
             Available Reserves
           </p>
           <h4>
-            {availableReserves !== undefined ? (
+            {availableReserves !== undefined && availableReserves !== 0? (
               <NumericFormat
                 displayType="text"
                 value={availableReserves.toFixed(2)}
@@ -269,7 +272,7 @@ const StatsBoard = (result: {
             Asset utilisation rate
           </p>
           <h4>
-            {availableReserves && totalReserves ? (
+            {availableReserves !== undefined && availableReserves !== 0 && totalReserves !== undefined && totalReserves !== 0? (
               `${(100 * (1 - availableReserves / totalReserves)).toFixed(2)}%`
             ) : (
               <MySpinner />
