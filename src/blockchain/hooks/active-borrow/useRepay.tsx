@@ -26,6 +26,11 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
     watch: true
   })
 
+  const selfLiquidateTransactionReceipt = useTransactionReceipt({
+    hash: transSelfLiquidateHash,
+    watch: true
+  });
+
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
     address: tokenAddressMap[asset.loanMarket] as string,
@@ -159,6 +164,8 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
     executeSelfLiquidate, 
     loadingSelfLiquidate,
     errorSelfLiquidate,
+    selfLiquidateTransactionReceipt, 
+    setIsSelfLiquidateHash
   };
 }
 
