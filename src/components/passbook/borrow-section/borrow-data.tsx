@@ -329,6 +329,8 @@ const BorrowData = ({
   const [showNoteForRepay, setShowNoteForRepay] = useState(false);
   const [repayNote, setRepayNote] = useState("");
 
+  const [showWithdrawCollateralPreclosureCharge, setShowCollateralPreclosureCharge] = useState(false);
+
 
 
   const dappsArray = [
@@ -866,6 +868,7 @@ const BorrowData = ({
     getNoteForRevertSpend();
     getNoteForWithdrawPartialBorrow();
     getNoteRepay();
+    checkIfLoanPreclosed();
   }, [asset])
 
   const getNoteForSpendBorrow = () => {
@@ -937,6 +940,20 @@ const BorrowData = ({
     }
     else 
       setShowNoteForRepay(false);
+  }
+
+  const checkIfLoanPreclosed = () => {
+    if (asset?.commitmentIndex !== 0) {
+      const commitmentDuration = 30 * 24 * 3600;
+      const commitmenntEndtime = new Date(asset?.loanCreationTime * 1000 + commitmentDuration * 1000);
+      const loanClosureTime = new Date(asset?.timelockActivationTime * 100);
+      // if commimentEndTime > loanClosureTime then loan is preclosed
+      if (commitmenntEndtime > loanClosureTime) {
+        setShowNoteForWithdrawCollateral(true);
+        setWithdrawCollateralNote(UserInformation?.WithdrawCollateral?.LoanPreclosed);
+        setShowCollateralPreclosureCharge(true);
+      }
+    }
   }
 
   const toggleyagi = () => {
@@ -4159,7 +4176,7 @@ const BorrowData = ({
                         {TransactionFees.loan.withdrawCollateral}%
                       </div>
                     </div>
-                    <div
+                    {showWithdrawCollateralPreclosureCharge ? <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -4178,7 +4195,7 @@ const BorrowData = ({
                       >
                         {TransactionFees.loan.preClosureLoan}%
                       </div>
-                    </div>
+                    </div>: null}
                     <div
                       style={{
                         display: "flex",
@@ -4197,18 +4214,19 @@ const BorrowData = ({
                         Starknet
                       </div>
                     </div>
+                    {showWithdrawCollateralPreclosureCharge ? 
                     <div
                       style={{
                         marginTop: "-20px",
                       }}
                     >
                       <div style={{ padding: "15px" }}></div>
-                      {/* <div style={{ color: "#6F6F6F", fontSize: "9px" }}>
+                      <div style={{ color: "#6F6F6F", fontSize: "9px" }}>
                         A pre-closure charge is applied on your collateral,
                         since you are withdrawing the collateral of a pre-closed
                         borrow.
-                      </div> */}
-                    </div>
+                      </div>
+                    </div> : null}
                   </div>
                   {
                     showNoteForWithdrawCollateral ?

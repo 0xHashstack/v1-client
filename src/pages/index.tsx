@@ -321,7 +321,7 @@ const Dashboard = () => {
             (Number(item.loanAmount/ (10 ** tokenDecimalsMap[item.loanMarket])) *
               Number(oracleAndFairPrices?.oraclePrices[i].price) *
               Number(
-                tempValue[`${item.loanMarketAddress}__${item.commitmentIndex}`]
+                tempValue?.[`${item.loanMarketAddress}__${item.commitmentIndex}`]
                   ?.borrowAPR?.apr100x
               )) /
             100;
