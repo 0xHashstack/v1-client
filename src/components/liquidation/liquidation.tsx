@@ -358,7 +358,7 @@ const Liquidation = ({
     const res = await Liquidate.call("is_loan_liquidable", [Id], {
       blockIdentifier: "pending",
     });
-    // console.log("here",BNtoNum(res,0) === "1.0000");
+    // console.log("here",BNtoNum(res,0));
     return (BNtoNum(res,0))
 
   }
@@ -368,8 +368,8 @@ const Liquidation = ({
     await activeLiquidationsData.map(async(asset,key)=>{
         // console.log("aa",asset);
         let x = await is_loan_liquidable(asset.id);
-        // console.log(x); 
-         if (x === "1.0000") {
+        console.log(x); 
+         if (x === "1") {
            Filterliq.push(asset)
            setFilteredLiquid(Filterliq);
           //  console.log("done",FilteredLiquid);
