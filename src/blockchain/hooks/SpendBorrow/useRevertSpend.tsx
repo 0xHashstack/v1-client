@@ -3,17 +3,26 @@ import { tokenAddressMap } from "../../stark-constants";
 import { GetErrorText, NumToBN } from "../../utils";
 import { toast } from "react-toastify";
 import Integration from '../../../../starknet-artifacts/contracts/modules/integration.cairo/integration_abi.json'
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { TxToastManager } from "../../txToastManager";
 
 const useRevertSpend = (diamondAddress: string, asset: any) => {
     const [toastRevertSpendParam, setToastRevertSpendParam] = useState({});
     const [isRevertSpendToastOpen, setIsToastRevertSpendOpen] = useState(false);
-    const [transHashRevertSpend, setTransHashRevertSpend] = useState();
+    const [transHashRevertSpend, setTransHashRevertSpend] = useState<string>();
 
     const requestRevertSpendReceipt = useTransactionReceipt({
         hash: transHashRevertSpend,
         watch: true,
-      });
+    });
+
+    useEffect(() => {
+        TxToastManager.handleTxToast(
+            requestRevertSpendReceipt,
+            `Revert Spend: Loan Id: ${asset?.loanId}`,
+            true
+        );
+    }, [requestRevertSpendReceipt]);
 
     const {
         data: dataRevertSpend,

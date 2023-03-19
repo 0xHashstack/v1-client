@@ -30,7 +30,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 
 	const { address: account } = useAccount();
 	const [transApprove, setTransApprove] = useState('');
-	const [transDeposit, setTransDeposit] = useState('');
+	const [transAddDeposit, setTransAddDeposit] = useState('');
 
 
 	useEffect(() => {
@@ -159,7 +159,7 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 		// console.log(diamondAddress, depositAmount);
 		try {
 			let tx = await executeDeposit();
-			setTransDeposit(tx.transaction_hash);
+			setTransAddDeposit(tx.transaction_hash);
 		} catch(err) {
 			// console.log(err, 'err add deposit')
 		}
@@ -182,7 +182,8 @@ const useAddDeposit = (_token: any, _diamondAddress: string) => {
 		depositAmount,
 		depositCommit,
 		transApprove,
-		transDeposit,
+		transAddDeposit,
+		setTransAddDeposit,
 		loadingApprove,
 		loadingDeposit,
 		dataApprove,

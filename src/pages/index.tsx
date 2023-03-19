@@ -58,7 +58,14 @@ import {
   useStarknetCall,
 } from "@starknet-react/core";
 import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
-import { Abi, Contract, number, RpcProvider, uint256 } from "starknet";
+import {
+  Abi,
+  Contract,
+  number,
+  RpcProvider,
+  uint256,
+  Provider,
+} from "starknet";
 import { assert } from "console";
 import depositAbi from "../../starknet-artifacts/contracts/modules/deposit.cairo/deposit_abi.json";
 import loanAbi from "../../starknet-artifacts/contracts/modules/loan.cairo/loan_abi.json";
@@ -84,6 +91,9 @@ import YourMatrics from "../components/matrics/yourMatrics";
 import ProtocolMatrics from "../components/matrics/protocolMatrix";
 import MySpinner from "../components/mySpinner";
 import { NumericFormat } from "react-number-format";
+import WhitelistModal from "../components/modals/whaitlistModal";
+import ExistingWhitelistModal from "../components/modals/existingWaitlistModal";
+
 // import App from "./Chart"
 
 interface IDeposit {
@@ -187,10 +197,12 @@ const Dashboard = () => {
 
   const checkDB = async () => {
     try {
-      //Whitelist check [correct check, ensure this is used on mainnet]
+      // Whitelist check [correct check, ensure this is used on mainnet]
       const whitelistStatus = await OffchainAPI.getWhitelistData(
         _account ? _account : ""
       );
+
+      // const whitelistStatus = await OffchainAPI.getWhitelistData("");
 
       //Waitlist check [I waitlisted my address for testing]
       //const whitelistStatus = await OffchainAPI.getWhitelistData("0x04ed937e802b1599a8d3b5dc93cf45f627d413e2d03e018c1da9f62062f7dfc8");
@@ -215,7 +227,7 @@ const Dashboard = () => {
     //   number.toHex(
     //     number.toBN(
     //       number.toFelt(
-    //         "0x5b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"
+    //         "0x732f5f56f0a0a1888a9db1f35bc729595f6c62c492e08dffe9d5c71ab1a3532"
     //       )
     //     )
     //   )
@@ -321,8 +333,9 @@ const Dashboard = () => {
             (Number(item.loanAmount / 10 ** tokenDecimalsMap[item.loanMarket]) *
               Number(oracleAndFairPrices?.oraclePrices[i].price) *
               Number(
-                tempValue?.[`${item.loanMarketAddress}__${item.commitmentIndex}`]
-                  ?.borrowAPR?.apr100x
+                tempValue?.[
+                  `${item.loanMarketAddress}__${item.commitmentIndex}`
+                ]?.borrowAPR?.apr100x
               )) /
             100;
 
@@ -482,9 +495,12 @@ const Dashboard = () => {
   }
 
   async function get_user_loans() {
-    let provider = new RpcProvider({
-      nodeUrl:
-        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
+    const provider = new Provider({
+      sequencer: {
+        baseUrl: "https://alpha-mainnet.starknet.io",
+        feederGatewayUrl: "feeder_gateway",
+        gatewayUrl: "gateway",
+      },
     });
     const MySwap = new Contract(loanAbi, diamondAddress, provider);
     const res = await MySwap.call("get_user_loans", [account], {
@@ -543,9 +559,12 @@ const Dashboard = () => {
   }
 
   async function get_user_deposits() {
-    let provider = new RpcProvider({
-      nodeUrl:
-        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
+    const provider = new Provider({
+      sequencer: {
+        baseUrl: "https://alpha-mainnet.starknet.io",
+        feederGatewayUrl: "feeder_gateway",
+        gatewayUrl: "gateway",
+      },
     });
     const Deposit = new Contract(depositAbi, diamondAddress, provider);
     const res = await Deposit.call("get_user_deposits", [account]);
@@ -798,39 +817,57 @@ const Dashboard = () => {
     );
   }
 
-
-  // Waitlist UI  
-  const WaitlistUI = () => {       
-    return(<p style={{zIndex : "1000", marginTop: "300px", marginBottom: "400px", textAlign: "center", verticalAlign: "text-bottom", fontSize: "40px", color: "white"}}>You are already in the queue</p>)
-  }
+  // Waitlist UI
+  const WaitlistUI = () => {
+    return (
+      <ExistingWhitelistModal accountAddress={account}/>
+    );
+  };
 
   // Timer logic
   // const showTimer = async () => {
-  //   if(timer >= 1){            
+  //   if(timer >= 1){
   //     setTimer(--timer);
-  //   }    
-  //   else {  
+  //   }
+  //   else {
   //     if(isWaitlisted!=1 && isWhitelisted!=1){
   //       window.location.href = "https://spearmint.xyz/p/hashstack";
-  //     }      
+  //     }
   //   }
-    
+
   //   return(null);
   // }
 
-  const addToWhitelist = async() => {
-    await OffchainAPI.setWhitelistData(_account?_account:"");
-  } 
+  // const addToWhitelist = async () => {
+  //   // await OffchainAPI.setWhitelistData(_account ? _account : "");
+  //   // await OffchainAPI.setWhitelistData("");
+  // };
 
   // Spearmint redirect UI
 
-  const SpearmintRedirectUI = () => {    
-    addToWhitelist()
-    //setTimeout(showTimer, 1200)    
-    return(<span>
-      <p style={{zIndex : "1000", marginTop: "300px", marginBottom: "350px", textAlign: "center", verticalAlign: "text-bottom", fontSize: "40px", color: "white"}}>Only registered users are allowed to access the mainnet. You're being added to the waitlist now</p>      
-    </span>);
-  }
+  const SpearmintRedirectUI = () => {
+    //addToWhitelist();
+    //setTimeout(showTimer, 1200)
+    return (
+      <span>
+        {/* <p
+          style={{
+            zIndex: "1000",
+            marginTop: "300px",
+            marginBottom: "350px",
+            textAlign: "center",
+            verticalAlign: "text-bottom",
+            fontSize: "40px",
+            color: "white",
+          }}
+        >
+          Only registered users are allowed to access the mainnet. You're being
+          added to the waitlist now
+        </p> */}
+        <WhitelistModal accountAddress={account} />
+      </span>
+    );
+  };
 
   const DashboardUI = () => {
     return (
@@ -1043,7 +1080,7 @@ const Dashboard = () => {
                                     setTypeOfLoansDropDownArrowType(DownArrow);
                                     setIsDropDownOpenTypeOfLoans(false);
                                     setActiveRepaytab(type);
-                                  }}             
+                                  }}
                                 >
                                   {type}
                                 </div>
@@ -1338,35 +1375,42 @@ const Dashboard = () => {
             incorrectChain()
           ) : (
             <>
+              {isWhitelisted ? (
+                <DashboardUI />
+              ) : isWaitlisted ? (
+                <WaitlistUI />
+              ) : (
+                <SpearmintRedirectUI />
+              )}
 
-              {isWhitelisted ? <DashboardUI />: isWaitlisted? <WaitlistUI/> : <SpearmintRedirectUI />}
-
-              <Row
-                style={{
-                  marginTop: "5px",
-                  position: "relative",
-                  bottom: "0px",
-                  left: "85%",
-                  backgroundColor: "transparent",
-                  borderRadius: "5px",
-                  zIndex: "200  ",
-                }}
-              >
-                <div
+              {isWhitelisted ? (
+                <Row
                   style={{
-                    display: "flex",
-                    padding: "5px 10px",
-                    alignItems: "center",
+                    marginTop: "15px",
+                    position: "relative",
+                    bottom: "0px",
+                    left: "85%",
+                    backgroundColor: "transparent",
+                    borderRadius: "5px",
+                    zIndex: "100",
                   }}
                 >
-                  <div>Latest synced block:&nbsp;&nbsp;</div>
-                  <div style={{ opacity: 0.6 }}>{offchainCurrentBlock}</div>
                   <div
-                    style={{ marginLeft: "5px" }}
-                    className="green-circle"
-                  ></div>
-                </div>
-              </Row>
+                    style={{
+                      display: "flex",
+                      padding: "5px 10px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div>Latest synced block:&nbsp;&nbsp;</div>
+                    <div style={{ opacity: 0.6 }}>{offchainCurrentBlock}</div>
+                    <div
+                      style={{ marginLeft: "5px" }}
+                      className="green-circle"
+                    ></div>
+                  </div>
+                </Row>
+              ) : null}
             </>
           )}
           {/* <Analytics></Analytics>

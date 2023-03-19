@@ -78,7 +78,7 @@ export class TxToastManager {
     message: ReactNode | string,
     type: TypeOptions,
     status: Status,
-    timeout = 5000,
+    timeout = 10000,
     progress = 1
   ) {
     // console.log("_showToast", {

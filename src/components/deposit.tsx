@@ -50,7 +50,6 @@ let Deposit: any = ({
   asset: string;
   depositLoanRates: any;
 }) => {
-
   const [asset, setAsset] = useState(assetParam);
   const [value, setValue] = useState<any>(0);
   const [tokenName, setTokenName] = useState(assetParam);
@@ -76,15 +75,10 @@ let Deposit: any = ({
   const [allowanceVal, setAllowance] = useState(0);
 
   const { account, address: accountAddress, status } = useAccount();
-  const [transApprove, setTransApprove] = useState("");
   const [transDeposit, setTransDeposit] = useState("");
   const [toastParam, setToastParam] = useState({});
   const [isToastOpen, setIsToastOpen] = useState(false);
 
-  const approveTransactionReceipt = useTransactionReceipt({
-    hash: transApprove,
-    watch: true,
-  });
   const requestDepositTransactionReceipt = useTransactionReceipt({
     hash: transDeposit,
     watch: true,
@@ -100,14 +94,6 @@ let Deposit: any = ({
       setDepositLoanRates(val);
     });
   }, [asset]);
-
-  useEffect(() => {
-    TxToastManager.handleTxToast(
-      approveTransactionReceipt,
-      `Deposit: Approve ${token?.name}`,
-      true
-    );
-  }, [approveTransactionReceipt]);
 
   useEffect(() => {
     TxToastManager.handleTxToast(
@@ -267,6 +253,8 @@ let Deposit: any = ({
   }
 
   const toggleDropdown = async () => {
+    setCommitmentArrow(Downarrow);
+    setCommitmentDropDown(false);
     setDropDown(!dropDown);
     setDropDownArrow(dropDown ? Downarrow : UpArrow);
   };

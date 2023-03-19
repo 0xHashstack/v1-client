@@ -1,4 +1,4 @@
-import { useContract, useStarknetCall, useStarknetExecute } from "@starknet-react/core";
+import { useContract, useStarknetCall, useStarknetExecute, useTransactionReceipt } from "@starknet-react/core";
 import { l3DiamondAddress, tokenAddressMap } from "../../stark-constants";
 import { number } from "starknet";
 import { GetErrorText, NumToBN } from "../../utils";
@@ -7,12 +7,28 @@ import { Abi } from "starknet";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { map } from "lodash";
+import { TxToastManager } from "../../txToastManager";
 
 const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
 
   const [toastJediswapParam, setToastJediswapParam] = useState({});
   const [isJediswapToastOpen, setIsToastJediswapOpen] = useState(false);
   const [supportedPoolsJediSwap, setSupportedPoolsJediSwap] = useState();
+
+  const [transJediSwapHash, setTransJediSwapHash] = useState("");
+
+  const jediSwapTransReceipt = useTransactionReceipt({
+    hash: transJediSwapHash,
+    watch: true
+  })
+
+  useEffect(() => {
+    TxToastManager.handleTxToast(
+      jediSwapTransReceipt,
+      `Spend Borrow: ${asset?.loanId}`,
+      true
+    );
+  }, [jediSwapTransReceipt]);
 
   const { contract: l3Contract } = useContract({
     abi: JediSwapAbi as Abi,
@@ -89,6 +105,7 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
   const handleJediSwap = async () => {
     try {
       const val = await executeJediSwap();
+      setTransJediSwapHash(val.transaction_hash);
       const toastParamValue = {
         success: true,
         heading: "Success",
@@ -121,6 +138,7 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
     loadingJediSwapSupportedPools,
     errorJediSwapSupportedPools,
     refreshJediSwapSupportedPools,
+    jediSwapTransReceipt,
 
     executeJediSwap,
     loadingJediSwap,

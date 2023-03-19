@@ -57,12 +57,31 @@ export default class OffchainAPI {
     }
   }
 
-  static async postWhitelist(route: string) {
+  // static async postWhitelist(route: string) {
+  //   try {
+  //     let url = `${this.ENDPOINT}${route}`
+  //     let res = await axios({
+  //       method: "post",
+  //       url,
+  //     })
+  //     return res.data
+  //   } catch (err) {
+  //     // console.log(err);
+  //   }
+  // }
+
+  static async postWhitelist(route: string, email: string, name: string) {
     try {
       let url = `${this.ENDPOINT}${route}`
       let res = await axios({
         method: "post",
         url,
+        data: [
+          {
+            Name: name,
+            Email: email,
+          },
+        ],
       })
       return res.data
     } catch (err) {
@@ -282,12 +301,19 @@ export default class OffchainAPI {
     // return Reserves;
   }
 
-  static async setWhitelistData(address: string) {
+  static async setWhitelistData(address: string, email: string, name: string) {
     let route = `/api/add-whitelist-address/${address}`
     // So many arguments not needed, just conforming to httpPost style. Only need to send account
-    await OffchainAPI.postWhitelist(route)
+    await OffchainAPI.postWhitelist(route, email, name)
     return null
   }
+
+  // static async setWhitelistData(address: string) {
+  //   let route = `/api/add-whitelist-address/${address}`
+  //   // So many arguments not needed, just conforming to httpPost style. Only need to send account
+  //   await OffchainAPI.postWhitelist(route)
+  //   return null
+  // }
 
   static async getWhitelistData(address: string) {
     let route = `/api/whitelistInfo/${address}`
