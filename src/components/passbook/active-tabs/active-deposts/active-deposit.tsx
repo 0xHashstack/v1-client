@@ -1023,7 +1023,7 @@ const ActiveDeposit = ({
                               `${getTokenFromName(tokenName).address
                               }__${commitPeriod}`
                             ]?.depositAPR?.apr100x as string
-                          )} %`
+                          ) / 100} %`
                         ) : (
                           <MySpinner />
                         )}

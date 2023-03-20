@@ -1269,7 +1269,7 @@ const Dashboard = () => {
         }}
       >
         <Head>
-          <title>Hashstack | Starknet testnet</title>
+          <title>Hashstack | Under-collateralised loans | DeFi</title>
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"
