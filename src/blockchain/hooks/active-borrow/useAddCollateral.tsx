@@ -8,16 +8,19 @@ import { GetErrorText, NumToBN, etherToWeiBN } from "../../utils";
 const useAddCollateral = (diamondAddress: string, asset: any) => {
     const [addCollateralAmount, setAddCollateralAmount] = useState<number>();
 
-    const [transWithdrawCollateral, setTransWithdrawCollateral] = useState('');
+    const [transAddCollateral, setTransAddCollateral] = useState('');
     const [toastAddcollatParam, setToastAddcollatParam] = useState({});
     const [isAddcollatToastOpen, setIsToastAddcollatOpen] = useState(false);
-    const withdrawCollateralTransactionReceipt = useTransactionReceipt({ hash: transWithdrawCollateral, watch: true })
+    const addCollateralTransactionReceipt = useTransactionReceipt({ 
+        hash: transAddCollateral, 
+        watch: true 
+    })
 
 
     useEffect(() => {
         // console.log('withdraw col tx receipt', withdrawCollateralTransactionReceipt.data?.transaction_hash, withdrawCollateralTransactionReceipt);
-        TxToastManager.handleTxToast(withdrawCollateralTransactionReceipt, `Withdraw collateral`, true)
-    }, [withdrawCollateralTransactionReceipt])
+        TxToastManager.handleTxToast(addCollateralTransactionReceipt, `Add collateral`, true)
+    }, [addCollateralTransactionReceipt])
 
     const {
         data: dataAddCollateral,
@@ -56,6 +59,7 @@ const useAddCollateral = (diamondAddress: string, asset: any) => {
         // console.log(`${asset.loanId} ${diamondAddress}`);
         try {
             const val = await executeAddCollateral();
+            setTransAddCollateral(val.transaction_hash);
             const toastParamValue = {
                 success: true,
                 heading: "Success",
@@ -90,6 +94,7 @@ const useAddCollateral = (diamondAddress: string, asset: any) => {
         loadingAddCollateral,
         errorAddCollateral,
         handleAddCollateral,
+        addCollateralTransactionReceipt,
 
         isAddcollatToastOpen,
         setIsToastAddcollatOpen,

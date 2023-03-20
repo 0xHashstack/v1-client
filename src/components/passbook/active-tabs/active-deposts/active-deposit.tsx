@@ -76,6 +76,7 @@ import classnames from "classnames";
 import { IDepositLoanRates } from "../../../borrow";
 import ToastModal from "../../../toastModals/customToastModal";
 import UserInformation from "../../../../../UserInformation.json";
+import { NumericFormat } from "react-number-format";
 
 const ActiveDeposit = ({
   reserves,
@@ -119,10 +120,6 @@ const ActiveDeposit = ({
     toastDepWithdrawParam,
   } = useWithdrawDeposit(asset, diamondAddress);
 
-  const approveTransactionReceipt = useTransactionReceipt({
-    hash: transApprove,
-    watch: true,
-  });
   const addDepositTransactionReceipt = useTransactionReceipt({
     hash: transAddDeposit,
     watch: true,
@@ -305,7 +302,7 @@ const ActiveDeposit = ({
   useEffect(() => {
     TxToastManager.handleTxToast(
       withdrawTransactionReceipt,
-      `Add Supply: Deposit ID: ${asset?.depositId}`,
+      `Withdraw Supply: Deposit ID: ${asset?.depositId}`,
       true
     );
   }, [withdrawTransactionReceipt]);
@@ -469,45 +466,6 @@ const ActiveDeposit = ({
       });
     }
   };
-
-  useEffect(() => {
-    // console.log(
-    //   "approve tx receipt",
-    //   approveTransactionReceipt.data?.transaction_hash,
-    //   approveTransactionReceipt
-    // );
-    TxToastManager.handleTxToast(
-      approveTransactionReceipt,
-      `Add Deposit: Approve ${Number(depositAmount)?.toFixed(4)} ${asset.market
-      }`,
-      true
-    );
-  }, [approveTransactionReceipt]);
-
-  useEffect(() => {
-    // console.log(
-    //   "borrow tx receipt",
-    //   addDepositTransactionReceipt.data?.transaction_hash,
-    //   addDepositTransactionReceipt
-    // );
-    TxToastManager.handleTxToast(
-      addDepositTransactionReceipt,
-      `Deposit ${Number(depositAmount)?.toFixed(4)} ${asset.market}`
-    );
-  }, [addDepositTransactionReceipt]);
-
-  useEffect(() => {
-    if (!withdrawAmount) return;
-    // console.log(
-    //   "borrow tx receipt",
-    //   withdrawTransactionReceipt.data?.transaction_hash,
-    //   withdrawTransactionReceipt
-    // );
-    TxToastManager.handleTxToast(
-      withdrawTransactionReceipt,
-      `Withdraw ${Number(withdrawAmount)?.toFixed(4)} ${asset.market}`
-    );
-  }, [withdrawTransactionReceipt]);
 
  
 
@@ -979,7 +937,7 @@ const ActiveDeposit = ({
                         top: "90px",
                       }}
                     >
-                      {value}%
+                      {value.toFixed(2)}%
                     </div>
                     {customActiveTab === "1"
                       ? depositAmount !== 0 &&

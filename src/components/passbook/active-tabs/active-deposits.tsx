@@ -54,7 +54,8 @@ const ActiveDepositsTab = ({
   isTransactionDone: any;
   inputVal1: any;
 }) => {
-  const [asset, setAsset] = useState<any>();
+  const [asset, setAsset] = useState<any>("BTC");
+  const [tokenSymbol, setTokenSymbol] = useState<string>("WBTC");
   const [historicalAPRs, setHistoricalAPRs] = useState();
   const [tokenName, setTokenName] = useState("BTC");
   const [customActiveTab, setCustomActiveTab] = useState("1");
@@ -437,6 +438,8 @@ const ActiveDepositsTab = ({
               isToastOpen={isToastOpen}
               setIsToastOpen={setIsToastOpen}
               toastParam={toastParam}
+              setTokenSymbol={setTokenSymbol}
+              tokenSymbol={tokenSymbol}
             />
           </>
         )}

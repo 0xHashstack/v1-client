@@ -50,7 +50,6 @@ let Deposit: any = ({
   asset: string;
   depositLoanRates: any;
 }) => {
-
   const [asset, setAsset] = useState(assetParam);
   const [value, setValue] = useState<any>(0);
   const [tokenName, setTokenName] = useState(assetParam);
@@ -254,6 +253,8 @@ let Deposit: any = ({
   }
 
   const toggleDropdown = async () => {
+    setCommitmentArrow(Downarrow);
+    setCommitmentDropDown(false);
     setDropDown(!dropDown);
     setDropDownArrow(dropDown ? Downarrow : UpArrow);
   };

@@ -56,17 +56,24 @@ import {
   useContract,
   useStarknet,
   useStarknetCall,
-} from "@starknet-react/core"
-import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table"
-import { Abi, Contract, number, RpcProvider, uint256 } from "starknet"
-import { assert } from "console"
-import depositAbi from "../../starknet-artifacts/contracts/modules/deposit.cairo/deposit_abi.json"
-import loanAbi from "../../starknet-artifacts/contracts/modules/loan.cairo/loan_abi.json"
-import Script from "next/script"
-import StatsBoard from "../components/dashboard/stats"
-import connectWalletArrowDown from "../assets/images/connectWalletArrowDown.svg"
-import SpendLoan from "../components/passbook/Spend-loans/spendLoan"
-import SpendLoanNav from "../components/passbook/Spend-loans/spendLoan-navbar"
+} from "@starknet-react/core";
+import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
+import {
+  Abi,
+  Contract,
+  number,
+  RpcProvider,
+  uint256,
+  Provider,
+} from "starknet";
+import { assert } from "console";
+import depositAbi from "../../starknet-artifacts/contracts/modules/deposit.cairo/deposit_abi.json";
+import loanAbi from "../../starknet-artifacts/contracts/modules/loan.cairo/loan_abi.json";
+import Script from "next/script";
+import StatsBoard from "../components/dashboard/stats";
+import connectWalletArrowDown from "../assets/images/connectWalletArrowDown.svg";
+import SpendLoan from "../components/passbook/Spend-loans/spendLoan";
+import SpendLoanNav from "../components/passbook/Spend-loans/spendLoan-navbar";
 // import YourSupplyBody from "../components/dashboard/supply";
 import { TabContext } from "../hooks/contextHooks/TabContext"
 import DashboardLiquid from "../components/dashboard/DashboardLiquid"
@@ -228,7 +235,7 @@ const Dashboard = () => {
     //   number.toHex(
     //     number.toBN(
     //       number.toFelt(
-    //         "0x5b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"
+    //         "0x732f5f56f0a0a1888a9db1f35bc729595f6c62c492e08dffe9d5c71ab1a3532"
     //       )
     //     )
     //   )
@@ -496,11 +503,14 @@ const Dashboard = () => {
   }
 
   async function get_user_loans() {
-    let provider = new RpcProvider({
-      nodeUrl:
-        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
-    })
-    const MySwap = new Contract(loanAbi, diamondAddress, provider)
+    const provider = new Provider({
+      sequencer: {
+        baseUrl: "https://alpha-mainnet.starknet.io",
+        feederGatewayUrl: "feeder_gateway",
+        gatewayUrl: "gateway",
+      },
+    });
+    const MySwap = new Contract(loanAbi, diamondAddress, provider);
     const res = await MySwap.call("get_user_loans", [account], {
       blockIdentifier: "pending",
     })
@@ -557,13 +567,16 @@ const Dashboard = () => {
   }
 
   async function get_user_deposits() {
-    let provider = new RpcProvider({
-      nodeUrl:
-        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
-    })
-    const Deposit = new Contract(depositAbi, diamondAddress, provider)
-    const res = await Deposit.call("get_user_deposits", [account])
-    parseDepositsData(res?.deposit_records_arr)
+    const provider = new Provider({
+      sequencer: {
+        baseUrl: "https://alpha-mainnet.starknet.io",
+        feederGatewayUrl: "feeder_gateway",
+        gatewayUrl: "gateway",
+      },
+    });
+    const Deposit = new Contract(depositAbi, diamondAddress, provider);
+    const res = await Deposit.call("get_user_deposits", [account]);
+    parseDepositsData(res?.deposit_records_arr);
   }
 
   useEffect(() => {
