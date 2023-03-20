@@ -175,6 +175,7 @@ const Dashboard = () => {
   const [modal_deposit, setmodal_deposit] = useState(false)
 
   // isWhitelisted is use to redirect users who are not whitelisted
+  const [checkingWaitlist, setCheckingWaitlist] = useState(true);
   const [isWhitelisted, setIsWhitelisted] = useState(0)
   const [isWaitlisted, setIsWaitlisted] = useState(0)
 
@@ -189,6 +190,8 @@ const Dashboard = () => {
 
   const checkDB = async () => {
     try {
+      setCheckingWaitlist(true)
+      // toast.info("Checking whitelist status...")
       // Whitelist check [correct check, ensure this is used on mainnet]
       const whitelistStatus = await OffchainAPI.getWhitelistData(
         _account ? _account : ""
@@ -207,8 +210,13 @@ const Dashboard = () => {
       } else if (whitelistStatus.isWhitelistedStatus == "Waitlist") {
         setIsWaitlisted(1)
       }
+      // toast.info("Whitelist status checked")
+      setTimeout(() => {
+        setCheckingWaitlist(false)
+      }, 500); // needed due to random flicker on showing modal and switching to redirect
     } catch (error) {
-      console.log(error)
+      console.log("Error while checking whitelist status", error)
+      toast.error("Error while checking whitelist status")
     }
   }
 
@@ -1354,8 +1362,14 @@ const Dashboard = () => {
         </div>
       </Row> */}
           {/* <Banner /> */}
-          {!_account || !starknetAccount ? (
-            <h3>Loading...</h3>
+          {!_account || !starknetAccount || checkingWaitlist ? (
+            <div style={{
+              marginTop: "50vh",
+              width: "100%",
+              textAlign: "center"
+            }}>
+              <MySpinner text="Loading..."/>
+            </div>
           ) : !isCorrectNetwork() ? (
             incorrectChain()
           ) : (
@@ -1366,6 +1380,7 @@ const Dashboard = () => {
                 <WaitlistUI />
               ) : (
                 <SpearmintRedirectUI />
+                // <h3 style={{"marginTop": "50px"}}>oadddddd</h3>
               )}
 
               {isWhitelisted ? (
