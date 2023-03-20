@@ -43,9 +43,9 @@ export class TxToastManager {
       // this._showToast(hash, hasToast,msg, 'default', receipt.data?.status, 0, 0.7)
       this._showToast(hash, hasToast, purpose, "success", receipt.data?.status);
     } 
-    // else if (receipt.data?.status == "ACCEPTED_ON_L2") {
-    //   this._showToast(hash, hasToast, purpose, "success", receipt.data?.status);
-    // } 
+    else if (receipt.data?.status == "ACCEPTED_ON_L2") {
+      this._showToast(hash, hasToast, purpose, "success", receipt.data?.status);
+    } 
     else if (receipt.data?.status == "REJECTED") {
       this._showToast(hash, hasToast, purpose, "error", receipt.data?.status);
     }
@@ -78,7 +78,7 @@ export class TxToastManager {
     message: ReactNode | string,
     type: TypeOptions,
     status: Status,
-    timeout = 5000,
+    timeout = 10000,
     progress = 1
   ) {
     // console.log("_showToast", {

@@ -20,7 +20,7 @@ import {
   NavLink,
 } from "reactstrap";
 import useAddDeposit from "../../../blockchain/hooks/active-deposits/useAddDeposit";
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip";
 import Image from "next/image";
 import arrowDown from "../../../assets/images/ArrowDownDark.svg";
 import arrowUp from "../../../assets/images/ArrowUpDark.svg";
@@ -326,9 +326,9 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
     const decimalsDeficit = 18 - tokenDecimalsMap[tokenName];
     const amount = getAmountOutData?.amount_to
       ? uint256
-        .uint256ToBN(getAmountOutData?.amount_to)
-        .mul(number.toBN(10).pow(number.toBN(decimalsDeficit)))
-        .toString()
+          .uint256ToBN(getAmountOutData?.amount_to)
+          .mul(number.toBN(10).pow(number.toBN(decimalsDeficit)))
+          .toString()
       : "NA";
     setTotalAmountOutJediSwap(amount);
   }, [getAmountOutData, loadingGetAmountOut, errorGetAmountOut]);
@@ -381,9 +381,9 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
     const decimalsDeficit = 18 - tokenDecimalsMap[tokenName];
     const amount = getAmountOutDataMySwap?.amount_to
       ? uint256
-        .uint256ToBN(getAmountOutDataMySwap?.amount_to)
-        .mul(number.toBN(10).pow(number.toBN(decimalsDeficit)))
-        .toString()
+          .uint256ToBN(getAmountOutDataMySwap?.amount_to)
+          .mul(number.toBN(10).pow(number.toBN(decimalsDeficit)))
+          .toString()
       : "NA";
     setTotalAmountOutmySwap(amount);
   }, [
@@ -401,6 +401,10 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
   };
 
   const toggleDropdown = () => {
+    setDropDownTwo(false);
+    setDappDropdown(false);
+    setDappDownArrow(arrowDown);
+    setStakeDropDownArrow(arrowDown);
     setDropDown(!dropDown);
     setDropDownArrow(dropDown ? arrowDown : arrowUp);
     // disconnectEvent(), connect(connector);
@@ -417,6 +421,11 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
   };
 
   const toggleDappDropdown = () => {
+    setDropDown(false);
+    setDropDownTwo(false);
+    setDappDropdown(false);
+    setDropDownArrow(arrowDown);
+    setStakeDropDownArrow(arrowDown);
     setDappDropdown(!dappDropdown);
     setDappDownArrow(dappDropdown ? arrowDown : arrowUp);
   };
@@ -426,8 +435,8 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
       appsImage === "mySwap"
         ? handleMySwap()
         : appsImage === "jediSwap"
-          ? handleJediSwap()
-          : null;
+        ? handleJediSwap()
+        : null;
     } else return null;
   };
 
@@ -733,6 +742,10 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                             dropDownTwo ? arrowDown : arrowUp
                           );
                           setDropDownTwo(!dropDownTwo);
+                          setDappDownArrow(arrowDown);
+                          setDappDropdown(false);
+                          setDropDown(false);
+                          setDropDownArrow(arrowDown);
                         }}
                         style={{ cursor: "pointer" }}
                         src={stakeDropDownArrow}
@@ -765,11 +778,11 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                           {appsImage ? (
                             <img
                               src={`./${appsImage}.svg`}
-                              width={`${appsImage === "mySwap" ||
-                                appsImage === "yagi"
-                                ? "60px"
-                                : "100px"
-                                }`}
+                              width={`${
+                                appsImage === "mySwap" || appsImage === "yagi"
+                                  ? "60px"
+                                  : "100px"
+                              }`}
                               height="30px"
                             ></img>
                           ) : (
@@ -812,6 +825,10 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                 backgroundColor: "#1D2131",
                                 boxShadow: "0px 0px 10px #00000020",
                               }}
+                              onMouseLeave={() => {
+                                setDappDropdown(!dappDropdown);
+                                setDappDownArrow(arrowDown);
+                              }}
                             >
                               {dappsArray.map((dapp, index) => {
                                 if (
@@ -838,7 +855,7 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                             const token = getTokenFromAddress(
                                               supportedPoolsJediSwap?.get(
                                                 tokenAddressMap[
-                                                selectedLoan?.loanMarket
+                                                  selectedLoan?.loanMarket
                                                 ]
                                               )?.[0] as string
                                             );
@@ -848,7 +865,7 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                             const token = getTokenFromAddress(
                                               supportedPoolsMySwap?.get(
                                                 tokenAddressMap[
-                                                selectedLoan?.loanMarket
+                                                  selectedLoan?.loanMarket
                                                 ]
                                               )?.[0] as string
                                             );
@@ -860,10 +877,11 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                     >
                                       <img
                                         src={`./${dapp.name}.svg`}
-                                        width={`${dapp.name === "mySwap"
+                                        width={`${
+                                          dapp.name === "mySwap"
                                             ? "60px"
                                             : "100px"
-                                          }`}
+                                        }`}
                                         height="30px"
                                       ></img>
                                     </div>
@@ -894,6 +912,10 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                 backgroundColor: "#1D2131",
                                 boxShadow: "0px 0px 10px #00000020",
                               }}
+                              onMouseLeave={() => {
+                                setDropDownTwo(!dropDownTwo);
+                                setStakeDropDownArrow(arrowDown);
+                              }}
                             >
                               {labels.map((word, index, labels) => {
                                 // if (title.label === word) {
@@ -901,7 +923,6 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                 // }
                                 return (
                                   <>
-
                                     <div
                                       style={{
                                         margin: "10px 0",
@@ -932,8 +953,8 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                             word === "Swap"
                                               ? "jediSwap"
                                               : word === "Stake"
-                                                ? "yagi"
-                                                : ""
+                                              ? "yagi"
+                                              : ""
                                           );
                                           // }
                                         }
@@ -979,6 +1000,10 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                                 marginBottom: "20px",
                                 padding: "5px 10px",
                                 backgroundColor: "#393D4F",
+                              }}
+                              onMouseLeave={() => {
+                                setIdDropDown(!idDropDown);
+                                setIdDropDownArrow(arrowDown);
                               }}
                             >
                               {activeLoansData.map(
@@ -1100,8 +1125,8 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                               (
                                 selectedLoan?.currentLoanAmount /
                                 10 **
-                                (tokenDecimalsMap[selectedLoan?.loanMarket] ||
-                                  18)
+                                  (tokenDecimalsMap[selectedLoan?.loanMarket] ||
+                                    18)
                               ).toFixed(4) || 0
                             ) : (
                               <span style={{ color: "white" }}>N/A</span>
@@ -1184,6 +1209,10 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                               backgroundColor: "#1D2131",
                               boxShadow: "0px 0px 10px #00000020",
                             }}
+                            onMouseLeave={() => {
+                              setDropDown(!dropDown);
+                              setDropDownArrow(arrowDown);
+                            }}
                           >
                             {Coins.map((coin, index) => {
                               if (coin.name === tokenName) return <></>;
@@ -1192,11 +1221,11 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                               const supportedMarkets =
                                 appsImage === "jediSwap"
                                   ? supportedPoolsJediSwap?.get(
-                                    borrowMarketAddress
-                                  )
+                                      borrowMarketAddress
+                                    )
                                   : supportedPoolsMySwap?.get(
-                                    borrowMarketAddress
-                                  );
+                                      borrowMarketAddress
+                                    );
                               const isSupported = supportedMarkets?.includes(
                                 tokenAddressMap[coin.name]
                               );
@@ -1296,8 +1325,8 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                               (
                                 selectedLoan?.currentLoanAmount /
                                 10 **
-                                (tokenDecimalsMap[selectedLoan?.loanMarket] ||
-                                  18)
+                                  (tokenDecimalsMap[selectedLoan?.loanMarket] ||
+                                    18)
                               ).toFixed(4)
                             ) : (
                               <span style={{ color: "white" }}>N/A</span>
@@ -1346,11 +1375,11 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                         {selectedLoan ? (
                           appsImage === "mySwap" ? (
                             totalAmountOutmySwap !== "NA" ? (
-                              totalAmountOutmySwap >
-                                changeTo18Decimals(
+                              Number(totalAmountOutmySwap) >
+                                Number(changeTo18Decimals(
                                   selectedLoan?.currentLoanAmount,
                                   selectedLoan.loanMarket
-                                ) ? (
+                                )) ? (
                                 `1 ${selectedLoan?.loanMarketSymbol} = ${(
                                   totalAmountOutmySwap /
                                   changeTo18Decimals(
@@ -1371,11 +1400,11 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                             )
                           ) : appsImage === "jediSwap" ? (
                             totalAmountOutJediSwap !== "NA" ? (
-                              totalAmountOutJediSwap >
-                                changeTo18Decimals(
+                              Number(totalAmountOutJediSwap) >
+                                Number(changeTo18Decimals(
                                   selectedLoan?.currentLoanAmount,
                                   selectedLoan?.loanMarket
-                                ) ? (
+                                )) ? (
                                 `1 ${selectedLoan?.loanMarketSymbol} = ${(
                                   totalAmountOutJediSwap /
                                   changeTo18Decimals(

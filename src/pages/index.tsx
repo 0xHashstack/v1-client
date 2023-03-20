@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useContext } from "react";
-import Ellipse1 from "../assets/images/Ellipse 59.svg";
+import React, { useState, useEffect, useContext } from "react"
+import Ellipse1 from "../assets/images/Ellipse 59.svg"
 import {
   Container,
   Row,
@@ -15,33 +15,33 @@ import {
   NavLink,
   NavItem,
   Nav,
-} from "reactstrap";
-import Image from "next/image";
-import classnames from "classnames";
-import "react-toastify/dist/ReactToastify.css";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import Head from "next/head";
-import { Icon } from "semantic-ui-react";
+} from "reactstrap"
+import Image from "next/image"
+import classnames from "classnames"
+import "react-toastify/dist/ReactToastify.css"
+import { toast, ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
+import Head from "next/head"
+import { Icon } from "semantic-ui-react"
 
-import loadable from "@loadable/component";
+import loadable from "@loadable/component"
 const TxHistoryTable = loadable(
   () => import("../components/dashboard/tx-history-table")
-);
+)
 
-import ProtocolStats from "../components/dashboard/protocol-stats";
+import ProtocolStats from "../components/dashboard/protocol-stats"
 
-import RepaidLoansTab from "../components/passbook/active-tabs/repaid-loans";
-import ActiveLoansTab from "../components/passbook/active-tabs/active-loans";
-import ActiveDepositsTab from "../components/passbook/active-tabs/active-deposits";
-import BorrowTab from "../components/passbook/borrow-section/borrow";
-import DashboardMenu from "../components/dashboard/dashboard-menu";
-import PassbookMenu from "../components/passbook/passbook-menu";
-import Liquidation from "../components/liquidation/liquidation";
-import LoanBorrowCommitment from "../components/dashboard/loanborrow-commitment";
-import OffchainAPI from "../services/offchainapi.service";
+import RepaidLoansTab from "../components/passbook/active-tabs/repaid-loans"
+import ActiveLoansTab from "../components/passbook/active-tabs/active-loans"
+import ActiveDepositsTab from "../components/passbook/active-tabs/active-deposits"
+import BorrowTab from "../components/passbook/borrow-section/borrow"
+import DashboardMenu from "../components/dashboard/dashboard-menu"
+import PassbookMenu from "../components/passbook/passbook-menu"
+import Liquidation from "../components/liquidation/liquidation"
+import LoanBorrowCommitment from "../components/dashboard/loanborrow-commitment"
+import OffchainAPI from "../services/offchainapi.service"
 
-import arrowDown from "../assets/images/arrowDown.svg";
+import arrowDown from "../assets/images/arrowDown.svg"
 import {
   diamondAddress,
   getCommitmentIndex,
@@ -49,8 +49,8 @@ import {
   getCommitmentNameFromIndexLoan,
   getTokenFromAddress,
   tokenDecimalsMap,
-} from "../blockchain/stark-constants";
-import BigNumber from "bignumber.js";
+} from "../blockchain/stark-constants"
+import BigNumber from "bignumber.js"
 import {
   useAccount,
   useContract,
@@ -58,7 +58,14 @@ import {
   useStarknetCall,
 } from "@starknet-react/core";
 import ActiveDepositTable from "../components/passbook/passbook-table/active-deposit-table";
-import { Abi, Contract, number, RpcProvider, uint256 } from "starknet";
+import {
+  Abi,
+  Contract,
+  number,
+  RpcProvider,
+  uint256,
+  Provider,
+} from "starknet";
 import { assert } from "console";
 import depositAbi from "../../starknet-artifacts/contracts/modules/deposit.cairo/deposit_abi.json";
 import loanAbi from "../../starknet-artifacts/contracts/modules/loan.cairo/loan_abi.json";
@@ -68,129 +75,136 @@ import connectWalletArrowDown from "../assets/images/connectWalletArrowDown.svg"
 import SpendLoan from "../components/passbook/Spend-loans/spendLoan";
 import SpendLoanNav from "../components/passbook/Spend-loans/spendLoan-navbar";
 // import YourSupplyBody from "../components/dashboard/supply";
-import { TabContext } from "../hooks/contextHooks/TabContext";
-import DashboardLiquid from "../components/dashboard/DashboardLiquid";
-import ToastModal from "../components/toastModals/customToastModal";
+import { TabContext } from "../hooks/contextHooks/TabContext"
+import DashboardLiquid from "../components/dashboard/DashboardLiquid"
+import ToastModal from "../components/toastModals/customToastModal"
 
-import useMaxloan from "../blockchain/hooks/Max_loan_given_collat";
-import { BNtoNum, GetErrorText, NumToBN } from "../blockchain/utils";
-import Crossimg from "../../public/cross.svg";
-import Chart from "../components/charts/Chart";
-import Chart2 from "../components/charts/Chart2";
-import BarChartComponent from "../components/charts/barChart";
-import DownArrow from "../assets/images/ArrowDownDark.svg";
-import UpArrow from "../assets/images/ArrowUpDark.svg";
-import YourMatrics from "../components/matrics/yourMatrics";
-import ProtocolMatrics from "../components/matrics/protocolMatrix";
-import MySpinner from "../components/mySpinner";
-import { NumericFormat } from "react-number-format";
+import useMaxloan from "../blockchain/hooks/Max_loan_given_collat"
+import { BNtoNum, GetErrorText, NumToBN } from "../blockchain/utils"
+import Crossimg from "../../public/cross.svg"
+import Chart from "../components/charts/Chart"
+import Chart2 from "../components/charts/Chart2"
+import BarChartComponent from "../components/charts/barChart"
+import DownArrow from "../assets/images/ArrowDownDark.svg"
+import UpArrow from "../assets/images/ArrowUpDark.svg"
+import YourMatrics from "../components/matrics/yourMatrics"
+import ProtocolMatrics from "../components/matrics/protocolMatrix"
+import MySpinner from "../components/mySpinner"
+import { NumericFormat } from "react-number-format"
+import WhitelistModal from "../components/modals/whaitlistModal"
+import ExistingWhitelistModal from "../components/modals/existingWaitlistModal"
+
 // import App from "./Chart"
 
 interface IDeposit {
-  amount: string;
-  account: string | undefined;
-  commitment: string | null;
-  market: string | undefined;
-  acquiredYield: number;
-  interestRate: number;
+  amount: string
+  account: string | undefined
+  commitment: string | null
+  market: string | undefined
+  acquiredYield: number
+  interestRate: number
 }
 
 interface ILoans {
-  loanMarket: string | undefined;
-  loanMarketAddress: string | undefined;
-  loanAmount: number;
-  commitment: string | null;
-  commitmentIndex: number | null;
-  collateralMarket: string | undefined;
-  collateralAmount: number;
-  loanInterest: number;
-  interestRate: number;
-  account: string | undefined;
-  cdr: number;
-  debtCategory: number | undefined;
-  loanId: number;
-  isSwapped: boolean;
-  state: string;
-  stateType: number;
-  currentLoanMarket: string | undefined;
-  currentLoanAmount: number;
+  loanMarket: string | undefined
+  loanMarketAddress: string | undefined
+  loanAmount: number
+  commitment: string | null
+  commitmentIndex: number | null
+  collateralMarket: string | undefined
+  collateralAmount: number
+  loanInterest: number
+  interestRate: number
+  account: string | undefined
+  cdr: number
+  debtCategory: number | undefined
+  loanId: number
+  isSwapped: boolean
+  state: string
+  stateType: number
+  currentLoanMarket: string | undefined
+  currentLoanAmount: number
 }
 
-const loanTypes = ["Repaid", "Active"];
+const loanTypes = ["Repaid", "Active"]
 
 const Dashboard = () => {
-  const [isLoading, setIsLoading] = useState(true);
-  const [activeDepositsData, setActiveDepositsData] = useState<IDeposit[]>([]);
-  const [activeLoansData, setActiveLoansData] = useState<ILoans[]>([]);
-  const [repaidLoansData, setRepaidLoansData] = useState<ILoans[]>([]);
-  const [activeLiquidationsData, setActiveLiquidationsData] = useState<any>([]);
-  const [isTransactionDone, setIsTransactionDone] = useState(false);
-  const [tempValue, setTempValue] = useState();
+  const [isLoading, setIsLoading] = useState(true)
+  const [activeDepositsData, setActiveDepositsData] = useState<IDeposit[]>([])
+  const [activeLoansData, setActiveLoansData] = useState<ILoans[]>([])
+  const [repaidLoansData, setRepaidLoansData] = useState<ILoans[]>([])
+  const [activeLiquidationsData, setActiveLiquidationsData] = useState<any>([])
+  const [isTransactionDone, setIsTransactionDone] = useState(false)
+  const [tempValue, setTempValue] = useState()
 
   const [handleDepositTransactionDone, setHandleDepositTransactionDone] =
-    useState(false);
+    useState(false)
   const [withdrawDepositTransactionDone, setWithdrawDepositTransactionDone] =
-    useState(false);
+    useState(false)
 
   // const [customActiveTab, setCustomActiveTab] = useState("1");
   // const [customActiveTabs, setCustomActiveTabs] = useState("1");
-  const [loanActionTab, setLoanActionTab] = useState("0");
-  const [passbookStatus, setPassbookStatus] = useState("ActiveDeposit");
+  const [loanActionTab, setLoanActionTab] = useState("0")
+  const [passbookStatus, setPassbookStatus] = useState("ActiveDeposit")
 
-  const [modal_repay_loan, setmodal_repay_loan] = useState(false);
-  const [modal_withdraw_loan, setmodal_withdraw_loan] = useState(false);
-  const [modal_swap_loan, setmodal_swap_loan] = useState(false);
-  const [modal_swap_to_loan, setmodal_swap_to_loan] = useState(false);
+  const [modal_repay_loan, setmodal_repay_loan] = useState(false)
+  const [modal_withdraw_loan, setmodal_withdraw_loan] = useState(false)
+  const [modal_swap_loan, setmodal_swap_loan] = useState(false)
+  const [modal_swap_to_loan, setmodal_swap_to_loan] = useState(false)
   // const [modal_add_collateral, setmodal_add_collateral] = useState(false);
   const [modal_withdraw_collateral, setmodal_withdraw_collateral] =
-    useState(false);
-  const [modal_add_active_deposit, setmodal_add_active_deposit] =
-    useState(true);
+    useState(false)
+  const [modal_add_active_deposit, setmodal_add_active_deposit] = useState(true)
   const [modal_withdraw_active_deposit, setmodal_withdraw_active_deposit] =
-    useState(false);
+    useState(false)
 
-  const [depositInterestChange, setDepositInterestChange] = useState("NONE");
-  const [borrowInterestChange, setBorrowInterestChange] = useState("NONE");
+  const [depositInterestChange, setDepositInterestChange] = useState("NONE")
+  const [borrowInterestChange, setBorrowInterestChange] = useState("NONE")
 
-  const [depositRequestSel, setDepositRequestSel] = useState();
-  const [withdrawDepositSel, setWithdrawDepositSel] = useState();
-  const [depositRequestVal, setDepositRequestVal] = useState();
-  const [withdrawDepositVal, setWithdrawDepositVal] = useState();
+  const [depositRequestSel, setDepositRequestSel] = useState()
+  const [withdrawDepositSel, setWithdrawDepositSel] = useState()
+  const [depositRequestVal, setDepositRequestVal] = useState()
+  const [withdrawDepositVal, setWithdrawDepositVal] = useState()
 
-  const [customActiveTabs, setCustomActiveTabs] = useState("1");
+  const [customActiveTabs, setCustomActiveTabs] = useState("1")
 
-  const [inputVal1, setInputVal1] = useState(0);
-  const [liquidationIndex, setLiquidationIndex] = useState(0);
+  const [inputVal1, setInputVal1] = useState(0)
+  const [liquidationIndex, setLiquidationIndex] = useState(0)
 
-  const [index, setIndex] = useState("1");
-  const { account: starknetAccount, address: _account } = useAccount();
-  const [account, setAccount] = useState<string>("");
+  const [index, setIndex] = useState("1")
+  const { account: starknetAccount, address: _account } = useAccount()
+  const [account, setAccount] = useState<string>("")
   // const [totalBorrowApr, setTotalBorrowApr] = useState(0);
-  const [netBorrowedApr, setNetBorrowedApr] = useState(0);
-  const [netAprEarned, setNetAprEarned] = useState(0);
-  const [oracleAndFairPrices, setOracleAndFairPrices] = useState<any>();
-  const [offchainCurrentBlock, setOffchainCurrentBlock] = useState("");
-  const [modal_deposit, setmodal_deposit] = useState(false);
+  const [netBorrowedApr, setNetBorrowedApr] = useState(0)
+  const [netAprEarned, setNetAprEarned] = useState(0)
+  const [oracleAndFairPrices, setOracleAndFairPrices] = useState<any>()
+  const [offchainCurrentBlock, setOffchainCurrentBlock] = useState("")
+  const [modal_deposit, setmodal_deposit] = useState(false)
 
   // isWhitelisted is use to redirect users who are not whitelisted
-  const [isWhitelisted, setIsWhitelisted] = useState(0);
-  const [isWaitlisted, setIsWaitlisted] = useState(0);
+  const [checkingWaitlist, setCheckingWaitlist] = useState(true);
+  const [isWhitelisted, setIsWhitelisted] = useState(0)
+  const [isWaitlisted, setIsWaitlisted] = useState(0)
 
-  let [timer, setTimer] = useState(3);
+  let [timer, setTimer] = useState(3)
 
   useEffect(() => {
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
       // console.log("got them", val);
-      setTempValue(val);
-    });
-  }, []);
+      setTempValue(val)
+    })
+  }, [])
 
   const checkDB = async () => {
     try {
-      //Whitelist check [correct check, ensure this is used on mainnet]
+      setCheckingWaitlist(true)
+      // toast.info("Checking whitelist status...")
+      // Whitelist check [correct check, ensure this is used on mainnet]
       const whitelistStatus = await OffchainAPI.getWhitelistData(
         _account ? _account : ""
-      );
+      )
+
+      // const whitelistStatus = await OffchainAPI.getWhitelistData("");
 
       //Waitlist check [I waitlisted my address for testing]
       //const whitelistStatus = await OffchainAPI.getWhitelistData("0x04ed937e802b1599a8d3b5dc93cf45f627d413e2d03e018c1da9f62062f7dfc8");
@@ -199,29 +213,35 @@ const Dashboard = () => {
       //const whitelistStatus = await OffchainAPI.getWhitelistData("0x04ed93802b1599a8d3b5dc93cf45f627d413e2d03e018c1da9f62062f7dfc8");
 
       if (whitelistStatus.isWhitelistedStatus == "Selected") {
-        setIsWhitelisted(1);
+        setIsWhitelisted(1)
       } else if (whitelistStatus.isWhitelistedStatus == "Waitlist") {
-        setIsWaitlisted(1);
+        setIsWaitlisted(1)
       }
+      // toast.info("Whitelist status checked")
+      setTimeout(() => {
+        setCheckingWaitlist(false)
+      }, 500); // needed due to random flicker on showing modal and switching to redirect
     } catch (error) {
-      console.log(error);
+      console.log("Error while checking whitelist status", error)
+      toast.error("Error while checking whitelist status")
     }
-  };
+  }
 
   useEffect(() => {
+    if (!_account) return
     //0x05b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864
-    setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
+    setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))))
     // setAccount(
     //   number.toHex(
     //     number.toBN(
     //       number.toFelt(
-    //         "0x5b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"
+    //         "0x732f5f56f0a0a1888a9db1f35bc729595f6c62c492e08dffe9d5c71ab1a3532"
     //       )
     //     )
     //   )
     // );
-    checkDB();
-  }, [_account]);
+    checkDB()
+  }, [_account])
 
   const {
     customActiveTab,
@@ -233,115 +253,116 @@ const Dashboard = () => {
     seteffectiveapr,
     loandepositrate,
     setNetEarnedApr,
-  } = useContext(TabContext);
+  } = useContext(TabContext)
 
-  const [reserves, setReserves] = useState();
+  const [reserves, setReserves] = useState()
 
-  const [typeOfLoans, setTypeOfLoans] = useState("Active");
+  const [typeOfLoans, setTypeOfLoans] = useState("Active")
   const [isDropDownOpenTypeOfLoans, setIsDropDownOpenTypeOfLoans] =
-    useState(false);
+    useState(false)
   const [typeOfLoansDropDownArrowType, setTypeOfLoansDropDownArrowType] =
-    useState(DownArrow);
-  const [filteredLoans, setFilteredLoans] = useState<ILoans[]>([]);
-  const [ActiveRepaytab, setActiveRepaytab] = useState("Active");
+    useState(DownArrow)
+  const [filteredLoans, setFilteredLoans] = useState<ILoans[]>([])
+  const [ActiveRepaytab, setActiveRepaytab] = useState("Active")
 
   function toggle(newIndex: string) {
     if (newIndex === index) {
-      setIndex("1");
+      setIndex("1")
     } else {
-      setIndex(newIndex);
+      setIndex(newIndex)
     }
   }
   OffchainAPI.getDashboardStats().then(
     (stats) => {
-      setOffchainCurrentBlock(stats.lastProcessedBlock?.blockNumber);
+      setOffchainCurrentBlock(stats.lastProcessedBlock?.blockNumber)
     },
     (err) => {
-      console.error(err);
+      console.error(err)
     }
-  );
+  )
 
   useEffect(() => {
     const getReserves = async () => {
-      const res = await OffchainAPI.getReserves();
-      setReserves(res?.reserves);
-    };
-    getReserves();
-  }, []);
+      const res = await OffchainAPI.getReserves()
+      setReserves(res?.reserves)
+    }
+    getReserves()
+  }, [])
 
   useEffect(() => {
     const getPrices = () => {
       OffchainAPI.getOraclePrices().then((prices) => {
         // console.log("prices", prices);
-        setOracleAndFairPrices(prices);
-      });
-    };
-    getPrices();
-  }, []);
+        setOracleAndFairPrices(prices)
+      })
+    }
+    getPrices()
+  }, [])
 
   useEffect(() => {
-    if (!oracleAndFairPrices || !activeLoansData) return;
-    calculateNetBorrowedApr();
-  }, [activeLoansData, oracleAndFairPrices]);
+    if (!oracleAndFairPrices || !activeLoansData) return
+    calculateNetBorrowedApr()
+  }, [activeLoansData, oracleAndFairPrices])
 
   useEffect(() => {
-    if (!oracleAndFairPrices || !activeDepositsData) return;
-    calculateNetAprEarned();
-  }, [activeDepositsData, oracleAndFairPrices]);
+    if (!oracleAndFairPrices || !activeDepositsData) return
+    calculateNetAprEarned()
+  }, [activeDepositsData, oracleAndFairPrices])
 
   const calculateNetAprEarned = () => {
-    let sum = 0;
+    let sum = 0
     for (let i = 0; i < oracleAndFairPrices?.oraclePrices?.length; i++) {
       activeDepositsData.map((item: any, index: number) => {
         if (item.market === oracleAndFairPrices?.oraclePrices[i].name) {
           sum +=
             ((Number(item.acquiredYield) + Number(item.interestPaid)) /
               10 ** Number(tokenDecimalsMap[item.market])) *
-            oracleAndFairPrices?.oraclePrices[i].price;
+            oracleAndFairPrices?.oraclePrices[i].price
         }
-      });
+      })
     }
     // console.log("net apr earned", sum);
-    setNetAprEarned(sum);
-    setNetEarnedApr(sum);
-  };
+    setNetAprEarned(sum)
+    setNetEarnedApr(sum)
+  }
 
   const EffectiveApr = () => {
-    let sum1 = 0;
-    let sum2 = 0;
+    let sum1 = 0
+    let sum2 = 0
     for (let i = 0; i < oracleAndFairPrices?.oraclePrices?.length; i++) {
       activeLoansData.map((item: any) => {
         if (
           item.loanMarket === oracleAndFairPrices?.oraclePrices[i].name &&
           !["REPAID", "LIQUIDATED"].includes(item.state)
         ) {
-          console.log("JJ", tempValue);
+          console.log("JJ", tempValue)
 
           sum1 +=
-            (Number(item.loanAmount/ (10 ** tokenDecimalsMap[item.loanMarket])) *
+            (Number(item.loanAmount / 10 ** tokenDecimalsMap[item.loanMarket]) *
               Number(oracleAndFairPrices?.oraclePrices[i].price) *
               Number(
-                tempValue[`${item.loanMarketAddress}__${item.commitmentIndex}`]
-                  ?.borrowAPR?.apr100x
+                tempValue?.[
+                  `${item.loanMarketAddress}__${item.commitmentIndex}`
+                ]?.borrowAPR?.apr100x
               )) /
-            100;
+            100
 
           sum2 +=
-            Number(item.loanAmount / (10 ** tokenDecimalsMap[item.loanMarket])) *
-            Number(oracleAndFairPrices?.oraclePrices[i].price);
+            Number(item.loanAmount / 10 ** tokenDecimalsMap[item.loanMarket]) *
+            Number(oracleAndFairPrices?.oraclePrices[i].price)
         }
-      });
+      })
     }
-    seteffectiveapr(Number(sum1) / Number(sum2));
-    console.log(sum1, sum2);
-  };
+    seteffectiveapr(Number(sum1) / Number(sum2))
+    console.log(sum1, sum2)
+  }
 
   useEffect(() => {
-    EffectiveApr();
-  }, [activeDepositsData, oracleAndFairPrices]);
+    EffectiveApr()
+  }, [activeDepositsData, oracleAndFairPrices])
 
   const calculateNetBorrowedApr = () => {
-    let sum = 0;
+    let sum = 0
     for (let i = 0; i < oracleAndFairPrices?.oraclePrices?.length; i++) {
       activeLoansData.map((item: any) => {
         if (
@@ -351,38 +372,38 @@ const Dashboard = () => {
           sum +=
             ((Number(item.interestPaid) + Number(item.interest)) /
               10 ** Number(tokenDecimalsMap[item.loanMarket])) *
-            oracleAndFairPrices?.oraclePrices[i].price;
+            oracleAndFairPrices?.oraclePrices[i].price
         }
-      });
+      })
     }
     // console.log("net borrow apr earned", sum);
-    setNetBorrowedApr(sum.toFixed(2));
-  };
+    setNetBorrowedApr(sum.toFixed(2))
+  }
   useEffect(() => {
-    let validTypes = ["REPAID", "SWAPPED", "OPEN"];
+    let validTypes = ["REPAID", "SWAPPED", "OPEN"]
     if (typeOfLoans === "Repaid") {
       setFilteredLoans(
         activeLoansData.filter((loan) => {
           return (
             loan.state === typeOfLoans?.toUpperCase() &&
             loan.collateralAmount > 0
-          );
+          )
         })
-      );
-      return;
+      )
+      return
     }
     setFilteredLoans(
       activeLoansData.filter((loan) => {
-        return loan.state !== "REPAID" && loan.state !== "LIQUIDATED";
+        return loan.state !== "REPAID" && loan.state !== "LIQUIDATED"
       })
-    );
-  }, [typeOfLoans, activeLoansData]);
+    )
+  }, [typeOfLoans, activeLoansData])
 
   function parseLoansData(loansData: any, collateralsData: any) {
-    const loans: ILoans[] = [];
+    const loans: ILoans[] = []
     for (let i = 0; i < loansData?.length; ++i) {
-      let loanData = loansData[i];
-      let collateralData = collateralsData[i];
+      let loanData = loansData[i]
+      let collateralData = collateralsData[i]
       let temp_len = {
         loanMarket: getTokenFromAddress(number.toHex(loanData?.market))?.name,
         loanMarketSymbol: getTokenFromAddress(number.toHex(loanData?.market))
@@ -461,51 +482,54 @@ const Dashboard = () => {
         // interest: Number(loanData.interest),
 
         //get apr is for loans apr
-      };
-      loans.push(JSON.parse(JSON.stringify(temp_len)));
+      }
+      loans.push(JSON.parse(JSON.stringify(temp_len)))
     }
 
-    setActiveLoansData(loans);
+    setActiveLoansData(loans)
     // console.log("loans: " + loans);
     setRepaidLoansData(
       loans.filter((asset) => {
         // console.log(asset, "testasset");
-        return asset.state === "REPAID";
+        return asset.state === "REPAID"
       })
-    );
+    )
     setFilteredLoans(
       activeLoansData.filter((loan) => {
-        return loan.state !== "REPAID" && loan.state !== "LIQUIDATED";
+        return loan.state !== "REPAID" && loan.state !== "LIQUIDATED"
       })
-    );
-    console.log("parsed loans data", loans);
+    )
+    console.log("parsed loans data", loans)
   }
 
   async function get_user_loans() {
-    let provider = new RpcProvider({
-      nodeUrl:
-        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
+    const provider = new Provider({
+      sequencer: {
+        baseUrl: "https://alpha-mainnet.starknet.io",
+        feederGatewayUrl: "feeder_gateway",
+        gatewayUrl: "gateway",
+      },
     });
     const MySwap = new Contract(loanAbi, diamondAddress, provider);
     const res = await MySwap.call("get_user_loans", [account], {
-      blockIdentifier: 'pending'
-    });
-    parseLoansData(res?.loan_records_arr, res?.collateral_records_arr);
-    console.log(res);
+      blockIdentifier: "pending",
+    })
+    parseLoansData(res?.loan_records_arr, res?.collateral_records_arr)
+    console.log(res)
   }
 
   useEffect(() => {
-    if (account) get_user_loans();
-  }, [account, customActiveTab]);
+    if (account) get_user_loans()
+  }, [account, customActiveTab])
 
   /*============================== Get Deposits from the blockchain ====================================*/
 
   function parseDepositsData(depositsData: any[]) {
-    console.log('parseDeposisDatat', depositsData);
-    let deposits: any[] = [];
-    let deposit;
+    console.log("parseDeposisDatat", depositsData)
+    let deposits: any[] = []
+    let deposit
     for (let i = 0; i < depositsData?.length; i++) {
-      let deposit: any = depositsData?.[i];
+      let deposit: any = depositsData?.[i]
       let myDep = {
         amount: uint256.uint256ToBN(deposit?.amount).toString(),
         market: getTokenFromAddress(number.toHex(deposit?.market))?.name,
@@ -529,23 +553,26 @@ const Dashboard = () => {
         timelockDuration: Number(BNtoNum(deposit?.timelock_validity, 0)),
 
         depositCreationTime: Number(deposit.created_at),
-      };
+      }
       // VT: had to stringify and append due to a weird bug that was updating data randomly after append
-      let myDepString = JSON.stringify(myDep);
-      deposits.push(JSON.parse(myDepString));
+      let myDepString = JSON.stringify(myDep)
+      deposits.push(JSON.parse(myDepString))
     }
     let nonZeroDeposits = deposits.filter(function (el) {
       console.log("amount parse deposit", el.amount)
-      return el.amount !== "0";
-    });
-    console.log("parsed deposit data", deposits);
-    setActiveDepositsData(nonZeroDeposits);
+      return el.amount !== "0"
+    })
+    console.log("parsed deposit data", deposits)
+    setActiveDepositsData(nonZeroDeposits)
   }
 
   async function get_user_deposits() {
-    let provider = new RpcProvider({
-      nodeUrl:
-        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
+    const provider = new Provider({
+      sequencer: {
+        baseUrl: "https://alpha-mainnet.starknet.io",
+        feederGatewayUrl: "feeder_gateway",
+        gatewayUrl: "gateway",
+      },
     });
     const Deposit = new Contract(depositAbi, diamondAddress, provider);
     const res = await Deposit.call("get_user_deposits", [account]);
@@ -553,17 +580,17 @@ const Dashboard = () => {
   }
 
   useEffect(() => {
-    if (account) get_user_deposits();
-  }, [account, customActiveTab, isTransactionDone]);
+    if (account) get_user_deposits()
+  }, [account, customActiveTab, isTransactionDone])
 
   useEffect(() => {
     setTimeout(() => {
-      setIsLoading(false);
-    }, 100);
+      setIsLoading(false)
+    }, 100)
     if (customActiveTab == "6") {
-      navigateLoansToLiquidate(liquidationIndex);
+      navigateLoansToLiquidate(liquidationIndex)
     }
-  }, [customActiveTab]); //only call this when custom active tab changes
+  }, [customActiveTab]) //only call this when custom active tab changes
 
   // const toggleCustom = (tab: any) => {
   //   if (customActiveTab !== tab) {
@@ -573,83 +600,83 @@ const Dashboard = () => {
 
   const toggleCustoms = (tab: any) => {
     if (customActiveTabs !== tab) {
-      setCustomActiveTabs(tab);
+      setCustomActiveTabs(tab)
     }
-  };
+  }
 
   const toggleLoanAction = (tab: any) => {
     if (loanActionTab !== tab) {
-      setLoanActionTab(tab);
+      setLoanActionTab(tab)
     }
-  };
+  }
 
   function removeBodyCss() {
-    setInputVal1(0);
-    document.body.classList.add("no_padding");
+    setInputVal1(0)
+    document.body.classList.add("no_padding")
   }
 
   function tog_repay_loan() {
-    setmodal_repay_loan(!modal_repay_loan);
-    removeBodyCss();
+    setmodal_repay_loan(!modal_repay_loan)
+    removeBodyCss()
   }
   function tog_withdraw_loan() {
-    setmodal_withdraw_loan(!modal_withdraw_loan);
-    removeBodyCss();
+    setmodal_withdraw_loan(!modal_withdraw_loan)
+    removeBodyCss()
   }
   function tog_swap_loan() {
-    setmodal_swap_loan(!modal_swap_loan);
-    removeBodyCss();
+    setmodal_swap_loan(!modal_swap_loan)
+    removeBodyCss()
   }
   function tog_swap_to_loan() {
-    setmodal_swap_to_loan(!modal_swap_to_loan);
-    removeBodyCss();
+    setmodal_swap_to_loan(!modal_swap_to_loan)
+    removeBodyCss()
   }
   // function tog_add_collateral() {
   //   setmodal_add_collateral(!modal_add_collateral);
   //   removeBodyCss();
   // }
   function tog_withdraw_collateral() {
-    setmodal_withdraw_collateral(!modal_withdraw_collateral);
-    removeBodyCss();
+    setmodal_withdraw_collateral(!modal_withdraw_collateral)
+    removeBodyCss()
   }
   function tog_add_active_deposit() {
     // setmodal_add_active_deposit(!modal_add_active_deposit)
-    setmodal_add_active_deposit(true);
-    setmodal_withdraw_active_deposit(false);
-    removeBodyCss();
+    setmodal_add_active_deposit(true)
+    setmodal_withdraw_active_deposit(false)
+    removeBodyCss()
   }
   function tog_withdraw_active_deposit() {
-    setmodal_withdraw_active_deposit(true);
-    setmodal_add_active_deposit(false);
-    removeBodyCss();
+    setmodal_withdraw_active_deposit(true)
+    setmodal_add_active_deposit(false)
+    removeBodyCss()
   }
 
   const handleDepositInterestChange = (e: any) => {
-    setDepositInterestChange(e.target.value);
-  };
+    setDepositInterestChange(e.target.value)
+  }
 
   const handleBorrowInterestChange = (e: any) => {
-    setBorrowInterestChange(e.target.value);
-  };
+    setBorrowInterestChange(e.target.value)
+  }
 
   const handleDepositRequestSelect = (e: any) => {
-    setDepositRequestSel(e.target.value);
-  };
+    setDepositRequestSel(e.target.value)
+  }
   const handleWithdrawDepositSelect = (e: any) => {
-    setWithdrawDepositSel(e.target.value);
-  };
+    setWithdrawDepositSel(e.target.value)
+  }
 
   const handleDepositRequestTime = (e: any) => {
-    setDepositRequestVal(e.target.value);
-  };
+    setDepositRequestVal(e.target.value)
+  }
   const handleWithdrawDepositTime = (e: any) => {
-    setWithdrawDepositVal(e.target.value);
-  };
+    setWithdrawDepositVal(e.target.value)
+  }
 
   const onLiquidationsData = async (liquidationsData: any[]) => {
-    const liquidations: any[] = [];
+    const liquidations: any[] = []
     for (let i = 0; i < liquidationsData.length; i++) {
-      const loan = liquidationsData[i];
+      const loan = liquidationsData[i]
       // console.log("loan in liquidation", loan);
       let myLiquidableLoan = {
         loanOwner: loan.account,
@@ -672,9 +699,9 @@ const Dashboard = () => {
 
         isLiquidationDone: false,
         id: loan.loanId,
-      };
-      let myLoanString = JSON.stringify(myLiquidableLoan);
-      liquidations.push(JSON.parse(myLoanString));
+      }
+      let myLoanString = JSON.stringify(myLiquidableLoan)
+      liquidations.push(JSON.parse(myLoanString))
     }
     // getting the unique liquidable loans by filtering laonMarket and Commitment
     // const uniqueLiquidableLoans = liquidations.filter(
@@ -688,25 +715,25 @@ const Dashboard = () => {
     // // console.log("uni liquida", uniqueLiquidableLoans);
     // setActiveLiquidationsData(uniqueLiquidableLoans);
     // console.log("onLiquidationsData in", liquidationsData, liquidations);
-    setActiveLiquidationsData(liquidations);
-  };
+    setActiveLiquidationsData(liquidations)
+  }
 
   const navigateLoansToLiquidate = async (liquidationIndex: any) => {
     !isTransactionDone &&
       account &&
       OffchainAPI.getLiquidableLoans(account).then(
         (loans) => {
-          onLiquidationsData(loans);
-          setIsLoading(false);
-          console.log("liquidable", loans);
+          onLiquidationsData(loans)
+          setIsLoading(false)
+          console.log("liquidable", loans)
         },
         (err) => {
-          setIsLoading(false);
-          setActiveLiquidationsData([]);
+          setIsLoading(false)
+          setActiveLiquidationsData([])
           // console.log(err);
         }
-      );
-  };
+      )
+  }
   const getActionTabs = (customActiveTab: string) => {
     // console.log("blockchain activedepoist", activeDepositsData);
     // console.log("blockchain activeloans", activeLoansData);
@@ -728,8 +755,8 @@ const Dashboard = () => {
             isTransactionDone={isTransactionDone}
             inputVal1={inputVal1}
           />
-        );
-        break;
+        )
+        break
 
       case "2": //
         return (
@@ -742,8 +769,8 @@ const Dashboard = () => {
             removeBodyCss={removeBodyCss}
             setCustomActiveTabs={setCustomActiveTabs}
           />
-        );
-        break;
+        )
+        break
 
       case "3":
         return (
@@ -751,12 +778,12 @@ const Dashboard = () => {
             repaidLoansData={repaidLoansData}
             customActiveTabs={customActiveTab}
           />
-        );
-        break;
+        )
+        break
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   const borrowActionTabs = () => {
     // console.log(repaidLoansData);
@@ -771,8 +798,8 @@ const Dashboard = () => {
         setCustomActiveTabs={setCustomActiveTabs}
         fairPriceArray={oracleAndFairPrices?.fairPrices}
       />
-    );
-  };
+    )
+  }
 
   function incorrectChain() {
     return (
@@ -795,41 +822,57 @@ const Dashboard = () => {
         {/* Currently connected to: {starknetAccount?.baseUrl}. The base url should
         be `https://alpha4-2.starknet.io` in your wallet for Goerli 2 network. */}
       </div>
-    );
+    )
   }
 
-
-  // Waitlist UI  
-  const WaitlistUI = () => {       
-    return(<p style={{zIndex : "1000", marginTop: "300px", marginBottom: "400px", textAlign: "center", verticalAlign: "text-bottom", fontSize: "40px", color: "white"}}>You are already in the queue</p>)
+  // Waitlist UI
+  const WaitlistUI = () => {
+    return <ExistingWhitelistModal accountAddress={account} />
   }
 
   // Timer logic
   // const showTimer = async () => {
-  //   if(timer >= 1){            
+  //   if(timer >= 1){
   //     setTimer(--timer);
-  //   }    
-  //   else {  
+  //   }
+  //   else {
   //     if(isWaitlisted!=1 && isWhitelisted!=1){
   //       window.location.href = "https://spearmint.xyz/p/hashstack";
-  //     }      
+  //     }
   //   }
-    
+
   //   return(null);
   // }
 
-  const addToWhitelist = async() => {
-    await OffchainAPI.setWhitelistData(_account?_account:"");
-  } 
+  // const addToWhitelist = async () => {
+  //   // await OffchainAPI.setWhitelistData(_account ? _account : "");
+  //   // await OffchainAPI.setWhitelistData("");
+  // };
 
   // Spearmint redirect UI
 
-  const SpearmintRedirectUI = () => {    
-    addToWhitelist()
-    //setTimeout(showTimer, 1200)    
-    return(<span>
-      <p style={{zIndex : "1000", marginTop: "300px", marginBottom: "350px", textAlign: "center", verticalAlign: "text-bottom", fontSize: "40px", color: "white"}}>Only registered users are allowed to access the mainnet. You're being added to the waitlist now</p>      
-    </span>);
+  const SpearmintRedirectUI = () => {
+    //addToWhitelist();
+    //setTimeout(showTimer, 1200)
+    return (
+      <span>
+        {/* <p
+          style={{
+            zIndex: "1000",
+            marginTop: "300px",
+            marginBottom: "350px",
+            textAlign: "center",
+            verticalAlign: "text-bottom",
+            fontSize: "40px",
+            color: "white",
+          }}
+        >
+          Only registered users are allowed to access the mainnet. You're being
+          added to the waitlist now
+        </p> */}
+        <WhitelistModal accountAddress={account} />
+      </span>
+    )
   }
 
   const DashboardUI = () => {
@@ -933,7 +976,9 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div style={{ width: "7%" }}>
-                          <div style={{ color: "#8C8C8C" }}>Interest Earned</div>
+                          <div style={{ color: "#8C8C8C" }}>
+                            Interest Earned
+                          </div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
                             {/* $8,932.14 */}${netAprEarned}
                           </div>
@@ -992,10 +1037,10 @@ const Dashboard = () => {
                         onClick={() => {
                           setTypeOfLoansDropDownArrowType(
                             isDropDownOpenTypeOfLoans ? DownArrow : UpArrow
-                          );
+                          )
                           setIsDropDownOpenTypeOfLoans(
                             !isDropDownOpenTypeOfLoans
-                          );
+                          )
                         }}
                       >
                         {typeOfLoans}&nbsp;&nbsp;&nbsp;
@@ -1037,15 +1082,15 @@ const Dashboard = () => {
                                     color: "white",
                                   }}
                                   onClick={() => {
-                                    setTypeOfLoans(type);
-                                    setTypeOfLoansDropDownArrowType(DownArrow);
-                                    setIsDropDownOpenTypeOfLoans(false);
-                                    setActiveRepaytab(type);
+                                    setTypeOfLoans(type)
+                                    setTypeOfLoansDropDownArrowType(DownArrow)
+                                    setIsDropDownOpenTypeOfLoans(false)
+                                    setActiveRepaytab(type)
                                   }}
                                 >
                                   {type}
                                 </div>
-                              );
+                              )
                             })}
                           </div>
                         </>
@@ -1133,6 +1178,7 @@ const Dashboard = () => {
                           {customActiveTab === "6" ? (
                             <div style={{ color: "black", marginTop: "30px" }}>
                               <Liquidation
+                                oraclePrices={oracleAndFairPrices?.oraclePrices}
                                 activeLiquidationsData={activeLiquidationsData}
                                 isTransactionDone={isTransactionDone}
                               />
@@ -1187,7 +1233,7 @@ const Dashboard = () => {
                     <u
                       style={{ cursor: "pointer", color: "white" }}
                       onClick={() => {
-                        toggleCustom("4");
+                        toggleCustom("4")
                       }}
                     >
                       your borrow
@@ -1206,14 +1252,14 @@ const Dashboard = () => {
           </Row>
         </Container>
       </div>
-    );
-  };
+    )
+  }
 
   function isCorrectNetwork() {
     return (
       starknetAccount?.baseUrl.includes("alpha-mainnet.starknet.io") ||
       starknetAccount?.baseUrl.includes("localhost")
-    );
+    )
   }
   // console.log("starknet",starknetAccount);
 
@@ -1235,7 +1281,7 @@ const Dashboard = () => {
         </p>
         We are currently under maintenance and should be back in couple of hours
       </div>
-    );
+    )
   }
 
   return (
@@ -1247,7 +1293,7 @@ const Dashboard = () => {
         }}
       >
         <Head>
-          <title>Hashstack | Starknet testnet</title>
+          <title>Hashstack | Under-collateralised loans | DeFi</title>
           <meta
             name="viewport"
             content="initial-scale=1.0, width=device-width"
@@ -1329,41 +1375,55 @@ const Dashboard = () => {
         </div>
       </Row> */}
           {/* <Banner /> */}
-          {!starknetAccount ? (
-            <h3>Loading...</h3>
+          {!_account || !starknetAccount || checkingWaitlist ? (
+            <div style={{
+              marginTop: "50vh",
+              width: "100%",
+              textAlign: "center"
+            }}>
+              <MySpinner text="Loading..."/>
+            </div>
           ) : !isCorrectNetwork() ? (
             incorrectChain()
           ) : (
             <>
+              {isWhitelisted ? (
+                <DashboardUI />
+              ) : isWaitlisted ? (
+                <WaitlistUI />
+              ) : (
+                <SpearmintRedirectUI />
+                // <h3 style={{"marginTop": "50px"}}>oadddddd</h3>
+              )}
 
-              {isWhitelisted ? <DashboardUI />: isWaitlisted? <WaitlistUI/> : <SpearmintRedirectUI />}
-
-              <Row
-                style={{
-                  marginTop: "5px",
-                  position: "relative",
-                  bottom: "0px",
-                  left: "85%",
-                  backgroundColor: "transparent",
-                  borderRadius: "5px",
-                  zIndex: "200  ",
-                }}
-              >
-                <div
+              {isWhitelisted ? (
+                <Row
                   style={{
-                    display: "flex",
-                    padding: "5px 10px",
-                    alignItems: "center",
+                    marginTop: "15px",
+                    position: "relative",
+                    bottom: "0px",
+                    left: "85%",
+                    backgroundColor: "transparent",
+                    borderRadius: "5px",
+                    zIndex: "100",
                   }}
                 >
-                  <div>Latest synced block:&nbsp;&nbsp;</div>
-                  <div style={{ opacity: 0.6 }}>{offchainCurrentBlock}</div>
                   <div
-                    style={{ marginLeft: "5px" }}
-                    className="green-circle"
-                  ></div>
-                </div>
-              </Row>
+                    style={{
+                      display: "flex",
+                      padding: "5px 10px",
+                      alignItems: "center",
+                    }}
+                  >
+                    <div>Latest synced block:&nbsp;&nbsp;</div>
+                    <div style={{ opacity: 0.6 }}>{offchainCurrentBlock}</div>
+                    <div
+                      style={{ marginLeft: "5px" }}
+                      className="green-circle"
+                    ></div>
+                  </div>
+                </Row>
+              ) : null}
             </>
           )}
           {/* <Analytics></Analytics>
@@ -1377,7 +1437,7 @@ const Dashboard = () => {
         {/* // </React.Fragment> */}
       </div>
     </>
-  );
-};
+  )
+}
 
-export default Dashboard;
+export default Dashboard

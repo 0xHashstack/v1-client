@@ -51,7 +51,7 @@ const SupplyModal = ({
   toggleDropdown,
   tokenName,
   setTokenName,
-  tokenSymbol, 
+  tokenSymbol,
   setTokenSymbol,
   setmodal_deposit,
   tog_center,
@@ -132,6 +132,9 @@ const SupplyModal = ({
   setIsToastOpen: any;
   toastParam: any;
 }) => {
+  // console.log("coin",tokenSymbol);
+  
+  
   return (
     <>
       <Modal
@@ -174,6 +177,7 @@ const SupplyModal = ({
 
                 <label
                   style={{
+                    cursor: "pointer",
                     width: "420px",
                     margin: "10px auto",
                     marginBottom: "20px",
@@ -210,7 +214,7 @@ const SupplyModal = ({
                       }}
                     >
                       <Image
-                        src={dropDownArrow}
+                        src={dropDown === false ? dropDownArrow : UpArrow}
                         alt="Picture of the author"
                         width="14px"
                         height="14px"
@@ -231,6 +235,7 @@ const SupplyModal = ({
 
                 <label
                   style={{
+                    cursor: "pointer",
                     width: "420px",
                     margin: "0 auto",
                     padding: "5px 10px",
@@ -296,8 +301,14 @@ const SupplyModal = ({
                         backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px #00000020",
                       }}
+                      onMouseLeave={() => {
+                        setDropDown(!dropDown);
+                        setDropDownArrow(Downarrow);
+                      }}
                     >
                       {Coins.map((coin, index) => {
+                        console.log("coin",coin);
+                        
                         if (coin.name === tokenName) return <></>;
                         return (
                           <>
@@ -345,7 +356,7 @@ const SupplyModal = ({
                         borderRadius: "5px",
                         position: "absolute",
                         zIndex: "100",
-                        top: "210px",
+                        top: "215px",
                         left: "39px",
                         width: "420px",
                         margin: "0px auto",
@@ -354,29 +365,35 @@ const SupplyModal = ({
                         backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px #00000020",
                       }}
+                      onMouseLeave={() => {
+                        setCommitmentDropDown(!commitmentDropDown);
+                        setCommitmentArrow(arrowDown);
+                      }}
                     >
-                      {(["Flexible", "2 weeks", "1 month", "3 months"].map((commit, index, arr) => {
-                        return (
-                          <>
-                            <div
-                              style={{
-                                fontSize: "15px",
-                                margin: "10px 0",
-                                cursor: "pointer",
-                              }}
-                              onClick={() => {
-                                setCommitmentValue(commit);
-                                setCommitmentDropDown(false);
-                                setCommitmentArrow(Downarrow);
-                                handleCommitChange(index);
-                              }}
-                            >
-                              &nbsp;{commit}
-                            </div>
-                            {arr.length == (index + 1) ? <></> : <hr />}
-                          </>
-                        )
-                      }))}
+                      {["Flexible", "2 weeks", "1 month", "3 months"].map(
+                        (commit, index, arr) => {
+                          return (
+                            <>
+                              <div
+                                style={{
+                                  fontSize: "15px",
+                                  margin: "10px 0",
+                                  cursor: "pointer",
+                                }}
+                                onClick={() => {
+                                  setCommitmentValue(commit);
+                                  setCommitmentDropDown(false);
+                                  setCommitmentArrow(Downarrow);
+                                  handleCommitChange(index);
+                                }}
+                              >
+                                &nbsp;{commit}
+                              </div>
+                              {arr.length == index + 1 ? <></> : <hr />}
+                            </>
+                          );
+                        }
+                      )}
                     </div>
                   </>
                 ) : (
@@ -535,13 +552,15 @@ const SupplyModal = ({
                       }}
                     >
                       {depositLoanRates && commitPeriod < 4 ? (
-                        `${parseFloat(
-                          depositLoanRates[
-                            `${
-                              getTokenFromName(asset as string)?.address
-                            }__${commitPeriod}`
-                          ]?.depositAPR?.apr100x as string
-                        ) / 100} %`
+                        `${
+                          parseFloat(
+                            depositLoanRates[
+                              `${
+                                getTokenFromName(asset as string)?.address
+                              }__${commitPeriod}`
+                            ]?.depositAPR?.apr100x as string
+                          ) / 100
+                        } %`
                       ) : (
                         <MySpinner />
                       )}
@@ -599,7 +618,7 @@ const SupplyModal = ({
                   </span>
                      This is the note where you are supposed to do some information of the given user and something
                 </div> */}
-                <br/>
+                <br />
                 <Button
                   color="white"
                   style={{

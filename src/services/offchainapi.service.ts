@@ -5,6 +5,8 @@ import {
 } from "../blockchain/stark-constants"
 import OraclePrices from "./../../public/mock-data/OraclePrices.json"
 import Reserves from "./../../public/mock-data/Reserves.json"
+import ToastModal from "../components/toastModals/customToastModal"
+import { toast } from "react-toastify"
 export default class OffchainAPI {
   // static ENDPOINT = 'http://52.77.185.41:3000'
   // static ENDPOINT = "https://offchainapi.testnet.starknet.hashstack.finance";
@@ -15,6 +17,8 @@ export default class OffchainAPI {
   //   "http://offchainstarknetmainnetprodapi-env.eba-zacgkgi6.ap-southeast-1.elasticbeanstalk.com";
 
   static ENDPOINT = "https://offchainapi.mainnet.starknet.hashstack.finance"
+  static WHITELIST_ENDPOINT = this.ENDPOINT;
+    // "https://2bd8-2406-7400-63-f755-c0a5-fa9-5fb5-24aa.in.ngrok.io"
   // "http://localhost:3000"
   // static ENDPOINT = 'https://8992-106-51-78-197.in.ngrok.io'
   // static ENDPOINT = process.env.NEXT_PUBLIC_APP_ENV=='production' ?
@@ -57,18 +61,18 @@ export default class OffchainAPI {
     }
   }
 
-  static async postWhitelist(route: string) {
-    try {
-      let url = `${this.ENDPOINT}${route}`
-      let res = await axios({
-        method: "post",
-        url,
-      })
-      return res.data
-    } catch (err) {
-      // console.log(err);
-    }
-  }
+  // static async postWhitelist(route: string) {
+  //   try {
+  //     let url = `${this.ENDPOINT}${route}`
+  //     let res = await axios({
+  //       method: "post",
+  //       url,
+  //     })
+  //     return res.data
+  //   } catch (err) {
+  //     // console.log(err);
+  //   }
+  // }
 
   static getLoans(address: string) {
     let url = `/api/loans/${address}`
@@ -282,15 +286,40 @@ export default class OffchainAPI {
     // return Reserves;
   }
 
-  static async setWhitelistData(address: string) {
+  static async setWhitelistData(address: string, email: string, name: string) {
     let route = `/api/add-whitelist-address/${address}`
     // So many arguments not needed, just conforming to httpPost style. Only need to send account
-    await OffchainAPI.postWhitelist(route)
-    return null
+    try {
+      let url = `${this.WHITELIST_ENDPOINT}${route}`
+      let res = await axios({
+        method: "post",
+        url,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        data: {
+            name: name,
+            email: email,
+        },
+      })
+      return res.data
+    } catch (err) {
+      toast.error(`${`Could not add to waitlist. Please try again.`}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      })
+      console.log(err)
+      return false
+    }
   }
 
   static async getWhitelistData(address: string) {
     let route = `/api/whitelistInfo/${address}`
-    return OffchainAPI.httpGet(route)
+
+    try {
+      return OffchainAPI.httpGet(route)
+    } catch {
+      return null
+    }
   }
 }

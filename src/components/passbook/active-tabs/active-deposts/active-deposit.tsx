@@ -76,6 +76,7 @@ import classnames from "classnames";
 import { IDepositLoanRates } from "../../../borrow";
 import ToastModal from "../../../toastModals/customToastModal";
 import UserInformation from "../../../../../UserInformation.json";
+import { NumericFormat } from "react-number-format";
 
 const ActiveDeposit = ({
   reserves,
@@ -102,7 +103,8 @@ const ActiveDeposit = ({
     loadingApprove,
     loadingDeposit,
     transApprove,
-    transDeposit,
+    transAddDeposit,
+    setTransAddDeposit
   } = useAddDeposit(asset, diamondAddress);
 
   const {
@@ -117,14 +119,9 @@ const ActiveDeposit = ({
     setIsDepWithdrawToastOpen,
     toastDepWithdrawParam,
   } = useWithdrawDeposit(asset, diamondAddress);
-  const [action, setAction] = useState(false);
 
-  const approveTransactionReceipt = useTransactionReceipt({
-    hash: transApprove,
-    watch: true,
-  });
   const addDepositTransactionReceipt = useTransactionReceipt({
-    hash: transDeposit,
+    hash: transAddDeposit,
     watch: true,
   });
 
@@ -154,14 +151,13 @@ const ActiveDeposit = ({
   const getNoteForDeposit = () => {
     if (asset?.commitmentIndex !== 0) {
       const commitmentDuration = asset?.commitmentIndex === 1 ? 14 * 24 * 3600
-      : (asset?.commitmentIndex) === "2" ? 30 * 24 * 3600
-      : (asset?.commitmentIndex) === "3" ? 90 * 24 * 3600 : 0;
+      : (asset?.commitmentIndex) === 2 ? 30 * 24 * 3600
+      : (asset?.commitmentIndex) === 3 ? 90 * 24 * 3600 : 0;
       const commitmenntEndtime = new Date(asset?.depositCreationTime * 1000 + commitmentDuration * 1000);
       const currentTime = new Date();
       const diff = Math.abs(commitmenntEndtime.getTime() - currentTime.getTime());
       const diffDays = Math.floor(diff / (1000 * 3600 * 24))
       const diffHours = Math.max(Math.floor((diff % (1000 * 3600 * 24)) / (1000 * 3600)), 1);
-      console.log("asset commitment index", asset?.commitmentIndex, asset?.depositCreationTime, diff);
       if (diff > 0) {
         setShowNoteForDeposit(true);
         setNoteForDeposit(UserInformation?.WithdrawDeposit?.CommitmentNotExpired + diffDays + " days " + diffHours + `${diffHours > 1 ? ' hours' : ' hour'}` + " more for commitment to end");
@@ -295,10 +291,24 @@ const ActiveDeposit = ({
     });
   }, [asset]);
 
-  const requestDepositTransactionReceipt = useTransactionReceipt({
-    hash: transDeposit,
-    watch: true,
-  });
+  useEffect(() => {
+    TxToastManager.handleTxToast(
+      addDepositTransactionReceipt,
+      `Add Supply: Deposit ID: ${asset?.depositId}`,
+      true
+    );
+  }, [addDepositTransactionReceipt]);
+
+  useEffect(() => {
+    TxToastManager.handleTxToast(
+      withdrawTransactionReceipt,
+      `Withdraw Supply: Deposit ID: ${asset?.depositId}`,
+      true
+    );
+  }, [withdrawTransactionReceipt]);
+
+
+
 
   const returnTransactionParameters = () => {
     let data, loading, reset, error;
@@ -346,10 +356,16 @@ const ActiveDeposit = ({
   };
 
   const handleWithdrawAmountChange = (e: any) => {
-    setWithdrawAmount(e.target.value);
+    console.log(e.target.value);
+    setWithdrawAmount(e.target.value)
+    console.log("with",withdrawAmount);
+    
+    
     const available = Number(
-      asset?.amount / 10 ** (tokenDecimalsMap[tokenName] || 18)
+      asset.amount / 10 ** (tokenDecimalsMap[tokenName] || 18)
     );
+    console.log(available);
+    
     if (!available) return;
     var percentage = (e.target.value / available) * 100;
     percentage = Math.max(0, percentage);
@@ -357,8 +373,12 @@ const ActiveDeposit = ({
       setValue("Greater than 100");
       return;
     }
-    percentage = Math.round(percentage * 100) / 100;
+    // percentage = Math.round(percentage * 100) / 100;
+    console.log(percentage);
+    
     setValue(percentage);
+    if(percentage  === 100) setWithdrawAllorNot(true);
+    else setWithdrawAllorNot(false);
   };
 
   const handleMax = () => {
@@ -421,6 +441,7 @@ const ActiveDeposit = ({
     }
     try {
       let val = await executeDeposit();
+      setTransAddDeposit(val.transaction_hash);
       const toastParamValue = {
         success: true,
         heading: "Success",
@@ -446,47 +467,10 @@ const ActiveDeposit = ({
     }
   };
 
-  useEffect(() => {
-    // console.log(
-    //   "approve tx receipt",
-    //   approveTransactionReceipt.data?.transaction_hash,
-    //   approveTransactionReceipt
-    // );
-    TxToastManager.handleTxToast(
-      approveTransactionReceipt,
-      `Add Deposit: Approve ${Number(depositAmount)?.toFixed(4)} ${asset.market
-      }`,
-      true
-    );
-  }, [approveTransactionReceipt]);
+ 
 
-  useEffect(() => {
-    // console.log(
-    //   "borrow tx receipt",
-    //   addDepositTransactionReceipt.data?.transaction_hash,
-    //   addDepositTransactionReceipt
-    // );
-    TxToastManager.handleTxToast(
-      addDepositTransactionReceipt,
-      `Deposit ${Number(depositAmount)?.toFixed(4)} ${asset.market}`
-    );
-  }, [addDepositTransactionReceipt]);
-
-  useEffect(() => {
-    if (!withdrawAmount) return;
-    // console.log(
-    //   "borrow tx receipt",
-    //   withdrawTransactionReceipt.data?.transaction_hash,
-    //   withdrawTransactionReceipt
-    // );
-    TxToastManager.handleTxToast(
-      withdrawTransactionReceipt,
-      `Withdraw ${Number(withdrawAmount)?.toFixed(4)} ${asset.market}`
-    );
-  }, [withdrawTransactionReceipt]);
-
-  useEffect(() => {
-    const currentBalance =
+  const onWithdrawSlider = (value:any)=>{
+     const currentBalance =
       parseFloat(
         weiToEtherNumber(
           asset.amount,
@@ -499,11 +483,12 @@ const ActiveDeposit = ({
           tokenAddressMap[asset.market] || ""
         ).toString()
       );
-    // console.log("currentBalance", (value / 100) * currentBalance);
-    setWithdrawAmount((value / 100) * currentBalance);
+
+    setWithdrawAmount(value*currentBalance/100);
     if(value  === 100) setWithdrawAllorNot(true);
     else setWithdrawAllorNot(false);
-  }, [value]);
+  }
+
 
   return (
     <div style={{ borderTop: "5px" }}>
@@ -728,7 +713,7 @@ const ActiveDeposit = ({
                 </Col>
                 <div
                   style={{
-                    fontSize: "9px",
+                    fontSize: "11px",
                     paddingTop: "10px",
                     color: "rgb(111, 111, 111)",
                     display: "flex",
@@ -858,6 +843,8 @@ const ActiveDeposit = ({
                             ? depositAmount
                             : withdrawAmount
                         }
+                        
+                        // value={withdrawAmount}
                         valid={!isInvalid()}
                       // valid={false}
                       />
@@ -936,6 +923,7 @@ const ActiveDeposit = ({
                             100
                           );
                           setValue(value);
+                          onWithdrawSlider(value);
                         }}
                         valueRenderer={(value: any) => `${value}%`}
                         showValue={false}
@@ -949,7 +937,7 @@ const ActiveDeposit = ({
                         top: "90px",
                       }}
                     >
-                      {value}%
+                      {value.toFixed(2)}%
                     </div>
                     {customActiveTab === "1"
                       ? depositAmount !== 0 &&
@@ -1027,7 +1015,7 @@ const ActiveDeposit = ({
                               `${getTokenFromName(tokenName).address
                               }__${commitPeriod}`
                             ]?.depositAPR?.apr100x as string
-                          )} %`
+                          ) / 100} %`
                         ) : (
                           <MySpinner />
                         )}
@@ -1123,7 +1111,8 @@ const ActiveDeposit = ({
                         0.1 %
                       </div>
                     </div>
-                    <div
+                    {asset.commitment !== "NONE" && showNoteForDeposit ?
+                     <div
                       style={{
                         display: "flex",
                         justifyContent: "space-between",
@@ -1142,7 +1131,7 @@ const ActiveDeposit = ({
                       >
                         0.02%
                       </div>
-                    </div>
+                    </div>: null}
                     {asset.commitment !== "NONE" && showNoteForDeposit ? (
                       <div
                         style={{
@@ -1198,10 +1187,11 @@ const ActiveDeposit = ({
                     else handleWithdrawDeposit(tokenName);
                   }}
                 >
-                  {!(
-                    loadingApprove ||
-                    isTransactionLoading(requestDepositTransactionReceipt)
-                  ) ? (
+                  {customActiveTab === "1" && !(
+                    isTransactionLoading(addDepositTransactionReceipt)
+                  ) || (customActiveTab === "2" && !(
+                    isTransactionLoading(withdrawTransactionReceipt)
+                  )) ? (
                     customActiveTab === "1" ? (
                       "Add Supply"
                     ) : customActiveTab === "2" ? (
@@ -1210,13 +1200,19 @@ const ActiveDeposit = ({
                       ""
                     )
                   ) : (
-                    <MySpinner text="Depositing token" />
+                    customActiveTab === "1" ? (
+                      <MySpinner text="Adding Supply" />
+                      ) : customActiveTab === "2" ? (
+                        <MySpinner text="Withdrawing Supply" />
+                    ) : (
+                      ""
+                    )
                   )}
                 </Button>
               </div>
             </Form>
           ) : (
-            <h2 style={{ color: "black" }}>Please connect your wallet</h2>
+            <h2 style={{ color: "white" }}>Please connect your wallet</h2>
           )}
         </div>
         {idDropDown ? (
@@ -1235,6 +1231,8 @@ const ActiveDeposit = ({
                 backgroundColor: "#393D4F",
                 // boxShadow: "0px 0px 10px rgb(57, 61, 79)",
               }}
+              onMouseLeave={()=>{setIdDropDown(!idDropDown)
+              setIdDropDownArrow(arrowDown)}}
             >
               {allAssets.map((asset, index) => {
                 return (
@@ -1245,7 +1243,7 @@ const ActiveDeposit = ({
                       cursor: "pointer",
                       display: "flex",
                       alignItems: "center",
-                      fontSize: "0.6rem",
+                      fontSize: "0.7rem",
                       color: "#6F6F6F",
                     }}
                     onClick={() => {

@@ -1,10 +1,11 @@
 import { useAccount, useStarknetExecute, useTransactionReceipt } from "@starknet-react/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Abi, uint256 } from "starknet";
 import { ERC20Abi, tokenDecimalsMap } from "../../stark-constants";
 import { NumToBN } from "../../utils";
 import { etherToWeiBN } from "../../utils";
 import { tokenAddressMap } from "../../stark-constants";
+import { TxToastManager } from "../../txToastManager";
 
 const useWithdrawPartialBorrow = (asset: any, diamondAddress: string) => {
   const [partialWithdrawAmount, setPartialWithdrawAmount] = useState<number>();
@@ -16,6 +17,14 @@ const useWithdrawPartialBorrow = (asset: any, diamondAddress: string) => {
     hash: transWithdrawPartialBorrowHash,
     watch: true
   })
+
+  useEffect(() => {
+    TxToastManager.handleTxToast(
+      partialWithdrawTransReceipt,
+      `Withdraw Partial Borrow: ${asset?.loanId}`,
+      true
+    );
+  }, [partialWithdrawTransReceipt]);
 
   const {
     data: dataWithdrawPartialBorrow,
@@ -30,7 +39,7 @@ const useWithdrawPartialBorrow = (asset: any, diamondAddress: string) => {
       entrypoint: "withdraw_partial_loan",
       calldata: [
         loanId,
-        etherToWeiBN(partialWithdrawAmount as number, tokenAddressMap[asset.loanMarket]|| "").toString(),
+        etherToWeiBN(partialWithdrawAmount as number, tokenAddressMap[asset.loanMarket] || "").toString(),
         0,
       ],
     }
