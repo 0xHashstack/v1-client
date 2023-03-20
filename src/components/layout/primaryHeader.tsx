@@ -116,19 +116,6 @@ const PrimaryHeader = ({
   return (
     // <div className="container">
     <Container className="headerContainer">
-      <Row
-        style={{ marginTop: "5px", position: "fixed", bottom: 0, left: "15px" }}
-      >
-        <div className="d-flex flex-wrap gap-2 block-status">
-          <div style={{ color: "rgb(255 255 255 / 50%)" }}>
-            Latest synced block:{" "}
-          </div>
-          <div className="sc-chPdSV hxkAVa css-x9zcw6" style={{ opacity: 0.6 }}>
-            {offchainCurrentBlock}
-          </div>
-          <div className="green-circle"></div>
-        </div>
-      </Row>
       <Row>
         <Col
           className="d-flex flex-column justify-content-between"

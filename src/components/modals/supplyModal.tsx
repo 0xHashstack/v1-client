@@ -210,7 +210,7 @@ const SupplyModal = ({
                       }}
                     >
                       <Image
-                        src={dropDownArrow}
+                        src={dropDown === false?dropDownArrow:UpArrow}
                         alt="Picture of the author"
                         width="14px"
                         height="14px"
@@ -296,6 +296,8 @@ const SupplyModal = ({
                         backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px #00000020",
                       }}
+                       onMouseLeave={()=>{setDropDown(!dropDown)
+                      setDropDownArrow(Downarrow)}}
                     >
                       {Coins.map((coin, index) => {
                         if (coin.name === tokenName) return <></>;
@@ -354,6 +356,8 @@ const SupplyModal = ({
                         backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px #00000020",
                       }}
+                      onMouseLeave={()=>{setCommitmentDropDown(!commitmentDropDown)
+                      setCommitmentArrow(arrowDown)}}
                     >
                       {(["Flexible", "2 weeks", "1 month", "3 months"].map((commit, index, arr) => {
                         return (
