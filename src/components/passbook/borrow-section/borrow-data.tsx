@@ -787,7 +787,7 @@ const BorrowData = ({
   const handleSelfLiquidate = async () => {
     try {
       const val = await executeSelfLiquidate();
-      setTransRepayHash(val.transaction_hash);
+      setIsSelfLiquidateHash(val.transaction_hash);
       const toastParamValue = {
         success: true,
         heading: "Success",
@@ -878,13 +878,6 @@ const BorrowData = ({
     }
   };
 
-  useEffect(() => {
-    TxToastManager.handleTxToast(
-      repayTransactionReceipt,
-      `Repay Loan ID ${asset?.loanId}`
-    );
-  }, [repayTransactionReceipt]);
-
   const changeTo18Decimals = (value: any, market: any) => {
     if (!tokenDecimalsMap[market]) return value;
     const decimalsDeficit = 18 - tokenDecimalsMap[market];
@@ -927,11 +920,17 @@ const BorrowData = ({
       const currentTime = new Date();
       // subtract the times and show the difference in days
       const diff = Math.abs(timeLockEndtime.getTime() - currentTime.getTime());
-      const diffHours = Math.ceil(diff / (1000 * 3600));
+      const diffDays = Math.floor(diff / (1000 * 3600 * 24));
+      const diffHours = Math.max(
+        Math.floor((diff % (1000 * 3600 * 24)) / (1000 * 3600)),
+        1
+      );
       setWithdrawCollateralNote(
         UserInformation?.WithdrawCollateral?.TimelockNotExpired +
-          diffHours +
-          " hours"
+        diffDays +
+        " days " +
+        diffHours +
+        `${diffHours > 1 ? " hours." : " hour."}`
       );
     } else {
       setShowNoteForWithdrawCollateral(false);
@@ -997,16 +996,12 @@ const BorrowData = ({
   const checkIfLoanPreclosed = () => {
     if (asset?.commitmentIndex !== 0) {
       const commitmentDuration = 30 * 24 * 3600;
-      const commitmenntEndtime = new Date(
+      const commitmentEndtime = new Date(
         asset?.loanCreationTime * 1000 + commitmentDuration * 1000
       );
       const loanClosureTime = new Date(asset?.timelockActivationTime * 100);
       // if commimentEndTime > loanClosureTime then loan is preclosed
-      if (commitmenntEndtime > loanClosureTime) {
-        setShowNoteForWithdrawCollateral(true);
-        setWithdrawCollateralNote(
-          UserInformation?.WithdrawCollateral?.LoanPreclosed
-        );
+      if (commitmentEndtime > loanClosureTime) {
         setShowCollateralPreclosureCharge(true);
       }
     }
@@ -4061,7 +4056,7 @@ const BorrowData = ({
                     }
                     onClick={handleSelfLiquidate}
                   >
-                    {!isTransactionLoading(requestDepositTransactionReceipt) ? (
+                    {!isTransactionLoading(selfLiquidateTransactionReceipt) ? (
                       <>{selection}</>
                     ) : (
                       <MySpinner text="Liquidating" />
