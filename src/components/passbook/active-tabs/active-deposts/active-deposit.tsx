@@ -560,18 +560,7 @@ const ActiveDeposit = ({
           <Col>
             <div style={{ fontSize: "14px", fontWeight: "600" }}>
               {assetParam &&
-                historicalAPRs &&
-                depositInterestAccrued(assetParam, historicalAPRs)}
-              {/* {depositLoanRates ? (
-                        `${parseFloat(
-                          depositLoanRates[
-                            `${getTokenFromName(asset as string)?.address
-                            }__${commitPeriod}`
-                          ]?.depositAPR?.apr100x as string
-                        )} %`
-                      ) : (
-                        <MySpinner />
-                      )} */}
+                weiToEtherNumber(assetParam?.acquiredYield?.toString(), tokenAddressMap?.[assetParam?.market] || "")}
               &nbsp;
               {assetParam.marketSymbol?.toUpperCase()}
             </div>

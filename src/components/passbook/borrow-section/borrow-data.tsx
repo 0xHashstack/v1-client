@@ -1305,7 +1305,7 @@ const BorrowData = ({
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
                 {weiToEtherNumber(
-                  (assetParam?.loanAmount).toString(),
+                  (assetParam?.loanAmount)?.toString(),
                   tokenAddressMap[assetParam?.loanMarket]?.toString() || ""
                 ).toString()}
               </span>

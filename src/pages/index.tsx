@@ -399,11 +399,12 @@ const Dashboard = () => {
     )
   }, [typeOfLoans, activeLoansData])
 
-  function parseLoansData(loansData: any, collateralsData: any) {
+  function parseLoansData(loansData: any, collateralsData: any, interestRecords: any) {
     const loans: ILoans[] = []
     for (let i = 0; i < loansData?.length; ++i) {
-      let loanData = loansData[i]
-      let collateralData = collateralsData[i]
+      let loanData = loansData[i];
+      let collateralData = collateralsData[i];
+      let interestData = interestRecords[i];
       let temp_len = {
         loanMarket: getTokenFromAddress(number.toHex(loanData?.market))?.name,
         loanMarketSymbol: getTokenFromAddress(number.toHex(loanData?.market))
@@ -467,8 +468,8 @@ const Dashboard = () => {
           Number(BNtoNum(loanData?.state, 0)) === 4
             ? 1
             : 0, // Repay status
-        interest: Number(0),
-        interestPaid: Number(0),
+        interest: uint256.uint256ToBN(interestData?.total_interest_paid).add(uint256.uint256ToBN(interestData?.deducted_interest))?.toString(),
+        interestPaid: uint256.uint256ToBN(interestData?.total_interest_paid)?.toString(),
         l3App:
           number.toBN(loanData?.l3_integration).toString() ===
           "1962660952167394271600"
@@ -514,8 +515,7 @@ const Dashboard = () => {
     const res = await MySwap.call("get_user_loans", [account], {
       blockIdentifier: "pending",
     })
-    parseLoansData(res?.loan_records_arr, res?.collateral_records_arr)
-    console.log(res)
+    parseLoansData(res?.loan_records_arr, res?.collateral_records_arr, res?.interest_records_arr)
   }
 
   useEffect(() => {
@@ -524,12 +524,13 @@ const Dashboard = () => {
 
   /*============================== Get Deposits from the blockchain ====================================*/
 
-  function parseDepositsData(depositsData: any[]) {
+  function parseDepositsData(depositsData: any[], yieldRecord: any) {
     console.log("parseDeposisDatat", depositsData)
     let deposits: any[] = []
     let deposit
     for (let i = 0; i < depositsData?.length; i++) {
       let deposit: any = depositsData?.[i]
+      let yieldData: any = yieldRecord?.[i]
       let myDep = {
         amount: uint256.uint256ToBN(deposit?.amount).toString(),
         market: getTokenFromAddress(number.toHex(deposit?.market))?.name,
@@ -542,8 +543,8 @@ const Dashboard = () => {
           ?.symbol,
         marketAddress: number.toHex(deposit?.market),
         depositId: Number(BNtoNum(deposit?.id, 0)),
-        acquiredYield: Number(0), // deposit interest TODO: FORMULA
-        interestPaid: Number(0), // deposit interest TODO: FORMULA
+        acquiredYield: uint256.uint256ToBN(yieldData?.total_yield_paid).add(uint256.uint256ToBN(yieldData?.accrued_yield))?.toString(),
+        interestPaid: uint256.uint256ToBN(yieldData?.total_yield_paid)?.toString(),
 
         isTimelockApplicable:
           Number(BNtoNum(deposit?.is_timelock_applicable, 0)) === 1,
@@ -576,7 +577,8 @@ const Dashboard = () => {
     });
     const Deposit = new Contract(depositAbi, diamondAddress, provider);
     const res = await Deposit.call("get_user_deposits", [account]);
-    parseDepositsData(res?.deposit_records_arr);
+    parseDepositsData(res?.deposit_records_arr, res?.yield_records_arr);
+    console.log("unparsed deposit", res);
   }
 
   useEffect(() => {
@@ -954,7 +956,7 @@ const Dashboard = () => {
                         <div style={{ width: "7%" }}>
                           <div style={{ color: "#8C8C8C" }}>Interest</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            {/* $8,932.14 */}${netAprEarned}
+                            {/* $8,932.14 */}${Number(netAprEarned).toFixed(2)}
                           </div>
                         </div>
                       </>
@@ -980,7 +982,7 @@ const Dashboard = () => {
                             Interest Earned
                           </div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            {/* $8,932.14 */}${netAprEarned}
+                            {/* $8,932.14 */}${Number(netAprEarned).toFixed(2)}
                           </div>
                         </div>
                       </>
