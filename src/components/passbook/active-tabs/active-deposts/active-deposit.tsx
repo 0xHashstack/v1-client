@@ -937,7 +937,7 @@ const ActiveDeposit = ({
                         top: "90px",
                       }}
                     >
-                      {value.toFixed(2)}%
+                      {Number(value).toFixed(2)}%
                     </div>
                     {customActiveTab === "1"
                       ? depositAmount !== 0 &&

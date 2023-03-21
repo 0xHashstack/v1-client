@@ -394,6 +394,63 @@
     {
         "data": [
             {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "account",
+                "type": "felt"
+            },
+            {
+                "name": "sender",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleGranted",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "account",
+                "type": "felt"
+            },
+            {
+                "name": "sender",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleRevoked",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "previousAdminRole",
+                "type": "felt"
+            },
+            {
+                "name": "newAdminRole",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleAdminChanged",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
                 "name": "loan_record",
                 "type": "Loan"
             },
@@ -435,6 +492,33 @@
         ],
         "keys": [],
         "name": "liquidationState",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "loan_id",
+                "type": "felt"
+            },
+            {
+                "name": "liquidator",
+                "type": "felt"
+            },
+            {
+                "name": "is_profit",
+                "type": "felt"
+            },
+            {
+                "name": "amount_diff",
+                "type": "Uint256"
+            },
+            {
+                "name": "timestamp",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "smart_liquidation",
         "type": "event"
     }
 ]

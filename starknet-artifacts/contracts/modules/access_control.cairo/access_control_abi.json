@@ -131,5 +131,22 @@
         "name": "revoke_liquidator_role",
         "outputs": [],
         "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "is_protocol_liquidator",
+        "outputs": [
+            {
+                "name": "has_role",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
     }
 ]

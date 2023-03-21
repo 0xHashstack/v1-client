@@ -121,9 +121,13 @@
                     "savings_apr_index": {
                         "cairo_type": "felt",
                         "offset": 0
+                    },
+                    "total_yield_paid": {
+                        "cairo_type": "starkware.cairo.common.uint256.Uint256",
+                        "offset": 4
                     }
                 },
-                "size": 4,
+                "size": 6,
                 "type": "struct"
             },
             "__main__.deposit_commitments": {
