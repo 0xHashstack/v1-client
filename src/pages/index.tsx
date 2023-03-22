@@ -177,6 +177,7 @@ const Dashboard = () => {
   // const [totalBorrowApr, setTotalBorrowApr] = useState(0);
   const [netBorrowedApr, setNetBorrowedApr] = useState(0)
   const [netAprEarned, setNetAprEarned] = useState(0)
+  const [interest, setInterest] = useState(0)
   const [oracleAndFairPrices, setOracleAndFairPrices] = useState<any>()
   const [offchainCurrentBlock, setOffchainCurrentBlock] = useState("")
   const [modal_deposit, setmodal_deposit] = useState(false)
@@ -235,7 +236,7 @@ const Dashboard = () => {
     //   number.toHex(
     //     number.toBN(
     //       number.toFelt(
-    //         "0x732f5f56f0a0a1888a9db1f35bc729595f6c62c492e08dffe9d5c71ab1a3532"
+    //         "0x5b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"
     //       )
     //     )
     //   )
@@ -315,7 +316,7 @@ const Dashboard = () => {
       activeDepositsData.map((item: any, index: number) => {
         if (item.market === oracleAndFairPrices?.oraclePrices[i].name) {
           sum +=
-            ((Number(item.acquiredYield) + Number(item.interestPaid)) /
+            (Number(item.acquiredYield) /
               10 ** Number(tokenDecimalsMap[item.market])) *
             oracleAndFairPrices?.oraclePrices[i].price
         }
@@ -323,12 +324,12 @@ const Dashboard = () => {
     }
     // console.log("net apr earned", sum);
     setNetAprEarned(sum)
-    setNetEarnedApr(sum)
   }
 
   const EffectiveApr = () => {
     let sum1 = 0
     let sum2 = 0
+    let interestofLoans = 0
     for (let i = 0; i < oracleAndFairPrices?.oraclePrices?.length; i++) {
       activeLoansData.map((item: any) => {
         if (
@@ -350,10 +351,16 @@ const Dashboard = () => {
           sum2 +=
             Number(item.loanAmount / 10 ** tokenDecimalsMap[item.loanMarket]) *
             Number(oracleAndFairPrices?.oraclePrices[i].price)
+
+          interestofLoans +=
+            (Number(item.interest) /
+              10 ** Number(tokenDecimalsMap[item.loanMarket])) *
+            oracleAndFairPrices?.oraclePrices[i].price
         }
       })
     }
     seteffectiveapr(Number(sum1) / Number(sum2))
+    setInterest(interestofLoans);
     console.log(sum1, sum2)
   }
 
@@ -956,7 +963,7 @@ const Dashboard = () => {
                         <div style={{ width: "7%" }}>
                           <div style={{ color: "#8C8C8C" }}>Interest</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            {/* $8,932.14 */}${Number(netAprEarned).toFixed(2)}
+                            {/* $8,932.14 */}${Number(interest).toFixed(2)}
                           </div>
                         </div>
                       </>
@@ -1008,7 +1015,7 @@ const Dashboard = () => {
                         <div style={{ width: "7%" }}>
                           <div style={{ color: "#8C8C8C" }}>Net Borrow APR</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            {/* $8,932.14 */}${netBorrowedApr}
+                            ${netBorrowedApr}
                           </div>
                         </div>
                       </>
