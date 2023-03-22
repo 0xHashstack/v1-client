@@ -1701,7 +1701,10 @@ const BorrowData = ({
                                   className="w-md"
                                   disabled={
                                     handleWithdrawLoanTransactionDone ||
-                                    inputVal1 <= 0
+                                    inputVal1 <= 0 ||
+                                    isTransactionLoading(
+                                      withdrawLoanTransactionReceipt
+                                    ) 
                                   }
                                   onClick={() => {
                                     handleWithdrawLoan(asset);
@@ -1750,7 +1753,10 @@ const BorrowData = ({
                                   // color="primary"
                                   className="w-md"
                                   disabled={
-                                    asset.isSwapped || handleSwapTransactionDone
+                                    asset.isSwapped || handleSwapTransactionDone ||
+                                    isTransactionLoading(
+                                      swapLoanToSecondaryTransactionReceipt
+                                    )
                                   }
                                   // onClick={() => {
                                   //   handleSwap();
@@ -3802,7 +3808,8 @@ const BorrowData = ({
                       loadingApprove ||
                       loadingRepay ||
                       !repayAmount ||
-                      repayAmount < 0
+                      repayAmount < 0 ||
+                      isTransactionLoading(repayTransactionReceipt)
                     }
                     onClick={handleRepayBorrow}
                   >
@@ -3900,19 +3907,11 @@ const BorrowData = ({
                       backgroundColor: "rgb(57, 61, 79)",
                       border: "none",
                     }}
-                    disabled={asset?.isWithdrawn || asset?.isSwapped}
-                    // disabled={
-                    //   // commitPeriod === undefined ||
-                    //   // loadingApprove ||
-                    //   // loadingDeposit ||
-                    //   // !addCollateralAmount ||
-                    //   // addCollateralAmount < 0
-                    // }
+                    disabled={asset?.isWithdrawn || asset?.isSwapped || isTransactionLoading(partialWithdrawTransReceipt)}
                     onClick={handleWithdrawPartialBorrow}
                   >
                     {!(
-                      loadingApprove ||
-                      isTransactionLoading(requestDepositTransactionReceipt)
+                      isTransactionLoading(partialWithdrawTransReceipt)
                     ) ? (
                       <>{selection}</>
                     ) : (
@@ -4053,7 +4052,7 @@ const BorrowData = ({
                       border: "none",
                     }}
                     disabled={
-                      loadingApprove || loadingSelfLiquidate || isInvalid()
+                      loadingApprove || loadingSelfLiquidate || isInvalid() || isTransactionLoading(selfLiquidateTransactionReceipt)
                     }
                     onClick={handleSelfLiquidate}
                   >
@@ -4285,7 +4284,8 @@ const BorrowData = ({
                     disabled={
                       loadingApprove ||
                       loadingAddCollateral ||
-                      isInvalidCollateralAmount()
+                      isInvalidCollateralAmount() ||
+                      isTransactionLoading(addCollateralTransactionReceipt)
                     }
                     onClick={handleAddCollateral}
                   >
@@ -4423,10 +4423,9 @@ const BorrowData = ({
                       border: "none",
                     }}
                     disabled={
-                      loadingApprove ||
-                      loadingDeposit ||
                       isInvalid() ||
-                      showNoteForWithdrawCollateral
+                      showNoteForWithdrawCollateral ||
+                      isTransactionLoading(withdrawCollateralTransactionReceipt)
                     }
                     onClick={handleWithdrawCollateral}
                   >
