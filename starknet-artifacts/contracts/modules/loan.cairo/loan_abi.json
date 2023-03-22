@@ -168,6 +168,33 @@
         "type": "struct"
     },
     {
+        "members": [
+            {
+                "name": "borrow_apr_index",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "last_deducted_at",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "deducted_interest",
+                "offset": 2,
+                "type": "Uint256"
+            },
+            {
+                "name": "total_interest_paid",
+                "offset": 4,
+                "type": "Uint256"
+            }
+        ],
+        "name": "Interest",
+        "size": 6,
+        "type": "struct"
+    },
+    {
         "data": [
             {
                 "name": "previousOwner",
@@ -578,6 +605,14 @@
             {
                 "name": "collateral_records_arr",
                 "type": "Collateral*"
+            },
+            {
+                "name": "interest_records_arr_len",
+                "type": "felt"
+            },
+            {
+                "name": "interest_records_arr",
+                "type": "Interest*"
             }
         ],
         "stateMutability": "view",

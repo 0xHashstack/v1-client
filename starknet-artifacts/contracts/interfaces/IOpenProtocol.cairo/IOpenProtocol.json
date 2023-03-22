@@ -157,6 +157,10 @@
                 "type": "const",
                 "value": 0
             },
+            "__main__.IOpenProtocol.SMART_LIQUIDATE_SELECTOR": {
+                "type": "const",
+                "value": 777047277074976209248395840745672192258705151724248639804831687701658520933
+            },
             "__main__.IOpenProtocol.SUPPORTED_MARKET_SELECTOR": {
                 "type": "const",
                 "value": 479986530203506885085622441604151791615920269885365766059014376923979368924
@@ -293,9 +297,13 @@
                     "last_deducted_at": {
                         "cairo_type": "felt",
                         "offset": 1
+                    },
+                    "total_interest_paid": {
+                        "cairo_type": "starkware.cairo.common.uint256.Uint256",
+                        "offset": 4
                     }
                 },
-                "size": 4,
+                "size": 6,
                 "type": "struct"
             },
             "contracts.storages.loan_store.Loan": {

@@ -16610,12 +16610,12 @@
                         "parent_location": [
                             {
                                 "end_col": 18,
-                                "end_line": 96,
+                                "end_line": 99,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
                                 "start_col": 10,
-                                "start_line": 96
+                                "start_line": 99
                             },
                             "While handling contract interface function:"
                         ],
@@ -16640,12 +16640,12 @@
                         "parent_location": [
                             {
                                 "end_col": 18,
-                                "end_line": 96,
+                                "end_line": 99,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
                                 "start_col": 10,
-                                "start_line": 96
+                                "start_line": 99
                             },
                             "While handling contract interface function:"
                         ],
@@ -16670,12 +16670,12 @@
                         "parent_location": [
                             {
                                 "end_col": 18,
-                                "end_line": 96,
+                                "end_line": 99,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
                                 "start_col": 10,
-                                "start_line": 96
+                                "start_line": 99
                             },
                             "While handling contract interface function:"
                         ],
@@ -16700,12 +16700,12 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 96,
+                                "end_line": 99,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
                                 "start_col": 19,
-                                "start_line": 96
+                                "start_line": 99
                             },
                             "While handling calldata argument 'loan_id'"
                         ],
@@ -16730,7 +16730,7 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 96,
+                                "end_line": 99,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -16744,12 +16744,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -16759,7 +16759,7 @@
                                     "While expanding the reference '__calldata_ptr' in:"
                                 ],
                                 "start_col": 19,
-                                "start_line": 96
+                                "start_line": 99
                             },
                             "While handling calldata argument 'loan_id'"
                         ],
@@ -16784,7 +16784,7 @@
                         "parent_location": [
                             {
                                 "end_col": 18,
-                                "end_line": 96,
+                                "end_line": 99,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -16805,12 +16805,12 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 18,
-                                                        "end_line": 96,
+                                                        "end_line": 99,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                         },
                                                         "start_col": 10,
-                                                        "start_line": 96
+                                                        "start_line": 99
                                                     },
                                                     "While handling contract interface function:"
                                                 ],
@@ -16825,7 +16825,7 @@
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 96
+                                "start_line": 99
                             },
                             "While handling contract interface function:"
                         ],
@@ -16850,7 +16850,7 @@
                         "parent_location": [
                             {
                                 "end_col": 18,
-                                "end_line": 96,
+                                "end_line": 99,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -16864,12 +16864,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -16879,7 +16879,7 @@
                                     "While expanding the reference 'contract_address' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 96
+                                "start_line": 99
                             },
                             "While handling contract interface function:"
                         ],
@@ -16904,12 +16904,12 @@
                         "parent_location": [
                             {
                                 "end_col": 18,
-                                "end_line": 96,
+                                "end_line": 99,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
                                 "start_col": 10,
-                                "start_line": 96
+                                "start_line": 99
                             },
                             "While handling contract interface function:"
                         ],
@@ -16934,12 +16934,12 @@
                         "parent_location": [
                             {
                                 "end_col": 18,
-                                "end_line": 96,
+                                "end_line": 99,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
                                 "start_col": 10,
-                                "start_line": 96
+                                "start_line": 99
                             },
                             "While handling contract interface function:"
                         ],
@@ -16964,7 +16964,7 @@
                         "parent_location": [
                             {
                                 "end_col": 18,
-                                "end_line": 96,
+                                "end_line": 99,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -16978,12 +16978,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -16993,7 +16993,7 @@
                                     "While expanding the reference 'calldata_ptr_start' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 96
+                                "start_line": 99
                             },
                             "While handling contract interface function:"
                         ],
@@ -17018,12 +17018,12 @@
                         "parent_location": [
                             {
                                 "end_col": 18,
-                                "end_line": 96,
+                                "end_line": 99,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
                                 "start_col": 10,
-                                "start_line": 96
+                                "start_line": 99
                             },
                             "While handling contract interface function:"
                         ],
@@ -17048,7 +17048,7 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 97,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -17062,7 +17062,7 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
@@ -17076,12 +17076,12 @@
                                                         "parent_location": [
                                                             {
                                                                 "end_col": 18,
-                                                                "end_line": 96,
+                                                                "end_line": 99,
                                                                 "input_file": {
                                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                                 },
                                                                 "start_col": 10,
-                                                                "start_line": 96
+                                                                "start_line": 99
                                                             },
                                                             "While handling return values of"
                                                         ],
@@ -17091,7 +17091,7 @@
                                                     "While expanding the reference '__return_value_actual_size' in:"
                                                 ],
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling return values of"
                                         ],
@@ -17101,7 +17101,7 @@
                                     "While expanding the reference '__return_value_ptr' in:"
                                 ],
                                 "start_col": 9,
-                                "start_line": 97
+                                "start_line": 100
                             },
                             "While handling return value 'loan_record'"
                         ],
@@ -17126,12 +17126,12 @@
                         "parent_location": [
                             {
                                 "end_col": 18,
-                                "end_line": 96,
+                                "end_line": 99,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
                                 "start_col": 10,
-                                "start_line": 96
+                                "start_line": 99
                             },
                             "While handling return values of"
                         ],
@@ -17163,7 +17163,7 @@
                                 "parent_location": [
                                     {
                                         "end_col": 18,
-                                        "end_line": 96,
+                                        "end_line": 99,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                         },
@@ -17177,7 +17177,7 @@
                                                 "parent_location": [
                                                     {
                                                         "end_col": 18,
-                                                        "end_line": 96,
+                                                        "end_line": 99,
                                                         "input_file": {
                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                         },
@@ -17191,12 +17191,12 @@
                                                                 "parent_location": [
                                                                     {
                                                                         "end_col": 18,
-                                                                        "end_line": 96,
+                                                                        "end_line": 99,
                                                                         "input_file": {
                                                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                                         },
                                                                         "start_col": 10,
-                                                                        "start_line": 96
+                                                                        "start_line": 99
                                                                     },
                                                                     "While handling contract interface function:"
                                                                 ],
@@ -17206,7 +17206,7 @@
                                                             "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                                         ],
                                                         "start_col": 10,
-                                                        "start_line": 96
+                                                        "start_line": 99
                                                     },
                                                     "While handling contract interface function:"
                                                 ],
@@ -17216,7 +17216,7 @@
                                             "While expanding the reference 'syscall_ptr' in:"
                                         ],
                                         "start_col": 10,
-                                        "start_line": 96
+                                        "start_line": 99
                                     },
                                     "While handling contract interface function:"
                                 ],
@@ -17246,7 +17246,7 @@
                         "parent_location": [
                             {
                                 "end_col": 18,
-                                "end_line": 96,
+                                "end_line": 99,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -17260,7 +17260,7 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
@@ -17274,12 +17274,12 @@
                                                         "parent_location": [
                                                             {
                                                                 "end_col": 18,
-                                                                "end_line": 96,
+                                                                "end_line": 99,
                                                                 "input_file": {
                                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                                 },
                                                                 "start_col": 10,
-                                                                "start_line": 96
+                                                                "start_line": 99
                                                             },
                                                             "While handling contract interface function:"
                                                         ],
@@ -17289,7 +17289,7 @@
                                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                 ],
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -17299,7 +17299,7 @@
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 96
+                                "start_line": 99
                             },
                             "While handling contract interface function:"
                         ],
@@ -17324,7 +17324,7 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 97,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -17338,12 +17338,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -17353,7 +17353,7 @@
                                     "While expanding the reference '__return_value_arg_loan_record' in:"
                                 ],
                                 "start_col": 9,
-                                "start_line": 97
+                                "start_line": 100
                             },
                             "While handling return value 'loan_record'"
                         ],
@@ -17378,7 +17378,7 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 97,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -17392,12 +17392,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -17407,7 +17407,7 @@
                                     "While expanding the reference '__return_value_arg_loan_record' in:"
                                 ],
                                 "start_col": 9,
-                                "start_line": 97
+                                "start_line": 100
                             },
                             "While handling return value 'loan_record'"
                         ],
@@ -17432,7 +17432,7 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 97,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -17446,12 +17446,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -17461,7 +17461,7 @@
                                     "While expanding the reference '__return_value_arg_loan_record' in:"
                                 ],
                                 "start_col": 9,
-                                "start_line": 97
+                                "start_line": 100
                             },
                             "While handling return value 'loan_record'"
                         ],
@@ -17486,7 +17486,7 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 97,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -17500,12 +17500,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -17515,7 +17515,7 @@
                                     "While expanding the reference '__return_value_arg_loan_record' in:"
                                 ],
                                 "start_col": 9,
-                                "start_line": 97
+                                "start_line": 100
                             },
                             "While handling return value 'loan_record'"
                         ],
@@ -17540,7 +17540,7 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 97,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -17554,12 +17554,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -17569,7 +17569,7 @@
                                     "While expanding the reference '__return_value_arg_loan_record' in:"
                                 ],
                                 "start_col": 9,
-                                "start_line": 97
+                                "start_line": 100
                             },
                             "While handling return value 'loan_record'"
                         ],
@@ -17594,7 +17594,7 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 97,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -17608,12 +17608,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -17623,7 +17623,7 @@
                                     "While expanding the reference '__return_value_arg_loan_record' in:"
                                 ],
                                 "start_col": 9,
-                                "start_line": 97
+                                "start_line": 100
                             },
                             "While handling return value 'loan_record'"
                         ],
@@ -17648,7 +17648,7 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 97,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -17662,12 +17662,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -17677,7 +17677,7 @@
                                     "While expanding the reference '__return_value_arg_loan_record' in:"
                                 ],
                                 "start_col": 9,
-                                "start_line": 97
+                                "start_line": 100
                             },
                             "While handling return value 'loan_record'"
                         ],
@@ -17702,7 +17702,7 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 97,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -17716,12 +17716,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -17731,7 +17731,7 @@
                                     "While expanding the reference '__return_value_arg_loan_record' in:"
                                 ],
                                 "start_col": 9,
-                                "start_line": 97
+                                "start_line": 100
                             },
                             "While handling return value 'loan_record'"
                         ],
@@ -17756,7 +17756,7 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 97,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -17770,12 +17770,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -17785,7 +17785,7 @@
                                     "While expanding the reference '__return_value_arg_loan_record' in:"
                                 ],
                                 "start_col": 9,
-                                "start_line": 97
+                                "start_line": 100
                             },
                             "While handling return value 'loan_record'"
                         ],
@@ -17810,7 +17810,7 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 97,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -17824,12 +17824,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -17839,7 +17839,7 @@
                                     "While expanding the reference '__return_value_arg_loan_record' in:"
                                 ],
                                 "start_col": 9,
-                                "start_line": 97
+                                "start_line": 100
                             },
                             "While handling return value 'loan_record'"
                         ],
@@ -17864,7 +17864,7 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 97,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -17878,12 +17878,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -17893,7 +17893,7 @@
                                     "While expanding the reference '__return_value_arg_loan_record' in:"
                                 ],
                                 "start_col": 9,
-                                "start_line": 97
+                                "start_line": 100
                             },
                             "While handling return value 'loan_record'"
                         ],
@@ -17918,7 +17918,7 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 97,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -17932,12 +17932,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -17947,7 +17947,7 @@
                                     "While expanding the reference '__return_value_arg_loan_record' in:"
                                 ],
                                 "start_col": 9,
-                                "start_line": 97
+                                "start_line": 100
                             },
                             "While handling return value 'loan_record'"
                         ],
@@ -17972,7 +17972,7 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 97,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -17986,12 +17986,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -18001,7 +18001,7 @@
                                     "While expanding the reference '__return_value_arg_loan_record' in:"
                                 ],
                                 "start_col": 9,
-                                "start_line": 97
+                                "start_line": 100
                             },
                             "While handling return value 'loan_record'"
                         ],
@@ -18026,7 +18026,7 @@
                         "parent_location": [
                             {
                                 "end_col": 26,
-                                "end_line": 97,
+                                "end_line": 100,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -18040,12 +18040,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -18055,7 +18055,7 @@
                                     "While expanding the reference '__return_value_arg_loan_record' in:"
                                 ],
                                 "start_col": 9,
-                                "start_line": 97
+                                "start_line": 100
                             },
                             "While handling return value 'loan_record'"
                         ],
@@ -18080,12 +18080,12 @@
                         "parent_location": [
                             {
                                 "end_col": 18,
-                                "end_line": 96,
+                                "end_line": 99,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
                                 "start_col": 10,
-                                "start_line": 96
+                                "start_line": 99
                             },
                             "While handling contract interface function:"
                         ],
@@ -19067,7 +19067,7 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
@@ -19084,7 +19084,7 @@
                                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                                 ],
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -19132,7 +19132,7 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 18,
-                                                "end_line": 96,
+                                                "end_line": 99,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                                 },
@@ -19149,7 +19149,7 @@
                                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                                 ],
                                                 "start_col": 10,
-                                                "start_line": 96
+                                                "start_line": 99
                                             },
                                             "While handling contract interface function:"
                                         ],
@@ -19258,7 +19258,7 @@
                         "parent_location": [
                             {
                                 "end_col": 18,
-                                "end_line": 96,
+                                "end_line": 99,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -19299,7 +19299,7 @@
                                     "While trying to update the implicit return value 'syscall_ptr' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 96
+                                "start_line": 99
                             },
                             "While handling contract interface function:"
                         ],
@@ -19376,7 +19376,7 @@
                         "parent_location": [
                             {
                                 "end_col": 18,
-                                "end_line": 96,
+                                "end_line": 99,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/interfaces/IOpenProtocol.cairo"
                                 },
@@ -19417,7 +19417,7 @@
                                     "While trying to update the implicit return value 'range_check_ptr' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 96
+                                "start_line": 99
                             },
                             "While handling contract interface function:"
                         ],
@@ -33203,6 +33203,10 @@
                 "type": "const",
                 "value": 0
             },
+            "contracts.interfaces.IOpenProtocol.IOpenProtocol.SMART_LIQUIDATE_SELECTOR": {
+                "type": "const",
+                "value": 777047277074976209248395840745672192258705151724248639804831687701658520933
+            },
             "contracts.interfaces.IOpenProtocol.IOpenProtocol.SUPPORTED_MARKET_SELECTOR": {
                 "type": "const",
                 "value": 479986530203506885085622441604151791615920269885365766059014376923979368924
@@ -34006,6 +34010,92 @@
                 "type": "alias"
             },
             "contracts.storages.loan_store.market_utilised_borrow.storage_write": {
+                "destination": "starkware.starknet.common.syscalls.storage_write",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids": {
+                "type": "namespace"
+            },
+            "contracts.storages.loan_store.user_loan_ids.Args": {
+                "full_name": "contracts.storages.loan_store.user_loan_ids.Args",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "contracts.storages.loan_store.user_loan_ids.HashBuiltin": {
+                "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids.ImplicitArgs": {
+                "full_name": "contracts.storages.loan_store.user_loan_ids.ImplicitArgs",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "contracts.storages.loan_store.user_loan_ids.Return": {
+                "cairo_type": "()",
+                "type": "type_definition"
+            },
+            "contracts.storages.loan_store.user_loan_ids.SIZEOF_LOCALS": {
+                "type": "const",
+                "value": 0
+            },
+            "contracts.storages.loan_store.user_loan_ids.hash2": {
+                "destination": "starkware.cairo.common.hash.hash2",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids.normalize_address": {
+                "destination": "starkware.starknet.common.storage.normalize_address",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids.storage_read": {
+                "destination": "starkware.starknet.common.syscalls.storage_read",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids.storage_write": {
+                "destination": "starkware.starknet.common.syscalls.storage_write",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len": {
+                "type": "namespace"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.Args": {
+                "full_name": "contracts.storages.loan_store.user_loan_ids_len.Args",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.HashBuiltin": {
+                "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.ImplicitArgs": {
+                "full_name": "contracts.storages.loan_store.user_loan_ids_len.ImplicitArgs",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.Return": {
+                "cairo_type": "()",
+                "type": "type_definition"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.SIZEOF_LOCALS": {
+                "type": "const",
+                "value": 0
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.hash2": {
+                "destination": "starkware.cairo.common.hash.hash2",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.normalize_address": {
+                "destination": "starkware.starknet.common.storage.normalize_address",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.storage_read": {
+                "destination": "starkware.starknet.common.syscalls.storage_read",
+                "type": "alias"
+            },
+            "contracts.storages.loan_store.user_loan_ids_len.storage_write": {
                 "destination": "starkware.starknet.common.syscalls.storage_write",
                 "type": "alias"
             },
