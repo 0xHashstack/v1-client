@@ -499,7 +499,8 @@ const BorrowData = ({
       amount.toString(),
       tokenAddressMap[asset?.loanMarket]
     );
-    setMaxPartialWithdrawAmount(amountWei);
+    let safeAmount = Number(amountWei*0.999).toFixed(6);
+    setMaxPartialWithdrawAmount(Number(safeAmount));
   }, [partialWithdrawData, partialWithdrawLoading, partialWithdrawError]);
 
   const {
@@ -1337,12 +1338,12 @@ const BorrowData = ({
             >
               {parseFloat(
                 weiToEtherNumber(
-                  (assetParam?.interestPaid).toString(),
+                  (assetParam?.interest).toString(),
                   tokenAddressMap[assetParam?.loanMarket] || ""
                 ).toString()
               ).toFixed(6)}
               &nbsp;
-              {EventMap[assetParam.loanMarketSymbol?.toUpperCase()]}
+              {assetParam?.loanMarketSymbol}
             </div>
             <div
               className="mr-6"
