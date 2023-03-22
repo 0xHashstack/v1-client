@@ -175,7 +175,6 @@ const Dashboard = () => {
   const { account: starknetAccount, address: _account } = useAccount()
   const [account, setAccount] = useState<string>("")
   // const [totalBorrowApr, setTotalBorrowApr] = useState(0);
-  const [netBorrowedApr, setNetBorrowedApr] = useState(0)
   const [netAprEarned, setNetAprEarned] = useState(0)
   const [interest, setInterest] = useState(0)
   const [oracleAndFairPrices, setOracleAndFairPrices] = useState<any>()
@@ -301,11 +300,6 @@ const Dashboard = () => {
   }, [])
 
   useEffect(() => {
-    if (!oracleAndFairPrices || !activeLoansData) return
-    calculateNetBorrowedApr()
-  }, [activeLoansData, oracleAndFairPrices])
-
-  useEffect(() => {
     if (!oracleAndFairPrices || !activeDepositsData) return
     calculateNetAprEarned()
   }, [activeDepositsData, oracleAndFairPrices])
@@ -368,24 +362,6 @@ const Dashboard = () => {
     EffectiveApr()
   }, [activeDepositsData, oracleAndFairPrices])
 
-  const calculateNetBorrowedApr = () => {
-    let sum = 0
-    for (let i = 0; i < oracleAndFairPrices?.oraclePrices?.length; i++) {
-      activeLoansData.map((item: any) => {
-        if (
-          item.loanMarket === oracleAndFairPrices?.oraclePrices[i].name &&
-          !["REPAID", "LIQUIDATED"].includes(item.state)
-        ) {
-          sum +=
-            ((Number(item.interestPaid) + Number(item.interest)) /
-              10 ** Number(tokenDecimalsMap[item.loanMarket])) *
-            oracleAndFairPrices?.oraclePrices[i].price
-        }
-      })
-    }
-    // console.log("net borrow apr earned", sum);
-    setNetBorrowedApr(sum.toFixed(2))
-  }
   useEffect(() => {
     let validTypes = ["REPAID", "SWAPPED", "OPEN"]
     if (typeOfLoans === "Repaid") {
@@ -963,7 +939,7 @@ const Dashboard = () => {
                         <div style={{ width: "7%" }}>
                           <div style={{ color: "#8C8C8C" }}>Interest</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            {/* $8,932.14 */}${Number(interest).toFixed(2)}
+                            ${Number(interest).toFixed(2)}
                           </div>
                         </div>
                       </>
@@ -1013,9 +989,9 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div style={{ width: "7%" }}>
-                          <div style={{ color: "#8C8C8C" }}>Net Borrow APR</div>
+                          <div style={{ color: "#8C8C8C" }}>Interest</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            ${netBorrowedApr}
+                            ${Number(interest).toFixed(2)}
                           </div>
                         </div>
                       </>
