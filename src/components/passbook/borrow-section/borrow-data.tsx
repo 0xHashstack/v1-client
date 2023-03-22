@@ -499,7 +499,8 @@ const BorrowData = ({
       amount.toString(),
       tokenAddressMap[asset?.loanMarket]
     );
-    setMaxPartialWithdrawAmount(amountWei);
+    let safeAmount = Number(amountWei*0.999).toFixed(6);
+    setMaxPartialWithdrawAmount(Number(safeAmount));
   }, [partialWithdrawData, partialWithdrawLoading, partialWithdrawError]);
 
   const {
