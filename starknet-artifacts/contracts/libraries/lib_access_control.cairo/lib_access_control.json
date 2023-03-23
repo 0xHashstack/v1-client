@@ -13852,20 +13852,7 @@
                         "__main__._get_all_roles"
                     ],
                     "flow_tracking_data": null,
-                    "hints": [
-                        {
-                            "location": {
-                                "end_col": 62,
-                                "end_line": 36,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_access_control.cairo"
-                                },
-                                "start_col": 5,
-                                "start_line": 36
-                            },
-                            "n_prefix_newlines": 0
-                        }
-                    ],
+                    "hints": [],
                     "inst": {
                         "end_col": 39,
                         "end_line": 26,
@@ -15126,20 +15113,7 @@
                         "__main__._assign_role_admin_by_index"
                     ],
                     "flow_tracking_data": null,
-                    "hints": [
-                        {
-                            "location": {
-                                "end_col": 66,
-                                "end_line": 65,
-                                "input_file": {
-                                    "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_access_control.cairo"
-                                },
-                                "start_col": 5,
-                                "start_line": 65
-                            },
-                            "n_prefix_newlines": 0
-                        }
-                    ],
+                    "hints": [],
                     "inst": {
                         "end_col": 46,
                         "end_line": 38,
@@ -18267,41 +18241,6 @@
                         }
                     }
                 }
-            ],
-            "504": [
-                {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__._get_all_roles"
-                    ],
-                    "code": "print(\"_get_all_roles\", ids.PROTOCOL_LIQUIDATOR_ROLE)",
-                    "flow_tracking_data": {
-                        "ap_tracking": {
-                            "group": 40,
-                            "offset": 5
-                        },
-                        "reference_ids": {}
-                    }
-                }
-            ],
-            "555": [
-                {
-                    "accessible_scopes": [
-                        "__main__",
-                        "__main__._assign_role_admin_by_index"
-                    ],
-                    "code": "print(\"_assign_role_admin_by_index\", ids.role, ids.index)",
-                    "flow_tracking_data": {
-                        "ap_tracking": {
-                            "group": 44,
-                            "offset": 34
-                        },
-                        "reference_ids": {
-                            "__main__._assign_role_admin_by_index.index": 13,
-                            "__main__._assign_role_admin_by_index.role": 14
-                        }
-                    }
-                }
             ]
         },
         "identifiers": {
@@ -18391,36 +18330,6 @@
             "__main__._assign_role_admin_by_index.SIZEOF_LOCALS": {
                 "type": "const",
                 "value": 1
-            },
-            "__main__._assign_role_admin_by_index.index": {
-                "cairo_type": "felt",
-                "full_name": "__main__._assign_role_admin_by_index.index",
-                "references": [
-                    {
-                        "ap_tracking_data": {
-                            "group": 44,
-                            "offset": 0
-                        },
-                        "pc": 539,
-                        "value": "[cast(fp + (-5), felt*)]"
-                    }
-                ],
-                "type": "reference"
-            },
-            "__main__._assign_role_admin_by_index.role": {
-                "cairo_type": "felt",
-                "full_name": "__main__._assign_role_admin_by_index.role",
-                "references": [
-                    {
-                        "ap_tracking_data": {
-                            "group": 44,
-                            "offset": 34
-                        },
-                        "pc": 555,
-                        "value": "[cast(fp, felt*)]"
-                    }
-                ],
-                "type": "reference"
             },
             "__main__._get_all_roles": {
                 "decorators": [],
@@ -22161,22 +22070,6 @@
                     },
                     "pc": 338,
                     "value": "[cast(fp + (-3), felt*)]"
-                },
-                {
-                    "ap_tracking_data": {
-                        "group": 44,
-                        "offset": 0
-                    },
-                    "pc": 539,
-                    "value": "[cast(fp + (-5), felt*)]"
-                },
-                {
-                    "ap_tracking_data": {
-                        "group": 44,
-                        "offset": 34
-                    },
-                    "pc": 555,
-                    "value": "[cast(fp, felt*)]"
                 }
             ]
         }

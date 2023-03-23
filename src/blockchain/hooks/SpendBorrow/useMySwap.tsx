@@ -24,7 +24,7 @@ const useMySwap = (diamondAddress: string, asset: any, toTokenName: any) => {
   useEffect(() => {
     TxToastManager.handleTxToast(
       mySwapTransReceipt,
-      `Spend Borrow: ${asset?.loanId}`,
+      `Spend Borrow Id: ${asset?.loanId}`,
       true
     );
   }, [mySwapTransReceipt]);
