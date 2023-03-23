@@ -43,7 +43,7 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
       selfLiquidateTransactionReceipt,
       `Liquidate Loan ID ${asset?.loanId}`
     );
-  }, [repayTransactionReceipt]);
+  }, [selfLiquidateTransactionReceipt]);
 
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
