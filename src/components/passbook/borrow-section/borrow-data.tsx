@@ -163,10 +163,6 @@ const BorrowData = ({
   const [marketTokenName, setMarketTokenName] = useState("");
   const [marketTokenSymbol, setMarketTokenSymbol] = useState("");
 
-  useEffect(() => {
-    setAsset(assetParam);
-  }, [assetParam]);
-
   const {
     handleDepositAmount,
     handleApprove,
@@ -361,6 +357,10 @@ const BorrowData = ({
   const { address: accountAddress, status } = useAccount();
 
   const [Yagidrop, setYagidrop] = useState(false);
+
+  useEffect(() => {
+    setAsset(assetParam);
+  }, [assetParam, modal_deposit]);
 
   useEffect(() => {
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
