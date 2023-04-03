@@ -1,4 +1,4 @@
-import { connect, getStarknet } from "@argent/get-starknet"
+import { connect, getStarknet } from "get-starknet"
 import { constants, shortString } from "starknet"
 
 import { Network } from "./token.service"
@@ -68,7 +68,7 @@ export const getExplorerBaseUrl = (): string | undefined => {
   if (network === "mainnet-alpha") {
     return "https://voyager.online"
   } else if (network === "goerli-alpha") {
-    return "https://goerli.voyager.online"
+    return "https://goerli-2.voyager.online"
   }
 }
 

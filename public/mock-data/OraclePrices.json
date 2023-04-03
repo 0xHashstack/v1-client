@@ -1,0 +1,66 @@
+{
+    "oraclePrices": [
+        {
+            "name": "BTC",
+            "address": "0x5b2a7c089e36c6caf4724d2df5bd7687fcdc9bd76d280ecb1e411410811b54e",
+            "price": 22022,
+            "lastUpdated": "2023-02-14T15:58:09.000Z"
+        },
+        {
+            "name": "ETH",
+            "address": "0x2aafa44aeade8d4e4c048970151ebe47f79ef89c95d06a6eeb2ec076588bf27",
+            "price": 1544.1,
+            "lastUpdated": "2023-02-14T15:58:09.000Z"
+        },
+        {
+            "name": "USDT",
+            "address": "0x38be05dde4b01e92d12a62f5dfa6584b5cad8e7b2295e2cb488f2b0385ff34f",
+            "price": 1,
+            "lastUpdated": "2023-02-14T15:58:10.000Z"
+        },
+        {
+            "name": "USDC",
+            "address": "0x53ec5bbf8c6b5aeeb4e08c3e4c8fdcda2dc32cd4b1ec3ea7a347ba5e5617371",
+            "price": 1,
+            "lastUpdated": "2023-02-14T15:58:10.000Z"
+        },
+        {
+            "name": "DAI",
+            "address": "0x5480dda623bd1fc409d46fd538df7aa44f826f05cbcc49c129f86ec3092dc39",
+            "price": 0.99,
+            "lastUpdated": "2023-02-14T15:58:10.000Z"
+        }
+    ],
+    "fairPrices": [
+        {
+            "name": "BTC",
+            "address": "0x5b2a7c089e36c6caf4724d2df5bd7687fcdc9bd76d280ecb1e411410811b54e",
+            "price": 23844,
+            "lastUpdated": "2023-02-14T16:06:01.712Z"
+        },
+        {
+            "name": "ETH",
+            "address": "0x2aafa44aeade8d4e4c048970151ebe47f79ef89c95d06a6eeb2ec076588bf27",
+            "price": 1600,
+            "lastUpdated": "2023-02-14T16:06:01.715Z"
+        },
+        {
+            "name": "USDT",
+            "address": "0x38be05dde4b01e92d12a62f5dfa6584b5cad8e7b2295e2cb488f2b0385ff34f",
+            "price": 1,
+            "lastUpdated": "2023-02-14T16:06:01.715Z"
+        },
+        {
+            "name": "USDC",
+            "address": "0x53ec5bbf8c6b5aeeb4e08c3e4c8fdcda2dc32cd4b1ec3ea7a347ba5e5617371",
+            "price": 1,
+            "lastUpdated": "2023-02-14T16:06:01.715Z"
+        },
+        {
+            "name": "DAI",
+            "address": "0x5480dda623bd1fc409d46fd538df7aa44f826f05cbcc49c129f86ec3092dc39",
+            "price": 0.99,
+            "lastUpdated": "2023-02-14T16:06:01.724Z"
+        }
+    ]
+}

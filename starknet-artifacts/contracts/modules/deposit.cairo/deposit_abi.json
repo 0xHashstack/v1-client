@@ -79,6 +79,33 @@
         "type": "struct"
     },
     {
+        "members": [
+            {
+                "name": "savings_apr_index",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "last_accrued_at",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "accrued_yield",
+                "offset": 2,
+                "type": "Uint256"
+            },
+            {
+                "name": "total_yield_paid",
+                "offset": 4,
+                "type": "Uint256"
+            }
+        ],
+        "name": "Yield",
+        "size": 6,
+        "type": "struct"
+    },
+    {
         "data": [
             {
                 "name": "deposit_record",
@@ -232,6 +259,34 @@
                 "type": "felt"
             }
         ],
+        "name": "withdraw_all_deposit",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "deposit_min_amount",
+        "outputs": [
+            {
+                "name": "min_amount",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "deposit_id",
+                "type": "felt"
+            }
+        ],
         "name": "get_deposit",
         "outputs": [
             {
@@ -239,6 +294,61 @@
                 "type": "Deposit"
             }
         ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user",
+                "type": "felt"
+            },
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "name": "get_user_deposit",
+        "outputs": [
+            {
+                "name": "deposit_id",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user",
+                "type": "felt"
+            }
+        ],
+        "name": "get_user_deposits",
+        "outputs": [
+            {
+                "name": "deposit_records_arr_len",
+                "type": "felt"
+            },
+            {
+                "name": "deposit_records_arr",
+                "type": "Deposit*"
+            },
+            {
+                "name": "yield_records_arr_len",
+                "type": "felt"
+            },
+            {
+                "name": "yield_records_arr",
+                "type": "Yield*"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -250,6 +360,7 @@
                 "type": "felt"
             }
         ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -266,6 +377,28 @@
                 "type": "Uint256"
             }
         ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "name": "get_deposit_reserves_commitment",
+        "outputs": [
+            {
+                "name": "reserve_commitment",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -277,6 +410,23 @@
         ],
         "name": "accrue_deposit_yield",
         "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "deposit_id",
+                "type": "felt"
+            }
+        ],
+        "name": "accrue_deposit_yield_view",
+        "outputs": [
+            {
+                "name": "final_accrued_yield",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {

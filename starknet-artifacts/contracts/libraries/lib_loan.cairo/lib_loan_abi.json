@@ -12,23 +12,33 @@
                 "type": "felt"
             },
             {
-                "name": "min_amount",
+                "name": "deposit_min_amount",
                 "offset": 2,
                 "type": "Uint256"
             },
             {
-                "name": "stork_key",
+                "name": "deposit_max_amount",
                 "offset": 4,
-                "type": "felt"
+                "type": "Uint256"
             },
             {
-                "name": "pontis_key",
-                "offset": 5,
+                "name": "loan_min_amount",
+                "offset": 6,
+                "type": "Uint256"
+            },
+            {
+                "name": "loan_max_amount",
+                "offset": 8,
+                "type": "Uint256"
+            },
+            {
+                "name": "empiric_key",
+                "offset": 10,
                 "type": "felt"
             }
         ],
         "name": "Market",
-        "size": 6,
+        "size": 11,
         "type": "struct"
     },
     {
@@ -46,6 +56,73 @@
         ],
         "name": "Uint256",
         "size": 2,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "id",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "owner",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "market",
+                "offset": 2,
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "offset": 3,
+                "type": "felt"
+            },
+            {
+                "name": "amount",
+                "offset": 4,
+                "type": "Uint256"
+            },
+            {
+                "name": "current_market",
+                "offset": 6,
+                "type": "felt"
+            },
+            {
+                "name": "current_amount",
+                "offset": 7,
+                "type": "Uint256"
+            },
+            {
+                "name": "is_loan_withdrawn",
+                "offset": 9,
+                "type": "felt"
+            },
+            {
+                "name": "debt_category",
+                "offset": 10,
+                "type": "felt"
+            },
+            {
+                "name": "state",
+                "offset": 11,
+                "type": "felt"
+            },
+            {
+                "name": "l3_integration",
+                "offset": 12,
+                "type": "felt"
+            },
+            {
+                "name": "created_at",
+                "offset": 13,
+                "type": "felt"
+            }
+        ],
+        "name": "Loan",
+        "size": 14,
         "type": "struct"
     },
     {
@@ -88,63 +165,6 @@
         ],
         "name": "Collateral",
         "size": 9,
-        "type": "struct"
-    },
-    {
-        "members": [
-            {
-                "name": "id",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "owner",
-                "offset": 1,
-                "type": "felt"
-            },
-            {
-                "name": "market",
-                "offset": 2,
-                "type": "felt"
-            },
-            {
-                "name": "commitment",
-                "offset": 3,
-                "type": "felt"
-            },
-            {
-                "name": "amount",
-                "offset": 4,
-                "type": "Uint256"
-            },
-            {
-                "name": "current_market",
-                "offset": 6,
-                "type": "felt"
-            },
-            {
-                "name": "current_amount",
-                "offset": 7,
-                "type": "Uint256"
-            },
-            {
-                "name": "debt_category",
-                "offset": 9,
-                "type": "felt"
-            },
-            {
-                "name": "state",
-                "offset": 10,
-                "type": "felt"
-            },
-            {
-                "name": "created_at",
-                "offset": 11,
-                "type": "felt"
-            }
-        ],
-        "name": "Loan",
-        "size": 12,
         "type": "struct"
     },
     {
@@ -196,22 +216,9 @@
             {
                 "name": "price",
                 "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
+            },
             {
-                "name": "asset",
-                "type": "felt"
-            }
-        ],
-        "name": "get_value_from_stork",
-        "outputs": [
-            {
-                "name": "price",
+                "name": "decimals",
                 "type": "felt"
             }
         ],
@@ -221,31 +228,46 @@
     {
         "inputs": [
             {
-                "name": "asset",
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "amount",
+                "type": "Uint256"
+            },
+            {
+                "name": "to_decimals",
                 "type": "felt"
             }
         ],
-        "name": "get_value_from_pontis",
+        "name": "normalize_price",
         "outputs": [
             {
-                "name": "price",
-                "type": "felt"
+                "name": "normalized_price",
+                "type": "Uint256"
             }
         ],
         "stateMutability": "view",
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "pause_price_feed",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "unpause_price_feed",
-        "outputs": [],
-        "type": "function"
+        "data": [
+            {
+                "name": "old_loan_record",
+                "type": "Loan"
+            },
+            {
+                "name": "new_loan_record",
+                "type": "Loan"
+            },
+            {
+                "name": "timestamp",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "loan_swap",
+        "type": "event"
     },
     {
         "data": [
@@ -268,25 +290,6 @@
         ],
         "keys": [],
         "name": "loan_interest_deducted",
-        "type": "event"
-    },
-    {
-        "data": [
-            {
-                "name": "old_loan_record",
-                "type": "Loan"
-            },
-            {
-                "name": "new_loan_record",
-                "type": "Loan"
-            },
-            {
-                "name": "timestamp",
-                "type": "felt"
-            }
-        ],
-        "keys": [],
-        "name": "loan_swap",
         "type": "event"
     },
     {
@@ -323,6 +326,10 @@
                 "type": "felt"
             },
             {
+                "name": "amount_withdrawn",
+                "type": "Uint256"
+            },
+            {
                 "name": "timestamp",
                 "type": "felt"
             }
@@ -336,6 +343,10 @@
             {
                 "name": "loan_record",
                 "type": "Loan"
+            },
+            {
+                "name": "collateral",
+                "type": "Collateral"
             },
             {
                 "name": "timestamp",

@@ -2,55 +2,6 @@
     {
         "members": [
             {
-                "name": "address",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "is_supported",
-                "offset": 1,
-                "type": "felt"
-            },
-            {
-                "name": "min_amount",
-                "offset": 2,
-                "type": "Uint256"
-            },
-            {
-                "name": "stork_key",
-                "offset": 4,
-                "type": "felt"
-            },
-            {
-                "name": "pontis_key",
-                "offset": 5,
-                "type": "felt"
-            }
-        ],
-        "name": "Market",
-        "size": 6,
-        "type": "struct"
-    },
-    {
-        "members": [
-            {
-                "name": "low",
-                "offset": 0,
-                "type": "felt"
-            },
-            {
-                "name": "high",
-                "offset": 1,
-                "type": "felt"
-            }
-        ],
-        "name": "Uint256",
-        "size": 2,
-        "type": "struct"
-    },
-    {
-        "members": [
-            {
                 "name": "market",
                 "offset": 0,
                 "type": "felt"
@@ -93,6 +44,23 @@
     {
         "members": [
             {
+                "name": "low",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "high",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "Uint256",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
                 "name": "id",
                 "offset": 0,
                 "type": "felt"
@@ -128,23 +96,33 @@
                 "type": "Uint256"
             },
             {
-                "name": "debt_category",
+                "name": "is_loan_withdrawn",
                 "offset": 9,
                 "type": "felt"
             },
             {
-                "name": "state",
+                "name": "debt_category",
                 "offset": 10,
                 "type": "felt"
             },
             {
-                "name": "created_at",
+                "name": "state",
                 "offset": 11,
+                "type": "felt"
+            },
+            {
+                "name": "l3_integration",
+                "offset": 12,
+                "type": "felt"
+            },
+            {
+                "name": "created_at",
+                "offset": 13,
                 "type": "felt"
             }
         ],
         "name": "Loan",
-        "size": 12,
+        "size": 14,
         "type": "struct"
     },
     {
@@ -183,69 +161,6 @@
         "keys": [],
         "name": "Unpaused",
         "type": "event"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset_record",
-                "type": "Market"
-            }
-        ],
-        "name": "asset_price",
-        "outputs": [
-            {
-                "name": "price",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            }
-        ],
-        "name": "get_value_from_stork",
-        "outputs": [
-            {
-                "name": "price",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "asset",
-                "type": "felt"
-            }
-        ],
-        "name": "get_value_from_pontis",
-        "outputs": [
-            {
-                "name": "price",
-                "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "pause_price_feed",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "unpause_price_feed",
-        "outputs": [],
-        "type": "function"
     },
     {
         "data": [
@@ -323,6 +238,10 @@
                 "type": "felt"
             },
             {
+                "name": "amount_withdrawn",
+                "type": "Uint256"
+            },
+            {
                 "name": "timestamp",
                 "type": "felt"
             }
@@ -336,6 +255,10 @@
             {
                 "name": "loan_record",
                 "type": "Loan"
+            },
+            {
+                "name": "collateral",
+                "type": "Collateral"
             },
             {
                 "name": "timestamp",
@@ -383,6 +306,63 @@
     {
         "data": [
             {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "account",
+                "type": "felt"
+            },
+            {
+                "name": "sender",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleGranted",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "account",
+                "type": "felt"
+            },
+            {
+                "name": "sender",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleRevoked",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "previousAdminRole",
+                "type": "felt"
+            },
+            {
+                "name": "newAdminRole",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleAdminChanged",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
                 "name": "loan_record",
                 "type": "Loan"
             },
@@ -400,15 +380,58 @@
         "type": "event"
     },
     {
-        "inputs": [
+        "data": [
             {
-                "name": "loan_id",
+                "name": "account",
+                "type": "felt"
+            },
+            {
+                "name": "_market",
+                "type": "felt"
+            },
+            {
+                "name": "_commitment",
+                "type": "felt"
+            },
+            {
+                "name": "loanId",
+                "type": "felt"
+            },
+            {
+                "name": "liquidable",
                 "type": "felt"
             }
         ],
-        "name": "_liquidate",
-        "outputs": [],
-        "type": "function"
+        "keys": [],
+        "name": "liquidationState",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "loan_id",
+                "type": "felt"
+            },
+            {
+                "name": "liquidator",
+                "type": "felt"
+            },
+            {
+                "name": "is_profit",
+                "type": "felt"
+            },
+            {
+                "name": "amount_diff",
+                "type": "Uint256"
+            },
+            {
+                "name": "timestamp",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "smart_liquidation",
+        "type": "event"
     },
     {
         "inputs": [
@@ -419,6 +442,51 @@
         ],
         "name": "liquidate",
         "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "loan_id",
+                "type": "felt"
+            }
+        ],
+        "name": "smart_liquidate",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "loan_id",
+                "type": "felt"
+            }
+        ],
+        "name": "is_loan_liquidable",
+        "outputs": [
+            {
+                "name": "is_liquidable",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "liquidator",
+                "type": "felt"
+            }
+        ],
+        "name": "is_valid_liquidator",
+        "outputs": [
+            {
+                "name": "is_liquidator",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {

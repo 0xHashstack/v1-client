@@ -1,0 +1,156 @@
+import { useContract, useStarknetCall, useStarknetExecute, useTransactionReceipt } from "@starknet-react/core";
+import { l3DiamondAddress, tokenAddressMap } from "../../stark-constants";
+import { number } from "starknet";
+import { GetErrorText, NumToBN } from "../../utils";
+import JediSwapAbi from "../../../../starknet-artifacts/contracts/integrations/modules/jedi_swap.cairo/jedi_swap_abi.json";
+import { Abi } from "starknet";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+import { map } from "lodash";
+import { TxToastManager } from "../../txToastManager";
+
+const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
+
+  const [toastJediswapParam, setToastJediswapParam] = useState({});
+  const [isJediswapToastOpen, setIsToastJediswapOpen] = useState(false);
+  const [supportedPoolsJediSwap, setSupportedPoolsJediSwap] = useState();
+
+  const [transJediSwapHash, setTransJediSwapHash] = useState("");
+
+  const jediSwapTransReceipt = useTransactionReceipt({
+    hash: transJediSwapHash,
+    watch: true
+  })
+
+  useEffect(() => {
+    TxToastManager.handleTxToast(
+      jediSwapTransReceipt,
+      `Spend Borrow: ${asset?.loanId}`,
+      true
+    );
+  }, [jediSwapTransReceipt]);
+
+  const { contract: l3Contract } = useContract({
+    abi: JediSwapAbi as Abi,
+    address: l3DiamondAddress,
+  });
+
+  const {
+    data: jediSwapSupportedPoolsData,
+    loading: loadingJediSwapSupportedPools,
+    error: errorJediSwapSupportedPools,
+    refresh: refreshJediSwapSupportedPools,
+  } = useStarknetCall({
+    contract: l3Contract,
+    method: 'get_supported_pools_jedi_swap',
+    args: [],
+    options: {
+      watch: false
+    }
+  })
+
+  function getMapArr(map: any, firstVal: any) {
+    if (map.get(firstVal)) {
+      return map.get(firstVal);
+    }
+    return []
+  }
+
+  useEffect(() => {
+
+    const setValue = (map: Map<string, Array<string>>, firstVal: string, secondVal: string) => {
+      if(map.get(firstVal))
+        map.set(firstVal, [...getMapArr(map, firstVal), secondVal]);
+      else map.set(firstVal, [secondVal]);
+    }
+
+    // console.log("loading jedi", loadingJediSwapSupportedPools);
+    const poolsData = new Map();
+    if (!loadingJediSwapSupportedPools) {
+      console.log(
+        "jediSwapSupportedPoolsData",
+        jediSwapSupportedPoolsData,
+        errorJediSwapSupportedPools
+      );
+      const pools = jediSwapSupportedPoolsData?.pools;
+      for(let i = 0; i<pools?.length; i++) {
+        const firstTokenAddress = number.toHex(pools[i].tokenA)
+        const secondTokenAddress = number.toHex(pools[i].tokenB);
+        setValue(poolsData, firstTokenAddress, secondTokenAddress);
+        setValue(poolsData, secondTokenAddress, firstTokenAddress);
+      }
+      // console.log("pooldata jediswap", poolsData);
+      setSupportedPoolsJediSwap(poolsData);
+    }
+  }, [
+    jediSwapSupportedPoolsData,
+    loadingJediSwapSupportedPools,
+    errorJediSwapSupportedPools,
+  ]);
+
+  const {
+    data: dataJediSwap,
+    loading: loadingJediSwap,
+    error: errorJediSwap,
+    reset: resetJediSwap,
+    execute: executeJediSwap,
+  } = useStarknetExecute({
+    calls: {
+      contractAddress: diamondAddress,
+      entrypoint: 'interact_with_l3',
+      calldata: ["1962660952167394271600", 2, asset?.loanId, tokenAddressMap[toTokenName]],
+    },
+  });
+
+  const handleJediSwap = async () => {
+    try {
+      const val = await executeJediSwap();
+      setTransJediSwapHash(val.transaction_hash);
+      const toastParamValue = {
+        success: true,
+        heading: "Success",
+        desc: "Copy the Transaction Hash",
+        textToCopy: val.transaction_hash,
+    };
+    setToastJediswapParam(toastParamValue);
+    setIsToastJediswapOpen(true);
+    } catch (err) {
+      // console.log(err, "err repay");
+      const toastParamValue = {
+        success: false,
+        heading: "Swap Transaction Failed",
+        desc: "Copy the error",
+        textToCopy: err,
+    };
+    setToastJediswapParam(toastParamValue);
+    setIsToastJediswapOpen(true);
+      toast.error(`${GetErrorText(`Swap for Loan ID${asset.loanId} failed`)}`, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        closeOnClick: true,
+      });
+      return;
+    }
+  }
+
+  return {
+    supportedPoolsJediSwap,
+    jediSwapSupportedPoolsData,
+    loadingJediSwapSupportedPools,
+    errorJediSwapSupportedPools,
+    refreshJediSwapSupportedPools,
+    jediSwapTransReceipt,
+
+    executeJediSwap,
+    loadingJediSwap,
+    dataJediSwap,
+    errorJediSwap,
+    handleJediSwap,
+
+    isJediswapToastOpen,
+    setIsToastJediswapOpen,
+    toastJediswapParam,
+  }
+
+}
+
+export default useJediSwap;

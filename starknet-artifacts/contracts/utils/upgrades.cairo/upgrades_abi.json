@@ -1,0 +1,13 @@
+[
+    {
+        "inputs": [
+            {
+                "name": "random",
+                "type": "felt"
+            }
+        ],
+        "name": "initializer",
+        "outputs": [],
+        "type": "function"
+    }
+]

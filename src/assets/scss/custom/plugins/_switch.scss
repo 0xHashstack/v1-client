@@ -42,7 +42,8 @@ input[switch] {
       content: '';
       position: absolute;
       left: 3px;
-      background-color: $gray-200;
+      // background-color: $gray-200;
+      color: white;
       box-shadow: none;
       border-radius: 2rem;
       height: 20px;
@@ -68,7 +69,7 @@ input[switch]:checked + label {
 
   &:after {
     left: 33px;
-    background-color: $gray-200;
+    // background-color: $gray-200;
   }
 }
 

@@ -1,0 +1,43 @@
+{
+    "devnet": {
+        "DIAMOND_ADDRESS": "0x39bf786fc4dd65e2f87220aa3d5c8afe504e6c8985c0eea34cb9e27100dcc11",
+        "TOKENS": [
+            {
+                "name": "BTC",
+                "symbol": "BTC",
+                "decimals": 18,
+                "address": "0x09abb9f1c5a42471ed2f351dd96f6b905befce025ee9bd63fa3d3bac1b3310b",
+                "CEXSymbol": "BTCUSDT",
+                "pontis_key": "18669995996566340"
+            },
+            {
+                "name": "USDC",
+                "symbol": "USDC",
+                "decimals": 18,
+                "address": "0x567a813767f551a880710c0d1581c31aac847e408c4e66f896ed293cb2dbdc4",
+                "CEXSymbol": "BUSDUSDT",
+                "pontis_key": "6148332971638477636"
+            },
+            {
+                "name": "USDT",
+                "symbol": "USDT",
+                "decimals": 18,
+                "address": "0x21f8de5a56091a98c922ff655e7f8a6856738003caa9ab6367402c42a959007",
+                "CEXSymbol": null,
+                "pontis_key": "6148333044652921668"
+            },
+            {
+                "name": "BNB",
+                "symbol": "BNB",
+                "decimals": 18,
+                "address": "0x773540f5a62e75fa9fbc1f45cba95fbd0e12ee9157b80c2615e2cbf41eaf4be",
+                "CEXSymbol": "BNBUSDT",
+                "pontis_key": "18663394631832388"
+            }
+        ],
+        "PONTIS_PROXY_ADDRESS": "0x037f669a16ecd84672736f4354f6029a93ab72fe93887cc6c08d1c80c83a466",
+        "STORK_PROXY_ADDRESS": "0x56e92604f6491f26a8af991b636f70f4c9fc07503d881202657b1926a06a318",
+        "SWAP_ROUTER_ADDRESS": "0x33daf84f0aad8d07f298d30e41ab549e2d2aa4f6145a25c668020b00093900f",
+        "FAUCET_ADDRESS": "0x0d6bcd5bd11de9611ea907d8413bcd95b120b521e65a7b4424a26f4abe43b90"
+    }
+}

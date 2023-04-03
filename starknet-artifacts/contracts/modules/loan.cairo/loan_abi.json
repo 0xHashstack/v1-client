@@ -12,23 +12,33 @@
                 "type": "felt"
             },
             {
-                "name": "min_amount",
+                "name": "deposit_min_amount",
                 "offset": 2,
                 "type": "Uint256"
             },
             {
-                "name": "stork_key",
+                "name": "deposit_max_amount",
                 "offset": 4,
-                "type": "felt"
+                "type": "Uint256"
             },
             {
-                "name": "pontis_key",
-                "offset": 5,
+                "name": "loan_min_amount",
+                "offset": 6,
+                "type": "Uint256"
+            },
+            {
+                "name": "loan_max_amount",
+                "offset": 8,
+                "type": "Uint256"
+            },
+            {
+                "name": "empiric_key",
+                "offset": 10,
                 "type": "felt"
             }
         ],
         "name": "Market",
-        "size": 6,
+        "size": 11,
         "type": "struct"
     },
     {
@@ -46,6 +56,73 @@
         ],
         "name": "Uint256",
         "size": 2,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "id",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "owner",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "market",
+                "offset": 2,
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "offset": 3,
+                "type": "felt"
+            },
+            {
+                "name": "amount",
+                "offset": 4,
+                "type": "Uint256"
+            },
+            {
+                "name": "current_market",
+                "offset": 6,
+                "type": "felt"
+            },
+            {
+                "name": "current_amount",
+                "offset": 7,
+                "type": "Uint256"
+            },
+            {
+                "name": "is_loan_withdrawn",
+                "offset": 9,
+                "type": "felt"
+            },
+            {
+                "name": "debt_category",
+                "offset": 10,
+                "type": "felt"
+            },
+            {
+                "name": "state",
+                "offset": 11,
+                "type": "felt"
+            },
+            {
+                "name": "l3_integration",
+                "offset": 12,
+                "type": "felt"
+            },
+            {
+                "name": "created_at",
+                "offset": 13,
+                "type": "felt"
+            }
+        ],
+        "name": "Loan",
+        "size": 14,
         "type": "struct"
     },
     {
@@ -93,58 +170,28 @@
     {
         "members": [
             {
-                "name": "id",
+                "name": "borrow_apr_index",
                 "offset": 0,
                 "type": "felt"
             },
             {
-                "name": "owner",
+                "name": "last_deducted_at",
                 "offset": 1,
                 "type": "felt"
             },
             {
-                "name": "market",
+                "name": "deducted_interest",
                 "offset": 2,
-                "type": "felt"
+                "type": "Uint256"
             },
             {
-                "name": "commitment",
-                "offset": 3,
-                "type": "felt"
-            },
-            {
-                "name": "amount",
+                "name": "total_interest_paid",
                 "offset": 4,
                 "type": "Uint256"
-            },
-            {
-                "name": "current_market",
-                "offset": 6,
-                "type": "felt"
-            },
-            {
-                "name": "current_amount",
-                "offset": 7,
-                "type": "Uint256"
-            },
-            {
-                "name": "debt_category",
-                "offset": 9,
-                "type": "felt"
-            },
-            {
-                "name": "state",
-                "offset": 10,
-                "type": "felt"
-            },
-            {
-                "name": "created_at",
-                "offset": 11,
-                "type": "felt"
             }
         ],
-        "name": "Loan",
-        "size": 12,
+        "name": "Interest",
+        "size": 6,
         "type": "struct"
     },
     {
@@ -196,22 +243,9 @@
             {
                 "name": "price",
                 "type": "felt"
-            }
-        ],
-        "stateMutability": "view",
-        "type": "function"
-    },
-    {
-        "inputs": [
+            },
             {
-                "name": "asset",
-                "type": "felt"
-            }
-        ],
-        "name": "get_value_from_stork",
-        "outputs": [
-            {
-                "name": "price",
+                "name": "decimals",
                 "type": "felt"
             }
         ],
@@ -221,31 +255,46 @@
     {
         "inputs": [
             {
-                "name": "asset",
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "amount",
+                "type": "Uint256"
+            },
+            {
+                "name": "to_decimals",
                 "type": "felt"
             }
         ],
-        "name": "get_value_from_pontis",
+        "name": "normalize_price",
         "outputs": [
             {
-                "name": "price",
-                "type": "felt"
+                "name": "normalized_price",
+                "type": "Uint256"
             }
         ],
         "stateMutability": "view",
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "pause_price_feed",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [],
-        "name": "unpause_price_feed",
-        "outputs": [],
-        "type": "function"
+        "data": [
+            {
+                "name": "old_loan_record",
+                "type": "Loan"
+            },
+            {
+                "name": "new_loan_record",
+                "type": "Loan"
+            },
+            {
+                "name": "timestamp",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "loan_swap",
+        "type": "event"
     },
     {
         "data": [
@@ -268,25 +317,6 @@
         ],
         "keys": [],
         "name": "loan_interest_deducted",
-        "type": "event"
-    },
-    {
-        "data": [
-            {
-                "name": "old_loan_record",
-                "type": "Loan"
-            },
-            {
-                "name": "new_loan_record",
-                "type": "Loan"
-            },
-            {
-                "name": "timestamp",
-                "type": "felt"
-            }
-        ],
-        "keys": [],
-        "name": "loan_swap",
         "type": "event"
     },
     {
@@ -323,6 +353,10 @@
                 "type": "felt"
             },
             {
+                "name": "amount_withdrawn",
+                "type": "Uint256"
+            },
+            {
                 "name": "timestamp",
                 "type": "felt"
             }
@@ -336,6 +370,10 @@
             {
                 "name": "loan_record",
                 "type": "Loan"
+            },
+            {
+                "name": "collateral",
+                "type": "Collateral"
             },
             {
                 "name": "timestamp",
@@ -446,6 +484,81 @@
     {
         "inputs": [
             {
+                "name": "loan_market",
+                "type": "felt"
+            },
+            {
+                "name": "collateral_market",
+                "type": "felt"
+            },
+            {
+                "name": "loan_amount",
+                "type": "Uint256"
+            },
+            {
+                "name": "collateral_amount",
+                "type": "Uint256"
+            }
+        ],
+        "name": "get_debt_category",
+        "outputs": [
+            {
+                "name": "debt_category",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "loan_record",
+                "type": "Loan"
+            },
+            {
+                "name": "amount",
+                "type": "Uint256"
+            }
+        ],
+        "name": "check_permissibile_withdrawal",
+        "outputs": [
+            {
+                "name": "withdraw_allowed",
+                "type": "felt"
+            },
+            {
+                "name": "liquidation_risk",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "loan_record",
+                "type": "Loan"
+            },
+            {
+                "name": "collateral_record",
+                "type": "Collateral"
+            }
+        ],
+        "name": "get_withdrawable_collateral_amount",
+        "outputs": [
+            {
+                "name": "amount_to_withdraw",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
                 "name": "user",
                 "type": "felt"
             },
@@ -463,6 +576,43 @@
             {
                 "name": "loan_id",
                 "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user",
+                "type": "felt"
+            }
+        ],
+        "name": "get_user_loans",
+        "outputs": [
+            {
+                "name": "loan_records_arr_len",
+                "type": "felt"
+            },
+            {
+                "name": "loan_records_arr",
+                "type": "Loan*"
+            },
+            {
+                "name": "collateral_records_arr_len",
+                "type": "felt"
+            },
+            {
+                "name": "collateral_records_arr",
+                "type": "Collateral*"
+            },
+            {
+                "name": "interest_records_arr_len",
+                "type": "felt"
+            },
+            {
+                "name": "interest_records_arr",
+                "type": "Interest*"
             }
         ],
         "stateMutability": "view",
@@ -494,6 +644,28 @@
                 "type": "Uint256"
             }
         ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "commitment",
+                "type": "felt"
+            }
+        ],
+        "name": "get_loan_reserves_commitment",
+        "outputs": [
+            {
+                "name": "reserve_commitment",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -510,6 +682,7 @@
                 "type": "Collateral"
             }
         ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -586,8 +759,64 @@
                 "type": "felt"
             }
         ],
-        "name": "deduct_loan_interest",
-        "outputs": [],
+        "name": "get_max_withdrawal_amount",
+        "outputs": [
+            {
+                "name": "amount",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "collateral_market",
+                "type": "felt"
+            },
+            {
+                "name": "collateral_amount",
+                "type": "Uint256"
+            }
+        ],
+        "name": "get_max_loan_amount",
+        "outputs": [
+            {
+                "name": "max_loan_amount",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "amount",
+                "type": "Uint256"
+            },
+            {
+                "name": "collateral_market",
+                "type": "felt"
+            }
+        ],
+        "name": "get_min_collateral_amount",
+        "outputs": [
+            {
+                "name": "min_collateral_amount",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
@@ -599,6 +828,54 @@
     {
         "inputs": [],
         "name": "unpause_loan",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "loan_market",
+                "type": "felt"
+            },
+            {
+                "name": "collateral_market",
+                "type": "felt"
+            },
+            {
+                "name": "amount",
+                "type": "Uint256"
+            },
+            {
+                "name": "collateral_amount",
+                "type": "Uint256"
+            }
+        ],
+        "name": "is_check_permissible_cdr",
+        "outputs": [
+            {
+                "name": "enough_reserves",
+                "type": "felt"
+            },
+            {
+                "name": "reserves_in_abundance",
+                "type": "felt"
+            },
+            {
+                "name": "cdr_permissible",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "loan_id",
+                "type": "felt"
+            }
+        ],
+        "name": "deduct_loan_interest",
         "outputs": [],
         "type": "function"
     }

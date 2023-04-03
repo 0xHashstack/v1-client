@@ -10,6 +10,7 @@
         "builtins": [
             "range_check"
         ],
+        "compiler_version": "0.10.1",
         "data": [],
         "debug_info": {
             "file_contents": {},
@@ -120,96 +121,14 @@
                     "savings_apr_index": {
                         "cairo_type": "felt",
                         "offset": 0
+                    },
+                    "total_yield_paid": {
+                        "cairo_type": "starkware.cairo.common.uint256.Uint256",
+                        "offset": 4
                     }
                 },
-                "size": 4,
+                "size": 6,
                 "type": "struct"
-            },
-            "__main__.apr": {
-                "type": "namespace"
-            },
-            "__main__.apr.Args": {
-                "full_name": "__main__.apr.Args",
-                "members": {},
-                "size": 0,
-                "type": "struct"
-            },
-            "__main__.apr.HashBuiltin": {
-                "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
-                "type": "alias"
-            },
-            "__main__.apr.ImplicitArgs": {
-                "full_name": "__main__.apr.ImplicitArgs",
-                "members": {},
-                "size": 0,
-                "type": "struct"
-            },
-            "__main__.apr.Return": {
-                "cairo_type": "()",
-                "type": "type_definition"
-            },
-            "__main__.apr.SIZEOF_LOCALS": {
-                "type": "const",
-                "value": 0
-            },
-            "__main__.apr.hash2": {
-                "destination": "starkware.cairo.common.hash.hash2",
-                "type": "alias"
-            },
-            "__main__.apr.normalize_address": {
-                "destination": "starkware.starknet.common.storage.normalize_address",
-                "type": "alias"
-            },
-            "__main__.apr.storage_read": {
-                "destination": "starkware.starknet.common.syscalls.storage_read",
-                "type": "alias"
-            },
-            "__main__.apr.storage_write": {
-                "destination": "starkware.starknet.common.syscalls.storage_write",
-                "type": "alias"
-            },
-            "__main__.apr_len": {
-                "type": "namespace"
-            },
-            "__main__.apr_len.Args": {
-                "full_name": "__main__.apr_len.Args",
-                "members": {},
-                "size": 0,
-                "type": "struct"
-            },
-            "__main__.apr_len.HashBuiltin": {
-                "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
-                "type": "alias"
-            },
-            "__main__.apr_len.ImplicitArgs": {
-                "full_name": "__main__.apr_len.ImplicitArgs",
-                "members": {},
-                "size": 0,
-                "type": "struct"
-            },
-            "__main__.apr_len.Return": {
-                "cairo_type": "()",
-                "type": "type_definition"
-            },
-            "__main__.apr_len.SIZEOF_LOCALS": {
-                "type": "const",
-                "value": 0
-            },
-            "__main__.apr_len.hash2": {
-                "destination": "starkware.cairo.common.hash.hash2",
-                "type": "alias"
-            },
-            "__main__.apr_len.normalize_address": {
-                "destination": "starkware.starknet.common.storage.normalize_address",
-                "type": "alias"
-            },
-            "__main__.apr_len.storage_read": {
-                "destination": "starkware.starknet.common.syscalls.storage_read",
-                "type": "alias"
-            },
-            "__main__.apr_len.storage_write": {
-                "destination": "starkware.starknet.common.syscalls.storage_write",
-                "type": "alias"
             },
             "__main__.deposit_commitments": {
                 "type": "namespace"
@@ -466,6 +385,49 @@
                 "type": "alias"
             },
             "__main__.market_reserves_deposit.storage_write": {
+                "destination": "starkware.starknet.common.syscalls.storage_write",
+                "type": "alias"
+            },
+            "__main__.market_reserves_deposit_commitment": {
+                "type": "namespace"
+            },
+            "__main__.market_reserves_deposit_commitment.Args": {
+                "full_name": "__main__.market_reserves_deposit_commitment.Args",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "__main__.market_reserves_deposit_commitment.HashBuiltin": {
+                "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
+                "type": "alias"
+            },
+            "__main__.market_reserves_deposit_commitment.ImplicitArgs": {
+                "full_name": "__main__.market_reserves_deposit_commitment.ImplicitArgs",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "__main__.market_reserves_deposit_commitment.Return": {
+                "cairo_type": "()",
+                "type": "type_definition"
+            },
+            "__main__.market_reserves_deposit_commitment.SIZEOF_LOCALS": {
+                "type": "const",
+                "value": 0
+            },
+            "__main__.market_reserves_deposit_commitment.hash2": {
+                "destination": "starkware.cairo.common.hash.hash2",
+                "type": "alias"
+            },
+            "__main__.market_reserves_deposit_commitment.normalize_address": {
+                "destination": "starkware.starknet.common.storage.normalize_address",
+                "type": "alias"
+            },
+            "__main__.market_reserves_deposit_commitment.storage_read": {
+                "destination": "starkware.starknet.common.syscalls.storage_read",
+                "type": "alias"
+            },
+            "__main__.market_reserves_deposit_commitment.storage_write": {
                 "destination": "starkware.starknet.common.syscalls.storage_write",
                 "type": "alias"
             },
@@ -778,6 +740,14 @@
                 "destination": "starkware.cairo.common.cairo_builtins.BitwiseBuiltin",
                 "type": "alias"
             },
+            "starkware.cairo.common.bool.FALSE": {
+                "type": "const",
+                "value": 0
+            },
+            "starkware.cairo.common.bool.TRUE": {
+                "type": "const",
+                "value": 1
+            },
             "starkware.cairo.common.cairo_builtins.BitwiseBuiltin": {
                 "full_name": "starkware.cairo.common.cairo_builtins.BitwiseBuiltin",
                 "members": {
@@ -851,6 +821,25 @@
                 "size": 3,
                 "type": "struct"
             },
+            "starkware.cairo.common.cairo_builtins.KeccakBuiltin": {
+                "full_name": "starkware.cairo.common.cairo_builtins.KeccakBuiltin",
+                "members": {
+                    "input": {
+                        "cairo_type": "starkware.cairo.common.keccak_state.KeccakBuiltinState",
+                        "offset": 0
+                    },
+                    "output": {
+                        "cairo_type": "starkware.cairo.common.keccak_state.KeccakBuiltinState",
+                        "offset": 8
+                    }
+                },
+                "size": 16,
+                "type": "struct"
+            },
+            "starkware.cairo.common.cairo_builtins.KeccakBuiltinState": {
+                "destination": "starkware.cairo.common.keccak_state.KeccakBuiltinState",
+                "type": "alias"
+            },
             "starkware.cairo.common.cairo_builtins.SignatureBuiltin": {
                 "full_name": "starkware.cairo.common.cairo_builtins.SignatureBuiltin",
                 "members": {
@@ -902,6 +891,53 @@
             },
             "starkware.cairo.common.hash.HashBuiltin": {
                 "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
+                "type": "alias"
+            },
+            "starkware.cairo.common.keccak_state.KeccakBuiltinState": {
+                "full_name": "starkware.cairo.common.keccak_state.KeccakBuiltinState",
+                "members": {
+                    "s0": {
+                        "cairo_type": "felt",
+                        "offset": 0
+                    },
+                    "s1": {
+                        "cairo_type": "felt",
+                        "offset": 1
+                    },
+                    "s2": {
+                        "cairo_type": "felt",
+                        "offset": 2
+                    },
+                    "s3": {
+                        "cairo_type": "felt",
+                        "offset": 3
+                    },
+                    "s4": {
+                        "cairo_type": "felt",
+                        "offset": 4
+                    },
+                    "s5": {
+                        "cairo_type": "felt",
+                        "offset": 5
+                    },
+                    "s6": {
+                        "cairo_type": "felt",
+                        "offset": 6
+                    },
+                    "s7": {
+                        "cairo_type": "felt",
+                        "offset": 7
+                    }
+                },
+                "size": 8,
+                "type": "struct"
+            },
+            "starkware.cairo.common.math.FALSE": {
+                "destination": "starkware.cairo.common.bool.FALSE",
+                "type": "alias"
+            },
+            "starkware.cairo.common.math.TRUE": {
+                "destination": "starkware.cairo.common.bool.TRUE",
                 "type": "alias"
             },
             "starkware.cairo.common.math_cmp.RC_BOUND": {
@@ -1647,6 +1683,10 @@
                         "cairo_type": "felt",
                         "offset": 2
                     },
+                    "nonce": {
+                        "cairo_type": "felt",
+                        "offset": 7
+                    },
                     "signature": {
                         "cairo_type": "felt*",
                         "offset": 4
@@ -1664,7 +1704,7 @@
                         "offset": 0
                     }
                 },
-                "size": 7,
+                "size": 8,
                 "type": "struct"
             }
         },
