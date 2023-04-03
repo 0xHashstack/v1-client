@@ -90,6 +90,7 @@ const ActiveDeposit = ({
   allAssets: any;
 }) => {
   const [asset, setAsset] = useState(assetParam);
+
   // console.log("your supply action asset", asset);
   const {
     // DepositAmount,
@@ -143,6 +144,10 @@ const ActiveDeposit = ({
 
   const [showNoteForDeposit, setShowNoteForDeposit] = useState(false);
   const [noteForDeposit, setNoteForDeposit] = useState("");
+
+  useEffect(() => {
+    setAsset(assetParam);
+  }, [modal_deposit, assetParam])
 
   useEffect(() => {
     getNoteForDeposit();
@@ -388,10 +393,20 @@ const ActiveDeposit = ({
         10 ** (tokenDecimalsMap[tokenName] || 18)
       );
     else {
-      setWithdrawAmount(
-        (Number(asset.amount) + Number(asset.acquiredYield)) /
-        10 ** (tokenDecimalsMap[tokenName] || 18)
+      const currentBalance =
+      parseFloat(
+        weiToEtherNumber(
+          asset.amount.toString(),
+          tokenAddressMap[asset.market] || ""
+        ).toString()
+      ) +
+      parseFloat(
+        weiToEtherNumber(
+          asset.acquiredYield.toString(),
+          tokenAddressMap[asset.market] || ""
+        ).toString()
       );
+      setWithdrawAmount(currentBalance);
       setWithdrawAllorNot(true);
       // console.log("max clicked", asset);
     }
@@ -473,13 +488,13 @@ const ActiveDeposit = ({
      const currentBalance =
       parseFloat(
         weiToEtherNumber(
-          asset.amount,
+          asset.amount.toString(),
           tokenAddressMap[asset.market] || ""
         ).toString()
       ) +
       parseFloat(
         weiToEtherNumber(
-          asset.acquiredYield,
+          asset.acquiredYield.toString(),
           tokenAddressMap[asset.market] || ""
         ).toString()
       );
@@ -560,18 +575,7 @@ const ActiveDeposit = ({
           <Col>
             <div style={{ fontSize: "14px", fontWeight: "600" }}>
               {assetParam &&
-                historicalAPRs &&
-                depositInterestAccrued(assetParam, historicalAPRs)}
-              {/* {depositLoanRates ? (
-                        `${parseFloat(
-                          depositLoanRates[
-                            `${getTokenFromName(asset as string)?.address
-                            }__${commitPeriod}`
-                          ]?.depositAPR?.apr100x as string
-                        )} %`
-                      ) : (
-                        <MySpinner />
-                      )} */}
+                weiToEtherNumber(assetParam?.acquiredYield?.toString(), tokenAddressMap?.[assetParam?.market] || "")}
               &nbsp;
               {assetParam.marketSymbol?.toUpperCase()}
             </div>
@@ -605,7 +609,7 @@ const ActiveDeposit = ({
                 fontSize: "14px",
               }}
             >
-              {assetParam.commitment?.toLowerCase()}
+              {assetParam.commitment?.toUpperCase()}
             </div>
             <CardTitle tag="h5"></CardTitle>
           </Col>
@@ -891,9 +895,17 @@ const ActiveDeposit = ({
                           10 ** (tokenDecimalsMap[tokenName] || 18)
                         ).toString()
                       ) : customActiveTab === "2" ? (
-                        Number(
-                          asset?.amount /
-                          10 ** (tokenDecimalsMap[tokenName] || 18)
+                        parseFloat(
+                          weiToEtherNumber(
+                            asset.amount.toString(),
+                            tokenAddressMap[asset.market] || ""
+                          ).toString()
+                        ) +
+                        parseFloat(
+                          weiToEtherNumber(
+                            asset.acquiredYield.toString(),
+                            tokenAddressMap[asset.market] || ""
+                          ).toString()
                         )
                       ) : (
                         <MySpinner />
@@ -916,6 +928,15 @@ const ActiveDeposit = ({
                         grabCursor={false}
                         showMarkers="hidden"
                         onChange={(value: any) => {
+                          if(value == 100)
+                           setDepositAmount(
+                            Number(
+                              uint256.uint256ToBN(
+                                dataBalance ? dataBalance[0] : 0
+                              )
+                            ) /
+                            10 ** (tokenDecimalsMap[tokenName] || 18))
+                          else
                           setDepositAmount(
                             (value *
                               (Number(uint256.uint256ToBN(dataBalance[0])) /
@@ -937,7 +958,7 @@ const ActiveDeposit = ({
                         top: "90px",
                       }}
                     >
-                      {value.toFixed(2)}%
+                      {Number(value).toFixed(2)}%
                     </div>
                     {customActiveTab === "1"
                       ? depositAmount !== 0 &&
@@ -955,9 +976,17 @@ const ActiveDeposit = ({
                       : customActiveTab === "2" &&
                       withdrawAmount !== 0 &&
                       withdrawAmount >
-                      Number(
-                        asset?.amount /
-                        10 ** (tokenDecimalsMap[tokenName] || 18)
+                      parseFloat(
+                        weiToEtherNumber(
+                          asset.amount.toString(),
+                          tokenAddressMap[asset.market] || ""
+                        ).toString()
+                      ) +
+                      parseFloat(
+                        weiToEtherNumber(
+                          asset.acquiredYield.toString(),
+                          tokenAddressMap[asset.market] || ""
+                        ).toString()
                       ) && (
                         <FormText style={{ color: "#e97272 !important" }}>
                           {`Amount is greater than your available balance`}

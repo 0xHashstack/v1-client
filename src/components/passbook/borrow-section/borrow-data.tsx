@@ -163,10 +163,6 @@ const BorrowData = ({
   const [marketTokenName, setMarketTokenName] = useState("");
   const [marketTokenSymbol, setMarketTokenSymbol] = useState("");
 
-  useEffect(() => {
-    setAsset(assetParam);
-  }, [assetParam]);
-
   const {
     handleDepositAmount,
     handleApprove,
@@ -363,6 +359,10 @@ const BorrowData = ({
   const [Yagidrop, setYagidrop] = useState(false);
 
   useEffect(() => {
+    setAsset(assetParam);
+  }, [assetParam, modal_deposit]);
+
+  useEffect(() => {
     OffchainAPI.getProtocolDepositLoanRates().then((val) => {
       // console.log("got them", val);
       setDepositLoanRates(val);
@@ -499,7 +499,8 @@ const BorrowData = ({
       amount.toString(),
       tokenAddressMap[asset?.loanMarket]
     );
-    setMaxPartialWithdrawAmount(amountWei);
+    let safeAmount = Number(amountWei*0.999).toFixed(6);
+    setMaxPartialWithdrawAmount(Number(safeAmount));
   }, [partialWithdrawData, partialWithdrawLoading, partialWithdrawError]);
 
   const {
@@ -787,7 +788,7 @@ const BorrowData = ({
   const handleSelfLiquidate = async () => {
     try {
       const val = await executeSelfLiquidate();
-      setTransRepayHash(val.transaction_hash);
+      setIsSelfLiquidateHash(val.transaction_hash);
       const toastParamValue = {
         success: true,
         heading: "Success",
@@ -878,13 +879,6 @@ const BorrowData = ({
     }
   };
 
-  useEffect(() => {
-    TxToastManager.handleTxToast(
-      repayTransactionReceipt,
-      `Repay Loan ID ${asset?.loanId}`
-    );
-  }, [repayTransactionReceipt]);
-
   const changeTo18Decimals = (value: any, market: any) => {
     if (!tokenDecimalsMap[market]) return value;
     const decimalsDeficit = 18 - tokenDecimalsMap[market];
@@ -927,11 +921,17 @@ const BorrowData = ({
       const currentTime = new Date();
       // subtract the times and show the difference in days
       const diff = Math.abs(timeLockEndtime.getTime() - currentTime.getTime());
-      const diffHours = Math.ceil(diff / (1000 * 3600));
+      const diffDays = Math.floor(diff / (1000 * 3600 * 24));
+      const diffHours = Math.max(
+        Math.floor((diff % (1000 * 3600 * 24)) / (1000 * 3600)),
+        1
+      );
       setWithdrawCollateralNote(
         UserInformation?.WithdrawCollateral?.TimelockNotExpired +
-          diffHours +
-          " hours"
+        diffDays +
+        " days " +
+        diffHours +
+        `${diffHours > 1 ? " hours." : " hour."}`
       );
     } else {
       setShowNoteForWithdrawCollateral(false);
@@ -997,16 +997,12 @@ const BorrowData = ({
   const checkIfLoanPreclosed = () => {
     if (asset?.commitmentIndex !== 0) {
       const commitmentDuration = 30 * 24 * 3600;
-      const commitmenntEndtime = new Date(
+      const commitmentEndtime = new Date(
         asset?.loanCreationTime * 1000 + commitmentDuration * 1000
       );
       const loanClosureTime = new Date(asset?.timelockActivationTime * 100);
       // if commimentEndTime > loanClosureTime then loan is preclosed
-      if (commitmenntEndtime > loanClosureTime) {
-        setShowNoteForWithdrawCollateral(true);
-        setWithdrawCollateralNote(
-          UserInformation?.WithdrawCollateral?.LoanPreclosed
-        );
+      if (commitmentEndtime > loanClosureTime) {
         setShowCollateralPreclosureCharge(true);
       }
     }
@@ -1310,7 +1306,7 @@ const BorrowData = ({
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
                 {weiToEtherNumber(
-                  (assetParam?.loanAmount).toString(),
+                  (assetParam?.loanAmount)?.toString(),
                   tokenAddressMap[assetParam?.loanMarket]?.toString() || ""
                 ).toString()}
               </span>
@@ -1342,12 +1338,12 @@ const BorrowData = ({
             >
               {parseFloat(
                 weiToEtherNumber(
-                  (assetParam?.interestPaid).toString(),
+                  (assetParam?.interest).toString(),
                   tokenAddressMap[assetParam?.loanMarket] || ""
                 ).toString()
               ).toFixed(6)}
               &nbsp;
-              {EventMap[assetParam.loanMarketSymbol?.toUpperCase()]}
+              {assetParam?.loanMarketSymbol}
             </div>
             <div
               className="mr-6"
@@ -1705,7 +1701,10 @@ const BorrowData = ({
                                   className="w-md"
                                   disabled={
                                     handleWithdrawLoanTransactionDone ||
-                                    inputVal1 <= 0
+                                    inputVal1 <= 0 ||
+                                    isTransactionLoading(
+                                      withdrawLoanTransactionReceipt
+                                    ) 
                                   }
                                   onClick={() => {
                                     handleWithdrawLoan(asset);
@@ -1754,7 +1753,10 @@ const BorrowData = ({
                                   // color="primary"
                                   className="w-md"
                                   disabled={
-                                    asset.isSwapped || handleSwapTransactionDone
+                                    asset.isSwapped || handleSwapTransactionDone ||
+                                    isTransactionLoading(
+                                      swapLoanToSecondaryTransactionReceipt
+                                    )
                                   }
                                   // onClick={() => {
                                   //   handleSwap();
@@ -3806,7 +3808,8 @@ const BorrowData = ({
                       loadingApprove ||
                       loadingRepay ||
                       !repayAmount ||
-                      repayAmount < 0
+                      repayAmount < 0 ||
+                      isTransactionLoading(repayTransactionReceipt)
                     }
                     onClick={handleRepayBorrow}
                   >
@@ -3904,19 +3907,11 @@ const BorrowData = ({
                       backgroundColor: "rgb(57, 61, 79)",
                       border: "none",
                     }}
-                    disabled={asset?.isWithdrawn || asset?.isSwapped}
-                    // disabled={
-                    //   // commitPeriod === undefined ||
-                    //   // loadingApprove ||
-                    //   // loadingDeposit ||
-                    //   // !addCollateralAmount ||
-                    //   // addCollateralAmount < 0
-                    // }
+                    disabled={asset?.isWithdrawn || asset?.isSwapped || isTransactionLoading(partialWithdrawTransReceipt)}
                     onClick={handleWithdrawPartialBorrow}
                   >
                     {!(
-                      loadingApprove ||
-                      isTransactionLoading(requestDepositTransactionReceipt)
+                      isTransactionLoading(partialWithdrawTransReceipt)
                     ) ? (
                       <>{selection}</>
                     ) : (
@@ -4057,11 +4052,11 @@ const BorrowData = ({
                       border: "none",
                     }}
                     disabled={
-                      loadingApprove || loadingSelfLiquidate || isInvalid()
+                      loadingApprove || loadingSelfLiquidate || isInvalid() || isTransactionLoading(selfLiquidateTransactionReceipt)
                     }
                     onClick={handleSelfLiquidate}
                   >
-                    {!isTransactionLoading(requestDepositTransactionReceipt) ? (
+                    {!isTransactionLoading(selfLiquidateTransactionReceipt) ? (
                       <>{selection}</>
                     ) : (
                       <MySpinner text="Liquidating" />
@@ -4289,7 +4284,8 @@ const BorrowData = ({
                     disabled={
                       loadingApprove ||
                       loadingAddCollateral ||
-                      isInvalidCollateralAmount()
+                      isInvalidCollateralAmount() ||
+                      isTransactionLoading(addCollateralTransactionReceipt)
                     }
                     onClick={handleAddCollateral}
                   >
@@ -4427,10 +4423,9 @@ const BorrowData = ({
                       border: "none",
                     }}
                     disabled={
-                      loadingApprove ||
-                      loadingDeposit ||
                       isInvalid() ||
-                      showNoteForWithdrawCollateral
+                      showNoteForWithdrawCollateral ||
+                      isTransactionLoading(withdrawCollateralTransactionReceipt)
                     }
                     onClick={handleWithdrawCollateral}
                   >

@@ -36,7 +36,7 @@ const ActiveDepositTable = ({
                         }
                       />
                     </div>
-                    <span>{EventMap[asset.market?.toUpperCase()]}</span>
+                    <span>{asset?.market?.toUpperCase()}</span>
                   </div>
                 </th>
                 <td>

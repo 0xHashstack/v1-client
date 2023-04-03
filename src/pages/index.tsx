@@ -175,8 +175,8 @@ const Dashboard = () => {
   const { account: starknetAccount, address: _account } = useAccount()
   const [account, setAccount] = useState<string>("")
   // const [totalBorrowApr, setTotalBorrowApr] = useState(0);
-  const [netBorrowedApr, setNetBorrowedApr] = useState(0)
   const [netAprEarned, setNetAprEarned] = useState(0)
+  const [interest, setInterest] = useState(0)
   const [oracleAndFairPrices, setOracleAndFairPrices] = useState<any>()
   const [offchainCurrentBlock, setOffchainCurrentBlock] = useState("")
   const [modal_deposit, setmodal_deposit] = useState(false)
@@ -235,7 +235,7 @@ const Dashboard = () => {
     //   number.toHex(
     //     number.toBN(
     //       number.toFelt(
-    //         "0x732f5f56f0a0a1888a9db1f35bc729595f6c62c492e08dffe9d5c71ab1a3532"
+    //         "0x5b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"
     //       )
     //     )
     //   )
@@ -300,11 +300,6 @@ const Dashboard = () => {
   }, [])
 
   useEffect(() => {
-    if (!oracleAndFairPrices || !activeLoansData) return
-    calculateNetBorrowedApr()
-  }, [activeLoansData, oracleAndFairPrices])
-
-  useEffect(() => {
     if (!oracleAndFairPrices || !activeDepositsData) return
     calculateNetAprEarned()
   }, [activeDepositsData, oracleAndFairPrices])
@@ -315,7 +310,7 @@ const Dashboard = () => {
       activeDepositsData.map((item: any, index: number) => {
         if (item.market === oracleAndFairPrices?.oraclePrices[i].name) {
           sum +=
-            ((Number(item.acquiredYield) + Number(item.interestPaid)) /
+            (Number(item.acquiredYield) /
               10 ** Number(tokenDecimalsMap[item.market])) *
             oracleAndFairPrices?.oraclePrices[i].price
         }
@@ -323,12 +318,12 @@ const Dashboard = () => {
     }
     // console.log("net apr earned", sum);
     setNetAprEarned(sum)
-    setNetEarnedApr(sum)
   }
 
   const EffectiveApr = () => {
     let sum1 = 0
     let sum2 = 0
+    let interestofLoans = 0
     for (let i = 0; i < oracleAndFairPrices?.oraclePrices?.length; i++) {
       activeLoansData.map((item: any) => {
         if (
@@ -350,10 +345,16 @@ const Dashboard = () => {
           sum2 +=
             Number(item.loanAmount / 10 ** tokenDecimalsMap[item.loanMarket]) *
             Number(oracleAndFairPrices?.oraclePrices[i].price)
+
+          interestofLoans +=
+            (Number(item.interest) /
+              10 ** Number(tokenDecimalsMap[item.loanMarket])) *
+            oracleAndFairPrices?.oraclePrices[i].price
         }
       })
     }
     seteffectiveapr(Number(sum1) / Number(sum2))
+    setInterest(interestofLoans);
     console.log(sum1, sum2)
   }
 
@@ -361,24 +362,6 @@ const Dashboard = () => {
     EffectiveApr()
   }, [activeDepositsData, oracleAndFairPrices])
 
-  const calculateNetBorrowedApr = () => {
-    let sum = 0
-    for (let i = 0; i < oracleAndFairPrices?.oraclePrices?.length; i++) {
-      activeLoansData.map((item: any) => {
-        if (
-          item.loanMarket === oracleAndFairPrices?.oraclePrices[i].name &&
-          !["REPAID", "LIQUIDATED"].includes(item.state)
-        ) {
-          sum +=
-            ((Number(item.interestPaid) + Number(item.interest)) /
-              10 ** Number(tokenDecimalsMap[item.loanMarket])) *
-            oracleAndFairPrices?.oraclePrices[i].price
-        }
-      })
-    }
-    // console.log("net borrow apr earned", sum);
-    setNetBorrowedApr(sum.toFixed(2))
-  }
   useEffect(() => {
     let validTypes = ["REPAID", "SWAPPED", "OPEN"]
     if (typeOfLoans === "Repaid") {
@@ -399,11 +382,12 @@ const Dashboard = () => {
     )
   }, [typeOfLoans, activeLoansData])
 
-  function parseLoansData(loansData: any, collateralsData: any) {
+  function parseLoansData(loansData: any, collateralsData: any, interestRecords: any) {
     const loans: ILoans[] = []
     for (let i = 0; i < loansData?.length; ++i) {
-      let loanData = loansData[i]
-      let collateralData = collateralsData[i]
+      let loanData = loansData[i];
+      let collateralData = collateralsData[i];
+      let interestData = interestRecords[i];
       let temp_len = {
         loanMarket: getTokenFromAddress(number.toHex(loanData?.market))?.name,
         loanMarketSymbol: getTokenFromAddress(number.toHex(loanData?.market))
@@ -467,8 +451,8 @@ const Dashboard = () => {
           Number(BNtoNum(loanData?.state, 0)) === 4
             ? 1
             : 0, // Repay status
-        interest: Number(0),
-        interestPaid: Number(0),
+        interest: uint256.uint256ToBN(interestData?.total_interest_paid).add(uint256.uint256ToBN(interestData?.deducted_interest))?.toString(),
+        interestPaid: uint256.uint256ToBN(interestData?.total_interest_paid)?.toString(),
         l3App:
           number.toBN(loanData?.l3_integration).toString() ===
           "1962660952167394271600"
@@ -514,8 +498,7 @@ const Dashboard = () => {
     const res = await MySwap.call("get_user_loans", [account], {
       blockIdentifier: "pending",
     })
-    parseLoansData(res?.loan_records_arr, res?.collateral_records_arr)
-    console.log(res)
+    parseLoansData(res?.loan_records_arr, res?.collateral_records_arr, res?.interest_records_arr)
   }
 
   useEffect(() => {
@@ -524,12 +507,13 @@ const Dashboard = () => {
 
   /*============================== Get Deposits from the blockchain ====================================*/
 
-  function parseDepositsData(depositsData: any[]) {
+  function parseDepositsData(depositsData: any[], yieldRecord: any) {
     console.log("parseDeposisDatat", depositsData)
     let deposits: any[] = []
     let deposit
     for (let i = 0; i < depositsData?.length; i++) {
       let deposit: any = depositsData?.[i]
+      let yieldData: any = yieldRecord?.[i]
       let myDep = {
         amount: uint256.uint256ToBN(deposit?.amount).toString(),
         market: getTokenFromAddress(number.toHex(deposit?.market))?.name,
@@ -542,8 +526,8 @@ const Dashboard = () => {
           ?.symbol,
         marketAddress: number.toHex(deposit?.market),
         depositId: Number(BNtoNum(deposit?.id, 0)),
-        acquiredYield: Number(0), // deposit interest TODO: FORMULA
-        interestPaid: Number(0), // deposit interest TODO: FORMULA
+        acquiredYield: uint256.uint256ToBN(yieldData?.total_yield_paid).add(uint256.uint256ToBN(yieldData?.accrued_yield))?.toString(),
+        interestPaid: uint256.uint256ToBN(yieldData?.total_yield_paid)?.toString(),
 
         isTimelockApplicable:
           Number(BNtoNum(deposit?.is_timelock_applicable, 0)) === 1,
@@ -576,7 +560,8 @@ const Dashboard = () => {
     });
     const Deposit = new Contract(depositAbi, diamondAddress, provider);
     const res = await Deposit.call("get_user_deposits", [account]);
-    parseDepositsData(res?.deposit_records_arr);
+    parseDepositsData(res?.deposit_records_arr, res?.yield_records_arr);
+    console.log("unparsed deposit", res);
   }
 
   useEffect(() => {
@@ -954,7 +939,7 @@ const Dashboard = () => {
                         <div style={{ width: "7%" }}>
                           <div style={{ color: "#8C8C8C" }}>Interest</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            {/* $8,932.14 */}${netAprEarned}
+                            ${Number(interest).toFixed(2)}
                           </div>
                         </div>
                       </>
@@ -980,7 +965,7 @@ const Dashboard = () => {
                             Interest Earned
                           </div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            {/* $8,932.14 */}${netAprEarned}
+                            {/* $8,932.14 */}${Number(netAprEarned).toFixed(2)}
                           </div>
                         </div>
                       </>
@@ -1004,9 +989,9 @@ const Dashboard = () => {
                           </div>
                         </div>
                         <div style={{ width: "7%" }}>
-                          <div style={{ color: "#8C8C8C" }}>Net Borrow APR</div>
+                          <div style={{ color: "#8C8C8C" }}>Interest</div>
                           <div style={{ fontSize: "16px", fontWeight: "500" }}>
-                            {/* $8,932.14 */}${netBorrowedApr}
+                            ${Number(interest).toFixed(2)}
                           </div>
                         </div>
                       </>

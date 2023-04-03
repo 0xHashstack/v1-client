@@ -31,6 +31,20 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
     watch: true
   });
 
+  useEffect(() => {
+    TxToastManager.handleTxToast(
+      repayTransactionReceipt,
+      `Repay Loan ID ${asset?.loanId}`
+    );
+  }, [repayTransactionReceipt]);
+
+  useEffect(() => {
+    TxToastManager.handleTxToast(
+      selfLiquidateTransactionReceipt,
+      `Liquidate Loan ID ${asset?.loanId}`
+    );
+  }, [selfLiquidateTransactionReceipt]);
+
   const { contract } = useContract({
     abi: ERC20Abi as Abi,
     address: tokenAddressMap[asset.loanMarket] as string,

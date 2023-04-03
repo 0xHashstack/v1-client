@@ -35270,12 +35270,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 18,
-                        "end_line": 113,
+                        "end_line": 154,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 113
+                        "start_line": 154
                     }
                 },
                 "1384": {
@@ -35287,7 +35287,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 45,
-                        "end_line": 110,
+                        "end_line": 151,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
@@ -35301,12 +35301,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 91,
-                                        "end_line": 114,
+                                        "end_line": 155,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "start_col": 38,
-                                        "start_line": 114
+                                        "start_line": 155
                                     },
                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                 ],
@@ -35316,7 +35316,7 @@
                             "While expanding the reference 'syscall_ptr' in:"
                         ],
                         "start_col": 27,
-                        "start_line": 110
+                        "start_line": 151
                     }
                 },
                 "1385": {
@@ -35328,7 +35328,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 73,
-                        "end_line": 110,
+                        "end_line": 151,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
@@ -35342,12 +35342,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 91,
-                                        "end_line": 114,
+                                        "end_line": 155,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "start_col": 38,
-                                        "start_line": 114
+                                        "start_line": 155
                                     },
                                     "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                 ],
@@ -35357,7 +35357,7 @@
                             "While expanding the reference 'pedersen_ptr' in:"
                         ],
                         "start_col": 47,
-                        "start_line": 110
+                        "start_line": 151
                     }
                 },
                 "1386": {
@@ -35369,7 +35369,7 @@
                     "hints": [],
                     "inst": {
                         "end_col": 90,
-                        "end_line": 110,
+                        "end_line": 151,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
@@ -35383,12 +35383,12 @@
                                 "parent_location": [
                                     {
                                         "end_col": 91,
-                                        "end_line": 114,
+                                        "end_line": 155,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "start_col": 38,
-                                        "start_line": 114
+                                        "start_line": 155
                                     },
                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                 ],
@@ -35398,7 +35398,7 @@
                             "While expanding the reference 'range_check_ptr' in:"
                         ],
                         "start_col": 75,
-                        "start_line": 110
+                        "start_line": 151
                     }
                 },
                 "1387": {
@@ -35410,24 +35410,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 21,
-                        "end_line": 111,
+                        "end_line": 152,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 69,
-                                "end_line": 114,
+                                "end_line": 155,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 59,
-                                "start_line": 114
+                                "start_line": 155
                             },
                             "While expanding the reference 'asset_from' in:"
                         ],
                         "start_col": 5,
-                        "start_line": 111
+                        "start_line": 152
                     }
                 },
                 "1388": {
@@ -35439,24 +35439,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 37,
-                        "end_line": 111,
+                        "end_line": 152,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 79,
-                                "end_line": 114,
+                                "end_line": 155,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 71,
-                                "start_line": 114
+                                "start_line": 155
                             },
                             "While expanding the reference 'asset_to' in:"
                         ],
                         "start_col": 23,
-                        "start_line": 111
+                        "start_line": 152
                     }
                 },
                 "1389": {
@@ -35468,24 +35468,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 57,
-                        "end_line": 111,
+                        "end_line": 152,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 90,
-                                "end_line": 114,
+                                "end_line": 155,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 81,
-                                "start_line": 114
+                                "start_line": 155
                             },
                             "While expanding the reference 'amount_in' in:"
                         ],
                         "start_col": 39,
-                        "start_line": 111
+                        "start_line": 152
                     }
                 },
                 "1390": {
@@ -35497,24 +35497,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 57,
-                        "end_line": 111,
+                        "end_line": 152,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 90,
-                                "end_line": 114,
+                                "end_line": 155,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 81,
-                                "start_line": 114
+                                "start_line": 155
                             },
                             "While expanding the reference 'amount_in' in:"
                         ],
                         "start_col": 39,
-                        "start_line": 111
+                        "start_line": 152
                     }
                 },
                 "1391": {
@@ -35526,12 +35526,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 91,
-                        "end_line": 114,
+                        "end_line": 155,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 38,
-                        "start_line": 114
+                        "start_line": 155
                     }
                 },
                 "1393": {
@@ -35543,24 +35543,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 34,
-                        "end_line": 114,
+                        "end_line": 155,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 34,
-                                "end_line": 114,
+                                "end_line": 155,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 10,
-                                "start_line": 114
+                                "start_line": 155
                             },
                             "While auto generating local variable for 'amount_out_jedi'."
                         ],
                         "start_col": 10,
-                        "start_line": 114
+                        "start_line": 155
                     }
                 },
                 "1394": {
@@ -35572,24 +35572,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 34,
-                        "end_line": 114,
+                        "end_line": 155,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 34,
-                                "end_line": 114,
+                                "end_line": 155,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 10,
-                                "start_line": 114
+                                "start_line": 155
                             },
                             "While auto generating local variable for 'amount_out_jedi'."
                         ],
                         "start_col": 10,
-                        "start_line": 114
+                        "start_line": 155
                     }
                 },
                 "1395": {
@@ -35608,7 +35608,7 @@
                         "parent_location": [
                             {
                                 "end_col": 91,
-                                "end_line": 114,
+                                "end_line": 155,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
@@ -35622,12 +35622,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 94,
-                                                "end_line": 115,
+                                                "end_line": 156,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 37,
-                                                "start_line": 115
+                                                "start_line": 156
                                             },
                                             "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                         ],
@@ -35637,7 +35637,7 @@
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
                                 "start_col": 38,
-                                "start_line": 114
+                                "start_line": 155
                             },
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
@@ -35661,7 +35661,7 @@
                         "parent_location": [
                             {
                                 "end_col": 91,
-                                "end_line": 114,
+                                "end_line": 155,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
@@ -35675,12 +35675,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 94,
-                                                "end_line": 115,
+                                                "end_line": 156,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 37,
-                                                "start_line": 115
+                                                "start_line": 156
                                             },
                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                         ],
@@ -35690,7 +35690,7 @@
                                     "While expanding the reference 'pedersen_ptr' in:"
                                 ],
                                 "start_col": 38,
-                                "start_line": 114
+                                "start_line": 155
                             },
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
@@ -35714,7 +35714,7 @@
                         "parent_location": [
                             {
                                 "end_col": 91,
-                                "end_line": 114,
+                                "end_line": 155,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
@@ -35728,12 +35728,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 94,
-                                                "end_line": 115,
+                                                "end_line": 156,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 37,
-                                                "start_line": 115
+                                                "start_line": 156
                                             },
                                             "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                         ],
@@ -35743,7 +35743,7 @@
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 38,
-                                "start_line": 114
+                                "start_line": 155
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
@@ -35760,24 +35760,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 21,
-                        "end_line": 111,
+                        "end_line": 152,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 72,
-                                "end_line": 115,
+                                "end_line": 156,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 62,
-                                "start_line": 115
+                                "start_line": 156
                             },
                             "While expanding the reference 'asset_from' in:"
                         ],
                         "start_col": 5,
-                        "start_line": 111
+                        "start_line": 152
                     }
                 },
                 "1399": {
@@ -35789,24 +35789,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 37,
-                        "end_line": 111,
+                        "end_line": 152,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 82,
-                                "end_line": 115,
+                                "end_line": 156,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 74,
-                                "start_line": 115
+                                "start_line": 156
                             },
                             "While expanding the reference 'asset_to' in:"
                         ],
                         "start_col": 23,
-                        "start_line": 111
+                        "start_line": 152
                     }
                 },
                 "1400": {
@@ -35818,24 +35818,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 57,
-                        "end_line": 111,
+                        "end_line": 152,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 93,
-                                "end_line": 115,
+                                "end_line": 156,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 84,
-                                "start_line": 115
+                                "start_line": 156
                             },
                             "While expanding the reference 'amount_in' in:"
                         ],
                         "start_col": 39,
-                        "start_line": 111
+                        "start_line": 152
                     }
                 },
                 "1401": {
@@ -35847,24 +35847,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 57,
-                        "end_line": 111,
+                        "end_line": 152,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 93,
-                                "end_line": 115,
+                                "end_line": 156,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 84,
-                                "start_line": 115
+                                "start_line": 156
                             },
                             "While expanding the reference 'amount_in' in:"
                         ],
                         "start_col": 39,
-                        "start_line": 111
+                        "start_line": 152
                     }
                 },
                 "1402": {
@@ -35876,12 +35876,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 94,
-                        "end_line": 115,
+                        "end_line": 156,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 37,
-                        "start_line": 115
+                        "start_line": 156
                     }
                 },
                 "1404": {
@@ -35893,24 +35893,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 33,
-                        "end_line": 115,
+                        "end_line": 156,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 115,
+                                "end_line": 156,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 10,
-                                "start_line": 115
+                                "start_line": 156
                             },
                             "While auto generating local variable for 'amount_out_10k'."
                         ],
                         "start_col": 10,
-                        "start_line": 115
+                        "start_line": 156
                     }
                 },
                 "1405": {
@@ -35922,24 +35922,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 33,
-                        "end_line": 115,
+                        "end_line": 156,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 115,
+                                "end_line": 156,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 10,
-                                "start_line": 115
+                                "start_line": 156
                             },
                             "While auto generating local variable for 'amount_out_10k'."
                         ],
                         "start_col": 10,
-                        "start_line": 115
+                        "start_line": 156
                     }
                 },
                 "1406": {
@@ -35958,7 +35958,7 @@
                         "parent_location": [
                             {
                                 "end_col": 94,
-                                "end_line": 115,
+                                "end_line": 156,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
@@ -35972,12 +35972,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 95,
-                                                "end_line": 116,
+                                                "end_line": 157,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 40,
-                                                "start_line": 116
+                                                "start_line": 157
                                             },
                                             "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                         ],
@@ -35987,7 +35987,7 @@
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
                                 "start_col": 37,
-                                "start_line": 115
+                                "start_line": 156
                             },
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
@@ -36011,7 +36011,7 @@
                         "parent_location": [
                             {
                                 "end_col": 94,
-                                "end_line": 115,
+                                "end_line": 156,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
@@ -36025,12 +36025,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 95,
-                                                "end_line": 116,
+                                                "end_line": 157,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 40,
-                                                "start_line": 116
+                                                "start_line": 157
                                             },
                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                         ],
@@ -36040,7 +36040,7 @@
                                     "While expanding the reference 'pedersen_ptr' in:"
                                 ],
                                 "start_col": 37,
-                                "start_line": 115
+                                "start_line": 156
                             },
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
@@ -36064,7 +36064,7 @@
                         "parent_location": [
                             {
                                 "end_col": 94,
-                                "end_line": 115,
+                                "end_line": 156,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
@@ -36078,12 +36078,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 95,
-                                                "end_line": 116,
+                                                "end_line": 157,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 40,
-                                                "start_line": 116
+                                                "start_line": 157
                                             },
                                             "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                         ],
@@ -36093,7 +36093,7 @@
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 37,
-                                "start_line": 115
+                                "start_line": 156
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
@@ -36110,24 +36110,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 21,
-                        "end_line": 111,
+                        "end_line": 152,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 73,
-                                "end_line": 116,
+                                "end_line": 157,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 63,
-                                "start_line": 116
+                                "start_line": 157
                             },
                             "While expanding the reference 'asset_from' in:"
                         ],
                         "start_col": 5,
-                        "start_line": 111
+                        "start_line": 152
                     }
                 },
                 "1410": {
@@ -36139,24 +36139,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 37,
-                        "end_line": 111,
+                        "end_line": 152,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 83,
-                                "end_line": 116,
+                                "end_line": 157,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 75,
-                                "start_line": 116
+                                "start_line": 157
                             },
                             "While expanding the reference 'asset_to' in:"
                         ],
                         "start_col": 23,
-                        "start_line": 111
+                        "start_line": 152
                     }
                 },
                 "1411": {
@@ -36168,24 +36168,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 57,
-                        "end_line": 111,
+                        "end_line": 152,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 94,
-                                "end_line": 116,
+                                "end_line": 157,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 85,
-                                "start_line": 116
+                                "start_line": 157
                             },
                             "While expanding the reference 'amount_in' in:"
                         ],
                         "start_col": 39,
-                        "start_line": 111
+                        "start_line": 152
                     }
                 },
                 "1412": {
@@ -36197,24 +36197,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 57,
-                        "end_line": 111,
+                        "end_line": 152,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 94,
-                                "end_line": 116,
+                                "end_line": 157,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 85,
-                                "start_line": 116
+                                "start_line": 157
                             },
                             "While expanding the reference 'amount_in' in:"
                         ],
                         "start_col": 39,
-                        "start_line": 111
+                        "start_line": 152
                     }
                 },
                 "1413": {
@@ -36226,12 +36226,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 95,
-                        "end_line": 116,
+                        "end_line": 157,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 40,
-                        "start_line": 116
+                        "start_line": 157
                     }
                 },
                 "1415": {
@@ -36250,7 +36250,7 @@
                         "parent_location": [
                             {
                                 "end_col": 95,
-                                "end_line": 116,
+                                "end_line": 157,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
@@ -36264,12 +36264,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 70,
-                                                "end_line": 118,
+                                                "end_line": 159,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 27,
-                                                "start_line": 118
+                                                "start_line": 159
                                             },
                                             "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                         ],
@@ -36279,7 +36279,7 @@
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 40,
-                                "start_line": 116
+                                "start_line": 157
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
@@ -36296,36 +36296,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 34,
-                        "end_line": 114,
+                        "end_line": 155,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 34,
-                                "end_line": 114,
+                                "end_line": 155,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 53,
-                                        "end_line": 118,
+                                        "end_line": 159,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "start_col": 38,
-                                        "start_line": 118
+                                        "start_line": 159
                                     },
                                     "While expanding the reference 'amount_out_jedi' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 114
+                                "start_line": 155
                             },
                             "While auto generating local variable for 'amount_out_jedi'."
                         ],
                         "start_col": 10,
-                        "start_line": 114
+                        "start_line": 155
                     }
                 },
                 "1417": {
@@ -36337,36 +36337,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 34,
-                        "end_line": 114,
+                        "end_line": 155,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 34,
-                                "end_line": 114,
+                                "end_line": 155,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 53,
-                                        "end_line": 118,
+                                        "end_line": 159,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "start_col": 38,
-                                        "start_line": 118
+                                        "start_line": 159
                                     },
                                     "While expanding the reference 'amount_out_jedi' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 114
+                                "start_line": 155
                             },
                             "While auto generating local variable for 'amount_out_jedi'."
                         ],
                         "start_col": 10,
-                        "start_line": 114
+                        "start_line": 155
                     }
                 },
                 "1418": {
@@ -36378,36 +36378,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 33,
-                        "end_line": 115,
+                        "end_line": 156,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 115,
+                                "end_line": 156,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 69,
-                                        "end_line": 118,
+                                        "end_line": 159,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "start_col": 55,
-                                        "start_line": 118
+                                        "start_line": 159
                                     },
                                     "While expanding the reference 'amount_out_10k' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 115
+                                "start_line": 156
                             },
                             "While auto generating local variable for 'amount_out_10k'."
                         ],
                         "start_col": 10,
-                        "start_line": 115
+                        "start_line": 156
                     }
                 },
                 "1419": {
@@ -36419,36 +36419,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 33,
-                        "end_line": 115,
+                        "end_line": 156,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 115,
+                                "end_line": 156,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 69,
-                                        "end_line": 118,
+                                        "end_line": 159,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "start_col": 55,
-                                        "start_line": 118
+                                        "start_line": 159
                                     },
                                     "While expanding the reference 'amount_out_10k' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 115
+                                "start_line": 156
                             },
                             "While auto generating local variable for 'amount_out_10k'."
                         ],
                         "start_col": 10,
-                        "start_line": 115
+                        "start_line": 156
                     }
                 },
                 "1420": {
@@ -36460,12 +36460,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 70,
-                        "end_line": 118,
+                        "end_line": 159,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 27,
-                        "start_line": 118
+                        "start_line": 159
                     }
                 },
                 "1422": {
@@ -36477,12 +36477,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 27,
-                        "end_line": 119,
+                        "end_line": 160,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 119
+                        "start_line": 160
                     }
                 },
                 "1424": {
@@ -36494,12 +36494,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 7,
-                        "end_line": 119,
+                        "end_line": 160,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 119
+                        "start_line": 160
                     }
                 },
                 "1426": {
@@ -36518,7 +36518,7 @@
                         "parent_location": [
                             {
                                 "end_col": 70,
-                                "end_line": 118,
+                                "end_line": 159,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
@@ -36532,12 +36532,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 79,
-                                                "end_line": 120,
+                                                "end_line": 161,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 34,
-                                                "start_line": 120
+                                                "start_line": 161
                                             },
                                             "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                         ],
@@ -36547,7 +36547,7 @@
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 27,
-                                "start_line": 118
+                                "start_line": 159
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
@@ -36564,36 +36564,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 33,
-                        "end_line": 115,
+                        "end_line": 156,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 115,
+                                "end_line": 156,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 59,
-                                        "end_line": 120,
+                                        "end_line": 161,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "start_col": 45,
-                                        "start_line": 120
+                                        "start_line": 161
                                     },
                                     "While expanding the reference 'amount_out_10k' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 115
+                                "start_line": 156
                             },
                             "While auto generating local variable for 'amount_out_10k'."
                         ],
                         "start_col": 10,
-                        "start_line": 115
+                        "start_line": 156
                     }
                 },
                 "1428": {
@@ -36605,36 +36605,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 33,
-                        "end_line": 115,
+                        "end_line": 156,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 115,
+                                "end_line": 156,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 59,
-                                        "end_line": 120,
+                                        "end_line": 161,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "start_col": 45,
-                                        "start_line": 120
+                                        "start_line": 161
                                     },
                                     "While expanding the reference 'amount_out_10k' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 115
+                                "start_line": 156
                             },
                             "While auto generating local variable for 'amount_out_10k'."
                         ],
                         "start_col": 10,
-                        "start_line": 115
+                        "start_line": 156
                     }
                 },
                 "1429": {
@@ -36646,24 +36646,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 36,
-                        "end_line": 116,
+                        "end_line": 157,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 78,
-                                "end_line": 120,
+                                "end_line": 161,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 61,
-                                "start_line": 120
+                                "start_line": 161
                             },
                             "While expanding the reference 'amount_out_myswap' in:"
                         ],
                         "start_col": 10,
-                        "start_line": 116
+                        "start_line": 157
                     }
                 },
                 "1430": {
@@ -36675,24 +36675,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 36,
-                        "end_line": 116,
+                        "end_line": 157,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 78,
-                                "end_line": 120,
+                                "end_line": 161,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 61,
-                                "start_line": 120
+                                "start_line": 161
                             },
                             "While expanding the reference 'amount_out_myswap' in:"
                         ],
                         "start_col": 10,
-                        "start_line": 116
+                        "start_line": 157
                     }
                 },
                 "1431": {
@@ -36704,12 +36704,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 79,
-                        "end_line": 120,
+                        "end_line": 161,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 34,
-                        "start_line": 120
+                        "start_line": 161
                     }
                 },
                 "1433": {
@@ -36721,12 +36721,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 34,
-                        "end_line": 121,
+                        "end_line": 162,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 13,
-                        "start_line": 121
+                        "start_line": 162
                     }
                 },
                 "1435": {
@@ -36738,12 +36738,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 11,
-                        "end_line": 121,
+                        "end_line": 162,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 121
+                        "start_line": 162
                     }
                 },
                 "1437": {
@@ -36762,36 +36762,36 @@
                         "parent_location": [
                             {
                                 "end_col": 95,
-                                "end_line": 116,
+                                "end_line": 157,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 45,
-                                        "end_line": 110,
+                                        "end_line": 151,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 43,
-                                                "end_line": 122,
+                                                "end_line": 163,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 13,
-                                                "start_line": 122
+                                                "start_line": 163
                                             },
                                             "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                         ],
                                         "start_col": 27,
-                                        "start_line": 110
+                                        "start_line": 151
                                     },
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
                                 "start_col": 40,
-                                "start_line": 116
+                                "start_line": 157
                             },
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
@@ -36815,36 +36815,36 @@
                         "parent_location": [
                             {
                                 "end_col": 95,
-                                "end_line": 116,
+                                "end_line": 157,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 73,
-                                        "end_line": 110,
+                                        "end_line": 151,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 43,
-                                                "end_line": 122,
+                                                "end_line": 163,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 13,
-                                                "start_line": 122
+                                                "start_line": 163
                                             },
                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                         ],
                                         "start_col": 47,
-                                        "start_line": 110
+                                        "start_line": 151
                                     },
                                     "While expanding the reference 'pedersen_ptr' in:"
                                 ],
                                 "start_col": 40,
-                                "start_line": 116
+                                "start_line": 157
                             },
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
@@ -36868,36 +36868,36 @@
                         "parent_location": [
                             {
                                 "end_col": 79,
-                                "end_line": 120,
+                                "end_line": 161,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 90,
-                                        "end_line": 110,
+                                        "end_line": 151,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 43,
-                                                "end_line": 122,
+                                                "end_line": 163,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 13,
-                                                "start_line": 122
+                                                "start_line": 163
                                             },
                                             "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                         ],
                                         "start_col": 75,
-                                        "start_line": 110
+                                        "start_line": 151
                                     },
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 34,
-                                "start_line": 120
+                                "start_line": 161
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
@@ -36914,12 +36914,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 22,
-                        "end_line": 122,
+                        "end_line": 163,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 21,
-                        "start_line": 122
+                        "start_line": 163
                     }
                 },
                 "1442": {
@@ -36931,24 +36931,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 36,
-                        "end_line": 116,
+                        "end_line": 157,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 41,
-                                "end_line": 122,
+                                "end_line": 163,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 24,
-                                "start_line": 122
+                                "start_line": 163
                             },
                             "While expanding the reference 'amount_out_myswap' in:"
                         ],
                         "start_col": 10,
-                        "start_line": 116
+                        "start_line": 157
                     }
                 },
                 "1443": {
@@ -36960,24 +36960,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 36,
-                        "end_line": 116,
+                        "end_line": 157,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 41,
-                                "end_line": 122,
+                                "end_line": 163,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 24,
-                                "start_line": 122
+                                "start_line": 163
                             },
                             "While expanding the reference 'amount_out_myswap' in:"
                         ],
                         "start_col": 10,
-                        "start_line": 116
+                        "start_line": 157
                     }
                 },
                 "1444": {
@@ -36989,12 +36989,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 43,
-                        "end_line": 122,
+                        "end_line": 163,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 13,
-                        "start_line": 122
+                        "start_line": 163
                     }
                 },
                 "1445": {
@@ -37013,36 +37013,36 @@
                         "parent_location": [
                             {
                                 "end_col": 95,
-                                "end_line": 116,
+                                "end_line": 157,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 45,
-                                        "end_line": 110,
+                                        "end_line": 151,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 36,
-                                                "end_line": 124,
+                                                "end_line": 165,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 9,
-                                                "start_line": 124
+                                                "start_line": 165
                                             },
                                             "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                         ],
                                         "start_col": 27,
-                                        "start_line": 110
+                                        "start_line": 151
                                     },
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
                                 "start_col": 40,
-                                "start_line": 116
+                                "start_line": 157
                             },
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
@@ -37066,36 +37066,36 @@
                         "parent_location": [
                             {
                                 "end_col": 95,
-                                "end_line": 116,
+                                "end_line": 157,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 73,
-                                        "end_line": 110,
+                                        "end_line": 151,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 36,
-                                                "end_line": 124,
+                                                "end_line": 165,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 9,
-                                                "start_line": 124
+                                                "start_line": 165
                                             },
                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                         ],
                                         "start_col": 47,
-                                        "start_line": 110
+                                        "start_line": 151
                                     },
                                     "While expanding the reference 'pedersen_ptr' in:"
                                 ],
                                 "start_col": 40,
-                                "start_line": 116
+                                "start_line": 157
                             },
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
@@ -37119,36 +37119,36 @@
                         "parent_location": [
                             {
                                 "end_col": 79,
-                                "end_line": 120,
+                                "end_line": 161,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 90,
-                                        "end_line": 110,
+                                        "end_line": 151,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 36,
-                                                "end_line": 124,
+                                                "end_line": 165,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 9,
-                                                "start_line": 124
+                                                "start_line": 165
                                             },
                                             "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                         ],
                                         "start_col": 75,
-                                        "start_line": 110
+                                        "start_line": 151
                                     },
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 34,
-                                "start_line": 120
+                                "start_line": 161
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
@@ -37165,12 +37165,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 18,
-                        "end_line": 124,
+                        "end_line": 165,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 17,
-                        "start_line": 124
+                        "start_line": 165
                     }
                 },
                 "1450": {
@@ -37182,36 +37182,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 33,
-                        "end_line": 115,
+                        "end_line": 156,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 115,
+                                "end_line": 156,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 34,
-                                        "end_line": 124,
+                                        "end_line": 165,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "start_col": 20,
-                                        "start_line": 124
+                                        "start_line": 165
                                     },
                                     "While expanding the reference 'amount_out_10k' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 115
+                                "start_line": 156
                             },
                             "While auto generating local variable for 'amount_out_10k'."
                         ],
                         "start_col": 10,
-                        "start_line": 115
+                        "start_line": 156
                     }
                 },
                 "1451": {
@@ -37223,36 +37223,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 33,
-                        "end_line": 115,
+                        "end_line": 156,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 33,
-                                "end_line": 115,
+                                "end_line": 156,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 34,
-                                        "end_line": 124,
+                                        "end_line": 165,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "start_col": 20,
-                                        "start_line": 124
+                                        "start_line": 165
                                     },
                                     "While expanding the reference 'amount_out_10k' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 115
+                                "start_line": 156
                             },
                             "While auto generating local variable for 'amount_out_10k'."
                         ],
                         "start_col": 10,
-                        "start_line": 115
+                        "start_line": 156
                     }
                 },
                 "1452": {
@@ -37264,12 +37264,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 36,
-                        "end_line": 124,
+                        "end_line": 165,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 124
+                        "start_line": 165
                     }
                 },
                 "1453": {
@@ -37288,7 +37288,7 @@
                         "parent_location": [
                             {
                                 "end_col": 70,
-                                "end_line": 118,
+                                "end_line": 159,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
@@ -37302,12 +37302,12 @@
                                         "parent_location": [
                                             {
                                                 "end_col": 76,
-                                                "end_line": 126,
+                                                "end_line": 167,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 30,
-                                                "start_line": 126
+                                                "start_line": 167
                                             },
                                             "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                         ],
@@ -37317,7 +37317,7 @@
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 27,
-                                "start_line": 118
+                                "start_line": 159
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
@@ -37334,36 +37334,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 34,
-                        "end_line": 114,
+                        "end_line": 155,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 34,
-                                "end_line": 114,
+                                "end_line": 155,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 56,
-                                        "end_line": 126,
+                                        "end_line": 167,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "start_col": 41,
-                                        "start_line": 126
+                                        "start_line": 167
                                     },
                                     "While expanding the reference 'amount_out_jedi' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 114
+                                "start_line": 155
                             },
                             "While auto generating local variable for 'amount_out_jedi'."
                         ],
                         "start_col": 10,
-                        "start_line": 114
+                        "start_line": 155
                     }
                 },
                 "1455": {
@@ -37375,36 +37375,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 34,
-                        "end_line": 114,
+                        "end_line": 155,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 34,
-                                "end_line": 114,
+                                "end_line": 155,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 56,
-                                        "end_line": 126,
+                                        "end_line": 167,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "start_col": 41,
-                                        "start_line": 126
+                                        "start_line": 167
                                     },
                                     "While expanding the reference 'amount_out_jedi' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 114
+                                "start_line": 155
                             },
                             "While auto generating local variable for 'amount_out_jedi'."
                         ],
                         "start_col": 10,
-                        "start_line": 114
+                        "start_line": 155
                     }
                 },
                 "1456": {
@@ -37416,24 +37416,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 36,
-                        "end_line": 116,
+                        "end_line": 157,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 75,
-                                "end_line": 126,
+                                "end_line": 167,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 58,
-                                "start_line": 126
+                                "start_line": 167
                             },
                             "While expanding the reference 'amount_out_myswap' in:"
                         ],
                         "start_col": 10,
-                        "start_line": 116
+                        "start_line": 157
                     }
                 },
                 "1457": {
@@ -37445,24 +37445,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 36,
-                        "end_line": 116,
+                        "end_line": 157,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 75,
-                                "end_line": 126,
+                                "end_line": 167,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 58,
-                                "start_line": 126
+                                "start_line": 167
                             },
                             "While expanding the reference 'amount_out_myswap' in:"
                         ],
                         "start_col": 10,
-                        "start_line": 116
+                        "start_line": 157
                     }
                 },
                 "1458": {
@@ -37474,12 +37474,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 76,
-                        "end_line": 126,
+                        "end_line": 167,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 30,
-                        "start_line": 126
+                        "start_line": 167
                     }
                 },
                 "1460": {
@@ -37491,12 +37491,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 30,
-                        "end_line": 127,
+                        "end_line": 168,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 127
+                        "start_line": 168
                     }
                 },
                 "1462": {
@@ -37508,12 +37508,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 7,
-                        "end_line": 127,
+                        "end_line": 168,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 127
+                        "start_line": 168
                     }
                 },
                 "1464": {
@@ -37532,36 +37532,36 @@
                         "parent_location": [
                             {
                                 "end_col": 95,
-                                "end_line": 116,
+                                "end_line": 157,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 45,
-                                        "end_line": 110,
+                                        "end_line": 151,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 39,
-                                                "end_line": 128,
+                                                "end_line": 169,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 9,
-                                                "start_line": 128
+                                                "start_line": 169
                                             },
                                             "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                         ],
                                         "start_col": 27,
-                                        "start_line": 110
+                                        "start_line": 151
                                     },
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
                                 "start_col": 40,
-                                "start_line": 116
+                                "start_line": 157
                             },
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
@@ -37585,36 +37585,36 @@
                         "parent_location": [
                             {
                                 "end_col": 95,
-                                "end_line": 116,
+                                "end_line": 157,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 73,
-                                        "end_line": 110,
+                                        "end_line": 151,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 39,
-                                                "end_line": 128,
+                                                "end_line": 169,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 9,
-                                                "start_line": 128
+                                                "start_line": 169
                                             },
                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                         ],
                                         "start_col": 47,
-                                        "start_line": 110
+                                        "start_line": 151
                                     },
                                     "While expanding the reference 'pedersen_ptr' in:"
                                 ],
                                 "start_col": 40,
-                                "start_line": 116
+                                "start_line": 157
                             },
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
@@ -37638,36 +37638,36 @@
                         "parent_location": [
                             {
                                 "end_col": 76,
-                                "end_line": 126,
+                                "end_line": 167,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 90,
-                                        "end_line": 110,
+                                        "end_line": 151,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 39,
-                                                "end_line": 128,
+                                                "end_line": 169,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 9,
-                                                "start_line": 128
+                                                "start_line": 169
                                             },
                                             "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                         ],
                                         "start_col": 75,
-                                        "start_line": 110
+                                        "start_line": 151
                                     },
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 30,
-                                "start_line": 126
+                                "start_line": 167
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
@@ -37684,12 +37684,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 18,
-                        "end_line": 128,
+                        "end_line": 169,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 17,
-                        "start_line": 128
+                        "start_line": 169
                     }
                 },
                 "1469": {
@@ -37701,24 +37701,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 36,
-                        "end_line": 116,
+                        "end_line": 157,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 37,
-                                "end_line": 128,
+                                "end_line": 169,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 20,
-                                "start_line": 128
+                                "start_line": 169
                             },
                             "While expanding the reference 'amount_out_myswap' in:"
                         ],
                         "start_col": 10,
-                        "start_line": 116
+                        "start_line": 157
                     }
                 },
                 "1470": {
@@ -37730,24 +37730,24 @@
                     "hints": [],
                     "inst": {
                         "end_col": 36,
-                        "end_line": 116,
+                        "end_line": 157,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 37,
-                                "end_line": 128,
+                                "end_line": 169,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "start_col": 20,
-                                "start_line": 128
+                                "start_line": 169
                             },
                             "While expanding the reference 'amount_out_myswap' in:"
                         ],
                         "start_col": 10,
-                        "start_line": 116
+                        "start_line": 157
                     }
                 },
                 "1471": {
@@ -37759,12 +37759,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 39,
-                        "end_line": 128,
+                        "end_line": 169,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 9,
-                        "start_line": 128
+                        "start_line": 169
                     }
                 },
                 "1472": {
@@ -37783,36 +37783,36 @@
                         "parent_location": [
                             {
                                 "end_col": 95,
-                                "end_line": 116,
+                                "end_line": 157,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 45,
-                                        "end_line": 110,
+                                        "end_line": 151,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 33,
-                                                "end_line": 130,
+                                                "end_line": 171,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 5,
-                                                "start_line": 130
+                                                "start_line": 171
                                             },
                                             "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                         ],
                                         "start_col": 27,
-                                        "start_line": 110
+                                        "start_line": 151
                                     },
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
                                 "start_col": 40,
-                                "start_line": 116
+                                "start_line": 157
                             },
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
@@ -37836,36 +37836,36 @@
                         "parent_location": [
                             {
                                 "end_col": 95,
-                                "end_line": 116,
+                                "end_line": 157,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 73,
-                                        "end_line": 110,
+                                        "end_line": 151,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 33,
-                                                "end_line": 130,
+                                                "end_line": 171,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 5,
-                                                "start_line": 130
+                                                "start_line": 171
                                             },
                                             "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                         ],
                                         "start_col": 47,
-                                        "start_line": 110
+                                        "start_line": 151
                                     },
                                     "While expanding the reference 'pedersen_ptr' in:"
                                 ],
                                 "start_col": 40,
-                                "start_line": 116
+                                "start_line": 157
                             },
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
@@ -37889,36 +37889,36 @@
                         "parent_location": [
                             {
                                 "end_col": 76,
-                                "end_line": 126,
+                                "end_line": 167,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 90,
-                                        "end_line": 110,
+                                        "end_line": 151,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "parent_location": [
                                             {
                                                 "end_col": 33,
-                                                "end_line": 130,
+                                                "end_line": 171,
                                                 "input_file": {
                                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                                 },
                                                 "start_col": 5,
-                                                "start_line": 130
+                                                "start_line": 171
                                             },
                                             "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                         ],
                                         "start_col": 75,
-                                        "start_line": 110
+                                        "start_line": 151
                                     },
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
                                 "start_col": 30,
-                                "start_line": 126
+                                "start_line": 167
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
@@ -37935,12 +37935,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 14,
-                        "end_line": 130,
+                        "end_line": 171,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 13,
-                        "start_line": 130
+                        "start_line": 171
                     }
                 },
                 "1477": {
@@ -37952,36 +37952,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 34,
-                        "end_line": 114,
+                        "end_line": 155,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 34,
-                                "end_line": 114,
+                                "end_line": 155,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 31,
-                                        "end_line": 130,
+                                        "end_line": 171,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "start_col": 16,
-                                        "start_line": 130
+                                        "start_line": 171
                                     },
                                     "While expanding the reference 'amount_out_jedi' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 114
+                                "start_line": 155
                             },
                             "While auto generating local variable for 'amount_out_jedi'."
                         ],
                         "start_col": 10,
-                        "start_line": 114
+                        "start_line": 155
                     }
                 },
                 "1478": {
@@ -37993,36 +37993,36 @@
                     "hints": [],
                     "inst": {
                         "end_col": 34,
-                        "end_line": 114,
+                        "end_line": 155,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
                                 "end_col": 34,
-                                "end_line": 114,
+                                "end_line": 155,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
                                         "end_col": 31,
-                                        "end_line": 130,
+                                        "end_line": 171,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                         },
                                         "start_col": 16,
-                                        "start_line": 130
+                                        "start_line": 171
                                     },
                                     "While expanding the reference 'amount_out_jedi' in:"
                                 ],
                                 "start_col": 10,
-                                "start_line": 114
+                                "start_line": 155
                             },
                             "While auto generating local variable for 'amount_out_jedi'."
                         ],
                         "start_col": 10,
-                        "start_line": 114
+                        "start_line": 155
                     }
                 },
                 "1479": {
@@ -38034,12 +38034,12 @@
                     "hints": [],
                     "inst": {
                         "end_col": 33,
-                        "end_line": 130,
+                        "end_line": 171,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "start_col": 5,
-                        "start_line": 130
+                        "start_line": 171
                     }
                 },
                 "1480": {
@@ -43766,24 +43766,24 @@
                         "parent_location": [
                             {
                                 "end_col": 45,
-                                "end_line": 110,
+                                "end_line": 151,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
-                                        "end_col": 80,
+                                        "end_col": 89,
                                         "end_line": 44,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/modules/pricer.cairo"
                                         },
-                                        "start_col": 27,
+                                        "start_col": 36,
                                         "start_line": 44
                                     },
                                     "While trying to retrieve the implicit argument 'syscall_ptr' in:"
                                 ],
                                 "start_col": 27,
-                                "start_line": 110
+                                "start_line": 151
                             },
                             "While expanding the reference 'syscall_ptr' in:"
                         ],
@@ -43808,24 +43808,24 @@
                         "parent_location": [
                             {
                                 "end_col": 73,
-                                "end_line": 110,
+                                "end_line": 151,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
-                                        "end_col": 80,
+                                        "end_col": 89,
                                         "end_line": 44,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/modules/pricer.cairo"
                                         },
-                                        "start_col": 27,
+                                        "start_col": 36,
                                         "start_line": 44
                                     },
                                     "While trying to retrieve the implicit argument 'pedersen_ptr' in:"
                                 ],
                                 "start_col": 47,
-                                "start_line": 110
+                                "start_line": 151
                             },
                             "While expanding the reference 'pedersen_ptr' in:"
                         ],
@@ -43850,24 +43850,24 @@
                         "parent_location": [
                             {
                                 "end_col": 90,
-                                "end_line": 110,
+                                "end_line": 151,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                                 },
                                 "parent_location": [
                                     {
-                                        "end_col": 80,
+                                        "end_col": 89,
                                         "end_line": 44,
                                         "input_file": {
                                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/modules/pricer.cairo"
                                         },
-                                        "start_col": 27,
+                                        "start_col": 36,
                                         "start_line": 44
                                     },
                                     "While trying to retrieve the implicit argument 'range_check_ptr' in:"
                                 ],
                                 "start_col": 75,
-                                "start_line": 110
+                                "start_line": 151
                             },
                             "While expanding the reference 'range_check_ptr' in:"
                         ],
@@ -43891,12 +43891,12 @@
                         },
                         "parent_location": [
                             {
-                                "end_col": 58,
+                                "end_col": 67,
                                 "end_line": 44,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/modules/pricer.cairo"
                                 },
-                                "start_col": 48,
+                                "start_col": 57,
                                 "start_line": 44
                             },
                             "While expanding the reference 'asset_from' in:"
@@ -43921,12 +43921,12 @@
                         },
                         "parent_location": [
                             {
-                                "end_col": 68,
+                                "end_col": 77,
                                 "end_line": 44,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/modules/pricer.cairo"
                                 },
-                                "start_col": 60,
+                                "start_col": 69,
                                 "start_line": 44
                             },
                             "While expanding the reference 'asset_to' in:"
@@ -43951,12 +43951,12 @@
                         },
                         "parent_location": [
                             {
-                                "end_col": 79,
+                                "end_col": 88,
                                 "end_line": 44,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/modules/pricer.cairo"
                                 },
-                                "start_col": 70,
+                                "start_col": 79,
                                 "start_line": 44
                             },
                             "While expanding the reference 'amount_in' in:"
@@ -43981,12 +43981,12 @@
                         },
                         "parent_location": [
                             {
-                                "end_col": 79,
+                                "end_col": 88,
                                 "end_line": 44,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/modules/pricer.cairo"
                                 },
-                                "start_col": 70,
+                                "start_col": 79,
                                 "start_line": 44
                             },
                             "While expanding the reference 'amount_in' in:"
@@ -44004,12 +44004,12 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
-                        "end_col": 80,
+                        "end_col": 89,
                         "end_line": 44,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/modules/pricer.cairo"
                         },
-                        "start_col": 27,
+                        "start_col": 36,
                         "start_line": 44
                     }
                 },
@@ -44023,13 +44023,13 @@
                     "hints": [],
                     "inst": {
                         "end_col": 45,
-                        "end_line": 110,
+                        "end_line": 151,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
-                                "end_col": 80,
+                                "end_col": 89,
                                 "end_line": 44,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/modules/pricer.cairo"
@@ -44058,13 +44058,13 @@
                                     },
                                     "While expanding the reference 'syscall_ptr' in:"
                                 ],
-                                "start_col": 27,
+                                "start_col": 36,
                                 "start_line": 44
                             },
                             "While trying to update the implicit return value 'syscall_ptr' in:"
                         ],
                         "start_col": 27,
-                        "start_line": 110
+                        "start_line": 151
                     }
                 },
                 "1644": {
@@ -44077,13 +44077,13 @@
                     "hints": [],
                     "inst": {
                         "end_col": 73,
-                        "end_line": 110,
+                        "end_line": 151,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
-                                "end_col": 80,
+                                "end_col": 89,
                                 "end_line": 44,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/modules/pricer.cairo"
@@ -44112,13 +44112,13 @@
                                     },
                                     "While expanding the reference 'pedersen_ptr' in:"
                                 ],
-                                "start_col": 27,
+                                "start_col": 36,
                                 "start_line": 44
                             },
                             "While trying to update the implicit return value 'pedersen_ptr' in:"
                         ],
                         "start_col": 47,
-                        "start_line": 110
+                        "start_line": 151
                     }
                 },
                 "1645": {
@@ -44131,13 +44131,13 @@
                     "hints": [],
                     "inst": {
                         "end_col": 90,
-                        "end_line": 110,
+                        "end_line": 151,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/libraries/lib_safe_swap.cairo"
                         },
                         "parent_location": [
                             {
-                                "end_col": 80,
+                                "end_col": 89,
                                 "end_line": 44,
                                 "input_file": {
                                     "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/modules/pricer.cairo"
@@ -44166,13 +44166,13 @@
                                     },
                                     "While expanding the reference 'range_check_ptr' in:"
                                 ],
-                                "start_col": 27,
+                                "start_col": 36,
                                 "start_line": 44
                             },
                             "While trying to update the implicit return value 'range_check_ptr' in:"
                         ],
                         "start_col": 75,
-                        "start_line": 110
+                        "start_line": 151
                     }
                 },
                 "1646": {
@@ -44184,7 +44184,7 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
-                        "end_col": 23,
+                        "end_col": 32,
                         "end_line": 44,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/modules/pricer.cairo"
@@ -44214,7 +44214,7 @@
                     "flow_tracking_data": null,
                     "hints": [],
                     "inst": {
-                        "end_col": 23,
+                        "end_col": 32,
                         "end_line": 44,
                         "input_file": {
                             "filename": "/Users/venkatkunisetty/Desktop/zkOpen/contracts/modules/pricer.cairo"
@@ -49242,9 +49242,13 @@
                     "savings_apr_index": {
                         "cairo_type": "felt",
                         "offset": 0
+                    },
+                    "total_yield_paid": {
+                        "cairo_type": "starkware.cairo.common.uint256.Uint256",
+                        "offset": 4
                     }
                 },
-                "size": 4,
+                "size": 6,
                 "type": "struct"
             },
             "contracts.storages.deposit_store.deposit_commitments": {
@@ -49913,9 +49917,13 @@
                     "last_deducted_at": {
                         "cairo_type": "felt",
                         "offset": 1
+                    },
+                    "total_interest_paid": {
+                        "cairo_type": "starkware.cairo.common.uint256.Uint256",
+                        "offset": 4
                     }
                 },
-                "size": 4,
+                "size": 6,
                 "type": "struct"
             },
             "contracts.storages.loan_store.Loan": {
