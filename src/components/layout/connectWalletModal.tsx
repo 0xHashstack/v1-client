@@ -16,7 +16,7 @@ import { useEffect } from "react";
 const ConnectWalletModal = () => {
   const [connectWallet, setConnectWallet] = useState(false);
   const [dropDownOpen, setdropDownOpen] = useState(false);
-  const [network, setNetwork] = useState("Select Network");
+  const [network, setNetwork] = useState("Starknet");
   const [dropDownArrow, setDropDownArrow] = useState(arrowDown);
   const { disconnect } = useDisconnect();
   const { address: evmAddress } = useAccount();
@@ -64,6 +64,7 @@ const ConnectWalletModal = () => {
       setDropDownArrow(dropDownOpen ? arrowDown : arrowUp);
     }
   };
+  // selectStarKnetNetwork(); // default network
 
   const disconnectEvent = () => {
     if (evmAddress) {
