@@ -21,6 +21,7 @@
 		"@rainbow-me/rainbowkit": "^0.8.1",
 		"@starknet-react/core": "^0.14.8",
 		"@types/loadable__component": "^5.13.4",
+		"@userback/react": "^0.3.0",
 		"@zeit/next-sass": "^1.0.1",
 		"axios": "^0.24.0",
 		"bignumber.js": "^9.0.1",

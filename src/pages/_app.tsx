@@ -17,7 +17,7 @@ import "./scrollbar.css";
 import { TabsProvider } from "../hooks/contextHooks/TabContext";
 // import Ellipse1 from "../assets/images/Ellipse 59.svg";
 // import Ellipse2 from "../assets/images/Ellipse 60.svg";
-import {SecTabsProvider} from "../hooks/contextHooks/SecTabContext"
+import { SecTabsProvider } from "../hooks/contextHooks/SecTabContext";
 import {
   InjectedConnector,
   StarknetProvider,
@@ -26,6 +26,9 @@ import {
 import { SequencerProvider, RpcProvider } from "starknet";
 import ErrorBoundary from "../components/ErrorComponent";
 import { IdentifierProvider } from "../blockchain/hooks/context/identifierContext";
+
+// importing userBack/widget
+import { UserbackProvider } from "@userback/react";
 
 if (typeof window !== "undefined") {
   const amplitude = require("@amplitude/analytics-browser");
@@ -89,36 +92,38 @@ function MyApp({ Component, pageProps }: AppProps) {
       </div>
       <ErrorBoundary>
         <IdentifierProvider>
-          <WagmiConfig client={wagmiClient}>
-            <RainbowKitProvider chains={chains}>
-              <StarknetProvider
-                connectors={connectors}
-                autoConnect
-                defaultProvider={
-                  // @todo to move this to env variables
-                  // @Rajeebs's Infura project
-                  new RpcProvider({
-                    nodeUrl:
-                      "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
-                  })
-                }
-              >
-                <Provider store={store}>
-                  <DetailsProvider>
-                    <SecTabsProvider>
-                    <TabsProvider>
-                      {/* <ConnectionDetails /> */}
-                      <Layout>
-                        <Component {...pageProps} />
-                      </Layout>
-                      <ToastContainer />
-                    </TabsProvider>
-                    </SecTabsProvider>
-                  </DetailsProvider>
-                </Provider>
-              </StarknetProvider>
-            </RainbowKitProvider>
-          </WagmiConfig>
+          <UserbackProvider token="39857|79571|wl6RzENQOfH9X00C8sLDIWgwj">
+            <WagmiConfig client={wagmiClient}>
+              <RainbowKitProvider chains={chains}>
+                <StarknetProvider
+                  connectors={connectors}
+                  autoConnect
+                  defaultProvider={
+                    // @todo to move this to env variables
+                    // @Rajeebs's Infura project
+                    new RpcProvider({
+                      nodeUrl:
+                        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
+                    })
+                  }
+                >
+                  <Provider store={store}>
+                    <DetailsProvider>
+                      <SecTabsProvider>
+                        <TabsProvider>
+                          {/* <ConnectionDetails /> */}
+                          <Layout>
+                            <Component {...pageProps} />
+                          </Layout>
+                          <ToastContainer />
+                        </TabsProvider>
+                      </SecTabsProvider>
+                    </DetailsProvider>
+                  </Provider>
+                </StarknetProvider>
+              </RainbowKitProvider>
+            </WagmiConfig>{" "}
+          </UserbackProvider>
         </IdentifierProvider>
       </ErrorBoundary>
     </div>
