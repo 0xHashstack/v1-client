@@ -160,7 +160,7 @@ const ActiveDeposit = ({
       : (asset?.commitmentIndex) === 3 ? 90 * 24 * 3600 : 0;
       const commitmenntEndtime = new Date(asset?.depositCreationTime * 1000 + commitmentDuration * 1000);
       const currentTime = new Date();
-      const diff = Math.abs(commitmenntEndtime.getTime() - currentTime.getTime());
+      const diff = commitmenntEndtime.getTime() - currentTime.getTime();
       const diffDays = Math.floor(diff / (1000 * 3600 * 24))
       const diffHours = Math.max(Math.floor((diff % (1000 * 3600 * 24)) / (1000 * 3600)), 1);
       if (diff > 0) {
