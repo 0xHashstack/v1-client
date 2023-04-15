@@ -472,7 +472,7 @@ const SecondaryHeader = ({
                   />
                 </span>
               </label>
-              <img
+              {/* <img
                 onClick={() => {
                   setLiquidateDropDown(false);
                   setSettingDropDown(!settingDropDown);
@@ -489,7 +489,7 @@ const SecondaryHeader = ({
                   cursor: "pointer",
                   marginTop: "10px",
                 }}
-              />
+              /> */}
               <div></div>
             </div>
           </div>
