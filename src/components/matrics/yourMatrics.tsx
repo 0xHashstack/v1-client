@@ -388,7 +388,9 @@ const YourMatrics = () => {
           </div>
           <div style={{ padding: "15px" }}>
             Think we should provide additional insights?{" "}
-            <span style={{ textDecoration: "underline" }}>Write to us</span>
+            <a href="mailto:hello@hashstack.finance" style={{color: "#fff"}}>
+              <span style={{ textDecoration: 'underline' }}>Write to us</span>
+            </a>
           </div>
         </CardBody>
       </Card>

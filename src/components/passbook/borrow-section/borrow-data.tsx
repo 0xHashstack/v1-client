@@ -914,25 +914,30 @@ const BorrowData = ({
       asset?.commitmentIndex !== 0 &&
       asset?.isTimelockActivated
     ) {
-      setShowNoteForWithdrawCollateral(true);
       const timeLockEndtime = new Date(
         (asset?.timelockActivationTime + asset?.timelockDuration) * 1000
       );
       const currentTime = new Date();
       // subtract the times and show the difference in days
-      const diff = Math.abs(timeLockEndtime.getTime() - currentTime.getTime());
+      const diff = timeLockEndtime.getTime() - currentTime.getTime();
       const diffDays = Math.floor(diff / (1000 * 3600 * 24));
       const diffHours = Math.max(
         Math.floor((diff % (1000 * 3600 * 24)) / (1000 * 3600)),
         1
       );
-      setWithdrawCollateralNote(
-        UserInformation?.WithdrawCollateral?.TimelockNotExpired +
-        diffDays +
-        " days " +
-        diffHours +
-        `${diffHours > 1 ? " hours." : " hour."}`
-      );
+      if(diff> 0) {
+        setShowNoteForWithdrawCollateral(true);
+        setWithdrawCollateralNote(
+          UserInformation?.WithdrawCollateral?.TimelockNotExpired +
+          diffDays +
+          " days " +
+          diffHours +
+          `${diffHours > 1 ? " hours." : " hour."}`
+        );
+      }
+      else {
+        setShowNoteForWithdrawCollateral(false);
+      }
     } else {
       setShowNoteForWithdrawCollateral(false);
     }
@@ -972,9 +977,7 @@ const BorrowData = ({
       );
       const currentTime = new Date();
 
-      const diff = Math.abs(
-        commitmenntEndtime.getTime() - currentTime.getTime()
-      );
+      const diff = commitmenntEndtime.getTime() - currentTime.getTime();
       const diffDays = Math.floor(diff / (1000 * 3600 * 24));
       const diffHours = Math.max(
         Math.floor((diff % (1000 * 3600 * 24)) / (1000 * 3600)),
