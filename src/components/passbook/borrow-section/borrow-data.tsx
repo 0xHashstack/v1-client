@@ -212,7 +212,8 @@ const BorrowData = ({
     executeWithdrawCollateral,
     loadingWithdrawCollateral,
     errorWithdrawCollateral,
-    withdrawCollateralTransactionReceipt
+    withdrawCollateralTransactionReceipt, 
+    setTransWithdrawCollateral
   } = useWithdrawCollateral(diamondAddress, asset.loanId);
   const {
     partialWithdrawAmount,
