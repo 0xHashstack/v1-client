@@ -411,6 +411,15 @@ const SecondaryHeader = ({
                 // onClick={() => {
                 //   handleButtonConnectWallet();
                 // }}
+                onClick={() => {
+                  setLiquidateDropDown(false);
+                  setSettingDropDown(false);
+                  setConnectWallet(false);
+                  setConnectWalletArrowState({
+                    bool: !connectWalletArrowState.bool,
+                    direction: "./connectWalletArrowDown.svg",
+                  });
+                }}
               >
                 <span
                   style={{
@@ -455,15 +464,6 @@ const SecondaryHeader = ({
                     </>
                   )}
                   <img
-                    onClick={() => {
-                      setLiquidateDropDown(false);
-                      setSettingDropDown(false);
-                      setConnectWallet(false);
-                      setConnectWalletArrowState({
-                        bool: !connectWalletArrowState.bool,
-                        direction: "./connectWalletArrowDown.svg",
-                      });
-                    }}
                     src="./connectWalletArrowDown.svg"
                     alt="arrow"
                     width="14px"
