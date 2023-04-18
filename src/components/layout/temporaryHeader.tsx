@@ -24,7 +24,7 @@ import { useDisconnect } from "wagmi";
 import { TabContext } from "../../hooks/contextHooks/TabContext";
 import OffchainAPI from "../../services/offchainapi.service";
 import { toast } from "react-toastify";
-import { stubFalse } from "lodash";
+import { flowRight, stubFalse } from "lodash";
 
 const SecondaryHeader = ({
   handleDisconnectWallet,
@@ -554,13 +554,15 @@ const SecondaryHeader = ({
             >
               <button
                 style={{
-                  marginLeft: "100px",
+                  // marginLeft: "100px",
                   marginBottom: "10px",
                   padding: "7px 8px",
                   borderRadius: "5px",
                   backgroundColor: "rgb(57, 61, 79)",
                   color: "white",
                   border: "none",
+                  width: "50%",
+                  float: "right",
                 }}
                 onClick={handleDisconnectWallet}
               >
@@ -569,19 +571,39 @@ const SecondaryHeader = ({
               <br />
               <button
                 style={{
-                  marginLeft: "89px",
+                  // marginLeft: "89px",
                   padding: "7px 8px",
                   borderRadius: "5px",
                   backgroundColor: "rgb(57, 61, 79)",
                   color: "white",
                   border: "none",
+                  width: "60%",
+                  float: "right",
                 }}
               >
                 Switch Wallet
               </button>
             </div>
-            <hr style={{ margin: "0 10px" }} />
             <div>
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  marginLeft: "10px",
+                }}
+              >
+                <hr
+                  style={{
+                    height: "1px",
+                    borderWidth: "0",
+                    color: "gray",
+                    backgroundColor: "gray",
+                    marginTop: "55px",
+                    width: "180px",
+                    // marginLeft: "10px",
+                  }}
+                />
+              </div>
               <div
                 style={{
                   position: "absolute",
@@ -596,14 +618,16 @@ const SecondaryHeader = ({
                 <div
                   style={{
                     color: "white",
-                    marginRight: "-15px",
+                    // marginRight: "-15px",
+                    // marginLeft: "50px",
+                    float: "right",
                     display: "flex",
                     gap: "5px",
                   }}
                 >
                   <img src="./green.svg" />
 
-                  <div> Starknet </div>
+                  <div style={{}}> Starknet </div>
                   {/* <img
                     src={`${dropDownArrow}`}
                     alt="Picture of the author"
