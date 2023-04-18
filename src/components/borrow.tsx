@@ -21,7 +21,11 @@ import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import React from "react";
 import "react-toastify/dist/ReactToastify.css";
-import { BorrowInterestRates, MinimumAmount, MinimumBorrowAmount } from "../blockchain/constants";
+import {
+  BorrowInterestRates,
+  MinimumAmount,
+  MinimumBorrowAmount,
+} from "../blockchain/constants";
 import {
   useAccount,
   useContract,
@@ -220,7 +224,7 @@ let Borrow: any = ({
 
   /* ======================== Get Debt Category ======================== */
 
-  const [debtCategory, setDebtCategory] = useState<any>('N/A');
+  const [debtCategory, setDebtCategory] = useState<any>("N/A");
 
   const { contract: loanContract } = useContract({
     address: diamondAddress,
@@ -238,8 +242,17 @@ let Borrow: any = ({
     args: [
       tokenAddressMap[asset],
       tokenAddressMap[borrowParams.collateralMarket || ""],
-      [etherToWeiBN(borrowParams.loanAmount as string, tokenAddressMap[asset]), 0],
-      [etherToWeiBN(borrowParams.collateralAmount as string, tokenAddressMap[borrowParams.collateralMarket]), 0],
+      [
+        etherToWeiBN(borrowParams.loanAmount as string, tokenAddressMap[asset]),
+        0,
+      ],
+      [
+        etherToWeiBN(
+          borrowParams.collateralAmount as string,
+          tokenAddressMap[borrowParams.collateralMarket]
+        ),
+        0,
+      ],
     ],
     options: {
       watch: true,
@@ -406,8 +419,8 @@ let Borrow: any = ({
       );
       const Data = dataMaxLoan?.max_loan_amount
         ? weiToEtherNumber(
-            uint256.uint256ToBN(dataMaxLoan?.max_loan_amount).toString(), 
-            tokenAddressMap[asset]||""
+            uint256.uint256ToBN(dataMaxLoan?.max_loan_amount).toString(),
+            tokenAddressMap[asset] || ""
           )
         : "0";
       setMaxloanData(Data);
@@ -569,18 +582,18 @@ let Borrow: any = ({
 
   useEffect(() => {
     // console.log(
-      // "check borrow allownace",
-      // token?.name,
-      // borrowParams.collateralMarket,
-      // {
-      //   dataAllowance,
-      //   remaining: dataAllowance
-      //     ? uint256.uint256ToBN(dataAllowance[0]).toString()
-      //     : "0",
-      //   errorAllowance,
-      //   refreshAllowance,
-      //   loadingAllowance,
-      // }
+    // "check borrow allownace",
+    // token?.name,
+    // borrowParams.collateralMarket,
+    // {
+    //   dataAllowance,
+    //   remaining: dataAllowance
+    //     ? uint256.uint256ToBN(dataAllowance[0]).toString()
+    //     : "0",
+    //   errorAllowance,
+    //   refreshAllowance,
+    //   loadingAllowance,
+    // }
     // );
     if (!loadingAllowance) {
       if (dataAllowance) {
@@ -604,7 +617,7 @@ let Borrow: any = ({
     return (
       Number(borrowParams.collateralAmount) <=
       Number(uint256.uint256ToBN(dataBalance ? dataBalance[0] : 0)) /
-        10 ** (tokenDecimalsMap[borrowParams?.collateralMarket as string])
+        10 ** tokenDecimalsMap[borrowParams?.collateralMarket as string]
     );
   }
 
@@ -633,7 +646,7 @@ let Borrow: any = ({
           type="button"
           onClick={() => {
             tog_borrow();
-            setTokenName(asset);
+            // setTokenName(asset);
             handleCollateralChange(`${asset}`);
           }}
           style={{

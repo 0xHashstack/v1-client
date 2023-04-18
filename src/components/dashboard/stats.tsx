@@ -280,7 +280,7 @@ const StatsBoard = (result: {
           </h4>
         </div>
 
-        <img
+        {/* <img
           src="./statsIcon.svg"
           alt="Navbar Logo"
           style={{
@@ -294,7 +294,7 @@ const StatsBoard = (result: {
           onClick={() => {
             toggleCustom("8");
           }}
-        />
+        /> */}
       </div>
       <div className="stat-card"></div>
     </div>
