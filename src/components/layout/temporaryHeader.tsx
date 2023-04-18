@@ -604,7 +604,7 @@ const SecondaryHeader = ({
                   <img src="./green.svg" />
 
                   <div> Starknet </div>
-                  <img
+                  {/* <img
                     src={`${dropDownArrow}`}
                     alt="Picture of the author"
                     width="14px"
@@ -613,7 +613,7 @@ const SecondaryHeader = ({
                       marginTop: "3px",
                       cursor: "pointer",
                     }}
-                  />
+                  /> */}
                 </div>
               </div>
             </div>
