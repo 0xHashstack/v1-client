@@ -42,11 +42,9 @@ export class TxToastManager {
       //     </p>)
       // this._showToast(hash, hasToast,msg, 'default', receipt.data?.status, 0, 0.7)
       this._showToast(hash, hasToast, purpose, "success", receipt.data?.status);
-    } 
-    else if (receipt.data?.status == "ACCEPTED_ON_L2") {
+    } else if (receipt.data?.status == "ACCEPTED_ON_L2") {
       this._showToast(hash, hasToast, purpose, "success", receipt.data?.status);
-    } 
-    else if (receipt.data?.status == "REJECTED") {
+    } else if (receipt.data?.status == "REJECTED") {
       this._showToast(hash, hasToast, purpose, "error", receipt.data?.status);
     }
   }
@@ -92,7 +90,7 @@ export class TxToastManager {
       type,
       toastId: hash,
       position: "bottom-right",
-      autoClose: timeout == 0 ? false : timeout,
+      autoClose: timeout == 0 || status === "success" ? false : timeout,
       hideProgressBar: timeout == 0 ? true : false,
       closeOnClick: true,
       pauseOnHover: true,
