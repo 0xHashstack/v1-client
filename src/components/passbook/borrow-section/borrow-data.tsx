@@ -1950,6 +1950,15 @@ const BorrowData = ({
                           border: "2px solid rgb(57, 61, 79)",
                           fontWeight: "200",
                         }}
+                        onClick={toggleDropdown}
+                        onMouseLeave={(event) => {
+                          const rect = event.target.getBoundingClientRect();
+                          const y = event.clientY;
+                          if (y < rect.bottom) {
+                            setDropDown(false);
+                            setDropDownArrow(Downarrow);
+                          }
+                        }}
                       >
                         <div
                           style={{
@@ -1959,7 +1968,6 @@ const BorrowData = ({
                             fontSize: "14px",
                             fontWeight: "400",
                           }}
-                          onClick={toggleDropdown}
                         >
                           <div>&nbsp;&nbsp;{selection}</div>
                           <div
@@ -2004,6 +2012,14 @@ const BorrowData = ({
                               justifyContent: "center",
                             }}
                             onClick={toggleDropdownTwo}
+                            onMouseLeave={(event) => {
+                              const rect = event.target.getBoundingClientRect();
+                              const y = event.clientY;
+                              if (y < rect.bottom) {
+                                setStakeDropDown(false);
+                                setDropDownArrowTwo(Downarrow);
+                              }
+                            }}
                           >
                             <div style={{ textAlign: "center" }}>
                               {actionLabel}
@@ -2026,6 +2042,16 @@ const BorrowData = ({
                               border: "2px solid rgb(57, 61, 79)",
                               fontWeight: "200",
                             }}
+                            onClick={toggleyagi}
+                            onMouseLeave={(event) => {
+                              const rect = event.target.getBoundingClientRect();
+                              const y = event.clientY;
+                              const x = event.clientX;
+                              if (y < rect.bottom) {
+                                setYagidrop(false);
+                                setyagiDownArrow(Downarrow);
+                              }
+                            }}
                           >
                             <div
                               style={{
@@ -2033,7 +2059,6 @@ const BorrowData = ({
                                 justifyContent: "space-between",
                                 alignItems: "center",
                               }}
-                              onClick={toggleyagi}
                             >
                               <div>
                                 &nbsp;&nbsp;
@@ -2704,6 +2729,14 @@ const BorrowData = ({
                           fontWeight: "400",
                         }}
                         onClick={toggleDropdown}
+                        onMouseLeave={(event) => {
+                          const rec = event.target.getBoundingClientRect();
+                          const yy = event.clientY;
+                          if (yy < rec.bottom) {
+                            setDropDown(false);
+                            setDropDownArrowTwo(Downarrow);
+                          }
+                        }}
                       >
                         <div>&nbsp;&nbsp;{selection}</div>
                         <label
@@ -3297,6 +3330,10 @@ const BorrowData = ({
                         backgroundColor: "#1D2131",
                         boxShadow: "0px 0px 10px #00000020",
                       }}
+                      onMouseLeave={(event) => {
+                        setMarketDropDown(!marketDropDown);
+                        setDropDownArrowThree(Downarrow);
+                      }}
                     >
                       {getSupportedTokens().map((coin, index, arr) => {
                         return (
@@ -3348,7 +3385,7 @@ const BorrowData = ({
                         marginBottom: "20px",
                         padding: "5px 10px",
                         backgroundColor: "#1D2131",
-                        boxShadow: "0px 0px 10px #00000020",
+                        boxShadow: "0px 0px 10px #3D3E52",
                       }}
                       onMouseLeave={() => {
                         setYagidrop(!Yagidrop);
@@ -3362,50 +3399,53 @@ const BorrowData = ({
                           )
                         ) {
                           return (
-                            <div
-                              key={index}
-                              style={{
-                                margin: "10px 15px",
-                                cursor: "pointer",
-                                display: "flex",
-                                alignItems: "center",
-                                fontSize: "16px",
-                              }}
-                              onClick={() => {
-                                // if (!activeLoansData) return;
-                                // setmodal_deposit(true);
-                                setMarketTokenName((prev) => {
-                                  if (dapp.name === "jediSwap") {
-                                    const token = getTokenFromAddress(
-                                      supportedPoolsJediSwap.get(
-                                        tokenAddressMap[asset.loanMarket]
-                                      )?.[0] as string
-                                    );
-                                    setMarketTokenSymbol(token?.symbol);
-                                    return token?.name;
-                                  } else if (dapp.name === "mySwap") {
-                                    const token = getTokenFromAddress(
-                                      supportedPoolsMySwap.get(
-                                        tokenAddressMap[asset.loanMarket]
-                                      )?.[0] as string
-                                    );
-                                    setMarketTokenSymbol(token?.symbol);
-                                    return token?.name;
-                                  } else return prev;
-                                });
-                                setappsImage(dapp.name);
-                                toggleyagi();
-                              }}
-                            >
-                              <img
-                                src={`./${dapp.name}.svg`}
-                                width={`${
-                                  dapp.name === "mySwap" ? "60px" : "100px"
-                                }`}
-                                height="30px"
-                                style={{ cursor: "pointer" }}
-                              />
-                            </div>
+                            <>
+                              {index != 0 && <hr />}
+                              <div
+                                key={index}
+                                style={{
+                                  margin: "10px 15px",
+                                  cursor: "pointer",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  fontSize: "16px",
+                                }}
+                                onClick={() => {
+                                  // if (!activeLoansData) return;
+                                  // setmodal_deposit(true);
+                                  setMarketTokenName((prev) => {
+                                    if (dapp.name === "jediSwap") {
+                                      const token = getTokenFromAddress(
+                                        supportedPoolsJediSwap.get(
+                                          tokenAddressMap[asset.loanMarket]
+                                        )?.[0] as string
+                                      );
+                                      setMarketTokenSymbol(token?.symbol);
+                                      return token?.name;
+                                    } else if (dapp.name === "mySwap") {
+                                      const token = getTokenFromAddress(
+                                        supportedPoolsMySwap.get(
+                                          tokenAddressMap[asset.loanMarket]
+                                        )?.[0] as string
+                                      );
+                                      setMarketTokenSymbol(token?.symbol);
+                                      return token?.name;
+                                    } else return prev;
+                                  });
+                                  setappsImage(dapp.name);
+                                  toggleyagi();
+                                }}
+                              >
+                                <img
+                                  src={`./${dapp.name}.svg`}
+                                  width={`${
+                                    dapp.name === "mySwap" ? "60px" : "100px"
+                                  }`}
+                                  height="30px"
+                                  style={{ cursor: "pointer" }}
+                                />
+                              </div>
+                            </>
                           );
                         }
                         return null;
@@ -3451,6 +3491,14 @@ const BorrowData = ({
                             alignItems: "center",
                           }}
                           onClick={toggleDropdownThree}
+                          onMouseLeave={(event) => {
+                            const rec = event.target.getBoundingClientRect();
+                            const yy = event.clientY;
+                            if (yy < rec.bottom) {
+                              setMarketDropDown(false);
+                              setDropDownArrowThree(Downarrow);
+                            }
+                          }}
                         >
                           {marketTokenName ? (
                             <div>
