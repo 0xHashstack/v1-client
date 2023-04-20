@@ -4,13 +4,13 @@ import { TabContext } from "../../hooks/contextHooks/TabContext";
 import { NumericFormat } from "react-number-format";
 import MySpinner from "../mySpinner";
 
-const YourMatrics = () => {
+const YourMatrics = ({ netAprEarned }: { netAprEarned: any }) => {
   const {
     customActiveTab,
     toggleCustom,
     YourSupply,
     YourBorrows,
-    NetEarnedApr,
+    // NetAprEarned,
     effectiveapr,
   } = useContext(TabContext);
   const [CoinsSupplyMetrics, setCoinsSupplyMetrics] = useState("");
@@ -97,7 +97,10 @@ const YourMatrics = () => {
                   >
                     Total Apr Earned
                   </span>
-                  <div style={{ fontSize: "25px" }}> $ {NetEarnedApr}</div>
+                  <div style={{ fontSize: "25px" }}>
+                    {" "}
+                    $ {Number(netAprEarned).toFixed(2)}
+                  </div>
                 </div>
               </div>
               <div
@@ -388,8 +391,8 @@ const YourMatrics = () => {
           </div>
           <div style={{ padding: "15px" }}>
             Think we should provide additional insights?{" "}
-            <a href="mailto:hello@hashstack.finance" style={{color: "#fff"}}>
-              <span style={{ textDecoration: 'underline' }}>Write to us</span>
+            <a href="mailto:hello@hashstack.finance" style={{ color: "#fff" }}>
+              <span style={{ textDecoration: "underline" }}>Write to us</span>
             </a>
           </div>
         </CardBody>

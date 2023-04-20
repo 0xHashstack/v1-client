@@ -22,6 +22,7 @@
 		"@starknet-react/core": "^0.14.8",
 		"@types/loadable__component": "^5.13.4",
 		"@userback/react": "^0.3.0",
+		"@usersnap/browser": "^0.0.3",
 		"@zeit/next-sass": "^1.0.1",
 		"axios": "^0.24.0",
 		"bignumber.js": "^9.0.1",

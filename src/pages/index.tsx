@@ -1104,7 +1104,7 @@ const Dashboard = () => {
               ) : null}
               {customActiveTab === "7" ? (
                 <div style={{ marginTop: "130px" }}>
-                  <YourMatrics />
+                  <YourMatrics netAprEarned={netAprEarned} />
                 </div>
               ) : null}
 
