@@ -230,18 +230,18 @@ const Dashboard = () => {
   useEffect(() => {
     if (!_account) return;
     //0x05b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864
-    // setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
-    setAccount(
-      number.toHex(
-        number.toBN(
-          number.toFelt(
-            // "0x5095078578a59f8a9c17df97188db1b59574c6d4836dd3e705fe8537624228a"
-            "0x5095078578a59f8a9c17df97188db1b59574c6d4836dd3e705fe8537624228a"
-            // "0x5b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"
-          )
-        )
-      )
-    );
+    setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
+    // setAccount(
+    //   number.toHex(
+    //     number.toBN(
+    //       number.toFelt(
+    //         // "0x5095078578a59f8a9c17df97188db1b59574c6d4836dd3e705fe8537624228a"
+    //         "0x5095078578a59f8a9c17df97188db1b59574c6d4836dd3e705fe8537624228a"
+    //         // "0x5b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"
+    //       )
+    //     )
+    //   )
+    // );
     checkDB();
   }, [_account]);
 
