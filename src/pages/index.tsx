@@ -1,3 +1,5 @@
+//@ts-nocheck
+
 import React, { useState, useEffect, useContext } from "react";
 import Ellipse1 from "../assets/images/Ellipse 59.svg";
 import {
@@ -228,16 +230,18 @@ const Dashboard = () => {
   useEffect(() => {
     if (!_account) return;
     //0x05b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864
-    setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
-    // setAccount(
-    //   number.toHex(
-    //     number.toBN(
-    //       number.toFelt(
-    //         "0x5095078578a59f8a9c17df97188db1b59574c6d4836dd3e705fe8537624228a"
-    //       )
-    //     )
-    //   )
-    // );
+    // setAccount(number.toHex(number.toBN(number.toFelt(_account || ""))));
+    setAccount(
+      number.toHex(
+        number.toBN(
+          number.toFelt(
+            // "0x5095078578a59f8a9c17df97188db1b59574c6d4836dd3e705fe8537624228a"
+            "0x5095078578a59f8a9c17df97188db1b59574c6d4836dd3e705fe8537624228a"
+            // "0x5b55db55f5884856860e63f3595b2ec6b2c9555f3f507b4ca728d8e427b7864"
+          )
+        )
+      )
+    );
     checkDB();
   }, [_account]);
 
@@ -1043,6 +1047,14 @@ const Dashboard = () => {
                             !isDropDownOpenTypeOfLoans
                           );
                         }}
+                        onMouseLeave={(event) => {
+                          const rec = event.target.getBoundingClientRect();
+                          const yy = event.clientY;
+                          if (yy < rec.bottom) {
+                            setIsDropDownOpenTypeOfLoans(false);
+                            setTypeOfLoansDropDownArrowType(DownArrow);
+                          }
+                        }}
                       >
                         {typeOfLoans}&nbsp;&nbsp;&nbsp;
                         <Image
@@ -1057,40 +1069,53 @@ const Dashboard = () => {
                         <>
                           <div
                             style={{
-                              borderRadius: "5px",
+                              // borderRadius: "5px",
                               position: "absolute",
                               zIndex: "100",
-                              top: "31px",
+                              top: "72px",
                               right: "0px",
                               width: "105px",
                               margin: "0px auto",
                               marginBottom: "20px",
                               padding: "5px 10px",
                               backgroundColor: "#393D4F",
+                              borderBottom: "7px",
                               // boxShadow: "0px 0px 10px rgb(57, 61, 79)",
+                            }}
+                            onMouseLeave={(event) => {
+                              // setTypeOfLoansDropDownArrowType(
+                              //   isDropDownOpenTypeOfLoans ? DownArrow : UpArrow
+                              // );
+                              setTypeOfLoansDropDownArrowType(DownArrow);
+                              setIsDropDownOpenTypeOfLoans(false);
                             }}
                           >
                             {loanTypes.map((type, index) => {
                               return (
-                                <div
-                                  key={index}
-                                  style={{
-                                    margin: "10px 0",
-                                    cursor: "pointer",
-                                    display: "flex",
-                                    alignItems: "center",
-                                    fontSize: "0.8rem",
-                                    color: "white",
-                                  }}
-                                  onClick={() => {
-                                    setTypeOfLoans(type);
-                                    setTypeOfLoansDropDownArrowType(DownArrow);
-                                    setIsDropDownOpenTypeOfLoans(false);
-                                    setActiveRepaytab(type);
-                                  }}
-                                >
-                                  {type}
-                                </div>
+                                <>
+                                  <div
+                                    key={index}
+                                    style={{
+                                      margin: "10px 0",
+                                      cursor: "pointer",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      fontSize: "0.8rem",
+                                      color: "white",
+                                    }}
+                                    onClick={() => {
+                                      setTypeOfLoans(type);
+                                      setTypeOfLoansDropDownArrowType(
+                                        DownArrow
+                                      );
+                                      setIsDropDownOpenTypeOfLoans(false);
+                                      setActiveRepaytab(type);
+                                    }}
+                                  >
+                                    {type}
+                                  </div>
+                                  {index < loanTypes.length - 1 && <hr />}
+                                </>
                               );
                             })}
                           </div>

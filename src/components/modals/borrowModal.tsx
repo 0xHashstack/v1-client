@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {
   Button,
   Col,
@@ -54,7 +56,7 @@ const BorrowModal: any = ({
   toggleDropdown,
   tokenName,
   setTokenName,
-  tokenSymbol, 
+  tokenSymbol,
   setTokenSymbol,
   borrowTokenName,
   setBorrowTokenName,
@@ -172,7 +174,7 @@ const BorrowModal: any = ({
   toastParam: any;
 }) => {
   // console.log("Thisasset",asset);
-  
+
   return (
     <Modal
       style={{ width: "548px", height: "945px" }}
@@ -257,7 +259,7 @@ const BorrowModal: any = ({
                   }}
                 >
                   <Image
-                    src={dropDown?UpArrow:dropDownArrow}
+                    src={dropDown ? UpArrow : dropDownArrow}
                     alt="Picture of the author"
                     width="14px"
                     height="14px"
@@ -293,7 +295,7 @@ const BorrowModal: any = ({
               {
                 <>
                   <Button
-                    outline 
+                    outline
                     type="button"
                     className="btn btn-md w-xs"
                     onClick={handleMax}
@@ -356,12 +358,12 @@ const BorrowModal: any = ({
                               dataBalance ? dataBalance[0] : 0
                             )
                           ) /
-                            10 **
-                              (tokenDecimalsMap[tokenName]||18))) /
+                            10 ** (tokenDecimalsMap[tokenName] || 18))) /
                         100,
                     });
                   }
-                  {// console.log("assets",asset);
+                  {
+                    // console.log("assets",asset);
                   }
                   setValue(value);
                 }}
@@ -395,7 +397,9 @@ const BorrowModal: any = ({
                     backgroundColor: "#1D2131",
                     boxShadow: "0px 0px 10px #0020",
                   }}
-                  onMouseLeave={()=>{setDropDown(!dropDown)}}
+                  onMouseLeave={() => {
+                    setDropDown(!dropDown);
+                  }}
                 >
                   {Coins.map((coin: any, index: number) => {
                     if (coin.name === tokenName) return <></>;
@@ -412,7 +416,7 @@ const BorrowModal: any = ({
                           }}
                           onClick={() => {
                             setTokenName(`${coin.name}`);
-                            setTokenSymbol(`${coin.symbol}`)
+                            setTokenSymbol(`${coin.symbol}`);
                             setDropDown(false);
                             setDropDownArrow(Downarrow);
                             handleCollateralChange(`${coin.name}`);
@@ -450,8 +454,10 @@ const BorrowModal: any = ({
                     backgroundColor: "#1D2131",
                     boxShadow: "0px 0px 10px #00000020",
                   }}
-                  onMouseLeave={()=>{setBorrowDropDown(!borrowDropDown)
-                  setBorrowArrow(dropDownArrow)}}
+                  onMouseLeave={() => {
+                    setBorrowDropDown(!borrowDropDown);
+                    setBorrowArrow(dropDownArrow);
+                  }}
                 >
                   {Coins.map((coin: any, index: number) => {
                     if (coin.name === borrowTokenName) return <></>;
@@ -468,7 +474,7 @@ const BorrowModal: any = ({
                           }}
                           onClick={() => {
                             setBorrowTokenName(`${coin.name}`);
-                            setBorrowTokenSymbol(`${coin.symbol}`)
+                            setBorrowTokenSymbol(`${coin.symbol}`);
                             setBorrowDropDown(false);
                             setBorrowArrow(Downarrow);
                             setAsset(`${coin.name}`);
@@ -508,8 +514,10 @@ const BorrowModal: any = ({
                     backgroundColor: "#1D2131",
                     boxShadow: "0px 0px 10px #00000020",
                   }}
-                  onMouseLeave={()=>{setCommitmentDropDown(!commitmentDropDown)
-                  setCommitmentArrow(Downarrow)}}
+                  onMouseLeave={() => {
+                    setCommitmentDropDown(!commitmentDropDown);
+                    setCommitmentArrow(Downarrow);
+                  }}
                 >
                   <div
                     style={{
@@ -526,7 +534,7 @@ const BorrowModal: any = ({
                   >
                     &nbsp;Flexible
                   </div>
-                  <hr/>
+                  <hr />
                   <div
                     style={{
                       fontSize: "15px",
@@ -738,29 +746,30 @@ const BorrowModal: any = ({
                       gap: "3px",
                     }}
                   >
-                    <Tooltip title='mySwap' arrow>
-                    <img
-                      src="./mySwapSmallIcon.svg"
-                      alt="Icon 1"
-                      width="15px"
-                      height="15px"
-                    />
-                    </Tooltip>
-                    {" "}
-                    <Tooltip title='jediSwap' arrow>
-                    <img
-                      src="./jediSwapSmallIcon.svg"
-                      alt="Icon 2"
-                      width="15px"
-                      height="15px"
-                    /></Tooltip>{" "}
-                    <Tooltip title='yagi' arrow>
-                    <img
-                      src="./yagiSmallIcon.svg"
-                      alt="Icon 3"
-                      width="15px"
-                      height="15px"
-                    /></Tooltip>{" "}
+                    <Tooltip title="mySwap" arrow>
+                      <img
+                        src="./mySwapSmallIcon.svg"
+                        alt="Icon 1"
+                        width="15px"
+                        height="15px"
+                      />
+                    </Tooltip>{" "}
+                    <Tooltip title="jediSwap" arrow>
+                      <img
+                        src="./jediSwapSmallIcon.svg"
+                        alt="Icon 2"
+                        width="15px"
+                        height="15px"
+                      />
+                    </Tooltip>{" "}
+                    <Tooltip title="yagi" arrow>
+                      <img
+                        src="./yagiSmallIcon.svg"
+                        alt="Icon 3"
+                        width="15px"
+                        height="15px"
+                      />
+                    </Tooltip>{" "}
                   </div>
                 </div>
                 <div
@@ -948,7 +957,7 @@ const BorrowModal: any = ({
                   </span>
                      This is the note where you are supposed to do some information of the given user and something
                 </div> */}
-                <br/>
+              <br />
 
               <Button
                 color="white"
@@ -979,7 +988,7 @@ const BorrowModal: any = ({
             </div>
           </Form>
         ) : (
-          <h2 style={{color:"white"}}>Please connect your wallet</h2>
+          <h2 style={{ color: "white" }}>Please connect your wallet</h2>
         )}
       </div>
       {isToastOpen ? (

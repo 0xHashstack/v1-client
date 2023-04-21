@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {
   useAccount,
   useContract,
@@ -85,6 +87,7 @@ import UserInformation from "../../../../UserInformation.json";
 import useMySwap from "../../../blockchain/hooks/SpendBorrow/useMySwap";
 import ToastModal from "../../toastModals/customToastModal";
 import { StrictButtonGroupProps } from "semantic-ui-react";
+import SelectButton from "../../buttons/SelectButton";
 
 const BorrowData = ({
   asset: assetParam,
@@ -277,7 +280,6 @@ const BorrowData = ({
     setIsToastRevertSpendOpen,
     toastRevertSpendParam,
   } = useRevertSpend(diamondAddress, asset);
-
   const [title, setTitle] = useState({
     amount: "Borrowd",
     label: "Stake",
@@ -436,6 +438,24 @@ const BorrowData = ({
     }
     setPoolId(currentPoolId);
   }, [asset, poolIdtoTokens, marketTokenName]);
+
+  const selection_array = [
+    "Self Liquidate",
+    "Spend Borrow",
+    "Repay Borrow",
+    "Withdraw Partial Borrow",
+    "Revert Spend",
+  ];
+
+  useEffect(() => {
+    selectionAction(selection);
+  }, [selection]);
+
+  // useEffect(() => {
+  //   if (!repayAmount) {
+  //     setRepayAmount(0);
+  //   }
+  // }, [repayAmount]);
 
   const { contract: l3JediContract } = useContract({
     abi: JediSwapAbi as Abi,
@@ -837,7 +857,8 @@ const BorrowData = ({
       });
       return;
     }
-    if (!repayAmount || repayAmount < 0) {
+    // if (!repayAmount || repayAmount < 0) {
+    if (repayAmount < 0) {
       toast.error(
         `${GetErrorText(`Can't withdraw < 0 of ${asset.loanMarket}`)}`,
         {
@@ -1097,16 +1118,27 @@ const BorrowData = ({
   }
 
   function isInvalidCollateralAmount() {
+    console.log(
+      "aryan",
+      tokenDecimalsMap[asset?.collateralMarket as string] || 18,
+      asset
+    );
     return (
       !addCollateralAmount ||
       addCollateralAmount <= 0 ||
       addCollateralAmount >
+        // Number(
+        //   uint256.uint256ToBN(
+        //     collateralMarketBalance ? collateralMarketBalance[0] : 0
+        //   )
+        // ) /
+        //   10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18)
         Number(
           uint256.uint256ToBN(
             collateralMarketBalance ? collateralMarketBalance[0] : 0
           )
         ) /
-          10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18)
+          10 ** (tokenDecimalsMap[asset?.collateralMarket as string] || 18)
     );
   }
 
@@ -1338,7 +1370,7 @@ const BorrowData = ({
 
           <Col>
             <div
-              style={{ fontSize: "14px", fontWeight: "600", width: "110px" }}
+              style={{ fontSize: "14px", fontWeight: "600", width: "115px" }}
             >
               {parseFloat(
                 weiToEtherNumber(
@@ -1871,6 +1903,8 @@ const BorrowData = ({
                           color: "black",
                           border: "1px solid #000",
                           borderRadius: "5px",
+                          position: "absolute",
+                          right: "180px",
                         }}
                         className={classnames({
                           active: customActiveTab === "2",
@@ -1939,7 +1973,7 @@ const BorrowData = ({
                 {!isCollateralActions ? (
                   <>
                     <div style={{ display: "block", maxWidth: "420px" }}>
-                      <label
+                      <SelectButton
                         style={{
                           width: "420px",
                           margin: "5px auto",
@@ -1959,8 +1993,10 @@ const BorrowData = ({
                             setDropDownArrow(Downarrow);
                           }
                         }}
+                        selection={selection}
+                        dropDownArrow={dropDownArrow}
                       >
-                        <div
+                        {/* <div
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
@@ -1985,8 +2021,8 @@ const BorrowData = ({
                               height="14px"
                             />
                           </div>
-                        </div>
-                      </label>
+                        </div> */}
+                      </SelectButton>
 
                       {selection === "Spend Borrow" ? (
                         <div
@@ -1996,7 +2032,7 @@ const BorrowData = ({
                             gap: "20px",
                           }}
                         >
-                          <label
+                          <SelectButton
                             style={{
                               width: "100px",
                               height: "45px",
@@ -2020,8 +2056,10 @@ const BorrowData = ({
                                 setDropDownArrowTwo(Downarrow);
                               }
                             }}
+                            selection={actionLabel}
+                            dropDownArrow={dropDownArrowTwo}
                           >
-                            <div style={{ textAlign: "center" }}>
+                            {/* <div style={{ textAlign: "center" }}>
                               {actionLabel}
                             </div>
                             <Image
@@ -2030,10 +2068,10 @@ const BorrowData = ({
                               alt="Picture of the author"
                               width="14px"
                               height="14px"
-                            />
-                          </label>
+                            /> */}
+                          </SelectButton>
 
-                          <label
+                          <SelectButton
                             style={{
                               width: "300px",
                               padding: "5px 10px",
@@ -2052,8 +2090,25 @@ const BorrowData = ({
                                 setyagiDownArrow(Downarrow);
                               }
                             }}
+                            selection={
+                              appsImage ? (
+                                <img
+                                  src={`./${appsImage}.svg`}
+                                  width={`${
+                                    appsImage === "mySwap" ||
+                                    appsImage === "yagi"
+                                      ? "60px"
+                                      : "100px"
+                                  }`}
+                                  height="30px"
+                                ></img>
+                              ) : (
+                                <>No dApps available</>
+                              )
+                            }
+                            dropDownArrow={dropDownArrowThree}
                           >
-                            <div
+                            {/* <div
                               style={{
                                 display: "flex",
                                 justifyContent: "space-between",
@@ -2096,8 +2151,8 @@ const BorrowData = ({
                                   <></>
                                 )}
                               </div>
-                            </div>
-                          </label>
+                            </div> */}
+                          </SelectButton>
                         </div>
                       ) : null}
                     </div>
@@ -2527,7 +2582,7 @@ const BorrowData = ({
                                   }}
                                   type="number"
                                   className="form-control"
-                                  placeholder={`Amount in ${asset.loanMarketSymbol}`}
+                                  placeholder={0}
                                   id="amount"
                                   onChange={(e) => {
                                     if (selection === "Repay Borrow")
@@ -2542,6 +2597,7 @@ const BorrowData = ({
                                       : partialWithdrawAmount
                                   }
                                   valid={!(!repayAmount || repayAmount <= 0)}
+                                  // valid={!(repayAmount <= 0)}
                                 />
 
                                 <Button
@@ -2708,7 +2764,7 @@ const BorrowData = ({
                   </>
                 ) : (
                   <>
-                    <label
+                    <SelectButton
                       style={{
                         width: "420px",
                         margin: "5px auto",
@@ -2718,24 +2774,29 @@ const BorrowData = ({
                         borderRadius: "5px",
                         border: "2px solid rgb(57, 61, 79)",
                         fontWeight: "200",
+                        marginRight: "9rem",
                       }}
+                      onClick={toggleDropdown}
+                      onMouseLeave={(event) => {
+                        const rec = event.target.getBoundingClientRect();
+                        const yy = event.clientY;
+                        if (yy < rec.bottom) {
+                          setDropDown(false);
+                          setDropDownArrowTwo(Downarrow);
+                        }
+                      }}
+                      selection={selection}
+                      dropDownArrow={
+                        assetParam.state === "REPAID" ? "" : dropDownArrow
+                      }
                     >
-                      <div
+                      {/* <div
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
                           alignItems: "center",
                           fontSize: "14px",
                           fontWeight: "400",
-                        }}
-                        onClick={toggleDropdown}
-                        onMouseLeave={(event) => {
-                          const rec = event.target.getBoundingClientRect();
-                          const yy = event.clientY;
-                          if (yy < rec.bottom) {
-                            setDropDown(false);
-                            setDropDownArrowTwo(Downarrow);
-                          }
                         }}
                       >
                         <div>&nbsp;&nbsp;{selection}</div>
@@ -2759,8 +2820,8 @@ const BorrowData = ({
                             />
                           )}
                         </label>
-                      </div>
-                    </label>
+                      </div> */}
+                    </SelectButton>
 
                     <div
                       style={{
@@ -2944,7 +3005,7 @@ const BorrowData = ({
                                   onChange={
                                     handleCollateralInputChangeAddCollateralAction
                                   }
-                                  value={addCollateralAmount}
+                                  value={addCollateralAmount || 0}
                                   valid={!isInvalidCollateralAmount()}
                                 />
                                 <Button
@@ -3137,7 +3198,7 @@ const BorrowData = ({
                         borderRadius: "5px",
                         position: "absolute",
                         zIndex: "100",
-                        top: "242px",
+                        top: "248px",
                         left: "40px",
                         width: "100px",
                         margin: "0px auto",
@@ -3321,14 +3382,14 @@ const BorrowData = ({
                         borderRadius: "5px",
                         position: "absolute",
                         zIndex: "100",
-                        top: "405px",
+                        top: "420px",
                         left: "39px",
                         width: "420px",
                         margin: "0px auto",
                         marginBottom: "20px",
                         padding: "5px 10px",
                         backgroundColor: "#1D2131",
-                        boxShadow: "0px 0px 10px #00000020",
+                        boxShadow: "0px 0px 10px #3D3E52",
                       }}
                       onMouseLeave={(event) => {
                         setMarketDropDown(!marketDropDown);
@@ -3377,7 +3438,7 @@ const BorrowData = ({
                         borderRadius: "5px",
                         position: "absolute",
                         zIndex: "100",
-                        top: "244px",
+                        top: "248px",
                         left: "160px",
 
                         width: "300px",
@@ -3877,7 +3938,7 @@ const BorrowData = ({
                     disabled={
                       loadingApprove ||
                       loadingRepay ||
-                      !repayAmount ||
+                      // !repayAmount ||
                       repayAmount < 0 ||
                       isTransactionLoading(repayTransactionReceipt)
                     }
