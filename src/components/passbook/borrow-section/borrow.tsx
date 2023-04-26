@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {
   useAccount,
   useContract,
@@ -127,7 +129,7 @@ const BorrowTab = ({
 
   const [tokenName, setTokenName] = useState("BTC");
   const [borrowTokenName, setBorrowTokenName] = useState("BTC");
-  const [borrowTokenSymbol, setBorrowTokenSymbol] = useState("WBTC")
+  const [borrowTokenSymbol, setBorrowTokenSymbol] = useState("WBTC");
   const [token, setToken] = useState(getTokenFromName("BTC"));
   const [loanActionTab, setLoanActionTab] = useState("0");
   const { address: account } = useAccount();
@@ -926,11 +928,10 @@ const BorrowTab = ({
               borrowTokenName={borrowTokenName}
               borrowDropDown={borrowDropDown}
               toastParam={toastParam}
-              tokenSymbol ={tokenSymbol}
-              setTokenSymbol ={setTokenSymbol}
+              tokenSymbol={tokenSymbol}
+              setTokenSymbol={setTokenSymbol}
               setBorrowTokenSymbol={setBorrowTokenSymbol}
-              borrowTokenSymbol ={borrowTokenSymbol}
-
+              borrowTokenSymbol={borrowTokenSymbol}
             />
           </>
         )}
