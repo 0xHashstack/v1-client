@@ -2774,7 +2774,7 @@ const BorrowData = ({
                         borderRadius: "5px",
                         border: "2px solid rgb(57, 61, 79)",
                         fontWeight: "200",
-                        marginRight: "9rem",
+                        marginRight: "100rem",
                       }}
                       onClick={toggleDropdown}
                       onMouseLeave={(event) => {
