@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {
   useAccount,
   useContract,
@@ -85,6 +87,7 @@ import UserInformation from "../../../../UserInformation.json";
 import useMySwap from "../../../blockchain/hooks/SpendBorrow/useMySwap";
 import ToastModal from "../../toastModals/customToastModal";
 import { StrictButtonGroupProps } from "semantic-ui-react";
+import SelectButton from "../../buttons/SelectButton";
 
 const BorrowData = ({
   asset: assetParam,
@@ -119,8 +122,8 @@ const BorrowData = ({
   withdrawLoanTransactionReceipt,
   swapLoanToSecondaryTransactionReceipt,
   setRevertSwapTransactionReceipt,
-  // repayTransactionReceipt,
-}: {
+}: // repayTransactionReceipt,
+{
   asset: any;
   allAssets: any;
   historicalAPRs: any;
@@ -212,8 +215,8 @@ const BorrowData = ({
     executeWithdrawCollateral,
     loadingWithdrawCollateral,
     errorWithdrawCollateral,
-    withdrawCollateralTransactionReceipt, 
-    setTransWithdrawCollateral
+    withdrawCollateralTransactionReceipt,
+    setTransWithdrawCollateral,
   } = useWithdrawCollateral(diamondAddress, asset.loanId);
   const {
     partialWithdrawAmount,
@@ -277,7 +280,6 @@ const BorrowData = ({
     setIsToastRevertSpendOpen,
     toastRevertSpendParam,
   } = useRevertSpend(diamondAddress, asset);
-
   const [title, setTitle] = useState({
     amount: "Borrowd",
     label: "Stake",
@@ -343,7 +345,7 @@ const BorrowData = ({
     showWithdrawCollateralPreclosureCharge,
     setShowCollateralPreclosureCharge,
   ] = useState(false);
-  const [DepositLoanRates, setDepositLoanRates] = useState()
+  const [DepositLoanRates, setDepositLoanRates] = useState();
 
   const dappsArray = [
     { name: "jediSwap", supportedActions: ["Swap"] },
@@ -370,7 +372,6 @@ const BorrowData = ({
     });
   }, []);
   // console.log("dep",DepositLoanRates);
-  
 
   useEffect(() => {
     // // console.log(
@@ -438,6 +439,24 @@ const BorrowData = ({
     setPoolId(currentPoolId);
   }, [asset, poolIdtoTokens, marketTokenName]);
 
+  const selection_array = [
+    "Self Liquidate",
+    "Spend Borrow",
+    "Repay Borrow",
+    "Withdraw Partial Borrow",
+    "Revert Spend",
+  ];
+
+  useEffect(() => {
+    selectionAction(selection);
+  }, [selection]);
+
+  // useEffect(() => {
+  //   if (!repayAmount) {
+  //     setRepayAmount(0);
+  //   }
+  // }, [repayAmount]);
+
   const { contract: l3JediContract } = useContract({
     abi: JediSwapAbi as Abi,
     address: l3DiamondAddress,
@@ -500,7 +519,7 @@ const BorrowData = ({
       amount.toString(),
       tokenAddressMap[asset?.loanMarket]
     );
-    let safeAmount = Number(amountWei*0.999).toFixed(6);
+    let safeAmount = Number(amountWei * 0.999).toFixed(6);
     setMaxPartialWithdrawAmount(Number(safeAmount));
   }, [partialWithdrawData, partialWithdrawLoading, partialWithdrawError]);
 
@@ -838,7 +857,8 @@ const BorrowData = ({
       });
       return;
     }
-    if (!repayAmount || repayAmount < 0) {
+    // if (!repayAmount || repayAmount < 0) {
+    if (repayAmount < 0) {
       toast.error(
         `${GetErrorText(`Can't withdraw < 0 of ${asset.loanMarket}`)}`,
         {
@@ -926,17 +946,16 @@ const BorrowData = ({
         Math.floor((diff % (1000 * 3600 * 24)) / (1000 * 3600)),
         1
       );
-      if(diff> 0) {
+      if (diff > 0) {
         setShowNoteForWithdrawCollateral(true);
         setWithdrawCollateralNote(
           UserInformation?.WithdrawCollateral?.TimelockNotExpired +
-          diffDays +
-          " days " +
-          diffHours +
-          `${diffHours > 1 ? " hours." : " hour."}`
+            diffDays +
+            " days " +
+            diffHours +
+            `${diffHours > 1 ? " hours." : " hour."}`
         );
-      }
-      else {
+      } else {
         setShowNoteForWithdrawCollateral(false);
       }
     } else {
@@ -1099,14 +1118,27 @@ const BorrowData = ({
   }
 
   function isInvalidCollateralAmount() {
+    console.log(
+      "aryan",
+      tokenDecimalsMap[asset?.collateralMarket as string] || 18,
+      asset
+    );
     return (
       !addCollateralAmount ||
       addCollateralAmount <= 0 ||
       addCollateralAmount >
+        // Number(
+        //   uint256.uint256ToBN(
+        //     collateralMarketBalance ? collateralMarketBalance[0] : 0
+        //   )
+        // ) /
+        //   10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18)
         Number(
-          uint256.uint256ToBN(collateralMarketBalance ? collateralMarketBalance[0] : 0)
+          uint256.uint256ToBN(
+            collateralMarketBalance ? collateralMarketBalance[0] : 0
+          )
         ) /
-          10 ** (tokenDecimalsMap[asset?.loanMarket as string] || 18)
+          10 ** (tokenDecimalsMap[asset?.collateralMarket as string] || 18)
     );
   }
 
@@ -1310,7 +1342,7 @@ const BorrowData = ({
               &nbsp;&nbsp;
               <span style={{ fontSize: "14px", fontWeight: "600" }}>
                 {weiToEtherNumber(
-                  (assetParam?.loanAmount)?.toString(),
+                  assetParam?.loanAmount?.toString(),
                   tokenAddressMap[assetParam?.loanMarket]?.toString() || ""
                 ).toString()}
               </span>
@@ -1338,7 +1370,7 @@ const BorrowData = ({
 
           <Col>
             <div
-              style={{ fontSize: "14px", fontWeight: "600", width: "110px" }}
+              style={{ fontSize: "14px", fontWeight: "600", width: "115px" }}
             >
               {parseFloat(
                 weiToEtherNumber(
@@ -1708,7 +1740,7 @@ const BorrowData = ({
                                     inputVal1 <= 0 ||
                                     isTransactionLoading(
                                       withdrawLoanTransactionReceipt
-                                    ) 
+                                    )
                                   }
                                   onClick={() => {
                                     handleWithdrawLoan(asset);
@@ -1757,7 +1789,8 @@ const BorrowData = ({
                                   // color="primary"
                                   className="w-md"
                                   disabled={
-                                    asset.isSwapped || handleSwapTransactionDone ||
+                                    asset.isSwapped ||
+                                    handleSwapTransactionDone ||
                                     isTransactionLoading(
                                       swapLoanToSecondaryTransactionReceipt
                                     )
@@ -1870,6 +1903,8 @@ const BorrowData = ({
                           color: "black",
                           border: "1px solid #000",
                           borderRadius: "5px",
+                          position: "absolute",
+                          right: "180px",
                         }}
                         className={classnames({
                           active: customActiveTab === "2",
@@ -1938,7 +1973,7 @@ const BorrowData = ({
                 {!isCollateralActions ? (
                   <>
                     <div style={{ display: "block", maxWidth: "420px" }}>
-                      <label
+                      <SelectButton
                         style={{
                           width: "420px",
                           margin: "5px auto",
@@ -1949,8 +1984,19 @@ const BorrowData = ({
                           border: "2px solid rgb(57, 61, 79)",
                           fontWeight: "200",
                         }}
+                        onClick={toggleDropdown}
+                        onMouseLeave={(event) => {
+                          const rect = event.target.getBoundingClientRect();
+                          const y = event.clientY;
+                          if (y < rect.bottom) {
+                            setDropDown(false);
+                            setDropDownArrow(Downarrow);
+                          }
+                        }}
+                        selection={selection}
+                        dropDownArrow={dropDownArrow}
                       >
-                        <div
+                        {/* <div
                           style={{
                             display: "flex",
                             justifyContent: "space-between",
@@ -1969,15 +2015,14 @@ const BorrowData = ({
                             }}
                           >
                             <Image
-                              onClick={toggleDropdown}
                               src={dropDownArrow}
                               alt="Picture of the author"
                               width="14px"
                               height="14px"
                             />
                           </div>
-                        </div>
-                      </label>
+                        </div> */}
+                      </SelectButton>
 
                       {selection === "Spend Borrow" ? (
                         <div
@@ -1987,7 +2032,7 @@ const BorrowData = ({
                             gap: "20px",
                           }}
                         >
-                          <label
+                          <SelectButton
                             style={{
                               width: "100px",
                               height: "45px",
@@ -2002,21 +2047,31 @@ const BorrowData = ({
                               alignItems: "center",
                               justifyContent: "center",
                             }}
+                            onClick={toggleDropdownTwo}
+                            onMouseLeave={(event) => {
+                              const rect = event.target.getBoundingClientRect();
+                              const y = event.clientY;
+                              if (y < rect.bottom) {
+                                setStakeDropDown(false);
+                                setDropDownArrowTwo(Downarrow);
+                              }
+                            }}
+                            selection={actionLabel}
+                            dropDownArrow={dropDownArrowTwo}
                           >
-                            <div style={{ textAlign: "center" }}>
+                            {/* <div style={{ textAlign: "center" }}>
                               {actionLabel}
                             </div>
                             <Image
-                              onClick={toggleDropdownTwo}
                               style={{ cursor: "pointer" }}
                               src={dropDownArrowTwo}
                               alt="Picture of the author"
                               width="14px"
                               height="14px"
-                            />
-                          </label>
+                            /> */}
+                          </SelectButton>
 
-                          <label
+                          <SelectButton
                             style={{
                               width: "300px",
                               padding: "5px 10px",
@@ -2025,8 +2080,35 @@ const BorrowData = ({
                               border: "2px solid rgb(57, 61, 79)",
                               fontWeight: "200",
                             }}
+                            onClick={toggleyagi}
+                            onMouseLeave={(event) => {
+                              const rect = event.target.getBoundingClientRect();
+                              const y = event.clientY;
+                              const x = event.clientX;
+                              if (y < rect.bottom) {
+                                setYagidrop(false);
+                                setyagiDownArrow(Downarrow);
+                              }
+                            }}
+                            selection={
+                              appsImage ? (
+                                <img
+                                  src={`./${appsImage}.svg`}
+                                  width={`${
+                                    appsImage === "mySwap" ||
+                                    appsImage === "yagi"
+                                      ? "60px"
+                                      : "100px"
+                                  }`}
+                                  height="30px"
+                                ></img>
+                              ) : (
+                                <>No dApps available</>
+                              )
+                            }
+                            dropDownArrow={dropDownArrowThree}
                           >
-                            <div
+                            {/* <div
                               style={{
                                 display: "flex",
                                 justifyContent: "space-between",
@@ -2059,7 +2141,7 @@ const BorrowData = ({
                               >
                                 {appsImage ? (
                                   <Image
-                                    onClick={toggleyagi}
+                                    // onClick={toggleyagi}
                                     src={yagiDownArrow}
                                     alt="DApp"
                                     width="14px"
@@ -2069,8 +2151,8 @@ const BorrowData = ({
                                   <></>
                                 )}
                               </div>
-                            </div>
-                          </label>
+                            </div> */}
+                          </SelectButton>
                         </div>
                       ) : null}
                     </div>
@@ -2500,7 +2582,7 @@ const BorrowData = ({
                                   }}
                                   type="number"
                                   className="form-control"
-                                  placeholder={`Amount in ${asset.loanMarketSymbol}`}
+                                  placeholder={0}
                                   id="amount"
                                   onChange={(e) => {
                                     if (selection === "Repay Borrow")
@@ -2515,6 +2597,7 @@ const BorrowData = ({
                                       : partialWithdrawAmount
                                   }
                                   valid={!(!repayAmount || repayAmount <= 0)}
+                                  // valid={!(repayAmount <= 0)}
                                 />
 
                                 <Button
@@ -2681,7 +2764,7 @@ const BorrowData = ({
                   </>
                 ) : (
                   <>
-                    <label
+                    <SelectButton
                       style={{
                         width: "420px",
                         margin: "5px auto",
@@ -2691,9 +2774,23 @@ const BorrowData = ({
                         borderRadius: "5px",
                         border: "2px solid rgb(57, 61, 79)",
                         fontWeight: "200",
+                        marginRight: "9rem",
                       }}
+                      onClick={toggleDropdown}
+                      onMouseLeave={(event) => {
+                        const rec = event.target.getBoundingClientRect();
+                        const yy = event.clientY;
+                        if (yy < rec.bottom) {
+                          setDropDown(false);
+                          setDropDownArrowTwo(Downarrow);
+                        }
+                      }}
+                      selection={selection}
+                      dropDownArrow={
+                        assetParam.state === "REPAID" ? "" : dropDownArrow
+                      }
                     >
-                      <div
+                      {/* <div
                         style={{
                           display: "flex",
                           justifyContent: "space-between",
@@ -2716,7 +2813,6 @@ const BorrowData = ({
                           ) : (
                             <Image
                               style={{ cursor: "pointer" }}
-                              onClick={toggleDropdown}
                               src={dropDownArrow}
                               alt="Picture of the author"
                               width="14px"
@@ -2724,8 +2820,8 @@ const BorrowData = ({
                             />
                           )}
                         </label>
-                      </div>
-                    </label>
+                      </div> */}
+                    </SelectButton>
 
                     <div
                       style={{
@@ -2909,7 +3005,7 @@ const BorrowData = ({
                                   onChange={
                                     handleCollateralInputChangeAddCollateralAction
                                   }
-                                  value={addCollateralAmount}
+                                  value={addCollateralAmount || 0}
                                   valid={!isInvalidCollateralAmount()}
                                 />
                                 <Button
@@ -3102,7 +3198,7 @@ const BorrowData = ({
                         borderRadius: "5px",
                         position: "absolute",
                         zIndex: "100",
-                        top: "242px",
+                        top: "248px",
                         left: "40px",
                         width: "100px",
                         margin: "0px auto",
@@ -3286,14 +3382,18 @@ const BorrowData = ({
                         borderRadius: "5px",
                         position: "absolute",
                         zIndex: "100",
-                        top: "405px",
+                        top: "420px",
                         left: "39px",
                         width: "420px",
                         margin: "0px auto",
                         marginBottom: "20px",
                         padding: "5px 10px",
                         backgroundColor: "#1D2131",
-                        boxShadow: "0px 0px 10px #00000020",
+                        boxShadow: "0px 0px 10px #3D3E52",
+                      }}
+                      onMouseLeave={(event) => {
+                        setMarketDropDown(!marketDropDown);
+                        setDropDownArrowThree(Downarrow);
                       }}
                     >
                       {getSupportedTokens().map((coin, index, arr) => {
@@ -3338,7 +3438,7 @@ const BorrowData = ({
                         borderRadius: "5px",
                         position: "absolute",
                         zIndex: "100",
-                        top: "244px",
+                        top: "248px",
                         left: "160px",
 
                         width: "300px",
@@ -3346,7 +3446,7 @@ const BorrowData = ({
                         marginBottom: "20px",
                         padding: "5px 10px",
                         backgroundColor: "#1D2131",
-                        boxShadow: "0px 0px 10px #00000020",
+                        boxShadow: "0px 0px 10px #3D3E52",
                       }}
                       onMouseLeave={() => {
                         setYagidrop(!Yagidrop);
@@ -3360,50 +3460,53 @@ const BorrowData = ({
                           )
                         ) {
                           return (
-                            <div
-                              key={index}
-                              style={{
-                                margin: "10px 15px",
-                                cursor: "pointer",
-                                display: "flex",
-                                alignItems: "center",
-                                fontSize: "16px",
-                              }}
-                              onClick={() => {
-                                // if (!activeLoansData) return;
-                                // setmodal_deposit(true);
-                                setMarketTokenName((prev) => {
-                                  if (dapp.name === "jediSwap") {
-                                    const token = getTokenFromAddress(
-                                      supportedPoolsJediSwap.get(
-                                        tokenAddressMap[asset.loanMarket]
-                                      )?.[0] as string
-                                    );
-                                    setMarketTokenSymbol(token?.symbol);
-                                    return token?.name;
-                                  } else if (dapp.name === "mySwap") {
-                                    const token = getTokenFromAddress(
-                                      supportedPoolsMySwap.get(
-                                        tokenAddressMap[asset.loanMarket]
-                                      )?.[0] as string
-                                    );
-                                    setMarketTokenSymbol(token?.symbol);
-                                    return token?.name;
-                                  } else return prev;
-                                });
-                                setappsImage(dapp.name);
-                                toggleyagi();
-                              }}
-                            >
-                              <img
-                                src={`./${dapp.name}.svg`}
-                                width={`${
-                                  dapp.name === "mySwap" ? "60px" : "100px"
-                                }`}
-                                height="30px"
-                                style={{ cursor: "pointer" }}
-                              />
-                            </div>
+                            <>
+                              {index != 0 && <hr />}
+                              <div
+                                key={index}
+                                style={{
+                                  margin: "10px 15px",
+                                  cursor: "pointer",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  fontSize: "16px",
+                                }}
+                                onClick={() => {
+                                  // if (!activeLoansData) return;
+                                  // setmodal_deposit(true);
+                                  setMarketTokenName((prev) => {
+                                    if (dapp.name === "jediSwap") {
+                                      const token = getTokenFromAddress(
+                                        supportedPoolsJediSwap.get(
+                                          tokenAddressMap[asset.loanMarket]
+                                        )?.[0] as string
+                                      );
+                                      setMarketTokenSymbol(token?.symbol);
+                                      return token?.name;
+                                    } else if (dapp.name === "mySwap") {
+                                      const token = getTokenFromAddress(
+                                        supportedPoolsMySwap.get(
+                                          tokenAddressMap[asset.loanMarket]
+                                        )?.[0] as string
+                                      );
+                                      setMarketTokenSymbol(token?.symbol);
+                                      return token?.name;
+                                    } else return prev;
+                                  });
+                                  setappsImage(dapp.name);
+                                  toggleyagi();
+                                }}
+                              >
+                                <img
+                                  src={`./${dapp.name}.svg`}
+                                  width={`${
+                                    dapp.name === "mySwap" ? "60px" : "100px"
+                                  }`}
+                                  height="30px"
+                                  style={{ cursor: "pointer" }}
+                                />
+                              </div>
+                            </>
                           );
                         }
                         return null;
@@ -3448,6 +3551,15 @@ const BorrowData = ({
                             justifyContent: "space-between",
                             alignItems: "center",
                           }}
+                          onClick={toggleDropdownThree}
+                          onMouseLeave={(event) => {
+                            const rec = event.target.getBoundingClientRect();
+                            const yy = event.clientY;
+                            if (yy < rec.bottom) {
+                              setMarketDropDown(false);
+                              setDropDownArrowThree(Downarrow);
+                            }
+                          }}
                         >
                           {marketTokenName ? (
                             <div>
@@ -3471,7 +3583,6 @@ const BorrowData = ({
                             }}
                           >
                             <Image
-                              onClick={toggleDropdownThree}
                               src={dropDownArrowThree}
                               alt="Picture of the author"
                               width="14px"
@@ -3513,97 +3624,112 @@ const BorrowData = ({
                       >
                         {/* 1 BTC = 21,000 USDT */}
                         {/* * TODO: Adjust for token Decimals */}
-                        {console.log("heres", asset, totalAmountOutJediSwap)
-                        }
-                        {asset ? ((appsImage === "mySwap" ? (
-                          totalAmountOutmySwap !== "NA" ? (
-                            Number(totalAmountOutmySwap) >
-                              Number(changeTo18Decimals(
-                                asset?.loanAmount,
-                                asset.loanMarket
-                              )) ? (
-                              `1 ${asset.loanMarketSymbol} = ${(
-                                number
-                                  .toBN(totalAmountOutmySwap)
-                                  .mul(number.toBN(100))
-                                  .div(
-                                    number.toBN(
+                        {console.log("heres", asset, totalAmountOutJediSwap)}
+                        {asset ? (
+                          appsImage === "mySwap" ? (
+                            totalAmountOutmySwap !== "NA" ? (
+                              Number(totalAmountOutmySwap) >
+                              Number(
+                                changeTo18Decimals(
+                                  asset?.loanAmount,
+                                  asset.loanMarket
+                                )
+                              ) ? (
+                                `1 ${asset.loanMarketSymbol} = ${(
+                                  number
+                                    .toBN(totalAmountOutmySwap)
+                                    .mul(number.toBN(100))
+                                    .div(
+                                      number.toBN(
+                                        changeTo18Decimals(
+                                          asset.loanAmount,
+                                          asset.loanMarket
+                                        )
+                                      )
+                                    )
+                                    .toNumber() / 100
+                                ).toFixed(4)} ${marketTokenSymbol}`
+                              ) : (
+                                `1 ${marketTokenSymbol} = ${(
+                                  number
+                                    .toBN(
                                       changeTo18Decimals(
-                                        asset.loanAmount,
+                                        asset?.loanAmount,
                                         asset.loanMarket
                                       )
                                     )
-                                  )
-                                  .toNumber() / 100
-                              ).toFixed(4)} ${marketTokenSymbol}`
+                                    .mul(number.toBN(100))
+                                    .div(number.toBN(totalAmountOutmySwap))
+                                    .toNumber() / 100
+                                ).toFixed(4)} ${asset.loanMarketSymbol}`
+                              )
                             ) : (
-                              `1 ${marketTokenSymbol} = ${(
-                                number
-                                  .toBN(
-                                    changeTo18Decimals(
-                                      asset?.loanAmount,
-                                      asset.loanMarket
-                                    )
-                                  )
-                                  .mul(number.toBN(100))
-                                  .div(number.toBN(totalAmountOutmySwap))
-                                  .toNumber() / 100
-                              ).toFixed(4)} ${asset.loanMarketSymbol}`
+                              <MySpinner />
                             )
-                          ) : (
-                            <MySpinner />
-                          )
-                        ) : appsImage === "jediSwap" ? (
-                          totalAmountOutJediSwap !== "NA" ? (
-                            Number(totalAmountOutJediSwap) >
-                              Number(changeTo18Decimals(
-                                asset?.loanAmount,
-                                asset.loanMarket
-                              )) ? (
-                              `1 ${asset.loanMarketSymbol} = ${(
-                                number
-                                  .toBN(totalAmountOutJediSwap)
-                                  .mul(number.toBN(100))
-                                  .div(
-                                    number.toBN(
+                          ) : appsImage === "jediSwap" ? (
+                            totalAmountOutJediSwap !== "NA" ? (
+                              Number(totalAmountOutJediSwap) >
+                              Number(
+                                changeTo18Decimals(
+                                  asset?.loanAmount,
+                                  asset.loanMarket
+                                )
+                              ) ? (
+                                `1 ${asset.loanMarketSymbol} = ${(
+                                  number
+                                    .toBN(totalAmountOutJediSwap)
+                                    .mul(number.toBN(100))
+                                    .div(
+                                      number.toBN(
+                                        changeTo18Decimals(
+                                          asset.loanAmount,
+                                          asset.loanMarket
+                                        )
+                                      )
+                                    )
+                                    .toNumber() / 100
+                                ).toFixed(4)} ${marketTokenSymbol}`
+                              ) : (
+                                `1 ${marketTokenSymbol} = ${(
+                                  number
+                                    .toBN(
                                       changeTo18Decimals(
-                                        asset.loanAmount,
+                                        asset?.loanAmount,
                                         asset.loanMarket
                                       )
                                     )
-                                  )
-                                  .toNumber() / 100
-                              ).toFixed(4)} ${marketTokenSymbol}`
+                                    .mul(number.toBN(100))
+                                    .div(number.toBN(totalAmountOutJediSwap))
+                                    .toNumber() / 100
+                                ).toFixed(4)} ${asset.loanMarketSymbol}`
+                              )
                             ) : (
-                              `1 ${marketTokenSymbol} = ${(
-                                number
-                                  .toBN(
-                                    changeTo18Decimals(
-                                      asset?.loanAmount,
-                                      asset.loanMarket
-                                    )
-                                  )
-                                  .mul(number.toBN(100))
-                                  .div(number.toBN(totalAmountOutJediSwap))
-                                  .toNumber() / 100
-                              ).toFixed(4)} ${asset.loanMarketSymbol}`
+                              <MySpinner />
                             )
                           ) : (
-                            <MySpinner />
+                            "-"
                           )
                         ) : (
                           "-"
-                        ))) : (
-                          "-"
                         )}
 
-                        {console.log("inequality", marketTokenSymbol, asset.loanMarketSymbol, totalAmountOutJediSwap, changeTo18Decimals(
-                          asset?.loanAmount,
-                          asset.loanMarket
-                        ), Number(totalAmountOutJediSwap) > Number(changeTo18Decimals(
-                          asset?.loanAmount,
-                          asset.loanMarket
-                        )))}
+                        {console.log(
+                          "inequality",
+                          marketTokenSymbol,
+                          asset.loanMarketSymbol,
+                          totalAmountOutJediSwap,
+                          changeTo18Decimals(
+                            asset?.loanAmount,
+                            asset.loanMarket
+                          ),
+                          Number(totalAmountOutJediSwap) >
+                            Number(
+                              changeTo18Decimals(
+                                asset?.loanAmount,
+                                asset.loanMarket
+                              )
+                            )
+                        )}
                       </div>
                     </div>
                     <div
@@ -3674,11 +3800,12 @@ const BorrowData = ({
                     }
                     onClick={handleSpendBorrowCTAButton}
                   >
-                    {!(actionLabel === "Swap" &&
-                      (
-                        (appsImage === 'jediSwap' && isTransactionLoading(jediSwapTransReceipt))
-                        || (appsImage === "mySwap" && isTransactionLoading(mySwapTransReceipt))
-                      )
+                    {!(
+                      actionLabel === "Swap" &&
+                      ((appsImage === "jediSwap" &&
+                        isTransactionLoading(jediSwapTransReceipt)) ||
+                        (appsImage === "mySwap" &&
+                          isTransactionLoading(mySwapTransReceipt)))
                     ) ? (
                       <div style={{ display: "block" }}>
                         {selection}
@@ -3811,7 +3938,7 @@ const BorrowData = ({
                     disabled={
                       loadingApprove ||
                       loadingRepay ||
-                      !repayAmount ||
+                      // !repayAmount ||
                       repayAmount < 0 ||
                       isTransactionLoading(repayTransactionReceipt)
                     }
@@ -3911,12 +4038,14 @@ const BorrowData = ({
                       backgroundColor: "rgb(57, 61, 79)",
                       border: "none",
                     }}
-                    disabled={asset?.isWithdrawn || asset?.isSwapped || isTransactionLoading(partialWithdrawTransReceipt)}
+                    disabled={
+                      asset?.isWithdrawn ||
+                      asset?.isSwapped ||
+                      isTransactionLoading(partialWithdrawTransReceipt)
+                    }
                     onClick={handleWithdrawPartialBorrow}
                   >
-                    {!(
-                      isTransactionLoading(partialWithdrawTransReceipt)
-                    ) ? (
+                    {!isTransactionLoading(partialWithdrawTransReceipt) ? (
                       <>{selection}</>
                     ) : (
                       <MySpinner text="Withdrawing" />
@@ -4056,7 +4185,10 @@ const BorrowData = ({
                       border: "none",
                     }}
                     disabled={
-                      loadingApprove || loadingSelfLiquidate || isInvalid() || isTransactionLoading(selfLiquidateTransactionReceipt)
+                      loadingApprove ||
+                      loadingSelfLiquidate ||
+                      isInvalid() ||
+                      isTransactionLoading(selfLiquidateTransactionReceipt)
                     }
                     onClick={handleSelfLiquidate}
                   >
@@ -4243,20 +4375,17 @@ const BorrowData = ({
                           color: "#6F6F6F",
                         }}
                       >
-
-                       {DepositLoanRates  ? (
-                      `${
-                        parseFloat(
-                          DepositLoanRates[
-                            `${asset.loanMarketAddress}__${
-                              asset.commitmentIndex
-                            }`
-                          ]?.borrowAPR?.apr100x as string
-                        ) / 100
-                      } %`
-                    ) : (
-                      <MySpinner />
-                    )}
+                        {DepositLoanRates ? (
+                          `${
+                            parseFloat(
+                              DepositLoanRates[
+                                `${asset.loanMarketAddress}__${asset.commitmentIndex}`
+                              ]?.borrowAPR?.apr100x as string
+                            ) / 100
+                          } %`
+                        ) : (
+                          <MySpinner />
+                        )}
                       </div>
                     </div>
                     <div
@@ -4293,9 +4422,7 @@ const BorrowData = ({
                     }
                     onClick={handleAddCollateral}
                   >
-                    {!(
-                      isTransactionLoading(addCollateralTransactionReceipt)
-                    ) ? (
+                    {!isTransactionLoading(addCollateralTransactionReceipt) ? (
                       <>{selection}</>
                     ) : (
                       <MySpinner text="Adding Collateral" />

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useState, useContext, MemoExoticComponent, useEffect } from "react";
 
 import {
