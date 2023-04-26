@@ -4,7 +4,13 @@ import type { AppProps } from "next/app";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
 
+import spaceApiKey from "../utils/constants/keys";
+import { loadSpace } from "@usersnap/browser";
+
 export default function App({ Component, pageProps }: AppProps) {
+  loadSpace(spaceApiKey).then((api) => {
+    api.init();
+  });
   return (
     <Provider store={store}>
       <Component {...pageProps} />
