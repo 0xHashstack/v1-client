@@ -5,6 +5,7 @@ import {
   selectAccountAddress,
   setAccountAddress,
 } from "@/store/slices/userAccountSlice";
+import SupplyModal from "@/components/modals/SupplyModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,9 +18,10 @@ export default function Home() {
   }
   return (
     <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
+      className={` flex bg-slate-500 min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <h1>Initial setup</h1>
+      <SupplyModal/>
     </main>
   );
 }
