@@ -5,6 +5,7 @@ import {
   selectAccountAddress,
   setAccountAddress,
 } from "@/store/slices/userAccountSlice";
+import Navbar from "@/components/layouts/navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,10 +17,20 @@ export default function Home() {
     dispatch(setAccountAddress(e.target.user.value));
   }
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <h1>Initial setup</h1>
-    </main>
+    <>
+      <Navbar />
+      <main
+        className={`bg-red-400 flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
+      >
+        {/* <h1>Initial setup</h1>
+        <h1>Initial setup</h1>
+        <h1>Initial setup</h1>
+        <h1>Initial setup</h1>
+        <h1>Initial setup</h1>
+        <h1>Initial setup</h1>
+        <h1>Initial setup</h1>
+        <h1>Initial setup</h1> */}
+      </main>
+    </>
   );
 }

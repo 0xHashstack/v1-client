@@ -6,11 +6,20 @@ import { store } from "../store/store";
 
 import spaceApiKey from "../utils/constants/keys";
 import { loadSpace } from "@usersnap/browser";
+import { useEffect } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
-  loadSpace(spaceApiKey).then((api) => {
-    api.init();
-  });
+  let feedbackinitialized = false;
+  useEffect(() => {
+    console.log("api");
+    if (!feedbackinitialized) {
+      loadSpace(spaceApiKey).then((api) => {
+        api.init();
+      });
+      feedbackinitialized = true;
+    }
+  }, []);
+
   return (
     <Provider store={store}>
       <Component {...pageProps} />
