@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Inter } from "next/font/google";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,6 +6,8 @@ import {
 } from "@/store/slices/userAccountSlice";
 import SupplyModal from "@/components/modals/SupplyModal";
 import Navbar from "@/components/layouts/navbar/Navbar";
+import StatsBoard from "@/pages/statsBoard";
+import { Stack } from "@chakra-ui/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,11 +19,17 @@ export default function Home() {
     dispatch(setAccountAddress(e.target.user.value));
   }
   return (
-    <main
-      className={` flex bg-slate-500 min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <h1>Initial setup</h1>
-      <SupplyModal/>
+    <main className={`${inter.className}`}>
+      <Navbar />
+      <Stack
+        alignItems="center"
+        minHeight={"100vh"}
+        pt="7rem"
+        backgroundColor="#010409"
+      >
+        <StatsBoard />
+        <SupplyModal />
+      </Stack>
     </main>
   );
 }

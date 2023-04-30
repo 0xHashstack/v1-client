@@ -19,7 +19,7 @@ export const userAccountSlice = createSlice({
       [HYDRATE]: (state, action) => {
         return {
           ...state,
-          ...action.payload.auth,
+          ...action.payload.user_account,
         };
       },
     },
