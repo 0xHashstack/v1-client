@@ -25,3 +25,50 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+*::-webkit-scrollbar {
+  width: 0.5em;
+  border-radius: 12px;
+}
+
+*::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 6px #c0c0c0;
+
+  border-radius: 12px;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: darkgrey;
+  outline: 1px solid slategrey;
+  border-radius: 12px;
+}
+
+*::-webkit-scrollbar-corner {
+  background-color: slategrey;
+  border-radius: 5px;
+}
+
+.navbar {
+  position: relative;
+  /* other styles for navbar... */
+}
+
+.navbar-button {
+  position: relative;
+  z-index: 1;
+  /* other styles for button... */
+}
+
+.dropdown-container {
+  background-color: #101216;
+  position: absolute;
+  top: 120%;
+  /* left: 12; */
+  z-index: 2;
+  border: 1px solid #2b2f35;
+  border-radius: 4px;
+}
+
+/* .dropdown-container > :first-child {
+  background-color: #0366d6;
+} */

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import {
     Button,
     Modal,
@@ -161,6 +161,6 @@ const SupplyModal = () => {
             </Portal>
         </div>
     )
-}
+};
 
 export default SupplyModal

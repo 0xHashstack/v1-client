@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Inter } from "next/font/google";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -6,8 +5,10 @@ import {
   setAccountAddress,
 } from "@/store/slices/userAccountSlice";
 import SupplyModal from "@/components/modals/SupplyModal";
-import TransactionFailedModal from "@/components/modals/TransactionFailedModal";
-import TransactionCancelModal from "@/components/modals/TransactionCancelModal";
+import Navbar from "@/components/layouts/navbar/Navbar";
+import StatsBoard from "@/pages/statsBoard";
+import { Stack } from "@chakra-ui/react";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
@@ -22,6 +23,7 @@ export default function Home() {
       className={` flex bg-slate-500 min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
     >
       <h1>Initial setup</h1>
+      <SupplyModal/>
     </main>
   );
 }
