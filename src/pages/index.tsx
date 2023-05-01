@@ -5,7 +5,6 @@ import {
   setAccountAddress,
 } from "@/store/slices/userAccountSlice";
 import SupplyModal from "@/components/modals/SupplyModal";
-import ModalBorrow from "@/components/modals/borrowModal";
 import Navbar from "@/components/layouts/navbar/Navbar";
 import StatsBoard from "@/pages/statsBoard";
 import { Stack } from "@chakra-ui/react";
@@ -20,11 +19,17 @@ export default function Home() {
     dispatch(setAccountAddress(e.target.user.value));
   }
   return (
-    <main className="flex align-middle justify-center font-inter">
-      <div>
-        <h1>Hello World</h1>
-        <ModalBorrow />
-      </div>
+    <main className={`${inter.className}`}>
+      <Navbar />
+      <Stack
+        alignItems="center"
+        minHeight={"100vh"}
+        pt="7rem"
+        backgroundColor="#010409"
+      >
+        <StatsBoard />
+        <SupplyModal />
+      </Stack>
     </main>
   );
 }
