@@ -8,11 +8,20 @@ import { ChakraProvider } from "@chakra-ui/react";
 
 import spaceApiKey from "../utils/constants/keys";
 import { loadSpace } from "@usersnap/browser";
+import { useEffect, useRef } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
-  loadSpace(spaceApiKey).then((api) => {
-    api.init();
-  });
+  const feedbackinitialized = useRef(false);
+  console.log("api");
+  useEffect(() => {
+    if (!feedbackinitialized.current) {
+      loadSpace(spaceApiKey).then((api) => {
+        api.init();
+      });
+    }
+    feedbackinitialized.current = true;
+  }, []);
+
   return (
     <ChakraProvider>
       <Provider store={store}>

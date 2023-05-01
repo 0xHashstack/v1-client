@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Inter } from "next/font/google";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -7,6 +6,9 @@ import {
 } from "@/store/slices/userAccountSlice";
 import SupplyModal from "@/components/modals/SupplyModal";
 import ModalBorrow from "@/components/modals/borrowModal";
+import Navbar from "@/components/layouts/navbar/Navbar";
+import StatsBoard from "@/pages/statsBoard";
+import { Stack } from "@chakra-ui/react";
 
 const inter = Inter({ subsets: ["latin"] });
 
