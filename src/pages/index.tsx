@@ -19,17 +19,11 @@ export default function Home() {
     dispatch(setAccountAddress(e.target.user.value));
   }
   return (
-    <main className={`${inter.className}`}>
-      <Navbar />
-      <Stack
-        alignItems="center"
-        minHeight={"100vh"}
-        pt="7rem"
-        backgroundColor="#010409"
-      >
-        <StatsBoard />
-        <SupplyModal />
-      </Stack>
+    <main
+      className={` flex bg-slate-500 min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
+    >
+      <h1>Initial setup</h1>
+      <SupplyModal/>
     </main>
   );
 }
