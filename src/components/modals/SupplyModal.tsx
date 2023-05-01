@@ -46,7 +46,7 @@ const SupplyModal = () => {
             </Card>
             <Checkbox defaultChecked mt="0.5rem">
               <Text fontSize="0.65rem">
-                Ticking would stake the received rTokens unchecking wouldn't
+                Ticking would stake the received rTokens unchecking wouldnt
                 stake rTokens
               </Text>
             </Checkbox>
