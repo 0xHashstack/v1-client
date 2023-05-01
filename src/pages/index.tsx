@@ -6,6 +6,7 @@ import {
   setAccountAddress,
 } from "@/store/slices/userAccountSlice";
 import SupplyModal from "@/components/modals/SupplyModal";
+import ModalBorrow from "@/components/modals/borrowModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -17,11 +18,11 @@ export default function Home() {
     dispatch(setAccountAddress(e.target.user.value));
   }
   return (
-    <main
-      className={` flex bg-slate-500 min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <h1>Initial setup</h1>
-      <SupplyModal/>
+    <main className="flex align-middle justify-center font-inter">
+      <div>
+        <h1>Hello World</h1>
+        <ModalBorrow />
+      </div>
     </main>
   );
 }
