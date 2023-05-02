@@ -5,6 +5,8 @@ const initialState = {
   navDropdowns: {
     moreButtonDropdown: false,
     walletConnectionDropdown: false,
+    borrowModalBorrowMarketDropdown: false,
+    borrowModalCollateralMarketDropdown: false,
   },
 };
 

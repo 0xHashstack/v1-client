@@ -10,7 +10,7 @@ import {
 import { useState } from "react";
 import SliderTooltip from "./sliderTooltip";
 const SliderWithInput = () => {
-  const [sliderValue, setSliderValue] = useState(50);
+  const [sliderValue, setSliderValue] = useState(46);
 
   const labelStyles = {
     mt: "2",
@@ -19,28 +19,34 @@ const SliderWithInput = () => {
   };
 
   return (
-    <Box pt={10} pb={2}>
-      <Slider aria-label="slider-ex-6" onChange={(val) => setSliderValue(val)}>
+    <Box pt={5} pb={2}>
+      <Slider
+        aria-label="slider-ex-6"
+        defaultValue={sliderValue}
+        onChange={(val) => setSliderValue(val)}
+      >
         <SliderMark value={sliderValue}>
-          <Box position="absolute" bottom="-6px" left="-16px">
+          <Box position="absolute" bottom="-8px" left="-11px" zIndex="1">
             <SliderTooltip />
             <Text
               position="absolute"
               color="black"
               top="6px"
-              left="4px"
-              fontSize="xs"
-              fontWeight="semibold"
+              left={
+                sliderValue !== 100 ? (sliderValue >= 10 ? "15%" : "25%") : "0"
+              }
+              fontSize=".58rem"
+              fontWeight="bold"
               textAlign="center"
             >
               {sliderValue}%
             </Text>
           </Box>
         </SliderMark>
-        <SliderTrack>
-          <SliderFilledTrack />
+        <SliderTrack h="2px" bg="#343333">
+          <SliderFilledTrack bg="white" />
         </SliderTrack>
-        <SliderThumb />
+        {/* <SliderThumb /> */}
       </Slider>
     </Box>
   );
