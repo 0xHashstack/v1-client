@@ -71,9 +71,9 @@ function MyApp({ Component, pageProps }: AppProps) {
     new InjectedConnector({ options: { id: "argentX" } }),
   ];
 
-  loadSpace(spaceApiKey).then((api) => {
-    api.init();
-  });
+  // loadSpace(spaceApiKey).then((api) => {
+  //   api.init();
+  // });
 
   return (
     <div
@@ -102,37 +102,39 @@ function MyApp({ Component, pageProps }: AppProps) {
       <ErrorBoundary>
         <IdentifierProvider>
           {/* <UserbackProvider token="39857|79571|wl6RzENQOfH9X00C8sLDIWgwj"> */}
-          <WagmiConfig client={wagmiClient}>
-            <RainbowKitProvider chains={chains}>
-              <StarknetProvider
-                connectors={connectors}
-                autoConnect
-                defaultProvider={
-                  // @todo to move this to env variables
-                  // @Rajeebs's Infura project
-                  new RpcProvider({
-                    nodeUrl:
-                      "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
-                  })
-                }
-              >
-                <Provider store={store}>
-                  <DetailsProvider>
-                    <SecTabsProvider>
-                      <TabsProvider>
-                        {/* <ConnectionDetails /> */}
-                        <Layout>
-                          <Component {...pageProps} />
-                        </Layout>
-                        <ToastContainer />
-                      </TabsProvider>
-                    </SecTabsProvider>
-                  </DetailsProvider>
-                </Provider>
-              </StarknetProvider>
-            </RainbowKitProvider>
-          </WagmiConfig>{" "}
-          {/* </UserbackProvider> */}
+          {/* new one below */}
+          <UserbackProvider token="40202|80442|mX2ZdYcMxJbcQjhQu6EJB9M9S">
+            <WagmiConfig client={wagmiClient}>
+              <RainbowKitProvider chains={chains}>
+                <StarknetProvider
+                  connectors={connectors}
+                  autoConnect
+                  defaultProvider={
+                    // @todo to move this to env variables
+                    // @Rajeebs's Infura project
+                    new RpcProvider({
+                      nodeUrl:
+                        "https://starknet-mainnet.infura.io/v3/c93242f6373647c7b5df8e400f236b7c",
+                    })
+                  }
+                >
+                  <Provider store={store}>
+                    <DetailsProvider>
+                      <SecTabsProvider>
+                        <TabsProvider>
+                          {/* <ConnectionDetails /> */}
+                          <Layout>
+                            <Component {...pageProps} />
+                          </Layout>
+                          <ToastContainer />
+                        </TabsProvider>
+                      </SecTabsProvider>
+                    </DetailsProvider>
+                  </Provider>
+                </StarknetProvider>
+              </RainbowKitProvider>
+            </WagmiConfig>{" "}
+          </UserbackProvider>
         </IdentifierProvider>
       </ErrorBoundary>
     </div>
