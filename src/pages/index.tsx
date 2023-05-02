@@ -7,6 +7,9 @@ import {
 import SupplyModal from "@/components/modals/SupplyModal";
 import Navbar from "@/components/layouts/navbar/Navbar";
 import StatsBoard from "@/pages/statsBoard";
+import BorrowModal from "@/components/modals/borrowModal";
+import TransactionCancelModal from "@/components/modals/TransactionCancelModal";
+import TransactionFailedModal from "@/components/modals/TransactionFailedModal";
 import { Stack } from "@chakra-ui/react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -29,6 +32,9 @@ export default function Home() {
       >
         <StatsBoard />
         <SupplyModal />
+        <BorrowModal/>
+        <TransactionCancelModal/>
+        <TransactionFailedModal/>
       </Stack>
     </main>
   );
