@@ -43,7 +43,7 @@ const Navbar = () => {
         zIndex: "10",
         position: "fixed",
         padding: "0.4rem 0",
-        backgroundColor: "#1C202F",
+        backgroundColor: "#161B22",
         width: "100vw",
         // height: "10%",
         color: "white",

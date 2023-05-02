@@ -1,6 +1,6 @@
 import React from "react";
 
-const BitcoinLogo = () => {
+const BTCLogo = () => {
   return (
     <svg
       width="16"
@@ -26,4 +26,4 @@ const BitcoinLogo = () => {
   );
 };
 
-export default BitcoinLogo;
+export default BTCLogo;

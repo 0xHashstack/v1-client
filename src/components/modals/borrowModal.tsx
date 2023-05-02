@@ -16,13 +16,62 @@ import {
   Text,
   Heading,
 } from "@chakra-ui/react";
-import BitcoinLogo from "../../assets/icons/coins/bitcoin";
+
+/* Coins logo import  */
+import BTCLogo from "../../assets/icons/coins/btc";
+import USDCLogo from "@/assets/icons/coins/usdc";
+import USDTLogo from "@/assets/icons/coins/usdt";
+import ETHLogo from "@/assets/icons/coins/eth";
+import DAILogo from "@/assets/icons/coins/dai";
+
 import DropdownUp from "../../assets/icons/dropdownUpIcon";
 import InfoIcon from "../../assets/icons/infoIcon";
 import SliderWithInput from "../uiElements/sliders/sliderWithInput";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectNavDropdowns,
+  setNavDropdown,
+} from "@/store/slices/dropdownsSlice";
+import { useState } from "react";
+
 const BorrowModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   //   console.log("isopen", isOpen, "onopen", onOpen, "onClose", onClose);
+
+  const dispatch = useDispatch();
+  const navDropdowns = useSelector(selectNavDropdowns);
+
+  const getCoin = (CoinName: string) => {
+    switch (CoinName) {
+      case "BTC":
+        return <BTCLogo />;
+        break;
+      case "USDC":
+        return <USDCLogo />;
+        break;
+      case "USDT":
+        return <USDTLogo />;
+        break;
+      case "ETH":
+        return <ETHLogo />;
+        break;
+      case "DAI":
+        return <DAILogo />;
+        break;
+      default:
+        break;
+    }
+  };
+
+  const handleDropdownClick = (dropdownName: string) => {
+    dispatch(setNavDropdown(dropdownName));
+  };
+
+  const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
+  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+
+  const [currentCollateralCoin, setCurrentCollateralCoin] = useState("BTC");
+  const [currentBorrowCoin, setCurrentBorrowCoin] = useState("BTC");
 
   return (
     <Box>
@@ -35,8 +84,8 @@ const BorrowModal = () => {
         scrollBehavior="outside"
         size={"sm"}
       >
-        <ModalOverlay />
-        <ModalContent bg={"#010409"}>
+        <ModalOverlay mt="20" />
+        <ModalContent mt="80" mb="10" bg={"#010409"}>
           {/* <ModalHeader>Borrow</ModalHeader> */}
           <ModalCloseButton
             top={"10"}
@@ -100,19 +149,74 @@ const BorrowModal = () => {
                   borderColor="#2B2F35"
                   justifyContent="space-between"
                   py="2"
-                  pl="2"
+                  pl="3"
                   pr="3"
                   borderRadius="md"
+                  className="navbar"
+                  onClick={() =>
+                    handleDropdownClick("borrowModalCollateralMarketDropdown")
+                  }
                 >
                   <Box display="flex" gap="1">
-                    <Box p="1">
-                      <BitcoinLogo />
-                    </Box>
-                    <Text>BTC</Text>
+                    <Box p="1">{getCoin(currentCollateralCoin)}</Box>
+                    <Text>{currentCollateralCoin}</Text>
                   </Box>
-                  <Box pt="1">
+                  <Box pt="1" className="navbar-button">
                     <DropdownUp />
                   </Box>
+                  {navDropdowns.borrowModalCollateralMarketDropdown && (
+                    <Box
+                      w="full"
+                      left="0"
+                      bg="#03060B"
+                      py="2"
+                      className="dropdown-container"
+                      boxShadow="dark-lg"
+                    >
+                      {coins.map((coin, index) => {
+                        return (
+                          <Box
+                            as="button"
+                            w="full"
+                            display="flex"
+                            alignItems="center"
+                            gap="1"
+                            pr="2"
+                            onClick={() => {
+                              setCurrentCollateralCoin(coin);
+                            }}
+                          >
+                            {coin === currentCollateralCoin && (
+                              <Box
+                                w="3px"
+                                h="28px"
+                                bg="#0C6AD9"
+                                borderRightRadius="md"
+                              ></Box>
+                            )}
+                            <Box
+                              w="full"
+                              display="flex"
+                              py="5px"
+                              px={`${
+                                coin === currentCollateralCoin ? "1" : "5"
+                              }`}
+                              gap="1"
+                              bg={`${
+                                coin === currentCollateralCoin
+                                  ? "#0C6AD9"
+                                  : "inherit"
+                              }`}
+                              borderRadius="md"
+                            >
+                              <Box p="1">{getCoin(coin)}</Box>
+                              <Text>{coin}</Text>
+                            </Box>
+                          </Box>
+                        );
+                      })}
+                    </Box>
+                  )}
                 </Box>
               </Box>
               <Box display="flex" flexDirection="column" gap="1">
@@ -138,10 +242,14 @@ const BorrowModal = () => {
                 </Box>
                 <InputGroup>
                   <Input
+                    min="0"
                     type="number"
                     textColor="white"
                     focusBorderColor="#2B2F35"
                     placeholder="Minimum 0.01536 BTC"
+                    _hover={{
+                      outline: "none",
+                    }}
                     _focus={{
                       boxShadow: "none",
                       outline: "0",
@@ -153,7 +261,7 @@ const BorrowModal = () => {
                       outline: "0",
                     }}
                     borderColor={"#2B2F35"}
-                    pl={"3"}
+                    pl={"4"}
                     pb={"1"}
                   />
                   <InputRightElement pr={"6"} pb={"1"} fontSize={"sm"}>
@@ -188,7 +296,7 @@ const BorrowModal = () => {
               <Box display="flex" flexDirection="column" gap="1">
                 <Box display="flex">
                   <Text fontSize="xs" color="#8B949E">
-                    Collateral Market
+                    Borrow Market
                   </Text>
                   <Tooltip
                     hasArrow
@@ -215,22 +323,75 @@ const BorrowModal = () => {
                   pl="2"
                   pr="3"
                   borderRadius="md"
+                  className="navbar"
+                  onClick={() =>
+                    handleDropdownClick("borrowModalBorrowMarketDropdown")
+                  }
                 >
                   <Box display="flex" gap="1">
-                    <Box p="1">
-                      <BitcoinLogo />
-                    </Box>
-                    <Text>BTC</Text>
+                    <Box p="1">{getCoin(currentBorrowCoin)}</Box>
+                    <Text>{currentBorrowCoin}</Text>
                   </Box>
-                  <Box pt="1">
+                  <Box pt="1" className="navbar-button">
                     <DropdownUp />
                   </Box>
+                  {navDropdowns.borrowModalBorrowMarketDropdown && (
+                    <Box
+                      w="full"
+                      left="0"
+                      bg="#03060B"
+                      py="2"
+                      className="dropdown-container"
+                      boxShadow="dark-lg"
+                    >
+                      {coins.map((coin, index) => {
+                        return (
+                          <Box
+                            as="button"
+                            w="full"
+                            display="flex"
+                            alignItems="center"
+                            gap="1"
+                            pr="2"
+                            onClick={() => {
+                              setCurrentBorrowCoin(coin);
+                            }}
+                          >
+                            {coin === currentBorrowCoin && (
+                              <Box
+                                w="3px"
+                                h="28px"
+                                bg="#0C6AD9"
+                                borderRightRadius="md"
+                              ></Box>
+                            )}
+                            <Box
+                              w="full"
+                              display="flex"
+                              py="5px"
+                              px={`${coin === currentBorrowCoin ? "1" : "5"}`}
+                              gap="1"
+                              bg={`${
+                                coin === currentBorrowCoin
+                                  ? "#0C6AD9"
+                                  : "inherit"
+                              }`}
+                              borderRadius="md"
+                            >
+                              <Box p="1">{getCoin(coin)}</Box>
+                              <Text>{coin}</Text>
+                            </Box>
+                          </Box>
+                        );
+                      })}
+                    </Box>
+                  )}
                 </Box>
               </Box>
               <Box display="flex" flexDirection="column" gap="1">
                 <Box display="flex">
                   <Text fontSize="xs" color="#8B949E">
-                    Collateral Amount
+                    Borrow Amount
                   </Text>
                   <Tooltip
                     hasArrow
@@ -250,12 +411,22 @@ const BorrowModal = () => {
                 </Box>
                 <InputGroup>
                   <Input
-                    textColor={"#343848"}
+                    type="number"
+                    textColor="white"
+                    focusBorderColor="#2B2F35"
                     placeholder="Minimum 0.01536 BTC"
+                    _hover={{
+                      outline: "none",
+                    }}
+                    _focus={{
+                      boxShadow: "none",
+                      outline: "0",
+                    }}
                     _placeholder={{
                       color: "#393D4F",
                       fontSize: ".89rem",
                       fontWeight: "600",
+                      outline: "0",
                     }}
                     borderColor={"#2B2F35"}
                     pl={"3"}
@@ -268,12 +439,9 @@ const BorrowModal = () => {
                   </InputRightElement>
                 </InputGroup>
               </Box>
-              <Text textAlign="right" fontSize="xs" fontWeight="thin">
-                Wallet Balance: 0.00{" "}
-                <Text as="span" color="#8B949E">
-                  BTC
-                </Text>
-              </Text>
+              <Box>
+                <SliderWithInput />
+              </Box>
             </Box>
 
             <Box className="p-2 bg-[#101216] rounded-md border border-[#2B2F35] my-6">
@@ -369,7 +537,7 @@ const BorrowModal = () => {
               </Box>
             </Box>
 
-            <button className="w-full bg-[#30363D] hover:bg-[#2EA043] text-[#6E7681] hover:text-[white] rounded-md border border-[#8B949E] py-1 mb-6">
+            <button className="w-full bg-[#101216] hover:bg-[#2EA043] text-[#6E7681] hover:text-[white] rounded-md border border-[#2B2F35] py-1 mb-6">
               Borrow
             </button>
           </ModalBody>
