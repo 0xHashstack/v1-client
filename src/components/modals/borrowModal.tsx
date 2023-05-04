@@ -28,11 +28,18 @@ import DAILogo from "@/assets/icons/coins/dai";
 import DropdownUp from "../../assets/icons/dropdownUpIcon";
 import InfoIcon from "../../assets/icons/infoIcon";
 import { useDispatch, useSelector } from "react-redux";
-import { selectInputSupplyAmount, selectCoinSelectedSupplyModal, setCoinSelectedSupplyModal, selectWalletBalance, setInputSupplyAmount, setInputBorrowModalCollateralAmount, setInputBorrowModalBorrowAmount } from "@/store/slices/userAccountSlice";
+import {
+  selectInputSupplyAmount,
+  selectCoinSelectedSupplyModal,
+  setCoinSelectedSupplyModal,
+  selectWalletBalance,
+  setInputSupplyAmount,
+  setInputBorrowModalCollateralAmount,
+  setInputBorrowModalBorrowAmount,
+} from "@/store/slices/userAccountSlice";
 import {
   selectNavDropdowns,
   setNavDropdown,
-
 } from "@/store/slices/dropdownsSlice";
 import { useState } from "react";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
@@ -40,13 +47,13 @@ import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 const BorrowModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   //   console.log("isopen", isOpen, "onopen", onOpen, "onClose", onClose);
-  const [sliderValue, setSliderValue] = useState(0)
-  const [sliderValue2, setsliderValue2] = useState(0)
+  const [sliderValue, setSliderValue] = useState(0);
+  const [sliderValue2, setsliderValue2] = useState(0);
   const dispatch = useDispatch();
   const walletBalance = useSelector(selectWalletBalance);
-  const [inputAmount, setinputAmount] = useState(0)
-  const [inputCollateralAmount, setinputCollateralAmount] = useState(0)
-  const [inputBorrowAmount, setinputBorrowAmount] = useState(0)
+  const [inputAmount, setinputAmount] = useState(0);
+  const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
+  const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const navDropdowns = useSelector(selectNavDropdowns);
 
   const getCoin = (CoinName: string) => {
@@ -85,7 +92,7 @@ const BorrowModal = () => {
       percentage = Math.round(percentage * 100) / 100;
       setSliderValue(percentage);
       setinputCollateralAmount(newValue);
-      dispatch(setInputBorrowModalCollateralAmount(newValue))
+      dispatch(setInputBorrowModalCollateralAmount(newValue));
       // dispatch((newValue));
     }
   };
@@ -100,7 +107,7 @@ const BorrowModal = () => {
       percentage = Math.round(percentage * 100) / 100;
       setsliderValue2(percentage);
       setinputBorrowAmount(newValue);
-      dispatch(setInputBorrowModalCollateralAmount(newValue))
+      dispatch(setInputBorrowModalCollateralAmount(newValue));
       // dispatch((newValue));
     }
   };
@@ -134,7 +141,6 @@ const BorrowModal = () => {
         onClose={onClose}
         isCentered
         scrollBehavior="inside"
-
       >
         <ModalOverlay
           bg="rgba(244, 242, 255, 0.5);"
@@ -150,7 +156,6 @@ const BorrowModal = () => {
               fontSize={"sm"}
               my={"2"}
             >
-
               <Heading fontSize="md" fontWeight="medium" mt="0.9rem">
                 Borrow
               </Heading>
@@ -209,6 +214,7 @@ const BorrowModal = () => {
                   onClick={() =>
                     handleDropdownClick("borrowModalCollateralMarketDropdown")
                   }
+                  as="button"
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentCollateralCoin)}</Box>
@@ -252,13 +258,15 @@ const BorrowModal = () => {
                               w="full"
                               display="flex"
                               py="5px"
-                              px={`${coin === currentCollateralCoin ? "1" : "5"
-                                }`}
+                              px={`${
+                                coin === currentCollateralCoin ? "1" : "5"
+                              }`}
                               gap="1"
-                              bg={`${coin === currentCollateralCoin
-                                ? "#0C6AD9"
-                                : "inherit"
-                                }`}
+                              bg={`${
+                                coin === currentCollateralCoin
+                                  ? "#0C6AD9"
+                                  : "inherit"
+                              }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -292,26 +300,57 @@ const BorrowModal = () => {
                     </Box>
                   </Tooltip>
                 </Box>
-                <Box width="100%" color="white" border="1px solid #2B2F35" borderRadius="6px" display="flex" justifyContent="space-between">
-                  <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleChange} value={inputCollateralAmount}
+                <Box
+                  width="100%"
+                  color="white"
+                  border="1px solid #2B2F35"
+                  borderRadius="6px"
+                  display="flex"
+                  justifyContent="space-between"
+                >
+                  <NumberInput
+                    border="0px"
+                    min={0}
+                    keepWithinRange={true}
+                    onChange={handleChange}
+                    value={inputCollateralAmount}
                   >
-                    <NumberInputField placeholder={`Minimum 0.01536 ${currentCollateralCoin}`} border="0px" _placeholder={{
-                      color: "#393D4F",
-                      fontSize: ".89rem",
-                      fontWeight: "600",
-                      outline: "0"
-                    }}
+                    <NumberInputField
+                      placeholder={`Minimum 0.01536 ${currentCollateralCoin}`}
+                      border="0px"
+                      _placeholder={{
+                        color: "#393D4F",
+                        fontSize: ".89rem",
+                        fontWeight: "600",
+                        outline: "0",
+                      }}
                       _focus={{
                         outline: "0",
-                        boxShadow: "none"
+                        boxShadow: "none",
                       }}
                     />
                   </NumberInput>
-                  <Button variant="ghost" color="#0969DA" _hover={{ bg: "#101216" }} onClick={() => { setinputCollateralAmount(walletBalance); setSliderValue(100); dispatch(setInputBorrowModalCollateralAmount(walletBalance)) }}>
+                  <Button
+                    variant="ghost"
+                    color="#0969DA"
+                    _hover={{ bg: "#101216" }}
+                    onClick={() => {
+                      setinputCollateralAmount(walletBalance);
+                      setSliderValue(100);
+                      dispatch(
+                        setInputBorrowModalCollateralAmount(walletBalance)
+                      );
+                    }}
+                  >
                     MAX
                   </Button>
                 </Box>
-                <Text textAlign="right" fontSize="12px" fontWeight="500" fontStyle="normal" >
+                <Text
+                  textAlign="right"
+                  fontSize="12px"
+                  fontWeight="500"
+                  fontStyle="normal"
+                >
                   Wallet Balance: {walletBalance}
                   <Text as="span" color="#8B949E">
                     {` ${currentCollateralCoin}`}
@@ -324,22 +363,31 @@ const BorrowModal = () => {
                     value={sliderValue}
                     onChange={(val) => {
                       setSliderValue(val);
-                      var ans = ((val / 100) * walletBalance);
+                      var ans = (val / 100) * walletBalance;
                       ans = Math.round(ans * 100) / 100;
-                      dispatch(setInputBorrowModalCollateralAmount(ans))
+                      dispatch(setInputBorrowModalCollateralAmount(ans));
                       setinputCollateralAmount(ans);
                     }}
                     focusThumbOnChange={false}
                   >
                     <SliderMark value={sliderValue}>
-                      <Box position="absolute" bottom="-8px" left="-11px" zIndex="1">
+                      <Box
+                        position="absolute"
+                        bottom="-8px"
+                        left="-11px"
+                        zIndex="1"
+                      >
                         <SliderTooltip />
                         <Text
                           position="absolute"
                           color="black"
                           top="6px"
                           left={
-                            sliderValue !== 100 ? (sliderValue >= 10 ? "15%" : "25%") : "0"
+                            sliderValue !== 100
+                              ? sliderValue >= 10
+                                ? "15%"
+                                : "25%"
+                              : "0"
                           }
                           fontSize=".58rem"
                           fontWeight="bold"
@@ -354,7 +402,6 @@ const BorrowModal = () => {
                     </SliderTrack>
                   </Slider>
                 </Box>
-
               </Box>
             </Box>
 
@@ -404,6 +451,7 @@ const BorrowModal = () => {
                   onClick={() =>
                     handleDropdownClick("borrowModalBorrowMarketDropdown")
                   }
+                  as="button"
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentBorrowCoin)}</Box>
@@ -449,10 +497,11 @@ const BorrowModal = () => {
                               py="5px"
                               px={`${coin === currentBorrowCoin ? "1" : "5"}`}
                               gap="1"
-                              bg={`${coin === currentBorrowCoin
-                                ? "#0C6AD9"
-                                : "inherit"
-                                }`}
+                              bg={`${
+                                coin === currentBorrowCoin
+                                  ? "#0C6AD9"
+                                  : "inherit"
+                              }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -486,22 +535,46 @@ const BorrowModal = () => {
                     </Box>
                   </Tooltip>
                 </Box>
-                <Box width="100%" color="white" border="1px solid #2B2F35" borderRadius="6px" display="flex" justifyContent="space-between">
-                  <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleBorrowChange} value={inputBorrowAmount}
+                <Box
+                  width="100%"
+                  color="white"
+                  border="1px solid #2B2F35"
+                  borderRadius="6px"
+                  display="flex"
+                  justifyContent="space-between"
+                >
+                  <NumberInput
+                    border="0px"
+                    min={0}
+                    keepWithinRange={true}
+                    onChange={handleBorrowChange}
+                    value={inputBorrowAmount}
                   >
-                    <NumberInputField placeholder={`Minimum 0.01536 ${currentBorrowCoin}`} border="0px" _placeholder={{
-                      color: "#393D4F",
-                      fontSize: ".89rem",
-                      fontWeight: "600",
-                      outline: "0"
-                    }}
+                    <NumberInputField
+                      placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
+                      border="0px"
+                      _placeholder={{
+                        color: "#393D4F",
+                        fontSize: ".89rem",
+                        fontWeight: "600",
+                        outline: "0",
+                      }}
                       _focus={{
                         outline: "0",
-                        boxShadow: "none"
+                        boxShadow: "none",
                       }}
                     />
                   </NumberInput>
-                  <Button variant="ghost" color="#0969DA" _hover={{ bg: "#101216" }} onClick={() => { setinputBorrowAmount(walletBalance); setsliderValue2(100); dispatch(setInputBorrowModalBorrowAmount(walletBalance)) }}>
+                  <Button
+                    variant="ghost"
+                    color="#0969DA"
+                    _hover={{ bg: "#101216" }}
+                    onClick={() => {
+                      setinputBorrowAmount(walletBalance);
+                      setsliderValue2(100);
+                      dispatch(setInputBorrowModalBorrowAmount(walletBalance));
+                    }}
+                  >
                     MAX
                   </Button>
                 </Box>
@@ -512,22 +585,31 @@ const BorrowModal = () => {
                     value={sliderValue2}
                     onChange={(val) => {
                       setsliderValue2(val);
-                      var ans = ((val / 100) * walletBalance);
+                      var ans = (val / 100) * walletBalance;
                       ans = Math.round(ans * 100) / 100;
-                      dispatch(setInputBorrowModalBorrowAmount(ans))
+                      dispatch(setInputBorrowModalBorrowAmount(ans));
                       setinputBorrowAmount(ans);
                     }}
                     focusThumbOnChange={false}
                   >
                     <SliderMark value={sliderValue2}>
-                      <Box position="absolute" bottom="-8px" left="-11px" zIndex="1">
+                      <Box
+                        position="absolute"
+                        bottom="-8px"
+                        left="-11px"
+                        zIndex="1"
+                      >
                         <SliderTooltip />
                         <Text
                           position="absolute"
                           color="black"
                           top="6px"
                           left={
-                            sliderValue2 !== 100 ? (sliderValue2 >= 10 ? "15%" : "25%") : "0"
+                            sliderValue2 !== 100
+                              ? sliderValue2 >= 10
+                                ? "15%"
+                                : "25%"
+                              : "0"
                           }
                           fontSize=".58rem"
                           fontWeight="bold"
@@ -548,9 +630,16 @@ const BorrowModal = () => {
             <Box className="p-4 bg-[#101216] rounded-md border border-[#2B2F35] my-6">
               <Box className="flex justify-between">
                 <Box className="flex">
-                  <Text className="text-xs text-[#8B949E]" font-style="normal"
+                  <Text
+                    className="text-xs text-[#8B949E]"
+                    font-style="normal"
                     font-weight="400"
-                    font-size="12px" lineHeight="16px" color="#6A737D">Gas estimate: </Text>
+                    font-size="12px"
+                    lineHeight="16px"
+                    color="#6A737D"
+                  >
+                    Gas estimate:{" "}
+                  </Text>
                   <Tooltip
                     hasArrow
                     placement="bottom-start"
@@ -567,15 +656,22 @@ const BorrowModal = () => {
                     </Box>
                   </Tooltip>
                 </Box>
-                <Text className="text-xs text-[#6E7681] font-bold" >
+                <Text className="text-xs text-[#6E7681] font-bold">
                   $ 10.91
                 </Text>
               </Box>
               <Box className="flex justify-between">
                 <Box className="flex">
-                  <Text className="text-xs text-[#8B949E]" font-style="normal"
+                  <Text
+                    className="text-xs text-[#8B949E]"
+                    font-style="normal"
                     font-weight="400"
-                    font-size="12px" lineHeight="16px" color="#6A737D">Borrow apr: </Text>
+                    font-size="12px"
+                    lineHeight="16px"
+                    color="#6A737D"
+                  >
+                    Borrow apr:{" "}
+                  </Text>
                   <Tooltip
                     hasArrow
                     placement="bottom-start"
@@ -596,9 +692,14 @@ const BorrowModal = () => {
               </Box>
               <Box className="flex justify-between">
                 <Box className="flex">
-                  <Text className="text-xs text-[#8B949E]" font-style="normal"
+                  <Text
+                    className="text-xs text-[#8B949E]"
+                    font-style="normal"
                     font-weight="400"
-                    font-size="12px" lineHeight="16px" color="#6A737D">
+                    font-size="12px"
+                    lineHeight="16px"
+                    color="#6A737D"
+                  >
                     Effective apr:{" "}
                   </Text>
                   <Tooltip
@@ -621,9 +722,14 @@ const BorrowModal = () => {
               </Box>
               <Box className="flex justify-between">
                 <Box className="flex">
-                  <Text className="text-xs text-[#8B949E]" font-style="normal"
+                  <Text
+                    className="text-xs text-[#8B949E]"
+                    font-style="normal"
                     font-weight="400"
-                    font-size="12px" lineHeight="16px" color="#6A737D">
+                    font-size="12px"
+                    lineHeight="16px"
+                    color="#6A737D"
+                  >
                     Health factor:{" "}
                   </Text>
                   <Tooltip
@@ -646,14 +752,32 @@ const BorrowModal = () => {
               </Box>
             </Box>
 
-            {(inputCollateralAmount > 0 && inputBorrowAmount > 0) ?
-              <Button bg="#8B949E" color="white" size='sm' width="100%" mb="2rem" border="1px solid #2B2F35" _hover={{ bg: "#2DA44E" }} _focus={{ bg: "#298E46" }}>
-                Borrow
-              </Button> :
-              <Button bg="#101216" color="#6E7681" size='sm' width="100%"  mb="2rem" border="1px solid #2B2F35" _hover={{ bg: "#101216" }} >
+            {inputCollateralAmount > 0 && inputBorrowAmount > 0 ? (
+              <Button
+                bg="#8B949E"
+                color="white"
+                size="sm"
+                width="100%"
+                mb="2rem"
+                border="1px solid #2B2F35"
+                _hover={{ bg: "#2DA44E" }}
+                _focus={{ bg: "#298E46" }}
+              >
                 Borrow
               </Button>
-            }
+            ) : (
+              <Button
+                bg="#101216"
+                color="#6E7681"
+                size="sm"
+                width="100%"
+                mb="2rem"
+                border="1px solid #2B2F35"
+                _hover={{ bg: "#101216" }}
+              >
+                Borrow
+              </Button>
+            )}
           </ModalBody>
 
           {/* <ModalFooter>

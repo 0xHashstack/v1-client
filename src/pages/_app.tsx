@@ -5,8 +5,24 @@ import { Inter } from "next/font/google";
 import { Provider } from "react-redux";
 import { store } from "../store/store";
 
-import { ChakraProvider } from "@chakra-ui/react";
+import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
+import spaceApiKey from "../utils/constants/keys";
+import { loadSpace } from "@usersnap/browser";
+import { useEffect, useRef } from "react";
+
+const theme = extendTheme({
+  colors: {
+    customBlue: {
+      500: "#0969DA",
+    },
+  },
+  fonts: {
+    body: "Inter, sans-serif",
+    // heading: "Georgia, serif",
+    // mono: "Menlo, monospace",
+  },
+});
 import { UserbackProvider } from "@userback/react";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -14,11 +30,9 @@ const inter = Inter({ subsets: ["latin"] });
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <UserbackProvider token="40202|80442|mX2ZdYcMxJbcQjhQu6EJB9M9S">
-      <ChakraProvider>
+      <ChakraProvider theme={theme}>
         <Provider store={store}>
-          <main className={inter.className}>
-            <Component {...pageProps} />
-          </main>
+          <Component {...pageProps} />
         </Provider>
       </ChakraProvider>
     </UserbackProvider>

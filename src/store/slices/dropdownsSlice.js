@@ -10,7 +10,12 @@ const initialState = {
     languagesDropdown: false,
     borrowModalBorrowMarketDropdown: false,
     borrowModalCollateralMarketDropdown: false,
-    supplyModalDropdown:false,
+    supplyModalDropdown: false,
+    yourBorrowModalBorrowMarketDropdown: false,
+    yourBorrowModalActionDropdown: false,
+    yourBorrowBorrowIDsDropdown: false,
+    yourBorrowDappDropdown: false,
+    yourBorrowPoolDropdown: false,
   },
 };
 
