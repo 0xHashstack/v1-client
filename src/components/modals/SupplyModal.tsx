@@ -19,7 +19,7 @@ import {
 import { useDisclosure } from "@chakra-ui/react";
 import SliderWithInput from "../uiElements/sliders/sliderWithInput";
 import InfoIcon from '@/assets/icons/infoIcon';
-import BitcoinLogo from '@/assets/icons/coins/bitcoin';
+import BitcoinLogo from '@/assets/icons/coins/btc';
 import DropdownUp from '@/assets/icons/dropdownUpIcon';
 const SupplyModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure()

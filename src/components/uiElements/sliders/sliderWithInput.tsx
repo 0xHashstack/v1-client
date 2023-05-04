@@ -43,10 +43,10 @@ const SliderWithInput = () => {
             </Text>
           </Box>
         </SliderMark>
-        <SliderTrack h="2px" bg="#343333">
+        <SliderTrack bg="#343333">
           <SliderFilledTrack bg="white" />
         </SliderTrack>
-        {/* <SliderThumb /> */}
+        <SliderThumb />
       </Slider>
     </Box>
   );

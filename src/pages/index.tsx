@@ -11,6 +11,8 @@ import { Box, Stack } from "@chakra-ui/react";
 import TransactionCancelModal from "@/components/modals/TransactionCancelModal";
 import BorrowModal from "@/components/modals/borrowModal";
 import Stats from "@/components/layouts/stats";
+import SupplyTable from "@/components/layouts/table/supplyTable";
+import YourBorrowModal from "@/components/modals/yourBorrowModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -22,7 +24,7 @@ export default function Home() {
     dispatch(setAccountAddress(e.target.user.value));
   }
   return (
-    <main className={`${inter.className}`}>
+    <main>
       <Navbar />
       <Stack
         alignItems="center"
@@ -30,8 +32,9 @@ export default function Home() {
         pt="7rem"
         backgroundColor="#010409"
       >
-        <StatsBoard />
-        <SupplyModal />
+        <SupplyTable />
+        {/* <SupplyModal /> */}
+        <YourBorrowModal />
         <BorrowModal />
       </Stack>
     </main>

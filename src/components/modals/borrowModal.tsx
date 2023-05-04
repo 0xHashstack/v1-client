@@ -84,7 +84,7 @@ const BorrowModal = () => {
         scrollBehavior="outside"
         size={"sm"}
       >
-        <ModalOverlay mt="20" />
+        <ModalOverlay mt="20" bg="rgba(244, 242, 255, 0.5);" />
         <ModalContent mt="80" mb="10" bg={"#010409"}>
           {/* <ModalHeader>Borrow</ModalHeader> */}
           <ModalCloseButton
@@ -156,6 +156,7 @@ const BorrowModal = () => {
                   onClick={() =>
                     handleDropdownClick("borrowModalCollateralMarketDropdown")
                   }
+                  as="button"
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentCollateralCoin)}</Box>
@@ -327,6 +328,7 @@ const BorrowModal = () => {
                   onClick={() =>
                     handleDropdownClick("borrowModalBorrowMarketDropdown")
                   }
+                  as="button"
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentBorrowCoin)}</Box>
