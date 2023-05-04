@@ -19,12 +19,14 @@ const TransactionFailedModal = () => {
             <Modal isOpen={isOpen} onClose={onClose}>
                 <ModalOverlay
                     bg="rgba(244, 242, 255, 0.5);"
+                    mt="5rem"
                 />
                 <ModalContent
                     bg="#101216"
                     color="white"
                     borderRadius="md"
                     p="2rem"
+                    mt="7rem"
                 >
                     <ModalCloseButton mt="1rem" mr="1rem" />
                     <ModalBody>

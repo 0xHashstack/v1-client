@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
+import { Inter } from "next/font/google";
 
 import { Provider } from "react-redux";
 import { store } from "../store/store";
@@ -22,24 +23,18 @@ const theme = extendTheme({
     // mono: "Menlo, monospace",
   },
 });
+import { UserbackProvider } from "@userback/react";
+
+const inter = Inter({ subsets: ["latin"] });
 
 export default function App({ Component, pageProps }: AppProps) {
-  const feedbackinitialized = useRef(false);
-  console.log("api");
-  useEffect(() => {
-    if (!feedbackinitialized.current) {
-      loadSpace(spaceApiKey).then((api) => {
-        api.init();
-      });
-    }
-    feedbackinitialized.current = true;
-  }, []);
-
   return (
-    <ChakraProvider theme={theme}>
-      <Provider store={store}>
-        <Component {...pageProps} />
-      </Provider>
-    </ChakraProvider>
+    <UserbackProvider token="40202|80442|mX2ZdYcMxJbcQjhQu6EJB9M9S">
+      <ChakraProvider theme={theme}>
+        <Provider store={store}>
+          <Component {...pageProps} />
+        </Provider>
+      </ChakraProvider>
+    </UserbackProvider>
   );
 }

@@ -2,11 +2,15 @@ import { createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 
 const initialState = {
+  currentDropdown: "",
   navDropdowns: {
     moreButtonDropdown: false,
     walletConnectionDropdown: false,
+    settingsDropdown: false,
+    languagesDropdown: false,
     borrowModalBorrowMarketDropdown: false,
     borrowModalCollateralMarketDropdown: false,
+    supplyModalDropdown: false,
     yourBorrowModalBorrowMarketDropdown: false,
     yourBorrowModalActionDropdown: false,
     yourBorrowBorrowIDsDropdown: false,
@@ -29,6 +33,8 @@ export const dropdownSlice = createSlice({
           dropdowns[key] = false;
         }
       });
+      state.currentDropdown = dropdownName;
+      console.log("aryan1", dropdownName);
       state.navDropdowns = dropdowns;
     },
   },
@@ -44,4 +50,5 @@ export const dropdownSlice = createSlice({
 
 export const { setNavDropdown } = dropdownSlice.actions;
 export const selectNavDropdowns = (state) => state.dropdowns.navDropdowns;
+export const selectCurrentDropdown = (state) => state.dropdowns.currentDropdown;
 export default dropdownSlice.reducer;
