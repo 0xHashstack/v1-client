@@ -88,27 +88,40 @@ const SupplyModal = () => {
 
     return (
         <div>
-            <Button onClick={onOpen}>Open Modal</Button>
+      <Button
+        key="borrow"
+        height={"2rem"}
+        padding="0rem 1rem"
+        border="1px solid #2b2f35"
+        color="#6e6e6e"
+        fontSize={"12px"}
+        bgColor="#101216"
+        _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
+        borderRadius={"6px"}
+        onClick={onOpen}
+      >
+        Supply
+      </Button>
             <Portal>
-                <Modal isOpen={isOpen} onClose={onClose} size={{ width: "700px", height: "100px" }} scrollBehavior='inside'>
+                <Modal isOpen={isOpen} onClose={onClose} size={{ width: "700px", height: "100px" }} isCentered>
                     <ModalOverlay
                         bg="rgba(244, 242, 255, 0.5);"
-                        mt="5rem"
+                        mt="3.9rem"
                     />
                     <ModalContent
                         bg="#010409"
                         color="white"
                         borderRadius="md"
                         maxW="462px"
-                        mt="7rem"
+                        mt="5rem"
                         zIndex={1}
                         className="modal-content"
 
                     >
-                        <ModalHeader mt="1rem">Supply</ModalHeader>
+                        <ModalHeader mt="1rem" fontSize="14px" fontWeight="600" fontStyle="normal" lineHeight="20px">Supply</ModalHeader>
                         <ModalCloseButton mt="1rem" mr="1rem" />
                         <ModalBody>
-                            <Text color='#0969DA' mb="8px">Supply ID-12345</Text>
+                            <Text color='#0969DA' mb="8px" fontSize="12px" fontStyle="normal" fontWeight="500" lineHeight="16px">Supply ID-12345</Text>
                             <Card bg="#101216" mb="0.5rem" p="1rem" border="1px solid #2B2F35" >
                                 <Text color="#8B949E" display="flex" alignItems="center">
                                     <Text mr="0.3rem">
@@ -271,8 +284,8 @@ const SupplyModal = () => {
                                     </Slider>
                                 </Box>
                             </Card>
-                            <Checkbox defaultChecked mt="0.7rem">
-                                <Text fontSize="0.65rem" color="#6E7681;">
+                            <Checkbox defaultChecked mt="0.7rem" w="390px">
+                                <Text fontSize="10.5px" color="#6E7681" fontStyle="normal" fontWeight="400" lineHeight="20px">
                                     Ticking would stake the received rTokens unchecking wouldn&apos;t stake rTokens
                                 </Text>
                             </Checkbox>

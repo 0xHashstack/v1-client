@@ -4,6 +4,7 @@ import Dashboard from "../dashboard";
 import SupplyModal from "@/components/modals/SupplyModal";
 import BorrowModal from "@/components/modals/borrowModal";
 
+
 const MarketDashboard = () => {
   const dashboardItems1 = [
     ["Market", "Price", "Total supply", "Supply APR"],
@@ -30,6 +31,7 @@ const MarketDashboard = () => {
             backgroundColor: "#0969DA",
           },
         }}
+        cursor="pointer"
       >
         Details
       </Text>,
