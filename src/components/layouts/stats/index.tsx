@@ -10,11 +10,19 @@ import {
   Box,
 } from "@chakra-ui/react";
 import Image from "next/image";
-const Stats = ({ header }: { header: string[] }) => {
+const Stats = ({
+  header,
+  onclick,
+  statsData,
+}: {
+  header: string[];
+  statsData: string[];
+  onclick: () => void;
+}) => {
   const gap: number = 100 / (header.length + 1);
   return (
     <HStack
-      w="48%"
+      w="49%"
       h="100%"
       display="flex"
       alignItems="center"
@@ -42,8 +50,8 @@ const Stats = ({ header }: { header: string[] }) => {
             <Text color="#6e7681" fontSize={14}>
               {val}
             </Text>
-            <Text color="#E6EDF3" fontSize={20}>
-              $12,000
+            <Text color="#E6EDF3" fontSize="20px">
+              {statsData[idx]}
             </Text>
           </VStack>
         );

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -7,161 +7,262 @@ import Link from "next/link";
 import arrowDown from "../../../assets/images/ArrowDownDark.svg";
 import arrowUp from "../../../assets/images/ArrowUpDark.svg";
 import starknetLogoBordered from "../../../assets/images/starknetLogoBordered.svg";
-import transferDeposit from "../../../assets/images/transferDeposit.svg";
+// import transferDeposit from "../../../assets/images/transferDeposit.svg";
 import languageArrow from "../../../assets/images/languageArrow.svg";
-import dashboardIcon from "../../../assets/images/dashboardIcon.svg";
+// import dashboardIcon from "/assets/images/dashboardIcon.svg";
 import hoverDashboardIcon from "../../../assets/images/hoverDashboardIcon.svg";
-import contributeEarnIcon from "../../../assets/images/contributeEarnIcon.svg";
+// import contributeEarnIcon from "../../../assets/images/contributeEarnIcon.svg";
 import hoverContributeEarnIcon from "../../../assets/images/hoverContributeEarnIcon.svg";
 import tickMark from "../../../assets/images/tickMark.svg";
-import moreIcon from "../../../assets/images/moreIcon.svg";
+// import moreIcon from "../../../assets/images/moreIcon.svg";
 import hoverMoreIcon from "../../../assets/images/hoverMoreIcon.svg";
-import stake from "../../../assets/images/stake.svg";
-import hoverStake from "../../../assets/images/hoverStake.svg";
+// import stake from "../../../assets/images/stake.svg";
+import hoverStake from "../../../assets/images/hoverStakeIcon.svg";
 import starknetIcon from "../../../assets/images/starknetWallet.svg";
-
+import darkModeOn from "../../../assets/images/darkModeOn.svg";
+import darkModeIcon from "../../../assets/images/darkModeIcon.svg";
+import darkIcon from "../../../assets/images/darkIcon.svg";
+import arrowNavRight from "../../../assets/images/arrowNavRight.svg";
+import arrowNavLeft from "../../../assets/images/arrowNavLeft.svg";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectCurrentDropdown,
   selectNavDropdowns,
   setNavDropdown,
 } from "@/store/slices/dropdownsSlice";
-import { Center, background } from "@chakra-ui/react";
+import {
+  Box,
+  Button,
+  Center,
+  HStack,
+  LinkOverlay,
+  Text,
+  background,
+  useOutsideClick,
+} from "@chakra-ui/react";
+import { selectLanguage, setLanguage } from "@/store/slices/userAccountSlice";
+// import useOutsideClickHandler from "../../../utils/functions/clickOutsideDropdownHandler";
+import { languages } from "../../../utils/constants/languages";
 
 const Navbar = () => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
+  const language = useSelector(selectLanguage);
+  const currentDropdown = useSelector(selectCurrentDropdown);
+
+  const [dashboardHover, setDashboardHover] = useState(false);
+  const [contibutionHover, setContibutionHover] = useState(false);
+  const [transferDepositHover, setTransferDepositHover] = useState(false);
+  const [stakeHover, setStakeHover] = useState(false);
 
   const handleDropdownClick = (dropdownName: string) => {
     dispatch(setNavDropdown(dropdownName));
   };
+  const [justifyContent, setJustifyContent] = useState("flex-start");
 
+  const toggleMode = () => {
+    setJustifyContent(
+      justifyContent === "flex-start" ? "flex-end" : "flex-start"
+    );
+  };
   const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
   const walletConnectionDropdown = ["Disconnect", "Switch wallet"];
+
+  const ref1 = useRef<HTMLDivElement>(null);
+  const ref2 = useRef<HTMLDivElement>(null);
+  useOutsideClick({
+    ref: ref1,
+    handler: (e) => {
+      if (
+        ref1.current &&
+        ref2.current &&
+        !ref1.current.contains(e.target as Node) &&
+        !ref2.current.contains(e.target as Node) &&
+        currentDropdown != ""
+      ) {
+        dispatch(setNavDropdown(""));
+      }
+    },
+  });
+  useOutsideClick({
+    ref: ref2,
+    handler: (e) => {
+      if (
+        ref1.current &&
+        ref2.current &&
+        !ref1.current.contains(e.target as Node) &&
+        !ref2.current.contains(e.target as Node) &&
+        currentDropdown != ""
+      ) {
+        dispatch(setNavDropdown(""));
+      }
+    },
+  });
+
   return (
-    <div
-      style={{
-        zIndex: "10",
-        position: "fixed",
-        padding: "0.4rem 0",
-        backgroundColor: "#1C202F",
-        width: "100vw",
-        // height: "10%",
-        color: "white",
-        boxShadow:
-          "rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px",
-        display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
+    <HStack
+      zIndex="10"
+      position="fixed"
+      pt={"4px"}
+      backgroundColor="#1C202F"
+      width="100vw"
+      boxShadow="rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px"
+      display="flex"
+      justifyContent="space-between"
+      alignItems="center"
+      color="#FFF"
+      height="3.8125rem"
       className="navbar"
     >
-      <div
-        className="d-flex"
-        style={{
-          display: "flex",
-          gap: "1.5rem",
-          alignItems: "center",
-          width: "70%",
-        }}
+      <HStack
+        display="flex"
+        // bgColor={"red"}
+        justifyContent={"flex-start"}
+        alignItems="center"
+        width="60%"
+        gap={"4px"}
       >
-        <div
-          style={{
-            display: "flex",
-            alignItems: "center",
-            marginLeft: "1.5rem",
-            marginRight: "0.5rem",
-          }}
-        >
-          <Link href="/">
-            <div style={{ height: "100%", width: "9rem" }}>
-              <Image
-                // style={{ marginLeft: "20px" }}
-                src="./hashstackLogo.svg"
-                alt="Navbar Logo"
-                height="40"
-                width="177"
-              />
-            </div>
-          </Link>
-        </div>
-
-        <label
-          style={{
-            padding: "10px",
-            fontSize: "12px",
-            borderRadius: "5px",
-            color: "#FFF",
-            cursor: "pointer",
-            marginBottom: "0px",
-            // backgroundColor: "#393D4F",
-          }}
-          className="button"
-        >
-          <span
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}
-            // onClick={() => {
-            //   toggleCustom("1");
-            // }}
+        <Link href="/">
+          <Box
+            height="100%"
+            display="flex"
+            alignItems="center"
+            marginLeft="1rem"
+            minWidth={"140px"}
+            marginRight="1.4em"
           >
             <Image
-              src={dashboardIcon}
-              alt="Picture of the author"
-              width="15"
-              height="15"
-              style={{ cursor: "pointer" }}
+              src="./hashstackLogo.svg"
+              alt="Navbar Logo"
+              height="32"
+              width="140"
             />
-            &nbsp;&nbsp;
-            <span style={{ fontSize: "larger" }}>Dashboard</span>
-          </span>
-        </label>
+          </Box>
+        </Link>
 
-        <a
-          href="https://hashstack.crew3.xyz/questboard"
-          target="_blank"
-          rel="noreferrer"
+        <Box
+          padding="16px 12px"
+          fontSize="14px"
+          borderRadius="5px"
+          cursor="pointer"
+          marginBottom="0px"
+          className="button"
+          _hover={{
+            color: "#6e7681",
+          }}
+          onMouseEnter={() => setDashboardHover(true)}
+          onMouseLeave={() => setDashboardHover(false)}
         >
-          <label
-            style={{
-              padding: "10px",
-              fontSize: "12px",
-              borderRadius: "5px",
-              color: "#FFF",
-              cursor: "pointer",
-              marginBottom: "0px",
-            }}
-            className="button"
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            gap={"8px"}
           >
-            <span
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              {" "}
+            {dashboardHover ? (
               <Image
-                src={contributeEarnIcon}
+                src={hoverDashboardIcon}
                 alt="Picture of the author"
-                width="15"
-                height="15"
+                width="16"
+                height="16"
                 style={{ cursor: "pointer" }}
               />
-              &nbsp;&nbsp;
-              <span style={{ fontSize: "larger" }}>Contribute-2-Earn</span>
-            </span>
-          </label>
-        </a>
+            ) : (
+              <Image
+                src={"./dashboardIcon.svg"}
+                alt="Picture of the author"
+                width="16"
+                height="16"
+                style={{ cursor: "pointer" }}
+              />
+            )}
 
-        <label
+            <Text fontSize="14px">Dashboard</Text>
+          </Box>
+        </Box>
+        <Box
+          padding="16px 12px"
+          fontSize="12px"
+          borderRadius="5px"
+          cursor="pointer"
+          marginBottom="0px"
+          // className="button"
+          // backgroundColor={"blue"}
+          _hover={{ color: "#6e7681" }}
+          onMouseEnter={() => setContibutionHover(true)}
+          onMouseLeave={() => setContibutionHover(false)}
+        >
+          <Link href="https://hashstack.crew3.xyz/questboard" target="_blank">
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              gap={"8px"}
+            >
+              {contibutionHover ? (
+                <Image
+                  src={hoverContributeEarnIcon}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                  style={{ cursor: "pointer" }}
+                />
+              ) : (
+                <Image
+                  src={"./contributeEarnIcon.svg"}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                  style={{ cursor: "pointer" }}
+                />
+              )}
+
+              <Text fontSize="14px">Contribute-2-Earn</Text>
+            </Box>
+          </Link>
+        </Box>
+        <Box
+          padding="16px 12px"
+          fontSize="12px"
+          borderRadius="5px"
+          cursor="pointer"
+          marginBottom="0px"
+          // className="button"
+          _hover={{ color: "#6e7681" }}
+          onMouseEnter={() => setStakeHover(true)}
+          onMouseLeave={() => setStakeHover(false)}
+        >
+          <Box
+            display="flex"
+            justifyContent="space-between"
+            alignItems="center"
+            gap={"8px"}
+          >
+            {stakeHover ? (
+              <Image
+                src={hoverStake}
+                alt="Picture of the author"
+                width="16"
+                height="16"
+                style={{ cursor: "pointer" }}
+              />
+            ) : (
+              <Image
+                src="./stake.svg"
+                alt="Picture of the author"
+                width="16"
+                height="16"
+                style={{ cursor: "pointer" }}
+              />
+            )}
+            <Text fontSize="14px">Stake</Text>
+          </Box>
+        </Box>
+        {/* <Box
           style={{
             padding: "3px 0px",
             fontSize: "12px",
             borderRadius: "5px",
-            color: "#FFF",
             cursor: "pointer",
             marginBottom: "0px",
             display: "flex",
@@ -170,6 +271,8 @@ const Navbar = () => {
           }}
           className="button navbar"
           onClick={() => handleDropdownClick("moreButtonDropdown")}
+          _hover={{ color: "#6e7681" }}
+          // ref={ref}
         >
           <span
             style={{
@@ -181,7 +284,7 @@ const Navbar = () => {
           >
             {" "}
             <Image
-              src={moreIcon}
+              src={"./moreIcon.svg"}
               alt="Picture of the author"
               width="20"
               height="20"
@@ -218,107 +321,100 @@ const Navbar = () => {
               })}
             </div>
           )}
-        </label>
-      </div>
-      <div
-        style={{
-          width: "50%",
-          display: "flex",
-          justifyContent: "flex-end",
-          alignItems: "center",
-        }}
+        </Box> */}
+      </HStack>
+      <HStack
+        width="50%"
+        display="flex"
+        justifyContent="flex-end"
+        alignItems="center"
       >
-        <div
-          style={{
-            display: "flex",
-            gap: "1rem",
-            justifyContent: "center",
-            alignItems: "center",
-            // backgroundColor: "red",
-            marginRight: "1rem",
-          }}
+        <HStack
+          display="flex"
+          gap="0.5rem"
+          justifyContent="center"
+          alignItems="center"
+          marginRight="1rem"
         >
-          <label
-            style={{
-              //   backgroundColor: "#2A2E3F",
-              padding: "0.4rem 1rem",
-              fontSize: "12px",
-              borderRadius: "6px",
-              color: "#FFF",
-              cursor: "pointer",
-              margin: "0",
-              border: "0.5px solid #57606A",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "8px",
-            }}
+          <Box
+            fontSize="12px"
+            borderRadius="6px"
+            cursor="pointer"
+            margin="0"
+            border="0.5px solid #57606A"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            gap="3"
             className="button"
+            _hover={{ color: "#6e7681" }}
+            onMouseEnter={() => setTransferDepositHover(true)}
+            onMouseLeave={() => setTransferDepositHover(false)}
           >
-            <span
-              style={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              gap="8px"
+              margin="6px 12px"
             >
-              {" "}
-              <Image
-                src={transferDeposit}
-                alt="Picture of the author"
-                width="20"
-                height="20"
-                style={{ cursor: "pointer" }}
-              />
-              &nbsp;&nbsp;&nbsp;{" "}
-              <span style={{ fontSize: "larger" }}>Transfer Deposit</span>
-            </span>
-          </label>
+              {transferDepositHover ? (
+                <Image
+                  src={"./transferDeposit.svg"}
+                  alt="Picture of the author"
+                  width="20"
+                  height="20"
+                  style={{ cursor: "pointer" }}
+                />
+              ) : (
+                <Image
+                  src={"./transferDeposit.svg"}
+                  alt="Picture of the author"
+                  width="20"
+                  height="20"
+                  style={{ cursor: "pointer" }}
+                />
+              )}
+              <Text
+                style={{
+                  fontSize: "larger",
+                }}
+              >
+                Transfer Deposit
+              </Text>
+            </Box>
+          </Box>
 
-          <label
-            style={{
-              //   height: "48px",
-              backgroundColor: "#30363d",
-              padding: "0.4rem 1rem",
-              fontSize: "12px",
-              borderRadius: "6px",
-              color: "#FFF",
-              width: "14rem",
-              cursor: "pointer",
-              margin: "0",
-              border: "0.5px solid #57606A",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: "8px",
-              flexGrow: "1",
-            }}
-            className="button navbar-button"
-            onClick={() => {
-              dispatch(setNavDropdown("walletConnectionDropdown"));
-            }}
-            // onClick={() => {
-            //   handleButtonConnectWallet();
-            // }}
-            // onClick={() => {
-            //   setLiquidateDropDown(false);
-            //   setSettingDropDown(false);
-            //   setConnectWallet(false);
-            //   setConnectWalletArrowState({
-            //     bool: !connectWalletArrowState.bool,
-            //     direction: "./connectWalletArrowDown.svg",
-            //   });
-            // }}
+          <Box
+            backgroundColor="#30363d"
+            padding="5px 1rem"
+            fontSize="12px"
+            borderRadius="6px"
+            color="#FFF"
+            width="13rem"
+            cursor="pointer"
+            margin="0"
+            border="0.5px solid #57606A"
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            gap="8px"
+            flexGrow="1"
+            className="button navbar"
+            ref={ref2}
           >
-            <span
-              style={{
-                display: "flex",
-                flexDirection: "row",
-                justifyContent: "space-between",
-                alignItems: "center",
+            <Box
+              display="flex"
+              flexDirection="row"
+              justifyContent="center"
+              alignItems="center"
+              width="100%"
+              className="navbar-button"
+              onClick={() => {
+                dispatch(setNavDropdown("walletConnectionDropdown"));
               }}
-              // className="navbar-button"
             >
               {
                 //   account ? (
@@ -345,54 +441,64 @@ const Navbar = () => {
                 //     </>
                 //   ) :
                 <>
-                  <span
-                    style={{
-                      fontSize: "larger",
-                    }}
+                  <Text
+                    fontSize="14px"
+                    width="100%"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems={"center"}
+                    // bgColor={"red"}
                   >
-                    Connect Wallet&nbsp;&nbsp;&nbsp;
-                  </span>
+                    Connect Wallet
+                  </Text>
                 </>
               }
-              <Image
-                src="./connectWalletArrowDown.svg"
-                alt="arrow"
-                width="14"
-                height="14"
-                style={{
-                  cursor: "pointer",
-                  position: "absolute",
-                  right: "0.8rem",
-                }}
-              />
-            </span>
+              {!navDropdowns.walletConnectionDropdown ? (
+                <Image
+                  src={"./connectWalletArrowDown.svg"}
+                  alt="arrow"
+                  width="14"
+                  height="14"
+                  style={{
+                    cursor: "pointer",
+                  }}
+                />
+              ) : (
+                <Image
+                  src={"./connectWalletArrowUp.svg"}
+                  alt="arrow"
+                  width="14"
+                  height="14"
+                  style={{
+                    cursor: "pointer",
+                  }}
+                />
+              )}
+            </Box>
             {navDropdowns.walletConnectionDropdown && (
-              <div
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                  alignItems: "flex-end",
-                  gap: "7px",
-                  padding: "0.5rem 0",
-                }}
+              <Box
+                width="100%"
+                display="flex"
+                justifyContent="center"
+                flexDirection="column"
+                alignItems="flex-end"
+                gap="7px"
+                padding="0.5rem 0"
+                boxShadow="1px 2px 8px rgba(0, 0, 0, 0.5), 4px 8px 24px #010409"
+                borderRadius="6px"
                 className="dropdown-container"
               >
                 {walletConnectionDropdown.map((val, idx) => {
                   return (
-                    <div
+                    <Box
                       key={idx}
-                      style={{
-                        // width: "100%",
-                        padding: "4px 11px",
-                        marginRight: "8px",
-                        borderRadius: "6px",
-                        border: "1px solid #2B2F35",
-                      }}
+                      padding="4px 11px"
+                      marginRight="8px"
+                      borderRadius="6px"
+                      border="1px solid #2B2F35"
                     >
                       {val}
-                    </div>
+                    </Box>
                   );
                 })}
                 {/* <hr />
@@ -410,21 +516,19 @@ const Navbar = () => {
                     // marginLeft: "10px",
                   }}
                 />
-                <div style={{ marginRight: "14px" }}>
-                  <div style={{ float: "right" }}>Network</div>
-                  <div
-                    style={{
-                      color: "white",
-                      // backgroundColor: "blue",
-                      // marginRight: "-15px",
-                      // marginLeft: "50px",
-                      display: "flex",
-                      width: "100%",
-                      justifyContent: "flex-end",
-                      alignItems: "center",
-                      gap: "5px",
-                      marginRight: "10px",
-                    }}
+                <Box marginRight="14px">
+                  <Text float="right">Network</Text>
+                  <Box
+                    color="white"
+                    // backgroundColor: "blue",
+                    // marginRight: "-15px",
+                    // marginLeft: "50px",
+                    display="flex"
+                    width="100%"
+                    justifyContent="flex-end"
+                    alignItems="center"
+                    gap="5px"
+                    marginRight="10px"
                   >
                     <Image
                       src="./green.svg"
@@ -443,33 +547,279 @@ const Navbar = () => {
                       cursor: "pointer",
                     }}
                   /> */}
-                  </div>
-                </div>
-              </div>
+                  </Box>
+                </Box>
+              </Box>
             )}
-          </label>
-          <Image
+          </Box>
+          <Box
+            borderRadius="6px"
+            width="fit-content"
+            padding="1px"
+            cursor="pointer"
+            margin="0"
+            // border: "0.5px solid #57606A",
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            gap="8px"
+            flexGrow="1"
+            className="button navbar"
+            ref={ref1}
+
+            // onClick={() => {
+            //   handleButtonConnectWallet();
+            // }}
             // onClick={() => {
             //   setLiquidateDropDown(false);
-            //   setSettingDropDown(!settingDropDown);
+            //   setSettingDropDown(false);
+            //   setConnectWallet(false);
             //   setConnectWalletArrowState({
-            //     bool: false,
+            //     bool: !connectWalletArrowState.bool,
             //     direction: "./connectWalletArrowDown.svg",
             //   });
             // }}
-            src="./settingIcon.svg"
-            alt="Picture of the author"
-            width="25"
-            height="25"
-            style={{
-              cursor: "pointer",
-            }}
-          />
-          {/* <div>{navDropdowns.moreButtonDropdown && <p>hey</p>}</div> */}
-        </div>
-      </div>
-    </div>
+          >
+            <Box
+              display="flex"
+              flexDirection="row"
+              justifyContent="center"
+              alignItems="center"
+              className="navbar-button"
+              onClick={() => {
+                dispatch(setNavDropdown("settingsDropdown"));
+              }}
+            >
+              <Image
+                // onClick={() => {
+                //   setLiquidateDropDown(false);
+                //   setSettingDropDown(!settingDropDown);
+                //   setConnectWalletArrowState({
+                //     bool: false,
+                //     direction: "./connectWalletArrowDown.svg",
+                //   });
+                // }}
+                src="./settingIcon.svg"
+                alt="Picture of the author"
+                width="16"
+                height="16"
+                style={{
+                  cursor: "pointer",
+                }}
+              />
+            </Box>
+            {navDropdowns.settingsDropdown && (
+              <Box
+                style={{}}
+                width="10rem"
+                display="flex"
+                justifyContent="center"
+                flexDirection="column"
+                alignItems="flex-start"
+                gap="7px"
+                padding="0.5rem 0"
+                boxShadow="1px 2px 8px rgba(0, 0, 0, 0.5), 4px 8px 24px #010409"
+                borderRadius="6px"
+                right="0px"
+                top="140%"
+                className="dropdown-container"
+              >
+                <Text
+                  color="#6e7681"
+                  fontSize="12px"
+                  // textAlign="left"
+                  paddingX="8px"
+                >
+                  General settings
+                </Text>
+                <HStack
+                  display="flex"
+                  justifyContent="space-between"
+                  // backgroundColor="red"
+                  width={"100%"}
+                  paddingX="8px"
+                >
+                  <Text fontSize="14px">Dark mode</Text>
+                  <Box
+                    // height="fit-content"
+                    display="flex"
+                    // padding="0.5px"
+                    justifyContent={`${justifyContent}`}
+                    alignItems="flex-start"
+                    backgroundColor="#060c20"
+                    width="3rem"
+                    borderRadius="100px"
+                    onClick={toggleMode}
+                  >
+                    <Image
+                      src={darkModeIcon}
+                      alt="Picture of the author"
+                      width="25"
+                      height="25"
+                      style={{ cursor: "pointer" }}
+                    />
+                  </Box>
+                </HStack>
+                {/* <hr />
+                <div>
+                  <div>Network</div>
+                  <div></div>
+                </div> */}
+                <hr
+                  style={{
+                    height: "1px",
+                    borderWidth: "0",
+                    backgroundColor: "#2B2F35",
+                    width: "96%",
+                    marginRight: "5.1px",
+                    // marginLeft: "10px",
+                  }}
+                />
+                <HStack
+                  display="flex"
+                  justifyContent="space-around"
+                  alignItems="center"
+                  padding="2px 6px"
+                  gap="1.5rem"
+                >
+                  <Text
+                    fontStyle="normal"
+                    fontWeight="400"
+                    fontSize="14px"
+                    lineHeight="20px"
+                  >
+                    Language
+                  </Text>
+                  {/* <HStack
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    // bgColor="red"
+                    // width="35%"
+                  > */}
+                  <Text
+                    fontSize={"12px"}
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    onClick={() => {
+                      dispatch(setNavDropdown("languagesDropdown"));
+                    }}
+                  >
+                    {language}
+                    <Image
+                      src={arrowNavRight}
+                      alt="Picture of the author"
+                      width="16"
+                      height="16"
+                      style={{ cursor: "pointer" }}
+                    />
+                  </Text>
+                  {/* </HStack> */}
+                </HStack>
+              </Box>
+            )}
+            {navDropdowns.languagesDropdown && (
+              <Box
+                width="16rem"
+                display="flex"
+                justifyContent="center"
+                flexDirection="column"
+                alignItems="flex-start"
+                gap="15px"
+                // padding: "0.5rem 0",
+                boxShadow="1px 2px 8px rgba(0, 0, 0, 0.5), 4px 8px 24px #010409"
+                borderRadius="6px"
+                right="0px"
+                top="140%"
+                padding="0.7rem 0.6rem"
+                // backgroundColor: "red",
+                className="dropdown-container"
+              >
+                <Text
+                  fontSize={"12px"}
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  onClick={() => {
+                    dispatch(setNavDropdown("settingsDropdown"));
+                  }}
+                  gap="8px"
+                  padding="0.5rem 0.7rem"
+                  color="#6E7681"
+                >
+                  <Image
+                    src={arrowNavLeft}
+                    alt="Picture of the author"
+                    width="7"
+                    height="7"
+                    style={{ cursor: "pointer" }}
+                  />
+                  Select Language
+                </Text>
+                {languages.map((val, idx) => (
+                  <>
+                    <HStack
+                      color="#6e7681"
+                      fontSize="12px"
+                      paddingX="8px"
+                      key={idx}
+                      justifyContent="space-between"
+                      // backgroundColor="red"
+                      width="100%"
+                      onClick={() => {
+                        if (!val.name.includes("Coming soon"))
+                          dispatch(setLanguage(`${val.name}`));
+                      }}
+                    >
+                      <Box
+                        display={"flex"}
+                        justifyContent={"flex-start"}
+                        gap={4}
+                        alignItems={"center"}
+                      >
+                        <Image
+                          src={val.icon}
+                          alt="Picture of the author"
+                          width="20"
+                          height="20"
+                          style={{ cursor: "pointer" }}
+                        />
+                        <Text>{val.name}</Text>
+                      </Box>
+                      {language === val.name && (
+                        <Image
+                          src={tickMark}
+                          alt="Picture of the author"
+                          width="15"
+                          height="15"
+                          style={{ cursor: "pointer" }}
+                        />
+                      )}
+                    </HStack>
+                    <hr
+                      style={{
+                        height: "1px",
+                        borderWidth: "0",
+                        backgroundColor: "#2B2F35",
+                        width: "95%",
+                        marginLeft: "6px",
+                        color: "#2A2E3F",
+                        display: `${
+                          idx == languages.length - 1 ? "none" : "block"
+                        }`,
+                      }}
+                    />
+                  </>
+                ))}
+              </Box>
+            )}
+          </Box>
+        </HStack>
+      </HStack>
+    </HStack>
   );
 };
 
-export default Navbar;
+export default memo(Navbar);

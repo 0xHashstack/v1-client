@@ -1,29 +1,25 @@
 import { Inter } from "next/font/google";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  selectAccountAddress,
-  setAccountAddress,
-} from "@/store/slices/userAccountSlice";
-import SupplyModal from "@/components/modals/SupplyModal";
-import Navbar from "@/components/layouts/navbar/Navbar";
-import StatsBoard from "@/pages/statsBoard";
-import { Stack } from "@chakra-ui/react";
+import { useEffect, useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const dispatch = useDispatch();
-  const address = useSelector(selectAccountAddress);
-  function handleAccount(e: any) {
-    e.preventDefault();
-    dispatch(setAccountAddress(e.target.user.value));
-  }
+  const [render, setRender] = useState(false);
+  const router = useRouter();
+  const href = "/market";
+  useEffect(() => {
+    // setRender(true);
+    router.push(href);
+  }, []);
   return (
-    <main
-      className={` flex bg-slate-500 min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <h1>Initial setup</h1>
-      <SupplyModal/>
+    <main className={`${inter.className}`}>
+      {render && (
+        <>
+          <Link href={"/market"}>Market</Link>
+        </>
+      )}
     </main>
   );
 }
