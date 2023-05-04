@@ -381,3 +381,4 @@ const SupplyModal = () => {
         </div>
     )
 }
+export default SupplyModal;
