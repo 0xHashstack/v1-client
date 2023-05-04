@@ -114,7 +114,21 @@ const BorrowModal = () => {
 
   return (
     <Box>
-      <Button onClick={onOpen}>Open Modal</Button>
+      <Button
+        key="borrow"
+        height={"2rem"}
+        padding="0rem 1rem"
+        border="1px solid #2b2f35"
+        color="#6e6e6e"
+        fontSize={"12px"}
+        bgColor="#101216"
+        _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
+        borderRadius={"6px"}
+        onClick={onOpen}
+      >
+        Borrow
+      </Button>
+      {/* <Button onClick={onOpen}>Open Modal</Button> */}
 
       <Modal
         isOpen={isOpen}

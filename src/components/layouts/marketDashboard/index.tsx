@@ -1,6 +1,8 @@
 import { Button, HStack, Text } from "@chakra-ui/react";
 import React from "react";
 import Dashboard from "../dashboard";
+import SupplyModal from "@/components/modals/SupplyModal";
+import BorrowModal from "@/components/modals/borrowModal";
 
 const MarketDashboard = () => {
   const dashboardItems1 = [
@@ -10,19 +12,7 @@ const MarketDashboard = () => {
   const rowItems1 = [
     ["USDT", "00000", "0000.000", "5%"],
     [
-      <Button
-        key="suppy"
-        backgroundColor="#101216"
-        height={"2rem"}
-        padding="0rem 2.1rem"
-        border="1px solid #2b2f35"
-        fontSize={"12px"}
-        color="#6e6e6e"
-        _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
-        borderRadius={"6px"}
-      >
-        Supply
-      </Button>,
+      <SupplyModal />,
       <Text
         key="supply-details"
         as="span"
@@ -56,19 +46,7 @@ const MarketDashboard = () => {
   const rowItems2 = [
     ["USDT", "000.00", "0000.000", "4%", "7%"],
     [
-      <Button
-        key="borrow"
-        height={"2rem"}
-        padding="0rem 2.1rem"
-        border="1px solid #2b2f35"
-        color="#6e6e6e"
-        fontSize={"12px"}
-        bgColor="#101216"
-        _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
-        borderRadius={"6px"}
-      >
-        Borrow
-      </Button>,
+      <BorrowModal />,
       <Text
         key="borrow-details"
         as="span"
