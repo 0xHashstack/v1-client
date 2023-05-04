@@ -27,7 +27,6 @@ import DAILogo from "@/assets/icons/coins/dai";
 
 import DropdownUp from "../../assets/icons/dropdownUpIcon";
 import InfoIcon from "../../assets/icons/infoIcon";
-import SliderWithInput from "../uiElements/sliders/sliderWithInput";
 import { useDispatch, useSelector } from "react-redux";
 import { selectInputSupplyAmount, selectCoinSelectedSupplyModal, setCoinSelectedSupplyModal, selectWalletBalance, setInputSupplyAmount, setInputBorrowModalCollateralAmount, setInputBorrowModalBorrowAmount } from "@/store/slices/userAccountSlice";
 import {
@@ -139,9 +138,9 @@ const BorrowModal = () => {
       >
         <ModalOverlay
           bg="rgba(244, 242, 255, 0.5);"
-          mt="5rem"
+          mt="3.9rem"
         />
-        <ModalContent mt="7rem" bg={"#010409"} maxW="442px">
+        <ModalContent mt="5rem" bg={"#010409"} maxW="442px">
           <ModalCloseButton mt="1rem" mr="1rem" color="white" />
           {/* <ModalHeader>Borrow</ModalHeader> */}
           <ModalBody color={"#E6EDF3"}>
