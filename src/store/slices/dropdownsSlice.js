@@ -7,6 +7,7 @@ const initialState = {
     walletConnectionDropdown: false,
     borrowModalBorrowMarketDropdown: false,
     borrowModalCollateralMarketDropdown: false,
+    supplyModalDropdown:false,
   },
 };
 

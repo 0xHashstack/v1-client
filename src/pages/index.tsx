@@ -9,6 +9,7 @@ import Navbar from "@/components/layouts/navbar/Navbar";
 import StatsBoard from "@/pages/statsBoard";
 import { Box, Stack } from "@chakra-ui/react";
 import TransactionCancelModal from "@/components/modals/TransactionCancelModal";
+import TransactionFailedModal from "@/components/modals/TransactionFailedModal";
 import BorrowModal from "@/components/modals/borrowModal";
 import Stats from "@/components/layouts/stats";
 
@@ -33,6 +34,8 @@ export default function Home() {
         <StatsBoard />
         <SupplyModal />
         <BorrowModal />
+        <TransactionCancelModal/>
+        <TransactionFailedModal/>
       </Stack>
     </main>
   );
