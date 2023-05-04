@@ -10,9 +10,9 @@ const MarketDashboard = () => {
     ["Supply", "Details"],
   ];
   const rowItems1 = [
-    ["USDT", "00000", "0000.000", "5%"],
+    ["USDT", "10000000", "10000.000", "5%"],
     [
-      <SupplyModal />,
+      <SupplyModal key={"1"} />,
       <Text
         key="supply-details"
         as="span"
@@ -46,7 +46,7 @@ const MarketDashboard = () => {
   const rowItems2 = [
     ["USDT", "000.00", "0000.000", "4%", "7%"],
     [
-      <BorrowModal />,
+      <BorrowModal key={"2"} />,
       <Text
         key="borrow-details"
         as="span"

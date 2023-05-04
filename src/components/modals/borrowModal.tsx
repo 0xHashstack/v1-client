@@ -27,7 +27,6 @@ import DAILogo from "@/assets/icons/coins/dai";
 
 import DropdownUp from "../../assets/icons/dropdownUpIcon";
 import InfoIcon from "../../assets/icons/infoIcon";
-import SliderWithInput from "../uiElements/sliders/sliderWithInput";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectInputSupplyAmount,
@@ -143,8 +142,8 @@ const BorrowModal = () => {
         isCentered
         scrollBehavior="inside"
       >
-        <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="5rem" />
-        <ModalContent mt="7rem" bg={"#010409"} maxW="442px">
+        <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
+        <ModalContent mt="5rem" bg={"#010409"} maxW="442px">
           <ModalCloseButton mt="1rem" mr="1rem" color="white" />
           {/* <ModalHeader>Borrow</ModalHeader> */}
           <ModalBody color={"#E6EDF3"}>

@@ -23,6 +23,12 @@ import {
   RadioGroup,
   Radio,
   Stack,
+  NumberInput,
+  Slider,
+  SliderMark,
+  SliderTrack,
+  SliderFilledTrack,
+  NumberInputField,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -53,9 +59,22 @@ import DaiToEth from "@/assets/icons/pools/daiToEth";
 import BtcToEth from "@/assets/icons/pools/btcToEth";
 import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
 
+import {
+  selectInputSupplyAmount,
+  selectCoinSelectedSupplyModal,
+  setCoinSelectedSupplyModal,
+  selectWalletBalance,
+  setInputSupplyAmount,
+  setInputBorrowModalCollateralAmount,
+  setInputBorrowModalBorrowAmount,
+  setInputYourBorrowModalRepayAmount,
+} from "@/store/slices/userAccountSlice";
+
+import SliderTooltip from "../uiElements/sliders/sliderTooltip";
+
 const YourBorrowModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
 
   const getCoin = (CoinName: string) => {
@@ -104,6 +123,521 @@ const YourBorrowModal = () => {
     }
   };
 
+  const getContainer = (action: string) => {
+    switch (action) {
+      case "Spend Borrow":
+        return (
+          <Box
+            p="2"
+            borderRadius="md"
+            border="1px"
+            borderColor="#2B2F35"
+            bg="#101216"
+            my="6"
+          >
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  est LP tokens recieved:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box p="1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text color="#8B949E" fontSize="xs">
+                $ 10.91
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  Liquidity spill:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box p="1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Box display="flex" color="#8B949E" fontSize="xs" gap="2">
+                <Box display="flex" gap="2px">
+                  <Box mt="2px">
+                    <SmallEth />
+                  </Box>
+                  <Text>1.23</Text>
+                </Box>
+                <Box display="flex" gap="2px">
+                  <Box mt="2px">
+                    <SmallUsdt />
+                  </Box>
+                  <Text>1.23</Text>
+                </Box>
+              </Box>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  Fees:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box p="1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text color="#8B949E" fontSize="xs">
+                0.1%
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  Borrow apr:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box p="1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text color="#8B949E" fontSize="xs">
+                5.56%
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  Gas estimate:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box className="p-1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text color="#8B949E" fontSize="xs">
+                5.56%
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  Effective apr:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box className="p-1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text color="#8B949E" fontSize="xs">
+                5.56%
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  Health factor:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box className="p-1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text color="#8B949E" fontSize="xs">
+                1.10
+              </Text>
+            </Box>
+          </Box>
+        );
+        break;
+
+      case "Repay Borrow":
+        return (
+          <Box
+            p="2"
+            borderRadius="md"
+            border="1px"
+            borderColor="#2B2F35"
+            bg="#101216"
+            my="6"
+          >
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  Borrowed market:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box p="1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text color="#8B949E" fontSize="xs">
+                1 BTC
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  rTokens unlocked:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box p="1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text color="#8B949E" fontSize="xs">
+                1.23
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  Est collateral value:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box p="1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text color="#8B949E" fontSize="xs">
+                5.56%
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  Fees:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box className="p-1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text color="#8B949E" fontSize="xs">
+                0.1%
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  Gas estimate:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box className="p-1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text color="#8B949E" fontSize="xs">
+                5.56%
+              </Text>
+            </Box>
+          </Box>
+        );
+        break;
+
+      case "Zero Repay":
+        return (
+          <Box
+            p="2"
+            borderRadius="md"
+            border="1px"
+            borderColor="#2B2F35"
+            bg="#101216"
+            my="6"
+          >
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  Dapp:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box p="1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Box display="flex" color="#8B949E" fontSize="xs" gap="2">
+                <Box display="flex" gap="2px">
+                  <Box>
+                    <JediswapLogo />
+                  </Box>
+                  <Text>Jediswap</Text>
+                </Box>
+              </Box>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  Borrow amount:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box p="1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text color="#8B949E" fontSize="xs">
+                1 BTC
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  rTokens unlocked:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box p="1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text color="#8B949E" fontSize="xs">
+                1.23
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  Est collateral value:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box p="1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text color="#8B949E" fontSize="xs">
+                5.56%
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  Fees:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box className="p-1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text color="#8B949E" fontSize="xs">
+                0.1%
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text color="#8B949E" fontSize="xs">
+                  Gas estimate:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="bottom-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box className="p-1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text color="#8B949E" fontSize="xs">
+                5.56%
+              </Text>
+            </Box>
+          </Box>
+        );
+        break;
+
+      default:
+        break;
+    }
+  };
+
   const handleDropdownClick = (dropdownName: string) => {
     dispatch(setNavDropdown(dropdownName));
   };
@@ -137,10 +671,33 @@ const YourBorrowModal = () => {
   ];
 
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
-  const [currentAction, setCurrentAction] = useState("Spend Borrow");
+  const [currentAction, setCurrentAction] = useState("Zero Repay");
   const [currentBorrowId, setCurrentBorrowId] = useState("ID - 123456");
   const [currentDapp, setCurrentDapp] = useState("Jediswap");
   const [currentPool, setCurrentPool] = useState("ETH/USDT");
+
+  const [sliderValue, setSliderValue] = useState(0);
+  const dispatch = useDispatch();
+  const walletBalance = useSelector(selectWalletBalance);
+  const [inputAmount, setinputAmount] = useState(0);
+  const [inputRepayAmount, setinputRepayAmount] = useState(0);
+
+  const handleChange = (newValue: any) => {
+    var percentage = (newValue * 100) / walletBalance;
+    percentage = Math.max(0, percentage);
+    if (percentage > 100) {
+      setSliderValue(100);
+      setinputRepayAmount(newValue);
+      dispatch(setInputYourBorrowModalRepayAmount(newValue));
+    } else {
+      percentage = Math.round(percentage * 100) / 100;
+      setSliderValue(percentage);
+      setinputRepayAmount(newValue);
+      dispatch(setInputYourBorrowModalRepayAmount(newValue));
+      // dispatch((newValue));
+    }
+  };
+
   return (
     <Box>
       <Button onClick={onOpen}>Open Modal</Button>
@@ -149,11 +706,11 @@ const YourBorrowModal = () => {
         isOpen={isOpen}
         onClose={onClose}
         isCentered
-        scrollBehavior="outside"
-        size="sm"
+        scrollBehavior="inside"
+        // size="sm"
       >
-        <ModalOverlay mt="20" bg="rgba(244, 242, 255, 0.5);" />
-        <ModalContent mt="32" bg={"#010409"}>
+        <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
+        <ModalContent mt="5rem" bg={"#010409"} maxW="442px">
           {/* <ModalHeader>Borrow</ModalHeader> */}
           <ModalCloseButton top={"8"} right={"6"} color={"white"} size={"sm"} />
           <ModalBody color={"#E6EDF3"} pt={6} px={7}>
@@ -202,17 +759,18 @@ const YourBorrowModal = () => {
                     </Tab>
                   </TabList>
                   <TabPanels>
-                    <TabPanel px="0" pb="0">
+                    <TabPanel p="0">
                       <Box
                         display="flex"
                         flexDirection="column"
                         backgroundColor="#101216"
                         border="1px"
                         borderColor="#2B2F35"
-                        p="3"
+                        p="5"
                         // my="4"
                         borderRadius="md"
                         gap="3"
+                        mt="1.5rem"
                       >
                         <Box display="flex" flexDirection="column" gap="1">
                           <Box display="flex">
@@ -270,6 +828,7 @@ const YourBorrowModal = () => {
                                 {actions.map((action, index) => {
                                   return (
                                     <Box
+                                      key={index}
                                       as="button"
                                       w="full"
                                       display="flex"
@@ -367,6 +926,7 @@ const YourBorrowModal = () => {
                                 {borrowIds.map((coin, index) => {
                                   return (
                                     <Box
+                                      key={index}
                                       as="button"
                                       w="full"
                                       display="flex"
@@ -469,6 +1029,7 @@ const YourBorrowModal = () => {
                                 {coins.map((coin, index) => {
                                   return (
                                     <Box
+                                      key={index}
                                       as="button"
                                       w="full"
                                       display="flex"
@@ -520,11 +1081,11 @@ const YourBorrowModal = () => {
                             </Text>
                           </Text>
                         </Box>
-                        {false && (
+                        {currentAction !== "Spend Borrow" && (
                           <Box display="flex" flexDirection="column" gap="1">
                             <Box display="flex">
                               <Text fontSize="xs" color="#8B949E">
-                                Collateral Amount
+                                Repay Amount
                               </Text>
                               <Tooltip
                                 hasArrow
@@ -542,40 +1103,53 @@ const YourBorrowModal = () => {
                                 </Box>
                               </Tooltip>
                             </Box>
-                            <InputGroup>
-                              <Input
-                                min="0"
-                                type="number"
-                                textColor="white"
-                                focusBorderColor="#2B2F35"
-                                placeholder="Minimum 0.01536 BTC"
-                                _hover={{
-                                  outline: "none",
-                                }}
-                                _focus={{
-                                  boxShadow: "none",
-                                  outline: "0",
-                                }}
-                                _placeholder={{
-                                  color: "#393D4F",
-                                  fontSize: ".89rem",
-                                  fontWeight: "600",
-                                  outline: "0",
-                                }}
-                                borderColor={"#2B2F35"}
-                                pl={"4"}
-                                pb={"1"}
-                              />
-                              <InputRightElement
-                                pr={"6"}
-                                pb={"1"}
-                                fontSize={"sm"}
+                            <Box
+                              width="100%"
+                              color="white"
+                              border="1px solid #2B2F35"
+                              borderRadius="6px"
+                              display="flex"
+                              justifyContent="space-between"
+                            >
+                              <NumberInput
+                                border="0px"
+                                min={0}
+                                keepWithinRange={true}
+                                onChange={handleChange}
+                                value={inputRepayAmount}
                               >
-                                <Box as="button" color="#0969DA">
-                                  MAX
-                                </Box>
-                              </InputRightElement>
-                            </InputGroup>
+                                <NumberInputField
+                                  placeholder={`Minimum 0.01536 ${currentBorrowMarketCoin}`}
+                                  border="0px"
+                                  _placeholder={{
+                                    color: "#393D4F",
+                                    fontSize: ".89rem",
+                                    fontWeight: "600",
+                                    outline: "0",
+                                  }}
+                                  _focus={{
+                                    outline: "0",
+                                    boxShadow: "none",
+                                  }}
+                                />
+                              </NumberInput>
+                              <Button
+                                variant="ghost"
+                                color="#0969DA"
+                                _hover={{ bg: "#101216" }}
+                                onClick={() => {
+                                  setinputRepayAmount(walletBalance);
+                                  setSliderValue(100);
+                                  dispatch(
+                                    setInputYourBorrowModalRepayAmount(
+                                      walletBalance
+                                    )
+                                  );
+                                }}
+                              >
+                                MAX
+                              </Button>
+                            </Box>
                             <Text
                               textAlign="right"
                               fontSize="xs"
@@ -586,474 +1160,367 @@ const YourBorrowModal = () => {
                                 BTC
                               </Text>
                             </Text>
+                            <Slider
+                              mt="12"
+                              mb="2"
+                              aria-label="slider-ex-6"
+                              defaultValue={sliderValue}
+                              value={sliderValue}
+                              onChange={(val) => {
+                                setSliderValue(val);
+                                var ans = (val / 100) * walletBalance;
+                                ans = Math.round(ans * 100) / 100;
+                                dispatch(
+                                  setInputYourBorrowModalRepayAmount(ans)
+                                );
+                                setinputRepayAmount(ans);
+                              }}
+                              focusThumbOnChange={false}
+                            >
+                              <SliderMark value={sliderValue}>
+                                <Box
+                                  position="absolute"
+                                  bottom="-8px"
+                                  left="-11px"
+                                  zIndex="1"
+                                >
+                                  <SliderTooltip />
+                                  <Text
+                                    position="absolute"
+                                    color="black"
+                                    top="6px"
+                                    left={
+                                      sliderValue !== 100
+                                        ? sliderValue >= 10
+                                          ? "15%"
+                                          : "25%"
+                                        : "0"
+                                    }
+                                    fontSize=".58rem"
+                                    fontWeight="bold"
+                                    textAlign="center"
+                                  >
+                                    {sliderValue}%
+                                  </Text>
+                                </Box>
+                              </SliderMark>
+                              <SliderTrack bg="#343333">
+                                <SliderFilledTrack
+                                  bg="white"
+                                  w={`${sliderValue}`}
+                                />
+                              </SliderTrack>
+                            </Slider>
                           </Box>
                         )}
-                        {false && (
+                      </Box>
+                      {currentAction === "Spend Borrow" && (
+                        <Box display="flex" flexDir="column" p="3" gap="1">
+                          <Box display="flex">
+                            <Text fontSize="xs" color="#8B949E">
+                              Purpose
+                            </Text>
+                            <Tooltip
+                              hasArrow
+                              placement="bottom-start"
+                              boxShadow="dark-lg"
+                              label="all the assets to the market"
+                              bg="#24292F"
+                              fontSize={"smaller"}
+                              fontWeight={"thin"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                            >
+                              <Box p="1">
+                                <InfoIcon />
+                              </Box>
+                            </Tooltip>
+                          </Box>
                           <Box>
-                            <SliderWithInput />
+                            <RadioGroup defaultValue="1">
+                              <Stack spacing={4} direction="row">
+                                <Radio
+                                  value="1"
+                                  bg="#2B2F35"
+                                  border="none"
+                                  colorScheme="customBlue"
+                                  _focus={{ boxShadow: "none", outline: "0" }}
+                                >
+                                  Liquidity provisioning
+                                </Radio>
+                                <Radio
+                                  fontSize="sm"
+                                  value="2"
+                                  bg="#2B2F35"
+                                  border="none"
+                                  colorScheme="customBlue"
+                                  _focus={{ boxShadow: "none", outline: "0" }}
+                                >
+                                  Trade
+                                </Radio>
+                              </Stack>
+                            </RadioGroup>
                           </Box>
-                        )}
-                      </Box>
-                      <Box display="flex" flexDir="column" p="3" gap="1">
-                        <Box display="flex">
-                          <Text fontSize="xs" color="#8B949E">
-                            Purpose
-                          </Text>
-                          <Tooltip
-                            hasArrow
-                            placement="bottom-start"
-                            boxShadow="dark-lg"
-                            label="all the assets to the market"
-                            bg="#24292F"
-                            fontSize={"smaller"}
-                            fontWeight={"thin"}
-                            borderRadius={"lg"}
-                            padding={"2"}
-                          >
-                            <Box p="1">
-                              <InfoIcon />
-                            </Box>
-                          </Tooltip>
                         </Box>
-                        <Box>
-                          <RadioGroup defaultValue="1">
-                            <Stack spacing={4} direction="row">
-                              <Radio
-                                value="1"
-                                bg="#2B2F35"
-                                border="none"
-                                colorScheme="customBlue"
-                                _focus={{ boxShadow: "none", outline: "0" }}
-                              >
-                                Liquidity provisioning
-                              </Radio>
-                              <Radio
-                                fontSize="sm"
-                                value="2"
-                                bg="#2B2F35"
-                                border="none"
-                                colorScheme="customBlue"
-                                _focus={{ boxShadow: "none", outline: "0" }}
-                              >
-                                Trade
-                              </Radio>
-                            </Stack>
-                          </RadioGroup>
-                        </Box>
-                      </Box>
-                      <Box
-                        display="flex"
-                        flexDirection="column"
-                        backgroundColor="#101216"
-                        border="1px"
-                        borderColor="#2B2F35"
-                        p="3"
-                        // my="4"
-                        borderRadius="md"
-                        gap="3"
-                      >
-                        <Box display="flex" flexDirection="column" gap="1">
-                          <Box display="flex">
-                            <Text fontSize="xs" color="#8B949E">
-                              Select Dapp
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="bottom-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box p="1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
-                          <Box
-                            display="flex"
-                            border="1px"
-                            borderColor="#2B2F35"
-                            justifyContent="space-between"
-                            py="2"
-                            pl="3"
-                            pr="3"
-                            borderRadius="md"
-                            className="navbar"
-                            onClick={() =>
-                              handleDropdownClick("yourBorrowDappDropdown")
-                            }
-                            as="button"
-                          >
-                            <Box display="flex" gap="1">
-                              <Box p="1">{getCoin(currentDapp)}</Box>
-                              <Text>{currentDapp}</Text>
-                            </Box>
-                            <Box pt="1" className="navbar-button">
-                              <DropdownUp />
-                            </Box>
-                            {navDropdowns.yourBorrowDappDropdown && (
-                              <Box
-                                w="full"
-                                left="0"
-                                bg="#03060B"
-                                py="2"
-                                className="dropdown-container"
+                      )}
+                      {currentAction === "Spend Borrow" && (
+                        <Box
+                          display="flex"
+                          flexDirection="column"
+                          backgroundColor="#101216"
+                          border="1px"
+                          borderColor="#2B2F35"
+                          p="3"
+                          // my="4"
+                          borderRadius="md"
+                          gap="3"
+                        >
+                          <Box display="flex" flexDirection="column" gap="1">
+                            <Box display="flex">
+                              <Text fontSize="xs" color="#8B949E">
+                                Select Dapp
+                              </Text>
+                              <Tooltip
+                                hasArrow
+                                placement="bottom-start"
                                 boxShadow="dark-lg"
+                                label="all the assets to the market"
+                                bg="#24292F"
+                                fontSize={"smaller"}
+                                fontWeight={"thin"}
+                                borderRadius={"lg"}
+                                padding={"2"}
                               >
-                                {dapps.map((dapp, index) => {
-                                  return (
-                                    <Button
-                                      // as="button"
-                                      w="full"
-                                      m="0"
-                                      pl="0"
-                                      display="flex"
-                                      alignItems="center"
-                                      gap="1"
-                                      pr="2"
-                                      bg="inherit"
-                                      onClick={() => {
-                                        setCurrentDapp(dapp.name);
-                                      }}
-                                      fontSize="sm"
-                                      _hover={{ background: "inherit" }}
-                                      isDisabled={dapp.status === "disable"}
-                                    >
-                                      {dapp.name === currentDapp && (
-                                        <Box
-                                          w="3px"
-                                          h="28px"
-                                          bg="#0C6AD9"
-                                          borderRightRadius="md"
-                                        ></Box>
-                                      )}
-                                      <Box
+                                <Box p="1">
+                                  <InfoIcon />
+                                </Box>
+                              </Tooltip>
+                            </Box>
+                            <Box
+                              display="flex"
+                              border="1px"
+                              borderColor="#2B2F35"
+                              justifyContent="space-between"
+                              py="2"
+                              pl="3"
+                              pr="3"
+                              borderRadius="md"
+                              className="navbar"
+                              onClick={() =>
+                                handleDropdownClick("yourBorrowDappDropdown")
+                              }
+                              as="button"
+                            >
+                              <Box display="flex" gap="1">
+                                <Box p="1">{getCoin(currentDapp)}</Box>
+                                <Text>{currentDapp}</Text>
+                              </Box>
+                              <Box pt="1" className="navbar-button">
+                                <DropdownUp />
+                              </Box>
+                              {navDropdowns.yourBorrowDappDropdown && (
+                                <Box
+                                  w="full"
+                                  left="0"
+                                  bg="#03060B"
+                                  py="2"
+                                  className="dropdown-container"
+                                  boxShadow="dark-lg"
+                                >
+                                  {dapps.map((dapp, index) => {
+                                    return (
+                                      <Button
+                                        // as="button"
+                                        key={index}
                                         w="full"
+                                        m="0"
+                                        pl="0"
                                         display="flex"
-                                        py="5px"
-                                        px={`${
-                                          dapp.name === currentDapp ? "1" : "5"
-                                        }`}
+                                        alignItems="center"
                                         gap="1"
-                                        bg={`${
-                                          dapp.name === currentDapp
-                                            ? "#0C6AD9"
-                                            : "inherit"
-                                        }`}
-                                        borderRadius="md"
+                                        pr="2"
+                                        bg="inherit"
+                                        onClick={() => {
+                                          setCurrentDapp(dapp.name);
+                                        }}
+                                        fontSize="sm"
+                                        _hover={{ background: "inherit" }}
+                                        isDisabled={dapp.status === "disable"}
                                       >
-                                        <Box p="1">{getCoin(dapp.name)}</Box>
-                                        <Text pt="1">{dapp.name}</Text>
-                                      </Box>
-                                      {dapp.status === "disable" && (
-                                        <Text
-                                          pt="1"
-                                          pr="3"
-                                          fontSize=".6rem"
-                                          fontWeight="thin"
+                                        {dapp.name === currentDapp && (
+                                          <Box
+                                            w="3px"
+                                            h="28px"
+                                            bg="#0C6AD9"
+                                            borderRightRadius="md"
+                                          ></Box>
+                                        )}
+                                        <Box
+                                          w="full"
+                                          display="flex"
+                                          py="5px"
+                                          px={`${
+                                            dapp.name === currentDapp
+                                              ? "1"
+                                              : "5"
+                                          }`}
+                                          gap="1"
+                                          bg={`${
+                                            dapp.name === currentDapp
+                                              ? "#0C6AD9"
+                                              : "inherit"
+                                          }`}
+                                          borderRadius="md"
                                         >
-                                          paused
-                                        </Text>
-                                      )}
-                                    </Button>
-                                  );
-                                })}
-                              </Box>
-                            )}
-                          </Box>
-                        </Box>
-                        <Box display="flex" flexDirection="column" gap="1">
-                          <Box display="flex">
-                            <Text fontSize="xs" color="#8B949E">
-                              Select Pool
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="bottom-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box p="1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
-                          <Box
-                            display="flex"
-                            border="1px"
-                            borderColor="#2B2F35"
-                            justifyContent="space-between"
-                            py="2"
-                            pl="3"
-                            pr="3"
-                            borderRadius="md"
-                            className="navbar"
-                            onClick={() =>
-                              handleDropdownClick("yourBorrowPoolDropdown")
-                            }
-                            as="button"
-                          >
-                            <Box display="flex" gap="1">
-                              <Box p="1">{getCoin(currentPool)}</Box>
-                              <Text>{currentPool}</Text>
+                                          <Box p="1">{getCoin(dapp.name)}</Box>
+                                          <Text pt="1">{dapp.name}</Text>
+                                        </Box>
+                                        {dapp.status === "disable" && (
+                                          <Text
+                                            pt="1"
+                                            pr="3"
+                                            fontSize=".6rem"
+                                            fontWeight="thin"
+                                          >
+                                            paused
+                                          </Text>
+                                        )}
+                                      </Button>
+                                    );
+                                  })}
+                                </Box>
+                              )}
                             </Box>
-                            <Box pt="1" className="navbar-button">
-                              <DropdownUp />
-                            </Box>
-                            {navDropdowns.yourBorrowPoolDropdown && (
-                              <Box
-                                w="full"
-                                left="0"
-                                bg="#03060B"
-                                py="2"
-                                className="dropdown-container"
+                          </Box>
+                          <Box display="flex" flexDirection="column" gap="1">
+                            <Box display="flex">
+                              <Text fontSize="xs" color="#8B949E">
+                                Select Pool
+                              </Text>
+                              <Tooltip
+                                hasArrow
+                                placement="bottom-start"
                                 boxShadow="dark-lg"
+                                label="all the assets to the market"
+                                bg="#24292F"
+                                fontSize={"smaller"}
+                                fontWeight={"thin"}
+                                borderRadius={"lg"}
+                                padding={"2"}
                               >
-                                {pools.map((pool, index) => {
-                                  return (
-                                    <Box
-                                      as="button"
-                                      w="full"
-                                      display="flex"
-                                      alignItems="center"
-                                      gap="1"
-                                      pr="2"
-                                      onClick={() => {
-                                        setCurrentPool(pool);
-                                      }}
-                                    >
-                                      {pool === currentPool && (
-                                        <Box
-                                          w="3px"
-                                          h="28px"
-                                          bg="#0C6AD9"
-                                          borderRightRadius="md"
-                                        ></Box>
-                                      )}
+                                <Box p="1">
+                                  <InfoIcon />
+                                </Box>
+                              </Tooltip>
+                            </Box>
+                            <Box
+                              display="flex"
+                              border="1px"
+                              borderColor="#2B2F35"
+                              justifyContent="space-between"
+                              py="2"
+                              pl="3"
+                              pr="3"
+                              borderRadius="md"
+                              className="navbar"
+                              onClick={() =>
+                                handleDropdownClick("yourBorrowPoolDropdown")
+                              }
+                              as="button"
+                            >
+                              <Box display="flex" gap="1">
+                                <Box p="1">{getCoin(currentPool)}</Box>
+                                <Text>{currentPool}</Text>
+                              </Box>
+                              <Box pt="1" className="navbar-button">
+                                <DropdownUp />
+                              </Box>
+                              {navDropdowns.yourBorrowPoolDropdown && (
+                                <Box
+                                  w="full"
+                                  left="0"
+                                  bg="#03060B"
+                                  py="2"
+                                  className="dropdown-container"
+                                  boxShadow="dark-lg"
+                                >
+                                  {pools.map((pool, index) => {
+                                    return (
                                       <Box
+                                        key={index}
+                                        as="button"
                                         w="full"
                                         display="flex"
-                                        py="5px"
-                                        px={`${
-                                          pool === currentPool ? "1" : "5"
-                                        }`}
+                                        alignItems="center"
                                         gap="1"
-                                        bg={`${
-                                          pool === currentPool
-                                            ? "#0C6AD9"
-                                            : "inherit"
-                                        }`}
-                                        borderRadius="md"
+                                        pr="2"
+                                        onClick={() => {
+                                          setCurrentPool(pool);
+                                        }}
                                       >
-                                        <Box p="1">{getCoin(pool)}</Box>
-                                        <Text>{pool}</Text>
+                                        {pool === currentPool && (
+                                          <Box
+                                            w="3px"
+                                            h="28px"
+                                            bg="#0C6AD9"
+                                            borderRightRadius="md"
+                                          ></Box>
+                                        )}
+                                        <Box
+                                          w="full"
+                                          display="flex"
+                                          py="5px"
+                                          px={`${
+                                            pool === currentPool ? "1" : "5"
+                                          }`}
+                                          gap="1"
+                                          bg={`${
+                                            pool === currentPool
+                                              ? "#0C6AD9"
+                                              : "inherit"
+                                          }`}
+                                          borderRadius="md"
+                                        >
+                                          <Box p="1">{getCoin(pool)}</Box>
+                                          <Text>{pool}</Text>
+                                        </Box>
                                       </Box>
-                                    </Box>
-                                  );
-                                })}
-                              </Box>
-                            )}
-                          </Box>
-                        </Box>
-                      </Box>
-                      <Box className="p-2 bg-[#101216] rounded-md border border-[#2B2F35] my-6">
-                        <Box className="flex justify-between">
-                          <Box className="flex">
-                            <Text className="text-xs text-[#8B949E]">
-                              est LP tokens recieved:{" "}
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="bottom-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box className="p-1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
-                          <Text className="text-xs text-[#8B949E]">
-                            $ 10.91
-                          </Text>
-                        </Box>
-                        <Box className="flex justify-between">
-                          <Box className="flex">
-                            <Text className="text-xs text-[#8B949E]">
-                              Liquidity spill:{" "}
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="bottom-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box className="p-1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
-                          <Box
-                            display="flex"
-                            className="text-xs text-[#8B949E]"
-                            gap="2"
-                          >
-                            <Box display="flex" gap="2px">
-                              <Box mt="2px">
-                                <SmallEth />
-                              </Box>
-                              <Text>1.23</Text>
-                            </Box>
-                            <Box display="flex" gap="2px">
-                              <Box mt="2px">
-                                <SmallUsdt />
-                              </Box>
-                              <Text>1.23</Text>
+                                    );
+                                  })}
+                                </Box>
+                              )}
                             </Box>
                           </Box>
                         </Box>
-                        <Box className="flex justify-between">
-                          <Box className="flex">
-                            <Text className="text-xs text-[#8B949E]">
-                              Fees:{" "}
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="bottom-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box className="p-1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
-                          <Text className="text-xs text-[#8B949E]">0.1%</Text>
-                        </Box>
-                        <Box className="flex justify-between">
-                          <Box className="flex">
-                            <Text className="text-xs text-[#8B949E]">
-                              Borrow apr:{" "}
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="bottom-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box className="p-1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
-                          <Text className="text-xs text-[#8B949E]">5.56%</Text>
-                        </Box>
-                        <Box className="flex justify-between">
-                          <Box className="flex">
-                            <Text className="text-xs text-[#8B949E]">
-                              Gas estimate:{" "}
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="bottom-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box className="p-1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
-                          <Text className="text-xs text-[#8B949E]">5.56%</Text>
-                        </Box>
-                        <Box className="flex justify-between">
-                          <Box className="flex">
-                            <Text className="text-xs text-[#8B949E]">
-                              Effective apr:{" "}
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="bottom-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box className="p-1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
-                          <Text className="text-xs text-[#8B949E]">5.56%</Text>
-                        </Box>
-                        <Box className="flex justify-between">
-                          <Box className="flex">
-                            <Text className="text-xs text-[#8B949E]">
-                              Health factor:{" "}
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="bottom-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box className="p-1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
-                          <Text className="text-xs text-[#8B949E]">1.10</Text>
-                        </Box>
-                      </Box>
+                      )}
+                      {getContainer(currentAction)}
 
-                      <Box
-                        as="button"
-                        className="w-full bg-[#101216] hover:bg-[#2EA043] text-[#6E7681] hover:text-[white] rounded-md border border-[#2B2F35] py-1 mb-6"
-                      >
-                        Borrow
-                      </Box>
+                      {inputRepayAmount > 0 ? (
+                        <Button
+                          bg="#8B949E"
+                          color="white"
+                          size="sm"
+                          width="100%"
+                          mb="2rem"
+                          border="1px solid #2B2F35"
+                          _hover={{ bg: "#2DA44E" }}
+                          _focus={{ bg: "#298E46" }}
+                        >
+                          Borrow
+                        </Button>
+                      ) : (
+                        <Button
+                          bg="#101216"
+                          color="#6E7681"
+                          size="sm"
+                          width="100%"
+                          mb="2rem"
+                          border="1px solid #2B2F35"
+                          _hover={{ bg: "#101216" }}
+                        >
+                          Borrow
+                        </Button>
+                      )}
                     </TabPanel>
                     <TabPanel>
                       <p>two!</p>

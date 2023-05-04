@@ -102,7 +102,7 @@ const SupplyModal = () => {
           size={{ width: "700px", height: "100px" }}
           scrollBehavior="inside"
         >
-          <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="5rem" />
+          <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
           <ModalContent
             bg="#010409"
             color="white"
