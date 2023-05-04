@@ -29,7 +29,21 @@ const SupplyModal = () => {
   const [inputAmount, setinputAmount] = useState(0);
   return (
     <div>
-      <Button onClick={onOpen}>Open Modal</Button>
+      <Button
+        key="suppy"
+        backgroundColor="#101216"
+        height={"2rem"}
+        padding="0rem 1rem"
+        border="1px solid #2b2f35"
+        fontSize={"12px"}
+        color="#6e6e6e"
+        _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
+        borderRadius={"6px"}
+        onClick={onOpen}
+      >
+        Supply
+      </Button>
+      {/* <Button onClick={onOpen}>Open Modal</Button> */}
       <Portal>
         <Modal
           isOpen={isOpen}
