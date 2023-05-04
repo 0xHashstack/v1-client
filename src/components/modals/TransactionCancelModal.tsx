@@ -16,8 +16,10 @@ const TransactionCancelModal = () => {
     return (
         <>
             <Button onClick={onOpen}>Open Modal 3</Button>
-            <Modal isOpen={isOpen} onClose={onClose}>
-                <ModalOverlay />
+            <Modal isOpen={isOpen} onClose={onClose} >
+                <ModalOverlay
+                        bg="rgba(244, 242, 255, 0.5);"
+                />
                 <ModalContent
                     bg="#101216"
                     color="white"

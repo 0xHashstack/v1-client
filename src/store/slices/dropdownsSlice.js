@@ -8,6 +8,8 @@ const initialState = {
     walletConnectionDropdown: false,
     settingsDropdown: false,
     languagesDropdown: false,
+    borrowModalBorrowMarketDropdown: false,
+    borrowModalCollateralMarketDropdown: false,
   },
 };
 
