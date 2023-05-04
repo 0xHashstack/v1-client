@@ -3,6 +3,7 @@ import React from "react";
 import Dashboard from "../dashboard";
 import SupplyModal from "@/components/modals/SupplyModal";
 import BorrowModal from "@/components/modals/borrowModal";
+import YourBorrowModal from "@/components/modals/yourBorrowModal";
 
 
 const MarketDashboard = () => {
@@ -96,6 +97,7 @@ const MarketDashboard = () => {
         gap={"14.2"}
         rowItems={rowItems2}
       />
+      <YourBorrowModal/>
     </HStack>
   );
 };

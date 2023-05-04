@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
   Button,
   Modal,
@@ -20,6 +21,7 @@ import {
   NumberInputField,
   Portal,
 } from "@chakra-ui/react";
+
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
 import InfoIcon from "@/assets/icons/infoIcon";
@@ -29,17 +31,17 @@ import USDTLogo from "@/assets/icons/coins/usdt";
 import ETHLogo from "@/assets/icons/coins/eth";
 import DAILogo from "@/assets/icons/coins/dai";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
+
 import {
   selectInputSupplyAmount,
-  selectCoinSelectedSupplyModal,
   setCoinSelectedSupplyModal,
   selectWalletBalance,
   setInputSupplyAmount,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectNavDropdowns,
-  setNavDropdown,
+  setModalDropdown,
+  selectModalDropDowns
 } from "@/store/slices/dropdownsSlice";
 
 const SupplyModal = () => {
@@ -51,7 +53,7 @@ const SupplyModal = () => {
   const [inputAmount, setinputAmount] = useState(0);
 
   const dispatch = useDispatch();
-  const navDropdowns = useSelector(selectNavDropdowns);
+  const modalDropdowns=useSelector(selectModalDropDowns);
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
@@ -74,7 +76,7 @@ const SupplyModal = () => {
     }
   };
   const handleDropdownClick = (dropdownName: string) => {
-    dispatch(setNavDropdown(dropdownName));
+    dispatch(setModalDropdown(dropdownName));
   };
   const handleChange = (newValue: any) => {
     var percentage = (newValue * 100) / walletBalance;
@@ -90,6 +92,7 @@ const SupplyModal = () => {
       dispatch(setInputSupplyAmount(newValue));
     }
   };
+//   console.log(currentSelectedCoin);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
     return (
@@ -112,13 +115,13 @@ const SupplyModal = () => {
                 <Modal isOpen={isOpen} onClose={onClose} size={{ width: "700px", height: "100px" }} isCentered>
                     <ModalOverlay
                         bg="rgba(244, 242, 255, 0.5);"
-                        mt="3.9rem"
+                        mt="3.8rem"
                     />
                     <ModalContent
                         bg="#010409"
                         color="white"
                         borderRadius="md"
-                        maxW="462px"
+                        maxW="442px"
                         mt="5rem"
                         zIndex={1}
                         className="modal-content"
@@ -173,7 +176,7 @@ const SupplyModal = () => {
                                     <Box pt="1" className="navbar-button">
                                         <DropdownUp />
                                     </Box>
-                                    {navDropdowns.supplyModalDropdown && (
+                                    {modalDropdowns.supplyModalDropdown && (
                                         <Box
                                             w="full"
                                             left="0"
@@ -291,7 +294,7 @@ const SupplyModal = () => {
                                 </Box>
                             </Card>
                             <Checkbox defaultChecked mt="0.7rem" w="390px">
-                                <Text fontSize="10.5px" color="#6E7681" fontStyle="normal" fontWeight="400" lineHeight="20px">
+                                <Text fontSize="10px" color="#6E7681" fontStyle="normal" fontWeight="400" lineHeight="20px">
                                     Ticking would stake the received rTokens unchecking wouldn&apos;t stake rTokens
                                 </Text>
                             </Checkbox>
