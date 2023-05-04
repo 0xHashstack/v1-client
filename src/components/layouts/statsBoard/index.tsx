@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Flex, HStack, VStack } from "@chakra-ui/react";
 import Stats from "@/components/layouts/stats";
 const StatsBoard = () => {
@@ -6,11 +6,11 @@ const StatsBoard = () => {
     <Flex
       display="flex"
       flexDirection="column"
-      mt="3rem"
-      h="8rem"
+      mt="2rem"
+      h="7rem"
       w="95%"
       flexWrap="wrap"
-      marginBottom="3rem"
+      marginBottom="4rem"
       // backgroundColor="#101216"
     >
       <HStack
@@ -24,6 +24,8 @@ const StatsBoard = () => {
       >
         <Stats
           header={["Your networth", "Your Supply", "Your borrow", "Net APR"]}
+          statsData={["$8392.14", "$5,536.83", "$536.83", "15.5%"]}
+          onclick={() => {}}
         />
         <Stats
           header={[
@@ -31,10 +33,12 @@ const StatsBoard = () => {
             "Available reserves",
             "Avg. asset utillization",
           ]}
+          statsData={["5,31,000.00", "$5,3100.00", "53.1%"]}
+          onclick={() => {}}
         />
       </HStack>
     </Flex>
   );
 };
 
-export default StatsBoard;
+export default memo(StatsBoard);

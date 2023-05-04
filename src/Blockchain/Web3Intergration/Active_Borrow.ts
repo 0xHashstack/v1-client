@@ -8,7 +8,6 @@ import {
   ec,
 } from "starknet";
 import fs from "fs";
-// @ts-ignore
 import {
   dtoken_loan_address,
   rtoken_address,

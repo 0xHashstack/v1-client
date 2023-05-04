@@ -50,6 +50,8 @@ body {
   border-radius: 5px;
 }
 
+/* CSS for dropdown functionality starts containing classes navbar navbar-button dropdown-container*/
+
 .navbar {
   position: relative;
   /* other styles for navbar... */
@@ -71,17 +73,4 @@ body {
   border-radius: 4px;
 }
 
-.modal-content {
-  overflow-y: scroll;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-}
-
-.modal-content::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-}
-
-/* .dropdown-container > :first-child {
-  background-color: #0366d6;
-} */
+/* CSS for dropdown functionality ends */
