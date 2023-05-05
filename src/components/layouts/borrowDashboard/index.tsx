@@ -20,6 +20,7 @@ import USDTLogo from "@/assets/images/stakeIcon.svg";
 import Image from "next/image";
 import BorrowModal from "@/components/modals/borrowModal";
 import SupplyModal from "@/components/modals/SupplyModal";
+import YourBorrowModal from "@/components/modals/yourBorrowModal";
 
 export interface ICoin {
   name: string;
@@ -376,7 +377,7 @@ const BorrowDashboard = ({
                         _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
                         borderRadius={"6px"}
                       >
-                        Actions
+                        <YourBorrowModal />
                       </Button>
                     </Box>
                   </Td>

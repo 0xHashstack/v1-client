@@ -111,8 +111,6 @@ const MarketDashboard = () => {
         // columnItems={dashboardItems2}
         // rowItems={rowItems2}
       />
-      <YourBorrowModal />
-      <TradeModal />
     </HStack>
   );
 };

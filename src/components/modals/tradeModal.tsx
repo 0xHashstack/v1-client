@@ -185,7 +185,7 @@ const TradeModal = () => {
         borderRadius={"6px"}
         onClick={onOpen}
       >
-        Borrow
+        Trade
       </Button>
       {/* <Button onClick={onOpen}>Open Modal</Button> */}
 

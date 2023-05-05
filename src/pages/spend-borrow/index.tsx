@@ -28,7 +28,6 @@ const SpendBorrow = () => {
               marginTop={"3.89rem"}
               marginBottom={"1.125rem"}
             />
-            <NavButtons />
             <SpendTable />
             {/* <MarketDashboard /> */}
             {/* <SupplyModal /> */}
