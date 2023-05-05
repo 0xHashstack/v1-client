@@ -9,7 +9,15 @@ import { capitalizeWords } from "../../../utils/functions/capitalizeWords";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
-const NavButtons = () => {
+const NavButtons = ({
+  width,
+  marginTop,
+  marginBottom,
+}: {
+  width: number;
+  marginTop: string;
+  marginBottom: string;
+}) => {
   const dispatch = useDispatch();
   const currentPage = useSelector(selectCurrentPage);
 
@@ -20,12 +28,11 @@ const NavButtons = () => {
   console.log("pathname", pathname);
   return (
     <HStack
-      w="100%"
-      mt="3rem"
-      mb="1rem"
-      width="95%"
+      mt={marginTop}
+      mb={marginBottom}
+      width={`${width}%`}
       // bgColor={"red"}
-      style={{ marginBottom: "0.5rem" }}
+      pl="2.5rem"
     >
       <ButtonGroup>
         {navOptions.map((val, idx) => (
@@ -45,12 +52,13 @@ const NavButtons = () => {
               lineHeight="20px"
               alignItems="center"
               letterSpacing="-0.15px"
-              padding="14px 8px"
+              padding="1.125rem 0.5rem"
               margin="4px"
               color={`${currentPage === val ? "#ffffff" : "#6e7681"}`}
               borderBottom={`${currentPage === val ? "2px solid #F9826C" : ""}`}
               borderRadius="0px"
               _hover={{ bg: "transparent", color: "#E6EDF3  " }}
+              // bgColor="pink"
             >
               {val === "market" && pathname != "/market" && (
                 <Box marginRight={1.5}>

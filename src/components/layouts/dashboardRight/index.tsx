@@ -1,0 +1,338 @@
+import React from "react";
+import {
+  Table,
+  Thead,
+  Tbody,
+  Tr,
+  Th,
+  Td,
+  TableContainer,
+  Wrap,
+  Text,
+  Box,
+  HStack,
+  VStack,
+} from "@chakra-ui/react";
+
+import BTCLogo from "@/assets/images/stakeIcon.svg";
+import USDTLogo from "@/assets/images/stakeIcon.svg";
+import Image from "next/image";
+import BorrowModal from "@/components/modals/borrowModal";
+import SupplyModal from "@/components/modals/SupplyModal";
+
+export interface ICoin {
+  name: string;
+  symbol: string;
+  icon: string;
+}
+
+export const Coins: ICoin[] = [
+  { name: "USDT", icon: "mdi-bitcoin", symbol: "USDT" },
+  { name: "USDC", icon: "mdi-ethereum", symbol: "USDC" },
+  { name: "BTC", icon: "mdi-bitcoin", symbol: "WBTC" },
+  { name: "ETH", icon: "mdi-ethereum", symbol: "WETH" },
+  { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
+];
+
+const DashboardRight = ({
+  width,
+}: {
+  width: string;
+  // gap: string;
+  // columnItems: Array<Array<string>>;
+  // rowItems: any;
+}) => {
+  const columnItems = [
+    "Market",
+    "Price",
+    "Total borrowed",
+    "Utillization",
+    "Borrow APR",
+    "Borrow",
+    "Trade",
+  ];
+
+  // const rowItems2 = [
+  //   [
+  //     <HStack>
+  //       <Box></Box>
+  //       <VStack>
+  //         <Text>USDT</Text>
+  //         <Text>Wallet Bal. $900</Text>
+  //       </VStack>
+  //     </HStack>,
+  //     "000.00",
+  //     "0000.000",
+  //     "4%",
+  //     "7%",
+  //     <BorrowModal />,
+  //     <Text
+  //       key="borrow-details"
+  //       as="span"
+  //       position="relative"
+  //       color="#0969DA"
+  //       fontSize="14px"
+  //       _hover={{
+  //         "::before": {
+  //           content: '""',
+  //           position: "absolute",
+  //           left: 0,
+  //           bottom: "-0px",
+  //           width: "100%",
+  //           height: "1px",
+  //           backgroundColor: "#0969DA",
+  //         },
+  //       }}
+  //     >
+  //       Trade
+  //     </Text>,
+  //   ],
+  // ];
+  // const gap2 = [["10", "20", "15", "8", "8", "12.5", "2.5"]];
+
+  return (
+    <TableContainer
+      bg="#101216"
+      border="1px"
+      borderColor="#2B2F35"
+      color="white"
+      borderRadius="md"
+      w={width}
+      display="flex"
+      justifyContent="flex-start"
+      alignItems="flex-start"
+      // bgColor={"yellow"}
+      height={"100%"}
+      paddingX={"14px"}
+      pt={"1.4rem"}
+      pb={"0.5rem"}
+      overflowX="hidden"
+    >
+      <Table variant="unstyled" width="100%" height="100%">
+        <Thead width={"100%"} height={"2.7rem"}>
+          <Tr width={"100%"}>
+            {columnItems.map((val, idx) => (
+              <Td
+                key={idx}
+                // width={`${gap2[idx]}%`}
+                // maxWidth={`${gap[idx1][idx2]}%`}
+                fontSize={"12px"}
+                fontWeight={400}
+                // border="1px solid blue"
+                padding={0}
+              >
+                <Text
+                  whiteSpace="pre-wrap"
+                  overflowWrap="break-word"
+                  //   bgColor={"red"}
+                  width={"100%"}
+                  height={"2rem"}
+                  // textAlign="center"
+                  textAlign={idx == 0 ? "left" : "center"}
+                  color={"#BDBFC1"}
+                  padding={0}
+                  pl={idx == 0 ? 5 : 0}
+                >
+                  {val}
+                </Text>
+              </Td>
+            ))}
+          </Tr>
+        </Thead>
+        <Tbody
+          position="relative"
+          overflowX="hidden"
+          //   display="flex"
+          //   flexDirection="column"
+          //   gap={"1rem"}
+        >
+          {Coins.map((coin, idx) => (
+            <>
+              <Tr
+                key={idx}
+                width={"100%"}
+                height={"5rem"}
+                // bgColor="blue"
+                // borderBottom="1px solid #2b2f35"
+                position="relative"
+              >
+                <Td
+                  width={"12%"}
+                  // maxWidth={`${gap[idx1][idx2]}%`}
+                  fontSize={"12px"}
+                  fontWeight={400}
+                  padding={2}
+                >
+                  <HStack gap={1.5} pl={3}>
+                    <Box height="32px" width="32px">
+                      <Image
+                        src={`./${coin.name}.svg`}
+                        alt="Picture of the author"
+                        width="32"
+                        height="32"
+                      />
+                    </Box>
+                    <Text fontSize="14px">{coin.name}</Text>
+                  </HStack>
+                </Td>
+                <Td
+                  width={"14%"}
+                  maxWidth={"3rem"}
+                  fontSize={"14px"}
+                  fontWeight={400}
+                  overflow={"hidden"}
+                  textAlign={"center"}
+                >
+                  <Text
+                    width="100%"
+                    height="100%"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    fontWeight="400"
+                    // bgColor={"blue"}
+                  >
+                    {/* {checkGap(idx1, idx2)} */}
+                    000.00
+                  </Text>
+                </Td>
+                <Td
+                  width={"15%"}
+                  maxWidth={"3rem"}
+                  fontSize={"14px"}
+                  fontWeight={400}
+                  overflow={"hidden"}
+                  textAlign={"center"}
+                >
+                  <Text
+                    width="100%"
+                    height="100%"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    fontWeight="400"
+                    // bgColor={"blue"}
+                  >
+                    {/* {checkGap(idx1, idx2)} */}
+                    00000.00
+                  </Text>
+                </Td>
+                <Td
+                  width={"13%"}
+                  maxWidth={"3rem"}
+                  fontSize={"14px"}
+                  fontWeight={400}
+                  overflow={"hidden"}
+                  textAlign={"center"}
+                >
+                  <Text
+                    width="100%"
+                    height="100%"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    fontWeight="400"
+                    // bgColor={"blue"}
+                  >
+                    {/* {checkGap(idx1, idx2)} */}
+                    7.00%
+                  </Text>
+                </Td>
+                <Td
+                  width={"13%"}
+                  maxWidth={"3rem"}
+                  fontSize={"14px"}
+                  fontWeight={400}
+                  overflow={"hidden"}
+                  textAlign={"center"}
+                >
+                  <Text
+                    width="100%"
+                    height="100%"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    fontWeight="400"
+                    // bgColor={"blue"}
+                  >
+                    {/* {checkGap(idx1, idx2)} */}
+                    19.00%
+                  </Text>
+                </Td>
+                <Td
+                  width={"12%"}
+                  maxWidth={"5rem"}
+                  fontSize={"14px"}
+                  fontWeight={400}
+                  //   overflow={"hidden"}
+                  textAlign={"center"}
+                >
+                  <Box
+                    width="100%"
+                    height="100%"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                    fontWeight="400"
+                    // bgColor={"blue"}
+                  >
+                    <BorrowModal />
+                  </Box>
+                </Td>
+                <Td
+                  width={"12%"}
+                  //   maxWidth={"3rem"}
+                  fontSize={"14px"}
+                  fontWeight={400}
+                  //   overflow={"hidden"}
+                  textAlign={"center"}
+                >
+                  <Box position="relative" display="inline-block">
+                    <Text
+                      key="borrow-details"
+                      as="span"
+                      position="relative"
+                      color="#0969DA"
+                      fontSize="14px"
+                      width="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      _hover={{
+                        "::before": {
+                          content: '""',
+                          position: "absolute",
+                          left: 0,
+                          bottom: "-0px",
+                          width: "100%",
+                          height: "1px",
+                          backgroundColor: "#0969DA",
+                        },
+                      }}
+                    >
+                      Trade
+                    </Text>
+                  </Box>
+                </Td>
+              </Tr>
+              <hr
+                style={{
+                  position: "absolute",
+                  height: "1px",
+                  borderWidth: "0",
+                  backgroundColor: "#2b2f35",
+                  width: "96%",
+                  left: "1.75%",
+                  display: `${idx == Coins.length - 1 ? "none" : "block"}`,
+                }}
+              />
+            </>
+          ))}
+        </Tbody>
+      </Table>
+    </TableContainer>
+  );
+};
+
+export default DashboardRight;

@@ -23,6 +23,11 @@ const SpendBorrow = () => {
             backgroundColor="#010409"
           >
             {/* <StatsBoard /> */}
+            <NavButtons
+              width={95}
+              marginTop={"3.89rem"}
+              marginBottom={"1.125rem"}
+            />
             <NavButtons />
             <SpendTable />
             {/* <MarketDashboard /> */}
