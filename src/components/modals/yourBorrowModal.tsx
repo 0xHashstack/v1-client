@@ -1311,7 +1311,7 @@ const YourBorrowModal = () => {
                           <Box display="flex" flexDirection="column" gap="1">
                             <Box display="flex">
                               <Text fontSize="xs" color="#8B949E">
-                                Dapp
+                                Select Dapp
                               </Text>
                               <Tooltip
                                 hasArrow
@@ -1545,6 +1545,7 @@ const YourBorrowModal = () => {
                                   {coins.map((coin, index) => {
                                     return (
                                       <Box
+                                        key={index}
                                         as="button"
                                         w="full"
                                         display="flex"
@@ -1690,6 +1691,7 @@ const YourBorrowModal = () => {
                                 {borrowIds.map((coin, index) => {
                                   return (
                                     <Box
+                                      key={index}
                                       as="button"
                                       w="full"
                                       display="flex"
@@ -1792,6 +1794,7 @@ const YourBorrowModal = () => {
                                 {coins.map((coin, index) => {
                                   return (
                                     <Box
+                                      key={index}
                                       as="button"
                                       w="full"
                                       display="flex"
