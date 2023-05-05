@@ -1,25 +1,24 @@
 import React, { useState } from "react";
-
 import {
-  Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  Slider,
-  SliderMark,
-  SliderTrack,
-  SliderFilledTrack,
-  ModalBody,
-  ModalCloseButton,
-  Card,
-  Text,
-  Checkbox,
-  Tooltip,
-  Box,
-  NumberInput,
-  NumberInputField,
-  Portal,
+    Button,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    Slider,
+    SliderMark,
+    SliderTrack,
+    SliderFilledTrack,
+    ModalBody,
+    ModalCloseButton,
+    Card,
+    Text,
+    Checkbox,
+    Tooltip,
+    Box,
+    NumberInput,
+    NumberInputField,
+    Portal,
 } from "@chakra-ui/react";
 
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
@@ -33,84 +32,92 @@ import DAILogo from "@/assets/icons/coins/dai";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
 
 import {
-  selectInputSupplyAmount,
-  setCoinSelectedSupplyModal,
-  selectWalletBalance,
-  setInputSupplyAmount,
+    selectInputSupplyAmount,
+    setCoinSelectedSupplyModal,
+    selectWalletBalance,
+    setInputSupplyAmount,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  setModalDropdown,
-  selectModalDropDowns
+    setModalDropdown,
+    selectModalDropDowns
 } from "@/store/slices/dropdownsSlice";
 
 const SupplyModal = () => {
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [sliderValue, setSliderValue] = useState(0);
-  const walletBalance = useSelector(selectWalletBalance);
-  const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
-  const inputAmount1 = useSelector(selectInputSupplyAmount);
-  const [inputAmount, setinputAmount] = useState(0);
+    const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const dispatch = useDispatch();
-  const modalDropdowns=useSelector(selectModalDropDowns);
-  const getCoin = (CoinName: string) => {
-    switch (CoinName) {
-      case "BTC":
-        return <BTCLogo />;
-        break;
-      case "USDC":
-        return <USDCLogo />;
-        break;
-      case "USDT":
-        return <USDTLogo />;
-        break;
-      case "ETH":
-        return <ETHLogo />;
-        break;
-      case "DAI":
-        return <DAILogo />;
-        break;
-      default:
-        break;
-    }
-  };
-  const handleDropdownClick = (dropdownName: string) => {
-    dispatch(setModalDropdown(dropdownName));
-  };
-  const handleChange = (newValue: any) => {
-    var percentage = (newValue * 100) / walletBalance;
-    percentage = Math.max(0, percentage);
-    if (percentage > 100) {
-      setSliderValue(100);
-      setinputAmount(newValue);
-      dispatch(setInputSupplyAmount(newValue));
-    } else {
-      percentage = Math.round(percentage * 100) / 100;
-      setSliderValue(percentage);
-      setinputAmount(newValue);
-      dispatch(setInputSupplyAmount(newValue));
-    }
-  };
-//   console.log(currentSelectedCoin);
-  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+    const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
+    const [inputAmount, setinputAmount] = useState(0);
+    const [sliderValue, setSliderValue] = useState(0);
+
+    const dispatch = useDispatch();
+    const modalDropdowns = useSelector(selectModalDropDowns);
+    const walletBalance = useSelector(selectWalletBalance);
+    const inputAmount1 = useSelector(selectInputSupplyAmount);
+
+    const getCoin = (CoinName: string) => {
+        switch (CoinName) {
+            case "BTC":
+                return <BTCLogo />;
+                break;
+            case "USDC":
+                return <USDCLogo />;
+                break;
+            case "USDT":
+                return <USDTLogo />;
+                break;
+            case "ETH":
+                return <ETHLogo />;
+                break;
+            case "DAI":
+                return <DAILogo />;
+                break;
+            default:
+                break;
+        }
+    };
+
+    //This Function handles the modalDropDowns
+    const handleDropdownClick = (dropdownName: string) => {
+        // Dispatches an action called setModalDropdown with the dropdownName as the payload
+        dispatch(setModalDropdown(dropdownName));
+    };
+
+    //This function is used to find the percentage of the slider from the input given by the user
+    const handleChange = (newValue: any) => {
+          // Calculate the percentage of the new value relative to the wallet balance
+        var percentage = (newValue * 100) / walletBalance;
+        percentage = Math.max(0, percentage);
+        if (percentage > 100) {
+            setSliderValue(100);
+            setinputAmount(newValue);
+            dispatch(setInputSupplyAmount(newValue));
+        } else {
+            percentage = Math.round(percentage * 100) / 100;
+            setSliderValue(percentage);
+            setinputAmount(newValue);
+            dispatch(setInputSupplyAmount(newValue));
+        }
+    };
+
+    const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
     return (
         <div>
-      <Button
-        key="borrow"
-        height={"2rem"}
-        padding="0rem 1rem"
-        border="1px solid #2b2f35"
-        color="#6e6e6e"
-        fontSize={"12px"}
-        bgColor="#101216"
-        _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
-        borderRadius={"6px"}
-        onClick={onOpen}
-      >
-        Supply
-      </Button>
+            <Button
+                key="borrow"
+                height={"2rem"}
+                padding="0rem 1rem"
+                border="1px solid #2b2f35"
+                color="#6e6e6e"
+                fontSize={"12px"}
+                bgColor="#101216"
+                _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
+                borderRadius={"6px"}
+                onClick={onOpen}
+            >
+                Supply
+            </Button>
             <Portal>
                 <Modal isOpen={isOpen} onClose={onClose} size={{ width: "700px", height: "100px" }} isCentered>
                     <ModalOverlay
@@ -137,20 +144,20 @@ const SupplyModal = () => {
                                         Market
                                     </Text>
                                     <Tooltip
-                                            hasArrow
-                                            placement="bottom-start"
-                                            boxShadow="dark-lg"
-                                            label="all the assets to the market"
-                                            bg="#24292F"
-                                            fontSize={"smaller"}
-                                            fontWeight={"thin"}
-                                            borderRadius={"lg"}
-                                            padding={"2"}
-                                        >
-                                            <Box>
-                                                <InfoIcon />
-                                            </Box>
-                                        </Tooltip>
+                                        hasArrow
+                                        placement="bottom-start"
+                                        boxShadow="dark-lg"
+                                        label="all the assets to the market"
+                                        bg="#24292F"
+                                        fontSize={"smaller"}
+                                        fontWeight={"thin"}
+                                        borderRadius={"lg"}
+                                        padding={"2"}
+                                    >
+                                        <Box>
+                                            <InfoIcon />
+                                        </Box>
+                                    </Tooltip>
                                 </Text>
                                 <Box
                                     display="flex"
@@ -255,7 +262,7 @@ const SupplyModal = () => {
                                         {` ${currentSelectedCoin}`}
                                     </Text>
                                 </Text>
-                                <Box pt={5} pb={2} mt="0.4rem">
+                                <Box pt={5} pb={2} mt="0.8rem">
                                     <Slider
                                         aria-label="slider-ex-6"
                                         defaultValue={sliderValue}
@@ -275,9 +282,9 @@ const SupplyModal = () => {
                                                 <Text
                                                     position="absolute"
                                                     color="black"
-                                                    top="5px"
+                                                    top="7px"
                                                     left={
-                                                        sliderValue !== 100 ? (sliderValue >= 10 ? "15%" : "25%") : "0"
+                                                        sliderValue !== 100 ? (sliderValue >= 10 ? "15%" : "25%") : "5%"
                                                     }
                                                     fontSize=".58rem"
                                                     fontWeight="bold"
@@ -299,146 +306,146 @@ const SupplyModal = () => {
                                 </Text>
                             </Checkbox>
 
-              <Card bg="#101216" mt="1rem" p="1rem" border="1px solid #2B2F35">
-                <Text
-                  display="flex"
-                  justifyContent="space-between"
-                  fontSize="0.9rem"
-                  mb="0.4rem"
-                >
-                  <Text display="flex" alignItems="center">
-                    <Text
-                      mr="0.2rem"
-                      font-style="normal"
-                      font-weight="400"
-                      font-size="12px"
-                      lineHeight="16px"
-                      color="#6A737D"
-                    >
-                      Fees:
-                    </Text>
-                    <Tooltip
-                      hasArrow
-                      placement="bottom-start"
-                      boxShadow="dark-lg"
-                      label="all the assets to the market"
-                      bg="#24292F"
-                      fontSize={"smaller"}
-                      fontWeight={"thin"}
-                      borderRadius={"lg"}
-                      padding={"2"}
-                    >
-                      <Box>
-                        <InfoIcon />
-                      </Box>
-                    </Tooltip>
-                  </Text>
-                  <Text color="#6E7681">5.56%</Text>
-                </Text>
-                <Text
-                  color="#8B949E"
-                  display="flex"
-                  justifyContent="space-between"
-                  fontSize="0.9rem"
-                  mb="0.4rem"
-                >
-                  <Text display="flex" alignItems="center">
-                    <Text
-                      mr="0.2rem"
-                      font-style="normal"
-                      font-weight="400"
-                      font-size="12px"
-                      color="#6A737D"
-                    >
-                      Gas estimate:
-                    </Text>
-                    <Tooltip
-                      hasArrow
-                      placement="bottom-start"
-                      boxShadow="dark-lg"
-                      label="all the assets to the market"
-                      bg="#24292F"
-                      fontSize={"smaller"}
-                      fontWeight={"thin"}
-                      borderRadius={"lg"}
-                      padding={"2"}
-                    >
-                      <Box>
-                        <InfoIcon />
-                      </Box>
-                    </Tooltip>
-                  </Text>
-                  <Text color="#6E7681">$ 0.50</Text>
-                </Text>
-                <Text
-                  color="#8B949E"
-                  display="flex"
-                  justifyContent="space-between"
-                  fontSize="0.9rem"
-                  mb="0.4rem"
-                >
-                  <Text display="flex" alignItems="center">
-                    <Text
-                      mr="0.2rem"
-                      font-style="normal"
-                      font-weight="400"
-                      font-size="12px"
-                      color="#6A737D"
-                    >
-                      Supply apr:
-                    </Text>
-                    <Tooltip
-                      hasArrow
-                      placement="bottom-start"
-                      boxShadow="dark-lg"
-                      label="all the assets to the market"
-                      bg="#24292F"
-                      fontSize={"smaller"}
-                      fontWeight={"thin"}
-                      borderRadius={"lg"}
-                      padding={"2"}
-                    >
-                      <Box>
-                        <InfoIcon />
-                      </Box>
-                    </Tooltip>
-                  </Text>
-                  <Text color="#6E7681">5.56%</Text>
-                </Text>
-              </Card>
-              {inputAmount1 > 0 ? (
-                <Button
-                  bg="#8B949E"
-                  color="white"
-                  size="sm"
-                  width="100%"
-                  mt="2rem"
-                  mb="2rem"
-                  border="1px solid #2B2F35"
-                  _hover={{ bg: "#2DA44E" }}
-                  _focus={{ bg: "#298E46" }}
-                >
-                  Supply
-                </Button>
-              ) : (
-                <Button
-                  bg="#101216"
-                  color="#6E7681"
-                  size="sm"
-                  width="100%"
-                  mt="2rem"
-                  mb="2rem"
-                  border="1px solid #2B2F35"
-                  _hover={{ bg: "#101216" }}
-                >
-                  Supply
-                </Button>
-              )}
-            </ModalBody>
-          </ModalContent>
-        </Modal>
-      </Portal>
-    </div>
-  );
+                            <Card bg="#101216" mt="1rem" p="1rem" border="1px solid #2B2F35">
+                                <Text
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    fontSize="0.9rem"
+                                    mb="0.4rem"
+                                >
+                                    <Text display="flex" alignItems="center">
+                                        <Text
+                                            mr="0.2rem"
+                                            font-style="normal"
+                                            font-weight="400"
+                                            font-size="12px"
+                                            lineHeight="16px"
+                                            color="#6A737D"
+                                        >
+                                            Fees:
+                                        </Text>
+                                        <Tooltip
+                                            hasArrow
+                                            placement="bottom-start"
+                                            boxShadow="dark-lg"
+                                            label="all the assets to the market"
+                                            bg="#24292F"
+                                            fontSize={"smaller"}
+                                            fontWeight={"thin"}
+                                            borderRadius={"lg"}
+                                            padding={"2"}
+                                        >
+                                            <Box>
+                                                <InfoIcon />
+                                            </Box>
+                                        </Tooltip>
+                                    </Text>
+                                    <Text color="#6E7681">5.56%</Text>
+                                </Text>
+                                <Text
+                                    color="#8B949E"
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    fontSize="0.9rem"
+                                    mb="0.4rem"
+                                >
+                                    <Text display="flex" alignItems="center">
+                                        <Text
+                                            mr="0.2rem"
+                                            font-style="normal"
+                                            font-weight="400"
+                                            font-size="12px"
+                                            color="#6A737D"
+                                        >
+                                            Gas estimate:
+                                        </Text>
+                                        <Tooltip
+                                            hasArrow
+                                            placement="bottom-start"
+                                            boxShadow="dark-lg"
+                                            label="all the assets to the market"
+                                            bg="#24292F"
+                                            fontSize={"smaller"}
+                                            fontWeight={"thin"}
+                                            borderRadius={"lg"}
+                                            padding={"2"}
+                                        >
+                                            <Box>
+                                                <InfoIcon />
+                                            </Box>
+                                        </Tooltip>
+                                    </Text>
+                                    <Text color="#6E7681">$ 0.50</Text>
+                                </Text>
+                                <Text
+                                    color="#8B949E"
+                                    display="flex"
+                                    justifyContent="space-between"
+                                    fontSize="0.9rem"
+                                    mb="0.4rem"
+                                >
+                                    <Text display="flex" alignItems="center">
+                                        <Text
+                                            mr="0.2rem"
+                                            font-style="normal"
+                                            font-weight="400"
+                                            font-size="12px"
+                                            color="#6A737D"
+                                        >
+                                            Supply apr:
+                                        </Text>
+                                        <Tooltip
+                                            hasArrow
+                                            placement="bottom-start"
+                                            boxShadow="dark-lg"
+                                            label="all the assets to the market"
+                                            bg="#24292F"
+                                            fontSize={"smaller"}
+                                            fontWeight={"thin"}
+                                            borderRadius={"lg"}
+                                            padding={"2"}
+                                        >
+                                            <Box>
+                                                <InfoIcon />
+                                            </Box>
+                                        </Tooltip>
+                                    </Text>
+                                    <Text color="#6E7681">5.56%</Text>
+                                </Text>
+                            </Card>
+                            {inputAmount1 > 0 ? (
+                                <Button
+                                    bg="#8B949E"
+                                    color="white"
+                                    size="sm"
+                                    width="100%"
+                                    mt="2rem"
+                                    mb="2rem"
+                                    border="1px solid #2B2F35"
+                                    _hover={{ bg: "#2DA44E" }}
+                                    _focus={{ bg: "#298E46" }}
+                                >
+                                    Supply
+                                </Button>
+                            ) : (
+                                <Button
+                                    bg="#101216"
+                                    color="#6E7681"
+                                    size="sm"
+                                    width="100%"
+                                    mt="2rem"
+                                    mb="2rem"
+                                    border="1px solid #2B2F35"
+                                    _hover={{ bg: "#101216" }}
+                                >
+                                    Supply
+                                </Button>
+                            )}
+                        </ModalBody>
+                    </ModalContent>
+                </Modal>
+            </Portal>
+        </div>
+    );
 };
 export default SupplyModal;

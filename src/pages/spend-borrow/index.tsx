@@ -4,7 +4,7 @@ import Navbar from "@/components/layouts/navbar/Navbar";
 import StatsBoard from "@/components/layouts/statsBoard";
 import { Stack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-
+import YourSupplyModal from "@/components/modals/yourSupply";
 const SpendBorrow = () => {
   const [render, setRender] = useState(true);
   useEffect(() => {
@@ -25,6 +25,7 @@ const SpendBorrow = () => {
             <NavButtons />
             {/* <MarketDashboard /> */}
             {/* <SupplyModal /> */}
+            <YourSupplyModal/>
           </Stack>
         </>
       )}

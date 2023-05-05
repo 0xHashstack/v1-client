@@ -4,6 +4,7 @@ import Dashboard from "../dashboard";
 import SupplyModal from "@/components/modals/SupplyModal";
 import BorrowModal from "@/components/modals/borrowModal";
 import YourBorrowModal from "@/components/modals/yourBorrowModal";
+import SpendBorrowModal from "@/components/modals/SpendBorrow";
 
 
 const MarketDashboard = () => {
@@ -98,6 +99,7 @@ const MarketDashboard = () => {
         rowItems={rowItems2}
       />
       <YourBorrowModal/>
+      <SpendBorrowModal/>
     </HStack>
   );
 };

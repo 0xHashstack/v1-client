@@ -9,14 +9,6 @@ const initialState = {
     walletConnectionDropdown: false,
     settingsDropdown: false,
     languagesDropdown: false,
-    borrowModalBorrowMarketDropdown: false,
-    borrowModalCollateralMarketDropdown: false,
-    supplyModalDropdown: false,
-    yourBorrowModalBorrowMarketDropdown: false,
-    yourBorrowModalActionDropdown: false,
-    yourBorrowBorrowIDsDropdown: false,
-    yourBorrowDappDropdown: false,
-    yourBorrowPoolDropdown: false,
   },
   modalDropdowns:{
     borrowModalBorrowMarketDropdown: false,
@@ -27,6 +19,8 @@ const initialState = {
     yourBorrowBorrowIDsDropdown: false,
     yourBorrowDappDropdown: false,
     yourBorrowPoolDropdown: false,
+    yourSupplyAddsupplyDropdown:false,
+    yourSupplyWithdrawlDropdown:false,
 
   }
 };
