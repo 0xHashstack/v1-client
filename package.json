@@ -16,7 +16,7 @@
     "@types/node": "18.16.0",
     "@types/react": "18.0.38",
     "@types/react-dom": "18.0.11",
-    "@userback/react": "0.3.0",
+    "@userback/react": "^0.3.0",
     "@usersnap/browser": "^0.0.3",
     "autoprefixer": "10.4.14",
     "axios": "0.24.0",

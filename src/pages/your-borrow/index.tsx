@@ -5,6 +5,7 @@ import Navbar from "@/components/layouts/navbar/Navbar";
 import StatsBoard from "@/components/layouts/statsBoard";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import Pagination from "@/components/uiElements/pagination";
+import YourBorrowModal from "@/components/modals/yourBorrowModal";
 import { Box, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 
@@ -41,6 +42,7 @@ const YourBorrow = () => {
   ];
   useEffect(() => {
     setRender(true);
+    console.log("rendered your borrow");
   }, []);
   return (
     <>

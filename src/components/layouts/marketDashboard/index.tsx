@@ -5,6 +5,8 @@ import SupplyModal from "@/components/modals/SupplyModal";
 import BorrowModal from "@/components/modals/borrowModal";
 import DashboardLeft from "../dashboardLeft";
 import DashboardRight from "../dashboardRight";
+import YourBorrowModal from "@/components/modals/yourBorrowModal";
+import TradeModal from "@/components/modals/tradeModal";
 
 const MarketDashboard = () => {
   const dashboardItems1 = [
@@ -109,6 +111,8 @@ const MarketDashboard = () => {
         // columnItems={dashboardItems2}
         // rowItems={rowItems2}
       />
+      <YourBorrowModal />
+      <TradeModal />
     </HStack>
   );
 };
