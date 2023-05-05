@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+
 import {
   Button,
   Modal,
@@ -20,6 +21,7 @@ import {
   NumberInputField,
   Portal,
 } from "@chakra-ui/react";
+
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
 import InfoIcon from "@/assets/icons/infoIcon";
@@ -29,17 +31,17 @@ import USDTLogo from "@/assets/icons/coins/usdt";
 import ETHLogo from "@/assets/icons/coins/eth";
 import DAILogo from "@/assets/icons/coins/dai";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
+
 import {
   selectInputSupplyAmount,
-  selectCoinSelectedSupplyModal,
   setCoinSelectedSupplyModal,
   selectWalletBalance,
   setInputSupplyAmount,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectNavDropdowns,
-  setNavDropdown,
+  setModalDropdown,
+  selectModalDropDowns,
 } from "@/store/slices/dropdownsSlice";
 
 const SupplyModal = () => {
@@ -51,7 +53,7 @@ const SupplyModal = () => {
   const [inputAmount, setinputAmount] = useState(0);
 
   const dispatch = useDispatch();
-  const navDropdowns = useSelector(selectNavDropdowns);
+  const modalDropdowns = useSelector(selectModalDropDowns);
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
@@ -74,7 +76,7 @@ const SupplyModal = () => {
     }
   };
   const handleDropdownClick = (dropdownName: string) => {
-    dispatch(setNavDropdown(dropdownName));
+    dispatch(setModalDropdown(dropdownName));
   };
   const handleChange = (newValue: any) => {
     var percentage = (newValue * 100) / walletBalance;
@@ -90,32 +92,61 @@ const SupplyModal = () => {
       dispatch(setInputSupplyAmount(newValue));
     }
   };
+  //   console.log(currentSelectedCoin);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
   return (
     <div>
-      <Button onClick={onOpen}>Open Modal</Button>
+      <Button
+        key="borrow"
+        height={"2rem"}
+        padding="0rem 1rem"
+        border="1px solid #2b2f35"
+        color="#6e6e6e"
+        fontSize={"12px"}
+        bgColor="#101216"
+        _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
+        borderRadius={"6px"}
+        onClick={onOpen}
+      >
+        Supply
+      </Button>
       <Portal>
         <Modal
           isOpen={isOpen}
           onClose={onClose}
           size={{ width: "700px", height: "100px" }}
-          scrollBehavior="inside"
+          isCentered
         >
           <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
           <ModalContent
             bg="#010409"
             color="white"
             borderRadius="md"
-            maxW="462px"
-            mt="7rem"
+            maxW="442px"
+            mt="5rem"
             zIndex={1}
             className="modal-content"
           >
-            <ModalHeader mt="1rem">Supply</ModalHeader>
+            <ModalHeader
+              mt="1rem"
+              fontSize="14px"
+              fontWeight="600"
+              fontStyle="normal"
+              lineHeight="20px"
+            >
+              Supply
+            </ModalHeader>
             <ModalCloseButton mt="1rem" mr="1rem" />
             <ModalBody>
-              <Text color="#0969DA" mb="8px">
+              <Text
+                color="#0969DA"
+                mb="8px"
+                fontSize="12px"
+                fontStyle="normal"
+                fontWeight="500"
+                lineHeight="16px"
+              >
                 Supply ID-12345
               </Text>
               <Card
@@ -164,7 +195,7 @@ const SupplyModal = () => {
                   <Box pt="1" className="navbar-button">
                     <DropdownUp />
                   </Box>
-                  {navDropdowns.supplyModalDropdown && (
+                  {modalDropdowns.supplyModalDropdown && (
                     <Box
                       w="full"
                       left="0"
@@ -324,8 +355,14 @@ const SupplyModal = () => {
                   </Slider>
                 </Box>
               </Card>
-              <Checkbox defaultChecked mt="0.7rem">
-                <Text fontSize="0.65rem" color="#6E7681;">
+              <Checkbox defaultChecked mt="0.7rem" w="390px">
+                <Text
+                  fontSize="10px"
+                  color="#6E7681"
+                  fontStyle="normal"
+                  fontWeight="400"
+                  lineHeight="20px"
+                >
                   Ticking would stake the received rTokens unchecking
                   wouldn&apos;t stake rTokens
                 </Text>

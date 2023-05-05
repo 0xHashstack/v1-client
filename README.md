@@ -1,3 +1,15 @@
+## To run the project on your local system, please follow the given steps.
+
+1. First Run this command on your desktop:
+   `git clone -b development-V1 https://github.com/0xHashstack/zkopen-client.git`
+2. After cloning the repository, run command :
+   `cd zkopen-client/`
+3. After that, to install all the necessary dependencies to run the project, run command :
+   `yarn install`
+4. Now, to run the project on your local system, run command:
+   `yarn dev`<br>
+   _Make sure to git pull to get latest codes update on your local system_
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
@@ -8,8 +20,6 @@ First, run the development server:
 npm run dev
 # or
 yarn dev
-# or
-pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
@@ -19,8 +29,6 @@ You can start editing the page by modifying `pages/index.tsx`. The page auto-upd
 [API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
 
 The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
 
 ## Learn More
 

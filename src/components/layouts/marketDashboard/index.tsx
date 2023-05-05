@@ -3,6 +3,8 @@ import React from "react";
 import Dashboard from "../dashboard";
 import SupplyModal from "@/components/modals/SupplyModal";
 import BorrowModal from "@/components/modals/borrowModal";
+import YourBorrowModal from "@/components/modals/yourBorrowModal";
+import TradeModal from "@/components/modals/tradeModal";
 
 const MarketDashboard = () => {
   const dashboardItems1 = [
@@ -30,6 +32,7 @@ const MarketDashboard = () => {
             backgroundColor: "#0969DA",
           },
         }}
+        cursor="pointer"
       >
         Details
       </Text>,
@@ -94,6 +97,8 @@ const MarketDashboard = () => {
         gap={"14.2"}
         rowItems={rowItems2}
       />
+      <YourBorrowModal />
+      <TradeModal />
     </HStack>
   );
 };

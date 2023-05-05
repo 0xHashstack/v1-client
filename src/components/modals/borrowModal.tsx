@@ -29,17 +29,15 @@ import DropdownUp from "../../assets/icons/dropdownUpIcon";
 import InfoIcon from "../../assets/icons/infoIcon";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectInputSupplyAmount,
-  selectCoinSelectedSupplyModal,
-  setCoinSelectedSupplyModal,
   selectWalletBalance,
-  setInputSupplyAmount,
   setInputBorrowModalCollateralAmount,
   setInputBorrowModalBorrowAmount,
 } from "@/store/slices/userAccountSlice";
 import {
   selectNavDropdowns,
   setNavDropdown,
+  setModalDropdown,
+  selectModalDropDowns,
 } from "@/store/slices/dropdownsSlice";
 import { useState } from "react";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
@@ -54,7 +52,7 @@ const BorrowModal = () => {
   const [inputAmount, setinputAmount] = useState(0);
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
-  const navDropdowns = useSelector(selectNavDropdowns);
+  const modalDropdowns = useSelector(selectModalDropDowns);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -79,7 +77,7 @@ const BorrowModal = () => {
   };
 
   const handleDropdownClick = (dropdownName: string) => {
-    dispatch(setNavDropdown(dropdownName));
+    dispatch(setModalDropdown(dropdownName));
   };
   const handleChange = (newValue: any) => {
     var percentage = (newValue * 100) / walletBalance;
@@ -220,7 +218,7 @@ const BorrowModal = () => {
                   <Box pt="1" className="navbar-button">
                     <DropdownUp />
                   </Box>
-                  {navDropdowns.borrowModalCollateralMarketDropdown && (
+                  {modalDropdowns.borrowModalCollateralMarketDropdown && (
                     <Box
                       w="full"
                       left="0"
@@ -457,7 +455,7 @@ const BorrowModal = () => {
                   <Box pt="1" className="navbar-button">
                     <DropdownUp />
                   </Box>
-                  {navDropdowns.borrowModalBorrowMarketDropdown && (
+                  {modalDropdowns.borrowModalBorrowMarketDropdown && (
                     <Box
                       w="full"
                       left="0"
