@@ -21,7 +21,11 @@ const YourSupply = () => {
             backgroundColor="#010409"
           >
             {/* <StatsBoard /> */}
-            <NavButtons />
+            <NavButtons
+              width={95}
+              marginTop={"3.89rem"}
+              marginBottom={"1rem"}
+            />
             {/* <MarketDashboard /> */}
             {/* <SupplyModal /> */}
           </Stack>

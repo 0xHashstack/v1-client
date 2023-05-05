@@ -27,12 +27,46 @@ const Dashboard = ({
   gap: string;
   rowItems: any;
 }) => {
+  function numberFormat(str: string) {
+    // Check if the input string contains numbers
+    const regExp = /\d/;
+    if (regExp.test(str)) {
+      let num: any = parseFloat(str);
+      let suffix = "";
+
+      // Convert large numbers to condensed format
+      if (num >= 1000000000) {
+        num = num / 1000000000;
+        suffix = "B";
+      } else if (num >= 1000000) {
+        num = num / 1000000;
+        suffix = "M";
+      } else if (num >= 1000) {
+        num = num / 1000;
+        suffix = "K";
+      }
+
+      // Handle cases when the number is less than 1, but greater than 0
+      if (num < 1 && num > 0) {
+        num = num.toFixed(2);
+      } else {
+        num = Math.floor(num);
+      }
+
+      // Add suffix to the converted number
+      num = num.toString() + suffix;
+      return num;
+    } else {
+      // Return the original string if it does not contain numbers
+      return str;
+    }
+  }
+
   return (
     <TableContainer
       bg="#101216"
       border="1px"
       borderColor="#2B2F35"
-      // p="4"
       color="white"
       borderRadius="md"
       w={width}
@@ -109,7 +143,7 @@ const Dashboard = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {val}
+                    {numberFormat(val)}
                   </Text>
                 </Td>
               ))
@@ -135,17 +169,11 @@ const Dashboard = ({
               val.map((val: any, idx2: number) => (
                 <Td
                   key={idx1}
-                  // width={`${gap[idx1][idx2]}%`}
                   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}
-                  // border="0.5px solid blue"
                   overflow={"hidden"}
-                  // display={"flex"}
-                  // flexDirection={"row"}
                   textAlign={"center"}
-                  // bgColor={"red"}
-                  // flexGrow={1}
                 >
                   <Text
                     width="100%"

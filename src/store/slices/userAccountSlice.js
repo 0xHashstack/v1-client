@@ -4,14 +4,16 @@ import { HYDRATE } from "next-redux-wrapper";
 const initialState = {
   account: "",
   accountAddress: "",
-  inputSupplyAmount:0,
-  inputBorrowModalCollateralAmount:0,
-  inputBorrowModalBorrowAmount:0,
-  coinSelectedSupplyModal:"BTC",
-  collateralCoinSelectedBorrowModal:"BTC",
-  borrowCoinSelectedBorrowModal:"BTC",
-  walletBalance:90,
-
+  inputSupplyAmount: 0,
+  inputBorrowModalCollateralAmount: 0,
+  inputBorrowModalBorrowAmount: 0,
+  inputTradeModalCollateralAmount: 0,
+  inputTradeModalBorrowAmount: 0,
+  coinSelectedSupplyModal: "BTC",
+  collateralCoinSelectedBorrowModal: "BTC",
+  borrowCoinSelectedBorrowModal: "BTC",
+  walletBalance: 90,
+  inputYourBorrowModalRepayAmount: 0,
 
   language: "English",
   currentPage: "market",
@@ -45,26 +47,35 @@ export const userAccountSlice = createSlice({
     setOffchainCurrentBlock(state, action) {
       state.offchainCurrentBlock = action.payload;
     },
-    setInputSupplyAmount(state,action){
-      state.inputSupplyAmount=action.payload;
+    setInputSupplyAmount(state, action) {
+      state.inputSupplyAmount = action.payload;
     },
-    setCoinSelectedSupplyModal(state,action){
-      state.coinSelectedSupplyModal=action.payload;
+    setCoinSelectedSupplyModal(state, action) {
+      state.coinSelectedSupplyModal = action.payload;
     },
-    setInputBorrowModalCollateralAmount(state,action){
-      state.inputBorrowModalCollateralAmount=action.payload;
+    setInputBorrowModalCollateralAmount(state, action) {
+      state.inputBorrowModalCollateralAmount = action.payload;
     },
-    setInputBorrowModalBorrowAmount(state,action){
-      state.inputBorrowModalBorrowAmount=action.payload;
+    setInputBorrowModalBorrowAmount(state, action) {
+      state.inputBorrowModalBorrowAmount = action.payload;
     },
-    setWalletBalance(state,action){
-      state.walletBalance=action.payload;
+    setInputTradeModalCollateralAmount(state, action) {
+      state.inputTradeModalCollateralAmount = action.payload;
     },
-    setCollateralCoinSelectedBorrowModal(state,action){
-      state.collateralCoinSelectedBorrowModal=action.payload;
+    setInputTradeModalBorrowAmount(state, action) {
+      state.inputTradeModalBorrowAmount = action.payload;
     },
-    setBorrowCoinSelectedBorrowModal(state,action){
-      state.borrowCoinSelectedBorrowModal=action.payload;
+    setWalletBalance(state, action) {
+      state.walletBalance = action.payload;
+    },
+    setCollateralCoinSelectedBorrowModal(state, action) {
+      state.collateralCoinSelectedBorrowModal = action.payload;
+    },
+    setBorrowCoinSelectedBorrowModal(state, action) {
+      state.borrowCoinSelectedBorrowModal = action.payload;
+    },
+    setInputYourBorrowModalRepayAmount(state, action) {
+      state.inputYourBorrowModalRepayAmount = action.payload;
     },
 
     extraReducers: {
@@ -88,17 +99,25 @@ export const {
   setOffchainCurrentBlock,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
-export const {setInputSupplyAmount}=userAccountSlice.actions;
-export const {setInputBorrowModalCollateralAmount}=userAccountSlice.actions;
-export const {setInputBorrowModalBorrowAmount}=userAccountSlice.actions;
-export const {setCoinSelectedSupplyModal}=userAccountSlice.actions;
-export const {setCollateralCoinSelectedBorrowModal}=userAccountSlice.actions;
-export const {setBorrowCoinSelectedBorrowModal}=userAccountSlice.actions;
-export const selectInputSupplyAmount=(state)=>state.user_account.inputSupplyAmount;
-export const selectCoinSelectedSupplyModal=(state)=>state.user_account.coinSelectedSupplyModal;
-export const selectCollateralCoinSelectedBorrowModal=(state)=>state.user_account.collateralCoinSelectedBorrowModal;
-export const selectBorrowCoinSelectedBorrowModal=(state)=>state.user_account.borrowCoinSelectedBorrowModal;
-export const selectWalletBalance=(state)=>state.user_account.walletBalance;
+export const { setInputSupplyAmount } = userAccountSlice.actions;
+export const { setInputBorrowModalCollateralAmount } = userAccountSlice.actions;
+export const { setInputBorrowModalBorrowAmount } = userAccountSlice.actions;
+export const { setInputTradeModalCollateralAmount } = userAccountSlice.actions;
+export const { setInputTradeModalBorrowAmount } = userAccountSlice.actions;
+export const { setCoinSelectedSupplyModal } = userAccountSlice.actions;
+export const { setCollateralCoinSelectedBorrowModal } =
+  userAccountSlice.actions;
+export const { setBorrowCoinSelectedBorrowModal } = userAccountSlice.actions;
+export const { setInputYourBorrowModalRepayAmount } = userAccountSlice.actions;
+export const selectInputSupplyAmount = (state) =>
+  state.user_account.inputSupplyAmount;
+export const selectCoinSelectedSupplyModal = (state) =>
+  state.user_account.coinSelectedSupplyModal;
+export const selectCollateralCoinSelectedBorrowModal = (state) =>
+  state.user_account.collateralCoinSelectedBorrowModal;
+export const selectBorrowCoinSelectedBorrowModal = (state) =>
+  state.user_account.borrowCoinSelectedBorrowModal;
+export const selectWalletBalance = (state) => state.user_account.walletBalance;
 export const selectAccountAddress = (state) =>
   state.user_account.accountAddress;
 export const selectLanguage = (state) => state.user_account.language;

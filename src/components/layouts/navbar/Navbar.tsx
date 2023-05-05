@@ -121,13 +121,13 @@ const Navbar = () => {
         alignItems="center"
         width="60%"
         gap={"4px"}
+        marginLeft="2rem"
       >
         <Link href="/">
           <Box
             height="100%"
             display="flex"
             alignItems="center"
-            marginLeft="1rem"
             minWidth={"140px"}
             marginRight="1.4em"
           >
@@ -331,13 +331,12 @@ const Navbar = () => {
       >
         <HStack
           display="flex"
-          gap="0.5rem"
+          gap="6px"
           justifyContent="center"
           alignItems="center"
           marginRight="1rem"
         >
           <Box
-            fontSize="12px"
             borderRadius="6px"
             cursor="pointer"
             margin="0"
@@ -376,13 +375,7 @@ const Navbar = () => {
                   style={{ cursor: "pointer" }}
                 />
               )}
-              <Text
-                style={{
-                  fontSize: "larger",
-                }}
-              >
-                Transfer Deposit
-              </Text>
+              <Text fontSize="14px">Transfer Deposit</Text>
             </Box>
           </Box>
 
@@ -394,13 +387,12 @@ const Navbar = () => {
             color="#FFF"
             width="13rem"
             cursor="pointer"
-            margin="0"
             border="0.5px solid #57606A"
             display="flex"
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
-            gap="8px"
+            gap="1px"
             flexGrow="1"
             className="button navbar"
             ref={ref2}
@@ -557,7 +549,6 @@ const Navbar = () => {
             width="fit-content"
             padding="1px"
             cursor="pointer"
-            margin="0"
             // border: "0.5px solid #57606A",
             display="flex"
             flexDirection="column"
@@ -587,6 +578,7 @@ const Navbar = () => {
               justifyContent="center"
               alignItems="center"
               className="navbar-button"
+              mr="0.5rem"
               onClick={() => {
                 dispatch(setNavDropdown("settingsDropdown"));
               }}
@@ -602,8 +594,8 @@ const Navbar = () => {
                 // }}
                 src="./settingIcon.svg"
                 alt="Picture of the author"
-                width="16"
-                height="16"
+                width="18"
+                height="18"
                 style={{
                   cursor: "pointer",
                 }}
