@@ -14,13 +14,14 @@ import {
 import SupplyModal from "@/components/modals/SupplyModal";
 import Navbar from "@/components/layouts/navbar/Navbar";
 import StatsBoard from "@/components/layouts/statsBoard";
-import { Stack, VStack } from "@chakra-ui/react";
+import { Box, Stack, VStack } from "@chakra-ui/react";
 import NavButtons from "@/components/layouts/navButtons";
 import MarketDashboard from "@/components/layouts/marketDashboard";
 import { useEffect, useState } from "react";
 // import { dataInitializer } from "@/utils/functions/dataInitializer";
 // import OffchainAPI from "@/services/offchainapi.service";
 import Link from "next/link";
+import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -85,11 +86,27 @@ export default function Market() {
             minHeight={"100vh"}
             pt="7rem"
             backgroundColor="#010409"
+            pb="7rem"
           >
             <StatsBoard />
-            <NavButtons />
+            <NavButtons
+              width={95}
+              marginTop={"3rem"}
+              marginBottom={"1.125rem"}
+            />
             <MarketDashboard />
             {/* <SupplyModal /> */}
+            <Box
+              paddingY="1rem"
+              // height="2rem"
+              // bgColor={"blue"}
+              width="95%"
+              display="flex"
+              justifyContent="flex-end"
+              alignItems="center"
+            >
+              <LatestSyncedBlock width="16rem" height="100%" block={83207} />
+            </Box>
           </Stack>
         </>
       )}

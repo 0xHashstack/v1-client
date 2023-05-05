@@ -33,7 +33,7 @@ const StatsBoard = () => {
             "Available reserves",
             "Avg. asset utillization",
           ]}
-          statsData={["5,31,000.00", "$5,3100.00", "53.1%"]}
+          statsData={["5,31,000.00", "$53,100.00", "53.1%"]}
           onclick={() => {}}
         />
       </HStack>

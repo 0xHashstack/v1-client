@@ -32,7 +32,6 @@ const Dashboard = ({
       bg="#101216"
       border="1px"
       borderColor="#2B2F35"
-      // p="4"
       color="white"
       borderRadius="md"
       w={width}
@@ -135,17 +134,11 @@ const Dashboard = ({
               val.map((val: any, idx2: number) => (
                 <Td
                   key={idx1}
-                  // width={`${gap[idx1][idx2]}%`}
                   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}
-                  // border="0.5px solid blue"
                   overflow={"hidden"}
-                  // display={"flex"}
-                  // flexDirection={"row"}
                   textAlign={"center"}
-                  // bgColor={"red"}
-                  // flexGrow={1}
                 >
                   <Text
                     width="100%"
