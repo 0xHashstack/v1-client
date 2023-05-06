@@ -65,6 +65,7 @@ import {
 } from "@/store/slices/userAccountSlice";
 
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
+import JediswapSmallLogo from "@/assets/icons/dapps/jediswapSmallLogo";
 
 const YourBorrowModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -482,7 +483,7 @@ const YourBorrowModal = () => {
               <Box display="flex" color="#8B949E" fontSize="xs" gap="2">
                 <Box display="flex" gap="2px">
                   <Box>
-                    <JediswapLogo />
+                    <JediswapSmallLogo />
                   </Box>
                   <Text>Jediswap</Text>
                 </Box>
@@ -706,7 +707,7 @@ const YourBorrowModal = () => {
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   return (
     <Box>
-      <Button onClick={onOpen}>Open Modal</Button>
+      <Button onClick={onOpen}>Actions</Button>
 
       <Modal
         isOpen={isOpen}
@@ -1298,7 +1299,7 @@ const YourBorrowModal = () => {
                           <Box display="flex" flexDirection="column" gap="1">
                             <Box display="flex">
                               <Text fontSize="xs" color="#8B949E">
-                                Dapp
+                                Select Dapp
                               </Text>
                               <Tooltip
                                 hasArrow
