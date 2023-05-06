@@ -33,9 +33,6 @@ const SpendBorrow = () => {
             <SpendTable />
             {/* <MarketDashboard /> */}
             {/* <SupplyModal /> */}
-            <YourBorrowModal/>
-            <YourSupplyModal/>
-            <SpendBorrowModal/>
           </Stack>
         </>
       )}
