@@ -16,6 +16,7 @@ import {
   Box,
   Text,
   Heading,
+  Card
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -141,7 +142,7 @@ const BorrowModal = () => {
         scrollBehavior="inside"
       >
         <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
-        <ModalContent mt="5rem" bg={"#010409"} maxW="442px">
+        <ModalContent mt="5rem" bg={"#010409"} maxW="462px">
           <ModalCloseButton mt="1rem" mr="1rem" color="white" />
           {/* <ModalHeader>Borrow</ModalHeader> */}
           <ModalBody color={"#E6EDF3"}>
@@ -253,15 +254,13 @@ const BorrowModal = () => {
                               w="full"
                               display="flex"
                               py="5px"
-                              px={`${
-                                coin === currentCollateralCoin ? "1" : "5"
-                              }`}
+                              px={`${coin === currentCollateralCoin ? "1" : "5"
+                                }`}
                               gap="1"
-                              bg={`${
-                                coin === currentCollateralCoin
+                              bg={`${coin === currentCollateralCoin
                                   ? "#0C6AD9"
                                   : "inherit"
-                              }`}
+                                }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -492,11 +491,10 @@ const BorrowModal = () => {
                               py="5px"
                               px={`${coin === currentBorrowCoin ? "1" : "5"}`}
                               gap="1"
-                              bg={`${
-                                coin === currentBorrowCoin
+                              bg={`${coin === currentBorrowCoin
                                   ? "#0C6AD9"
                                   : "inherit"
-                              }`}
+                                }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -622,18 +620,23 @@ const BorrowModal = () => {
               </Box>
             </Box>
 
-            <Box className="p-4 bg-[#101216] rounded-md border border-[#2B2F35] my-6">
-              <Box className="flex justify-between">
-                <Box className="flex">
+            <Card bg="#101216" mt="1.5rem" p="1rem" border="1px solid #2B2F35" mb="1.5rem">
+              <Text
+                color="#8B949E"
+                display="flex"
+                justifyContent="space-between"
+                fontSize="0.9rem"
+                mb="0.4rem"
+              >
+                <Text display="flex" alignItems="center">
                   <Text
-                    className="text-xs text-[#8B949E]"
+                    mr="0.2rem"
                     font-style="normal"
                     font-weight="400"
-                    font-size="12px"
-                    lineHeight="16px"
+                    font-size="14px"
                     color="#6A737D"
                   >
-                    Gas estimate:{" "}
+                    Gas estimate:
                   </Text>
                   <Tooltip
                     hasArrow
@@ -646,26 +649,32 @@ const BorrowModal = () => {
                     borderRadius={"lg"}
                     padding={"2"}
                   >
-                    <Box className="p-1">
+                    <Box>
                       <InfoIcon />
                     </Box>
                   </Tooltip>
-                </Box>
-                <Text className="text-xs text-[#6E7681] font-bold">
-                  $ 10.91
                 </Text>
-              </Box>
-              <Box className="flex justify-between">
-                <Box className="flex">
+                <Text font-style="normal"
+                  font-weight="400"
+                  font-size="14px"
+                  color="#6A737D">$ 10.91</Text>
+              </Text>
+              <Text
+                display="flex"
+                justifyContent="space-between"
+                fontSize="0.9rem"
+                mb="0.4rem"
+              >
+                <Text display="flex" alignItems="center">
                   <Text
-                    className="text-xs text-[#8B949E]"
+                    mr="0.2rem"
                     font-style="normal"
                     font-weight="400"
-                    font-size="12px"
+                    font-size="14px"
                     lineHeight="16px"
                     color="#6A737D"
                   >
-                    Borrow apr:{" "}
+                    Borrow apr:
                   </Text>
                   <Tooltip
                     hasArrow
@@ -678,24 +687,32 @@ const BorrowModal = () => {
                     borderRadius={"lg"}
                     padding={"2"}
                   >
-                    <Box className="p-1">
+                    <Box>
                       <InfoIcon />
                     </Box>
                   </Tooltip>
-                </Box>
-                <Text className="text-xs text-[#6E7681] font-bold">5.56%</Text>
-              </Box>
-              <Box className="flex justify-between">
-                <Box className="flex">
+                </Text>
+                <Text font-style="normal"
+                  font-weight="400"
+                  font-size="14px"
+                  color="#6A737D">5.56%</Text>
+              </Text>
+              <Text
+                display="flex"
+                justifyContent="space-between"
+                fontSize="0.9rem"
+                mb="0.4rem"
+              >
+                <Text display="flex" alignItems="center">
                   <Text
-                    className="text-xs text-[#8B949E]"
+                    mr="0.2rem"
                     font-style="normal"
                     font-weight="400"
-                    font-size="12px"
+                    font-size="14px"
                     lineHeight="16px"
                     color="#6A737D"
                   >
-                    Effective apr:{" "}
+                    Effective apr:
                   </Text>
                   <Tooltip
                     hasArrow
@@ -708,24 +725,31 @@ const BorrowModal = () => {
                     borderRadius={"lg"}
                     padding={"2"}
                   >
-                    <Box className="p-1">
+                    <Box>
                       <InfoIcon />
                     </Box>
                   </Tooltip>
-                </Box>
-                <Text className="text-xs text-[#6E7681] font-bold">5.56%</Text>
-              </Box>
-              <Box className="flex justify-between">
-                <Box className="flex">
+                </Text>
+                <Text font-style="normal"
+                  font-weight="400"
+                  font-size="14px"
+                  color="#6A737D">5.56%</Text>
+              </Text>
+              <Text
+                color="#8B949E"
+                display="flex"
+                justifyContent="space-between"
+                fontSize="0.9rem"
+              >
+                <Text display="flex" alignItems="center">
                   <Text
-                    className="text-xs text-[#8B949E]"
+                    mr="0.2rem"
                     font-style="normal"
                     font-weight="400"
-                    font-size="12px"
-                    lineHeight="16px"
+                    font-size="14px"
                     color="#6A737D"
                   >
-                    Health factor:{" "}
+                    Health Factor:
                   </Text>
                   <Tooltip
                     hasArrow
@@ -738,14 +762,17 @@ const BorrowModal = () => {
                     borderRadius={"lg"}
                     padding={"2"}
                   >
-                    <Box className="p-1">
+                    <Box>
                       <InfoIcon />
                     </Box>
                   </Tooltip>
-                </Box>
-                <Text className="text-xs text-[#6E7681] font-bold">5.56%</Text>
-              </Box>
-            </Box>
+                </Text>
+                <Text font-style="normal"
+                  font-weight="400"
+                  font-size="14px"
+                  color="#6A737D">5.56%</Text>
+              </Text>
+            </Card>
 
             {inputCollateralAmount > 0 && inputBorrowAmount > 0 ? (
               <Button

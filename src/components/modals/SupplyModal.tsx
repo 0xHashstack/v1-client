@@ -78,14 +78,14 @@ const SupplyModal = () => {
     };
 
     //This Function handles the modalDropDowns
-    const handleDropdownClick = (dropdownName: string) => {
+    const handleDropdownClick = (dropdownName: any) => {
         // Dispatches an action called setModalDropdown with the dropdownName as the payload
         dispatch(setModalDropdown(dropdownName));
     };
 
     //This function is used to find the percentage of the slider from the input given by the user
     const handleChange = (newValue: any) => {
-          // Calculate the percentage of the new value relative to the wallet balance
+        // Calculate the percentage of the new value relative to the wallet balance
         var percentage = (newValue * 100) / walletBalance;
         percentage = Math.max(0, percentage);
         if (percentage > 100) {
@@ -128,16 +128,15 @@ const SupplyModal = () => {
                         bg="#010409"
                         color="white"
                         borderRadius="md"
-                        maxW="442px"
-                        mt="5rem"
+                        maxW="462px"
                         zIndex={1}
+                        mt="5rem"
                         className="modal-content"
 
                     >
                         <ModalHeader mt="1rem" fontSize="14px" fontWeight="600" fontStyle="normal" lineHeight="20px">Supply</ModalHeader>
                         <ModalCloseButton mt="1rem" mr="1rem" />
                         <ModalBody>
-                            <Text color='#0969DA' mb="8px" fontSize="12px" fontStyle="normal" fontWeight="500" lineHeight="16px">Supply ID-12345</Text>
                             <Card bg="#101216" mb="0.5rem" p="1rem" border="1px solid #2B2F35" >
                                 <Text color="#8B949E" display="flex" alignItems="center">
                                     <Text mr="0.3rem">
@@ -300,8 +299,8 @@ const SupplyModal = () => {
                                     </Slider>
                                 </Box>
                             </Card>
-                            <Checkbox defaultChecked mt="0.7rem" w="390px">
-                                <Text fontSize="10px" color="#6E7681" fontStyle="normal" fontWeight="400" lineHeight="20px">
+                            <Checkbox defaultChecked mt="0.7rem" w="410px">
+                                <Text fontSize="10.5px" color="#6E7681" fontStyle="normal" fontWeight="400" lineHeight="20px">
                                     Ticking would stake the received rTokens unchecking wouldn&apos;t stake rTokens
                                 </Text>
                             </Checkbox>
@@ -318,7 +317,7 @@ const SupplyModal = () => {
                                             mr="0.2rem"
                                             font-style="normal"
                                             font-weight="400"
-                                            font-size="12px"
+                                            font-size="14px"
                                             lineHeight="16px"
                                             color="#6A737D"
                                         >
@@ -340,7 +339,10 @@ const SupplyModal = () => {
                                             </Box>
                                         </Tooltip>
                                     </Text>
-                                    <Text color="#6E7681">5.56%</Text>
+                                    <Text font-style="normal"
+                                        font-weight="400"
+                                        font-size="14px"
+                                        color="#6A737D">5.56%</Text>
                                 </Text>
                                 <Text
                                     color="#8B949E"
@@ -354,7 +356,7 @@ const SupplyModal = () => {
                                             mr="0.2rem"
                                             font-style="normal"
                                             font-weight="400"
-                                            font-size="12px"
+                                            font-size="14px"
                                             color="#6A737D"
                                         >
                                             Gas estimate:
@@ -375,21 +377,23 @@ const SupplyModal = () => {
                                             </Box>
                                         </Tooltip>
                                     </Text>
-                                    <Text color="#6E7681">$ 0.50</Text>
+                                    <Text font-style="normal"
+                                        font-weight="400"
+                                        font-size="14px"
+                                        color="#6A737D">$ 0.50</Text>
                                 </Text>
                                 <Text
                                     color="#8B949E"
                                     display="flex"
                                     justifyContent="space-between"
                                     fontSize="0.9rem"
-                                    mb="0.4rem"
                                 >
                                     <Text display="flex" alignItems="center">
                                         <Text
                                             mr="0.2rem"
                                             font-style="normal"
                                             font-weight="400"
-                                            font-size="12px"
+                                            font-size="14px"
                                             color="#6A737D"
                                         >
                                             Supply apr:
@@ -410,7 +414,10 @@ const SupplyModal = () => {
                                             </Box>
                                         </Tooltip>
                                     </Text>
-                                    <Text color="#6E7681">5.56%</Text>
+                                    <Text font-style="normal"
+                                        font-weight="400"
+                                        font-size="14px"
+                                        color="#6A737D">5.56%</Text>
                                 </Text>
                             </Card>
                             {inputAmount1 > 0 ? (

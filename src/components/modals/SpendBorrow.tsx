@@ -162,6 +162,7 @@ const SpendBorrowModal = () => {
     };
 
     const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+    const rcoins = ["rBTC", "rUSDT", "rUSDC", "rETH", "rDAI"];
     const actions = [
         "Stake",
         "Swap",
@@ -204,8 +205,8 @@ const SpendBorrowModal = () => {
                         <ModalCloseButton mt="1rem" mr="1rem" />
                         <ModalBody>
                             <Card bg="#101216" mb="0.5rem" p="1rem" border="1px solid #2B2F35" >
-                                <Text color="#8B949E" display="flex" alignItems="center">
-                                    <Text mr="0.3rem" ml="0.2rem">
+                                <Text color="#8B949E" display="flex" alignItems="center" mb="0.1rem">
+                                    <Text mr="0.3rem" ml="0.2rem" fontSize="12px" fontWeight="400" fontStyle="normal">
                                         Action
                                     </Text>
                                     <Tooltip
@@ -232,7 +233,8 @@ const SpendBorrowModal = () => {
                                     py="2"
                                     pl="3"
                                     pr="3"
-                                    mt="0.5rem"
+                                    mb="0.1rem"
+                                    mt="0.1rem"
                                     borderRadius="md"
                                     color="white"
                                     className="navbar"
@@ -261,6 +263,7 @@ const SpendBorrowModal = () => {
                                             {actions.map((action, index) => {
                                                 return (
                                                     <Box
+                                                        key={index}
                                                         as="button"
                                                         w="full"
                                                         display="flex"
@@ -303,7 +306,7 @@ const SpendBorrowModal = () => {
                                 </Box>
                                 <Box display="flex" flexDirection="column" gap="1" mt="0.5rem">
                                     <Box display="flex" mt="0.3rem">
-                                        <Text fontSize="xs" color="#8B949E" ml="0.2rem">
+                                        <Text  color="#8B949E" ml="0.2rem" fontSize="12px" fontWeight="400" fontStyle="normal" >
                                             Borrow ID
                                         </Text>
                                         <Tooltip
@@ -335,7 +338,7 @@ const SpendBorrowModal = () => {
                                         color="white"
                                         className="navbar"
                                         onClick={() =>
-                                            handleDropdownClick("yourBorrowBorrowIDsDropdown")
+                                            handleDropdownClick("spendBorrowBorrowIDDropdown")
                                         }
                                         as="button"
                                     >
@@ -345,7 +348,7 @@ const SpendBorrowModal = () => {
                                         <Text pt="1" className="navbar-button">
                                             <DropdownUp />
                                         </Text>
-                                        {modalDropdowns.yourBorrowBorrowIDsDropdown && (
+                                        {modalDropdowns.spendBorrowBorrowIDDropdown && (
                                             <Box
                                                 w="full"
                                                 left="0"
@@ -357,6 +360,7 @@ const SpendBorrowModal = () => {
                                                 {borrowIds.map((coin, index) => {
                                                     return (
                                                         <Box
+                                                            key={index}
                                                             as="button"
                                                             w="full"
                                                             display="flex"
@@ -398,9 +402,9 @@ const SpendBorrowModal = () => {
                                         )}
                                     </Box>
                                 </Box>
-                                <Box display="flex" flexDirection="column" gap="1">
+                                <Box display="flex" flexDirection="column" gap="1" mt="0.5rem">
                                     <Box display="flex" mt="0.5rem">
-                                        <Text fontSize="xs" color="#8B949E">
+                                        <Text  color="#8B949E" fontSize="12px" fontWeight="400" fontStyle="normal">
                                             Borrow Market
                                         </Text>
                                         <Tooltip
@@ -433,7 +437,7 @@ const SpendBorrowModal = () => {
                                         color="white"
                                         onClick={() =>
                                             handleDropdownClick(
-                                                "yourBorrowModalBorrowMarketDropdown"
+                                                "spendBorrowBorrowMarketDropdown"
                                             )
                                         }
                                         as="button"
@@ -447,7 +451,7 @@ const SpendBorrowModal = () => {
                                         <Box pt="1" className="navbar-button">
                                             <DropdownUp />
                                         </Box>
-                                        {modalDropdowns.yourBorrowModalBorrowMarketDropdown && (
+                                        {modalDropdowns.spendBorrowBorrowMarketDropdown && (
                                             <Box
                                                 w="full"
                                                 left="0"
@@ -459,6 +463,7 @@ const SpendBorrowModal = () => {
                                                 {coins.map((coin, index) => {
                                                     return (
                                                         <Box
+                                                            key={index}
                                                             as="button"
                                                             w="full"
                                                             display="flex"
@@ -708,7 +713,7 @@ const SpendBorrowModal = () => {
                             >
                                 <Box display="flex" flexDirection="column" gap="1">
                                     <Box display="flex">
-                                        <Text fontSize="xs" color="#8B949E">
+                                        <Text fontSize="12px" fontWeight="400" fontStyle="normal"  color="#8B949E">
                                             Select Dapp
                                         </Text>
                                         <Tooltip
@@ -761,6 +766,7 @@ const SpendBorrowModal = () => {
                                                 {dapps.map((dapp, index) => {
                                                     return (
                                                         <Button
+                                                            key={index}
                                                             // as="button"
                                                             w="full"
                                                             m="0"
@@ -848,16 +854,16 @@ const SpendBorrowModal = () => {
 
                                     </Text>
                                     <Text display="flex" color="#6E7681" fontSize="14px" fontWeight="400" fontStyle="normal">
-                                        Available borrowed Amount: <Text color="white">00.00</Text>
+                                        Available borrowed Amount:<Text color="white" ml="0.2rem">00.00</Text>
                                         <Text color="white" ml="0.2rem" fontSize="14px" fontStyle="normal">
                                             BTC
 
                                         </Text>
                                     </Text>
                                 </Box>
-                                <Box display="flex" flexDirection="column" >
+                                <Box display="flex" flexDirection="column" gap="1px">
                                     <Box display="flex">
-                                        <Text fontSize="xs" color="#8B949E">
+                                        <Text  color="#8B949E" fontSize="12px" fontWeight="400" fontStyle="normal">
                                             Select Pool
                                         </Text>
                                         <Tooltip
@@ -884,8 +890,7 @@ const SpendBorrowModal = () => {
                                         py="2"
                                         pl="3"
                                         pr="3"
-                                        mb="1rem"
-                                        mt="0.5rem"
+                                        mt="0.1rem"
                                         borderRadius="md"
                                         className="navbar"
                                         cursor="pointer"
@@ -957,7 +962,7 @@ const SpendBorrowModal = () => {
                                 </Box>
 
                             </Box>}
-                            {/* Dropdowns For when the user selects trade or liquidity or anything */}
+
                             {currentAction == "Trade" && <Box
                                 display="flex"
                                 flexDirection="column"
@@ -972,7 +977,7 @@ const SpendBorrowModal = () => {
                             >
                                 <Box display="flex" flexDirection="column" gap="1">
                                     <Box display="flex">
-                                        <Text fontSize="xs" color="#8B949E">
+                                        <Text fontSize="12px" fontWeight="400" fontStyle="normal"  color="#8B949E">
                                             Select Dapp
                                         </Text>
                                         <Tooltip
@@ -1025,6 +1030,7 @@ const SpendBorrowModal = () => {
                                                 {dapps.map((dapp, index) => {
                                                     return (
                                                         <Button
+                                                            key={index}
                                                             // as="button"
                                                             w="full"
                                                             m="0"
@@ -1084,7 +1090,7 @@ const SpendBorrowModal = () => {
                                 </Box>
                                 <Box display="flex" flexDirection="column" gap="1">
                                     <Box display="flex">
-                                        <Text fontSize="xs" color="#8B949E">
+                                        <Text fontSize="12px" fontWeight="400" fontStyle="normal"  color="#8B949E">
                                             Select Pool
                                         </Text>
                                         <Tooltip
@@ -1111,8 +1117,7 @@ const SpendBorrowModal = () => {
                                         py="2"
                                         pl="3"
                                         pr="3"
-                                        mb="1rem"
-                                        mt="0.5rem"
+                                        mb="0.5rem"
                                         borderRadius="md"
                                         className="navbar"
                                         cursor="pointer"
@@ -1251,6 +1256,7 @@ const SpendBorrowModal = () => {
                                                 {dapps.map((dapp, index) => {
                                                     return (
                                                         <Button
+                                                            key={index}
                                                             // as="button"
                                                             w="full"
                                                             m="0"
@@ -1363,6 +1369,7 @@ const SpendBorrowModal = () => {
                                                 {pools.map((pool, index) => {
                                                     return (
                                                         <Box
+                                                            key={index}
                                                             as="button"
                                                             w="full"
                                                             display="flex"
@@ -1407,12 +1414,13 @@ const SpendBorrowModal = () => {
                             </Box>}
                             {/* All the info on the fees and all the other requirements  */}
                             {currentAction == "Swap" &&
-                                <Card bg="#101216" mt="1.5rem" p="1rem" border="1px solid #2B2F35">
+                                <Card bg="#101216" mt="1.5rem" padding="1rem" border="1px solid #2B2F35">
                                     <Text
                                         display="flex"
                                         justifyContent="space-between"
                                         fontSize="0.9rem"
                                         mb="0.4rem"
+                                        lineHeight="14px"
                                     >
                                         <Text display="flex" alignItems="center">
                                             <Text
@@ -1483,7 +1491,6 @@ const SpendBorrowModal = () => {
                                         display="flex"
                                         justifyContent="space-between"
                                         fontSize="0.9rem"
-                                        mb="0.4rem"
                                     >
                                         <Text display="flex" alignItems="center">
                                             <Text
@@ -1515,23 +1522,14 @@ const SpendBorrowModal = () => {
                                     </Text>
                                 </Card>
                             }
-
                             {currentAction == "Stake" &&
-                                <Text padding="0px" fontSize="12px" fontWeight="400" fontStyle="normal" color=" #6A737D" mt="1rem">
-                                    To stake you need to supply any asset to receive rTokens. <br></br>
-                                    Click here To
-                                    <Text display="inline" mt="1rem" color="#0969DA" cursor="pointer" ml="0.4rem">
-                                        Add Supply
-                                    </Text>
-                                </Text>
-                            }
-                            {currentAction == "Stake" &&
-                                <Card bg="#101216" mt="1rem" p="1rem" border="1px solid #2B2F35">
+                                <Card bg="#101216" mt="1rem" padding="1rem" border="1px solid #2B2F35">
                                     <Text
                                         display="flex"
                                         justifyContent="space-between"
                                         fontSize="0.9rem"
                                         mb="0.4rem"
+                                        
                                     >
                                         <Text display="flex" alignItems="center">
                                             <Text
@@ -1602,7 +1600,6 @@ const SpendBorrowModal = () => {
                                         display="flex"
                                         justifyContent="space-between"
                                         fontSize="0.9rem"
-                                        mb="0.4rem"
                                     >
                                         <Text display="flex" alignItems="center">
                                             <Text
@@ -1634,13 +1631,22 @@ const SpendBorrowModal = () => {
                                     </Text>
                                 </Card>
                             }
+                            {currentAction == "Stake" &&
+                                <Text padding="0px" fontSize="12px" fontWeight="400" fontStyle="normal" color=" #6A737D" mt="1rem">
+                                    To stake you need to supply any asset to receive rTokens. <br></br>
+                                    Click here To
+                                    <Text display="inline" mt="1rem" color="#0969DA" cursor="pointer" ml="0.4rem">
+                                        Add Supply
+                                    </Text>
+                                </Text>
+                            }
                             {currentAction == "Trade" &&
                                 <Card bg="#101216" mt="2rem" p="1rem" border="1px solid #2B2F35">
                                     <Text
                                         display="flex"
                                         justifyContent="space-between"
                                         fontSize="0.9rem"
-                                        mb="0.4rem"
+                                        mb="0.2rem"
                                     >
                                         <Text display="flex" alignItems="center">
                                             <Text
@@ -1693,7 +1699,7 @@ const SpendBorrowModal = () => {
                                         display="flex"
                                         justifyContent="space-between"
                                         fontSize="0.9rem"
-                                        mb="0.4rem"
+                                        mb="0.2rem"
                                     >
                                         <Text display="flex" alignItems="center">
                                             <Text
@@ -1728,7 +1734,7 @@ const SpendBorrowModal = () => {
                                         display="flex"
                                         justifyContent="space-between"
                                         fontSize="0.9rem"
-                                        mb="0.4rem"
+                                        mb="0.2rem"
                                     >
                                         <Text display="flex" alignItems="center">
                                             <Text
@@ -1762,7 +1768,7 @@ const SpendBorrowModal = () => {
                                         display="flex"
                                         justifyContent="space-between"
                                         fontSize="0.9rem"
-                                        mb="0.4rem"
+                                        mb="0.2rem"
                                     >
                                         <Text display="flex" alignItems="center">
                                             <Text
@@ -1797,7 +1803,7 @@ const SpendBorrowModal = () => {
                                         display="flex"
                                         justifyContent="space-between"
                                         fontSize="0.9rem"
-                                        mb="0.4rem"
+                                        mb="0.2rem"
                                     >
                                         <Text display="flex" alignItems="center">
                                             <Text
@@ -1832,7 +1838,6 @@ const SpendBorrowModal = () => {
                                         display="flex"
                                         justifyContent="space-between"
                                         fontSize="0.9rem"
-                                        mb="0.4rem"
                                     >
                                         <Text display="flex" alignItems="center">
                                             <Text
@@ -1865,10 +1870,10 @@ const SpendBorrowModal = () => {
                                     </Text>
                                 </Card>
                             }
-                            {currentAction == "Liquidity Provision" && <Box bg="#101216" borderRadius="6px" padding="8px" border="1px solid #2B2F35" mt="1.5rem">
-                                <Box className="flex justify-between">
+                            {currentAction == "Liquidity Provision" && <Box bg="#101216" borderRadius="6px" p="1rem" border="1px solid #2B2F35" mt="1.5rem">
+                                <Box className="flex justify-between" mb="0.2rem">
                                     <Box className="flex">
-                                        <Text className="text-xs text-[#8B949E]">
+                                        <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">
                                             est LP tokens recieved:{" "}
                                         </Text>
                                         <Tooltip
@@ -1882,18 +1887,18 @@ const SpendBorrowModal = () => {
                                             borderRadius={"lg"}
                                             padding={"2"}
                                         >
-                                            <Box className="p-1">
+                                            <Box ml="0.1rem" mt="0.4rem">
                                                 <InfoIcon />
                                             </Box>
                                         </Tooltip>
                                     </Box>
-                                    <Text className="text-xs text-[#8B949E]">
+                                    <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">
                                         $ 10.91
                                     </Text>
                                 </Box>
-                                <Box className="flex justify-between">
+                                <Box className="flex justify-between" mb="0.2rem">
                                     <Box className="flex">
-                                        <Text className="text-xs text-[#8B949E]">
+                                        <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">
                                             Liquidity spill:{" "}
                                         </Text>
                                         <Tooltip
@@ -1907,15 +1912,15 @@ const SpendBorrowModal = () => {
                                             borderRadius={"lg"}
                                             padding={"2"}
                                         >
-                                            <Box className="p-1">
+                                            <Box ml="0.1rem" mt="0.4rem">
                                                 <InfoIcon />
                                             </Box>
                                         </Tooltip>
                                     </Box>
                                     <Box
                                         display="flex"
-                                        className="text-xs text-[#8B949E]"
                                         gap="2"
+                                        color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal"
                                     >
                                         <Box display="flex" gap="2px">
                                             <Box mt="2px">
@@ -1931,9 +1936,9 @@ const SpendBorrowModal = () => {
                                         </Box>
                                     </Box>
                                 </Box>
-                                <Box className="flex justify-between">
+                                <Box className="flex justify-between" mb="0.2rem">
                                     <Box className="flex">
-                                        <Text className="text-xs text-[#8B949E]">
+                                        <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">
                                             Fees:{" "}
                                         </Text>
                                         <Tooltip
@@ -1947,16 +1952,16 @@ const SpendBorrowModal = () => {
                                             borderRadius={"lg"}
                                             padding={"2"}
                                         >
-                                            <Box className="p-1">
+                                            <Box ml="0.1rem" mt="0.4rem">
                                                 <InfoIcon />
                                             </Box>
                                         </Tooltip>
                                     </Box>
-                                    <Text className="text-xs text-[#8B949E]">0.1%</Text>
+                                    <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">0.1%</Text>
                                 </Box>
-                                <Box className="flex justify-between">
+                                <Box className="flex justify-between" mb="0.2rem">
                                     <Box className="flex">
-                                        <Text className="text-xs text-[#8B949E]">
+                                        <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">
                                             Borrow apr:{" "}
                                         </Text>
                                         <Tooltip
@@ -1970,16 +1975,16 @@ const SpendBorrowModal = () => {
                                             borderRadius={"lg"}
                                             padding={"2"}
                                         >
-                                            <Box className="p-1">
+                                            <Box ml="0.1rem" mt="0.4rem">
                                                 <InfoIcon />
                                             </Box>
                                         </Tooltip>
                                     </Box>
-                                    <Text className="text-xs text-[#8B949E]">5.56%</Text>
+                                    <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">5.56%</Text>
                                 </Box>
-                                <Box className="flex justify-between">
+                                <Box className="flex justify-between" mb="0.2rem">
                                     <Box className="flex">
-                                        <Text className="text-xs text-[#8B949E]">
+                                        <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">
                                             Gas estimate:{" "}
                                         </Text>
                                         <Tooltip
@@ -1993,16 +1998,16 @@ const SpendBorrowModal = () => {
                                             borderRadius={"lg"}
                                             padding={"2"}
                                         >
-                                            <Box className="p-1">
+                                            <Box ml="0.1rem" mt="0.4rem">
                                                 <InfoIcon />
                                             </Box>
                                         </Tooltip>
                                     </Box>
-                                    <Text className="text-xs text-[#8B949E]">5.56%</Text>
+                                    <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">5.56%</Text>
                                 </Box>
-                                <Box className="flex justify-between">
+                                <Box className="flex justify-between" mb="0.2rem">
                                     <Box className="flex">
-                                        <Text className="text-xs text-[#8B949E]">
+                                        <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">
                                             Effective apr:{" "}
                                         </Text>
                                         <Tooltip
@@ -2016,16 +2021,16 @@ const SpendBorrowModal = () => {
                                             borderRadius={"lg"}
                                             padding={"2"}
                                         >
-                                            <Box className="p-1">
+                                            <Box ml="0.1rem" mt="0.4rem">
                                                 <InfoIcon />
                                             </Box>
                                         </Tooltip>
                                     </Box>
-                                    <Text className="text-xs text-[#8B949E]">5.56%</Text>
+                                    <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">5.56%</Text>
                                 </Box>
                                 <Box className="flex justify-between">
                                     <Box className="flex">
-                                        <Text className="text-xs text-[#8B949E]">
+                                        <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">
                                             Health factor:{" "}
                                         </Text>
                                         <Tooltip
@@ -2039,12 +2044,12 @@ const SpendBorrowModal = () => {
                                             borderRadius={"lg"}
                                             padding={"2"}
                                         >
-                                            <Box className="p-1">
+                                            <Box ml="0.1rem" mt="0.4rem">
                                                 <InfoIcon />
                                             </Box>
                                         </Tooltip>
                                     </Box>
-                                    <Text className="text-xs text-[#8B949E]">1.10</Text>
+                                    <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">1.10</Text>
                                 </Box>
                             </Box>}
                             {inputAmount1 > 0 ? (

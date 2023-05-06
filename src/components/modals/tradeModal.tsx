@@ -949,6 +949,7 @@ const TradeModal = () => {
                           {coins.map((coin, index) => {
                             return (
                               <Box
+                                key={index}
                                 as="button"
                                 w="full"
                                 display="flex"

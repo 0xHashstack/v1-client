@@ -12,7 +12,7 @@ export default function Home() {
   useEffect(() => {
     // setRender(true);
     router.push(href);
-  }, []);
+  }, [router]);
   return (
     <main className={`${inter.className}`}>
       {render && (

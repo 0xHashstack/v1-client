@@ -5,6 +5,8 @@ import StatsBoard from "@/components/layouts/statsBoard";
 import { Stack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import YourSupplyModal from "@/components/modals/yourSupply";
+import SpendBorrowModal from "@/components/modals/SpendBorrow";
+import YourBorrowModal from "@/components/modals/yourBorrowModal";
 const SpendBorrow = () => {
   const [render, setRender] = useState(true);
   useEffect(() => {
@@ -29,7 +31,9 @@ const SpendBorrow = () => {
             />
             {/* <MarketDashboard /> */}
             {/* <SupplyModal /> */}
+            <YourBorrowModal/>
             <YourSupplyModal/>
+            <SpendBorrowModal/>
           </Stack>
         </>
       )}

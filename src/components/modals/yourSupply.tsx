@@ -150,7 +150,7 @@ const YourSupplyModal = () => {
             // dispatch(setInputSupplyAmount(newValue));
         }
     };
-    const handleDropdownClick = (dropdownName: string) => {
+    const handleDropdownClick = (dropdownName: any) => {
         dispatch(setModalDropdown(dropdownName));
     };
     const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
@@ -181,7 +181,7 @@ const YourSupplyModal = () => {
             //   scrollBehavior="inside"
             >
                 <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
-                <ModalContent mt="5rem" bg={"#010409"} maxW="464px">
+                <ModalContent mt="5rem" bg={"#010409"} maxW="442px">
                     {/* <ModalHeader>Borrow</ModalHeader> */}
                     <ModalCloseButton mt="1rem" mr="1rem" color="white" />
                     <ModalBody color={"#E6EDF3"} pt={6} px={7}>
