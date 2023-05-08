@@ -9,7 +9,7 @@ import { Box, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import YourSupplyModal from "@/components/modals/yourSupply";
 const YourSupply = () => {
-  const [render, setRender] = useState(true);
+  const [render, setRender] = useState(false);
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const Coins = [
     { name: "USDT", icon: "mdi-bitcoin", symbol: "USDT" },
@@ -139,7 +139,6 @@ const YourSupply = () => {
               <LatestSyncedBlock width="16rem" height="100%" block={83207} />
             </Box>
             {/* <SupplyModal /> */}
-            <YourSupplyModal/>
           </Stack>
         </>
       )}
