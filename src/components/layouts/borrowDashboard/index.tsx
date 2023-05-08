@@ -361,7 +361,7 @@ const BorrowDashboard = ({
                       fontWeight="400"
                       // bgColor={"blue"}
                     >
-                      <Button
+                      {/* <Button
                         key="suppy"
                         backgroundColor="#101216"
                         height={"2rem"}
@@ -371,9 +371,9 @@ const BorrowDashboard = ({
                         color="#6e6e6e"
                         _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
                         borderRadius={"6px"}
-                      >
-                        <YourBorrowModal />
-                      </Button>
+                      > */}
+                      <YourBorrowModal />
+                      {/* </Button> */}
                     </Box>
                   </Td>
                 </Tr>

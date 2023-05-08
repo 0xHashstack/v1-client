@@ -8,7 +8,7 @@ import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import Pagination from "@/components/uiElements/pagination";
 import YourBorrowModal from "@/components/modals/yourBorrowModal";
 import React, { useEffect, useState } from "react";
-import { HStack,VStack,Text,Box } from "@chakra-ui/react";
+import { HStack, VStack, Text, Box } from "@chakra-ui/react";
 const YourBorrow = () => {
   const [render, setRender] = useState(true);
   const [currentPagination, setCurrentPagination] = useState<number>(1);
