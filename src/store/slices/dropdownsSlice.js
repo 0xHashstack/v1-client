@@ -9,9 +9,6 @@ const initialState = {
     walletConnectionDropdown: false,
     settingsDropdown: false,
     languagesDropdown: false,
-    borrowModalBorrowMarketDropdown: false,
-    borrowModalCollateralMarketDropdown: false,
-    supplyModalDropdown: false,
   },
   modalDropdowns: {
     borrowModalBorrowMarketDropdown: false,
@@ -26,7 +23,12 @@ const initialState = {
     yourBorrowModalActionDropdown: false,
     yourBorrowDappDropdown: false,
     yourBorrowPoolDropdown: false,
-  },
+    yourSupplyAddsupplyDropdown:false,
+    yourSupplyWithdrawlDropdown:false,
+    spendBorrowBorrowIDDropdown:false,
+    spendBorrowBorrowMarketDropdown:false,
+
+  }
 };
 
 export const dropdownSlice = createSlice({
@@ -57,23 +59,9 @@ export const dropdownSlice = createSlice({
           dropdowns[key] = false;
         }
       });
-      state.currentModalDropdown = dropdownName;
-      console.log("ModalDropdown-", dropdownName);
-      state.modalDropdowns = dropdowns;
-    },
-    setModalDropdown(state, action) {
-      const dropdownName = action.payload;
-      const dropdowns = { ...state.navDropdowns };
-      Object.keys(dropdowns).forEach((key) => {
-        if (key === dropdownName) {
-          dropdowns[key] = !dropdowns[key];
-        } else {
-          dropdowns[key] = false;
-        }
-      });
       state.currentDropdown = dropdownName;
       console.log("aryan1", dropdownName);
-      state.navDropdowns = dropdowns;
+      state.modalDropdowns = dropdowns;
     },
   },
   extraReducers: {
@@ -88,11 +76,7 @@ export const dropdownSlice = createSlice({
 
 export const { setNavDropdown } = dropdownSlice.actions;
 export const { setModalDropdown } = dropdownSlice.actions;
-// export const { setModalDropdown } = dropdownSlice.actions;
 export const selectNavDropdowns = (state) => state.dropdowns.navDropdowns;
-// export const selectModalDropdowns = (state) => state.dropdowns.modalDropdowns;
 export const selectCurrentDropdown = (state) => state.dropdowns.currentDropdown;
 export const selectModalDropDowns = (state) => state.dropdowns.modalDropdowns;
-export const selectCurrentModalDropdown = (state) =>
-  state.dropdowns.currentModalDropdown;
 export default dropdownSlice.reducer;

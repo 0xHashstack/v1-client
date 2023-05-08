@@ -19,6 +19,7 @@ import USDTLogo from "@/assets/images/stakeIcon.svg";
 import Image from "next/image";
 import BorrowModal from "@/components/modals/borrowModal";
 import SupplyModal from "@/components/modals/SupplyModal";
+import TradeModal from "@/components/modals/tradeModal";
 
 export interface ICoin {
   name: string;
@@ -311,7 +312,7 @@ const DashboardRight = ({
                         },
                       }}
                     >
-                      Trade
+                      <TradeModal />
                     </Text>
                   </Box>
                 </Td>

@@ -185,7 +185,7 @@ const TradeModal = () => {
         borderRadius={"6px"}
         onClick={onOpen}
       >
-        Borrow
+        Trade
       </Button>
       {/* <Button onClick={onOpen}>Open Modal</Button> */}
 
@@ -725,7 +725,7 @@ const TradeModal = () => {
                   <Box display="flex" flexDirection="column" gap="1">
                     <Box display="flex">
                       <Text fontSize="xs" color="#8B949E">
-                        Dapp
+                        Select Dapp
                       </Text>
                       <Tooltip
                         hasArrow
@@ -949,7 +949,7 @@ const TradeModal = () => {
                           {coins.map((coin, index) => {
                             return (
                               <Box
-                                key="index"
+                                key={index}
                                 as="button"
                                 w="full"
                                 display="flex"

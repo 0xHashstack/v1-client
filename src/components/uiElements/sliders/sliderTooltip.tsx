@@ -5,8 +5,8 @@ const SliderTooltip = (props: any) => {
 
   return (
     <svg
-      width="26"
-      height="49"
+      width="30"
+      height="56"
       viewBox="0 0 26 49"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -20,5 +20,6 @@ const SliderTooltip = (props: any) => {
     </svg>
   );
 };
+
 
 export default SliderTooltip;
