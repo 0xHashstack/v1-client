@@ -17,25 +17,31 @@ import {
   TabPanels,
   Tab,
 } from "@chakra-ui/react";
-import BTCLogo from "@/assets/icons/coins/btc";
-import USDTLogo from "./tableIcons/usdt";
-import SmallUsdt from "@/assets/icons/coins/smallUsdt";
+
 import TableUsdtLogo from "./usdtLogo";
 import TableBtcLogo from "./btcLogo";
-import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
 import TableJediswapLogo from "./tableIcons/jediswapLogo";
 import TableYagiLogo from "./tableIcons/yagiLogo";
 import TableMySwap from "./tableIcons/mySwap";
 import InfoIcon from "@/assets/icons/infoIcon";
 import TableClose from "./tableIcons/close";
 import TableInfoIcon from "./tableIcons/infoIcon";
+import { useRouter } from "next/router";
+import { px } from "framer-motion";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
+  const router=useRouter();
+  const {query}=router;
+  console.log(query);
 
   const handleClick = () => {
     //   onClick={setShowWarning(() => false)}
     setShowWarning(false);
   };
+  const handleBorrowChange=()=>{
+    router.push('/your-borrow')
+
+  }
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
@@ -67,6 +73,7 @@ const SpendTable = () => {
               textDecoration="underline"
               color="#0C6AD9"
               cursor="pointer"
+              onClick={handleBorrowChange}
             >
               your borrow
             </Box>
@@ -113,7 +120,10 @@ const SpendTable = () => {
                   _hover={{
                     backgroundColor: "#2B2F35",
                     width: "80%",
-                    borderRadius: "4rem",
+                    borderRadius: "10px",
+                    borderRightRadius:"md",
+                    w:"3px",
+                    h:"28px"
                   }}
                   key={index}
                 >
@@ -239,7 +249,7 @@ const SpendTable = () => {
                 <Text color="white" fontSize="sm">
                   Select a Dapp to begin with the spend
                 </Text>
-                <Box display="flex" gap="14" mt="3">
+                <Box display="flex" gap="14" mt="3" >
                   <TableYagiLogo />
                   <TableJediswapLogo />
                   <TableMySwap />

@@ -10,7 +10,7 @@ import YourBorrowModal from "@/components/modals/yourBorrowModal";
 import React, { useEffect, useState } from "react";
 import { HStack,VStack,Text,Box } from "@chakra-ui/react";
 const YourBorrow = () => {
-  const [render, setRender] = useState(true);
+  const [render, setRender] = useState(false);
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const Coins = [
     { name: "USDT", icon: "mdi-bitcoin", symbol: "USDT" },

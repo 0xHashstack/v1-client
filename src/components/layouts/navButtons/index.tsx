@@ -57,7 +57,7 @@ const NavButtons = ({
               color={`${currentPage === val ? "#ffffff" : "#6e7681"}`}
               borderBottom={`${currentPage === val ? "2px solid #F9826C" : ""}`}
               borderRadius="0px"
-              _hover={{ bg: "transparent", color: "#E6EDF3  " }}
+              _hover={{ bg: "transparent", color: "#E6EDF3  "}}
               // bgColor="pink"
             >
               {val === "market" && pathname != "/market" && (

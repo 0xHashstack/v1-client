@@ -3,9 +3,9 @@ import Navbar from "@/components/layouts/navbar/Navbar";
 import StatsBoard from "@/components/layouts/statsBoard";
 import { Stack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-
+import YourSupplyModal from "@/components/modals/yourSupply";
 const YourSupply = () => {
-  const [render, setRender] = useState(true);
+  const [render, setRender] = useState(false);
   useEffect(() => {
     setRender(true);
   }, []);
@@ -28,6 +28,7 @@ const YourSupply = () => {
             />
             {/* <MarketDashboard /> */}
             {/* <SupplyModal /> */}
+            <YourSupplyModal/>
           </Stack>
         </>
       )}
