@@ -88,7 +88,7 @@ export const dropdownSlice = createSlice({
 
 export const { setNavDropdown } = dropdownSlice.actions;
 export const { setModalDropdown } = dropdownSlice.actions;
-export const { setModalDropdown } = dropdownSlice.actions;
+// export const { setModalDropdown } = dropdownSlice.actions;
 export const selectNavDropdowns = (state) => state.dropdowns.navDropdowns;
 // export const selectModalDropdowns = (state) => state.dropdowns.modalDropdowns;
 export const selectCurrentDropdown = (state) => state.dropdowns.currentDropdown;

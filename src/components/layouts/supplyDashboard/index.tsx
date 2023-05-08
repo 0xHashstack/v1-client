@@ -27,7 +27,7 @@ export interface ICoin {
   icon: string;
 }
 
-const BorrowDashboard = ({
+const SupplyDashboard = ({
   width,
   currentPagination,
   Coins,
@@ -110,29 +110,6 @@ const BorrowDashboard = ({
                 >
                   <Td
                     width={"12.5%"}
-                    // maxWidth={`${gap[idx1][idx2]}%`}
-                    fontSize={"12px"}
-                    fontWeight={400}
-                    padding={2}
-                    textAlign="center"
-                  >
-                    <Text
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
-                      fontSize="14px"
-                      color="#E6EDF3"
-                      // bgColor={"blue"}
-                    >
-                      {/* {checkGap(idx1, idx2)} */}
-                      ID 12345
-                    </Text>
-                  </Td>
-                  <Td
-                    width={"12.5%"}
                     // maxWidth={"3rem"}
                     fontSize={"14px"}
                     fontWeight={400}
@@ -199,7 +176,7 @@ const BorrowDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      00000.00
+                      1.23
                     </Text>
                   </Td>
                   <Td
@@ -220,107 +197,8 @@ const BorrowDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      7.00%
+                      8.22%
                     </Text>
-                  </Td>
-                  <Td
-                    width={"12.5%"}
-                    maxWidth={"5rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    //   overflow={"hidden"}
-                    textAlign={"center"}
-                  >
-                    <VStack
-                      // gap="3px"
-                      width="100%"
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      height="2.5rem"
-                      // bgColor="red"
-                    >
-                      <HStack
-                        height="2rem"
-                        width="2rem"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <Image
-                          src={`./USDT.svg`}
-                          alt="Picture of the author"
-                          width="32"
-                          height="32"
-                        />
-                        <Text fontSize="14px" fontWeight="400">
-                          USDT
-                        </Text>
-                      </HStack>
-                      <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                        9,868
-                      </Text>
-                    </VStack>
-                  </Td>
-                  <Td
-                    width={"12.5%"}
-                    maxWidth={"5rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    //   overflow={"hidden"}
-                    textAlign={"center"}
-                  >
-                    <Box
-                      // gap="3px"
-                      width="100%"
-                      display="flex"
-                      flexDirection="column"
-                      justifyContent="center"
-                      alignItems="center"
-                      height="3rem"
-                      // bgColor="red"
-                    >
-                      <Box
-                        height="50%"
-                        width="100%"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        {/* <Box
-                          // bgColor="red"
-                          display="flex"
-                          justifyContent="flex-end"
-                          alignItems="flex-end"
-                          // height
-                        >
-                          <Image
-                            src={`./Swap.svg`}
-                            alt="Picture of the author"
-                            width="24"
-                            height="24"
-                          />
-                        </Box> */}
-                        <Text fontSize="14px" fontWeight="400">
-                          Swap
-                        </Text>
-                      </Box>
-                      <HStack
-                        height="50%"
-                        width="100%"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <Image
-                          src={`./USDT.svg`}
-                          alt="Picture of the author"
-                          width="16"
-                          height="16"
-                        />
-                        <Text fontSize="14px" fontWeight="400">
-                          1.234
-                        </Text>
-                      </HStack>
-                    </Box>
                   </Td>
                   <Td
                     width={"12.5%"}
@@ -340,7 +218,29 @@ const BorrowDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      1,234
+                      7.8%
+                    </Text>
+                  </Td>
+
+                  <Td
+                    width={"12.5%"}
+                    maxWidth={"3rem"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    overflow={"hidden"}
+                    textAlign={"center"}
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      // bgColor={"blue"}
+                    >
+                      {/* {checkGap(idx1, idx2)} */}
+                      Active
                     </Text>
                   </Td>
                   <Td
@@ -364,7 +264,7 @@ const BorrowDashboard = ({
                         key="suppy"
                         backgroundColor="#101216"
                         height={"2rem"}
-                        padding="0rem 1rem"
+                        padding="0rem 0.8rem"
                         border="1px solid #2b2f35"
                         fontSize={"12px"}
                         color="#6e6e6e"
@@ -424,4 +324,4 @@ const BorrowDashboard = ({
   );
 };
 
-export default BorrowDashboard;
+export default SupplyDashboard;

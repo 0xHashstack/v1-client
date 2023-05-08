@@ -40,6 +40,16 @@ const YourBorrow = () => {
     { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
     { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
   ];
+  const columnItems = [
+    "Borrow ID",
+    "Borrowed",
+    "borrowed",
+    "Effective APR",
+    "Collateral",
+    "Spend status",
+    "Risk premium",
+    "Actions",
+  ];
   useEffect(() => {
     setRender(true);
     console.log("rendered your borrow");
@@ -102,6 +112,7 @@ const YourBorrow = () => {
               width={"95%"}
               currentPagination={currentPagination}
               Coins={Coins}
+              columnItems={columnItems}
             />
             <Box
               paddingY="1rem"

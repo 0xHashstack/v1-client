@@ -75,7 +75,7 @@ const SupplyModal = () => {
         break;
     }
   };
-  const handleDropdownClick = (dropdownName: string) => {
+  const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
   const handleChange = (newValue: any) => {

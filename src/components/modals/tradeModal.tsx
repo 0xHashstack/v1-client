@@ -130,7 +130,7 @@ const TradeModal = () => {
     }
   };
 
-  const handleDropdownClick = (dropdownName: string) => {
+  const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
   const handleChange = (newValue: any) => {
@@ -949,6 +949,7 @@ const TradeModal = () => {
                           {coins.map((coin, index) => {
                             return (
                               <Box
+                                key="index"
                                 as="button"
                                 w="full"
                                 display="flex"

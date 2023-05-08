@@ -645,7 +645,7 @@ const YourBorrowModal = () => {
     }
   };
 
-  const handleDropdownClick = (dropdownName: string) => {
+  const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
@@ -1545,6 +1545,7 @@ const YourBorrowModal = () => {
                                   {coins.map((coin, index) => {
                                     return (
                                       <Box
+                                        key={index}
                                         as="button"
                                         w="full"
                                         display="flex"
@@ -1690,6 +1691,7 @@ const YourBorrowModal = () => {
                                 {borrowIds.map((coin, index) => {
                                   return (
                                     <Box
+                                      key={index}
                                       as="button"
                                       w="full"
                                       display="flex"
@@ -1782,6 +1784,7 @@ const YourBorrowModal = () => {
                             </Box>
                             {modalDropdowns.yourBorrowModalBorrowMarketDropdown2 && (
                               <Box
+                                key={"box-key"}
                                 w="full"
                                 left="0"
                                 bg="#03060B"
@@ -1792,6 +1795,7 @@ const YourBorrowModal = () => {
                                 {coins.map((coin, index) => {
                                   return (
                                     <Box
+                                      key={index}
                                       as="button"
                                       w="full"
                                       display="flex"

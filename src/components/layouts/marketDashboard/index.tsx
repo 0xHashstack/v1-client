@@ -13,36 +13,7 @@ const MarketDashboard = () => {
     ["Market", "Price", "Total supply", "Supply APR"],
     ["Supply", "Details"],
   ];
-  // const rowItems1 = [
-  //   ["abc", "00000", "0000.000", "5%"],
-  //   [
-  //     <SupplyModal />,
-  //     <Text
-  //       key="supply-details"
-  //       as="span"
-  //       position="relative"
-  //       color="#0969DA"
-  //       fontSize="14px"
-  //       _hover={{
-  //         "::before": {
-  //           content: '""',
-  //           position: "absolute",
-  //           left: 0,
-  //           bottom: "-0px",
-  //           width: "100%",
-  //           height: "1px",
-  //           backgroundColor: "#0969DA",
-  //         },
-  //       }}
-  //     >
-  //       Details
-  //     </Text>,
-  //   ],
-  // ];
-  // const gap1 = [
-  //   ["22", "20", "20", "20"],
-  //   ["2.5", "2.5"],
-  // ];
+
   const dashboardItems2 = [
     ["Market", "Price", "Total borrowed", "Utillization", "Borrow APR"],
     ["Borrow", "Trade"],
@@ -111,8 +82,8 @@ const MarketDashboard = () => {
         // columnItems={dashboardItems2}
         // rowItems={rowItems2}
       />
-      <YourBorrowModal />
-      <TradeModal />
+      {/* <YourBorrowModal />
+      <TradeModal /> */}
     </HStack>
   );
 };
