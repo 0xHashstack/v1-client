@@ -8,7 +8,7 @@ import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import Pagination from "@/components/uiElements/pagination";
 import YourBorrowModal from "@/components/modals/yourBorrowModal";
 import React, { useEffect, useState } from "react";
-import { HStack,VStack,Text,Box } from "@chakra-ui/react";
+import { HStack, VStack, Text, Box } from "@chakra-ui/react";
 const YourBorrow = () => {
   const [render, setRender] = useState(false);
   const [currentPagination, setCurrentPagination] = useState<number>(1);
@@ -39,6 +39,16 @@ const YourBorrow = () => {
     { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
     { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
     { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
+  ];
+  const columnItems = [
+    "Borrow ID",
+    "Borrowed",
+    "borrowed",
+    "Effective APR",
+    "Collateral",
+    "Spend status",
+    "Risk premium",
+    "Actions",
   ];
   useEffect(() => {
     setRender(true);
@@ -102,6 +112,7 @@ const YourBorrow = () => {
               width={"95%"}
               currentPagination={currentPagination}
               Coins={Coins}
+              columnItems={columnItems}
             />
             <Box
               paddingY="1rem"
