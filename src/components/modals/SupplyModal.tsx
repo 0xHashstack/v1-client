@@ -30,7 +30,6 @@ import USDTLogo from "@/assets/icons/coins/usdt";
 import ETHLogo from "@/assets/icons/coins/eth";
 import DAILogo from "@/assets/icons/coins/dai";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
-
 import {
     selectInputSupplyAmount,
     setCoinSelectedSupplyModal,
@@ -179,6 +178,7 @@ const SupplyModal = () => {
                                         <Box p="1">{getCoin(currentSelectedCoin)}</Box>
                                         <Text color="white">{currentSelectedCoin}</Text>
                                     </Box>
+                                    
                                     <Box pt="1" className="navbar-button">
                                         <DropdownUp />
                                     </Box>

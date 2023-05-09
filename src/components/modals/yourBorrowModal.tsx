@@ -132,8 +132,8 @@ const YourBorrowModal = () => {
             mt="1.5rem"
             mb="1.5rem"
           >
-            <Box className="flex justify-between" mb="0.2rem">
-              <Box className="flex">
+            <Box  display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box  display="flex">
                 <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">
                   est LP tokens recieved:{" "}
                 </Text>
@@ -157,8 +157,8 @@ const YourBorrowModal = () => {
                 $ 10.91
               </Text>
             </Box>
-            <Box className="flex justify-between" mb="0.2rem">
-              <Box className="flex">
+            <Box  display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box display="flex">
                 <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">
                   Liquidity spill:{" "}
                 </Text>
@@ -197,8 +197,8 @@ const YourBorrowModal = () => {
                 </Box>
               </Box>
             </Box>
-            <Box className="flex justify-between" mb="0.2rem">
-              <Box className="flex">
+            <Box  display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box  display="flex">
                 <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">
                   Fees:{" "}
                 </Text>
@@ -220,8 +220,8 @@ const YourBorrowModal = () => {
               </Box>
               <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">0.1%</Text>
             </Box>
-            <Box className="flex justify-between" mb="0.2rem">
-              <Box className="flex">
+            <Box  display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box  display="flex">
                 <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">
                   Borrow apr:{" "}
                 </Text>
@@ -243,8 +243,8 @@ const YourBorrowModal = () => {
               </Box>
               <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">5.56%</Text>
             </Box>
-            <Box className="flex justify-between" mb="0.2rem">
-              <Box className="flex">
+            <Box  display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box  display="flex">
                 <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">
                   Gas estimate:{" "}
                 </Text>
@@ -266,8 +266,8 @@ const YourBorrowModal = () => {
               </Box>
               <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">5.56%</Text>
             </Box>
-            <Box className="flex justify-between" mb="0.2rem">
-              <Box className="flex">
+            <Box  display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box  display="flex">
                 <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">
                   Effective apr:{" "}
                 </Text>
@@ -289,8 +289,8 @@ const YourBorrowModal = () => {
               </Box>
               <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">5.56%</Text>
             </Box>
-            <Box className="flex justify-between">
-              <Box className="flex">
+            <Box  display="flex" justifyContent="space-between">
+              <Box  display="flex">
                 <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">
                   Health factor:{" "}
                 </Text>
@@ -417,7 +417,7 @@ const YourBorrowModal = () => {
                   borderRadius={"lg"}
                   padding={"2"}
                 >
-                  <Box className="p-1">
+                  <Box padding="0.25rem">
                     <InfoIcon />
                   </Box>
                 </Tooltip>
@@ -442,7 +442,7 @@ const YourBorrowModal = () => {
                   borderRadius={"lg"}
                   padding={"2"}
                 >
-                  <Box className="p-1">
+                  <Box padding="0.25rem">
                     <InfoIcon />
                   </Box>
                 </Tooltip>
@@ -586,7 +586,7 @@ const YourBorrowModal = () => {
                   borderRadius={"lg"}
                   padding={"2"}
                 >
-                  <Box className="p-1">
+                  <Box padding="0.25rem">
                     <InfoIcon />
                   </Box>
                 </Tooltip>
@@ -611,7 +611,7 @@ const YourBorrowModal = () => {
                   borderRadius={"lg"}
                   padding={"2"}
                 >
-                  <Box className="p-1">
+                  <Box padding="0.25rem">
                     <InfoIcon />
                   </Box>
                 </Tooltip>

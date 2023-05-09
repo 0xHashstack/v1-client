@@ -66,15 +66,14 @@ import {
     setCoinSelectedSupplyModal,
     selectWalletBalance,
 } from "@/store/slices/userAccountSlice";
-const YourSupplyModal = () => {
+const StakeModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const dispatch = useDispatch();
     const [sliderValue, setSliderValue] = useState(0);
     const modalDropdowns = useSelector(selectModalDropDowns);
-    const [inputAmount, setinputAmount] = useState(0);
-    const [inputSupplyAmount, setinputSupplyAmount] = useState(0)
-    const [inputWithdrawlAmount, setinputWithdrawlAmount] = useState(0)
     const [sliderValue2, setSliderValue2] = useState(0);
+    const [inputStakeAmount, setInputStakeAmount] = useState(0)
+    const [inputUnstakeAmount, setInputUnstakeAmount] = useState(0)
 
 
     const getCoin = (CoinName: string) => {
@@ -92,6 +91,21 @@ const YourSupplyModal = () => {
                 return <ETHLogo />;
                 break;
             case "DAI":
+                return <DAILogo />;
+                break;
+            case "rBTC":
+                return <BTCLogo />;
+                break;
+            case "rUSDC":
+                return <USDCLogo />;
+                break;
+            case "rUSDT":
+                return <USDTLogo />;
+                break;
+            case "rETH":
+                return <ETHLogo />;
+                break;
+            case "rDAI":
                 return <DAILogo />;
                 break;
             case "Jediswap":
@@ -127,26 +141,26 @@ const YourSupplyModal = () => {
         percentage = Math.max(0, percentage);
         if (percentage > 100) {
             setSliderValue(100);
-            setinputSupplyAmount(newValue);
+            setInputStakeAmount(newValue);
             // dispatch(setInputSupplyAmount(newValue));
         } else {
             percentage = Math.round(percentage * 100) / 100;
             setSliderValue(percentage);
-            setinputSupplyAmount(newValue);
+            setInputStakeAmount(newValue);
             // dispatch(setInputSupplyAmount(newValue));
         }
     };
-    const handleWithdrawlChange = (newValue: any) => {
+    const handleUnstakeChange = (newValue: any) => {
         var percentage = (newValue * 100) / walletBalance;
         percentage = Math.max(0, percentage);
         if (percentage > 100) {
             setSliderValue2(100);
-            setinputWithdrawlAmount(newValue);
+            setInputUnstakeAmount(newValue);
             // dispatch(setInputSupplyAmount(newValue));
         } else {
             percentage = Math.round(percentage * 100) / 100;
             setSliderValue2(percentage);
-            setinputWithdrawlAmount(newValue);
+            setInputUnstakeAmount(newValue);
             // dispatch(setInputSupplyAmount(newValue));
         }
     };
@@ -154,8 +168,10 @@ const YourSupplyModal = () => {
         dispatch(setModalDropdown(dropdownName));
     };
     const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+    const rcoins = ["rBTC", "rUSDT", "rUSDC", "rETH", "rDAI"];
     const walletBalance = useSelector(selectWalletBalance);
     const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] = useState("BTC");
+    const [currentSelectedStakeCoin, setCurrentSelectedStakeCoin] = useState("rBTC")
     const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] = useState("BTC")
     return (
         <Box>
@@ -171,7 +187,7 @@ const YourSupplyModal = () => {
                 borderRadius={"6px"}
                 onClick={onOpen}
             >
-                Repay
+                Details
             </Button>
 
             <Modal
@@ -209,7 +225,7 @@ const YourSupplyModal = () => {
                                                 border: "none",
                                             }}
                                         >
-                                            Add supply
+                                            Stake
                                         </Tab>
                                         <Tab
                                             py="1"
@@ -226,7 +242,7 @@ const YourSupplyModal = () => {
                                                 border: "none",
                                             }}
                                         >
-                                            Withdraw supply
+                                            Unstake
                                         </Tab>
                                     </TabList>
                                     <TabPanels>
@@ -235,7 +251,7 @@ const YourSupplyModal = () => {
                                             <Card bg="#101216" mb="0.5rem" p="1rem" border="1px solid #2B2F35" mt="1.5rem">
                                                 <Text color="#8B949E" display="flex" alignItems="center">
                                                     <Text mr="0.3rem" fontSize="12px" fontWeight="400" fontStyle="normal">
-                                                        Market
+                                                        Select Market
                                                     </Text>
                                                     <Tooltip
                                                         hasArrow
@@ -267,17 +283,17 @@ const YourSupplyModal = () => {
                                                     className="navbar"
                                                     cursor="pointer"
                                                     onClick={() =>
-                                                        handleDropdownClick("yourSupplyAddsupplyDropdown")
+                                                        handleDropdownClick("stakeMarketDropDown")
                                                     }
                                                 >
                                                     <Box display="flex" gap="1">
-                                                        <Box p="1">{getCoin(currentSelectedSupplyCoin)}</Box>
-                                                        <Text color="white">{currentSelectedSupplyCoin}</Text>
+                                                        <Box p="1">{getCoin(currentSelectedStakeCoin)}</Box>
+                                                        <Text color="white" mt="0.1rem">{currentSelectedStakeCoin}</Text>
                                                     </Box>
                                                     <Box pt="1" className="navbar-button">
                                                         <DropdownUp />
                                                     </Box>
-                                                    {modalDropdowns.yourSupplyAddsupplyDropdown && (
+                                                    {modalDropdowns.stakeMarketDropDown && (
                                                         <Box
                                                             w="full"
                                                             left="0"
@@ -286,7 +302,7 @@ const YourSupplyModal = () => {
                                                             className="dropdown-container"
                                                             boxShadow="dark-lg"
                                                         >
-                                                            {coins.map((coin, index) => {
+                                                            {rcoins.map((coin, index) => {
                                                                 return (
                                                                     <Box
                                                                         key={index}
@@ -297,11 +313,11 @@ const YourSupplyModal = () => {
                                                                         gap="1"
                                                                         pr="2"
                                                                         onClick={() => {
-                                                                            setCurrentSelectedSupplyCoin(coin);
+                                                                            setCurrentSelectedStakeCoin(coin);
                                                                             // dispatch(setCoinSelectedSupplyModal(coin))
                                                                         }}
                                                                     >
-                                                                        {coin === currentSelectedSupplyCoin && (
+                                                                        {coin === currentSelectedStakeCoin && (
                                                                             <Box
                                                                                 w="3px"
                                                                                 h="28px"
@@ -313,10 +329,10 @@ const YourSupplyModal = () => {
                                                                             w="full"
                                                                             display="flex"
                                                                             py="5px"
-                                                                            px={`${coin === currentSelectedSupplyCoin ? "1" : "5"
+                                                                            px={`${coin === currentSelectedStakeCoin ? "1" : "5"
                                                                                 }`}
                                                                             gap="1"
-                                                                            bg={`${coin === currentSelectedSupplyCoin
+                                                                            bg={`${coin === currentSelectedStakeCoin
                                                                                 ? "#0C6AD9"
                                                                                 : "inherit"
                                                                                 }`}
@@ -331,8 +347,28 @@ const YourSupplyModal = () => {
                                                         </Box>
                                                     )}
                                                 </Box>
+                                                <Text color="#8B949E" display="flex" alignItems="center">
+                                                    <Text mr="0.3rem" fontSize="12px" fontWeight="400" fontStyle="normal">
+                                                        Amount
+                                                    </Text>
+                                                    <Tooltip
+                                                        hasArrow
+                                                        placement="bottom-start"
+                                                        boxShadow="dark-lg"
+                                                        label="all the assets to the market"
+                                                        bg="#24292F"
+                                                        fontSize={"smaller"}
+                                                        fontWeight={"thin"}
+                                                        borderRadius={"lg"}
+                                                        padding={"2"}
+                                                    >
+                                                        <Box>
+                                                            <InfoIcon />
+                                                        </Box>
+                                                    </Tooltip>
+                                                </Text>
                                                 <Box width="100%" color="white" border="1px solid #2B2F35" borderRadius="6px" display="flex" justifyContent="space-between">
-                                                    <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleChange} value={inputSupplyAmount} outline="none"
+                                                    <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleChange} value={inputStakeAmount} outline="none"
                                                     >
                                                         <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`} border="0px" _placeholder={{
                                                             color: "#393D4F",
@@ -346,7 +382,7 @@ const YourSupplyModal = () => {
                                                             }}
                                                         />
                                                     </NumberInput>
-                                                    <Button variant="ghost" color="#0969DA" _hover={{ bg: "#101216" }} onClick={() => { setinputSupplyAmount(walletBalance); setSliderValue(100); }}>
+                                                    <Button variant="ghost" color="#0969DA" _hover={{ bg: "#101216" }} onClick={() => { setInputStakeAmount(walletBalance); setSliderValue(100); }}>
                                                         MAX
                                                     </Button>
                                                 </Box>
@@ -366,7 +402,7 @@ const YourSupplyModal = () => {
                                                             var ans = ((val / 100) * walletBalance);
                                                             ans = Math.round(ans * 100) / 100;
                                                             // dispatch(setInputSupplyAmount(ans))
-                                                            setinputSupplyAmount(ans);
+                                                            setInputStakeAmount(ans);
                                                         }}
                                                         focusThumbOnChange={false}
                                                     >
@@ -394,13 +430,8 @@ const YourSupplyModal = () => {
                                                     </Slider>
                                                 </Box>
                                             </Card>
-                                            <Checkbox defaultChecked mt="0.7rem" w="390px">
-                                                <Text fontSize="10px" color="#6E7681" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                                                    Ticking would stake the received rTokens unchecking wouldn&apos;t stake rTokens
-                                                </Text>
-                                            </Checkbox>
 
-                                            <Card bg="#101216" mt="1rem" p="1rem" border="1px solid #2B2F35" mb="0.5rem">
+                                            <Card bg="#101216" mt="1.5rem" p="1rem" border="1px solid #2B2F35" mb="0.5rem">
                                                 <Text
                                                     color="#8B949E"
                                                     display="flex"
@@ -416,7 +447,7 @@ const YourSupplyModal = () => {
                                                             font-size="12px"
                                                             color="#6A737D"
                                                         >
-                                                            Wallet balance:
+                                                            Staking rewards:
                                                         </Text>
                                                         <Tooltip
                                                             hasArrow
@@ -434,42 +465,7 @@ const YourSupplyModal = () => {
                                                             </Box>
                                                         </Tooltip>
                                                     </Text>
-                                                    <Text color="#6E7681">$ 10.91</Text>
-                                                </Text>
-                                                <Text
-                                                    display="flex"
-                                                    justifyContent="space-between"
-                                                    fontSize="12px"
-                                                    mb="0.4rem"
-                                                >
-                                                    <Text display="flex" alignItems="center">
-                                                        <Text
-                                                            mr="0.2rem"
-                                                            font-style="normal"
-                                                            font-weight="400"
-                                                            font-size="12px"
-                                                            lineHeight="16px"
-                                                            color="#6A737D"
-                                                        >
-                                                            Fees:
-                                                        </Text>
-                                                        <Tooltip
-                                                            hasArrow
-                                                            placement="bottom-start"
-                                                            boxShadow="dark-lg"
-                                                            label="all the assets to the market"
-                                                            bg="#24292F"
-                                                            fontSize={"smaller"}
-                                                            fontWeight={"thin"}
-                                                            borderRadius={"lg"}
-                                                            padding={"2"}
-                                                        >
-                                                            <Box>
-                                                                <InfoIcon />
-                                                            </Box>
-                                                        </Tooltip>
-                                                    </Text>
-                                                    <Text color="#6E7681">0.1%</Text>
+                                                    <Text color="#6E7681">5.56%</Text>
                                                 </Text>
                                                 <Text
                                                     color="#8B949E"
@@ -520,7 +516,7 @@ const YourSupplyModal = () => {
                                                             font-size="12px"
                                                             color="#6A737D"
                                                         >
-                                                            Supply apr:
+                                                            Fees:
                                                         </Text>
                                                         <Tooltip
                                                             hasArrow
@@ -538,10 +534,17 @@ const YourSupplyModal = () => {
                                                             </Box>
                                                         </Tooltip>
                                                     </Text>
-                                                    <Text color="#6E7681">7.75%</Text>
+                                                    <Text color="#6E7681">0.3%</Text>
                                                 </Text>
                                             </Card>
-                                            {inputSupplyAmount > 0 ? (
+                                            <Text padding="0px" fontSize="12px" fontWeight="400" fontStyle="normal" color=" #6A737D" mt="1rem" lineHeight="18px">
+                                                To stake you need to supply any asset to receive rTokens. <br></br>
+                                                click here To
+                                                <Text display="inline" color="#0969DA" cursor="pointer" ml="0.4rem" lineHeight="18px" >
+                                                    Add Supply
+                                                </Text>
+                                            </Text>
+                                            {inputStakeAmount > 0 ? (
                                                 <Button
                                                     bg="#8B949E"
                                                     color="white"
@@ -553,7 +556,7 @@ const YourSupplyModal = () => {
                                                     _hover={{ bg: "#2DA44E" }}
                                                     _focus={{ bg: "#298E46" }}
                                                 >
-                                                    Supply
+                                                    Stake
                                                 </Button>
                                             ) : (
                                                 <Button
@@ -566,15 +569,16 @@ const YourSupplyModal = () => {
                                                     border="1px solid #2B2F35"
                                                     _hover={{ bg: "#101216" }}
                                                 >
-                                                    Supply
+                                                    Stake
                                                 </Button>
                                             )}
                                         </TabPanel>
                                         <TabPanel p="0" m="0">
+
                                             <Card bg="#101216" mb="0.5rem" p="1rem" border="1px solid #2B2F35" mt="1.5rem">
                                                 <Text color="#8B949E" display="flex" alignItems="center">
-                                                    <Text mr="0.3rem" fontSize="12px">
-                                                        Supply market
+                                                    <Text mr="0.3rem" fontSize="12px" fontWeight="400" fontStyle="normal">
+                                                        Select Market
                                                     </Text>
                                                     <Tooltip
                                                         hasArrow
@@ -601,22 +605,22 @@ const YourSupplyModal = () => {
                                                     pl="3"
                                                     pr="3"
                                                     mb="1rem"
-                                                    mt="0.3rem"
+                                                    mt="0.2rem"
                                                     borderRadius="md"
                                                     className="navbar"
                                                     cursor="pointer"
                                                     onClick={() =>
-                                                        handleDropdownClick("yourSupplyWithdrawlDropdown")
+                                                        handleDropdownClick("stakeMarketDropDown")
                                                     }
                                                 >
                                                     <Box display="flex" gap="1">
-                                                        <Box p="1">{getCoin(currentSelectedWithdrawlCoin)}</Box>
-                                                        <Text color="white">{currentSelectedWithdrawlCoin}</Text>
+                                                        <Box p="1">{getCoin(currentSelectedStakeCoin)}</Box>
+                                                        <Text color="white" mt="0.1rem">{currentSelectedStakeCoin}</Text>
                                                     </Box>
                                                     <Box pt="1" className="navbar-button">
                                                         <DropdownUp />
                                                     </Box>
-                                                    {modalDropdowns.yourSupplyWithdrawlDropdown && (
+                                                    {modalDropdowns.stakeMarketDropDown && (
                                                         <Box
                                                             w="full"
                                                             left="0"
@@ -625,8 +629,7 @@ const YourSupplyModal = () => {
                                                             className="dropdown-container"
                                                             boxShadow="dark-lg"
                                                         >
-                                                            {coins.map((coin, index) => {
-
+                                                            {rcoins.map((coin, index) => {
                                                                 return (
                                                                     <Box
                                                                         key={index}
@@ -637,11 +640,11 @@ const YourSupplyModal = () => {
                                                                         gap="1"
                                                                         pr="2"
                                                                         onClick={() => {
-                                                                            setcurrentSelectedWithdrawlCoin(coin);
+                                                                            setCurrentSelectedStakeCoin(coin);
                                                                             // dispatch(setCoinSelectedSupplyModal(coin))
                                                                         }}
                                                                     >
-                                                                        {coin === currentSelectedWithdrawlCoin && (
+                                                                        {coin === currentSelectedStakeCoin && (
                                                                             <Box
                                                                                 w="3px"
                                                                                 h="28px"
@@ -653,10 +656,10 @@ const YourSupplyModal = () => {
                                                                             w="full"
                                                                             display="flex"
                                                                             py="5px"
-                                                                            px={`${coin === currentSelectedWithdrawlCoin ? "1" : "5"
+                                                                            px={`${coin === currentSelectedStakeCoin ? "1" : "5"
                                                                                 }`}
                                                                             gap="1"
-                                                                            bg={`${coin === currentSelectedWithdrawlCoin
+                                                                            bg={`${coin === currentSelectedStakeCoin
                                                                                 ? "#0C6AD9"
                                                                                 : "inherit"
                                                                                 }`}
@@ -672,8 +675,8 @@ const YourSupplyModal = () => {
                                                     )}
                                                 </Box>
                                                 <Text color="#8B949E" display="flex" alignItems="center">
-                                                    <Text mr="0.3rem" fontSize="12px" fontStyle="normal" fontWeight="400">
-                                                        Withdraw amount
+                                                    <Text mr="0.3rem" fontSize="12px" fontWeight="400" fontStyle="normal">
+                                                        Amount
                                                     </Text>
                                                     <Tooltip
                                                         hasArrow
@@ -691,10 +694,10 @@ const YourSupplyModal = () => {
                                                         </Box>
                                                     </Tooltip>
                                                 </Text>
-                                                <Box width="100%" color="white" border="1px solid #2B2F35" borderRadius="6px" display="flex" justifyContent="space-between" mt="0.3rem">
-                                                    <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleWithdrawlChange} value={inputWithdrawlAmount} outline="none"
+                                                <Box width="100%" color="white" border="1px solid #2B2F35" borderRadius="6px" display="flex" justifyContent="space-between">
+                                                    <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleUnstakeChange} value={inputUnstakeAmount} outline="none"
                                                     >
-                                                        <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedWithdrawlCoin}`} border="0px" _placeholder={{
+                                                        <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`} border="0px" _placeholder={{
                                                             color: "#393D4F",
                                                             fontSize: ".89rem",
                                                             fontWeight: "600",
@@ -706,14 +709,14 @@ const YourSupplyModal = () => {
                                                             }}
                                                         />
                                                     </NumberInput>
-                                                    <Button variant="ghost" color="#0969DA" _hover={{ bg: "#101216" }} onClick={() => { setinputWithdrawlAmount(walletBalance); setSliderValue2(100); }}>
+                                                    <Button variant="ghost" color="#0969DA" _hover={{ bg: "#101216" }} onClick={() => { setInputUnstakeAmount(walletBalance); setSliderValue2(100); }}>
                                                         MAX
                                                     </Button>
                                                 </Box>
                                                 <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
                                                     Wallet Balance: {walletBalance}
                                                     <Text color="#6E7781" ml="0.2rem">
-                                                        {` ${currentSelectedWithdrawlCoin}`}
+                                                        {` ${currentSelectedSupplyCoin}`}
                                                     </Text>
                                                 </Text>
                                                 <Box pt={5} pb={2} mt="0.8rem">
@@ -726,7 +729,7 @@ const YourSupplyModal = () => {
                                                             var ans = ((val / 100) * walletBalance);
                                                             ans = Math.round(ans * 100) / 100;
                                                             // dispatch(setInputSupplyAmount(ans))
-                                                            setinputWithdrawlAmount(ans);
+                                                            setInputUnstakeAmount(ans);
                                                         }}
                                                         focusThumbOnChange={false}
                                                     >
@@ -754,13 +757,8 @@ const YourSupplyModal = () => {
                                                     </Slider>
                                                 </Box>
                                             </Card>
-                                            <Checkbox defaultChecked mt="0.7rem" w="390px">
-                                                <Text fontSize="10px" color="#6E7681" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                                                    Ticking would stake the received rTokens unchecking wouldn&apos;t stake rTokens
-                                                </Text>
-                                            </Checkbox>
 
-                                            <Card bg="#101216" mt="1rem" p="1rem" border="1px solid #2B2F35" mb="0.5rem">
+                                            <Card bg="#101216" mt="1.5rem" p="1rem" border="1px solid #2B2F35" mb="0.5rem">
                                                 <Text
                                                     color="#8B949E"
                                                     display="flex"
@@ -776,7 +774,42 @@ const YourSupplyModal = () => {
                                                             font-size="12px"
                                                             color="#6A737D"
                                                         >
-                                                            est. supply unlocked:
+                                                            est. rTokens:
+                                                        </Text>
+                                                        <Tooltip
+                                                            hasArrow
+                                                            placement="bottom-start"
+                                                            boxShadow="dark-lg"
+                                                            label="all the assets to the market"
+                                                            bg="#24292F"
+                                                            fontSize={"smaller"}
+                                                            fontWeight={"thin"}
+                                                            borderRadius={"lg"}
+                                                            padding={"2"}
+                                                        >
+                                                            <Box>
+                                                                <InfoIcon />
+                                                            </Box>
+                                                        </Tooltip>
+                                                    </Text>
+                                                    <Text color="#6E7681">$10.91</Text>
+                                                </Text>
+                                                <Text
+                                                    color="#8B949E"
+                                                    display="flex"
+                                                    justifyContent="space-between"
+                                                    fontSize="12px"
+                                                    mb="0.4rem"
+                                                >
+                                                    <Text display="flex" alignItems="center">
+                                                        <Text
+                                                            mr="0.2rem"
+                                                            font-style="normal"
+                                                            font-weight="400"
+                                                            font-size="12px"
+                                                            color="#6A737D"
+                                                        >
+                                                            Gas estimate:
                                                         </Text>
                                                         <Tooltip
                                                             hasArrow
@@ -801,7 +834,6 @@ const YourSupplyModal = () => {
                                                     display="flex"
                                                     justifyContent="space-between"
                                                     fontSize="12px"
-                                                    mb="0.4rem"
                                                 >
                                                     <Text display="flex" alignItems="center">
                                                         <Text
@@ -809,79 +841,6 @@ const YourSupplyModal = () => {
                                                             font-style="normal"
                                                             font-weight="400"
                                                             font-size="12px"
-                                                            color="#6A737D"
-                                                        >
-                                                            Earned APR:
-                                                        </Text>
-                                                        <Tooltip
-                                                            hasArrow
-                                                            placement="right"
-                                                            bg="#101216"
-                                                            padding="16px"
-                                                            border="1px solid #2B2F35"
-                                                            borderRadius="6px"
-
-                                                            label={
-                                                                <Box display="flex" flexDirection="column" justifyContent="space-between" width="226px" gap="6px">
-                                                                    <Box display="flex" justifyContent="space-between" fontSize="12px" fontStyle="normal" fontWeight="500">
-                                                                        <Box display="flex">
-                                                                            <ETHLogo />
-                                                                            rETH =
-                                                                        </Box>
-                                                                        <Text>
-                                                                            x
-                                                                        </Text>
-                                                                    </Box>
-                                                                    <Box display="flex" justifyContent="space-between" fontSize="12px" fontStyle="normal" fontWeight="500">
-                                                                        <Box display="flex">
-                                                                            1<ETHLogo />
-                                                                            rETH =
-                                                                        </Box>
-                                                                        <Box display="flex">
-                                                                            y<ETHLogo />
-
-                                                                        </Box>
-                                                                    </Box>
-                                                                    <Box display="flex" justifyContent="space-between" fontSize="12px" fontStyle="normal" fontWeight="500">
-                                                                        <Box display="flex">
-
-                                                                            1X =
-                                                                        </Box>
-                                                                        <Box display="flex">
-                                                                            z USD <USDTLogo />
-                                                                        </Box>
-                                                                    </Box>
-                                                                    <Box fontSize="12px" fontStyle="normal" fontWeight="500" width="142px" mt="4px">
-                                                                        est. collateral value in usd =
-                                                                        x * y * z = us $ a.
-                                                                    </Box>
-                                                                    <Box>
-
-                                                                    </Box>
-                                                                </Box>
-                                                            }
-
-                                                        >
-                                                            <Box>
-                                                                <InfoIcon />
-                                                            </Box>
-                                                        </Tooltip>
-                                                    </Text>
-                                                    <Text color="#6E7681">1.240 rETH</Text>
-                                                </Text>
-                                                <Text
-                                                    display="flex"
-                                                    justifyContent="space-between"
-                                                    fontSize="12px"
-                                                    mb="0.4rem"
-                                                >
-                                                    <Text display="flex" alignItems="center">
-                                                        <Text
-                                                            mr="0.2rem"
-                                                            font-style="normal"
-                                                            font-weight="400"
-                                                            font-size="12px"
-                                                            lineHeight="16px"
                                                             color="#6A737D"
                                                         >
                                                             Fees:
@@ -902,44 +861,17 @@ const YourSupplyModal = () => {
                                                             </Box>
                                                         </Tooltip>
                                                     </Text>
-                                                    <Text color="#6E7681">0.1%</Text>
-                                                </Text>
-                                                <Text
-                                                    color="#8B949E"
-                                                    display="flex"
-                                                    justifyContent="space-between"
-                                                    fontSize="12px"
-                                                >
-                                                    <Text display="flex" alignItems="center">
-                                                        <Text
-                                                            mr="0.2rem"
-                                                            font-style="normal"
-                                                            font-weight="400"
-                                                            font-size="12px"
-                                                            color="#6A737D"
-                                                        >
-                                                            Gas Estimate balance:
-                                                        </Text>
-                                                        <Tooltip
-                                                            hasArrow
-                                                            placement="bottom-start"
-                                                            boxShadow="dark-lg"
-                                                            label="all the assets to the market"
-                                                            bg="#24292F"
-                                                            fontSize={"smaller"}
-                                                            fontWeight={"thin"}
-                                                            borderRadius={"lg"}
-                                                            padding={"2"}
-                                                        >
-                                                            <Box>
-                                                                <InfoIcon />
-                                                            </Box>
-                                                        </Tooltip>
-                                                    </Text>
-                                                    <Text color="#6E7681">$ 10.91</Text>
+                                                    <Text color="#6E7681">0.3%</Text>
                                                 </Text>
                                             </Card>
-                                            {inputWithdrawlAmount > 0 ? (
+                                            <Text padding="0px" fontSize="12px" fontWeight="400" fontStyle="normal" color=" #6A737D" mt="1rem" lineHeight="18px">
+                                                You have not staked any rTokens to unstake <br></br>
+                                                click here To
+                                                <Text display="inline" color="#0969DA" cursor="pointer" ml="0.4rem" lineHeight="18px" >
+                                                    Add Supply
+                                                </Text>
+                                            </Text>
+                                            {inputUnstakeAmount > 0 ? (
                                                 <Button
                                                     bg="#8B949E"
                                                     color="white"
@@ -951,7 +883,7 @@ const YourSupplyModal = () => {
                                                     _hover={{ bg: "#2DA44E" }}
                                                     _focus={{ bg: "#298E46" }}
                                                 >
-                                                    Withdraw
+                                                    Unstake
                                                 </Button>
                                             ) : (
                                                 <Button
@@ -964,7 +896,7 @@ const YourSupplyModal = () => {
                                                     border="1px solid #2B2F35"
                                                     _hover={{ bg: "#101216" }}
                                                 >
-                                                    Withdraw
+                                                    Unstake
                                                 </Button>
                                             )}
                                         </TabPanel>
@@ -979,4 +911,4 @@ const YourSupplyModal = () => {
     );
 };
 
-export default YourSupplyModal;
+export default StakeModal;

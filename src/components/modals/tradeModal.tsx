@@ -1093,7 +1093,7 @@ const TradeModal = () => {
                         borderRadius={"lg"}
                         padding={"2"}
                       >
-                        <Box className="p-1">
+                        <Box padding="0.25rem">
                           <InfoIcon />
                         </Box>
                       </Tooltip>
@@ -1118,7 +1118,7 @@ const TradeModal = () => {
                         borderRadius={"lg"}
                         padding={"2"}
                       >
-                        <Box className="p-1">
+                        <Box  padding="0.25rem">
                           <InfoIcon />
                         </Box>
                       </Tooltip>
@@ -1143,7 +1143,7 @@ const TradeModal = () => {
                         borderRadius={"lg"}
                         padding={"2"}
                       >
-                        <Box className="p-1">
+                        <Box padding="0.25rem">
                           <InfoIcon />
                         </Box>
                       </Tooltip>

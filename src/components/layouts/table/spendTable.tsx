@@ -5,8 +5,6 @@ import {
   TableCaption,
   TableContainer,
   Tbody,
-  Td,
-  Tfoot,
   Th,
   Thead,
   Tr,
@@ -16,6 +14,7 @@ import {
   TabPanel,
   TabPanels,
   Tab,
+  Td,
 } from "@chakra-ui/react";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import TableUsdtLogo from "./usdtLogo";
@@ -99,7 +98,7 @@ const SpendTable = () => {
         <Table variant="unstyled">
           {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
           <Thead>
-            <Tr className="font-inter" color="#BDBFC1">
+            <Tr  fontFamily="Inter" color="#BDBFC1">
               <Th fontWeight="400" fontSize="12px" fontStyle="normal" lineHeight="20px" textTransform="none">Borrow ID</Th>
               <Th fontWeight="400" fontSize="12px" fontStyle="normal" lineHeight="20px" textAlign="center" textTransform="none">
                 Borrow market
@@ -123,10 +122,11 @@ const SpendTable = () => {
                   _hover={{
                     backgroundColor: "#2B2F35",
                     width: "80%",
-                    borderRadius: "10px",
-                    borderRightRadius: "md",
+                  borderRadius: "10px",
+                   
                   }}
                   key={index}
+                  cursor="pointer"
                 >
                   <Td>
                     <Box display="flex" gap="2">
