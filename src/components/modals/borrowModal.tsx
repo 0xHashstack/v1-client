@@ -634,7 +634,7 @@ const BorrowModal = () => {
                 color="#8B949E"
                 display="flex"
                 justifyContent="space-between"
-                fontSize="0.9rem"
+                fontSize="12px"
                 mb="0.4rem"
               >
                 <Text display="flex" alignItems="center">
@@ -675,7 +675,7 @@ const BorrowModal = () => {
               <Text
                 display="flex"
                 justifyContent="space-between"
-                fontSize="0.9rem"
+                fontSize="12px"
                 mb="0.4rem"
               >
                 <Text display="flex" alignItems="center">
@@ -717,7 +717,7 @@ const BorrowModal = () => {
               <Text
                 display="flex"
                 justifyContent="space-between"
-                fontSize="0.9rem"
+                fontSize="12px"
                 mb="0.4rem"
               >
                 <Text display="flex" alignItems="center">
@@ -760,7 +760,7 @@ const BorrowModal = () => {
                 color="#8B949E"
                 display="flex"
                 justifyContent="space-between"
-                fontSize="0.9rem"
+                fontSize="12px"
               >
                 <Text display="flex" alignItems="center">
                   <Text
@@ -788,14 +788,10 @@ const BorrowModal = () => {
                     </Box>
                   </Tooltip>
                 </Text>
-                <Text
-                  font-style="normal"
-                  font-weight="400"
-                  font-size="14px"
-                  color="#6A737D"
-                >
-                  5.56%
-                </Text>
+                <Text font-style="normal"
+                  font-weight="900"
+                  font-size="12px"
+                  color="#6A737D">5.56%</Text>
               </Text>
             </Card>
 

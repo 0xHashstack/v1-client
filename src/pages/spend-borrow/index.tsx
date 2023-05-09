@@ -3,7 +3,7 @@ import NavButtons from "@/components/layouts/navButtons";
 import Navbar from "@/components/layouts/navbar/Navbar";
 import StatsBoard from "@/components/layouts/statsBoard";
 import SpendTable from "@/components/layouts/table/spendTable";
-import { Box, HStack, Stack, Text, VStack } from "@chakra-ui/react";
+import { Box, HStack, Stack, Text, VStack,HStack,VStack,Text } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import YourSupplyModal from "@/components/modals/yourSupply";
 import SpendBorrowModal from "@/components/modals/SpendBorrow";
@@ -11,7 +11,7 @@ import YourBorrowModal from "@/components/modals/yourBorrowModal";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import PageCard from "@/components/layouts/pageCard";
 const SpendBorrow = () => {
-  const [render, setRender] = useState(true);
+  const [render, setRender] = useState(false);
   useEffect(() => {
     setRender(true);
   }, []);

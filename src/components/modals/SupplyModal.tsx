@@ -30,7 +30,6 @@ import USDTLogo from "@/assets/icons/coins/usdt";
 import ETHLogo from "@/assets/icons/coins/eth";
 import DAILogo from "@/assets/icons/coins/dai";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
-
 import {
     selectInputSupplyAmount,
     setCoinSelectedSupplyModal,
@@ -179,6 +178,7 @@ const SupplyModal = () => {
                                         <Box p="1">{getCoin(currentSelectedCoin)}</Box>
                                         <Text color="white">{currentSelectedCoin}</Text>
                                     </Box>
+                                    
                                     <Box pt="1" className="navbar-button">
                                         <DropdownUp />
                                     </Box>
@@ -309,7 +309,7 @@ const SupplyModal = () => {
                                 <Text
                                     display="flex"
                                     justifyContent="space-between"
-                                    fontSize="0.9rem"
+                                    fontSize="12px"
                                     mb="0.4rem"
                                 >
                                     <Text display="flex" alignItems="center">
@@ -317,7 +317,7 @@ const SupplyModal = () => {
                                             mr="0.2rem"
                                             font-style="normal"
                                             font-weight="400"
-                                            font-size="14px"
+                                            font-size="12px"
                                             lineHeight="16px"
                                             color="#6A737D"
                                         >
@@ -341,14 +341,14 @@ const SupplyModal = () => {
                                     </Text>
                                     <Text font-style="normal"
                                         font-weight="400"
-                                        font-size="14px"
+                                        font-size="12px"
                                         color="#6A737D">5.56%</Text>
                                 </Text>
                                 <Text
                                     color="#8B949E"
                                     display="flex"
                                     justifyContent="space-between"
-                                    fontSize="0.9rem"
+                                    fontSize="12px"
                                     mb="0.4rem"
                                 >
                                     <Text display="flex" alignItems="center">
@@ -356,7 +356,7 @@ const SupplyModal = () => {
                                             mr="0.2rem"
                                             font-style="normal"
                                             font-weight="400"
-                                            font-size="14px"
+                                            font-size="12px"
                                             color="#6A737D"
                                         >
                                             Gas estimate:
@@ -379,21 +379,21 @@ const SupplyModal = () => {
                                     </Text>
                                     <Text font-style="normal"
                                         font-weight="400"
-                                        font-size="14px"
+                                        font-size="12px"
                                         color="#6A737D">$ 0.50</Text>
                                 </Text>
                                 <Text
                                     color="#8B949E"
                                     display="flex"
                                     justifyContent="space-between"
-                                    fontSize="0.9rem"
+                                    fontSize="12px"
                                 >
                                     <Text display="flex" alignItems="center">
                                         <Text
                                             mr="0.2rem"
                                             font-style="normal"
                                             font-weight="400"
-                                            font-size="14px"
+                                            font-size="12px"
                                             color="#6A737D"
                                         >
                                             Supply apr:
@@ -416,7 +416,7 @@ const SupplyModal = () => {
                                     </Text>
                                     <Text font-style="normal"
                                         font-weight="400"
-                                        font-size="14px"
+                                        font-size="12px"
                                         color="#6A737D">5.56%</Text>
                                 </Text>
                             </Card>

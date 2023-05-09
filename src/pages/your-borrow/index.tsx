@@ -13,7 +13,7 @@ import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 
 const YourBorrow = () => {
-  const [render, setRender] = useState(true);
+  const [render, setRender] = useState(false);
   const [currentPagination, setCurrentPagination] = useState<number>(1);
 
   const columnItems = [

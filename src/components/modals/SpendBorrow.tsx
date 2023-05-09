@@ -1871,8 +1871,8 @@ const SpendBorrowModal = () => {
                                 </Card>
                             }
                             {currentAction == "Liquidity Provision" && <Box bg="#101216" borderRadius="6px" p="1rem" border="1px solid #2B2F35" mt="1.5rem">
-                                <Box className="flex justify-between" mb="0.2rem">
-                                    <Box className="flex">
+                                <Box  display="flex" justifyContent="space-between" mb="0.2rem">
+                                    <Box  display="flex">
                                         <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">
                                             est LP tokens recieved:{" "}
                                         </Text>
@@ -1896,8 +1896,8 @@ const SpendBorrowModal = () => {
                                         $ 10.91
                                     </Text>
                                 </Box>
-                                <Box className="flex justify-between" mb="0.2rem">
-                                    <Box className="flex">
+                                <Box  display="flex" justifyContent="space-between" mb="0.2rem">
+                                    <Box display="flex">
                                         <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">
                                             Liquidity spill:{" "}
                                         </Text>
@@ -1936,8 +1936,8 @@ const SpendBorrowModal = () => {
                                         </Box>
                                     </Box>
                                 </Box>
-                                <Box className="flex justify-between" mb="0.2rem">
-                                    <Box className="flex">
+                                <Box  display="flex" justifyContent="space-between" mb="0.2rem">
+                                    <Box  display="flex">
                                         <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">
                                             Fees:{" "}
                                         </Text>
@@ -1959,8 +1959,8 @@ const SpendBorrowModal = () => {
                                     </Box>
                                     <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">0.1%</Text>
                                 </Box>
-                                <Box className="flex justify-between" mb="0.2rem">
-                                    <Box className="flex">
+                                <Box  display="flex" justifyContent="space-between" mb="0.2rem">
+                                    <Box  display="flex">
                                         <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">
                                             Borrow apr:{" "}
                                         </Text>
@@ -1982,8 +1982,8 @@ const SpendBorrowModal = () => {
                                     </Box>
                                     <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">5.56%</Text>
                                 </Box>
-                                <Box className="flex justify-between" mb="0.2rem">
-                                    <Box className="flex">
+                                <Box  display="flex" justifyContent="space-between" mb="0.2rem">
+                                    <Box  display="flex">
                                         <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">
                                             Gas estimate:{" "}
                                         </Text>
@@ -2005,8 +2005,8 @@ const SpendBorrowModal = () => {
                                     </Box>
                                     <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">5.56%</Text>
                                 </Box>
-                                <Box className="flex justify-between" mb="0.2rem">
-                                    <Box className="flex">
+                                <Box  display="flex" justifyContent="space-between" mb="0.2rem">
+                                    <Box display="flex">
                                         <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">
                                             Effective apr:{" "}
                                         </Text>
@@ -2028,8 +2028,8 @@ const SpendBorrowModal = () => {
                                     </Box>
                                     <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">5.56%</Text>
                                 </Box>
-                                <Box className="flex justify-between">
-                                    <Box className="flex">
+                                <Box  display="flex" justifyContent="space-between">
+                                    <Box  display="flex">
                                         <Text color="#6A737D" fontSize="14px" fontWeight="400" fontStyle="normal">
                                             Health factor:{" "}
                                         </Text>

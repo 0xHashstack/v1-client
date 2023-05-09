@@ -8,9 +8,9 @@ import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import Pagination from "@/components/uiElements/pagination";
 import { Box, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
-import { Coins } from "@/utils/constants/coin";
+import { Coins } from "@/utils/constants/coin";import YourSupplyModal from "@/components/modals/yourSupply";
 const YourSupply = () => {
-  const [render, setRender] = useState(true);
+  const [render, setRender] = useState(false);
   const [currentPagination, setCurrentPagination] = useState<number>(1);
 
   const columnItems = [

@@ -6,9 +6,6 @@ import { store } from "../store/store";
 
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
-import spaceApiKey from "../utils/constants/keys";
-import { loadSpace } from "@usersnap/browser";
-import { useEffect, useRef } from "react";
 
 const theme = extendTheme({
   colors: {
