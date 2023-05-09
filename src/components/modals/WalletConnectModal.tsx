@@ -283,7 +283,7 @@ const WalletConnectModal = () => {
                             </Card>
                             <Box display="flex" flexDirection="row" fontSize="12px" lineHeight="30px" fontWeight="400" >
                                 <Text>
-                                    Don't have a supporting wallet.
+                                    Don&apos;t have a supporting wallet.
                                     <Button variant="unstyled" color="#2563EB" fontSize="12px" ml="0.3rem" >
                                         Download bravos from here
 
@@ -292,7 +292,7 @@ const WalletConnectModal = () => {
                             </Box>
                             <Box display="inline-flex" alignItems="center" fontSize="14px" lineHeight="22px" fontWeight="400">
                                 <Text fontSize="14px" lineHeight="22px" fontWeight="400">
-                                    By connecting your wallet, you agree to Hashstack’s 
+                                    By connecting your wallet, you agree to Hashstack&apos;s 
                                 </Text>
                                 <Button display="inline" variant="unstyled" color="#2563EB" fontSize="14px" marginLeft="4px">
                                     terms of
