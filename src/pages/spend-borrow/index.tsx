@@ -10,6 +10,9 @@ import SpendBorrowModal from "@/components/modals/SpendBorrow";
 import YourBorrowModal from "@/components/modals/yourBorrowModal";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import WalletConnectModal from "@/components/modals/WalletConnectModal";
+import StakUnstakeModal from "@/components/modals/StakeUnstakeModal";
+import SwapModal from "@/components/modals/SwapModal";
+import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
 import StakeModal from "@/components/modals/StakeModal";
 const SpendBorrow = () => {
   const [render, setRender] = useState(false);
@@ -72,10 +75,6 @@ const SpendBorrow = () => {
             <SpendTable />
             {/* <MarketDashboard /> */}
             {/* <SupplyModal /> */}
-            <StakeModal/>
-            <YourSupplyModal/>
-            <WalletConnectModal/>
-            <SpendBorrowModal/>
           </Stack>
         </>
       )}

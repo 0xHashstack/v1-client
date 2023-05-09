@@ -26,7 +26,6 @@ import InfoIcon from "@/assets/icons/infoIcon";
 import TableClose from "./tableIcons/close";
 import TableInfoIcon from "./tableIcons/infoIcon";
 import { useRouter } from "next/router";
-import { px } from "framer-motion";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const router = useRouter();
