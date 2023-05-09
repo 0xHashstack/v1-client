@@ -130,7 +130,7 @@ const TradeModal = () => {
     }
   };
 
-  const handleDropdownClick = (dropdownName: string) => {
+  const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
   const handleChange = (newValue: any) => {
@@ -173,20 +173,33 @@ const TradeModal = () => {
 
   return (
     <Box>
-      <Button
-        key="borrow"
-        height={"2rem"}
-        padding="0rem 1rem"
-        border="1px solid #2b2f35"
-        color="#6e6e6e"
-        fontSize={"12px"}
-        bgColor="#101216"
-        _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
-        borderRadius={"6px"}
+      <Text
+        key="borrow-details"
+        as="span"
+        position="relative"
+        color="#0969DA"
+        fontSize="14px"
+        width="100%"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        fontWeight="400"
+        cursor="pointer"
+        _hover={{
+          "::before": {
+            content: '""',
+            position: "absolute",
+            left: 0,
+            bottom: "-0px",
+            width: "100%",
+            height: "1px",
+            backgroundColor: "#0969DA",
+          },
+        }}
         onClick={onOpen}
       >
         Trade
-      </Button>
+      </Text>
       {/* <Button onClick={onOpen}>Open Modal</Button> */}
 
       <Modal
@@ -1093,7 +1106,7 @@ const TradeModal = () => {
                         borderRadius={"lg"}
                         padding={"2"}
                       >
-                        <Box className="p-1">
+                        <Box padding="0.25rem">
                           <InfoIcon />
                         </Box>
                       </Tooltip>
@@ -1118,7 +1131,7 @@ const TradeModal = () => {
                         borderRadius={"lg"}
                         padding={"2"}
                       >
-                        <Box className="p-1">
+                        <Box  padding="0.25rem">
                           <InfoIcon />
                         </Box>
                       </Tooltip>
@@ -1143,7 +1156,7 @@ const TradeModal = () => {
                         borderRadius={"lg"}
                         padding={"2"}
                       >
-                        <Box className="p-1">
+                        <Box padding="0.25rem">
                           <InfoIcon />
                         </Box>
                       </Tooltip>

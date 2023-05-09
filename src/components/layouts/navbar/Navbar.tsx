@@ -42,8 +42,7 @@ import {
 } from "@chakra-ui/react";
 import { selectLanguage, setLanguage } from "@/store/slices/userAccountSlice";
 // import useOutsideClickHandler from "../../../utils/functions/clickOutsideDropdownHandler";
-import { languages } from "../../../utils/constants/languages";
-
+import { languages } from "@/utils/constants/languages";
 const Navbar = () => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
@@ -54,6 +53,7 @@ const Navbar = () => {
   const [contibutionHover, setContibutionHover] = useState(false);
   const [transferDepositHover, setTransferDepositHover] = useState(false);
   const [stakeHover, setStakeHover] = useState(false);
+  const [connected, setConnected] = useState(true);
 
   const handleDropdownClick = (dropdownName: string) => {
     dispatch(setNavDropdown(dropdownName));
@@ -324,7 +324,7 @@ const Navbar = () => {
         </Box> */}
       </HStack>
       <HStack
-        width="50%"
+        width="40%"
         display="flex"
         justifyContent="flex-end"
         alignItems="center"
@@ -340,14 +340,16 @@ const Navbar = () => {
             borderRadius="6px"
             cursor="pointer"
             margin="0"
-            border="0.5px solid #57606A"
+            height="2rem"
+            border="0.5px solid #6e6e6e"
             display="flex"
             flexDirection="column"
             alignItems="center"
             justifyContent="center"
             gap="3"
             className="button"
-            _hover={{ color: "#6e7681" }}
+            color="#6E6E6E"
+            // _hover={{ color: "#010409", bgColor: "#f6f8fa" }}
             onMouseEnter={() => setTransferDepositHover(true)}
             onMouseLeave={() => setTransferDepositHover(false)}
           >
@@ -358,7 +360,14 @@ const Navbar = () => {
               gap="8px"
               margin="6px 12px"
             >
-              {transferDepositHover ? (
+              <Image
+                src={"./transferDepositDisabled.svg"}
+                alt="Picture of the author"
+                width="20"
+                height="20"
+                style={{ cursor: "pointer" }}
+              />
+              {/* {transferDepositHover ? (
                 <Image
                   src={"./transferDeposit.svg"}
                   alt="Picture of the author"
@@ -368,26 +377,25 @@ const Navbar = () => {
                 />
               ) : (
                 <Image
-                  src={"./transferDeposit.svg"}
+                  src={"./transferDepositDull.svg"}
                   alt="Picture of the author"
                   width="20"
                   height="20"
                   style={{ cursor: "pointer" }}
                 />
-              )}
-              <Text fontSize="14px">Transfer Deposit</Text>
+              )} */}
+              <Text fontSize="14px" lineHeight="14px">
+                Transfer Deposit
+              </Text>
             </Box>
           </Box>
 
           <Box
-            backgroundColor="#30363d"
-            padding="5px 1rem"
             fontSize="12px"
-            borderRadius="6px"
             color="#FFF"
             width="13rem"
+            height="2rem"
             cursor="pointer"
-            border="0.5px solid #57606A"
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -398,40 +406,54 @@ const Navbar = () => {
             ref={ref2}
           >
             <Box
+              backgroundColor="#2DA44E"
               display="flex"
+              border="0.5px solid #57606A"
+              borderRadius="6px"
               flexDirection="row"
-              justifyContent="center"
+              paddingY="6px"
+              justifyContent="space-between"
               alignItems="center"
               width="100%"
+              height="100%"
+              // bgColor="blue"
               className="navbar-button"
               onClick={() => {
                 dispatch(setNavDropdown("walletConnectionDropdown"));
               }}
             >
-              {
-                //   account ? (
-                //     <>
-                //       &nbsp;
-                //       <Image
-                //         // onClick={() => {
-                //         //   setConnectWallet(false);
-                //         // }}
-                //         alt=""
-                //         src={starknetLogoBordered}
-                //         width="18px"
-                //         height="18px"
-                //         style={{ cursor: "pointer" }}
-                //       />
-                //       <div style={{ fontSize: "larger" }}>
-                //         &nbsp;&nbsp;&nbsp;&nbsp;
-                //         {`${account.substring(0, 3)}...${account.substring(
-                //           account.length - 10,
-                //           account.length
-                //         )}`}{" "}
-                //         &nbsp;&nbsp;&nbsp;
-                //       </div>
-                //     </>
-                //   ) :
+              {connected ? (
+                <HStack
+                  // bgColor="red"
+                  width="100%"
+                  // gap={1}
+                  justifyContent="flex-start"
+                  pl={4}
+                >
+                  <Image
+                    // onClick={() => {
+                    //   setConnectWallet(false);
+                    // }}
+                    alt=""
+                    src={starknetLogoBordered}
+                    width="18"
+                    height="18"
+                    style={{ cursor: "pointer" }}
+                  />
+                  <Text
+                    fontSize="14px"
+                    fontWeight="500"
+                    color="#FFFFFF"
+                    lineHeight="20px"
+                  >
+                    {/* {`${account.substring(0, 3)}...${account.substring(
+                      account.length - 10,
+                      account.length
+                    )}`}{" "} */}
+                    0x76....767874865
+                  </Text>
+                </HStack>
+              ) : (
                 <>
                   <Text
                     fontSize="14px"
@@ -444,28 +466,30 @@ const Navbar = () => {
                     Connect Wallet
                   </Text>
                 </>
-              }
-              {!navDropdowns.walletConnectionDropdown ? (
-                <Image
-                  src={"./connectWalletArrowDown.svg"}
-                  alt="arrow"
-                  width="14"
-                  height="14"
-                  style={{
-                    cursor: "pointer",
-                  }}
-                />
-              ) : (
-                <Image
-                  src={"./connectWalletArrowUp.svg"}
-                  alt="arrow"
-                  width="14"
-                  height="14"
-                  style={{
-                    cursor: "pointer",
-                  }}
-                />
               )}
+              <Box position="absolute" right="0.5rem">
+                {!navDropdowns.walletConnectionDropdown ? (
+                  <Image
+                    src={"./connectWalletArrowDown.svg"}
+                    alt="arrow"
+                    width="14"
+                    height="14"
+                    style={{
+                      cursor: "pointer",
+                    }}
+                  />
+                ) : (
+                  <Image
+                    src={"./connectWalletArrowUp.svg"}
+                    alt="arrow"
+                    width="14"
+                    height="14"
+                    style={{
+                      cursor: "pointer",
+                    }}
+                  />
+                )}
+              </Box>
             </Box>
             {navDropdowns.walletConnectionDropdown && (
               <Box

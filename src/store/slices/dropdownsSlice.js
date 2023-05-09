@@ -27,6 +27,8 @@ const initialState = {
     yourSupplyWithdrawlDropdown:false,
     spendBorrowBorrowIDDropdown:false,
     spendBorrowBorrowMarketDropdown:false,
+    walletConnectDropDown:false,
+    stakeMarketDropDown:false
 
   }
 };

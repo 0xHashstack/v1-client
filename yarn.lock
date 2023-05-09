@@ -1409,6 +1409,11 @@
   dependencies:
     "glob" "7.1.7"
 
+"@next/font@^13.4.1":
+  version "13.4.1"
+  resolved "https://registry.yarnpkg.com/@next/font/-/font-13.4.1.tgz#bbb279d017efc631e804b7a4fc66eb77e86b9b8e"
+  integrity sha512-GIgdVNXhWgGq92NUSGVd4n2yiF1k0i6U3dt/Pa9SFJvOEJyAJ99khXVq6cYJYJS8jhbL0yjE8+th8h+KjIGzuA==
+
 "@next/swc-darwin-arm64@13.3.1":
   "integrity" "sha512-UXPtriEc/pBP8luSLSCZBcbzPeVv+SSjs9cH/KygTbhmACye8/OOXRZO13Z2Wq1G0gLmEAIHQAOuF+vafPd2lw=="
   "resolved" "https://registry.npmjs.org/@next/swc-darwin-arm64/-/swc-darwin-arm64-13.3.1.tgz"

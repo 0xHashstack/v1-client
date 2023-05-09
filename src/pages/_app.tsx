@@ -1,15 +1,11 @@
 import "@/styles/globals.css";
 import type { AppProps } from "next/app";
-import { Inter } from "next/font/google";
 
 import { Provider } from "react-redux";
 import { store } from "../store/store";
 
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
-import spaceApiKey from "../utils/constants/keys";
-import { loadSpace } from "@usersnap/browser";
-import { useEffect, useRef } from "react";
 
 const theme = extendTheme({
   colors: {
@@ -19,13 +15,9 @@ const theme = extendTheme({
   },
   fonts: {
     body: "Inter, sans-serif",
-    // heading: "Georgia, serif",
-    // mono: "Menlo, monospace",
   },
 });
 import { UserbackProvider } from "@userback/react";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

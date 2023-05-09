@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 // import OffchainAPI from "@/services/offchainapi.service";
 import Link from "next/link";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
+import PageCard from "@/components/layouts/pageCard";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -36,7 +37,7 @@ export default function Market() {
     e.preventDefault();
     dispatch(setAccountAddress(e.target.user.value));
   }
-  const [render, setRender] = useState(false);
+  const [render, setRender] = useState(true);
   useEffect(() => {
     setRender(true);
     // const dispatch = useDispatch();
@@ -77,39 +78,22 @@ export default function Market() {
 
   console.log("degug2", offchainCurrentBlock);
   return (
-    <>
-      {render && (
-        <>
-          <Navbar />
-          <Stack
-            alignItems="center"
-            minHeight={"100vh"}
-            pt="7rem"
-            backgroundColor="#010409"
-            pb="7rem"
-          >
-            <StatsBoard />
-            <NavButtons
-              width={95}
-              marginTop={"3rem"}
-              marginBottom={"1.125rem"}
-            />
-            <MarketDashboard />
-            {/* <SupplyModal /> */}
-            <Box
-              paddingY="1rem"
-              // height="2rem"
-              // bgColor={"blue"}
-              width="95%"
-              display="flex"
-              justifyContent="flex-end"
-              alignItems="center"
-            >
-              <LatestSyncedBlock width="16rem" height="100%" block={83207} />
-            </Box>
-          </Stack>
-        </>
-      )}
-    </>
+    <PageCard>
+      <StatsBoard />
+      <NavButtons width={95} marginBottom={"1.125rem"} />
+      <MarketDashboard />
+      {/* <SupplyModal /> */}
+      <Box
+        paddingY="1rem"
+        // height="2rem"
+        // bgColor={"blue"}
+        width="95%"
+        display="flex"
+        justifyContent="flex-end"
+        alignItems="center"
+      >
+        <LatestSyncedBlock width="16rem" height="100%" block={83207} />
+      </Box>
+    </PageCard>
   );
 }

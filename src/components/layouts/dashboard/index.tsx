@@ -149,7 +149,7 @@ const Dashboard = ({
               ))
             )}
           </Tr>
-          <hr
+          <Tr
             style={{
               position: "absolute",
               height: "1px",

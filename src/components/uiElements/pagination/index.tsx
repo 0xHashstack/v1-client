@@ -64,7 +64,7 @@ const Pagination = ({
                 onClick={() => setCurrentPagination(i)}
                 _hover={{
                   bgColor: currentPagination == i ? "#0969DA" : "#010409",
-                  border: "1px solid #D0D7DE",
+                  border: currentPagination == i ? "none" : "1px solid #D0D7DE",
                 }}
               >
                 {i}

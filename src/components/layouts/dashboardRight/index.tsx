@@ -12,6 +12,7 @@ import {
   Box,
   HStack,
   VStack,
+  useMediaQuery,
 } from "@chakra-ui/react";
 
 import BTCLogo from "@/assets/images/stakeIcon.svg";
@@ -46,50 +47,14 @@ const DashboardRight = ({
   const columnItems = [
     "Market",
     "Price",
-    "Total borrowed",
+    "Total borrow",
     "Utillization",
     "Borrow APR",
-    "Borrow",
-    "Trade",
+    "",
+    "",
   ];
 
-  // const rowItems2 = [
-  //   [
-  //     <HStack>
-  //       <Box></Box>
-  //       <VStack>
-  //         <Text>USDT</Text>
-  //         <Text>Wallet Bal. $900</Text>
-  //       </VStack>
-  //     </HStack>,
-  //     "000.00",
-  //     "0000.000",
-  //     "4%",
-  //     "7%",
-  //     <BorrowModal />,
-  //     <Text
-  //       key="borrow-details"
-  //       as="span"
-  //       position="relative"
-  //       color="#0969DA"
-  //       fontSize="14px"
-  //       _hover={{
-  //         "::before": {
-  //           content: '""',
-  //           position: "absolute",
-  //           left: 0,
-  //           bottom: "-0px",
-  //           width: "100%",
-  //           height: "1px",
-  //           backgroundColor: "#0969DA",
-  //         },
-  //       }}
-  //     >
-  //       Trade
-  //     </Text>,
-  //   ],
-  // ];
-  // const gap2 = [["10", "20", "15", "8", "8", "12.5", "2.5"]];
+  const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
 
   return (
     <TableContainer
@@ -104,10 +69,12 @@ const DashboardRight = ({
       alignItems="flex-start"
       // bgColor={"yellow"}
       height={"100%"}
-      paddingX={"14px"}
-      pt={"1.4rem"}
-      pb={"0.5rem"}
+      paddingX={isLargerThan1280 ? "2rem" : "1rem"}
+      pt={"1.7rem"}
+      // pb={"0.5rem"}
       overflowX="hidden"
+      // bgColor={"red"}
+      // px={"1.5rem"}
     >
       <Table variant="unstyled" width="100%" height="100%">
         <Thead width={"100%"} height={"2.7rem"}>
@@ -132,7 +99,7 @@ const DashboardRight = ({
                   textAlign={idx == 0 ? "left" : "center"}
                   color={"#BDBFC1"}
                   padding={0}
-                  pl={idx == 0 ? 5 : 0}
+                  // pl={idx == 0 ? 5 : 0}
                 >
                   {val}
                 </Text>
@@ -158,13 +125,15 @@ const DashboardRight = ({
                 position="relative"
               >
                 <Td
-                  width={"12%"}
+                  width={"14%"}
                   // maxWidth={`${gap[idx1][idx2]}%`}
                   fontSize={"12px"}
                   fontWeight={400}
-                  padding={2}
+                  padding={0}
+                  textAlign="left"
+                  // bgColor={"red"}
                 >
-                  <HStack gap={1.5} pl={3}>
+                  <HStack gap={1.5}>
                     <Box height="32px" width="32px">
                       <Image
                         src={`./${coin.name}.svg`}
@@ -177,7 +146,7 @@ const DashboardRight = ({
                   </HStack>
                 </Td>
                 <Td
-                  width={"14%"}
+                  width={"17%"}
                   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}
@@ -198,7 +167,7 @@ const DashboardRight = ({
                   </Text>
                 </Td>
                 <Td
-                  width={"15%"}
+                  width={"17%"}
                   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}
@@ -219,7 +188,7 @@ const DashboardRight = ({
                   </Text>
                 </Td>
                 <Td
-                  width={"13%"}
+                  width={"17%"}
                   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}
@@ -240,7 +209,7 @@ const DashboardRight = ({
                   </Text>
                 </Td>
                 <Td
-                  width={"13%"}
+                  width={"17%"}
                   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}
@@ -261,12 +230,17 @@ const DashboardRight = ({
                   </Text>
                 </Td>
                 <Td
-                  width={"12%"}
+                  width={"7%"}
                   maxWidth={"5rem"}
                   fontSize={"14px"}
                   fontWeight={400}
                   //   overflow={"hidden"}
                   textAlign={"center"}
+                  // bgColor={"red"}
+                  // p="0 2 0 0"
+                  p={0}
+                  // pr={3}
+                  // pl={1}
                 >
                   <Box
                     width="100%"
@@ -281,15 +255,19 @@ const DashboardRight = ({
                   </Box>
                 </Td>
                 <Td
-                  width={"12%"}
+                  width={"7%"}
                   //   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}
                   //   overflow={"hidden"}
-                  textAlign={"center"}
+                  textAlign={"right"}
+                  // bgColor={"green"}
+                  // p="0px 0px 12px 0px"
+                  p={0}
+                  pl={3.5}
                 >
                   <Box position="relative" display="inline-block">
-                    <Text
+                    {/* <Text
                       key="borrow-details"
                       as="span"
                       position="relative"
@@ -311,20 +289,20 @@ const DashboardRight = ({
                           backgroundColor: "#0969DA",
                         },
                       }}
-                    >
-                      <TradeModal />
-                    </Text>
+                    > */}
+                    <TradeModal />
+                    {/* </Text> */}
                   </Box>
                 </Td>
               </Tr>
-              <hr
+              <Tr
                 style={{
                   position: "absolute",
                   height: "1px",
                   borderWidth: "0",
                   backgroundColor: "#2b2f35",
-                  width: "96%",
-                  left: "1.75%",
+                  width: "100%",
+                  // left: "1.75%",
                   display: `${idx == Coins.length - 1 ? "none" : "block"}`,
                 }}
               />
