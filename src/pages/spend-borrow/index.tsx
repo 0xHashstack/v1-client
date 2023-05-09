@@ -3,7 +3,7 @@ import NavButtons from "@/components/layouts/navButtons";
 import Navbar from "@/components/layouts/navbar/Navbar";
 import StatsBoard from "@/components/layouts/statsBoard";
 import SpendTable from "@/components/layouts/table/spendTable";
-import { Box, HStack, Stack, Text, VStack,HStack,VStack,Text } from "@chakra-ui/react";
+import { Box, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import YourSupplyModal from "@/components/modals/yourSupply";
 import SpendBorrowModal from "@/components/modals/SpendBorrow";
@@ -59,17 +59,17 @@ const SpendBorrow = () => {
         </HStack>
       </HStack>
       <SpendTable />
-      {/* <Box
-              paddingY="1rem"
-              // height="2rem"
-              // bgColor={"blue"}
-              width="95%"
-              display="flex"
-              justifyContent="flex-end"
-              alignItems="center"
-              >
-              <LatestSyncedBlock width="16rem" height="100%" block={83207} />
-            </Box> */}
+      <Box
+        mt="1rem"
+        // height="2rem"
+        // bgColor={"blue"}
+        width="95%"
+        display="flex"
+        justifyContent="flex-end"
+        alignItems="center"
+      >
+        <LatestSyncedBlock width="16rem" height="100%" block={83207} />
+      </Box>
     </PageCard>
   );
 };
