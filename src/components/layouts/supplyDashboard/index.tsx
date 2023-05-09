@@ -60,9 +60,11 @@ const SupplyDashboard = ({
       // bgColor={"yellow"}
       // height={"100%"}
       height={"37rem"}
-      padding={"1rem 0px"}
+      padding={"1rem 1.5rem"}
       overflowX="hidden"
-      mt={"3rem"}
+      // m={0}
+      // mt={"3rem"}
+      // style={{ marginTop: "0.8rem" }}
     >
       <Table variant="unstyled" width="100%" height="100%">
         <Thead width={"100%"} height={"5rem"}>
@@ -74,6 +76,16 @@ const SupplyDashboard = ({
                 // maxWidth={`${gap[idx1][idx2]}%`}
                 fontSize={"12px"}
                 fontWeight={400}
+                textAlign={
+                  idx1 == 0
+                    ? "left"
+                    : idx1 == columnItems.length - 1
+                    ? "right"
+                    : "center"
+                }
+                pl={idx1 == 0 ? 22 : 0}
+                pr={idx1 == columnItems.length - 1 ? 12 : 0}
+                // border="1px solid blue"
               >
                 <Text
                   whiteSpace="pre-wrap"
@@ -81,7 +93,7 @@ const SupplyDashboard = ({
                   // bgColor={"red"}
                   width={"100%"}
                   height={"2rem"}
-                  textAlign="center"
+                  // textAlign="center"
                   color={"#BDBFC1"}
                 >
                   {val}
@@ -103,7 +115,7 @@ const SupplyDashboard = ({
                 <Tr
                   key={idx}
                   width={"100%"}
-                  // height={"5rem"}
+                  height={"5.1rem"}
                   // bgColor="blue"
                   // borderBottom="1px solid #2b2f35"
                   position="relative"
@@ -114,17 +126,18 @@ const SupplyDashboard = ({
                     fontSize={"14px"}
                     fontWeight={400}
                     overflow={"hidden"}
-                    textAlign={"center"}
+                    // textAlign={"left"}
+                    pl={10}
                     // bgColor={"green"}
                   >
-                    <Text
+                    <Box
                       width="100%"
                       height="100%"
                       display="flex"
                       alignItems="center"
-                      justifyContent="center"
+                      justifyContent="flex-start"
                       fontWeight="400"
-                      textAlign="center"
+                      // textAlign="left"
                       // bgColor={"blue"}
                     >
                       <VStack
@@ -132,7 +145,7 @@ const SupplyDashboard = ({
                         width="100%"
                         display="flex"
                         justifyContent="center"
-                        alignItems="center"
+                        alignItems="flex-start"
                         height="2.5rem"
                         // bgColor="red"
                       >
@@ -156,7 +169,7 @@ const SupplyDashboard = ({
                           10,000
                         </Text>
                       </VStack>
-                    </Text>
+                    </Box>
                   </Td>
                   <Td
                     width={"12.5%"}
@@ -256,8 +269,9 @@ const SupplyDashboard = ({
                       height="100%"
                       display="flex"
                       alignItems="center"
-                      justifyContent="center"
+                      justifyContent="flex-end"
                       fontWeight="400"
+                      pr={2}
                       // bgColor={"blue"}
                     >
                       <Button
@@ -276,14 +290,14 @@ const SupplyDashboard = ({
                     </Box>
                   </Td>
                 </Tr>
-                <hr
+                <Tr
                   style={{
                     position: "absolute",
                     height: "1px",
                     borderWidth: "0",
                     backgroundColor: "#2b2f35",
-                    width: "94%",
-                    left: "3%",
+                    width: "100%",
+                    // left: "3%",
                     display: `${idx == 5 ? "none" : "block"}`,
                   }}
                 />
@@ -297,7 +311,7 @@ const SupplyDashboard = ({
               i < 6 - (upper_bound - lower_bound + 1);
               i++
             ) {
-              rows.push(<Tr height="4.7rem"></Tr>);
+              rows.push(<Tr height="4.99rem"></Tr>);
             }
             return rows;
           })()}

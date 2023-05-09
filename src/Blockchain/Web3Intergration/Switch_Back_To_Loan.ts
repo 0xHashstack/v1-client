@@ -70,7 +70,7 @@ async function get_usd_value_Integration(loan_id:any) {
         const res = await myTestContract.get_usd_value_Integration(par);
         await provider.waitForTransaction(res.transaction_hash);
 
-        return {success:true,Result:res};
+        return res;
         
     } catch (error) {
         console.log(error);
@@ -79,4 +79,13 @@ async function get_usd_value_Integration(loan_id:any) {
     }
 
 }
+
+
+
+
+
+
+
+
+
 

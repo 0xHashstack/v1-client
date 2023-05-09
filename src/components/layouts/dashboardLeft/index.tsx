@@ -12,6 +12,7 @@ import {
   Box,
   HStack,
   VStack,
+  useMediaQuery,
 } from "@chakra-ui/react";
 
 import BTCLogo from "@/assets/images/stakeIcon.svg";
@@ -42,42 +43,8 @@ const DashboardLeft = ({
   // gap: string;
   // rowItems: any;
 }) => {
-  const columnItems = [
-    "Market",
-    "Price",
-    "Total Supply",
-    "Supply APR",
-    "Supply",
-    "Details",
-  ];
-  // const rowItems1 = [
-  //   ["abc", "00000", "0000.000", "5%"],
-  //   [
-  //     <SupplyModal />,
-  //     <Text
-  //       key="supply-details"
-  //       as="span"
-  //       position="relative"
-  //       color="#0969DA"
-  //       fontSize="14px"
-  //       _hover={{
-  //         "::before": {
-  //           content: '""',
-  //           position: "absolute",
-  //           left: 0,
-  //           bottom: "-0px",
-  //           width: "100%",
-  //           height: "1px",
-  //           backgroundColor: "#0969DA",
-  //         },
-  //       }}
-  //     >
-  //       Details
-  //     </Text>,
-  //   ],
-  // ];
-  // const gap1 = ["22", "20", "20", "20", "2.5", "2.5"];
-
+  const columnItems = ["Market", "Price", "Total Supply", "Supply APR", "", ""];
+  const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   return (
     <TableContainer
       bg="#101216"
@@ -91,9 +58,9 @@ const DashboardLeft = ({
       alignItems="flex-start"
       // bgColor={"yellow"}
       height={"100%"}
-      paddingX={"18px"}
-      pt={"1.4rem"}
-      pb={"0.5rem"}
+      paddingX={isLargerThan1280 ? "2rem" : "1rem"}
+      pt={"1.7rem"}
+      // pb={"0.5rem"}
       overflowX="hidden"
     >
       <Table variant="unstyled" width="100%" height="100%">
@@ -102,12 +69,11 @@ const DashboardLeft = ({
             {columnItems.map((val, idx) => (
               <Td
                 key={idx}
-                width={"17%"}
-                // maxWidth={`${gap[idx1][idx2]}%`}
                 fontSize={"12px"}
                 fontWeight={400}
                 // border="1px solid blue"
                 padding={0}
+                // bgColor={"red"}
               >
                 <Text
                   whiteSpace="pre-wrap"
@@ -119,7 +85,7 @@ const DashboardLeft = ({
                   textAlign={idx == 0 ? "left" : "center"}
                   color={"#BDBFC1"}
                   padding={0}
-                  pl={idx == 0 ? 3 : 0}
+                  // pl={idx == 0 ? "7.2%" : 0}
                 >
                   {val}
                 </Text>
@@ -149,12 +115,12 @@ const DashboardLeft = ({
                   // maxWidth={`${gap[idx1][idx2]}%`}
                   fontSize={"12px"}
                   fontWeight={400}
-                  padding={2}
+                  padding={0}
                 >
                   <HStack
                     gap="3px"
                     display="flex"
-                    justifyContent="center"
+                    justifyContent="flex-start"
                     alignItems="center"
                     // bgColor="red"
                   >
@@ -248,12 +214,13 @@ const DashboardLeft = ({
                   </Text>
                 </Td>
                 <Td
-                  width={"17%"}
+                  width={"5%"}
                   maxWidth={"5rem"}
                   fontSize={"14px"}
                   fontWeight={400}
                   //   overflow={"hidden"}
-                  textAlign={"center"}
+                  textAlign={"right"}
+                  // bgColor={"blue"}
                 >
                   <Box
                     width="100%"
@@ -262,13 +229,12 @@ const DashboardLeft = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    // bgColor={"blue"}
                   >
                     <SupplyModal />
                   </Box>
                 </Td>
                 <Td
-                  width={"17%"}
+                  width={"5%"}
                   //   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}
@@ -305,14 +271,14 @@ const DashboardLeft = ({
                   </Box>
                 </Td>
               </Tr>
-              <hr
+              <Tr
                 style={{
                   position: "absolute",
                   height: "1px",
                   borderWidth: "0",
                   backgroundColor: "#2b2f35",
-                  width: "97%",
-                  left: "1%",
+                  width: "100%",
+                  // left: "0%",
                   display: `${idx == Coins.length - 1 ? "none" : "block"}`,
                 }}
               />

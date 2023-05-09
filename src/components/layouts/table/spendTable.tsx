@@ -25,21 +25,15 @@ import TableMySwap from "./tableIcons/mySwap";
 import InfoIcon from "@/assets/icons/infoIcon";
 import TableClose from "./tableIcons/close";
 import TableInfoIcon from "./tableIcons/infoIcon";
-import { useRouter } from "next/router";
+import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { setCurrentPage } from "@/store/slices/userAccountSlice";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
-  const router = useRouter();
-  const { query } = router;
-  console.log(query);
-
   const handleClick = () => {
     //   onClick={setShowWarning(() => false)}
     setShowWarning(false);
   };
-  const handleBorrowChange = () => {
-    router.push('/your-borrow')
-
-  }
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
@@ -49,6 +43,7 @@ const SpendTable = () => {
     ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "10,325.55367"],
   ];
 
+  const dispatch = useDispatch();
   return (
     <>
       {showWarning && (
@@ -61,24 +56,30 @@ const SpendTable = () => {
             fontStyle="normal"
             fontWeight="400"
             borderRadius="md"
-          // textAlign="center"
+            // textAlign="center"
           >
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
               <TableInfoIcon />
             </Box>
             Only unspent loans are displayed here. For comprehensive list of
             active loans go to
-            <Box
-              ml="1"
-              as="span"
-              textDecoration="underline"
-              color="#0C6AD9"
-              cursor="pointer"
-              onClick={handleBorrowChange}
+            <Link
+              href="/your-borrow"
+              onClick={() => {
+                dispatch(setCurrentPage("your borrow"));
+              }}
             >
-              your borrow
-            </Box>
-            <Box cursor="pointer" mt="0.1rem" ml="0.7rem" onClick={handleClick}>
+              <Box
+                ml="1"
+                as="span"
+                textDecoration="underline"
+                color="#0C6AD9"
+                cursor="pointer"
+              >
+                your borrow
+              </Box>
+            </Link>
+            <Box py="1" pl="4" cursor="pointer" onClick={handleClick}>
               <TableClose />
             </Box>
           </Box>
@@ -97,18 +98,54 @@ const SpendTable = () => {
         <Table variant="unstyled">
           {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
           <Thead>
-            <Tr  fontFamily="Inter" color="#BDBFC1">
-              <Th fontWeight="400" fontSize="12px" fontStyle="normal" lineHeight="20px" textTransform="none">Borrow ID</Th>
-              <Th fontWeight="400" fontSize="12px" fontStyle="normal" lineHeight="20px" textAlign="center" textTransform="none">
+            <Tr fontFamily="Inter" color="#BDBFC1">
+              <Th
+                fontWeight="400"
+                fontSize="12px"
+                fontStyle="normal"
+                lineHeight="20px"
+                textTransform="none"
+              >
+                Borrow ID
+              </Th>
+              <Th
+                fontWeight="400"
+                fontSize="12px"
+                fontStyle="normal"
+                lineHeight="20px"
+                textAlign="center"
+                textTransform="none"
+              >
                 Borrow market
               </Th>
-              <Th fontWeight="400" fontSize="12px" fontStyle="normal" lineHeight="20px" textAlign="center" textTransform="none">
+              <Th
+                fontWeight="400"
+                fontSize="12px"
+                fontStyle="normal"
+                lineHeight="20px"
+                textAlign="center"
+                textTransform="none"
+              >
                 Available borrow amount
               </Th>
-              <Th fontWeight="400" fontSize="12px" fontStyle="normal" lineHeight="20px" textAlign="center" textTransform="none">
+              <Th
+                fontWeight="400"
+                fontSize="12px"
+                fontStyle="normal"
+                lineHeight="20px"
+                textAlign="center"
+                textTransform="none"
+              >
                 Collateral market
               </Th>
-              <Th fontWeight="400" fontSize="12px" fontStyle="normal" lineHeight="20px" textAlign="center" textTransform="none">
+              <Th
+                fontWeight="400"
+                fontSize="12px"
+                fontStyle="normal"
+                lineHeight="20px"
+                textAlign="center"
+                textTransform="none"
+              >
                 Collateral amount
               </Th>
             </Tr>
@@ -121,18 +158,22 @@ const SpendTable = () => {
                   _hover={{
                     backgroundColor: "#2B2F35",
                     width: "80%",
-                  borderRadius: "10px",
-                   
+                    borderRadius: "10px",
                   }}
                   key={index}
                   cursor="pointer"
                 >
                   <Td>
                     <Box display="flex" gap="2">
-                      <Text fontSize="14px" fontWeight="400" fontStyle="normal" lineHeight="22px" color="#E6EDF3">
+                      <Text
+                        fontSize="14px"
+                        fontWeight="400"
+                        fontStyle="normal"
+                        lineHeight="22px"
+                        color="#E6EDF3"
+                      >
                         {currentRow[0]}
                       </Text>
-
                     </Box>
                   </Td>
                   <Td textAlign="center">
@@ -146,10 +187,27 @@ const SpendTable = () => {
                       <Box my="1">
                         <TableUsdtLogo />
                       </Box>
-                      <Text fontSize="14px" fontWeight="400" fontStyle="normal" lineHeight="22px" color="#E6EDF3">{currentRow[1]}</Text>
+                      <Text
+                        fontSize="14px"
+                        fontWeight="400"
+                        fontStyle="normal"
+                        lineHeight="22px"
+                        color="#E6EDF3"
+                      >
+                        {currentRow[1]}
+                      </Text>
                     </Box>
                   </Td>
-                  <Td textAlign="center" color="#E6EDF3" fontSize="14px" fontWeight="400" fontStyle="normal" lineHeight="22px">{currentRow[2]}</Td>
+                  <Td
+                    textAlign="center"
+                    color="#E6EDF3"
+                    fontSize="14px"
+                    fontWeight="400"
+                    fontStyle="normal"
+                    lineHeight="22px"
+                  >
+                    {currentRow[2]}
+                  </Td>
                   <Td textAlign="center">
                     <Box
                       display="flex"
@@ -161,10 +219,27 @@ const SpendTable = () => {
                       <Box my="1">
                         <TableBtcLogo />
                       </Box>
-                      <Text fontSize="14px" fontWeight="400" fontStyle="normal" lineHeight="22px" color="#E6EDF3">{currentRow[3]}</Text>
+                      <Text
+                        fontSize="14px"
+                        fontWeight="400"
+                        fontStyle="normal"
+                        lineHeight="22px"
+                        color="#E6EDF3"
+                      >
+                        {currentRow[3]}
+                      </Text>
                     </Box>
                   </Td>
-                  <Td textAlign="center" fontSize="14px" fontWeight="400" fontStyle="normal" lineHeight="22px" color="#E6EDF3">{currentRow[4]}</Td>
+                  <Td
+                    textAlign="center"
+                    fontSize="14px"
+                    fontWeight="400"
+                    fontStyle="normal"
+                    lineHeight="22px"
+                    color="#E6EDF3"
+                  >
+                    {currentRow[4]}
+                  </Td>
                 </Tr>
               );
             })}
@@ -188,7 +263,7 @@ const SpendTable = () => {
                 // color: "white",
                 bg: "#0969DA",
                 border: "none",
-                borderRadius: "0px"
+                borderRadius: "0px",
               }}
             >
               stake
@@ -207,7 +282,7 @@ const SpendTable = () => {
                 // color: "white",
                 bg: "#0969DA",
                 border: "none",
-                borderRadius: "0px"
+                borderRadius: "0px",
               }}
             >
               swap
@@ -226,7 +301,7 @@ const SpendTable = () => {
                 // color: "white",
                 bg: "#0969DA",
                 border: "none",
-                borderRadius: "0px"
+                borderRadius: "0px",
               }}
             >
               trade
@@ -245,7 +320,7 @@ const SpendTable = () => {
                 // color: "white",
                 bg: "#0969DA",
                 border: "none",
-                borderRadius: "0px"
+                borderRadius: "0px",
               }}
             >
               Liquidity provision
@@ -260,19 +335,16 @@ const SpendTable = () => {
                 <Text color="white" fontSize="sm">
                   Select a Dapp to begin with the spend
                 </Text>
-                <Box display="flex" gap="14" mt="1rem" >
+                <Box display="flex" gap="14" mt="1rem">
                   <Box cursor="pointer">
                     <TableYagiLogo />
                   </Box>
                   <Box cursor="pointer">
-
                     <TableJediswapLogo />
                   </Box>
                   <Box cursor="pointer">
-
                     <TableMySwap />
                   </Box>
-                  
                 </Box>
               </Box>
             </TabPanel>
@@ -283,11 +355,8 @@ const SpendTable = () => {
               <p>Liquidity provision</p>
             </TabPanel>
           </TabPanels>
-          
         </Tabs>
       </Box>
-      
-
     </>
   );
 };
