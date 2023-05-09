@@ -29,6 +29,9 @@ import TableMySwap from "./tableIcons/mySwap";
 import InfoIcon from "@/assets/icons/infoIcon";
 import TableClose from "./tableIcons/close";
 import TableInfoIcon from "./tableIcons/infoIcon";
+import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { setCurrentPage } from "@/store/slices/userAccountSlice";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
 
@@ -45,11 +48,12 @@ const SpendTable = () => {
     ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "10,325.55367"],
   ];
 
+  const dispatch = useDispatch();
   return (
     <>
       {showWarning && (
         <Box display="flex" justifyContent="left" w="94%" pb="2">
-          <Text
+          <Box
             display="flex"
             bg="#DDF4FF"
             fontSize="sm"
@@ -61,19 +65,26 @@ const SpendTable = () => {
             </Box>
             Only unspent loans are displayed here. For comprehensive list of
             active loans go to
-            <Box
-              ml="1"
-              as="span"
-              textDecoration="underline"
-              color="#0C6AD9"
-              cursor="pointer"
+            <Link
+              href="/your-borrow"
+              onClick={() => {
+                dispatch(setCurrentPage("your borrow"));
+              }}
             >
-              your borrow
-            </Box>
+              <Box
+                ml="1"
+                as="span"
+                textDecoration="underline"
+                color="#0C6AD9"
+                cursor="pointer"
+              >
+                your borrow
+              </Box>
+            </Link>
             <Box py="1" pl="4" cursor="pointer" onClick={handleClick}>
               <TableClose />
             </Box>
-          </Text>
+          </Box>
         </Box>
       )}
       <TableContainer

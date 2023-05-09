@@ -11,11 +11,11 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 const NavButtons = ({
   width,
-  marginTop,
+  // marginTop,
   marginBottom,
 }: {
   width: number;
-  marginTop: string;
+  // marginTop: string;
   marginBottom: string;
 }) => {
   const dispatch = useDispatch();
@@ -28,11 +28,11 @@ const NavButtons = ({
   console.log("pathname", pathname);
   return (
     <HStack
-      mt={marginTop}
+      // mt={marginTop}
       mb={marginBottom}
       width={`${width}%`}
       // bgColor={"red"}
-      pl="2.5rem"
+      // pl="1.7rem"
     >
       <ButtonGroup>
         {navOptions.map((val, idx) => (
@@ -52,12 +52,12 @@ const NavButtons = ({
               lineHeight="20px"
               alignItems="center"
               letterSpacing="-0.15px"
-              padding="1.125rem 0.5rem"
-              margin="4px"
+              padding="1.125rem 0.4rem"
+              margin="2px"
               color={`${currentPage === val ? "#ffffff" : "#6e7681"}`}
               borderBottom={`${currentPage === val ? "2px solid #F9826C" : ""}`}
               borderRadius="0px"
-              _hover={{ bg: "transparent", color: "#E6EDF3  " }}
+              _hover={{ bg: "transparent", color: "#E6EDF3" }}
               // bgColor="pink"
             >
               {val === "market" && pathname != "/market" && (

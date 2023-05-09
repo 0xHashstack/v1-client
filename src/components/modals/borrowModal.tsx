@@ -16,7 +16,7 @@ import {
   Box,
   Text,
   Heading,
-  Card
+  Card,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -254,13 +254,15 @@ const BorrowModal = () => {
                               w="full"
                               display="flex"
                               py="5px"
-                              px={`${coin === currentCollateralCoin ? "1" : "5"
-                                }`}
+                              px={`${
+                                coin === currentCollateralCoin ? "1" : "5"
+                              }`}
                               gap="1"
-                              bg={`${coin === currentCollateralCoin
+                              bg={`${
+                                coin === currentCollateralCoin
                                   ? "#0C6AD9"
                                   : "inherit"
-                                }`}
+                              }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -491,10 +493,11 @@ const BorrowModal = () => {
                               py="5px"
                               px={`${coin === currentBorrowCoin ? "1" : "5"}`}
                               gap="1"
-                              bg={`${coin === currentBorrowCoin
+                              bg={`${
+                                coin === currentBorrowCoin
                                   ? "#0C6AD9"
                                   : "inherit"
-                                }`}
+                              }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -620,7 +623,13 @@ const BorrowModal = () => {
               </Box>
             </Box>
 
-            <Card bg="#101216" mt="1.5rem" p="1rem" border="1px solid #2B2F35" mb="1.5rem">
+            <Card
+              bg="#101216"
+              mt="1.5rem"
+              p="1rem"
+              border="1px solid #2B2F35"
+              mb="1.5rem"
+            >
               <Text
                 color="#8B949E"
                 display="flex"
@@ -654,10 +663,14 @@ const BorrowModal = () => {
                     </Box>
                   </Tooltip>
                 </Text>
-                <Text font-style="normal"
+                <Text
+                  font-style="normal"
                   font-weight="400"
                   font-size="14px"
-                  color="#6A737D">$ 10.91</Text>
+                  color="#6A737D"
+                >
+                  $ 10.91
+                </Text>
               </Text>
               <Text
                 display="flex"
@@ -692,10 +705,14 @@ const BorrowModal = () => {
                     </Box>
                   </Tooltip>
                 </Text>
-                <Text font-style="normal"
+                <Text
+                  font-style="normal"
                   font-weight="400"
                   font-size="14px"
-                  color="#6A737D">5.56%</Text>
+                  color="#6A737D"
+                >
+                  5.56%
+                </Text>
               </Text>
               <Text
                 display="flex"
@@ -730,10 +747,14 @@ const BorrowModal = () => {
                     </Box>
                   </Tooltip>
                 </Text>
-                <Text font-style="normal"
+                <Text
+                  font-style="normal"
                   font-weight="400"
                   font-size="14px"
-                  color="#6A737D">5.56%</Text>
+                  color="#6A737D"
+                >
+                  5.56%
+                </Text>
               </Text>
               <Text
                 color="#8B949E"
@@ -767,10 +788,14 @@ const BorrowModal = () => {
                     </Box>
                   </Tooltip>
                 </Text>
-                <Text font-style="normal"
+                <Text
+                  font-style="normal"
                   font-weight="400"
                   font-size="14px"
-                  color="#6A737D">5.56%</Text>
+                  color="#6A737D"
+                >
+                  5.56%
+                </Text>
               </Text>
             </Card>
 

@@ -58,14 +58,20 @@ const BorrowDashboard = ({
       display="flex"
       justifyContent="flex-start"
       alignItems="flex-start"
-      // bgColor={"yellow"}
+      // bgColor={"red"}
       // height={"100%"}
       height={"37rem"}
-      padding={"1rem 0px"}
+      padding={"1rem 2rem 0rem"}
       overflowX="hidden"
       mt={"3rem"}
     >
-      <Table variant="unstyled" width="100%" height="100%">
+      <Table
+        variant="unstyled"
+        width="100%"
+        height="100%"
+        // bgColor={"blue"}
+        // p={0}
+      >
         <Thead width={"100%"} height={"5rem"}>
           <Tr width={"100%"} height="2rem">
             {columnItems.map((val: any, idx1: any) => (
@@ -75,14 +81,26 @@ const BorrowDashboard = ({
                 // maxWidth={`${gap[idx1][idx2]}%`}
                 fontSize={"12px"}
                 fontWeight={400}
+                // textAlign={"left"}
+                p={0}
+                // bgColor={"pink"}
+                // border="1px solid red"
               >
                 <Text
                   whiteSpace="pre-wrap"
                   overflowWrap="break-word"
-                  // bgColor={"red"}
                   width={"100%"}
                   height={"2rem"}
-                  textAlign="center"
+                  fontSize="12px"
+                  textAlign={
+                    idx1 == 0
+                      ? "left"
+                      : idx1 == columnItems.length - 1
+                      ? "right"
+                      : "center"
+                  }
+                  pl={idx1 == 0 ? 2 : 0}
+                  pr={idx1 == columnItems.length - 1 ? 5 : 0}
                   color={"#BDBFC1"}
                 >
                   {val}
@@ -105,14 +123,15 @@ const BorrowDashboard = ({
                   key={idx}
                   width={"100%"}
                   // height={"5rem"}
-                  // bgColor="blue"
+                  // bgColor="green"
                   // borderBottom="1px solid #2b2f35"
                   position="relative"
+                  p={0}
                 >
                   <Td
                     width={"12.5%"}
                     // maxWidth={`${gap[idx1][idx2]}%`}
-                    fontSize={"12px"}
+                    fontSize={"14px"}
                     fontWeight={400}
                     padding={2}
                     textAlign="center"
@@ -122,7 +141,7 @@ const BorrowDashboard = ({
                       height="100%"
                       display="flex"
                       alignItems="center"
-                      justifyContent="center"
+                      justifyContent="flex-start"
                       fontWeight="400"
                       fontSize="14px"
                       color="#E6EDF3"
@@ -141,7 +160,7 @@ const BorrowDashboard = ({
                     textAlign={"center"}
                     // bgColor={"green"}
                   >
-                    <Text
+                    <Box
                       width="100%"
                       height="100%"
                       display="flex"
@@ -172,7 +191,11 @@ const BorrowDashboard = ({
                             width="32"
                             height="32"
                           />
-                          <Text fontSize="14px" fontWeight="400">
+                          <Text
+                            fontSize="14px"
+                            fontWeight="400"
+                            color="#E6EDF3"
+                          >
                             USDT
                           </Text>
                         </HStack>
@@ -180,7 +203,7 @@ const BorrowDashboard = ({
                           10,000
                         </Text>
                       </VStack>
-                    </Text>
+                    </Box>
                   </Td>
                   <Td
                     width={"12.5%"}
@@ -200,7 +223,7 @@ const BorrowDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      00000.00
+                      8%
                     </Text>
                   </Td>
                   <Td
@@ -263,7 +286,7 @@ const BorrowDashboard = ({
                     </VStack>
                   </Td>
                   <Td
-                    width={"12.5%"}
+                    // width={"13%"}
                     maxWidth={"5rem"}
                     fontSize={"14px"}
                     fontWeight={400}
@@ -279,46 +302,68 @@ const BorrowDashboard = ({
                       alignItems="center"
                       height="3rem"
                       // bgColor="red"
+                      // pl="3.4rem"
                     >
-                      <Box
-                        height="50%"
-                        width="100%"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        {/* <Box
-                          // bgColor="red"
-                          display="flex"
-                          justifyContent="flex-end"
-                          alignItems="flex-end"
-                          // height
-                        >
-                          <Image
-                            src={`./Swap.svg`}
-                            alt="Picture of the author"
-                            width="24"
-                            height="24"
-                          />
-                        </Box> */}
-                        <Text fontSize="14px" fontWeight="400">
-                          Swap
-                        </Text>
-                      </Box>
                       <HStack
                         height="50%"
                         width="100%"
                         alignItems="center"
-                        justifyContent="center"
+                        justifyContent="flex-start"
+                        gap={0.5}
                       >
-                        <Image
-                          src={`./USDT.svg`}
-                          alt="Picture of the author"
-                          width="16"
-                          height="16"
-                        />
+                        <Box minWidth={"16px"}>
+                          <Image
+                            src={`./Swap.svg`}
+                            alt="Picture of the author"
+                            width="16"
+                            height="16"
+                          />
+                        </Box>
                         <Text fontSize="14px" fontWeight="400">
-                          1.234
+                          Swap
+                        </Text>
+                      </HStack>
+                      <HStack
+                        height="50%"
+                        width="100%"
+                        alignItems="center"
+                        justifyContent="flex-start"
+                        // bgColor={"red"}
+                      >
+                        <Box
+                          display="flex"
+                          gap={0.5}
+                          // bgColor={"blue"}
+                        >
+                          <Box
+                            display="flex"
+                            gap={0.5}
+                            minWidth={"16px"}
+                            // bgColor={"blue"}
+                          >
+                            <Image
+                              src={`./USDT.svg`}
+                              alt="Picture of the author"
+                              width="16"
+                              height="16"
+                            />
+                          </Box>
+                          <Box
+                            display="flex"
+                            gap={0.5}
+                            minWidth={"16px"}
+                            // bgColor={"blue"}
+                          >
+                            <Image
+                              src={`./ETH.svg`}
+                              alt="Picture of the author"
+                              width="16"
+                              height="16"
+                            />
+                          </Box>
+                        </Box>
+                        <Text fontSize="14px" fontWeight="400">
+                          1.234/2.23
                         </Text>
                       </HStack>
                     </Box>
@@ -350,14 +395,16 @@ const BorrowDashboard = ({
                     fontSize={"14px"}
                     fontWeight={400}
                     //   overflow={"hidden"}
-                    textAlign={"center"}
+                    textAlign={"right"}
+                    // bgColor={"pink"}
+                    p={0}
                   >
                     <Box
                       width="100%"
                       height="100%"
                       display="flex"
                       alignItems="center"
-                      justifyContent="center"
+                      justifyContent="flex-end"
                       fontWeight="400"
                       // bgColor={"blue"}
                     >
@@ -377,14 +424,13 @@ const BorrowDashboard = ({
                     </Box>
                   </Td>
                 </Tr>
-                <hr
+                <Tr
                   style={{
                     position: "absolute",
+                    // left: "0%",
+                    width: "100%",
                     height: "1px",
-                    borderWidth: "0",
-                    backgroundColor: "#2b2f35",
-                    width: "94%",
-                    left: "3%",
+                    borderBottom: "1px solid #2b2f35",
                     display: `${idx == 5 ? "none" : "block"}`,
                   }}
                 />
@@ -398,7 +444,7 @@ const BorrowDashboard = ({
               i < 6 - (upper_bound - lower_bound + 1);
               i++
             ) {
-              rows.push(<Tr height="4.7rem"></Tr>);
+              rows.push(<Tr height="5.15rem"></Tr>);
             }
             return rows;
           })()}
