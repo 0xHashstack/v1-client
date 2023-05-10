@@ -28,6 +28,8 @@ import TableInfoIcon from "./tableIcons/infoIcon";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { setCurrentPage } from "@/store/slices/userAccountSlice";
+import HazardIcon from "@/assets/icons/hazardIcon";
+import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const handleClick = () => {
@@ -248,7 +250,7 @@ const SpendTable = () => {
       </TableContainer>
       <Box display="flex" justifyContent="left" w="89%" pt="14" pb="6rem">
         <Tabs variant="unstyled">
-          <TabList borderRadius="md" bg="#101216" color="white">
+          <TabList borderRadius="md"  color="white">
             <Tab
               padding="6px 16px"
               //   color="#6E7681"
@@ -266,7 +268,7 @@ const SpendTable = () => {
                 borderRadius: "0px",
               }}
             >
-              stake
+              Liquidity provision
             </Tab>
             <Tab
               padding="6px 16px"
@@ -304,7 +306,7 @@ const SpendTable = () => {
                 borderRadius: "0px",
               }}
             >
-              trade
+              stake
             </Tab>
             <Tab
               padding="6px 16px"
@@ -323,13 +325,10 @@ const SpendTable = () => {
                 borderRadius: "0px",
               }}
             >
-              Liquidity provision
+              Trade
             </Tab>
           </TabList>
           <TabPanels>
-            <TabPanel>
-              <p>stake</p>
-            </TabPanel>
             <TabPanel padding="0" mt="1.5rem">
               <Box>
                 <Text color="white" fontSize="sm">
@@ -348,11 +347,36 @@ const SpendTable = () => {
                 </Box>
               </Box>
             </TabPanel>
-            <TabPanel>
-              <p>trade</p>
+            <TabPanel padding="0" mt="1.5rem">
+              <Box>
+                <Text color="white" fontSize="sm">
+                  Select a Dapp to begin with the spend
+                </Text>
+                <Box display="flex" gap="14" mt="1rem">
+                  <Box cursor="pointer">
+                    <TableJediswapLogo />
+                  </Box>
+                  <Box cursor="pointer">
+                    <TableMySwap />
+                  </Box>
+                </Box>
+              </Box>
+            </TabPanel>
+            <TabPanel padding="0" mt="1.5rem">
+              <Box>
+                <Text color="white" fontSize="sm">
+                  Select a Dapp to begin with the spend
+                </Text>
+                <Box display="flex" gap="14" mt="1rem">
+                  <Box cursor="pointer">
+                    <TableYagiLogo />
+                  </Box>
+                </Box>
+              </Box>
             </TabPanel>
             <TabPanel>
-              <p>Liquidity provision</p>
+              Trade
+              
             </TabPanel>
           </TabPanels>
         </Tabs>

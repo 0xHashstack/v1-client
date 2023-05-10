@@ -138,8 +138,8 @@ const SupplyModal = () => {
                         <ModalBody>
                             <Card bg="#101216" mb="0.5rem" p="1rem" border="1px solid #2B2F35" >
                                 <Text color="#8B949E" display="flex" alignItems="center">
-                                    <Text mr="0.3rem">
-                                        Market
+                                    <Text mr="0.3rem" fontSize="12px" fontStyle="normal" fontWeight="400">
+                                        Supply Market
                                     </Text>
                                     <Tooltip
                                         hasArrow
@@ -166,7 +166,7 @@ const SupplyModal = () => {
                                     pl="3"
                                     pr="3"
                                     mb="1rem"
-                                    mt="0.5rem"
+                                    mt="0.3rem"
                                     borderRadius="md"
                                     className="navbar"
                                     cursor="pointer"
@@ -236,7 +236,27 @@ const SupplyModal = () => {
                                         </Box>
                                     )}
                                 </Box>
-                                <Box width="100%" color="white" border="1px solid #2B2F35" borderRadius="6px" display="flex" justifyContent="space-between">
+                                <Text color="#8B949E" display="flex" alignItems="center">
+                                    <Text mr="0.3rem" fontSize="12px" fontStyle="normal" fontWeight="400">
+                                        Amount
+                                    </Text>
+                                    <Tooltip
+                                        hasArrow
+                                        placement="bottom-start"
+                                        boxShadow="dark-lg"
+                                        label="all the assets to the market"
+                                        bg="#24292F"
+                                        fontSize={"smaller"}
+                                        fontWeight={"thin"}
+                                        borderRadius={"lg"}
+                                        padding={"2"}
+                                    >
+                                        <Box>
+                                            <InfoIcon />
+                                        </Box>
+                                    </Tooltip>
+                                </Text>
+                                <Box width="100%" color="white" border="1px solid #2B2F35" borderRadius="6px" display="flex" justifyContent="space-between" mt="0.3rem">
                                     <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleChange} value={inputAmount} outline="none"
                                     >
                                         <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedCoin}`} border="0px" _placeholder={{
