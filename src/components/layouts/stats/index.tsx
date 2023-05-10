@@ -1,18 +1,14 @@
 import React from "react";
-import {
-  HStack,
-  VStack,
-  Text,
-  Box,
-} from "@chakra-ui/react";
+import { HStack, VStack, Text, Box } from "@chakra-ui/react";
 import Image from "next/image";
+import numberFormatter from "@/utils/functions/numberFormatter";
 const Stats = ({
   header,
   onclick,
   statsData,
 }: {
   header: string[];
-  statsData: string[];
+  statsData: any[];
   onclick: () => void;
 }) => {
   const gap: number = 100 / (header.length + 1);
@@ -47,7 +43,9 @@ const Stats = ({
               {val}
             </Text>
             <Text color="#E6EDF3" fontSize="20px">
-              {statsData[idx]}
+              {val == "Net APR" || val == "Avg. asset utillization"
+                ? statsData[idx] + "%"
+                : "$" + numberFormatter(statsData[idx])}
             </Text>
           </VStack>
         );

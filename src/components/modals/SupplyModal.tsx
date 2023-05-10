@@ -131,7 +131,7 @@ const SupplyModal = () => {
             borderRadius="md"
             maxW="462px"
             zIndex={1}
-            mt="5rem"
+            mt="8rem"
             className="modal-content"
           >
             <ModalHeader

@@ -24,14 +24,14 @@ const YourBorrow = () => {
     "Collateral",
     "Spend status",
     "Risk premium",
-    "Actions",
+    "",
   ];
   useEffect(() => {
     setRender(true);
     console.log("rendered your borrow");
   }, []);
   return (
-    <PageCard>
+    <PageCard pt="6.5rem">
       {/* <StatsBoard /> */}
       <HStack
         display="flex"

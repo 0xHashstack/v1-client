@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { Box, Button, Stack, Text } from "@chakra-ui/react";
 import Navbar from "@/components/layouts/navbar/Navbar";
 import PageCard from "@/components/layouts/pageCard";
+import WalletConnectModal from "@/components/modals/WalletConnectModal";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,22 +15,15 @@ export default function Home() {
   const href = "/market";
   useEffect(() => {
     // setRender(true);
-    router.push(href);
+    // router.push(href);
   }, [router]);
   return (
     <PageCard justifyContent="center" alignItems="center">
       <Text fontSize="46px" color="#FFFFFF">
         Welcome to Hashstack&apos;s mainnet!
       </Text>
-      <Button
-        bgColor="#30363d"
-        color="#BDBFC1"
-        border="1px solid #8b949e"
-        borderRadius="6px"
-        p="6px 12px"
-      >
-        Connect wallet
-      </Button>
+
+      <WalletConnectModal />
     </PageCard>
   );
 }

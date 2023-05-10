@@ -436,7 +436,7 @@ const Navbar = () => {
                     //   setConnectWallet(false);
                     // }}
                     alt=""
-                    src={starknetLogoBordered}
+                    src={"./starknetLogoBordered.svg"}
                     width="18"
                     height="18"
                     style={{ cursor: "pointer" }}

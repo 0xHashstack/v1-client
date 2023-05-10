@@ -6,7 +6,7 @@ const StatsBoard = () => {
     <Flex
       display="flex"
       flexDirection="column"
-      mt="2rem"
+      // mt="2rem"
       h="7rem"
       w="95%"
       flexWrap="wrap"
@@ -24,7 +24,7 @@ const StatsBoard = () => {
       >
         <Stats
           header={["Your networth", "Your Supply", "Your borrow", "Net APR"]}
-          statsData={["$8392.14", "$5,536.83", "$536.83", "15.5%"]}
+          statsData={[8392.14, 5536.83, 536.83, 15.5]}
           onclick={() => {}}
         />
         <Stats
@@ -33,7 +33,7 @@ const StatsBoard = () => {
             "Available reserves",
             "Avg. asset utillization",
           ]}
-          statsData={["5,31,000.00", "$53,100.00", "53.1%"]}
+          statsData={[531025.0, 53104.0, 53.1]}
           onclick={() => {}}
         />
       </HStack>
