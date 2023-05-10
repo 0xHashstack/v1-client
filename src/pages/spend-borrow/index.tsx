@@ -59,17 +59,6 @@ const SpendBorrow = () => {
         </HStack>
       </HStack>
       <SpendTable />
-      <Box
-        mt="1rem"
-        // height="2rem"
-        // bgColor={"blue"}
-        width="95%"
-        display="flex"
-        justifyContent="flex-end"
-        alignItems="center"
-      >
-        <LatestSyncedBlock width="16rem" height="100%" block={83207} />
-      </Box>
     </PageCard>
   );
 };

@@ -184,7 +184,7 @@ const DashboardRight = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    00000.00
+                    000.00
                   </Text>
                 </Td>
                 <Td
