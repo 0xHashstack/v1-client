@@ -13,6 +13,7 @@
     "@emotion/react": "^11.10.8",
     "@emotion/styled": "^11.10.8",
     "@next/font": "^13.4.1",
+    "@project-serum/anchor": "^0.26.0",
     "@reduxjs/toolkit": "^1.9.5",
     "@types/node": "18.16.0",
     "@types/react": "18.0.38",
