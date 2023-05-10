@@ -44,6 +44,45 @@ async function Staking_Integration(rToken:any,amount:any,receiver:any) {
 
 }
 
+
+async function Estimated_fee_Staking_Integration(rToken:any,amount:any,receiver:any) {
+
+    const provider = new Provider({ sequencer: { network: constants.NetworkName.SN_GOERLI } });
+    const privateKey1 = "0x02f38fb567d5d50d375d6ec3c7f12b22c5eb436a3d16ddfde17eeef8e26eb93b"
+
+    // initialize existing Argent X account
+    const account0Address: string = "0x03038ae29ffd0258880b34b9ffdd37a02bd1b7a7e15ff183c69a0a1c18d30998";
+    const account0 = new Account(provider, account0Address, privateKey1);
+
+    //{Contract Address}
+
+    const compiledTest = json.parse(fs.readFileSync("./compiledContracts/Supply_Liquidity.sierra").toString("ascii"));
+    const myTestContract = new Contract(compiledTest.abi, staking_address, provider);
+    console.log('Test Contract connected at =', myTestContract.address);
+
+    // Interactions with the contract with call & invoke
+    myTestContract.connect(account0);
+
+    try {
+        const { suggestedMaxFee: estimatedFee1 } = await account0.estimateInvokeFee({
+            contractAddress: opencore_address,
+            entrypoint: "stake",
+            calldata:[
+                rToken,
+                amount,
+                receiver,
+          ],
+          });
+          console.log("estimatedFee :", estimatedFee1)
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+
+}
+
+
+
 async function Unstaking_Integration(rToken:any,amount:any,receiver:any) {
 
     const provider = new Provider({ sequencer: { network: constants.NetworkName.SN_GOERLI } });
@@ -74,6 +113,41 @@ async function Unstaking_Integration(rToken:any,amount:any,receiver:any) {
 
         return result;
 
+    } catch (error) {
+        console.log(error);
+        return false;
+    }
+}
+
+async function Estimated_fee_Unstaking_Integration(rToken:any,amount:any,receiver:any) {
+
+    const provider = new Provider({ sequencer: { network: constants.NetworkName.SN_GOERLI } });
+    const privateKey1 = "0x02f38fb567d5d50d375d6ec3c7f12b22c5eb436a3d16ddfde17eeef8e26eb93b"
+
+    // initialize existing Argent X account
+    const account0Address: string = "0x03038ae29ffd0258880b34b9ffdd37a02bd1b7a7e15ff183c69a0a1c18d30998";
+    const account0 = new Account(provider, account0Address, privateKey1);
+
+    //{Contract Address}
+
+    const compiledTest = json.parse(fs.readFileSync("./compiledContracts/Supply_Liquidity.sierra").toString("ascii"));
+    const myTestContract = new Contract(compiledTest.abi, staking_address, provider);
+    console.log('Test Contract connected at =', myTestContract.address);
+
+    // Interactions with the contract with call & invoke
+    myTestContract.connect(account0);
+
+    try {
+        const { suggestedMaxFee: estimatedFee1 } = await account0.estimateInvokeFee({
+            contractAddress: opencore_address,
+            entrypoint: "unstake",
+            calldata:[
+                rToken,
+                amount,
+                receiver,
+          ],
+          });
+          console.log("estimatedFee :", estimatedFee1)
     } catch (error) {
         console.log(error);
         return false;
