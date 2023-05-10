@@ -142,7 +142,7 @@ const BorrowModal = () => {
         scrollBehavior="inside"
       >
         <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
-        <ModalContent mt="5rem" bg={"#010409"} maxW="462px">
+        <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
           <ModalCloseButton mt="1rem" mr="1rem" color="white" />
           {/* <ModalHeader>Borrow</ModalHeader> */}
           <ModalBody color={"#E6EDF3"}>
@@ -157,11 +157,6 @@ const BorrowModal = () => {
               </Heading>
               <ModalCloseButton mt="1rem" mr="1rem" color="white" />
               {/* <button onClick={onClose}>Cancel</button> */}
-            </Box>
-            <Box mt="4">
-              <Text fontSize="xs" color="#0969DA" fontWeight="semibold">
-                Borrow ID - 123456
-              </Text>
             </Box>
 
             <Box
@@ -801,14 +796,13 @@ const BorrowModal = () => {
 
             {inputCollateralAmount > 0 && inputBorrowAmount > 0 ? (
               <Button
-                bg="#8B949E"
-                color="white"
+              bg="#101216"
+              color="#8B949E"
                 size="sm"
                 width="100%"
                 mb="2rem"
-                border="1px solid #2B2F35"
-                _hover={{ bg: "#2DA44E" }}
-                _focus={{ bg: "#298E46" }}
+                border="1px solid #8B949E"
+                _hover={{ bg: "#10216" }}
               >
                 Borrow
               </Button>

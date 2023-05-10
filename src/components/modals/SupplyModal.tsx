@@ -20,7 +20,7 @@ import {
   NumberInputField,
   Portal,
 } from "@chakra-ui/react";
-
+import { useRef } from "react";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
 import InfoIcon from "@/assets/icons/infoIcon";
@@ -30,6 +30,7 @@ import USDTLogo from "@/assets/icons/coins/usdt";
 import ETHLogo from "@/assets/icons/coins/eth";
 import DAILogo from "@/assets/icons/coins/dai";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
+import SpinnerLoader from "../uiElements/loaders/spinner";
 import {
   selectInputSupplyAmount,
   setCoinSelectedSupplyModal,
@@ -44,6 +45,7 @@ import {
 
 const SupplyModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [inputAmount, setinputAmount] = useState(0);
@@ -129,14 +131,14 @@ const SupplyModal = () => {
                         borderRadius="md"
                         maxW="462px"
                         zIndex={1}
-                        mt="5rem"
+                        mt="8rem"
                         className="modal-content"
 
                     >
                         <ModalHeader mt="1rem" fontSize="14px" fontWeight="600" fontStyle="normal" lineHeight="20px">Supply</ModalHeader>
                         <ModalCloseButton mt="1rem" mr="1rem" />
                         <ModalBody>
-                            <Card bg="#101216" mb="0.5rem" p="1rem" border="1px solid #2B2F35" >
+                            <Card bg="#101216" mb="0.5rem" p="1rem" border="1px solid #2B2F35" mt="-1.5">
                                 <Text color="#8B949E" display="flex" alignItems="center">
                                     <Text mr="0.3rem" fontSize="12px" fontStyle="normal" fontWeight="400">
                                         Supply Market
@@ -257,8 +259,9 @@ const SupplyModal = () => {
                                     </Tooltip>
                                 </Text>
                                 <Box width="100%" color="white" border="1px solid #2B2F35" borderRadius="6px" display="flex" justifyContent="space-between" mt="0.3rem">
-                                    <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleChange} value={inputAmount} outline="none"
+                                    <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleChange} value={inputAmount} outline="none"  precision={1} step={0.1}
                                     >
+                                        
                                         <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedCoin}`} border="0px" _placeholder={{
                                             color: "#393D4F",
                                             fontSize: ".89rem",
@@ -270,6 +273,7 @@ const SupplyModal = () => {
                                                 boxShadow: "none"
                                             }}
                                         />
+
                                     </NumberInput>
                                     <Button variant="ghost" color="#0969DA" _hover={{ bg: "#101216" }} onClick={() => { setinputAmount(walletBalance); setSliderValue(100); dispatch(setInputSupplyAmount(walletBalance)) }}>
                                         MAX
@@ -384,6 +388,7 @@ const SupplyModal = () => {
                       color="#6A737D"
                     >
                       Gas estimate:
+                      {/* <SpinnerLoader/> */}
                     </Text>
                     <Tooltip
                       hasArrow
@@ -454,15 +459,14 @@ const SupplyModal = () => {
               </Card>
               {inputAmount1 > 0 ? (
                 <Button
-                  bg="#8B949E"
-                  color="white"
+                bg="#101216"
+                  color="#8B949E"
                   size="sm"
                   width="100%"
-                  mt="2rem"
-                  mb="2rem"
-                  border="1px solid #2B2F35"
-                  _hover={{ bg: "#2DA44E" }}
-                  _focus={{ bg: "#298E46" }}
+                  mt="1.5rem"
+                  mb="1.5rem"
+                  border="1px solid #8B949E"
+                  _hover={{ bg: "#10216" }}
                 >
                   Supply
                 </Button>
@@ -472,8 +476,8 @@ const SupplyModal = () => {
                   color="#6E7681"
                   size="sm"
                   width="100%"
-                  mt="2rem"
-                  mb="2rem"
+                  mt="1.5rem"
+                  mb="1.5rem"
                   border="1px solid #2B2F35"
                   _hover={{ bg: "#101216" }}
                 >

@@ -169,9 +169,9 @@ const LiquidityProvisionModal = () => {
                         bg="#010409"
                         color="white"
                         borderRadius="md"
-                        maxW="462px"
+                        maxW="464px"
                         zIndex={1}
-                        mt="4rem"
+                        mt="8rem"
                         className="modal-content"
 
                     >
@@ -694,15 +694,14 @@ const LiquidityProvisionModal = () => {
                                 </Box>
                             {inputAmount1 > 0 ? (
                                 <Button
-                                    bg="#8B949E"
-                                    color="white"
-                                    size="sm"
-                                    width="100%"
-                                    mt="1rem"
-                                    mb="0.5rem"
-                                    border="1px solid #2B2F35"
-                                    _hover={{ bg: "#2DA44E" }}
-                                    _focus={{ bg: "#298E46" }}
+                                bg="#101216"
+                                color="#8B949E"
+                                size="sm"
+                                width="100%"
+                                mt="1.5rem"
+                                mb="1.5rem"
+                                border="1px solid #8B949E"
+                                _hover={{ bg: "#10216" }}
                                 >
                                     Spend Borrow
                                 </Button>

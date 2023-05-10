@@ -21,7 +21,7 @@ import Image from "next/image";
 import BorrowModal from "@/components/modals/borrowModal";
 import SupplyModal from "@/components/modals/SupplyModal";
 import StakeModal from "@/components/modals/StakeModal";
-
+import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -248,7 +248,7 @@ const DashboardLeft = ({
                   pl={2}
                 >
                   <Box position="relative" display="inline-block">
-                    <StakeModal />
+                    <StakeUnstakeModal/>
                   </Box>
                 </Td>
               </Tr>

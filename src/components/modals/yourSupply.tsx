@@ -181,7 +181,7 @@ const YourSupplyModal = () => {
         //   scrollBehavior="inside"
       >
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
-        <ModalContent mt="5rem" bg={"#010409"} maxW="442px">
+        <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
           {/* <ModalHeader>Borrow</ModalHeader> */}
           <ModalCloseButton mt="1rem" mr="1rem" color="white" />
           <ModalBody color={"#E6EDF3"} pt={6} px={7}>
@@ -276,7 +276,7 @@ const YourSupplyModal = () => {
                           pl="3"
                           pr="3"
                           mb="1rem"
-                          mt="0.2rem"
+                          mt="0.3rem"
                           borderRadius="md"
                           className="navbar"
                           cursor="pointer"
@@ -353,6 +353,35 @@ const YourSupplyModal = () => {
                             </Box>
                           )}
                         </Box>
+                        <Text
+                          color="#8B949E"
+                          display="flex"
+                          alignItems="center"
+                        >
+                          <Text
+                            mr="0.3rem"
+                            fontSize="12px"
+                            fontWeight="400"
+                            fontStyle="normal"
+                          >
+                            Amount
+                          </Text>
+                          <Tooltip
+                            hasArrow
+                            placement="bottom-start"
+                            boxShadow="dark-lg"
+                            label="all the assets to the market"
+                            bg="#24292F"
+                            fontSize={"smaller"}
+                            fontWeight={"thin"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                          >
+                            <Box>
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
+                        </Text>
                         <Box
                           width="100%"
                           color="white"
@@ -360,6 +389,7 @@ const YourSupplyModal = () => {
                           borderRadius="6px"
                           display="flex"
                           justifyContent="space-between"
+                          mt="0.2rem"
                         >
                           <NumberInput
                             border="0px"

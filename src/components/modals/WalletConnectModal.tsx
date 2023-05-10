@@ -5,10 +5,6 @@ import {
     ModalOverlay,
     ModalContent,
     ModalHeader,
-    Slider,
-    SliderMark,
-    SliderTrack,
-    SliderFilledTrack,
     ModalBody,
     ModalCloseButton,
     Card,
@@ -20,7 +16,6 @@ import {
     NumberInputField,
     Portal,
 } from "@chakra-ui/react";
-
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
 import InfoIcon from "@/assets/icons/infoIcon";
@@ -251,6 +246,7 @@ const WalletConnectModal = () => {
                                     display="flex"
                                     justifyContent="space-between"
                                     cursor="pointer"
+                                    onClick={()=>{}}
                                 >
                                     <Text ml="1rem" color="white">
                                         Bravos Wallet
