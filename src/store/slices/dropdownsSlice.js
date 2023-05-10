@@ -28,7 +28,17 @@ const initialState = {
     spendBorrowBorrowIDDropdown:false,
     spendBorrowBorrowMarketDropdown:false,
     walletConnectDropDown:false,
-    stakeMarketDropDown:false
+    stakeMarketDropDown:false,
+    unstakeMarketDropDown:false,
+    swapModalSupplyMarketDropDown:false,
+    swapModalBorrowMarketDropDown:false,
+    swapModalBorrowIDDropDown:false,
+    stakeModalSupplyMarketDropDown:false,
+    stakeModalBorrowMarketDropDown:false,
+    stakeModalBorrowIDDropDown:false,
+    liquidityProvisionPoolDropDown:false,
+    liquidityProvisionBorrowIDDropDown:false,
+    liquidityProvisionBorrowMarketDropDown:false
 
   }
 };

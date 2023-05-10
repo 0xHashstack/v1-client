@@ -28,6 +28,8 @@ import TableInfoIcon from "./tableIcons/infoIcon";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { setCurrentPage } from "@/store/slices/userAccountSlice";
+import HazardIcon from "@/assets/icons/hazardIcon";
+import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
 import TableYagiLogoDull from "./tableIcons/yagiLogoDull";
 import TableMySwapDull from "./tableIcons/mySwapDull";
 import TableJediswapLogoDull from "./tableIcons/jediswapLogoDull";
@@ -381,7 +383,7 @@ const SpendTable = () => {
               onClick={() => setTradeNote(true)}
               // isDisabled={selectedDapp == ""}
             >
-              trade
+              Trade
             </Tab>
           </TabList>
           <TabPanels>

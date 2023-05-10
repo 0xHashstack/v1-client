@@ -6,7 +6,7 @@ const dtoken_loan_address = "0xx32312";
 const rtoken_address = "0xx11312";
 const opencore_address = "0xx232312";
 
-async function Repay_Borrow_Integration(loan_id:any,amount:any) {
+async function Remove_liquidity_interaction(integration_address:any,loan_id:any,min_tokens_rec:any) {
 
     const provider = new Provider({ sequencer: { network: constants.NetworkName.SN_GOERLI } });
     const privateKey1 = "0x02f38fb567d5d50d375d6ec3c7f12b22c5eb436a3d16ddfde17eeef8e26eb93b"
@@ -25,24 +25,25 @@ async function Repay_Borrow_Integration(loan_id:any,amount:any) {
     myTestContract.connect(account0);
 
     const par =  CallData.compile({
+        _integration_address: integration_address,
         _loan_id: loan_id,
-        _amount: amount,
+        _min_tokens_rec: min_tokens_rec,
     })
 
     try {
-        const result = await myTestContract.repay_loan(par);
+        const result = await myTestContract.remove_liquidity(par);
         await provider.waitForTransaction(result.transaction_hash);
-
         return result;
 
     } catch (error) {
         console.log(error);
         return false;
     }
+
 }
 
 
-async function Estimate_fees_Repay_Borrow(loan_id:any,amount:any) {
+async function estimate_gas_fee_Add_liquidity(integration_address:any,loan_id:any,min_tokens_rec:any) {
 
     const provider = new Provider({ sequencer: { network: constants.NetworkName.SN_GOERLI } });
     const privateKey1 = "0x02f38fb567d5d50d375d6ec3c7f12b22c5eb436a3d16ddfde17eeef8e26eb93b"
@@ -63,10 +64,11 @@ async function Estimate_fees_Repay_Borrow(loan_id:any,amount:any) {
     try {
         const { suggestedMaxFee: estimatedFee1 } = await account0.estimateInvokeFee({
             contractAddress: opencore_address,
-            entrypoint: "repay_loan",
+            entrypoint: "remove_liquidity",
             calldata:[
+                integration_address,
                 loan_id,
-                amount,
+                min_tokens_rec,
           ],
           });
           console.log("estimatedFee :", estimatedFee1)
@@ -75,4 +77,5 @@ async function Estimate_fees_Repay_Borrow(loan_id:any,amount:any) {
         console.log(error);
         return false;
     }
+
 }

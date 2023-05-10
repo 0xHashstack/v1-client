@@ -1,12 +1,13 @@
 import { CallData, constants, Provider, Contract, Account, json, ec } from "starknet";
 import fs from "fs";
 // @ts-ignore
-import {dtoken_loan_address, rtoken_address, opencore_address } from "./constants.ts";
+import {dtoken_loan_address, rtoken_address, opencore_address } from "./constants.js";
 const dtoken_loan_address = "0xx32312";
 const rtoken_address = "0xx11312";
 const opencore_address = "0xx232312";
 
-async function Repay_Borrow_Integration(loan_id:any,amount:any) {
+
+async function Withdraw_Integration(amount:any,receiver:any,owner:any) {
 
     const provider = new Provider({ sequencer: { network: constants.NetworkName.SN_GOERLI } });
     const privateKey1 = "0x02f38fb567d5d50d375d6ec3c7f12b22c5eb436a3d16ddfde17eeef8e26eb93b"
@@ -17,7 +18,7 @@ async function Repay_Borrow_Integration(loan_id:any,amount:any) {
 
     //{Contract Address}
 
-    const compiledTest = json.parse(fs.readFileSync("./compiledContracts/Supply_Liquidity.sierra").toString("ascii"));
+    const compiledTest = json.parse(fs.readFileSync("./compiledContracts/Spend_Borrow_Integration.sierra").toString("ascii"));
     const myTestContract = new Contract(compiledTest.abi, rtoken_address, provider);
     console.log('Test Contract connected at =', myTestContract.address);
 
@@ -25,24 +26,27 @@ async function Repay_Borrow_Integration(loan_id:any,amount:any) {
     myTestContract.connect(account0);
 
     const par =  CallData.compile({
-        _loan_id: loan_id,
         _amount: amount,
+        _receiver: receiver,
+        _owner: owner,
     })
 
     try {
-        const result = await myTestContract.repay_loan(par);
+        let result = await myTestContract.withdraw(par);
+
         await provider.waitForTransaction(result.transaction_hash);
 
         return result;
-
+        
     } catch (error) {
         console.log(error);
         return false;
+        
     }
+
 }
 
-
-async function Estimate_fees_Repay_Borrow(loan_id:any,amount:any) {
+async function Estimate_fee_Withdraw_Integration(amount:any,receiver:any,owner:any) {
 
     const provider = new Provider({ sequencer: { network: constants.NetworkName.SN_GOERLI } });
     const privateKey1 = "0x02f38fb567d5d50d375d6ec3c7f12b22c5eb436a3d16ddfde17eeef8e26eb93b"
@@ -53,7 +57,7 @@ async function Estimate_fees_Repay_Borrow(loan_id:any,amount:any) {
 
     //{Contract Address}
 
-    const compiledTest = json.parse(fs.readFileSync("./compiledContracts/Supply_Liquidity.sierra").toString("ascii"));
+    const compiledTest = json.parse(fs.readFileSync("./compiledContracts/Spend_Borrow_Integration.sierra").toString("ascii"));
     const myTestContract = new Contract(compiledTest.abi, rtoken_address, provider);
     console.log('Test Contract connected at =', myTestContract.address);
 
@@ -63,16 +67,17 @@ async function Estimate_fees_Repay_Borrow(loan_id:any,amount:any) {
     try {
         const { suggestedMaxFee: estimatedFee1 } = await account0.estimateInvokeFee({
             contractAddress: opencore_address,
-            entrypoint: "repay_loan",
+            entrypoint: "withdraw",
             calldata:[
-                loan_id,
                 amount,
-          ],
+                receiver,
+            ]  
           });
           console.log("estimatedFee :", estimatedFee1)
-
     } catch (error) {
         console.log(error);
         return false;
+        
     }
+
 }

@@ -27,7 +27,12 @@ import SmallUsdt from "@/assets/icons/coins/smallUsdt";
 import DAILogo from "@/assets/icons/coins/dai";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
 import SmallJediswapLogo from "@/assets/icons/coins/smallJediswap";
-import YagiLogo from "@/assets/icons/dapps/yagiLogo";
+import UsdcToUsdt from "@/assets/icons/pools/usdcToUsdt";
+import EthToUsdc from "@/assets/icons/pools/ethToUsdc";
+import DaiToEth from "@/assets/icons/pools/daiToEth";
+import BtcToEth from "@/assets/icons/pools/btcToEth";
+import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
+import EthToUsdt from "@/assets/icons/pools/ethToUsdt";
 import {
     selectInputSupplyAmount,
     setCoinSelectedSupplyModal,
@@ -40,12 +45,13 @@ import {
     selectModalDropDowns
 } from "@/store/slices/dropdownsSlice";
 
-const StakeModal = () => {
+const LiquidityProvisionModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
     const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("ETH");
     const [currentBorrowId, setCurrentBorrowId] = useState("ID - 123456");
+    const [currentPool, setCurrentPool] = useState("ETH/USDT");
     const [inputAmount, setinputAmount] = useState(0);
     const [sliderValue, setSliderValue] = useState(0);
 
@@ -71,6 +77,27 @@ const StakeModal = () => {
             case "DAI":
                 return <DAILogo />;
                 break;
+            case "Jediswap":
+                return <JediswapLogo />;
+                break;
+            case "wETH/USDT":
+                return <EthToUsdt />;
+                break;
+            case "USDC/USDT":
+                return <UsdcToUsdt />;
+                break;
+            case "wETH/USDC":
+                return <EthToUsdc />;
+                break;
+            case "DAI/ETH":
+                return <DaiToEth />;
+                break;
+            case "wBTC/ETH":
+                return <BtcToEth />;
+                break;
+            case "wBTC/USDT":
+                return <BtcToUsdt />;
+                break;
             default:
                 break;
         }
@@ -81,6 +108,14 @@ const StakeModal = () => {
         "ID - 123458",
         "ID - 123459",
         "ID - 1234510",
+    ];
+    const pools = [
+        "wETH/USDT",
+        "USDC/USDT",
+        "wETH/USDC",
+        "DAI/ETH",
+        "wBTC/ETH",
+        "wBTC/USDT",
     ];
 
     //This Function handles the modalDropDowns
@@ -122,7 +157,7 @@ const StakeModal = () => {
                 borderRadius={"6px"}
                 onClick={onOpen}
             >
-                Stake
+                Liquidity
             </Button>
             <Portal>
                 <Modal isOpen={isOpen} onClose={onClose}  isCentered >
@@ -140,13 +175,13 @@ const StakeModal = () => {
                         className="modal-content"
 
                     >
-                        <ModalHeader mt="1rem" fontSize="14px" fontWeight="600" fontStyle="normal" lineHeight="20px">Stake</ModalHeader>
+                        <ModalHeader mt="1rem" fontSize="14px" fontWeight="600" fontStyle="normal" lineHeight="20px">Liquidity Provision</ModalHeader>
                         <ModalCloseButton mt="1rem" mr="1rem" />
                         <ModalBody>
                             <Card bg="#101216" mb="0.5rem" p="1rem" border="1px solid #2B2F35" >
                                 <Text color="#8B949E" display="flex" alignItems="center">
-                                    <Text mr="0.3rem" fontSize="12px">
-                                        Select Market
+                                    <Text mr="0.3rem" fontSize="12px" >
+                                        Select Liquidity Pool
                                     </Text>
                                     <Tooltip
                                         hasArrow
@@ -165,84 +200,84 @@ const StakeModal = () => {
                                     </Tooltip>
                                 </Text>
                                 <Box
-                                    display="flex"
-                                    border="1px"
-                                    borderColor="#2B2F35"
-                                    justifyContent="space-between"
-                                    py="2"
-                                    pl="3"
-                                    pr="3"
-                                    mb="1rem"
-                                    mt="0.2rem"
-                                    borderRadius="md"
-                                    className="navbar"
-                                    cursor="pointer"
-                                    onClick={() =>
-                                        handleDropdownClick("stakeModalSupplyMarketDropDown")
-                                    }
-                                >
-                                    <Box display="flex" gap="1">
-                                        <Box p="1">{getCoin(currentSelectedCoin)}</Box>
-                                        <Text color="white">{currentSelectedCoin}</Text>
-                                    </Box>
-                                    
-                                    <Box pt="1" className="navbar-button">
-                                        <DropdownUp />
-                                    </Box>
-                                    {modalDropdowns.stakeModalSupplyMarketDropDown&& (
-                                        <Box
-                                            w="full"
-                                            left="0"
-                                            bg="#03060B"
-                                            py="2"
-                                            className="dropdown-container"
-                                            boxShadow="dark-lg"
-                                        >
-                                            {coins.map((coin, index) => {
-                                                return (
-                                                    <Box
-                                                        key={index}
-                                                        as="button"
-                                                        w="full"
-                                                        display="flex"
-                                                        alignItems="center"
-                                                        gap="1"
-                                                        pr="2"
-                                                        onClick={() => {
-                                                            setCurrentSelectedCoin(coin);
-                                                            dispatch(setCoinSelectedSupplyModal(coin))
-                                                        }}
-                                                    >
-                                                        {coin === currentSelectedCoin && (
-                                                            <Box
-                                                                w="3px"
-                                                                h="28px"
-                                                                bg="#0C6AD9"
-                                                                borderRightRadius="md"
-                                                            ></Box>
-                                                        )}
+                                        display="flex"
+                                        border="1px"
+                                        borderColor="#2B2F35"
+                                        justifyContent="space-between"
+                                        py="2"
+                                        pl="3"
+                                        mb="1rem"
+                                        pr="3"
+                                        mt="0.2rem"
+                                        borderRadius="md"
+                                        className="navbar"
+                                        color="white"
+                                        fontSize="16px"
+                                        onClick={() =>
+                                            handleDropdownClick("liquidityProvisionPoolDropDown")
+                                        }
+                                        as="button"
+                                    >
+                                        <Box display="flex" gap="1">
+                                            <Box p="1">{getCoin(currentPool)}</Box>
+                                            <Text mt="0.1rem">{currentPool}</Text>
+                                        </Box>
+                                        <Box pt="1" className="navbar-button">
+                                            <DropdownUp />
+                                        </Box>
+                                        {modalDropdowns.liquidityProvisionPoolDropDown && (
+                                            <Box
+                                                w="full"
+                                                left="0"
+                                                bg="#03060B"
+                                                py="2"
+                                                className="dropdown-container"
+                                                boxShadow="dark-lg"
+                                            >
+                                                {pools.map((pool, index) => {
+                                                    return (
                                                         <Box
+                                                            key={index}
+                                                            as="button"
                                                             w="full"
                                                             display="flex"
-                                                            py="5px"
-                                                            px={`${coin === currentSelectedCoin ? "1" : "5"
-                                                                }`}
+                                                            alignItems="center"
                                                             gap="1"
-                                                            bg={`${coin === currentSelectedCoin
-                                                                ? "#0C6AD9"
-                                                                : "inherit"
-                                                                }`}
-                                                            borderRadius="md"
+                                                            pr="2"
+                                                            onClick={() => {
+                                                                setCurrentPool(pool);
+                                                            }}
                                                         >
-                                                            <Box p="1">{getCoin(coin)}</Box>
-                                                            <Text color="white">{coin}</Text>
+                                                            {pool === currentPool && (
+                                                                <Box
+                                                                    w="3px"
+                                                                    h="28px"
+                                                                    bg="#0C6AD9"
+                                                                    borderRightRadius="md"
+                                                                ></Box>
+                                                            )}
+                                                            <Box
+                                                                w="full"
+                                                                display="flex"
+                                                                py="5px"
+                                                                px={`${pool === currentPool ? "1" : "5"
+                                                                    }`}
+                                                                gap="1"
+                                                                bg={`${pool === currentPool
+                                                                    ? "#0C6AD9"
+                                                                    : "inherit"
+                                                                    }`}
+                                                                borderRadius="md"
+                                                            >
+                                                                <Box p="1">{getCoin(pool)}</Box>
+                                                                <Text>{pool}</Text>
+                                                            </Box>
                                                         </Box>
-                                                    </Box>
-                                                );
-                                            })}
-                                        </Box>
-                                    )}
-                                </Box>
+                                                    );
+                                                })}
+                                            </Box>
+                                        )}
+                                    </Box>
                                 <Text color="#8B949E" display="flex" alignItems="center">
                                     <Text mr="0.3rem" fontSize="12px">
                                         Borrow ID
@@ -277,17 +312,17 @@ const StakeModal = () => {
                                         color="white"
                                         className="navbar"
                                         onClick={() =>
-                                            handleDropdownClick("stakeModalBorrowIDDropDown")
+                                            handleDropdownClick("liquidityProvisionBorrowIDDropDown")
                                         }
                                         as="button"
                                     >
-                                        <Box display="flex" gap="1">
+                                        <Box display="flex" gap="1" ml="0.2rem">
                                             {currentBorrowId}
                                         </Box>
                                         <Text pt="1" className="navbar-button">
                                             <DropdownUp />
                                         </Text>
-                                        {modalDropdowns.stakeModalBorrowIDDropDown && (
+                                        {modalDropdowns.liquidityProvisionBorrowIDDropDown && (
                                             <Box
                                                 w="full"
                                                 left="0"
@@ -373,7 +408,7 @@ const StakeModal = () => {
                                     className="navbar"
                                     cursor="pointer"
                                     onClick={() =>
-                                        handleDropdownClick("stakeModalBorrowMarketDropDown")
+                                        handleDropdownClick("liquidityProvisionBorrowMarketDropDown")
                                     }
                                 >
                                     <Box display="flex" gap="1">
@@ -384,7 +419,7 @@ const StakeModal = () => {
                                     <Box pt="1" className="navbar-button">
                                         <DropdownUp />
                                     </Box>
-                                    {modalDropdowns.stakeModalBorrowMarketDropDown && (
+                                    {modalDropdowns.liquidityProvisionBorrowMarketDropDown && (
                                         <Box
                                             w="full"
                                             left="0"
@@ -471,9 +506,9 @@ const StakeModal = () => {
                                     </Box>
                                     <Box display="flex" gap="2px">
                                             <Box mt="2px">
-                                                <YagiLogo/>
+                                                <SmallJediswapLogo/>
                                             </Box>
-                                        <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">Yagi</Text>
+                                        <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">Jediswap</Text>
                                             
                                         </Box>
                                 </Box>
@@ -692,4 +727,4 @@ const StakeModal = () => {
         </div>
     );
 };
-export default StakeModal;
+export default LiquidityProvisionModal;
