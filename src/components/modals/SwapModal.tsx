@@ -27,7 +27,6 @@ import SmallUsdt from "@/assets/icons/coins/smallUsdt";
 import DAILogo from "@/assets/icons/coins/dai";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
 import SmallJediswapLogo from "@/assets/icons/coins/smallJediswap";
-import YagiLogo from "@/assets/icons/dapps/yagiLogo";
 import {
     selectInputSupplyAmount,
     setCoinSelectedSupplyModal,
@@ -40,7 +39,7 @@ import {
     selectModalDropDowns
 } from "@/store/slices/dropdownsSlice";
 
-const StakeModal = () => {
+const SwapModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
 
     const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
@@ -122,7 +121,7 @@ const StakeModal = () => {
                 borderRadius={"6px"}
                 onClick={onOpen}
             >
-                Stake
+                Swap
             </Button>
             <Portal>
                 <Modal isOpen={isOpen} onClose={onClose}  isCentered >
@@ -140,7 +139,7 @@ const StakeModal = () => {
                         className="modal-content"
 
                     >
-                        <ModalHeader mt="1rem" fontSize="14px" fontWeight="600" fontStyle="normal" lineHeight="20px">Stake</ModalHeader>
+                        <ModalHeader mt="1rem" fontSize="14px" fontWeight="600" fontStyle="normal" lineHeight="20px">Swap</ModalHeader>
                         <ModalCloseButton mt="1rem" mr="1rem" />
                         <ModalBody>
                             <Card bg="#101216" mb="0.5rem" p="1rem" border="1px solid #2B2F35" >
@@ -178,7 +177,7 @@ const StakeModal = () => {
                                     className="navbar"
                                     cursor="pointer"
                                     onClick={() =>
-                                        handleDropdownClick("stakeModalSupplyMarketDropDown")
+                                        handleDropdownClick("swapModalSupplyMarketDropDown")
                                     }
                                 >
                                     <Box display="flex" gap="1">
@@ -189,7 +188,7 @@ const StakeModal = () => {
                                     <Box pt="1" className="navbar-button">
                                         <DropdownUp />
                                     </Box>
-                                    {modalDropdowns.stakeModalSupplyMarketDropDown&& (
+                                    {modalDropdowns.swapModalSupplyMarketDropDown && (
                                         <Box
                                             w="full"
                                             left="0"
@@ -277,7 +276,7 @@ const StakeModal = () => {
                                         color="white"
                                         className="navbar"
                                         onClick={() =>
-                                            handleDropdownClick("stakeModalBorrowIDDropDown")
+                                            handleDropdownClick("swapModalBorrowIDDropDown")
                                         }
                                         as="button"
                                     >
@@ -287,7 +286,7 @@ const StakeModal = () => {
                                         <Text pt="1" className="navbar-button">
                                             <DropdownUp />
                                         </Text>
-                                        {modalDropdowns.stakeModalBorrowIDDropDown && (
+                                        {modalDropdowns.swapModalBorrowIDDropDown && (
                                             <Box
                                                 w="full"
                                                 left="0"
@@ -373,7 +372,7 @@ const StakeModal = () => {
                                     className="navbar"
                                     cursor="pointer"
                                     onClick={() =>
-                                        handleDropdownClick("stakeModalBorrowMarketDropDown")
+                                        handleDropdownClick("swapModalBorrowMarketDropDown")
                                     }
                                 >
                                     <Box display="flex" gap="1">
@@ -384,7 +383,7 @@ const StakeModal = () => {
                                     <Box pt="1" className="navbar-button">
                                         <DropdownUp />
                                     </Box>
-                                    {modalDropdowns.stakeModalBorrowMarketDropDown && (
+                                    {modalDropdowns.swapModalBorrowMarketDropDown && (
                                         <Box
                                             w="full"
                                             left="0"
@@ -471,16 +470,19 @@ const StakeModal = () => {
                                     </Box>
                                     <Box display="flex" gap="2px">
                                             <Box mt="2px">
-                                                <YagiLogo/>
+                                                <SmallJediswapLogo/>
                                             </Box>
-                                        <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">Yagi</Text>
+                                        <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">Jediswap</Text>
                                             
                                         </Box>
                                 </Box>
                                 <Box  display="flex" justifyContent="space-between" mb="0.3rem">
                                     <Box display="flex">
                                     <Box display="flex" gap="2px">
-                                        <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">est LP tokens received:</Text>
+                                        <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">est</Text>
+                                            <Box mt="2px">
+                                                <SmallEth/>
+                                            </Box>
                                         </Box>
                                         <Tooltip
                                             hasArrow
@@ -498,7 +500,7 @@ const StakeModal = () => {
                                             </Box>
                                         </Tooltip>
                                     </Box>
-                                    <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">$10.91</Text>
+                                    <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">0.1%</Text>
                                 </Box>
                                 <Box  display="flex" justifyContent="space-between" mb="0.3rem">
                                     <Box  display="flex">
@@ -692,4 +694,4 @@ const StakeModal = () => {
         </div>
     );
 };
-export default StakeModal;
+export default SwapModal;

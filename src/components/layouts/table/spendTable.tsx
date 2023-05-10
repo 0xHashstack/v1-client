@@ -28,8 +28,15 @@ import TableInfoIcon from "./tableIcons/infoIcon";
 import Link from "next/link";
 import { useDispatch } from "react-redux";
 import { setCurrentPage } from "@/store/slices/userAccountSlice";
+import HazardIcon from "@/assets/icons/hazardIcon";
+import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
+import TableYagiLogoDull from "./tableIcons/yagiLogoDull";
+import TableMySwapDull from "./tableIcons/mySwapDull";
+import TableJediswapLogoDull from "./tableIcons/jediswapLogoDull";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
+  const [currentBorrow, setCurrentBorrow] = useState(-1);
+  const [selectedDapp, setSelectedDapp] = useState("");
   const handleClick = () => {
     //   onClick={setShowWarning(() => false)}
     setShowWarning(false);
@@ -37,10 +44,17 @@ const SpendTable = () => {
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
+  const columnItems = [
+    "Borrow ID",
+    "Borrowed",
+    "Effective APR",
+    "LTV",
+    "Health factor",
+  ];
   const rows = [
-    ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "10,325.55367"],
-    ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "10,325.55367"],
-    ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "10,325.55367"],
+    ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "00.00%"],
+    ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "00.00%"],
+    ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "00.00%"],
   ];
 
   const dispatch = useDispatch();
@@ -89,184 +103,203 @@ const SpendTable = () => {
         //   bg="#101216"
         border="1px"
         borderColor="#2B2F35"
-        py="6"
+        // py="6"
         color="white"
         borderRadius="md"
         w="94%"
-        px="3"
+        // px="3"
+        p="2rem 1rem 24px"
       >
         <Table variant="unstyled">
           {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
-          <Thead>
-            <Tr fontFamily="Inter" color="#BDBFC1">
-              <Th
-                fontWeight="400"
-                fontSize="12px"
-                fontStyle="normal"
-                lineHeight="20px"
-                textTransform="none"
-              >
-                Borrow ID
-              </Th>
-              <Th
-                fontWeight="400"
-                fontSize="12px"
-                fontStyle="normal"
-                lineHeight="20px"
-                textAlign="center"
-                textTransform="none"
-              >
-                Borrow market
-              </Th>
-              <Th
-                fontWeight="400"
-                fontSize="12px"
-                fontStyle="normal"
-                lineHeight="20px"
-                textAlign="center"
-                textTransform="none"
-              >
-                Available borrow amount
-              </Th>
-              <Th
-                fontWeight="400"
-                fontSize="12px"
-                fontStyle="normal"
-                lineHeight="20px"
-                textAlign="center"
-                textTransform="none"
-              >
-                Collateral market
-              </Th>
-              <Th
-                fontWeight="400"
-                fontSize="12px"
-                fontStyle="normal"
-                lineHeight="20px"
-                textAlign="center"
-                textTransform="none"
-              >
-                Collateral amount
-              </Th>
+          <Thead width={"100%"}>
+            <Tr width={"100%"} height="2rem">
+              {columnItems.map((val: any, idx1: any) => (
+                <Td
+                  key={idx1}
+                  width={"12.5%"}
+                  fontSize={"12px"}
+                  fontWeight={400}
+                  p={0}
+                >
+                  <Text
+                    whiteSpace="pre-wrap"
+                    overflowWrap="break-word"
+                    width={"100%"}
+                    height={"2rem"}
+                    fontSize="12px"
+                    textAlign={
+                      idx1 == 0
+                        ? "left"
+                        : idx1 == columnItems.length - 1
+                        ? "right"
+                        : "center"
+                    }
+                    pl={idx1 == 0 ? 6 : 0}
+                    pr={idx1 == columnItems.length - 1 ? 45 : 0}
+                    color={"#BDBFC1"}
+                  >
+                    {val}
+                  </Text>
+                </Td>
+              ))}
             </Tr>
           </Thead>
 
-          <Tbody bg="inherit">
+          <Tbody bg="inherit" position="relative">
             {rows.map((currentRow, index) => {
               return (
-                <Tr
-                  _hover={{
-                    backgroundColor: "#2B2F35",
-                    width: "80%",
-                    borderRadius: "10px",
-                  }}
-                  key={index}
-                  cursor="pointer"
-                >
-                  <Td>
-                    <Box display="flex" gap="2">
-                      <Text
-                        fontSize="14px"
-                        fontWeight="400"
-                        fontStyle="normal"
-                        lineHeight="22px"
-                        color="#E6EDF3"
-                      >
-                        {currentRow[0]}
-                      </Text>
-                    </Box>
-                  </Td>
-                  <Td textAlign="center">
-                    <Box
-                      display="flex"
-                      gap="1"
-                      justifyContent="center"
-                      h="full"
-                      alignItems="center"
-                    >
-                      <Box my="1">
-                        <TableUsdtLogo />
-                      </Box>
-                      <Text
-                        fontSize="14px"
-                        fontWeight="400"
-                        fontStyle="normal"
-                        lineHeight="22px"
-                        color="#E6EDF3"
-                      >
-                        {currentRow[1]}
-                      </Text>
-                    </Box>
-                  </Td>
-                  <Td
-                    textAlign="center"
-                    color="#E6EDF3"
-                    fontSize="14px"
-                    fontWeight="400"
-                    fontStyle="normal"
-                    lineHeight="22px"
+                <>
+                  <Tr
+                    _hover={{
+                      backgroundColor: "#2B2F35",
+                      // width: "80%",
+                      borderRadius: "6px",
+                    }}
+                    position="relative"
+                    height="4rem"
+                    key={index}
+                    cursor="pointer"
+                    bgColor={currentBorrow == index ? "#2B2F35" : "none "}
+                    onClick={() => {
+                      setSelectedDapp("trade");
+                      setCurrentBorrow(index);
+                    }}
                   >
-                    {currentRow[2]}
-                  </Td>
-                  <Td textAlign="center">
-                    <Box
-                      display="flex"
-                      gap="1"
-                      justifyContent="center"
-                      h="full"
-                      alignItems="center"
-                    >
-                      <Box my="1">
-                        <TableBtcLogo />
-                      </Box>
-                      <Text
-                        fontSize="14px"
-                        fontWeight="400"
-                        fontStyle="normal"
-                        lineHeight="22px"
-                        color="#E6EDF3"
+                    <Td>
+                      <Box
+                        position="absolute"
+                        height="24px"
+                        width="4px"
+                        borderRadius="6px"
+                        bgColor="#2B2F35"
+                        left={-2}
+                        display={currentBorrow == index ? "blcok" : "none"}
+                      />
+                      <Box
+                        display="flex"
+                        gap="2"
+                        // bgColor="blue"
+                        justifyContent="flex-start"
                       >
-                        {currentRow[3]}
-                      </Text>
-                    </Box>
-                  </Td>
-                  <Td
-                    textAlign="center"
-                    fontSize="14px"
-                    fontWeight="400"
-                    fontStyle="normal"
-                    lineHeight="22px"
-                    color="#E6EDF3"
-                  >
-                    {currentRow[4]}
-                  </Td>
-                </Tr>
+                        <Text
+                          fontSize="14px"
+                          fontWeight="400"
+                          fontStyle="normal"
+                          lineHeight="22px"
+                          color="#E6EDF3"
+                          textAlign="left"
+                        >
+                          {currentRow[0]}
+                        </Text>
+                      </Box>
+                    </Td>
+                    <Td textAlign="center">
+                      <Box
+                        display="flex"
+                        gap="1"
+                        justifyContent="center"
+                        h="full"
+                        alignItems="center"
+                      >
+                        <Box my="1">
+                          <TableUsdtLogo />
+                        </Box>
+                        <Text
+                          fontSize="14px"
+                          fontWeight="400"
+                          fontStyle="normal"
+                          lineHeight="22px"
+                          color="#E6EDF3"
+                        >
+                          {currentRow[1]}
+                        </Text>
+                      </Box>
+                    </Td>
+                    <Td
+                      textAlign="center"
+                      color="#E6EDF3"
+                      fontSize="14px"
+                      fontWeight="400"
+                      fontStyle="normal"
+                      lineHeight="22px"
+                    >
+                      {currentRow[2]}
+                    </Td>
+                    <Td textAlign="center">
+                      <Box
+                        display="flex"
+                        gap="1"
+                        justifyContent="center"
+                        h="full"
+                        alignItems="center"
+                      >
+                        <Box my="1">
+                          <TableBtcLogo />
+                        </Box>
+                        <Text
+                          fontSize="14px"
+                          fontWeight="400"
+                          fontStyle="normal"
+                          lineHeight="22px"
+                          color="#E6EDF3"
+                        >
+                          {currentRow[3]}
+                        </Text>
+                      </Box>
+                    </Td>
+                    <Td p={0}>
+                      <Box
+                        display="flex"
+                        // gap="2"
+                        // bgColor="blue"
+                        justifyContent="flex-end"
+                        pr={5}
+                      >
+                        <Text
+                          width="40%"
+                          fontSize="14px"
+                          fontWeight="400"
+                          fontStyle="normal"
+                          lineHeight="22px"
+                          color="#E6EDF3"
+                          textAlign="center"
+                        >
+                          {currentRow[4]}
+                        </Text>
+                      </Box>
+                    </Td>
+                  </Tr>
+                </>
               );
             })}
           </Tbody>
         </Table>
       </TableContainer>
-      <Box display="flex" justifyContent="left" w="89%" pt="14" pb="6rem">
-        <Tabs variant="unstyled">
-          <TabList borderRadius="md" bg="#101216" color="white">
+      <Box display="flex" justifyContent="left" w="94%" height="16rem">
+        <Tabs variant="unstyled" defaultIndex={1} pt="0rem">
+          <TabList
+            borderRadius="26px"
+            color={selectedDapp == "" ? "#2B2F35" : "white"}
+          >
             <Tab
-              padding="6px 16px"
+              padding="0px 16px"
               //   color="#6E7681"
               fontSize="14px"
               fontStyle="normal"
               border="1px"
               borderColor="#2B2F35"
               lineHeight="20px"
-              borderLeftRadius="md"
+              borderLeftRadius="6px"
               fontWeight="500"
+              // borderRadius="0px"
               _selected={{
                 // color: "white",
-                bg: "#0969DA",
-                border: "none",
-                borderRadius: "0px",
+                bg: selectedDapp != "" ? "#0969DA" : "none",
+                // border: "none",
               }}
             >
-              stake
+              Liquidity provision
             </Tab>
             <Tab
               padding="6px 16px"
@@ -278,11 +311,11 @@ const SpendTable = () => {
               lineHeight="20px"
               borderLeftRadius="md"
               fontWeight="500"
+              borderRadius="0px"
               _selected={{
                 // color: "white",
-                bg: "#0969DA",
-                border: "none",
-                borderRadius: "0px",
+                bg: selectedDapp != "" ? "#0969DA" : "none",
+                // border: "none",
               }}
             >
               swap
@@ -297,14 +330,14 @@ const SpendTable = () => {
               lineHeight="20px"
               borderLeftRadius="md"
               fontWeight="500"
+              borderRadius="0px"
               _selected={{
                 // color: "white",
-                bg: "#0969DA",
-                border: "none",
-                borderRadius: "0px",
+                bg: selectedDapp != "" ? "#0969DA" : "none",
+                // border: "none",
               }}
             >
-              trade
+              stake
             </Tab>
             <Tab
               padding="6px 16px"
@@ -314,16 +347,15 @@ const SpendTable = () => {
               border="1px"
               borderColor="#2B2F35"
               lineHeight="20px"
-              borderLeftRadius="md"
+              borderRightRadius="6px"
               fontWeight="500"
               _selected={{
                 // color: "white",
                 bg: "#0969DA",
-                border: "none",
-                borderRadius: "0px",
+                // border: "none",
               }}
             >
-              Liquidity provision
+              Trade
             </Tab>
           </TabList>
           <TabPanels>
@@ -332,18 +364,29 @@ const SpendTable = () => {
             </TabPanel>
             <TabPanel padding="0" mt="1.5rem">
               <Box>
-                <Text color="white" fontSize="sm">
+                <Text
+                  color={selectedDapp != "" ? "white" : "#2B2F35"}
+                  fontSize="sm"
+                >
                   Select a Dapp to begin with the spend
                 </Text>
                 <Box display="flex" gap="14" mt="1rem">
                   <Box cursor="pointer">
-                    <TableYagiLogo />
+                    {selectedDapp != "" ? (
+                      <TableYagiLogo />
+                    ) : (
+                      <TableYagiLogoDull />
+                    )}
                   </Box>
                   <Box cursor="pointer">
-                    <TableJediswapLogo />
+                    {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
                   </Box>
                   <Box cursor="pointer">
-                    <TableMySwap />
+                    {selectedDapp != "" ? (
+                      <TableJediswapLogo />
+                    ) : (
+                      <TableJediswapLogoDull />
+                    )}
                   </Box>
                 </Box>
               </Box>
@@ -352,10 +395,22 @@ const SpendTable = () => {
               <p>trade</p>
             </TabPanel>
             <TabPanel>
-              <p>Liquidity provision</p>
+              Trade
+              
             </TabPanel>
           </TabPanels>
         </Tabs>
+        <Box
+          // mt="1rem"
+          // height="100%"
+          // bgColor={"blue"}
+          width="95%"
+          display="flex"
+          justifyContent="flex-end"
+          alignItems="flex-end"
+        >
+          <LatestSyncedBlock width="16rem" height="100%" block={83207} />
+        </Box>
       </Box>
     </>
   );

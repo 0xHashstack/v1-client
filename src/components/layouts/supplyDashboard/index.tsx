@@ -20,6 +20,7 @@ import USDTLogo from "@/assets/images/stakeIcon.svg";
 import Image from "next/image";
 import BorrowModal from "@/components/modals/borrowModal";
 import SupplyModal from "@/components/modals/SupplyModal";
+import YourSupplyModal from "@/components/modals/yourSupply";
 
 export interface ICoin {
   name: string;
@@ -274,19 +275,7 @@ const SupplyDashboard = ({
                       pr={2}
                       // bgColor={"blue"}
                     >
-                      <Button
-                        key="suppy"
-                        backgroundColor="#101216"
-                        height={"2rem"}
-                        padding="0rem 0.8rem"
-                        border="1px solid #2b2f35"
-                        fontSize={"12px"}
-                        color="#6e6e6e"
-                        _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
-                        borderRadius={"6px"}
-                      >
-                        Actions
-                      </Button>
+                        <YourSupplyModal />
                     </Box>
                   </Td>
                 </Tr>

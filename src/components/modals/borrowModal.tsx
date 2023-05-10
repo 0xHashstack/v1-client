@@ -122,8 +122,8 @@ const BorrowModal = () => {
       <Button
         key="borrow"
         height={"2rem"}
-        padding="0rem 1rem"
-        border="1px solid #2b2f35"
+        padding="6px 12px"
+        border="1px solid #BDBFC1"
         color="#6e6e6e"
         fontSize={"12px"}
         bgColor="#101216"
@@ -788,10 +788,14 @@ const BorrowModal = () => {
                     </Box>
                   </Tooltip>
                 </Text>
-                <Text font-style="normal"
+                <Text
+                  font-style="normal"
                   font-weight="900"
                   font-size="12px"
-                  color="#6A737D">5.56%</Text>
+                  color="#6A737D"
+                >
+                  5.56%
+                </Text>
               </Text>
             </Card>
 

@@ -20,6 +20,7 @@ import USDTLogo from "@/assets/images/stakeIcon.svg";
 import Image from "next/image";
 import BorrowModal from "@/components/modals/borrowModal";
 import SupplyModal from "@/components/modals/SupplyModal";
+import StakeModal from "@/components/modals/StakeModal";
 
 export interface ICoin {
   name: string;
@@ -151,7 +152,7 @@ const DashboardLeft = ({
                   </HStack>
                 </Td>
                 <Td
-                  width={"17%"}
+                  width={"18%"}
                   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}
@@ -172,7 +173,7 @@ const DashboardLeft = ({
                   </Text>
                 </Td>
                 <Td
-                  width={"17%"}
+                  width={"18%"}
                   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}
@@ -189,11 +190,11 @@ const DashboardLeft = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    00000.00
+                    000.00
                   </Text>
                 </Td>
                 <Td
-                  width={"17%"}
+                  width={"18%"}
                   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}
@@ -214,13 +215,15 @@ const DashboardLeft = ({
                   </Text>
                 </Td>
                 <Td
-                  width={"5%"}
+                  width={"4%"}
                   maxWidth={"5rem"}
                   fontSize={"14px"}
                   fontWeight={400}
                   //   overflow={"hidden"}
                   textAlign={"right"}
                   // bgColor={"blue"}
+                  p={0}
+                  pr={3}
                 >
                   <Box
                     width="100%"
@@ -240,34 +243,12 @@ const DashboardLeft = ({
                   fontWeight={400}
                   //   overflow={"hidden"}
                   textAlign={"center"}
-                  //   bgColor="red"
+                  // bgColor="red"
+                  p={0}
+                  pl={2}
                 >
                   <Box position="relative" display="inline-block">
-                    <Text
-                      key="borrow-details"
-                      as="span"
-                      position="relative"
-                      color="#0969DA"
-                      fontSize="14px"
-                      width="100%"
-                      //   display="flex"
-                      //   alignItems="center"
-                      //   justifyContent="center"
-                      fontWeight="400"
-                      _hover={{
-                        "::before": {
-                          content: '""',
-                          position: "absolute",
-                          left: 0,
-                          bottom: "-0px",
-                          width: "100%",
-                          height: "1px",
-                          backgroundColor: "#0969DA",
-                        },
-                      }}
-                    >
-                      Details
-                    </Text>
+                    <StakeModal />
                   </Box>
                 </Td>
               </Tr>
