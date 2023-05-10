@@ -30,145 +30,156 @@ import StarknetLogo from "@/assets/icons/coins/starknet";
 import BrowserWalletIcon from "@/assets/icons/wallets/browserwallet";
 import EthWalletLogo from "@/assets/icons/coins/ethwallet";
 import {
-    selectInputSupplyAmount,
-    setCoinSelectedSupplyModal,
-    selectWalletBalance,
-    setInputSupplyAmount,
+  selectInputSupplyAmount,
+  setCoinSelectedSupplyModal,
+  selectWalletBalance,
+  setInputSupplyAmount,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
-    setModalDropdown,
-    selectModalDropDowns
+  setModalDropdown,
+  selectModalDropDowns,
 } from "@/store/slices/dropdownsSlice";
+import { useRouter } from "next/router";
 
 const WalletConnectModal = () => {
-    const { isOpen, onOpen, onClose } = useDisclosure();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
-    const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
-    const [inputAmount, setinputAmount] = useState(0);
-    const [sliderValue, setSliderValue] = useState(0);
-    const [currentNetwork, setCurrentNetwork] = useState("Select network")
+  const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
+  const [inputAmount, setinputAmount] = useState(0);
+  const [sliderValue, setSliderValue] = useState(0);
+  const [currentNetwork, setCurrentNetwork] = useState("Select network");
 
-    const dispatch = useDispatch();
-    const modalDropdowns = useSelector(selectModalDropDowns);
-    const walletBalance = useSelector(selectWalletBalance);
-    const inputAmount1 = useSelector(selectInputSupplyAmount);
+  const dispatch = useDispatch();
+  const modalDropdowns = useSelector(selectModalDropDowns);
+  const walletBalance = useSelector(selectWalletBalance);
+  const inputAmount1 = useSelector(selectInputSupplyAmount);
 
-    const getCoin = (CoinName: string) => {
-        switch (CoinName) {
-            case "BTC":
-                return <BTCLogo />;
-                break;
-            case "USDC":
-                return <USDCLogo />;
-                break;
-            case "USDT":
-                return <USDTLogo />;
-                break;
-            case "ETH":
-                return <ETHLogo />;
-                break;
-            case "DAI":
-                return <DAILogo />;
-                break;
-            case "Starknet":
-                return <StarknetLogo />;
-                break;
-            case "Ethereum (Coming soon)":
-                return <EthWalletLogo />
-                break;
-            default:
-                break;
-        }
-    };
+  const router = useRouter();
 
-    //This Function handles the modalDropDowns
-    const handleDropdownClick = (dropdownName: any) => {
-        // Dispatches an action called setModalDropdown with the dropdownName as the payload
-        dispatch(setModalDropdown(dropdownName));
-    };
+  const getCoin = (CoinName: string) => {
+    switch (CoinName) {
+      case "BTC":
+        return <BTCLogo />;
+        break;
+      case "USDC":
+        return <USDCLogo />;
+        break;
+      case "USDT":
+        return <USDTLogo />;
+        break;
+      case "ETH":
+        return <ETHLogo />;
+        break;
+      case "DAI":
+        return <DAILogo />;
+        break;
+      case "Starknet":
+        return <StarknetLogo />;
+        break;
+      case "Ethereum (Coming soon)":
+        return <EthWalletLogo />;
+        break;
+      default:
+        break;
+    }
+  };
 
-    //This function is used to find the percentage of the slider from the input given by the user
-    const handleChange = (newValue: any) => {
-        // Calculate the percentage of the new value relative to the wallet balance
-        var percentage = (newValue * 100) / walletBalance;
-        percentage = Math.max(0, percentage);
-        if (percentage > 100) {
-            setSliderValue(100);
-            setinputAmount(newValue);
-            dispatch(setInputSupplyAmount(newValue));
-        } else {
-            percentage = Math.round(percentage * 100) / 100;
-            setSliderValue(percentage);
-            setinputAmount(newValue);
-            dispatch(setInputSupplyAmount(newValue));
-        }
-    };
+  //This Function handles the modalDropDowns
+  const handleDropdownClick = (dropdownName: any) => {
+    // Dispatches an action called setModalDropdown with the dropdownName as the payload
+    dispatch(setModalDropdown(dropdownName));
+  };
 
-    const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-    const networks = [
-        { name: "Starknet", status: "enable" },
-        { name: "Ethereum (Coming soon)", status: "disable" },
-    ];
+  //This function is used to find the percentage of the slider from the input given by the user
+  const handleChange = (newValue: any) => {
+    // Calculate the percentage of the new value relative to the wallet balance
+    var percentage = (newValue * 100) / walletBalance;
+    percentage = Math.max(0, percentage);
+    if (percentage > 100) {
+      setSliderValue(100);
+      setinputAmount(newValue);
+      dispatch(setInputSupplyAmount(newValue));
+    } else {
+      percentage = Math.round(percentage * 100) / 100;
+      setSliderValue(percentage);
+      setinputAmount(newValue);
+      dispatch(setInputSupplyAmount(newValue));
+    }
+  };
 
+  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const networks = [
+    { name: "Starknet", status: "enable" },
+    { name: "Ethereum (Coming soon)", status: "disable" },
+  ];
 
-    return (
-        <div>
-            <Button
-                key="borrow"
-                height={"2rem"}
-                padding="0rem 1rem"
-                border="1px solid #2b2f35"
-                color="#6e6e6e"
-                fontSize={"12px"}
-                bgColor="#101216"
-                _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
-                borderRadius={"6px"}
-                onClick={onOpen}
+  return (
+    <div>
+      <Button
+        key="borrow"
+        bgColor="#30363d"
+        color="#BDBFC1"
+        border="1px solid #8b949e"
+        borderRadius="6px"
+        p="6px 12px"
+        _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
+        onClick={onOpen}
+      >
+        Connect Wallet
+      </Button>
+      <Portal>
+        <Modal isOpen={isOpen} onClose={onClose} isCentered>
+          <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
+          <ModalContent
+            bg="#010409"
+            color="white"
+            borderRadius="md"
+            maxW="462px"
+            zIndex={1}
+            mt="5rem"
+            className="modal-content"
+          >
+            <ModalHeader
+              mt="1rem"
+              fontSize="14px"
+              fontWeight="600"
+              fontStyle="normal"
+              lineHeight="20px"
             >
-                Connect Wallet
-            </Button>
-            <Portal>
-                <Modal isOpen={isOpen} onClose={onClose}  isCentered>
-                    <ModalOverlay
-                        bg="rgba(244, 242, 255, 0.5);"
-                        mt="3.8rem"
-                    />
-                    <ModalContent
-                        bg="#010409"
-                        color="white"
-                        borderRadius="md"
-                        maxW="462px"
-                        zIndex={1}
-                        mt="5rem"
-                        className="modal-content"
-
-                    >
-                        <ModalHeader mt="1rem" fontSize="14px" fontWeight="600" fontStyle="normal" lineHeight="20px">Connect a wallet</ModalHeader>
-                        <ModalCloseButton mt="1rem" mr="1rem" />
-                        <ModalBody>
-                            <Card bg="#101216" mb="0.5rem" p="1rem" border="1px solid #2B2F35" >
-                                <Box
-                                    display="flex"
-                                    border="1px"
-                                    borderColor="#2B2F35"
-                                    justifyContent="space-between"
-                                    py="2"
-                                    pl="3"
-                                    pr="3"
-                                    mb="1rem"
-                                    mt="0.5rem"
-                                    borderRadius="md"
-                                    className="navbar"
-                                    cursor="pointer"
-                                    onClick={() =>
-                                        handleDropdownClick("walletConnectDropDown")
-                                    }
-                                >
-                                    <Box display="flex" gap="1">
-                                        {currentNetwork!='Select network'&&<Box p="1">{getCoin(currentNetwork)}</Box>}
-                                        <Text color="white" p="1">{currentNetwork}</Text>
-                                    </Box>
+              Connect a wallet
+            </ModalHeader>
+            <ModalCloseButton mt="1rem" mr="1rem" />
+            <ModalBody>
+              <Card
+                bg="#101216"
+                mb="0.5rem"
+                p="1rem"
+                border="1px solid #2B2F35"
+              >
+                <Box
+                  display="flex"
+                  border="1px"
+                  borderColor="#2B2F35"
+                  justifyContent="space-between"
+                  py="2"
+                  pl="3"
+                  pr="3"
+                  mb="1rem"
+                  mt="0.5rem"
+                  borderRadius="md"
+                  className="navbar"
+                  cursor="pointer"
+                  onClick={() => handleDropdownClick("walletConnectDropDown")}
+                >
+                  <Box display="flex" gap="1">
+                    {currentNetwork != "Select network" && (
+                      <Box p="1">{getCoin(currentNetwork)}</Box>
+                    )}
+                    <Text color="white" p="1">
+                      {currentNetwork}
+                    </Text>
+                  </Box>
 
                                     <Box pt="1" className="navbar-button">
                                         <DropdownUp />
@@ -298,20 +309,37 @@ const WalletConnectModal = () => {
                             service & disclaimer
                                 </Button>
 
-                            <Box mt="0.4rem" display="flex" flexDirection="column" pb="32px">
-                                <Text fontSize="10px" lineHeight="18px" fontWeight="400" color="#8C8C8C">
-                                    This mainnet is currently in alpha with limitations on the maximum supply & borrow amount. This is done in consideration of the current network and liquidity constraints of the Starknet. We urge the users to use the dapp with caution. Hashstack will not cover any accidental loss of user funds.
-                                </Text>
-                                <Text fontSize="10px" lineHeight="18px" fontWeight="400" color="#8C8C8C" mt="1rem">
-                                    Wallets are provided by External Providers and by selecting you agree to Terms of those Providers. Your access to the wallet might be reliant on the External Provider being operational.
-
-                                </Text>
-                            </Box>
-                        </ModalBody>
-                    </ModalContent>
-                </Modal>
-            </Portal>
-        </div>
-    );
+              <Box mt="0.4rem" display="flex" flexDirection="column" pb="32px">
+                <Text
+                  fontSize="10px"
+                  lineHeight="18px"
+                  fontWeight="400"
+                  color="#8C8C8C"
+                >
+                  This mainnet is currently in alpha with limitations on the
+                  maximum supply & borrow amount. This is done in consideration
+                  of the current network and liquidity constraints of the
+                  Starknet. We urge the users to use the dapp with caution.
+                  Hashstack will not cover any accidental loss of user funds.
+                </Text>
+                <Text
+                  fontSize="10px"
+                  lineHeight="18px"
+                  fontWeight="400"
+                  color="#8C8C8C"
+                  mt="1rem"
+                >
+                  Wallets are provided by External Providers and by selecting
+                  you agree to Terms of those Providers. Your access to the
+                  wallet might be reliant on the External Provider being
+                  operational.
+                </Text>
+              </Box>
+            </ModalBody>
+          </ModalContent>
+        </Modal>
+      </Portal>
+    </div>
+  );
 };
 export default WalletConnectModal;

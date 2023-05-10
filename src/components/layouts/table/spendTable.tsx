@@ -33,10 +33,12 @@ import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
 import TableYagiLogoDull from "./tableIcons/yagiLogoDull";
 import TableMySwapDull from "./tableIcons/mySwapDull";
 import TableJediswapLogoDull from "./tableIcons/jediswapLogoDull";
+import Image from "next/image";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
   const [selectedDapp, setSelectedDapp] = useState("");
+  const [tradeNote, setTradeNote] = useState(false);
   const handleClick = () => {
     //   onClick={setShowWarning(() => false)}
     setShowWarning(false);
@@ -69,7 +71,7 @@ const SpendTable = () => {
             p="4"
             fontStyle="normal"
             fontWeight="400"
-            borderRadius="md"
+            borderRadius="6px"
             // textAlign="center"
           >
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
@@ -136,7 +138,7 @@ const SpendTable = () => {
                         : "center"
                     }
                     pl={idx1 == 0 ? 6 : 0}
-                    pr={idx1 == columnItems.length - 1 ? 45 : 0}
+                    pr={idx1 == columnItems.length - 1 ? 35 : 0}
                     color={"#BDBFC1"}
                   >
                     {val}
@@ -152,9 +154,9 @@ const SpendTable = () => {
                 <>
                   <Tr
                     _hover={{
-                      backgroundColor: "#2B2F35",
+                      // backgroundColor: "#2B2F35",
                       // width: "80%",
-                      borderRadius: "6px",
+                      borderRadius: "0px",
                     }}
                     position="relative"
                     height="4rem"
@@ -166,12 +168,12 @@ const SpendTable = () => {
                       setCurrentBorrow(index);
                     }}
                   >
-                    <Td>
+                    <Td borderLeftRadius="6px">
                       <Box
                         position="absolute"
                         height="24px"
                         width="4px"
-                        borderRadius="6px"
+                        // borderRadius="6px"
                         bgColor="#2B2F35"
                         left={-2}
                         display={currentBorrow == index ? "blcok" : "none"}
@@ -248,7 +250,7 @@ const SpendTable = () => {
                         </Text>
                       </Box>
                     </Td>
-                    <Td p={0}>
+                    <Td p={0} borderRightRadius="6px">
                       <Box
                         display="flex"
                         // gap="2"
@@ -276,14 +278,33 @@ const SpendTable = () => {
           </Tbody>
         </Table>
       </TableContainer>
-      <Box display="flex" justifyContent="left" w="94%" height="16rem">
-        <Tabs variant="unstyled" defaultIndex={1} pt="0rem">
+      <Box
+        display="flex"
+        justifyContent="left"
+        w="94%"
+        height="16rem"
+
+        // bgColor="pink"
+      >
+        <Tabs
+          variant="unstyled"
+          defaultIndex={0}
+          pt="2rem"
+          display="flex"
+          flexDirection="column"
+          width="45%"
+          gap="2rem"
+        >
           <TabList
-            borderRadius="26px"
+            // borderRadius="26px"
             color={selectedDapp == "" ? "#2B2F35" : "white"}
+            h="2rem"
+            width="100%"
+            display="flex"
+            // bgColor="red"
           >
             <Tab
-              padding="0px 16px"
+              // padding="6px 16px"
               //   color="#6E7681"
               fontSize="14px"
               fontStyle="normal"
@@ -292,85 +313,89 @@ const SpendTable = () => {
               lineHeight="20px"
               borderLeftRadius="6px"
               fontWeight="500"
+              _selected={{
+                // color: "white",
+                bg: selectedDapp != "" ? "#0969DA" : "none",
+                // border: "none",
+              }}
+              // isDisabled={selectedDapp == ""}
+            >
+              Liquidity provision
+            </Tab>
+            <Tab
+              // padding="6px 16px"
+              //   color="#6E7681"
+              fontSize="14px"
+              fontStyle="normal"
+              border="1px"
+              borderColor="#2B2F35"
+              lineHeight="20px"
+              // borderLeftRadius="md"
+              fontWeight="500"
+              borderRadius="0px"
+              _selected={{
+                // color: "white",
+                bg: selectedDapp != "" ? "#0969DA" : "none",
+                // border: "none",
+              }}
+              // isDisabled={selectedDapp == ""}
+              // isDisabled={selectedDapp == ""}
+            >
+              swap
+            </Tab>
+            <Tab
+              // padding="0px 16px"
+              //   color="#6E7681"
+              fontSize="14px"
+              fontStyle="normal"
+              border="1px"
+              borderColor="#2B2F35"
+              lineHeight="20px"
+              fontWeight="500"
               // borderRadius="0px"
               _selected={{
                 // color: "white",
                 bg: selectedDapp != "" ? "#0969DA" : "none",
                 // border: "none",
               }}
-            >
-              Liquidity provision
-            </Tab>
-            <Tab
-              padding="6px 16px"
-              //   color="#6E7681"
-              fontSize="14px"
-              fontStyle="normal"
-              border="1px"
-              borderColor="#2B2F35"
-              lineHeight="20px"
-              borderLeftRadius="md"
-              fontWeight="500"
-              borderRadius="0px"
-              _selected={{
-                // color: "white",
-                bg: selectedDapp != "" ? "#0969DA" : "none",
-                // border: "none",
-              }}
-            >
-              swap
-            </Tab>
-            <Tab
-              padding="6px 16px"
-              //   color="#6E7681"
-              fontSize="14px"
-              fontStyle="normal"
-              border="1px"
-              borderColor="#2B2F35"
-              lineHeight="20px"
-              borderLeftRadius="md"
-              fontWeight="500"
-              borderRadius="0px"
-              _selected={{
-                // color: "white",
-                bg: selectedDapp != "" ? "#0969DA" : "none",
-                // border: "none",
-              }}
+              // isDisabled={selectedDapp == ""}
             >
               stake
             </Tab>
+
             <Tab
-              padding="6px 16px"
+              // padding="6px 16px"
               //   color="#6E7681"
               fontSize="14px"
               fontStyle="normal"
               border="1px"
               borderColor="#2B2F35"
               lineHeight="20px"
-              borderRightRadius="6px"
+              // borderLeftRadius="md"
               fontWeight="500"
+              borderRadius="0px"
+              borderRightRadius="6px"
               _selected={{
                 // color: "white",
-                bg: "#0969DA",
+                bg: selectedDapp != "" ? "#0969DA" : "none",
                 // border: "none",
               }}
+              onClick={() => setTradeNote(true)}
+              // isDisabled={selectedDapp == ""}
             >
               Trade
             </Tab>
           </TabList>
           <TabPanels>
-            <TabPanel>
-              <p>stake</p>
-            </TabPanel>
-            <TabPanel padding="0" mt="1.5rem">
-              <Box>
+            <TabPanel p={0}>
+              <Box display="flex" flexDirection="column">
                 <Text
                   color={selectedDapp != "" ? "white" : "#2B2F35"}
                   fontSize="sm"
                 >
                   Select a Dapp to begin with the spend
                 </Text>
-                <Box display="flex" gap="14" mt="1rem">
+                <Box display="flex" gap="4rem" mt="1rem">
                   <Box cursor="pointer">
                     {selectedDapp != "" ? (
                       <TableYagiLogo />
@@ -391,12 +416,91 @@ const SpendTable = () => {
                 </Box>
               </Box>
             </TabPanel>
-            <TabPanel>
-              <p>trade</p>
+            <TabPanel padding="0">
+              <Box>
+                <Text
+                  color={selectedDapp != "" ? "white" : "#2B2F35"}
+                  fontSize="sm"
+                >
+                  Select a Dapp to begin with the spend
+                </Text>
+                <Box display="flex" gap="14" mt="1rem">
+                  <Box cursor="pointer">
+                    {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
+                  </Box>
+                  <Box cursor="pointer">
+                    {selectedDapp != "" ? (
+                      <TableJediswapLogo />
+                    ) : (
+                      <TableJediswapLogoDull />
+                    )}
+                  </Box>
+                </Box>
+              </Box>
             </TabPanel>
-            <TabPanel>
-              Trade
-              
+            <TabPanel p={0}>
+              <Box>
+                <Text
+                  color={selectedDapp != "" ? "white" : "#2B2F35"}
+                  fontSize="sm"
+                >
+                  Select a Dapp to begin with the spend
+                </Text>
+                <Box display="flex" gap="14" mt="1rem">
+                  <Box cursor="pointer">
+                    {selectedDapp != "" ? (
+                      <TableYagiLogo />
+                    ) : (
+                      <TableYagiLogoDull />
+                    )}
+                  </Box>
+                </Box>
+              </Box>
+            </TabPanel>
+
+            <TabPanel p={0}>
+              <Box
+                display={tradeNote ? "flex" : "none"}
+                bg="#DDF4FF"
+                fontSize="14px"
+                p="8px"
+                fontStyle="normal"
+                fontWeight="400"
+                borderRadius="6px"
+                justifyContent="center"
+                alignItems="flex-start"
+                bgColor="#fff8c5"
+                // textAlign="center"
+                // bgColor="red"
+              >
+                <Box
+                  cursor="pointer"
+                  // bgColor="blue"
+                  display="flex"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  pt="1px"
+                >
+                  <Image
+                    src="./alertTrade.svg"
+                    alt="Picture of the author"
+                    width="46"
+                    height="46"
+                  />
+                </Box>
+                <Box p="6px 2px" display="flex">
+                  We are evaluating few promising DEXes to integrate. Please
+                  check back at a late time.
+                  <Box
+                    p="2px 0px"
+                    cursor="pointer"
+                    // bgColor="pink"
+                    onClick={() => setTradeNote(false)}
+                  >
+                    <TableClose />
+                  </Box>
+                </Box>
+              </Box>
             </TabPanel>
           </TabPanels>
         </Tabs>

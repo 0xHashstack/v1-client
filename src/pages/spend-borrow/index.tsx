@@ -17,7 +17,7 @@ const SpendBorrow = () => {
     setRender(true);
   }, []);
   return (
-    <PageCard>
+    <PageCard pt="6.5rem">
       <HStack
         display="flex"
         justifyContent="space-between"

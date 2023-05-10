@@ -308,8 +308,8 @@ const BorrowDashboard = ({
                         height="50%"
                         width="100%"
                         alignItems="center"
-                        justifyContent="flex-start"
-                        gap={0.5}
+                        justifyContent="center"
+                        // gap={0.2}
                       >
                         <Box minWidth={"16px"}>
                           <Image
@@ -332,7 +332,7 @@ const BorrowDashboard = ({
                       >
                         <Box
                           display="flex"
-                          gap={0.5}
+                          // gap={0.5}
                           // bgColor={"blue"}
                         >
                           <Box
