@@ -15,7 +15,7 @@ export default function Home() {
   const href = "/market";
   useEffect(() => {
     // setRender(true);
-    // router.push(href);
+    router.push(href);
   }, [router]);
   return (
     <PageCard justifyContent="center" alignItems="center">
