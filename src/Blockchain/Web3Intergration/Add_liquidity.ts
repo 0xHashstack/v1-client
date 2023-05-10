@@ -1,4 +1,4 @@
-import { CallData, constants, Provider, Contract, Account, json, ec } from "starknet";
+import { CallData, constants, Provider, Contract, Account, json, ec, } from "starknet";
 import fs from "fs";
 // @ts-ignore
 import {dtoken_loan_address, rtoken_address, opencore_address } from "./constants.ts";
@@ -6,7 +6,7 @@ const dtoken_loan_address = "0xx32312";
 const rtoken_address = "0xx11312";
 const opencore_address = "0xx232312";
 
-async function Repay_Borrow_Integration(loan_id:any,amount:any) {
+async function Add_liquidity_interaction(integration_address:any,loan_id:any,marketA:any,marketB:any,min_pool_token:any) {
 
     const provider = new Provider({ sequencer: { network: constants.NetworkName.SN_GOERLI } });
     const privateKey1 = "0x02f38fb567d5d50d375d6ec3c7f12b22c5eb436a3d16ddfde17eeef8e26eb93b"
@@ -25,26 +25,30 @@ async function Repay_Borrow_Integration(loan_id:any,amount:any) {
     myTestContract.connect(account0);
 
     const par =  CallData.compile({
+        _integration_address: integration_address,
         _loan_id: loan_id,
-        _amount: amount,
+        _marketA: marketA,
+        _marketB: marketB,
+        _min_pool_token: min_pool_token,
     })
 
     try {
-        const result = await myTestContract.repay_loan(par);
+        const result = await myTestContract.add_liquidity(par);
         await provider.waitForTransaction(result.transaction_hash);
-
         return result;
 
     } catch (error) {
         console.log(error);
         return false;
     }
+
 }
 
 
-async function Estimate_fees_Repay_Borrow(loan_id:any,amount:any) {
+async function estimate_gasfee_Add_liquidity(integration_address:any,loan_id:any,marketA:any,marketB:any,min_pool_token:any) {
 
     const provider = new Provider({ sequencer: { network: constants.NetworkName.SN_GOERLI } });
+    // const provider = new starknet.Provider();
     const privateKey1 = "0x02f38fb567d5d50d375d6ec3c7f12b22c5eb436a3d16ddfde17eeef8e26eb93b"
 
     // initialize existing Argent X account
@@ -60,13 +64,24 @@ async function Estimate_fees_Repay_Borrow(loan_id:any,amount:any) {
     // Interactions with the contract with call & invoke
     myTestContract.connect(account0);
 
+    const par =  CallData.compile({
+        _integration_address: integration_address,
+        _loan_id: loan_id,
+        _marketA: marketA,
+        _marketB: marketB,
+        _min_pool_token: min_pool_token,
+    })
+
     try {
         const { suggestedMaxFee: estimatedFee1 } = await account0.estimateInvokeFee({
             contractAddress: opencore_address,
-            entrypoint: "repay_loan",
+            entrypoint: "add_liquidity",
             calldata:[
+                integration_address,
                 loan_id,
-                amount,
+                marketA,
+                marketB,
+                min_pool_token,
           ],
           });
           console.log("estimatedFee :", estimatedFee1)
@@ -75,4 +90,5 @@ async function Estimate_fees_Repay_Borrow(loan_id:any,amount:any) {
         console.log(error);
         return false;
     }
+
 }

@@ -1,81 +1,81 @@
-import { CallData, constants, Provider, Contract, Account, json, ec } from "starknet";
-import fs from "fs";
-// @ts-ignore
-import {dtoken_loan_address, rtoken_address, opencore_address } from "./constants.ts";
-const dtoken_loan_address = "0xx32312";
-const rtoken_address = "0xx11312";
-const opencore_address = "0xx232312";
+// import { CallData, constants, Provider, Contract, Account, json, ec } from "starknet";
+// import fs from "fs";
+// // @ts-ignore
+// import {dtoken_loan_address, rtoken_address, opencore_address } from "./constants.ts";
+// const dtoken_loan_address = "0xx32312";
+// const rtoken_address = "0xx11312";
+// const opencore_address = "0xx232312";
 
 
-async function BalanceOf_Account_Integration(account:any) {
+// async function BalanceOf_Account_Integration(account:any) {
 
-    const provider = new Provider({ sequencer: { network: constants.NetworkName.SN_GOERLI } });
-    const privateKey1 = "0x02f38fb567d5d50d375d6ec3c7f12b22c5eb436a3d16ddfde17eeef8e26eb93b"
+//     const provider = new Provider({ sequencer: { network: constants.NetworkName.SN_GOERLI } });
+//     const privateKey1 = "0x02f38fb567d5d50d375d6ec3c7f12b22c5eb436a3d16ddfde17eeef8e26eb93b"
 
-    // initialize existing Argent X account
-    const account0Address: string = "0x03038ae29ffd0258880b34b9ffdd37a02bd1b7a7e15ff183c69a0a1c18d30998";
-    const account0 = new Account(provider, account0Address, privateKey1);
+//     // initialize existing Argent X account
+//     const account0Address: string = "0x03038ae29ffd0258880b34b9ffdd37a02bd1b7a7e15ff183c69a0a1c18d30998";
+//     const account0 = new Account(provider, account0Address, privateKey1);
 
-    //{Contract Address}
+//     //{Contract Address}
 
-    const compiledTest = json.parse(fs.readFileSync("./compiledContracts/Spend_Borrow_Integration.sierra").toString("ascii"));
-    const myTestContract = new Contract(compiledTest.abi, rtoken_address, provider);
-    console.log('Test Contract connected at =', myTestContract.address);
+//     const compiledTest = json.parse(fs.readFileSync("./compiledContracts/Spend_Borrow_Integration.sierra").toString("ascii"));
+//     const myTestContract = new Contract(compiledTest.abi, rtoken_address, provider);
+//     console.log('Test Contract connected at =', myTestContract.address);
 
-    // Interactions with the contract with call & invoke
-    myTestContract.connect(account0);
+//     // Interactions with the contract with call & invoke
+//     myTestContract.connect(account0);
 
-    const par =  CallData.compile({
-        _account: account,
-    })
+//     const par =  CallData.compile({
+//         _account: account,
+//     })
 
-    try {
-        let result = await myTestContract.revert_interact_with_l3(par);
+//     try {
+//         let result = await myTestContract.revert_interact_with_l3(par);
 
-        await provider.waitForTransaction(result.transaction_hash);
+//         await provider.waitForTransaction(result.transaction_hash);
 
-        return result;
+//         return result;
         
-    } catch (error) {
-        console.log(error);
-        return false;
+//     } catch (error) {
+//         console.log(error);
+//         return false;
         
-    }
+//     }
 
-}
+// }
 
-async function Total_Supply_Integration() {
+// async function Total_Supply_Integration() {
 
-    const provider = new Provider({ sequencer: { network: constants.NetworkName.SN_GOERLI } });
-    const privateKey1 = "0x02f38fb567d5d50d375d6ec3c7f12b22c5eb436a3d16ddfde17eeef8e26eb93b"
+//     const provider = new Provider({ sequencer: { network: constants.NetworkName.SN_GOERLI } });
+//     const privateKey1 = "0x02f38fb567d5d50d375d6ec3c7f12b22c5eb436a3d16ddfde17eeef8e26eb93b"
 
-    // initialize existing Argent X account
-    const account0Address: string = "0x03038ae29ffd0258880b34b9ffdd37a02bd1b7a7e15ff183c69a0a1c18d30998";
-    const account0 = new Account(provider, account0Address, privateKey1);
+//     // initialize existing Argent X account
+//     const account0Address: string = "0x03038ae29ffd0258880b34b9ffdd37a02bd1b7a7e15ff183c69a0a1c18d30998";
+//     const account0 = new Account(provider, account0Address, privateKey1);
 
-    //{Contract Address}
+//     //{Contract Address}
 
-    const compiledTest = json.parse(fs.readFileSync("./compiledContracts/Spend_Borrow_Integration.sierra").toString("ascii"));
-    const myTestContract = new Contract(compiledTest.abi, rtoken_address, provider);
-    console.log('Test Contract connected at =', myTestContract.address);
+//     const compiledTest = json.parse(fs.readFileSync("./compiledContracts/Spend_Borrow_Integration.sierra").toString("ascii"));
+//     const myTestContract = new Contract(compiledTest.abi, rtoken_address, provider);
+//     console.log('Test Contract connected at =', myTestContract.address);
 
-    // Interactions with the contract with call & invoke
-    myTestContract.connect(account0);
+//     // Interactions with the contract with call & invoke
+//     myTestContract.connect(account0);
 
-    try {
-        let result = await myTestContract.revert_interact_with_l3({
-                parseRequest: false,
-                parseResponse: false,
-            });
+//     try {
+//         let result = await myTestContract.revert_interact_with_l3({
+//                 parseRequest: false,
+//                 parseResponse: false,
+//             });
 
-        await provider.waitForTransaction(result.transaction_hash);
+//         await provider.waitForTransaction(result.transaction_hash);
 
-        return result;
+//         return result;
         
-    } catch (error) {
-        console.log(error);
-        return false;
+//     } catch (error) {
+//         console.log(error);
+//         return false;
         
-    }
+//     }
 
-}
+// }
