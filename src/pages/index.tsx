@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { Box, Button, Stack, Text } from "@chakra-ui/react";
 import Navbar from "@/components/layouts/navbar/Navbar";
+import PageCard from "@/components/layouts/pageCard";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -16,32 +17,19 @@ export default function Home() {
     router.push(href);
   }, [router]);
   return (
-    <main className={`${inter.className}`}>
-      {render && (
-        <>
-          <Navbar />
-          <Stack
-            bgColor="#010409"
-            alignItems="center"
-            justifyContent="center"
-            minHeight={"100vh"}
-            gap="1.5rem"
-          >
-            <Text fontSize="46px" color="#FFFFFF">
-              Welcome to Hashstack&apos;s mainnet!
-            </Text>
-            <Button
-              bgColor="#30363d"
-              color="#BDBFC1"
-              border="1px solid #8b949e"
-              borderRadius="6px"
-              p="6px 12px"
-            >
-              Connect wallet
-            </Button>
-          </Stack>
-        </>
-      )}
-    </main>
+    <PageCard justifyContent="center" alignItems="center">
+      <Text fontSize="46px" color="#FFFFFF">
+        Welcome to Hashstack&apos;s mainnet!
+      </Text>
+      <Button
+        bgColor="#30363d"
+        color="#BDBFC1"
+        border="1px solid #8b949e"
+        borderRadius="6px"
+        p="6px 12px"
+      >
+        Connect wallet
+      </Button>
+    </PageCard>
   );
 }

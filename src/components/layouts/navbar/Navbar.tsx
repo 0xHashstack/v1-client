@@ -20,6 +20,7 @@ import hoverMoreIcon from "../../../assets/images/hoverMoreIcon.svg";
 import hoverStake from "../../../assets/images/hoverStakeIcon.svg";
 import starknetIcon from "../../../assets/images/starknetWallet.svg";
 import darkModeOn from "../../../assets/images/darkModeOn.svg";
+import darkModeOff from "../../../assets/images/darkModeOff.svg";
 import darkModeIcon from "../../../assets/images/darkModeIcon.svg";
 import darkIcon from "../../../assets/images/darkIcon.svg";
 import arrowNavRight from "../../../assets/images/arrowNavRight.svg";
@@ -59,7 +60,7 @@ const Navbar = () => {
     dispatch(setNavDropdown(dropdownName));
   };
   const [justifyContent, setJustifyContent] = useState("flex-start");
-
+  const [toggleDarkMode, setToggleDarkMode] = useState(true);
   const toggleMode = () => {
     setJustifyContent(
       justifyContent === "flex-start" ? "flex-end" : "flex-start"
@@ -467,23 +468,23 @@ const Navbar = () => {
                   </Text>
                 </>
               )}
-              <Box position="absolute" right="0.5rem">
+              <Box position="absolute" right="0.6rem">
                 {!navDropdowns.walletConnectionDropdown ? (
                   <Image
                     src={"./connectWalletArrowDown.svg"}
                     alt="arrow"
-                    width="14"
-                    height="14"
+                    width="16"
+                    height="16"
                     style={{
                       cursor: "pointer",
                     }}
                   />
                 ) : (
                   <Image
-                    src={"./connectWalletArrowUp.svg"}
+                    src={"./connectWalletArrowDown.svg"}
                     alt="arrow"
-                    width="14"
-                    height="14"
+                    width="16"
+                    height="16"
                     style={{
                       cursor: "pointer",
                     }}
@@ -552,7 +553,7 @@ const Navbar = () => {
                       height="6"
                       width="6"
                     />
-                    Starknet
+                    Ethereum Goerli
                     {/* <img
                     src={`${dropDownArrow}`}
                     alt="Picture of the author"
@@ -563,6 +564,15 @@ const Navbar = () => {
                       cursor: "pointer",
                     }}
                   /> */}
+                    <Image
+                      src={"./connectWalletArrowDown.svg"}
+                      alt="arrow"
+                      width="16"
+                      height="16"
+                      style={{
+                        cursor: "pointer",
+                      }}
+                    />
                   </Box>
                 </Box>
               </Box>
@@ -640,6 +650,7 @@ const Navbar = () => {
                 right="0px"
                 top="140%"
                 className="dropdown-container"
+                // bgColor="white"
               >
                 <Text
                   color="#6e7681"
@@ -652,12 +663,13 @@ const Navbar = () => {
                 <HStack
                   display="flex"
                   justifyContent="space-between"
+                  alignItems="center"
                   // backgroundColor="red"
                   width={"100%"}
                   paddingX="8px"
                 >
                   <Text fontSize="14px">Dark mode</Text>
-                  <Box
+                  {/* <Box
                     // height="fit-content"
                     display="flex"
                     // padding="0.5px"
@@ -667,15 +679,23 @@ const Navbar = () => {
                     width="3rem"
                     borderRadius="100px"
                     onClick={toggleMode}
+                  > */}
+                  <Box
+                    onClick={() => setToggleDarkMode(!toggleDarkMode)}
+                    // bgColor="blue"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
                   >
                     <Image
-                      src={darkModeIcon}
+                      src={toggleDarkMode ? darkModeOn : darkModeOff}
                       alt="Picture of the author"
-                      width="25"
-                      height="25"
+                      width="44"
+                      height="22"
                       style={{ cursor: "pointer" }}
                     />
                   </Box>
+                  {/* </Box> */}
                 </HStack>
                 {/* <hr />
                 <div>

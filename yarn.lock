@@ -2084,6 +2084,11 @@ bn.js@^5.2.1:
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-5.2.1.tgz#0bc527a6a0d18d0aa8d5b0538ce4a77dccfa7b70"
   integrity sha512-eXRvHzWyYPBuB4NBy0cmYQjGitUrtqwbvlzP3G6VFnNRbsZQIxQ10PbKKHt8gZ/HW/D/747aDl+QkDqg3KQLMQ==
 
+bowser@^2.11.0:
+  version "2.11.0"
+  resolved "https://registry.yarnpkg.com/bowser/-/bowser-2.11.0.tgz#5ca3c35757a7aa5771500c70a73a9f91ef420a8f"
+  integrity sha512-AlcaJBi/pqqJBIQ8U9Mcpc9i8Aqxn88Skv5d+xBX006BY5u8N3mGLHa5Lgppa7L/HfwgwLgZ6NYs+Ag6uUmJRA==
+
 brace-expansion@^1.1.7:
   version "1.1.11"
   resolved "https://registry.npmjs.org/brace-expansion/-/brace-expansion-1.1.11.tgz"
@@ -2836,6 +2841,19 @@ get-nonce@^1.0.0:
   version "1.0.1"
   resolved "https://registry.npmjs.org/get-nonce/-/get-nonce-1.0.1.tgz"
   integrity sha512-FJhYRoDaiatfEkUK8HKlicmu/3SGFD51q3itKDGoSTysQJBnfOcxU5GxnhE1E6soB76MbT0MBtnKJuXyAx+96Q==
+
+get-starknet-core@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/get-starknet-core/-/get-starknet-core-2.1.0.tgz#f8dee81c0b050fbb6d284fad81a5bbdad79ef74c"
+  integrity sha512-sT9fxIiM3maEqz1cVggiB/jGn+nUCavhhhJRnU/G1zKMmJFYORjRNohEZ1xXgRt6MFVUNPnAzxQrhI1F645VNA==
+
+get-starknet@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/get-starknet/-/get-starknet-2.1.0.tgz#990e275dd1ce3b531b9b8a8a51f9699beba8951b"
+  integrity sha512-cJX1M/IsFYBpMI/oyn05CPiM3a/95RLesYkc4pCeuO6x3upSaJDa6kanWi294qPRBnhwanAIB3zeGhVZ9ymBMg==
+  dependencies:
+    bowser "^2.11.0"
+    get-starknet-core "^2.1.0"
 
 get-symbol-description@^1.0.0:
   version "1.0.0"
@@ -3900,10 +3918,10 @@ source-map@^0.5.7:
   resolved "https://registry.yarnpkg.com/source-map/-/source-map-0.5.7.tgz#8a039d2d1021d22d1ea14c80d8ea468ba2ef3fcc"
   integrity sha512-LbrmJOMUSdEVxIKvdcJzQC+nQhe8FUZQTXQy6+I75skNgn3OoQ0DZA8YnFa7gp8tqtL3KPf1kmo0R5DoApeSGQ==
 
-starknet@5.7.0:
-  version "5.7.0"
-  resolved "https://registry.yarnpkg.com/starknet/-/starknet-5.7.0.tgz#8fc6b80c528008f24e66954c37542b59f0d67866"
-  integrity sha512-FmuX0OzqKa/jTkloeddUhEy3TzaZriWF8cfyk0hxOk9ytb51DWqtTuGQgOFxT2Ss0n7zUhLTzcd3bgkhwffjbQ==
+starknet@^5.9.2:
+  version "5.9.2"
+  resolved "https://registry.yarnpkg.com/starknet/-/starknet-5.9.2.tgz#2f82f2eb5e24912468e00df64cb349fd0f6fdc9c"
+  integrity sha512-zCoMQOlmaNeYlNjvVjYevaYcZv+6Uvivtn1n9IuF8cGtZKHVYf/7wqha8rjpFgGGCgDthJjqj+B7Zxu9oh0GFg==
   dependencies:
     "@noble/curves" "^0.8.2"
     isomorphic-fetch "^3.0.0"
@@ -4118,11 +4136,6 @@ typed-array-length@^1.0.4:
     call-bind "^1.0.2"
     for-each "^0.3.3"
     is-typed-array "^1.1.9"
-
-typeface-inter@^3.18.1:
-  version "3.18.1"
-  resolved "https://registry.yarnpkg.com/typeface-inter/-/typeface-inter-3.18.1.tgz#24cccdf29923f318589783997be20a662cd3ab9c"
-  integrity sha512-c+TBanYFCvmg3j5vPk+zxK4ocMZbPxMEmjnwG7rPQoV87xvQ6b07VbAOC0Va0XBbbZCGw6cWNeFuLeg1YQru3Q==
 
 typescript@5.0.4:
   version "5.0.4"
