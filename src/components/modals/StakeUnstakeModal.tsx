@@ -45,9 +45,6 @@ import {
 import { useState } from "react";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
 import EthToUsdt from "@/assets/icons/pools/ethToUsdt";
-import SmallEth from "@/assets/icons/coins/smallEth";
-import SmallUsdt from "@/assets/icons/coins/smallUsdt";
-import MySwap from "@/assets/icons/dapps/mySwap";
 import MySwapDisabled from "@/assets/icons/dapps/mySwapDisabled";
 import UsdcToUsdt from "@/assets/icons/pools/usdcToUsdt";
 import EthToUsdc from "@/assets/icons/pools/ethToUsdc";
@@ -172,20 +169,33 @@ const StakeUnstakeModal = () => {
     const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] = useState("BTC")
     return (
         <Box>
-            <Button
-                key="borrow"
-                height={"2rem"}
-                padding="0rem 1rem"
-                border="1px solid #2b2f35"
-                color="#6e6e6e"
-                fontSize={"12px"}
-                bgColor="#101216"
-                _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
-                borderRadius={"6px"}
-                onClick={onOpen}
-            >
-                Details
-            </Button>
+      <Text
+        key="borrow-details"
+        as="span"
+        position="relative"
+        color="#0969DA"
+        fontSize="14px"
+        width="100%"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        fontWeight="400"
+        cursor="pointer"
+        _hover={{
+          "::before": {
+            content: '""',
+            position: "absolute",
+            left: 0,
+            bottom: "-0px",
+            width: "100%",
+            height: "1px",
+            backgroundColor: "#0969DA",
+          },
+        }}
+        onClick={onOpen}
+      >
+        Details
+      </Text>
 
             <Modal
                 isOpen={isOpen}
@@ -194,7 +204,7 @@ const StakeUnstakeModal = () => {
             //   scrollBehavior="inside"
             >
                 <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
-                <ModalContent mt="5rem" bg={"#010409"} maxW="442px">
+                <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
                     {/* <ModalHeader>Borrow</ModalHeader> */}
                     <ModalCloseButton mt="1rem" mr="1rem" color="white" />
                     <ModalBody color={"#E6EDF3"} pt={6} px={7}>
@@ -543,15 +553,14 @@ const StakeUnstakeModal = () => {
                                             </Text>
                                             {inputStakeAmount > 0 ? (
                                                 <Button
-                                                    bg="#8B949E"
-                                                    color="white"
-                                                    size="sm"
-                                                    width="100%"
-                                                    mt="1rem"
-                                                    mb="1rem"
-                                                    border="1px solid #2B2F35"
-                                                    _hover={{ bg: "#2DA44E" }}
-                                                    _focus={{ bg: "#298E46" }}
+                                                bg="#101216"
+                                                color="#8B949E"
+                                                size="sm"
+                                                width="100%"
+                                                mt="1.5rem"
+                                                mb="1.5rem"
+                                                border="1px solid #8B949E"
+                                                _hover={{ bg: "#10216" }}
                                                 >
                                                     Stake
                                                 </Button>
@@ -561,8 +570,8 @@ const StakeUnstakeModal = () => {
                                                     color="#6E7681"
                                                     size="sm"
                                                     width="100%"
-                                                    mt="1rem"
-                                                    mb="1rem"
+                                                    mt="1.5rem"
+                                                    mb="1.5rem"
                                                     border="1px solid #2B2F35"
                                                     _hover={{ bg: "#101216" }}
                                                 >
@@ -870,15 +879,14 @@ const StakeUnstakeModal = () => {
                                             </Text>
                                             {inputUnstakeAmount > 0 ? (
                                                 <Button
-                                                    bg="#8B949E"
-                                                    color="white"
-                                                    size="sm"
-                                                    width="100%"
-                                                    mt="1rem"
-                                                    mb="1rem"
-                                                    border="1px solid #2B2F35"
-                                                    _hover={{ bg: "#2DA44E" }}
-                                                    _focus={{ bg: "#298E46" }}
+                                                bg="#101216"
+                                                color="#8B949E"
+                                                size="sm"
+                                                width="100%"
+                                                mt="1.5rem"
+                                                mb="1.5rem"
+                                                border="1px solid #8B949E"
+                                                _hover={{ bg: "#10216" }}
                                                 >
                                                     Unstake
                                                 </Button>
@@ -888,8 +896,8 @@ const StakeUnstakeModal = () => {
                                                     color="#6E7681"
                                                     size="sm"
                                                     width="100%"
-                                                    mt="1rem"
-                                                    mb="1rem"
+                                                    mt="1.5rem"
+                                                    mb="1.5rem"
                                                     border="1px solid #2B2F35"
                                                     _hover={{ bg: "#101216" }}
                                                 >

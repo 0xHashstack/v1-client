@@ -20,7 +20,7 @@ import {
   NumberInputField,
   Portal,
 } from "@chakra-ui/react";
-
+import { useRef } from "react";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
 import InfoIcon from "@/assets/icons/infoIcon";
@@ -30,6 +30,7 @@ import USDTLogo from "@/assets/icons/coins/usdt";
 import ETHLogo from "@/assets/icons/coins/eth";
 import DAILogo from "@/assets/icons/coins/dai";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
+import SpinnerLoader from "../uiElements/loaders/spinner";
 import {
   selectInputSupplyAmount,
   setCoinSelectedSupplyModal,
@@ -44,6 +45,7 @@ import {
 
 const SupplyModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [inputAmount, setinputAmount] = useState(0);
@@ -457,6 +459,7 @@ const SupplyModal = () => {
                       color="#6A737D"
                     >
                       Gas estimate:
+                      {/* <SpinnerLoader/> */}
                     </Text>
                     <Tooltip
                       hasArrow
@@ -527,15 +530,14 @@ const SupplyModal = () => {
               </Card>
               {inputAmount1 > 0 ? (
                 <Button
-                  bg="#8B949E"
-                  color="white"
+                bg="#101216"
+                  color="#8B949E"
                   size="sm"
                   width="100%"
-                  mt="2rem"
-                  mb="2rem"
-                  border="1px solid #2B2F35"
-                  _hover={{ bg: "#2DA44E" }}
-                  _focus={{ bg: "#298E46" }}
+                  mt="1.5rem"
+                  mb="1.5rem"
+                  border="1px solid #8B949E"
+                  _hover={{ bg: "#10216" }}
                 >
                   Supply
                 </Button>
@@ -545,8 +547,8 @@ const SupplyModal = () => {
                   color="#6E7681"
                   size="sm"
                   width="100%"
-                  mt="2rem"
-                  mb="2rem"
+                  mt="1.5rem"
+                  mb="1.5rem"
                   border="1px solid #2B2F35"
                   _hover={{ bg: "#101216" }}
                 >

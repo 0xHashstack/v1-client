@@ -864,7 +864,7 @@ const YourBorrowModal = () => {
         // size="sm"
       >
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
-        <ModalContent mt="5rem" bg={"#010409"} maxW="442px">
+        <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
           {/* <ModalHeader>Borrow</ModalHeader> */}
           <ModalCloseButton top={"7"} right={"6"} color={"white"} size={"sm"} />
           <ModalBody color={"#E6EDF3"} pt={6} px={7}>
@@ -1750,14 +1750,13 @@ const YourBorrowModal = () => {
 
                       {inputRepayAmount > 0 ? (
                         <Button
-                          bg="#8B949E"
-                          color="white"
-                          size="sm"
-                          width="100%"
-                          mb="2rem"
-                          border="1px solid #2B2F35"
-                          _hover={{ bg: "#2DA44E" }}
-                          _focus={{ bg: "#298E46" }}
+                        bg="#101216"
+                        color="#8B949E"
+                        size="sm"
+                        width="100%"
+                        mb="1.5rem"
+                        border="1px solid #8B949E"
+                        _hover={{ bg: "#10216" }}
                         >
                           Borrow
                         </Button>
@@ -1920,89 +1919,83 @@ const YourBorrowModal = () => {
                             </Tooltip>
                           </Box>
                           <Box
-                            display="flex"
-                            border="1px"
-                            borderColor="#2B2F35"
-                            justifyContent="space-between"
-                            py="2"
-                            pl="3"
-                            pr="3"
-                            borderRadius="md"
-                            className="navbar"
-                            onClick={() =>
-                              handleDropdownClick(
-                                "yourBorrowModalBorrowMarketDropdown2"
-                              )
-                            }
-                            as="button"
-                          >
-                            <Box display="flex" gap="1">
-                              <Box p="1">
-                                {getCoin(currentBorrowMarketCoin2)}
-                              </Box>
-                              <Text>{currentBorrowMarketCoin2}</Text>
-                            </Box>
-                            <Box pt="1" className="navbar-button">
-                              <DropdownUp />
-                            </Box>
-                            {modalDropdowns.yourBorrowModalBorrowMarketDropdown2 && (
-                              <Box
-                                key={"box-key"}
-                                w="full"
-                                left="0"
-                                bg="#03060B"
-                                py="2"
-                                className="dropdown-container"
-                                boxShadow="dark-lg"
-                              >
-                                {coins.map((coin, index) => {
-                                  return (
-                                    <Box
-                                      key={index}
-                                      as="button"
-                                      w="full"
-                                      display="flex"
-                                      alignItems="center"
-                                      gap="1"
-                                      pr="2"
-                                      onClick={() => {
-                                        setCurrentBorrowMarketCoin2(coin);
-                                      }}
-                                    >
-                                      {coin === currentBorrowMarketCoin2 && (
-                                        <Box
-                                          w="3px"
-                                          h="28px"
-                                          bg="#0C6AD9"
-                                          borderRightRadius="md"
-                                        ></Box>
-                                      )}
-                                      <Box
-                                        w="full"
-                                        display="flex"
-                                        py="5px"
-                                        px={`${
-                                          coin === currentBorrowMarketCoin2
-                                            ? "1"
-                                            : "5"
-                                        }`}
-                                        gap="1"
-                                        bg={`${
-                                          coin === currentBorrowMarketCoin2
-                                            ? "#0C6AD9"
-                                            : "inherit"
-                                        }`}
-                                        borderRadius="md"
-                                      >
-                                        <Box p="1">{getCoin(coin)}</Box>
-                                        <Text>{coin}</Text>
-                                      </Box>
+                                    display="flex"
+                                    border="1px"
+                                    borderColor="#2B2F35"
+                                    justifyContent="space-between"
+                                    py="2"
+                                    pl="3"
+                                    pr="3"
+                                    mt="0.3rem"
+                                    borderRadius="md"
+                                    className="navbar"
+                                    cursor="pointer"
+                                    onClick={() =>
+                                        handleDropdownClick("yourBorrowModalBorrowMarketDropdown2")
+                                    }
+                                >
+                                    <Box display="flex" gap="1">
+                                        <Box p="1">{getCoin(currentBorrowMarketCoin2)}</Box>
+                                        <Text color="white" mt="0.12rem">{currentBorrowMarketCoin2}</Text>
                                     </Box>
-                                  );
-                                })}
-                              </Box>
-                            )}
-                          </Box>
+                                    
+                                    <Box pt="1" className="navbar-button">
+                                        <DropdownUp />
+                                    </Box>
+                                    {modalDropdowns.yourBorrowModalBorrowMarketDropdown2 && (
+                                        <Box
+                                            w="full"
+                                            left="0"
+                                            bg="#03060B"
+                                            py="2"
+                                            className="dropdown-container"
+                                            boxShadow="dark-lg"
+                                        >
+                                            {coins.map((coin, index) => {
+                                                return (
+                                                    <Box
+                                                        key={index}
+                                                        as="button"
+                                                        w="full"
+                                                        display="flex"
+                                                        alignItems="center"
+                                                        gap="1"
+                                                        pr="2"
+                                                        onClick={() => {
+                                                          setCurrentBorrowMarketCoin2(coin);
+                                                            // dispatch(setCoinSelectedSupplyModal(coin))
+                                                        }}
+                                                    >
+                                                        {coin === currentBorrowMarketCoin2 && (
+                                                            <Box
+                                                                w="3px"
+                                                                h="28px"
+                                                                bg="#0C6AD9"
+                                                                borderRightRadius="md"
+                                                            ></Box>
+                                                        )}
+                                                        <Box
+                                                            w="full"
+                                                            display="flex"
+                                                            py="5px"
+                                                            px={`${coin === currentBorrowMarketCoin2 ? "1" : "5"
+                                                                }`}
+                                                            gap="1"
+                                                            bg={`${coin === currentBorrowMarketCoin2
+                                                                ? "#0C6AD9"
+                                                                : "inherit"
+                                                                }`}
+                                                            borderRadius="md"
+                                                        >
+                                                            <Box p="1">{getCoin(coin)}</Box>
+                                                            <Text color="white">{coin}</Text>
+                                                        </Box>
+                                                    </Box>
+                                                );
+                                            })}
+                                        </Box>
+                                    )}
+                                </Box>
                         </Box>
                         <Text
                           color="#8B949E"
@@ -2484,19 +2477,18 @@ const YourBorrowModal = () => {
                           <Text color="#6E7681">1.10</Text>
                         </Text>
                       </Card>
-                      {inputAmount > 0 ? (
+                      {inputCollateralAmount > 0 ? (
                         <Button
-                          bg="#8B949E"
-                          color="white"
-                          size="sm"
-                          width="100%"
-                          mt="2rem"
-                          mb="2rem"
-                          border="1px solid #2B2F35"
-                          _hover={{ bg: "#2DA44E" }}
-                          _focus={{ bg: "#298E46" }}
+                        bg="#101216"
+                        color="#8B949E"
+                        size="sm"
+                        width="100%"
+                        mt="1.5rem"
+                        mb="1.5rem"
+                        border="1px solid #8B949E"
+                        _hover={{ bg: "#10216" }}
                         >
-                          Borrow
+                          Add Collateral
                         </Button>
                       ) : (
                         <Button
@@ -2509,7 +2501,7 @@ const YourBorrowModal = () => {
                           border="1px solid #2B2F35"
                           _hover={{ bg: "#101216" }}
                         >
-                          Borrow
+                          Add Collateral
                         </Button>
                       )}
                     </TabPanel>

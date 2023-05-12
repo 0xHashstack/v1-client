@@ -12,6 +12,7 @@ const initialState = {
   coinSelectedSupplyModal: "BTC",
   collateralCoinSelectedBorrowModal: "BTC",
   borrowCoinSelectedBorrowModal: "BTC",
+  spendBorrowselectedDapp:"",
   walletBalance: 90,
   inputYourBorrowModalRepayAmount: 0,
 
@@ -59,6 +60,9 @@ export const userAccountSlice = createSlice({
     setInputBorrowModalBorrowAmount(state, action) {
       state.inputBorrowModalBorrowAmount = action.payload;
     },
+    setSpendBorrowSelectedDapp(state,action){
+      state.spendBorrowselectedDapp=action.payload;
+    },
     setInputTradeModalCollateralAmount(state, action) {
       state.inputTradeModalCollateralAmount = action.payload;
     },
@@ -97,6 +101,7 @@ export const {
   setReserves,
   setOracleAndFairPrices,
   setOffchainCurrentBlock,
+  setSpendBorrowSelectedDapp
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -109,6 +114,8 @@ export const { setCollateralCoinSelectedBorrowModal } =
   userAccountSlice.actions;
 export const { setBorrowCoinSelectedBorrowModal } = userAccountSlice.actions;
 export const { setInputYourBorrowModalRepayAmount } = userAccountSlice.actions;
+export const selectSelectedDapp = (state) =>
+  state.user_account.spendBorrowselectedDapp;
 export const selectInputSupplyAmount = (state) =>
   state.user_account.inputSupplyAmount;
 export const selectCoinSelectedSupplyModal = (state) =>

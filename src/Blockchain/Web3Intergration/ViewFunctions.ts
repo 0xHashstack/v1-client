@@ -9,12 +9,12 @@ import {
 } from "starknet";
 import fs from "fs";
 // @ts-ignore
-import {dtoken_loan_address, metrics_address, opencore_address } from "./constants.ts";
+import {dtoken_loan_address, metrics_address, opencore_address } from "./constants";
 import { getProvider } from "@project-serum/anchor";
-const dtoken_loan_address = "0xx32312";
-const rtoken_address = "0xx11312";
-const opencore_address = "0xx232312";
-const metrics_address = "0x0123"
+// const dtoken_loan_address = "0xx32312";
+// const rtoken_address = "0xx11312";
+// const opencore_address = "0xx232312";
+// const metrics_address = "0x0123"
 
 // function run() {
 //     const provider = new Provider({ sequencer: { network: constants.NetworkName.SN_GOERLI } });
@@ -141,7 +141,7 @@ async function asset_price(market: any) {
   }
 }
 
-async function total_supply(market: any) {
+export async function total_supply(market: any) {
   const provider = new Provider({
     sequencer: { network: constants.NetworkName.SN_GOERLI },
   });
@@ -458,7 +458,7 @@ async function available_borrow_amount(loan_id: any) {
   }
 }
 
-async function available_reserves(market: any) {
+export async function available_reserves(market: any) {
   const provider = new Provider({
     sequencer: { network: constants.NetworkName.SN_GOERLI },
   });
@@ -1139,7 +1139,7 @@ async function est_withdraw(rToken: any, rtoken_amount: any) {
 
 
 //returns uint128
-async function rtokens_unlocked(loan_id:any) {
+ async function rtokens_unlocked(loan_id:any) {
 
     const provider = new Provider({ sequencer: { network: constants.NetworkName.SN_GOERLI } });
     const privateKey1 = "0x02f38fb567d5d50d375d6ec3c7f12b22c5eb436a3d16ddfde17eeef8e26eb93b"

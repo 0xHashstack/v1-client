@@ -33,11 +33,19 @@ import DaiToEth from "@/assets/icons/pools/daiToEth";
 import BtcToEth from "@/assets/icons/pools/btcToEth";
 import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
 import EthToUsdt from "@/assets/icons/pools/ethToUsdt";
+import TableMySwap from "../layouts/table/tableIcons/mySwap";
+import TableJediswapLogoDull from "../layouts/table/tableIcons/jediswapLogoDull";
+import TableYagiLogo from "../layouts/table/tableIcons/yagiLogo";
+import TableYagiLogoDull from "../layouts/table/tableIcons/yagiLogoDull";
+import TableMySwapDull from "../layouts/table/tableIcons/mySwapDull";
+import TableJediswapLogo from "../layouts/table/tableIcons/jediswapLogo";
+
 import {
     selectInputSupplyAmount,
     setCoinSelectedSupplyModal,
     selectWalletBalance,
     setInputSupplyAmount,
+    selectSelectedDapp
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -54,6 +62,7 @@ const LiquidityProvisionModal = () => {
     const [currentPool, setCurrentPool] = useState("ETH/USDT");
     const [inputAmount, setinputAmount] = useState(0);
     const [sliderValue, setSliderValue] = useState(0);
+    const selectedDapp=useSelector(selectSelectedDapp);
 
     const dispatch = useDispatch();
     const modalDropdowns = useSelector(selectModalDropDowns);
@@ -145,22 +154,27 @@ const LiquidityProvisionModal = () => {
 
     return (
         <div>
-            <Button
-                key="borrow"
-                height={"2rem"}
-                padding="0rem 1rem"
-                border="1px solid #2b2f35"
-                color="#6e6e6e"
-                fontSize={"12px"}
-                bgColor="#101216"
-                _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
-                borderRadius={"6px"}
-                onClick={onOpen}
-            >
-                Liquidity
-            </Button>
+                <Box display="flex" gap="4rem" mt="1rem">
+                  <Box cursor="pointer" onClick={onOpen}>
+                    {selectedDapp != "" ? (
+                      <TableYagiLogo />
+                    ) : (
+                      <TableYagiLogoDull />
+                    )}
+                  </Box>
+                  <Box cursor="pointer" onClick={onOpen}>
+                    {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
+                  </Box>
+                  <Box cursor="pointer" onClick={onOpen}>
+                    {selectedDapp != "" ? (
+                      <TableJediswapLogo />
+                    ) : (
+                      <TableJediswapLogoDull />
+                    )}
+                  </Box>
+                </Box>
             <Portal>
-                <Modal isOpen={isOpen} onClose={onClose}  isCentered >
+                <Modal isOpen={isOpen} onClose={onClose}  isCentered scrollBehavior="inside">
                     <ModalOverlay
                         bg="rgba(244, 242, 255, 0.5);"
                         mt="3.8rem"
@@ -169,9 +183,9 @@ const LiquidityProvisionModal = () => {
                         bg="#010409"
                         color="white"
                         borderRadius="md"
-                        maxW="462px"
+                        maxW="464px"
                         zIndex={1}
-                        mt="4rem"
+                        mt="8rem"
                         className="modal-content"
 
                     >
@@ -694,15 +708,14 @@ const LiquidityProvisionModal = () => {
                                 </Box>
                             {inputAmount1 > 0 ? (
                                 <Button
-                                    bg="#8B949E"
-                                    color="white"
-                                    size="sm"
-                                    width="100%"
-                                    mt="1rem"
-                                    mb="0.5rem"
-                                    border="1px solid #2B2F35"
-                                    _hover={{ bg: "#2DA44E" }}
-                                    _focus={{ bg: "#298E46" }}
+                                bg="#101216"
+                                color="#8B949E"
+                                size="sm"
+                                width="100%"
+                                mt="1.5rem"
+                                mb="1.5rem"
+                                border="1px solid #8B949E"
+                                _hover={{ bg: "#10216" }}
                                 >
                                     Spend Borrow
                                 </Button>
@@ -712,8 +725,8 @@ const LiquidityProvisionModal = () => {
                                     color="#6E7681"
                                     size="sm"
                                     width="100%"
-                                    mt="1rem"
-                                    mb="0.5rem"
+                                    mt="1.5rem"
+                                    mb="1.5rem"
                                     border="1px solid #2B2F35"
                                     _hover={{ bg: "#101216" }}
                                 >

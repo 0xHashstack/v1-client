@@ -46,11 +46,14 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <UserbackProvider token="40202|80442|mX2ZdYcMxJbcQjhQu6EJB9M9S">
       <ChakraProvider theme={theme}>
+        <StarknetProvider connectors={connectors}>
         <Provider store={store}>
           <StarknetProvider connectors={connectors}>
             <Component {...pageProps} />
           </StarknetProvider>
         </Provider>
+
+        </StarknetProvider>
       </ChakraProvider>
     </UserbackProvider>
   );
