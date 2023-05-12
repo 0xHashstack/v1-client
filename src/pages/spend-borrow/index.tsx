@@ -60,7 +60,7 @@ const SpendBorrow = () => {
         </HStack>
       </HStack>
       <SpendTable />
-      {/* <WalletConnectModal/> */}
+      <WalletConnectModal/>
     </PageCard>
   );
 };

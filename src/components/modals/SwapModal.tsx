@@ -27,11 +27,16 @@ import SmallUsdt from "@/assets/icons/coins/smallUsdt";
 import DAILogo from "@/assets/icons/coins/dai";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
 import SmallJediswapLogo from "@/assets/icons/coins/smallJediswap";
+import TableMySwap from "../layouts/table/tableIcons/mySwap";
+import TableMySwapDull from "../layouts/table/tableIcons/mySwapDull";
+import TableJediswapLogo from "../layouts/table/tableIcons/jediswapLogo";
+import TableJediswapLogoDull from "../layouts/table/tableIcons/jediswapLogoDull";
 import {
     selectInputSupplyAmount,
     setCoinSelectedSupplyModal,
     selectWalletBalance,
     setInputSupplyAmount,
+    selectSelectedDapp,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -52,6 +57,7 @@ const SwapModal = () => {
     const modalDropdowns = useSelector(selectModalDropDowns);
     const walletBalance = useSelector(selectWalletBalance);
     const inputAmount1 = useSelector(selectInputSupplyAmount);
+    const selectedDapp=useSelector(selectSelectedDapp);
 
     const getCoin = (CoinName: string) => {
         switch (CoinName) {
@@ -104,27 +110,27 @@ const SwapModal = () => {
             dispatch(setInputSupplyAmount(newValue));
         }
     };
+    // console.log(onOpen)
 
     const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
     return (
         <div>
-            <Button
-                key="borrow"
-                height={"2rem"}
-                padding="0rem 1rem"
-                border="1px solid #2b2f35"
-                color="#6e6e6e"
-                fontSize={"12px"}
-                bgColor="#101216"
-                _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
-                borderRadius={"6px"}
-                onClick={onOpen}
-            >
-                Swap
-            </Button>
-            <Portal>
-                <Modal isOpen={isOpen} onClose={onClose}  isCentered >
+                            <Box display="flex" gap="14" mt="1rem">
+                  <Box cursor="pointer" onClick={onOpen}>
+                    {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
+                  </Box>
+                  <Box cursor="pointer" onClick={onOpen}>
+                    {selectedDapp != "" ? (
+                      <Box >
+                        <TableJediswapLogo />
+                      </Box>
+                    ) : (
+                      <TableJediswapLogoDull />
+                    )}
+                  </Box>
+                </Box>
+                <Modal isOpen={isOpen} onClose={onClose}  isCentered scrollBehavior="inside">
                     <ModalOverlay
                         bg="rgba(244, 242, 255, 0.5);"
                         mt="3.8rem"
@@ -678,8 +684,8 @@ const SwapModal = () => {
                                     color="#6E7681"
                                     size="sm"
                                     width="100%"
-                                    mt="1rem"
-                                    mb="0.5rem"
+                                    mt="1.5rem"
+                                    mb="1.5rem"
                                     border="1px solid #2B2F35"
                                     _hover={{ bg: "#101216" }}
                                 >
@@ -689,7 +695,6 @@ const SwapModal = () => {
                         </ModalBody>
                     </ModalContent>
                 </Modal>
-            </Portal>
         </div>
     );
 };

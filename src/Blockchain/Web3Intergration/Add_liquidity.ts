@@ -1,4 +1,4 @@
-import { CallData, constants, Provider, Contract, Account, json, ec, } from "starknet";
+import { Calldata, constants, Provider, Contract, Account, json, ec, } from "starknet";
 import fs from "fs";
 // @ts-ignore
 import {dtoken_loan_address, rtoken_address, opencore_address } from "./constants.ts";
@@ -24,7 +24,7 @@ async function Add_liquidity_interaction(integration_address:any,loan_id:any,mar
     // Interactions with the contract with call & invoke
     myTestContract.connect(account0);
 
-    const par =  CallData.compile({
+    const par =  Calldata.compile({
         _integration_address: integration_address,
         _loan_id: loan_id,
         _marketA: marketA,
@@ -64,7 +64,7 @@ async function estimate_gasfee_Add_liquidity(integration_address:any,loan_id:any
     // Interactions with the contract with call & invoke
     myTestContract.connect(account0);
 
-    const par =  CallData.compile({
+    const par =  Calldata.compile({
         _integration_address: integration_address,
         _loan_id: loan_id,
         _marketA: marketA,

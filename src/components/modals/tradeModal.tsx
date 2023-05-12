@@ -1237,8 +1237,8 @@ const TradeModal = () => {
                   color="#8B949E"
                   size="sm"
                   width="100%"
-                  mt="1.5rem"
-                  mb="1.5rem"
+                  mt="3"
+                  mb="2Srem"
                   border="1px solid #8B949E"
                   _hover={{ bg: "#10216" }}
                   >

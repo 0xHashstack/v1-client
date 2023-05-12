@@ -9,16 +9,17 @@ import {
     ModalCloseButton,
     Card,
     Text,
-    Checkbox,
-    Tooltip,
     Box,
-    NumberInput,
-    NumberInputField,
     Portal,
 } from "@chakra-ui/react";
-import SliderTooltip from "../uiElements/sliders/sliderTooltip";
+import {
+  useAccount,
+  useConnectors,
+  useStarknet,
+  useBlock,
+} from "@starknet-react/core";
+import { useContract } from "@starknet-react/core";
 import { useDisclosure } from "@chakra-ui/react";
-import InfoIcon from "@/assets/icons/infoIcon";
 import BTCLogo from "../../assets/icons/coins/btc";
 import USDCLogo from "@/assets/icons/coins/usdc";
 import BravosIcon from "@/assets/icons/wallets/bravos";
@@ -31,7 +32,6 @@ import BrowserWalletIcon from "@/assets/icons/wallets/browserwallet";
 import EthWalletLogo from "@/assets/icons/coins/ethwallet";
 import {
   selectInputSupplyAmount,
-  setCoinSelectedSupplyModal,
   selectWalletBalance,
   setInputSupplyAmount,
 } from "@/store/slices/userAccountSlice";
@@ -40,22 +40,24 @@ import {
   setModalDropdown,
   selectModalDropDowns,
 } from "@/store/slices/dropdownsSlice";
-import { useRouter } from "next/router";
-
+// import {available_reserves} from '../../Blockchain/Web3Intergration/ViewFunctions'
 const WalletConnectModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-
-  const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [currentNetwork, setCurrentNetwork] = useState("Select network");
+  const [walletName, setWalletName] = useState("")
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
-  const inputAmount1 = useSelector(selectInputSupplyAmount);
+  const { account, address, status } = useAccount();
+  const { available, disconnect, connect, connectors } = useConnectors();
+  // console.log(total_supply)
+  // console.log(available_reserves)
 
-  const router = useRouter();
+
+  
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -257,7 +259,6 @@ const WalletConnectModal = () => {
                                     display="flex"
                                     justifyContent="space-between"
                                     cursor="pointer"
-                                    onClick={()=>{}}
                                 >
                                     <Text ml="1rem" color="white">
                                         Bravos Wallet

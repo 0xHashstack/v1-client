@@ -39,6 +39,7 @@ import {
     setModalDropdown,
     selectModalDropDowns
 } from "@/store/slices/dropdownsSlice";
+import TableYagiLogo from "../layouts/table/tableIcons/yagiLogo";
 
 const StakeModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
@@ -110,22 +111,16 @@ const StakeModal = () => {
 
     return (
         <div>
-            <Button
-                key="borrow"
-                height={"2rem"}
-                padding="0rem 1rem"
-                border="1px solid #2b2f35"
-                color="#6e6e6e"
-                fontSize={"12px"}
-                bgColor="#101216"
-                _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
-                borderRadius={"6px"}
+            <Box
                 onClick={onOpen}
+                // mt="0.7rem"
+                bg="#010409"
+                _hover={{bg:"#010409"}}
             >
-                Stake
-            </Button>
+                <TableYagiLogo/>
+            </Box>
             <Portal>
-                <Modal isOpen={isOpen} onClose={onClose}  isCentered >
+                <Modal isOpen={isOpen} onClose={onClose}  isCentered scrollBehavior="inside">
                     <ModalOverlay
                         bg="rgba(244, 242, 255, 0.5);"
                         mt="3.8rem"
@@ -676,8 +671,8 @@ const StakeModal = () => {
                                     color="#6E7681"
                                     size="sm"
                                     width="100%"
-                                    mt="1rem"
-                                    mb="0.5rem"
+                                    mt="1.5rem"
+                                    mb="1.5rem"
                                     border="1px solid #2B2F35"
                                     _hover={{ bg: "#101216" }}
                                 >
