@@ -237,7 +237,7 @@ const DashboardLeft = ({
                   </Box>
                 </Td>
                 <Td
-                  width={"5%"}
+                  width={"7%"}
                   //   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}

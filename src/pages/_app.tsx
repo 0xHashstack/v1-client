@@ -6,8 +6,26 @@ import { store } from "../store/store";
 
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
+import {
+  StarknetConfig,
+  InjectedConnector,
+  StarknetProvider,
+} from "@starknet-react/core";
 
 const theme = extendTheme({
+  components: {
+    Tabs: {
+      baseStyle: {
+        tab: {
+          _disabled: {
+            // background: "red",
+            opacity: "100%",
+            cursor: "pointer",
+          },
+        },
+      },
+    },
+  },
   colors: {
     customBlue: {
       500: "#0969DA",
@@ -20,11 +38,18 @@ const theme = extendTheme({
 import { UserbackProvider } from "@userback/react";
 
 export default function App({ Component, pageProps }: AppProps) {
+  const connectors = [
+    new InjectedConnector({ options: { id: "braavos" } }),
+    new InjectedConnector({ options: { id: "argentX" } }),
+  ];
+
   return (
     <UserbackProvider token="40202|80442|mX2ZdYcMxJbcQjhQu6EJB9M9S">
       <ChakraProvider theme={theme}>
         <Provider store={store}>
-          <Component {...pageProps} />
+          <StarknetProvider connectors={connectors}>
+            <Component {...pageProps} />
+          </StarknetProvider>
         </Provider>
       </ChakraProvider>
     </UserbackProvider>

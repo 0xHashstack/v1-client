@@ -132,9 +132,14 @@ const YourBorrowModal = () => {
             mt="1.5rem"
             mb="1.5rem"
           >
-            <Box  display="flex" justifyContent="space-between" mb="0.2rem">
-              <Box  display="flex">
-                <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">
+            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box display="flex">
+                <Text
+                  color="#6A737D"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
                   est LP tokens recieved:{" "}
                 </Text>
                 <Tooltip
@@ -153,13 +158,23 @@ const YourBorrowModal = () => {
                   </Box>
                 </Tooltip>
               </Box>
-              <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">
+              <Text
+                color="#6A737D"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
                 $ 10.91
               </Text>
             </Box>
-            <Box  display="flex" justifyContent="space-between" mb="0.2rem">
+            <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
-                <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">
+                <Text
+                  color="#6A737D"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
                   Liquidity spill:{" "}
                 </Text>
                 <Tooltip
@@ -181,7 +196,10 @@ const YourBorrowModal = () => {
               <Box
                 display="flex"
                 gap="2"
-                color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal"
+                color="#6A737D"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
               >
                 <Box display="flex" gap="2px">
                   <Box mt="2px">
@@ -197,9 +215,14 @@ const YourBorrowModal = () => {
                 </Box>
               </Box>
             </Box>
-            <Box  display="flex" justifyContent="space-between" mb="0.2rem">
-              <Box  display="flex">
-                <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">
+            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box display="flex">
+                <Text
+                  color="#6A737D"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
                   Fees:{" "}
                 </Text>
                 <Tooltip
@@ -218,11 +241,23 @@ const YourBorrowModal = () => {
                   </Box>
                 </Tooltip>
               </Box>
-              <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">0.1%</Text>
+              <Text
+                color="#6A737D"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+                0.1%
+              </Text>
             </Box>
-            <Box  display="flex" justifyContent="space-between" mb="0.2rem">
-              <Box  display="flex">
-                <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">
+            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box display="flex">
+                <Text
+                  color="#6A737D"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
                   Borrow apr:{" "}
                 </Text>
                 <Tooltip
@@ -241,11 +276,23 @@ const YourBorrowModal = () => {
                   </Box>
                 </Tooltip>
               </Box>
-              <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">5.56%</Text>
+              <Text
+                color="#6A737D"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+                5.56%
+              </Text>
             </Box>
-            <Box  display="flex" justifyContent="space-between" mb="0.2rem">
-              <Box  display="flex">
-                <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">
+            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box display="flex">
+                <Text
+                  color="#6A737D"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
                   Gas estimate:{" "}
                 </Text>
                 <Tooltip
@@ -264,11 +311,23 @@ const YourBorrowModal = () => {
                   </Box>
                 </Tooltip>
               </Box>
-              <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">5.56%</Text>
+              <Text
+                color="#6A737D"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+                5.56%
+              </Text>
             </Box>
-            <Box  display="flex" justifyContent="space-between" mb="0.2rem">
-              <Box  display="flex">
-                <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">
+            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box display="flex">
+                <Text
+                  color="#6A737D"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
                   Effective apr:{" "}
                 </Text>
                 <Tooltip
@@ -287,11 +346,23 @@ const YourBorrowModal = () => {
                   </Box>
                 </Tooltip>
               </Box>
-              <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">5.56%</Text>
+              <Text
+                color="#6A737D"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+                5.56%
+              </Text>
             </Box>
-            <Box  display="flex" justifyContent="space-between">
-              <Box  display="flex">
-                <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text
+                  color="#6A737D"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
                   Health factor:{" "}
                 </Text>
                 <Tooltip
@@ -310,7 +381,14 @@ const YourBorrowModal = () => {
                   </Box>
                 </Tooltip>
               </Box>
-              <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">1.10</Text>
+              <Text
+                color="#6A737D"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+                1.10
+              </Text>
             </Box>
           </Box>
         );
@@ -328,7 +406,12 @@ const YourBorrowModal = () => {
           >
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
-                <Text color="#8B949E" fontSize="12px" fontWeight="400" fontStyle="normal">
+                <Text
+                  color="#8B949E"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
                   Borrowed market:{" "}
                 </Text>
                 <Tooltip
@@ -347,13 +430,23 @@ const YourBorrowModal = () => {
                   </Box>
                 </Tooltip>
               </Box>
-              <Text color="#8B949E" fontSize="12px" fontWeight="400" fontStyle="normal">
+              <Text
+                color="#8B949E"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
                 1 BTC
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
-                <Text color="#8B949E"  fontSize="12px" fontWeight="400" fontStyle="normal">
+                <Text
+                  color="#8B949E"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
                   rTokens unlocked:{" "}
                 </Text>
                 <Tooltip
@@ -372,13 +465,23 @@ const YourBorrowModal = () => {
                   </Box>
                 </Tooltip>
               </Box>
-              <Text color="#8B949E" fontSize="12px" fontWeight="400" fontStyle="normal">
+              <Text
+                color="#8B949E"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
                 1.23
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
-                <Text color="#8B949E" fontSize="12px" fontWeight="400" fontStyle="normal">
+                <Text
+                  color="#8B949E"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
                   Est collateral value:{" "}
                 </Text>
                 <Tooltip
@@ -397,13 +500,23 @@ const YourBorrowModal = () => {
                   </Box>
                 </Tooltip>
               </Box>
-              <Text color="#8B949E" fontSize="12px" fontWeight="400" fontStyle="normal">
+              <Text
+                color="#8B949E"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
                 5.56%
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
-                <Text color="#8B949E" fontSize="12px" fontWeight="400" fontStyle="normal">
+                <Text
+                  color="#8B949E"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
                   Fees:{" "}
                 </Text>
                 <Tooltip
@@ -422,13 +535,23 @@ const YourBorrowModal = () => {
                   </Box>
                 </Tooltip>
               </Box>
-              <Text color="#8B949E" fontSize="12px" fontWeight="400" fontStyle="normal">
+              <Text
+                color="#8B949E"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
                 0.1%
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
-                <Text color="#8B949E" fontSize="12px" fontWeight="400" fontStyle="normal">
+                <Text
+                  color="#8B949E"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
                   Gas estimate:{" "}
                 </Text>
                 <Tooltip
@@ -447,7 +570,12 @@ const YourBorrowModal = () => {
                   </Box>
                 </Tooltip>
               </Box>
-              <Text color="#8B949E" fontSize="12px" fontWeight="400" fontStyle="normal">
+              <Text
+                color="#8B949E"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
                 5.56%
               </Text>
             </Box>

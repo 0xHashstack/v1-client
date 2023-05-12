@@ -7,7 +7,7 @@ const StatsBoard = () => {
       display="flex"
       flexDirection="column"
       // mt="2rem"
-      h="7rem"
+      h="6.4rem"
       w="95%"
       flexWrap="wrap"
       marginBottom="4rem"

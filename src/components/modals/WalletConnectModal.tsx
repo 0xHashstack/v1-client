@@ -47,7 +47,13 @@ import {
 } from "@/store/slices/dropdownsSlice";
 import { useRouter } from "next/router";
 
-const WalletConnectModal = () => {
+const WalletConnectModal = ({
+  placeHolder,
+  onClick,
+}: {
+  placeHolder: string;
+  onClick: () => void;
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
@@ -129,9 +135,11 @@ const WalletConnectModal = () => {
         borderRadius="6px"
         p="6px 12px"
         _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
-        onClick={onOpen}
+        onClick={() => {
+          onOpen();
+        }}
       >
-        Connect Wallet
+        {placeHolder}
       </Button>
       <Portal>
         <Modal isOpen={isOpen} onClose={onClose} isCentered>
@@ -269,7 +277,8 @@ const WalletConnectModal = () => {
                   display="flex"
                   justifyContent="space-between"
                   cursor="pointer"
-                  onClick={() => router.push("/market")}
+                  // onClick={() => router.push("/market")}
+                  onClick={() => onClick()}
                 >
                   <Text ml="1rem" color="white">
                     Bravos Wallet

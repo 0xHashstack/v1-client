@@ -327,7 +327,7 @@ const BorrowDashboard = ({
                         height="50%"
                         width="100%"
                         alignItems="center"
-                        justifyContent="flex-start"
+                        justifyContent="center"
                         // bgColor={"red"}
                       >
                         <Box

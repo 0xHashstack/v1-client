@@ -41,7 +41,17 @@ import {
   background,
   useOutsideClick,
 } from "@chakra-ui/react";
-import { selectLanguage, setLanguage } from "@/store/slices/userAccountSlice";
+import {
+  selectAccount,
+  selectLanguage,
+  setLanguage,
+} from "@/store/slices/userAccountSlice";
+import {
+  useAccount,
+  useConnectors,
+  useStarknet,
+  useBlock,
+} from "@starknet-react/core";
 // import useOutsideClickHandler from "../../../utils/functions/clickOutsideDropdownHandler";
 import { languages } from "@/utils/constants/languages";
 const Navbar = () => {
@@ -49,13 +59,14 @@ const Navbar = () => {
   const navDropdowns = useSelector(selectNavDropdowns);
   const language = useSelector(selectLanguage);
   const currentDropdown = useSelector(selectCurrentDropdown);
+  const account = useSelector(selectAccount);
 
   const [dashboardHover, setDashboardHover] = useState(false);
   const [contibutionHover, setContibutionHover] = useState(false);
   const [transferDepositHover, setTransferDepositHover] = useState(false);
   const [stakeHover, setStakeHover] = useState(false);
   const [connected, setConnected] = useState(true);
-
+  const { available, disconnect, connect, connectors } = useConnectors();
   const handleDropdownClick = (dropdownName: string) => {
     dispatch(setNavDropdown(dropdownName));
   };
@@ -423,13 +434,16 @@ const Navbar = () => {
                 dispatch(setNavDropdown("walletConnectionDropdown"));
               }}
             >
-              {connected ? (
-                <HStack
+              {account ? (
+                <Box
                   // bgColor="red"
                   width="100%"
                   // gap={1}
+                  display="flex"
                   justifyContent="flex-start"
-                  pl={4}
+                  alignItems="center"
+                  pl={5}
+                  gap={3.5}
                 >
                   <Image
                     // onClick={() => {
@@ -437,8 +451,8 @@ const Navbar = () => {
                     // }}
                     alt=""
                     src={"./starknetLogoBordered.svg"}
-                    width="18"
-                    height="18"
+                    width="16"
+                    height="16"
                     style={{ cursor: "pointer" }}
                   />
                   <Text
@@ -446,14 +460,24 @@ const Navbar = () => {
                     fontWeight="500"
                     color="#FFFFFF"
                     lineHeight="20px"
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    // bgColor="blue"
                   >
                     {/* {`${account.substring(0, 3)}...${account.substring(
                       account.length - 10,
                       account.length
                     )}`}{" "} */}
-                    0x76....767874865
+                    {`${account.address.substring(
+                      0,
+                      3
+                    )}...${account.address.substring(
+                      account.address.length - 9,
+                      account.address.length
+                    )}`}{" "}
                   </Text>
-                </HStack>
+                </Box>
               ) : (
                 <>
                   <Text
@@ -468,7 +492,7 @@ const Navbar = () => {
                   </Text>
                 </>
               )}
-              <Box position="absolute" right="0.6rem">
+              <Box position="absolute" right="0.8rem">
                 {!navDropdowns.walletConnectionDropdown ? (
                   <Image
                     src={"./connectWalletArrowDown.svg"}
@@ -505,19 +529,44 @@ const Navbar = () => {
                 borderRadius="6px"
                 className="dropdown-container"
               >
-                {walletConnectionDropdown.map((val, idx) => {
-                  return (
+                {account ? (
+                  // walletConnectionDropdown.map((val, idx) => {
+                  //   return (
+                  <>
                     <Box
-                      key={idx}
+                      // key={idx}
                       padding="4px 11px"
                       marginRight="8px"
                       borderRadius="6px"
                       border="1px solid #2B2F35"
+                      onClick={() => disconnect()}
                     >
-                      {val}
+                      Disconnect
                     </Box>
-                  );
-                })}
+                    <Box
+                      // key={idx}
+                      padding="4px 11px"
+                      marginRight="8px"
+                      borderRadius="6px"
+                      border="1px solid #2B2F35"
+                      onClick={() => connect(connectors[1])}
+                    >
+                      Switch Wallet
+                    </Box>
+                  </>
+                ) : (
+                  //   );
+                  // })
+                  <Box
+                    padding="4px 11px"
+                    marginRight="8px"
+                    borderRadius="6px"
+                    border="1px solid #2B2F35"
+                    onClick={() => connect(connectors[0])}
+                  >
+                    Connect
+                  </Box>
+                )}
                 {/* <hr />
                 <div>
                   <div>Network</div>

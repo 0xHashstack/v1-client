@@ -318,7 +318,7 @@ const SpendTable = () => {
                 bg: selectedDapp != "" ? "#0969DA" : "none",
                 // border: "none",
               }}
-              // isDisabled={selectedDapp == ""}
+              isDisabled={selectedDapp == ""}
             >
               Liquidity provision
             </Tab>
@@ -339,7 +339,7 @@ const SpendTable = () => {
                 // border: "none",
               }}
               // isDisabled={selectedDapp == ""}
-              // isDisabled={selectedDapp == ""}
+              isDisabled={selectedDapp == ""}
             >
               swap
             </Tab>
@@ -358,7 +358,7 @@ const SpendTable = () => {
                 bg: selectedDapp != "" ? "#0969DA" : "none",
                 // border: "none",
               }}
-              // isDisabled={selectedDapp == ""}
+              isDisabled={selectedDapp == ""}
             >
               stake
             </Tab>
@@ -381,7 +381,7 @@ const SpendTable = () => {
                 // border: "none",
               }}
               onClick={() => setTradeNote(true)}
-              // isDisabled={selectedDapp == ""}
+              isDisabled={selectedDapp == ""}
             >
               Trade
             </Tab>

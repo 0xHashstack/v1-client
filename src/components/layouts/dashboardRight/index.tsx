@@ -188,7 +188,7 @@ const DashboardRight = ({
                   </Text>
                 </Td>
                 <Td
-                  width={"17%"}
+                  width={"15%"}
                   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}
@@ -209,7 +209,7 @@ const DashboardRight = ({
                   </Text>
                 </Td>
                 <Td
-                  width={"17%"}
+                  width={"15%"}
                   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}
@@ -230,7 +230,7 @@ const DashboardRight = ({
                   </Text>
                 </Td>
                 <Td
-                  width={"7%"}
+                  width={"8%"}
                   maxWidth={"5rem"}
                   fontSize={"14px"}
                   fontWeight={400}
@@ -238,7 +238,7 @@ const DashboardRight = ({
                   textAlign={"center"}
                   // bgColor={"red"}
                   // p="0 2 0 0"
-                  p={0}
+                  p={1.5}
                   // pr={3}
                   // pl={1}
                 >
@@ -255,16 +255,16 @@ const DashboardRight = ({
                   </Box>
                 </Td>
                 <Td
-                  width={"7%"}
+                  width={"8%"}
                   //   maxWidth={"3rem"}
                   fontSize={"14px"}
                   fontWeight={400}
                   //   overflow={"hidden"}
-                  textAlign={"right"}
+                  textAlign={"center"}
                   // bgColor={"green"}
                   // p="0px 0px 12px 0px"
                   p={0}
-                  pl={3.5}
+                  pl={2}
                 >
                   <Box position="relative" display="inline-block">
                     {/* <Text

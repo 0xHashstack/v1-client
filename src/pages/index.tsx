@@ -6,24 +6,45 @@ import { Box, Button, Stack, Text } from "@chakra-ui/react";
 import Navbar from "@/components/layouts/navbar/Navbar";
 import PageCard from "@/components/layouts/pageCard";
 import WalletConnectModal from "@/components/modals/WalletConnectModal";
+import {
+  useAccount,
+  useConnectors,
+  useStarknet,
+  useBlock,
+} from "@starknet-react/core";
+import { useContract, useStarknetCall } from "@starknet-react/core";
+import { useDispatch } from "react-redux";
+import { setAccount } from "@/store/slices/userAccountSlice";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
+  const { account, address, status } = useAccount();
+  const { available, disconnect, connect, connectors } = useConnectors();
   const [render, setRender] = useState(true);
   const router = useRouter();
   const href = "/market";
+  const dispatch = useDispatch();
   useEffect(() => {
     // setRender(true);
-    // router.push(href);
   }, [router]);
+  useEffect(() => {
+    if (status == "connected") {
+      // alert(account?.address);
+      router.push(href);
+      dispatch(setAccount(account));
+    }
+  }, [account, status]);
   return (
     <PageCard justifyContent="center" alignItems="center">
       <Text fontSize="46px" color="#FFFFFF">
         Welcome to Hashstack&apos;s mainnet!
       </Text>
 
-      <WalletConnectModal />
+      <WalletConnectModal
+        placeHolder={"Connect Wallet"}
+        onClick={() => connect(connectors[0])}
+      />
     </PageCard>
   );
 }
