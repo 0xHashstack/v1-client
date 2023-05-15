@@ -513,7 +513,7 @@ const LiquidityProvisionModal = () => {
                                 <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
                                     Borrow Balance: {walletBalance}
                                     <Text color="#6E7781" ml="0.2rem">
-                                        {` ${currentSelectedCoin}`}
+                                        {` ${currentBorrowMarketCoin}`}
                                     </Text>
                                 </Text>
 

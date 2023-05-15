@@ -23,7 +23,8 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import PageCard from "@/components/layouts/pageCard";
-
+import { useRouter } from "next/router";
+import { setSpendBorrowSelectedDapp} from "@/store/slices/userAccountSlice";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Market() {
@@ -33,6 +34,7 @@ export default function Market() {
   const offchainCurrentBlock = useSelector(selectOffchainCurrentBlock);
   const address = useSelector(selectAccountAddress);
   const account = useSelector(selectAccount);
+  
   function handleAccount(e: any) {
     e.preventDefault();
     dispatch(setAccountAddress(e.target.user.value));

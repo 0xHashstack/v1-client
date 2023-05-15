@@ -112,12 +112,6 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
   return (
     <div>
       <Button
-        key="borrow"
-        height={"2rem"}
-        fontSize={"12px"}
-        bgColor="#101216"
-        _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
-        borderRadius={"6px"}
         onClick={onOpen}
         {...restProps}
       >
@@ -340,7 +334,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                   </Slider>
                 </Box>
               </Card>
-              <Checkbox defaultChecked mt="0.7rem" w="410px">
+              <Checkbox defaultChecked mt="0.7rem" w="410px" size="md" iconSize='1rem' _focus={{boxShadow:"none"}} borderColor="#2B2F35">
                 <Text fontSize="10.5px" color="#6E7681" fontStyle="normal" fontWeight="400" lineHeight="20px">
                   Ticking would stake the received rTokens unchecking wouldn&apos;t stake rTokens
                 </Text>
@@ -487,6 +481,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                     _hover={{ bg: "white",color:"black" }}
                     transition="border 0.2s"
                   // onClick={}
+                  _active={{border:"3px solid grey"}}
                   >
                     Supply
                   </Button>

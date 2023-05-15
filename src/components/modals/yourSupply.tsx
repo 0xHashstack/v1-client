@@ -497,7 +497,7 @@ Wallet Balance: {walletBalance}
                           </Slider>
                         </Box>
                       </Card>
-                      <Checkbox defaultChecked mt="0.7rem" w="390px">
+                      <Checkbox defaultChecked mt="0.7rem" w="390px" borderColor="#2B2F35">
                         <Text
                           fontSize="10px"
                           color="#6E7681"
@@ -946,7 +946,7 @@ Wallet Balance: {walletBalance}
                           </Slider>
                         </Box>
                       </Card>
-                      <Checkbox defaultChecked mt="0.7rem" w="390px">
+                      <Checkbox defaultChecked mt="0.7rem" w="390px" borderColor="#2B2F35">
                         <Text
                           fontSize="10px"
                           color="#6E7681"
