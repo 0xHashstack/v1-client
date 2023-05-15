@@ -18,9 +18,10 @@ import {
   Box,
   NumberInput,
   NumberInputField,
+  StackProps,
   Portal,
 } from "@chakra-ui/react";
-import { useRef } from "react";
+import TickIcon from "@/assets/icons/tickIcon";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
 import InfoIcon from "@/assets/icons/infoIcon";
@@ -30,7 +31,8 @@ import USDTLogo from "@/assets/icons/coins/usdt";
 import ETHLogo from "@/assets/icons/coins/eth";
 import DAILogo from "@/assets/icons/coins/dai";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
-import SpinnerLoader from "../uiElements/loaders/spinner";
+import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
+import SuccessButton from "../uiElements/buttons/SuccessButton";
 import {
   selectInputSupplyAmount,
   setCoinSelectedSupplyModal,
@@ -43,13 +45,16 @@ import {
   selectModalDropDowns,
 } from "@/store/slices/dropdownsSlice";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
+import ErrorButton from "../uiElements/buttons/ErrorButton";
 
-const SupplyModal = () => {
+
+const SupplyModal = ({ buttonText, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
+  const [buttonId, setButtonId] = useState(0)
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
@@ -94,7 +99,8 @@ const SupplyModal = () => {
       setinputAmount(newValue);
       dispatch(setInputSupplyAmount(newValue));
     } else {
-      percentage = Math.round(percentage * 100) / 100;
+      percentage = Math.round(percentage * 10) / 10;
+      console.log(percentage)
       setSliderValue(percentage);
       setinputAmount(newValue);
       dispatch(setInputSupplyAmount(newValue));
@@ -106,60 +112,39 @@ const SupplyModal = () => {
   return (
     <div>
       <Button
-        key="supply"
+        key="borrow"
         height={"2rem"}
-        padding="6px 12px"
-        border="1px solid #BDBFC1"
-        color="#6e6e6e"
         fontSize={"12px"}
         bgColor="#101216"
         _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
         borderRadius={"6px"}
         onClick={onOpen}
+        {...restProps}
       >
-        Supply
+        {buttonText}
       </Button>
       <Portal>
-        <Modal
-          isOpen={isOpen}
-          onClose={onClose}
-          size={{ width: "700px", height: "100px" }}
-          isCentered
-        >
-          <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
+        <Modal isOpen={isOpen} onClose={onClose} size={{ width: "700px", height: "100px" }} isCentered>
+          <ModalOverlay
+            bg="rgba(244, 242, 255, 0.5);"
+            mt="3.8rem"
+          />
           <ModalContent
             bg="#010409"
             color="white"
             borderRadius="md"
             maxW="462px"
             zIndex={1}
-            mt="5rem"
+            mt="8rem"
             className="modal-content"
+
           >
-            <ModalHeader
-              mt="1rem"
-              fontSize="14px"
-              fontWeight="600"
-              fontStyle="normal"
-              lineHeight="20px"
-            >
-              Supply
-            </ModalHeader>
+            <ModalHeader mt="1rem" fontSize="14px" fontWeight="600" fontStyle="normal" lineHeight="20px">Supply</ModalHeader>
             <ModalCloseButton mt="1rem" mr="1rem" />
             <ModalBody>
-              <Card
-                bg="#101216"
-                mb="0.5rem"
-                p="1rem"
-                border="1px solid #2B2F35"
-              >
+              <Card bg="#101216" mb="0.5rem" p="1rem" border="1px solid #2B2F35" mt="-1.5">
                 <Text color="#8B949E" display="flex" alignItems="center">
-                  <Text
-                    mr="0.3rem"
-                    fontSize="12px"
-                    fontStyle="normal"
-                    fontWeight="400"
-                  >
+                  <Text mr="0.3rem" fontSize="12px" fontStyle="normal" fontWeight="400">
                     Supply Market
                   </Text>
                   <Tooltip
@@ -191,7 +176,9 @@ const SupplyModal = () => {
                   borderRadius="md"
                   className="navbar"
                   cursor="pointer"
-                  onClick={() => handleDropdownClick("supplyModalDropdown")}
+                  onClick={() =>
+                    handleDropdownClick("supplyModalDropdown")
+                  }
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentSelectedCoin)}</Box>
@@ -222,7 +209,7 @@ const SupplyModal = () => {
                             pr="2"
                             onClick={() => {
                               setCurrentSelectedCoin(coin);
-                              dispatch(setCoinSelectedSupplyModal(coin));
+                              dispatch(setCoinSelectedSupplyModal(coin))
                             }}
                           >
                             {coin === currentSelectedCoin && (
@@ -237,13 +224,13 @@ const SupplyModal = () => {
                               w="full"
                               display="flex"
                               py="5px"
-                              px={`${coin === currentSelectedCoin ? "1" : "5"}`}
+                              px={`${coin === currentSelectedCoin ? "1" : "5"
+                                }`}
                               gap="1"
-                              bg={`${
-                                coin === currentSelectedCoin
-                                  ? "#0C6AD9"
-                                  : "inherit"
-                              }`}
+                              bg={`${coin === currentSelectedCoin
+                                ? "#0C6AD9"
+                                : "inherit"
+                                }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -256,12 +243,7 @@ const SupplyModal = () => {
                   )}
                 </Box>
                 <Text color="#8B949E" display="flex" alignItems="center">
-                  <Text
-                    mr="0.3rem"
-                    fontSize="12px"
-                    fontStyle="normal"
-                    fontWeight="400"
-                  >
+                  <Text mr="0.3rem" fontSize="12px" fontStyle="normal" fontWeight="400">
                     Amount
                   </Text>
                   <Tooltip
@@ -280,66 +262,46 @@ const SupplyModal = () => {
                     </Box>
                   </Tooltip>
                 </Text>
-                <Box
-                  width="100%"
-                  color="white"
-                  border="1px solid #2B2F35"
-                  borderRadius="6px"
-                  display="flex"
-                  justifyContent="space-between"
-                  mt="0.3rem"
-                >
-                  <NumberInput
-                    border="0px"
-                    min={0}
-                    keepWithinRange={true}
-                    onChange={handleChange}
-                    value={inputAmount}
-                    outline="none"
+                <Box width="100%" color="white" border={`${inputAmount > walletBalance ? "1px solid #CF222E" :inputAmount>0 && inputAmount<=walletBalance?"1px solid #1A7F37":"1px solid #2B2F35 "}`} borderRadius="6px" display="flex" justifyContent="space-between" mt="0.3rem">
+                  <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleChange} value={inputAmount?inputAmount:""} outline="none" precision={1} step={0.1}
                   >
-                    <NumberInputField
-                      placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
-                      border="0px"
-                      _placeholder={{
-                        color: "#393D4F",
-                        fontSize: ".89rem",
-                        fontWeight: "600",
-                        outline: "none",
-                      }}
+                    <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedCoin}`} color={`${inputAmount>walletBalance?"#CF222E":inputAmount==0?"white": "#1A7F37"}`} border="0px" _placeholder={{
+                      color: "#393D4F",
+                      fontSize: ".89rem",
+                      fontWeight: "600",
+                      outline: "none"
+                    }}
                       _focus={{
                         outline: "0",
-                        boxShadow: "none",
+                        boxShadow: "none"
                       }}
                     />
+
                   </NumberInput>
-                  <Button
-                    variant="ghost"
-                    color="#0969DA"
-                    _hover={{ bg: "#101216" }}
-                    onClick={() => {
-                      setinputAmount(walletBalance);
-                      setSliderValue(100);
-                      dispatch(setInputSupplyAmount(walletBalance));
-                    }}
-                  >
+                  <Button variant="ghost" color="#0969DA" _hover={{ bg: "#101216" }} onClick={() => { setinputAmount(walletBalance); setSliderValue(100); dispatch(setInputSupplyAmount(walletBalance)) }}>
                     MAX
                   </Button>
                 </Box>
-                <Text
-                  color="#E6EDF3"
-                  display="flex"
-                  justifyContent="flex-end"
-                  mt="0.4rem"
-                  fontSize="12px"
-                  fontWeight="500"
-                  fontStyle="normal"
-                  fontFamily="Inter"
-                >
+                {inputAmount > walletBalance ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+
+                  <Text color="#CF222E" display="flex">
+                    <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
+                  <Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
+                    Wallet Balance: {walletBalance}
+                    <Text color="#6E7781" ml="0.2rem">
+                      {` ${currentSelectedCoin}`}
+                    </Text>
+                  </Text>
+
+                </Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
                   Wallet Balance: {walletBalance}
                   <Text color="#6E7781" ml="0.2rem">
                     {` ${currentSelectedCoin}`}
                   </Text>
                 </Text>
+
+                }
+
                 <Box pt={5} pb={2} mt="0.8rem">
                   <Slider
                     aria-label="slider-ex-6"
@@ -347,31 +309,22 @@ const SupplyModal = () => {
                     value={sliderValue}
                     onChange={(val) => {
                       setSliderValue(val);
-                      var ans = (val / 100) * walletBalance;
+                      var ans = ((val / 100) * walletBalance);
                       ans = Math.round(ans * 100) / 100;
-                      dispatch(setInputSupplyAmount(ans));
+                      dispatch(setInputSupplyAmount(ans))
                       setinputAmount(ans);
                     }}
                     focusThumbOnChange={false}
                   >
                     <SliderMark value={sliderValue}>
-                      <Box
-                        position="absolute"
-                        bottom="-8px"
-                        left="-11px"
-                        zIndex="1"
-                      >
+                      <Box position="absolute" bottom="-8px" left="-11px" zIndex="1">
                         <SliderTooltip />
                         <Text
                           position="absolute"
                           color="black"
                           top="7px"
                           left={
-                            sliderValue !== 100
-                              ? sliderValue >= 10
-                                ? "15%"
-                                : "25%"
-                              : "5%"
+                            sliderValue !== 100 ? (sliderValue >= 10 ? "15%" : "25%") : "5%"
                           }
                           fontSize=".58rem"
                           fontWeight="bold"
@@ -388,15 +341,8 @@ const SupplyModal = () => {
                 </Box>
               </Card>
               <Checkbox defaultChecked mt="0.7rem" w="410px">
-                <Text
-                  fontSize="10.5px"
-                  color="#6E7681"
-                  fontStyle="normal"
-                  fontWeight="400"
-                  lineHeight="20px"
-                >
-                  Ticking would stake the received rTokens unchecking
-                  wouldn&apos;t stake rTokens
+                <Text fontSize="10.5px" color="#6E7681" fontStyle="normal" fontWeight="400" lineHeight="20px">
+                  Ticking would stake the received rTokens unchecking wouldn&apos;t stake rTokens
                 </Text>
               </Checkbox>
 
@@ -528,20 +474,23 @@ const SupplyModal = () => {
                   </Text>
                 </Text>
               </Card>
-              {inputAmount1 > 0 ? (
-                <Button
-                  bg="#101216"
-                  color="#8B949E"
-                  size="sm"
-                  width="100%"
-                  mt="1.5rem"
-                  mb="1.5rem"
-                  border="1px solid #8B949E"
-                  _hover={{ bg: "#10216" }}
-                >
-                  Supply
-                </Button>
-              ) : (
+              {inputAmount1 > 0 &&inputAmount<=walletBalance ?
+                buttonId == 1 ? <SuccessButton successText="Supply success" /> : buttonId == 2 ? <ErrorButton errorText="Copy error!" /> :
+                  <Button
+                      bg="#101216"
+                    color="#8B949E"
+                    size="sm"
+                    width="100%"
+                    mt="1.5rem"
+                    mb="1.5rem"
+                    border="1px solid #8B949E"
+                    _hover={{ bg: "white",color:"black" }}
+                    transition="border 0.2s"
+                  // onClick={}
+                  >
+                    Supply
+                  </Button>
+                :
                 // <Button
                 //   bg="#101216"
                 //   color="#6E7681"
@@ -564,9 +513,10 @@ const SupplyModal = () => {
                   border="1px solid #2B2F35"
                   _hover={{ color: "#010409", bgColor: "#e1e4e9" }}
                 >
+
                   Supply
                 </AnimatedButton>
-              )}
+              }
             </ModalBody>
           </ModalContent>
         </Modal>

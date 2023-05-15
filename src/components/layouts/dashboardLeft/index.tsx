@@ -233,7 +233,9 @@ const DashboardLeft = ({
                     justifyContent="center"
                     fontWeight="400"
                   >
-                    <SupplyModal />
+                    <SupplyModal buttonText="Supply"                 padding="0rem 1rem"
+                border="1px solid #2b2f35"
+                color="#6e6e6e"/>
                   </Box>
                 </Td>
                 <Td

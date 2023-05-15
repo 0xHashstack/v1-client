@@ -1182,7 +1182,7 @@ const YourBorrowModal = () => {
                               <Box p="1">
                                 {getCoin(currentBorrowMarketCoin1)}
                               </Box>
-                              <Text>{currentBorrowMarketCoin1}</Text>
+                              <Text mt="0.15rem">{currentBorrowMarketCoin1}</Text>
                             </Box>
                             <Box pt="1" className="navbar-button">
                               <DropdownUp />
@@ -1252,7 +1252,7 @@ const YourBorrowModal = () => {
                           </Text>
                         </Box>
                         {currentAction !== "Spend Borrow" && (
-                          <Box display="flex" flexDirection="column" gap="1">
+                          <Box display="flex" flexDirection="column" gap="1" mt="0">
                             <Box display="flex">
                               <Text fontSize="xs" color="#8B949E">
                                 Repay Amount

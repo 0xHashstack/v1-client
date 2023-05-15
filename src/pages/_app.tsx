@@ -18,9 +18,13 @@ const theme = extendTheme({
       baseStyle: {
         tab: {
           _disabled: {
-            // background: "red",
-            opacity: "100%",
-            cursor: "pointer",
+            background:"#101216",
+            opacity:"100%",
+            cursor:'pointer',
+          },
+          "> *:first-of-type": {
+             background:"#101216",
+             opacity:"100%",
           },
         },
       },
