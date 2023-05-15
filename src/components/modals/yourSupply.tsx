@@ -179,7 +179,7 @@ const YourSupplyModal = () => {
         isOpen={isOpen}
         onClose={onClose}
         isCentered
-        //   scrollBehavior="inside"
+      //   scrollBehavior="inside"
       >
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
         <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
@@ -190,7 +190,7 @@ const YourSupplyModal = () => {
               display={"flex"}
               justifyContent={"space-between"}
               fontSize={"sm"}
-              // my={"2"}
+            // my={"2"}
             >
               <Box w="full">
                 <Tabs variant="unstyled">
@@ -332,17 +332,15 @@ const YourSupplyModal = () => {
                                       w="full"
                                       display="flex"
                                       py="5px"
-                                      px={`${
-                                        coin === currentSelectedSupplyCoin
+                                      px={`${coin === currentSelectedSupplyCoin
                                           ? "1"
                                           : "5"
-                                      }`}
+                                        }`}
                                       gap="1"
-                                      bg={`${
-                                        coin === currentSelectedSupplyCoin
+                                      bg={`${coin === currentSelectedSupplyCoin
                                           ? "#0C6AD9"
                                           : "inherit"
-                                      }`}
+                                        }`}
                                       borderRadius="md"
                                     >
                                       <Box p="1">{getCoin(coin)}</Box>
@@ -386,7 +384,7 @@ const YourSupplyModal = () => {
                         <Box
                           width="100%"
                           color="white"
-                          border={`${inputSupplyAmount > walletBalance ? "1px solid #CF222E" :inputSupplyAmount>0 && inputSupplyAmount<=walletBalance?"1px solid #1A7F37":"1px solid #2B2F35 "}`}
+                          border={`${inputSupplyAmount > walletBalance ? "1px solid #CF222E" : inputSupplyAmount > 0 && inputSupplyAmount <= walletBalance ? "1px solid #1A7F37" : "1px solid #2B2F35 "}`}
                           borderRadius="6px"
                           display="flex"
                           justifyContent="space-between"
@@ -397,12 +395,12 @@ const YourSupplyModal = () => {
                             min={0}
                             keepWithinRange={true}
                             onChange={handleChange}
-                            value={inputSupplyAmount?inputSupplyAmount:""}
+                            value={inputSupplyAmount ? inputSupplyAmount : ""}
                             outline="none"
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
-                              color={`${inputSupplyAmount>walletBalance?"#CF222E":inputSupplyAmount==0?"white": "#1A7F37"}`}
+                              color={`${inputSupplyAmount > walletBalance ? "#CF222E" : inputSupplyAmount == 0 ? "white" : "#1A7F37"}`}
                               border="0px"
                               _placeholder={{
                                 color: "#393D4F",
@@ -430,23 +428,23 @@ const YourSupplyModal = () => {
                         </Box>
                         {inputSupplyAmount > walletBalance ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
 
-<Text color="#CF222E" display="flex">
-  <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
-<Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
-  Wallet Balance: {walletBalance}
-  <Text color="#6E7781" ml="0.2rem">
-    {` ${currentSelectedSupplyCoin}`}
-  </Text>
-</Text>
+                          <Text color="#CF222E" display="flex">
+                            <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
+                          <Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
+                            Wallet Balance: {walletBalance}
+                            <Text color="#6E7781" ml="0.2rem">
+                              {` ${currentSelectedSupplyCoin}`}
+                            </Text>
+                          </Text>
 
-</Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
-Wallet Balance: {walletBalance}
-<Text color="#6E7781" ml="0.2rem">
-  {` ${currentSelectedSupplyCoin}`}
-</Text>
-</Text>
+                        </Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+                          Wallet Balance: {walletBalance}
+                          <Text color="#6E7781" ml="0.2rem">
+                            {` ${currentSelectedSupplyCoin}`}
+                          </Text>
+                        </Text>
 
-}
+                        }
                         <Box pt={5} pb={2} mt="0.8rem">
                           <Slider
                             aria-label="slider-ex-6"
@@ -657,16 +655,16 @@ Wallet Balance: {walletBalance}
                           <Text color="#6E7681">7.75%</Text>
                         </Text>
                       </Card>
-                      {inputSupplyAmount > 0 &&inputSupplyAmount<=walletBalance ? (
+                      {inputSupplyAmount > 0 && inputSupplyAmount <= walletBalance ? (
                         <Button
-                        bg="#101216"
-                        color="#8B949E"
-                        size="sm"
-                        width="100%"
-                        mt="1.5rem"
-                        mb="1.5rem"
-                        border="1px solid #8B949E"
-                        _hover={{ bg: "white",color:"black" }}
+                          bg="#101216"
+                          color="#8B949E"
+                          size="sm"
+                          width="100%"
+                          mt="1.5rem"
+                          mb="1.5rem"
+                          border="1px solid #8B949E"
+                          _hover={{ bg: "white", color: "black" }}
                         >
                           Supply
                         </Button>
@@ -781,17 +779,15 @@ Wallet Balance: {walletBalance}
                                       w="full"
                                       display="flex"
                                       py="5px"
-                                      px={`${
-                                        coin === currentSelectedWithdrawlCoin
+                                      px={`${coin === currentSelectedWithdrawlCoin
                                           ? "1"
                                           : "5"
-                                      }`}
+                                        }`}
                                       gap="1"
-                                      bg={`${
-                                        coin === currentSelectedWithdrawlCoin
+                                      bg={`${coin === currentSelectedWithdrawlCoin
                                           ? "#0C6AD9"
                                           : "inherit"
-                                      }`}
+                                        }`}
                                       borderRadius="md"
                                     >
                                       <Box p="1">{getCoin(coin)}</Box>
@@ -835,7 +831,7 @@ Wallet Balance: {walletBalance}
                         <Box
                           width="100%"
                           color="white"
-                          border={`${inputWithdrawlAmount > walletBalance ? "1px solid #CF222E" :inputWithdrawlAmount>0 && inputWithdrawlAmount<=walletBalance?"1px solid #1A7F37":"1px solid #2B2F35 "}`}
+                          border={`${inputWithdrawlAmount > walletBalance ? "1px solid #CF222E" : inputWithdrawlAmount > 0 && inputWithdrawlAmount <= walletBalance ? "1px solid #1A7F37" : "1px solid #2B2F35 "}`}
                           borderRadius="6px"
                           display="flex"
                           justifyContent="space-between"
@@ -846,12 +842,12 @@ Wallet Balance: {walletBalance}
                             min={0}
                             keepWithinRange={true}
                             onChange={handleWithdrawlChange}
-                            value={inputWithdrawlAmount?inputWithdrawlAmount:""}
+                            value={inputWithdrawlAmount ? inputWithdrawlAmount : ""}
                             outline="none"
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedWithdrawlCoin}`}
-                              color={`${inputWithdrawlAmount>walletBalance?"#CF222E":inputWithdrawlAmount==0?"white": "#1A7F37"}`}
+                              color={`${inputWithdrawlAmount > walletBalance ? "#CF222E" : inputWithdrawlAmount == 0 ? "white" : "#1A7F37"}`}
                               border="0px"
                               _placeholder={{
                                 color: "#393D4F",
@@ -879,23 +875,23 @@ Wallet Balance: {walletBalance}
                         </Box>
                         {inputWithdrawlAmount > walletBalance ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
 
-<Text color="#CF222E" display="flex">
-  <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
-<Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
-  Wallet Balance: {walletBalance}
-  <Text color="#6E7781" ml="0.2rem">
-    {` ${currentSelectedWithdrawlCoin}`}
-  </Text>
-</Text>
+                          <Text color="#CF222E" display="flex">
+                            <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
+                          <Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
+                            Wallet Balance: {walletBalance}
+                            <Text color="#6E7781" ml="0.2rem">
+                              {` ${currentSelectedWithdrawlCoin}`}
+                            </Text>
+                          </Text>
 
-</Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
-Wallet Balance: {walletBalance}
-<Text color="#6E7781" ml="0.2rem">
-  {` ${currentSelectedWithdrawlCoin}`}
-</Text>
-</Text>
+                        </Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+                          Wallet Balance: {walletBalance}
+                          <Text color="#6E7781" ml="0.2rem">
+                            {` ${currentSelectedWithdrawlCoin}`}
+                          </Text>
+                        </Text>
 
-}
+                        }
                         <Box pt={5} pb={2} mt="0.8rem">
                           <Slider
                             aria-label="slider-ex-6"
@@ -1164,17 +1160,17 @@ Wallet Balance: {walletBalance}
                           <Text color="#6E7681">$ 10.91</Text>
                         </Text>
                       </Card>
-                      {inputWithdrawlAmount > 0 &&inputWithdrawlAmount<=walletBalance ? (
+                      {inputWithdrawlAmount > 0 && inputWithdrawlAmount <= walletBalance ? (
                         <Button
-                        bg="#101216"
-                        color="#8B949E"
-                        size="sm"
-                        width="100%"
-                        mt="1.5rem"
-                        mb="1.5rem"
-                        border="1px solid #8B949E"
-                        _hover={{ bg: "white",color:"black" }}
-                        transition="border 0.2s"
+                          bg="#101216"
+                          color="#8B949E"
+                          size="sm"
+                          width="100%"
+                          mt="1.5rem"
+                          mb="1.5rem"
+                          border="1px solid #8B949E"
+                          _hover={{ bg: "white", color: "black" }}
+                          transition="border 0.2s"
                         >
                           Withdraw
                         </Button>
@@ -1184,8 +1180,8 @@ Wallet Balance: {walletBalance}
                           color="#6E7681"
                           size="sm"
                           width="100%"
-                          mt="1rem"
-                          mb="1rem"
+                          mt="1.5rem"
+                          mb="1.5rem"
                           border="1px solid #2B2F35"
                           _hover={{ bg: "#101216" }}
                         >
