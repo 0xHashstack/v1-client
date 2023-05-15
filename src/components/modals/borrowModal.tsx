@@ -17,6 +17,7 @@ import {
   Text,
   Heading,
   Card,
+  ModalHeader,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -35,25 +36,25 @@ import {
   setInputBorrowModalBorrowAmount,
 } from "@/store/slices/userAccountSlice";
 import {
-  selectNavDropdowns,
-  setNavDropdown,
   setModalDropdown,
   selectModalDropDowns,
 } from "@/store/slices/dropdownsSlice";
 import { useState } from "react";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
+import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
+import SuccessButton from "../uiElements/buttons/SuccessButton";
+import ErrorButton from "../uiElements/buttons/ErrorButton";
 
 const BorrowModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  //   console.log("isopen", isOpen, "onopen", onOpen, "onClose", onClose);
   const [sliderValue, setSliderValue] = useState(0);
   const [sliderValue2, setsliderValue2] = useState(0);
   const dispatch = useDispatch();
   const walletBalance = useSelector(selectWalletBalance);
-  const [inputAmount, setinputAmount] = useState(0);
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
+  const [buttonId, setButtonId] = useState(0)
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -143,21 +144,13 @@ const BorrowModal = () => {
       >
         <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
         <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
-          <ModalCloseButton mt="1rem" mr="1rem" color="white" />
+        <ModalHeader mt="1rem" fontSize="14px" fontWeight="600" fontStyle="normal" lineHeight="20px" color="white">Borrow</ModalHeader>
+        <ModalCloseButton color="white" mt="1rem" mr="1rem"/>
           {/* <ModalHeader>Borrow</ModalHeader> */}
-          <ModalBody color={"#E6EDF3"}>
-            <Box
-              display={"flex"}
-              justifyContent={"space-between"}
-              fontSize={"sm"}
-              my={"2"}
-            >
-              <Heading fontSize="md" fontWeight="medium" mt="0.9rem">
-                Borrow
-              </Heading>
-              <ModalCloseButton mt="1rem" mr="1rem" color="white" />
+          <ModalBody  overflowY="auto" color={"#E6EDF3"}>
+
+              {/* <ModalCloseButton mt="1rem" mr="1rem" color="white" /> */}
               {/* <button onClick={onClose}>Cancel</button> */}
-            </Box>
 
             <Box
               display="flex"
@@ -166,7 +159,7 @@ const BorrowModal = () => {
               border="1px"
               borderColor="#2B2F35"
               p="1rem"
-              my="4"
+              mt="-1.5"
               borderRadius="md"
               gap="3"
             >
@@ -249,15 +242,13 @@ const BorrowModal = () => {
                               w="full"
                               display="flex"
                               py="5px"
-                              px={`${
-                                coin === currentCollateralCoin ? "1" : "5"
-                              }`}
+                              px={`${coin === currentCollateralCoin ? "1" : "5"
+                                }`}
                               gap="1"
-                              bg={`${
-                                coin === currentCollateralCoin
+                              bg={`${coin === currentCollateralCoin
                                   ? "#0C6AD9"
                                   : "inherit"
-                              }`}
+                                }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -293,8 +284,8 @@ const BorrowModal = () => {
                 </Box>
                 <Box
                   width="100%"
-                  color="white"
-                  border="1px solid #2B2F35"
+                  color={`${inputCollateralAmount > walletBalance ? "#CF222E" : inputCollateralAmount == 0 ? "white" : "#1A7F37"}`}
+                  border={`${inputCollateralAmount > walletBalance ? "1px solid #CF222E" : inputCollateralAmount > 0 && inputCollateralAmount <= walletBalance ? "1px solid #1A7F37" : "1px solid #2B2F35 "}`}
                   borderRadius="6px"
                   display="flex"
                   justifyContent="space-between"
@@ -304,7 +295,7 @@ const BorrowModal = () => {
                     min={0}
                     keepWithinRange={true}
                     onChange={handleChange}
-                    value={inputCollateralAmount}
+                    value={inputCollateralAmount ? inputCollateralAmount : ""}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentCollateralCoin}`}
@@ -336,17 +327,25 @@ const BorrowModal = () => {
                     MAX
                   </Button>
                 </Box>
-                <Text
-                  textAlign="right"
-                  fontSize="12px"
-                  fontWeight="500"
-                  fontStyle="normal"
-                >
+                {inputCollateralAmount > walletBalance ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+
+                  <Text color="#CF222E" display="flex">
+                    <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
+                  <Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
+                    Wallet Balance: {walletBalance}
+                    <Text color="#6E7781" ml="0.2rem">
+                      {` ${currentCollateralCoin}`}
+                    </Text>
+                  </Text>
+
+                </Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
                   Wallet Balance: {walletBalance}
-                  <Text as="span" color="#8B949E">
+                  <Text color="#6E7781" ml="0.2rem">
                     {` ${currentCollateralCoin}`}
                   </Text>
                 </Text>
+
+                }
                 <Box pt={5} pb={2} mt="0.4rem">
                   <Slider
                     aria-label="slider-ex-6"
@@ -488,11 +487,10 @@ const BorrowModal = () => {
                               py="5px"
                               px={`${coin === currentBorrowCoin ? "1" : "5"}`}
                               gap="1"
-                              bg={`${
-                                coin === currentBorrowCoin
+                              bg={`${coin === currentBorrowCoin
                                   ? "#0C6AD9"
                                   : "inherit"
-                              }`}
+                                }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -623,7 +621,6 @@ const BorrowModal = () => {
               mt="1.5rem"
               p="1rem"
               border="1px solid #2B2F35"
-              mb="1.5rem"
             >
               <Text
                 color="#8B949E"
@@ -794,31 +791,35 @@ const BorrowModal = () => {
               </Text>
             </Card>
 
-            {inputCollateralAmount > 0 && inputBorrowAmount > 0 ? (
+            {inputCollateralAmount > 0 && inputBorrowAmount > 0 &&inputCollateralAmount<=walletBalance ? 
+              buttonId==1? <SuccessButton successText="Borrow successful."/>:buttonId==2?<ErrorButton errorText="Copy error!" /> :
               <Button
-              bg="#101216"
-              color="#8B949E"
+                bg="#101216"
+                color="#8B949E"
                 size="sm"
                 width="100%"
-                mb="2rem"
+                mt="1.5rem"
+                mb="1.5rem"
                 border="1px solid #8B949E"
-                _hover={{ bg: "#10216" }}
+                _hover={{ bg: "white",color:"black" }}
+                onClick={()=>{setButtonId(2)}}
               >
                 Borrow
               </Button>
-            ) : (
+            : 
               <Button
                 bg="#101216"
                 color="#6E7681"
                 size="sm"
                 width="100%"
-                mb="2rem"
+                mt="1.5rem"
+                mb="1.5rem"
                 border="1px solid #2B2F35"
                 _hover={{ bg: "#101216" }}
               >
                 Borrow
               </Button>
-            )}
+            }
           </ModalBody>
 
           {/* <ModalFooter>

@@ -63,6 +63,7 @@ const LiquidityProvisionModal = () => {
     const [inputAmount, setinputAmount] = useState(0);
     const [sliderValue, setSliderValue] = useState(0);
     const selectedDapp=useSelector(selectSelectedDapp);
+    console.log(selectedDapp);
 
     const dispatch = useDispatch();
     const modalDropdowns = useSelector(selectModalDropDowns);
@@ -155,17 +156,39 @@ const LiquidityProvisionModal = () => {
     return (
         <div>
                 <Box display="flex" gap="4rem" mt="1rem">
-                  <Box cursor="pointer" onClick={onOpen}>
+                  <Box cursor="pointer"
+                  onClick={()=>{
+                    if(selectedDapp==""){
+                        console.log("hi")
+                    }else{
+                        onOpen();
+
+                    }
+                  }}>
                     {selectedDapp != "" ? (
                       <TableYagiLogo />
                     ) : (
                       <TableYagiLogoDull />
                     )}
                   </Box>
-                  <Box cursor="pointer" onClick={onOpen}>
+                  <Box cursor="pointer" onClick={()=>{
+                    if(selectedDapp==""){
+                        console.log("hi")
+                    }else{
+                        onOpen();
+
+                    }
+                  }}>
                     {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
                   </Box>
-                  <Box cursor="pointer" onClick={onOpen}>
+                  <Box cursor="pointer" onClick={()=>{
+                    if(selectedDapp==""){
+                        console.log("hi")
+                    }else{
+                        onOpen();
+
+                    }
+                  }}>
                     {selectedDapp != "" ? (
                       <TableJediswapLogo />
                     ) : (

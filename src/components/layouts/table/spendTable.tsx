@@ -315,14 +315,18 @@ const SpendTable = () => {
               border="1px"
               borderColor="#2B2F35"
               lineHeight="20px"
-              borderLeftRadius="6px"
+              // borderLeftRadius="md"
               fontWeight="500"
+              borderRadius="0px"
               _selected={{
                 // color: "white",
                 bg: selectedDapp != "" ? "#0969DA" : "none",
                 // border: "none",
               }}
-              // isDisabled={selectedDapp == ""}
+              _disabled={{
+                background:"#101216"
+              }}
+              isDisabled={selectedDapp == ""}
             >
               Liquidity provision
             </Tab>
@@ -343,7 +347,7 @@ const SpendTable = () => {
                 // border: "none",
               }}
 
-              // isDisabled={selectedDapp == ""}
+              isDisabled={selectedDapp == ""}
               // isDisabled={selectedDapp == ""}
             >
               swap
@@ -363,7 +367,7 @@ const SpendTable = () => {
                 bg: selectedDapp != "" ? "#0969DA" : "none",
                 // border: "none",
               }}
-              // isDisabled={selectedDapp == ""}
+              isDisabled={selectedDapp == ""}
             >
               stake
             </Tab>
@@ -386,7 +390,7 @@ const SpendTable = () => {
                 // border: "none",
               }}
               onClick={() => setTradeNote(true)}
-              // isDisabled={selectedDapp == ""}
+              isDisabled={selectedDapp == ""}
             >
               Trade
             </Tab>

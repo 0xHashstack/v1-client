@@ -65,6 +65,7 @@ import {
   setCoinSelectedSupplyModal,
   selectWalletBalance,
 } from "@/store/slices/userAccountSlice";
+import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 const YourSupplyModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
@@ -288,7 +289,7 @@ const YourSupplyModal = () => {
                             <Box p="1">
                               {getCoin(currentSelectedSupplyCoin)}
                             </Box>
-                            <Text color="white">
+                            <Text color="white" mt="0.15rem">
                               {currentSelectedSupplyCoin}
                             </Text>
                           </Box>
@@ -385,7 +386,7 @@ const YourSupplyModal = () => {
                         <Box
                           width="100%"
                           color="white"
-                          border="1px solid #2B2F35"
+                          border={`${inputSupplyAmount > walletBalance ? "1px solid #CF222E" :inputSupplyAmount>0 && inputSupplyAmount<=walletBalance?"1px solid #1A7F37":"1px solid #2B2F35 "}`}
                           borderRadius="6px"
                           display="flex"
                           justifyContent="space-between"
@@ -396,11 +397,12 @@ const YourSupplyModal = () => {
                             min={0}
                             keepWithinRange={true}
                             onChange={handleChange}
-                            value={inputSupplyAmount}
+                            value={inputSupplyAmount?inputSupplyAmount:""}
                             outline="none"
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
+                              color={`${inputSupplyAmount>walletBalance?"#CF222E":inputSupplyAmount==0?"white": "#1A7F37"}`}
                               border="0px"
                               _placeholder={{
                                 color: "#393D4F",
@@ -426,21 +428,25 @@ const YourSupplyModal = () => {
                             MAX
                           </Button>
                         </Box>
-                        <Text
-                          color="#E6EDF3"
-                          display="flex"
-                          justifyContent="flex-end"
-                          mt="0.4rem"
-                          fontSize="12px"
-                          fontWeight="500"
-                          fontStyle="normal"
-                          fontFamily="Inter"
-                        >
-                          Wallet Balance: {walletBalance}
-                          <Text color="#6E7781" ml="0.2rem">
-                            {` ${currentSelectedSupplyCoin}`}
-                          </Text>
-                        </Text>
+                        {inputSupplyAmount > walletBalance ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+
+<Text color="#CF222E" display="flex">
+  <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
+<Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
+  Wallet Balance: {walletBalance}
+  <Text color="#6E7781" ml="0.2rem">
+    {` ${currentSelectedSupplyCoin}`}
+  </Text>
+</Text>
+
+</Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+Wallet Balance: {walletBalance}
+<Text color="#6E7781" ml="0.2rem">
+  {` ${currentSelectedSupplyCoin}`}
+</Text>
+</Text>
+
+}
                         <Box pt={5} pb={2} mt="0.8rem">
                           <Slider
                             aria-label="slider-ex-6"
@@ -651,17 +657,16 @@ const YourSupplyModal = () => {
                           <Text color="#6E7681">7.75%</Text>
                         </Text>
                       </Card>
-                      {inputSupplyAmount > 0 ? (
+                      {inputSupplyAmount > 0 &&inputSupplyAmount<=walletBalance ? (
                         <Button
-                          bg="#8B949E"
-                          color="white"
-                          size="sm"
-                          width="100%"
-                          mt="1rem"
-                          mb="1rem"
-                          border="1px solid #2B2F35"
-                          _hover={{ bg: "#2DA44E" }}
-                          _focus={{ bg: "#298E46" }}
+                        bg="#101216"
+                        color="#8B949E"
+                        size="sm"
+                        width="100%"
+                        mt="1.5rem"
+                        mb="1.5rem"
+                        border="1px solid #8B949E"
+                        _hover={{ bg: "white",color:"black" }}
                         >
                           Supply
                         </Button>
@@ -671,8 +676,8 @@ const YourSupplyModal = () => {
                           color="#6E7681"
                           size="sm"
                           width="100%"
-                          mt="1rem"
-                          mb="1rem"
+                          mt="1.5rem"
+                          mb="1.5rem"
                           border="1px solid #2B2F35"
                           _hover={{ bg: "#101216" }}
                         >
@@ -733,7 +738,7 @@ const YourSupplyModal = () => {
                             <Box p="1">
                               {getCoin(currentSelectedWithdrawlCoin)}
                             </Box>
-                            <Text color="white">
+                            <Text color="white" mt="0.15rem">
                               {currentSelectedWithdrawlCoin}
                             </Text>
                           </Box>
@@ -830,7 +835,7 @@ const YourSupplyModal = () => {
                         <Box
                           width="100%"
                           color="white"
-                          border="1px solid #2B2F35"
+                          border={`${inputWithdrawlAmount > walletBalance ? "1px solid #CF222E" :inputWithdrawlAmount>0 && inputWithdrawlAmount<=walletBalance?"1px solid #1A7F37":"1px solid #2B2F35 "}`}
                           borderRadius="6px"
                           display="flex"
                           justifyContent="space-between"
@@ -841,11 +846,12 @@ const YourSupplyModal = () => {
                             min={0}
                             keepWithinRange={true}
                             onChange={handleWithdrawlChange}
-                            value={inputWithdrawlAmount}
+                            value={inputWithdrawlAmount?inputWithdrawlAmount:""}
                             outline="none"
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedWithdrawlCoin}`}
+                              color={`${inputWithdrawlAmount>walletBalance?"#CF222E":inputWithdrawlAmount==0?"white": "#1A7F37"}`}
                               border="0px"
                               _placeholder={{
                                 color: "#393D4F",
@@ -871,21 +877,25 @@ const YourSupplyModal = () => {
                             MAX
                           </Button>
                         </Box>
-                        <Text
-                          color="#E6EDF3"
-                          display="flex"
-                          justifyContent="flex-end"
-                          mt="0.4rem"
-                          fontSize="12px"
-                          fontWeight="500"
-                          fontStyle="normal"
-                          fontFamily="Inter"
-                        >
-                          Wallet Balance: {walletBalance}
-                          <Text color="#6E7781" ml="0.2rem">
-                            {` ${currentSelectedWithdrawlCoin}`}
-                          </Text>
-                        </Text>
+                        {inputWithdrawlAmount > walletBalance ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+
+<Text color="#CF222E" display="flex">
+  <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
+<Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
+  Wallet Balance: {walletBalance}
+  <Text color="#6E7781" ml="0.2rem">
+    {` ${currentSelectedWithdrawlCoin}`}
+  </Text>
+</Text>
+
+</Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+Wallet Balance: {walletBalance}
+<Text color="#6E7781" ml="0.2rem">
+  {` ${currentSelectedWithdrawlCoin}`}
+</Text>
+</Text>
+
+}
                         <Box pt={5} pb={2} mt="0.8rem">
                           <Slider
                             aria-label="slider-ex-6"
@@ -1154,17 +1164,17 @@ const YourSupplyModal = () => {
                           <Text color="#6E7681">$ 10.91</Text>
                         </Text>
                       </Card>
-                      {inputWithdrawlAmount > 0 ? (
+                      {inputWithdrawlAmount > 0 &&inputWithdrawlAmount<=walletBalance ? (
                         <Button
-                          bg="#8B949E"
-                          color="white"
-                          size="sm"
-                          width="100%"
-                          mt="1rem"
-                          mb="1rem"
-                          border="1px solid #2B2F35"
-                          _hover={{ bg: "#2DA44E" }}
-                          _focus={{ bg: "#298E46" }}
+                        bg="#101216"
+                        color="#8B949E"
+                        size="sm"
+                        width="100%"
+                        mt="1.5rem"
+                        mb="1.5rem"
+                        border="1px solid #8B949E"
+                        _hover={{ bg: "white",color:"black" }}
+                        transition="border 0.2s"
                         >
                           Withdraw
                         </Button>

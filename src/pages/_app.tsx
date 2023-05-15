@@ -12,6 +12,23 @@ import {
 } from "@starknet-react/core";
 
 const theme = extendTheme({
+  components: {
+    Tabs: {
+      baseStyle: {
+        tab: {
+          _disabled: {
+            background:"#101216",
+            opacity:"100%",
+            cursor:'pointer',
+          },
+          "> *:first-of-type": {
+             background:"#101216",
+             opacity:"100%",
+          },
+        },
+      },
+    },
+  },
   colors: {
     customBlue: {
       500: "#0969DA",
