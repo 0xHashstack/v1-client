@@ -128,7 +128,7 @@ const BorrowModal = () => {
         color="#6e6e6e"
         fontSize={"12px"}
         bgColor="#101216"
-        _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
+        _hover={{ bg: "white",color:"black" }}
         borderRadius={"6px"}
         onClick={onOpen}
       >

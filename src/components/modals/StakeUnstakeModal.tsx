@@ -62,6 +62,7 @@ import {
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
+import SupplyModal from "./SupplyModal";
 const StakeUnstakeModal = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const dispatch = useDispatch();
@@ -173,33 +174,33 @@ const StakeUnstakeModal = () => {
     const [buttonId, setButtonId] = useState(0)
     return (
         <Box>
-      <Text
-        key="borrow-details"
-        as="span"
-        position="relative"
-        color="#0969DA"
-        fontSize="14px"
-        width="100%"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        fontWeight="400"
-        cursor="pointer"
-        _hover={{
-          "::before": {
-            content: '""',
-            position: "absolute",
-            left: 0,
-            bottom: "-0px",
-            width: "100%",
-            height: "1px",
-            backgroundColor: "#0969DA",
-          },
-        }}
-        onClick={onOpen}
-      >
-        Details
-      </Text>
+            <Text
+                key="borrow-details"
+                as="span"
+                position="relative"
+                color="#0969DA"
+                fontSize="14px"
+                width="100%"
+                display="flex"
+                alignItems="center"
+                justifyContent="center"
+                fontWeight="400"
+                cursor="pointer"
+                _hover={{
+                    "::before": {
+                        content: '""',
+                        position: "absolute",
+                        left: 0,
+                        bottom: "-0px",
+                        width: "100%",
+                        height: "1px",
+                        backgroundColor: "#0969DA",
+                    },
+                }}
+                onClick={onOpen}
+            >
+                Details
+            </Text>
 
             <Modal
                 isOpen={isOpen}
@@ -378,10 +379,10 @@ const StakeUnstakeModal = () => {
                                                         </Box>
                                                     </Tooltip>
                                                 </Text>
-                                                <Box width="100%" color="white" border={`${inputStakeAmount > walletBalance ? "1px solid #CF222E" :inputStakeAmount>0 && inputStakeAmount<=walletBalance?"1px solid #1A7F37":"1px solid #2B2F35 "}`} borderRadius="6px" display="flex" justifyContent="space-between">
-                                                    <NumberInput border="0px"  min={0} keepWithinRange={true} onChange={handleChange} value={inputStakeAmount?inputStakeAmount:""} outline="none"
+                                                <Box width="100%" color="white" border={`${inputStakeAmount > walletBalance ? "1px solid #CF222E" : inputStakeAmount > 0 && inputStakeAmount <= walletBalance ? "1px solid #1A7F37" : "1px solid #2B2F35 "}`} borderRadius="6px" display="flex" justifyContent="space-between">
+                                                    <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleChange} value={inputStakeAmount ? inputStakeAmount : ""} outline="none"
                                                     >
-                                                        <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`} color={`${inputStakeAmount>walletBalance?"#CF222E":inputStakeAmount==0?"white": "#1A7F37"}`} border="0px" _placeholder={{
+                                                        <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`} color={`${inputStakeAmount > walletBalance ? "#CF222E" : inputStakeAmount == 0 ? "white" : "#1A7F37"}`} border="0px" _placeholder={{
                                                             color: "#393D4F",
                                                             fontSize: ".89rem",
                                                             fontWeight: "600",
@@ -399,23 +400,23 @@ const StakeUnstakeModal = () => {
                                                 </Box>
                                                 {inputStakeAmount > walletBalance ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
 
-<Text color="#CF222E" display="flex">
-  <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
-<Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
-  Wallet Balance: {walletBalance}
-  <Text color="#6E7781" ml="0.2rem">
-    {` ${currentSelectedStakeCoin}`}
-  </Text>
-</Text>
+                                                    <Text color="#CF222E" display="flex">
+                                                        <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
+                                                    <Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
+                                                        Wallet Balance: {walletBalance}
+                                                        <Text color="#6E7781" ml="0.2rem">
+                                                            {` ${currentSelectedStakeCoin}`}
+                                                        </Text>
+                                                    </Text>
 
-</Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
-Wallet Balance: {walletBalance}
-<Text color="#6E7781" ml="0.2rem">
-  {` ${currentSelectedStakeCoin}`}
-</Text>
-</Text>
+                                                </Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+                                                    Wallet Balance: {walletBalance}
+                                                    <Text color="#6E7781" ml="0.2rem">
+                                                        {` ${currentSelectedStakeCoin}`}
+                                                    </Text>
+                                                </Text>
 
-}
+                                                }
                                                 <Box pt={5} pb={2} mt="0.8rem">
                                                     <Slider
                                                         aria-label="slider-ex-6"
@@ -568,21 +569,21 @@ Wallet Balance: {walletBalance}
                                                     Add Supply
                                                 </Text>
                                             </Text>
-                                            {inputStakeAmount > 0 &&inputStakeAmount<=walletBalance ? 
-                                            buttonId==1?<SuccessButton successText="Stake success" />:buttonId==2? <ErrorButton errorText="Copy error!"/>:
-                                                <Button
-                                                bg="#101216"
-                                                color="#8B949E" 
-                                                size="sm"
-                                                width="100%"
-                                                mt="1.5rem"
-                                                mb="1.5rem"
-                                                border="1px solid #8B949E"
-                                                _hover={{ bg: "white",color:"black" }}
-                                                >
-                                                    Stake
-                                                </Button>
-                                            : 
+                                            {inputStakeAmount > 0 && inputStakeAmount <= walletBalance ?
+                                                buttonId == 1 ? <SuccessButton successText="Stake success" /> : buttonId == 2 ? <ErrorButton errorText="Copy error!" /> :
+                                                    <Button
+                                                        bg="#101216"
+                                                        color="#8B949E"
+                                                        size="sm"
+                                                        width="100%"
+                                                        mt="1.5rem"
+                                                        mb="1.5rem"
+                                                        border="1px solid #8B949E"
+                                                        _hover={{ bg: "white", color: "black" }}
+                                                    >
+                                                        Stake
+                                                    </Button>
+                                                :
                                                 <Button
                                                     bg="#101216"
                                                     color="#6E7681"
@@ -718,10 +719,10 @@ Wallet Balance: {walletBalance}
                                                         </Box>
                                                     </Tooltip>
                                                 </Text>
-                                                <Box width="100%" color="white" border={`${inputUnstakeAmount > walletBalance ? "1px solid #CF222E" :inputUnstakeAmount>0 && inputUnstakeAmount<=walletBalance?"1px solid #1A7F37":"1px solid #2B2F35 "}`} borderRadius="6px" display="flex" justifyContent="space-between">
-                                                    <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleUnstakeChange} value={inputUnstakeAmount?inputUnstakeAmount:""} outline="none"
+                                                <Box width="100%" color="white" border={`${inputUnstakeAmount > walletBalance ? "1px solid #CF222E" : inputUnstakeAmount > 0 && inputUnstakeAmount <= walletBalance ? "1px solid #1A7F37" : "1px solid #2B2F35 "}`} borderRadius="6px" display="flex" justifyContent="space-between">
+                                                    <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleUnstakeChange} value={inputUnstakeAmount ? inputUnstakeAmount : ""} outline="none"
                                                     >
-                                                        <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`} color={`${inputUnstakeAmount>walletBalance?"#CF222E":inputUnstakeAmount==0?"white": "#1A7F37"}`} border="0px" _placeholder={{
+                                                        <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`} color={`${inputUnstakeAmount > walletBalance ? "#CF222E" : inputUnstakeAmount == 0 ? "white" : "#1A7F37"}`} border="0px" _placeholder={{
                                                             color: "#393D4F",
                                                             fontSize: ".89rem",
                                                             fontWeight: "600",
@@ -739,23 +740,23 @@ Wallet Balance: {walletBalance}
                                                 </Box>
                                                 {inputUnstakeAmount > walletBalance ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
 
-<Text color="#CF222E" display="flex">
-  <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
-<Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
-  Wallet Balance: {walletBalance}
-  <Text color="#6E7781" ml="0.2rem">
-    {` ${currentSelectedUnstakeCoin}`}
-  </Text>
-</Text>
+                                                    <Text color="#CF222E" display="flex">
+                                                        <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
+                                                    <Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
+                                                        Wallet Balance: {walletBalance}
+                                                        <Text color="#6E7781" ml="0.2rem">
+                                                            {` ${currentSelectedUnstakeCoin}`}
+                                                        </Text>
+                                                    </Text>
 
-</Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
-Wallet Balance: {walletBalance}
-<Text color="#6E7781" ml="0.2rem">
-  {` ${currentSelectedUnstakeCoin}`}
-</Text>
-</Text>
+                                                </Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+                                                    Wallet Balance: {walletBalance}
+                                                    <Text color="#6E7781" ml="0.2rem">
+                                                        {` ${currentSelectedUnstakeCoin}`}
+                                                    </Text>
+                                                </Text>
 
-}
+                                                }
                                                 <Box pt={5} pb={2} mt="0.8rem">
                                                     <Slider
                                                         aria-label="slider-ex-6"
@@ -901,23 +902,20 @@ Wallet Balance: {walletBalance}
                                                     <Text color="#6E7681">0.3%</Text>
                                                 </Text>
                                             </Card>
-                                            <Text padding="0px" fontSize="12px" fontWeight="400" fontStyle="normal" color=" #6A737D" mt="1rem" lineHeight="18px">
-                                                You have not staked any rTokens to unstake <br></br>
-                                                click here To
-                                                <Text display="inline" color="#0969DA" cursor="pointer" ml="0.4rem" lineHeight="18px" >
-                                                    Add Supply
-                                                </Text>
+                                            <Text display="flex" flexDirection="column" padding="0px" fontSize="12px" fontWeight="400" fontStyle="normal" color=" #6A737D" mt="1rem" lineHeight="18px">
+                                                <Text>You have not staked any rTokens to unstake</Text> 
+                                                <Text display="flex">click here To <SupplyModal variant='link' fontSize="12px" display="inline" color="#0969DA" cursor="pointer" ml="0.4rem" lineHeight="18px" buttonText="Add Supply"/></Text>
                                             </Text>
-                                            {inputUnstakeAmount > 0 && inputUnstakeAmount<=walletBalance ? (
+                                            {inputUnstakeAmount > 0 && inputUnstakeAmount <= walletBalance ? (
                                                 <Button
-                                                bg="#101216"
-                                                color="#8B949E"
-                                                size="sm"
-                                                width="100%"
-                                                mt="1.5rem"
-                                                mb="1.5rem"
-                                                border="1px solid #8B949E"
-                                                _hover={{ bg: "white",color:"black" }}
+                                                    bg="#101216"
+                                                    color="#8B949E"
+                                                    size="sm"
+                                                    width="100%"
+                                                    mt="1.5rem"
+                                                    mb="1.5rem"
+                                                    border="1px solid #8B949E"
+                                                    _hover={{ bg: "white", color: "black" }}
                                                 >
                                                     Unstake
                                                 </Button>

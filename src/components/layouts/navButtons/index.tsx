@@ -3,7 +3,7 @@ import {
   setCurrentPage,
 } from "@/store/slices/userAccountSlice";
 import { Box, Button, ButtonGroup, HStack } from "@chakra-ui/react";
-import React, { memo, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { capitalizeWords } from "../../../utils/functions/capitalizeWords";
 import Link from "next/link";
@@ -25,7 +25,16 @@ const NavButtons = ({
 
   const router = useRouter();
   const { pathname } = router;
-  console.log("pathname", pathname);
+  useEffect(() => {
+    const storedCurrentPage = localStorage.getItem("currentPage");
+    if (storedCurrentPage) {
+      dispatch(setCurrentPage(storedCurrentPage));
+    }
+  }, []);
+  const handleButtonClick = (val: string) => {
+    dispatch(setCurrentPage(val));
+    localStorage.setItem("currentPage", val);
+  };
   return (
     <HStack
       // mt={marginTop}
@@ -38,9 +47,7 @@ const NavButtons = ({
         {navOptions.map((val, idx) => (
           <Link
             key={idx}
-            onClick={() => {
-              dispatch(setCurrentPage(val));
-            }}
+            onClick={() => handleButtonClick(val)}
             href={`/${val.replace(/\s+/g, "-")}`}
           >
             <Button

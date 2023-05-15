@@ -11,11 +11,11 @@ import React, { useEffect, useState } from "react";
 import { HStack, VStack, Text, Box } from "@chakra-ui/react";
 import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
-
+import { useDispatch } from "react-redux";
+import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 const YourBorrow = () => {
   const [render, setRender] = useState(false);
   const [currentPagination, setCurrentPagination] = useState<number>(1);
-
   const columnItems = [
     "Borrow ID",
     "Borrowed",

@@ -65,6 +65,7 @@ import {
 } from "@/store/slices/userAccountSlice";
 
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
+import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 
 const YourBorrowModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -748,7 +749,7 @@ const YourBorrowModal = () => {
             >
               <Box w="full">
                 <Tabs variant="unstyled">
-                  <TabList borderRadius="md">
+                  <TabList borderRadius="md" position="sticky">
                     <Tab
                       py="1"
                       px="3"
@@ -787,6 +788,7 @@ const YourBorrowModal = () => {
                   <TabPanels>
                     <TabPanel p="0" m="0">
                       <Box
+                      
                         display="flex"
                         flexDirection="column"
                         backgroundColor="#101216"
@@ -1960,7 +1962,7 @@ const YourBorrowModal = () => {
                         <Box
                           width="100%"
                           color="white"
-                          border="1px solid #2B2F35"
+                          border={`${inputCollateralAmount > walletBalance ? "1px solid #CF222E" :inputCollateralAmount>0 && inputAmount<=walletBalance?"1px solid #1A7F37":"1px solid #2B2F35 "}`}
                           borderRadius="6px"
                           display="flex"
                           justifyContent="space-between"
@@ -1969,9 +1971,10 @@ const YourBorrowModal = () => {
                           <NumberInput
                             border="0px"
                             min={0}
+                            color={`${inputCollateralAmount>walletBalance?"#CF222E":inputCollateralAmount==0?"white": "#1A7F37"}`}
                             keepWithinRange={true}
                             onChange={handleCollateralChange}
-                            value={inputCollateralAmount}
+                            value={inputCollateralAmount?inputCollateralAmount:""}
                             outline="none"
                           >
                             <NumberInputField
@@ -2001,20 +2004,25 @@ const YourBorrowModal = () => {
                             MAX
                           </Button>
                         </Box>
-                        <Text
-                          color="#E6EDF3"
-                          display="flex"
-                          justifyContent="flex-end"
-                          fontSize="12px"
-                          fontWeight="500"
-                          fontStyle="normal"
-                          fontFamily="Inter"
-                        >
-                          Wallet Balance: {walletBalance}
-                          <Text color="#6E7781" ml="0.2rem">
-                            {` ${currentSelectedCoin}`}
-                          </Text>
-                        </Text>
+                        {inputCollateralAmount > walletBalance ? <Text display="flex" justifyContent="space-between" color="#E6EDF3"  fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+
+<Text color="#CF222E" display="flex">
+  <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
+<Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
+  Wallet Balance: {walletBalance}
+  <Text color="#6E7781" ml="0.2rem">
+    {` ${currentSelectedCoin}`}
+  </Text>
+</Text>
+
+</Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+Wallet Balance: {walletBalance}
+<Text color="#6E7781" ml="0.2rem">
+  {` ${currentSelectedCoin}`}
+</Text>
+</Text>
+
+}
                         <Box pt={5} pb={2} mt="0.2rem">
                           <Slider
                             aria-label="slider-ex-6"
@@ -2349,7 +2357,7 @@ const YourBorrowModal = () => {
                           <Text color="#6E7681">1.10</Text>
                         </Text>
                       </Card>
-                      {inputCollateralAmount > 0 ? (
+                      {inputCollateralAmount > 0 &&inputCollateralAmount<=walletBalance ? (
                         <Button
                         bg="#101216"
                         color="#8B949E"
@@ -2368,8 +2376,8 @@ const YourBorrowModal = () => {
                           color="#6E7681"
                           size="sm"
                           width="100%"
-                          mt="2rem"
-                          mb="2rem"
+                          mt="1.5rem"
+                          mb="1.5rem"
                           border="1px solid #2B2F35"
                           _hover={{ bg: "#101216" }}
                         >
