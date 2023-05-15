@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Table,
@@ -26,7 +26,7 @@ import InfoIcon from "@/assets/icons/infoIcon";
 import TableClose from "./tableIcons/close";
 import TableInfoIcon from "./tableIcons/infoIcon";
 import Link from "next/link";
-import { useDispatch,useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setCurrentPage } from "@/store/slices/userAccountSlice";
 import HazardIcon from "@/assets/icons/hazardIcon";
 import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
@@ -36,7 +36,8 @@ import TableJediswapLogoDull from "./tableIcons/jediswapLogoDull";
 import Image from "next/image";
 import StakeModal from "@/components/modals/StakeModal";
 import SwapModal from "@/components/modals/SwapModal";
-import { setSpendBorrowSelectedDapp} from "@/store/slices/userAccountSlice";
+import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
+import { useRouter } from "next/router";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -63,6 +64,22 @@ const SpendTable = () => {
   ];
 
   const dispatch = useDispatch();
+
+  const router = useRouter();
+  function handleRouteChange(url: string) {
+    dispatch(setSpendBorrowSelectedDapp(""));
+  }
+  useEffect(() => {
+    const handleRouteChangeComplete = (url: string) => {
+      handleRouteChange(url);
+    };
+
+    router.events.on("routeChangeComplete", handleRouteChangeComplete);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChangeComplete);
+    };
+  }, []);
   return (
     <>
       {showWarning && (
@@ -169,7 +186,7 @@ const SpendTable = () => {
                     onClick={() => {
                       setSelectedDapp("trade");
                       setCurrentBorrow(index);
-                      dispatch(setSpendBorrowSelectedDapp("trade"))
+                      dispatch(setSpendBorrowSelectedDapp("trade"));
                     }}
                   >
                     <Td borderLeftRadius="6px">
@@ -342,7 +359,6 @@ const SpendTable = () => {
                 bg: selectedDapp != "" ? "#0969DA" : "none",
                 // border: "none",
               }}
-
               // isDisabled={selectedDapp == ""}
               isDisabled={selectedDapp == ""}
             >
@@ -400,7 +416,7 @@ const SpendTable = () => {
                 >
                   Select a Dapp to begin with the spend
                 </Text>
-                <LiquidityProvisionModal/>
+                <LiquidityProvisionModal />
               </Box>
             </TabPanel>
             <TabPanel padding="0">
@@ -411,7 +427,7 @@ const SpendTable = () => {
                 >
                   Select a Dapp to begin with the spend
                 </Text>
-                <SwapModal/>
+                <SwapModal />
               </Box>
             </TabPanel>
             <TabPanel p={0}>
@@ -423,9 +439,9 @@ const SpendTable = () => {
                   Select a Dapp to begin with the spend
                 </Text>
                 <Box display="flex" gap="14" mt="1rem">
-                  <Box cursor="pointer" >
+                  <Box cursor="pointer">
                     {selectedDapp != "" ? (
-                      <StakeModal/>
+                      <StakeModal />
                     ) : (
                       <TableYagiLogoDull />
                     )}

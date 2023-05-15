@@ -42,10 +42,10 @@ import {
   setModalDropdown,
   selectModalDropDowns,
 } from "@/store/slices/dropdownsSlice";
+import AnimatedButton from "../uiElements/buttons/AnimationButton";
 
 const SupplyModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [inputAmount, setinputAmount] = useState(0);
@@ -530,7 +530,7 @@ const SupplyModal = () => {
               </Card>
               {inputAmount1 > 0 ? (
                 <Button
-                bg="#101216"
+                  bg="#101216"
                   color="#8B949E"
                   size="sm"
                   width="100%"
@@ -542,18 +542,30 @@ const SupplyModal = () => {
                   Supply
                 </Button>
               ) : (
-                <Button
-                  bg="#101216"
+                // <Button
+                //   bg="#101216"
+                //   color="#6E7681"
+                //   size="sm"
+                //   width="100%"
+                //   mt="1.5rem"
+                //   mb="1.5rem"
+                //   border="1px solid #2B2F35"
+                //   _hover={{ bg: "#101216" }}
+                // >
+                //   Supply
+                // </Button>
+                <AnimatedButton
+                  bgColor="#101216"
                   color="#6E7681"
                   size="sm"
                   width="100%"
                   mt="1.5rem"
                   mb="1.5rem"
                   border="1px solid #2B2F35"
-                  _hover={{ bg: "#101216" }}
+                  _hover={{ color: "#010409", bgColor: "#e1e4e9" }}
                 >
                   Supply
-                </Button>
+                </AnimatedButton>
               )}
             </ModalBody>
           </ModalContent>

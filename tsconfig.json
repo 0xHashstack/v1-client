@@ -18,6 +18,12 @@
       "@/*": ["./src/*"]
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/utils/functions/numberFormatter.tsx"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "src/utils/functions/numberFormatter.tsx",
+    "src/components/uiElements/buttons/AnimationButton.tsx"
+  ],
   "exclude": ["node_modules"]
 }

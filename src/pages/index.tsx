@@ -15,6 +15,8 @@ import {
 import { useContract, useStarknetCall } from "@starknet-react/core";
 import { useDispatch } from "react-redux";
 import { setAccount } from "@/store/slices/userAccountSlice";
+import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
+// import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -45,6 +47,7 @@ export default function Home() {
         placeHolder={"Connect Wallet"}
         onClick={() => connect(connectors[0])}
       />
+      {/* <AnimatedButton /> */}
     </PageCard>
   );
 }
