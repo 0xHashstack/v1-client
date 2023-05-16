@@ -26,11 +26,11 @@ The first page you will be directed to is the Wallet Connection Page:-
 
 ![image](https://github.com/0xHashstack/zkopen-client/assets/86202585/24a1fcda-d39c-4b4d-ae5d-773a054db54d)
 
-
 3. When you are Loged in you will reach the market page
 
 ![image](https://github.com/0xHashstack/zkopen-client/assets/86202585/bb403b7e-b0bb-48bf-ab85-08ec1a9c48a9)
 
+4. Visit NOTE.md for track of unused files in codebase.
 
 ## Learn More
 
