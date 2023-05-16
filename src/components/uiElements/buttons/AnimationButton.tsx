@@ -15,6 +15,9 @@ const AnimatedButton: React.FC<Props> = ({
 }) => {
   const classes = [];
   if (className) classes.push(className);
+
+  //Below array is previously static data which is now used as labelArray as props
+
   // const strings = [
   //   "Deposit Amount approved",
   //   "Successfully transferred to Hashstack’s supply vault.",
@@ -23,6 +26,7 @@ const AnimatedButton: React.FC<Props> = ({
   //   "Transaction complete.",
   //   "Supply success",
   // ];
+
   const [currentStringIndex, setCurrentStringIndex] = useState(-1);
   const [isAnimationStarted, setIsAnimationStarted] = useState(false);
   const progressBarWidth = `${
@@ -64,7 +68,7 @@ const AnimatedButton: React.FC<Props> = ({
       borderRadius="8px"
       // color="white"
       position="relative"
-      // overflow="hidden"
+      overflow="hidden"
       className={classes.join(" ")}
       // _hover={{ bg: "white", color: "black !important" }}
       _active={{ border: isAnimationStarted ?"":"3px solid grey" }}
@@ -78,6 +82,7 @@ const AnimatedButton: React.FC<Props> = ({
         width="100%"
         position="relative"
         overflow="hidden"
+        // borderRadius="8px"
         // bgColor="blue"
       >
         <AnimatePresence initial={false}>
@@ -141,6 +146,7 @@ const AnimatedButton: React.FC<Props> = ({
         height="100%"
         zIndex={0}
         transition="width 0.5s ease-in-out"
+        // borderLeftRadius="8px"
       />
     </Button>
   );

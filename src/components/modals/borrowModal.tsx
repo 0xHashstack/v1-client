@@ -54,7 +54,7 @@ const BorrowModal = () => {
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
-  const [buttonId, setButtonId] = useState(0)
+  const [buttonId, setButtonId] = useState(0);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -124,11 +124,11 @@ const BorrowModal = () => {
         key="borrow"
         height={"2rem"}
         padding="6px 12px"
-        border="1px solid #BDBFC1"
+        border="1px solid #2b2f35"
         color="#6e6e6e"
         fontSize={"12px"}
         bgColor="#101216"
-        _hover={{ bg: "white",color:"black" }}
+        _hover={{ bg: "white", color: "black" }}
         borderRadius={"6px"}
         onClick={onOpen}
       >
@@ -144,13 +144,21 @@ const BorrowModal = () => {
       >
         <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
         <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
-        <ModalHeader mt="1rem" fontSize="14px" fontWeight="600" fontStyle="normal" lineHeight="20px" color="white">Borrow</ModalHeader>
-        <ModalCloseButton color="white" mt="1rem" mr="1rem"/>
+          <ModalHeader
+            mt="1rem"
+            fontSize="14px"
+            fontWeight="600"
+            fontStyle="normal"
+            lineHeight="20px"
+            color="white"
+          >
+            Borrow
+          </ModalHeader>
+          <ModalCloseButton color="white" mt="1rem" mr="1rem" />
           {/* <ModalHeader>Borrow</ModalHeader> */}
-          <ModalBody  overflowY="auto" color={"#E6EDF3"}>
-
-              {/* <ModalCloseButton mt="1rem" mr="1rem" color="white" /> */}
-              {/* <button onClick={onClose}>Cancel</button> */}
+          <ModalBody overflowY="auto" color={"#E6EDF3"}>
+            {/* <ModalCloseButton mt="1rem" mr="1rem" color="white" /> */}
+            {/* <button onClick={onClose}>Cancel</button> */}
 
             <Box
               display="flex"
@@ -242,13 +250,15 @@ const BorrowModal = () => {
                               w="full"
                               display="flex"
                               py="5px"
-                              px={`${coin === currentCollateralCoin ? "1" : "5"
-                                }`}
+                              px={`${
+                                coin === currentCollateralCoin ? "1" : "5"
+                              }`}
                               gap="1"
-                              bg={`${coin === currentCollateralCoin
+                              bg={`${
+                                coin === currentCollateralCoin
                                   ? "#0C6AD9"
                                   : "inherit"
-                                }`}
+                              }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -487,10 +497,11 @@ const BorrowModal = () => {
                               py="5px"
                               px={`${coin === currentBorrowCoin ? "1" : "5"}`}
                               gap="1"
-                              bg={`${coin === currentBorrowCoin
+                              bg={`${
+                                coin === currentBorrowCoin
                                   ? "#0C6AD9"
                                   : "inherit"
-                                }`}
+                              }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -616,12 +627,7 @@ const BorrowModal = () => {
               </Box>
             </Box>
 
-            <Card
-              bg="#101216"
-              mt="1.5rem"
-              p="1rem"
-              border="1px solid #2B2F35"
-            >
+            <Card bg="#101216" mt="1.5rem" p="1rem" border="1px solid #2B2F35">
               <Text
                 color="#8B949E"
                 display="flex"
@@ -820,7 +826,7 @@ const BorrowModal = () => {
               >
                 Borrow
               </Button>
-            }
+            )}
           </ModalBody>
 
           {/* <ModalFooter>

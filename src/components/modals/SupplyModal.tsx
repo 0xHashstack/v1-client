@@ -522,9 +522,9 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                   <ErrorButton errorText="Copy error!" />
                 ) : (
                   <AnimatedButton
-                    bgColor="#101216"
+                    // bgColor="#101216"
                     // bgColor="red"
-                    p={0}
+                    // p={0}
                     color="#8B949E"
                     size="sm"
                     width="100%"
