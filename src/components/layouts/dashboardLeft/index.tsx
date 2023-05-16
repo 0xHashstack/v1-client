@@ -1,26 +1,20 @@
 import React from "react";
+
 import {
   Table,
   Thead,
   Tbody,
   Tr,
-  Th,
   Td,
   TableContainer,
-  Wrap,
   Text,
   Box,
   HStack,
-  VStack,
   useMediaQuery,
 } from "@chakra-ui/react";
 
-import BTCLogo from "@/assets/images/stakeIcon.svg";
-import USDTLogo from "@/assets/images/stakeIcon.svg";
 import Image from "next/image";
-import BorrowModal from "@/components/modals/borrowModal";
 import SupplyModal from "@/components/modals/SupplyModal";
-import StakeModal from "@/components/modals/StakeModal";
 import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 export interface ICoin {
   name: string;

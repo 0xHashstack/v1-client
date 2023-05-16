@@ -66,7 +66,7 @@ const WalletConnectModal = ({
 
 
   useEffect(() => {
-    alert(status)
+    // alert(status)
     if (status == "connected") {
 
       // alert(account?.address);

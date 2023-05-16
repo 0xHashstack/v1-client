@@ -279,7 +279,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                 {inputAmount > walletBalance ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
 
                   <Text color="#CF222E" display="flex">
-                    <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
+                    <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Amount exceeds balance</Text></Text>
                   <Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
                     Wallet Balance: {walletBalance}
                     <Text color="#6E7781" ml="0.2rem">
@@ -471,17 +471,14 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
               {inputAmount1 > 0 &&inputAmount<=walletBalance ?
                 buttonId == 1 ? <SuccessButton successText="Supply success" /> : buttonId == 2 ? <ErrorButton errorText="Copy error!" /> :
                 <AnimatedButton
-                  bgColor="#101216"
-                  color="#6E7681"
-                  size="sm"
-                  width="100%"
-                  mt="1.5rem"
-                  mb="1.5rem"
-                  border="1px solid #2B2F35"
-                  _hover={{ color: "#010409", bgColor: "#e1e4e9" }}
+                bgColor="#101216"
+                color="#8B949E"
+                size="sm"
+                width="100%"
+                mt="1.5rem"
+                mb="1.5rem"
+                border="1px solid #8B949E"
                 >
-
-                  Supply
                 </AnimatedButton>
                 :
                 <Button

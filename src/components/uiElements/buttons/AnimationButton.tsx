@@ -1,7 +1,7 @@
 import { Button, Box, ButtonProps } from "@chakra-ui/react";
 import { ReactNode, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-
+import SuccessButton from "./SuccessButton";
 interface Props extends ButtonProps {
   children: ReactNode;
 }
@@ -59,12 +59,37 @@ const AnimatedButton: React.FC<Props> = ({ children, className, ...rest }) => {
       position="relative"
       overflow="hidden"
       className={classes.join(" ")}
+      bgColor={isAnimationStarted ? "white" : bgColor}
+      _hover={{ bg: "white",color:"black !important" }}
+      _active={{border:"3px solid grey",bgColor:"white"}}
       {...rest}
-      bgColor={isAnimationStarted ? "#e1e4e9" : bgColor}
       // _hover={{ color: "#010409" }}
     >
       <Box height="100%" width="100%" position="relative" overflow="hidden">
         <AnimatePresence initial={false}>
+        {currentStringIndex === -1 ? 
+        <motion.div
+              key={currentStringIndex}
+              initial={{ opacity: 0, translateY: 50 }}
+              animate={{ opacity: 1, translateY: 0 }}
+              exit={{ opacity: 0, translateY: -50 }}
+              transition={{ duration: 1 }}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: "1",
+                color: isAnimationStarted ? "#010409" : rest.color,
+              }}
+            >
+              Supply
+            </motion.div>
+           :
           <motion.div
             key={currentStringIndex}
             initial={{ translateY: "100%" }}
@@ -87,7 +112,7 @@ const AnimatedButton: React.FC<Props> = ({ children, className, ...rest }) => {
           >
             {currentStringIndex === -1 ? "Supply" : strings[currentStringIndex]}
             {/* {strings[currentStringIndex]} */}
-          </motion.div>
+          </motion.div>}
           {/* )} */}
         </AnimatePresence>
       </Box>

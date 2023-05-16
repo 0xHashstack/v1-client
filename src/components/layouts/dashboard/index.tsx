@@ -1,20 +1,14 @@
 import React from "react";
+
 import {
   Table,
   Thead,
   Tbody,
   Tr,
-  Th,
   Td,
   TableContainer,
-  Wrap,
   Text,
-  Box,
 } from "@chakra-ui/react";
-
-import BTCLogo from "@/assets/images/stakeIcon.svg";
-import USDTLogo from "@/assets/images/stakeIcon.svg";
-import Image from "next/image";
 
 const Dashboard = ({
   width,

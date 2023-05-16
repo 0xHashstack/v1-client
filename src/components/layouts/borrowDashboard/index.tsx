@@ -1,25 +1,19 @@
 import React from "react";
+
 import {
   Table,
   Thead,
   Tbody,
   Tr,
-  Th,
   Td,
   TableContainer,
-  Wrap,
   Text,
   Box,
   HStack,
   VStack,
-  Button,
 } from "@chakra-ui/react";
 
-import BTCLogo from "@/assets/images/stakeIcon.svg";
-import USDTLogo from "@/assets/images/stakeIcon.svg";
 import Image from "next/image";
-import BorrowModal from "@/components/modals/borrowModal";
-import SupplyModal from "@/components/modals/SupplyModal";
 import YourBorrowModal from "@/components/modals/yourBorrowModal";
 
 export interface ICoin {
@@ -45,7 +39,6 @@ const BorrowDashboard = ({
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
   upper_bound = Math.min(Coins.length - 1, upper_bound);
-  console.log("aryan " + lower_bound + " " + upper_bound);
 
   return upper_bound >= lower_bound && Coins.length > 0 ? (
     <TableContainer

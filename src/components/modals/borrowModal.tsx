@@ -802,7 +802,7 @@ const BorrowModal = () => {
                 mb="1.5rem"
                 border="1px solid #8B949E"
                 _hover={{ bg: "white",color:"black" }}
-                onClick={()=>{setButtonId(2)}}
+                // onClick={()=>{setButtonId(2)}}
               >
                 Borrow
               </Button>

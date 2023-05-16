@@ -1,24 +1,11 @@
-import { Box, Button, HStack, Text, VStack } from "@chakra-ui/react";
+import {HStack } from "@chakra-ui/react";
 import React from "react";
 // import Dashboard from "../dashboard";
-import SupplyModal from "@/components/modals/SupplyModal";
-import BorrowModal from "@/components/modals/borrowModal";
+
 import DashboardLeft from "../dashboardLeft";
 import DashboardRight from "../dashboardRight";
-import YourBorrowModal from "@/components/modals/yourBorrowModal";
-import TradeModal from "@/components/modals/tradeModal";
 
 const MarketDashboard = () => {
-  const dashboardItems1 = [
-    ["Market", "Price", "Total supply", "Supply APR"],
-    ["Supply", "Details"],
-  ];
-
-  const dashboardItems2 = [
-    ["Market", "Price", "Total borrowed", "Utillization", "Borrow APR"],
-    ["Borrow", "Trade"],
-  ];
-
   // const rowItems2 = [
   //   [
   //     <HStack>
