@@ -470,34 +470,6 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
               </Card>
               {inputAmount1 > 0 &&inputAmount<=walletBalance ?
                 buttonId == 1 ? <SuccessButton successText="Supply success" /> : buttonId == 2 ? <ErrorButton errorText="Copy error!" /> :
-                  <Button
-                      bg="#101216"
-                    color="#8B949E"
-                    size="sm"
-                    width="100%"
-                    mt="1.5rem"
-                    mb="1.5rem"
-                    border="1px solid #8B949E"
-                    _hover={{ bg: "white",color:"black" }}
-                    transition="border 0.2s"
-                  // onClick={}
-                  _active={{border:"3px solid grey"}}
-                  >
-                    Supply
-                  </Button>
-                :
-                // <Button
-                //   bg="#101216"
-                //   color="#6E7681"
-                //   size="sm"
-                //   width="100%"
-                //   mt="1.5rem"
-                //   mb="1.5rem"
-                //   border="1px solid #2B2F35"
-                //   _hover={{ bg: "#101216" }}
-                // >
-                //   Supply
-                // </Button>
                 <AnimatedButton
                   bgColor="#101216"
                   color="#6E7681"
@@ -511,6 +483,20 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
 
                   Supply
                 </AnimatedButton>
+                :
+                <Button
+                  bg="#101216"
+                  color="#6E7681"
+                  size="sm"
+                  width="100%"
+                  mt="1.5rem"
+                  mb="1.5rem"
+                  border="1px solid #2B2F35"
+                  _hover={{ bg: "#101216" }}
+                >
+                  Supply
+                </Button>
+
               }
             </ModalBody>
           </ModalContent>

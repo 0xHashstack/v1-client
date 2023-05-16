@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Button,
     Modal,
@@ -33,6 +33,7 @@ import EthWalletLogo from "@/assets/icons/coins/ethwallet";
 import {
   selectInputSupplyAmount,
   selectWalletBalance,
+  setAccount,
   setInputSupplyAmount,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,7 +41,7 @@ import {
   setModalDropdown,
   selectModalDropDowns,
 } from "@/store/slices/dropdownsSlice";
-import { useRouter } from "next/router";
+import router, { useRouter } from "next/router";
 
 const WalletConnectModal = ({
   placeHolder,
@@ -64,7 +65,15 @@ const WalletConnectModal = ({
   // console.log(available_reserves)
 
 
-  
+  useEffect(() => {
+    alert(status)
+    if (status == "connected") {
+
+      // alert(account?.address);
+      router.push('/market');
+      dispatch(setAccount(account));
+    }
+  }, [account, status]);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {

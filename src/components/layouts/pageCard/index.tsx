@@ -9,7 +9,7 @@ import {
   useStarknet,
   useBlock,
 } from "@starknet-react/core";
-import { useContract, useStarknetCall } from "@starknet-react/core";
+import { useContract} from "@starknet-react/core";
 import { setAccount } from "@/store/slices/userAccountSlice";
 
 interface Props extends StackProps {

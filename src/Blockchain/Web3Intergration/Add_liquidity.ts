@@ -13,7 +13,7 @@ import {
   dtoken_loan_address,
   rtoken_address,
   opencore_address,
-} from "./constants.ts";
+} from "./constants";
 // const dtoken_loan_address = "0xx32312";
 // const rtoken_address = "0xx11312";
 // const opencore_address = "0xx232312";

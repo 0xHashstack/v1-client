@@ -12,7 +12,7 @@ import {
   useStarknet,
   useBlock,
 } from "@starknet-react/core";
-import { useContract, useStarknetCall } from "@starknet-react/core";
+import { useContract } from "@starknet-react/core";
 import { useDispatch } from "react-redux";
 import { setAccount } from "@/store/slices/userAccountSlice";
 import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
@@ -31,7 +31,9 @@ export default function Home() {
     // setRender(true);
   }, [router]);
   useEffect(() => {
+    alert(status)
     if (status == "connected") {
+
       // alert(account?.address);
       router.push(href);
       dispatch(setAccount(account));

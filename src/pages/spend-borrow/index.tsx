@@ -6,7 +6,6 @@ import SpendTable from "@/components/layouts/table/spendTable";
 import { Box, HStack, Stack, Text, VStack } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import YourSupplyModal from "@/components/modals/yourSupply";
-import SpendBorrowModal from "@/components/modals/SpendBorrow";
 import YourBorrowModal from "@/components/modals/yourBorrowModal";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import PageCard from "@/components/layouts/pageCard";
