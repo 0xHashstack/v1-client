@@ -1,23 +1,19 @@
-import { Button,Text } from '@chakra-ui/react'
-import TickIcon from '@/assets/icons/tickIcon';
+import { Box, Text } from "@chakra-ui/react";
+import TickIcon from "@/assets/icons/tickIcon";
 import React, { ReactNode, useEffect, useState } from "react";
-const SuccessButton = ({
-    successText
-}:any) => {
+const SuccessButton = ({ successText }: any) => {
   return (
-    <Button
-    bg="#2DA44E"
-    color="white"
-    size="sm"
-    width="100%"
-    mt="1.5rem"
-    mb="1.5rem"
-    border="1px solid #2B2F35"
-    _hover={{ bg: "#2DA44E",color:"#010409" }}
+    <Box
+      color="white"
+      fontSize="14px"
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
     >
-        <TickIcon/><Text color="white" ml="0.4rem">{successText}</Text>
-    </Button>
-  )
-}
+      <TickIcon />
+      <Text ml="0.4rem">{successText}</Text>
+    </Box>
+  );
+};
 
-export default SuccessButton
+export default SuccessButton;

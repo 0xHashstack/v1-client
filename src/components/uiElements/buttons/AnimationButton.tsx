@@ -4,30 +4,36 @@ import { motion, AnimatePresence } from "framer-motion";
 import SuccessButton from "./SuccessButton";
 interface Props extends ButtonProps {
   children: ReactNode;
+  labelArray: Array<string | ReactNode>;
 }
 
-const AnimatedButton: React.FC<Props> = ({ children, className, ...rest }) => {
+const AnimatedButton: React.FC<Props> = ({
+  labelArray,
+  children,
+  className,
+  ...rest
+}) => {
   const classes = [];
   if (className) classes.push(className);
-  const strings = [
-    "Deposit Amount approved",
-    "Successfully transferred to Hashstack’s supply vault.",
-    "Determining the rToken amount to mint.",
-    "rTokens have been minted successfully.",
-    "Transaction complete.",
-    "Supply success",
-  ];
+  // const strings = [
+  //   "Deposit Amount approved",
+  //   "Successfully transferred to Hashstack’s supply vault.",
+  //   "Determining the rToken amount to mint.",
+  //   "rTokens have been minted successfully.",
+  //   "Transaction complete.",
+  //   "Supply success",
+  // ];
   const [currentStringIndex, setCurrentStringIndex] = useState(-1);
   const [isAnimationStarted, setIsAnimationStarted] = useState(false);
   const progressBarWidth = `${
-    ((currentStringIndex + 1) / strings.length) * 100
+    ((currentStringIndex + 1) / labelArray.length) * 100
   }%`;
 
   const handleClick = () => {
     console.log("clicked");
-    if (!isAnimationStarted) {
+    if (!isAnimationStarted && currentStringIndex != labelArray.length - 1) {
       setIsAnimationStarted(true);
-      setCurrentStringIndex(0);
+      setCurrentStringIndex(-1);
     }
   };
 
@@ -37,11 +43,12 @@ const AnimatedButton: React.FC<Props> = ({ children, className, ...rest }) => {
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
           const nextIndex = prevIndex + 1;
-          if (nextIndex === strings.length) {
+          if (nextIndex === labelArray.length) {
             setIsAnimationStarted(false);
-            return -1; // Reset currentStringIndex to -1 after the animation completes
+            return prevIndex; // Reset currentStringIndex to -1 after the animation completes
           }
-          return nextIndex % strings.length;
+          // return nextIndex % labelArray.length;
+          return nextIndex % labelArray.length;
         });
       }, 2000);
     }
@@ -57,18 +64,25 @@ const AnimatedButton: React.FC<Props> = ({ children, className, ...rest }) => {
       borderRadius="8px"
       // color="white"
       position="relative"
-      overflow="hidden"
+      // overflow="hidden"
       className={classes.join(" ")}
-      bgColor={isAnimationStarted ? "white" : bgColor}
-      _hover={{ bg: "white",color:"black !important" }}
-      _active={{border:"3px solid grey",bgColor:"white"}}
+      // _hover={{ bg: "white", color: "black !important" }}
+      _active={{ border: "3px solid grey" }}
       {...rest}
-      // _hover={{ color: "#010409" }}
+      bgColor={isAnimationStarted ? "#eeeff2" : bgColor}
+      color={isAnimationStarted ? "#010409" : "#6A737D"}
+      _hover={{ color: "#010409", bgColor: "#eeeff2" }}
     >
-      <Box height="100%" width="100%" position="relative" overflow="hidden">
+      <Box
+        height="100%"
+        width="100%"
+        position="relative"
+        overflow="hidden"
+        // bgColor="blue"
+      >
         <AnimatePresence initial={false}>
-        {currentStringIndex === -1 ? 
-        <motion.div
+          {currentStringIndex === -1 ? (
+            <motion.div
               key={currentStringIndex}
               initial={{ opacity: 0, translateY: 50 }}
               animate={{ opacity: 1, translateY: 0 }}
@@ -84,35 +98,37 @@ const AnimatedButton: React.FC<Props> = ({ children, className, ...rest }) => {
                 alignItems: "center",
                 justifyContent: "center",
                 zIndex: "1",
-                color: isAnimationStarted ? "#010409" : rest.color,
               }}
             >
-              Supply
+              {children}
             </motion.div>
-           :
-          <motion.div
-            key={currentStringIndex}
-            initial={{ translateY: "100%" }}
-            animate={{ translateY: "0%" }}
-            exit={{ translateY: "-100%" }}
-            transition={{ duration: 1 }}
-            style={{
-              position: "absolute",
-              top: 0,
-              left: 0,
-              right: 0,
-              bottom: 0,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              zIndex: "1",
-              color: isAnimationStarted ? "#010409" : `${rest.color}`,
-              // __hover: {},
-            }}
-          >
-            {currentStringIndex === -1 ? "Supply" : strings[currentStringIndex]}
-            {/* {strings[currentStringIndex]} */}
-          </motion.div>}
+          ) : (
+            <motion.div
+              key={currentStringIndex}
+              initial={{ translateY: "100%" }}
+              animate={{ translateY: "0%" }}
+              exit={{ translateY: "-100%" }}
+              transition={{ duration: 1 }}
+              style={{
+                position: "absolute",
+                top: 0,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                zIndex: "1",
+                // color: isAnimationStarted ? "#010409" : `${rest.color}`,
+                // __hover: {},
+              }}
+            >
+              {currentStringIndex === -1
+                ? children
+                : labelArray[currentStringIndex]}
+              {/* {labelArray[currentStringIndex]} */}
+            </motion.div>
+          )}
           {/* )} */}
         </AnimatePresence>
       </Box>
