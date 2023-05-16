@@ -24,7 +24,7 @@ import Link from "next/link";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import PageCard from "@/components/layouts/pageCard";
 import { useRouter } from "next/router";
-import { setSpendBorrowSelectedDapp} from "@/store/slices/userAccountSlice";
+import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Market() {
@@ -34,7 +34,7 @@ export default function Market() {
   const offchainCurrentBlock = useSelector(selectOffchainCurrentBlock);
   const address = useSelector(selectAccountAddress);
   const account = useSelector(selectAccount);
-  
+
   function handleAccount(e: any) {
     e.preventDefault();
     dispatch(setAccountAddress(e.target.user.value));
@@ -42,40 +42,6 @@ export default function Market() {
   const [render, setRender] = useState(true);
   useEffect(() => {
     setRender(true);
-    // const dispatch = useDispatch();
-    // const getReserves = async () => {
-    //   try {
-    //     const res = await OffchainAPI.getReserves();
-    //     // console.log("degug1", res);
-    //     dispatch(setReserves(res?.reserves));
-    //   } catch (error) {
-    //     console.log("getReserves failed market page", error);
-    //   }
-    // };
-    // getReserves();
-    // const getPrices = () => {
-    //   OffchainAPI.getOraclePrices()
-    //     .then((prices) => {
-    //       // console.log("prices", prices);
-    //       dispatch(setOracleAndFairPrices(prices));
-    //     })
-    //     .catch((error) => {
-    //       console.log("oraclePrices failed market page", error);
-    //     });
-    // };
-    // getPrices();
-    // OffchainAPI.getDashboardStats()
-    //   .then(
-    //     (stats) => {
-    //       dispatch(setOffchainCurrentBlock(stats));
-    //     },
-    //     (err) => {
-    //       console.error(err);
-    //     }
-    //   )
-    //   .catch((error) => {
-    //     console.log("getDashboardStats failed market page", error);
-    //   });
   }, []);
 
   console.log("degug2", offchainCurrentBlock);
@@ -99,3 +65,43 @@ export default function Market() {
     </PageCard>
   );
 }
+
+// Code for fetching data
+
+// useEffect(() => {
+//   setRender(true);
+//   const dispatch = useDispatch();
+//   const getReserves = async () => {
+//     try {
+//       const res = await OffchainAPI.getReserves();
+//       // console.log("degug1", res);
+//       dispatch(setReserves(res?.reserves));
+//     } catch (error) {
+//       console.log("getReserves failed market page", error);
+//     }
+//   };
+//   getReserves();
+//   const getPrices = () => {
+//     OffchainAPI.getOraclePrices()
+//       .then((prices) => {
+//         // console.log("prices", prices);
+//         dispatch(setOracleAndFairPrices(prices));
+//       })
+//       .catch((error) => {
+//         console.log("oraclePrices failed market page", error);
+//       });
+//   };
+//   getPrices();
+//   OffchainAPI.getDashboardStats()
+//     .then(
+//       (stats) => {
+//         dispatch(setOffchainCurrentBlock(stats));
+//       },
+//       (err) => {
+//         console.error(err);
+//       }
+//     )
+//     .catch((error) => {
+//       console.log("getDashboardStats failed market page", error);
+//     });
+// }, []);

@@ -15,6 +15,9 @@ const AnimatedButton: React.FC<Props> = ({
 }) => {
   const classes = [];
   if (className) classes.push(className);
+
+  //Below array is previously static data which is now used as labelArray as props
+
   // const strings = [
   //   "Deposit Amount approved",
   //   "Successfully transferred to Hashstack’s supply vault.",
@@ -23,6 +26,7 @@ const AnimatedButton: React.FC<Props> = ({
   //   "Transaction complete.",
   //   "Supply success",
   // ];
+
   const [currentStringIndex, setCurrentStringIndex] = useState(-1);
   const [isAnimationStarted, setIsAnimationStarted] = useState(false);
   const progressBarWidth = `${

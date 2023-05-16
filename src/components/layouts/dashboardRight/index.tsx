@@ -12,7 +12,6 @@ import {
   useMediaQuery,
 } from "@chakra-ui/react";
 
-
 import Image from "next/image";
 import BorrowModal from "@/components/modals/borrowModal";
 import TradeModal from "@/components/modals/tradeModal";
@@ -261,31 +260,7 @@ const DashboardRight = ({
                   pl={2}
                 >
                   <Box position="relative" display="inline-block">
-                    {/* <Text
-                      key="borrow-details"
-                      as="span"
-                      position="relative"
-                      color="#0969DA"
-                      fontSize="14px"
-                      width="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
-                      _hover={{
-                        "::before": {
-                          content: '""',
-                          position: "absolute",
-                          left: 0,
-                          bottom: "-0px",
-                          width: "100%",
-                          height: "1px",
-                          backgroundColor: "#0969DA",
-                        },
-                      }}
-                    > */}
                     <TradeModal />
-                    {/* </Text> */}
                   </Box>
                 </Td>
               </Tr>
