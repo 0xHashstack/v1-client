@@ -23,7 +23,8 @@ The first page you will be directed to is the Wallet Connection Page:-
 2. Login with your bravoos wallet
 3. When you are Loged in you will reach the market page
 
-![image](https://github.com/0xHashstack/zkopen-client/assets/77379621/a0791c8b-35e4-4ee2-bb93-7045f0df2506)
+![image](https://github.com/0xHashstack/zkopen-client/assets/77379621/b2c5cad3-bdd1-42dc-9aed-a3d3c6f61d12)
+
 
 
 ## Learn More
