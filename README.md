@@ -12,23 +12,20 @@
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+
+
 ## Getting Started
+![image](https://github.com/0xHashstack/zkopen-client/assets/77379621/6b96e82f-b1ab-4b0f-9693-c1c0438dc90f)
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+The first page you will be directed to is the Wallet Connection Page:-
+1. Click on Connect Wallet and then tap on Bravos Wallet.
+2. Login with your bravoos wallet
+3. When you are Loged in you will reach the market page
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+![image](https://github.com/0xHashstack/zkopen-client/assets/77379621/b2c5cad3-bdd1-42dc-9aed-a3d3c6f61d12)
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
 ## Learn More
 
