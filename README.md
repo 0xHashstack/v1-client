@@ -12,9 +12,17 @@
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
-![image](https://github.com/0xHashstack/zkopen-client/assets/77379621/a858074c-5988-421f-9000-373f8c04327f)
+
 
 ## Getting Started
+![image](https://github.com/0xHashstack/zkopen-client/assets/77379621/a858074c-5988-421f-9000-373f8c04327f)
+
+The first page you will be directed to is the Wallet Connection Page:-
+1. Click on Connect Wallet and then tap on Bravos Wallet.
+2. Login with your bravoos wallet
+3. When you are Loged in you will reach the market page
+
+![image](https://github.com/0xHashstack/zkopen-client/assets/77379621/a0791c8b-35e4-4ee2-bb93-7045f0df2506)
 
 First, run the development server:
 
