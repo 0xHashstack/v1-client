@@ -12,6 +12,8 @@
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+![image](https://github.com/0xHashstack/zkopen-client/assets/77379621/a858074c-5988-421f-9000-373f8c04327f)
+
 ## Getting Started
 
 First, run the development server:
