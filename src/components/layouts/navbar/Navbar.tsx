@@ -353,6 +353,7 @@ const Navbar = () => {
             cursor="pointer"
             margin="0"
             height="2rem"
+            // border="0.5px solid #6e6e6e"
             border="0.5px solid #6e6e6e"
             display="flex"
             flexDirection="column"
@@ -360,7 +361,8 @@ const Navbar = () => {
             justifyContent="center"
             gap="3"
             className="button"
-            color="#6E6E6E"
+            // color="#6E6E6E"
+            color={transferDepositHover ? "#6e6e6e" : "#FFF"}
             // _hover={{ color: "#010409", bgColor: "#f6f8fa" }}
             onMouseEnter={() => setTransferDepositHover(true)}
             onMouseLeave={() => setTransferDepositHover(false)}
@@ -372,14 +374,14 @@ const Navbar = () => {
               gap="8px"
               margin="6px 12px"
             >
-              <Image
+              {/* <Image
                 src={"./transferDepositDisabled.svg"}
                 alt="Picture of the author"
                 width="20"
                 height="20"
                 style={{ cursor: "pointer" }}
-              />
-              {/* {transferDepositHover ? (
+              /> */}
+              {!transferDepositHover ? (
                 <Image
                   src={"./transferDeposit.svg"}
                   alt="Picture of the author"
@@ -395,7 +397,7 @@ const Navbar = () => {
                   height="20"
                   style={{ cursor: "pointer" }}
                 />
-              )} */}
+              )}
               <Text fontSize="14px" lineHeight="14px">
                 Transfer Deposit
               </Text>
