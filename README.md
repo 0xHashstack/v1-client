@@ -15,7 +15,8 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 
 ## Getting Started
-![image](https://github.com/0xHashstack/zkopen-client/assets/77379621/a858074c-5988-421f-9000-373f8c04327f)
+![image](https://github.com/0xHashstack/zkopen-client/assets/77379621/6b96e82f-b1ab-4b0f-9693-c1c0438dc90f)
+
 
 The first page you will be directed to is the Wallet Connection Page:-
 1. Click on Connect Wallet and then tap on Bravos Wallet.
