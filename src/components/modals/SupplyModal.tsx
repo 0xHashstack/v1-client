@@ -256,10 +256,10 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                     </Box>
                   </Tooltip>
                 </Text>
-                <Box width="100%" color="white" border={`${inputAmount > walletBalance ? "1px solid #CF222E" :inputAmount>0 && inputAmount<=walletBalance?"1px solid #1A7F37":"1px solid #2B2F35 "}`} borderRadius="6px" display="flex" justifyContent="space-between" mt="0.3rem">
+                <Box width="100%" color="white" border={`${inputAmount > walletBalance ? "1px solid #CF222E" : inputAmount<0 ? "1px solid #CF222E": inputAmount>0 && inputAmount<=walletBalance?"1px solid #1A7F37":"1px solid #2B2F35 "}`} borderRadius="6px" display="flex" justifyContent="space-between" mt="0.3rem">
                   <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleChange} value={inputAmount?inputAmount:""} outline="none" precision={1} step={0.1}
                   >
-                    <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedCoin}`} color={`${inputAmount>walletBalance?"#CF222E":inputAmount==0?"white": "#1A7F37"}`} border="0px" _placeholder={{
+                    <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedCoin}`} color={`${inputAmount>walletBalance?"#CF222E": inputAmount<0? "#CF222E": inputAmount==0?"white": "#1A7F37"}`} border="0px" _placeholder={{
                       color: "#393D4F",
                       fontSize: ".89rem",
                       fontWeight: "600",
@@ -276,10 +276,10 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                     MAX
                   </Button>
                 </Box>
-                {inputAmount > walletBalance ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+                {inputAmount > walletBalance || inputAmount<0 ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
 
                   <Text color="#CF222E" display="flex">
-                    <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Amount exceeds balance</Text></Text>
+                    <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">{inputAmount>walletBalance?"Amount exceeds balance":"Invalid Input"}</Text></Text>
                   <Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
                     Wallet Balance: {walletBalance}
                     <Text color="#6E7781" ml="0.2rem">
@@ -296,7 +296,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
 
                 }
 
-                <Box pt={5} pb={2} mt="0.8rem">
+                <Box pt={5} pb={2} mt="0.9rem">
                   <Slider
                     aria-label="slider-ex-6"
                     defaultValue={sliderValue}
@@ -318,7 +318,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                           color="black"
                           top="7px"
                           left={
-                            sliderValue !== 100 ? (sliderValue >= 10 ? "15%" : "25%") : "5%"
+                            sliderValue !== 100 ? (sliderValue >= 10 ? "15%" : "25%") : "8%"
                           }
                           fontSize=".58rem"
                           fontWeight="bold"

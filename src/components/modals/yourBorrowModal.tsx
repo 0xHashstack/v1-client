@@ -867,7 +867,7 @@ const YourBorrowModal = () => {
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
         <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
           {/* <ModalHeader>Borrow</ModalHeader> */}
-          <ModalCloseButton top={"7"} right={"6"} color={"white"} size={"sm"} />
+          <ModalCloseButton color="white" mt="1rem" mr="1rem"/>
           <ModalBody color={"#E6EDF3"} pt={6} px={7}>
             <Box
               display={"flex"}
@@ -877,7 +877,7 @@ const YourBorrowModal = () => {
             >
               <Box w="full">
                 <Tabs variant="unstyled">
-                  <TabList borderRadius="md" position="sticky">
+                  <TabList borderRadius="md" >
                     <Tab
                       py="1"
                       px="3"

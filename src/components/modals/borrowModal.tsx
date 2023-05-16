@@ -284,8 +284,8 @@ const BorrowModal = () => {
                 </Box>
                 <Box
                   width="100%"
-                  color={`${inputCollateralAmount > walletBalance ? "#CF222E" : inputCollateralAmount == 0 ? "white" : "#1A7F37"}`}
-                  border={`${inputCollateralAmount > walletBalance ? "1px solid #CF222E" : inputCollateralAmount > 0 && inputCollateralAmount <= walletBalance ? "1px solid #1A7F37" : "1px solid #2B2F35 "}`}
+                  color={`${inputCollateralAmount > walletBalance ? "#CF222E" : inputCollateralAmount<0?"#CF222E": inputCollateralAmount == 0 ? "white" : "#1A7F37"}`}
+                  border={`${inputCollateralAmount > walletBalance ? "1px solid #CF222E" : inputCollateralAmount<0?"1px solid #CF222E" :inputCollateralAmount > 0 && inputCollateralAmount <= walletBalance ? "1px solid #1A7F37" : "1px solid #2B2F35 "}`}
                   borderRadius="6px"
                   display="flex"
                   justifyContent="space-between"
@@ -327,10 +327,10 @@ const BorrowModal = () => {
                     MAX
                   </Button>
                 </Box>
-                {inputCollateralAmount > walletBalance ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+                {inputCollateralAmount > walletBalance || inputCollateralAmount<0 ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
 
                   <Text color="#CF222E" display="flex">
-                    <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
+                    <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">{inputCollateralAmount>walletBalance? "Amount exceeds balance":"Invalid Input"}</Text></Text>
                   <Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
                     Wallet Balance: {walletBalance}
                     <Text color="#6E7781" ml="0.2rem">
@@ -346,7 +346,7 @@ const BorrowModal = () => {
                 </Text>
 
                 }
-                <Box pt={5} pb={2} mt="0.4rem">
+                <Box pt={5} pb={2} mt="0.8rem">
                   <Slider
                     aria-label="slider-ex-6"
                     defaultValue={sliderValue}
@@ -567,7 +567,7 @@ const BorrowModal = () => {
                     MAX
                   </Button>
                 </Box>
-                <Box pt={5} pb={2} mt="0.4rem">
+                <Box pt={5} pb={2} mt="0.9rem">
                   <Slider
                     aria-label="slider-ex-6"
                     defaultValue={sliderValue2}
@@ -802,6 +802,7 @@ const BorrowModal = () => {
                 mb="1.5rem"
                 border="1px solid #8B949E"
                 _hover={{ bg: "white",color:"black" }}
+                _active={{border:"3px solid gray"}}
                 // onClick={()=>{setButtonId(2)}}
               >
                 Borrow

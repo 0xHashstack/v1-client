@@ -379,10 +379,10 @@ const StakeUnstakeModal = () => {
                                                         </Box>
                                                     </Tooltip>
                                                 </Text>
-                                                <Box width="100%" color="white" border={`${inputStakeAmount > walletBalance ? "1px solid #CF222E" : inputStakeAmount > 0 && inputStakeAmount <= walletBalance ? "1px solid #1A7F37" : "1px solid #2B2F35 "}`} borderRadius="6px" display="flex" justifyContent="space-between">
+                                                <Box width="100%" color="white" border={`${inputStakeAmount > walletBalance ? "1px solid #CF222E" : inputStakeAmount<0?"1px solid #CF222E": inputStakeAmount > 0 && inputStakeAmount <= walletBalance ? "1px solid #1A7F37" : "1px solid #2B2F35 "}`} borderRadius="6px" display="flex" justifyContent="space-between">
                                                     <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleChange} value={inputStakeAmount ? inputStakeAmount : ""} outline="none"
                                                     >
-                                                        <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`} color={`${inputStakeAmount > walletBalance ? "#CF222E" : inputStakeAmount == 0 ? "white" : "#1A7F37"}`} border="0px" _placeholder={{
+                                                        <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`} color={`${inputStakeAmount > walletBalance ? "#CF222E" : inputStakeAmount<0?"#CF222E": inputStakeAmount == 0 ? "white" : "#1A7F37"}`} border="0px" _placeholder={{
                                                             color: "#393D4F",
                                                             fontSize: ".89rem",
                                                             fontWeight: "600",
@@ -398,10 +398,10 @@ const StakeUnstakeModal = () => {
                                                         MAX
                                                     </Button>
                                                 </Box>
-                                                {inputStakeAmount > walletBalance ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+                                                {inputStakeAmount > walletBalance || inputStakeAmount<0 ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
 
                                                     <Text color="#CF222E" display="flex">
-                                                        <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
+                                                        <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">{inputStakeAmount>walletBalance?"Amount exceeds balance":"Invalid Input"} </Text></Text>
                                                     <Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
                                                         Wallet Balance: {walletBalance}
                                                         <Text color="#6E7781" ml="0.2rem">
@@ -417,7 +417,7 @@ const StakeUnstakeModal = () => {
                                                 </Text>
 
                                                 }
-                                                <Box pt={5} pb={2} mt="0.8rem">
+                                                <Box pt={5} pb={2} mt="1rem">
                                                     <Slider
                                                         aria-label="slider-ex-6"
                                                         defaultValue={sliderValue}
@@ -580,6 +580,7 @@ const StakeUnstakeModal = () => {
                                                         mb="1.5rem"
                                                         border="1px solid #8B949E"
                                                         _hover={{ bg: "white", color: "black" }}
+                                                        _active={{border:"3px solid gray"}}
                                                     >
                                                         Stake
                                                     </Button>
@@ -719,10 +720,10 @@ const StakeUnstakeModal = () => {
                                                         </Box>
                                                     </Tooltip>
                                                 </Text>
-                                                <Box width="100%" color="white" border={`${inputUnstakeAmount > walletBalance ? "1px solid #CF222E" : inputUnstakeAmount > 0 && inputUnstakeAmount <= walletBalance ? "1px solid #1A7F37" : "1px solid #2B2F35 "}`} borderRadius="6px" display="flex" justifyContent="space-between">
+                                                <Box width="100%" color="white" border={`${inputUnstakeAmount > walletBalance ? "1px solid #CF222E" : inputUnstakeAmount<0?"1px solid #CF222E": inputUnstakeAmount > 0 && inputUnstakeAmount <= walletBalance ? "1px solid #1A7F37" : "1px solid #2B2F35 "}`} borderRadius="6px" display="flex" justifyContent="space-between">
                                                     <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleUnstakeChange} value={inputUnstakeAmount ? inputUnstakeAmount : ""} outline="none"
                                                     >
-                                                        <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`} color={`${inputUnstakeAmount > walletBalance ? "#CF222E" : inputUnstakeAmount == 0 ? "white" : "#1A7F37"}`} border="0px" _placeholder={{
+                                                        <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`} color={`${inputUnstakeAmount > walletBalance ? "#CF222E" : inputUnstakeAmount<0?"#CF222E": inputUnstakeAmount == 0 ? "white" : "#1A7F37"}`} border="0px" _placeholder={{
                                                             color: "#393D4F",
                                                             fontSize: ".89rem",
                                                             fontWeight: "600",
@@ -738,10 +739,10 @@ const StakeUnstakeModal = () => {
                                                         MAX
                                                     </Button>
                                                 </Box>
-                                                {inputUnstakeAmount > walletBalance ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+                                                {inputUnstakeAmount > walletBalance || inputUnstakeAmount<0 ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
 
                                                     <Text color="#CF222E" display="flex">
-                                                        <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
+                                                        <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">{inputUnstakeAmount>walletBalance ? "Amount exceeds balance":"Invalid Input"} </Text></Text>
                                                     <Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
                                                         Wallet Balance: {walletBalance}
                                                         <Text color="#6E7781" ml="0.2rem">
@@ -757,7 +758,7 @@ const StakeUnstakeModal = () => {
                                                 </Text>
 
                                                 }
-                                                <Box pt={5} pb={2} mt="0.8rem">
+                                                <Box pt={5} pb={2} mt="1rem">
                                                     <Slider
                                                         aria-label="slider-ex-6"
                                                         defaultValue={sliderValue2}
@@ -916,6 +917,7 @@ const StakeUnstakeModal = () => {
                                                     mb="1.5rem"
                                                     border="1px solid #8B949E"
                                                     _hover={{ bg: "white", color: "black" }}
+                                                    _active={{border:"3px solid gray"}}
                                                 >
                                                     Unstake
                                                 </Button>
