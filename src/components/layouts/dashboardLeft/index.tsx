@@ -74,7 +74,7 @@ const DashboardLeft = ({
                 fontWeight={400}
                 // border="1px solid blue"
                 padding={0}
-              // bgColor={"red"}
+                // bgColor={"red"}
               >
                 <Text
                   whiteSpace="pre-wrap"
@@ -86,7 +86,7 @@ const DashboardLeft = ({
                   textAlign={idx == 0 ? "left" : "center"}
                   color={"#BDBFC1"}
                   padding={0}
-                // pl={idx == 0 ? "7.2%" : 0}
+                  // pl={idx == 0 ? "7.2%" : 0}
                 >
                   {val}
                 </Text>
@@ -97,9 +97,9 @@ const DashboardLeft = ({
         <Tbody
           position="relative"
           overflowX="hidden"
-        //   display="flex"
-        //   flexDirection="column"
-        //   gap={"1rem"}
+          //   display="flex"
+          //   flexDirection="column"
+          //   gap={"1rem"}
         >
           {Coins.map((coin, idx) => (
             <>
@@ -123,7 +123,7 @@ const DashboardLeft = ({
                     display="flex"
                     justifyContent="flex-start"
                     alignItems="center"
-                  // bgColor="red"
+                    // bgColor="red"
                   >
                     <Box height="2rem" width="2rem">
                       <Image
@@ -166,7 +166,7 @@ const DashboardLeft = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                  // bgColor={"blue"}
+                    // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
                     000.00
@@ -187,7 +187,7 @@ const DashboardLeft = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                  // bgColor={"blue"}
+                    // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
                     000.00
@@ -208,7 +208,7 @@ const DashboardLeft = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                  // bgColor={"blue"}
+                    // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
                     7.00%
@@ -233,15 +233,17 @@ const DashboardLeft = ({
                     justifyContent="center"
                     fontWeight="400"
                   >
-                    <SupplyModal buttonText="Supply"
+                    <SupplyModal
+                      buttonText="Supply"
                       height={"2rem"}
                       fontSize={"12px"}
                       padding="6px 12px"
-                      border="1px solid #BDBFC1"
+                      border="1px solid #6E6E6E"
                       bgColor="#101216"
                       _hover={{ bg: "white", color: "black" }}
                       borderRadius={"6px"}
-                      color="#6e6e6e" />
+                      color="#6e6e6e"
+                    />
                   </Box>
                 </Td>
                 <Td
