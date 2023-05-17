@@ -69,34 +69,34 @@ const StakeUnstakeModal = () => {
     const getCoin = (CoinName: string) => {
         switch (CoinName) {
             case "BTC":
-                return <BTCLogo />;
+                return <BTCLogo height={"16px"} width={"16px"}/>;
                 break;
             case "USDC":
-                return <USDCLogo />;
+                return <USDCLogo height={"16px"} width={"16px"}/>;
                 break;
             case "USDT":
-                return <USDTLogo />;
+                return <USDTLogo height={"16px"} width={"16px"}/>;
                 break;
             case "ETH":
-                return <ETHLogo />;
+                return <ETHLogo height={"16px"} width={"16px"}/>;
                 break;
             case "DAI":
-                return <DAILogo />;
+                return <DAILogo height={"16px"} width={"16px"}/>;
                 break;
             case "rBTC":
-                return <BTCLogo />;
+                return <BTCLogo height={"16px"} width={"16px"}/>;
                 break;
             case "rUSDC":
-                return <USDCLogo />;
+                return <USDCLogo height={"16px"} width={"16px"}/>;
                 break;
             case "rUSDT":
-                return <USDTLogo />;
+                return <USDTLogo height={"16px"} width={"16px"}/>;
                 break;
             case "rETH":
-                return <ETHLogo />;
+                return <ETHLogo height={"16px"} width={"16px"}/>;
                 break;
             case "rDAI":
-                return <DAILogo />;
+                return <DAILogo height={"16px"} width={"16px"}/>;
                 break;
             case "Jediswap":
                 return <JediswapLogo />;
