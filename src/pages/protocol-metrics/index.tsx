@@ -60,7 +60,7 @@ const ProtocolMetrics = () => {
             justifyContent="space-between"
             mb="2rem"
           >
-            <HStack width="50%">
+            <HStack width="51.5%">
               <VStack
                 display="flex"
                 justifyContent="center"
@@ -135,7 +135,7 @@ const ProtocolMetrics = () => {
             justifyContent="space-between"
             mb="2rem"
           >
-            <HStack width="50%">
+            <HStack width="51.5%">
               <VStack
                 display="flex"
                 justifyContent="center"
@@ -159,7 +159,7 @@ const ProtocolMetrics = () => {
                 alignItems="flex-start"
                 gap={"3px"}
                 p="13px 25px"
-                //   bgColor="pink"
+                // bgColor="pink"
               >
                 <Text color="#6e7681" fontSize="14px" alignItems="center">
                   Average borrow APR:
