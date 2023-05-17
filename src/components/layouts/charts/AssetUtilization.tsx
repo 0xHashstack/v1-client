@@ -10,13 +10,6 @@ const AssetUtilizationChart = () => {
       {
         name: 'Series 1',
         data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
-        // fill: {
-        //   colors: ['#0FCA7A'],
-        //   opacity: 1, // Set the opacity to 1 for fully opaque bars
-        // },
-        dataPoints: {
-          hidden: true,
-        },
       },
     ],
     options: {
@@ -29,6 +22,13 @@ const AssetUtilizationChart = () => {
         enabled: false,
       },
       xaxis: {
+        labels:{
+          style: {
+            colors: '#6E7681', // Set the color of the labels
+            fontSize:"12px",
+            fontWeight:"400",
+          },
+        },
         axisTicks: {
           show: false,
         },
@@ -39,32 +39,41 @@ const AssetUtilizationChart = () => {
       },
       yaxis: {
         labels: {
-          formatter: function (value:any) {
+          formatter: function (value) {
             return value / 1000 + 'k';
+          },
+          style: {
+            colors: '#6E7681', // Set the color of the labels
+            fontSize:"12px",
+            fontWeight:"400",
           },
         },
         min: 0,
-        borderColor: 'grey',
       },
-      stroke: {
-        curve: 'smooth',
-        opacity:1
+      plotOptions: {
+        bar: {
+          opacity: 1, // Set the opacity to 1 for fully opaque bars
+          columnWidth: '70%', // Adjust the column width for better spacing between bars
+          colors: {
+            backgroundBarOpacity: 1, // Set the opacity of the background bar
+          },
+        },
       },
-      opacity:1,
       colors: ['#0FCA7A'],
       grid: {
-        borderColor: '#888888',
+        borderColor: '#2B2F35',
+        padding: {
+          bottom: 10, // Add bottom padding to prevent overlap with x-axis labels
+        },
       },
       annotations: {
         xaxis: [
           {
-            x: 0, // Specify the x-axis value where the line should appear
-            strokeDashArray: 0, // Set the length of the dash for the line
-            borderColor: 'grey', // Set the color of the line
-            borderWidth: 1, // Set the width of the line
+            x: 0,
+            strokeDashArray: 0,
+            borderColor: 'grey',
+            borderWidth: 1,
           },
-
-
         ],
       },
     },
