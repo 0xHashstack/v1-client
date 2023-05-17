@@ -81,19 +81,19 @@ const YourSupplyModal = () => {
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
-        return <BTCLogo />;
+        return <BTCLogo height={"16px"} width={"16px"} />;
         break;
       case "USDC":
-        return <USDCLogo />;
+        return <USDCLogo height={"16px"} width={"16px"} />;
         break;
       case "USDT":
-        return <USDTLogo />;
+        return <USDTLogo height={"16px"} width={"16px"} />;
         break;
       case "ETH":
-        return <ETHLogo />;
+        return <ETHLogo height={"16px"} width={"16px"} />;
         break;
       case "DAI":
-        return <DAILogo />;
+        return <DAILogo height={"16px"} width={"16px"} />;
         break;
       case "Jediswap":
         return <JediswapLogo />;
@@ -181,7 +181,7 @@ const YourSupplyModal = () => {
         isOpen={isOpen}
         onClose={onClose}
         isCentered
-      //   scrollBehavior="inside"
+        //   scrollBehavior="inside"
       >
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
         <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
@@ -192,7 +192,7 @@ const YourSupplyModal = () => {
               display={"flex"}
               justifyContent={"space-between"}
               fontSize={"sm"}
-            // my={"2"}
+              // my={"2"}
             >
               <Box w="full">
                 <Tabs variant="unstyled">
@@ -334,15 +334,17 @@ const YourSupplyModal = () => {
                                       w="full"
                                       display="flex"
                                       py="5px"
-                                      px={`${coin === currentSelectedSupplyCoin
+                                      px={`${
+                                        coin === currentSelectedSupplyCoin
                                           ? "1"
                                           : "5"
-                                        }`}
+                                      }`}
                                       gap="1"
-                                      bg={`${coin === currentSelectedSupplyCoin
+                                      bg={`${
+                                        coin === currentSelectedSupplyCoin
                                           ? "#0C6AD9"
                                           : "inherit"
-                                        }`}
+                                      }`}
                                       borderRadius="md"
                                     >
                                       <Box p="1">{getCoin(coin)}</Box>
@@ -386,7 +388,16 @@ const YourSupplyModal = () => {
                         <Box
                           width="100%"
                           color="white"
-                          border={`${inputSupplyAmount > walletBalance ? "1px solid #CF222E" : inputSupplyAmount<0?"1px solid #CF222E": inputSupplyAmount > 0 && inputSupplyAmount <= walletBalance ? "1px solid #1A7F37" : "1px solid #2B2F35 "}`}
+                          border={`${
+                            inputSupplyAmount > walletBalance
+                              ? "1px solid #CF222E"
+                              : inputSupplyAmount < 0
+                              ? "1px solid #CF222E"
+                              : inputSupplyAmount > 0 &&
+                                inputSupplyAmount <= walletBalance
+                              ? "1px solid #1A7F37"
+                              : "1px solid #2B2F35 "
+                          }`}
                           borderRadius="6px"
                           display="flex"
                           justifyContent="space-between"
@@ -402,7 +413,15 @@ const YourSupplyModal = () => {
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
-                              color={`${inputSupplyAmount > walletBalance ? "#CF222E" :inputSupplyAmount<0?"#CF222E": inputSupplyAmount == 0 ? "white" : "#1A7F37"}`}
+                              color={`${
+                                inputSupplyAmount > walletBalance
+                                  ? "#CF222E"
+                                  : inputSupplyAmount < 0
+                                  ? "#CF222E"
+                                  : inputSupplyAmount == 0
+                                  ? "white"
+                                  : "#1A7F37"
+                              }`}
                               border="0px"
                               _placeholder={{
                                 color: "#393D4F",
@@ -428,25 +447,56 @@ const YourSupplyModal = () => {
                             MAX
                           </Button>
                         </Box>
-                        {inputSupplyAmount > walletBalance || inputSupplyAmount<0 ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
-
-                          <Text color="#CF222E" display="flex">
-                            <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">{inputSupplyAmount>walletBalance?"Amount exceeds amount":"Invalid Input"}</Text></Text>
-                          <Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
+                        {inputSupplyAmount > walletBalance ||
+                        inputSupplyAmount < 0 ? (
+                          <Text
+                            display="flex"
+                            justifyContent="space-between"
+                            color="#E6EDF3"
+                            mt="0.4rem"
+                            fontSize="12px"
+                            fontWeight="500"
+                            fontStyle="normal"
+                            fontFamily="Inter"
+                          >
+                            <Text color="#CF222E" display="flex">
+                              <Text mt="0.2rem">
+                                <SmallErrorIcon />{" "}
+                              </Text>
+                              <Text ml="0.3rem">
+                                {inputSupplyAmount > walletBalance
+                                  ? "Amount exceeds amount"
+                                  : "Invalid Input"}
+                              </Text>
+                            </Text>
+                            <Text
+                              color="#E6EDF3"
+                              display="flex"
+                              justifyContent="flex-end"
+                            >
+                              Wallet Balance: {walletBalance}
+                              <Text color="#6E7781" ml="0.2rem">
+                                {` ${currentSelectedSupplyCoin}`}
+                              </Text>
+                            </Text>
+                          </Text>
+                        ) : (
+                          <Text
+                            color="#E6EDF3"
+                            display="flex"
+                            justifyContent="flex-end"
+                            mt="0.4rem"
+                            fontSize="12px"
+                            fontWeight="500"
+                            fontStyle="normal"
+                            fontFamily="Inter"
+                          >
                             Wallet Balance: {walletBalance}
                             <Text color="#6E7781" ml="0.2rem">
                               {` ${currentSelectedSupplyCoin}`}
                             </Text>
                           </Text>
-
-                        </Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
-                          Wallet Balance: {walletBalance}
-                          <Text color="#6E7781" ml="0.2rem">
-                            {` ${currentSelectedSupplyCoin}`}
-                          </Text>
-                        </Text>
-
-                        }
+                        )}
                         <Box pt={5} pb={2} mt="1rem">
                           <Slider
                             aria-label="slider-ex-6"
@@ -497,7 +547,12 @@ const YourSupplyModal = () => {
                           </Slider>
                         </Box>
                       </Card>
-                      <Checkbox defaultChecked mt="0.7rem" w="390px" borderColor="#2B2F35">
+                      <Checkbox
+                        defaultChecked
+                        mt="0.7rem"
+                        w="390px"
+                        borderColor="#2B2F35"
+                      >
                         <Text
                           fontSize="10px"
                           color="#6E7681"
@@ -657,30 +712,31 @@ const YourSupplyModal = () => {
                           <Text color="#6E7681">7.75%</Text>
                         </Text>
                       </Card>
-                      {inputSupplyAmount > 0 && inputSupplyAmount <= walletBalance ? (
-                                                <AnimatedButton
-                                                bgColor="#101216"
-                                                // bgColor="red"
-                                                // p={0}
-                                                color="#8B949E"
-                                                size="sm"
-                                                width="100%"
-                                                mt="1.5rem"
-                                                mb="1.5rem"
-                                                border="1px solid #8B949E"
-                                                labelArray={[
-                                                  "Deposit Amount approved",
-                                                  "Successfully transfered to Hashstack's supply vault.",
-                                                  "Determining the rToken amount to mint.",
-                                                  "rTokens have been minted successfully.",
-                                                  "Transaction complete.",
-                                                  // <ErrorButton errorText="Transaction failed" />,
-                                                  // <ErrorButton errorText="Copy error!" />,
-                                                  <SuccessButton successText={"Supply success"} />,
-                                                ]}
-                                              >
-                                                Supply
-                                              </AnimatedButton>
+                      {inputSupplyAmount > 0 &&
+                      inputSupplyAmount <= walletBalance ? (
+                        <AnimatedButton
+                          bgColor="#101216"
+                          // bgColor="red"
+                          // p={0}
+                          color="#8B949E"
+                          size="sm"
+                          width="100%"
+                          mt="1.5rem"
+                          mb="1.5rem"
+                          border="1px solid #8B949E"
+                          labelArray={[
+                            "Deposit Amount approved",
+                            "Successfully transfered to Hashstack's supply vault.",
+                            "Determining the rToken amount to mint.",
+                            "rTokens have been minted successfully.",
+                            "Transaction complete.",
+                            // <ErrorButton errorText="Transaction failed" />,
+                            // <ErrorButton errorText="Copy error!" />,
+                            <SuccessButton successText={"Supply success"} />,
+                          ]}
+                        >
+                          Supply
+                        </AnimatedButton>
                       ) : (
                         <Button
                           bg="#101216"
@@ -792,15 +848,17 @@ const YourSupplyModal = () => {
                                       w="full"
                                       display="flex"
                                       py="5px"
-                                      px={`${coin === currentSelectedWithdrawlCoin
+                                      px={`${
+                                        coin === currentSelectedWithdrawlCoin
                                           ? "1"
                                           : "5"
-                                        }`}
+                                      }`}
                                       gap="1"
-                                      bg={`${coin === currentSelectedWithdrawlCoin
+                                      bg={`${
+                                        coin === currentSelectedWithdrawlCoin
                                           ? "#0C6AD9"
                                           : "inherit"
-                                        }`}
+                                      }`}
                                       borderRadius="md"
                                     >
                                       <Box p="1">{getCoin(coin)}</Box>
@@ -844,7 +902,18 @@ const YourSupplyModal = () => {
                         <Box
                           width="100%"
                           color="white"
-                          border={`${inputWithdrawlAmount > walletBalance ? "1px solid #CF222E" : inputWithdrawlAmount<0?"1px solid #CF222E": inputWithdrawlAmount<0?"1px solid #CF222E": inputWithdrawlAmount > 0 && inputWithdrawlAmount <= walletBalance ? "1px solid #1A7F37" : "1px solid #2B2F35 "}`}
+                          border={`${
+                            inputWithdrawlAmount > walletBalance
+                              ? "1px solid #CF222E"
+                              : inputWithdrawlAmount < 0
+                              ? "1px solid #CF222E"
+                              : inputWithdrawlAmount < 0
+                              ? "1px solid #CF222E"
+                              : inputWithdrawlAmount > 0 &&
+                                inputWithdrawlAmount <= walletBalance
+                              ? "1px solid #1A7F37"
+                              : "1px solid #2B2F35 "
+                          }`}
                           borderRadius="6px"
                           display="flex"
                           justifyContent="space-between"
@@ -855,12 +924,22 @@ const YourSupplyModal = () => {
                             min={0}
                             keepWithinRange={true}
                             onChange={handleWithdrawlChange}
-                            value={inputWithdrawlAmount ? inputWithdrawlAmount : ""}
+                            value={
+                              inputWithdrawlAmount ? inputWithdrawlAmount : ""
+                            }
                             outline="none"
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedWithdrawlCoin}`}
-                              color={`${inputWithdrawlAmount > walletBalance ? "#CF222E" :  inputWithdrawlAmount<0 ?"#CF222E": inputWithdrawlAmount == 0 ? "white" : "#1A7F37"}`}
+                              color={`${
+                                inputWithdrawlAmount > walletBalance
+                                  ? "#CF222E"
+                                  : inputWithdrawlAmount < 0
+                                  ? "#CF222E"
+                                  : inputWithdrawlAmount == 0
+                                  ? "white"
+                                  : "#1A7F37"
+                              }`}
                               border="0px"
                               _placeholder={{
                                 color: "#393D4F",
@@ -886,25 +965,56 @@ const YourSupplyModal = () => {
                             MAX
                           </Button>
                         </Box>
-                        {inputWithdrawlAmount > walletBalance || inputWithdrawlAmount<0 ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
-
-                          <Text color="#CF222E" display="flex">
-                            <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">{inputWithdrawlAmount>walletBalance ?"Amount exceeds ballance":"Invalid Input"}</Text></Text>
-                          <Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
+                        {inputWithdrawlAmount > walletBalance ||
+                        inputWithdrawlAmount < 0 ? (
+                          <Text
+                            display="flex"
+                            justifyContent="space-between"
+                            color="#E6EDF3"
+                            mt="0.4rem"
+                            fontSize="12px"
+                            fontWeight="500"
+                            fontStyle="normal"
+                            fontFamily="Inter"
+                          >
+                            <Text color="#CF222E" display="flex">
+                              <Text mt="0.2rem">
+                                <SmallErrorIcon />{" "}
+                              </Text>
+                              <Text ml="0.3rem">
+                                {inputWithdrawlAmount > walletBalance
+                                  ? "Amount exceeds ballance"
+                                  : "Invalid Input"}
+                              </Text>
+                            </Text>
+                            <Text
+                              color="#E6EDF3"
+                              display="flex"
+                              justifyContent="flex-end"
+                            >
+                              Wallet Balance: {walletBalance}
+                              <Text color="#6E7781" ml="0.2rem">
+                                {` ${currentSelectedWithdrawlCoin}`}
+                              </Text>
+                            </Text>
+                          </Text>
+                        ) : (
+                          <Text
+                            color="#E6EDF3"
+                            display="flex"
+                            justifyContent="flex-end"
+                            mt="0.4rem"
+                            fontSize="12px"
+                            fontWeight="500"
+                            fontStyle="normal"
+                            fontFamily="Inter"
+                          >
                             Wallet Balance: {walletBalance}
                             <Text color="#6E7781" ml="0.2rem">
                               {` ${currentSelectedWithdrawlCoin}`}
                             </Text>
                           </Text>
-
-                        </Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
-                          Wallet Balance: {walletBalance}
-                          <Text color="#6E7781" ml="0.2rem">
-                            {` ${currentSelectedWithdrawlCoin}`}
-                          </Text>
-                        </Text>
-
-                        }
+                        )}
                         <Box pt={5} pb={2} mt="1rem">
                           <Slider
                             aria-label="slider-ex-6"
@@ -955,7 +1065,12 @@ const YourSupplyModal = () => {
                           </Slider>
                         </Box>
                       </Card>
-                      <Checkbox defaultChecked mt="0.7rem" w="390px" borderColor="#2B2F35">
+                      <Checkbox
+                        defaultChecked
+                        mt="0.7rem"
+                        w="390px"
+                        borderColor="#2B2F35"
+                      >
                         <Text
                           fontSize="10px"
                           color="#6E7681"
@@ -1173,30 +1288,46 @@ const YourSupplyModal = () => {
                           <Text color="#6E7681">$ 10.91</Text>
                         </Text>
                       </Card>
-                      {inputWithdrawlAmount > 0 && inputWithdrawlAmount <= walletBalance ? (
-                                                <AnimatedButton
-                                                bgColor="#101216"
-                                                // bgColor="red"
-                                                // p={0}
-                                                color="#8B949E"
-                                                size="sm"
-                                                width="100%"
-                                                mt="1.5rem"
-                                                mb="1.5rem"
-                                                border="1px solid #8B949E"
-                                                labelArray={[
-                                                  "Checking if sufficient rTokens are available",
-                                                  <Text display="flex">Fetching the exchange between <Text ml="0.4rem" mr="0.1rem"><BTCLogo/></Text>  rbtc &<Text ml="0.3rem" mr="0.1rem"><BTCLogo/></Text>BTC</Text>
-                                                 ,
-                                                  <Text display="flex">Burning 12345<Text ml="0.5rem" mr="0.1rem" ><BTCLogo/></Text>  rBTC</Text>,
-                                                  "Processing Withdrawl",
-                                                  // <ErrorButton errorText="Transaction failed" />,
-                                                  // <ErrorButton errorText="Copy error!" />,
-                                                  <SuccessButton successText={"Withdrawl Success"} />,
-                                                ]}
-                                              >
-                                                Withdraw
-                                              </AnimatedButton>
+                      {inputWithdrawlAmount > 0 &&
+                      inputWithdrawlAmount <= walletBalance ? (
+                        <AnimatedButton
+                          bgColor="#101216"
+                          // bgColor="red"
+                          // p={0}
+                          color="#8B949E"
+                          size="sm"
+                          width="100%"
+                          mt="1.5rem"
+                          mb="1.5rem"
+                          border="1px solid #8B949E"
+                          labelArray={[
+                            "Checking if sufficient rTokens are available",
+                            <Text display="flex">
+                              Fetching the exchange between{" "}
+                              <Text ml="0.4rem" mr="0.1rem">
+                                <BTCLogo height={"16px"} width={"16px"} />
+                              </Text>{" "}
+                              rbtc &
+                              <Text ml="0.3rem" mr="0.1rem">
+                                <BTCLogo height={"16px"} width={"16px"} />
+                              </Text>
+                              BTC
+                            </Text>,
+                            <Text display="flex">
+                              Burning 12345
+                              <Text ml="0.5rem" mr="0.1rem">
+                                <BTCLogo height={"16px"} width={"16px"} />
+                              </Text>{" "}
+                              rBTC
+                            </Text>,
+                            "Processing Withdrawl",
+                            // <ErrorButton errorText="Transaction failed" />,
+                            // <ErrorButton errorText="Copy error!" />,
+                            <SuccessButton successText={"Withdrawl Success"} />,
+                          ]}
+                        >
+                          Withdraw
+                        </AnimatedButton>
                       ) : (
                         <Button
                           bg="#101216"

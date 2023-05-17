@@ -9,22 +9,25 @@ import InfoIconBig from "@/assets/icons/infoIconBig";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
 import getCoin from "@/utils/functions/getCoin";
 import { useDispatch, useSelector } from "react-redux";
+import _coins from "@/utils/constants/coins";
 import {
-  selectNavDropdowns,
-  setNavDropdown,
+  selectMetricsDropdowns,
+  setMetricsDropdown,
 } from "@/store/slices/dropdownsSlice";
-import { Coins } from "@/utils/constants/coin";
-import coins from "@/utils/constants/coins";
 import TotalRevenueChart from "@/components/layouts/charts/TotalRevenue";
+import Link from "next/link";
 const YourMetrics = () => {
+  //   const [metricsCancel, setMetricsCancel] = useState(false);
   const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
   const dispatch = useDispatch();
-  const navDropdown = useSelector(selectNavDropdowns);
+  const metricsDropdowns = useSelector(selectMetricsDropdowns);
   const handleDropdownClick = (dropdownName: any) => {
-    dispatch(setNavDropdown(dropdownName));
+    // alert(dropdownName);
+    dispatch(setMetricsDropdown(dropdownName));
   };
   return (
     <PageCard pt="8rem">
+      {/* {!metricsCancel && ( */}
       <Box
         width="95%"
         p="2rem 4rem"
@@ -41,7 +44,11 @@ const YourMetrics = () => {
             <Text color="#E6EDF3" fontSize="28px">
               Your metrics
             </Text>
-            <CancelIcon />
+            <Link href={"/market"}>
+              <Box cursor="pointer">
+                <CancelIcon />
+              </Box>
+            </Link>
           </HStack>
           <Box
             display="flex"
@@ -87,7 +94,10 @@ const YourMetrics = () => {
               cursor="pointer"
               w="23rem"
               //   bgColor="red"
-              onClick={() => handleDropdownClick("yourMetricsMarketDropdown")}
+              onClick={() => {
+                // alert("hey");
+                handleDropdownClick("yourMetricsMarketDropdown");
+              }}
               as="button"
             >
               <Box
@@ -97,7 +107,7 @@ const YourMetrics = () => {
                 gap="1"
                 // bgColor="red"
               >
-                <Box p="1">{getCoin(currentMarketCoin)}</Box>
+                <Box p="1">{getCoin(currentMarketCoin, "16px", "16px")}</Box>
                 <Text
                   color="#E6EDF3"
                   fontSize="14px"
@@ -114,7 +124,7 @@ const YourMetrics = () => {
               <Box pt="1" className="navbar-button">
                 <DropdownUp />
               </Box>
-              {navDropdown.yourMetricsMarketDropdown && (
+              {metricsDropdowns.yourMetricsMarketDropdown && (
                 <Box
                   w="full"
                   left="0"
@@ -123,7 +133,7 @@ const YourMetrics = () => {
                   className="dropdown-container"
                   boxShadow="dark-lg"
                 >
-                  {coins.map((coin, index) => {
+                  {_coins.map((coin, index) => {
                     return (
                       <Box
                         key={index}
@@ -134,6 +144,7 @@ const YourMetrics = () => {
                         gap="1"
                         pr="2"
                         onClick={() => {
+                          //   alert(coin);
                           setCurrentMarketCoin(coin);
                         }}
                       >
@@ -156,8 +167,8 @@ const YourMetrics = () => {
                           }`}
                           borderRadius="md"
                         >
-                          <Box p="1">{getCoin(coin)}</Box>
-                          <Text>{coin}</Text>
+                          <Box>{getCoin(coin, "16px", "16px")}</Box>
+                          <Text color="#E6EDF3">{coin}</Text>
                         </Box>
                       </Box>
                     );
@@ -208,7 +219,7 @@ const YourMetrics = () => {
                   alignItems="center"
                   gap="8px"
                 >
-                  <BTCLogo />
+                  <BTCLogo height={"24px"} width={"24px"} />
                   <Text color="#e6edf3" fontSize="20px">
                     BTC
                   </Text>
@@ -275,7 +286,7 @@ const YourMetrics = () => {
                     alignItems="center"
                     gap="8px"
                   >
-                    <BTCLogo />
+                    <BTCLogo height={"24px"} width={"24px"} />
                     <Text color="#e6edf3" fontSize="20px">
                       BTC
                     </Text>
@@ -328,11 +339,12 @@ const YourMetrics = () => {
               </Box>
             </Box>
             <Box>
-              <TotalRevenueChart/>
+              <TotalRevenueChart />
             </Box>
           </Box>
         </Box>
       </Box>
+      {/* )} */}
     </PageCard>
   );
 };
