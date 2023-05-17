@@ -9,7 +9,6 @@ const initialState = {
     walletConnectionDropdown: false,
     settingsDropdown: false,
     languagesDropdown: false,
-    yourMetricsMarketDropdown: false,
   },
   modalDropdowns: {
     borrowModalBorrowMarketDropdown: false,
@@ -41,6 +40,9 @@ const initialState = {
     liquidityProvisionBorrowIDDropDown: false,
     liquidityProvisionBorrowMarketDropDown: false,
   },
+  metricsDropdowns: {
+    yourMetricsMarketDropdown: false,
+  },
 };
 
 export const dropdownSlice = createSlice({
@@ -51,7 +53,7 @@ export const dropdownSlice = createSlice({
       const dropdownName = action.payload;
       const dropdowns = { ...state.navDropdowns };
       Object.keys(dropdowns).forEach((key) => {
-        if (key === dropdownName) {
+        if (key == dropdownName) {
           dropdowns[key] = !dropdowns[key];
         } else {
           dropdowns[key] = false;
@@ -75,6 +77,20 @@ export const dropdownSlice = createSlice({
       console.log("aryan1", dropdownName);
       state.modalDropdowns = dropdowns;
     },
+    setMetricsDropdown(state, action) {
+      const dropdownName = action.payload;
+      const dropdowns = { ...state.metricsDropdowns };
+      Object.keys(dropdowns).forEach((key) => {
+        if (key == dropdownName) {
+          dropdowns[key] = !dropdowns[key];
+        } else {
+          dropdowns[key] = false;
+        }
+      });
+      // state.currentDropdown = dropdownName;
+      // alert(dropdownName);
+      state.metricsDropdowns = dropdowns;
+    },
   },
   extraReducers: {
     [HYDRATE]: (state, action) => {
@@ -88,7 +104,10 @@ export const dropdownSlice = createSlice({
 
 export const { setNavDropdown } = dropdownSlice.actions;
 export const { setModalDropdown } = dropdownSlice.actions;
+export const { setMetricsDropdown } = dropdownSlice.actions;
 export const selectNavDropdowns = (state) => state.dropdowns.navDropdowns;
 export const selectCurrentDropdown = (state) => state.dropdowns.currentDropdown;
 export const selectModalDropDowns = (state) => state.dropdowns.modalDropdowns;
+export const selectMetricsDropdowns = (state) =>
+  state.dropdowns.metricsDropdowns;
 export default dropdownSlice.reducer;

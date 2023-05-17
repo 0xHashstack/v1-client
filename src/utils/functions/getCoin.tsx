@@ -4,22 +4,22 @@ import ETHLogo from "@/assets/icons/coins/eth";
 import USDCLogo from "@/assets/icons/coins/usdc";
 import USDTLogo from "@/assets/icons/coins/usdt";
 
-const getCoin = (CoinName: string) => {
+const getCoin = (CoinName: string, height: string, width: string) => {
   switch (CoinName) {
     case "BTC":
-      return <BTCLogo />;
+      return <BTCLogo height={height} width={width} />;
       break;
     case "USDC":
-      return <USDCLogo />;
+      return <USDCLogo height={height} width={width} />;
       break;
     case "USDT":
-      return <USDTLogo />;
+      return <USDTLogo height={height} width={width} />;
       break;
     case "ETH":
-      return <ETHLogo />;
+      return <ETHLogo height={height} width={width} />;
       break;
     case "DAI":
-      return <DAILogo />;
+      return <DAILogo height={height} width={width} />;
       break;
     default:
       break;
