@@ -15,6 +15,7 @@ import {
 } from "@/store/slices/dropdownsSlice";
 import { Coins } from "@/utils/constants/coin";
 import coins from "@/utils/constants/coins";
+import TotalRevenueChart from "@/components/layouts/charts/TotalRevenue";
 const YourMetrics = () => {
   const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
   const dispatch = useDispatch();
@@ -326,7 +327,9 @@ const YourMetrics = () => {
                 </VStack>
               </Box>
             </Box>
-            <Box>{/* Charts here */}</Box>
+            <Box>
+              <TotalRevenueChart/>
+            </Box>
           </Box>
         </Box>
       </Box>
