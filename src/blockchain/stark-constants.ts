@@ -3,7 +3,7 @@ import * as DeployDetailsProd from "../../contracts_addresses_prod_goerli2.json"
 // import * as DeployDetails from "../../../zkOpen/contract_addresses.json";
 import ERC20Abi from "../../ABIs/erc20_abi.json";
 import ComptrollerAbi from "../../ABIs/comptroller_abi.json";
-import LiquidateAbi from "../../ABIs/liquidation_abi.json"
+import LiquidateAbi from "../../ABIs/liquidation_abi.json";
 import { number } from "starknet";
 import {
   UseTransactionReceiptResult,
@@ -35,7 +35,7 @@ for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
 
 export const getTokenFromName = (name: string) => {
   let something = contractsEnv.TOKENS.map((item) => item.name);
-  // console.log(something);
+  // console.log("something", something);
   let index = contractsEnv.TOKENS.map((item) => item.name).indexOf(name);
   return contractsEnv.TOKENS[index];
   //   if (process.env.NODE_ENV === "development") {
@@ -52,7 +52,7 @@ export const tokenAddressMap: ItokenAddressMap = {
   USDT: getTokenFromName("USDT")?.address,
   USDC: getTokenFromName("USDC")?.address,
   ETH: getTokenFromName("ETH")?.address,
-  DAI: getTokenFromName("DAI")?.address
+  DAI: getTokenFromName("DAI")?.address,
 };
 
 export const tokenDecimalsMap: ItokenDecimalsMap = {
@@ -60,14 +60,13 @@ export const tokenDecimalsMap: ItokenDecimalsMap = {
   USDT: getTokenFromName("USDT")?.decimals,
   USDC: getTokenFromName("USDC")?.decimals,
   ETH: getTokenFromName("ETH")?.decimals,
-  DAI: getTokenFromName("DAI")?.decimals
+  DAI: getTokenFromName("DAI")?.decimals,
 };
 
 export function isTransactionLoading(receipt: UseTransactionReceiptResult) {
   // if(receipt.loading)
   // 	return true
-  if (receipt.data?.status == "RECEIVED")
-    return true;
+  if (receipt.data?.status == "RECEIVED") return true;
 }
 
 export function handleTransactionToast(receipt: UseTransactionReceiptResult) {}
@@ -108,7 +107,7 @@ export const getTokenFromAddress = (address: string) => {
   return token;
 };
 
-// export const getTokenDecimalsFromName = (name: string) => 
+// export const getTokenDecimalsFromName = (name: string) =>
 
 export const getCommitmentNameFromIndexDeposit = (index: string) => {
   if (index === "0") {
@@ -156,4 +155,4 @@ export const getCommitmentIndexStringFromNameLoan = (name: string) => {
 export const getCommitmentIndex = (index: string) => {
   return parseInt(index);
 };
-export { ERC20Abi, ComptrollerAbi, contractsEnv,LiquidateAbi };
+export { ERC20Abi, ComptrollerAbi, contractsEnv, LiquidateAbi };
