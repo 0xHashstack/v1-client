@@ -81,6 +81,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
         break;
     }
   };
+  console.log(inputAmount)
 
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {
@@ -97,12 +98,16 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
       setSliderValue(100);
       setinputAmount(newValue);
       dispatch(setInputSupplyAmount(newValue));
-    } else {
-      percentage = Math.round(percentage * 10) / 10;
-      console.log(percentage);
-      setSliderValue(percentage);
-      setinputAmount(newValue);
-      dispatch(setInputSupplyAmount(newValue));
+    }
+    else {
+      percentage = Math.round(percentage);
+      if(isNaN(percentage)){
+        
+      }else{
+        setSliderValue(percentage);
+        setinputAmount(newValue);
+        dispatch(setInputSupplyAmount(newValue));
+      }
     }
   };
 
@@ -275,10 +280,10 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                     </Box>
                   </Tooltip>
                 </Text>
-                <Box width="100%" color="white" border={`${inputAmount > walletBalance ? "1px solid #CF222E" : inputAmount<0 ? "1px solid #CF222E": inputAmount>0 && inputAmount<=walletBalance?"1px solid #1A7F37":"1px solid #2B2F35 "}`} borderRadius="6px" display="flex" justifyContent="space-between" mt="0.3rem">
+                <Box width="100%" color="white" border={`${inputAmount > walletBalance ? "1px solid #CF222E" : inputAmount<0 ? "1px solid #CF222E":isNaN(inputAmount)?"1px solid #CF222E": inputAmount>0 && inputAmount<=walletBalance?"1px solid #1A7F37":"1px solid #2B2F35 "}`} borderRadius="6px" display="flex" justifyContent="space-between" mt="0.3rem">
                   <NumberInput border="0px" min={0} keepWithinRange={true} onChange={handleChange} value={inputAmount?inputAmount:""} outline="none" precision={1} step={0.1}
                   >
-                    <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedCoin}`} color={`${inputAmount>walletBalance?"#CF222E": inputAmount<0? "#CF222E": inputAmount==0?"white": "#1A7F37"}`} border="0px" _placeholder={{
+                    <NumberInputField placeholder={`Minimum 0.01536 ${currentSelectedCoin}`} color={`${inputAmount>walletBalance?"#CF222E":isNaN(inputAmount)?"#CF222E": inputAmount<0? "#CF222E": inputAmount==0?"white": "#1A7F37"}`} border="0px" _placeholder={{
                       color: "#393D4F",
                       fontSize: ".89rem",
                       fontWeight: "600",
@@ -303,7 +308,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                     MAX
                   </Button>
                 </Box>
-                {inputAmount > walletBalance || inputAmount<0 ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+                {inputAmount > walletBalance || inputAmount<0 || isNaN(inputAmount) ? <Text display="flex" justifyContent="space-between" color="#E6EDF3" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
 
                   <Text color="#CF222E" display="flex">
                     <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">{inputAmount>walletBalance?"Amount exceeds balance":"Invalid Input"}</Text></Text>
@@ -522,7 +527,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                   <ErrorButton errorText="Copy error!" />
                 ) : (
                   <AnimatedButton
-                    // bgColor="#101216"
+                    bgColor="#101216"
                     // bgColor="red"
                     // p={0}
                     color="#8B949E"

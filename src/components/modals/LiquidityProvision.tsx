@@ -13,7 +13,8 @@ import {
     Box,
     Portal,
 } from "@chakra-ui/react";
-
+import AnimatedButton from "../uiElements/buttons/AnimationButton";
+import SuccessButton from "../uiElements/buttons/SuccessButton";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
 import InfoIcon from "@/assets/icons/infoIcon";
@@ -59,7 +60,7 @@ const LiquidityProvisionModal = () => {
     const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
     const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("ETH");
     const [currentBorrowId, setCurrentBorrowId] = useState("ID - 123456");
-    const [currentPool, setCurrentPool] = useState("ETH/USDT");
+    const [currentPool, setCurrentPool] = useState("Select a pool");
     const [inputAmount, setinputAmount] = useState(0);
     const [sliderValue, setSliderValue] = useState(0);
     const selectedDapp=useSelector(selectSelectedDapp);
@@ -256,7 +257,8 @@ const LiquidityProvisionModal = () => {
                                         as="button"
                                     >
                                         <Box display="flex" gap="1">
-                                            <Box p="1">{getCoin(currentPool)}</Box>
+                                            {currentPool!="Select a pool" ?<Box p="1">{getCoin(currentPool)}</Box>:""}
+                                            
                                             <Text mt="0.1rem">{currentPool}</Text>
                                         </Box>
                                         <Box pt="1" className="navbar-button">
@@ -729,19 +731,28 @@ const LiquidityProvisionModal = () => {
                                     <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">1.10</Text>
                                 </Box>
                                 </Box>
-                            {inputAmount1 > 0 ? (
-                                <Button
-                                bg="#101216"
-                                color="#8B949E"
-                                size="sm"
-                                width="100%"
-                                mt="1.5rem"
-                                mb="1.5rem"
-                                border="1px solid #8B949E"
-                                _hover={{ bg: "#10216" }}
-                                >
-                                    Spend Borrow
-                                </Button>
+                            {currentPool!="Select a pool" ? (
+                                                 <AnimatedButton
+                                                 bgColor="#101216"
+                                                 // bgColor="red"
+                                                 // p={0}
+                                                 color="#8B949E"
+                                                 size="sm"
+                                                 width="100%"
+                                                 mt="1.5rem"
+                                                 mb="1.5rem"
+                                                 border="1px solid #8B949E"
+                                                 labelArray={[
+                                                   "Performing pre-checks",
+                                                   "Processing the spend borrow",
+                                                   "Updating the l3 records.",
+                                                   // <ErrorButton errorText="Transaction failed" />,
+                                                   // <ErrorButton errorText="Copy error!" />,
+                                                   <SuccessButton successText={"Spend successful."} />,
+                                                 ]}
+                                               >
+                                                 Spend Borrow
+                                               </AnimatedButton>
                             ) : (
                                 <Button
                                     bg="#101216"

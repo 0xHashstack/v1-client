@@ -44,6 +44,7 @@ import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
+import AnimatedButton from "../uiElements/buttons/AnimationButton";
 
 const BorrowModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -89,7 +90,7 @@ const BorrowModal = () => {
       setinputCollateralAmount(newValue);
       dispatch(setInputBorrowModalCollateralAmount(newValue));
     } else {
-      percentage = Math.round(percentage * 100) / 100;
+      percentage = Math.round(percentage ) ;
       setSliderValue(percentage);
       setinputCollateralAmount(newValue);
       dispatch(setInputBorrowModalCollateralAmount(newValue));
@@ -104,7 +105,7 @@ const BorrowModal = () => {
       setinputBorrowAmount(newValue);
       dispatch(setInputBorrowModalCollateralAmount(newValue));
     } else {
-      percentage = Math.round(percentage * 100) / 100;
+      percentage = Math.round(percentage);
       setsliderValue2(percentage);
       setinputBorrowAmount(newValue);
       dispatch(setInputBorrowModalCollateralAmount(newValue));
@@ -387,7 +388,7 @@ const BorrowModal = () => {
                               ? sliderValue >= 10
                                 ? "15%"
                                 : "25%"
-                              : "0"
+                              : "8%"
                           }
                           fontSize=".58rem"
                           fontWeight="bold"
@@ -609,7 +610,7 @@ const BorrowModal = () => {
                               ? sliderValue2 >= 10
                                 ? "15%"
                                 : "25%"
-                              : "0"
+                              : "8%"
                           }
                           fontSize=".58rem"
                           fontWeight="bold"
@@ -799,20 +800,27 @@ const BorrowModal = () => {
 
             {inputCollateralAmount > 0 && inputBorrowAmount > 0 &&inputCollateralAmount<=walletBalance ? 
               buttonId==1? <SuccessButton successText="Borrow successful."/>:buttonId==2?<ErrorButton errorText="Copy error!" /> :
-              <Button
-                bg="#101216"
-                color="#8B949E"
-                size="sm"
-                width="100%"
-                mt="1.5rem"
-                mb="1.5rem"
-                border="1px solid #8B949E"
-                _hover={{ bg: "white",color:"black" }}
-                _active={{border:"3px solid gray"}}
-                // onClick={()=>{setButtonId(2)}}
-              >
-                Borrow
-              </Button>
+                  <AnimatedButton
+                    bgColor="#101216"
+                    // bgColor="red"
+                    // p={0}
+                    color="#8B949E"
+                    size="sm"
+                    width="100%"
+                    mt="1.5rem"
+                    mb="1.5rem"
+                    border="1px solid #8B949E"
+                    labelArray={[
+                      "Collateral received",
+                      "Processing the borrow request.",
+                      "Borrow successful.",
+                      // <ErrorButton errorText="Transaction failed" />,
+                      // <ErrorButton errorText="Copy error!" />,
+                      <SuccessButton successText={"Borrow successful."} />,
+                    ]}
+                  >
+                    Borrow
+                  </AnimatedButton>
             : 
               <Button
                 bg="#101216"
@@ -826,7 +834,7 @@ const BorrowModal = () => {
               >
                 Borrow
               </Button>
-            )}
+            }
           </ModalBody>
 
           {/* <ModalFooter>
