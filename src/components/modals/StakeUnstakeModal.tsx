@@ -14,17 +14,13 @@ import {
     NumberInputField,
     Slider,
     SliderMark,
-    SliderThumb,
     SliderTrack,
     SliderFilledTrack,
     TabList,
     Tab,
     TabPanel,
     Tabs,
-    TabPanels,
-    RadioGroup,
-    Radio,
-    Stack
+    TabPanels
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -51,12 +47,9 @@ import EthToUsdc from "@/assets/icons/pools/ethToUsdc";
 import DaiToEth from "@/assets/icons/pools/daiToEth";
 import BtcToEth from "@/assets/icons/pools/btcToEth";
 import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
-
+import AnimatedButton from "../uiElements/buttons/AnimationButton";
 
 import {
-    selectInputSupplyAmount,
-    selectCoinSelectedSupplyModal,
-    setCoinSelectedSupplyModal,
     selectWalletBalance,
 } from "@/store/slices/userAccountSlice";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
@@ -76,34 +69,34 @@ const StakeUnstakeModal = () => {
     const getCoin = (CoinName: string) => {
         switch (CoinName) {
             case "BTC":
-                return <BTCLogo />;
+                return <BTCLogo height={"16px"} width={"16px"}/>;
                 break;
             case "USDC":
-                return <USDCLogo />;
+                return <USDCLogo height={"16px"} width={"16px"}/>;
                 break;
             case "USDT":
-                return <USDTLogo />;
+                return <USDTLogo height={"16px"} width={"16px"}/>;
                 break;
             case "ETH":
-                return <ETHLogo />;
+                return <ETHLogo height={"16px"} width={"16px"}/>;
                 break;
             case "DAI":
-                return <DAILogo />;
+                return <DAILogo height={"16px"} width={"16px"}/>;
                 break;
             case "rBTC":
-                return <BTCLogo />;
+                return <BTCLogo height={"16px"} width={"16px"}/>;
                 break;
             case "rUSDC":
-                return <USDCLogo />;
+                return <USDCLogo height={"16px"} width={"16px"}/>;
                 break;
             case "rUSDT":
-                return <USDTLogo />;
+                return <USDTLogo height={"16px"} width={"16px"}/>;
                 break;
             case "rETH":
-                return <ETHLogo />;
+                return <ETHLogo height={"16px"} width={"16px"}/>;
                 break;
             case "rDAI":
-                return <DAILogo />;
+                return <DAILogo height={"16px"} width={"16px"}/>;
                 break;
             case "Jediswap":
                 return <JediswapLogo />;
@@ -571,19 +564,28 @@ const StakeUnstakeModal = () => {
                                             </Text>
                                             {inputStakeAmount > 0 && inputStakeAmount <= walletBalance ?
                                                 buttonId == 1 ? <SuccessButton successText="Stake success" /> : buttonId == 2 ? <ErrorButton errorText="Copy error!" /> :
-                                                    <Button
-                                                        bg="#101216"
-                                                        color="#8B949E"
-                                                        size="sm"
-                                                        width="100%"
-                                                        mt="1.5rem"
-                                                        mb="1.5rem"
-                                                        border="1px solid #8B949E"
-                                                        _hover={{ bg: "white", color: "black" }}
-                                                        _active={{border:"3px solid gray"}}
-                                                    >
-                                                        Stake
-                                                    </Button>
+                                                <AnimatedButton
+                                                bgColor="#101216"
+                                                // bgColor="red"
+                                                // p={0}
+                                                color="#8B949E"
+                                                size="sm"
+                                                width="100%"
+                                                mt="1.5rem"
+                                                mb="1.5rem"
+                                                border="1px solid #8B949E"
+                                                labelArray={[
+                                                  "Processing",
+                                                  "Checking for sufficient rtoken balance.",
+                                                  "Transferring rTokens to the supply vault",
+                                                  "Updating the supply records.",
+                                                  // <ErrorButton errorText="Transaction failed" />,
+                                                  // <ErrorButton errorText="Copy error!" />,
+                                                  <SuccessButton successText={"Stake successful."} />,
+                                                ]}
+                                              >
+                                                Stake
+                                              </AnimatedButton>
                                                 :
                                                 <Button
                                                     bg="#101216"
@@ -908,19 +910,28 @@ const StakeUnstakeModal = () => {
                                                 <Text display="flex">click here To <SupplyModal variant='link' fontSize="12px" display="inline" color="#0969DA" cursor="pointer" ml="0.4rem" lineHeight="18px" buttonText="Add Supply"/></Text>
                                             </Text>
                                             {inputUnstakeAmount > 0 && inputUnstakeAmount <= walletBalance ? (
-                                                <Button
-                                                    bg="#101216"
-                                                    color="#8B949E"
-                                                    size="sm"
-                                                    width="100%"
-                                                    mt="1.5rem"
-                                                    mb="1.5rem"
-                                                    border="1px solid #8B949E"
-                                                    _hover={{ bg: "white", color: "black" }}
-                                                    _active={{border:"3px solid gray"}}
-                                                >
-                                                    Unstake
-                                                </Button>
+                  <AnimatedButton
+                  bgColor="#101216"
+                  // bgColor="red"
+                  // p={0}
+                  color="#8B949E"
+                  size="sm"
+                  width="100%"
+                  mt="1.5rem"
+                  mb="1.5rem"
+                  border="1px solid #8B949E"
+                  labelArray={[
+                    "Processing",
+                    "Unstake amount matches staked rToken balance",
+                    "Unstaking the rTokens.",
+                    "Transferring to the user account",
+                    // <ErrorButton errorText="Transaction failed" />,
+                    // <ErrorButton errorText="Copy error!" />,
+                    <SuccessButton successText={"Unstake successful."} />,
+                  ]}
+                >
+                  Unstake
+                </AnimatedButton>
                                             ) : (
                                                 <Button
                                                     bg="#101216"

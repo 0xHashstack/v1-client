@@ -116,7 +116,7 @@ const Navbar = () => {
       zIndex="10"
       position="fixed"
       pt={"4px"}
-      backgroundColor="#1C202F"
+      backgroundColor="#161B22"
       width="100vw"
       boxShadow="rgba(0, 0, 0, 0.15) 0px 15px 25px, rgba(0, 0, 0, 0.05) 0px 5px 10px"
       display="flex"

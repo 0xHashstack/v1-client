@@ -58,19 +58,19 @@ const StakeModal = () => {
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
-        return <BTCLogo />;
+        return <BTCLogo height={"16px"} width={"16px"}/>;
         break;
       case "USDC":
-        return <USDCLogo />;
+        return <USDCLogo height={"16px"} width={"16px"}/>;
         break;
       case "USDT":
-        return <USDTLogo />;
+        return <USDTLogo height={"16px"} width={"16px"}/>;
         break;
       case "ETH":
-        return <ETHLogo />;
+        return <ETHLogo height={"16px"} width={"16px"}/>;
         break;
       case "DAI":
-        return <DAILogo />;
+        return <DAILogo height={"16px"} width={"16px"}/>;
         break;
       default:
         break;

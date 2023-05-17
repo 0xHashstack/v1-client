@@ -55,6 +55,7 @@ const Stats = ({
         display="flex"
         justifyContent="flex-end"
         paddingRight={2}
+        onClick={onclick}
       >
         <Image
           src="./statsIcon.svg"
