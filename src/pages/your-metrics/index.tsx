@@ -14,6 +14,7 @@ import {
   selectMetricsDropdowns,
   setMetricsDropdown,
 } from "@/store/slices/dropdownsSlice";
+import TotalRevenueChart from "@/components/layouts/charts/TotalRevenue";
 const YourMetrics = () => {
   const [metricsCancel, setMetricsCancel] = useState(false);
   const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
@@ -334,7 +335,9 @@ const YourMetrics = () => {
                   </VStack>
                 </Box>
               </Box>
-              <Box>{/* Charts here */}</Box>
+              <Box>
+              <TotalRevenueChart/>
+            </Box>
             </Box>
           </Box>
         </Box>

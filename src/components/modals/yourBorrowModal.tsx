@@ -33,6 +33,7 @@ import USDTLogo from "@/assets/icons/coins/usdt";
 import ETHLogo from "@/assets/icons/coins/eth";
 import DAILogo from "@/assets/icons/coins/dai";
 
+import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import DropdownUp from "../../assets/icons/dropdownUpIcon";
 import InfoIcon from "../../assets/icons/infoIcon";
 import { useDispatch, useSelector } from "react-redux";
@@ -66,6 +67,7 @@ import {
 
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
+import SuccessButton from "../uiElements/buttons/SuccessButton";
 
 const YourBorrowModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -795,8 +797,8 @@ const YourBorrowModal = () => {
   const [currentAction, setCurrentAction] = useState("Spend Borrow");
   const [currentBorrowId1, setCurrentBorrowId1] = useState("ID - 123456");
   const [currentBorrowId2, setCurrentBorrowId2] = useState("ID - 123456");
-  const [currentDapp, setCurrentDapp] = useState("Jediswap");
-  const [currentPool, setCurrentPool] = useState("ETH/USDT");
+  const [currentDapp, setCurrentDapp] = useState("Select a dapp");
+  const [currentPool, setCurrentPool] = useState("Select a pool");
 
   const [sliderValue, setSliderValue] = useState(0);
   // const dispatch = useDispatch();
@@ -1500,8 +1502,9 @@ const YourBorrowModal = () => {
                               as="button"
                             >
                               <Box display="flex" gap="1">
-                                <Box p="1">{getCoin(currentDapp)}</Box>
-                                <Text>{currentDapp}</Text>
+                                {currentDapp!="Select a dapp"?<Box p="1">{getCoin(currentDapp)}</Box>:""}
+                                
+                                <Text mt="0.15rem">{currentDapp}</Text>
                               </Box>
                               <Box pt="1" className="navbar-button">
                                 <DropdownUp />
@@ -1617,13 +1620,14 @@ const YourBorrowModal = () => {
                               as="button"
                             >
                               <Box display="flex" gap="1">
-                                <Box p="1">
+                                {currentPool!="Select a pool"?                         <Box p="1">
                                   {getCoin(
                                     radioValue === "1"
                                       ? currentPool
                                       : currentPoolCoin
                                   )}
-                                </Box>
+                                </Box>:""}
+        
                                 <Text>
                                   {radioValue === "1"
                                     ? currentPool
@@ -1749,20 +1753,66 @@ const YourBorrowModal = () => {
                         </Box>
                       )}
                       {getContainer(currentAction)}
+                      {currentAction=="Spend Borrow"? (currentDapp!="Select a dapp" &&currentPool!="Select a pool") ?
+                                                <AnimatedButton
+                                                bgColor="#101216"
+                                                // bgColor="red"
+                                                // p={0}
+                                                color="#8B949E"
+                                                size="sm"
+                                                width="100%"
+                                                mb="1.5rem"
+                                                border="1px solid #8B949E"
+                                                labelArray={[
+                                                  "Performing pre-checks",
+                                                  "Processing the spend borrow",
+                                                  "Updating the l3 records.",
+                                                  // <ErrorButton errorText="Transaction failed" />,
+                                                  // <ErrorButton errorText="Copy error!" />,
+                                                  <SuccessButton successText={"Spend borrow successful."} />,
+                                                ]}
+                                              >
+                                                Spend
+                                              </AnimatedButton>
+ : 
+ <Button
+   bg="#101216"
+   color="#6E7681"
+   size="sm"
+   width="100%"
+   mb="2rem"
+   border="1px solid #2B2F35"
+   _hover={{ bg: "#101216" }}
+ >
+   Spend
+ </Button>:""                    
+                      }
 
-                      {inputRepayAmount > 0 ? (
-                        <Button
-                        bg="#101216"
-                        color="#8B949E"
-                        size="sm"
-                        width="100%"
-                        mb="1.5rem"
-                        border="1px solid #8B949E"
-                        _hover={{ bg: "#10216" }}
-                        >
-                          Borrow
-                        </Button>
-                      ) : (
+                      {currentAction=="Repay Borrow"?inputRepayAmount > 0 ? 
+                                                <AnimatedButton
+                                                bgColor="#101216"
+                                                // bgColor="red"
+                                                // p={0}
+                                                color="#8B949E"
+                                                size="sm"
+                                                width="100%"
+                                                mb="1.5rem"
+                                                border="1px solid #8B949E"
+                                                labelArray={[
+                                                  "Calculating the outstanding borrow amount.",
+                                                  "transferring the repay amount to the borrow vault.",
+                                                  "Burning the dTokens.",
+                                                  "Covering the debt to the debt market.",
+                                                  "Minting rTokens.",
+                                                  "Transferring rtokens to the user account.",
+                                                  // <ErrorButton errorText="Transaction failed" />,
+                                                  // <ErrorButton errorText="Copy error!" />,
+                                                  <SuccessButton successText={"Repay loan success"} />,
+                                                ]}
+                                              >
+                                                Repay borrow
+                                              </AnimatedButton>
+                       : 
                         <Button
                           bg="#101216"
                           color="#6E7681"
@@ -1772,9 +1822,44 @@ const YourBorrowModal = () => {
                           border="1px solid #2B2F35"
                           _hover={{ bg: "#101216" }}
                         >
-                          Borrow
+                          Repay borrow
                         </Button>
-                      )}
+                      :""}
+                      {currentAction=="Zero Repay" ?inputRepayAmount == 0 ? 
+                                                <AnimatedButton
+                                                bgColor="#101216"
+                                                // bgColor="red"
+                                                // p={0}
+                                                color="#8B949E"
+                                                size="sm"
+                                                width="100%"
+                                                mb="1.5rem"
+                                                border="1px solid #8B949E"
+                                                labelArray={[
+                                                  "Performing prechecks.",
+                                                  "Processing self liquidation.",
+                                                  "Borrow closed successfully.",
+                                                  "Determine rToken balance.",
+                                                  "Transferring rtokens to your account.",
+                                                  // <ErrorButton errorText="Transaction failed" />,
+                                                  // <ErrorButton errorText="Copy error!" />,
+                                                  <SuccessButton successText={"Self liqudidation successfull."} />,
+                                                ]}
+                                              >
+                                                Zero repay
+                                              </AnimatedButton>
+                       : 
+                        <Button
+                          bg="#101216"
+                          color="#6E7681"
+                          size="sm"
+                          width="100%"
+                          mb="2rem"
+                          border="1px solid #2B2F35"
+                          _hover={{ bg: "#101216" }}
+                        >
+                          Zero repay
+                        </Button>:""}
                     </TabPanel>
                     <TabPanel m="0" p="0">
                       <Box
@@ -2090,7 +2175,7 @@ const YourBorrowModal = () => {
                         <Box
                           width="100%"
                           color="white"
-                          border={`${inputCollateralAmount > walletBalance ? "1px solid #CF222E" :inputCollateralAmount>0 && inputAmount<=walletBalance?"1px solid #1A7F37":"1px solid #2B2F35 "}`}
+                          border={`${inputCollateralAmount > walletBalance ? "1px solid #CF222E" :inputCollateralAmount<0?"1px solid #CF222E": inputCollateralAmount>0 && inputAmount<=walletBalance?"1px solid #1A7F37":"1px solid #2B2F35 "}`}
                           borderRadius="6px"
                           display="flex"
                           justifyContent="space-between"
@@ -2099,7 +2184,7 @@ const YourBorrowModal = () => {
                           <NumberInput
                             border="0px"
                             min={0}
-                            color={`${inputCollateralAmount>walletBalance?"#CF222E":inputCollateralAmount==0?"white": "#1A7F37"}`}
+                            color={`${inputCollateralAmount>walletBalance?"#CF222E":inputCollateralAmount<0?"#CF222E":  inputCollateralAmount==0?"white": "#1A7F37"}`}
                             keepWithinRange={true}
                             onChange={handleCollateralChange}
                             value={inputCollateralAmount?inputCollateralAmount:""}
@@ -2132,10 +2217,10 @@ const YourBorrowModal = () => {
                             MAX
                           </Button>
                         </Box>
-                        {inputCollateralAmount > walletBalance ? <Text display="flex" justifyContent="space-between" color="#E6EDF3"  fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
+                        {inputCollateralAmount > walletBalance || inputCollateralAmount<0 ? <Text display="flex" justifyContent="space-between" color="#E6EDF3"  fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
 
 <Text color="#CF222E" display="flex">
-  <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">Invalid Input</Text></Text>
+  <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">{inputCollateralAmount>walletBalance ?"Amount exceeds balance":"Invalid Input"} </Text></Text>
 <Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
   Wallet Balance: {walletBalance}
   <Text color="#6E7781" ml="0.2rem">
@@ -2151,7 +2236,7 @@ Wallet Balance: {walletBalance}
 </Text>
 
 }
-                        <Box pt={5} pb={2} mt="0.2rem">
+                        <Box pt={5} pb={2} mt="0.8rem">
                           <Slider
                             aria-label="slider-ex-6"
                             defaultValue={sliderValue2}
@@ -2486,18 +2571,29 @@ Wallet Balance: {walletBalance}
                         </Text>
                       </Card>
                       {inputCollateralAmount > 0 &&inputCollateralAmount<=walletBalance ? (
-                        <Button
-                        bg="#101216"
-                        color="#8B949E"
-                        size="sm"
-                        width="100%"
-                        mt="1.5rem"
-                        mb="1.5rem"
-                        border="1px solid #8B949E"
-                        _hover={{ bg: "#10216" }}
-                        >
-                          Add Collateral
-                        </Button>
+                                                 <AnimatedButton
+                                                 bgColor="#101216"
+                                                 // bgColor="red"
+                                                 // p={0}
+                                                 color="#8B949E"
+                                                 size="sm"
+                                                 width="100%"
+                                                 mt="1.5rem"
+                                                 mb="1.5rem"
+                                                 border="1px solid #8B949E"
+                                                 labelArray={[
+                                                   "Processing",
+                                                   "Transferring collateral to supply vault.",
+                                                   "Minting & transferring rTokens to the user account.",
+                                                   "Locking rTokens.",
+                                                   "Updating collateral records",
+                                                   // <ErrorButton errorText="Transaction failed" />,
+                                                   // <ErrorButton errorText="Copy error!" />,
+                                                   <SuccessButton successText={"Add collateral successful."} />,
+                                                 ]}
+                                               >
+                                                 Add Collateral
+                                               </AnimatedButton>
                       ) : (
                         <Button
                           bg="#101216"
