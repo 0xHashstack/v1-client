@@ -7,7 +7,7 @@ const RiskPremiumChart = () => {
         series: [
           {
             name: 'Series 1',
-            data: [30000, 40000, 35000, 50000, 49000, 60000,80000],
+            data: [30, 40, 35, 50, 49, 60,80],
             fill: {
               colors: ['#005CC5'], // Specify the fill color for the area under the line
               opacity: 0.5, // Set the opacity of the fill color (optional)
@@ -50,7 +50,7 @@ const RiskPremiumChart = () => {
           yaxis: {
             labels: {
               formatter: function (value:any) {
-                return value / 1000 + 'k'; // Divide by 1000 and append 'k' for thousands
+                return value  + '%'; // Divide by 1000 and append 'k' for thousands
               },
             },
             borderColor:'grey'
@@ -103,7 +103,8 @@ const RiskPremiumChart = () => {
           },
           stroke: {
             curve: 'smooth',
-            colors: ['#22863A'],
+            colors: ['#79B8FF'],
+            opacity:1
           },
           grid:{
             borderColor: '#888888',
@@ -114,7 +115,7 @@ const RiskPremiumChart = () => {
       
       
     return (
-      <Box width="50%">
+      <Box border="1px solid #2B2F35" borderRadius="6px" padding="16px 24px 40px">
         <ApexCharts
           options={splineChartData.options}
           series={splineChartData.series}

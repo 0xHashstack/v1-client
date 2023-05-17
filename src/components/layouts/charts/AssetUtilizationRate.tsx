@@ -53,80 +53,80 @@ const AssetUtilizationRateChart = () => {
                 return value / 1000 + 'k'; // Divide by 1000 and append 'k' for thousands
               },
             },
-            borderColor:'grey'
+            borderColor:'#6E7681'
           },
           annotations: {
             xaxis: [
               {
                 x: 'Jan', // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#6E7681', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 'Feb', // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#6E7681', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 'Mar', // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#6E7681', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 'Apr', // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#6E7681', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 'May', // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#6E7681', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 'Jun', // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#6E7681', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 'Jul', // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#6E7681', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 'Aug', // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#6E7681', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 'Sep', // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#6E7681', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 'Oct', // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#6E7681', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 'Nov', // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#6E7681', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 'Dec', // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#6E7681', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
             ],
@@ -134,6 +134,7 @@ const AssetUtilizationRateChart = () => {
           stroke: {
             curve: 'smooth',
             colors: ['#005CC5'],
+            opacity:1,
           },
           grid:{
             borderColor: '#888888',
@@ -144,7 +145,7 @@ const AssetUtilizationRateChart = () => {
       
       
     return (
-      <Box width="50%">
+      <Box border="1px solid #2B2F35" borderRadius="6px" padding="16px 24px 40px">
         <ApexCharts
           options={splineChartData.options}
           series={splineChartData.series}
