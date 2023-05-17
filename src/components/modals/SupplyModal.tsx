@@ -318,15 +318,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                       {` ${currentSelectedCoin}`}
                     </Text>
                   </Text>
-
-                </Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
-                  Wallet Balance: {walletBalance}
-                  <Text color="#6E7781" ml="0.2rem">
-                    {` ${currentSelectedCoin}`}
-                  </Text>
-                </Text>
-
-                }
+                )}
 
                 <Box pt={5} pb={2} mt="0.9rem">
                   <Slider
@@ -355,7 +347,11 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                           color="black"
                           top="7px"
                           left={
-                            sliderValue !== 100 ? (sliderValue >= 10 ? "15%" : "25%") : "8%"
+                            sliderValue !== 100
+                              ? sliderValue >= 10
+                                ? "15%"
+                                : "25%"
+                              : "8%"
                           }
                           fontSize=".58rem"
                           fontWeight="bold"
@@ -544,7 +540,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                       "Transaction complete.",
                       // <ErrorButton errorText="Transaction failed" />,
                       // <ErrorButton errorText="Copy error!" />,
-                      <SuccessButton successText={"Success"} />,
+                      <SuccessButton key={"success"} successText={"Success"} />,
                     ]}
                   >
                     Supply

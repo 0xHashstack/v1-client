@@ -33,7 +33,6 @@ export default function Home() {
   useEffect(() => {
     // alert(status)
     if (status == "connected") {
-
       // alert(account?.address);
       router.push(href);
       dispatch(setAccount(account));
