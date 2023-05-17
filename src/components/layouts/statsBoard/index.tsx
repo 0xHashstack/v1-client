@@ -1,7 +1,12 @@
 import React, { memo } from "react";
 import { Flex, HStack, VStack } from "@chakra-ui/react";
 import Stats from "@/components/layouts/stats";
+import { useRouter } from "next/router";
 const StatsBoard = () => {
+  const router = useRouter();
+  const handleRouteChange = (path: string) => {
+    router.push(path);
+  };
   return (
     <Flex
       display="flex"
@@ -25,7 +30,9 @@ const StatsBoard = () => {
         <Stats
           header={["Your networth", "Your Supply", "Your borrow", "Net APR"]}
           statsData={[8392.14, 5536.83, 536.83, 15.5]}
-          onclick={() => {}}
+          onclick={() => {
+            handleRouteChange("/your-metrics");
+          }}
         />
         <Stats
           header={[
@@ -34,7 +41,9 @@ const StatsBoard = () => {
             "Avg. asset utillization",
           ]}
           statsData={[531025.0, 53104.0, 53.1]}
-          onclick={() => {}}
+          onclick={() => {
+            handleRouteChange("/protocol-metrics");
+          }}
         />
       </HStack>
     </Flex>
