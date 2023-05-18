@@ -14,7 +14,7 @@ const nextConfig = {
           // {
           //   key: 'Content-Security-Policy',
           //   value:
-          //     "default-src 'self' '; script-src 'self' ; style-src 'self' ; font-src 'self' 'https://fonts.googleapis.com'; connect-src 'self' http://localhost:3000",
+          //     "default-src"
           // },
           {
             key: 'X-Content-Type-Options',

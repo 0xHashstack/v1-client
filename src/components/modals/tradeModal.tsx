@@ -645,7 +645,18 @@ const TradeModal = () => {
                         MAX
                       </Button>
                     </Box>
-                    <Box pt={5} pb={2} mt="0.4rem">
+                    <Text
+                      textAlign="right"
+                      fontSize="12px"
+                      fontWeight="500"
+                      fontStyle="normal"
+                    >
+                      Available Reserves: {walletBalance}
+                      <Text as="span" color="#8B949E">
+                        {` ${currentCollateralCoin}`}
+                      </Text>
+                    </Text>
+                    <Box pt={5} pb={2} mt="0.8rem">
                       <Slider
                         aria-label="slider-ex-6"
                         defaultValue={sliderValue2}
@@ -692,8 +703,11 @@ const TradeModal = () => {
                       </Slider>
                     </Box>
                   </Box>
+                  
                 </Box>
+                
               </Box>
+              
               <Box w="48%">
                 <Box display="flex" flexDir="column" p="3" gap="1">
                   <Box>
