@@ -164,14 +164,14 @@ const YourSupplyModal = () => {
     <Box>
       <Button
         key="suppy"
-        backgroundColor="#101216"
         height={"2rem"}
-        padding="0rem 0.8rem"
-        border="1px solid #2b2f35"
         fontSize={"12px"}
-        color="#6e6e6e"
-        _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
+        padding="6px 12px"
+        border="1px solid #BDBFC1;"
+        bgColor="#101216"
+        _hover={{ bg: "white", color: "black" }}
         borderRadius={"6px"}
+        color="#BDBFC1"
         onClick={onOpen}
       >
         Actions
@@ -732,10 +732,7 @@ const YourSupplyModal = () => {
                             "Transaction complete.",
                             // <ErrorButton errorText="Transaction failed" />,
                             // <ErrorButton errorText="Copy error!" />,
-                            <SuccessButton
-                              key={"successButton"}
-                              successText={"Supply success"}
-                            />,
+                            <SuccessButton successText={"Supply success"} />,
                           ]}
                         >
                           Supply
@@ -1181,13 +1178,11 @@ const YourSupplyModal = () => {
                                     fontWeight="500"
                                   >
                                     <Box display="flex">
-                                      1
-                                      <ETHLogo height={"16px"} width={"16px"} />
+                                      1<ETHLogo height={"16px"} width={"16px"} />
                                       rETH =
                                     </Box>
                                     <Box display="flex">
-                                      y
-                                      <ETHLogo height={"16px"} width={"16px"} />
+                                      y<ETHLogo height={"16px"} width={"16px"} />
                                     </Box>
                                   </Box>
                                   <Box
@@ -1199,11 +1194,7 @@ const YourSupplyModal = () => {
                                   >
                                     <Box display="flex">1X =</Box>
                                     <Box display="flex">
-                                      z USD{" "}
-                                      <USDTLogo
-                                        height={"16px"}
-                                        width={"16px"}
-                                      />
+                                      z USD <USDTLogo height={"16px"} width={"16px"} />
                                     </Box>
                                   </Box>
                                   <Box
@@ -1311,18 +1302,18 @@ const YourSupplyModal = () => {
                           border="1px solid #8B949E"
                           labelArray={[
                             "Checking if sufficient rTokens are available",
-                            <Text display="flex" key={0}>
+                            <Text display="flex">
                               Fetching the exchange between{" "}
                               <Text ml="0.4rem" mr="0.1rem">
                                 <BTCLogo height={"16px"} width={"16px"} />
                               </Text>{" "}
                               rbtc &
-                              <Text ml="0.3rem" mr="0.1rem" key={1}>
+                              <Text ml="0.3rem" mr="0.1rem">
                                 <BTCLogo height={"16px"} width={"16px"} />
                               </Text>
                               BTC
                             </Text>,
-                            <Text display="flex" key={2}>
+                            <Text display="flex">
                               Burning 12345
                               <Text ml="0.5rem" mr="0.1rem">
                                 <BTCLogo height={"16px"} width={"16px"} />
@@ -1332,10 +1323,7 @@ const YourSupplyModal = () => {
                             "Processing Withdrawl",
                             // <ErrorButton errorText="Transaction failed" />,
                             // <ErrorButton errorText="Copy error!" />,
-                            <SuccessButton
-                              key={"successButton"}
-                              successText={"Withdrawl Success"}
-                            />,
+                            <SuccessButton successText={"Withdrawl Success"} />,
                           ]}
                         >
                           Withdraw

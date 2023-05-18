@@ -848,12 +848,13 @@ const YourBorrowModal = () => {
         key="suppy"
         backgroundColor="#101216"
         height={"2rem"}
-        padding="0rem 1rem"
-        border="1px solid #2b2f35"
         fontSize={"12px"}
-        color="#6e6e6e"
-        _hover={{ bgColor: "#2DA44E", color: "#E6EDF3" }}
+        padding="6px 12px"
+        border="1px solid #BDBFC1"
+        bgColor="#101216"
+        _hover={{ bg: "white", color: "black" }}
         borderRadius={"6px"}
+        color="#BDBFC1"
         onClick={onOpen}
       >
         Actions
