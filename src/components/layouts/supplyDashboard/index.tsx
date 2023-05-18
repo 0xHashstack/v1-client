@@ -320,7 +320,7 @@ const SupplyDashboard = ({
         bgColor="#101216"
         borderRadius="8px"
       >
-        <Text color="#FFFFFF">You do not have outstanding borrows</Text>
+        <Text color="#FFFFFF">Your Ethereum Wallet is empty</Text>
         <Text color="#0969DA">Borrow assets</Text>
       </Box>
     </>

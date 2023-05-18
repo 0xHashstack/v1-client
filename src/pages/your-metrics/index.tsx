@@ -168,7 +168,7 @@ const YourMetrics = () => {
                           borderRadius="md"
                         >
                           <Box>{getCoin(coin, "16px", "16px")}</Box>
-                          <Text color="#E6EDF3">{coin}</Text>
+                          <Text color="#E6EDF3" >{coin}</Text>
                         </Box>
                       </Box>
                     );

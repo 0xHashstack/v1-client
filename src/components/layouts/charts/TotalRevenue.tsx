@@ -46,6 +46,9 @@ const TotalRevenueChart = () => {
           show: false,
         },
       },
+      tooltip:{
+        enabled:true,
+      },
       dataLabels: {
         enabled: false,
       },
@@ -244,7 +247,7 @@ const TotalRevenueChart = () => {
         Time
       </Text>
       </Box>
-      <Box position="absolute" width="119px" height="15px" top="195px" left="-35px" fontSize="12px" fontWeight="400" fontStyle="normal" lineHeight="15px" color="#E6EDF3" transform="rotate(-90deg)">
+      <Box position="absolute" width="119px" height="15px" top="205px" left="-35px" fontSize="12px" fontWeight="400" fontStyle="normal" lineHeight="15px" color="#E6EDF3" transform="rotate(-90deg)">
       Income & Expenses  
       </Box>
     </Box>
