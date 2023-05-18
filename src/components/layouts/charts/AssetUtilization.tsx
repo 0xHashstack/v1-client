@@ -1,14 +1,14 @@
-import React from 'react';
-import dynamic from 'next/dynamic';
-import { Box } from '@chakra-ui/react';
+import React from "react";
+import dynamic from "next/dynamic";
+import { Box } from "@chakra-ui/react";
 
-const ApexCharts = dynamic(() => import('react-apexcharts'), { ssr: false });
+const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const AssetUtilizationChart = () => {
   const splineChartData = {
     series: [
       {
-        name: 'Series 1',
+        name: "Series 1",
         data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
       },
     ],
@@ -22,30 +22,30 @@ const AssetUtilizationChart = () => {
         enabled: false,
       },
       xaxis: {
-        labels:{
+        labels: {
           style: {
-            colors: '#6E7681', // Set the color of the labels
-            fontSize:"12px",
-            fontWeight:"400",
+            colors: "#6E7681", // Set the color of the labels
+            fontSize: "12px",
+            fontWeight: "400",
           },
         },
         axisTicks: {
           show: false,
         },
         axisBorder: {
-          color: 'grey',
+          color: "grey",
         },
         categories: [1, 2, 3, 4, 5, 6, 7],
       },
       yaxis: {
         labels: {
-          formatter: function (value) {
-            return value / 1000 + 'k';
+          formatter: function (value: any) {
+            return value / 1000 + "k";
           },
           style: {
-            colors: '#6E7681', // Set the color of the labels
-            fontSize:"12px",
-            fontWeight:"400",
+            colors: "#6E7681", // Set the color of the labels
+            fontSize: "12px",
+            fontWeight: "400",
           },
         },
         min: 0,
@@ -53,15 +53,15 @@ const AssetUtilizationChart = () => {
       plotOptions: {
         bar: {
           opacity: 1, // Set the opacity to 1 for fully opaque bars
-          columnWidth: '70%', // Adjust the column width for better spacing between bars
+          columnWidth: "70%", // Adjust the column width for better spacing between bars
           colors: {
             backgroundBarOpacity: 1, // Set the opacity of the background bar
           },
         },
       },
-      colors: ['#0FCA7A'],
+      colors: ["#0FCA7A"],
       grid: {
-        borderColor: '#2B2F35',
+        borderColor: "#2B2F35",
         padding: {
           bottom: 10, // Add bottom padding to prevent overlap with x-axis labels
         },
@@ -71,7 +71,7 @@ const AssetUtilizationChart = () => {
           {
             x: 0,
             strokeDashArray: 0,
-            borderColor: 'grey',
+            borderColor: "grey",
             borderWidth: 1,
           },
         ],

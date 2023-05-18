@@ -60,19 +60,19 @@ const BorrowModal = () => {
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
-        return <BTCLogo height={"16px"} width={"16px"}/>;
+        return <BTCLogo height={"16px"} width={"16px"} />;
         break;
       case "USDC":
-        return <USDCLogo height={"16px"} width={"16px"}/>;
+        return <USDCLogo height={"16px"} width={"16px"} />;
         break;
       case "USDT":
-        return <USDTLogo height={"16px"} width={"16px"}/>;
+        return <USDTLogo height={"16px"} width={"16px"} />;
         break;
       case "ETH":
-        return <ETHLogo height={"16px"} width={"16px"}/>;
+        return <ETHLogo height={"16px"} width={"16px"} />;
         break;
       case "DAI":
-        return <DAILogo height={"16px"} width={"16px"}/>;
+        return <DAILogo height={"16px"} width={"16px"} />;
         break;
       default:
         break;
@@ -90,7 +90,7 @@ const BorrowModal = () => {
       setinputCollateralAmount(newValue);
       dispatch(setInputBorrowModalCollateralAmount(newValue));
     } else {
-      percentage = Math.round(percentage ) ;
+      percentage = Math.round(percentage);
       setSliderValue(percentage);
       setinputCollateralAmount(newValue);
       dispatch(setInputBorrowModalCollateralAmount(newValue));
@@ -594,7 +594,8 @@ const BorrowModal = () => {
                       ? "1px solid #CF222E"
                       : isNaN(inputBorrowAmount)
                       ? "1px solid #CF222E"
-                      : inputBorrowAmount > 0 && inputBorrowAmount <= walletBalance
+                      : inputBorrowAmount > 0 &&
+                        inputBorrowAmount <= walletBalance
                       ? "1px solid #1A7F37"
                       : "1px solid #2B2F35 "
                   }`}
@@ -607,7 +608,7 @@ const BorrowModal = () => {
                     min={0}
                     keepWithinRange={true}
                     onChange={handleBorrowChange}
-                    value={inputBorrowAmount?inputBorrowAmount:""}
+                    value={inputBorrowAmount ? inputBorrowAmount : ""}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
@@ -618,7 +619,7 @@ const BorrowModal = () => {
                           ? "#CF222E"
                           : inputBorrowAmount < 0
                           ? "#CF222E"
-                          : inputBorrowAmount== 0
+                          : inputBorrowAmount == 0
                           ? "white"
                           : "#1A7F37"
                       }`}
@@ -648,8 +649,7 @@ const BorrowModal = () => {
                     MAX
                   </Button>
                 </Box>
-                {inputBorrowAmount > walletBalance ||
-                inputBorrowAmount < 0 ? (
+                {inputBorrowAmount > walletBalance || inputBorrowAmount < 0 ? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -838,7 +838,7 @@ const BorrowModal = () => {
                 fontSize="12px"
                 mb="0.4rem"
               >
-                <Text display="flex" alignItems="center">
+                <Text display="flex" alignItems="center" key={"effective apr"}>
                   <Text
                     mr="0.2rem"
                     font-style="normal"
@@ -917,30 +917,40 @@ const BorrowModal = () => {
               </Text>
             </Card>
 
-            {inputCollateralAmount > 0 && inputBorrowAmount > 0 &&inputCollateralAmount<=walletBalance ? 
-              buttonId==1? <SuccessButton successText="Borrow successful."/>:buttonId==2?<ErrorButton errorText="Copy error!" /> :
-                  <AnimatedButton
-                    bgColor="#101216"
-                    // bgColor="red"
-                    // p={0}
-                    color="#8B949E"
-                    size="sm"
-                    width="100%"
-                    mt="1.5rem"
-                    mb="1.5rem"
-                    border="1px solid #8B949E"
-                    labelArray={[
-                      "Collateral received",
-                      "Processing the borrow request.",
-                      "Borrow successful.",
-                      // <ErrorButton errorText="Transaction failed" />,
-                      // <ErrorButton errorText="Copy error!" />,
-                      <SuccessButton successText={"Borrow successful."} />,
-                    ]}
-                  >
-                    Borrow
-                  </AnimatedButton>
-            : 
+            {inputCollateralAmount > 0 &&
+            inputBorrowAmount > 0 &&
+            inputCollateralAmount <= walletBalance ? (
+              buttonId == 1 ? (
+                <SuccessButton successText="Borrow successful." />
+              ) : buttonId == 2 ? (
+                <ErrorButton errorText="Copy error!" />
+              ) : (
+                <AnimatedButton
+                  bgColor="#101216"
+                  // bgColor="red"
+                  // p={0}
+                  color="#8B949E"
+                  size="sm"
+                  width="100%"
+                  mt="1.5rem"
+                  mb="1.5rem"
+                  border="1px solid #8B949E"
+                  labelArray={[
+                    "Collateral received",
+                    "Processing the borrow request.",
+                    "Borrow successful.",
+                    // <ErrorButton errorText="Transaction failed" />,
+                    // <ErrorButton errorText="Copy error!" />,
+                    <SuccessButton
+                      key={"successButton"}
+                      successText={"Borrow successful."}
+                    />,
+                  ]}
+                >
+                  Borrow
+                </AnimatedButton>
+              )
+            ) : (
               <Button
                 bg="#101216"
                 color="#6E7681"
@@ -953,7 +963,7 @@ const BorrowModal = () => {
               >
                 Borrow
               </Button>
-            }
+            )}
           </ModalBody>
 
           {/* <ModalFooter>

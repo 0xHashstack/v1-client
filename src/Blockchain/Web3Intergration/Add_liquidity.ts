@@ -107,7 +107,7 @@ async function estimate_gasfee_Add_liquidity(
   // Interactions with the contract with call & invoke
   myTestContract.connect(account0);
 
-  const par = Calldata.compile({
+  const par = CallData.compile({
     _integration_address: integration_address,
     _loan_id: loan_id,
     _marketA: marketA,

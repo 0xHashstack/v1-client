@@ -618,7 +618,10 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                       "Transaction complete.",
                       // <ErrorButton errorText="Transaction failed" />,
                       // <ErrorButton errorText="Copy error!" />,
-                      <SuccessButton successText={"Success"} />,
+                      <SuccessButton
+                        key={"successButton"}
+                        successText={"Success"}
+                      />,
                     ]}
                   >
                     Supply
