@@ -192,7 +192,8 @@ const TotalRevenueChart = () => {
   };
 
   return (
-    <Box p="16px">
+    <Box p="16px" position="relative">
+      <Box>
       <Box ml="1rem" display="flex" mb="1rem">
         <Box display="flex">
           <Box p="1">
@@ -242,6 +243,10 @@ const TotalRevenueChart = () => {
       >
         Time
       </Text>
+      </Box>
+      <Box position="absolute" width="119px" height="15px" top="195px" left="-35px" fontSize="12px" fontWeight="400" fontStyle="normal" lineHeight="15px" color="#E6EDF3" transform="rotate(-90deg)">
+      Income & Expenses  
+      </Box>
     </Box>
   );
 };
