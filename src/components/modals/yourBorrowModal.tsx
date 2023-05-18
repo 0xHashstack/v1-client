@@ -80,19 +80,19 @@ const YourBorrowModal = () => {
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
-        return <BTCLogo height={"16px"} width={"16px"}/>;
+        return <BTCLogo height={"16px"} width={"16px"} />;
         break;
       case "USDC":
-        return <USDCLogo height={"16px"} width={"16px"}/>;
+        return <USDCLogo height={"16px"} width={"16px"} />;
         break;
       case "USDT":
-        return <USDTLogo height={"16px"} width={"16px"}/>;
+        return <USDTLogo height={"16px"} width={"16px"} />;
         break;
       case "ETH":
-        return <ETHLogo height={"16px"} width={"16px"}/>;
+        return <ETHLogo height={"16px"} width={"16px"} />;
         break;
       case "DAI":
-        return <DAILogo height={"16px"} width={"16px"}/>;
+        return <DAILogo height={"16px"} width={"16px"} />;
         break;
       case "Jediswap":
         return <JediswapLogo />;
@@ -869,7 +869,7 @@ const YourBorrowModal = () => {
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
         <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
           {/* <ModalHeader>Borrow</ModalHeader> */}
-          <ModalCloseButton color="white" mt="1rem" mr="1rem"/>
+          <ModalCloseButton color="white" mt="1rem" mr="1rem" />
           <ModalBody color={"#E6EDF3"} pt={6} px={7}>
             <Box
               display={"flex"}
@@ -879,7 +879,7 @@ const YourBorrowModal = () => {
             >
               <Box w="full">
                 <Tabs variant="unstyled">
-                  <TabList borderRadius="md" >
+                  <TabList borderRadius="md">
                     <Tab
                       py="1"
                       px="3"
@@ -918,7 +918,6 @@ const YourBorrowModal = () => {
                   <TabPanels>
                     <TabPanel p="0" m="0">
                       <Box
-                      
                         display="flex"
                         flexDirection="column"
                         backgroundColor="#101216"
@@ -1186,7 +1185,9 @@ const YourBorrowModal = () => {
                               <Box p="1">
                                 {getCoin(currentBorrowMarketCoin1)}
                               </Box>
-                              <Text mt="0.15rem">{currentBorrowMarketCoin1}</Text>
+                              <Text mt="0.15rem">
+                                {currentBorrowMarketCoin1}
+                              </Text>
                             </Box>
                             <Box pt="1" className="navbar-button">
                               <DropdownUp />
@@ -1256,7 +1257,12 @@ const YourBorrowModal = () => {
                           </Text>
                         </Box>
                         {currentAction !== "Spend Borrow" && (
-                          <Box display="flex" flexDirection="column" gap="1" mt="0">
+                          <Box
+                            display="flex"
+                            flexDirection="column"
+                            gap="1"
+                            mt="0"
+                          >
                             <Box display="flex">
                               <Text fontSize="xs" color="#8B949E">
                                 Repay Amount
@@ -1502,8 +1508,12 @@ const YourBorrowModal = () => {
                               as="button"
                             >
                               <Box display="flex" gap="1">
-                                {currentDapp!="Select a dapp"?<Box p="1">{getCoin(currentDapp)}</Box>:""}
-                                
+                                {currentDapp != "Select a dapp" ? (
+                                  <Box p="1">{getCoin(currentDapp)}</Box>
+                                ) : (
+                                  ""
+                                )}
+
                                 <Text mt="0.15rem">{currentDapp}</Text>
                               </Box>
                               <Box pt="1" className="navbar-button">
@@ -1620,14 +1630,18 @@ const YourBorrowModal = () => {
                               as="button"
                             >
                               <Box display="flex" gap="1">
-                                {currentPool!="Select a pool"?                         <Box p="1">
-                                  {getCoin(
-                                    radioValue === "1"
-                                      ? currentPool
-                                      : currentPoolCoin
-                                  )}
-                                </Box>:""}
-        
+                                {currentPool != "Select a pool" ? (
+                                  <Box p="1">
+                                    {getCoin(
+                                      radioValue === "1"
+                                        ? currentPool
+                                        : currentPoolCoin
+                                    )}
+                                  </Box>
+                                ) : (
+                                  ""
+                                )}
+
                                 <Text>
                                   {radioValue === "1"
                                     ? currentPool
@@ -1753,113 +1767,136 @@ const YourBorrowModal = () => {
                         </Box>
                       )}
                       {getContainer(currentAction)}
-                      {currentAction=="Spend Borrow"? (currentDapp!="Select a dapp" &&currentPool!="Select a pool") ?
-                                                <AnimatedButton
-                                                bgColor="#101216"
-                                                // bgColor="red"
-                                                // p={0}
-                                                color="#8B949E"
-                                                size="sm"
-                                                width="100%"
-                                                mb="1.5rem"
-                                                border="1px solid #8B949E"
-                                                labelArray={[
-                                                  "Performing pre-checks",
-                                                  "Processing the spend borrow",
-                                                  "Updating the l3 records.",
-                                                  // <ErrorButton errorText="Transaction failed" />,
-                                                  // <ErrorButton errorText="Copy error!" />,
-                                                  <SuccessButton successText={"Spend borrow successful."} />,
-                                                ]}
-                                              >
-                                                Spend
-                                              </AnimatedButton>
- : 
- <Button
-   bg="#101216"
-   color="#6E7681"
-   size="sm"
-   width="100%"
-   mb="2rem"
-   border="1px solid #2B2F35"
-   _hover={{ bg: "#101216" }}
- >
-   Spend
- </Button>:""                    
-                      }
+                      {currentAction == "Spend Borrow" ? (
+                        currentDapp != "Select a dapp" &&
+                        currentPool != "Select a pool" ? (
+                          <AnimatedButton
+                            bgColor="#101216"
+                            // bgColor="red"
+                            // p={0}
+                            color="#8B949E"
+                            size="sm"
+                            width="100%"
+                            mb="1.5rem"
+                            border="1px solid #8B949E"
+                            labelArray={[
+                              "Performing pre-checks",
+                              "Processing the spend borrow",
+                              "Updating the l3 records.",
+                              // <ErrorButton errorText="Transaction failed" />,
+                              // <ErrorButton errorText="Copy error!" />,
+                              <SuccessButton
+                                key={"successButton"}
+                                successText={"Spend borrow successful."}
+                              />,
+                            ]}
+                          >
+                            Spend
+                          </AnimatedButton>
+                        ) : (
+                          <Button
+                            bg="#101216"
+                            color="#6E7681"
+                            size="sm"
+                            width="100%"
+                            mb="2rem"
+                            border="1px solid #2B2F35"
+                            _hover={{ bg: "#101216" }}
+                          >
+                            Spend
+                          </Button>
+                        )
+                      ) : (
+                        ""
+                      )}
 
-                      {currentAction=="Repay Borrow"?inputRepayAmount > 0 ? 
-                                                <AnimatedButton
-                                                bgColor="#101216"
-                                                // bgColor="red"
-                                                // p={0}
-                                                color="#8B949E"
-                                                size="sm"
-                                                width="100%"
-                                                mb="1.5rem"
-                                                border="1px solid #8B949E"
-                                                labelArray={[
-                                                  "Calculating the outstanding borrow amount.",
-                                                  "transferring the repay amount to the borrow vault.",
-                                                  "Burning the dTokens.",
-                                                  "Covering the debt to the debt market.",
-                                                  "Minting rTokens.",
-                                                  "Transferring rtokens to the user account.",
-                                                  // <ErrorButton errorText="Transaction failed" />,
-                                                  // <ErrorButton errorText="Copy error!" />,
-                                                  <SuccessButton successText={"Repay loan success"} />,
-                                                ]}
-                                              >
-                                                Repay borrow
-                                              </AnimatedButton>
-                       : 
-                        <Button
-                          bg="#101216"
-                          color="#6E7681"
-                          size="sm"
-                          width="100%"
-                          mb="2rem"
-                          border="1px solid #2B2F35"
-                          _hover={{ bg: "#101216" }}
-                        >
-                          Repay borrow
-                        </Button>
-                      :""}
-                      {currentAction=="Zero Repay" ?inputRepayAmount == 0 ? 
-                                                <AnimatedButton
-                                                bgColor="#101216"
-                                                // bgColor="red"
-                                                // p={0}
-                                                color="#8B949E"
-                                                size="sm"
-                                                width="100%"
-                                                mb="1.5rem"
-                                                border="1px solid #8B949E"
-                                                labelArray={[
-                                                  "Performing prechecks.",
-                                                  "Processing self liquidation.",
-                                                  "Borrow closed successfully.",
-                                                  "Determine rToken balance.",
-                                                  "Transferring rtokens to your account.",
-                                                  // <ErrorButton errorText="Transaction failed" />,
-                                                  // <ErrorButton errorText="Copy error!" />,
-                                                  <SuccessButton successText={"Self liqudidation successfull."} />,
-                                                ]}
-                                              >
-                                                Zero repay
-                                              </AnimatedButton>
-                       : 
-                        <Button
-                          bg="#101216"
-                          color="#6E7681"
-                          size="sm"
-                          width="100%"
-                          mb="2rem"
-                          border="1px solid #2B2F35"
-                          _hover={{ bg: "#101216" }}
-                        >
-                          Zero repay
-                        </Button>:""}
+                      {currentAction == "Repay Borrow" ? (
+                        inputRepayAmount > 0 ? (
+                          <AnimatedButton
+                            bgColor="#101216"
+                            // bgColor="red"
+                            // p={0}
+                            color="#8B949E"
+                            size="sm"
+                            width="100%"
+                            mb="1.5rem"
+                            border="1px solid #8B949E"
+                            labelArray={[
+                              "Calculating the outstanding borrow amount.",
+                              "transferring the repay amount to the borrow vault.",
+                              "Burning the dTokens.",
+                              "Covering the debt to the debt market.",
+                              "Minting rTokens.",
+                              "Transferring rtokens to the user account.",
+                              // <ErrorButton errorText="Transaction failed" />,
+                              // <ErrorButton errorText="Copy error!" />,
+                              <SuccessButton
+                                key={"successButton"}
+                                successText={"Repay loan success"}
+                              />,
+                            ]}
+                          >
+                            Repay borrow
+                          </AnimatedButton>
+                        ) : (
+                          <Button
+                            bg="#101216"
+                            color="#6E7681"
+                            size="sm"
+                            width="100%"
+                            mb="2rem"
+                            border="1px solid #2B2F35"
+                            _hover={{ bg: "#101216" }}
+                          >
+                            Repay borrow
+                          </Button>
+                        )
+                      ) : (
+                        ""
+                      )}
+                      {currentAction == "Zero Repay" ? (
+                        inputRepayAmount == 0 ? (
+                          <AnimatedButton
+                            bgColor="#101216"
+                            // bgColor="red"
+                            // p={0}
+                            color="#8B949E"
+                            size="sm"
+                            width="100%"
+                            mb="1.5rem"
+                            border="1px solid #8B949E"
+                            labelArray={[
+                              "Performing prechecks.",
+                              "Processing self liquidation.",
+                              "Borrow closed successfully.",
+                              "Determine rToken balance.",
+                              "Transferring rtokens to your account.",
+                              // <ErrorButton errorText="Transaction failed" />,
+                              // <ErrorButton errorText="Copy error!" />,
+                              <SuccessButton
+                                key={"successButton"}
+                                successText={"Self liqudidation successfull."}
+                              />,
+                            ]}
+                          >
+                            Zero repay
+                          </AnimatedButton>
+                        ) : (
+                          <Button
+                            bg="#101216"
+                            color="#6E7681"
+                            size="sm"
+                            width="100%"
+                            mb="2rem"
+                            border="1px solid #2B2F35"
+                            _hover={{ bg: "#101216" }}
+                          >
+                            Zero repay
+                          </Button>
+                        )
+                      ) : (
+                        ""
+                      )}
                     </TabPanel>
                     <TabPanel m="0" p="0">
                       <Box
@@ -2006,83 +2043,93 @@ const YourBorrowModal = () => {
                             </Tooltip>
                           </Box>
                           <Box
-                                    display="flex"
-                                    border="1px"
-                                    borderColor="#2B2F35"
-                                    justifyContent="space-between"
-                                    py="2"
-                                    pl="3"
-                                    pr="3"
-                                    mt="0.3rem"
-                                    borderRadius="md"
-                                    className="navbar"
-                                    cursor="pointer"
-                                    onClick={() =>
-                                        handleDropdownClick("yourBorrowModalBorrowMarketDropdown2")
-                                    }
-                                >
-                                    <Box display="flex" gap="1">
-                                        <Box p="1">{getCoin(currentBorrowMarketCoin2)}</Box>
-                                        <Text color="white" mt="0.12rem">{currentBorrowMarketCoin2}</Text>
-                                    </Box>
-                                    
-                                    <Box pt="1" className="navbar-button">
-                                        <DropdownUp />
-                                    </Box>
-                                    {modalDropdowns.yourBorrowModalBorrowMarketDropdown2 && (
+                            display="flex"
+                            border="1px"
+                            borderColor="#2B2F35"
+                            justifyContent="space-between"
+                            py="2"
+                            pl="3"
+                            pr="3"
+                            mt="0.3rem"
+                            borderRadius="md"
+                            className="navbar"
+                            cursor="pointer"
+                            onClick={() =>
+                              handleDropdownClick(
+                                "yourBorrowModalBorrowMarketDropdown2"
+                              )
+                            }
+                          >
+                            <Box display="flex" gap="1">
+                              <Box p="1">
+                                {getCoin(currentBorrowMarketCoin2)}
+                              </Box>
+                              <Text color="white" mt="0.12rem">
+                                {currentBorrowMarketCoin2}
+                              </Text>
+                            </Box>
+
+                            <Box pt="1" className="navbar-button">
+                              <DropdownUp />
+                            </Box>
+                            {modalDropdowns.yourBorrowModalBorrowMarketDropdown2 && (
+                              <Box
+                                w="full"
+                                left="0"
+                                bg="#03060B"
+                                py="2"
+                                className="dropdown-container"
+                                boxShadow="dark-lg"
+                              >
+                                {coins.map((coin, index) => {
+                                  return (
+                                    <Box
+                                      key={index}
+                                      as="button"
+                                      w="full"
+                                      display="flex"
+                                      alignItems="center"
+                                      gap="1"
+                                      pr="2"
+                                      onClick={() => {
+                                        setCurrentBorrowMarketCoin2(coin);
+                                        // dispatch(setCoinSelectedSupplyModal(coin))
+                                      }}
+                                    >
+                                      {coin === currentBorrowMarketCoin2 && (
                                         <Box
-                                            w="full"
-                                            left="0"
-                                            bg="#03060B"
-                                            py="2"
-                                            className="dropdown-container"
-                                            boxShadow="dark-lg"
-                                        >
-                                            {coins.map((coin, index) => {
-                                                return (
-                                                    <Box
-                                                        key={index}
-                                                        as="button"
-                                                        w="full"
-                                                        display="flex"
-                                                        alignItems="center"
-                                                        gap="1"
-                                                        pr="2"
-                                                        onClick={() => {
-                                                          setCurrentBorrowMarketCoin2(coin);
-                                                            // dispatch(setCoinSelectedSupplyModal(coin))
-                                                        }}
-                                                    >
-                                                        {coin === currentBorrowMarketCoin2 && (
-                                                            <Box
-                                                                w="3px"
-                                                                h="28px"
-                                                                bg="#0C6AD9"
-                                                                borderRightRadius="md"
-                                                            ></Box>
-                                                        )}
-                                                        <Box
-                                                            w="full"
-                                                            display="flex"
-                                                            py="5px"
-                                                            px={`${coin === currentBorrowMarketCoin2 ? "1" : "5"
-                                                                }`}
-                                                            gap="1"
-                                                            bg={`${coin === currentBorrowMarketCoin2
-                                                                ? "#0C6AD9"
-                                                                : "inherit"
-                                                                }`}
-                                                            borderRadius="md"
-                                                        >
-                                                            <Box p="1">{getCoin(coin)}</Box>
-                                                            <Text color="white">{coin}</Text>
-                                                        </Box>
-                                                    </Box>
-                                                );
-                                            })}
-                                        </Box>
-                                    )}
-                                </Box>
+                                          w="3px"
+                                          h="28px"
+                                          bg="#0C6AD9"
+                                          borderRightRadius="md"
+                                        ></Box>
+                                      )}
+                                      <Box
+                                        w="full"
+                                        display="flex"
+                                        py="5px"
+                                        px={`${
+                                          coin === currentBorrowMarketCoin2
+                                            ? "1"
+                                            : "5"
+                                        }`}
+                                        gap="1"
+                                        bg={`${
+                                          coin === currentBorrowMarketCoin2
+                                            ? "#0C6AD9"
+                                            : "inherit"
+                                        }`}
+                                        borderRadius="md"
+                                      >
+                                        <Box p="1">{getCoin(coin)}</Box>
+                                        <Text color="white">{coin}</Text>
+                                      </Box>
+                                    </Box>
+                                  );
+                                })}
+                              </Box>
+                            )}
+                          </Box>
                         </Box>
                         <Text
                           color="#8B949E"
@@ -2175,7 +2222,16 @@ const YourBorrowModal = () => {
                         <Box
                           width="100%"
                           color="white"
-                          border={`${inputCollateralAmount > walletBalance ? "1px solid #CF222E" :inputCollateralAmount<0?"1px solid #CF222E": inputCollateralAmount>0 && inputAmount<=walletBalance?"1px solid #1A7F37":"1px solid #2B2F35 "}`}
+                          border={`${
+                            inputCollateralAmount > walletBalance
+                              ? "1px solid #CF222E"
+                              : inputCollateralAmount < 0
+                              ? "1px solid #CF222E"
+                              : inputCollateralAmount > 0 &&
+                                inputAmount <= walletBalance
+                              ? "1px solid #1A7F37"
+                              : "1px solid #2B2F35 "
+                          }`}
                           borderRadius="6px"
                           display="flex"
                           justifyContent="space-between"
@@ -2184,10 +2240,20 @@ const YourBorrowModal = () => {
                           <NumberInput
                             border="0px"
                             min={0}
-                            color={`${inputCollateralAmount>walletBalance?"#CF222E":inputCollateralAmount<0?"#CF222E":  inputCollateralAmount==0?"white": "#1A7F37"}`}
+                            color={`${
+                              inputCollateralAmount > walletBalance
+                                ? "#CF222E"
+                                : inputCollateralAmount < 0
+                                ? "#CF222E"
+                                : inputCollateralAmount == 0
+                                ? "white"
+                                : "#1A7F37"
+                            }`}
                             keepWithinRange={true}
                             onChange={handleCollateralChange}
-                            value={inputCollateralAmount?inputCollateralAmount:""}
+                            value={
+                              inputCollateralAmount ? inputCollateralAmount : ""
+                            }
                             outline="none"
                           >
                             <NumberInputField
@@ -2217,25 +2283,54 @@ const YourBorrowModal = () => {
                             MAX
                           </Button>
                         </Box>
-                        {inputCollateralAmount > walletBalance || inputCollateralAmount<0 ? <Text display="flex" justifyContent="space-between" color="#E6EDF3"  fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
-
-<Text color="#CF222E" display="flex">
-  <Text mt="0.2rem"><SmallErrorIcon /> </Text><Text ml="0.3rem">{inputCollateralAmount>walletBalance ?"Amount exceeds balance":"Invalid Input"} </Text></Text>
-<Text color="#E6EDF3" display="flex" justifyContent="flex-end" >
-  Wallet Balance: {walletBalance}
-  <Text color="#6E7781" ml="0.2rem">
-    {` ${currentSelectedCoin}`}
-  </Text>
-</Text>
-
-</Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
-Wallet Balance: {walletBalance}
-<Text color="#6E7781" ml="0.2rem">
-  {` ${currentSelectedCoin}`}
-</Text>
-</Text>
-
-}
+                        {inputCollateralAmount > walletBalance ||
+                        inputCollateralAmount < 0 ? (
+                          <Text
+                            display="flex"
+                            justifyContent="space-between"
+                            color="#E6EDF3"
+                            fontSize="12px"
+                            fontWeight="500"
+                            fontStyle="normal"
+                            fontFamily="Inter"
+                          >
+                            <Text color="#CF222E" display="flex">
+                              <Text mt="0.2rem">
+                                <SmallErrorIcon />{" "}
+                              </Text>
+                              <Text ml="0.3rem">
+                                {inputCollateralAmount > walletBalance
+                                  ? "Amount exceeds balance"
+                                  : "Invalid Input"}{" "}
+                              </Text>
+                            </Text>
+                            <Text
+                              color="#E6EDF3"
+                              display="flex"
+                              justifyContent="flex-end"
+                            >
+                              Wallet Balance: {walletBalance}
+                              <Text color="#6E7781" ml="0.2rem">
+                                {` ${currentSelectedCoin}`}
+                              </Text>
+                            </Text>
+                          </Text>
+                        ) : (
+                          <Text
+                            color="#E6EDF3"
+                            display="flex"
+                            justifyContent="flex-end"
+                            fontSize="12px"
+                            fontWeight="500"
+                            fontStyle="normal"
+                            fontFamily="Inter"
+                          >
+                            Wallet Balance: {walletBalance}
+                            <Text color="#6E7781" ml="0.2rem">
+                              {` ${currentSelectedCoin}`}
+                            </Text>
+                          </Text>
+                        )}
                         <Box pt={5} pb={2} mt="0.8rem">
                           <Slider
                             aria-label="slider-ex-6"
@@ -2570,30 +2665,34 @@ Wallet Balance: {walletBalance}
                           <Text color="#6E7681">1.10</Text>
                         </Text>
                       </Card>
-                      {inputCollateralAmount > 0 &&inputCollateralAmount<=walletBalance ? (
-                                                 <AnimatedButton
-                                                 bgColor="#101216"
-                                                 // bgColor="red"
-                                                 // p={0}
-                                                 color="#8B949E"
-                                                 size="sm"
-                                                 width="100%"
-                                                 mt="1.5rem"
-                                                 mb="1.5rem"
-                                                 border="1px solid #8B949E"
-                                                 labelArray={[
-                                                   "Processing",
-                                                   "Transferring collateral to supply vault.",
-                                                   "Minting & transferring rTokens to the user account.",
-                                                   "Locking rTokens.",
-                                                   "Updating collateral records",
-                                                   // <ErrorButton errorText="Transaction failed" />,
-                                                   // <ErrorButton errorText="Copy error!" />,
-                                                   <SuccessButton successText={"Add collateral successful."} />,
-                                                 ]}
-                                               >
-                                                 Add Collateral
-                                               </AnimatedButton>
+                      {inputCollateralAmount > 0 &&
+                      inputCollateralAmount <= walletBalance ? (
+                        <AnimatedButton
+                          bgColor="#101216"
+                          // bgColor="red"
+                          // p={0}
+                          color="#8B949E"
+                          size="sm"
+                          width="100%"
+                          mt="1.5rem"
+                          mb="1.5rem"
+                          border="1px solid #8B949E"
+                          labelArray={[
+                            "Processing",
+                            "Transferring collateral to supply vault.",
+                            "Minting & transferring rTokens to the user account.",
+                            "Locking rTokens.",
+                            "Updating collateral records",
+                            // <ErrorButton errorText="Transaction failed" />,
+                            // <ErrorButton errorText="Copy error!" />,
+                            <SuccessButton
+                              key={"successButton"}
+                              successText={"Add collateral successful."}
+                            />,
+                          ]}
+                        >
+                          Add Collateral
+                        </AnimatedButton>
                       ) : (
                         <Button
                           bg="#101216"
