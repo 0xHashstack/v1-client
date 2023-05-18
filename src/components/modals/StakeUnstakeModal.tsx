@@ -753,7 +753,7 @@ const StakeUnstakeModal = () => {
                                                     </Text>
 
                                                 </Text> : <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
-                                                    Wallet Balance: {walletBalance}
+                                                    Staking Balance: {walletBalance}
                                                     <Text color="#6E7781" ml="0.2rem">
                                                         {` ${currentSelectedUnstakeCoin}`}
                                                     </Text>

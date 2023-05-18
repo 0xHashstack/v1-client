@@ -587,7 +587,17 @@ const BorrowModal = () => {
                 <Box
                   width="100%"
                   color="white"
-                  border="1px solid #2B2F35"
+                  border={`${
+                    inputBorrowAmount > walletBalance
+                      ? "1px solid #CF222E"
+                      : inputBorrowAmount < 0
+                      ? "1px solid #CF222E"
+                      : isNaN(inputBorrowAmount)
+                      ? "1px solid #CF222E"
+                      : inputBorrowAmount > 0 && inputBorrowAmount <= walletBalance
+                      ? "1px solid #1A7F37"
+                      : "1px solid #2B2F35 "
+                  }`}
                   borderRadius="6px"
                   display="flex"
                   justifyContent="space-between"
@@ -597,10 +607,21 @@ const BorrowModal = () => {
                     min={0}
                     keepWithinRange={true}
                     onChange={handleBorrowChange}
-                    value={inputBorrowAmount}
+                    value={inputBorrowAmount?inputBorrowAmount:""}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
+                      color={`${
+                        inputBorrowAmount > walletBalance
+                          ? "#CF222E"
+                          : isNaN(inputBorrowAmount)
+                          ? "#CF222E"
+                          : inputBorrowAmount < 0
+                          ? "#CF222E"
+                          : inputBorrowAmount== 0
+                          ? "white"
+                          : "#1A7F37"
+                      }`}
                       border="0px"
                       _placeholder={{
                         color: "#393D4F",
@@ -627,6 +648,56 @@ const BorrowModal = () => {
                     MAX
                   </Button>
                 </Box>
+                {inputBorrowAmount > walletBalance ||
+                inputBorrowAmount < 0 ? (
+                  <Text
+                    display="flex"
+                    justifyContent="space-between"
+                    color="#E6EDF3"
+                    mt="0.4rem"
+                    fontSize="12px"
+                    fontWeight="500"
+                    fontStyle="normal"
+                    fontFamily="Inter"
+                  >
+                    <Text color="#CF222E" display="flex">
+                      <Text mt="0.2rem">
+                        <SmallErrorIcon />{" "}
+                      </Text>
+                      <Text ml="0.3rem">
+                        {inputBorrowAmount > walletBalance
+                          ? "Amount exceeds balance"
+                          : "Invalid Input"}
+                      </Text>
+                    </Text>
+                    <Text
+                      color="#E6EDF3"
+                      display="flex"
+                      justifyContent="flex-end"
+                    >
+                      Available reserves: {walletBalance}
+                      <Text color="#6E7781" ml="0.2rem">
+                        {` ${currentCollateralCoin}`}
+                      </Text>
+                    </Text>
+                  </Text>
+                ) : (
+                  <Text
+                    color="#E6EDF3"
+                    display="flex"
+                    justifyContent="flex-end"
+                    mt="0.4rem"
+                    fontSize="12px"
+                    fontWeight="500"
+                    fontStyle="normal"
+                    fontFamily="Inter"
+                  >
+                    Available reserves: {walletBalance}
+                    <Text color="#6E7781" ml="0.2rem">
+                      {` ${currentCollateralCoin}`}
+                    </Text>
+                  </Text>
+                )}
                 <Box pt={5} pb={2} mt="0.9rem">
                   <Slider
                     aria-label="slider-ex-6"

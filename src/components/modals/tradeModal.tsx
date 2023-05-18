@@ -803,6 +803,7 @@ const TradeModal = () => {
                                 }}
                                 fontSize="sm"
                                 _hover={{ background: "inherit" }}
+                                _disabled={{cursor:"pointer"}}
                                 isDisabled={dapp.status === "disable"}
                               >
                                 {dapp.name === currentDapp && (

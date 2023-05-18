@@ -35,6 +35,7 @@ const TotalRevenueChart = () => {
         ],       
         options: {
           chart: {
+            // offsetX: 50,
             toolbar: {
               show: false,
             },
