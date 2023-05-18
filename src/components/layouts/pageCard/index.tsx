@@ -29,7 +29,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     // alert(account?.address);
     dispatch(setAccount(account));
     // }
-  }, [account, status]);
+  }, [account, status,dispatch]);
   if (className) classes.push(className);
   useEffect(() => {
     setRender(true);
