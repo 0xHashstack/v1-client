@@ -79,7 +79,7 @@ const SpendTable = () => {
     return () => {
       router.events.off("routeChangeComplete", handleRouteChangeComplete);
     };
-  }, []);
+  }, [handleRouteChange, router.events]);
   return (
     <>
       {showWarning && (

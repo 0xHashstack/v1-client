@@ -37,7 +37,7 @@ export default function Home() {
       router.push(href);
       dispatch(setAccount(account));
     }
-  }, [account, status]);
+  }, [account, status,dispatch,router]);
   return (
     <PageCard justifyContent="center" alignItems="center">
       <Text fontSize="46px" color="#FFFFFF">

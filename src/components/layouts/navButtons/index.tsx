@@ -35,7 +35,7 @@ const NavButtons = ({
     if (storedCurrentPage) {
       dispatch(setCurrentPage(storedCurrentPage));
     }
-  }, []);
+  }, [dispatch]);
 
   const handleButtonClick = (val: string) => {
     dispatch(setCurrentPage(val));

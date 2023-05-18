@@ -42,6 +42,13 @@ const RiskPremiumChart = () => {
             axisTicks: {
               show: false, // Hide the small spikes at x-axis labels
             },
+            labels:{
+              style: {
+                colors: '#6E7681', // Set the color of the labels
+                fontSize:"12px",
+                fontWeight:"400",
+              },
+            },
             axisBorder: {
               color: 'grey', // Set the color of the x-axis lines
             },
@@ -52,6 +59,12 @@ const RiskPremiumChart = () => {
               formatter: function (value:any) {
                 return value  + '%'; // Divide by 1000 and append 'k' for thousands
               },
+              style: {
+                colors: '#6E7681', // Set the color of the labels
+                fontSize:"12px",
+                fontWeight:"400",
+              },
+              
             },
             borderColor:'grey'
           },
@@ -60,43 +73,43 @@ const RiskPremiumChart = () => {
               {
                 x: 1, // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#2B2F35', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 6, // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#2B2F35', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 12, // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#2B2F35', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 18, // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#2B2F35', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 24, // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#2B2F35', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 30, // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#2B2F35', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
               {
                 x: 36, // Specify the x-axis value where the line should appear
                 strokeDashArray: 0, // Set the length of the dash for the line
-                borderColor: 'grey', // Set the color of the line
+                borderColor: '#2B2F35', // Set the color of the line
                 borderWidth: 1, // Set the width of the line
               },
             ],
@@ -107,7 +120,7 @@ const RiskPremiumChart = () => {
             opacity:1
           },
           grid:{
-            borderColor: '#888888',
+            borderColor: '#2B2F35',
           },
         },
       };
