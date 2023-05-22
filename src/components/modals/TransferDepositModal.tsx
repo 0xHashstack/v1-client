@@ -45,11 +45,15 @@ import {
 } from "@/store/slices/dropdownsSlice";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
+import AaveLogo from "@/assets/icons/coins/aave";
+import CompoundLogo from "@/assets/icons/coins/compound";
 
-const SupplyModal = ({ buttonText, ...restProps }: any) => {
+const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [currentProtocol, setcurrentProtocol] = useState("Aave");
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
+  const [currentSelectedCoin1, setCurrentSelectedCoin1] = useState("Aave");
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
@@ -76,6 +80,12 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
+        case "Aave":
+            return <AaveLogo/>;
+            break;
+        case "Compound":
+            return <CompoundLogo/>
+            break;
       default:
         break;
     }
@@ -109,6 +119,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
   };
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const protocols=["Aave","Compound"];
 
   return (
     <div>
@@ -139,7 +150,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
               fontStyle="normal"
               lineHeight="20px"
             >
-              Supply
+              Transfer Deposit
             </ModalHeader>
             <ModalCloseButton mt="1rem" mr="1rem" />
             <ModalBody>
@@ -150,6 +161,108 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                 border="1px solid #2B2F35"
                 mt="-1.5"
               >
+                                <Text color="#8B949E" display="flex" alignItems="center">
+                  <Text
+                    mr="0.3rem"
+                    fontSize="12px"
+                    fontStyle="normal"
+                    fontWeight="400"
+                  >
+                    Select Market
+                  </Text>
+                  <Tooltip
+                    hasArrow
+                    placement="bottom-start"
+                    boxShadow="dark-lg"
+                    label="all the assets to the market"
+                    bg="#24292F"
+                    fontSize={"smaller"}
+                    fontWeight={"thin"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                  >
+                    <Box>
+                      <InfoIcon />
+                    </Box>
+                  </Tooltip>
+                </Text>
+                <Box
+                  display="flex"
+                  border="1px"
+                  borderColor="#2B2F35"
+                  justifyContent="space-between"
+                  py="2"
+                  pl="3"
+                  pr="3"
+                  mb="1rem"
+                  mt="0.3rem"
+                  borderRadius="md"
+                  className="navbar"
+                  cursor="pointer"
+                  onClick={() => handleDropdownClick("transferDepositProtocolDropdown")}
+                >
+                  <Box display="flex" gap="1">
+                    <Box p="1">{getCoin(currentProtocol)}</Box>
+                    <Text color="white">{currentProtocol}</Text>
+                  </Box>
+
+                  <Box pt="1" className="navbar-button">
+                    <DropdownUp />
+                  </Box>
+                  {modalDropdowns.transferDepositProtocolDropdown && (
+                    <Box
+                      w="full"
+                      left="0"
+                      bg="#03060B"
+                      py="2"
+                      className="dropdown-container"
+                      boxShadow="dark-lg"
+                    >
+                      {protocols.map((protocol, index) => {
+                        return (
+                          <Box
+                            key={index}
+                            as="button"
+                            w="full"
+                            display="flex"
+                            alignItems="center"
+                            gap="1"
+                            pr="2"
+                            onClick={() => {
+                              setcurrentProtocol(protocol);
+                            //   dispatch(setCoinSelectedSupplyModal(protocol));
+                            }}
+                          >
+                            {protocol === currentSelectedCoin && (
+                              <Box
+                                w="3px"
+                                h="28px"
+                                bg="#0C6AD9"
+                                borderRightRadius="md"
+                              ></Box>
+                            )}
+                            <Box
+                              w="full"
+                              display="flex"
+                              py="5px"
+                              px={`${protocol === currentProtocol ? "1" : "5"}`}
+                              gap="1"
+                              bg={`${
+                                protocol === currentProtocol
+                                  ? "#0C6AD9"
+                                  : "inherit"
+                              }`}
+                              borderRadius="md"
+                            >
+                              <Box p="1">{getCoin(protocol)}</Box>
+                              <Text color="white">{protocol}</Text>
+                            </Box>
+                          </Box>
+                        );
+                      })}
+                    </Box>
+                  )}
+                </Box>
                 <Text color="#8B949E" display="flex" alignItems="center">
                   <Text
                     mr="0.3rem"
@@ -188,7 +301,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                   borderRadius="md"
                   className="navbar"
                   cursor="pointer"
-                  onClick={() => handleDropdownClick("supplyModalDropdown")}
+                  onClick={() => handleDropdownClick("transferDepostMarketDropdown")}
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentSelectedCoin)}</Box>
@@ -198,7 +311,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                   <Box pt="1" className="navbar-button">
                     <DropdownUp />
                   </Box>
-                  {modalDropdowns.supplyModalDropdown && (
+                  {modalDropdowns.transferDepostMarketDropdown && (
                     <Box
                       w="full"
                       left="0"
@@ -373,7 +486,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                       display="flex"
                       justifyContent="flex-end"
                     >
-                      Wallet Balance: {walletBalance}
+                      Aave Balance: {walletBalance}
                       <Text color="#6E7781" ml="0.2rem">
                         {` ${currentSelectedCoin}`}
                       </Text>
@@ -390,14 +503,13 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                     fontStyle="normal"
                     fontFamily="Inter"
                   >
-                    Wallet Balance: {walletBalance}
+                    Aave Balance: {walletBalance}
                     <Text color="#6E7781" ml="0.2rem">
                       {` ${currentSelectedCoin}`}
                     </Text>
                   </Text>
                 )}
-
-                <Box pt={5} pb={2} mt="0.9rem">
+                               <Box pt={5} pb={2} mt="0.9rem">
                   <Slider
                     aria-label="slider-ex-6"
                     defaultValue={sliderValue}
@@ -623,7 +735,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                       />,
                     ]}
                   >
-                    Supply
+                    Transfer Deposit
                   </AnimatedButton>
                 )
               ) : (
@@ -637,7 +749,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                   border="1px solid #2B2F35"
                   _hover={{ bg: "#101216" }}
                 >
-                  Supply
+                  Transfer Deposit
                 </Button>
               )}
             </ModalBody>
@@ -647,4 +759,4 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
     </div>
   );
 };
-export default SupplyModal;
+export default TransferDepositModal;

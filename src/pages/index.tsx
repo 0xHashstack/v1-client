@@ -15,7 +15,6 @@ import {
 import { useContract } from "@starknet-react/core";
 import { useDispatch } from "react-redux";
 import { setAccount } from "@/store/slices/userAccountSlice";
-import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 // import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -24,8 +23,9 @@ export default function Home() {
   const { account, address, status } = useAccount();
   const { available, disconnect, connect, connectors } = useConnectors();
   const [render, setRender] = useState(true);
+  const [isWhiteListed,setIsWhiteListed]=useState(false);
   const router = useRouter();
-  const href = "/market";
+  const href = "/waitlist";
   const dispatch = useDispatch();
   useEffect(() => {
     // setRender(true);
@@ -40,7 +40,7 @@ export default function Home() {
   }, [account, status,dispatch,router]);
   return (
     <PageCard justifyContent="center" alignItems="center">
-      <Text fontSize="46px" color="#FFFFFF">
+        <Text fontSize="46px" color="#FFFFFF">
         Welcome to Hashstack&apos;s mainnet!
       </Text>
 
@@ -48,7 +48,7 @@ export default function Home() {
         placeHolder={"Connect Wallet"}
         onClick={() => connect(connectors[0])}
       />
-      {/* <AnimatedButton /> */}
-    </PageCard>
+      </PageCard>
+
   );
 }

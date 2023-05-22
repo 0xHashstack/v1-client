@@ -39,6 +39,9 @@ const initialState = {
     liquidityProvisionPoolDropDown: false,
     liquidityProvisionBorrowIDDropDown: false,
     liquidityProvisionBorrowMarketDropDown: false,
+    supplyEquivalentMarketDropDown:false,
+    transferDepositProtocolDropdown:false,
+    transferDepostMarketDropdown:false,
   },
   metricsDropdowns: {
     yourMetricsMarketDropdown: false,

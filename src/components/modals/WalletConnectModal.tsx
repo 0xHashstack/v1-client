@@ -70,10 +70,10 @@ const WalletConnectModal = ({
     if (status == "connected") {
 
       // alert(account?.address);
-      router.push('/market');
+      // router.push('/market');
       dispatch(setAccount(account));
     }
-  }, [account, status]);
+  }, [dispatch,account, status]);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {

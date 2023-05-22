@@ -46,10 +46,10 @@ import {
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 
-const SupplyModal = ({ buttonText, ...restProps }: any) => {
+const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
+  const [currentSelectedCoin, setCurrentSelectedCoin] = useState("USDT");
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
@@ -139,7 +139,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
               fontStyle="normal"
               lineHeight="20px"
             >
-              Supply
+              Supply $10 equivalent
             </ModalHeader>
             <ModalCloseButton mt="1rem" mr="1rem" />
             <ModalBody>
@@ -188,7 +188,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                   borderRadius="md"
                   className="navbar"
                   cursor="pointer"
-                  onClick={() => handleDropdownClick("supplyModalDropdown")}
+                  onClick={() => handleDropdownClick("supplyEquivalentMarketDropDown")}
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentSelectedCoin)}</Box>
@@ -198,7 +198,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                   <Box pt="1" className="navbar-button">
                     <DropdownUp />
                   </Box>
-                  {modalDropdowns.supplyModalDropdown && (
+                  {modalDropdowns.supplyEquivalentMarketDropDown && (
                     <Box
                       w="full"
                       left="0"
@@ -396,8 +396,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                     </Text>
                   </Text>
                 )}
-
-                <Box pt={5} pb={2} mt="0.9rem">
+                               <Box pt={5} pb={2} mt="0.9rem">
                   <Slider
                     aria-label="slider-ex-6"
                     defaultValue={sliderValue}
@@ -599,7 +598,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                 ) : buttonId == 2 ? (
                   <ErrorButton errorText="Copy error!" />
                 ) : (
-                  <AnimatedButton
+                  <Button
                     bgColor="#101216"
                     // bgColor="red"
                     // p={0}
@@ -609,22 +608,23 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                     mt="1.5rem"
                     mb="1.5rem"
                     border="1px solid #8B949E"
-                    labelArray={[
-                      "Deposit Amount approved",
-                      "Successfully transferred to Hashstack’s supply vault.",
-                      "Determining the rToken amount to mint.",
-                      "rTokens have been minted successfully.",
-                      "Transaction complete.",
-                      // <ErrorButton errorText="Transaction failed" />,
-                      // <ErrorButton errorText="Copy error!" />,
-                      <SuccessButton
-                        key={"successButton"}
-                        successText={"Success"}
-                      />,
-                    ]}
+                    // labelArray={[
+                    //   "Deposit Amount approved",
+                    //   "Successfully transferred to Hashstack’s supply vault.",
+                    //   "Determining the rToken amount to mint.",
+                    //   "rTokens have been minted successfully.",
+                    //   "Transaction complete.",
+                    //   // <ErrorButton errorText="Transaction failed" />,
+                    //   // <ErrorButton errorText="Copy error!" />,
+                    //   <SuccessButton
+                    //     key={"successButton"}
+                    //     successText={"Success"}
+                    //   />,
+                    // ]}
+                    _hover={{background:"white",color:"black"}}
                   >
                     Supply
-                  </AnimatedButton>
+                  </Button>
                 )
               ) : (
                 <Button
@@ -647,4 +647,4 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
     </div>
   );
 };
-export default SupplyModal;
+export default SupplyEquivalentModal;
