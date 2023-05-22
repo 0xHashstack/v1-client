@@ -54,7 +54,10 @@ import SmallUsdt from "@/assets/icons/coins/smallUsdt";
 import DaiToEth from "@/assets/icons/pools/daiToEth";
 import BtcToEth from "@/assets/icons/pools/btcToEth";
 import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
-
+import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
+import AnimatedButton from "../uiElements/buttons/AnimationButton";
+import SuccessButton from "../uiElements/buttons/SuccessButton";
+import ErrorButton from "../uiElements/buttons/ErrorButton";
 const TradeModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   //   console.log("isopen", isOpen, "onopen", onOpen, "onClose", onClose);
@@ -141,10 +144,15 @@ const TradeModal = () => {
       setinputCollateralAmount(newValue);
       dispatch(setInputTradeModalCollateralAmount(newValue));
     } else {
-      percentage = Math.round(percentage * 100) / 100;
-      setSliderValue(percentage);
-      setinputCollateralAmount(newValue);
-      dispatch(setInputTradeModalCollateralAmount(newValue));
+      percentage = Math.round(percentage);
+      if(isNaN(percentage)){
+
+      }else{
+
+        setSliderValue(percentage);
+        setinputCollateralAmount(newValue);
+        dispatch(setInputTradeModalCollateralAmount(newValue));
+      }
       // dispatch((newValue));
     }
   };
@@ -156,9 +164,13 @@ const TradeModal = () => {
       setinputBorrowAmount(newValue);
       // dispatch(setInputTradeModalCollateralAmount(newValue));
     } else {
-      percentage = Math.round(percentage * 100) / 100;
-      setsliderValue2(percentage);
-      setinputBorrowAmount(newValue);
+      percentage = Math.round(percentage) ;
+      if(isNaN(percentage)){
+        
+      }else{
+        setsliderValue2(percentage);
+        setinputBorrowAmount(newValue);
+      }
       // dispatch(setInputTradeModalCollateralAmount(newValue));
       // dispatch((newValue));
     }
@@ -366,7 +378,17 @@ const TradeModal = () => {
                     <Box
                       width="100%"
                       color="white"
-                      border="1px solid #2B2F35"
+                      border={`${
+                        inputCollateralAmount > walletBalance
+                          ? "1px solid #CF222E"
+                          : inputCollateralAmount < 0
+                          ? "1px solid #CF222E"
+                          : isNaN(inputCollateralAmount)
+                          ? "1px solid #CF222E"
+                          : inputCollateralAmount > 0 && inputCollateralAmount <= walletBalance
+                          ? "1px solid #1A7F37"
+                          : "1px solid #2B2F35 "
+                      }`}
                       borderRadius="6px"
                       display="flex"
                       justifyContent="space-between"
@@ -380,6 +402,14 @@ const TradeModal = () => {
                       >
                         <NumberInputField
                           placeholder={`Minimum 0.01536 ${currentCollateralCoin}`}
+                          color={`${inputCollateralAmount>walletBalance                           ? "#CF222E"
+                          : isNaN(inputCollateralAmount)
+                          ? "#CF222E"
+                          : inputCollateralAmount < 0
+                          ? "#CF222E"
+                          : inputCollateralAmount == 0
+                          ? "white"
+                          : "#1A7F37"}`}
                           border="0px"
                           _placeholder={{
                             color: "#393D4F",
@@ -408,17 +438,57 @@ const TradeModal = () => {
                         MAX
                       </Button>
                     </Box>
+               {inputCollateralAmount > walletBalance ||
+                inputCollateralAmount < 0 ||
+                isNaN(inputCollateralAmount) ? (
+                  <Text
+                    display="flex"
+                    justifyContent="space-between"
+                    color="#E6EDF3"
+                    mt="0.4rem"
+                    fontSize="12px"
+                    fontWeight="500"
+                    fontStyle="normal"
+                    fontFamily="Inter"
+                  >
+                    <Text color="#CF222E" display="flex">
+                      <Text mt="0.2rem">
+                        <SmallErrorIcon />{" "}
+                      </Text>
+                      <Text ml="0.3rem">
+                        {inputAmount > walletBalance
+                          ? "Amount exceeds balance"
+                          : "Invalid Input"}
+                      </Text>
+                    </Text>
                     <Text
-                      textAlign="right"
-                      fontSize="12px"
-                      fontWeight="500"
-                      fontStyle="normal"
+                      color="#E6EDF3"
+                      display="flex"
+                      justifyContent="flex-end"
                     >
                       Wallet Balance: {walletBalance}
-                      <Text as="span" color="#8B949E">
+                      <Text color="#6E7781" ml="0.2rem">
                         {` ${currentCollateralCoin}`}
                       </Text>
                     </Text>
+                  </Text>
+                ) : (
+                  <Text
+                    color="#E6EDF3"
+                    display="flex"
+                    justifyContent="flex-end"
+                    mt="0.4rem"
+                    fontSize="12px"
+                    fontWeight="500"
+                    fontStyle="normal"
+                    fontFamily="Inter"
+                  >
+                    Wallet Balance: {walletBalance}
+                    <Text color="#6E7781" ml="0.2rem">
+                      {` ${currentCollateralCoin}`}
+                    </Text>
+                  </Text>
+                )}
                     <Box pt={5} pb={2} mt="0.4rem">
                       <Slider
                         aria-label="slider-ex-6"
@@ -603,7 +673,17 @@ const TradeModal = () => {
                     <Box
                       width="100%"
                       color="white"
-                      border="1px solid #2B2F35"
+                      border={`${
+                        inputBorrowAmount > walletBalance
+                          ? "1px solid #CF222E"
+                          : inputBorrowAmount < 0
+                          ? "1px solid #CF222E"
+                          : isNaN(inputBorrowAmount)
+                          ? "1px solid #CF222E"
+                          : inputBorrowAmount > 0 && inputBorrowAmount <= walletBalance
+                          ? "1px solid #1A7F37"
+                          : "1px solid #2B2F35 "
+                      }`}
                       borderRadius="6px"
                       display="flex"
                       justifyContent="space-between"
@@ -617,6 +697,17 @@ const TradeModal = () => {
                       >
                         <NumberInputField
                           placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
+                          color={`${
+                            inputBorrowAmount > walletBalance
+                              ? "#CF222E"
+                              : isNaN(inputBorrowAmount)
+                              ? "#CF222E"
+                              : inputBorrowAmount < 0
+                              ? "#CF222E"
+                              : inputBorrowAmount == 0
+                              ? "white"
+                              : "#1A7F37"
+                          }`}
                           border="0px"
                           _placeholder={{
                             color: "#393D4F",
@@ -645,17 +736,57 @@ const TradeModal = () => {
                         MAX
                       </Button>
                     </Box>
-                    <Text
-                      textAlign="right"
-                      fontSize="12px"
-                      fontWeight="500"
-                      fontStyle="normal"
-                    >
-                      Available Reserves: {walletBalance}
-                      <Text as="span" color="#8B949E">
-                        {` ${currentCollateralCoin}`}
+                    {inputBorrowAmount > walletBalance ||
+                inputBorrowAmount < 0 ||
+                isNaN(inputBorrowAmount) ? (
+                  <Text
+                    display="flex"
+                    justifyContent="space-between"
+                    color="#E6EDF3"
+                    mt="0.4rem"
+                    fontSize="12px"
+                    fontWeight="500"
+                    fontStyle="normal"
+                    fontFamily="Inter"
+                  >
+                    <Text color="#CF222E" display="flex">
+                      <Text mt="0.2rem">
+                        <SmallErrorIcon />{" "}
+                      </Text>
+                      <Text ml="0.3rem">
+                        {inputBorrowAmount > walletBalance
+                          ? "Amount exceeds balance"
+                          : "Invalid Input"}
                       </Text>
                     </Text>
+                    <Text
+                      color="#E6EDF3"
+                      display="flex"
+                      justifyContent="flex-end"
+                    >
+                      Available Reserves:  {walletBalance}
+                      <Text color="#6E7781" ml="0.2rem">
+                        {` ${currentBorrowCoin}`}
+                      </Text>
+                    </Text>
+                  </Text>
+                ) : (
+                  <Text
+                    color="#E6EDF3"
+                    display="flex"
+                    justifyContent="flex-end"
+                    mt="0.4rem"
+                    fontSize="12px"
+                    fontWeight="500"
+                    fontStyle="normal"
+                    fontFamily="Inter"
+                  >
+                    Available Reserves: {walletBalance}
+                    <Text color="#6E7781" ml="0.2rem">
+                      {` ${currentBorrowCoin}`}
+                    </Text>
+                  </Text>
+                )}
                     <Box pt={5} pb={2} mt="0.8rem">
                       <Slider
                         aria-label="slider-ex-6"
@@ -1247,18 +1378,32 @@ const TradeModal = () => {
                   </Box>
                 </Box>
                 {inputCollateralAmount > 0 && inputBorrowAmount > 0 ? (
-                  <Button
-                  bg="#101216"
-                  color="#8B949E"
-                  size="sm"
-                  width="100%"
-                  mt="3"
-                  mb="2Srem"
-                  border="1px solid #8B949E"
-                  _hover={{ bg: "#10216" }}
+                  <AnimatedButton
+                    bgColor="#101216"
+                    // bgColor="red"
+                    // p={0}
+                    color="#8B949E"
+                    size="sm"
+                    width="100%"
+                    mt="1.5rem"
+                    mb="1.5rem"
+                    border="1px solid #8B949E"
+                    labelArray={[
+                      "Performing Checks",
+                      "Processing",
+                      "Collateral received",
+                      "Processing the borrow request.",
+                      "Checking the reserves for sufficient liquidity",
+                      "Reserves are sufficient",
+                      "Borrow successful.",
+                      <SuccessButton
+                        key={"successButton"}
+                        successText={"Borrow successful"}
+                      />,
+                    ]}
                   >
                     Borrow
-                  </Button>
+                  </AnimatedButton>
                 ) : (
                   <Button
                     bg="#101216"

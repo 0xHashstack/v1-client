@@ -131,9 +131,13 @@ const StakeUnstakeModal = () => {
       setInputStakeAmount(newValue);
       // dispatch(setInputSupplyAmount(newValue));
     } else {
-      percentage = Math.round(percentage * 100) / 100;
-      setSliderValue(percentage);
-      setInputStakeAmount(newValue);
+      percentage = Math.round(percentage) ;
+      if(isNaN(percentage)){
+
+      }else{
+          setSliderValue(percentage);
+          setInputStakeAmount(newValue);
+      }
       // dispatch(setInputSupplyAmount(newValue));
     }
   };
@@ -145,9 +149,13 @@ const StakeUnstakeModal = () => {
       setInputUnstakeAmount(newValue);
       // dispatch(setInputSupplyAmount(newValue));
     } else {
-      percentage = Math.round(percentage * 100) / 100;
-      setSliderValue2(percentage);
-      setInputUnstakeAmount(newValue);
+      percentage = Math.round(percentage);
+      if(isNaN(percentage)){
+
+      }else{
+          setSliderValue2(percentage);
+          setInputUnstakeAmount(newValue);
+      }
       // dispatch(setInputSupplyAmount(newValue));
     }
   };

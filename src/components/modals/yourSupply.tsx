@@ -131,9 +131,13 @@ const YourSupplyModal = () => {
       setinputSupplyAmount(newValue);
       // dispatch(setInputSupplyAmount(newValue));
     } else {
-      percentage = Math.round(percentage * 100) / 100;
-      setSliderValue(percentage);
-      setinputSupplyAmount(newValue);
+      percentage = Math.round(percentage);
+      if(isNaN(percentage)){
+
+      }else{
+        setSliderValue(percentage);
+        setinputSupplyAmount(newValue);
+      }
       // dispatch(setInputSupplyAmount(newValue));
     }
   };
@@ -145,9 +149,13 @@ const YourSupplyModal = () => {
       setinputWithdrawlAmount(newValue);
       // dispatch(setInputSupplyAmount(newValue));
     } else {
-      percentage = Math.round(percentage * 100) / 100;
-      setSliderValue2(percentage);
-      setinputWithdrawlAmount(newValue);
+      percentage = Math.round(percentage );
+      if(isNaN(percentage)){
+
+      }else{
+        setSliderValue2(percentage);
+        setinputWithdrawlAmount(newValue);
+      }
       // dispatch(setInputSupplyAmount(newValue));
     }
   };

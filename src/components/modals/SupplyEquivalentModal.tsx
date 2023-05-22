@@ -45,6 +45,7 @@ import {
 } from "@/store/slices/dropdownsSlice";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
+import { useRouter } from "next/router";
 
 const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -58,6 +59,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
   const inputAmount1 = useSelector(selectInputSupplyAmount);
+  const router =useRouter();
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -622,6 +624,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                     //   />,
                     // ]}
                     _hover={{background:"white",color:"black"}}
+                    onClick={()=>{router.push('/market')}}
                   >
                     Supply
                   </Button>
