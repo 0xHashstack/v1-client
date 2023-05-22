@@ -18,6 +18,7 @@ import { setAccount } from "@/store/slices/userAccountSlice";
 import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 import SupplyEquivalentModal from "@/components/modals/SupplyEquivalentModal";
 import TransferDepositModal from "@/components/modals/TransferDepositModal";
+import ReferFreindsModal from "@/components/modals/ReferFreindsModal";
 // import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -28,7 +29,7 @@ export default function WaitList() {
   const [render, setRender] = useState(true);
   const [isWhiteListed,setIsWhiteListed]=useState(false);
   const router = useRouter();
-  const href = "/market";
+//   const href = "/market";
   const dispatch = useDispatch();
   useEffect(() => {
     // setRender(true);
@@ -37,7 +38,7 @@ export default function WaitList() {
     // alert(status)
     if (status == "connected") {
       // alert(account?.address);
-      router.push(href);
+    //   router.push(href);
       dispatch(setAccount(account));
     }
   }, [account, status,dispatch,router]);
@@ -79,6 +80,23 @@ export default function WaitList() {
                     lineHeight="20px"
                     mt="1.5rem"
                     _hover={{background:"white",color:"black"}}
+          />
+          <ReferFreindsModal
+                              buttonText="Refer two friends"
+                              height="40px"
+                              width="267px"
+                              background="#101216"
+                              color="#8B949E"
+                              display="flex"
+                              alignItems="center"
+                              gap="8px"
+                              borderRadius="6px"
+                              border="1px solid #8B949E"
+                              fontSize="14px"
+                              fontWeight="600"
+                              lineHeight="20px"
+                              mt="1.5rem"
+                              _hover={{background:"white",color:"black"}}
           />
         </Box>
         </PageCard>

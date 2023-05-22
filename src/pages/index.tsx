@@ -23,9 +23,10 @@ export default function Home() {
   const { account, address, status } = useAccount();
   const { available, disconnect, connect, connectors } = useConnectors();
   const [render, setRender] = useState(true);
-  const [isWhiteListed,setIsWhiteListed]=useState(false);
+  const [isWhiteListed,setIsWhiteListed]=useState(true);
   const router = useRouter();
   const href = "/waitlist";
+  const href2 = "/market";
   const dispatch = useDispatch();
   useEffect(() => {
     // setRender(true);
@@ -34,7 +35,11 @@ export default function Home() {
     // alert(status)
     if (status == "connected") {
       // alert(account?.address);
-      router.push(href);
+      if(isWhiteListed){
+        router.push(href)
+      }else{
+        router.push(href2);
+      }
       dispatch(setAccount(account));
     }
   }, [account, status,dispatch,router]);
