@@ -86,7 +86,7 @@ const TradeModal = () => {
   ];
   const [currentDapp, setCurrentDapp] = useState("Select a dapp");
   const [currentPool, setCurrentPool] = useState("Select a pool");
-  const [currentPoolCoin, setCurrentPoolCoin] = useState("ETH");
+  const [currentPoolCoin, setCurrentPoolCoin] = useState("Select a pool");
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
