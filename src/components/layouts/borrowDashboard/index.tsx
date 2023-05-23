@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Table,
@@ -15,6 +15,7 @@ import {
 
 import Image from "next/image";
 import YourBorrowModal from "@/components/modals/yourBorrowModal";
+import { Coins } from "../dashboardLeft";
 
 export interface ICoin {
   name: string;
@@ -39,6 +40,15 @@ const BorrowDashboard = ({
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
   upper_bound = Math.min(Coins.length - 1, upper_bound);
+  const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
+  useEffect(() => {
+    let temp: any = [];
+    for (let i = 0; i < Coins.length; i++) {
+      temp.push({ id: Coins[i].id, name: Coins[i].name });
+    }
+    setBorrowIDCoinMap(temp);
+    // console.log("faisal coin mapping", borrowIDCoinMap);
+  }, []);
 
   return upper_bound >= lower_bound && Coins.length > 0 ? (
     <TableContainer
@@ -109,11 +119,13 @@ const BorrowDashboard = ({
           //   flexDirection="column"
           //   gap={"1rem"}
         >
-          {Coins.slice(lower_bound, upper_bound + 1).map(
-            (coin: any, idx: number) => (
+          {Coins.slice(lower_bound, upper_bound + 1).map((coin: any) => {
+            // console.log("faisal coin check", coin);
+            // borrowIDCoinMap.push([coin.id, coin.name]);
+            return (
               <>
                 <Tr
-                  key={idx}
+                  key={coin.idx}
                   width={"100%"}
                   // height={"5rem"}
                   // bgColor="green"
@@ -141,7 +153,7 @@ const BorrowDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      ID 12345
+                      {coin.id}{" "}
                     </Text>
                   </Td>
                   <Td
@@ -179,7 +191,8 @@ const BorrowDashboard = ({
                           justifyContent="center"
                         >
                           <Image
-                            src={`./USDT.svg`}
+                            // src={`./BTC.svg`}
+                            src={`${coin.name}.svg`}
                             alt="Picture of the author"
                             width="32"
                             height="32"
@@ -401,7 +414,11 @@ const BorrowDashboard = ({
                       fontWeight="400"
                       // bgColor={"blue"}
                     >
-                      <YourBorrowModal />
+                      <YourBorrowModal
+                        currentID={coin.id}
+                        currentMarket={coin.name}
+                        borrowIDCoinMap={borrowIDCoinMap}
+                      />
                     </Box>
                   </Td>
                 </Tr>
@@ -412,12 +429,12 @@ const BorrowDashboard = ({
                     width: "100%",
                     height: "1px",
                     borderBottom: "1px solid #2b2f35",
-                    display: `${idx == 5 ? "none" : "block"}`,
+                    display: `${coin.idx == 5 ? "none" : "block"}`,
                   }}
                 />
               </>
-            )
-          )}
+            );
+          })}
           {(() => {
             const rows = [];
             for (

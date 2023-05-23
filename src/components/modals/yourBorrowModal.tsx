@@ -69,7 +69,13 @@ import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 
-const YourBorrowModal = () => {
+const YourBorrowModal = ({
+  borrowIDCoinMap,
+  currentID,
+  currentMarket,
+}: any) => {
+  // console.log("took map", borrowIDCoinMap, currentID, currentMarket);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   // const dispatch = useDispatch();
   const dispatch = useDispatch();
@@ -790,12 +796,12 @@ const YourBorrowModal = () => {
   const [radioValue, setRadioValue] = useState("1");
 
   const [currentBorrowMarketCoin1, setCurrentBorrowMarketCoin1] =
-    useState("BTC");
+    useState(currentMarket);
   const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
     useState("BTC");
   const [currentPoolCoin, setCurrentPoolCoin] = useState("ETH");
   const [currentAction, setCurrentAction] = useState("Spend Borrow");
-  const [currentBorrowId1, setCurrentBorrowId1] = useState("ID - 123456");
+  const [currentBorrowId1, setCurrentBorrowId1] = useState(currentID);
   const [currentBorrowId2, setCurrentBorrowId2] = useState("ID - 123456");
   const [currentDapp, setCurrentDapp] = useState("Select a dapp");
   const [currentPool, setCurrentPool] = useState("Select a pool");
@@ -816,10 +822,9 @@ const YourBorrowModal = () => {
       setinputRepayAmount(newValue);
       dispatch(setInputYourBorrowModalRepayAmount(newValue));
     } else {
-      percentage = Math.round(percentage );
-      if(isNaN(percentage)){
-
-      }else{
+      percentage = Math.round(percentage);
+      if (isNaN(percentage)) {
+      } else {
         setSliderValue(percentage);
         setinputRepayAmount(newValue);
         dispatch(setInputYourBorrowModalRepayAmount(newValue));
@@ -837,15 +842,33 @@ const YourBorrowModal = () => {
       // dispatch(setInputYourBorrowModalRepayAmount(newValue));
     } else {
       percentage = Math.round(percentage);
-      if(isNaN(percentage)){
-
-      }else{
-
+      if (isNaN(percentage)) {
+      } else {
         setSliderValue2(percentage);
         setinputCollateralAmount(newValue);
       }
       // dispatch(setInputYourBorrowModalRepayAmount(newValue));
       // dispatch((newValue));
+    }
+  };
+
+  const handleBorrowMarketCoinChange = (id: string) => {
+    // console.log("got id", id);
+    for (let i = 0; i < borrowIDCoinMap.length; i++) {
+      if (borrowIDCoinMap[i].id === id.slice(5)) {
+        setCurrentBorrowMarketCoin1(borrowIDCoinMap[i].name);
+        return;
+      }
+    }
+  };
+
+  const handleBorrowMarketIDChange = (coin: string) => {
+    // console.log("got coin", coin);
+    for (let i = 0; i < borrowIDCoinMap.length; i++) {
+      if (borrowIDCoinMap[i].name === coin) {
+        setCurrentBorrowId1(`ID - ${borrowIDCoinMap[i].id}`);
+        return;
+      }
     }
   };
 
@@ -1113,6 +1136,7 @@ const YourBorrowModal = () => {
                                       pr="2"
                                       onClick={() => {
                                         setCurrentBorrowId1(coin);
+                                        handleBorrowMarketCoinChange(coin);
                                       }}
                                     >
                                       {coin === currentBorrowId1 && (
@@ -1223,6 +1247,7 @@ const YourBorrowModal = () => {
                                       pr="2"
                                       onClick={() => {
                                         setCurrentBorrowMarketCoin1(coin);
+                                        handleBorrowMarketIDChange(coin);
                                       }}
                                     >
                                       {coin === currentBorrowMarketCoin1 && (

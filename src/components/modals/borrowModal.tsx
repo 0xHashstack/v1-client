@@ -91,9 +91,8 @@ const BorrowModal = () => {
       dispatch(setInputBorrowModalCollateralAmount(newValue));
     } else {
       percentage = Math.round(percentage);
-      if(isNaN(percentage)){
-
-      }else{
+      if (isNaN(percentage)) {
+      } else {
         setSliderValue(percentage);
         setinputCollateralAmount(newValue);
         dispatch(setInputBorrowModalCollateralAmount(newValue));
@@ -110,9 +109,8 @@ const BorrowModal = () => {
       dispatch(setInputBorrowModalCollateralAmount(newValue));
     } else {
       percentage = Math.round(percentage);
-      if(isNaN(percentage)){
-
-      }else{
+      if (isNaN(percentage)) {
+      } else {
         setsliderValue2(percentage);
         setinputBorrowAmount(newValue);
         dispatch(setInputBorrowModalCollateralAmount(newValue));
