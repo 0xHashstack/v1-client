@@ -41,7 +41,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import {
     setModalDropdown,
-    selectModalDropDowns
+    selectModalDropDowns,
+    resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
 
 const SwapModal = () => {
@@ -119,6 +120,7 @@ const SwapModal = () => {
         setCurrentBorrowMarketCoin("ETH");
         setCurrentSelectedCoin("Select a market");
         setCurrentBorrowId("ID - 123456");
+        dispatch(resetModalDropdowns());
     }
 
     return (

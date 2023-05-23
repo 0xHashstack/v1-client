@@ -38,6 +38,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
   selectModalDropDowns,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
 import TableYagiLogo from "../layouts/table/tableIcons/yagiLogo";
 
@@ -112,6 +113,7 @@ const StakeModal = () => {
     setCurrentBorrowMarketCoin("ETH");
     setCurrentSelectedCoin("Select a market");
     setCurrentBorrowId("ID - 123456");
+    dispatch(resetModalDropdowns());
 }
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];

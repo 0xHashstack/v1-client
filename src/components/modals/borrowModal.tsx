@@ -38,6 +38,7 @@ import {
 import {
   setModalDropdown,
   selectModalDropDowns,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
 import { useState } from "react";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
@@ -45,7 +46,6 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
-
 const BorrowModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [sliderValue, setSliderValue] = useState(0);
@@ -134,6 +134,7 @@ const BorrowModal = () => {
     setinputCollateralAmount(0);
     setSliderValue(0);
     setsliderValue2(0);
+    dispatch(resetModalDropdowns());
   }
 
   return (

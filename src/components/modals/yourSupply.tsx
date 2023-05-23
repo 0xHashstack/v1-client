@@ -45,6 +45,7 @@ import {
   setNavDropdown,
   setModalDropdown,
   selectModalDropDowns,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
 import { useState } from "react";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
@@ -175,6 +176,7 @@ const YourSupplyModal = () => {
       setinputWithdrawlAmount(0);
       setCurrentSelectedSupplyCoin("BTC");
       setcurrentSelectedWithdrawlCoin("BTC");
+      dispatch(resetModalDropdowns());
     }
   return (
     <Box>

@@ -41,6 +41,7 @@ import {
   setModalDropdown,
   selectNavDropdowns,
   selectModalDropDowns,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
 import { useState } from "react";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
@@ -865,6 +866,7 @@ const YourBorrowModal = () => {
     setSliderValue(0);
     setSliderValue2(0);
     setinputRepayAmount(0);
+    dispatch(resetModalDropdowns());
 
   }
   return (

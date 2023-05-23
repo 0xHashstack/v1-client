@@ -37,8 +37,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
   selectModalDropDowns,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
 import EthToUsdt from "@/assets/icons/pools/ethToUsdt";
 import MySwapDisabled from "@/assets/icons/dapps/mySwapDisabled";
@@ -179,8 +180,9 @@ const StakeUnstakeModal = () => {
     setSliderValue2(0);
     setInputStakeAmount(0);
     setInputUnstakeAmount(0);
-    setCurrentSelectedStakeCoin("BTC");
-    setcurrentSelectedUnstakeCoin("BTC");
+    setCurrentSelectedStakeCoin("rBTC");
+    setcurrentSelectedUnstakeCoin("rBTC");
+    dispatch(resetModalDropdowns());
   }
   return (
     <Box>

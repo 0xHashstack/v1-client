@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Modal,
@@ -42,6 +42,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
   selectModalDropDowns,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
@@ -53,12 +54,11 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
-  const [buttonActive, setButtonActive] = useState(false)
+
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
-  const inputAmount1 = useSelector(selectInputSupplyAmount);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -115,6 +115,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
     setinputAmount(0);
     setSliderValue(0);
     setCurrentSelectedCoin("BTC");
+    dispatch(resetModalDropdowns());
   }
 
   return (

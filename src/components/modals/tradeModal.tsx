@@ -41,6 +41,7 @@ import {
   setNavDropdown,
   setModalDropdown,
   selectModalDropDowns,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
 import { useState } from "react";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
@@ -192,6 +193,7 @@ const TradeModal = () => {
     setCurrentBorrowCoin("BTC");
     setCurrentPoolCoin("Select a pool");
     setRadioValue("1");
+    dispatch(resetModalDropdowns());
   }
 
   return (

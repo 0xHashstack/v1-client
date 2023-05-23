@@ -52,6 +52,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
   selectModalDropDowns,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
 
 const LiquidityProvisionModal = () => {
@@ -157,6 +158,7 @@ const LiquidityProvisionModal = () => {
     setCurrentBorrowId("ID - 123456");
     setCurrentPool("Select a pool");
     setCurrentBorrowMarketCoin("ETH");
+    dispatch(resetModalDropdowns());
   }
 
   return (

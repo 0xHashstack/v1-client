@@ -94,18 +94,28 @@ export const dropdownSlice = createSlice({
       // alert(dropdownName);
       state.metricsDropdowns = dropdowns;
     },
-  },
-  extraReducers: {
-    [HYDRATE]: (state, action) => {
-      return {
-        ...state,
-        ...action.payload.dropdowns,
-      };
+    resetModalDropdowns(state) {
+      state.modalDropdowns = initialState.modalDropdowns;
+      state.currentModalDropdown = initialState.currentModalDropdown;
     },
+  },
+  extraReducers: (builder) => {
+    builder
+      .addCase(resetModalDropdowns, (state) => {
+        state.modalDropdowns = initialState.modalDropdowns;
+        state.currentModalDropdown = initialState.currentModalDropdown;
+      })
+      .addCase(HYDRATE, (state, action) => {
+        return {
+          ...state,
+          ...action.payload.dropdowns,
+        };
+      });
   },
 });
 
-export const { setNavDropdown } = dropdownSlice.actions;
+export const { setNavDropdown,resetModalDropdowns } = dropdownSlice.actions;
+
 export const { setModalDropdown } = dropdownSlice.actions;
 export const { setMetricsDropdown } = dropdownSlice.actions;
 export const selectNavDropdowns = (state) => state.dropdowns.navDropdowns;
