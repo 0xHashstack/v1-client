@@ -52,6 +52,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
   selectModalDropDowns,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
 
 const LiquidityProvisionModal = () => {
@@ -153,6 +154,12 @@ const LiquidityProvisionModal = () => {
   };
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const resetStates=()=>{
+    setCurrentBorrowId("ID - 123456");
+    setCurrentPool("Select a pool");
+    setCurrentBorrowMarketCoin("ETH");
+    dispatch(resetModalDropdowns());
+  }
 
   return (
     <div>
@@ -201,7 +208,10 @@ const LiquidityProvisionModal = () => {
       <Portal>
         <Modal
           isOpen={isOpen}
-          onClose={onClose}
+          onClose={()=>{
+            onClose();
+            resetStates();
+          }}
           isCentered
           scrollBehavior="inside"
         >

@@ -111,6 +111,11 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
   };
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const resetStates=()=>{
+    setinputAmount(0);
+    setSliderValue(0);
+    setCurrentSelectedCoin("USDT");
+  }
 
   return (
     <div>
@@ -120,7 +125,10 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
       <Portal>
         <Modal
           isOpen={isOpen}
-          onClose={onClose}
+          onClose={()=>{
+            onClose();
+            resetStates();
+          }}
           size={{ width: "700px", height: "100px" }}
           isCentered
         >
@@ -596,7 +604,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                   </Text>
                 </Text>
               </Card>
-              {inputAmount1 > 0 && inputAmount <= walletBalance ? (
+              {inputAmount > 0 && inputAmount <= walletBalance ? (
                 buttonId == 1 ? (
                   <SuccessButton successText="Supply success" />
                 ) : buttonId == 2 ? (

@@ -54,7 +54,6 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   const [currentProtocol, setcurrentProtocol] = useState("Aave");
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
-  const [currentSelectedCoin1, setCurrentSelectedCoin1] = useState("Aave");
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
@@ -121,7 +120,13 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   };
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-  const protocols = ["Aave", "Compound"];
+  const protocols=["Aave","Compound"];
+  const resetStates=()=>{
+    setcurrentProtocol("Aave");
+    setinputAmount(0);
+    setSliderValue(0);
+    setCurrentSelectedCoin("BTC");
+  }
 
   return (
     <div>
@@ -131,7 +136,10 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
       <Portal>
         <Modal
           isOpen={isOpen}
-          onClose={onClose}
+          onClose={()=>{
+            onClose();
+            resetStates();
+          }}
           size={{ width: "700px", height: "100px" }}
           isCentered
         >
@@ -170,7 +178,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     fontStyle="normal"
                     fontWeight="400"
                   >
-                    Select Market
+                    Select Protocol
                   </Text>
                   <Tooltip
                     hasArrow
@@ -711,7 +719,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                   </Text>
                 </Text>
               </Card>
-              {inputAmount1 > 0 && inputAmount <= walletBalance ? (
+              {inputAmount > 0 && inputAmount <= walletBalance ? (
                 buttonId == 1 ? (
                   <SuccessButton successText="Supply success" />
                 ) : buttonId == 2 ? (

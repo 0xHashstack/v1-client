@@ -45,6 +45,7 @@ import {
   setNavDropdown,
   setModalDropdown,
   selectModalDropDowns,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
 import { useState } from "react";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
@@ -168,6 +169,15 @@ const YourSupplyModal = () => {
     useState("BTC");
   const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
     useState("BTC");
+    const resetStates=()=>{
+      setSliderValue(0);
+      setSliderValue2(0);
+      setinputSupplyAmount(0);
+      setinputWithdrawlAmount(0);
+      setCurrentSelectedSupplyCoin("BTC");
+      setcurrentSelectedWithdrawlCoin("BTC");
+      dispatch(resetModalDropdowns());
+    }
   return (
     <Box>
       <Button
@@ -187,7 +197,10 @@ const YourSupplyModal = () => {
 
       <Modal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={()=>{
+          onClose();
+          resetStates();
+        }}
         isCentered
         //   scrollBehavior="inside"
       >

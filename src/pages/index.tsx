@@ -35,7 +35,7 @@ export default function Home() {
     // alert(status)
     if (status == "connected") {
       // alert(account?.address);
-      if(isWhiteListed){
+      if(!isWhiteListed){
         router.push(href)
       }else{
         router.push(href2);

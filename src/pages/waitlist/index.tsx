@@ -25,23 +25,14 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function WaitList() {
   const { account, address, status } = useAccount();
-  const { available, disconnect, connect, connectors } = useConnectors();
-  const [render, setRender] = useState(true);
-  const [isWhiteListed,setIsWhiteListed]=useState(false);
-  const router = useRouter();
-//   const href = "/market";
+
   const dispatch = useDispatch();
-  useEffect(() => {
-    // setRender(true);
-  }, [router]);
   useEffect(() => {
     // alert(status)
     if (status == "connected") {
-      // alert(account?.address);
-    //   router.push(href);
       dispatch(setAccount(account));
     }
-  }, [account, status,dispatch,router]);
+  }, [account, status,dispatch]);
   return (
       <PageCard justifyContent="center" >
         <Text color="#D3AC41" fontSize="48px" fontWeight="600" fontStyle="normal">You're on the waitlist!</Text>
