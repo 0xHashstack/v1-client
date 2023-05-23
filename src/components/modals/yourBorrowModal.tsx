@@ -1299,6 +1299,9 @@ const YourBorrowModal = () => {
                                 onChange={handleChange}
                                 value={inputRepayAmount}
                                 isDisabled={currentAction === "Zero Repay"}
+                                step={parseFloat(
+                                  `${inputRepayAmount <= 99999 ? 0.1 : 0}`
+                                )}
                               >
                                 <NumberInputField
                                   placeholder={`Minimum 0.01536 ${currentBorrowMarketCoin1}`}
@@ -2256,6 +2259,9 @@ const YourBorrowModal = () => {
                               inputCollateralAmount ? inputCollateralAmount : ""
                             }
                             outline="none"
+                            step={parseFloat(
+                              `${inputCollateralAmount <= 99999 ? 0.1 : 0}`
+                            )}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}

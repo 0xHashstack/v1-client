@@ -188,7 +188,9 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                   borderRadius="md"
                   className="navbar"
                   cursor="pointer"
-                  onClick={() => handleDropdownClick("supplyEquivalentMarketDropDown")}
+                  onClick={() =>
+                    handleDropdownClick("supplyEquivalentMarketDropDown")
+                  }
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentSelectedCoin)}</Box>
@@ -303,8 +305,8 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                     onChange={handleChange}
                     value={inputAmount ? inputAmount : ""}
                     outline="none"
-                    precision={1}
-                    step={0.1}
+                    // precision={1}
+                    step={parseFloat(`${inputAmount <= 99999 ? 0.1 : 0}`)}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
@@ -396,7 +398,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                     </Text>
                   </Text>
                 )}
-                               <Box pt={5} pb={2} mt="0.9rem">
+                <Box pt={5} pb={2} mt="0.9rem">
                   <Slider
                     aria-label="slider-ex-6"
                     defaultValue={sliderValue}
@@ -621,7 +623,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                     //     successText={"Success"}
                     //   />,
                     // ]}
-                    _hover={{background:"white",color:"black"}}
+                    _hover={{ background: "white", color: "black" }}
                   >
                     Supply
                   </Button>

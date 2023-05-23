@@ -80,12 +80,12 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
-        case "Aave":
-            return <AaveLogo/>;
-            break;
-        case "Compound":
-            return <CompoundLogo/>
-            break;
+      case "Aave":
+        return <AaveLogo />;
+        break;
+      case "Compound":
+        return <CompoundLogo />;
+        break;
       default:
         break;
     }
@@ -119,7 +119,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   };
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-  const protocols=["Aave","Compound"];
+  const protocols = ["Aave", "Compound"];
 
   return (
     <div>
@@ -161,7 +161,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                 border="1px solid #2B2F35"
                 mt="-1.5"
               >
-                                <Text color="#8B949E" display="flex" alignItems="center">
+                <Text color="#8B949E" display="flex" alignItems="center">
                   <Text
                     mr="0.3rem"
                     fontSize="12px"
@@ -199,7 +199,9 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                   borderRadius="md"
                   className="navbar"
                   cursor="pointer"
-                  onClick={() => handleDropdownClick("transferDepositProtocolDropdown")}
+                  onClick={() =>
+                    handleDropdownClick("transferDepositProtocolDropdown")
+                  }
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentProtocol)}</Box>
@@ -230,7 +232,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                             pr="2"
                             onClick={() => {
                               setcurrentProtocol(protocol);
-                            //   dispatch(setCoinSelectedSupplyModal(protocol));
+                              //   dispatch(setCoinSelectedSupplyModal(protocol));
                             }}
                           >
                             {protocol === currentSelectedCoin && (
@@ -301,7 +303,9 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                   borderRadius="md"
                   className="navbar"
                   cursor="pointer"
-                  onClick={() => handleDropdownClick("transferDepostMarketDropdown")}
+                  onClick={() =>
+                    handleDropdownClick("transferDepostMarketDropdown")
+                  }
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentSelectedCoin)}</Box>
@@ -417,7 +421,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     value={inputAmount ? inputAmount : ""}
                     outline="none"
                     precision={1}
-                    step={0.1}
+                    step={parseFloat(`${inputAmount <= 99999 ? 0.1 : 0}`)}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
@@ -509,7 +513,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     </Text>
                   </Text>
                 )}
-                               <Box pt={5} pb={2} mt="0.9rem">
+                <Box pt={5} pb={2} mt="0.9rem">
                   <Slider
                     aria-label="slider-ex-6"
                     defaultValue={sliderValue}

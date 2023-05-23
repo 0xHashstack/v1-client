@@ -426,6 +426,9 @@ const StakeUnstakeModal = () => {
                             onChange={handleChange}
                             value={inputStakeAmount ? inputStakeAmount : ""}
                             outline="none"
+                            step={parseFloat(
+                              `${inputStakeAmount <= 99999 ? 0.1 : 0}`
+                            )}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
@@ -922,6 +925,9 @@ const StakeUnstakeModal = () => {
                             onChange={handleUnstakeChange}
                             value={inputUnstakeAmount ? inputUnstakeAmount : ""}
                             outline="none"
+                            step={parseFloat(
+                              `${inputUnstakeAmount <= 99999 ? 0.1 : 0}`
+                            )}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}

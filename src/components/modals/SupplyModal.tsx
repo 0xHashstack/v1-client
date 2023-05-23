@@ -303,8 +303,8 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                     onChange={handleChange}
                     value={inputAmount ? inputAmount : ""}
                     outline="none"
-                    precision={1}
-                    step={0.1}
+                    // precision={1}
+                    step={parseFloat(`${inputAmount <= 99999 ? 0.1 : 0}`)}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
