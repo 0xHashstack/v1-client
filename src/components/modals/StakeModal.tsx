@@ -44,7 +44,7 @@ import TableYagiLogo from "../layouts/table/tableIcons/yagiLogo";
 const StakeModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
+  const [currentSelectedCoin, setCurrentSelectedCoin] = useState("Select a market");
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("ETH");
   const [currentBorrowId, setCurrentBorrowId] = useState("ID - 123456");
   const [inputAmount, setinputAmount] = useState(0);
@@ -106,6 +106,13 @@ const StakeModal = () => {
       dispatch(setInputSupplyAmount(newValue));
     }
   };
+  const resetStates=()=>{
+    setSliderValue(0);
+    setinputAmount(0);
+    setCurrentBorrowMarketCoin("ETH");
+    setCurrentSelectedCoin("Select a market");
+    setCurrentBorrowId("ID - 123456");
+}
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
@@ -120,7 +127,10 @@ const StakeModal = () => {
                 <TableYagiLogo/>
             </Box>
             <Portal>
-                <Modal isOpen={isOpen} onClose={onClose}  isCentered scrollBehavior="inside">
+                <Modal isOpen={isOpen} onClose={()=>{
+                    onClose();
+                    resetStates();
+                }}  isCentered scrollBehavior="inside">
                     <ModalOverlay
                         bg="rgba(244, 242, 255, 0.5);"
                         mt="3.8rem"
@@ -177,7 +187,8 @@ const StakeModal = () => {
                                     }
                                 >
                                     <Box display="flex" gap="1">
-                                        <Box p="1">{getCoin(currentSelectedCoin)}</Box>
+                                        {currentSelectedCoin!='Select a market'?<Box p="1">{getCoin(currentSelectedCoin)}</Box>:""}
+                                        
                                         <Text color="white">{currentSelectedCoin}</Text>
                                     </Box>
                                     
@@ -433,10 +444,11 @@ const StakeModal = () => {
                                         </Box>
                                     )}
                                 </Box>
+                                
                                 <Text color="#E6EDF3" display="flex" justifyContent="flex-end" mt="0.4rem" fontSize="12px" fontWeight="500" fontStyle="normal" fontFamily="Inter">
                                     Borrow Balance: {walletBalance}
                                     <Text color="#6E7781" ml="0.2rem">
-                                        {` ${currentSelectedCoin}`}
+                                        {` ${currentBorrowMarketCoin}`}
                                     </Text>
                                 </Text>
 
@@ -652,7 +664,7 @@ const StakeModal = () => {
                                     <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">1.10</Text>
                                 </Box>
                                 </Box>
-                            {inputAmount1 > 0 ? (
+                            {currentSelectedCoin!="Select a market" ? (
                                 <Button
                                 bg="#101216"
                                 color="#8B949E"

@@ -153,6 +153,11 @@ const LiquidityProvisionModal = () => {
   };
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const resetStates=()=>{
+    setCurrentBorrowId("ID - 123456");
+    setCurrentPool("Select a pool");
+    setCurrentBorrowMarketCoin("ETH");
+  }
 
   return (
     <div>
@@ -201,7 +206,10 @@ const LiquidityProvisionModal = () => {
       <Portal>
         <Modal
           isOpen={isOpen}
-          onClose={onClose}
+          onClose={()=>{
+            onClose();
+            resetStates();
+          }}
           isCentered
           scrollBehavior="inside"
         >

@@ -793,7 +793,7 @@ const YourBorrowModal = () => {
     useState("BTC");
   const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
     useState("BTC");
-  const [currentPoolCoin, setCurrentPoolCoin] = useState("ETH");
+  const [currentPoolCoin, setCurrentPoolCoin] = useState("Select a pool");
   const [currentAction, setCurrentAction] = useState("Spend Borrow");
   const [currentBorrowId1, setCurrentBorrowId1] = useState("ID - 123456");
   const [currentBorrowId2, setCurrentBorrowId2] = useState("ID - 123456");
@@ -851,6 +851,22 @@ const YourBorrowModal = () => {
 
   // const walletBalance = useSelector(selectWalletBalance);
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
+  const resetStates=()=>{
+    setRadioValue("1");
+    setCurrentAction("Spend Borrow")
+    setCurrentBorrowMarketCoin1("BTC");
+    setCurrentBorrowMarketCoin2("BTC");
+    setCurrentBorrowId1("ID - 123456");
+    setCurrentBorrowId2("ID - 123456");
+    setCurrentDapp("Select a dapp");
+    setCurrentPool("Select a pool");
+    setCurrentPoolCoin("Select a pool")
+    setinputCollateralAmount(0);
+    setSliderValue(0);
+    setSliderValue2(0);
+    setinputRepayAmount(0);
+
+  }
   return (
     <Box>
       <Button
@@ -871,7 +887,10 @@ const YourBorrowModal = () => {
 
       <Modal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={()=>{
+          onClose();
+          resetStates();
+        }}
         isCentered
         scrollBehavior="inside"
         // size="sm"
@@ -1640,19 +1659,20 @@ const YourBorrowModal = () => {
                               as="button"
                             >
                               <Box display="flex" gap="1">
-                                {currentPool != "Select a pool" ? (
-                                  <Box p="1">
+                              {getCoin(
+                                      radioValue === "1"
+                                        ? currentPool
+                                        : currentPoolCoin
+                                    )?                                  <Box p="1">
                                     {getCoin(
                                       radioValue === "1"
                                         ? currentPool
                                         : currentPoolCoin
                                     )}
-                                  </Box>
-                                ) : (
-                                  ""
-                                )}
+                                  </Box>:""}
 
-                                <Text>
+
+                                <Text mt="0.2rem">
                                   {radioValue === "1"
                                     ? currentPool
                                     : currentPoolCoin}
@@ -1779,7 +1799,7 @@ const YourBorrowModal = () => {
                       {getContainer(currentAction)}
                       {currentAction == "Spend Borrow" ? (
                         currentDapp != "Select a dapp" &&
-                        currentPool != "Select a pool" ? (
+                        (currentPool != "Select a pool" || currentPoolCoin!='Select a pool') ? (
                           <AnimatedButton
                             bgColor="#101216"
                             // bgColor="red"
@@ -1922,31 +1942,31 @@ const YourBorrowModal = () => {
                         mt="1.5rem"
                       >
                         <Box display="flex" flexDirection="column" gap="1">
-                          <Box display="flex">
-                            <Text
-                              fontSize="12px"
-                              fontWeight="400"
-                              fontStyle="normal"
-                              color="#8B949E"
-                            >
-                              Borrow ID
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="bottom-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box p="1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
+                        <Text color="#8B949E" display="flex" alignItems="center">
+                  <Text
+                    mr="0.3rem"
+                    fontSize="12px"
+                    fontStyle="normal"
+                    fontWeight="400"
+                  >
+                    Borrow ID
+                  </Text>
+                  <Tooltip
+                    hasArrow
+                    placement="bottom-start"
+                    boxShadow="dark-lg"
+                    label="all the assets to the market"
+                    bg="#24292F"
+                    fontSize={"smaller"}
+                    fontWeight={"thin"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                  >
+                    <Box>
+                      <InfoIcon />
+                    </Box>
+                  </Tooltip>
+                </Text>
                           <Box
                             display="flex"
                             border="1px"
@@ -1964,7 +1984,7 @@ const YourBorrowModal = () => {
                             }
                             as="button"
                           >
-                            <Box display="flex" gap="1">
+                            <Box display="flex" gap="1" pt="1">
                               {currentBorrowId2}
                             </Box>
                             <Text pt="1" className="navbar-button">
@@ -2027,31 +2047,31 @@ const YourBorrowModal = () => {
                           </Box>
                         </Box>
                         <Box display="flex" flexDirection="column" gap="1">
-                          <Box display="flex">
-                            <Text
-                              fontSize="12px"
-                              fontWeight="400"
-                              fontStyle="normal"
-                              color="#8B949E"
-                            >
-                              Borrow Market
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="bottom-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box p="1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
+                        <Text color="#8B949E" display="flex" alignItems="center">
+                  <Text
+                    mr="0.3rem"
+                    fontSize="12px"
+                    fontStyle="normal"
+                    fontWeight="400"
+                  >
+                    Borrow Market
+                  </Text>
+                  <Tooltip
+                    hasArrow
+                    placement="bottom-start"
+                    boxShadow="dark-lg"
+                    label="all the assets to the market"
+                    bg="#24292F"
+                    fontSize={"smaller"}
+                    fontWeight={"thin"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                  >
+                    <Box>
+                      <InfoIcon />
+                    </Box>
+                  </Tooltip>
+                </Text>
                           <Box
                             display="flex"
                             border="1px"
@@ -2060,7 +2080,7 @@ const YourBorrowModal = () => {
                             py="2"
                             pl="3"
                             pr="3"
-                            mt="0.3rem"
+                            mt="-0.1rem"
                             borderRadius="md"
                             className="navbar"
                             cursor="pointer"

@@ -174,6 +174,14 @@ const StakeUnstakeModal = () => {
   const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
     useState("BTC");
   const [buttonId, setButtonId] = useState(0);
+  const resetStates=()=>{
+    setSliderValue(0);
+    setSliderValue2(0);
+    setInputStakeAmount(0);
+    setInputUnstakeAmount(0);
+    setCurrentSelectedStakeCoin("BTC");
+    setcurrentSelectedUnstakeCoin("BTC");
+  }
   return (
     <Box>
       <Text
@@ -206,7 +214,11 @@ const StakeUnstakeModal = () => {
 
       <Modal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={()=>{
+            onClose();
+            resetStates();
+
+        }}
         isCentered
         //   scrollBehavior="inside"
       >

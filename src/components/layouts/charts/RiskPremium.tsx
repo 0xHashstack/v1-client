@@ -39,6 +39,9 @@ const RiskPremiumChart = () => {
         enabled: false,
       },
       xaxis: {
+        tooltip: {
+          enabled: false, // Disable the x-axis tooltip
+        },
         axisTicks: {
           show: false, // Hide the small spikes at x-axis labels
         },

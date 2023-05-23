@@ -83,8 +83,8 @@ const TradeModal = () => {
     "BTC/ETH",
     "BTC/USDT",
   ];
-  const [currentDapp, setCurrentDapp] = useState("Jediswap");
-  const [currentPool, setCurrentPool] = useState("ETH/USDT");
+  const [currentDapp, setCurrentDapp] = useState("Select a dapp");
+  const [currentPool, setCurrentPool] = useState("Select a pool");
   const [currentPoolCoin, setCurrentPoolCoin] = useState("ETH");
 
   const getCoin = (CoinName: string) => {
@@ -181,6 +181,19 @@ const TradeModal = () => {
   const [currentBorrowCoin, setCurrentBorrowCoin] = useState("BTC");
   const [radioValue, setRadioValue] = useState("1");
 
+  const resetStates=()=>{
+    setSliderValue(0);
+    setsliderValue2(0);
+    setinputCollateralAmount(0);
+    setinputBorrowAmount(0);
+    setCurrentDapp("Select a dapp");
+    setCurrentPool("Select a pool");
+    setCurrentCollateralCoin("BTC");
+    setCurrentBorrowCoin("BTC");
+    setCurrentPoolCoin("Select a pool");
+    setRadioValue("1");
+  }
+
   return (
     <Box>
       <Text
@@ -214,7 +227,10 @@ const TradeModal = () => {
 
       <Modal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={()=>{
+          onClose();
+          resetStates();
+        }}
         isCentered
         scrollBehavior="inside"
       >
@@ -520,7 +536,7 @@ const TradeModal = () => {
                                   ? sliderValue >= 10
                                     ? "15%"
                                     : "25%"
-                                  : "0"
+                                  : "8%"
                               }
                               fontSize=".58rem"
                               fontWeight="bold"
@@ -818,7 +834,7 @@ const TradeModal = () => {
                                   ? sliderValue2 >= 10
                                     ? "15%"
                                     : "25%"
-                                  : "0"
+                                  : "8%"
                               }
                               fontSize=".58rem"
                               fontWeight="bold"
@@ -915,7 +931,7 @@ const TradeModal = () => {
                       as="button"
                     >
                       <Box display="flex" gap="1">
-                        <Box p="1">{getCoin(currentDapp)}</Box>
+                        {currentDapp!='Select a dapp' ?<Box p="1">{getCoin(currentDapp)}</Box>:""}
                         <Text>{currentDapp}</Text>
                       </Box>
                       <Box pt="1" className="navbar-button">
@@ -1031,11 +1047,13 @@ const TradeModal = () => {
                       as="button"
                     >
                       <Box display="flex" gap="1">
-                        <Box p="1">
+                      {getCoin(
+                            radioValue === "1" ? currentPool : currentPoolCoin
+                          )?                        <Box p="1">
                           {getCoin(
                             radioValue === "1" ? currentPool : currentPoolCoin
                           )}
-                        </Box>
+                        </Box>:""}
                         <Text>
                           {radioValue === "1" ? currentPool : currentPoolCoin}
                         </Text>
@@ -1086,7 +1104,7 @@ const TradeModal = () => {
                                   }`}
                                   borderRadius="md"
                                 >
-                                  <Box p="1">{getCoin(pool)}</Box>
+                                  <Box p="1">{getCoin(pool) }</Box>
                                   <Text>{pool}</Text>
                                 </Box>
                               </Box>
@@ -1377,7 +1395,7 @@ const TradeModal = () => {
                     </Text>
                   </Box>
                 </Box>
-                {inputCollateralAmount > 0 && inputBorrowAmount > 0 ? (
+                {inputCollateralAmount > 0 && inputBorrowAmount > 0 && currentDapp!='Select a dapp' && (currentPool!='Select a pool' || currentPoolCoin!='Select a pool')  ? (
                   <AnimatedButton
                     bgColor="#101216"
                     // bgColor="red"
@@ -1410,8 +1428,8 @@ const TradeModal = () => {
                     color="#6E7681"
                     size="sm"
                     width="100%"
-                    mt="3"
-                    mb="2rem"
+                    mt="1.5rem"
+                    mb="1.5rem"
                     border="1px solid #2B2F35"
                     _hover={{ bg: "#101216" }}
                   >

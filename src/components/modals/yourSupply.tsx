@@ -168,6 +168,14 @@ const YourSupplyModal = () => {
     useState("BTC");
   const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
     useState("BTC");
+    const resetStates=()=>{
+      setSliderValue(0);
+      setSliderValue2(0);
+      setinputSupplyAmount(0);
+      setinputWithdrawlAmount(0);
+      setCurrentSelectedSupplyCoin("BTC");
+      setcurrentSelectedWithdrawlCoin("BTC");
+    }
   return (
     <Box>
       <Button
@@ -187,7 +195,10 @@ const YourSupplyModal = () => {
 
       <Modal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={()=>{
+          onClose();
+          resetStates();
+        }}
         isCentered
         //   scrollBehavior="inside"
       >

@@ -127,6 +127,15 @@ const BorrowModal = () => {
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState("BTC");
   const [currentBorrowCoin, setCurrentBorrowCoin] = useState("BTC");
 
+  const resetStates=()=>{
+    setCurrentCollateralCoin("BTC");
+    setCurrentBorrowCoin("BTC");
+    setinputBorrowAmount(0);
+    setinputCollateralAmount(0);
+    setSliderValue(0);
+    setsliderValue2(0);
+  }
+
   return (
     <Box>
       <Button
@@ -147,7 +156,10 @@ const BorrowModal = () => {
 
       <Modal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={()=>{
+          onClose();
+          resetStates();
+        }}
         isCentered
         scrollBehavior="inside"
       >
