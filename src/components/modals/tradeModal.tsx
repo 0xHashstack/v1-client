@@ -91,19 +91,19 @@ const TradeModal = () => {
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
-        return <BTCLogo height={"16px"} width={"16px"}/>;
+        return <BTCLogo height={"16px"} width={"16px"} />;
         break;
       case "USDC":
-        return <USDCLogo height={"16px"} width={"16px"}/>;
+        return <USDCLogo height={"16px"} width={"16px"} />;
         break;
       case "USDT":
-        return <USDTLogo height={"16px"} width={"16px"}/>;
+        return <USDTLogo height={"16px"} width={"16px"} />;
         break;
       case "ETH":
-        return <ETHLogo height={"16px"} width={"16px"}/>;
+        return <ETHLogo height={"16px"} width={"16px"} />;
         break;
       case "DAI":
-        return <DAILogo height={"16px"} width={"16px"}/>;
+        return <DAILogo height={"16px"} width={"16px"} />;
         break;
       case "Jediswap":
         return <JediswapLogo />;
@@ -146,10 +146,8 @@ const TradeModal = () => {
       dispatch(setInputTradeModalCollateralAmount(newValue));
     } else {
       percentage = Math.round(percentage);
-      if(isNaN(percentage)){
-
-      }else{
-
+      if (isNaN(percentage)) {
+      } else {
         setSliderValue(percentage);
         setinputCollateralAmount(newValue);
         dispatch(setInputTradeModalCollateralAmount(newValue));
@@ -165,10 +163,9 @@ const TradeModal = () => {
       setinputBorrowAmount(newValue);
       // dispatch(setInputTradeModalCollateralAmount(newValue));
     } else {
-      percentage = Math.round(percentage) ;
-      if(isNaN(percentage)){
-        
-      }else{
+      percentage = Math.round(percentage);
+      if (isNaN(percentage)) {
+      } else {
         setsliderValue2(percentage);
         setinputBorrowAmount(newValue);
       }
@@ -403,7 +400,8 @@ const TradeModal = () => {
                           ? "1px solid #CF222E"
                           : isNaN(inputCollateralAmount)
                           ? "1px solid #CF222E"
-                          : inputCollateralAmount > 0 && inputCollateralAmount <= walletBalance
+                          : inputCollateralAmount > 0 &&
+                            inputCollateralAmount <= walletBalance
                           ? "1px solid #1A7F37"
                           : "1px solid #2B2F35 "
                       }`}
@@ -417,17 +415,23 @@ const TradeModal = () => {
                         keepWithinRange={true}
                         onChange={handleChange}
                         value={inputCollateralAmount}
+                        step={parseFloat(
+                          `${inputCollateralAmount <= 99999 ? 0.1 : 0}`
+                        )}
                       >
                         <NumberInputField
                           placeholder={`Minimum 0.01536 ${currentCollateralCoin}`}
-                          color={`${inputCollateralAmount>walletBalance                           ? "#CF222E"
-                          : isNaN(inputCollateralAmount)
-                          ? "#CF222E"
-                          : inputCollateralAmount < 0
-                          ? "#CF222E"
-                          : inputCollateralAmount == 0
-                          ? "white"
-                          : "#1A7F37"}`}
+                          color={`${
+                            inputCollateralAmount > walletBalance
+                              ? "#CF222E"
+                              : isNaN(inputCollateralAmount)
+                              ? "#CF222E"
+                              : inputCollateralAmount < 0
+                              ? "#CF222E"
+                              : inputCollateralAmount == 0
+                              ? "white"
+                              : "#1A7F37"
+                          }`}
                           border="0px"
                           _placeholder={{
                             color: "#393D4F",
@@ -456,57 +460,57 @@ const TradeModal = () => {
                         MAX
                       </Button>
                     </Box>
-               {inputCollateralAmount > walletBalance ||
-                inputCollateralAmount < 0 ||
-                isNaN(inputCollateralAmount) ? (
-                  <Text
-                    display="flex"
-                    justifyContent="space-between"
-                    color="#E6EDF3"
-                    mt="0.4rem"
-                    fontSize="12px"
-                    fontWeight="500"
-                    fontStyle="normal"
-                    fontFamily="Inter"
-                  >
-                    <Text color="#CF222E" display="flex">
-                      <Text mt="0.2rem">
-                        <SmallErrorIcon />{" "}
+                    {inputCollateralAmount > walletBalance ||
+                    inputCollateralAmount < 0 ||
+                    isNaN(inputCollateralAmount) ? (
+                      <Text
+                        display="flex"
+                        justifyContent="space-between"
+                        color="#E6EDF3"
+                        mt="0.4rem"
+                        fontSize="12px"
+                        fontWeight="500"
+                        fontStyle="normal"
+                        fontFamily="Inter"
+                      >
+                        <Text color="#CF222E" display="flex">
+                          <Text mt="0.2rem">
+                            <SmallErrorIcon />{" "}
+                          </Text>
+                          <Text ml="0.3rem">
+                            {inputAmount > walletBalance
+                              ? "Amount exceeds balance"
+                              : "Invalid Input"}
+                          </Text>
+                        </Text>
+                        <Text
+                          color="#E6EDF3"
+                          display="flex"
+                          justifyContent="flex-end"
+                        >
+                          Wallet Balance: {walletBalance}
+                          <Text color="#6E7781" ml="0.2rem">
+                            {` ${currentCollateralCoin}`}
+                          </Text>
+                        </Text>
                       </Text>
-                      <Text ml="0.3rem">
-                        {inputAmount > walletBalance
-                          ? "Amount exceeds balance"
-                          : "Invalid Input"}
+                    ) : (
+                      <Text
+                        color="#E6EDF3"
+                        display="flex"
+                        justifyContent="flex-end"
+                        mt="0.4rem"
+                        fontSize="12px"
+                        fontWeight="500"
+                        fontStyle="normal"
+                        fontFamily="Inter"
+                      >
+                        Wallet Balance: {walletBalance}
+                        <Text color="#6E7781" ml="0.2rem">
+                          {` ${currentCollateralCoin}`}
+                        </Text>
                       </Text>
-                    </Text>
-                    <Text
-                      color="#E6EDF3"
-                      display="flex"
-                      justifyContent="flex-end"
-                    >
-                      Wallet Balance: {walletBalance}
-                      <Text color="#6E7781" ml="0.2rem">
-                        {` ${currentCollateralCoin}`}
-                      </Text>
-                    </Text>
-                  </Text>
-                ) : (
-                  <Text
-                    color="#E6EDF3"
-                    display="flex"
-                    justifyContent="flex-end"
-                    mt="0.4rem"
-                    fontSize="12px"
-                    fontWeight="500"
-                    fontStyle="normal"
-                    fontFamily="Inter"
-                  >
-                    Wallet Balance: {walletBalance}
-                    <Text color="#6E7781" ml="0.2rem">
-                      {` ${currentCollateralCoin}`}
-                    </Text>
-                  </Text>
-                )}
+                    )}
                     <Box pt={5} pb={2} mt="0.4rem">
                       <Slider
                         aria-label="slider-ex-6"
@@ -698,7 +702,8 @@ const TradeModal = () => {
                           ? "1px solid #CF222E"
                           : isNaN(inputBorrowAmount)
                           ? "1px solid #CF222E"
-                          : inputBorrowAmount > 0 && inputBorrowAmount <= walletBalance
+                          : inputBorrowAmount > 0 &&
+                            inputBorrowAmount <= walletBalance
                           ? "1px solid #1A7F37"
                           : "1px solid #2B2F35 "
                       }`}
@@ -712,6 +717,9 @@ const TradeModal = () => {
                         keepWithinRange={true}
                         onChange={handleBorrowChange}
                         value={inputBorrowAmount}
+                        step={parseFloat(
+                          `${inputBorrowAmount <= 99999 ? 0.1 : 0}`
+                        )}
                       >
                         <NumberInputField
                           placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
@@ -755,56 +763,56 @@ const TradeModal = () => {
                       </Button>
                     </Box>
                     {inputBorrowAmount > walletBalance ||
-                inputBorrowAmount < 0 ||
-                isNaN(inputBorrowAmount) ? (
-                  <Text
-                    display="flex"
-                    justifyContent="space-between"
-                    color="#E6EDF3"
-                    mt="0.4rem"
-                    fontSize="12px"
-                    fontWeight="500"
-                    fontStyle="normal"
-                    fontFamily="Inter"
-                  >
-                    <Text color="#CF222E" display="flex">
-                      <Text mt="0.2rem">
-                        <SmallErrorIcon />{" "}
+                    inputBorrowAmount < 0 ||
+                    isNaN(inputBorrowAmount) ? (
+                      <Text
+                        display="flex"
+                        justifyContent="space-between"
+                        color="#E6EDF3"
+                        mt="0.4rem"
+                        fontSize="12px"
+                        fontWeight="500"
+                        fontStyle="normal"
+                        fontFamily="Inter"
+                      >
+                        <Text color="#CF222E" display="flex">
+                          <Text mt="0.2rem">
+                            <SmallErrorIcon />{" "}
+                          </Text>
+                          <Text ml="0.3rem">
+                            {inputBorrowAmount > walletBalance
+                              ? "Amount exceeds balance"
+                              : "Invalid Input"}
+                          </Text>
+                        </Text>
+                        <Text
+                          color="#E6EDF3"
+                          display="flex"
+                          justifyContent="flex-end"
+                        >
+                          Available Reserves: {walletBalance}
+                          <Text color="#6E7781" ml="0.2rem">
+                            {` ${currentBorrowCoin}`}
+                          </Text>
+                        </Text>
                       </Text>
-                      <Text ml="0.3rem">
-                        {inputBorrowAmount > walletBalance
-                          ? "Amount exceeds balance"
-                          : "Invalid Input"}
+                    ) : (
+                      <Text
+                        color="#E6EDF3"
+                        display="flex"
+                        justifyContent="flex-end"
+                        mt="0.4rem"
+                        fontSize="12px"
+                        fontWeight="500"
+                        fontStyle="normal"
+                        fontFamily="Inter"
+                      >
+                        Available Reserves: {walletBalance}
+                        <Text color="#6E7781" ml="0.2rem">
+                          {` ${currentBorrowCoin}`}
+                        </Text>
                       </Text>
-                    </Text>
-                    <Text
-                      color="#E6EDF3"
-                      display="flex"
-                      justifyContent="flex-end"
-                    >
-                      Available Reserves:  {walletBalance}
-                      <Text color="#6E7781" ml="0.2rem">
-                        {` ${currentBorrowCoin}`}
-                      </Text>
-                    </Text>
-                  </Text>
-                ) : (
-                  <Text
-                    color="#E6EDF3"
-                    display="flex"
-                    justifyContent="flex-end"
-                    mt="0.4rem"
-                    fontSize="12px"
-                    fontWeight="500"
-                    fontStyle="normal"
-                    fontFamily="Inter"
-                  >
-                    Available Reserves: {walletBalance}
-                    <Text color="#6E7781" ml="0.2rem">
-                      {` ${currentBorrowCoin}`}
-                    </Text>
-                  </Text>
-                )}
+                    )}
                     <Box pt={5} pb={2} mt="0.8rem">
                       <Slider
                         aria-label="slider-ex-6"
@@ -852,11 +860,9 @@ const TradeModal = () => {
                       </Slider>
                     </Box>
                   </Box>
-                  
                 </Box>
-                
               </Box>
-              
+
               <Box w="48%">
                 <Box display="flex" flexDir="column" p="3" gap="1">
                   <Box>
@@ -966,7 +972,7 @@ const TradeModal = () => {
                                 }}
                                 fontSize="sm"
                                 _hover={{ background: "inherit" }}
-                                _disabled={{cursor:"pointer"}}
+                                _disabled={{ cursor: "pointer" }}
                                 isDisabled={dapp.status === "disable"}
                               >
                                 {dapp.name === currentDapp && (
@@ -1179,97 +1185,133 @@ const TradeModal = () => {
                   bg="#101216"
                   my="4"
                 >
-                  {radioValue=="1" &&                  <Box display="flex" justifyContent="space-between" mb="1">
-                    <Box display="flex">
+                  {radioValue == "1" && (
+                    <Box display="flex" justifyContent="space-between" mb="1">
+                      <Box display="flex">
+                        <Text color="#6E7681" fontSize="xs">
+                          est LP tokens recieved:{" "}
+                        </Text>
+                        <Tooltip
+                          hasArrow
+                          placement="bottom-start"
+                          boxShadow="dark-lg"
+                          label="all the assets to the market"
+                          bg="#24292F"
+                          fontSize={"smaller"}
+                          fontWeight={"thin"}
+                          borderRadius={"lg"}
+                          padding={"2"}
+                        >
+                          <Box p="1">
+                            <InfoIcon />
+                          </Box>
+                        </Tooltip>
+                      </Box>
                       <Text color="#6E7681" fontSize="xs">
-                        est LP tokens recieved:{" "}
+                        $ 10.91
                       </Text>
-                      <Tooltip
-                        hasArrow
-                        placement="bottom-start"
-                        boxShadow="dark-lg"
-                        label="all the assets to the market"
-                        bg="#24292F"
-                        fontSize={"smaller"}
-                        fontWeight={"thin"}
-                        borderRadius={"lg"}
-                        padding={"2"}
-                      >
-                        <Box p="1">
-                          <InfoIcon />
-                        </Box>
-                      </Tooltip>
                     </Box>
-                    <Text color="#6E7681" fontSize="xs">
-                      $ 10.91
-                    </Text>
-                  </Box>}
-                      {radioValue=="1" &&                  <Box  display="flex" justifyContent="space-between" mb="0.3rem">
-                                    <Box  display="flex">
-                                        <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">
-                                            Liquidity split:{" "}
-                                        </Text>
-                                        <Tooltip
-                                            hasArrow
-                                            placement="bottom-start"
-                                            boxShadow="dark-lg"
-                                            label="all the assets to the market"
-                                            bg="#24292F"
-                                            fontSize={"smaller"}
-                                            fontWeight={"thin"}
-                                            borderRadius={"lg"}
-                                            padding={"2"}
-                                        >
-                                            <Box ml="0.2rem" mt="0.2rem">
-                                                <InfoIcon />
-                                            </Box>
-                                        </Tooltip>
-                                    </Box>
-                                    <Box
-                                        display="flex"
-                                        gap="2"
-                                        color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal"
-                                    >
-                                        <Box display="flex" gap="2px">
-                                            <Box mt="2px">
-                                                <SmallEth />
-                                            </Box>
-                                            <Text>1.23</Text>
-                                        </Box>
-                                        <Box display="flex" gap="2px">
-                                            <Box mt="2px">
-                                                <SmallUsdt />
-                                            </Box>
-                                            <Text>1.23</Text>
-                                        </Box>
-                                    </Box>
-                                </Box>}
-                        {radioValue=="2" &&                                <Box  display="flex" justifyContent="space-between" mb="0.3rem">
-                                    <Box display="flex">
-                                    <Box display="flex" gap="2px">
-                                        <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">est</Text>
-                                            <Box mt="2px">
-                                                <SmallEth/>
-                                            </Box>
-                                        </Box>
-                                        <Tooltip
-                                            hasArrow
-                                            placement="bottom-start"
-                                            boxShadow="dark-lg"
-                                            label="all the assets to the market"
-                                            bg="#24292F"
-                                            fontSize={"smaller"}
-                                            fontWeight={"thin"}
-                                            borderRadius={"lg"}
-                                            padding={"2"}
-                                        >
-                                            <Box ml="0.2rem" mt="0.2rem">
-                                                <InfoIcon />
-                                            </Box>
-                                        </Tooltip>
-                                    </Box>
-                                    <Text color="#6A737D" fontSize="12px" fontWeight="400" fontStyle="normal">$10.91</Text>
-                                </Box>}
+                  )}
+                  {radioValue == "1" && (
+                    <Box
+                      display="flex"
+                      justifyContent="space-between"
+                      mb="0.3rem"
+                    >
+                      <Box display="flex">
+                        <Text
+                          color="#6A737D"
+                          fontSize="12px"
+                          fontWeight="400"
+                          fontStyle="normal"
+                        >
+                          Liquidity split:{" "}
+                        </Text>
+                        <Tooltip
+                          hasArrow
+                          placement="bottom-start"
+                          boxShadow="dark-lg"
+                          label="all the assets to the market"
+                          bg="#24292F"
+                          fontSize={"smaller"}
+                          fontWeight={"thin"}
+                          borderRadius={"lg"}
+                          padding={"2"}
+                        >
+                          <Box ml="0.2rem" mt="0.2rem">
+                            <InfoIcon />
+                          </Box>
+                        </Tooltip>
+                      </Box>
+                      <Box
+                        display="flex"
+                        gap="2"
+                        color="#6A737D"
+                        fontSize="12px"
+                        fontWeight="400"
+                        fontStyle="normal"
+                      >
+                        <Box display="flex" gap="2px">
+                          <Box mt="2px">
+                            <SmallEth />
+                          </Box>
+                          <Text>1.23</Text>
+                        </Box>
+                        <Box display="flex" gap="2px">
+                          <Box mt="2px">
+                            <SmallUsdt />
+                          </Box>
+                          <Text>1.23</Text>
+                        </Box>
+                      </Box>
+                    </Box>
+                  )}
+                  {radioValue == "2" && (
+                    <Box
+                      display="flex"
+                      justifyContent="space-between"
+                      mb="0.3rem"
+                    >
+                      <Box display="flex">
+                        <Box display="flex" gap="2px">
+                          <Text
+                            color="#6A737D"
+                            fontSize="12px"
+                            fontWeight="400"
+                            fontStyle="normal"
+                          >
+                            est
+                          </Text>
+                          <Box mt="2px">
+                            <SmallEth />
+                          </Box>
+                        </Box>
+                        <Tooltip
+                          hasArrow
+                          placement="bottom-start"
+                          boxShadow="dark-lg"
+                          label="all the assets to the market"
+                          bg="#24292F"
+                          fontSize={"smaller"}
+                          fontWeight={"thin"}
+                          borderRadius={"lg"}
+                          padding={"2"}
+                        >
+                          <Box ml="0.2rem" mt="0.2rem">
+                            <InfoIcon />
+                          </Box>
+                        </Tooltip>
+                      </Box>
+                      <Text
+                        color="#6A737D"
+                        fontSize="12px"
+                        fontWeight="400"
+                        fontStyle="normal"
+                      >
+                        $10.91
+                      </Text>
+                    </Box>
+                  )}
                   <Box display="flex" justifyContent="space-between" mb="1">
                     <Box display="flex">
                       <Text color="#6E7681" fontSize="xs">
@@ -1362,7 +1404,7 @@ const TradeModal = () => {
                         borderRadius={"lg"}
                         padding={"2"}
                       >
-                        <Box  padding="0.25rem">
+                        <Box padding="0.25rem">
                           <InfoIcon />
                         </Box>
                       </Tooltip>

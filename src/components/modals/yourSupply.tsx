@@ -431,6 +431,9 @@ const YourSupplyModal = () => {
                             onChange={handleChange}
                             value={inputSupplyAmount ? inputSupplyAmount : ""}
                             outline="none"
+                            step={parseFloat(
+                              `${inputSupplyAmount <= 99999 ? 0.1 : 0}`
+                            )}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
@@ -952,6 +955,9 @@ const YourSupplyModal = () => {
                               inputWithdrawlAmount ? inputWithdrawlAmount : ""
                             }
                             outline="none"
+                            step={parseFloat(
+                              `${inputWithdrawlAmount <= 99999 ? 0.1 : 0}`
+                            )}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedWithdrawlCoin}`}

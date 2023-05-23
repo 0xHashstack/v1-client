@@ -345,6 +345,11 @@ const BorrowModal = () => {
                     keepWithinRange={true}
                     onChange={handleChange}
                     value={inputCollateralAmount ? inputCollateralAmount : ""}
+                    // outline="none"
+                    // precision={1}
+                    step={parseFloat(
+                      `${inputCollateralAmount <= 99999 ? 0.1 : 0}`
+                    )}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentCollateralCoin}`}
@@ -630,6 +635,7 @@ const BorrowModal = () => {
                     keepWithinRange={true}
                     onChange={handleBorrowChange}
                     value={inputBorrowAmount ? inputBorrowAmount : ""}
+                    step={parseFloat(`${inputBorrowAmount <= 99999 ? 0.1 : 0}`)}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
