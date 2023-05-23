@@ -54,6 +54,7 @@ import {
 } from "@starknet-react/core";
 // import useOutsideClickHandler from "../../../utils/functions/clickOutsideDropdownHandler";
 import { languages } from "@/utils/constants/languages";
+import { useRouter } from "next/router";
 const Navbar = () => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
@@ -79,6 +80,8 @@ const Navbar = () => {
   };
   const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
   const walletConnectionDropdown = ["Disconnect", "Switch wallet"];
+
+  const router = useRouter();
 
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
@@ -407,7 +410,7 @@ const Navbar = () => {
           <Box
             fontSize="12px"
             color="#FFF"
-            width="13rem"
+            // width="13rem"
             height="2rem"
             cursor="pointer"
             display="flex"
@@ -426,7 +429,9 @@ const Navbar = () => {
               borderRadius="6px"
               flexDirection="row"
               paddingY="6px"
-              justifyContent="space-between"
+              pr="2.2rem"
+              pl="1rem"
+              justifyContent="flex-start"
               alignItems="center"
               width="100%"
               height="100%"
@@ -444,8 +449,8 @@ const Navbar = () => {
                   display="flex"
                   justifyContent="flex-start"
                   alignItems="center"
-                  pl={5}
-                  gap={3.5}
+                  // pl={5}
+                  gap={2.5}
                 >
                   <Image
                     // onClick={() => {
@@ -494,7 +499,7 @@ const Navbar = () => {
                   </Text>
                 </>
               )}
-              <Box position="absolute" right="0.8rem">
+              <Box position="absolute" right="0.7rem">
                 {!navDropdowns.walletConnectionDropdown ? (
                   <Image
                     src={"./connectWalletArrowDown.svg"}
@@ -541,7 +546,10 @@ const Navbar = () => {
                       marginRight="8px"
                       borderRadius="6px"
                       border="1px solid #2B2F35"
-                      onClick={() => disconnect()}
+                      onClick={() => {
+                        disconnect();
+                        router.push("./");
+                      }}
                     >
                       Disconnect
                     </Box>
@@ -551,7 +559,10 @@ const Navbar = () => {
                       marginRight="8px"
                       borderRadius="6px"
                       border="1px solid #2B2F35"
-                      onClick={() => connect(connectors[1])}
+                      onClick={() => {
+                        disconnect();
+                        router.push("./");
+                      }}
                     >
                       Switch Wallet
                     </Box>
