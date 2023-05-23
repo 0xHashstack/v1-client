@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import PageCard from "@/components/layouts/pageCard";
 import { Box, HStack, Text, Tooltip, VStack } from "@chakra-ui/react";
 import CancelIcon from "@/assets/icons/cancelIcon";
-import SliderTooltip from "@/components/uiElements/sliders/sliderTooltip";
 import InfoIcon from "@/assets/icons/infoIcon";
 import BTCLogo from "@/assets/icons/coins/btc";
 import InfoIconBig from "@/assets/icons/infoIconBig";
@@ -13,6 +12,7 @@ import _coins from "@/utils/constants/coins";
 import {
   selectMetricsDropdowns,
   setMetricsDropdown,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
 import TotalRevenueChart from "@/components/layouts/charts/TotalRevenue";
 import Link from "next/link";
