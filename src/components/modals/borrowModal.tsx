@@ -91,9 +91,13 @@ const BorrowModal = () => {
       dispatch(setInputBorrowModalCollateralAmount(newValue));
     } else {
       percentage = Math.round(percentage);
-      setSliderValue(percentage);
-      setinputCollateralAmount(newValue);
-      dispatch(setInputBorrowModalCollateralAmount(newValue));
+      if(isNaN(percentage)){
+
+      }else{
+        setSliderValue(percentage);
+        setinputCollateralAmount(newValue);
+        dispatch(setInputBorrowModalCollateralAmount(newValue));
+      }
       // dispatch((newValue));
     }
   };
@@ -106,9 +110,13 @@ const BorrowModal = () => {
       dispatch(setInputBorrowModalCollateralAmount(newValue));
     } else {
       percentage = Math.round(percentage);
-      setsliderValue2(percentage);
-      setinputBorrowAmount(newValue);
-      dispatch(setInputBorrowModalCollateralAmount(newValue));
+      if(isNaN(percentage)){
+
+      }else{
+        setsliderValue2(percentage);
+        setinputBorrowAmount(newValue);
+        dispatch(setInputBorrowModalCollateralAmount(newValue));
+      }
       // dispatch((newValue));
     }
   };

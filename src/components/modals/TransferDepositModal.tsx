@@ -47,6 +47,7 @@ import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import AaveLogo from "@/assets/icons/coins/aave";
 import CompoundLogo from "@/assets/icons/coins/compound";
+import { useRouter } from "next/router";
 
 const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -62,6 +63,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
   const inputAmount1 = useSelector(selectInputSupplyAmount);
+  const router =useRouter();
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -235,7 +237,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                               //   dispatch(setCoinSelectedSupplyModal(protocol));
                             }}
                           >
-                            {protocol === currentSelectedCoin && (
+                            {protocol === currentProtocol && (
                               <Box
                                 w="3px"
                                 h="28px"
@@ -738,6 +740,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                         successText={"Success"}
                       />,
                     ]}
+                    onClick={()=>{router.push('/market')}}
                   >
                     Transfer Deposit
                   </AnimatedButton>

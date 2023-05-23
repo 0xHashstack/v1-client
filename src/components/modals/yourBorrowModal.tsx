@@ -816,10 +816,14 @@ const YourBorrowModal = () => {
       setinputRepayAmount(newValue);
       dispatch(setInputYourBorrowModalRepayAmount(newValue));
     } else {
-      percentage = Math.round(percentage * 100) / 100;
-      setSliderValue(percentage);
-      setinputRepayAmount(newValue);
-      dispatch(setInputYourBorrowModalRepayAmount(newValue));
+      percentage = Math.round(percentage );
+      if(isNaN(percentage)){
+
+      }else{
+        setSliderValue(percentage);
+        setinputRepayAmount(newValue);
+        dispatch(setInputYourBorrowModalRepayAmount(newValue));
+      }
       // dispatch((newValue));
     }
   };
@@ -832,9 +836,14 @@ const YourBorrowModal = () => {
       setinputCollateralAmount(newValue);
       // dispatch(setInputYourBorrowModalRepayAmount(newValue));
     } else {
-      percentage = Math.round(percentage * 100) / 100;
-      setSliderValue2(percentage);
-      setinputCollateralAmount(newValue);
+      percentage = Math.round(percentage);
+      if(isNaN(percentage)){
+
+      }else{
+
+        setSliderValue2(percentage);
+        setinputCollateralAmount(newValue);
+      }
       // dispatch(setInputYourBorrowModalRepayAmount(newValue));
       // dispatch((newValue));
     }

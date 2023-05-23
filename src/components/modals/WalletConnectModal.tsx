@@ -68,6 +68,7 @@ const WalletConnectModal = ({
   useEffect(() => {
     // alert(status)
     if (status == "connected") {
+      router.push('/waitlist')
 
       // alert(account?.address);
       // router.push('/market');
