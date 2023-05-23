@@ -54,7 +54,6 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   const [currentProtocol, setcurrentProtocol] = useState("Aave");
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
-  const [currentSelectedCoin1, setCurrentSelectedCoin1] = useState("Aave");
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
@@ -81,6 +80,12 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
         break;
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
+        break;
+      case "Aave":
+        return <AaveLogo />;
+        break;
+      case "Compound":
+        return <CompoundLogo />;
         break;
       case "Aave":
         return <AaveLogo />;
@@ -121,7 +126,13 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   };
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-  const protocols = ["Aave", "Compound"];
+  const protocols=["Aave","Compound"];
+  const resetStates=()=>{
+    setcurrentProtocol("Aave");
+    setinputAmount(0);
+    setSliderValue(0);
+    setCurrentSelectedCoin("BTC");
+  }
 
   return (
     <div>
@@ -131,7 +142,10 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
       <Portal>
         <Modal
           isOpen={isOpen}
-          onClose={onClose}
+          onClose={()=>{
+            onClose();
+            resetStates();
+          }}
           size={{ width: "700px", height: "100px" }}
           isCentered
         >
@@ -423,7 +437,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     value={inputAmount ? inputAmount : ""}
                     outline="none"
                     precision={1}
-                    step={0.1}
+                    step={parseFloat(`${inputAmount <= 99999 ? 0.1 : 0}`)}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
@@ -711,7 +725,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                   </Text>
                 </Text>
               </Card>
-              {inputAmount1 > 0 && inputAmount <= walletBalance ? (
+              {inputAmount > 0 && inputAmount <= walletBalance ? (
                 buttonId == 1 ? (
                   <SuccessButton successText="Supply success" />
                 ) : buttonId == 2 ? (

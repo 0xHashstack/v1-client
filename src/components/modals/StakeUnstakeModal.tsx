@@ -37,8 +37,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
   selectModalDropDowns,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
 import EthToUsdt from "@/assets/icons/pools/ethToUsdt";
 import MySwapDisabled from "@/assets/icons/dapps/mySwapDisabled";
@@ -174,6 +175,15 @@ const StakeUnstakeModal = () => {
   const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
     useState("BTC");
   const [buttonId, setButtonId] = useState(0);
+  const resetStates=()=>{
+    setSliderValue(0);
+    setSliderValue2(0);
+    setInputStakeAmount(0);
+    setInputUnstakeAmount(0);
+    setCurrentSelectedStakeCoin("rBTC");
+    setcurrentSelectedUnstakeCoin("rBTC");
+    dispatch(resetModalDropdowns());
+  }
   return (
     <Box>
       <Text
@@ -206,7 +216,11 @@ const StakeUnstakeModal = () => {
 
       <Modal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={()=>{
+            onClose();
+            resetStates();
+
+        }}
         isCentered
         //   scrollBehavior="inside"
       >
@@ -434,6 +448,9 @@ const StakeUnstakeModal = () => {
                             onChange={handleChange}
                             value={inputStakeAmount ? inputStakeAmount : ""}
                             outline="none"
+                            step={parseFloat(
+                              `${inputStakeAmount <= 99999 ? 0.1 : 0}`
+                            )}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
@@ -930,6 +947,9 @@ const StakeUnstakeModal = () => {
                             onChange={handleUnstakeChange}
                             value={inputUnstakeAmount ? inputUnstakeAmount : ""}
                             outline="none"
+                            step={parseFloat(
+                              `${inputUnstakeAmount <= 99999 ? 0.1 : 0}`
+                            )}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}

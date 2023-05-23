@@ -38,6 +38,7 @@ import {
 import {
   setModalDropdown,
   selectModalDropDowns,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
 import { useState } from "react";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
@@ -45,7 +46,6 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
-
 const BorrowModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [sliderValue, setSliderValue] = useState(0);
@@ -91,9 +91,8 @@ const BorrowModal = () => {
       dispatch(setInputBorrowModalCollateralAmount(newValue));
     } else {
       percentage = Math.round(percentage);
-      if(isNaN(percentage)){
-
-      }else{
+      if (isNaN(percentage)) {
+      } else {
         setSliderValue(percentage);
         setinputCollateralAmount(newValue);
         dispatch(setInputBorrowModalCollateralAmount(newValue));
@@ -110,9 +109,8 @@ const BorrowModal = () => {
       dispatch(setInputBorrowModalCollateralAmount(newValue));
     } else {
       percentage = Math.round(percentage);
-      if(isNaN(percentage)){
-
-      }else{
+      if (isNaN(percentage)) {
+      } else {
         setsliderValue2(percentage);
         setinputBorrowAmount(newValue);
         dispatch(setInputBorrowModalCollateralAmount(newValue));
@@ -126,6 +124,16 @@ const BorrowModal = () => {
 
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState("BTC");
   const [currentBorrowCoin, setCurrentBorrowCoin] = useState("BTC");
+
+  const resetStates=()=>{
+    setCurrentCollateralCoin("BTC");
+    setCurrentBorrowCoin("BTC");
+    setinputBorrowAmount(0);
+    setinputCollateralAmount(0);
+    setSliderValue(0);
+    setsliderValue2(0);
+    dispatch(resetModalDropdowns());
+  }
 
   return (
     <Box>
@@ -147,7 +155,10 @@ const BorrowModal = () => {
 
       <Modal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={()=>{
+          onClose();
+          resetStates();
+        }}
         isCentered
         scrollBehavior="inside"
       >
@@ -332,6 +343,11 @@ const BorrowModal = () => {
                     keepWithinRange={true}
                     onChange={handleChange}
                     value={inputCollateralAmount ? inputCollateralAmount : ""}
+                    // outline="none"
+                    // precision={1}
+                    step={parseFloat(
+                      `${inputCollateralAmount <= 99999 ? 0.1 : 0}`
+                    )}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentCollateralCoin}`}
@@ -617,6 +633,7 @@ const BorrowModal = () => {
                     keepWithinRange={true}
                     onChange={handleBorrowChange}
                     value={inputBorrowAmount ? inputBorrowAmount : ""}
+                    step={parseFloat(`${inputBorrowAmount <= 99999 ? 0.1 : 0}`)}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}

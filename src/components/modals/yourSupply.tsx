@@ -45,6 +45,7 @@ import {
   setNavDropdown,
   setModalDropdown,
   selectModalDropDowns,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
 import { useState } from "react";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
@@ -168,6 +169,15 @@ const YourSupplyModal = () => {
     useState("BTC");
   const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
     useState("BTC");
+    const resetStates=()=>{
+      setSliderValue(0);
+      setSliderValue2(0);
+      setinputSupplyAmount(0);
+      setinputWithdrawlAmount(0);
+      setCurrentSelectedSupplyCoin("BTC");
+      setcurrentSelectedWithdrawlCoin("BTC");
+      dispatch(resetModalDropdowns());
+    }
   return (
     <Box>
       <Button
@@ -187,7 +197,10 @@ const YourSupplyModal = () => {
 
       <Modal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={()=>{
+          onClose();
+          resetStates();
+        }}
         isCentered
         //   scrollBehavior="inside"
       >
@@ -418,6 +431,9 @@ const YourSupplyModal = () => {
                             onChange={handleChange}
                             value={inputSupplyAmount ? inputSupplyAmount : ""}
                             outline="none"
+                            step={parseFloat(
+                              `${inputSupplyAmount <= 99999 ? 0.1 : 0}`
+                            )}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
@@ -939,6 +955,9 @@ const YourSupplyModal = () => {
                               inputWithdrawlAmount ? inputWithdrawlAmount : ""
                             }
                             outline="none"
+                            step={parseFloat(
+                              `${inputWithdrawlAmount <= 99999 ? 0.1 : 0}`
+                            )}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedWithdrawlCoin}`}

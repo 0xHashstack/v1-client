@@ -33,6 +33,9 @@ const SupplyAprChart = () => {
       // },
     ],
     options: {
+      markers: {
+        colors: ['#22863A'], // Set the marker color(s)
+      },
       chart: {
         toolbar: {
           show: false,
@@ -42,6 +45,9 @@ const SupplyAprChart = () => {
         enabled: false,
       },
       xaxis: {
+        tooltip: {
+          enabled: false, // Disable the x-axis tooltip
+        },
         axisTicks: {
           show: false, // Hide the small spikes at x-axis labels
         },

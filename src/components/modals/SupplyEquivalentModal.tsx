@@ -59,7 +59,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
   const inputAmount1 = useSelector(selectInputSupplyAmount);
-  const router =useRouter();
+  const router = useRouter();
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -111,6 +111,11 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
   };
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const resetStates=()=>{
+    setinputAmount(0);
+    setSliderValue(0);
+    setCurrentSelectedCoin("USDT");
+  }
 
   return (
     <div>
@@ -120,7 +125,10 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
       <Portal>
         <Modal
           isOpen={isOpen}
-          onClose={onClose}
+          onClose={()=>{
+            onClose();
+            resetStates();
+          }}
           size={{ width: "700px", height: "100px" }}
           isCentered
         >
@@ -190,7 +198,9 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                   borderRadius="md"
                   className="navbar"
                   cursor="pointer"
-                  onClick={() => handleDropdownClick("supplyEquivalentMarketDropDown")}
+                  onClick={() =>
+                    handleDropdownClick("supplyEquivalentMarketDropDown")
+                  }
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentSelectedCoin)}</Box>
@@ -305,8 +315,8 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                     onChange={handleChange}
                     value={inputAmount ? inputAmount : ""}
                     outline="none"
-                    precision={1}
-                    step={0.1}
+                    // precision={1}
+                    step={parseFloat(`${inputAmount <= 99999 ? 0.1 : 0}`)}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
@@ -398,7 +408,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                     </Text>
                   </Text>
                 )}
-                               <Box pt={5} pb={2} mt="0.9rem">
+                <Box pt={5} pb={2} mt="0.9rem">
                   <Slider
                     aria-label="slider-ex-6"
                     defaultValue={sliderValue}
@@ -594,7 +604,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                   </Text>
                 </Text>
               </Card>
-              {inputAmount1 > 0 && inputAmount <= walletBalance ? (
+              {inputAmount > 0 && inputAmount <= walletBalance ? (
                 buttonId == 1 ? (
                   <SuccessButton successText="Supply success" />
                 ) : buttonId == 2 ? (
@@ -623,8 +633,10 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                     //     successText={"Success"}
                     //   />,
                     // ]}
-                    _hover={{background:"white",color:"black"}}
-                    onClick={()=>{router.push('/market')}}
+                    _hover={{ background: "white", color: "black" }}
+                    onClick={() => {
+                      router.push("/market");
+                    }}
                   >
                     Supply
                   </Button>

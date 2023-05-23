@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Modal,
@@ -42,6 +42,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
   selectModalDropDowns,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
@@ -54,10 +55,10 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
 
+
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
-  const inputAmount1 = useSelector(selectInputSupplyAmount);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -110,6 +111,13 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
+  const resetStates=()=>{
+    setinputAmount(0);
+    setSliderValue(0);
+    setCurrentSelectedCoin("BTC");
+    dispatch(resetModalDropdowns());
+  }
+
   return (
     <div>
       <Button onClick={onOpen} {...restProps}>
@@ -118,7 +126,10 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
       <Portal>
         <Modal
           isOpen={isOpen}
-          onClose={onClose}
+          onClose={()=>{
+            onClose();
+            resetStates();
+          }}
           size={{ width: "700px", height: "100px" }}
           isCentered
         >
@@ -303,8 +314,8 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                     onChange={handleChange}
                     value={inputAmount ? inputAmount : ""}
                     outline="none"
-                    precision={1}
-                    step={0.1}
+                    // precision={1}
+                    step={parseFloat(`${inputAmount <= 99999 ? 0.1 : 0}`)}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
@@ -593,7 +604,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                   </Text>
                 </Text>
               </Card>
-              {inputAmount1 > 0 && inputAmount <= walletBalance ? (
+              {inputAmount > 0 && inputAmount <= walletBalance ? (
                 buttonId == 1 ? (
                   <SuccessButton successText="Supply success" />
                 ) : buttonId == 2 ? (

@@ -41,6 +41,7 @@ import {
   setModalDropdown,
   selectNavDropdowns,
   selectModalDropDowns,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
 import { useState } from "react";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
@@ -69,7 +70,13 @@ import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 
-const YourBorrowModal = () => {
+const YourBorrowModal = ({
+  borrowIDCoinMap,
+  currentID,
+  currentMarket,
+}: any) => {
+  // console.log("took map", borrowIDCoinMap, currentID, currentMarket);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
   // const dispatch = useDispatch();
   const dispatch = useDispatch();
@@ -790,12 +797,12 @@ const YourBorrowModal = () => {
   const [radioValue, setRadioValue] = useState("1");
 
   const [currentBorrowMarketCoin1, setCurrentBorrowMarketCoin1] =
-    useState("BTC");
+    useState(currentMarket);
   const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
     useState("BTC");
-  const [currentPoolCoin, setCurrentPoolCoin] = useState("ETH");
+  const [currentPoolCoin, setCurrentPoolCoin] = useState("Select a pool");
   const [currentAction, setCurrentAction] = useState("Spend Borrow");
-  const [currentBorrowId1, setCurrentBorrowId1] = useState("ID - 123456");
+  const [currentBorrowId1, setCurrentBorrowId1] = useState(currentID);
   const [currentBorrowId2, setCurrentBorrowId2] = useState("ID - 123456");
   const [currentDapp, setCurrentDapp] = useState("Select a dapp");
   const [currentPool, setCurrentPool] = useState("Select a pool");
@@ -816,10 +823,9 @@ const YourBorrowModal = () => {
       setinputRepayAmount(newValue);
       dispatch(setInputYourBorrowModalRepayAmount(newValue));
     } else {
-      percentage = Math.round(percentage );
-      if(isNaN(percentage)){
-
-      }else{
+      percentage = Math.round(percentage);
+      if (isNaN(percentage)) {
+      } else {
         setSliderValue(percentage);
         setinputRepayAmount(newValue);
         dispatch(setInputYourBorrowModalRepayAmount(newValue));
@@ -837,10 +843,8 @@ const YourBorrowModal = () => {
       // dispatch(setInputYourBorrowModalRepayAmount(newValue));
     } else {
       percentage = Math.round(percentage);
-      if(isNaN(percentage)){
-
-      }else{
-
+      if (isNaN(percentage)) {
+      } else {
         setSliderValue2(percentage);
         setinputCollateralAmount(newValue);
       }
@@ -849,8 +853,45 @@ const YourBorrowModal = () => {
     }
   };
 
+  const handleBorrowMarketCoinChange = (id: string) => {
+    // console.log("got id", id);
+    for (let i = 0; i < borrowIDCoinMap.length; i++) {
+      if (borrowIDCoinMap[i].id === id.slice(5)) {
+        setCurrentBorrowMarketCoin1(borrowIDCoinMap[i].name);
+        return;
+      }
+    }
+  };
+
+  const handleBorrowMarketIDChange = (coin: string) => {
+    // console.log("got coin", coin);
+    for (let i = 0; i < borrowIDCoinMap.length; i++) {
+      if (borrowIDCoinMap[i].name === coin) {
+        setCurrentBorrowId1(`ID - ${borrowIDCoinMap[i].id}`);
+        return;
+      }
+    }
+  };
+
   // const walletBalance = useSelector(selectWalletBalance);
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
+  const resetStates=()=>{
+    setRadioValue("1");
+    setCurrentAction("Spend Borrow")
+    setCurrentBorrowMarketCoin1("BTC");
+    setCurrentBorrowMarketCoin2("BTC");
+    setCurrentBorrowId1("ID - 123456");
+    setCurrentBorrowId2("ID - 123456");
+    setCurrentDapp("Select a dapp");
+    setCurrentPool("Select a pool");
+    setCurrentPoolCoin("Select a pool")
+    setinputCollateralAmount(0);
+    setSliderValue(0);
+    setSliderValue2(0);
+    setinputRepayAmount(0);
+    dispatch(resetModalDropdowns());
+
+  }
   return (
     <Box>
       <Button
@@ -871,7 +912,10 @@ const YourBorrowModal = () => {
 
       <Modal
         isOpen={isOpen}
-        onClose={onClose}
+        onClose={()=>{
+          onClose();
+          resetStates();
+        }}
         isCentered
         scrollBehavior="inside"
         // size="sm"
@@ -1113,6 +1157,7 @@ const YourBorrowModal = () => {
                                       pr="2"
                                       onClick={() => {
                                         setCurrentBorrowId1(coin);
+                                        handleBorrowMarketCoinChange(coin);
                                       }}
                                     >
                                       {coin === currentBorrowId1 && (
@@ -1223,6 +1268,7 @@ const YourBorrowModal = () => {
                                       pr="2"
                                       onClick={() => {
                                         setCurrentBorrowMarketCoin1(coin);
+                                        handleBorrowMarketIDChange(coin);
                                       }}
                                     >
                                       {coin === currentBorrowMarketCoin1 && (
@@ -1308,6 +1354,9 @@ const YourBorrowModal = () => {
                                 onChange={handleChange}
                                 value={inputRepayAmount}
                                 isDisabled={currentAction === "Zero Repay"}
+                                step={parseFloat(
+                                  `${inputRepayAmount <= 99999 ? 0.1 : 0}`
+                                )}
                               >
                                 <NumberInputField
                                   placeholder={`Minimum 0.01536 ${currentBorrowMarketCoin1}`}
@@ -1640,19 +1689,20 @@ const YourBorrowModal = () => {
                               as="button"
                             >
                               <Box display="flex" gap="1">
-                                {currentPool != "Select a pool" ? (
-                                  <Box p="1">
+                              {getCoin(
+                                      radioValue === "1"
+                                        ? currentPool
+                                        : currentPoolCoin
+                                    )?                                  <Box p="1">
                                     {getCoin(
                                       radioValue === "1"
                                         ? currentPool
                                         : currentPoolCoin
                                     )}
-                                  </Box>
-                                ) : (
-                                  ""
-                                )}
+                                  </Box>:""}
 
-                                <Text>
+
+                                <Text mt="0.2rem">
                                   {radioValue === "1"
                                     ? currentPool
                                     : currentPoolCoin}
@@ -1779,7 +1829,7 @@ const YourBorrowModal = () => {
                       {getContainer(currentAction)}
                       {currentAction == "Spend Borrow" ? (
                         currentDapp != "Select a dapp" &&
-                        currentPool != "Select a pool" ? (
+                        (currentPool != "Select a pool" || currentPoolCoin!='Select a pool') ? (
                           <AnimatedButton
                             bgColor="#101216"
                             // bgColor="red"
@@ -1922,31 +1972,31 @@ const YourBorrowModal = () => {
                         mt="1.5rem"
                       >
                         <Box display="flex" flexDirection="column" gap="1">
-                          <Box display="flex">
-                            <Text
-                              fontSize="12px"
-                              fontWeight="400"
-                              fontStyle="normal"
-                              color="#8B949E"
-                            >
-                              Borrow ID
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="bottom-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box p="1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
+                        <Text color="#8B949E" display="flex" alignItems="center">
+                  <Text
+                    mr="0.3rem"
+                    fontSize="12px"
+                    fontStyle="normal"
+                    fontWeight="400"
+                  >
+                    Borrow ID
+                  </Text>
+                  <Tooltip
+                    hasArrow
+                    placement="bottom-start"
+                    boxShadow="dark-lg"
+                    label="all the assets to the market"
+                    bg="#24292F"
+                    fontSize={"smaller"}
+                    fontWeight={"thin"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                  >
+                    <Box>
+                      <InfoIcon />
+                    </Box>
+                  </Tooltip>
+                </Text>
                           <Box
                             display="flex"
                             border="1px"
@@ -1964,7 +2014,7 @@ const YourBorrowModal = () => {
                             }
                             as="button"
                           >
-                            <Box display="flex" gap="1">
+                            <Box display="flex" gap="1" pt="1">
                               {currentBorrowId2}
                             </Box>
                             <Text pt="1" className="navbar-button">
@@ -2027,31 +2077,31 @@ const YourBorrowModal = () => {
                           </Box>
                         </Box>
                         <Box display="flex" flexDirection="column" gap="1">
-                          <Box display="flex">
-                            <Text
-                              fontSize="12px"
-                              fontWeight="400"
-                              fontStyle="normal"
-                              color="#8B949E"
-                            >
-                              Borrow Market
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="bottom-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box p="1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
+                        <Text color="#8B949E" display="flex" alignItems="center">
+                  <Text
+                    mr="0.3rem"
+                    fontSize="12px"
+                    fontStyle="normal"
+                    fontWeight="400"
+                  >
+                    Borrow Market
+                  </Text>
+                  <Tooltip
+                    hasArrow
+                    placement="bottom-start"
+                    boxShadow="dark-lg"
+                    label="all the assets to the market"
+                    bg="#24292F"
+                    fontSize={"smaller"}
+                    fontWeight={"thin"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                  >
+                    <Box>
+                      <InfoIcon />
+                    </Box>
+                  </Tooltip>
+                </Text>
                           <Box
                             display="flex"
                             border="1px"
@@ -2060,7 +2110,7 @@ const YourBorrowModal = () => {
                             py="2"
                             pl="3"
                             pr="3"
-                            mt="0.3rem"
+                            mt="-0.1rem"
                             borderRadius="md"
                             className="navbar"
                             cursor="pointer"
@@ -2265,6 +2315,9 @@ const YourBorrowModal = () => {
                               inputCollateralAmount ? inputCollateralAmount : ""
                             }
                             outline="none"
+                            step={parseFloat(
+                              `${inputCollateralAmount <= 99999 ? 0.1 : 0}`
+                            )}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
