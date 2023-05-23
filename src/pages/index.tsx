@@ -23,7 +23,7 @@ export default function Home() {
   const { account, address, status } = useAccount();
   const { available, disconnect, connect, connectors } = useConnectors();
   const [render, setRender] = useState(true);
-  const [isWhiteListed,setIsWhiteListed]=useState(true);
+  const [isWhiteListed, setIsWhiteListed] = useState(false);
   const router = useRouter();
   const href = "/waitlist";
   const href2 = "/market";
@@ -35,17 +35,17 @@ export default function Home() {
     // alert(status)
     if (status == "connected") {
       // alert(account?.address);
-      if(isWhiteListed){
-        router.push(href)
-      }else{
+      if (!isWhiteListed) {
+        router.push(href);
+      } else {
         router.push(href2);
       }
       dispatch(setAccount(account));
     }
-  }, [account, status,dispatch,router]);
+  }, [account, status, dispatch, router]);
   return (
     <PageCard justifyContent="center" alignItems="center">
-        <Text fontSize="46px" color="#FFFFFF">
+      <Text fontSize="46px" color="#FFFFFF">
         Welcome to Hashstack&apos;s mainnet!
       </Text>
 
@@ -53,7 +53,6 @@ export default function Home() {
         placeHolder={"Connect Wallet"}
         onClick={() => connect(connectors[0])}
       />
-      </PageCard>
-
+    </PageCard>
   );
 }

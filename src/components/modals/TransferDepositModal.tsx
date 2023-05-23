@@ -63,7 +63,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
   const inputAmount1 = useSelector(selectInputSupplyAmount);
-  const router =useRouter();
+  const router = useRouter();
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -82,12 +82,12 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
-        case "Aave":
-            return <AaveLogo/>;
-            break;
-        case "Compound":
-            return <CompoundLogo/>
-            break;
+      case "Aave":
+        return <AaveLogo />;
+        break;
+      case "Compound":
+        return <CompoundLogo />;
+        break;
       default:
         break;
     }
@@ -121,7 +121,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   };
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-  const protocols=["Aave","Compound"];
+  const protocols = ["Aave", "Compound"];
 
   return (
     <div>
@@ -163,14 +163,14 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                 border="1px solid #2B2F35"
                 mt="-1.5"
               >
-                                <Text color="#8B949E" display="flex" alignItems="center">
+                <Text color="#8B949E" display="flex" alignItems="center">
                   <Text
                     mr="0.3rem"
                     fontSize="12px"
                     fontStyle="normal"
                     fontWeight="400"
                   >
-                    Select Market
+                    Select Protocol
                   </Text>
                   <Tooltip
                     hasArrow
@@ -201,7 +201,9 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                   borderRadius="md"
                   className="navbar"
                   cursor="pointer"
-                  onClick={() => handleDropdownClick("transferDepositProtocolDropdown")}
+                  onClick={() =>
+                    handleDropdownClick("transferDepositProtocolDropdown")
+                  }
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentProtocol)}</Box>
@@ -232,7 +234,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                             pr="2"
                             onClick={() => {
                               setcurrentProtocol(protocol);
-                            //   dispatch(setCoinSelectedSupplyModal(protocol));
+                              //   dispatch(setCoinSelectedSupplyModal(protocol));
                             }}
                           >
                             {protocol === currentProtocol && (
@@ -303,7 +305,9 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                   borderRadius="md"
                   className="navbar"
                   cursor="pointer"
-                  onClick={() => handleDropdownClick("transferDepostMarketDropdown")}
+                  onClick={() =>
+                    handleDropdownClick("transferDepostMarketDropdown")
+                  }
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentSelectedCoin)}</Box>
@@ -511,7 +515,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     </Text>
                   </Text>
                 )}
-                               <Box pt={5} pb={2} mt="0.9rem">
+                <Box pt={5} pb={2} mt="0.9rem">
                   <Slider
                     aria-label="slider-ex-6"
                     defaultValue={sliderValue}
@@ -736,7 +740,9 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                         successText={"Success"}
                       />,
                     ]}
-                    onClick={()=>{router.push('/market')}}
+                    onClick={() => {
+                      router.push("/market");
+                    }}
                   >
                     Transfer Deposit
                   </AnimatedButton>

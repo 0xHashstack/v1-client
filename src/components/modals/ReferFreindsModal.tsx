@@ -176,17 +176,17 @@ const ReferFreindsModal = ({ buttonText, ...restProps }: any) => {
                   </Tooltip>
                 </Text>
                 <Box
-                          w="full"
-                          backgroundColor="#101216"
-                          py="2"
-                          border="1px solid #2B2F35"
-                          borderRadius="6px"
-                          mt="0.2rem"
-                        >
-                          <Text ml="1rem" color="white">
-                          Oxdshdjchicclzm zb jbJKCaklscjl;CJ
-                          </Text>
-                        </Box>
+                  w="full"
+                  backgroundColor="#101216"
+                  py="2"
+                  border="1px solid #2B2F35"
+                  borderRadius="6px"
+                  mt="0.2rem"
+                >
+                  <Text ml="1rem" color="white">
+                    Oxdshdjchicclzm zb jbJKCaklscjl;CJ
+                  </Text>
+                </Box>
               </Card>
               <Card
                 bg="#101216"
@@ -220,11 +220,24 @@ const ReferFreindsModal = ({ buttonText, ...restProps }: any) => {
                     </Box>
                   </Tooltip>
                 </Text>
-                <Text color="#6A737D" mt="8px" fontSize="12px" fontStyle="normal" fontWeight="400" lineHeight="20px">
-                    1. "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+                <Text
+                  color="#6A737D"
+                  mt="8px"
+                  fontSize="12px"
+                  fontStyle="normal"
+                  fontWeight="400"
+                  lineHeight="20px"
+                >
+                  1. "Lorem ipsum dolor sit amet, consectetur adipiscing elit,
+                  sed do eiusmod tempor incididunt ut labore et dolore magna
+                  aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                  ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis
+                  aute irure dolor in reprehenderit in voluptate velit esse
+                  cillum dolore eu fugiat nulla pariatur. Excepteur sint
+                  occaecat cupidatat non proident, sunt in culpa qui officia
+                  deserunt mollit anim id est laborum."
                 </Text>
               </Card>
-
 
               {inputAmount1 > 0 && inputAmount <= walletBalance ? (
                 buttonId == 1 ? (
@@ -255,6 +268,7 @@ const ReferFreindsModal = ({ buttonText, ...restProps }: any) => {
                         successText={"Success"}
                       />,
                     ]}
+                    onClick={onClose}
                   >
                     Copy Referal Link
                   </AnimatedButton>
@@ -269,6 +283,7 @@ const ReferFreindsModal = ({ buttonText, ...restProps }: any) => {
                   mb="1rem"
                   border="1px solid #2B2F35"
                   _hover={{ bg: "#101216" }}
+                  onClick={onClose}
                 >
                   Copy Referal Link
                 </Button>
