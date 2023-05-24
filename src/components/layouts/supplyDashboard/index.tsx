@@ -275,7 +275,7 @@ const SupplyDashboard = ({
                       pr={2}
                       // bgColor={"blue"}
                     >
-                        <YourSupplyModal />
+                      <YourSupplyModal />
                     </Box>
                   </Td>
                 </Tr>

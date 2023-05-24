@@ -202,7 +202,7 @@ const BorrowDashboard = ({
                             fontWeight="400"
                             color="#E6EDF3"
                           >
-                            USDT
+                            {coin.name}
                           </Text>
                         </HStack>
                         <Text fontSize="14px" fontWeight="500" color="#F7BB5B">

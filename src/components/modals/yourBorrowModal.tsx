@@ -41,7 +41,7 @@ import {
   setModalDropdown,
   selectNavDropdowns,
   selectModalDropDowns,
-  resetModalDropdowns
+  resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
 import { useState } from "react";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
@@ -799,11 +799,11 @@ const YourBorrowModal = ({
   const [currentBorrowMarketCoin1, setCurrentBorrowMarketCoin1] =
     useState(currentMarket);
   const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
-    useState("BTC");
+    useState(currentMarket);
   const [currentPoolCoin, setCurrentPoolCoin] = useState("Select a pool");
   const [currentAction, setCurrentAction] = useState("Spend Borrow");
-  const [currentBorrowId1, setCurrentBorrowId1] = useState(currentID);
-  const [currentBorrowId2, setCurrentBorrowId2] = useState("ID - 123456");
+  const [currentBorrowId1, setCurrentBorrowId1] = useState(`ID - ${currentID}`);
+  const [currentBorrowId2, setCurrentBorrowId2] = useState(`ID - ${currentID}`);
   const [currentDapp, setCurrentDapp] = useState("Select a dapp");
   const [currentPool, setCurrentPool] = useState("Select a pool");
 
@@ -853,7 +853,7 @@ const YourBorrowModal = ({
     }
   };
 
-  const handleBorrowMarketCoinChange = (id: string) => {
+  const handleBorrowMarketCoinChange1 = (id: string) => {
     // console.log("got id", id);
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
       if (borrowIDCoinMap[i].id === id.slice(5)) {
@@ -863,7 +863,17 @@ const YourBorrowModal = ({
     }
   };
 
-  const handleBorrowMarketIDChange = (coin: string) => {
+  const handleBorrowMarketCoinChange2 = (id: string) => {
+    // console.log("got id", id);
+    for (let i = 0; i < borrowIDCoinMap.length; i++) {
+      if (borrowIDCoinMap[i].id === id.slice(5)) {
+        setCurrentBorrowMarketCoin2(borrowIDCoinMap[i].name);
+        return;
+      }
+    }
+  };
+
+  const handleBorrowMarketIDChange1 = (coin: string) => {
     // console.log("got coin", coin);
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
       if (borrowIDCoinMap[i].name === coin) {
@@ -873,25 +883,34 @@ const YourBorrowModal = ({
     }
   };
 
+  const handleBorrowMarketIDChange2 = (coin: string) => {
+    // console.log("got coin", coin);
+    for (let i = 0; i < borrowIDCoinMap.length; i++) {
+      if (borrowIDCoinMap[i].name === coin) {
+        setCurrentBorrowId2(`ID - ${borrowIDCoinMap[i].id}`);
+        return;
+      }
+    }
+  };
+
   // const walletBalance = useSelector(selectWalletBalance);
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
-  const resetStates=()=>{
+  const resetStates = () => {
     setRadioValue("1");
-    setCurrentAction("Spend Borrow")
+    setCurrentAction("Spend Borrow");
     setCurrentBorrowMarketCoin1("BTC");
     setCurrentBorrowMarketCoin2("BTC");
     setCurrentBorrowId1("ID - 123456");
     setCurrentBorrowId2("ID - 123456");
     setCurrentDapp("Select a dapp");
     setCurrentPool("Select a pool");
-    setCurrentPoolCoin("Select a pool")
+    setCurrentPoolCoin("Select a pool");
     setinputCollateralAmount(0);
     setSliderValue(0);
     setSliderValue2(0);
     setinputRepayAmount(0);
     dispatch(resetModalDropdowns());
-
-  }
+  };
   return (
     <Box>
       <Button
@@ -912,7 +931,7 @@ const YourBorrowModal = ({
 
       <Modal
         isOpen={isOpen}
-        onClose={()=>{
+        onClose={() => {
           onClose();
           resetStates();
         }}
@@ -1157,7 +1176,7 @@ const YourBorrowModal = ({
                                       pr="2"
                                       onClick={() => {
                                         setCurrentBorrowId1(coin);
-                                        handleBorrowMarketCoinChange(coin);
+                                        handleBorrowMarketCoinChange1(coin);
                                       }}
                                     >
                                       {coin === currentBorrowId1 && (
@@ -1268,7 +1287,7 @@ const YourBorrowModal = ({
                                       pr="2"
                                       onClick={() => {
                                         setCurrentBorrowMarketCoin1(coin);
-                                        handleBorrowMarketIDChange(coin);
+                                        handleBorrowMarketIDChange1(coin);
                                       }}
                                     >
                                       {coin === currentBorrowMarketCoin1 && (
@@ -1689,18 +1708,21 @@ const YourBorrowModal = ({
                               as="button"
                             >
                               <Box display="flex" gap="1">
-                              {getCoin(
-                                      radioValue === "1"
-                                        ? currentPool
-                                        : currentPoolCoin
-                                    )?                                  <Box p="1">
+                                {getCoin(
+                                  radioValue === "1"
+                                    ? currentPool
+                                    : currentPoolCoin
+                                ) ? (
+                                  <Box p="1">
                                     {getCoin(
                                       radioValue === "1"
                                         ? currentPool
                                         : currentPoolCoin
                                     )}
-                                  </Box>:""}
-
+                                  </Box>
+                                ) : (
+                                  ""
+                                )}
 
                                 <Text mt="0.2rem">
                                   {radioValue === "1"
@@ -1829,7 +1851,8 @@ const YourBorrowModal = ({
                       {getContainer(currentAction)}
                       {currentAction == "Spend Borrow" ? (
                         currentDapp != "Select a dapp" &&
-                        (currentPool != "Select a pool" || currentPoolCoin!='Select a pool') ? (
+                        (currentPool != "Select a pool" ||
+                          currentPoolCoin != "Select a pool") ? (
                           <AnimatedButton
                             bgColor="#101216"
                             // bgColor="red"
@@ -1972,31 +1995,35 @@ const YourBorrowModal = ({
                         mt="1.5rem"
                       >
                         <Box display="flex" flexDirection="column" gap="1">
-                        <Text color="#8B949E" display="flex" alignItems="center">
-                  <Text
-                    mr="0.3rem"
-                    fontSize="12px"
-                    fontStyle="normal"
-                    fontWeight="400"
-                  >
-                    Borrow ID
-                  </Text>
-                  <Tooltip
-                    hasArrow
-                    placement="bottom-start"
-                    boxShadow="dark-lg"
-                    label="all the assets to the market"
-                    bg="#24292F"
-                    fontSize={"smaller"}
-                    fontWeight={"thin"}
-                    borderRadius={"lg"}
-                    padding={"2"}
-                  >
-                    <Box>
-                      <InfoIcon />
-                    </Box>
-                  </Tooltip>
-                </Text>
+                          <Text
+                            color="#8B949E"
+                            display="flex"
+                            alignItems="center"
+                          >
+                            <Text
+                              mr="0.3rem"
+                              fontSize="12px"
+                              fontStyle="normal"
+                              fontWeight="400"
+                            >
+                              Borrow ID
+                            </Text>
+                            <Tooltip
+                              hasArrow
+                              placement="bottom-start"
+                              boxShadow="dark-lg"
+                              label="all the assets to the market"
+                              bg="#24292F"
+                              fontSize={"smaller"}
+                              fontWeight={"thin"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                            >
+                              <Box>
+                                <InfoIcon />
+                              </Box>
+                            </Tooltip>
+                          </Text>
                           <Box
                             display="flex"
                             border="1px"
@@ -2041,6 +2068,7 @@ const YourBorrowModal = ({
                                       pr="2"
                                       onClick={() => {
                                         setCurrentBorrowId2(coin);
+                                        handleBorrowMarketCoinChange2(coin);
                                       }}
                                     >
                                       {coin === currentBorrowId2 && (
@@ -2077,31 +2105,35 @@ const YourBorrowModal = ({
                           </Box>
                         </Box>
                         <Box display="flex" flexDirection="column" gap="1">
-                        <Text color="#8B949E" display="flex" alignItems="center">
-                  <Text
-                    mr="0.3rem"
-                    fontSize="12px"
-                    fontStyle="normal"
-                    fontWeight="400"
-                  >
-                    Borrow Market
-                  </Text>
-                  <Tooltip
-                    hasArrow
-                    placement="bottom-start"
-                    boxShadow="dark-lg"
-                    label="all the assets to the market"
-                    bg="#24292F"
-                    fontSize={"smaller"}
-                    fontWeight={"thin"}
-                    borderRadius={"lg"}
-                    padding={"2"}
-                  >
-                    <Box>
-                      <InfoIcon />
-                    </Box>
-                  </Tooltip>
-                </Text>
+                          <Text
+                            color="#8B949E"
+                            display="flex"
+                            alignItems="center"
+                          >
+                            <Text
+                              mr="0.3rem"
+                              fontSize="12px"
+                              fontStyle="normal"
+                              fontWeight="400"
+                            >
+                              Borrow Market
+                            </Text>
+                            <Tooltip
+                              hasArrow
+                              placement="bottom-start"
+                              boxShadow="dark-lg"
+                              label="all the assets to the market"
+                              bg="#24292F"
+                              fontSize={"smaller"}
+                              fontWeight={"thin"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                            >
+                              <Box>
+                                <InfoIcon />
+                              </Box>
+                            </Tooltip>
+                          </Text>
                           <Box
                             display="flex"
                             border="1px"
@@ -2153,6 +2185,7 @@ const YourBorrowModal = ({
                                       pr="2"
                                       onClick={() => {
                                         setCurrentBorrowMarketCoin2(coin);
+                                        handleBorrowMarketIDChange2(coin);
                                         // dispatch(setCoinSelectedSupplyModal(coin))
                                       }}
                                     >

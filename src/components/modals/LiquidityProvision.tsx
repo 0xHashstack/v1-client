@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Button,
   Modal,
@@ -52,15 +52,28 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
   selectModalDropDowns,
-  resetModalDropdowns
+  resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
 
-const LiquidityProvisionModal = () => {
+const LiquidityProvisionModal = ({
+  borrowIDCoinMap,
+  borrowIds,
+  coins,
+  currentId,
+  currentMarketCoin,
+}: any) => {
+  console.log("liquidity found map: ", borrowIDCoinMap);
+  console.log("liquidity found borrow ids: ", borrowIds);
+  console.log("liquidity found coins: ", coins);
+  console.log("liquidity found current coin: ", currentId);
+  console.log("liquidity found current id: ", currentMarketCoin);
+
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
-  const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("ETH");
-  const [currentBorrowId, setCurrentBorrowId] = useState("ID - 123456");
+  const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] =
+    useState(currentMarketCoin);
+  const [currentBorrowId, setCurrentBorrowId] = useState(currentId);
   const [currentPool, setCurrentPool] = useState("Select a pool");
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
@@ -114,13 +127,13 @@ const LiquidityProvisionModal = () => {
         break;
     }
   };
-  const borrowIds = [
-    "ID - 123456",
-    "ID - 123457",
-    "ID - 123458",
-    "ID - 123459",
-    "ID - 1234510",
-  ];
+  // const borrowIds = [
+  //   "ID - 123456",
+  //   "ID - 123457",
+  //   "ID - 123458",
+  //   "ID - 123459",
+  //   "ID - 1234510",
+  // ];
   const pools = [
     "wETH/USDT",
     "USDC/USDT",
@@ -153,13 +166,38 @@ const LiquidityProvisionModal = () => {
     }
   };
 
-  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-  const resetStates=()=>{
-    setCurrentBorrowId("ID - 123456");
+  // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const resetStates = () => {
+    setCurrentBorrowId(currentId);
     setCurrentPool("Select a pool");
-    setCurrentBorrowMarketCoin("ETH");
+    setCurrentBorrowMarketCoin(currentMarketCoin);
     dispatch(resetModalDropdowns());
-  }
+  };
+
+  useEffect(() => {
+    setCurrentBorrowId(currentId);
+    setCurrentBorrowMarketCoin(currentMarketCoin);
+  }, [currentId]);
+
+  const handleBorrowMarketCoinChange = (id: string) => {
+    // console.log("got id", id);
+    for (let i = 0; i < borrowIDCoinMap.length; i++) {
+      if (borrowIDCoinMap[i].id === id) {
+        setCurrentBorrowMarketCoin(borrowIDCoinMap[i].name);
+        return;
+      }
+    }
+  };
+
+  const handleBorrowMarketIDChange = (coin: string) => {
+    // console.log("got coin", coin);
+    for (let i = 0; i < borrowIDCoinMap.length; i++) {
+      if (borrowIDCoinMap[i].name === coin) {
+        setCurrentBorrowId(borrowIDCoinMap[i].id);
+        return;
+      }
+    }
+  };
 
   return (
     <div>
@@ -208,7 +246,7 @@ const LiquidityProvisionModal = () => {
       <Portal>
         <Modal
           isOpen={isOpen}
-          onClose={()=>{
+          onClose={() => {
             onClose();
             resetStates();
           }}
@@ -408,6 +446,7 @@ const LiquidityProvisionModal = () => {
                             pr="2"
                             onClick={() => {
                               setCurrentBorrowId(coin);
+                              handleBorrowMarketCoinChange(coin);
                             }}
                           >
                             {coin === currentBorrowId && (
@@ -510,6 +549,7 @@ const LiquidityProvisionModal = () => {
                             pr="2"
                             onClick={() => {
                               setCurrentBorrowMarketCoin(coin);
+                              handleBorrowMarketIDChange(coin);
                               // dispatch(setCoinSelectedSupplyModal(coin))
                             }}
                           >
