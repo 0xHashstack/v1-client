@@ -30,6 +30,7 @@ import {
   selectCurrentDropdown,
   selectNavDropdowns,
   setNavDropdown,
+  resetModalDropdowns
 } from "@/store/slices/dropdownsSlice";
 import {
   Box,
