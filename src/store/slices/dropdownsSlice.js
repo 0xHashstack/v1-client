@@ -102,8 +102,10 @@ export const dropdownSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(resetModalDropdowns, (state) => {
+        state.navDropdowns=initialState.navDropdowns;
         state.modalDropdowns = initialState.modalDropdowns;
         state.currentModalDropdown = initialState.currentModalDropdown;
+        state.currentDropdown=initialState.currentDropdown;
       })
       .addCase(HYDRATE, (state, action) => {
         return {
