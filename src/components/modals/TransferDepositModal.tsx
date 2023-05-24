@@ -62,7 +62,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
   const inputAmount1 = useSelector(selectInputSupplyAmount);
-  const router =useRouter();
+  const router = useRouter();
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -80,6 +80,12 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
         break;
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
+        break;
+      case "Aave":
+        return <AaveLogo />;
+        break;
+      case "Compound":
+        return <CompoundLogo />;
         break;
       case "Aave":
         return <AaveLogo />;
@@ -748,7 +754,9 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                         successText={"Success"}
                       />,
                     ]}
-                    onClick={()=>{router.push('/market')}}
+                    onClick={() => {
+                      router.push("/market");
+                    }}
                   >
                     Transfer Deposit
                   </AnimatedButton>
