@@ -38,6 +38,7 @@ import StakeModal from "@/components/modals/StakeModal";
 import SwapModal from "@/components/modals/SwapModal";
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
+import SmallEth from "@/assets/icons/coins/smallEth";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -48,7 +49,7 @@ const SpendTable = () => {
     setShowWarning(false);
   };
 
-  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
   const columnItems = [
     "Borrow ID",
@@ -59,8 +60,8 @@ const SpendTable = () => {
   ];
   const rows = [
     ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "00.00%"],
-    ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "00.00%"],
-    ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "00.00%"],
+    ["Borrow ID 12346", "rBTC", "10,324.556", "BTC", "00.00%"],
+    ["Borrow ID 12347", "rETH", "10,324.556", "BTC", "00.00%"],
   ];
 
   const dispatch = useDispatch();
@@ -69,6 +70,30 @@ const SpendTable = () => {
   function handleRouteChange(url: string) {
     dispatch(setSpendBorrowSelectedDapp(""));
   }
+
+  const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
+  const [borrowIds, setBorrowIds] = useState([]);
+  const [currentId, setCurrentId] = useState("");
+  const [currentMarketCoin, setCurrentMarketCoin] = useState("");
+  const [coins, setCoins] = useState([]);
+  useEffect(() => {
+    let temp1: any = [];
+    let temp2: any = [];
+    let temp3: any = [];
+    for (let i = 0; i < rows.length; i++) {
+      temp1.push({
+        id: "ID - " + rows[i][0].slice(10),
+        name: rows[i][1].slice(1),
+      });
+      temp2.push("ID - " + rows[i][0].slice(10));
+      temp3.push(rows[i][1].slice(1));
+    }
+    setBorrowIDCoinMap(temp1);
+    setBorrowIds(temp2);
+    setCoins(temp3);
+    console.log("faisal coin mapping", borrowIDCoinMap);
+  }, []);
+
   useEffect(() => {
     const handleRouteChangeComplete = (url: string) => {
       handleRouteChange(url);
@@ -187,6 +212,8 @@ const SpendTable = () => {
                     onClick={() => {
                       setSelectedDapp("trade");
                       setCurrentBorrow(index);
+                      setCurrentId("ID - " + currentRow[0].slice(10));
+                      setCurrentMarketCoin(currentRow[1].slice(1));
                       dispatch(setSpendBorrowSelectedDapp("trade"));
                     }}
                   >
@@ -198,7 +225,7 @@ const SpendTable = () => {
                         // borderRadius="6px"
                         bgColor="#2B2F35"
                         left={-2}
-                        display={currentBorrow == index ? "blcok" : "none"}
+                        display={currentBorrow == index ? "block" : "none"}
                       />
                       <Box
                         display="flex"
@@ -227,7 +254,12 @@ const SpendTable = () => {
                         alignItems="center"
                       >
                         <Box my="1">
-                          <TableUsdtLogo />
+                          <Image
+                            src={`./${currentRow[1].slice(1)}.svg`}
+                            alt="Picture of the author"
+                            width={16}
+                            height={16}
+                          />
                         </Box>
                         <Text
                           fontSize="14px"
@@ -335,14 +367,14 @@ const SpendTable = () => {
               lineHeight="20px"
               // borderLeftRadius="md"
               fontWeight="500"
-              borderRadius="0px"
+              borderLeftRadius="6px"
               _selected={{
                 // color: "white",
                 bg: selectedDapp != "" ? "#0969DA" : "none",
                 // border: "none",
               }}
               _disabled={{
-                background:"#101216"
+                background: "#101216",
               }}
               isDisabled={selectedDapp == ""}
             >
@@ -364,7 +396,6 @@ const SpendTable = () => {
                 bg: selectedDapp != "" ? "#0969DA" : "none",
                 // border: "none",
               }}
-
               isDisabled={selectedDapp == ""}
               // isDisabled={selectedDapp == ""}
             >
@@ -422,7 +453,13 @@ const SpendTable = () => {
                 >
                   Select a Dapp to begin with the spend
                 </Text>
-                <LiquidityProvisionModal />
+                <LiquidityProvisionModal
+                  borrowIDCoinMap={borrowIDCoinMap}
+                  coins={coins}
+                  borrowIds={borrowIds}
+                  currentId={currentId}
+                  currentMarketCoin={currentMarketCoin}
+                />
               </Box>
             </TabPanel>
             <TabPanel padding="0">
@@ -433,7 +470,13 @@ const SpendTable = () => {
                 >
                   Select a Dapp to begin with the spend
                 </Text>
-                <SwapModal />
+                <SwapModal
+                  borrowIDCoinMap={borrowIDCoinMap}
+                  coins={coins}
+                  borrowIds={borrowIds}
+                  currentId={currentId}
+                  currentMarketCoin={currentMarketCoin}
+                />
               </Box>
             </TabPanel>
             <TabPanel p={0}>
@@ -447,7 +490,13 @@ const SpendTable = () => {
                 <Box display="flex" gap="14" mt="1rem">
                   <Box cursor="pointer">
                     {selectedDapp != "" ? (
-                      <StakeModal />
+                      <StakeModal
+                        borrowIDCoinMap={borrowIDCoinMap}
+                        coins={coins}
+                        borrowIds={borrowIds}
+                        currentId={currentId}
+                        currentMarketCoin={currentMarketCoin}
+                      />
                     ) : (
                       <TableYagiLogoDull />
                     )}

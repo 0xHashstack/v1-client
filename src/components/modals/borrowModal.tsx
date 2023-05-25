@@ -702,7 +702,7 @@ const BorrowModal = () => {
                     >
                       Available reserves: {walletBalance}
                       <Text color="#6E7781" ml="0.2rem">
-                        {` ${currentCollateralCoin}`}
+                        {` ${currentBorrowCoin}`}
                       </Text>
                     </Text>
                   </Text>
@@ -719,7 +719,7 @@ const BorrowModal = () => {
                   >
                     Available reserves: {walletBalance}
                     <Text color="#6E7781" ml="0.2rem">
-                      {` ${currentCollateralCoin}`}
+                      {` ${currentBorrowCoin}`}
                     </Text>
                   </Text>
                 )}
