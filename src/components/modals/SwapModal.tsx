@@ -262,7 +262,7 @@ const SwapModal = ({
                     className="dropdown-container"
                     boxShadow="dark-lg"
                   >
-                    {coins.map((coin, index) => {
+                    {coins.map((coin: string, index: number) => {
                       return (
                         <Box
                           key={index}
@@ -357,7 +357,7 @@ const SwapModal = ({
                     className="dropdown-container"
                     boxShadow="dark-lg"
                   >
-                    {borrowIds.map((coin, index) => {
+                    {borrowIds.map((coin: string, index: number) => {
                       return (
                         <Box
                           key={index}
@@ -458,7 +458,7 @@ const SwapModal = ({
                     className="dropdown-container"
                     boxShadow="dark-lg"
                   >
-                    {coins.map((coin, index) => {
+                    {coins.map((coin: string, index: number) => {
                       return (
                         <Box
                           key={index}
