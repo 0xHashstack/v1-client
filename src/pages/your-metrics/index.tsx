@@ -12,7 +12,7 @@ import _coins from "@/utils/constants/coins";
 import {
   selectMetricsDropdowns,
   setMetricsDropdown,
-  resetModalDropdowns
+  resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
 import TotalRevenueChart from "@/components/layouts/charts/TotalRevenue";
 import Link from "next/link";
@@ -133,7 +133,7 @@ const YourMetrics = () => {
                   className="dropdown-container"
                   boxShadow="dark-lg"
                 >
-                  {_coins.map((coin, index) => {
+                  {_coins.map((coin: string, index: number) => {
                     return (
                       <Box
                         key={index}
@@ -168,7 +168,7 @@ const YourMetrics = () => {
                           borderRadius="md"
                         >
                           <Box>{getCoin(coin, "16px", "16px")}</Box>
-                          <Text color="#E6EDF3" >{coin}</Text>
+                          <Text color="#E6EDF3">{coin}</Text>
                         </Box>
                       </Box>
                     );

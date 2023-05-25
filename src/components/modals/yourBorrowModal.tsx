@@ -1164,50 +1164,54 @@ const YourBorrowModal = ({
                                 className="dropdown-container"
                                 boxShadow="dark-lg"
                               >
-                                {borrowIds.map((coin, index) => {
-                                  return (
-                                    <Box
-                                      key={index}
-                                      as="button"
-                                      w="full"
-                                      display="flex"
-                                      alignItems="center"
-                                      gap="1"
-                                      pr="2"
-                                      onClick={() => {
-                                        setCurrentBorrowId1(coin);
-                                        handleBorrowMarketCoinChange1(coin);
-                                      }}
-                                    >
-                                      {coin === currentBorrowId1 && (
-                                        <Box
-                                          w="3px"
-                                          h="28px"
-                                          bg="#0C6AD9"
-                                          borderRightRadius="md"
-                                        ></Box>
-                                      )}
+                                {borrowIds.map(
+                                  (coin: string, index: number) => {
+                                    return (
                                       <Box
+                                        key={index}
+                                        as="button"
                                         w="full"
                                         display="flex"
-                                        py="5px"
-                                        px={`${
-                                          coin === currentBorrowId1 ? "2" : "5"
-                                        }`}
+                                        alignItems="center"
                                         gap="1"
-                                        bg={`${
-                                          coin === currentBorrowId1
-                                            ? "#0C6AD9"
-                                            : "inherit"
-                                        }`}
-                                        borderRadius="md"
+                                        pr="2"
+                                        onClick={() => {
+                                          setCurrentBorrowId1(coin);
+                                          handleBorrowMarketCoinChange1(coin);
+                                        }}
                                       >
-                                        {/* <Box p="1">{getCoin(coin)}</Box> */}
-                                        <Text>{coin}</Text>
+                                        {coin === currentBorrowId1 && (
+                                          <Box
+                                            w="3px"
+                                            h="28px"
+                                            bg="#0C6AD9"
+                                            borderRightRadius="md"
+                                          ></Box>
+                                        )}
+                                        <Box
+                                          w="full"
+                                          display="flex"
+                                          py="5px"
+                                          px={`${
+                                            coin === currentBorrowId1
+                                              ? "2"
+                                              : "5"
+                                          }`}
+                                          gap="1"
+                                          bg={`${
+                                            coin === currentBorrowId1
+                                              ? "#0C6AD9"
+                                              : "inherit"
+                                          }`}
+                                          borderRadius="md"
+                                        >
+                                          {/* <Box p="1">{getCoin(coin)}</Box> */}
+                                          <Text>{coin}</Text>
+                                        </Box>
                                       </Box>
-                                    </Box>
-                                  );
-                                })}
+                                    );
+                                  }
+                                )}
                               </Box>
                             )}
                           </Box>
@@ -1275,7 +1279,7 @@ const YourBorrowModal = ({
                                 className="dropdown-container"
                                 boxShadow="dark-lg"
                               >
-                                {coins.map((coin, index) => {
+                                {coins.map((coin: string, index: number) => {
                                   return (
                                     <Box
                                       key={index}
@@ -1797,7 +1801,7 @@ const YourBorrowModal = ({
                                   className="dropdown-container"
                                   boxShadow="dark-lg"
                                 >
-                                  {coins.map((coin, index) => {
+                                  {coins.map((coin: string, index: number) => {
                                     return (
                                       <Box
                                         key={index}
@@ -2056,50 +2060,54 @@ const YourBorrowModal = ({
                                 className="dropdown-container"
                                 boxShadow="dark-lg"
                               >
-                                {borrowIds.map((coin, index) => {
-                                  return (
-                                    <Box
-                                      key={index}
-                                      as="button"
-                                      w="full"
-                                      display="flex"
-                                      alignItems="center"
-                                      gap="1"
-                                      pr="2"
-                                      onClick={() => {
-                                        setCurrentBorrowId2(coin);
-                                        handleBorrowMarketCoinChange2(coin);
-                                      }}
-                                    >
-                                      {coin === currentBorrowId2 && (
-                                        <Box
-                                          w="3px"
-                                          h="28px"
-                                          bg="#0C6AD9"
-                                          borderRightRadius="md"
-                                        ></Box>
-                                      )}
+                                {borrowIds.map(
+                                  (coin: string, index: number) => {
+                                    return (
                                       <Box
+                                        key={index}
+                                        as="button"
                                         w="full"
                                         display="flex"
-                                        py="5px"
-                                        px={`${
-                                          coin === currentBorrowId2 ? "2" : "5"
-                                        }`}
+                                        alignItems="center"
                                         gap="1"
-                                        bg={`${
-                                          coin === currentBorrowId2
-                                            ? "#0C6AD9"
-                                            : "inherit"
-                                        }`}
-                                        borderRadius="md"
+                                        pr="2"
+                                        onClick={() => {
+                                          setCurrentBorrowId2(coin);
+                                          handleBorrowMarketCoinChange2(coin);
+                                        }}
                                       >
-                                        {/* <Box p="1">{getCoin(coin)}</Box> */}
-                                        <Text>{coin}</Text>
+                                        {coin === currentBorrowId2 && (
+                                          <Box
+                                            w="3px"
+                                            h="28px"
+                                            bg="#0C6AD9"
+                                            borderRightRadius="md"
+                                          ></Box>
+                                        )}
+                                        <Box
+                                          w="full"
+                                          display="flex"
+                                          py="5px"
+                                          px={`${
+                                            coin === currentBorrowId2
+                                              ? "2"
+                                              : "5"
+                                          }`}
+                                          gap="1"
+                                          bg={`${
+                                            coin === currentBorrowId2
+                                              ? "#0C6AD9"
+                                              : "inherit"
+                                          }`}
+                                          borderRadius="md"
+                                        >
+                                          {/* <Box p="1">{getCoin(coin)}</Box> */}
+                                          <Text>{coin}</Text>
+                                        </Box>
                                       </Box>
-                                    </Box>
-                                  );
-                                })}
+                                    );
+                                  }
+                                )}
                               </Box>
                             )}
                           </Box>
@@ -2173,7 +2181,7 @@ const YourBorrowModal = ({
                                 className="dropdown-container"
                                 boxShadow="dark-lg"
                               >
-                                {coins.map((coin, index) => {
+                                {coins.map((coin: string, index: number) => {
                                   return (
                                     <Box
                                       key={index}

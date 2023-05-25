@@ -38,7 +38,7 @@ import {
 import {
   setModalDropdown,
   selectModalDropDowns,
-  resetModalDropdowns
+  resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
 import { useState } from "react";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
@@ -125,7 +125,7 @@ const BorrowModal = () => {
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState("BTC");
   const [currentBorrowCoin, setCurrentBorrowCoin] = useState("BTC");
 
-  const resetStates=()=>{
+  const resetStates = () => {
     setCurrentCollateralCoin("BTC");
     setCurrentBorrowCoin("BTC");
     setinputBorrowAmount(0);
@@ -133,7 +133,7 @@ const BorrowModal = () => {
     setSliderValue(0);
     setsliderValue2(0);
     dispatch(resetModalDropdowns());
-  }
+  };
 
   return (
     <Box>
@@ -155,7 +155,7 @@ const BorrowModal = () => {
 
       <Modal
         isOpen={isOpen}
-        onClose={()=>{
+        onClose={() => {
           onClose();
           resetStates();
         }}
@@ -244,7 +244,7 @@ const BorrowModal = () => {
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {coins.map((coin, index) => {
+                      {coins.map((coin: string, index: number) => {
                         return (
                           <Box
                             key={index}
@@ -542,7 +542,7 @@ const BorrowModal = () => {
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {coins.map((coin, index) => {
+                      {coins.map((coin: string, index: number) => {
                         return (
                           <Box
                             key={index}

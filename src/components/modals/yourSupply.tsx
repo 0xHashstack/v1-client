@@ -45,7 +45,7 @@ import {
   setNavDropdown,
   setModalDropdown,
   selectModalDropDowns,
-  resetModalDropdowns
+  resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
 import { useState } from "react";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
@@ -133,9 +133,8 @@ const YourSupplyModal = () => {
       // dispatch(setInputSupplyAmount(newValue));
     } else {
       percentage = Math.round(percentage);
-      if(isNaN(percentage)){
-
-      }else{
+      if (isNaN(percentage)) {
+      } else {
         setSliderValue(percentage);
         setinputSupplyAmount(newValue);
       }
@@ -150,10 +149,9 @@ const YourSupplyModal = () => {
       setinputWithdrawlAmount(newValue);
       // dispatch(setInputSupplyAmount(newValue));
     } else {
-      percentage = Math.round(percentage );
-      if(isNaN(percentage)){
-
-      }else{
+      percentage = Math.round(percentage);
+      if (isNaN(percentage)) {
+      } else {
         setSliderValue2(percentage);
         setinputWithdrawlAmount(newValue);
       }
@@ -169,15 +167,15 @@ const YourSupplyModal = () => {
     useState("BTC");
   const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
     useState("BTC");
-    const resetStates=()=>{
-      setSliderValue(0);
-      setSliderValue2(0);
-      setinputSupplyAmount(0);
-      setinputWithdrawlAmount(0);
-      setCurrentSelectedSupplyCoin("BTC");
-      setcurrentSelectedWithdrawlCoin("BTC");
-      dispatch(resetModalDropdowns());
-    }
+  const resetStates = () => {
+    setSliderValue(0);
+    setSliderValue2(0);
+    setinputSupplyAmount(0);
+    setinputWithdrawlAmount(0);
+    setCurrentSelectedSupplyCoin("BTC");
+    setcurrentSelectedWithdrawlCoin("BTC");
+    dispatch(resetModalDropdowns());
+  };
   return (
     <Box>
       <Button
@@ -197,7 +195,7 @@ const YourSupplyModal = () => {
 
       <Modal
         isOpen={isOpen}
-        onClose={()=>{
+        onClose={() => {
           onClose();
           resetStates();
         }}
@@ -328,7 +326,7 @@ const YourSupplyModal = () => {
                               className="dropdown-container"
                               boxShadow="dark-lg"
                             >
-                              {coins.map((coin, index) => {
+                              {coins.map((coin: string, index: number) => {
                                 return (
                                   <Box
                                     key={index}
@@ -848,7 +846,7 @@ const YourSupplyModal = () => {
                               className="dropdown-container"
                               boxShadow="dark-lg"
                             >
-                              {coins.map((coin, index) => {
+                              {coins.map((coin: string, index: number) => {
                                 return (
                                   <Box
                                     key={index}

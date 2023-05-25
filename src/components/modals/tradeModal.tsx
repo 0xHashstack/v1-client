@@ -41,7 +41,7 @@ import {
   setNavDropdown,
   setModalDropdown,
   selectModalDropDowns,
-  resetModalDropdowns
+  resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
 import { useState } from "react";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
@@ -179,7 +179,7 @@ const TradeModal = () => {
   const [currentBorrowCoin, setCurrentBorrowCoin] = useState("BTC");
   const [radioValue, setRadioValue] = useState("1");
 
-  const resetStates=()=>{
+  const resetStates = () => {
     setSliderValue(0);
     setsliderValue2(0);
     setinputCollateralAmount(0);
@@ -191,7 +191,7 @@ const TradeModal = () => {
     setCurrentPoolCoin("Select a pool");
     setRadioValue("1");
     dispatch(resetModalDropdowns());
-  }
+  };
 
   return (
     <Box>
@@ -226,7 +226,7 @@ const TradeModal = () => {
 
       <Modal
         isOpen={isOpen}
-        onClose={()=>{
+        onClose={() => {
           onClose();
           resetStates();
         }}
@@ -322,7 +322,7 @@ const TradeModal = () => {
                           className="dropdown-container"
                           boxShadow="dark-lg"
                         >
-                          {coins.map((coin, index) => {
+                          {coins.map((coin: string, index: number) => {
                             return (
                               <Box
                                 key={index}
@@ -624,7 +624,7 @@ const TradeModal = () => {
                           className="dropdown-container"
                           boxShadow="dark-lg"
                         >
-                          {coins.map((coin, index) => {
+                          {coins.map((coin: string, index: number) => {
                             return (
                               <Box
                                 key={index}
@@ -939,7 +939,11 @@ const TradeModal = () => {
                       as="button"
                     >
                       <Box display="flex" gap="1">
-                        {currentDapp!='Select a dapp' ?<Box p="1">{getCoin(currentDapp)}</Box>:""}
+                        {currentDapp != "Select a dapp" ? (
+                          <Box p="1">{getCoin(currentDapp)}</Box>
+                        ) : (
+                          ""
+                        )}
                         <Text>{currentDapp}</Text>
                       </Box>
                       <Box pt="1" className="navbar-button">
@@ -1055,13 +1059,17 @@ const TradeModal = () => {
                       as="button"
                     >
                       <Box display="flex" gap="1">
-                      {getCoin(
-                            radioValue === "1" ? currentPool : currentPoolCoin
-                          )?                        <Box p="1">
-                          {getCoin(
-                            radioValue === "1" ? currentPool : currentPoolCoin
-                          )}
-                        </Box>:""}
+                        {getCoin(
+                          radioValue === "1" ? currentPool : currentPoolCoin
+                        ) ? (
+                          <Box p="1">
+                            {getCoin(
+                              radioValue === "1" ? currentPool : currentPoolCoin
+                            )}
+                          </Box>
+                        ) : (
+                          ""
+                        )}
                         <Text>
                           {radioValue === "1" ? currentPool : currentPoolCoin}
                         </Text>
@@ -1112,7 +1120,7 @@ const TradeModal = () => {
                                   }`}
                                   borderRadius="md"
                                 >
-                                  <Box p="1">{getCoin(pool) }</Box>
+                                  <Box p="1">{getCoin(pool)}</Box>
                                   <Text>{pool}</Text>
                                 </Box>
                               </Box>
@@ -1129,7 +1137,7 @@ const TradeModal = () => {
                           className="dropdown-container"
                           boxShadow="dark-lg"
                         >
-                          {coins.map((coin, index) => {
+                          {coins.map((coin: string, index: number) => {
                             return (
                               <Box
                                 key={index}
@@ -1439,7 +1447,11 @@ const TradeModal = () => {
                     </Text>
                   </Box>
                 </Box>
-                {inputCollateralAmount > 0 && inputBorrowAmount > 0 && currentDapp!='Select a dapp' && (currentPool!='Select a pool' || currentPoolCoin!='Select a pool')  ? (
+                {inputCollateralAmount > 0 &&
+                inputBorrowAmount > 0 &&
+                currentDapp != "Select a dapp" &&
+                (currentPool != "Select a pool" ||
+                  currentPoolCoin != "Select a pool") ? (
                   <AnimatedButton
                     bgColor="#101216"
                     // bgColor="red"

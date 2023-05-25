@@ -218,7 +218,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {coins.map((coin, index) => {
+                      {coins.map((coin: string, index: number) => {
                         return (
                           <Box
                             key={index}

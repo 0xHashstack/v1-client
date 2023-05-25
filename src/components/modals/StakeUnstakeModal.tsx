@@ -37,7 +37,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
   selectModalDropDowns,
-  resetModalDropdowns
+  resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
 import { useEffect, useState } from "react";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
@@ -132,12 +132,11 @@ const StakeUnstakeModal = () => {
       setInputStakeAmount(newValue);
       // dispatch(setInputSupplyAmount(newValue));
     } else {
-      percentage = Math.round(percentage) ;
-      if(isNaN(percentage)){
-
-      }else{
-          setSliderValue(percentage);
-          setInputStakeAmount(newValue);
+      percentage = Math.round(percentage);
+      if (isNaN(percentage)) {
+      } else {
+        setSliderValue(percentage);
+        setInputStakeAmount(newValue);
       }
       // dispatch(setInputSupplyAmount(newValue));
     }
@@ -151,11 +150,10 @@ const StakeUnstakeModal = () => {
       // dispatch(setInputSupplyAmount(newValue));
     } else {
       percentage = Math.round(percentage);
-      if(isNaN(percentage)){
-
-      }else{
-          setSliderValue2(percentage);
-          setInputUnstakeAmount(newValue);
+      if (isNaN(percentage)) {
+      } else {
+        setSliderValue2(percentage);
+        setInputUnstakeAmount(newValue);
       }
       // dispatch(setInputSupplyAmount(newValue));
     }
@@ -175,7 +173,7 @@ const StakeUnstakeModal = () => {
   const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
     useState("BTC");
   const [buttonId, setButtonId] = useState(0);
-  const resetStates=()=>{
+  const resetStates = () => {
     setSliderValue(0);
     setSliderValue2(0);
     setInputStakeAmount(0);
@@ -183,7 +181,7 @@ const StakeUnstakeModal = () => {
     setCurrentSelectedStakeCoin("rBTC");
     setcurrentSelectedUnstakeCoin("rBTC");
     dispatch(resetModalDropdowns());
-  }
+  };
   return (
     <Box>
       <Text
@@ -216,10 +214,9 @@ const StakeUnstakeModal = () => {
 
       <Modal
         isOpen={isOpen}
-        onClose={()=>{
-            onClose();
-            resetStates();
-
+        onClose={() => {
+          onClose();
+          resetStates();
         }}
         isCentered
         //   scrollBehavior="inside"
@@ -346,7 +343,7 @@ const StakeUnstakeModal = () => {
                               className="dropdown-container"
                               boxShadow="dark-lg"
                             >
-                              {rcoins.map((coin, index) => {
+                              {rcoins.map((coin: string, index: number) => {
                                 return (
                                   <Box
                                     key={index}
@@ -845,7 +842,7 @@ const StakeUnstakeModal = () => {
                               className="dropdown-container"
                               boxShadow="dark-lg"
                             >
-                              {rcoins.map((coin, index) => {
+                              {rcoins.map((coin: string, index: number) => {
                                 return (
                                   <Box
                                     key={index}
