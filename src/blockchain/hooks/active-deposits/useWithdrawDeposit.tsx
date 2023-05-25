@@ -9,17 +9,13 @@ import { number } from "starknet";
 import { tokenAddressMap, tokenDecimalsMap } from "../../stark-constants";
 import { GetErrorText, NumToBN, etherToWeiBN } from "../../utils";
 
-const useWithdrawDeposit = (
-  asset: any,
-  diamondAddress: string,
-) => {
+const useWithdrawDeposit = (asset: any, diamondAddress: string) => {
   const [withdrawAmount, setWithdrawAmount] = useState<number>();
-  const [transWithdraw, setTransWithdraw] = useState('');
+  const [transWithdraw, setTransWithdraw] = useState("");
   const [withdrawAllorNot, setWithdrawAllorNot] = useState(false);
 
   const [toastDepWithdrawParam, setDepWithdrawToastParam] = useState({});
   const [isDepWithdrawToastOpen, setIsDepWithdrawToastOpen] = useState(false);
-
 
   const {
     data: dataWithdrawDeposit,
@@ -31,7 +27,14 @@ const useWithdrawDeposit = (
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "withdraw_deposit",
-      calldata: [asset.depositId, etherToWeiBN(withdrawAmount as number, tokenAddressMap[asset.market]||"").toString(), 0],
+      calldata: [
+        asset.depositId,
+        etherToWeiBN(
+          withdrawAmount as number,
+          tokenAddressMap[asset.market] || ""
+        ).toString(),
+        0,
+      ],
     },
   });
 
@@ -40,13 +43,13 @@ const useWithdrawDeposit = (
     loading: loadingWithdrawDepositAll,
     error: errorWithdrawDepositAll,
     reset: resetWithdrawDepositAll,
-    execute: executeWithdrawDepositAll
+    execute: executeWithdrawDepositAll,
   } = useStarknetExecute({
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "withdraw_all_deposit",
       calldata: [asset.depositId],
-    }
+    },
   });
 
   const handleWithdrawDeposit = async () => {
@@ -54,33 +57,34 @@ const useWithdrawDeposit = (
 
     try {
       let val;
-      if (withdrawAllorNot) 
-        val = await executeWithdrawDepositAll();
-      else 
-        val = await executeWithdrawDep();
+      if (withdrawAllorNot) val = await executeWithdrawDepositAll();
+      else val = await executeWithdrawDep();
       setTransWithdraw(val.transaction_hash);
       const toastParamValue = {
         success: true,
         heading: "Success",
-        desc: "Copy the Transaction Hash", 
+        desc: "Copy the Transaction Hash",
         textToCopy: val.transaction_hash,
       };
       setDepWithdrawToastParam(toastParamValue);
       setIsDepWithdrawToastOpen(true);
-    } catch(err) {
+    } catch (err) {
       // console.log(err, 'withdraw deposit')
       const toastParamValue = {
         success: false,
         heading: "Deposit Transaction Failed",
-        desc: "Copy the error", 
+        desc: "Copy the error",
         textToCopy: err,
       };
       setDepWithdrawToastParam(toastParamValue);
       setIsDepWithdrawToastOpen(true);
-      toast.error(`${GetErrorText(`Withdraw for ID:${asset.depositId} failed`)}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        closeOnClick: true,
-      });
+      toast.error(
+        `${GetErrorText(`Withdraw for ID:${asset.depositId} failed`)}`,
+        {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          closeOnClick: true,
+        }
+      );
     }
   };
 
@@ -94,8 +98,8 @@ const useWithdrawDeposit = (
     loadingWithdrawDeposit,
     errorWithdrawDeposit,
 
-    isDepWithdrawToastOpen, 
-    setIsDepWithdrawToastOpen, 
+    isDepWithdrawToastOpen,
+    setIsDepWithdrawToastOpen,
     toastDepWithdrawParam,
   };
 };
