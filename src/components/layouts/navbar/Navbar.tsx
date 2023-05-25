@@ -548,6 +548,7 @@ const Navbar = () => {
                       borderRadius="6px"
                       border="1px solid #2B2F35"
                       onClick={() => {
+                        dispatch(setNavDropdown(""));
                         disconnect();
                         router.push("./");
                       }}
@@ -561,6 +562,7 @@ const Navbar = () => {
                       borderRadius="6px"
                       border="1px solid #2B2F35"
                       onClick={() => {
+                        dispatch(setNavDropdown(""));
                         disconnect();
                         router.push("./");
                       }}
