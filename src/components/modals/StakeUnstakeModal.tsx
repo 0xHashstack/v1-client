@@ -701,7 +701,10 @@ const StakeUnstakeModal = () => {
                           <Text color="#6E7681">0.3%</Text>
                         </Text>
                       </Card>
+
                       <Text
+                        display="flex"
+                        flexDirection="column"
                         padding="0px"
                         fontSize="12px"
                         fontWeight="400"
@@ -710,17 +713,21 @@ const StakeUnstakeModal = () => {
                         mt="1rem"
                         lineHeight="18px"
                       >
-                        To stake you need to supply any asset to receive
-                        rTokens. <br></br>
-                        click here To
-                        <Text
-                          display="inline"
-                          color="#0969DA"
-                          cursor="pointer"
-                          ml="0.4rem"
-                          lineHeight="18px"
-                        >
-                          Add Supply
+                        <Text>To stake you need to supply any asset to receive
+                        rTokens.</Text>
+                        <Text display="flex">
+                          click here To{" "}
+                          <SupplyModal
+                            variant="link"
+                            fontSize="12px"
+                            display="inline"
+                            color="#0969DA"
+                            cursor="pointer"
+                            ml="0.4rem"
+                            lineHeight="18px"
+                            buttonText="Add Supply"
+                            backGroundOverLay="rgba(244, 242, 255, 0)"
+                          />
                         </Text>
                       </Text>
                       {inputStakeAmount > 0 &&
@@ -1223,6 +1230,7 @@ const StakeUnstakeModal = () => {
                             ml="0.4rem"
                             lineHeight="18px"
                             buttonText="Add Supply"
+                            backGroundOverLay="rgba(244, 242, 255, 0)"
                           />
                         </Text>
                       </Text>

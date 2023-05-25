@@ -237,6 +237,7 @@ const DashboardLeft = ({
                       _hover={{ bg: "white", color: "black" }}
                       borderRadius={"6px"}
                       color="#BDBFC1;"
+                      backGroundOverLay="rgba(244, 242, 255, 0.5)"
                     />
                   </Box>
                 </Td>

@@ -47,7 +47,7 @@ import {
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 
-const SupplyModal = ({ buttonText, ...restProps }: any) => {
+const SupplyModal = ({ buttonText,backGroundOverLay, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
@@ -133,7 +133,7 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
           size={{ width: "700px", height: "100px" }}
           isCentered
         >
-          <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
+          <ModalOverlay  bg={backGroundOverLay} mt="3.8rem" />
           <ModalContent
             bg="#010409"
             color="white"
