@@ -1,13 +1,23 @@
-import { useAccount, useContract, useStarknetCall, useStarknetExecute, useTransactionReceipt } from "@starknet-react/core";
+import {
+  useAccount,
+  useContract,
+  useStarknetCall,
+  useStarknetExecute,
+  useTransactionReceipt,
+} from "@starknet-react/core";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { Abi, uint256 } from "starknet";
-import { ERC20Abi, tokenAddressMap, tokenDecimalsMap } from "../../stark-constants";
+import {
+  ERC20Abi,
+  tokenAddressMap,
+  tokenDecimalsMap,
+} from "../../stark-constants";
 import { TxToastManager } from "../../txToastManager";
 import { BNtoNum, GetErrorText, NumToBN } from "../../utils";
-import { etherToWeiBN ,weiToEtherNumber} from "../../utils";
+import { etherToWeiBN, weiToEtherNumber } from "../../utils";
 
-const useRepay = ( asset: any, diamondAddress: string ) => {
+const useRepay = (asset: any, diamondAddress: string) => {
   const [repayAmount, setRepayAmount] = useState<number>();
   const [commitmentPeriod, setCommitmentPeriod] = useState();
   const [loanId, setLoanId] = useState<number>();
@@ -23,12 +33,12 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
 
   const repayTransactionReceipt = useTransactionReceipt({
     hash: transRepayHash,
-    watch: true
-  })
+    watch: true,
+  });
 
   const selfLiquidateTransactionReceipt = useTransactionReceipt({
     hash: transSelfLiquidateHash,
-    watch: true
+    watch: true,
   });
 
   useEffect(() => {
@@ -74,7 +84,14 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
     calls: {
       contractAddress: tokenAddressMap[asset.loanMarket] as string,
       entrypoint: "approve",
-      calldata: [diamondAddress, etherToWeiBN(repayAmount as number, tokenAddressMap[asset.loanMarket] || "").toString(), 0],
+      calldata: [
+        diamondAddress,
+        etherToWeiBN(
+          repayAmount as number,
+          tokenAddressMap[asset.loanMarket] || ""
+        ).toString(),
+        0,
+      ],
     },
   });
 
@@ -89,7 +106,14 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
       {
         contractAddress: tokenAddressMap[asset.loanMarket] as string,
         entrypoint: "approve",
-        calldata: [diamondAddress, etherToWeiBN(repayAmount as number, tokenAddressMap[asset.loanMarket]|| "").toString(), 0],
+        calldata: [
+          diamondAddress,
+          etherToWeiBN(
+            repayAmount as number,
+            tokenAddressMap[asset.loanMarket] || ""
+          ).toString(),
+          0,
+        ],
       },
       {
         contractAddress: diamondAddress,
@@ -97,11 +121,14 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
         calldata: [
           tokenAddressMap[asset.loanMarket],
           asset.commitmentIndex,
-          etherToWeiBN(repayAmount as number, tokenAddressMap[asset.loanMarket]|| "").toString(),
+          etherToWeiBN(
+            repayAmount as number,
+            tokenAddressMap[asset.loanMarket] || ""
+          ).toString(),
           0,
         ],
-      }
-    ]
+      },
+    ],
   });
 
   const {
@@ -121,8 +148,8 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
           0,
           0,
         ],
-      }
-    ]
+      },
+    ],
   });
 
   useEffect(() => {
@@ -140,7 +167,14 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
         let data: any = dataAllowance;
         let _allowance = uint256.uint256ToBN(data.remaining);
         // // console.log({ _allowance: _allowance.toString(), depositAmount });
-        setAllowance(Number(weiToEtherNumber(dataAllowance[0]?.low, tokenAddressMap[asset.loanMarket]|| "").toString()));
+        setAllowance(
+          Number(
+            weiToEtherNumber(
+              dataAllowance[0]?.low,
+              tokenAddressMap[asset.loanMarket] || ""
+            ).toString()
+          )
+        );
         if (allowanceVal > (repayAmount as number)) {
           setAllowed(true);
           setShouldApprove(false);
@@ -164,7 +198,7 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
   };
 
   return {
-    repayAmount, 
+    repayAmount,
     setRepayAmount,
     handleApprove,
     executeRepay,
@@ -175,12 +209,12 @@ const useRepay = ( asset: any, diamondAddress: string ) => {
     errorRepay,
 
     //SelfLiquidate - Repay with 0 amount
-    executeSelfLiquidate, 
+    executeSelfLiquidate,
     loadingSelfLiquidate,
     errorSelfLiquidate,
-    selfLiquidateTransactionReceipt, 
-    setIsSelfLiquidateHash
+    selfLiquidateTransactionReceipt,
+    setIsSelfLiquidateHash,
   };
-}
+};
 
 export default useRepay;
