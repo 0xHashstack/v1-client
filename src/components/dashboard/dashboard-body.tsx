@@ -36,9 +36,9 @@ let DashboardTBody: any = ({
   const [depositLoanRates, setDepositLoanRates] = useState();
   const [oracleAndFairPrices, setOracleAndFairPrices] = useState<any>();
 
-  const processOracleFairPrices = (coinName: string, arr) => {
+  const processOracleFairPrices = (coinName: string, arr: any) => {
     if (!arr) return;
-    const oraclePrice = arr.find((ele) => {
+    const oraclePrice = arr.find((ele: any) => {
       return ele.name === coinName;
     });
     return oraclePrice?.price?.toFixed(3);

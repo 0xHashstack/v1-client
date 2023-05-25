@@ -474,7 +474,7 @@ const SecondaryHeader = ({
               </label>
               {/* <img
                 onClick={() => {
-                  setLiquidateDropDown(false);
+                  setLiquidateDropDown(false);  
                   setSettingDropDown(!settingDropDown);
                   setConnectWalletArrowState({
                     bool: false,
