@@ -48,7 +48,7 @@ const BorrowDashboard = ({
     }
     setBorrowIDCoinMap(temp);
     // console.log("faisal coin mapping", borrowIDCoinMap);
-  }, []);
+  }, [Coins]);
 
   return upper_bound >= lower_bound && Coins.length > 0 ? (
     <TableContainer
