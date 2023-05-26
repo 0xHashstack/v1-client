@@ -92,7 +92,7 @@ const SpendTable = () => {
     setBorrowIds(temp2);
     setCoins(temp3);
     console.log("faisal coin mapping", borrowIDCoinMap);
-  }, [borrowIDCoinMap,rows]);
+  }, []);
 
   useEffect(() => {
     const handleRouteChangeComplete = (url: string) => {

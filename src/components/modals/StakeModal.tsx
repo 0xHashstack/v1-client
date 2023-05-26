@@ -127,7 +127,7 @@ const StakeModal = ({
   useEffect(() => {
     setCurrentBorrowId(currentId);
     setCurrentBorrowMarketCoin(currentMarketCoin);
-  }, [currentId]);
+  }, [currentId,currentMarketCoin]);
 
   const handleBorrowMarketCoinChange = (id: string) => {
     // console.log("got id", id);
