@@ -1282,9 +1282,11 @@ const Dashboard = () => {
   };
 
   function isCorrectNetwork() {
+    console.log("starknetAccount", starknetAccount);
     return (
-      starknetAccount?.baseUrl.includes("alpha-mainnet.starknet.io") ||
-      starknetAccount?.baseUrl.includes("localhost")
+      starknetAccount?.baseUrl?.includes("alpha-mainnet.starknet.io") ||
+      starknetAccount?.baseUrl?.includes("localhost") ||
+      starknetAccount?.provider?.baseUrl?.includes("alpha-mainnet.starknet.io")
     );
   }
   // console.log("starknet",starknetAccount);
