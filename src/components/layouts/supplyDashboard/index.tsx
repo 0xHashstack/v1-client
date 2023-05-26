@@ -45,7 +45,7 @@ const SupplyDashboard = ({
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
   upper_bound = Math.min(Coins.length - 1, upper_bound);
-  console.log("aryan " + lower_bound + " " + upper_bound);
+  // console.log("aryan " + lower_bound + " " + upper_bound);
 
   return upper_bound >= lower_bound && Coins.length > 0 ? (
     <TableContainer

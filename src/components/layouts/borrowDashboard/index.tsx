@@ -47,7 +47,6 @@ const BorrowDashboard = ({
       temp.push({ id: Coins[i].id, name: Coins[i].name });
     }
     setBorrowIDCoinMap(temp);
-    // console.log("faisal coin mapping", borrowIDCoinMap);
   }, [Coins]);
 
   return upper_bound >= lower_bound && Coins.length > 0 ? (

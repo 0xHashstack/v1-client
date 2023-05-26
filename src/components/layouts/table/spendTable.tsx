@@ -91,7 +91,7 @@ const SpendTable = () => {
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);
     setCoins(temp3);
-    console.log("faisal coin mapping", borrowIDCoinMap);
+    // console.log("faisal coin mapping", borrowIDCoinMap);
   }, []);
 
   useEffect(() => {

@@ -3,7 +3,7 @@ import type { AppProps } from "next/app";
 
 import { Provider } from "react-redux";
 import { store } from "../store/store";
-
+import Head from "next/head";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
 
 import {
@@ -48,6 +48,12 @@ export default function App({ Component, pageProps }: AppProps) {
   ];
 
   return (
+    <>
+    <Head>
+    <title>HashStack | Under Collateralized Loans</title>
+        <meta name="description" content="Hashstack provides a permissionless zk-native money market protocol enabling secure under-collateralised loans to the crypto retail. Built on Starknet L2 [announcement], Hashstack leverages the capability of zero-knowledge proofs to provide a cost & capital-efficient lending solution." />
+        <link rel="shortcut icon" href="/favicon-32x32.png" />
+    </Head>
     <UserbackProvider token="40202|80442|mX2ZdYcMxJbcQjhQu6EJB9M9S">
       <ChakraProvider theme={theme}>
         <StarknetProvider connectors={connectors}>
@@ -60,5 +66,6 @@ export default function App({ Component, pageProps }: AppProps) {
         </StarknetProvider>
       </ChakraProvider>
     </UserbackProvider>
+    </>
   );
 }

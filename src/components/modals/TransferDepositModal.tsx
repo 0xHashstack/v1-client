@@ -97,7 +97,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
         break;
     }
   };
-  console.log(inputAmount);
+  // console.log(inputAmount);
 
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {

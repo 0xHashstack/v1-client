@@ -34,7 +34,7 @@ const AnimatedButton: React.FC<Props> = ({
   }%`;
 
   const handleClick = () => {
-    console.log("clicked");
+    // console.log("clicked");
     if (!isAnimationStarted && currentStringIndex != labelArray.length - 1) {
       setIsAnimationStarted(true);
       setCurrentStringIndex(-1);

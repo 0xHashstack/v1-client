@@ -62,11 +62,11 @@ const LiquidityProvisionModal = ({
   currentId,
   currentMarketCoin,
 }: any) => {
-  console.log("liquidity found map: ", borrowIDCoinMap);
-  console.log("liquidity found borrow ids: ", borrowIds);
-  console.log("liquidity found coins: ", coins);
-  console.log("liquidity found current coin: ", currentId);
-  console.log("liquidity found current id: ", currentMarketCoin);
+  // console.log("liquidity found map: ", borrowIDCoinMap);
+  // console.log("liquidity found borrow ids: ", borrowIds);
+  // console.log("liquidity found coins: ", coins);
+  // console.log("liquidity found current coin: ", currentId);
+  // console.log("liquidity found current id: ", currentMarketCoin);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -78,7 +78,6 @@ const LiquidityProvisionModal = ({
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const selectedDapp = useSelector(selectSelectedDapp);
-  console.log(selectedDapp);
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
@@ -206,7 +205,7 @@ const LiquidityProvisionModal = ({
           cursor="pointer"
           onClick={() => {
             if (selectedDapp == "") {
-              console.log("hi");
+              // console.log("hi");
             } else {
               onOpen();
             }
@@ -218,7 +217,7 @@ const LiquidityProvisionModal = ({
           cursor="pointer"
           onClick={() => {
             if (selectedDapp == "") {
-              console.log("hi");
+              // console.log("hi");
             } else {
               onOpen();
             }
@@ -230,7 +229,7 @@ const LiquidityProvisionModal = ({
           cursor="pointer"
           onClick={() => {
             if (selectedDapp == "") {
-              console.log("hi");
+              // console.log("hi");
             } else {
               onOpen();
             }

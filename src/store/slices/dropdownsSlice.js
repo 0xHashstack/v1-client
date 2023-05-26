@@ -63,7 +63,7 @@ export const dropdownSlice = createSlice({
         }
       });
       state.currentDropdown = dropdownName;
-      console.log("aryan1", dropdownName);
+      // console.log("aryan1", dropdownName);
       state.navDropdowns = dropdowns;
     },
     setModalDropdown(state, action) {
@@ -77,7 +77,7 @@ export const dropdownSlice = createSlice({
         }
       });
       state.currentDropdown = dropdownName;
-      console.log("aryan1", dropdownName);
+      // console.log("aryan1", dropdownName);
       state.modalDropdowns = dropdowns;
     },
     setMetricsDropdown(state, action) {
