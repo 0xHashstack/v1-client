@@ -50,5 +50,14 @@ const SelectDropdown = (props: any) => {
     </div>
   );
 };
+export async function getServerSideProps() {
+  // Fetch data or perform server-side operations
+  const serverData = "Some data from the server";
 
+  return {
+    props: {
+      serverData,
+    },
+  };
+}
 export default SelectDropdown;

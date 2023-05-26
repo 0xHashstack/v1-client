@@ -28,5 +28,4 @@ const MarketDashboard = () => {
     </HStack>
   );
 };
-
 export default MarketDashboard;
