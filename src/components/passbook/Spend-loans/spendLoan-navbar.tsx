@@ -393,7 +393,7 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
   ]);
 
   const tog_center = async () => {
-    console.log("Here hai apun");
+    // console.log("Here hai apun");
     setmodal_deposit(!modal_deposit);
     console.log(modal_deposit);
 
@@ -1376,10 +1376,12 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                           appsImage === "mySwap" ? (
                             totalAmountOutmySwap !== "NA" ? (
                               Number(totalAmountOutmySwap) >
-                                Number(changeTo18Decimals(
+                              Number(
+                                changeTo18Decimals(
                                   selectedLoan?.currentLoanAmount,
                                   selectedLoan.loanMarket
-                                )) ? (
+                                )
+                              ) ? (
                                 `1 ${selectedLoan?.loanMarketSymbol} = ${(
                                   totalAmountOutmySwap /
                                   changeTo18Decimals(
@@ -1401,10 +1403,12 @@ const SpendLoanNav = ({ activeLoansData, modal_deposit, setmodal_deposit }) => {
                           ) : appsImage === "jediSwap" ? (
                             totalAmountOutJediSwap !== "NA" ? (
                               Number(totalAmountOutJediSwap) >
-                                Number(changeTo18Decimals(
+                              Number(
+                                changeTo18Decimals(
                                   selectedLoan?.currentLoanAmount,
                                   selectedLoan?.loanMarket
-                                )) ? (
+                                )
+                              ) ? (
                                 `1 ${selectedLoan?.loanMarketSymbol} = ${(
                                   totalAmountOutJediSwap /
                                   changeTo18Decimals(
