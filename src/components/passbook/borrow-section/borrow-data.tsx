@@ -162,7 +162,7 @@ const BorrowData = ({
   revertSwapTransactionReceipt: any;
 }) => {
   const [asset, setAsset] = useState(assetParam);
-  console.log("asset borrow data", asset);
+  // console.log("asset borrow data", asset);
   const [marketTokenName, setMarketTokenName] = useState("");
   const [marketTokenSymbol, setMarketTokenSymbol] = useState("");
 
