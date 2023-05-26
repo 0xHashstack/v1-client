@@ -50,7 +50,7 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
     <Head>
-    <title>HashStack | Under Collateralized Loans</title>
+    <title>HashStack | Under-collateralised loans | Defi</title>
         <meta name="description" content="Hashstack provides a permissionless zk-native money market protocol enabling secure under-collateralised loans to the crypto retail. Built on Starknet L2 [announcement], Hashstack leverages the capability of zero-knowledge proofs to provide a cost & capital-efficient lending solution." />
         <link rel="shortcut icon" href="/favicon-32x32.png" />
     </Head>
