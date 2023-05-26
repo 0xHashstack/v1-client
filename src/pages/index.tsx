@@ -494,7 +494,7 @@ const Dashboard = () => {
         return loan.state !== "REPAID" && loan.state !== "LIQUIDATED";
       })
     );
-    console.log("parsed loans data", loans);
+    // console.log("parsed loans data", loans);
   }
 
   async function get_user_loans() {
@@ -523,7 +523,7 @@ const Dashboard = () => {
   /*============================== Get Deposits from the blockchain ====================================*/
 
   function parseDepositsData(depositsData: any[], yieldRecord: any) {
-    console.log("parseDeposisDatat", depositsData);
+    // console.log("parseDeposisDatat", depositsData);
     let deposits: any[] = [];
     let deposit;
     for (let i = 0; i < depositsData?.length; i++) {
@@ -563,10 +563,10 @@ const Dashboard = () => {
       deposits.push(JSON.parse(myDepString));
     }
     let nonZeroDeposits = deposits.filter(function (el) {
-      console.log("amount parse deposit", el.amount);
+      // console.log("amount parse deposit", el.amount);
       return el.amount !== "0";
     });
-    console.log("parsed deposit data", deposits);
+    // console.log("parsed deposit data", deposits);
     setActiveDepositsData(nonZeroDeposits);
   }
 
@@ -581,7 +581,7 @@ const Dashboard = () => {
     const Deposit = new Contract(depositAbi, diamondAddress, provider);
     const res = await Deposit.call("get_user_deposits", [account]);
     parseDepositsData(res?.deposit_records_arr, res?.yield_records_arr);
-    console.log("unparsed deposit", res);
+    // console.log("unparsed deposit", res);
   }
 
   useEffect(() => {
@@ -1282,9 +1282,11 @@ const Dashboard = () => {
   };
 
   function isCorrectNetwork() {
+    // console.log("starknetAccount", starknetAccount);
     return (
-      starknetAccount?.baseUrl.includes("alpha-mainnet.starknet.io") ||
-      starknetAccount?.baseUrl.includes("localhost")
+      starknetAccount?.baseUrl?.includes("alpha-mainnet.starknet.io") ||
+      starknetAccount?.baseUrl?.includes("localhost") ||
+      starknetAccount?.provider?.baseUrl?.includes("alpha-mainnet.starknet.io")
     );
   }
   // console.log("starknet",starknetAccount);

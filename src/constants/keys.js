@@ -1,1 +1,1 @@
-export const spaceApiKey = "9141e37f-6b35-4f05-90a1-54cd356f3e36";
+export const spaceApiKey = "bbddae86-724d-4802-962b-5a043ffd8eed";

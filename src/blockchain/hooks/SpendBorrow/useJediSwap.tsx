@@ -1,4 +1,9 @@
-import { useContract, useStarknetCall, useStarknetExecute, useTransactionReceipt } from "@starknet-react/core";
+import {
+  useContract,
+  useStarknetCall,
+  useStarknetExecute,
+  useTransactionReceipt,
+} from "@starknet-react/core";
 import { l3DiamondAddress, tokenAddressMap } from "../../stark-constants";
 import { number } from "starknet";
 import { GetErrorText, NumToBN } from "../../utils";
@@ -10,7 +15,6 @@ import { map } from "lodash";
 import { TxToastManager } from "../../txToastManager";
 
 const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
-
   const [toastJediswapParam, setToastJediswapParam] = useState({});
   const [isJediswapToastOpen, setIsToastJediswapOpen] = useState(false);
   const [supportedPoolsJediSwap, setSupportedPoolsJediSwap] = useState();
@@ -19,8 +23,8 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
 
   const jediSwapTransReceipt = useTransactionReceipt({
     hash: transJediSwapHash,
-    watch: true
-  })
+    watch: true,
+  });
 
   useEffect(() => {
     TxToastManager.handleTxToast(
@@ -42,27 +46,30 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
     refresh: refreshJediSwapSupportedPools,
   } = useStarknetCall({
     contract: l3Contract,
-    method: 'get_supported_pools_jedi_swap',
+    method: "get_supported_pools_jedi_swap",
     args: [],
     options: {
-      watch: false
-    }
-  })
+      watch: false,
+    },
+  });
 
   function getMapArr(map: any, firstVal: any) {
     if (map.get(firstVal)) {
       return map.get(firstVal);
     }
-    return []
+    return [];
   }
 
   useEffect(() => {
-
-    const setValue = (map: Map<string, Array<string>>, firstVal: string, secondVal: string) => {
-      if(map.get(firstVal))
+    const setValue = (
+      map: Map<string, Array<string>>,
+      firstVal: string,
+      secondVal: string
+    ) => {
+      if (map.get(firstVal))
         map.set(firstVal, [...getMapArr(map, firstVal), secondVal]);
       else map.set(firstVal, [secondVal]);
-    }
+    };
 
     // console.log("loading jedi", loadingJediSwapSupportedPools);
     const poolsData = new Map();
@@ -73,8 +80,8 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
         errorJediSwapSupportedPools
       );
       const pools = jediSwapSupportedPoolsData?.pools;
-      for(let i = 0; i<pools?.length; i++) {
-        const firstTokenAddress = number.toHex(pools[i].tokenA)
+      for (let i = 0; i < pools?.length; i++) {
+        const firstTokenAddress = number.toHex(pools[i].tokenA);
         const secondTokenAddress = number.toHex(pools[i].tokenB);
         setValue(poolsData, firstTokenAddress, secondTokenAddress);
         setValue(poolsData, secondTokenAddress, firstTokenAddress);
@@ -97,8 +104,13 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
   } = useStarknetExecute({
     calls: {
       contractAddress: diamondAddress,
-      entrypoint: 'interact_with_l3',
-      calldata: ["1962660952167394271600", 2, asset?.loanId, tokenAddressMap[toTokenName]],
+      entrypoint: "interact_with_l3",
+      calldata: [
+        "1962660952167394271600",
+        2,
+        asset?.loanId,
+        tokenAddressMap[toTokenName],
+      ],
     },
   });
 
@@ -111,9 +123,9 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
         heading: "Success",
         desc: "Copy the Transaction Hash",
         textToCopy: val.transaction_hash,
-    };
-    setToastJediswapParam(toastParamValue);
-    setIsToastJediswapOpen(true);
+      };
+      setToastJediswapParam(toastParamValue);
+      setIsToastJediswapOpen(true);
     } catch (err) {
       // console.log(err, "err repay");
       const toastParamValue = {
@@ -121,16 +133,16 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
         heading: "Swap Transaction Failed",
         desc: "Copy the error",
         textToCopy: err,
-    };
-    setToastJediswapParam(toastParamValue);
-    setIsToastJediswapOpen(true);
+      };
+      setToastJediswapParam(toastParamValue);
+      setIsToastJediswapOpen(true);
       toast.error(`${GetErrorText(`Swap for Loan ID${asset.loanId} failed`)}`, {
         position: toast.POSITION.BOTTOM_RIGHT,
         closeOnClick: true,
       });
       return;
     }
-  }
+  };
 
   return {
     supportedPoolsJediSwap,
@@ -149,8 +161,7 @@ const useJediSwap = (diamondAddress: string, asset: any, toTokenName: any) => {
     isJediswapToastOpen,
     setIsToastJediswapOpen,
     toastJediswapParam,
-  }
-
-}
+  };
+};
 
 export default useJediSwap;

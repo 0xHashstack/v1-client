@@ -1,4 +1,7 @@
-import { useStarknetExecute, useTransactionReceipt } from "@starknet-react/core";
+import {
+  useStarknetExecute,
+  useTransactionReceipt,
+} from "@starknet-react/core";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { TxToastManager } from "../../txToastManager";
@@ -12,15 +15,21 @@ const useWithdrawCollateral = (_diamondAddress: string, _loanId: number) => {
     setLoanId(_loanId);
   }, [_diamondAddress, _loanId]);
 
-  const [transWithdrawCollateral, setTransWithdrawCollateral] = useState('');
+  const [transWithdrawCollateral, setTransWithdrawCollateral] = useState("");
 
-  const withdrawCollateralTransactionReceipt = useTransactionReceipt({ hash: transWithdrawCollateral, watch: true })
-
+  const withdrawCollateralTransactionReceipt = useTransactionReceipt({
+    hash: transWithdrawCollateral,
+    watch: true,
+  });
 
   useEffect(() => {
     // console.log('withdraw col tx receipt', withdrawCollateralTransactionReceipt.data?.transaction_hash, withdrawCollateralTransactionReceipt);
-    TxToastManager.handleTxToast(withdrawCollateralTransactionReceipt, `Withdraw collateral`, true)
-  }, [withdrawCollateralTransactionReceipt])
+    TxToastManager.handleTxToast(
+      withdrawCollateralTransactionReceipt,
+      `Withdraw collateral`,
+      true
+    );
+  }, [withdrawCollateralTransactionReceipt]);
 
   const {
     data: dataWithdrawCollateral,
@@ -40,8 +49,8 @@ const useWithdrawCollateral = (_diamondAddress: string, _loanId: number) => {
     executeWithdrawCollateral,
     loadingWithdrawCollateral,
     errorWithdrawCollateral,
-    withdrawCollateralTransactionReceipt, 
-    setTransWithdrawCollateral
+    withdrawCollateralTransactionReceipt,
+    setTransWithdrawCollateral,
   };
 };
 
