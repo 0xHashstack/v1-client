@@ -71,7 +71,7 @@ const AnimatedButton: React.FC<Props> = ({
       overflow="hidden"
       className={classes.join(" ")}
       // _hover={{ bg: "white", color: "black !important" }}
-      _active={{ border: isAnimationStarted ?"":"3px solid grey" }}
+      _active={{ border: isAnimationStarted ? "" : "3px solid grey" }}
       {...rest}
       bgColor={isAnimationStarted ? "#eeeff2" : bgColor}
       color={isAnimationStarted ? "#010409" : "#6A737D"}

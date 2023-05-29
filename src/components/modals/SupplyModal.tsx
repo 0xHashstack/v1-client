@@ -42,19 +42,18 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
   selectModalDropDowns,
-  resetModalDropdowns
+  resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 
-const SupplyModal = ({ buttonText, ...restProps }: any) => {
+const SupplyModal = ({ buttonText, setIsOpenCustom, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
-
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
@@ -111,12 +110,15 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
-  const resetStates=()=>{
+  const resetStates = () => {
     setinputAmount(0);
     setSliderValue(0);
     setCurrentSelectedCoin("BTC");
     dispatch(resetModalDropdowns());
-  }
+  };
+
+  // useEffect(() => {
+  // }, []);
 
   return (
     <div>
@@ -126,9 +128,10 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
       <Portal>
         <Modal
           isOpen={isOpen}
-          onClose={()=>{
+          onClose={() => {
             onClose();
             resetStates();
+            if (setIsOpenCustom) setIsOpenCustom(false);
           }}
           size={{ width: "700px", height: "100px" }}
           isCentered
@@ -152,7 +155,13 @@ const SupplyModal = ({ buttonText, ...restProps }: any) => {
             >
               Supply
             </ModalHeader>
-            <ModalCloseButton mt="1rem" mr="1rem" />
+            <ModalCloseButton
+              onClick={() => {
+                if (setIsOpenCustom) setIsOpenCustom(false);
+              }}
+              mt="1rem"
+              mr="1rem"
+            />
             <ModalBody>
               <Card
                 bg="#101216"

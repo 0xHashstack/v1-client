@@ -434,7 +434,7 @@ const LiquidityProvisionModal = ({
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {borrowIds.map((coin, index) => {
+                      {borrowIds.map((coin: any, index: any) => {
                         return (
                           <Box
                             key={index}
@@ -537,7 +537,7 @@ const LiquidityProvisionModal = ({
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {coins.map((coin, index) => {
+                      {coins.map((coin: any, index: any) => {
                         return (
                           <Box
                             key={index}

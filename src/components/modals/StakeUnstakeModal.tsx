@@ -37,7 +37,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
   selectModalDropDowns,
-  resetModalDropdowns
+  resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
 import { useEffect, useState } from "react";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
@@ -55,7 +55,7 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import SupplyModal from "./SupplyModal";
-const StakeUnstakeModal = () => {
+const StakeUnstakeModal = ({ isOpenCustom, setIsOpenCustom }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const [sliderValue, setSliderValue] = useState(0);
@@ -63,6 +63,7 @@ const StakeUnstakeModal = () => {
   const [sliderValue2, setSliderValue2] = useState(0);
   const [inputStakeAmount, setInputStakeAmount] = useState(0);
   const [inputUnstakeAmount, setInputUnstakeAmount] = useState(0);
+  const [isSupplyTap, setIsSupplyTap] = useState(false);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -132,12 +133,11 @@ const StakeUnstakeModal = () => {
       setInputStakeAmount(newValue);
       // dispatch(setInputSupplyAmount(newValue));
     } else {
-      percentage = Math.round(percentage) ;
-      if(isNaN(percentage)){
-
-      }else{
-          setSliderValue(percentage);
-          setInputStakeAmount(newValue);
+      percentage = Math.round(percentage);
+      if (isNaN(percentage)) {
+      } else {
+        setSliderValue(percentage);
+        setInputStakeAmount(newValue);
       }
       // dispatch(setInputSupplyAmount(newValue));
     }
@@ -151,11 +151,10 @@ const StakeUnstakeModal = () => {
       // dispatch(setInputSupplyAmount(newValue));
     } else {
       percentage = Math.round(percentage);
-      if(isNaN(percentage)){
-
-      }else{
-          setSliderValue2(percentage);
-          setInputUnstakeAmount(newValue);
+      if (isNaN(percentage)) {
+      } else {
+        setSliderValue2(percentage);
+        setInputUnstakeAmount(newValue);
       }
       // dispatch(setInputSupplyAmount(newValue));
     }
@@ -175,7 +174,7 @@ const StakeUnstakeModal = () => {
   const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
     useState("BTC");
   const [buttonId, setButtonId] = useState(0);
-  const resetStates=()=>{
+  const resetStates = () => {
     setSliderValue(0);
     setSliderValue2(0);
     setInputStakeAmount(0);
@@ -183,7 +182,14 @@ const StakeUnstakeModal = () => {
     setCurrentSelectedStakeCoin("rBTC");
     setcurrentSelectedUnstakeCoin("rBTC");
     dispatch(resetModalDropdowns());
-  }
+  };
+  console.log("testing isopen: ", isOpen);
+  console.log("testing custom isopen: ", isOpenCustom);
+
+  useEffect(() => {
+    setIsOpenCustom(false);
+  }, []);
+
   return (
     <Box>
       <Text
@@ -215,11 +221,11 @@ const StakeUnstakeModal = () => {
       </Text>
 
       <Modal
-        isOpen={isOpen}
-        onClose={()=>{
-            onClose();
-            resetStates();
-
+        isOpen={isSupplyTap ? isOpenCustom : isOpen}
+        onOverlayClick={() => setIsOpenCustom(false)}
+        onClose={() => {
+          onClose();
+          resetStates();
         }}
         isCentered
         //   scrollBehavior="inside"
@@ -227,7 +233,12 @@ const StakeUnstakeModal = () => {
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
         <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
           {/* <ModalHeader>Borrow</ModalHeader> */}
-          <ModalCloseButton mt="1rem" mr="1rem" color="white" />
+          <ModalCloseButton
+            onClick={() => setIsOpenCustom(false)}
+            mt="1rem"
+            mr="1rem"
+            color="white"
+          />
           <ModalBody color={"#E6EDF3"} pt={6} px={7}>
             <Box
               display={"flex"}
@@ -1214,16 +1225,19 @@ const StakeUnstakeModal = () => {
                         <Text>You have not staked any rTokens to unstake</Text>
                         <Text display="flex">
                           click here To{" "}
-                          <SupplyModal
-                            variant="link"
-                            fontSize="12px"
-                            display="inline"
-                            color="#0969DA"
-                            cursor="pointer"
-                            ml="0.4rem"
-                            lineHeight="18px"
-                            buttonText="Add Supply"
-                          />
+                          <Box onClick={() => setIsSupplyTap(true)}>
+                            <SupplyModal
+                              variant="link"
+                              fontSize="12px"
+                              display="inline"
+                              color="#0969DA"
+                              cursor="pointer"
+                              ml="0.4rem"
+                              lineHeight="18px"
+                              buttonText="Add Supply"
+                              setIsOpenCustom={setIsOpenCustom}
+                            />
+                          </Box>
                         </Text>
                       </Text>
                       {inputUnstakeAmount > 0 &&
