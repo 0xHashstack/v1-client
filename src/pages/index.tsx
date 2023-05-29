@@ -70,16 +70,6 @@ export default function Home() {
       setinputAmount(newValue);
     }
   };
-  useEffect(() => {
-    // alert(status)
-    if (status == "connected") {
-      router.push('/waitlist')
-
-      // alert(account?.address);
-      // router.push('/market');
-      dispatch(setAccount(account));
-    }
-  }, [dispatch,account, status]);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const networks = [
     { name: "Starknet", status: "enable" },
@@ -113,20 +103,20 @@ export default function Home() {
     }
   };
   useEffect(() => {
-    // setRender(true);
-  }, [router]);
-  useEffect(() => {
     // alert(status)
     if (status == "connected") {
       // alert(account?.address);
-      if (!isWhiteListed) {
-        router.push(href);
-      } else {
-        router.push(href2);
-      }
+      localStorage.setItem("account", JSON.stringify(account));
       dispatch(setAccount(account));
+      if (!isWhiteListed) {
+        router.replace(href);
+        
+      } else {
+        router.replace(href2);
+      }
     }
   }, [account, status, dispatch, router]);
+  
   return (
     <PageCard justifyContent="center" alignItems="center" backgroundColor="gray">
       <Box display="flex" background="#010409" flexDirection="column" alignItems="flex-start" padding="32px" width="462px" height="567px" border="1px solid #30363D" borderRadius="8px">

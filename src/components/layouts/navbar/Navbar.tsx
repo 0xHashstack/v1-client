@@ -1,4 +1,4 @@
-import React, { memo, useRef, useState } from "react";
+import React, { memo, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -56,13 +56,23 @@ import {
 // import useOutsideClickHandler from "../../../utils/functions/clickOutsideDropdownHandler";
 import { languages } from "@/utils/constants/languages";
 import { useRouter } from "next/router";
+import { type } from "os";
 const Navbar = () => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
   const language = useSelector(selectLanguage);
+  const [parsedAccount, setParsedAccount] = useState()
   const currentDropdown = useSelector(selectCurrentDropdown);
   const account = useSelector(selectAccount);
-
+  useEffect(()=>{
+    const storedAccount = localStorage.getItem("account");
+    if(storedAccount){
+      setParsedAccount(JSON.parse(storedAccount))
+    }
+    // console.log("Sahitya account",typeof account.address)
+    console.log("Sahitya",(parsedAccount ))
+    
+  },[])
   const [dashboardHover, setDashboardHover] = useState(false);
   const [contibutionHover, setContibutionHover] = useState(false);
   const [transferDepositHover, setTransferDepositHover] = useState(false);
@@ -442,7 +452,7 @@ const Navbar = () => {
                 dispatch(setNavDropdown("walletConnectionDropdown"));
               }}
             >
-              {account ? (
+              {parsedAccount ? (
                 <Box
                   // bgColor="red"
                   width="100%"
@@ -477,12 +487,12 @@ const Navbar = () => {
                       account.length - 10,
                       account.length
                     )}`}{" "} */}
-                    {`${account.address.substring(
+                    {`${parsedAccount.address.substring(
                       0,
                       3
-                    )}...${account.address.substring(
-                      account.address.length - 9,
-                      account.address.length
+                    )}...${parsedAccount.address.substring(
+                      parsedAccount.address.length - 9,
+                      parsedAccount.address.length
                     )}`}{" "}
                   </Text>
                 </Box>
@@ -537,7 +547,7 @@ const Navbar = () => {
                 borderRadius="6px"
                 className="dropdown-container"
               >
-                {account ? (
+                {parsedAccount ? (
                   // walletConnectionDropdown.map((val, idx) => {
                   //   return (
                   <>
@@ -550,7 +560,9 @@ const Navbar = () => {
                       onClick={() => {
                         dispatch(setNavDropdown(""));
                         disconnect();
-                        router.push("./waitlist");
+                        localStorage.setItem("account","");
+
+                        router.push("./");
                       }}
                     >
                       Disconnect
@@ -578,7 +590,10 @@ const Navbar = () => {
                     marginRight="8px"
                     borderRadius="6px"
                     border="1px solid #2B2F35"
-                    onClick={() => connect(connectors[0])}
+                    onClick={()=>{
+                      connect(connectors[0]);
+                      localStorage.setItem("account",JSON.stringify(account));
+                    }}
                   >
                     Connect
                   </Box>
