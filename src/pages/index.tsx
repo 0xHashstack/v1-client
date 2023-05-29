@@ -38,7 +38,10 @@ import {
   useBlock,
 } from "@starknet-react/core";
 import { useDispatch, useSelector } from "react-redux";
-import { selectWalletBalance, setAccount } from "@/store/slices/userAccountSlice";
+import {
+  selectWalletBalance,
+  setAccount,
+} from "@/store/slices/userAccountSlice";
 // import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -55,7 +58,7 @@ export default function Home() {
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [currentNetwork, setCurrentNetwork] = useState("Select network");
-  const [walletName, setWalletName] = useState("")
+  const [walletName, setWalletName] = useState("");
   const walletBalance = useSelector(selectWalletBalance);
   const handleChange = (newValue: any) => {
     // Calculate the percentage of the new value relative to the wallet balance
@@ -73,13 +76,13 @@ export default function Home() {
   useEffect(() => {
     // alert(status)
     if (status == "connected") {
-      router.push('/waitlist')
+      router.push("/waitlist");
 
       // alert(account?.address);
       // router.push('/market');
       dispatch(setAccount(account));
     }
-  }, [dispatch,account, status]);
+  }, [dispatch, account, status]);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const networks = [
     { name: "Starknet", status: "enable" },
@@ -128,8 +131,24 @@ export default function Home() {
     }
   }, [account, status, dispatch, router]);
   return (
-    <PageCard justifyContent="center" alignItems="center" backgroundColor="gray">
-      <Box display="flex" background="#010409" flexDirection="column" alignItems="flex-start" padding="32px" width="462px" height="567px" border="1px solid #30363D" borderRadius="8px">
+    <Box
+      display="flex"
+      justifyContent="center"
+      alignItems="center"
+      backgroundColor="#191922"
+      height="100vh"
+    >
+      <Box
+        display="flex"
+        background="#010409"
+        flexDirection="column"
+        alignItems="flex-start"
+        padding="32px"
+        width="462px"
+        height="567px"
+        border="1px solid #30363D"
+        borderRadius="8px"
+      >
         <Text color="#fff">Connect a wallet</Text>
         <Card
           bg="#101216"
@@ -151,10 +170,10 @@ export default function Home() {
             borderRadius="md"
             className="navbar"
             cursor="pointer"
-          // onClick={() => handleDropdownClick("walletConnectDropDown")}
+            // onClick={() => handleDropdownClick("walletConnectDropDown")}
           >
             <Box display="flex" gap="1">
-                <Box p="1">{getCoin("Starknet")}</Box>
+              <Box p="1">{getCoin("Starknet")}</Box>
               <Text color="white" p="1">
                 Starknet
               </Text>
@@ -170,8 +189,8 @@ export default function Home() {
             display="flex"
             justifyContent="space-between"
             cursor="pointer"
-          // onClick={() => router.push("/market")}
-          onClick={() => connect(connectors[0])}
+            // onClick={() => router.push("/market")}
+            onClick={() => connect(connectors[0])}
           >
             <Text ml="1rem" color="white">
               Bravos Wallet
@@ -210,24 +229,22 @@ export default function Home() {
         >
           <Text color="#fff">
             Don&apos;t have a supporting wallet.
-            <Link href="https://braavos.app/" target="_blank">            
-            <Button
-              variant="link"
-              fontSize="12px"
-              display="inline"
-              color="#0969DA"
-              cursor="pointer"
-              ml="0.4rem"
-              lineHeight="18px"
-            >
-              
-              Download bravos from here
-            </Button>
+            <Link href="https://braavos.app/" target="_blank">
+              <Button
+                variant="link"
+                fontSize="12px"
+                display="inline"
+                color="#0969DA"
+                cursor="pointer"
+                ml="0.4rem"
+                lineHeight="18px"
+              >
+                Download bravos from here
+              </Button>
             </Link>
           </Text>
         </Box>
         <Box
-
           alignItems="center"
           fontSize="14px"
           lineHeight="22px"
@@ -244,7 +261,6 @@ export default function Home() {
             color="#0969DA"
             cursor="pointer"
             lineHeight="22px"
-
           >
             terms of service & disclaimer
           </Button>
@@ -257,11 +273,11 @@ export default function Home() {
             fontWeight="400"
             color="#8C8C8C"
           >
-            This mainnet is currently in alpha with limitations on the
-            maximum supply & borrow amount. This is done in consideration
-            of the current network and liquidity constraints of the
-            Starknet. We urge the users to use the dapp with caution.
-            Hashstack will not cover any accidental loss of user funds.
+            This mainnet is currently in alpha with limitations on the maximum
+            supply & borrow amount. This is done in consideration of the current
+            network and liquidity constraints of the Starknet. We urge the users
+            to use the dapp with caution. Hashstack will not cover any
+            accidental loss of user funds.
           </Text>
           <Text
             fontSize="10px"
@@ -270,13 +286,12 @@ export default function Home() {
             color="#8C8C8C"
             mt="1rem"
           >
-            Wallets are provided by External Providers and by selecting
-            you agree to Terms of those Providers. Your access to the
-            wallet might be reliant on the External Provider being
-            operational.
+            Wallets are provided by External Providers and by selecting you
+            agree to Terms of those Providers. Your access to the wallet might
+            be reliant on the External Provider being operational.
           </Text>
         </Box>
       </Box>
-    </PageCard>
+    </Box>
   );
 }
