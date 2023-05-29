@@ -10,7 +10,7 @@ import crossButton from "../../assets/images/crossButton.svg";
 import starknetLogo from "../../assets/images/starknetLogo.svg";
 import { useDisconnect } from "wagmi";
 import ethLogo from "../../assets/images/ethLogo.svg";
-import ArgentXlogo from "../../assets/images/ArgentXlogo.svg"
+import ArgentXlogo from "../../assets/images/ArgentXlogo.svg";
 import { useEffect } from "react";
 
 const ConnectWalletModal = () => {
@@ -28,8 +28,18 @@ const ConnectWalletModal = () => {
     redirectLink: "#",
   });
   const { address: account } = useAccount();
-  const { available, connect } = useConnectors();
-  
+  // const { available, connect } = useConnectors();
+  const { available, refresh, connect } = useConnectors();
+
+  useEffect(() => {
+    const interval = setInterval(refresh, 3000);
+    console.log("refresh");
+    return () => clearInterval(interval);
+  }, [refresh]);
+  useEffect(() => {
+    console.log("avalable - ", available);
+  }, [available]);
+
   // console.log(available);
 
   // function handleButtonConnectWallet() {
@@ -56,7 +66,7 @@ const ConnectWalletModal = () => {
   //   setConnectWallet(!connectWallet);
   //   // removeBodyCss();
   // }
-  
+
   const selectStarKnetNetwork = () => {
     {
       setNetwork("Starknet");
@@ -80,13 +90,14 @@ const ConnectWalletModal = () => {
 
   const handleConnectBraavosWallet = () => {
     {
+      console.log("available", available);
       available.length > 0
         ? available.map((connector, id) => {
-          // console.log(id,connector.options.id);
-          if (network === "Starknet" && connector.options.id === "braavos") {
-            disconnectEvent(), connect(connector);
-          }
-        })
+            console.log("connect", id, connector.options.id);
+            if (network === "Starknet" && connector.options.id === "braavos") {
+              disconnectEvent(), connect(connector);
+            }
+          })
         : window.open("https://braavos.app/", "_blank");
     }
   };
@@ -95,12 +106,11 @@ const ConnectWalletModal = () => {
     {
       available.length > 0
         ? available.map((connector, id) => {
-          // // console.log(id);
-          if (network === "Starknet" && connector.options.id === "argentX") {
-            disconnectEvent(), connect(connector);
-          }
-
-        })
+            // // console.log(id);
+            if (network === "Starknet" && connector.options.id === "argentX") {
+              disconnectEvent(), connect(connector);
+            }
+          })
         : window.open("https://www.argent.xyz/argent-x/", "_blank");
     }
   };
@@ -162,11 +172,12 @@ const ConnectWalletModal = () => {
                   alignItems: "center",
                 }}
               >
-                <div style={{
-                  display: "flex",
-                  alignItems:"center"
-                }}>
-               
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                  }}
+                >
                   {network === "Starknet" ? (
                     <img
                       src="./starknetconnectlogo.svg"
@@ -175,7 +186,7 @@ const ConnectWalletModal = () => {
                       height="22px"
                     />
                   ) : null}
-                  <div style={{marginLeft: "8px"}}>{network}</div>
+                  <div style={{ marginLeft: "8px" }}>{network}</div>
                 </div>
                 <div
                   style={{
@@ -203,7 +214,7 @@ const ConnectWalletModal = () => {
                       display: "flex",
                       marginBottom: "10px",
                       cursor: "pointer",
-                      alignItems:"center"
+                      alignItems: "center",
                     }}
                   >
                     <img
@@ -216,7 +227,7 @@ const ConnectWalletModal = () => {
                       &nbsp;Starknet
                     </div>
                   </div>
-                  <div style={{ display: "flex" ,alignItems:"center"}}>
+                  <div style={{ display: "flex", alignItems: "center" }}>
                     <img
                       src="./ethconnectlogo.svg"
                       alt="Picture of the author"
@@ -310,7 +321,6 @@ const ConnectWalletModal = () => {
                 >
                   {/* &nbsp;{networkSelected.walletName} Wallet */}
                   &nbsp; Argent X Wallet
-
                 </div>
                 <div style={{ marginRight: "10px", marginTop: "2px" }}>
                   <img
@@ -323,10 +333,7 @@ const ConnectWalletModal = () => {
               </div>
             </label>
             {/* </a> */}
-            {
-              network !== "Starknet" ? <EthWalletButton /> : null
-            }
-
+            {network !== "Starknet" ? <EthWalletButton /> : null}
           </div>
 
           <p style={{ fontSize: "14px" }}>
