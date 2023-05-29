@@ -89,29 +89,40 @@ const ConnectWalletModal = () => {
   };
 
   const handleConnectBraavosWallet = () => {
+    let braavos = false;
     {
       console.log("available", available);
-      available.length > 0
-        ? available.map((connector, id) => {
-            console.log("connect", id, connector.options.id);
-            if (network === "Starknet" && connector.options.id === "braavos") {
-              disconnectEvent(), connect(connector);
-            }
-          })
-        : window.open("https://braavos.app/", "_blank");
+      if (available.length > 0) {
+        available.map((connector, id) => {
+          console.log("connect", id, connector.options.id);
+          if (network === "Starknet" && connector.options.id === "braavos") {
+            braavos = true;
+            disconnectEvent(), connect(connector);
+          }
+        });
+      }
+      if (!braavos) {
+        window.open("https://braavos.app/", "_blank");
+      }
     }
   };
 
   const handleConnectArgentXWallet = () => {
+    let argentX = false;
     {
-      available.length > 0
-        ? available.map((connector, id) => {
-            // // console.log(id);
-            if (network === "Starknet" && connector.options.id === "argentX") {
-              disconnectEvent(), connect(connector);
-            }
-          })
-        : window.open("https://www.argent.xyz/argent-x/", "_blank");
+      console.log("available", available);
+      if (available.length > 0) {
+        available.map((connector, id) => {
+          console.log("connect", id, connector.options.id);
+          if (network === "Starknet" && connector.options.id === "argentX") {
+            argentX = true;
+            disconnectEvent(), connect(connector);
+          }
+        });
+      }
+      if (!argentX) {
+        window.open("https://www.argent.xyz/argent-x/", "_blank");
+      }
     }
   };
   return (
