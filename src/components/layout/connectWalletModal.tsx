@@ -33,8 +33,13 @@ const ConnectWalletModal = () => {
 
   useEffect(() => {
     const interval = setInterval(refresh, 3000);
+    console.log("refresh");
     return () => clearInterval(interval);
   }, [refresh]);
+  useEffect(() => {
+    console.log("avalable - ", available);
+  }, [available]);
+
   // console.log(available);
 
   // function handleButtonConnectWallet() {
@@ -273,7 +278,7 @@ const ConnectWalletModal = () => {
                     color: "#FFF",
                   }}
                 >
-                  &nbsp; Braavos Wallett
+                  &nbsp; Braavos Wallet
                 </div>
                 <div style={{ marginRight: "10px", marginTop: "2px" }}>
                   <img
