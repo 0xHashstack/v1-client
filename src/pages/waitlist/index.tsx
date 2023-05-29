@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { Box, Button, Stack, Text } from "@chakra-ui/react";
 import Navbar from "@/components/layouts/navbar/Navbar";
 import PageCard from "@/components/layouts/pageCard";
-import WalletConnectModal from "@/components/modals/WalletConnectModal";
+// import WalletConnectModal from "@/components/modals/WalletConnectModal";
 import {
   useAccount,
   useConnectors,

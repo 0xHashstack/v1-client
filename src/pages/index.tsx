@@ -18,7 +18,7 @@ import {
 
 import Navbar from "@/components/layouts/navbar/Navbar";
 import PageCard from "@/components/layouts/pageCard";
-import WalletConnectModal from "@/components/modals/WalletConnectModal";
+// import WalletConnectModal from "@/components/modals/WalletConnectModal";
 import { useContract } from "@starknet-react/core";
 import { useDisclosure } from "@chakra-ui/react";
 import BTCLogo from "@/assets/icons/coins/btc";
@@ -131,12 +131,17 @@ export default function Home() {
     }
   }, [account, status, dispatch, router]);
   return (
-    <Box
-      display="flex"
+    // <Box
+    //   display="flex"
+    //   justifyContent="center"
+    //   alignItems="center"
+    //   backgroundColor="#191922"
+    //   height="100vh"
+    // >
+    <PageCard
       justifyContent="center"
       alignItems="center"
       backgroundColor="#191922"
-      height="100vh"
     >
       <Box
         display="flex"
@@ -292,6 +297,7 @@ export default function Home() {
           </Text>
         </Box>
       </Box>
-    </Box>
+    </PageCard>
+    // </Box>
   );
 }
