@@ -142,6 +142,7 @@ export default function Home() {
       justifyContent="center"
       alignItems="center"
       backgroundColor="#191922"
+      height="100vh"
     >
       <Box
         display="flex"
