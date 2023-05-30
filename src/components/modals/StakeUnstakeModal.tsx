@@ -55,7 +55,7 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import SupplyModal from "./SupplyModal";
-const StakeUnstakeModal = ({ isOpenCustom, setIsOpenCustom }: any) => {
+const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const [sliderValue, setSliderValue] = useState(0);
@@ -162,33 +162,39 @@ const StakeUnstakeModal = ({ isOpenCustom, setIsOpenCustom }: any) => {
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
-  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const coins = [
+    { BTC: "rBTC" },
+    { USDT: "rUSDT" },
+    { USDC: "rUSDC" },
+    { ETH: "rETH" },
+    { DAI: "rDAI" },
+  ];
   const rcoins = ["rBTC", "rUSDT", "rUSDC", "rETH", "rDAI"];
   const walletBalance = useSelector(selectWalletBalance);
+  const coinObj: any = coins.find((obj) => coin.name in obj);
+  const rcoinValue = coinObj ? coinObj[coin.name] : undefined;
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
     useState("BTC");
   const [currentSelectedStakeCoin, setCurrentSelectedStakeCoin] =
-    useState("rBTC");
+    useState(rcoinValue);
   const [currentSelectedUnstakeCoin, setcurrentSelectedUnstakeCoin] =
-    useState("rBTC");
-  const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
-    useState("BTC");
+    useState(rcoinValue);
   const [buttonId, setButtonId] = useState(0);
   const resetStates = () => {
     setSliderValue(0);
     setSliderValue2(0);
     setInputStakeAmount(0);
     setInputUnstakeAmount(0);
-    setCurrentSelectedStakeCoin("rBTC");
-    setcurrentSelectedUnstakeCoin("rBTC");
+    setCurrentSelectedStakeCoin(coin ? rcoinValue : "rBTC");
+    setcurrentSelectedUnstakeCoin(coin ? rcoinValue : "rBTC");
     dispatch(resetModalDropdowns());
   };
-  console.log("testing isopen: ", isOpen);
-  console.log("testing custom isopen: ", isOpenCustom);
+  // console.log("testing isopen: ", isOpen);
+  // console.log("testing custom isopen: ", isOpenCustom);
 
-  useEffect(() => {
-    setIsOpenCustom(false);
-  }, []);
+  // useEffect(() => {
+  //   setIsOpenCustom(false);
+  // }, []);
 
   return (
     <Box>
@@ -221,8 +227,9 @@ const StakeUnstakeModal = ({ isOpenCustom, setIsOpenCustom }: any) => {
       </Text>
 
       <Modal
-        isOpen={isSupplyTap ? isOpenCustom : isOpen}
-        onOverlayClick={() => setIsOpenCustom(false)}
+        isOpen={isOpen}
+        // isOpen={isSupplyTap ? isOpenCustom : isOpen}
+        // onOverlayClick={() => setIsOpenCustom(false)}
         onClose={() => {
           onClose();
           resetStates();
@@ -234,7 +241,7 @@ const StakeUnstakeModal = ({ isOpenCustom, setIsOpenCustom }: any) => {
         <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
           {/* <ModalHeader>Borrow</ModalHeader> */}
           <ModalCloseButton
-            onClick={() => setIsOpenCustom(false)}
+            // onClick={() => setIsOpenCustom(false)}
             mt="1rem"
             mr="1rem"
             color="white"
@@ -740,6 +747,7 @@ const StakeUnstakeModal = ({ isOpenCustom, setIsOpenCustom }: any) => {
                             lineHeight="18px"
                             buttonText="Add Supply"
                             backGroundOverLay="rgba(244, 242, 255, 0)"
+                            coin={coin}
                           />
                         </Text>
                       </Text>
@@ -1234,20 +1242,18 @@ const StakeUnstakeModal = ({ isOpenCustom, setIsOpenCustom }: any) => {
                         <Text>You have not staked any rTokens to unstake</Text>
                         <Text display="flex">
                           click here To{" "}
-                          <Box onClick={() => setIsSupplyTap(true)}>
-                            <SupplyModal
-                              variant="link"
-                              fontSize="12px"
-                              display="inline"
-                              color="#0969DA"
-                              cursor="pointer"
-                              ml="0.4rem"
-                              lineHeight="18px"
-                              buttonText="Add Supply"
-                              setIsOpenCustom={setIsOpenCustom}
-                              backGroundOverLay="none"
-                            />
-                          </Box>
+                          <SupplyModal
+                            variant="link"
+                            fontSize="12px"
+                            display="inline"
+                            color="#0969DA"
+                            cursor="pointer"
+                            ml="0.4rem"
+                            lineHeight="18px"
+                            buttonText="Add Supply"
+                            backGroundOverLay="rgba(244, 242, 255, 0)"
+                            coin={coin}
+                          />
                         </Text>
                       </Text>
                       {inputUnstakeAmount > 0 &&

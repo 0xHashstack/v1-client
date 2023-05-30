@@ -116,7 +116,8 @@ const YourMetrics = () => {
                   //   display="flex"
                   //   justifyContent="center"
                   //   alignItems="center"
-                  pt={1}
+                  // pt={1}
+                  mb="0.1rem"
                 >
                   {currentMarketCoin}
                 </Text>

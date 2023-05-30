@@ -59,7 +59,7 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
-const TradeModal = () => {
+const TradeModal = ({ buttonText,coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   //   console.log("isopen", isOpen, "onopen", onOpen, "onClose", onClose);
   const [sliderValue, setSliderValue] = useState(0);
@@ -175,8 +175,8 @@ const TradeModal = () => {
   };
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
-  const [currentCollateralCoin, setCurrentCollateralCoin] = useState("BTC");
-  const [currentBorrowCoin, setCurrentBorrowCoin] = useState("BTC");
+  const [currentCollateralCoin, setCurrentCollateralCoin] = useState(coin ? coin.name :"BTC");
+  const [currentBorrowCoin, setCurrentBorrowCoin] = useState(coin ? coin.name :"BTC");
   const [radioValue, setRadioValue] = useState("1");
 
   const resetStates = () => {
@@ -186,8 +186,8 @@ const TradeModal = () => {
     setinputBorrowAmount(0);
     setCurrentDapp("Select a dapp");
     setCurrentPool("Select a pool");
-    setCurrentCollateralCoin("BTC");
-    setCurrentBorrowCoin("BTC");
+    setCurrentCollateralCoin(coin.name);
+    setCurrentBorrowCoin(coin.name);
     setCurrentPoolCoin("Select a pool");
     setRadioValue("1");
     dispatch(resetModalDropdowns());

@@ -47,16 +47,17 @@ import {
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 
-// const SupplyModal = ({ buttonText, , ...restProps }: any) => {
 const SupplyModal = ({
   buttonText,
-  setIsOpenCustom,
+  coin,
   backGroundOverLay,
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
+  const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
+    coin ? coin.name : "BTC"
+  );
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
@@ -119,7 +120,7 @@ const SupplyModal = ({
   const resetStates = () => {
     setinputAmount(0);
     setSliderValue(0);
-    setCurrentSelectedCoin("BTC");
+    setCurrentSelectedCoin(coin ? coin.name : "BTC");
     dispatch(resetModalDropdowns());
   };
 
@@ -137,7 +138,7 @@ const SupplyModal = ({
           onClose={() => {
             onClose();
             resetStates();
-            if (setIsOpenCustom) setIsOpenCustom(false);
+            // if (setIsOpenCustom) setIsOpenCustom(false);
           }}
           size={{ width: "700px", height: "100px" }}
           isCentered
@@ -162,9 +163,9 @@ const SupplyModal = ({
               Supply
             </ModalHeader>
             <ModalCloseButton
-              onClick={() => {
-                if (setIsOpenCustom) setIsOpenCustom(false);
-              }}
+              // onClick={() => {
+              //   if (setIsOpenCustom) setIsOpenCustom(false);
+              // }}
               mt="1rem"
               mr="1rem"
             />

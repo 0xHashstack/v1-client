@@ -29,9 +29,11 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Market() {
   const dispatch = useDispatch();
+  const router=useRouter();
   const reserves = useSelector(selectReserves);
   const oracleAndFairPrices = useSelector(selectOracleAndFairPrices);
   const offchainCurrentBlock = useSelector(selectOffchainCurrentBlock);
+  const [parsedAccount, setParsedAccount] = useState<any>()
   const address = useSelector(selectAccountAddress);
   const account = useSelector(selectAccount);
 
@@ -40,11 +42,14 @@ export default function Market() {
     dispatch(setAccountAddress(e.target.user.value));
   }
   const [render, setRender] = useState(true);
-  useEffect(() => {
-    setRender(true);
-  }, []);
 
   console.log("degug2", offchainCurrentBlock);
+  useEffect(()=>{
+    const storedAccount = localStorage.getItem("account");
+    if(!storedAccount){
+      router.push('/')
+    }
+  },[])
   return (
     <PageCard>
       <StatsBoard />

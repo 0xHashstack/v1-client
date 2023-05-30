@@ -512,84 +512,23 @@ const LiquidityProvisionModal = ({
                   mt="0.2rem"
                   borderRadius="md"
                   className="navbar"
-                  cursor="pointer"
-                  onClick={() =>
-                    handleDropdownClick(
-                      "liquidityProvisionBorrowMarketDropDown"
-                    )
-                  }
+                  // onClick={() =>
+                  //   handleDropdownClick(
+                  //     "liquidityProvisionBorrowMarketDropDown"
+                  //   )
+                  // }
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentBorrowMarketCoin)}</Box>
                     <Text color="white">{currentBorrowMarketCoin}</Text>
                   </Box>
-
-                  <Box pt="1" className="navbar-button">
-                    <DropdownUp />
-                  </Box>
-                  {modalDropdowns.liquidityProvisionBorrowMarketDropDown && (
-                    <Box
-                      w="full"
-                      left="0"
-                      bg="#03060B"
-                      py="2"
-                      className="dropdown-container"
-                      boxShadow="dark-lg"
-                    >
-                      {coins.map((coin: string, index: number) => {
-                        return (
-                          <Box
-                            key={index}
-                            as="button"
-                            w="full"
-                            display="flex"
-                            alignItems="center"
-                            gap="1"
-                            pr="2"
-                            onClick={() => {
-                              setCurrentBorrowMarketCoin(coin);
-                              handleBorrowMarketIDChange(coin);
-                              // dispatch(setCoinSelectedSupplyModal(coin))
-                            }}
-                          >
-                            {coin === currentBorrowMarketCoin && (
-                              <Box
-                                w="3px"
-                                h="28px"
-                                bg="#0C6AD9"
-                                borderRightRadius="md"
-                              ></Box>
-                            )}
-                            <Box
-                              w="full"
-                              display="flex"
-                              py="5px"
-                              px={`${
-                                coin === currentBorrowMarketCoin ? "1" : "5"
-                              }`}
-                              gap="1"
-                              bg={`${
-                                coin === currentBorrowMarketCoin
-                                  ? "#0C6AD9"
-                                  : "inherit"
-                              }`}
-                              borderRadius="md"
-                            >
-                              <Box p="1">{getCoin(coin)}</Box>
-                              <Text color="white">{coin}</Text>
-                            </Box>
-                          </Box>
-                        );
-                      })}
-                    </Box>
-                  )}
                 </Box>
                 <Text
                   color="#E6EDF3"
                   display="flex"
                   justifyContent="flex-end"
                   mt="0.4rem"
-                  fontSize="12px"
+                fontSize="12px"
                   fontWeight="500"
                   fontStyle="normal"
                   fontFamily="Inter"
