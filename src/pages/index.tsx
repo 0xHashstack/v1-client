@@ -2,19 +2,43 @@ import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { Box, Button, Stack, Text } from "@chakra-ui/react";
+import {
+  Button,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalCloseButton,
+  Card,
+  Text,
+  Box,
+  Portal,
+} from "@chakra-ui/react";
+
 import Navbar from "@/components/layouts/navbar/Navbar";
 import PageCard from "@/components/layouts/pageCard";
 import WalletConnectModal from "@/components/modals/WalletConnectModal";
+import { useContract } from "@starknet-react/core";
+import { useDisclosure } from "@chakra-ui/react";
+import BTCLogo from "@/assets/icons/coins/btc";
+import USDCLogo from "@/assets/icons/coins/usdc";
+import BravosIcon from "@/assets/icons/wallets/bravos";
+import USDTLogo from "@/assets/icons/coins/usdt";
+import ETHLogo from "@/assets/icons/coins/eth";
+import DAILogo from "@/assets/icons/coins/dai";
+import DropdownUp from "@/assets/icons/dropdownUpIcon";
+import StarknetLogo from "@/assets/icons/coins/starknet";
+import BrowserWalletIcon from "@/assets/icons/wallets/browserwallet";
+import EthWalletLogo from "@/assets/icons/coins/ethwallet";
 import {
   useAccount,
   useConnectors,
   useStarknet,
   useBlock,
 } from "@starknet-react/core";
-import { useContract } from "@starknet-react/core";
-import { useDispatch } from "react-redux";
-import { setAccount } from "@/store/slices/userAccountSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectWalletBalance, setAccount } from "@/store/slices/userAccountSlice";
 // import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -28,6 +52,66 @@ export default function Home() {
   const href = "/waitlist";
   const href2 = "/market";
   const dispatch = useDispatch();
+  const [inputAmount, setinputAmount] = useState(0);
+  const [sliderValue, setSliderValue] = useState(0);
+  const [currentNetwork, setCurrentNetwork] = useState("Select network");
+  const [walletName, setWalletName] = useState("")
+  const walletBalance = useSelector(selectWalletBalance);
+  const handleChange = (newValue: any) => {
+    // Calculate the percentage of the new value relative to the wallet balance
+    var percentage = (newValue * 100) / walletBalance;
+    percentage = Math.max(0, percentage);
+    if (percentage > 100) {
+      setSliderValue(100);
+      setinputAmount(newValue);
+    } else {
+      percentage = Math.round(percentage * 100) / 100;
+      setSliderValue(percentage);
+      setinputAmount(newValue);
+    }
+  };
+  useEffect(() => {
+    // alert(status)
+    if (status == "connected") {
+      router.push('/waitlist')
+
+      // alert(account?.address);
+      // router.push('/market');
+      dispatch(setAccount(account));
+    }
+  }, [dispatch,account, status]);
+  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const networks = [
+    { name: "Starknet", status: "enable" },
+    { name: "Ethereum (Coming soon)", status: "disable" },
+  ];
+  const getCoin = (CoinName: string) => {
+    switch (CoinName) {
+      case "BTC":
+        return <BTCLogo height={"16px"} width={"16px"} />;
+        break;
+      case "USDC":
+        return <USDCLogo height={"16px"} width={"16px"} />;
+        break;
+      case "USDT":
+        return <USDTLogo height={"16px"} width={"16px"} />;
+        break;
+      case "ETH":
+        return <ETHLogo height={"16px"} width={"16px"} />;
+        break;
+      case "DAI":
+        return <DAILogo height={"16px"} width={"16px"} />;
+        break;
+      case "Starknet":
+        return <StarknetLogo />;
+        break;
+      case "Ethereum (Coming soon)":
+        return <EthWalletLogo />;
+        break;
+      default:
+        break;
+    }
+  };
   useEffect(() => {
     // setRender(true);
   }, [router]);
@@ -44,15 +128,155 @@ export default function Home() {
     }
   }, [account, status, dispatch, router]);
   return (
-    <PageCard justifyContent="center" alignItems="center">
-      <Text fontSize="46px" color="#FFFFFF">
-        Welcome to Hashstack&apos;s mainnet!
-      </Text>
+    <PageCard justifyContent="center" alignItems="center" backgroundColor="gray">
+      <Box display="flex" background="#010409" flexDirection="column" alignItems="flex-start" padding="32px" width="462px" height="567px" border="1px solid #30363D" borderRadius="8px">
+        <Text color="#fff">Connect a wallet</Text>
+        <Card
+          bg="#101216"
+          p="1rem"
+          border="1px solid #2B2F35"
+          width="400px"
+          mt="8px"
+        >
+          <Box
+            display="flex"
+            border="1px"
+            borderColor="#2B2F35"
+            justifyContent="space-between"
+            py="1"
+            pl="3"
+            pr="3"
+            mb="1rem"
+            mt="0.5rem"
+            borderRadius="md"
+            className="navbar"
+            cursor="pointer"
+          // onClick={() => handleDropdownClick("walletConnectDropDown")}
+          >
+            <Box display="flex" gap="1">
+                <Box p="1">{getCoin("Starknet")}</Box>
+              <Text color="white" p="1">
+                Starknet
+              </Text>
+            </Box>
+          </Box>
+          <Box
+            w="full"
+            backgroundColor="#101216"
+            py="2"
+            border="1px solid #2B2F35"
+            borderRadius="6px"
+            gap="3px"
+            display="flex"
+            justifyContent="space-between"
+            cursor="pointer"
+          // onClick={() => router.push("/market")}
+          onClick={() => connect(connectors[0])}
+          >
+            <Text ml="1rem" color="white">
+              Bravos Wallet
+            </Text>
+            <Box p="1" mr="16px">
+              <BravosIcon />
+            </Box>
+          </Box>
+          <Box
+            w="full"
+            backgroundColor="#101216"
+            py="2"
+            border="1px solid #2B2F35"
+            borderRadius="6px"
+            gap="3px"
+            mt="1rem"
+            display="flex"
+            justifyContent="space-between"
+            cursor="pointer"
+          >
+            <Text ml="1rem" color="white">
+              Connect browser wallet
+            </Text>
+            <Box p="1" mr="16px">
+              <BrowserWalletIcon />
+            </Box>
+          </Box>
+        </Card>
+        <Box
+          display="flex"
+          flexDirection="row"
+          fontSize="12px"
+          lineHeight="30px"
+          fontWeight="400"
+          mt="16px"
+        >
+          <Text color="#fff">
+            Don&apos;t have a supporting wallet.
+            <Link href="https://braavos.app/" target="_blank">            
+            <Button
+              variant="link"
+              fontSize="12px"
+              display="inline"
+              color="#0969DA"
+              cursor="pointer"
+              ml="0.4rem"
+              lineHeight="18px"
+            >
+              
+              Download bravos from here
+            </Button>
+            </Link>
+          </Text>
+        </Box>
+        <Box
 
-      <WalletConnectModal
-        placeHolder={"Connect Wallet"}
-        onClick={() => connect(connectors[0])}
-      />
+          alignItems="center"
+          fontSize="14px"
+          lineHeight="22px"
+          fontWeight="400"
+          mt="8px"
+        >
+          <Text fontSize="14px" lineHeight="22px" fontWeight="400" color="#fff">
+            By connecting your wallet, you agree to Hashstack&apos;s
+          </Text>
+          <Button
+            variant="link"
+            fontSize="14px"
+            display="inline"
+            color="#0969DA"
+            cursor="pointer"
+            lineHeight="22px"
+
+          >
+            terms of service & disclaimer
+          </Button>
+        </Box>
+
+        <Box mt="16px" display="flex" flexDirection="column" pb="32px">
+          <Text
+            fontSize="10px"
+            lineHeight="18px"
+            fontWeight="400"
+            color="#8C8C8C"
+          >
+            This mainnet is currently in alpha with limitations on the
+            maximum supply & borrow amount. This is done in consideration
+            of the current network and liquidity constraints of the
+            Starknet. We urge the users to use the dapp with caution.
+            Hashstack will not cover any accidental loss of user funds.
+          </Text>
+          <Text
+            fontSize="10px"
+            lineHeight="18px"
+            fontWeight="400"
+            color="#8C8C8C"
+            mt="1rem"
+          >
+            Wallets are provided by External Providers and by selecting
+            you agree to Terms of those Providers. Your access to the
+            wallet might be reliant on the External Provider being
+            operational.
+          </Text>
+        </Box>
+      </Box>
     </PageCard>
   );
 }

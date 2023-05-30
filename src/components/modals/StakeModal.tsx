@@ -127,7 +127,7 @@ const StakeModal = ({
   useEffect(() => {
     setCurrentBorrowId(currentId);
     setCurrentBorrowMarketCoin(currentMarketCoin);
-  }, [currentId]);
+  }, [currentId, currentMarketCoin]);
 
   const handleBorrowMarketCoinChange = (id: string) => {
     // console.log("got id", id);
@@ -257,7 +257,7 @@ const StakeModal = ({
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {coins.map((coin: any, index: any) => {
+                      {coins.map((coin: string, index: number) => {
                         return (
                           <Box
                             key={index}
@@ -354,7 +354,7 @@ const StakeModal = ({
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {borrowIds.map((coin: any, index: any) => {
+                      {borrowIds.map((coin: string, index: number) => {
                         return (
                           <Box
                             key={index}
@@ -455,7 +455,7 @@ const StakeModal = ({
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {coins.map((coin: any, index: any) => {
+                      {coins.map((coin: string, index: number) => {
                         return (
                           <Box
                             key={index}

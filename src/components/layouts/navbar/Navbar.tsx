@@ -139,7 +139,7 @@ const Navbar = () => {
         gap={"4px"}
         marginLeft="2rem"
       >
-        <Link href="/">
+        <Link href="/waitlist">
           <Box
             height="100%"
             display="flex"
@@ -548,8 +548,9 @@ const Navbar = () => {
                       borderRadius="6px"
                       border="1px solid #2B2F35"
                       onClick={() => {
+                        dispatch(setNavDropdown(""));
                         disconnect();
-                        router.push("./");
+                        router.push("./waitlist");
                       }}
                     >
                       Disconnect
@@ -561,6 +562,7 @@ const Navbar = () => {
                       borderRadius="6px"
                       border="1px solid #2B2F35"
                       onClick={() => {
+                        dispatch(setNavDropdown(""));
                         disconnect();
                         router.push("./");
                       }}

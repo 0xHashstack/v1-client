@@ -28,7 +28,7 @@ const YourBorrow = () => {
   ];
   useEffect(() => {
     setRender(true);
-    console.log("rendered your borrow");
+    // console.log("rendered your borrow");
   }, []);
   return (
     <PageCard pt="6.5rem">

@@ -47,7 +47,13 @@ import {
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 
-const SupplyModal = ({ buttonText, setIsOpenCustom, ...restProps }: any) => {
+// const SupplyModal = ({ buttonText, , ...restProps }: any) => {
+const SupplyModal = ({
+  buttonText,
+  setIsOpenCustom,
+  backGroundOverLay,
+  ...restProps
+}: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
@@ -80,7 +86,7 @@ const SupplyModal = ({ buttonText, setIsOpenCustom, ...restProps }: any) => {
         break;
     }
   };
-  console.log(inputAmount);
+  // console.log(inputAmount);
 
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {
@@ -136,7 +142,7 @@ const SupplyModal = ({ buttonText, setIsOpenCustom, ...restProps }: any) => {
           size={{ width: "700px", height: "100px" }}
           isCentered
         >
-          <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
+          <ModalOverlay bg={backGroundOverLay} mt="3.8rem" />
           <ModalContent
             bg="#010409"
             color="white"
@@ -227,7 +233,7 @@ const SupplyModal = ({ buttonText, setIsOpenCustom, ...restProps }: any) => {
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {coins.map((coin, index) => {
+                      {coins.map((coin: string, index: number) => {
                         return (
                           <Box
                             key={index}

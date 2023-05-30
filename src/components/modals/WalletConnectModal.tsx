@@ -127,11 +127,7 @@ const WalletConnectModal = ({
     }
   };
 
-  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-  const networks = [
-    { name: "Starknet", status: "enable" },
-    { name: "Ethereum (Coming soon)", status: "disable" },
-  ];
+
 
   return (
     <div>

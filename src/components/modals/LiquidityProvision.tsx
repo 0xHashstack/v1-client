@@ -62,11 +62,11 @@ const LiquidityProvisionModal = ({
   currentId,
   currentMarketCoin,
 }: any) => {
-  console.log("liquidity found map: ", borrowIDCoinMap);
-  console.log("liquidity found borrow ids: ", borrowIds);
-  console.log("liquidity found coins: ", coins);
-  console.log("liquidity found current coin: ", currentId);
-  console.log("liquidity found current id: ", currentMarketCoin);
+  // console.log("liquidity found map: ", borrowIDCoinMap);
+  // console.log("liquidity found borrow ids: ", borrowIds);
+  // console.log("liquidity found coins: ", coins);
+  // console.log("liquidity found current coin: ", currentId);
+  // console.log("liquidity found current id: ", currentMarketCoin);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -78,7 +78,6 @@ const LiquidityProvisionModal = ({
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const selectedDapp = useSelector(selectSelectedDapp);
-  console.log(selectedDapp);
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
@@ -177,7 +176,7 @@ const LiquidityProvisionModal = ({
   useEffect(() => {
     setCurrentBorrowId(currentId);
     setCurrentBorrowMarketCoin(currentMarketCoin);
-  }, [currentId]);
+  }, [currentId, currentMarketCoin]);
 
   const handleBorrowMarketCoinChange = (id: string) => {
     // console.log("got id", id);
@@ -206,7 +205,7 @@ const LiquidityProvisionModal = ({
           cursor="pointer"
           onClick={() => {
             if (selectedDapp == "") {
-              console.log("hi");
+              // console.log("hi");
             } else {
               onOpen();
             }
@@ -218,7 +217,7 @@ const LiquidityProvisionModal = ({
           cursor="pointer"
           onClick={() => {
             if (selectedDapp == "") {
-              console.log("hi");
+              // console.log("hi");
             } else {
               onOpen();
             }
@@ -230,7 +229,7 @@ const LiquidityProvisionModal = ({
           cursor="pointer"
           onClick={() => {
             if (selectedDapp == "") {
-              console.log("hi");
+              // console.log("hi");
             } else {
               onOpen();
             }
@@ -434,7 +433,7 @@ const LiquidityProvisionModal = ({
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {borrowIds.map((coin: any, index: any) => {
+                      {borrowIds.map((coin: string, index: number) => {
                         return (
                           <Box
                             key={index}
@@ -537,7 +536,7 @@ const LiquidityProvisionModal = ({
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {coins.map((coin: any, index: any) => {
+                      {coins.map((coin: string, index: number) => {
                         return (
                           <Box
                             key={index}

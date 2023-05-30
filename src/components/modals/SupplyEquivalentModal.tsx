@@ -82,7 +82,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
         break;
     }
   };
-  console.log(inputAmount);
+  // console.log(inputAmount);
 
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {
@@ -111,11 +111,11 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
   };
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-  const resetStates=()=>{
+  const resetStates = () => {
     setinputAmount(0);
     setSliderValue(0);
     setCurrentSelectedCoin("USDT");
-  }
+  };
 
   return (
     <div>
@@ -125,7 +125,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
       <Portal>
         <Modal
           isOpen={isOpen}
-          onClose={()=>{
+          onClose={() => {
             onClose();
             resetStates();
           }}
@@ -219,7 +219,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {coins.map((coin, index) => {
+                      {coins.map((coin: string, index: number) => {
                         return (
                           <Box
                             key={index}
