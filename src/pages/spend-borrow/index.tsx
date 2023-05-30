@@ -9,6 +9,7 @@ import YourSupplyModal from "@/components/modals/yourSupply";
 import YourBorrowModal from "@/components/modals/yourBorrowModal";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import PageCard from "@/components/layouts/pageCard";
+import Pagination from "@/components/uiElements/pagination";
 // import WalletConnectModal from "@/components/modals/WalletConnectModal";
 const SpendBorrow = () => {
   const [render, setRender] = useState(false);
@@ -59,6 +60,7 @@ const SpendBorrow = () => {
         </HStack>
       </HStack>
       <SpendTable />
+
       {/* <WalletConnectModal/> */}
     </PageCard>
   );

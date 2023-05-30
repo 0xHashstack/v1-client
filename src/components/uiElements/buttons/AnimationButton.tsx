@@ -28,10 +28,43 @@ const AnimatedButton: React.FC<Props> = ({
   // ];
 
   const [currentStringIndex, setCurrentStringIndex] = useState(-1);
+  const [progressBarWidth, setProgressBarWidth] = useState("0%");
   const [isAnimationStarted, setIsAnimationStarted] = useState(false);
-  const progressBarWidth = `${
-    ((currentStringIndex + 1) / labelArray.length) * 100
-  }%`;
+
+  useEffect(() => {
+    if (isAnimationStarted) {
+      setProgressBarWidth(
+        `${((currentStringIndex + 1) / labelArray.length) * 100 + 4}%`
+      );
+
+      // setProgressBarWidth(
+      //   `${((currentStringIndex + 1) / labelArray.length) * 100 + 2}%`
+      // );
+      let interval: any = setInterval(() => {
+        setProgressBarWidth(
+          `${((currentStringIndex + 1) / labelArray.length) * 100 + 2}%`
+        );
+      }, 500);
+
+      return () => clearInterval(interval);
+    }
+  }, [currentStringIndex]);
+
+  useEffect(() => {
+    if (isAnimationStarted) {
+      // setProgressBarWidth(
+      //   `${((currentStringIndex + 1) / labelArray.length) * 100 + 4}%`
+      // );
+
+      let interval: any = setInterval(() => {
+        setProgressBarWidth(
+          `${((currentStringIndex + 1) / labelArray.length) * 100}%`
+        );
+      }, 1500);
+
+      return () => clearInterval(interval);
+    }
+  }, [currentStringIndex]);
 
   const handleClick = () => {
     // console.log("clicked");
@@ -71,7 +104,7 @@ const AnimatedButton: React.FC<Props> = ({
       overflow="hidden"
       className={classes.join(" ")}
       // _hover={{ bg: "white", color: "black !important" }}
-      _active={{ border: isAnimationStarted ?"":"3px solid grey" }}
+      _active={{ border: isAnimationStarted ? "" : "3px solid grey" }}
       {...rest}
       bgColor={isAnimationStarted ? "#eeeff2" : bgColor}
       color={isAnimationStarted ? "#010409" : "#6A737D"}
@@ -92,7 +125,7 @@ const AnimatedButton: React.FC<Props> = ({
               initial={{ opacity: 0, translateY: 50 }}
               animate={{ opacity: 1, translateY: 0 }}
               exit={{ opacity: 0, translateY: -50 }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.5 }}
               style={{
                 position: "absolute",
                 top: 0,
@@ -113,7 +146,7 @@ const AnimatedButton: React.FC<Props> = ({
               initial={{ translateY: "100%" }}
               animate={{ translateY: "0%" }}
               exit={{ translateY: "-100%" }}
-              transition={{ duration: 1 }}
+              transition={{ duration: 0.5 }}
               style={{
                 position: "absolute",
                 top: 0,

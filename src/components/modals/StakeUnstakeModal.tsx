@@ -55,7 +55,7 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import SupplyModal from "./SupplyModal";
-const StakeUnstakeModal = ({ buttonText,coin, ...restProps }: any) => {
+const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const [sliderValue, setSliderValue] = useState(0);
@@ -63,6 +63,7 @@ const StakeUnstakeModal = ({ buttonText,coin, ...restProps }: any) => {
   const [sliderValue2, setSliderValue2] = useState(0);
   const [inputStakeAmount, setInputStakeAmount] = useState(0);
   const [inputUnstakeAmount, setInputUnstakeAmount] = useState(0);
+  const [isSupplyTap, setIsSupplyTap] = useState(false);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -161,11 +162,17 @@ const StakeUnstakeModal = ({ buttonText,coin, ...restProps }: any) => {
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
-  const coins = [{"BTC":"rBTC"}, {"USDT":"rUSDT"}, {"USDC":"rUSDC"}, {"ETH":"rETH"}, {"DAI":"rDAI"}];
+  const coins = [
+    { BTC: "rBTC" },
+    { USDT: "rUSDT" },
+    { USDC: "rUSDC" },
+    { ETH: "rETH" },
+    { DAI: "rDAI" },
+  ];
   const rcoins = ["rBTC", "rUSDT", "rUSDC", "rETH", "rDAI"];
   const walletBalance = useSelector(selectWalletBalance);
-  const coinObj:any = coins.find(obj => coin.name in obj);
-const rcoinValue = coinObj ? coinObj[coin.name] : undefined;
+  const coinObj: any = coins.find((obj) => coin.name in obj);
+  const rcoinValue = coinObj ? coinObj[coin.name] : undefined;
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
     useState("BTC");
   const [currentSelectedStakeCoin, setCurrentSelectedStakeCoin] =
@@ -178,10 +185,17 @@ const rcoinValue = coinObj ? coinObj[coin.name] : undefined;
     setSliderValue2(0);
     setInputStakeAmount(0);
     setInputUnstakeAmount(0);
-    setCurrentSelectedStakeCoin(coin ? rcoinValue:"rBTC");
-    setcurrentSelectedUnstakeCoin(coin ? rcoinValue:"rBTC");
+    setCurrentSelectedStakeCoin(coin ? rcoinValue : "rBTC");
+    setcurrentSelectedUnstakeCoin(coin ? rcoinValue : "rBTC");
     dispatch(resetModalDropdowns());
   };
+  // console.log("testing isopen: ", isOpen);
+  // console.log("testing custom isopen: ", isOpenCustom);
+
+  // useEffect(() => {
+  //   setIsOpenCustom(false);
+  // }, []);
+
   return (
     <Box>
       <Text
@@ -214,6 +228,8 @@ const rcoinValue = coinObj ? coinObj[coin.name] : undefined;
 
       <Modal
         isOpen={isOpen}
+        // isOpen={isSupplyTap ? isOpenCustom : isOpen}
+        // onOverlayClick={() => setIsOpenCustom(false)}
         onClose={() => {
           onClose();
           resetStates();
@@ -224,7 +240,12 @@ const rcoinValue = coinObj ? coinObj[coin.name] : undefined;
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
         <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
           {/* <ModalHeader>Borrow</ModalHeader> */}
-          <ModalCloseButton mt="1rem" mr="1rem" color="white" />
+          <ModalCloseButton
+            // onClick={() => setIsOpenCustom(false)}
+            mt="1rem"
+            mr="1rem"
+            color="white"
+          />
           <ModalBody color={"#E6EDF3"} pt={6} px={7}>
             <Box
               display={"flex"}
@@ -710,8 +731,10 @@ const rcoinValue = coinObj ? coinObj[coin.name] : undefined;
                         mt="1rem"
                         lineHeight="18px"
                       >
-                        <Text>To stake you need to supply any asset to receive
-                        rTokens.</Text>
+                        <Text>
+                          To stake you need to supply any asset to receive
+                          rTokens.
+                        </Text>
                         <Text display="flex">
                           click here To{" "}
                           <SupplyModal

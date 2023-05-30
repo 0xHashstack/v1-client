@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import {
   Table,
@@ -40,6 +40,8 @@ const DashboardLeft = ({
 }) => {
   const columnItems = ["Market", "Price", "Total Supply", "Supply APR", "", ""];
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
+  const [isOpenCustom, setIsOpenCustom] = useState(false);
+
   return (
     <TableContainer
       bg="#101216"
@@ -226,6 +228,7 @@ const DashboardLeft = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
+                    onClick={() => setIsOpenCustom(false)}
                   >
                     <SupplyModal
                       buttonText="Supply"
@@ -254,9 +257,7 @@ const DashboardLeft = ({
                   pl={2}
                 >
                   <Box position="relative" display="inline-block">
-                    <StakeUnstakeModal 
-                      coin={coin}
-                    />
+                    <StakeUnstakeModal coin={coin} />
                   </Box>
                 </Td>
               </Tr>

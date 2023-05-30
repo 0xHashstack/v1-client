@@ -39,6 +39,7 @@ import SwapModal from "@/components/modals/SwapModal";
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import SmallEth from "@/assets/icons/coins/smallEth";
+import Pagination from "@/components/uiElements/pagination";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -62,9 +63,16 @@ const SpendTable = () => {
     ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "00.00%"],
     ["Borrow ID 12346", "rBTC", "10,324.556", "BTC", "00.00%"],
     ["Borrow ID 12347", "rETH", "10,324.556", "BTC", "00.00%"],
+    ["Borrow ID 12348", "rUSDT", "10,324.556", "BTC", "00.00%"],
+    ["Borrow ID 12349", "rBTC", "10,324.556", "BTC", "00.00%"],
+    ["Borrow ID 12350", "rETH", "10,324.556", "BTC", "00.00%"],
+    ["Borrow ID 12351", "rUSDT", "10,324.556", "BTC", "00.00%"],
+    ["Borrow ID 12352", "rBTC", "10,324.556", "BTC", "00.00%"],
+
   ];
 
   const dispatch = useDispatch();
+
 
   const router = useRouter();
   function handleRouteChange(url: string) {
@@ -76,6 +84,10 @@ const SpendTable = () => {
   const [currentId, setCurrentId] = useState("");
   const [currentMarketCoin, setCurrentMarketCoin] = useState("");
   const [coins, setCoins] = useState([]);
+  const [currentPagination, setCurrentPagination] = useState<number>(1);
+  let lower_bound = 3 * (currentPagination - 1);
+  let upper_bound = lower_bound + 2;
+  upper_bound = Math.min(rows.length - 1, upper_bound);
   useEffect(() => {
     let temp1: any = [];
     let temp2: any = [];
@@ -94,10 +106,17 @@ const SpendTable = () => {
     // console.log("faisal coin mapping", borrowIDCoinMap);
   }, []);
 
+  useEffect(()=>{
+    setCurrentBorrow(-1)
+    setSelectedDapp("")
+    dispatch(setSpendBorrowSelectedDapp(""));
+  },[currentPagination])
   useEffect(() => {
     const handleRouteChangeComplete = (url: string) => {
       handleRouteChange(url);
     };
+
+
 
     router.events.on("routeChangeComplete", handleRouteChangeComplete);
 
@@ -117,7 +136,7 @@ const SpendTable = () => {
             fontStyle="normal"
             fontWeight="400"
             borderRadius="6px"
-            // textAlign="center"
+          // textAlign="center"
           >
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
               <TableInfoIcon />
@@ -147,198 +166,240 @@ const SpendTable = () => {
           </Box>
         </Box>
       )}
-      <TableContainer
-        //   bg="#101216"
-        border="1px"
-        borderColor="#2B2F35"
-        // py="6"
-        color="white"
-        borderRadius="md"
-        w="94%"
-        // px="3"
-        p="2rem 1rem 24px"
-      >
-        <Table variant="unstyled">
-          {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
-          <Thead width={"100%"}>
-            <Tr width={"100%"} height="2rem">
-              {columnItems.map((val: any, idx1: any) => (
-                <Td
-                  key={idx1}
-                  width={"12.5%"}
-                  fontSize={"12px"}
-                  fontWeight={400}
-                  p={0}
-                >
-                  <Text
-                    whiteSpace="pre-wrap"
-                    overflowWrap="break-word"
-                    width={"100%"}
-                    height={"2rem"}
-                    fontSize="12px"
-                    textAlign={
-                      idx1 == 0
-                        ? "left"
-                        : idx1 == columnItems.length - 1
-                        ? "right"
-                        : "center"
-                    }
-                    pl={idx1 == 0 ? 6 : 0}
-                    pr={idx1 == columnItems.length - 1 ? 35 : 0}
-                    color={"#BDBFC1"}
-                  >
-                    {val}
-                  </Text>
-                </Td>
-              ))}
-            </Tr>
-          </Thead>
-
-          <Tbody bg="inherit" position="relative">
-            {rows.map((currentRow, index) => {
-              return (
-                <>
-                  <Tr
-                    _hover={{
-                      // backgroundColor: "#2B2F35",
-                      // width: "80%",
-                      borderRadius: "0px",
-                    }}
-                    position="relative"
-                    height="4rem"
-                    key={index}
-                    cursor="pointer"
-                    bgColor={currentBorrow == index ? "#2B2F35" : "none "}
-                    onClick={() => {
-                      setSelectedDapp("trade");
-                      setCurrentBorrow(index);
-                      setCurrentId("ID - " + currentRow[0].slice(10));
-                      setCurrentMarketCoin(currentRow[1].slice(1));
-                      dispatch(setSpendBorrowSelectedDapp("trade"));
-                    }}
-                  >
-                    <Td borderLeftRadius="6px">
-                      <Box
-                        position="absolute"
-                        height="24px"
-                        width="4px"
-                        // borderRadius="6px"
-                        bgColor="#2B2F35"
-                        left={-2}
-                        display={currentBorrow == index ? "block" : "none"}
-                      />
-                      <Box
-                        display="flex"
-                        gap="2"
-                        // bgColor="blue"
-                        justifyContent="flex-start"
-                      >
-                        <Text
-                          fontSize="14px"
-                          fontWeight="400"
-                          fontStyle="normal"
-                          lineHeight="22px"
-                          color="#E6EDF3"
-                          textAlign="left"
-                        >
-                          {currentRow[0]}
-                        </Text>
-                      </Box>
-                    </Td>
-                    <Td textAlign="center">
-                      <Box
-                        display="flex"
-                        gap="1"
-                        justifyContent="center"
-                        h="full"
-                        alignItems="center"
-                      >
-                        <Box my="1">
-                          <Image
-                            src={`./${currentRow[1].slice(1)}.svg`}
-                            alt="Picture of the author"
-                            width={16}
-                            height={16}
-                          />
-                        </Box>
-                        <Text
-                          fontSize="14px"
-                          fontWeight="400"
-                          fontStyle="normal"
-                          lineHeight="22px"
-                          color="#E6EDF3"
-                        >
-                          {currentRow[1]}
-                        </Text>
-                      </Box>
-                    </Td>
+      {upper_bound >= lower_bound && rows.length > 0 ?
+            <TableContainer
+            //   bg="#101216"
+            border="1px"
+            borderColor="#2B2F35"
+            // py="6"
+            color="white"
+            borderRadius="md"
+            w="94%"
+            // px="3"
+            p="2rem 1rem 24px"
+          >
+            <Table variant="unstyled">
+              {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
+              <Thead width={"100%"}>
+                <Tr width={"100%"} height="2rem">
+                  {columnItems.map((val: any, idx1: any) => (
                     <Td
-                      textAlign="center"
-                      color="#E6EDF3"
-                      fontSize="14px"
-                      fontWeight="400"
-                      fontStyle="normal"
-                      lineHeight="22px"
+                      key={idx1}
+                      width={"12.5%"}
+                      fontSize={"12px"}
+                      fontWeight={400}
+                      p={0}
                     >
-                      {currentRow[2]}
-                    </Td>
-                    <Td textAlign="center">
-                      <Box
-                        display="flex"
-                        gap="1"
-                        justifyContent="center"
-                        h="full"
-                        alignItems="center"
+                      <Text
+                        whiteSpace="pre-wrap"
+                        overflowWrap="break-word"
+                        width={"100%"}
+                        height={"2rem"}
+                        fontSize="12px"
+                        textAlign={
+                          idx1 == 0
+                            ? "left"
+                            : idx1 == columnItems.length - 1
+                              ? "right"
+                              : "center"
+                        }
+                        pl={idx1 == 0 ? 6 : 0}
+                        pr={idx1 == columnItems.length - 1 ? 35 : 0}
+                        color={"#BDBFC1"}
                       >
-                        <Box my="1">
-                          <TableBtcLogo />
-                        </Box>
-                        <Text
-                          fontSize="14px"
-                          fontWeight="400"
-                          fontStyle="normal"
-                          lineHeight="22px"
-                          color="#E6EDF3"
-                        >
-                          {currentRow[3]}
-                        </Text>
-                      </Box>
+                        {val}
+                      </Text>
                     </Td>
-                    <Td p={0} borderRightRadius="6px">
-                      <Box
-                        display="flex"
-                        // gap="2"
-                        // bgColor="blue"
-                        justifyContent="flex-end"
-                        pr={5}
+                  ))}
+                </Tr>
+              </Thead>
+    
+              <Tbody bg="inherit" position="relative">
+                {rows.slice(lower_bound,upper_bound+1).map((currentRow, index) => {
+                  return (
+                    <>
+                      <Tr
+                        _hover={{
+                          // backgroundColor: "#2B2F35",
+                          // width: "80%",
+                          borderRadius: "0px",
+                        }}
+                        position="relative"
+                        height="4rem"
+                        key={index}
+                        cursor="pointer"
+                        bgColor={currentBorrow == index ? "#2B2F35" : "none "}
+                        onClick={() => {
+                          setSelectedDapp("trade");
+                          setCurrentBorrow(index);
+                          setCurrentId("ID - " + currentRow[0].slice(10));
+                          setCurrentMarketCoin(currentRow[1].slice(1));
+                          dispatch(setSpendBorrowSelectedDapp("trade"));
+                        }}
                       >
-                        <Text
-                          width="40%"
-                          fontSize="14px"
-                          fontWeight="400"
-                          fontStyle="normal"
-                          lineHeight="22px"
-                          color="#E6EDF3"
+                        <Td borderLeftRadius="6px">
+                          <Box
+                            position="absolute"
+                            height="24px"
+                            width="4px"
+                            // borderRadius="6px"
+                            bgColor="#2B2F35"
+                            left={-2}
+                            display={currentBorrow == index ? "block" : "none"}
+                          />
+                          <Box
+                            display="flex"
+                            gap="2"
+                            // bgColor="blue"
+                            justifyContent="flex-start"
+                          >
+                            <Text
+                              fontSize="14px"
+                              fontWeight="400"
+                              fontStyle="normal"
+                              lineHeight="22px"
+                              color="#E6EDF3"
+                              textAlign="left"
+                            >
+                              {currentRow[0]}
+                            </Text>
+                          </Box>
+                        </Td>
+                        <Td textAlign="center">
+                          <Box
+                            display="flex"
+                            gap="1"
+                            justifyContent="center"
+                            h="full"
+                            alignItems="center"
+                          >
+                            <Box my="1">
+                              <Image
+                                src={`./${currentRow[1].slice(1)}.svg`}
+                                alt="Picture of the author"
+                                width={16}
+                                height={16}
+                              />
+                            </Box>
+                            <Text
+                              fontSize="14px"
+                              fontWeight="400"
+                              fontStyle="normal"
+                              lineHeight="22px"
+                              color="#E6EDF3"
+                            >
+                              {currentRow[1]}
+                            </Text>
+                          </Box>
+                        </Td>
+                        <Td
                           textAlign="center"
+                          color="#E6EDF3"
+                          fontSize="14px"
+                          fontWeight="400"
+                          fontStyle="normal"
+                          lineHeight="22px"
                         >
-                          {currentRow[4]}
-                        </Text>
-                      </Box>
-                    </Td>
-                  </Tr>
-                </>
-              );
-            })}
-          </Tbody>
-        </Table>
-      </TableContainer>
+                          {currentRow[2]}
+                        </Td>
+                        <Td textAlign="center">
+                          <Box
+                            display="flex"
+                            gap="1"
+                            justifyContent="center"
+                            h="full"
+                            alignItems="center"
+                          >
+                            <Box my="1">
+                              <TableBtcLogo />
+                            </Box>
+                            <Text
+                              fontSize="14px"
+                              fontWeight="400"
+                              fontStyle="normal"
+                              lineHeight="22px"
+                              color="#E6EDF3"
+                            >
+                              {currentRow[3]}
+                            </Text>
+                          </Box>
+                        </Td>
+                        <Td p={0} borderRightRadius="6px">
+                          <Box
+                            display="flex"
+                            // gap="2"
+                            // bgColor="blue"
+                            justifyContent="flex-end"
+                            pr={5}
+                          >
+                            <Text
+                              width="40%"
+                              fontSize="14px"
+                              fontWeight="400"
+                              fontStyle="normal"
+                              lineHeight="22px"
+                              color="#E6EDF3"
+                              textAlign="center"
+                            >
+                              {currentRow[4]}
+                            </Text>
+                          </Box>
+                        </Td>
+                      </Tr>
+                    </>
+                  );
+                })}
+                          {(() => {
+            const rows2 = [];
+            for (
+              let i: number = 0;
+              i < 3 - (upper_bound - lower_bound + 1);
+              i++
+            ) {
+              rows2.push(<Tr height="4.99rem"></Tr>);
+            }
+            return rows2;
+          })()}
+              </Tbody>
+            </Table>
+          </TableContainer>:
+          <>
+          <Box
+            border="1px"
+            borderColor="#2B2F35"
+            // py="6"
+            color="white"
+            borderRadius="md"
+            w="94%"
+            // px="3"
+            p="2rem 1rem 24px"
+          >
+            <Text color="#FFFFFF">Add More Borrow</Text>
+            <Text color="#0969DA">Borrow assets</Text>
+          </Box>
+        </>
+      }
+
+      <Box
+        paddingY="1rem"
+        width="95%"
+        display="flex"
+        justifyContent="space-between"
+        alignItems="center"
+      >
+        <Pagination
+          currentPagination={currentPagination}
+          setCurrentPagination={(x: any) => setCurrentPagination(x)}
+          max={rows.length}
+        />
+      </Box>
       <Box
         display="flex"
         justifyContent="left"
         w="94%"
         height="16rem"
 
-        // bgColor="pink"
+      // bgColor="pink"
       >
         <Tabs
           variant="unstyled"
@@ -355,7 +416,7 @@ const SpendTable = () => {
             h="2rem"
             width="100%"
             display="flex"
-            // bgColor="red"
+          // bgColor="red"
           >
             <Tab
               // padding="6px 16px"
@@ -397,7 +458,7 @@ const SpendTable = () => {
                 // border: "none",
               }}
               isDisabled={selectedDapp == ""}
-              // isDisabled={selectedDapp == ""}
+            // isDisabled={selectedDapp == ""}
             >
               swap
             </Tab>
@@ -517,8 +578,8 @@ const SpendTable = () => {
                 justifyContent="center"
                 alignItems="flex-start"
                 bgColor="#fff8c5"
-                // textAlign="center"
-                // bgColor="red"
+              // textAlign="center"
+              // bgColor="red"
               >
                 <Box
                   cursor="pointer"
