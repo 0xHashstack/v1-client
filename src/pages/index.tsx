@@ -107,13 +107,16 @@ export default function Home() {
   };
   useEffect(() => {
     // alert(status)
+    const storedAccount = localStorage.getItem("account");
+    if(storedAccount){
+      router.push('./market')
+    }
     if (status == "connected") {
       // alert(account?.address);
       localStorage.setItem("account", JSON.stringify(account));
       dispatch(setAccount(account));
       if (!isWhiteListed) {
-        router.replace(href);
-        
+        router.replace(href); 
       } else {
         router.replace(href2);
       }

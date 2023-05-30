@@ -61,7 +61,7 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
   const language = useSelector(selectLanguage);
-  const [parsedAccount, setParsedAccount] = useState()
+  const [parsedAccount, setParsedAccount] = useState<any>()
   const currentDropdown = useSelector(selectCurrentDropdown);
   const account = useSelector(selectAccount);
   useEffect(()=>{

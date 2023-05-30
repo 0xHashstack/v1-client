@@ -47,10 +47,10 @@ import {
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 
-const SupplyModal = ({ buttonText,backGroundOverLay, ...restProps }: any) => {
+const SupplyModal = ({ buttonText,coin,backGroundOverLay, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
+  const [currentSelectedCoin, setCurrentSelectedCoin] = useState(coin ? coin.name:"BTC");
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
@@ -114,7 +114,7 @@ const SupplyModal = ({ buttonText,backGroundOverLay, ...restProps }: any) => {
   const resetStates=()=>{
     setinputAmount(0);
     setSliderValue(0);
-    setCurrentSelectedCoin("BTC");
+    setCurrentSelectedCoin(coin? coin.name:"BTC");
     dispatch(resetModalDropdowns());
   }
 

@@ -238,6 +238,7 @@ const DashboardLeft = ({
                       borderRadius={"6px"}
                       color="#BDBFC1;"
                       backGroundOverLay="rgba(244, 242, 255, 0.5)"
+                      coin={coin}
                     />
                   </Box>
                 </Td>
@@ -253,7 +254,9 @@ const DashboardLeft = ({
                   pl={2}
                 >
                   <Box position="relative" display="inline-block">
-                    <StakeUnstakeModal />
+                    <StakeUnstakeModal 
+                      coin={coin}
+                    />
                   </Box>
                 </Td>
               </Tr>

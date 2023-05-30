@@ -244,7 +244,9 @@ const DashboardRight = ({
                     fontWeight="400"
                     // bgColor={"blue"}
                   >
-                    <BorrowModal />
+                    <BorrowModal 
+                      coin={coin}
+                    />
                   </Box>
                 </Td>
                 <Td
@@ -260,7 +262,9 @@ const DashboardRight = ({
                   pl={2}
                 >
                   <Box position="relative" display="inline-block">
-                    <TradeModal />
+                    <TradeModal 
+                      coin={coin}
+                    />
                   </Box>
                 </Td>
               </Tr>
