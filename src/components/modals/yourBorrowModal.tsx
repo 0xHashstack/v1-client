@@ -1252,11 +1252,11 @@ const YourBorrowModal = ({
                             pr="3"
                             borderRadius="md"
                             className="navbar"
-                              // onClick={() =>
-                              //   handleDropdownClick(
-                              //     "yourBorrowModalBorrowMarketDropdown1"
-                              //   )
-                              // }
+                            // onClick={() =>
+                            //   handleDropdownClick(
+                            //     "yourBorrowModalBorrowMarketDropdown1"
+                            //   )
+                            // }
                             as="button"
                           >
                             <Box display="flex" gap="1">
@@ -1270,7 +1270,7 @@ const YourBorrowModal = ({
                             {/* <Box pt="1" className="navbar-button">
                               <DropdownUp />
                             </Box> */}
-                            {modalDropdowns.yourBorrowModalBorrowMarketDropdown1 && (
+                            {/* {modalDropdowns.yourBorrowModalBorrowMarketDropdown1 && (
                               <Box
                                 w="full"
                                 left="0"
@@ -1326,7 +1326,7 @@ const YourBorrowModal = ({
                                   );
                                 })}
                               </Box>
-                            )}
+                            )} */}
                           </Box>
                           <Text textAlign="right" fontSize="xs">
                             Borrow Balance: 0.00{" "}
