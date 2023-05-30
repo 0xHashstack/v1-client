@@ -55,7 +55,7 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import SupplyModal from "./SupplyModal";
-const StakeUnstakeModal = () => {
+const StakeUnstakeModal = ({ buttonText,coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const [sliderValue, setSliderValue] = useState(0);
@@ -161,25 +161,25 @@ const StakeUnstakeModal = () => {
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
-  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const coins = [{"BTC":"rBTC"}, {"USDT":"rUSDT"}, {"USDC":"rUSDC"}, {"ETH":"rETH"}, {"DAI":"rDAI"}];
   const rcoins = ["rBTC", "rUSDT", "rUSDC", "rETH", "rDAI"];
   const walletBalance = useSelector(selectWalletBalance);
+  const coinObj:any = coins.find(obj => coin.name in obj);
+const rcoinValue = coinObj ? coinObj[coin.name] : undefined;
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
     useState("BTC");
   const [currentSelectedStakeCoin, setCurrentSelectedStakeCoin] =
-    useState("rBTC");
+    useState(rcoinValue);
   const [currentSelectedUnstakeCoin, setcurrentSelectedUnstakeCoin] =
-    useState("rBTC");
-  const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
-    useState("BTC");
+    useState(rcoinValue);
   const [buttonId, setButtonId] = useState(0);
   const resetStates = () => {
     setSliderValue(0);
     setSliderValue2(0);
     setInputStakeAmount(0);
     setInputUnstakeAmount(0);
-    setCurrentSelectedStakeCoin("rBTC");
-    setcurrentSelectedUnstakeCoin("rBTC");
+    setCurrentSelectedStakeCoin(coin ? rcoinValue:"rBTC");
+    setcurrentSelectedUnstakeCoin(coin ? rcoinValue:"rBTC");
     dispatch(resetModalDropdowns());
   };
   return (
@@ -724,6 +724,7 @@ const StakeUnstakeModal = () => {
                             lineHeight="18px"
                             buttonText="Add Supply"
                             backGroundOverLay="rgba(244, 242, 255, 0)"
+                            coin={coin}
                           />
                         </Text>
                       </Text>
@@ -1228,6 +1229,7 @@ const StakeUnstakeModal = () => {
                             lineHeight="18px"
                             buttonText="Add Supply"
                             backGroundOverLay="rgba(244, 242, 255, 0)"
+                            coin={coin}
                           />
                         </Text>
                       </Text>

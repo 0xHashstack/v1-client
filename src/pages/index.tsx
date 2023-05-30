@@ -73,16 +73,6 @@ export default function Home() {
       setinputAmount(newValue);
     }
   };
-  useEffect(() => {
-    // alert(status)
-    if (status == "connected") {
-      router.push("/waitlist");
-
-      // alert(account?.address);
-      // router.push('/market');
-      dispatch(setAccount(account));
-    }
-  }, [dispatch, account, status]);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const networks = [
     { name: "Starknet", status: "enable" },
@@ -116,20 +106,23 @@ export default function Home() {
     }
   };
   useEffect(() => {
-    // setRender(true);
-  }, [router]);
-  useEffect(() => {
     // alert(status)
+    const storedAccount = localStorage.getItem("account");
+    if(storedAccount){
+      router.push('./market')
+    }
     if (status == "connected") {
       // alert(account?.address);
-      if (!isWhiteListed) {
-        router.push(href);
-      } else {
-        router.push(href2);
-      }
+      localStorage.setItem("account", JSON.stringify(account));
       dispatch(setAccount(account));
+      if (!isWhiteListed) {
+        router.replace(href); 
+      } else {
+        router.replace(href2);
+      }
     }
   }, [account, status, dispatch, router]);
+  
   return (
     // <Box
     //   display="flex"

@@ -635,7 +635,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
                     // ]}
                     _hover={{ background: "white", color: "black" }}
                     onClick={() => {
-                      router.push("/market");
+                      router.replace("/market");
                     }}
                   >
                     Supply

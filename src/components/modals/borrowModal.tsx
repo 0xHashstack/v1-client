@@ -46,7 +46,7 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
-const BorrowModal = () => {
+const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [sliderValue, setSliderValue] = useState(0);
   const [sliderValue2, setsliderValue2] = useState(0);
@@ -122,12 +122,12 @@ const BorrowModal = () => {
   const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
-  const [currentCollateralCoin, setCurrentCollateralCoin] = useState("BTC");
-  const [currentBorrowCoin, setCurrentBorrowCoin] = useState("BTC");
+  const [currentCollateralCoin, setCurrentCollateralCoin] = useState(coin ? coin.name :"BTC");
+  const [currentBorrowCoin, setCurrentBorrowCoin] = useState(coin ? coin.name :"BTC");
 
   const resetStates = () => {
-    setCurrentCollateralCoin("BTC");
-    setCurrentBorrowCoin("BTC");
+    setCurrentCollateralCoin(coin.name);
+    setCurrentBorrowCoin(coin.name);
     setinputBorrowAmount(0);
     setinputCollateralAmount(0);
     setSliderValue(0);
