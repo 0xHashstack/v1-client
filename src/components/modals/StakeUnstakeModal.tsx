@@ -174,6 +174,15 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     { ETH: "rETH" },
     { DAI: "rDAI" },
   ];
+
+  const coinsSupplied: any = {
+    rBTC: false,
+    rUSDT: true,
+    rUSDC: true,
+    rETH: false,
+    rDAI: true,
+  };
+
   const rcoins = ["rBTC", "rUSDT", "rUSDC", "rETH", "rDAI"];
   const walletBalance = useSelector(selectWalletBalance);
   const coinObj: any = coins.find((obj) => coin.name in obj);
@@ -306,7 +315,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         border="1px solid #2B2F35"
                         mt="1.5rem"
                       >
-                        {!isSupplied && (
+                        {!coinsSupplied[currentSelectedStakeCoin] && (
                           <Box
                             // display="flex"
                             // justifyContent="left"
@@ -351,7 +360,12 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             fontWeight="400"
                             fontStyle="normal"
                           >
-                            {`${isSupplied ? "Select" : "Supply"}`} Market
+                            {`${
+                              !coinsSupplied[currentSelectedStakeCoin]
+                                ? "Select"
+                                : "Supply"
+                            }`}{" "}
+                            Market
                           </Text>
                           <Tooltip
                             hasArrow
@@ -646,7 +660,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           </Slider>
                         </Box>
                       </Card>
-                      {!isSupplied && (
+                      {!coinsSupplied[currentSelectedStakeCoin] && (
                         <Checkbox
                           color="#0969DA"
                           defaultChecked
@@ -843,7 +857,11 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               />,
                             ]}
                           >
-                            {`${isSupplied ? "Stake" : "Stake and Supply"}`}
+                            {`${
+                              !coinsSupplied[currentSelectedStakeCoin]
+                                ? "Stake and Supply"
+                                : "Stake"
+                            }`}
                           </AnimatedButton>
                         )
                       ) : (
@@ -857,7 +875,11 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           border="1px solid #2B2F35"
                           _hover={{ bg: "#101216" }}
                         >
-                          {`${isSupplied ? "Stake" : "Stake and Supply"}`}
+                          {`${
+                            !coinsSupplied[currentSelectedStakeCoin]
+                              ? "Stake and Supply"
+                              : "Stake"
+                          }`}
                         </Button>
                       )}
                     </TabPanel>
