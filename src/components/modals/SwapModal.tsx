@@ -159,10 +159,22 @@ const SwapModal = ({
   return (
     <div>
       <Box display="flex" gap="14" mt="1rem">
-        <Box cursor="pointer" onClick={onOpen}>
+        <Box cursor="pointer" onClick={()=>{
+          if(selectedDapp==""){
+
+          }else{
+            onOpen();
+          }
+        }}>
           {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
         </Box>
-        <Box cursor="pointer" onClick={onOpen}>
+        <Box cursor="pointer" onClick={()=>{
+          if(selectedDapp==""){
+
+          }else{
+            onOpen();
+          }
+        }}>
           {selectedDapp != "" ? (
             <Box>
               <TableJediswapLogo />

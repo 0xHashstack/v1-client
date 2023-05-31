@@ -40,6 +40,7 @@ import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import SmallEth from "@/assets/icons/coins/smallEth";
 import Pagination from "@/components/uiElements/pagination";
+import YourBorrowModal from "@/components/modals/yourBorrowModal";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -373,9 +374,25 @@ const SpendTable = () => {
             w="94%"
             // px="3"
             p="2rem 1rem 24px"
+            h="283px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            flexDirection="column"
+            gap="4px"
           >
-            <Text color="#FFFFFF">Add More Borrow</Text>
-            <Text color="#0969DA">Borrow assets</Text>
+            <Text color="#FFFFFF">You do not have outstanding borrows</Text>
+            <YourBorrowModal
+            buttonText="Borrow assets"
+            variant="link"
+            fontSize="16px"
+            fontWeight="400"
+            display="inline"
+            color="#0969DA"
+            cursor="pointer"
+            ml="0.4rem"
+            lineHeight="24px"
+            />
           </Box>
         </>
       }

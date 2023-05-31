@@ -417,6 +417,15 @@ const BorrowDashboard = ({
                         currentID={coin.id}
                         currentMarket={coin.name}
                         borrowIDCoinMap={borrowIDCoinMap}
+                        buttonText="Actions"
+                        height={"2rem"}
+                        fontSize={"12px"}
+                        padding="6px 12px"
+                        border="1px solid #BDBFC1"
+                        bgColor="#101216"
+                        _hover={{ bg: "white", color: "black" }}
+                        borderRadius={"6px"}
+                        color="#BDBFC1;"
                       />
                     </Box>
                   </Td>
@@ -462,7 +471,17 @@ const BorrowDashboard = ({
         borderRadius="8px"
       >
         <Text color="#FFFFFF">You do not have outstanding borrows</Text>
-        <Text color="#0969DA">Borrow assets</Text>
+        <YourBorrowModal
+            buttonText="Borrow assets"
+            variant="link"
+            fontSize="16px"
+            fontWeight="400"
+            display="inline"
+            color="#0969DA"
+            cursor="pointer"
+            ml="0.4rem"
+            lineHeight="24px"
+            />
       </Box>
     </>
   );

@@ -74,6 +74,8 @@ const YourBorrowModal = ({
   borrowIDCoinMap,
   currentID,
   currentMarket,
+  buttonText,
+  ...restProps
 }: any) => {
   // console.log("took map", borrowIDCoinMap, currentID, currentMarket);
 
@@ -915,18 +917,10 @@ const YourBorrowModal = ({
     <Box>
       <Button
         key="suppy"
-        backgroundColor="#101216"
-        height={"2rem"}
-        fontSize={"12px"}
-        padding="6px 12px"
-        border="1px solid #BDBFC1"
-        bgColor="#101216"
-        _hover={{ bg: "white", color: "black" }}
-        borderRadius={"6px"}
-        color="#BDBFC1"
         onClick={onOpen}
+        {...restProps}
       >
-        Actions
+        {buttonText}
       </Button>
 
       <Modal
@@ -1270,7 +1264,7 @@ const YourBorrowModal = ({
                             {/* <Box pt="1" className="navbar-button">
                               <DropdownUp />
                             </Box> */}
-                            {modalDropdowns.yourBorrowModalBorrowMarketDropdown1 && (
+                            {/* {modalDropdowns.yourBorrowModalBorrowMarketDropdown1 && (
                               <Box
                                 w="full"
                                 left="0"
@@ -1326,7 +1320,7 @@ const YourBorrowModal = ({
                                   );
                                 })}
                               </Box>
-                            )}
+                            )} */}
                           </Box>
                           <Text textAlign="right" fontSize="xs">
                             Borrow Balance: 0.00{" "}
