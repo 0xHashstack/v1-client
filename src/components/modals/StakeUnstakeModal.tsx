@@ -661,27 +661,45 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         </Box>
                       </Card>
                       {!coinsSupplied[currentSelectedStakeCoin] && (
-                        <Checkbox
-                          color="#0969DA"
-                          defaultChecked
-                          mt="0.7rem"
-                          w="420px"
-                          size="md"
-                          iconSize="1rem"
-                          _focus={{ boxShadow: "none" }}
-                          borderColor="#2B2F35"
-                        >
+                        // <Checkbox
+                        //   color="#0969DA"
+                        //   w="100%"
+                        //   defaultChecked
+                        //   // mt="0.7rem"
+                        //   w="420px"
+                        //   size="md"
+                        //   iconSize="1rem"
+                        //   _focus={{ boxShadow: "none" }}
+                        //   borderColor="#2B2F35"
+                        // >
+                        //   <Text
+                        //     fontSize="12px"
+                        //     color="#6E7681"
+                        //     fontStyle="normal"
+                        //     fontWeight="400"
+                        //     lineHeight="20px"
+                        //   >
+                        //     Ticking would stake the received rTokens unchecking
+                        //     wouldn&apos;t stake rTokens
+                        //   </Text>
+                        // </Checkbox>
+                        <Box display="flex" gap="2">
+                          <Checkbox
+                            size="md"
+                            colorScheme="customBlue"
+                            defaultChecked
+                            mb="auto"
+                            mt="4px"
+                          />
                           <Text
-                            fontSize="sm"
-                            color="#6E7681"
-                            fontStyle="normal"
+                            fontSize="12px"
                             fontWeight="400"
-                            lineHeight="20px"
+                            color="#6E7681"
                           >
-                            Ticking would stake the received rTokens unchecking
-                            wouldn&apos;t stake rTokens
+                            Ticking would stake the received rTokens. unchecking
+                            woudn't stake rTokens
                           </Text>
-                        </Checkbox>
+                        </Box>
                       )}
                       <Card
                         bg="#101216"
