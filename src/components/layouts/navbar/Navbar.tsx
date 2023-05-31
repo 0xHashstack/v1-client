@@ -149,7 +149,7 @@ const Navbar = () => {
         gap={"4px"}
         marginLeft="2rem"
       >
-        <Link href="/waitlist">
+        <Link href="/market">
           <Box
             height="100%"
             display="flex"
