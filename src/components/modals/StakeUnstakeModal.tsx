@@ -21,6 +21,7 @@ import {
   TabPanel,
   Tabs,
   TabPanels,
+  Checkbox,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -55,6 +56,10 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import SupplyModal from "./SupplyModal";
+import TableInfoIcon from "../layouts/table/tableIcons/infoIcon";
+import Link from "next/link";
+import TableClose from "../layouts/table/tableIcons/close";
+import WarningIcon from "@/assets/icons/coins/warningIcon";
 const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
@@ -173,6 +178,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const walletBalance = useSelector(selectWalletBalance);
   const coinObj: any = coins.find((obj) => coin.name in obj);
   const rcoinValue = coinObj ? coinObj[coin.name] : undefined;
+  const [isSupplied, setIsSupplied] = useState(false);
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
     useState("BTC");
   const [currentSelectedStakeCoin, setCurrentSelectedStakeCoin] =
@@ -300,6 +306,40 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         border="1px solid #2B2F35"
                         mt="1.5rem"
                       >
+                        {!isSupplied && (
+                          <Box
+                            // display="flex"
+                            // justifyContent="left"
+                            w="100%"
+                            pb="4"
+                          >
+                            <Box
+                              display="flex"
+                              bg="#FFF8C5"
+                              color="black"
+                              fontSize="xs"
+                              p="4"
+                              fontStyle="normal"
+                              fontWeight="500"
+                              borderRadius="6px"
+                              // textAlign="center"
+                            >
+                              <Box pr="3" my="auto" cursor="pointer">
+                                <WarningIcon />
+                              </Box>
+                              Selected market is not supplied. to stake in the
+                              below selected market supply the asset below
+                              {/* <Box
+                                py="1"
+                                pl="4"
+                                cursor="pointer"
+                                // onClick={handleClick}
+                              >
+                                <TableClose />
+                              </Box> */}
+                            </Box>
+                          </Box>
+                        )}
                         <Text
                           color="#8B949E"
                           display="flex"
@@ -311,7 +351,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             fontWeight="400"
                             fontStyle="normal"
                           >
-                            Select Market
+                            {`${isSupplied ? "Select" : "Supply"}`} Market
                           </Text>
                           <Tooltip
                             hasArrow
@@ -606,7 +646,29 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           </Slider>
                         </Box>
                       </Card>
-
+                      {!isSupplied && (
+                        <Checkbox
+                          color="#0969DA"
+                          defaultChecked
+                          mt="0.7rem"
+                          w="420px"
+                          size="md"
+                          iconSize="1rem"
+                          _focus={{ boxShadow: "none" }}
+                          borderColor="#2B2F35"
+                        >
+                          <Text
+                            fontSize="sm"
+                            color="#6E7681"
+                            fontStyle="normal"
+                            fontWeight="400"
+                            lineHeight="20px"
+                          >
+                            Ticking would stake the received rTokens unchecking
+                            wouldn&apos;t stake rTokens
+                          </Text>
+                        </Checkbox>
+                      )}
                       <Card
                         bg="#101216"
                         mt="1.5rem"
@@ -720,7 +782,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         </Text>
                       </Card>
 
-                      <Text
+                      {/* <Text
                         display="flex"
                         flexDirection="column"
                         padding="0px"
@@ -750,7 +812,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             coin={coin}
                           />
                         </Text>
-                      </Text>
+                      </Text> */}
                       {inputStakeAmount > 0 &&
                       inputStakeAmount <= walletBalance ? (
                         buttonId == 1 ? (
@@ -781,7 +843,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               />,
                             ]}
                           >
-                            Stake
+                            {`${isSupplied ? "Stake" : "Stake and Supply"}`}
                           </AnimatedButton>
                         )
                       ) : (
@@ -795,7 +857,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           border="1px solid #2B2F35"
                           _hover={{ bg: "#101216" }}
                         >
-                          Stake
+                          {`${isSupplied ? "Stake" : "Stake and Supply"}`}
                         </Button>
                       )}
                     </TabPanel>

@@ -34,7 +34,7 @@ const AnimatedButton: React.FC<Props> = ({
   useEffect(() => {
     if (isAnimationStarted) {
       setProgressBarWidth(
-        `${((currentStringIndex + 1) / labelArray.length) * 100 + 4}%`
+        `${((currentStringIndex + 1) / labelArray.length) * 100 + 2}%`
       );
 
       // setProgressBarWidth(
@@ -42,7 +42,7 @@ const AnimatedButton: React.FC<Props> = ({
       // );
       let interval: any = setInterval(() => {
         setProgressBarWidth(
-          `${((currentStringIndex + 1) / labelArray.length) * 100 + 2}%`
+          `${((currentStringIndex + 1) / labelArray.length) * 100 + 1}%`
         );
       }, 500);
 
@@ -125,7 +125,7 @@ const AnimatedButton: React.FC<Props> = ({
               initial={{ opacity: 0, translateY: 50 }}
               animate={{ opacity: 1, translateY: 0 }}
               exit={{ opacity: 0, translateY: -50 }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.4 }}
               style={{
                 position: "absolute",
                 top: 0,
@@ -146,7 +146,7 @@ const AnimatedButton: React.FC<Props> = ({
               initial={{ translateY: "100%" }}
               animate={{ translateY: "0%" }}
               exit={{ translateY: "-100%" }}
-              transition={{ duration: 0.5 }}
+              transition={{ duration: 0.4 }}
               style={{
                 position: "absolute",
                 top: 0,
