@@ -86,6 +86,8 @@ const SpendTable = () => {
   const [currentMarketCoin, setCurrentMarketCoin] = useState("");
   const [coins, setCoins] = useState([]);
   const [currentPagination, setCurrentPagination] = useState<number>(1);
+  const [tabIndex, setTabIndex] = useState(0)
+  const [selectedIndex, setselectedIndex] = useState(0)
   let lower_bound = 3 * (currentPagination - 1);
   let upper_bound = lower_bound + 2;
   upper_bound = Math.min(rows.length - 1, upper_bound);
@@ -110,6 +112,7 @@ const SpendTable = () => {
   useEffect(()=>{
     setCurrentBorrow(-1)
     setSelectedDapp("")
+    setTabIndex(0)
     dispatch(setSpendBorrowSelectedDapp(""));
   },[currentPagination])
   useEffect(() => {
@@ -420,12 +423,14 @@ const SpendTable = () => {
       >
         <Tabs
           variant="unstyled"
-          defaultIndex={0}
+          defaultIndex={selectedIndex}
           pt="2rem"
           display="flex"
           flexDirection="column"
           width="45%"
           gap="2rem"
+          index={tabIndex}
+          onChange={(index) => setTabIndex(index)}
         >
           <TabList
             // borderRadius="26px"
@@ -474,6 +479,9 @@ const SpendTable = () => {
                 bg: selectedDapp != "" ? "#0969DA" : "none",
                 // border: "none",
               }}
+              _disabled={{
+                background: "#101216",
+              }}
               isDisabled={selectedDapp == ""}
             // isDisabled={selectedDapp == ""}
             >
@@ -493,6 +501,9 @@ const SpendTable = () => {
                 // color: "white",
                 bg: selectedDapp != "" ? "#0969DA" : "none",
                 // border: "none",
+              }}
+              _disabled={{
+                background: "#101216",
               }}
               isDisabled={selectedDapp == ""}
             >
@@ -515,6 +526,9 @@ const SpendTable = () => {
                 // color: "white",
                 bg: selectedDapp != "" ? "#0969DA" : "none",
                 // border: "none",
+              }}
+              _disabled={{
+                background: "#101216",
               }}
               onClick={() => setTradeNote(true)}
               isDisabled={selectedDapp == ""}
