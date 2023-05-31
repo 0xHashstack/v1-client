@@ -697,7 +697,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             color="#6E7681"
                           >
                             Ticking would stake the received rTokens. unchecking
-                            woudn't stake rTokens
+                            woudn&apos;t stake rTokens
                           </Text>
                         </Box>
                       )}
