@@ -84,8 +84,8 @@ const SpendTable = () => {
   const [currentMarketCoin, setCurrentMarketCoin] = useState("");
   const [coins, setCoins] = useState([]);
   const [currentPagination, setCurrentPagination] = useState<number>(1);
-  const [tabIndex, setTabIndex] = useState(0)
-  const [selectedIndex, setselectedIndex] = useState(0)
+  const [tabIndex, setTabIndex] = useState(0);
+  const [selectedIndex, setselectedIndex] = useState(0);
   let lower_bound = 3 * (currentPagination - 1);
   let upper_bound = lower_bound + 2;
   upper_bound = Math.min(rows.length - 1, upper_bound);
@@ -107,10 +107,10 @@ const SpendTable = () => {
     // console.log("faisal coin mapping", borrowIDCoinMap);
   }, []);
 
-  useEffect(()=>{
-    setCurrentBorrow(-1)
-    setSelectedDapp("")
-    setTabIndex(0)
+  useEffect(() => {
+    setCurrentBorrow(-1);
+    setSelectedDapp("");
+    setTabIndex(0);
     dispatch(setSpendBorrowSelectedDapp(""));
   }, [currentPagination]);
   useEffect(() => {
@@ -231,6 +231,7 @@ const SpendTable = () => {
                         key={index}
                         cursor="pointer"
                         bgColor={currentBorrow == index ? "#2B2F35" : "none "}
+                        // bgColor="green"
                         onClick={() => {
                           setSelectedDapp("trade");
                           setCurrentBorrow(index);
@@ -358,7 +359,7 @@ const SpendTable = () => {
                   i < 3 - (upper_bound - lower_bound + 1);
                   i++
                 ) {
-                  rows2.push(<Tr height="4.99rem"></Tr>);
+                  rows2.push(<Tr height="4rem"></Tr>);
                 }
                 return rows2;
               })()}
@@ -385,15 +386,15 @@ const SpendTable = () => {
           >
             <Text color="#FFFFFF">You do not have outstanding borrows</Text>
             <YourBorrowModal
-            buttonText="Borrow assets"
-            variant="link"
-            fontSize="16px"
-            fontWeight="400"
-            display="inline"
-            color="#0969DA"
-            cursor="pointer"
-            ml="0.4rem"
-            lineHeight="24px"
+              buttonText="Borrow assets"
+              variant="link"
+              fontSize="16px"
+              fontWeight="400"
+              display="inline"
+              color="#0969DA"
+              cursor="pointer"
+              ml="0.4rem"
+              lineHeight="24px"
             />
           </Box>
         </>
