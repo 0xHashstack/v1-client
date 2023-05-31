@@ -89,11 +89,14 @@ const YourBorrow = () => {
         justifyContent="space-between"
         alignItems="center"
       >
-        <Pagination
-          currentPagination={currentPagination}
-          setCurrentPagination={(x: any) => setCurrentPagination(x)}
-          max={Coins.length}
-        />
+        <Box>
+          <Pagination
+            currentPagination={currentPagination}
+            setCurrentPagination={(x: any) => setCurrentPagination(x)}
+            max={Coins.length}
+            rows={6}
+          />
+        </Box>
         <LatestSyncedBlock width="16rem" height="100%" block={83207} />
       </Box>
       {/* <SupplyModal /> */}

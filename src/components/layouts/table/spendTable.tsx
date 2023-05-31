@@ -68,11 +68,9 @@ const SpendTable = () => {
     ["Borrow ID 12350", "rETH", "10,324.556", "BTC", "00.00%"],
     ["Borrow ID 12351", "rUSDT", "10,324.556", "BTC", "00.00%"],
     ["Borrow ID 12352", "rBTC", "10,324.556", "BTC", "00.00%"],
-
   ];
 
   const dispatch = useDispatch();
-
 
   const router = useRouter();
   function handleRouteChange(url: string) {
@@ -106,17 +104,15 @@ const SpendTable = () => {
     // console.log("faisal coin mapping", borrowIDCoinMap);
   }, []);
 
-  useEffect(()=>{
-    setCurrentBorrow(-1)
-    setSelectedDapp("")
+  useEffect(() => {
+    setCurrentBorrow(-1);
+    setSelectedDapp("");
     dispatch(setSpendBorrowSelectedDapp(""));
-  },[currentPagination])
+  }, [currentPagination]);
   useEffect(() => {
     const handleRouteChangeComplete = (url: string) => {
       handleRouteChange(url);
     };
-
-
 
     router.events.on("routeChangeComplete", handleRouteChangeComplete);
 
@@ -136,7 +132,7 @@ const SpendTable = () => {
             fontStyle="normal"
             fontWeight="400"
             borderRadius="6px"
-          // textAlign="center"
+            // textAlign="center"
           >
             <Box mt="0.1rem" mr="0.7rem" cursor="pointer">
               <TableInfoIcon />
@@ -166,56 +162,58 @@ const SpendTable = () => {
           </Box>
         </Box>
       )}
-      {upper_bound >= lower_bound && rows.length > 0 ?
-            <TableContainer
-            //   bg="#101216"
-            border="1px"
-            borderColor="#2B2F35"
-            // py="6"
-            color="white"
-            borderRadius="md"
-            w="94%"
-            // px="3"
-            p="2rem 1rem 24px"
-          >
-            <Table variant="unstyled">
-              {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
-              <Thead width={"100%"}>
-                <Tr width={"100%"} height="2rem">
-                  {columnItems.map((val: any, idx1: any) => (
-                    <Td
-                      key={idx1}
-                      width={"12.5%"}
-                      fontSize={"12px"}
-                      fontWeight={400}
-                      p={0}
+      {upper_bound >= lower_bound && rows.length > 0 ? (
+        <TableContainer
+          //   bg="#101216"
+          border="1px"
+          borderColor="#2B2F35"
+          // py="6"
+          color="white"
+          borderRadius="md"
+          w="94%"
+          // px="3"
+          p="2rem 1rem 24px"
+        >
+          <Table variant="unstyled">
+            {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
+            <Thead width={"100%"}>
+              <Tr width={"100%"} height="2rem">
+                {columnItems.map((val: any, idx1: any) => (
+                  <Td
+                    key={idx1}
+                    width={"12.5%"}
+                    fontSize={"12px"}
+                    fontWeight={400}
+                    p={0}
+                  >
+                    <Text
+                      whiteSpace="pre-wrap"
+                      overflowWrap="break-word"
+                      width={"100%"}
+                      height={"2rem"}
+                      fontSize="12px"
+                      textAlign={
+                        idx1 == 0
+                          ? "left"
+                          : idx1 == columnItems.length - 1
+                          ? "right"
+                          : "center"
+                      }
+                      pl={idx1 == 0 ? 6 : 0}
+                      pr={idx1 == columnItems.length - 1 ? 35 : 0}
+                      color={"#BDBFC1"}
                     >
-                      <Text
-                        whiteSpace="pre-wrap"
-                        overflowWrap="break-word"
-                        width={"100%"}
-                        height={"2rem"}
-                        fontSize="12px"
-                        textAlign={
-                          idx1 == 0
-                            ? "left"
-                            : idx1 == columnItems.length - 1
-                              ? "right"
-                              : "center"
-                        }
-                        pl={idx1 == 0 ? 6 : 0}
-                        pr={idx1 == columnItems.length - 1 ? 35 : 0}
-                        color={"#BDBFC1"}
-                      >
-                        {val}
-                      </Text>
-                    </Td>
-                  ))}
-                </Tr>
-              </Thead>
-    
-              <Tbody bg="inherit" position="relative">
-                {rows.slice(lower_bound,upper_bound+1).map((currentRow, index) => {
+                      {val}
+                    </Text>
+                  </Td>
+                ))}
+              </Tr>
+            </Thead>
+
+            <Tbody bg="inherit" position="relative">
+              {rows
+                .slice(lower_bound, upper_bound + 1)
+                .map((currentRow, index) => {
                   return (
                     <>
                       <Tr
@@ -349,21 +347,22 @@ const SpendTable = () => {
                     </>
                   );
                 })}
-                          {(() => {
-            const rows2 = [];
-            for (
-              let i: number = 0;
-              i < 3 - (upper_bound - lower_bound + 1);
-              i++
-            ) {
-              rows2.push(<Tr height="4.99rem"></Tr>);
-            }
-            return rows2;
-          })()}
-              </Tbody>
-            </Table>
-          </TableContainer>:
-          <>
+              {(() => {
+                const rows2 = [];
+                for (
+                  let i: number = 0;
+                  i < 3 - (upper_bound - lower_bound + 1);
+                  i++
+                ) {
+                  rows2.push(<Tr height="4.99rem"></Tr>);
+                }
+                return rows2;
+              })()}
+            </Tbody>
+          </Table>
+        </TableContainer>
+      ) : (
+        <>
           <Box
             border="1px"
             borderColor="#2B2F35"
@@ -378,7 +377,7 @@ const SpendTable = () => {
             <Text color="#0969DA">Borrow assets</Text>
           </Box>
         </>
-      }
+      )}
 
       <Box
         paddingY="1rem"
@@ -391,6 +390,7 @@ const SpendTable = () => {
           currentPagination={currentPagination}
           setCurrentPagination={(x: any) => setCurrentPagination(x)}
           max={rows.length}
+          rows={3}
         />
       </Box>
       <Box
@@ -399,7 +399,7 @@ const SpendTable = () => {
         w="94%"
         height="16rem"
 
-      // bgColor="pink"
+        // bgColor="pink"
       >
         <Tabs
           variant="unstyled"
@@ -416,7 +416,7 @@ const SpendTable = () => {
             h="2rem"
             width="100%"
             display="flex"
-          // bgColor="red"
+            // bgColor="red"
           >
             <Tab
               // padding="6px 16px"
@@ -458,7 +458,7 @@ const SpendTable = () => {
                 // border: "none",
               }}
               isDisabled={selectedDapp == ""}
-            // isDisabled={selectedDapp == ""}
+              // isDisabled={selectedDapp == ""}
             >
               swap
             </Tab>
@@ -578,8 +578,8 @@ const SpendTable = () => {
                 justifyContent="center"
                 alignItems="flex-start"
                 bgColor="#fff8c5"
-              // textAlign="center"
-              // bgColor="red"
+                // textAlign="center"
+                // bgColor="red"
               >
                 <Box
                   cursor="pointer"
