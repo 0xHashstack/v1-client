@@ -79,6 +79,7 @@ const YourBorrow = () => {
         currentPagination={currentPagination}
         Coins={Coins}
         columnItems={columnItems}
+        
       />
       <Box
         paddingY="1rem"

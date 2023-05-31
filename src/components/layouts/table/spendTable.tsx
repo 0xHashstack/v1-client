@@ -40,6 +40,7 @@ import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import SmallEth from "@/assets/icons/coins/smallEth";
 import Pagination from "@/components/uiElements/pagination";
+import YourBorrowModal from "@/components/modals/yourBorrowModal";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -83,6 +84,8 @@ const SpendTable = () => {
   const [currentMarketCoin, setCurrentMarketCoin] = useState("");
   const [coins, setCoins] = useState([]);
   const [currentPagination, setCurrentPagination] = useState<number>(1);
+  const [tabIndex, setTabIndex] = useState(0)
+  const [selectedIndex, setselectedIndex] = useState(0)
   let lower_bound = 3 * (currentPagination - 1);
   let upper_bound = lower_bound + 2;
   upper_bound = Math.min(rows.length - 1, upper_bound);
@@ -104,9 +107,10 @@ const SpendTable = () => {
     // console.log("faisal coin mapping", borrowIDCoinMap);
   }, []);
 
-  useEffect(() => {
-    setCurrentBorrow(-1);
-    setSelectedDapp("");
+  useEffect(()=>{
+    setCurrentBorrow(-1)
+    setSelectedDapp("")
+    setTabIndex(0)
     dispatch(setSpendBorrowSelectedDapp(""));
   }, [currentPagination]);
   useEffect(() => {
@@ -372,9 +376,25 @@ const SpendTable = () => {
             w="94%"
             // px="3"
             p="2rem 1rem 24px"
+            h="283px"
+            display="flex"
+            alignItems="center"
+            justifyContent="center"
+            flexDirection="column"
+            gap="4px"
           >
-            <Text color="#FFFFFF">Add More Borrow</Text>
-            <Text color="#0969DA">Borrow assets</Text>
+            <Text color="#FFFFFF">You do not have outstanding borrows</Text>
+            <YourBorrowModal
+            buttonText="Borrow assets"
+            variant="link"
+            fontSize="16px"
+            fontWeight="400"
+            display="inline"
+            color="#0969DA"
+            cursor="pointer"
+            ml="0.4rem"
+            lineHeight="24px"
+            />
           </Box>
         </>
       )}
@@ -403,12 +423,14 @@ const SpendTable = () => {
       >
         <Tabs
           variant="unstyled"
-          defaultIndex={0}
+          defaultIndex={selectedIndex}
           pt="2rem"
           display="flex"
           flexDirection="column"
           width="45%"
           gap="2rem"
+          index={tabIndex}
+          onChange={(index) => setTabIndex(index)}
         >
           <TabList
             // borderRadius="26px"
@@ -457,6 +479,9 @@ const SpendTable = () => {
                 bg: selectedDapp != "" ? "#0969DA" : "none",
                 // border: "none",
               }}
+              _disabled={{
+                background: "#101216",
+              }}
               isDisabled={selectedDapp == ""}
               // isDisabled={selectedDapp == ""}
             >
@@ -476,6 +501,9 @@ const SpendTable = () => {
                 // color: "white",
                 bg: selectedDapp != "" ? "#0969DA" : "none",
                 // border: "none",
+              }}
+              _disabled={{
+                background: "#101216",
               }}
               isDisabled={selectedDapp == ""}
             >
@@ -498,6 +526,9 @@ const SpendTable = () => {
                 // color: "white",
                 bg: selectedDapp != "" ? "#0969DA" : "none",
                 // border: "none",
+              }}
+              _disabled={{
+                background: "#101216",
               }}
               onClick={() => setTradeNote(true)}
               isDisabled={selectedDapp == ""}
