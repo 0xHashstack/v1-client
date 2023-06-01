@@ -42,6 +42,7 @@ import {
   selectWalletBalance,
   setAccount,
 } from "@/store/slices/userAccountSlice";
+import Banner from "@/components/uiElements/loaders/Banner";
 // import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -131,12 +132,14 @@ export default function Home() {
     //   backgroundColor="#191922"
     //   height="100vh"
     // >
-    <PageCard
+    <Box
+    display="flex"
       justifyContent="center"
       alignItems="center"
       backgroundColor="#191922"
       height="100vh"
     >
+      {/* <Banner/> */}
       <Box
         display="flex"
         background="#010409"
@@ -291,7 +294,7 @@ export default function Home() {
           </Text>
         </Box>
       </Box>
-    </PageCard>
+    </Box>
     // </Box>
   );
 }
