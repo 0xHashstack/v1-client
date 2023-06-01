@@ -689,12 +689,13 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             colorScheme="customBlue"
                             defaultChecked
                             mb="auto"
-                            mt="4px"
+                            mt="1.2rem"
                           />
                           <Text
                             fontSize="12px"
                             fontWeight="400"
                             color="#6E7681"
+                            mt="1rem"
                           >
                             Ticking would stake the received rTokens. unchecking
                             woudn&apos;t stake rTokens
@@ -703,10 +704,9 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                       )}
                       <Card
                         bg="#101216"
-                        mt="1.5rem"
+                        mt="1rem"
                         p="1rem"
                         border="1px solid #2B2F35"
-                        mb="0.5rem"
                       >
                         <Text
                           color="#8B949E"
@@ -909,6 +909,40 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         border="1px solid #2B2F35"
                         mt="1.5rem"
                       >
+                                                {!coinsSupplied[currentSelectedUnstakeCoin] && (
+                          <Box
+                            // display="flex"
+                            // justifyContent="left"
+                            w="100%"
+                            pb="4"
+                          >
+                            <Box
+                              display="flex"
+                              bg="#FFF8C5"
+                              color="black"
+                              fontSize="xs"
+                              p="4"
+                              my="auto"
+                              fontStyle="normal"
+                              fontWeight="500"
+                              borderRadius="6px"
+                              // textAlign="center"
+                            >
+                              <Box pr="3" my="auto" cursor="pointer">
+                                <WarningIcon />
+                              </Box>
+                              Selected market is not staked. Firstly stake the coins to unstake
+                              {/* <Box
+                                py="1"
+                                pl="4"
+                                cursor="pointer"
+                                // onClick={handleClick}
+                              >
+                                <TableClose />
+                              </Box> */}
+                            </Box>
+                          </Box>
+                        )}
                         <Text
                           color="#8B949E"
                           display="flex"
@@ -1057,6 +1091,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           width="100%"
                           color="white"
                           border={`${
+                            !coinsSupplied[currentSelectedUnstakeCoin] ? "1px solid #2B2F35":
                             inputUnstakeAmount > walletBalance
                               ? "1px solid #CF222E"
                               : inputUnstakeAmount < 0
@@ -1075,15 +1110,17 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             min={0}
                             keepWithinRange={true}
                             onChange={handleUnstakeChange}
-                            value={inputUnstakeAmount ? inputUnstakeAmount : ""}
+                            value={coinsSupplied[currentSelectedUnstakeCoin]?inputUnstakeAmount ?inputUnstakeAmount:"":""}
                             outline="none"
                             step={parseFloat(
                               `${inputUnstakeAmount <= 99999 ? 0.1 : 0}`
                             )}
+                            isDisabled={!coinsSupplied[currentSelectedUnstakeCoin]}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
                               color={`${
+                                !coinsSupplied[currentSelectedUnstakeCoin] ?"#1A7F37":
                                 inputUnstakeAmount > walletBalance
                                   ? "#CF222E"
                                   : inputUnstakeAmount < 0
@@ -1110,6 +1147,9 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             color="#0969DA"
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
+                              if(!coinsSupplied[currentSelectedUnstakeCoin]){
+                                return;
+                              }
                               setInputUnstakeAmount(walletBalance);
                               setSliderValue2(100);
                             }}
@@ -1117,8 +1157,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             MAX
                           </Button>
                         </Box>
-                        {inputUnstakeAmount > walletBalance ||
-                        inputUnstakeAmount < 0 ? (
+                        {(inputUnstakeAmount > walletBalance ||
+                        inputUnstakeAmount < 0) && (coinsSupplied[currentSelectedUnstakeCoin]) ? (
                           <Text
                             display="flex"
                             justifyContent="space-between"
@@ -1171,8 +1211,11 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           <Slider
                             aria-label="slider-ex-6"
                             defaultValue={sliderValue2}
-                            value={sliderValue2}
+                            value={!coinsSupplied[currentSelectedUnstakeCoin]?0:sliderValue2}
                             onChange={(val) => {
+                              if(!coinsSupplied[currentSelectedUnstakeCoin]){
+                                return;
+                              }
                               setSliderValue2(val);
                               var ans = (val / 100) * walletBalance;
                               ans = Math.round(ans * 100) / 100;
@@ -1181,19 +1224,24 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             }}
                             focusThumbOnChange={false}
                           >
-                            <SliderMark value={sliderValue2}>
+                            <SliderMark value={!coinsSupplied[currentSelectedUnstakeCoin] ?0:sliderValue2}>
                               <Box
                                 position="absolute"
                                 bottom="-8px"
                                 left="-11px"
                                 zIndex="1"
                               >
-                                <SliderTooltip />
+                                <SliderTooltip
+                                  color={
+                                    `${!coinsSupplied[currentSelectedUnstakeCoin]?"#6E7681":"#DEDEDE"}`
+                                  }
+                                />
                                 <Text
                                   position="absolute"
                                   color="black"
                                   top="7px"
                                   left={
+                                    !coinsSupplied[currentSelectedUnstakeCoin]?"25%":
                                     sliderValue2 !== 100
                                       ? sliderValue2 >= 10
                                         ? "15%"
@@ -1204,7 +1252,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                                   fontWeight="bold"
                                   textAlign="center"
                                 >
-                                  {sliderValue2}%
+                                  {!coinsSupplied[currentSelectedUnstakeCoin]?0:sliderValue2}%
                                 </Text>
                               </Box>
                             </SliderMark>
@@ -1223,7 +1271,6 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         mt="1.5rem"
                         p="1rem"
                         border="1px solid #2B2F35"
-                        mb="0.5rem"
                       >
                         <Text
                           color="#8B949E"
@@ -1330,36 +1377,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           <Text color="#6E7681">0.3%</Text>
                         </Text>
                       </Card>
-                      <Text
-                        display="flex"
-                        flexDirection="column"
-                        padding="0px"
-                        fontSize="12px"
-                        fontWeight="400"
-                        fontStyle="normal"
-                        color=" #6A737D"
-                        mt="1rem"
-                        lineHeight="18px"
-                      >
-                        <Text>You have not staked any rTokens to unstake</Text>
-                        <Text display="flex">
-                          click here To{" "}
-                          <SupplyModal
-                            variant="link"
-                            fontSize="12px"
-                            display="inline"
-                            color="#0969DA"
-                            cursor="pointer"
-                            ml="0.4rem"
-                            lineHeight="18px"
-                            buttonText="Add Supply"
-                            backGroundOverLay="rgba(244, 242, 255, 0)"
-                            coin={coin}
-                          />
-                        </Text>
-                      </Text>
-                      {inputUnstakeAmount > 0 &&
-                      inputUnstakeAmount <= walletBalance ? (
+                      {(inputUnstakeAmount > 0 &&
+                      inputUnstakeAmount <= walletBalance) &&(coinsSupplied[currentSelectedUnstakeCoin]) ? (
                         <AnimatedButton
                           bgColor="#101216"
                           // bgColor="red"
