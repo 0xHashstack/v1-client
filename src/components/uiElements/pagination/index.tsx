@@ -26,6 +26,8 @@ const Pagination = ({
         >
           <HStack
             // color="#0969DA"
+            // bgColor="red"
+            p="7px"
             display="flex"
             alignItems="center"
             justifyContent="center"
@@ -46,13 +48,13 @@ const Pagination = ({
               width="16"
               height="16"
             />
-            <Text
+            {/* <Text
               textAlign="right"
               fontSize="14px"
               color={currentPagination <= 1 ? "#57606A" : "#0969DA"}
             >
               Previous
-            </Text>
+            </Text> */}
           </HStack>
           <ButtonGroup
             gap={0}
@@ -94,6 +96,8 @@ const Pagination = ({
     <Button></Button> */}
           <HStack
             // color="#0969DA"
+            // bgColor="red"
+            p="7px"
             display="flex"
             alignItems="center"
             justifyContent="center"
@@ -106,13 +110,13 @@ const Pagination = ({
                 : " "
             }
           >
-            <Text
+            {/* <Text
               textAlign="right"
               fontSize="14px"
               color={rows * currentPagination >= max ? "#57606A" : "#0969DA"}
             >
               Next
-            </Text>
+            </Text> */}
             <Image
               src={`paginationRightArrow${
                 rows * currentPagination >= max ? "Dull" : "Glow"
