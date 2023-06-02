@@ -16,14 +16,7 @@ import LoanAbi from "../../abis/dToken_abi.json";
 
 const useGetLoanRecord = (loanId: number) => {
     const [loanIdState, setLoanId] = useState<number>(loanId);
-    // data: dataAllowance,
-    // error: errorAllowance,
-    // isIdle: isIdleAllowance,
-    // isLoading: loadingAllowance,
-    // isSuccess: isSuccessAllowance,
-    // isError: isErrorAllowance,
-    // refetch: refetchAllowance,
-    // status: statusAllowance,
+
     const { 
         data: dataLoanRecord,
         error: errorLoanRecord,
@@ -39,6 +32,17 @@ const useGetLoanRecord = (loanId: number) => {
         functionName: "get_loan_record",
         args: [loanIdState]
     });
+
+    return {
+        dataLoanRecord,
+        errorLoanRecord,
+        isIdleLoanRecord,
+        loadingLoanRecord,
+        isSuccessLoanRecord,
+        isErrorLoanRecord,
+        refetchLoanRecord,
+        statusLoanRecord,
+    };
 
 }
     
