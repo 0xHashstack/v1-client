@@ -1,19 +1,11 @@
 import * as DeployDetailsProd from "../../contract_addresses.json";
-// import ERC20Abi from "../../ABIs/erc20_abi.json";
-// import ComptrollerAbi from "../../ABIs/comptroller_abi.json";
-// import LiquidateAbi from "../../ABIs/liquidation_abi.json";
+import ERC20Abi from "./abis/erc20_abi.json";
 import { number } from "starknet";
 import {
   UseWaitForTransactionResult,
   UseTransactionResult,
 } from "@starknet-react/core";
-interface ItokenAddressMap {
-  [key: string]: string | undefined;
-}
-
-interface ItokenDecimalsMap {
-  [key: string]: number | undefined;
-}
+import { ItokenAddressMap, ItokenDecimalsMap } from "./interfaces/interfaces";
 
 export function processAddress(address: string) {
   return number.toHex(number.toBN(number.toFelt(address)));
@@ -92,4 +84,4 @@ export const getCommitmentNameFromIndexDeposit = (index: string) => {
 export const getCommitmentIndex = (index: string) => {
   return parseInt(index);
 };
-// export { ERC20Abi, ComptrollerAbi, contractsEnv, LiquidateAbi };
+export { ERC20Abi, contractsEnv };
