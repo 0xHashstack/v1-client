@@ -20,6 +20,8 @@ const useLoanRequest = () => {
 
     const [market, setMarket] = useState<string>("");
     const [amount, setAmount] = useState<number>(0);
+    
+    // Collateral
     const [rToken, setRToken] = useState<string>("");
     const [rTokenAmount, setRTokenAmount] = useState<number>(0);
 

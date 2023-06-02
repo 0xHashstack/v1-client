@@ -198,6 +198,7 @@ const useRepay = (asset: any, diamondAddress: string) => {
           !asset.commitmentIndex
         ) {
             return;
+
         }
         if (!tokenAddressMap[asset.loanMarket] && !repayAmount && !diamondAddress) {
           return;
@@ -225,7 +226,7 @@ const useRepay = (asset: any, diamondAddress: string) => {
           };
           return;
         }
-      };
+    };
 
     const handleApprove = async (asset: string) => {
         try {

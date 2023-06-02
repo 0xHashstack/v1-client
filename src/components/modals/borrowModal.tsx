@@ -46,6 +46,7 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
+import useLoanRequest from "@/Blockchain/hooks/Writes/useLoanRequest";
 const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [sliderValue, setSliderValue] = useState(0);
@@ -55,6 +56,14 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
+
+  const {  market,
+    setMarket,
+    amount,
+    setAmount,
+    rToken,
+    setRToken, } = useLoanRequest();
+
   const [buttonId, setButtonId] = useState(0);
 
   const getCoin = (CoinName: string) => {

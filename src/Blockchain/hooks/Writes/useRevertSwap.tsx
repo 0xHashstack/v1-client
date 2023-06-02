@@ -59,7 +59,8 @@ const useRevertSwapSpend = (loanIdParam: number) => {
         isIdleRevertSwapSpend,
         isLoadingRevertSwapSpend,
         isSuccessRevertSwapSpend,
-        statusRevertSwapSpend
+        statusRevertSwapSpend,
+
     };
 };
 
