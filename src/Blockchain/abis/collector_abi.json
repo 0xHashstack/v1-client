@@ -1,0 +1,161 @@
+[
+    {
+        "members": [
+            {
+                "name": "rToken",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "dToken",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "empiric_key",
+                "offset": 2,
+                "type": "felt"
+            }
+        ],
+        "name": "AssetMetadata",
+        "size": 3,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "low",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "high",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "Uint256",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "data": [
+            {
+                "name": "previousOwner",
+                "type": "felt"
+            },
+            {
+                "name": "newOwner",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Paused",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Unpaused",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "name": "_insurance",
+                "type": "felt"
+            },
+            {
+                "name": "_treasury",
+                "type": "felt"
+            },
+            {
+                "name": "_tier1_capital",
+                "type": "felt"
+            },
+            {
+                "name": "_v1_core_diamond_address",
+                "type": "felt"
+            }
+        ],
+        "name": "constructor",
+        "outputs": [],
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "name": "_index",
+                "type": "felt"
+            }
+        ],
+        "name": "get_asset_metadata",
+        "outputs": [
+            {
+                "name": "asset",
+                "type": "felt"
+            },
+            {
+                "name": "asset_metadata",
+                "type": "AssetMetadata"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset",
+                "type": "felt"
+            }
+        ],
+        "name": "get_collector_asset_balance",
+        "outputs": [
+            {
+                "name": "get_collector_asset_balance",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "total_collector_asset_balance",
+        "outputs": [
+            {
+                "name": "total_collector_asset_balance_len",
+                "type": "felt"
+            },
+            {
+                "name": "total_collector_asset_balance",
+                "type": "Uint256*"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "fees_distribution_split",
+        "outputs": [],
+        "type": "function"
+    }
+]
