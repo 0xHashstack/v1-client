@@ -13,6 +13,7 @@ import {
 import { TxToastManager } from "../../tx-ToastManager";
 import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 import LoanAbi from "../../abis/dToken_abi.json";
+import exp from "constants";
 
 const useGetCollateralRecord = (loanId: number) => {
     const [loanIdState, setCollateralId] = useState<number>(loanId);
@@ -45,4 +46,6 @@ const useGetCollateralRecord = (loanId: number) => {
     };
 
 }
+
+export default useGetCollateralRecord;
     

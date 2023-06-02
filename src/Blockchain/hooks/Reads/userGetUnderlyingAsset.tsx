@@ -44,4 +44,6 @@ const useGetUnderlyingAsset = () => {
     };
 
 }
+
+export default useGetUnderlyingAsset;
     

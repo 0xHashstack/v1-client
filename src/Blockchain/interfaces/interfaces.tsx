@@ -35,3 +35,4 @@ export interface ILoans {
     l3Category: number | undefined;
     createdAt: Date;
 }
+

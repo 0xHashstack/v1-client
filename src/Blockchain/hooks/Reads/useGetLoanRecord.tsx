@@ -45,4 +45,6 @@ const useGetLoanRecord = (loanId: number) => {
     };
 
 }
+
+export default useGetLoanRecord;
     
