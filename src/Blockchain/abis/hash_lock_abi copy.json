@@ -1,0 +1,180 @@
+[
+    {
+        "members": [
+            {
+                "name": "low",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "high",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "Uint256",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "data": [
+            {
+                "name": "previousOwner",
+                "type": "felt"
+            },
+            {
+                "name": "newOwner",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Paused",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Unpaused",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "account",
+                "type": "felt"
+            },
+            {
+                "name": "sender",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleGranted",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "account",
+                "type": "felt"
+            },
+            {
+                "name": "sender",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleRevoked",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "previousAdminRole",
+                "type": "felt"
+            },
+            {
+                "name": "newAdminRole",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleAdminChanged",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "get_hash_token_contract",
+        "outputs": [
+            {
+                "name": "hash_token_contract_",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "_v1_core_diamond_address",
+                "type": "felt"
+            }
+        ],
+        "name": "constructor",
+        "outputs": [],
+        "type": "constructor"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user",
+                "type": "felt"
+            }
+        ],
+        "name": "get_user_hash_lock_pool_balance",
+        "outputs": [
+            {
+                "name": "get_user_hash_lock_pool_balance_",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_total_hash_lock_pool_balance",
+        "outputs": [
+            {
+                "name": "get_total_hash_lock_pool_balance",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user",
+                "type": "felt"
+            },
+            {
+                "name": "hash_token_amount",
+                "type": "Uint256"
+            }
+        ],
+        "name": "lock_hash_token",
+        "outputs": [],
+        "type": "function"
+    }
+]
