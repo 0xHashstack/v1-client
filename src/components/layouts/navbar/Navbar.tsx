@@ -93,6 +93,8 @@ const Navbar = () => {
   const walletConnectionDropdown = ["Disconnect", "Switch wallet"];
 
   const router = useRouter();
+  const { pathname } = router;
+
 
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
@@ -173,9 +175,13 @@ const Navbar = () => {
           cursor="pointer"
           marginBottom="0px"
           className="button"
+          color={`${pathname=="/market"?"#6e7681":"white"}`}
           _hover={{
             color: "#6e7681",
           }}
+          onClick={()=>{router.push('/market')}}
+
+          
           onMouseEnter={() => setDashboardHover(true)}
           onMouseLeave={() => setDashboardHover(false)}
         >
@@ -185,7 +191,7 @@ const Navbar = () => {
             alignItems="center"
             gap={"8px"}
           >
-            {dashboardHover ? (
+            {pathname=="/market" || dashboardHover ? (
               <Image
                 src={hoverDashboardIcon}
                 alt="Picture of the author"
