@@ -57,12 +57,12 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
 
-  const {  market,
-    setMarket,
-    amount,
-    setAmount,
-    rToken,
-    setRToken, } = useLoanRequest();
+  // const {  market,
+  //   setMarket,
+  //   amount,
+  //   setAmount,
+  //   rToken,
+  //   setRToken, } = useLoanRequest();
 
   const [buttonId, setButtonId] = useState(0);
 
