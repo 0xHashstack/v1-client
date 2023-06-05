@@ -60,7 +60,7 @@ const SpendTable = () => {
     "LTV",
     "Health factor",
   ];
-  const rows = [
+  const rows: any[] = [
     ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "00.00%"],
     ["Borrow ID 12346", "rBTC", "10,324.556", "BTC", "00.00%"],
     ["Borrow ID 12347", "rETH", "10,324.556", "BTC", "00.00%"],
@@ -93,13 +93,15 @@ const SpendTable = () => {
     let temp1: any = [];
     let temp2: any = [];
     let temp3: any = [];
-    for (let i = 0; i < rows.length; i++) {
-      temp1.push({
-        id: "ID - " + rows[i][0].slice(10),
-        name: rows[i][1].slice(1),
-      });
-      temp2.push("ID - " + rows[i][0].slice(10));
-      temp3.push(rows[i][1].slice(1));
+    if(rows.length!=0){
+      for (let i = 0; i < rows.length; i++) {
+        temp1.push({
+          id: "ID - " + rows[i][0].slice(10),
+          name: rows[i][1].slice(1),
+        });
+        temp2.push("ID - " + rows[i][0].slice(10));
+        temp3.push(rows[i][1].slice(1));
+      }
     }
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);

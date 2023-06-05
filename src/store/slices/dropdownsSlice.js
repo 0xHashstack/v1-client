@@ -117,7 +117,6 @@ export const dropdownSlice = createSlice({
 });
 
 export const { setNavDropdown,resetModalDropdowns } = dropdownSlice.actions;
-
 export const { setModalDropdown } = dropdownSlice.actions;
 export const { setMetricsDropdown } = dropdownSlice.actions;
 export const selectNavDropdowns = (state) => state.dropdowns.navDropdowns;
