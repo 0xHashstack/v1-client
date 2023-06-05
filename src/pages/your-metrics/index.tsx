@@ -117,7 +117,9 @@ const YourMetrics = () => {
                   //   justifyContent="center"
                   //   alignItems="center"
                   // pt={1}
-                  mb="0.1rem"
+                  // mb="0.1rem"
+                  // mt="0.1rem"
+                  mt="0.1rem"
                 >
                   {currentMarketCoin}
                 </Text>
@@ -168,7 +170,7 @@ const YourMetrics = () => {
                           }`}
                           borderRadius="md"
                         >
-                          <Box>{getCoin(coin, "16px", "16px")}</Box>
+                          <Box p="1">{getCoin(coin, "16px", "16px")}</Box>
                           <Text color="#E6EDF3">{coin}</Text>
                         </Box>
                       </Box>

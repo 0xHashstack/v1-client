@@ -2,25 +2,18 @@ import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import Image from "next/image";
 import {
   Button,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
   Card,
   Text,
   Box,
   Portal,
 } from "@chakra-ui/react";
-
 import Navbar from "@/components/layouts/navbar/Navbar";
 import PageCard from "@/components/layouts/pageCard";
 // import WalletConnectModal from "@/components/modals/WalletConnectModal";
-import { useContract } from "@starknet-react/core";
-import { useDisclosure } from "@chakra-ui/react";
+import ArgentXLogo from '../assets/images/ArgentXlogo.svg'
 import BTCLogo from "@/assets/icons/coins/btc";
 import USDCLogo from "@/assets/icons/coins/usdc";
 import BravosIcon from "@/assets/icons/wallets/bravos";
@@ -34,21 +27,27 @@ import EthWalletLogo from "@/assets/icons/coins/ethwallet";
 import {
   useAccount,
   useConnectors,
-  useStarknet,
-  useBlock,
+  // useBalance,
 } from "@starknet-react/core";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectWalletBalance,
   setAccount,
 } from "@/store/slices/userAccountSlice";
+import Banner from "@/components/uiElements/loaders/Banner";
+import Banner2 from "@/components/uiElements/loaders/Banner2";
 // import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
   const { account, address, status } = useAccount();
+  // const { data, isLoading, error, refetch } = useBalance({
+  //   address
+  // })
+  // console.log(data);
   const { available, disconnect, connect, connectors } = useConnectors();
+  console.log(available[1]?.options?.id);
   const [render, setRender] = useState(true);
   const [isWhiteListed, setIsWhiteListed] = useState(false);
   const router = useRouter();
@@ -108,8 +107,13 @@ export default function Home() {
   useEffect(() => {
     // alert(status)
     const storedAccount = localStorage.getItem("account");
-    if (storedAccount) {
-      router.push("./market");
+    const hasVisited = localStorage.getItem('visited');
+    if (!hasVisited) {
+      // Set a local storage item to indicate the user has visited
+      localStorage.setItem('visited', 'true');
+    }
+    if(storedAccount){
+      router.push('./market')
     }
     if (status == "connected") {
       // alert(account?.address);
@@ -178,45 +182,118 @@ export default function Home() {
               </Text>
             </Box>
           </Box>
-          <Box
-            w="full"
-            backgroundColor="#101216"
-            py="2"
-            border="1px solid #2B2F35"
-            borderRadius="6px"
-            gap="3px"
-            display="flex"
-            justifyContent="space-between"
-            cursor="pointer"
-            // onClick={() => router.push("/market")}
-            onClick={() => connect(connectors[0])}
-          >
-            <Text ml="1rem" color="white">
-              Bravos Wallet
-            </Text>
-            <Box p="1" mr="16px">
-              <BravosIcon />
-            </Box>
-          </Box>
-          <Box
-            w="full"
-            backgroundColor="#101216"
-            py="2"
-            border="1px solid #2B2F35"
-            borderRadius="6px"
-            gap="3px"
-            mt="1rem"
-            display="flex"
-            justifyContent="space-between"
-            cursor="pointer"
-          >
-            <Text ml="1rem" color="white">
-              Connect browser wallet
-            </Text>
-            <Box p="1" mr="16px">
-              <BrowserWalletIcon />
-            </Box>
-          </Box>
+          {available[0]?.options?.id ?
+                    <Box
+                    w="full"
+                    backgroundColor="#101216"
+                    py="2"
+                    border="1px solid #2B2F35"
+                    borderRadius="6px"
+                    gap="3px"
+                    display="flex"
+                    justifyContent="space-between"
+                    cursor="pointer"
+                    // onClick={() => router.push("/market")}
+                    onClick={() => 
+                      connect(connectors[0])
+                    }
+                  >
+                    <Text ml="1rem" color="white">
+                      {available[0]?.options?.id ? "Bravos Wallet":"Download Bravos Wallet"}
+                    </Text>
+                    <Box p="1" mr="16px">
+                      <BravosIcon />
+                    </Box>
+                  </Box>
+          :
+          <Link href="https://braavos.app" target="_blank">
+               <Box
+               w="full"
+               backgroundColor="#101216"
+               py="2"
+               border="1px solid #2B2F35"
+               borderRadius="6px"
+               gap="3px"
+               display="flex"
+               justifyContent="space-between"
+               cursor="pointer"
+               // onClick={() => router.push("/market")}
+               onClick={() => 
+                 connect(connectors[0])
+               }
+             >
+               <Text ml="1rem" color="white">
+                 {available[0]?.options?.id ? "Bravos Wallet":"Download Bravos Wallet"}
+               </Text>
+               <Box p="1" mr="16px">
+                 <BravosIcon />
+               </Box>
+             </Box>     
+          </Link>
+          }
+
+          {available[1]?.options.id ?
+
+             <Box
+             w="full"
+             backgroundColor="#101216"
+             py="2"
+             border="1px solid #2B2F35"
+             borderRadius="6px"
+             gap="3px"
+             mt="1rem"
+             display="flex"
+             justifyContent="space-between"
+             cursor="pointer"
+             onClick={() => connect(connectors[1])}
+           >
+             
+             <Text ml="1rem" color="white">
+             {available[1]?.options?.id ? "Argent X Wallet":"Download Argent X Wallet"}
+             </Text>
+             <Box p="1" mr="16px">
+             <Image
+                           src={ArgentXLogo}
+                           alt="Picture of the author"
+                           width="15"
+                           height="15"
+                           style={{ cursor: "pointer" }}
+                         />
+             </Box>
+           </Box>       
+          :
+          <Link href="https://www.argent.xyz/argent-x" target="_black">
+          
+                    <Box
+                    w="full"
+                    backgroundColor="#101216"
+                    py="2"
+                    border="1px solid #2B2F35"
+                    borderRadius="6px"
+                    gap="3px"
+                    mt="1rem"
+                    display="flex"
+                    justifyContent="space-between"
+                    cursor="pointer"
+                    onClick={() => connect(connectors[1])}
+                  >
+                    
+                    <Text ml="1rem" color="white">
+                    {available[1]?.options?.id ? "Argent X Wallet":"Download Argent X Wallet"}
+                    </Text>
+                    <Box p="1" mr="16px">
+                    <Image
+                                  src={ArgentXLogo}
+                                  alt="Picture of the author"
+                                  width="15"
+                                  height="15"
+                                  style={{ cursor: "pointer" }}
+                                />
+                    </Box>
+                  </Box>
+          </Link>
+          }
+
         </Card>
         <Box
           display="flex"
@@ -226,22 +303,6 @@ export default function Home() {
           fontWeight="400"
           mt="16px"
         >
-          <Text color="#fff">
-            Don&apos;t have a supporting wallet.
-            <Link href="https://braavos.app/" target="_blank">
-              <Button
-                variant="link"
-                fontSize="12px"
-                display="inline"
-                color="#0969DA"
-                cursor="pointer"
-                ml="0.4rem"
-                lineHeight="18px"
-              >
-                Download bravos from here
-              </Button>
-            </Link>
-          </Text>
         </Box>
         <Box
           alignItems="center"
@@ -267,7 +328,7 @@ export default function Home() {
 
         <Box mt="16px" display="flex" flexDirection="column" pb="32px">
           <Text
-            fontSize="10px"
+            fontSize="12px"
             lineHeight="18px"
             fontWeight="400"
             color="#8C8C8C"
@@ -279,7 +340,7 @@ export default function Home() {
             accidental loss of user funds.
           </Text>
           <Text
-            fontSize="10px"
+            fontSize="12px"
             lineHeight="18px"
             fontWeight="400"
             color="#8C8C8C"

@@ -94,6 +94,8 @@ const Navbar = () => {
   const { connector } = useAccount();
 
   const router = useRouter();
+  const { pathname } = router;
+
 
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
@@ -183,6 +185,7 @@ const Navbar = () => {
           cursor="pointer"
           marginBottom="0px"
           className="button"
+          color={`${pathname=="/market"?"#6e7681":"white"}`}
           _hover={{
             color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
           }}
