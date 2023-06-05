@@ -159,22 +159,26 @@ const SwapModal = ({
   return (
     <div>
       <Box display="flex" gap="14" mt="1rem">
-        <Box cursor="pointer" onClick={()=>{
-          if(selectedDapp==""){
-
-          }else{
-            onOpen();
-          }
-        }}>
+        <Box
+          cursor="pointer"
+          onClick={() => {
+            if (selectedDapp == "") {
+            } else {
+              onOpen();
+            }
+          }}
+        >
           {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
         </Box>
-        <Box cursor="pointer" onClick={()=>{
-          if(selectedDapp==""){
-
-          }else{
-            onOpen();
-          }
-        }}>
+        <Box
+          cursor="pointer"
+          onClick={() => {
+            if (selectedDapp == "") {
+            } else {
+              onOpen();
+            }
+          }}
+        >
           {selectedDapp != "" ? (
             <Box>
               <TableJediswapLogo />
@@ -494,7 +498,7 @@ const SwapModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right-start"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -539,7 +543,7 @@ const SwapModal = ({
                   </Box>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right-start"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -574,7 +578,7 @@ const SwapModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right-start"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -622,7 +626,7 @@ const SwapModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right-start"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -657,7 +661,7 @@ const SwapModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right-start"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -692,7 +696,7 @@ const SwapModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right-start"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -727,7 +731,7 @@ const SwapModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right-start"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -762,7 +766,7 @@ const SwapModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right-start"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"

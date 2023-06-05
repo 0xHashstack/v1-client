@@ -617,7 +617,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="bottom-start"
+                      placement="right-start"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -660,7 +660,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="bottom-start"
+                      placement="right-start"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -701,7 +701,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="bottom-start"
+                      placement="right-start"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"

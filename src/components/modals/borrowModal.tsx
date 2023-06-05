@@ -46,7 +46,7 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
-const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
+const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [sliderValue, setSliderValue] = useState(0);
   const [sliderValue2, setsliderValue2] = useState(0);
@@ -122,8 +122,12 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
   const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
-  const [currentCollateralCoin, setCurrentCollateralCoin] = useState(coin ? coin.name :"BTC");
-  const [currentBorrowCoin, setCurrentBorrowCoin] = useState(coin ? coin.name :"BTC");
+  const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
+    coin ? coin.name : "BTC"
+  );
+  const [currentBorrowCoin, setCurrentBorrowCoin] = useState(
+    coin ? coin.name : "BTC"
+  );
 
   const resetStates = () => {
     setCurrentCollateralCoin(coin.name);
@@ -792,7 +796,7 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right-start"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -834,7 +838,7 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right-start"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -876,7 +880,7 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right-start"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -917,7 +921,7 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right-start"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"

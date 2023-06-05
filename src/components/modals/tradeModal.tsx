@@ -59,7 +59,7 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
-const TradeModal = ({ buttonText,coin, ...restProps }: any) => {
+const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   //   console.log("isopen", isOpen, "onopen", onOpen, "onClose", onClose);
   const [sliderValue, setSliderValue] = useState(0);
@@ -175,8 +175,12 @@ const TradeModal = ({ buttonText,coin, ...restProps }: any) => {
   };
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
-  const [currentCollateralCoin, setCurrentCollateralCoin] = useState(coin ? coin.name :"BTC");
-  const [currentBorrowCoin, setCurrentBorrowCoin] = useState(coin ? coin.name :"BTC");
+  const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
+    coin ? coin.name : "BTC"
+  );
+  const [currentBorrowCoin, setCurrentBorrowCoin] = useState(
+    coin ? coin.name : "BTC"
+  );
   const [radioValue, setRadioValue] = useState("1");
 
   const resetStates = () => {
@@ -1201,7 +1205,7 @@ const TradeModal = ({ buttonText,coin, ...restProps }: any) => {
                         </Text>
                         <Tooltip
                           hasArrow
-                          placement="bottom-start"
+                          placement="right-start"
                           boxShadow="dark-lg"
                           label="all the assets to the market"
                           bg="#24292F"
@@ -1237,7 +1241,7 @@ const TradeModal = ({ buttonText,coin, ...restProps }: any) => {
                         </Text>
                         <Tooltip
                           hasArrow
-                          placement="bottom-start"
+                          placement="right-start"
                           boxShadow="dark-lg"
                           label="all the assets to the market"
                           bg="#24292F"
@@ -1296,7 +1300,7 @@ const TradeModal = ({ buttonText,coin, ...restProps }: any) => {
                         </Box>
                         <Tooltip
                           hasArrow
-                          placement="bottom-start"
+                          placement="right-start"
                           boxShadow="dark-lg"
                           label="all the assets to the market"
                           bg="#24292F"
@@ -1327,7 +1331,7 @@ const TradeModal = ({ buttonText,coin, ...restProps }: any) => {
                       </Text>
                       <Tooltip
                         hasArrow
-                        placement="bottom-start"
+                        placement="right-start"
                         boxShadow="dark-lg"
                         label="all the assets to the market"
                         bg="#24292F"
@@ -1353,7 +1357,7 @@ const TradeModal = ({ buttonText,coin, ...restProps }: any) => {
                       </Text>
                       <Tooltip
                         hasArrow
-                        placement="bottom-start"
+                        placement="right-start"
                         boxShadow="dark-lg"
                         label="all the assets to the market"
                         bg="#24292F"
@@ -1378,7 +1382,7 @@ const TradeModal = ({ buttonText,coin, ...restProps }: any) => {
                       </Text>
                       <Tooltip
                         hasArrow
-                        placement="bottom-start"
+                        placement="right-start"
                         boxShadow="dark-lg"
                         label="all the assets to the market"
                         bg="#24292F"
@@ -1403,7 +1407,7 @@ const TradeModal = ({ buttonText,coin, ...restProps }: any) => {
                       </Text>
                       <Tooltip
                         hasArrow
-                        placement="bottom-start"
+                        placement="right-start"
                         boxShadow="dark-lg"
                         label="all the assets to the market"
                         bg="#24292F"
@@ -1428,7 +1432,7 @@ const TradeModal = ({ buttonText,coin, ...restProps }: any) => {
                       </Text>
                       <Tooltip
                         hasArrow
-                        placement="bottom-start"
+                        placement="right-start"
                         boxShadow="dark-lg"
                         label="all the assets to the market"
                         bg="#24292F"

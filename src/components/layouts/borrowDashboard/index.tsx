@@ -41,12 +41,17 @@ const BorrowDashboard = ({
   let upper_bound = lower_bound + 5;
   upper_bound = Math.min(Coins.length - 1, upper_bound);
   const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
+  const [borrowIds, setBorrowIds] = useState([]);
   useEffect(() => {
-    let temp: any = [];
+    let temp1: any = [];
+    let temp2: any = [];
+
     for (let i = 0; i < Coins.length; i++) {
-      temp.push({ id: Coins[i].id, name: Coins[i].name });
+      temp1.push({ id: Coins[i].id, name: Coins[i].name });
+      temp2.push(Coins[i].id);
     }
-    setBorrowIDCoinMap(temp);
+    setBorrowIDCoinMap(temp1);
+    setBorrowIds(temp2);
   }, [Coins]);
 
   return upper_bound >= lower_bound && Coins.length > 0 ? (
@@ -417,6 +422,7 @@ const BorrowDashboard = ({
                         currentID={coin.id}
                         currentMarket={coin.name}
                         borrowIDCoinMap={borrowIDCoinMap}
+                        borrowIds={borrowIds}
                         buttonText="Actions"
                         height={"2rem"}
                         fontSize={"12px"}
@@ -472,16 +478,16 @@ const BorrowDashboard = ({
       >
         <Text color="#FFFFFF">You do not have outstanding borrows</Text>
         <YourBorrowModal
-            buttonText="Borrow assets"
-            variant="link"
-            fontSize="16px"
-            fontWeight="400"
-            display="inline"
-            color="#0969DA"
-            cursor="pointer"
-            ml="0.4rem"
-            lineHeight="24px"
-            />
+          buttonText="Borrow assets"
+          variant="link"
+          fontSize="16px"
+          fontWeight="400"
+          display="inline"
+          color="#0969DA"
+          cursor="pointer"
+          ml="0.4rem"
+          lineHeight="24px"
+        />
       </Box>
     </>
   );

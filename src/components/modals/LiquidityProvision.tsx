@@ -528,7 +528,7 @@ const LiquidityProvisionModal = ({
                   display="flex"
                   justifyContent="flex-end"
                   mt="0.4rem"
-                fontSize="12px"
+                  fontSize="12px"
                   fontWeight="500"
                   fontStyle="normal"
                   fontFamily="Inter"
@@ -559,7 +559,7 @@ const LiquidityProvisionModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="bottom-start"
+                      placement="right-start"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -601,7 +601,7 @@ const LiquidityProvisionModal = ({
                     </Box>
                     <Tooltip
                       hasArrow
-                      placement="bottom-start"
+                      placement="right-start"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -636,7 +636,7 @@ const LiquidityProvisionModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="bottom-start"
+                      placement="right-start"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -684,7 +684,7 @@ const LiquidityProvisionModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="bottom-start"
+                      placement="right-start"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -719,7 +719,7 @@ const LiquidityProvisionModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="bottom-start"
+                      placement="right-start"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -754,7 +754,7 @@ const LiquidityProvisionModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="bottom-start"
+                      placement="right-start"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -789,7 +789,7 @@ const LiquidityProvisionModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="bottom-start"
+                      placement="right-start"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -824,7 +824,7 @@ const LiquidityProvisionModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="bottom-start"
+                      placement="right-start"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"

@@ -613,7 +613,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -648,7 +648,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -683,7 +683,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -717,7 +717,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -1137,7 +1137,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -1172,7 +1172,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right"
+                              placement="right-start"
                               bg="#101216"
                               padding="16px"
                               border="1px solid #2B2F35"
@@ -1271,7 +1271,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -1305,7 +1305,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
