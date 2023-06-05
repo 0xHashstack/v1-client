@@ -43,7 +43,7 @@ import {
   selectModalDropDowns,
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
 import EthToUsdt from "@/assets/icons/pools/ethToUsdt";
 import SmallEth from "@/assets/icons/coins/smallEth";
@@ -913,6 +913,12 @@ const YourBorrowModal = ({
     setinputRepayAmount(0);
     dispatch(resetModalDropdowns());
   };
+
+  useEffect(()=>{
+    setinputCollateralAmount(0);
+    setSliderValue2(0);
+  },[currentBorrowMarketCoin2])
+
   return (
     <Box>
       <Button
@@ -1459,7 +1465,7 @@ const YourBorrowModal = ({
                                         ? sliderValue >= 10
                                           ? "15%"
                                           : "25%"
-                                        : "0"
+                                        : "8%"
                                     }
                                     fontSize=".58rem"
                                     fontWeight="bold"
@@ -1905,7 +1911,7 @@ const YourBorrowModal = ({
                             labelArray={[
                               "Calculating the outstanding borrow amount.",
                               "transferring the repay amount to the borrow vault.",
-                              "Burning the dTokens.",
+                              "Burning the rTokens.",
                               "Covering the debt to the debt market.",
                               "Minting rTokens.",
                               "Transferring rtokens to the user account.",

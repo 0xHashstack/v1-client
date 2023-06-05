@@ -585,7 +585,6 @@ const SpendTable = () => {
                     {selectedDapp != "" ? (
                       <StakeModal
                         borrowIDCoinMap={borrowIDCoinMap}
-                        coins={coins}
                         borrowIds={borrowIds}
                         currentId={currentId}
                         currentMarketCoin={currentMarketCoin}

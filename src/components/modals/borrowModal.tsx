@@ -40,7 +40,7 @@ import {
   selectModalDropDowns,
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
@@ -134,6 +134,14 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
     setsliderValue2(0);
     dispatch(resetModalDropdowns());
   };
+  useEffect(()=>{
+    setinputCollateralAmount(0);
+    setSliderValue(0);
+  },[currentCollateralCoin])
+  useEffect(()=>{
+    setinputBorrowAmount(0);
+    setsliderValue2(0);
+  },[currentBorrowCoin])
 
   return (
     <Box>
@@ -944,7 +952,7 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
 
             {inputCollateralAmount > 0 &&
             inputBorrowAmount > 0 &&
-            inputCollateralAmount <= walletBalance ? (
+            inputCollateralAmount <= walletBalance && inputBorrowAmount<=walletBalance ? (
               buttonId == 1 ? (
                 <SuccessButton successText="Borrow successful." />
               ) : buttonId == 2 ? (
@@ -963,7 +971,6 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                   labelArray={[
                     "Collateral received",
                     "Processing the borrow request.",
-                    "Borrow successful.",
                     // <ErrorButton errorText="Transaction failed" />,
                     // <ErrorButton errorText="Copy error!" />,
                     <SuccessButton

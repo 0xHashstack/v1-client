@@ -139,7 +139,7 @@ const ReferFreindsModal = ({ buttonText, ...restProps }: any) => {
               fontStyle="normal"
               lineHeight="20px"
             >
-              Refer freinds
+              Refer friends
             </ModalHeader>
             <ModalCloseButton mt="1rem" mr="1rem" />
             <ModalBody>

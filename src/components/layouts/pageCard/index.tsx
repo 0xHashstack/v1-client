@@ -11,7 +11,7 @@ import {
 } from "@starknet-react/core";
 import { useContract} from "@starknet-react/core";
 import { setAccount } from "@/store/slices/userAccountSlice";
-
+import { useRouter } from "next/router";
 interface Props extends StackProps {
   children: ReactNode;
 }
@@ -21,12 +21,15 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const classes = [];
   const { account, address, status } = useAccount();
+
+
   const { available, disconnect, connect, connectors } = useConnectors();
   const dispatch = useDispatch();
 
   useEffect(() => {
     // if (status == "connected") {
     // alert(account?.address);
+    
     dispatch(setAccount(account));
     // }
   }, [account, status,dispatch]);
