@@ -1,0 +1,684 @@
+[
+    {
+        "members": [
+            {
+                "name": "low",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "high",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "Uint256",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "asset",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "supported",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "paused",
+                "offset": 2,
+                "type": "felt"
+            },
+            {
+                "name": "staking_paused",
+                "offset": 3,
+                "type": "felt"
+            },
+            {
+                "name": "min_deposit_amount",
+                "offset": 4,
+                "type": "Uint256"
+            },
+            {
+                "name": "max_deposit_amount",
+                "offset": 6,
+                "type": "Uint256"
+            }
+        ],
+        "name": "DepositVaultMetadata",
+        "size": 8,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "asset",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "supported",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "paused",
+                "offset": 2,
+                "type": "felt"
+            },
+            {
+                "name": "min_borrow",
+                "offset": 3,
+                "type": "Uint256"
+            },
+            {
+                "name": "max_borrow",
+                "offset": 5,
+                "type": "Uint256"
+            }
+        ],
+        "name": "BorrowVaultMetadata",
+        "size": 7,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "rToken",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "dToken",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "empiric_key",
+                "offset": 2,
+                "type": "felt"
+            }
+        ],
+        "name": "AssetMetadata",
+        "size": 3,
+        "type": "struct"
+    },
+    {
+        "data": [
+            {
+                "name": "previousOwner",
+                "type": "felt"
+            },
+            {
+                "name": "newOwner",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Paused",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Unpaused",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "account",
+                "type": "felt"
+            },
+            {
+                "name": "sender",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleGranted",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "account",
+                "type": "felt"
+            },
+            {
+                "name": "sender",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleRevoked",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "previousAdminRole",
+                "type": "felt"
+            },
+            {
+                "name": "newAdminRole",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleAdminChanged",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset",
+                "type": "felt"
+            }
+        ],
+        "name": "is_deposit_vault_support",
+        "outputs": [
+            {
+                "name": "supported",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset",
+                "type": "felt"
+            }
+        ],
+        "name": "is_deposit_vault_paused",
+        "outputs": [
+            {
+                "name": "paused",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset",
+                "type": "felt"
+            }
+        ],
+        "name": "is_stake_paused",
+        "outputs": [
+            {
+                "name": "stake_paused",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "rToken",
+                "type": "felt"
+            },
+            {
+                "name": "asset",
+                "type": "felt"
+            },
+            {
+                "name": "supported",
+                "type": "felt"
+            },
+            {
+                "name": "paused",
+                "type": "felt"
+            },
+            {
+                "name": "staking_paused",
+                "type": "felt"
+            },
+            {
+                "name": "min_deposit_amount",
+                "type": "Uint256"
+            },
+            {
+                "name": "max_deposit_amount",
+                "type": "Uint256"
+            }
+        ],
+        "name": "set_deposit_vault",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "index",
+                "type": "felt"
+            }
+        ],
+        "name": "get_deposit_vault",
+        "outputs": [
+            {
+                "name": "rToken",
+                "type": "felt"
+            },
+            {
+                "name": "metadata",
+                "type": "DepositVaultMetadata"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "rToken",
+                "type": "felt"
+            }
+        ],
+        "name": "get_minimum_deposit_amount",
+        "outputs": [
+            {
+                "name": "_get_minimum_deposit_amount",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_deposit_vaults_len",
+        "outputs": [
+            {
+                "name": "len",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "dToken",
+                "type": "felt"
+            },
+            {
+                "name": "asset",
+                "type": "felt"
+            },
+            {
+                "name": "paused",
+                "type": "felt"
+            },
+            {
+                "name": "supported",
+                "type": "felt"
+            },
+            {
+                "name": "min_borrow",
+                "type": "Uint256"
+            },
+            {
+                "name": "max_borrow",
+                "type": "Uint256"
+            }
+        ],
+        "name": "set_borrow_vault",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "index",
+                "type": "felt"
+            }
+        ],
+        "name": "get_borrow_vault",
+        "outputs": [
+            {
+                "name": "dToken",
+                "type": "felt"
+            },
+            {
+                "name": "metadata",
+                "type": "BorrowVaultMetadata"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_borrow_vaults_len",
+        "outputs": [
+            {
+                "name": "len",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset",
+                "type": "felt"
+            },
+            {
+                "name": "rToken",
+                "type": "felt"
+            },
+            {
+                "name": "dToken",
+                "type": "felt"
+            },
+            {
+                "name": "empiric_key",
+                "type": "felt"
+            }
+        ],
+        "name": "set_asset_metadata",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "index",
+                "type": "felt"
+            }
+        ],
+        "name": "get_asset_metadata",
+        "outputs": [
+            {
+                "name": "asset",
+                "type": "felt"
+            },
+            {
+                "name": "metadata",
+                "type": "AssetMetadata"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "integration",
+                "type": "felt"
+            },
+            {
+                "name": "method",
+                "type": "felt"
+            },
+            {
+                "name": "selector",
+                "type": "felt"
+            }
+        ],
+        "name": "set_integration_selector_mapping",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "integration",
+                "type": "felt"
+            },
+            {
+                "name": "method",
+                "type": "felt"
+            }
+        ],
+        "name": "get_integration_selector_mapping",
+        "outputs": [
+            {
+                "name": "function_selector",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_all_assets",
+        "outputs": [
+            {
+                "name": "assets_len",
+                "type": "felt"
+            },
+            {
+                "name": "assets",
+                "type": "felt*"
+            },
+            {
+                "name": "asset_metadata_len",
+                "type": "felt"
+            },
+            {
+                "name": "asset_metadata",
+                "type": "AssetMetadata*"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_asset_metadata_len",
+        "outputs": [
+            {
+                "name": "len",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset",
+                "type": "felt"
+            }
+        ],
+        "name": "get_rToken_from_asset",
+        "outputs": [
+            {
+                "name": "rToken",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset",
+                "type": "felt"
+            }
+        ],
+        "name": "get_asset_from_rToken",
+        "outputs": [
+            {
+                "name": "rToken",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset",
+                "type": "felt"
+            }
+        ],
+        "name": "get_dToken_from_asset",
+        "outputs": [
+            {
+                "name": "dToken",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "dToken",
+                "type": "felt"
+            }
+        ],
+        "name": "get_asset_from_dToken",
+        "outputs": [
+            {
+                "name": "asset",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_staking_contract",
+        "outputs": [
+            {
+                "name": "staking_contract",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "staking_contract_",
+                "type": "felt"
+            }
+        ],
+        "name": "set_staking_contract",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_collector_contract",
+        "outputs": [
+            {
+                "name": "collector_contract_",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "collector_contract_",
+                "type": "felt"
+            }
+        ],
+        "name": "set_collector_contract",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_hash_lock_pool_contract",
+        "outputs": [
+            {
+                "name": "hash_lock_pool_contract_",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_hash_token_contract",
+        "outputs": [
+            {
+                "name": "hash_token_contract_",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "hash_lock_pool_contract_",
+                "type": "felt"
+            }
+        ],
+        "name": "set_hash_lock_pool_contract",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "hash_token_contract_",
+                "type": "felt"
+            }
+        ],
+        "name": "set_hash_token_contract",
+        "outputs": [],
+        "type": "function"
+    }
+]

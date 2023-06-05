@@ -120,30 +120,27 @@ export default function Home() {
       localStorage.setItem("account", JSON.stringify(account));
       dispatch(setAccount(account));
       if (!isWhiteListed) {
-        router.replace(href); 
+        router.replace(href);
       } else {
         router.replace(href2);
       }
     }
   }, [account, status, dispatch, router]);
-  
+
   return (
-    // <Box
-    //   display="flex"
-    //   justifyContent="center"
-    //   alignItems="center"
-    //   backgroundColor="#191922"
-    //   height="100vh"
-    // >
     <Box
-    display="flex"
+      display="flex"
       justifyContent="center"
       alignItems="center"
       backgroundColor="#191922"
       height="100vh"
     >
-      {/* <Banner/> */}
-      {/* <Banner2/> */}
+      {/* <PageCard
+      justifyContent="center"
+      alignItems="center"
+      backgroundColor="#191922"
+      height="100vh"
+    > */}
       <Box
         display="flex"
         background="#010409"
@@ -355,7 +352,7 @@ export default function Home() {
           </Text>
         </Box>
       </Box>
+      {/* </PageCard> */}
     </Box>
-    // </Box>
   );
 }
