@@ -18,17 +18,6 @@ const useDeposit  = () => {
     const [depositAmount, setDepositAmount] = useState(0);
     const [asset, setAsset] = useState("");
 
-
-    //     data: dataLoanRequest,
-    //     error: errorLoanRequest,
-    //     reset: resetLoanRequest,
-    //     write: writeLoanRequest,
-    //     writeAsync: writeAsyncLoanRequest,
-    //     isError: isErrorLoanRequest,
-    //     isIdle: isIdleLoanRequest,
-    //     isLoading: isLoadingLoanRequest,
-    //     isSuccess: isSuccessLoanRequest,
-    //     status: statusLoanRequest,
     const {
         data: dataDeposit,
         error: errorDeposit,
