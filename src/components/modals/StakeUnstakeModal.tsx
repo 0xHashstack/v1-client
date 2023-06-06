@@ -214,17 +214,17 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
-  console.log(activeModal)
+  console.log(activeModal);
 
-  useEffect(()=>{
+  useEffect(() => {
     setInputStakeAmount(0);
     setSliderValue(0);
-  },[currentSelectedStakeCoin])
+  }, [currentSelectedStakeCoin]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setInputUnstakeAmount(0);
     setSliderValue2(0);
-  },[currentSelectedUnstakeCoin])
+  }, [currentSelectedUnstakeCoin]);
 
   return (
     <Box>
@@ -384,7 +384,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -422,7 +422,11 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                           </Box>
                           <Box pt="1" className="navbar-button">
-                            {activeModal=="stakeMarketDropDown" ?<ArrowUp/> :<DropdownUp/>}
+                            {activeModal == "stakeMarketDropDown" ? (
+                              <ArrowUp />
+                            ) : (
+                              <DropdownUp />
+                            )}
                           </Box>
                           {modalDropdowns.stakeMarketDropDown && (
                             <Box
@@ -497,7 +501,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -742,7 +746,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -777,7 +781,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -811,7 +815,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -924,7 +928,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         border="1px solid #2B2F35"
                         mt="1.5rem"
                       >
-                                                {!coinsSupplied[currentSelectedUnstakeCoin] && (
+                        {!coinsSupplied[currentSelectedUnstakeCoin] && (
                           <Box
                             // display="flex"
                             // justifyContent="left"
@@ -946,7 +950,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               <Box pr="3" my="auto" cursor="pointer">
                                 <WarningIcon />
                               </Box>
-                              Selected market is not staked. Firstly stake the coins to unstake
+                              Selected market is not staked. Firstly stake the
+                              coins to unstake
                               {/* <Box
                                 py="1"
                                 pl="4"
@@ -973,7 +978,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -1013,7 +1018,11 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                           </Box>
                           <Box pt="1" className="navbar-button">
-                            {activeModal=="unstakeMarketDropDown" ?<ArrowUp/>:<DropdownUp/>}
+                            {activeModal == "unstakeMarketDropDown" ? (
+                              <ArrowUp />
+                            ) : (
+                              <DropdownUp />
+                            )}
                           </Box>
                           {modalDropdowns.unstakeMarketDropDown && (
                             <Box
@@ -1088,7 +1097,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -1106,8 +1115,9 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           width="100%"
                           color="white"
                           border={`${
-                            !coinsSupplied[currentSelectedUnstakeCoin] ? "1px solid #2B2F35":
-                            inputUnstakeAmount > walletBalance
+                            !coinsSupplied[currentSelectedUnstakeCoin]
+                              ? "1px solid #2B2F35"
+                              : inputUnstakeAmount > walletBalance
                               ? "1px solid #CF222E"
                               : inputUnstakeAmount < 0
                               ? "1px solid #CF222E"
@@ -1125,19 +1135,28 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             min={0}
                             keepWithinRange={true}
                             onChange={handleUnstakeChange}
-                            value={coinsSupplied[currentSelectedUnstakeCoin]?inputUnstakeAmount ?inputUnstakeAmount:"":""}
+                            value={
+                              coinsSupplied[currentSelectedUnstakeCoin]
+                                ? inputUnstakeAmount
+                                  ? inputUnstakeAmount
+                                  : ""
+                                : ""
+                            }
                             outline="none"
                             step={parseFloat(
                               `${inputUnstakeAmount <= 99999 ? 0.1 : 0}`
                             )}
-                            isDisabled={!coinsSupplied[currentSelectedUnstakeCoin]}
+                            isDisabled={
+                              !coinsSupplied[currentSelectedUnstakeCoin]
+                            }
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
                               color={`${
-                                !coinsSupplied[currentSelectedUnstakeCoin] ?"#1A7F37":
-                                inputUnstakeAmount > walletBalance
+                                !coinsSupplied[currentSelectedUnstakeCoin]
+                                  ? "#1A7F37"
+                                  : inputUnstakeAmount > walletBalance
                                   ? "#CF222E"
                                   : inputUnstakeAmount < 0
                                   ? "#CF222E"
@@ -1164,7 +1183,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             color="#0969DA"
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
-                              if(!coinsSupplied[currentSelectedUnstakeCoin]){
+                              if (!coinsSupplied[currentSelectedUnstakeCoin]) {
                                 return;
                               }
                               setInputUnstakeAmount(walletBalance);
@@ -1175,7 +1194,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           </Button>
                         </Box>
                         {(inputUnstakeAmount > walletBalance ||
-                        inputUnstakeAmount < 0) && (coinsSupplied[currentSelectedUnstakeCoin]) ? (
+                          inputUnstakeAmount < 0) &&
+                        coinsSupplied[currentSelectedUnstakeCoin] ? (
                           <Text
                             display="flex"
                             justifyContent="space-between"
@@ -1228,9 +1248,13 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           <Slider
                             aria-label="slider-ex-6"
                             defaultValue={sliderValue2}
-                            value={!coinsSupplied[currentSelectedUnstakeCoin]?0:sliderValue2}
+                            value={
+                              !coinsSupplied[currentSelectedUnstakeCoin]
+                                ? 0
+                                : sliderValue2
+                            }
                             onChange={(val) => {
-                              if(!coinsSupplied[currentSelectedUnstakeCoin]){
+                              if (!coinsSupplied[currentSelectedUnstakeCoin]) {
                                 return;
                               }
                               setSliderValue2(val);
@@ -1241,7 +1265,13 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             }}
                             focusThumbOnChange={false}
                           >
-                            <SliderMark value={!coinsSupplied[currentSelectedUnstakeCoin] ?0:sliderValue2}>
+                            <SliderMark
+                              value={
+                                !coinsSupplied[currentSelectedUnstakeCoin]
+                                  ? 0
+                                  : sliderValue2
+                              }
+                            >
                               <Box
                                 position="absolute"
                                 bottom="-8px"
@@ -1249,17 +1279,20 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                                 zIndex="1"
                               >
                                 <SliderTooltip
-                                  color={
-                                    `${!coinsSupplied[currentSelectedUnstakeCoin]?"#6E7681":"#DEDEDE"}`
-                                  }
+                                  color={`${
+                                    !coinsSupplied[currentSelectedUnstakeCoin]
+                                      ? "#6E7681"
+                                      : "#DEDEDE"
+                                  }`}
                                 />
                                 <Text
                                   position="absolute"
                                   color="black"
                                   top="7px"
                                   left={
-                                    !coinsSupplied[currentSelectedUnstakeCoin]?"25%":
-                                    sliderValue2 !== 100
+                                    !coinsSupplied[currentSelectedUnstakeCoin]
+                                      ? "25%"
+                                      : sliderValue2 !== 100
                                       ? sliderValue2 >= 10
                                         ? "15%"
                                         : "25%"
@@ -1269,7 +1302,10 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                                   fontWeight="bold"
                                   textAlign="center"
                                 >
-                                  {!coinsSupplied[currentSelectedUnstakeCoin]?0:sliderValue2}%
+                                  {!coinsSupplied[currentSelectedUnstakeCoin]
+                                    ? 0
+                                    : sliderValue2}
+                                  %
                                 </Text>
                               </Box>
                             </SliderMark>
@@ -1308,7 +1344,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -1343,7 +1379,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -1377,7 +1413,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -1394,8 +1430,9 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           <Text color="#6E7681">0.3%</Text>
                         </Text>
                       </Card>
-                      {(inputUnstakeAmount > 0 &&
-                      inputUnstakeAmount <= walletBalance) &&(coinsSupplied[currentSelectedUnstakeCoin]) ? (
+                      {inputUnstakeAmount > 0 &&
+                      inputUnstakeAmount <= walletBalance &&
+                      coinsSupplied[currentSelectedUnstakeCoin] ? (
                         <AnimatedButton
                           bgColor="#101216"
                           // bgColor="red"

@@ -181,15 +181,15 @@ const YourSupplyModal = () => {
     (key) => modalDropdowns[key] === true
   );
 
-  useEffect(()=>{
+  useEffect(() => {
     setinputSupplyAmount(0);
     setSliderValue(0);
-  },[currentSelectedSupplyCoin])
+  }, [currentSelectedSupplyCoin]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setinputWithdrawlAmount(0);
     setSliderValue2(0);
-  },[currentSelectedWithdrawlCoin])
+  }, [currentSelectedWithdrawlCoin]);
 
   return (
     <Box>
@@ -290,7 +290,7 @@ const YourSupplyModal = () => {
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -330,7 +330,11 @@ const YourSupplyModal = () => {
                             </Text>
                           </Box>
                           <Box pt="1" className="navbar-button">
-                            {activeModal=="yourSupplyAddsupplyDropdown" ?<ArrowUp/>:<DropdownUp/>}
+                            {activeModal == "yourSupplyAddsupplyDropdown" ? (
+                              <ArrowUp />
+                            ) : (
+                              <DropdownUp />
+                            )}
                           </Box>
                           {modalDropdowns.yourSupplyAddsupplyDropdown && (
                             <Box
@@ -405,7 +409,7 @@ const YourSupplyModal = () => {
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -628,7 +632,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -663,7 +667,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -698,7 +702,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -732,7 +736,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -810,7 +814,7 @@ const YourSupplyModal = () => {
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -850,7 +854,11 @@ const YourSupplyModal = () => {
                             </Text>
                           </Box>
                           <Box pt="1" className="navbar-button">
-                            {activeModal=="yourSupplyWithdrawlDropdown" ?<ArrowUp/>:<DropdownUp/>}
+                            {activeModal == "yourSupplyWithdrawlDropdown" ? (
+                              <ArrowUp />
+                            ) : (
+                              <DropdownUp />
+                            )}
                           </Box>
                           {modalDropdowns.yourSupplyWithdrawlDropdown && (
                             <Box
@@ -925,7 +933,7 @@ const YourSupplyModal = () => {
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -1152,7 +1160,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -1286,7 +1294,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -1320,7 +1328,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"

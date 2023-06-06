@@ -43,43 +43,50 @@ const YourBorrow = () => {
         pr="3rem"
         mb="1rem"
       >
-        <NavButtons width={70} marginBottom={"0rem"} />
-        <HStack
-          width="13.5rem"
+        <Box
+          // bgColor="red"
+          height="100%"
           display="flex"
+          width="100%"
           justifyContent="space-between"
-          alignItems="flex-end"
-          // bgColor="blue"
         >
-          <VStack
+          <NavButtons width={70} marginBottom={"0rem"} />
+          <HStack
+            width="13.5rem"
             display="flex"
-            justifyContent="center"
-            alignItems="center"
-            gap={"3px"}
+            justifyContent="space-between"
+            alignItems="flex-end"
+            // bgColor="blue"
           >
-            <Text color="#6e7681" fontSize="14px" alignItems="center">
-              Total Borrow
-            </Text>
-            <Text color="#e6edf3" fontSize="20px">
-              $8,932.14
-            </Text>
-          </VStack>
-          <VStack gap={"3px"}>
-            <Text color="#6e7681" fontSize="14px" alignItems="center">
-              Net APR
-            </Text>
-            <Text color="#e6edf3" fontSize="20px">
-              15.5%
-            </Text>
-          </VStack>
-        </HStack>
+            <VStack
+              display="flex"
+              justifyContent="center"
+              alignItems="center"
+              gap={"3px"}
+            >
+              <Text color="#6e7681" fontSize="14px" alignItems="center">
+                Total Borrow
+              </Text>
+              <Text color="#e6edf3" fontSize="20px">
+                $8,932.14
+              </Text>
+            </VStack>
+            <VStack gap={"3px"}>
+              <Text color="#6e7681" fontSize="14px" alignItems="center">
+                Net APR
+              </Text>
+              <Text color="#e6edf3" fontSize="20px">
+                15.5%
+              </Text>
+            </VStack>
+          </HStack>
+        </Box>
       </HStack>
       <BorrowDashboard
         width={"95%"}
         currentPagination={currentPagination}
         Coins={Coins}
         columnItems={columnItems}
-        
       />
       <Box
         paddingY="1rem"
