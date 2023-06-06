@@ -450,7 +450,7 @@ const SupplyModal = ({
                       <Box
                         position="absolute"
                         bottom="-8px"
-                        left="-11px"
+                        left="-13.5px"
                         zIndex="1"
                       >
                         <SliderTooltip />
