@@ -67,8 +67,6 @@ const SpendTable = () => {
     ["Borrow ID 12348", "rUSDT", "10,324.556", "BTC", "00.00%"],
     ["Borrow ID 12349", "rBTC", "10,324.556", "BTC", "00.00%"],
     ["Borrow ID 12350", "rETH", "10,324.556", "BTC", "00.00%"],
-    ["Borrow ID 12351", "rUSDT", "10,324.556", "BTC", "00.00%"],
-    ["Borrow ID 12352", "rBTC", "10,324.556", "BTC", "00.00%"],
   ];
 
   const dispatch = useDispatch();

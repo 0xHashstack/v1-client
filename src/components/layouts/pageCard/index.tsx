@@ -26,17 +26,17 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const { available, disconnect, connect, connectors } = useConnectors();
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    // if (status == "connected") {
-    // alert(account?.address);
+  // useEffect(() => {
+  //   // if (status == "connected") {
+  //   // alert(account?.address);
     
-    dispatch(setAccount(account));
-    // }
-  }, [account, status,dispatch]);
+  //   dispatch(setAccount(account));
+  //   // }
+  // }, [account, status,dispatch]);
   if (className) classes.push(className);
-  useEffect(() => {
-    setRender(true);
-  }, []);
+  // useEffect(() => {
+  //   setRender(true);
+  // }, []);
   return (
     <>
       {render && (

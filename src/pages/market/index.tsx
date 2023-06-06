@@ -18,6 +18,7 @@ import { Box, Stack, VStack } from "@chakra-ui/react";
 import NavButtons from "@/components/layouts/navButtons";
 import MarketDashboard from "@/components/layouts/marketDashboard";
 import { useEffect, useState } from "react";
+import useBalanceOf from '../../Blockchain/hooks/Reads/useBalanceOf'
 // import { dataInitializer } from "@/utils/functions/dataInitializer";
 // import OffchainAPI from "@/services/offchainapi.service";
 import Link from "next/link";
@@ -34,14 +35,13 @@ export default function Market() {
   const oracleAndFairPrices = useSelector(selectOracleAndFairPrices);
   const offchainCurrentBlock = useSelector(selectOffchainCurrentBlock);
   const [parsedAccount, setParsedAccount] = useState<any>()
-  const address = useSelector(selectAccountAddress);
-  const account = useSelector(selectAccount);
 
-  function handleAccount(e: any) {
-    e.preventDefault();
-    dispatch(setAccountAddress(e.target.user.value));
-  }
+
+
   const [render, setRender] = useState(true);
+  // console.log(account.address)
+  // const { dataBalanceOf, errorBalanceOf, isFetchingBalanceOf, refetchBalanceOf, statusBalanceOf }=useBalanceOf("0x00cf781b5ef7d4cf7620bee8ae9e8fbcf9c708663c8645d754fbb3263ce3f176");
+  // console.log(JSON.stringify(dataBalanceOf) ,"data")
   // useEffect(()=>{
   //   const storedAccount = localStorage.getItem("account");
   //   if(!storedAccount){

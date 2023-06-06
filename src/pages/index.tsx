@@ -46,31 +46,18 @@ export default function Home() {
   //   address
   // })
   // console.log(data);
-  const { available, disconnect, connect, connectors } = useConnectors();
+  const { available, disconnect, connect, connectors,refresh } = useConnectors();
   const [render, setRender] = useState(true);
   const [isWhiteListed, setIsWhiteListed] = useState(false);
   const router = useRouter();
   const href = "/waitlist";
   const href2 = "/market";
   const dispatch = useDispatch();
-  const [inputAmount, setinputAmount] = useState(0);
-  const [sliderValue, setSliderValue] = useState(0);
-  const [currentNetwork, setCurrentNetwork] = useState("Select network");
-  const [walletName, setWalletName] = useState("");
   const walletBalance = useSelector(selectWalletBalance);
-  const handleChange = (newValue: any) => {
-    // Calculate the percentage of the new value relative to the wallet balance
-    var percentage = (newValue * 100) / walletBalance;
-    percentage = Math.max(0, percentage);
-    if (percentage > 100) {
-      setSliderValue(100);
-      setinputAmount(newValue);
-    } else {
-      percentage = Math.round(percentage * 100) / 100;
-      setSliderValue(percentage);
-      setinputAmount(newValue);
-    }
-  };
+  useEffect(() => {
+    const interval = setInterval(refresh, 100)
+    return () => clearInterval(interval)
+  }, [refresh])
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const networks = [
     { name: "Starknet", status: "enable" },
@@ -103,6 +90,7 @@ export default function Home() {
         break;
     }
   };
+  // console.log(account ,"index page")
   useEffect(() => {
     // alert(status)
     // const storedAccount = localStorage.getItem("account");
@@ -124,7 +112,7 @@ export default function Home() {
         router.replace(href2);
       }
     }
-  }, [account, status, dispatch, router]);
+  }, [account, status, dispatch]);
 
   return (
     <Box
@@ -193,9 +181,10 @@ export default function Home() {
               justifyContent="space-between"
               cursor="pointer"
               // onClick={() => router.push("/market")}
-              onClick={() =>
-                connect(connectors[0])
-              }
+              onClick={()=>{
+                connect(connectors[0]);
+              }}
+
             >
               <Text ml="1rem" color="white">
                 {available[0]?.options?.id=="braavos" ? "Bravos Wallet" : "Download Bravos Wallet"}
@@ -217,9 +206,9 @@ export default function Home() {
                 justifyContent="space-between"
                 cursor="pointer"
                 // onClick={() => router.push("/market")}
-                onClick={() =>
-                  connect(connectors[0])
-                }
+                // onClick={() =>
+                //   connect(connectors[0])
+                // }
               >
                 <Text ml="1rem" color="white">
                   {available[0]?.options?.id=="braavos" ? "Bravos Wallet" : "Download Bravos Wallet"}
@@ -244,7 +233,9 @@ export default function Home() {
               display="flex"
               justifyContent="space-between"
               cursor="pointer"
-              onClick={() => connect(connectors[1])}
+              onClick={()=>{
+                connect(connectors[1]);
+              }}
             >
 
               <Text ml="1rem" color="white">
@@ -274,7 +265,7 @@ export default function Home() {
                 display="flex"
                 justifyContent="space-between"
                 cursor="pointer"
-                onClick={() => connect(connectors[1])}
+                // onClick={() => connect(connectors[1])}
               >
 
                 <Text ml="1rem" color="white">
