@@ -63,7 +63,7 @@ const Navbar = () => {
   const language = useSelector(selectLanguage);
   const [parsedAccount, setParsedAccount] = useState<any>();
   const currentDropdown = useSelector(selectCurrentDropdown);
-  const account = useSelector(selectAccount);
+  const { account } = useAccount();
   // console.log(account,"Navbar")
   // useEffect(() => {
   //   const storedAccount = localStorage.getItem("account");
@@ -96,7 +96,6 @@ const Navbar = () => {
 
   const router = useRouter();
   const { pathname } = router;
-
 
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
@@ -186,7 +185,7 @@ const Navbar = () => {
           cursor="pointer"
           marginBottom="0px"
           className="button"
-          color={`${pathname=="/market"?"#6e7681":"white"}`}
+          color={`${pathname == "/market" ? "#6e7681" : "white"}`}
           _hover={{
             color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
           }}
@@ -204,29 +203,33 @@ const Navbar = () => {
             alignItems="center"
             gap={"8px"}
           >
-            {router.pathname != "/market" ? dashboardHover ?
+            {router.pathname != "/market" ? (
+              dashboardHover ? (
+                <Image
+                  src={hoverDashboardIcon}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                  style={{ cursor: "pointer" }}
+                />
+              ) : (
+                <Image
+                  src={"./dashboardIcon.svg"}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                  style={{ cursor: "pointer" }}
+                />
+              )
+            ) : (
               <Image
-              src={hoverDashboardIcon}
+                src={hoverDashboardIcon}
                 alt="Picture of the author"
                 width="16"
                 height="16"
                 style={{ cursor: "pointer" }}
               />
-             :              <Image
-             src={"./dashboardIcon.svg"}
-               alt="Picture of the author"
-               width="16"
-               height="16"
-               style={{ cursor: "pointer" }}
-             />:  
-              <Image
-              src={hoverDashboardIcon}
-                alt="Picture of the author"
-                width="16"
-                height="16"
-                style={{ cursor: "pointer" }}
-              />
-            }
+            )}
 
             <Text fontSize="14px">Dashboard</Text>
           </Box>
@@ -487,7 +490,7 @@ const Navbar = () => {
                 dispatch(setNavDropdown("walletConnectionDropdown"));
               }}
             >
-              {account? (
+              {account ? (
                 <Box
                   // bgColor="red"
                   width="100%"
@@ -627,7 +630,9 @@ const Navbar = () => {
                     borderRadius="6px"
                     border="1px solid #2B2F35"
                     onClick={() => {
-                      connect(connectors[0]);
+                      // alert("hey");
+                      connect(connectors[1]);
+                      console.log("navbar", account);
                       // localStorage.setItem("account", JSON.stringify(account));
                     }}
                   >
