@@ -42,14 +42,13 @@ export default function Market() {
     dispatch(setAccountAddress(e.target.user.value));
   }
   const [render, setRender] = useState(true);
-
-  console.log("degug2", offchainCurrentBlock);
-  useEffect(()=>{
-    const storedAccount = localStorage.getItem("account");
-    if(!storedAccount){
-      router.push('/')
-    }
-  },[])
+  // useEffect(()=>{
+  //   const storedAccount = localStorage.getItem("account");
+  //   if(!storedAccount){
+  //     router.push('/')
+  //   }
+  // },[])
+  // console.log("degug2", offchainCurrentBlock);
   return (
     <PageCard>
       <StatsBoard />

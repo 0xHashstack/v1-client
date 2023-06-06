@@ -64,14 +64,15 @@ const Navbar = () => {
   const [parsedAccount, setParsedAccount] = useState<any>();
   const currentDropdown = useSelector(selectCurrentDropdown);
   const account = useSelector(selectAccount);
-  useEffect(() => {
-    const storedAccount = localStorage.getItem("account");
-    if (storedAccount) {
-      setParsedAccount(JSON.parse(storedAccount));
-    }
-    // console.log("Sahitya account",typeof account.address)
-    console.log("Sahitya", parsedAccount);
-  }, []);
+  console.log(account)
+  // useEffect(() => {
+  //   const storedAccount = localStorage.getItem("account");
+  //   if (storedAccount) {
+  //     setParsedAccount(JSON.parse(storedAccount));
+  //   }
+  //   // console.log("Sahitya account",typeof account.address)
+  //   console.log("Sahitya", parsedAccount);
+  // }, []);
   const [dashboardHover, setDashboardHover] = useState(false);
   const [contibutionHover, setContibutionHover] = useState(false);
   const [transferDepositHover, setTransferDepositHover] = useState(false);
@@ -203,23 +204,29 @@ const Navbar = () => {
             alignItems="center"
             gap={"8px"}
           >
-            {router.pathname != "/waitlist" && dashboardHover ? (
+            {router.pathname != "/market" ? dashboardHover ?
               <Image
-                src={hoverDashboardIcon}
+              src={hoverDashboardIcon}
                 alt="Picture of the author"
                 width="16"
                 height="16"
                 style={{ cursor: "pointer" }}
               />
-            ) : (
+             :              <Image
+             src={"./dashboardIcon.svg"}
+               alt="Picture of the author"
+               width="16"
+               height="16"
+               style={{ cursor: "pointer" }}
+             />:  
               <Image
-                src={"./dashboardIcon.svg"}
+              src={hoverDashboardIcon}
                 alt="Picture of the author"
                 width="16"
                 height="16"
                 style={{ cursor: "pointer" }}
               />
-            )}
+            }
 
             <Text fontSize="14px">Dashboard</Text>
           </Box>
@@ -480,7 +487,7 @@ const Navbar = () => {
                 dispatch(setNavDropdown("walletConnectionDropdown"));
               }}
             >
-              {parsedAccount ? (
+              {account? (
                 <Box
                   // bgColor="red"
                   width="100%"
@@ -515,12 +522,12 @@ const Navbar = () => {
                       account.length - 10,
                       account.length
                     )}`}{" "} */}
-                    {`${parsedAccount.address.substring(
+                    {`${account.address.substring(
                       0,
                       3
-                    )}...${parsedAccount.address.substring(
-                      parsedAccount.address.length - 9,
-                      parsedAccount.address.length
+                    )}...${account.address.substring(
+                      account.address.length - 9,
+                      account.address.length
                     )}`}{" "}
                   </Text>
                 </Box>
@@ -575,7 +582,7 @@ const Navbar = () => {
                 borderRadius="6px"
                 className="dropdown-container"
               >
-                {parsedAccount ? (
+                {account ? (
                   // walletConnectionDropdown.map((val, idx) => {
                   //   return (
                   <>
@@ -588,7 +595,7 @@ const Navbar = () => {
                       onClick={() => {
                         dispatch(setNavDropdown(""));
                         disconnect();
-                        localStorage.setItem("account", "");
+                        // localStorage.setItem("account", "");
 
                         router.push("./");
                       }}
@@ -621,7 +628,7 @@ const Navbar = () => {
                     border="1px solid #2B2F35"
                     onClick={() => {
                       connect(connectors[0]);
-                      localStorage.setItem("account", JSON.stringify(account));
+                      // localStorage.setItem("account", JSON.stringify(account));
                     }}
                   >
                     Connect
