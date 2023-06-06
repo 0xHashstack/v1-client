@@ -47,7 +47,7 @@ import {
   selectModalDropDowns,
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
 import EthToUsdt from "@/assets/icons/pools/ethToUsdt";
 import SmallEth from "@/assets/icons/coins/smallEth";
@@ -176,6 +176,17 @@ const YourSupplyModal = () => {
     setcurrentSelectedWithdrawlCoin("BTC");
     dispatch(resetModalDropdowns());
   };
+
+  useEffect(()=>{
+    setinputSupplyAmount(0);
+    setSliderValue(0);
+  },[currentSelectedSupplyCoin])
+
+  useEffect(()=>{
+    setinputWithdrawlAmount(0);
+    setSliderValue2(0);
+  },[currentSelectedWithdrawlCoin])
+
   return (
     <Box>
       <Button

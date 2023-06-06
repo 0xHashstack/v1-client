@@ -30,7 +30,7 @@ import {
   selectCurrentDropdown,
   selectNavDropdowns,
   setNavDropdown,
-  resetModalDropdowns
+  resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
 import {
   Box,
@@ -61,18 +61,17 @@ const Navbar = () => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
   const language = useSelector(selectLanguage);
-  const [parsedAccount, setParsedAccount] = useState<any>()
+  const [parsedAccount, setParsedAccount] = useState<any>();
   const currentDropdown = useSelector(selectCurrentDropdown);
   const account = useSelector(selectAccount);
-  useEffect(()=>{
+  useEffect(() => {
     const storedAccount = localStorage.getItem("account");
-    if(storedAccount){
-      setParsedAccount(JSON.parse(storedAccount))
+    if (storedAccount) {
+      setParsedAccount(JSON.parse(storedAccount));
     }
     // console.log("Sahitya account",typeof account.address)
-    console.log("Sahitya",(parsedAccount ))
-    
-  },[])
+    console.log("Sahitya", parsedAccount);
+  }, []);
   const [dashboardHover, setDashboardHover] = useState(false);
   const [contibutionHover, setContibutionHover] = useState(false);
   const [transferDepositHover, setTransferDepositHover] = useState(false);
@@ -92,7 +91,11 @@ const Navbar = () => {
   const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
   const walletConnectionDropdown = ["Disconnect", "Switch wallet"];
 
+  const { connector } = useAccount();
+
   const router = useRouter();
+  const { pathname } = router;
+
 
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
@@ -125,6 +128,15 @@ const Navbar = () => {
     },
   });
 
+  const switchWallet = () => {
+    console.log(connector);
+    if (connector?.options?.id == "braavos") {
+      connect(connectors[1]);
+    } else {
+      connect(connectors[0]);
+    }
+  };
+
   return (
     <HStack
       zIndex="10"
@@ -149,7 +161,7 @@ const Navbar = () => {
         gap={"4px"}
         marginLeft="2rem"
       >
-        <Link href="/market">
+        <Link href={router.pathname != "/waitlist" ? "/market" : "/waitlist"}>
           <Box
             height="100%"
             display="flex"
@@ -173,8 +185,14 @@ const Navbar = () => {
           cursor="pointer"
           marginBottom="0px"
           className="button"
+          color={`${pathname=="/market"?"#6e7681":"white"}`}
           _hover={{
-            color: "#6e7681",
+            color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
+          }}
+          onClick={() => {
+            if (router.pathname != "/waitlist") {
+              router.push("/market");
+            }
           }}
           onMouseEnter={() => setDashboardHover(true)}
           onMouseLeave={() => setDashboardHover(false)}
@@ -185,7 +203,7 @@ const Navbar = () => {
             alignItems="center"
             gap={"8px"}
           >
-            {dashboardHover ? (
+            {router.pathname != "/waitlist" && dashboardHover ? (
               <Image
                 src={hoverDashboardIcon}
                 alt="Picture of the author"
@@ -254,7 +272,9 @@ const Navbar = () => {
           cursor="pointer"
           marginBottom="0px"
           // className="button"
-          _hover={{ color: "#6e7681" }}
+          _hover={{
+            color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
+          }}
           onMouseEnter={() => setStakeHover(true)}
           onMouseLeave={() => setStakeHover(false)}
         >
@@ -264,7 +284,7 @@ const Navbar = () => {
             alignItems="center"
             gap={"8px"}
           >
-            {stakeHover ? (
+            {router.pathname != "/waitlist" && stakeHover ? (
               <Image
                 src={hoverStake}
                 alt="Picture of the author"
@@ -368,7 +388,11 @@ const Navbar = () => {
             margin="0"
             height="2rem"
             // border="0.5px solid #6e6e6e"
-            border="0.5px solid #6e6e6e"
+            border={`0.5px solid ${
+              router.pathname != "/waitlist" && transferDepositHover
+                ? "#6e6e6e"
+                : "#FFF"
+            }`}
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -376,7 +400,11 @@ const Navbar = () => {
             gap="3"
             className="button"
             // color="#6E6E6E"
-            color={transferDepositHover ? "#6e6e6e" : "#FFF"}
+            color={
+              router.pathname != "/waitlist" && transferDepositHover
+                ? "#6e6e6e"
+                : "#FFF"
+            }
             // _hover={{ color: "#010409", bgColor: "#f6f8fa" }}
             onMouseEnter={() => setTransferDepositHover(true)}
             onMouseLeave={() => setTransferDepositHover(false)}
@@ -395,7 +423,7 @@ const Navbar = () => {
                 height="20"
                 style={{ cursor: "pointer" }}
               /> */}
-              {!transferDepositHover ? (
+              {router.pathname == "/waitlist" || !transferDepositHover ? (
                 <Image
                   src={"./transferDeposit.svg"}
                   alt="Picture of the author"
@@ -560,7 +588,7 @@ const Navbar = () => {
                       onClick={() => {
                         dispatch(setNavDropdown(""));
                         disconnect();
-                        localStorage.setItem("account","");
+                        localStorage.setItem("account", "");
 
                         router.push("./");
                       }}
@@ -575,8 +603,9 @@ const Navbar = () => {
                       border="1px solid #2B2F35"
                       onClick={() => {
                         dispatch(setNavDropdown(""));
-                        disconnect();
-                        router.push("./");
+                        switchWallet();
+                        // disconnect();
+                        // router.push("./");
                       }}
                     >
                       Switch Wallet
@@ -590,9 +619,9 @@ const Navbar = () => {
                     marginRight="8px"
                     borderRadius="6px"
                     border="1px solid #2B2F35"
-                    onClick={()=>{
+                    onClick={() => {
                       connect(connectors[0]);
-                      localStorage.setItem("account",JSON.stringify(account));
+                      localStorage.setItem("account", JSON.stringify(account));
                     }}
                   >
                     Connect

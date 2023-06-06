@@ -211,6 +211,16 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   //   setIsOpenCustom(false);
   // }, []);
 
+  useEffect(() => {
+    setInputStakeAmount(0);
+    setSliderValue(0);
+  }, [currentSelectedStakeCoin]);
+
+  useEffect(() => {
+    setInputUnstakeAmount(0);
+    setSliderValue2(0);
+  }, [currentSelectedUnstakeCoin]);
+
   return (
     <Box>
       <Text
@@ -1126,6 +1136,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             isDisabled={
                               !coinsSupplied[currentSelectedUnstakeCoin]
                             }
+                            _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
@@ -1140,6 +1151,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                                   ? "white"
                                   : "#1A7F37"
                               }`}
+                              _disabled={{ cursor: "pointer" }}
                               border="0px"
                               _placeholder={{
                                 color: "#393D4F",
@@ -1296,7 +1308,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
 
                       <Card
                         bg="#101216"
-                        mt="1.5rem"
+                        mt="1rem"
                         p="1rem"
                         border="1px solid #2B2F35"
                       >

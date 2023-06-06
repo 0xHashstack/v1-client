@@ -45,11 +45,11 @@ import TableYagiLogo from "../layouts/table/tableIcons/yagiLogo";
 const StakeModal = ({
   borrowIDCoinMap,
   borrowIds,
-  coins,
   currentId,
   currentMarketCoin,
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
   const [currentSelectedCoin, setCurrentSelectedCoin] =
     useState("Select a market");

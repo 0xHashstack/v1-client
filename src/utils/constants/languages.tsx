@@ -5,7 +5,7 @@ export const languages = [
     id: 1,
   },
   {
-    name: "हिंदी",
+    name: "हिंदी [Coming soon]",
     icon: require("../../assets/images/languages/india.svg"),
     id: 2,
   },

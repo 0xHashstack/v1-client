@@ -48,7 +48,6 @@ import {
 const SwapModal = ({
   borrowIDCoinMap,
   borrowIds,
-  coins,
   currentId,
   currentMarketCoin,
 }: any) => {
@@ -67,6 +66,7 @@ const SwapModal = ({
   const walletBalance = useSelector(selectWalletBalance);
   const inputAmount1 = useSelector(selectInputSupplyAmount);
   const selectedDapp = useSelector(selectSelectedDapp);
+  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -452,10 +452,6 @@ const SwapModal = ({
                 mt="0.2rem"
                 borderRadius="md"
                 className="navbar"
-                // cursor="pointer"
-                // onClick={() =>
-                //   handleDropdownClick("swapModalBorrowMarketDropDown")
-                // }
               >
                 <Box display="flex" gap="1">
                   <Box p="1">{getCoin(currentBorrowMarketCoin)}</Box>

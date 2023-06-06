@@ -918,6 +918,12 @@ const YourBorrowModal = ({
     setinputRepayAmount(0);
     dispatch(resetModalDropdowns());
   };
+
+  useEffect(() => {
+    setinputCollateralAmount(0);
+    setSliderValue2(0);
+  }, [currentBorrowMarketCoin2]);
+
   return (
     <Box>
       <Button key="suppy" onClick={onOpen} {...restProps}>
@@ -1460,7 +1466,7 @@ const YourBorrowModal = ({
                                         ? sliderValue >= 10
                                           ? "15%"
                                           : "25%"
-                                        : "0"
+                                        : "8%"
                                     }
                                     fontSize=".58rem"
                                     fontWeight="bold"
@@ -1906,7 +1912,7 @@ const YourBorrowModal = ({
                             labelArray={[
                               "Calculating the outstanding borrow amount.",
                               "transferring the repay amount to the borrow vault.",
-                              "Burning the dTokens.",
+                              "Burning the rTokens.",
                               "Covering the debt to the debt market.",
                               "Minting rTokens.",
                               "Transferring rtokens to the user account.",
@@ -2188,7 +2194,7 @@ const YourBorrowModal = ({
                                       pr="2"
                                       onClick={() => {
                                         setCurrentBorrowMarketCoin2(coin);
-                                        handleBorrowMarketIDChange2(coin);
+                                        // handleBorrowMarketIDChange2(coin);
                                         // dispatch(setCoinSelectedSupplyModal(coin))
                                       }}
                                     >

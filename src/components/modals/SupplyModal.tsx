@@ -124,8 +124,10 @@ const SupplyModal = ({
     dispatch(resetModalDropdowns());
   };
 
-  // useEffect(() => {
-  // }, []);
+  useEffect(() => {
+    setinputAmount(0);
+    setSliderValue(0);
+  }, [currentSelectedCoin]);
 
   return (
     <div>
@@ -473,7 +475,6 @@ const SupplyModal = ({
               </Card>
               <Checkbox
                 defaultChecked
-                mt="0.7rem"
                 w="410px"
                 size="md"
                 iconSize="1rem"
@@ -481,11 +482,12 @@ const SupplyModal = ({
                 borderColor="#2B2F35"
               >
                 <Text
-                  fontSize="10.5px"
+                  fontSize="12px"
                   color="#6E7681"
                   fontStyle="normal"
                   fontWeight="400"
                   lineHeight="20px"
+                  mt="1rem"
                 >
                   Ticking would stake the received rTokens unchecking
                   wouldn&apos;t stake rTokens

@@ -43,7 +43,7 @@ import {
   selectModalDropDowns,
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
 import MySwapDisabled from "@/assets/icons/dapps/mySwapDisabled";
@@ -196,6 +196,16 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
     setRadioValue("1");
     dispatch(resetModalDropdowns());
   };
+
+  useEffect(()=>{
+    setinputBorrowAmount(0);
+    setsliderValue2(0);
+  },[currentBorrowCoin])
+
+  useEffect(()=>{
+    setinputCollateralAmount(0);
+    setSliderValue(0);
+  },[currentCollateralCoin])
 
   return (
     <Box>
