@@ -56,19 +56,14 @@ import BtcToEth from "@/assets/icons/pools/btcToEth";
 import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
 
 import {
-  selectInputSupplyAmount,
-  selectCoinSelectedSupplyModal,
-  setCoinSelectedSupplyModal,
   selectWalletBalance,
-  setInputSupplyAmount,
-  setInputBorrowModalCollateralAmount,
-  setInputBorrowModalBorrowAmount,
   setInputYourBorrowModalRepayAmount,
 } from "@/store/slices/userAccountSlice";
 
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
+import ArrowUp from "@/assets/icons/arrowup";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -854,6 +849,7 @@ const YourBorrowModal = ({
       // dispatch((newValue));
     }
   };
+ 
 
   const handleBorrowMarketCoinChange1 = (id: string) => {
     // console.log("got id", id);
@@ -874,6 +870,10 @@ const YourBorrowModal = ({
       }
     }
   };
+  const activeModal = Object.keys(modalDropdowns).find(
+    (key) => modalDropdowns[key] === true
+  );
+  // console.log(activeModal)
 
   const handleBorrowMarketIDChange1 = (coin: string) => {
     // console.log("got coin", coin);
@@ -1044,7 +1044,7 @@ const YourBorrowModal = ({
                               {currentAction}
                             </Text>
                             <Box pt="1" className="navbar-button">
-                              <DropdownUp />
+                              {activeModal=="yourBorrowModalActionDropdown" ?<ArrowUp/>:<DropdownUp/>}
                             </Box>
                             {modalDropdowns.yourBorrowModalActionDropdown && (
                               <Box
@@ -1153,7 +1153,7 @@ const YourBorrowModal = ({
                               {currentBorrowId1}
                             </Box>
                             <Text pt="1" className="navbar-button">
-                              <DropdownUp />
+                              {activeModal=="yourBorrowBorrowIDsDropdown1" ? <ArrowUp/>:<DropdownUp/>}
                             </Text>
                             {modalDropdowns.yourBorrowBorrowIDsDropdown1 && (
                               <Box
@@ -2049,7 +2049,7 @@ const YourBorrowModal = ({
                               {currentBorrowId2}
                             </Box>
                             <Text pt="1" className="navbar-button">
-                              <DropdownUp />
+                              {activeModal=="yourBorrowBorrowIDsDropdown2" ? <ArrowUp/>:<DropdownUp/>}
                             </Text>
                             {modalDropdowns.yourBorrowBorrowIDsDropdown2 && (
                               <Box
@@ -2170,7 +2170,7 @@ const YourBorrowModal = ({
                             </Box>
 
                             <Box pt="1" className="navbar-button">
-                              <DropdownUp />
+                              {activeModal=="yourBorrowModalBorrowMarketDropdown2" ? <ArrowUp/>:<DropdownUp/>}
                             </Box>
                             {modalDropdowns.yourBorrowModalBorrowMarketDropdown2 && (
                               <Box

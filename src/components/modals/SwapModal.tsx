@@ -44,6 +44,7 @@ import {
   selectModalDropDowns,
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
+import ArrowUp from "@/assets/icons/arrowup";
 
 const SwapModal = ({
   borrowIDCoinMap,
@@ -89,6 +90,9 @@ const SwapModal = ({
         break;
     }
   };
+  const activeModal = Object.keys(modalDropdowns).find(
+    (key) => modalDropdowns[key] === true
+  );
   // const borrowIds = [
   //     "ID - 123456",
   //     "ID - 123457",
@@ -263,7 +267,7 @@ const SwapModal = ({
                 </Box>
 
                 <Box pt="1" className="navbar-button">
-                  <DropdownUp />
+                  {activeModal=="swapModalSupplyMarketDropDown" ?<ArrowUp/>:<DropdownUp/>}
                 </Box>
                 {modalDropdowns.swapModalSupplyMarketDropDown && (
                   <Box
@@ -358,7 +362,7 @@ const SwapModal = ({
                   {currentBorrowId}
                 </Box>
                 <Text pt="1" className="navbar-button">
-                  <DropdownUp />
+                  {activeModal=="swapModalBorrowIDDropDown" ? <ArrowUp/>:<DropdownUp/>}
                 </Text>
                 {modalDropdowns.swapModalBorrowIDDropDown && (
                   <Box

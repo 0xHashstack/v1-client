@@ -41,6 +41,7 @@ import {
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
 import TableYagiLogo from "../layouts/table/tableIcons/yagiLogo";
+import ArrowUp from "@/assets/icons/arrowup";
 
 const StakeModal = ({
   borrowIDCoinMap,
@@ -98,6 +99,9 @@ const StakeModal = ({
     // Dispatches an action called setModalDropdown with the dropdownName as the payload
     dispatch(setModalDropdown(dropdownName));
   };
+  const activeModal = Object.keys(modalDropdowns).find(
+    (key) => modalDropdowns[key] === true
+  );
 
   //This function is used to find the percentage of the slider from the input given by the user
   const handleChange = (newValue: any) => {
@@ -246,7 +250,7 @@ const StakeModal = ({
                   </Box>
 
                   <Box pt="1" className="navbar-button">
-                    <DropdownUp />
+                    {activeModal=="stakeModalSupplyMarketDropDown" ?<ArrowUp/>:<DropdownUp/>}
                   </Box>
                   {modalDropdowns.stakeModalSupplyMarketDropDown && (
                     <Box
@@ -343,7 +347,7 @@ const StakeModal = ({
                     {currentBorrowId}
                   </Box>
                   <Text pt="1" className="navbar-button">
-                    <DropdownUp />
+                    {activeModal=="stakeModalBorrowIDDropDown" ?<ArrowUp/>:<DropdownUp/>}
                   </Text>
                   {modalDropdowns.stakeModalBorrowIDDropDown && (
                     <Box

@@ -69,6 +69,7 @@ import {
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
+import ArrowUp from "@/assets/icons/arrowup";
 const YourSupplyModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
@@ -176,6 +177,9 @@ const YourSupplyModal = () => {
     setcurrentSelectedWithdrawlCoin("BTC");
     dispatch(resetModalDropdowns());
   };
+  const activeModal = Object.keys(modalDropdowns).find(
+    (key) => modalDropdowns[key] === true
+  );
 
   useEffect(()=>{
     setinputSupplyAmount(0);
@@ -326,7 +330,7 @@ const YourSupplyModal = () => {
                             </Text>
                           </Box>
                           <Box pt="1" className="navbar-button">
-                            <DropdownUp />
+                            {activeModal=="yourSupplyAddsupplyDropdown" ?<ArrowUp/>:<DropdownUp/>}
                           </Box>
                           {modalDropdowns.yourSupplyAddsupplyDropdown && (
                             <Box
@@ -846,7 +850,7 @@ const YourSupplyModal = () => {
                             </Text>
                           </Box>
                           <Box pt="1" className="navbar-button">
-                            <DropdownUp />
+                            {activeModal=="yourSupplyWithdrawlDropdown" ?<ArrowUp/>:<DropdownUp/>}
                           </Box>
                           {modalDropdowns.yourSupplyWithdrawlDropdown && (
                             <Box

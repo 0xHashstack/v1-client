@@ -46,6 +46,7 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
+import ArrowUp from "@/assets/icons/arrowup";
 const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [sliderValue, setSliderValue] = useState(0);
@@ -55,6 +56,14 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
+
+  // const {  market,
+  //   setMarket,
+  //   amount,
+  //   setAmount,
+  //   rToken,
+  //   setRToken, } = useLoanRequest();
+
   const [buttonId, setButtonId] = useState(0);
 
   const getCoin = (CoinName: string) => {
@@ -124,7 +133,9 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
 
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState(coin ? coin.name :"BTC");
   const [currentBorrowCoin, setCurrentBorrowCoin] = useState(coin ? coin.name :"BTC");
-
+  const activeModal = Object.keys(modalDropdowns).find(
+    (key) => modalDropdowns[key] === true
+  );
   const resetStates = () => {
     setCurrentCollateralCoin(coin.name);
     setCurrentBorrowCoin(coin.name);
@@ -137,7 +148,7 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
   useEffect(()=>{
     setinputCollateralAmount(0);
     setSliderValue(0);
-  },[currentCollateralCoin])
+},[currentCollateralCoin])
   useEffect(()=>{
     setinputBorrowAmount(0);
     setsliderValue2(0);
@@ -241,7 +252,7 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                     <Text>{currentCollateralCoin}</Text>
                   </Box>
                   <Box pt="1" className="navbar-button">
-                    <DropdownUp />
+                    {activeModal=="borrowModalCollateralMarketDropdown" ? <ArrowUp/> :<DropdownUp/>}
                   </Box>
                   {modalDropdowns.borrowModalCollateralMarketDropdown && (
                     <Box
@@ -539,7 +550,7 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                     <Text>{currentBorrowCoin}</Text>
                   </Box>
                   <Box pt="1" className="navbar-button">
-                    <DropdownUp />
+                    {activeModal=="borrowModalBorrowMarketDropdown" ? <ArrowUp/>:<DropdownUp/>}
                   </Box>
                   {modalDropdowns.borrowModalBorrowMarketDropdown && (
                     <Box

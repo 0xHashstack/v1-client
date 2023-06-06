@@ -60,6 +60,7 @@ import TableInfoIcon from "../layouts/table/tableIcons/infoIcon";
 import Link from "next/link";
 import TableClose from "../layouts/table/tableIcons/close";
 import WarningIcon from "@/assets/icons/coins/warningIcon";
+import ArrowUp from "@/assets/icons/arrowup";
 const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
@@ -210,6 +211,10 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   // useEffect(() => {
   //   setIsOpenCustom(false);
   // }, []);
+  const activeModal = Object.keys(modalDropdowns).find(
+    (key) => modalDropdowns[key] === true
+  );
+  console.log(activeModal)
 
   useEffect(()=>{
     setInputStakeAmount(0);
@@ -417,7 +422,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                           </Box>
                           <Box pt="1" className="navbar-button">
-                            <DropdownUp />
+                            {activeModal=="stakeMarketDropDown" ?<ArrowUp/> :<DropdownUp/>}
                           </Box>
                           {modalDropdowns.stakeMarketDropDown && (
                             <Box
@@ -1008,7 +1013,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                           </Box>
                           <Box pt="1" className="navbar-button">
-                            <DropdownUp />
+                            {activeModal=="unstakeMarketDropDown" ?<ArrowUp/>:<DropdownUp/>}
                           </Box>
                           {modalDropdowns.unstakeMarketDropDown && (
                             <Box

@@ -1,0 +1,529 @@
+[
+    {
+        "members": [
+            {
+                "name": "low",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "high",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "Uint256",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "slab1",
+                "offset": 0,
+                "type": "Uint256"
+            },
+            {
+                "name": "slab2",
+                "offset": 2,
+                "type": "Uint256"
+            },
+            {
+                "name": "slab3",
+                "offset": 4,
+                "type": "Uint256"
+            }
+        ],
+        "name": "HASHTokenLockingSlab",
+        "size": 6,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "slab1_fees",
+                "offset": 0,
+                "type": "Uint256"
+            },
+            {
+                "name": "slab2_fees",
+                "offset": 2,
+                "type": "Uint256"
+            },
+            {
+                "name": "slab3_fees",
+                "offset": 4,
+                "type": "Uint256"
+            }
+        ],
+        "name": "HASHTokenLockingSlabRebateFees",
+        "size": 6,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "_apr_base_rate",
+                "offset": 0,
+                "type": "Uint256"
+            },
+            {
+                "name": "_apr_optimal_ur",
+                "offset": 2,
+                "type": "Uint256"
+            },
+            {
+                "name": "_optimal_ur",
+                "offset": 4,
+                "type": "Uint256"
+            },
+            {
+                "name": "_apr_max",
+                "offset": 6,
+                "type": "Uint256"
+            }
+        ],
+        "name": "InterestCurveParameters",
+        "size": 8,
+        "type": "struct"
+    },
+    {
+        "data": [
+            {
+                "name": "previousOwner",
+                "type": "felt"
+            },
+            {
+                "name": "newOwner",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Paused",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Unpaused",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "account",
+                "type": "felt"
+            },
+            {
+                "name": "sender",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleGranted",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "account",
+                "type": "felt"
+            },
+            {
+                "name": "sender",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleRevoked",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "previousAdminRole",
+                "type": "felt"
+            },
+            {
+                "name": "newAdminRole",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleAdminChanged",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "get_hash_lock_pool_contract",
+        "outputs": [
+            {
+                "name": "hash_lock_pool_contract_",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_hash_token_contract",
+        "outputs": [
+            {
+                "name": "hash_token_contract_",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user",
+                "type": "felt"
+            }
+        ],
+        "name": "get_user_hash_lock_pool_balance",
+        "outputs": [
+            {
+                "name": "get_user_hash_lock_pool_balance_",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_total_hash_lock_pool_balance",
+        "outputs": [
+            {
+                "name": "get_total_hash_lock_pool_balance",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "slab1",
+                "type": "Uint256"
+            },
+            {
+                "name": "slab2",
+                "type": "Uint256"
+            },
+            {
+                "name": "slab3",
+                "type": "Uint256"
+            }
+        ],
+        "name": "set_hash_token_locking_slab",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_hash_token_locking_slab",
+        "outputs": [
+            {
+                "name": "get_hash_token_locking_slab",
+                "type": "HASHTokenLockingSlab"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "slab1_fees",
+                "type": "Uint256"
+            },
+            {
+                "name": "slab2_fees",
+                "type": "Uint256"
+            },
+            {
+                "name": "slab3_fees",
+                "type": "Uint256"
+            }
+        ],
+        "name": "set_hash_token_locking_slab_rebate_fees",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_hash_token_locking_slab_rebate_fees",
+        "outputs": [
+            {
+                "name": "get_hash_token_locking_slab_rebate_fees",
+                "type": "HASHTokenLockingSlabRebateFees"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user",
+                "type": "felt"
+            }
+        ],
+        "name": "get_max_rebate_on_transaction_fees",
+        "outputs": [
+            {
+                "name": "get_max_rebate_on_transaction_fees_",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "factor",
+                "type": "felt"
+            }
+        ],
+        "name": "set_interest_correlation_factor",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_interest_correlation_factor",
+        "outputs": [
+            {
+                "name": "interest",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "apr_base_rate",
+                "type": "Uint256"
+            },
+            {
+                "name": "apr_optimal_ur",
+                "type": "Uint256"
+            },
+            {
+                "name": "optimal_ur",
+                "type": "Uint256"
+            },
+            {
+                "name": "apr_max",
+                "type": "Uint256"
+            }
+        ],
+        "name": "setDialParameters",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "market",
+                "type": "felt"
+            }
+        ],
+        "name": "getDialParameters",
+        "outputs": [
+            {
+                "name": "params",
+                "type": "InterestCurveParameters"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "offset",
+                "type": "felt"
+            }
+        ],
+        "name": "set_interest_offset",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_interest_offset",
+        "outputs": [
+            {
+                "name": "offset",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user",
+                "type": "felt"
+            }
+        ],
+        "name": "get_user_start_time",
+        "outputs": [
+            {
+                "name": "time",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "number",
+                "type": "felt"
+            }
+        ],
+        "name": "set_leverage",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_leverage",
+        "outputs": [
+            {
+                "name": "leverage",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user",
+                "type": "felt"
+            }
+        ],
+        "name": "get_user_credit_risk",
+        "outputs": [
+            {
+                "name": "risk",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user",
+                "type": "felt"
+            },
+            {
+                "name": "credit_risk",
+                "type": "felt"
+            }
+        ],
+        "name": "set_user_credit_risk",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user",
+                "type": "felt"
+            }
+        ],
+        "name": "get_user_age_barrier",
+        "outputs": [
+            {
+                "name": "time",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "age_barrier",
+                "type": "felt"
+            }
+        ],
+        "name": "set_user_age_barrier",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_ltv_collateral_amount",
+        "outputs": [
+            {
+                "name": "amount",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "collateral_amount",
+                "type": "Uint256"
+            }
+        ],
+        "name": "set_ltv_collateral_amount",
+        "outputs": [],
+        "type": "function"
+    }
+]

@@ -1,0 +1,340 @@
+[
+    {
+        "members": [
+            {
+                "name": "SUPER_ADMIN",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "COMPTROLLER",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "GOVERNOR",
+                "offset": 2,
+                "type": "felt"
+            }
+        ],
+        "name": "AccessControlRoles",
+        "size": 3,
+        "type": "struct"
+    },
+    {
+        "data": [
+            {
+                "name": "previousOwner",
+                "type": "felt"
+            },
+            {
+                "name": "newOwner",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Paused",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Unpaused",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "account",
+                "type": "felt"
+            },
+            {
+                "name": "sender",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleGranted",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "account",
+                "type": "felt"
+            },
+            {
+                "name": "sender",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleRevoked",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "previousAdminRole",
+                "type": "felt"
+            },
+            {
+                "name": "newAdminRole",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "RoleAdminChanged",
+        "type": "event"
+    },
+    {
+        "inputs": [],
+        "name": "constructor",
+        "outputs": [],
+        "type": "constructor"
+    },
+    {
+        "inputs": [],
+        "name": "initializer",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "role",
+                "type": "felt"
+            }
+        ],
+        "name": "assert_only_role",
+        "outputs": [],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_super_admin_address",
+        "outputs": [
+            {
+                "name": "super_admin",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_access_control_roles",
+        "outputs": [
+            {
+                "name": "get_access_control_roles",
+                "type": "AccessControlRoles"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_super_admin_role",
+        "outputs": [
+            {
+                "name": "super_admin",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_comptroller_role",
+        "outputs": [
+            {
+                "name": "comptroller_role",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_governor_role",
+        "outputs": [
+            {
+                "name": "get_governor_role",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "super_admin_role",
+                "type": "felt"
+            },
+            {
+                "name": "user",
+                "type": "felt"
+            }
+        ],
+        "name": "has_super_admin_role",
+        "outputs": [
+            {
+                "name": "has_super_admin_role",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "user",
+                "type": "felt"
+            }
+        ],
+        "name": "has_role",
+        "outputs": [
+            {
+                "name": "has_role",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "role",
+                "type": "felt"
+            }
+        ],
+        "name": "get_role_admin",
+        "outputs": [
+            {
+                "name": "admin",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "user",
+                "type": "felt"
+            }
+        ],
+        "name": "grant_role",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "user",
+                "type": "felt"
+            }
+        ],
+        "name": "revoke_role",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "user",
+                "type": "felt"
+            }
+        ],
+        "name": "renounce_role",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "user_from",
+                "type": "felt"
+            },
+            {
+                "name": "user_to",
+                "type": "felt"
+            }
+        ],
+        "name": "transfer_role",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "role",
+                "type": "felt"
+            },
+            {
+                "name": "super_admin_role",
+                "type": "felt"
+            }
+        ],
+        "name": "set_role_super_admin",
+        "outputs": [],
+        "type": "function"
+    }
+]
