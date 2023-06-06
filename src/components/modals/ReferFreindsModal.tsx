@@ -161,7 +161,7 @@ const ReferFreindsModal = ({ buttonText, ...restProps }: any) => {
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -206,7 +206,7 @@ const ReferFreindsModal = ({ buttonText, ...restProps }: any) => {
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"

@@ -44,6 +44,7 @@ import {
   selectModalDropDowns,
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
+import ArrowUp from "@/assets/icons/arrowup";
 
 const SwapModal = ({
   borrowIDCoinMap,
@@ -89,6 +90,9 @@ const SwapModal = ({
         break;
     }
   };
+  const activeModal = Object.keys(modalDropdowns).find(
+    (key) => modalDropdowns[key] === true
+  );
   // const borrowIds = [
   //     "ID - 123456",
   //     "ID - 123457",
@@ -159,22 +163,26 @@ const SwapModal = ({
   return (
     <div>
       <Box display="flex" gap="14" mt="1rem">
-        <Box cursor="pointer" onClick={()=>{
-          if(selectedDapp==""){
-
-          }else{
-            onOpen();
-          }
-        }}>
+        <Box
+          cursor="pointer"
+          onClick={() => {
+            if (selectedDapp == "") {
+            } else {
+              onOpen();
+            }
+          }}
+        >
           {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
         </Box>
-        <Box cursor="pointer" onClick={()=>{
-          if(selectedDapp==""){
-
-          }else{
-            onOpen();
-          }
-        }}>
+        <Box
+          cursor="pointer"
+          onClick={() => {
+            if (selectedDapp == "") {
+            } else {
+              onOpen();
+            }
+          }}
+        >
           {selectedDapp != "" ? (
             <Box>
               <TableJediswapLogo />
@@ -221,7 +229,7 @@ const SwapModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="bottom-start"
+                  placement="right"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -263,7 +271,11 @@ const SwapModal = ({
                 </Box>
 
                 <Box pt="1" className="navbar-button">
-                  <DropdownUp />
+                  {activeModal == "swapModalSupplyMarketDropDown" ? (
+                    <ArrowUp />
+                  ) : (
+                    <DropdownUp />
+                  )}
                 </Box>
                 {modalDropdowns.swapModalSupplyMarketDropDown && (
                   <Box
@@ -325,7 +337,7 @@ const SwapModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="bottom-start"
+                  placement="right"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -358,7 +370,11 @@ const SwapModal = ({
                   {currentBorrowId}
                 </Box>
                 <Text pt="1" className="navbar-button">
-                  <DropdownUp />
+                  {activeModal == "swapModalBorrowIDDropDown" ? (
+                    <ArrowUp />
+                  ) : (
+                    <DropdownUp />
+                  )}
                 </Text>
                 {modalDropdowns.swapModalBorrowIDDropDown && (
                   <Box
@@ -423,7 +439,7 @@ const SwapModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="bottom-start"
+                  placement="right"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -490,7 +506,7 @@ const SwapModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -535,7 +551,7 @@ const SwapModal = ({
                   </Box>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -570,7 +586,7 @@ const SwapModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -618,7 +634,7 @@ const SwapModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -653,7 +669,7 @@ const SwapModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -688,7 +704,7 @@ const SwapModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -723,7 +739,7 @@ const SwapModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -758,7 +774,7 @@ const SwapModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"

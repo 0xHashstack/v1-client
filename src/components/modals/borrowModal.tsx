@@ -46,8 +46,8 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
-import useLoanRequest from "@/Blockchain/hooks/Writes/useLoanRequest";
-const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
+import ArrowUp from "@/assets/icons/arrowup";
+const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [sliderValue, setSliderValue] = useState(0);
   const [sliderValue2, setsliderValue2] = useState(0);
@@ -57,12 +57,12 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
 
-  const {  market,
-    setMarket,
-    amount,
-    setAmount,
-    rToken,
-    setRToken, } = useLoanRequest();
+  // const {  market,
+  //   setMarket,
+  //   amount,
+  //   setAmount,
+  //   rToken,
+  //   setRToken, } = useLoanRequest();
 
   const [buttonId, setButtonId] = useState(0);
 
@@ -131,9 +131,15 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
   const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
-  const [currentCollateralCoin, setCurrentCollateralCoin] = useState(coin ? coin.name :"BTC");
-  const [currentBorrowCoin, setCurrentBorrowCoin] = useState(coin ? coin.name :"BTC");
-
+  const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
+    coin ? coin.name : "BTC"
+  );
+  const [currentBorrowCoin, setCurrentBorrowCoin] = useState(
+    coin ? coin.name : "BTC"
+  );
+  const activeModal = Object.keys(modalDropdowns).find(
+    (key) => modalDropdowns[key] === true
+  );
   const resetStates = () => {
     setCurrentCollateralCoin(coin.name);
     setCurrentBorrowCoin(coin.name);
@@ -143,14 +149,14 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
     setsliderValue2(0);
     dispatch(resetModalDropdowns());
   };
-  useEffect(()=>{
+  useEffect(() => {
     setinputCollateralAmount(0);
     setSliderValue(0);
-  },[currentCollateralCoin])
-  useEffect(()=>{
+  }, [currentCollateralCoin]);
+  useEffect(() => {
     setinputBorrowAmount(0);
     setsliderValue2(0);
-  },[currentBorrowCoin])
+  }, [currentBorrowCoin]);
 
   return (
     <Box>
@@ -215,7 +221,7 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -250,7 +256,11 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                     <Text>{currentCollateralCoin}</Text>
                   </Box>
                   <Box pt="1" className="navbar-button">
-                    <DropdownUp />
+                    {activeModal == "borrowModalCollateralMarketDropdown" ? (
+                      <ArrowUp />
+                    ) : (
+                      <DropdownUp />
+                    )}
                   </Box>
                   {modalDropdowns.borrowModalCollateralMarketDropdown && (
                     <Box
@@ -315,7 +325,7 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -513,7 +523,7 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -548,7 +558,11 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                     <Text>{currentBorrowCoin}</Text>
                   </Box>
                   <Box pt="1" className="navbar-button">
-                    <DropdownUp />
+                    {activeModal == "borrowModalBorrowMarketDropdown" ? (
+                      <ArrowUp />
+                    ) : (
+                      <DropdownUp />
+                    )}
                   </Box>
                   {modalDropdowns.borrowModalBorrowMarketDropdown && (
                     <Box
@@ -611,7 +625,7 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -809,7 +823,7 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -851,7 +865,7 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -893,7 +907,7 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -934,7 +948,7 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -961,7 +975,8 @@ const BorrowModal = ({ buttonText,coin, ...restProps }: any) => {
 
             {inputCollateralAmount > 0 &&
             inputBorrowAmount > 0 &&
-            inputCollateralAmount <= walletBalance && inputBorrowAmount<=walletBalance ? (
+            inputCollateralAmount <= walletBalance &&
+            inputBorrowAmount <= walletBalance ? (
               buttonId == 1 ? (
                 <SuccessButton successText="Borrow successful." />
               ) : buttonId == 2 ? (

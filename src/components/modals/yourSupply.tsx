@@ -69,6 +69,7 @@ import {
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
+import ArrowUp from "@/assets/icons/arrowup";
 const YourSupplyModal = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
@@ -176,16 +177,19 @@ const YourSupplyModal = () => {
     setcurrentSelectedWithdrawlCoin("BTC");
     dispatch(resetModalDropdowns());
   };
+  const activeModal = Object.keys(modalDropdowns).find(
+    (key) => modalDropdowns[key] === true
+  );
 
-  useEffect(()=>{
+  useEffect(() => {
     setinputSupplyAmount(0);
     setSliderValue(0);
-  },[currentSelectedSupplyCoin])
+  }, [currentSelectedSupplyCoin]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setinputWithdrawlAmount(0);
     setSliderValue2(0);
-  },[currentSelectedWithdrawlCoin])
+  }, [currentSelectedWithdrawlCoin]);
 
   return (
     <Box>
@@ -286,7 +290,7 @@ const YourSupplyModal = () => {
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -326,7 +330,11 @@ const YourSupplyModal = () => {
                             </Text>
                           </Box>
                           <Box pt="1" className="navbar-button">
-                            <DropdownUp />
+                            {activeModal == "yourSupplyAddsupplyDropdown" ? (
+                              <ArrowUp />
+                            ) : (
+                              <DropdownUp />
+                            )}
                           </Box>
                           {modalDropdowns.yourSupplyAddsupplyDropdown && (
                             <Box
@@ -401,7 +409,7 @@ const YourSupplyModal = () => {
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -624,7 +632,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -659,7 +667,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -694,7 +702,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -728,7 +736,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -806,7 +814,7 @@ const YourSupplyModal = () => {
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -846,7 +854,11 @@ const YourSupplyModal = () => {
                             </Text>
                           </Box>
                           <Box pt="1" className="navbar-button">
-                            <DropdownUp />
+                            {activeModal == "yourSupplyWithdrawlDropdown" ? (
+                              <ArrowUp />
+                            ) : (
+                              <DropdownUp />
+                            )}
                           </Box>
                           {modalDropdowns.yourSupplyWithdrawlDropdown && (
                             <Box
@@ -921,7 +933,7 @@ const YourSupplyModal = () => {
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -1148,7 +1160,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -1282,7 +1294,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -1316,7 +1328,7 @@ const YourSupplyModal = () => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="bottom-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
