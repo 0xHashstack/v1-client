@@ -20,6 +20,7 @@ import {
   NumberInputField,
   Portal,
 } from "@chakra-ui/react";
+import ArrowUp from "@/assets/icons/arrowup";
 import TickIcon from "@/assets/icons/tickIcon";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
@@ -43,6 +44,7 @@ import {
   setModalDropdown,
   selectModalDropDowns,
   resetModalDropdowns,
+  selectCurrentModalDropdown
 } from "@/store/slices/dropdownsSlice";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
@@ -94,6 +96,10 @@ const SupplyModal = ({
     // Dispatches an action called setModalDropdown with the dropdownName as the payload
     dispatch(setModalDropdown(dropdownName));
   };
+  const activeModal = Object.keys(modalDropdowns).find(
+    (key) => modalDropdowns[key] === true
+  );
+  // console.log(activeModal)
 
   //This function is used to find the percentage of the slider from the input given by the user
   const handleChange = (newValue: any) => {
@@ -225,7 +231,7 @@ const SupplyModal = ({
                   </Box>
 
                   <Box pt="1" className="navbar-button">
-                    <DropdownUp />
+                    {activeModal ? <ArrowUp />:<DropdownUp />}
                   </Box>
                   {modalDropdowns.supplyModalDropdown && (
                     <Box

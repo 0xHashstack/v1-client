@@ -54,6 +54,7 @@ import {
   selectModalDropDowns,
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
+import ArrowUp from "@/assets/icons/arrowup";
 
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
@@ -187,7 +188,9 @@ const LiquidityProvisionModal = ({
       }
     }
   };
-
+  const activeModal = Object.keys(modalDropdowns).find(
+    (key) => modalDropdowns[key] === true
+  );
   const handleBorrowMarketIDChange = (coin: string) => {
     // console.log("got coin", coin);
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
@@ -328,7 +331,7 @@ const LiquidityProvisionModal = ({
                     <Text mt="0.1rem">{currentPool}</Text>
                   </Box>
                   <Box pt="1" className="navbar-button">
-                    <DropdownUp />
+                    {activeModal=="liquidityProvisionPoolDropDown" ? <ArrowUp/>:<DropdownUp/>}
                   </Box>
                   {modalDropdowns.liquidityProvisionPoolDropDown && (
                     <Box
@@ -422,7 +425,7 @@ const LiquidityProvisionModal = ({
                     {currentBorrowId}
                   </Box>
                   <Text pt="1" className="navbar-button">
-                    <DropdownUp />
+                    {activeModal=="liquidityProvisionBorrowIDDropDown" ?<ArrowUp/>:<DropdownUp/>}
                   </Text>
                   {modalDropdowns.liquidityProvisionBorrowIDDropDown && (
                     <Box
