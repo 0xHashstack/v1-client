@@ -265,14 +265,14 @@
     {
         "inputs": [
             {
-                "name": "asset",
+                "name": "rToken",
                 "type": "felt"
             }
         ],
         "name": "get_asset_from_rToken",
         "outputs": [
             {
-                "name": "rToken",
+                "name": "asset",
                 "type": "felt"
             }
         ],
@@ -306,6 +306,22 @@
             }
         ],
         "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "loan_id",
+                "type": "felt"
+            }
+        ],
+        "name": "_revert_interaction_with_l3",
+        "outputs": [
+            {
+                "name": "reverted_amount",
+                "type": "Uint256"
+            }
+        ],
         "type": "function"
     },
     {
@@ -389,10 +405,6 @@
             {
                 "name": "rToken",
                 "type": "felt"
-            },
-            {
-                "name": "rToken_amount_to_withdraw",
-                "type": "Uint256"
             },
             {
                 "name": "receiver",
@@ -592,7 +604,7 @@
                 "type": "Uint256"
             }
         ],
-    "name": "add_rToken_collateral",
+        "name": "add_rToken_collateral",
         "outputs": [],
         "type": "function"
     },
@@ -605,6 +617,78 @@
         ],
         "name": "update_state",
         "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "user",
+                "type": "felt"
+            }
+        ],
+        "name": "check_open_role",
+        "outputs": [],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "integration",
+                "type": "felt"
+            },
+            {
+                "name": "calldata_len",
+                "type": "felt"
+            },
+            {
+                "name": "calldata",
+                "type": "felt*"
+            }
+        ],
+        "name": "interact_with_l3",
+        "outputs": [
+            {
+                "name": "return_data_len",
+                "type": "felt"
+            },
+            {
+                "name": "return_data",
+                "type": "felt*"
+            }
+        ],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "loan_id",
+                "type": "felt"
+            }
+        ],
+        "name": "revert_interaction_with_l3",
+        "outputs": [
+            {
+                "name": "reverted_amount",
+                "type": "Uint256"
+            }
+        ],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "loan_id",
+                "type": "felt"
+            }
+        ],
+        "name": "get_health_factor",
+        "outputs": [
+            {
+                "name": "factor",
+                "type": "felt"
+            }
+        ],
         "type": "function"
     }
 ]

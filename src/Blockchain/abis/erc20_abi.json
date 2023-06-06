@@ -93,6 +93,21 @@
         "type": "function"
     },
     {
+        "inputs": [
+            {
+                "name": "recipient",
+                "type": "felt"
+            },
+            {
+                "name": "amount",
+                "type": "Uint256"
+            }
+        ],
+        "name": "drip",
+        "outputs": [],
+        "type": "function"
+    },
+    {
         "inputs": [],
         "name": "name",
         "outputs": [

@@ -47,10 +47,20 @@
                 "name": "max_deposit_amount",
                 "offset": 6,
                 "type": "Uint256"
+            },
+            {
+                "name": "min_stake_amount",
+                "offset": 8,
+                "type": "Uint256"
+            },
+            {
+                "name": "max_stake_amount",
+                "offset": 10,
+                "type": "Uint256"
             }
         ],
         "name": "DepositVaultMetadata",
-        "size": 8,
+        "size": 12,
         "type": "struct"
     },
     {
@@ -294,6 +304,27 @@
                 "type": "felt"
             }
         ],
+        "name": "get_deposit_vault_by_index",
+        "outputs": [
+            {
+                "name": "rToken",
+                "type": "felt"
+            },
+            {
+                "name": "metadata",
+                "type": "DepositVaultMetadata"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "rToken",
+                "type": "felt"
+            }
+        ],
         "name": "get_deposit_vault",
         "outputs": [
             {
@@ -319,6 +350,23 @@
         "outputs": [
             {
                 "name": "_get_minimum_deposit_amount",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "rToken",
+                "type": "felt"
+            }
+        ],
+        "name": "get_minimum_stake_amount",
+        "outputs": [
+            {
+                "name": "_get_minimum_stake_amount_",
                 "type": "Uint256"
             }
         ],
@@ -371,11 +419,49 @@
     {
         "inputs": [
             {
-                "name": "index",
+                "name": "dToken",
                 "type": "felt"
             }
         ],
         "name": "get_borrow_vault",
+        "outputs": [
+            {
+                "name": "dToken",
+                "type": "felt"
+            },
+            {
+                "name": "metadata",
+                "type": "BorrowVaultMetadata"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "dToken",
+                "type": "felt"
+            }
+        ],
+        "name": "is_dVault_supported",
+        "outputs": [
+            {
+                "name": "is_dVault_supported",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "index",
+                "type": "felt"
+            }
+        ],
+        "name": "get_borrow_vault_by_index",
         "outputs": [
             {
                 "name": "dToken",
@@ -541,14 +627,14 @@
     {
         "inputs": [
             {
-                "name": "asset",
+                "name": "rToken",
                 "type": "felt"
             }
         ],
         "name": "get_asset_from_rToken",
         "outputs": [
             {
-                "name": "rToken",
+                "name": "asset",
                 "type": "felt"
             }
         ],
@@ -678,6 +764,217 @@
             }
         ],
         "name": "set_hash_token_contract",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "empiric_address",
+                "type": "felt"
+            }
+        ],
+        "name": "set_empiric_proxy",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_empiric_proxy",
+        "outputs": [
+            {
+                "name": "empiric_address",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "decimals",
+                "type": "felt"
+            }
+        ],
+        "name": "set_expected_empiric_decimals",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_expected_empiric_decimals",
+        "outputs": [
+            {
+                "name": "decimals",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "integration",
+                "type": "felt"
+            },
+            {
+                "name": "selector",
+                "type": "felt"
+            },
+            {
+                "name": "is_allowed",
+                "type": "felt"
+            }
+        ],
+        "name": "set_category_and_function_type_allowed",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "integration",
+                "type": "felt"
+            },
+            {
+                "name": "selector",
+                "type": "felt"
+            }
+        ],
+        "name": "get_category_and_function_type_allowed",
+        "outputs": [
+            {
+                "name": "is_allowed",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "set_integration_contract_address",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_integration_contract_address",
+        "outputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "hash_governance_contract_",
+                "type": "felt"
+            }
+        ],
+        "name": "set_hash_governance_contract",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_hash_governance_contract",
+        "outputs": [
+            {
+                "name": "hash_governance_contract_",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "access_control_contract_",
+                "type": "felt"
+            }
+        ],
+        "name": "set_access_control_contract",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_access_control_contract",
+        "outputs": [
+            {
+                "name": "access_control_contract_",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "amount",
+                "type": "Uint256"
+            }
+        ],
+        "name": "set_minimum_liquidator_deposit",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_liquidation_base_market",
+        "outputs": [
+            {
+                "name": "asset",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset",
+                "type": "felt"
+            }
+        ],
+        "name": "set_liquidation_base_market",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "set_jedi_swap_router",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "address",
+                "type": "felt"
+            }
+        ],
+        "name": "set_my_swap_router",
         "outputs": [],
         "type": "function"
     }

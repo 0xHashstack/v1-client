@@ -3650,6 +3650,49 @@
                 "destination": "starkware.starknet.common.syscalls.storage_write",
                 "type": "alias"
             },
+            "core.contracts.funds.funds_store.liquidation_share": {
+                "type": "namespace"
+            },
+            "core.contracts.funds.funds_store.liquidation_share.Args": {
+                "full_name": "core.contracts.funds.funds_store.liquidation_share.Args",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "core.contracts.funds.funds_store.liquidation_share.HashBuiltin": {
+                "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
+                "type": "alias"
+            },
+            "core.contracts.funds.funds_store.liquidation_share.ImplicitArgs": {
+                "full_name": "core.contracts.funds.funds_store.liquidation_share.ImplicitArgs",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "core.contracts.funds.funds_store.liquidation_share.Return": {
+                "cairo_type": "()",
+                "type": "type_definition"
+            },
+            "core.contracts.funds.funds_store.liquidation_share.SIZEOF_LOCALS": {
+                "type": "const",
+                "value": 0
+            },
+            "core.contracts.funds.funds_store.liquidation_share.hash2": {
+                "destination": "starkware.cairo.common.hash.hash2",
+                "type": "alias"
+            },
+            "core.contracts.funds.funds_store.liquidation_share.normalize_address": {
+                "destination": "starkware.starknet.common.storage.normalize_address",
+                "type": "alias"
+            },
+            "core.contracts.funds.funds_store.liquidation_share.storage_read": {
+                "destination": "starkware.starknet.common.syscalls.storage_read",
+                "type": "alias"
+            },
+            "core.contracts.funds.funds_store.liquidation_share.storage_write": {
+                "destination": "starkware.starknet.common.syscalls.storage_write",
+                "type": "alias"
+            },
             "core.contracts.funds.funds_store.tier1_capital": {
                 "type": "namespace"
             },
@@ -4084,9 +4127,17 @@
                         "cairo_type": "starkware.cairo.common.uint256.Uint256",
                         "offset": 6
                     },
+                    "max_stake_amount": {
+                        "cairo_type": "starkware.cairo.common.uint256.Uint256",
+                        "offset": 10
+                    },
                     "min_deposit_amount": {
                         "cairo_type": "starkware.cairo.common.uint256.Uint256",
                         "offset": 4
+                    },
+                    "min_stake_amount": {
+                        "cairo_type": "starkware.cairo.common.uint256.Uint256",
+                        "offset": 8
                     },
                     "paused": {
                         "cairo_type": "felt",
@@ -4101,7 +4152,7 @@
                         "offset": 1
                     }
                 },
-                "size": 8,
+                "size": 12,
                 "type": "struct"
             },
             "core.contracts.open_diamond.storages.governor_store.HashBuiltin": {
@@ -4110,49 +4161,6 @@
             },
             "core.contracts.open_diamond.storages.governor_store.Uint256": {
                 "destination": "starkware.cairo.common.uint256.Uint256",
-                "type": "alias"
-            },
-            "core.contracts.open_diamond.storages.governor_store._staking_contract": {
-                "type": "namespace"
-            },
-            "core.contracts.open_diamond.storages.governor_store._staking_contract.Args": {
-                "full_name": "core.contracts.open_diamond.storages.governor_store._staking_contract.Args",
-                "members": {},
-                "size": 0,
-                "type": "struct"
-            },
-            "core.contracts.open_diamond.storages.governor_store._staking_contract.HashBuiltin": {
-                "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
-                "type": "alias"
-            },
-            "core.contracts.open_diamond.storages.governor_store._staking_contract.ImplicitArgs": {
-                "full_name": "core.contracts.open_diamond.storages.governor_store._staking_contract.ImplicitArgs",
-                "members": {},
-                "size": 0,
-                "type": "struct"
-            },
-            "core.contracts.open_diamond.storages.governor_store._staking_contract.Return": {
-                "cairo_type": "()",
-                "type": "type_definition"
-            },
-            "core.contracts.open_diamond.storages.governor_store._staking_contract.SIZEOF_LOCALS": {
-                "type": "const",
-                "value": 0
-            },
-            "core.contracts.open_diamond.storages.governor_store._staking_contract.hash2": {
-                "destination": "starkware.cairo.common.hash.hash2",
-                "type": "alias"
-            },
-            "core.contracts.open_diamond.storages.governor_store._staking_contract.normalize_address": {
-                "destination": "starkware.starknet.common.storage.normalize_address",
-                "type": "alias"
-            },
-            "core.contracts.open_diamond.storages.governor_store._staking_contract.storage_read": {
-                "destination": "starkware.starknet.common.syscalls.storage_read",
-                "type": "alias"
-            },
-            "core.contracts.open_diamond.storages.governor_store._staking_contract.storage_write": {
-                "destination": "starkware.starknet.common.syscalls.storage_write",
                 "type": "alias"
             },
             "core.contracts.open_diamond.storages.governor_store.asset_metadata": {
@@ -4413,6 +4421,49 @@
                 "destination": "starkware.starknet.common.syscalls.storage_write",
                 "type": "alias"
             },
+            "core.contracts.open_diamond.storages.governor_store.category_and_function_type_allowed": {
+                "type": "namespace"
+            },
+            "core.contracts.open_diamond.storages.governor_store.category_and_function_type_allowed.Args": {
+                "full_name": "core.contracts.open_diamond.storages.governor_store.category_and_function_type_allowed.Args",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "core.contracts.open_diamond.storages.governor_store.category_and_function_type_allowed.HashBuiltin": {
+                "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
+                "type": "alias"
+            },
+            "core.contracts.open_diamond.storages.governor_store.category_and_function_type_allowed.ImplicitArgs": {
+                "full_name": "core.contracts.open_diamond.storages.governor_store.category_and_function_type_allowed.ImplicitArgs",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "core.contracts.open_diamond.storages.governor_store.category_and_function_type_allowed.Return": {
+                "cairo_type": "()",
+                "type": "type_definition"
+            },
+            "core.contracts.open_diamond.storages.governor_store.category_and_function_type_allowed.SIZEOF_LOCALS": {
+                "type": "const",
+                "value": 0
+            },
+            "core.contracts.open_diamond.storages.governor_store.category_and_function_type_allowed.hash2": {
+                "destination": "starkware.cairo.common.hash.hash2",
+                "type": "alias"
+            },
+            "core.contracts.open_diamond.storages.governor_store.category_and_function_type_allowed.normalize_address": {
+                "destination": "starkware.starknet.common.storage.normalize_address",
+                "type": "alias"
+            },
+            "core.contracts.open_diamond.storages.governor_store.category_and_function_type_allowed.storage_read": {
+                "destination": "starkware.starknet.common.syscalls.storage_read",
+                "type": "alias"
+            },
+            "core.contracts.open_diamond.storages.governor_store.category_and_function_type_allowed.storage_write": {
+                "destination": "starkware.starknet.common.syscalls.storage_write",
+                "type": "alias"
+            },
             "core.contracts.open_diamond.storages.governor_store.collector_contract": {
                 "type": "namespace"
             },
@@ -4585,6 +4636,49 @@
                 "destination": "starkware.starknet.common.syscalls.storage_write",
                 "type": "alias"
             },
+            "core.contracts.open_diamond.storages.governor_store.hash_governance_contract": {
+                "type": "namespace"
+            },
+            "core.contracts.open_diamond.storages.governor_store.hash_governance_contract.Args": {
+                "full_name": "core.contracts.open_diamond.storages.governor_store.hash_governance_contract.Args",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "core.contracts.open_diamond.storages.governor_store.hash_governance_contract.HashBuiltin": {
+                "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
+                "type": "alias"
+            },
+            "core.contracts.open_diamond.storages.governor_store.hash_governance_contract.ImplicitArgs": {
+                "full_name": "core.contracts.open_diamond.storages.governor_store.hash_governance_contract.ImplicitArgs",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "core.contracts.open_diamond.storages.governor_store.hash_governance_contract.Return": {
+                "cairo_type": "()",
+                "type": "type_definition"
+            },
+            "core.contracts.open_diamond.storages.governor_store.hash_governance_contract.SIZEOF_LOCALS": {
+                "type": "const",
+                "value": 0
+            },
+            "core.contracts.open_diamond.storages.governor_store.hash_governance_contract.hash2": {
+                "destination": "starkware.cairo.common.hash.hash2",
+                "type": "alias"
+            },
+            "core.contracts.open_diamond.storages.governor_store.hash_governance_contract.normalize_address": {
+                "destination": "starkware.starknet.common.storage.normalize_address",
+                "type": "alias"
+            },
+            "core.contracts.open_diamond.storages.governor_store.hash_governance_contract.storage_read": {
+                "destination": "starkware.starknet.common.syscalls.storage_read",
+                "type": "alias"
+            },
+            "core.contracts.open_diamond.storages.governor_store.hash_governance_contract.storage_write": {
+                "destination": "starkware.starknet.common.syscalls.storage_write",
+                "type": "alias"
+            },
             "core.contracts.open_diamond.storages.governor_store.hash_lock_pool_contract": {
                 "type": "namespace"
             },
@@ -4671,6 +4765,49 @@
                 "destination": "starkware.starknet.common.syscalls.storage_write",
                 "type": "alias"
             },
+            "core.contracts.open_diamond.storages.governor_store.l3_diamond_address": {
+                "type": "namespace"
+            },
+            "core.contracts.open_diamond.storages.governor_store.l3_diamond_address.Args": {
+                "full_name": "core.contracts.open_diamond.storages.governor_store.l3_diamond_address.Args",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "core.contracts.open_diamond.storages.governor_store.l3_diamond_address.HashBuiltin": {
+                "destination": "starkware.cairo.common.cairo_builtins.HashBuiltin",
+                "type": "alias"
+            },
+            "core.contracts.open_diamond.storages.governor_store.l3_diamond_address.ImplicitArgs": {
+                "full_name": "core.contracts.open_diamond.storages.governor_store.l3_diamond_address.ImplicitArgs",
+                "members": {},
+                "size": 0,
+                "type": "struct"
+            },
+            "core.contracts.open_diamond.storages.governor_store.l3_diamond_address.Return": {
+                "cairo_type": "()",
+                "type": "type_definition"
+            },
+            "core.contracts.open_diamond.storages.governor_store.l3_diamond_address.SIZEOF_LOCALS": {
+                "type": "const",
+                "value": 0
+            },
+            "core.contracts.open_diamond.storages.governor_store.l3_diamond_address.hash2": {
+                "destination": "starkware.cairo.common.hash.hash2",
+                "type": "alias"
+            },
+            "core.contracts.open_diamond.storages.governor_store.l3_diamond_address.normalize_address": {
+                "destination": "starkware.starknet.common.storage.normalize_address",
+                "type": "alias"
+            },
+            "core.contracts.open_diamond.storages.governor_store.l3_diamond_address.storage_read": {
+                "destination": "starkware.starknet.common.syscalls.storage_read",
+                "type": "alias"
+            },
+            "core.contracts.open_diamond.storages.governor_store.l3_diamond_address.storage_write": {
+                "destination": "starkware.starknet.common.syscalls.storage_write",
+                "type": "alias"
+            },
             "core.contracts.open_diamond.storages.governor_store.staking_contract": {
                 "type": "namespace"
             },
@@ -4717,23 +4854,51 @@
             "core.interfaces.IAccessControl.IAccessControl": {
                 "type": "namespace"
             },
+            "core.interfaces.IAccessControl.IAccessControl.ASSERTONLYROLE_SELECTOR": {
+                "type": "const",
+                "value": 1386318866085066363111614747537032230385928418486837828840775637927321767079
+            },
             "core.interfaces.IAccessControl.IAccessControl.Args": {
                 "full_name": "core.interfaces.IAccessControl.IAccessControl.Args",
                 "members": {},
                 "size": 0,
                 "type": "struct"
             },
-            "core.interfaces.IAccessControl.IAccessControl.GET_ROLE_ADMIN_SELECTOR": {
+            "core.interfaces.IAccessControl.IAccessControl.GETROLEADMIN_SELECTOR": {
                 "type": "const",
-                "value": 1362020099646839294595095386844417957430499722265868037749475291537810423586
+                "value": 910462217185875474129624545597148273527461046201048665674829677747977138336
             },
-            "core.interfaces.IAccessControl.IAccessControl.GRANT_ROLE_SELECTOR": {
+            "core.interfaces.IAccessControl.IAccessControl.GET_COMPTROLLER_ROLE_SELECTOR": {
                 "type": "const",
-                "value": 696465794742374603933803281730432718032369660551303946322441599049217711352
+                "value": 1010008553377465185415469416817430781902726798367478911044213618001452697340
             },
-            "core.interfaces.IAccessControl.IAccessControl.HAS_ROLE_SELECTOR": {
+            "core.interfaces.IAccessControl.IAccessControl.GET_GOVERNOR_ROLE_SELECTOR": {
                 "type": "const",
-                "value": 1366388387368871408391212538559652367856720459146781554727253958102015704427
+                "value": 53340912553042336450313757727738521983523857069741923913103818380038736890
+            },
+            "core.interfaces.IAccessControl.IAccessControl.GET_OPEN_ROLE_SELECTOR": {
+                "type": "const",
+                "value": 1069123896018505443731704220644423376387898437485471108902759850733776865035
+            },
+            "core.interfaces.IAccessControl.IAccessControl.GET_SUPER_ADMIN_ADDRESS_SELECTOR": {
+                "type": "const",
+                "value": 792410886480605567477475888044046492868012041252146095456118793561084122389
+            },
+            "core.interfaces.IAccessControl.IAccessControl.GET_SUPER_ADMIN_ROLE_SELECTOR": {
+                "type": "const",
+                "value": 266082636643759310906996228022731207840103946605253540240505224302479296674
+            },
+            "core.interfaces.IAccessControl.IAccessControl.GRANTROLE_SELECTOR": {
+                "type": "const",
+                "value": 1560367495170354764728633504478902402932263081389505108205717909711296447354
+            },
+            "core.interfaces.IAccessControl.IAccessControl.HASROLE_SELECTOR": {
+                "type": "const",
+                "value": 1524480176774572350379373280772296831127278266370645462286311440052160428776
+            },
+            "core.interfaces.IAccessControl.IAccessControl.HASSUPERADMINROLE_SELECTOR": {
+                "type": "const",
+                "value": 446303824762482917563978375277125826446576171793772373210055486465524685283
             },
             "core.interfaces.IAccessControl.IAccessControl.ImplicitArgs": {
                 "full_name": "core.interfaces.IAccessControl.IAccessControl.ImplicitArgs",
@@ -4741,29 +4906,33 @@
                 "size": 0,
                 "type": "struct"
             },
-            "core.interfaces.IAccessControl.IAccessControl.RENOUNCE_ROLE_SELECTOR": {
+            "core.interfaces.IAccessControl.IAccessControl.RENOUNCEROLE_SELECTOR": {
                 "type": "const",
-                "value": 381642946473585770820036185024503555343080187113488329245049642671977725251
+                "value": 6653341620071310973752352638048746524830698423958043731928584816850528307
             },
-            "core.interfaces.IAccessControl.IAccessControl.REVOKE_ROLE_SELECTOR": {
+            "core.interfaces.IAccessControl.IAccessControl.REVOKEROLE_SELECTOR": {
                 "type": "const",
-                "value": 1028425309240443364614227714606617982815215427817085929123345110828617643756
+                "value": 296713603368084158511776663600408199547886832463141828777247169469594393981
             },
             "core.interfaces.IAccessControl.IAccessControl.Return": {
                 "cairo_type": "()",
                 "type": "type_definition"
             },
-            "core.interfaces.IAccessControl.IAccessControl.SET_ROLE_SUPER_ADMIN_SELECTOR": {
+            "core.interfaces.IAccessControl.IAccessControl.SETACCESSCONTROLROLES_SELECTOR": {
                 "type": "const",
-                "value": 413175235493739410288365085374149331559381716866986343066786505748692601177
+                "value": 673588806451510738101149946087205622079308686909507458355245248865972831525
+            },
+            "core.interfaces.IAccessControl.IAccessControl.SETROLESUPERADMIN_SELECTOR": {
+                "type": "const",
+                "value": 121811559196597829964258057850649225245313232863066200933915088335392147372
             },
             "core.interfaces.IAccessControl.IAccessControl.SIZEOF_LOCALS": {
                 "type": "const",
                 "value": 0
             },
-            "core.interfaces.IAccessControl.IAccessControl.TRANSFER_ROLE_SELECTOR": {
+            "core.interfaces.IAccessControl.IAccessControl.TRANSFERROLE_SELECTOR": {
                 "type": "const",
-                "value": 548399790296651493801212766555311408541363686464616893072224015642293224687
+                "value": 610308433700406725350933947604327556945642019653728694359809281514906575226
             },
             "core.interfaces.IAccessControl.IAccessControl.alloc": {
                 "destination": "starkware.cairo.common.alloc.alloc",
@@ -4873,6 +5042,50 @@
                 "type": "const",
                 "value": 512522449276256497680591970590208333954131737187699415633072810694583815336
             },
+            "core.interfaces.IComptroller.IComptroller.GET_DEPOSIT_REQUEST_FEE_SELECTOR": {
+                "type": "const",
+                "value": 713600490312180236905124863563241202637282566154289888989924555878367696962
+            },
+            "core.interfaces.IComptroller.IComptroller.GET_EFFECTIVE_ADD_LIQUIDITY_FEE_SELECTOR": {
+                "type": "const",
+                "value": 878262940738236064434955733396736346248378205490615045801413413960808275363
+            },
+            "core.interfaces.IComptroller.IComptroller.GET_EFFECTIVE_DEPOSIT_REQUEST_FEE_SELECTOR": {
+                "type": "const",
+                "value": 1523276655112126603412151146769204586936305095172355486113165893364282807807
+            },
+            "core.interfaces.IComptroller.IComptroller.GET_EFFECTIVE_LOAN_REPAY_FEE_SELECTOR": {
+                "type": "const",
+                "value": 652220025694309020470460081380996841953216795176836213492463803159633846114
+            },
+            "core.interfaces.IComptroller.IComptroller.GET_EFFECTIVE_LOAN_REQUEST_FEE_SELECTOR": {
+                "type": "const",
+                "value": 995278065474967020265161908446732029786403874237273226957614206051161371104
+            },
+            "core.interfaces.IComptroller.IComptroller.GET_EFFECTIVE_REMOVE_LIQUIDITY_FEE_SELECTOR": {
+                "type": "const",
+                "value": 1434970682243638604673666984442004195991769579024989257948995590009951653993
+            },
+            "core.interfaces.IComptroller.IComptroller.GET_EFFECTIVE_REVERT_SWAP_FEE_SELECTOR": {
+                "type": "const",
+                "value": 1549320636602884639916510457994771448628565214135766898991182426466680111096
+            },
+            "core.interfaces.IComptroller.IComptroller.GET_EFFECTIVE_STAKING_FEE_SELECTOR": {
+                "type": "const",
+                "value": 1772058105493286134343311907797136024584633859304998531006667123133224219994
+            },
+            "core.interfaces.IComptroller.IComptroller.GET_EFFECTIVE_SWAP_FEE_SELECTOR": {
+                "type": "const",
+                "value": 775531778032358561260044312866879012015290272326256775833133777623214878478
+            },
+            "core.interfaces.IComptroller.IComptroller.GET_EFFECTIVE_UNSTAKING_FEE_SELECTOR": {
+                "type": "const",
+                "value": 312469345146098631291534462913804599681358418132607192736539079106420187087
+            },
+            "core.interfaces.IComptroller.IComptroller.GET_EFFECTIVE_WITHDRAW_DEPOSIT_FEE_SELECTOR": {
+                "type": "const",
+                "value": 1709416302588921387084490714174098204145055159980846019720044675754066280311
+            },
             "core.interfaces.IComptroller.IComptroller.GET_MAX_REBATE_ON_TRANSACTION_FEES_SELECTOR": {
                 "type": "const",
                 "value": 1374476802783501313561812990886425666089799570236989249709446179432905302933
@@ -4880,6 +5093,14 @@
             "core.interfaces.IComptroller.IComptroller.GET_MINIMUM_DEPOSIT_AMOUNT_SELECTOR": {
                 "type": "const",
                 "value": 1681460796492883839300670209367784279085883539468687841993160354945324696996
+            },
+            "core.interfaces.IComptroller.IComptroller.GET_STAKING_FEE_SELECTOR": {
+                "type": "const",
+                "value": 76964773369185826124177299334626152621081798279356871757874946659743768537
+            },
+            "core.interfaces.IComptroller.IComptroller.GET_UNSTAKING_FEE_SELECTOR": {
+                "type": "const",
+                "value": 1249777350760036427065701372492725076316983271270438424449716801439457475195
             },
             "core.interfaces.IComptroller.IComptroller.GET_WITHDRAW_DEPOSIT_FEE_SELECTOR": {
                 "type": "const",
@@ -4894,6 +5115,38 @@
             "core.interfaces.IComptroller.IComptroller.Return": {
                 "cairo_type": "()",
                 "type": "type_definition"
+            },
+            "core.interfaces.IComptroller.IComptroller.SETDIALPARAMETERS_SELECTOR": {
+                "type": "const",
+                "value": 888632425352581526760345569760740452408069074521825176069461000787068629105
+            },
+            "core.interfaces.IComptroller.IComptroller.SET_HASH_TOKEN_LOCKING_SLAB_REBATE_FEES_SELECTOR": {
+                "type": "const",
+                "value": 247567250897747759168428803428605782267568754053102856544396232415132991520
+            },
+            "core.interfaces.IComptroller.IComptroller.SET_HASH_TOKEN_LOCKING_SLAB_SELECTOR": {
+                "type": "const",
+                "value": 631616250143958311764204756517372569151634296795708297925306221323422127640
+            },
+            "core.interfaces.IComptroller.IComptroller.SET_INTEREST_CORRELATION_FACTOR_SELECTOR": {
+                "type": "const",
+                "value": 1150754398850198689212814992870255679413389715931239103951043577316776707726
+            },
+            "core.interfaces.IComptroller.IComptroller.SET_LEVERAGE_SELECTOR": {
+                "type": "const",
+                "value": 1518682642075877322576247813551383594630997350265035724097493953212854723564
+            },
+            "core.interfaces.IComptroller.IComptroller.SET_PROTOCOL_FEES_SELECTOR": {
+                "type": "const",
+                "value": 1274857851025857487183297051417539273858879254487081805371552839693689148419
+            },
+            "core.interfaces.IComptroller.IComptroller.SET_RESERVE_FACTOR_SELECTOR": {
+                "type": "const",
+                "value": 81224665618441034696198273848535369640711297689827615634090862792620878116
+            },
+            "core.interfaces.IComptroller.IComptroller.SET_USER_CREDIT_RISK_SELECTOR": {
+                "type": "const",
+                "value": 33373473406206343467562186082243043774331802632798167183091807327655871559
             },
             "core.interfaces.IComptroller.IComptroller.SIZEOF_LOCALS": {
                 "type": "const",
@@ -4923,6 +5176,10 @@
                 "destination": "core.contracts.open_diamond.storages.governor_store.AssetMetadata",
                 "type": "alias"
             },
+            "core.interfaces.IGovernor.BorrowVaultMetadata": {
+                "destination": "core.contracts.open_diamond.storages.governor_store.BorrowVaultMetadata",
+                "type": "alias"
+            },
             "core.interfaces.IGovernor.DepositVaultMetadata": {
                 "destination": "core.contracts.open_diamond.storages.governor_store.DepositVaultMetadata",
                 "type": "alias"
@@ -4935,6 +5192,10 @@
                 "members": {},
                 "size": 0,
                 "type": "struct"
+            },
+            "core.interfaces.IGovernor.IGovernor.GET_ACCESS_CONTROL_CONTRACT_SELECTOR": {
+                "type": "const",
+                "value": 745070388049555418986937132137167154349255846957252238557840316753243967178
             },
             "core.interfaces.IGovernor.IGovernor.GET_ASSET_FROM_DTOKEN_SELECTOR": {
                 "type": "const",
@@ -4952,6 +5213,14 @@
                 "type": "const",
                 "value": 1200708012562285002558710214616644680428747059501029205922175574699926650975
             },
+            "core.interfaces.IGovernor.IGovernor.GET_ASSET_PRICE_FROM_ADDRESS_SELECTOR": {
+                "type": "const",
+                "value": 1713895191263159819909806028470934536707983824634381186123401661919811002341
+            },
+            "core.interfaces.IGovernor.IGovernor.GET_BORROW_VAULT_SELECTOR": {
+                "type": "const",
+                "value": 430178979758408756933005179714295543633766441395941304165887962795976585942
+            },
             "core.interfaces.IGovernor.IGovernor.GET_COLLECTOR_CONTRACT_SELECTOR": {
                 "type": "const",
                 "value": 329091627321654969063276158967894152489102507805621882940509006419916541289
@@ -4959,10 +5228,6 @@
             "core.interfaces.IGovernor.IGovernor.GET_DEPOSIT_VAULTS_LEN_SELECTOR": {
                 "type": "const",
                 "value": 1443245673743178346973411562822835161995406231445175782795040207838623090034
-            },
-            "core.interfaces.IGovernor.IGovernor.GET_DEPOSIT_VAULT_METADATA_SELECTOR": {
-                "type": "const",
-                "value": 1185380029967581255906702412394429540451607440242693184605264834224924683744
             },
             "core.interfaces.IGovernor.IGovernor.GET_DEPOSIT_VAULT_SELECTOR": {
                 "type": "const",
@@ -4972,9 +5237,25 @@
                 "type": "const",
                 "value": 174085878517702865198501505014197527204825742451213561230242771981014770754
             },
+            "core.interfaces.IGovernor.IGovernor.GET_HASH_LOCK_POOL_CONTRACT_SELECTOR": {
+                "type": "const",
+                "value": 181309957811804435555965271864003356733974080211013039349695411671029141039
+            },
+            "core.interfaces.IGovernor.IGovernor.GET_HASH_TOKEN_CONTRACT_SELECTOR": {
+                "type": "const",
+                "value": 1349702176997896758059382432319985902913950530731856371157011303700303260271
+            },
+            "core.interfaces.IGovernor.IGovernor.GET_LIQUIDATION_BASE_MARKET_SELECTOR": {
+                "type": "const",
+                "value": 787050270527780095038380157839251653333542540728790184906748308464402556764
+            },
             "core.interfaces.IGovernor.IGovernor.GET_MINIMUM_DEPOSIT_AMOUNT_SELECTOR": {
                 "type": "const",
                 "value": 1681460796492883839300670209367784279085883539468687841993160354945324696996
+            },
+            "core.interfaces.IGovernor.IGovernor.GET_MINIMUM_STAKE_AMOUNT_SELECTOR": {
+                "type": "const",
+                "value": 691042717504108005093329318288124578095804564809978092511284768630763598116
             },
             "core.interfaces.IGovernor.IGovernor.GET_RTOKEN_FROM_ASSET_SELECTOR": {
                 "type": "const",
@@ -4994,6 +5275,10 @@
                 "cairo_type": "()",
                 "type": "type_definition"
             },
+            "core.interfaces.IGovernor.IGovernor.SET_ACCESS_CONTROL_CONTRACT_SELECTOR": {
+                "type": "const",
+                "value": 1551870826614517118989002921849498164041634568574069177232086311061282538847
+            },
             "core.interfaces.IGovernor.IGovernor.SET_ASSET_FROM_RTOKEN_SELECTOR": {
                 "type": "const",
                 "value": 232592246438019977518242617216969183972151484591071790962540314113004465813
@@ -5002,6 +5287,10 @@
                 "type": "const",
                 "value": 666359341302302187233521335343723462895922740850751885552348277599094125288
             },
+            "core.interfaces.IGovernor.IGovernor.SET_BORROW_VAULT_SELECTOR": {
+                "type": "const",
+                "value": 679351173967325255579289249110619895041563171946492298400994815724933129676
+            },
             "core.interfaces.IGovernor.IGovernor.SET_COLLECTOR_CONTRACT_SELECTOR": {
                 "type": "const",
                 "value": 88796328495494837824566225280332231961502549935062049834791386449887489294
@@ -5009,6 +5298,42 @@
             "core.interfaces.IGovernor.IGovernor.SET_DEPOSIT_VAULT_SELECTOR": {
                 "type": "const",
                 "value": 536756039354503639058199269258670660968956495099191216942151643988104681618
+            },
+            "core.interfaces.IGovernor.IGovernor.SET_EMPIRIC_PROXY_SELECTOR": {
+                "type": "const",
+                "value": 842966042905085519545152585007990606706659965882743527934851271843995281014
+            },
+            "core.interfaces.IGovernor.IGovernor.SET_EXPECTED_EMPIRIC_DECIMALS_SELECTOR": {
+                "type": "const",
+                "value": 1046477695901836877382681210454626796725605925915399785190518077432544764212
+            },
+            "core.interfaces.IGovernor.IGovernor.SET_HASH_GOVERNANCE_CONTRACT_SELECTOR": {
+                "type": "const",
+                "value": 1050619686940766303813659097945832055410754893691953428657647703472685966451
+            },
+            "core.interfaces.IGovernor.IGovernor.SET_HASH_LOCK_POOL_CONTRACT_SELECTOR": {
+                "type": "const",
+                "value": 1795121476488477125106935271656387922794020135222057403839303665285580247599
+            },
+            "core.interfaces.IGovernor.IGovernor.SET_HASH_TOKEN_CONTRACT_SELECTOR": {
+                "type": "const",
+                "value": 1463217279393235884912209576140930013507615522756429279660774656908091267427
+            },
+            "core.interfaces.IGovernor.IGovernor.SET_JEDI_SWAP_ROUTER_SELECTOR": {
+                "type": "const",
+                "value": 1627048875873285869861138403783391868923951563013073013692133916985390957779
+            },
+            "core.interfaces.IGovernor.IGovernor.SET_LIQUIDATION_BASE_MARKET_SELECTOR": {
+                "type": "const",
+                "value": 1350969065682239915648481905313290393457621695317302649813591032211656804692
+            },
+            "core.interfaces.IGovernor.IGovernor.SET_MINIMUM_LIQUIDATOR_DEPOSIT_SELECTOR": {
+                "type": "const",
+                "value": 1333713008180149106739434331850175315168958852708872547602641971036678709870
+            },
+            "core.interfaces.IGovernor.IGovernor.SET_MY_SWAP_ROUTER_SELECTOR": {
+                "type": "const",
+                "value": 1216356343777678082115657457994306410169065777596947819236029478707141347602
             },
             "core.interfaces.IGovernor.IGovernor.SET_RTOKEN_FROM_ASSET_SELECTOR": {
                 "type": "const",
@@ -5587,6 +5912,10 @@
             "core.interfaces.ierc20.IERC20.DECIMALS_SELECTOR": {
                 "type": "const",
                 "value": 134830404806214277570220174593674215737759987247891306080029841794115377321
+            },
+            "core.interfaces.ierc20.IERC20.DRIP_SELECTOR": {
+                "type": "const",
+                "value": 59629513245055334985651153917719315977871334574847550290874697325584170644
             },
             "core.interfaces.ierc20.IERC20.ImplicitArgs": {
                 "full_name": "core.interfaces.ierc20.IERC20.ImplicitArgs",
