@@ -46,12 +46,18 @@ export default function Home() {
   //   address
   // })
   // console.log(data);
-  const { available, disconnect, connect, connectors } = useConnectors();
+  const { available, refresh, disconnect, connect, connectors } = useConnectors();
+  useEffect(() => {
+    const interval = setInterval(refresh, 5000)
+    return () => clearInterval(interval)
+  }, [refresh])
+
+  console.log("available", available);
   const [render, setRender] = useState(true);
   const [isWhiteListed, setIsWhiteListed] = useState(false);
   const router = useRouter();
-  const href = "/waitlist";
-  const href2 = "/market";
+  const waitlistHref = "/waitlist";
+  const marketHref2 = "/market";
   const dispatch = useDispatch();
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
@@ -104,14 +110,14 @@ export default function Home() {
     }
   };
   useEffect(() => {
-    // alert(status)
+    alert(status)
     // const storedAccount = localStorage.getItem("account");
-    const hasVisited = localStorage.getItem('visited');
-    if (!hasVisited) {
-      // Set a local storage item to indicate the user has visited
-      localStorage.setItem('visited', 'true');
-    }
-    // if (storedAccount) {
+    // const hasVisited = localStorage.getItem('visited');
+    // if (!hasVisited) {
+    //   // Set a local storage item to indicate the user has visited
+    //   localStorage.setItem('visited', 'true');
+    // }
+    // if(storedAccount){
     //   router.push('./market')
     // }
     if (status == "connected") {
@@ -119,11 +125,12 @@ export default function Home() {
       // localStorage.setItem("account", JSON.stringify(account));
       dispatch(setAccount(account));
       if (!isWhiteListed) {
-        router.replace(href);
+        router.replace(waitlistHref);
       } else {
-        router.replace(href2);
+        router.replace(marketHref2);
       }
     }
+    console.log("account home", address, status);
   }, [account, status, dispatch, router]);
 
   return (
@@ -181,116 +188,118 @@ export default function Home() {
               </Text>
             </Box>
           </Box>
-          {available[0]?.options?.id=="braavos" ?
-            <Box
-              w="full"
-              backgroundColor="#101216"
-              py="2"
-              border="1px solid #2B2F35"
-              borderRadius="6px"
-              gap="3px"
-              display="flex"
-              justifyContent="space-between"
-              cursor="pointer"
-              // onClick={() => router.push("/market")}
-              onClick={() =>
-                connect(connectors[0])
-              }
-            >
-              <Text ml="1rem" color="white">
-                {available[0]?.options?.id=="braavos" ? "Bravos Wallet" : "Download Bravos Wallet"}
-              </Text>
-              <Box p="1" mr="16px">
-                <BravosIcon />
-              </Box>
-            </Box>
-            :
-            <Link href="https://braavos.app" target="_blank">
-              <Box
-                w="full"
-                backgroundColor="#101216"
-                py="2"
-                border="1px solid #2B2F35"
-                borderRadius="6px"
-                gap="3px"
-                display="flex"
-                justifyContent="space-between"
-                cursor="pointer"
-                // onClick={() => router.push("/market")}
-                onClick={() =>
-                  connect(connectors[0])
-                }
-              >
-                <Text ml="1rem" color="white">
-                  {available[0]?.options?.id=="braavos" ? "Bravos Wallet" : "Download Bravos Wallet"}
-                </Text>
-                <Box p="1" mr="16px">
-                  <BravosIcon />
-                </Box>
-              </Box>
-            </Link>
+          {available[0]?.options?.id ?
+                    <Box
+                    w="full"
+                    backgroundColor="#101216"
+                    py="2"
+                    border="1px solid #2B2F35"
+                    borderRadius="6px"
+                    gap="3px"
+                    display="flex"
+                    justifyContent="space-between"
+                    cursor="pointer"
+                    // onClick={() => router.push("/market")}
+                    onClick={() => 
+                      connect(connectors[0])
+                    }
+                  >
+                    <Text ml="1rem" color="white">
+                      {available[0]?.options?.id ? "Bravos Wallet":"Download Bravos Wallet"}
+                    </Text>
+                    <Box p="1" mr="16px">
+                      <BravosIcon />
+                    </Box>
+                  </Box>
+          :
+          <h1>braavos</h1>
+          // <Link href="https://braavos.app" target="_blank">
+          //      <Box
+          //      w="full"
+          //      backgroundColor="#101216"
+          //      py="2"
+          //      border="1px solid #2B2F35"
+          //      borderRadius="6px"
+          //      gap="3px"
+          //      display="flex"
+          //      justifyContent="space-between"
+          //      cursor="pointer"
+          //      // onClick={() => router.push("/market")}
+          //     //  onClick={() => 
+          //     //    connect(connectors[0])
+          //     //  }
+          //    >
+          //      <Text ml="1rem" color="white">
+          //        {available[0]?.options?.id ? "Bravos Wallet":"Download Bravos Wallet"}
+          //      </Text>
+          //      <Box p="1" mr="16px">
+          //        <BravosIcon />
+          //      </Box>
+          //    </Box>     
+          // </Link>
           }
 
           {available[1]?.options.id=="argentX"|| available[0]?.options.id=="argentX" ?
 
-            <Box
-              w="full"
-              backgroundColor="#101216"
-              py="2"
-              border="1px solid #2B2F35"
-              borderRadius="6px"
-              gap="3px"
-              mt="1rem"
-              display="flex"
-              justifyContent="space-between"
-              cursor="pointer"
-              onClick={() => connect(connectors[1])}
-            >
-
-              <Text ml="1rem" color="white">
-                {available[1]?.options.id=="argentX" || available[0]?.options.id=="argentX" ? "Argent X Wallet" : "Download Argent X Wallet"}
-              </Text>
-              <Box p="1" mr="16px">
-                <Image
-                  src={ArgentXLogo}
-                  alt="Picture of the author"
-                  width="15"
-                  height="15"
-                  style={{ cursor: "pointer" }}
-                />
-              </Box>
-            </Box>
-            :
-            <Link href="https://www.argent.xyz/argent-x" target="_black">
-
-              <Box
-                w="full"
-                backgroundColor="#101216"
-                py="2"
-                border="1px solid #2B2F35"
-                borderRadius="6px"
-                gap="3px"
-                mt="1rem"
-                display="flex"
-                justifyContent="space-between"
-                cursor="pointer"
-                onClick={() => connect(connectors[1])}
-              >
-
-                <Text ml="1rem" color="white">
-                  {available[1]?.options.id=="argentX" || available[0]?.options.id=="argentX" ? "Argent X Wallet" : "Download Argent X Wallet"}
-                </Text>
-                <Box p="1" mr="16px">
-                  <Image
-                    src={ArgentXLogo}
-                    alt="Picture of the author"
-                    width="15"
-                    height="15"
-                    style={{ cursor: "pointer" }}
-                  />
-                </Box>
-              </Box>
-            </Link>
+             <Box
+             w="full"
+             backgroundColor="#101216"
+             py="2"
+             border="1px solid #2B2F35"
+             borderRadius="6px"
+             gap="3px"
+             mt="1rem"
+             display="flex"
+             justifyContent="space-between"
+             cursor="pointer"
+             onClick={() => connect(connectors[1])}
+           >
+             
+             <Text ml="1rem" color="white">
+             {available[1]?.options?.id ? "Argent X Wallet":"Download Argent X Wallet"}
+             </Text>
+             <Box p="1" mr="16px">
+             <Image
+                           src={ArgentXLogo}
+                           alt="Picture of the author"
+                           width="15"
+                           height="15"
+                           style={{ cursor: "pointer" }}
+                         />
+             </Box>
+           </Box>       
+          :
+          <h1>argent</h1>
+          // <Link href="https://www.argent.xyz/argent-x" target="_black">
+          
+          //           <Box
+          //           w="full"
+          //           backgroundColor="#101216"
+          //           py="2"
+          //           border="1px solid #2B2F35"
+          //           borderRadius="6px"
+          //           gap="3px"
+          //           mt="1rem"
+          //           display="flex"
+          //           justifyContent="space-between"
+          //           cursor="pointer"
+          //           // onClick={() => connect(connectors[1])}
+          //         >
+                    
+          //           <Text ml="1rem" color="white">
+          //           {available[1]?.options?.id ? "Argent X Wallet":"Download Argent X Wallet"}
+          //           </Text>
+          //           <Box p="1" mr="16px">
+          //           <Image
+          //                         src={ArgentXLogo}
+          //                         alt="Picture of the author"
+          //                         width="15"
+          //                         height="15"
+          //                         style={{ cursor: "pointer" }}
+          //                       />
+          //           </Box>
+          //         </Box>
+          // </Link>
           }
 
         </Card>
