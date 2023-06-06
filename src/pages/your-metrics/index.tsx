@@ -65,7 +65,7 @@ const YourMetrics = () => {
               </Text>
               <Tooltip
                 hasArrow
-                placement="bottom-start"
+                placement="right"
                 boxShadow="dark-lg"
                 label="Select market"
                 bg="#24292F"
@@ -320,7 +320,7 @@ const YourMetrics = () => {
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="bottom-start"
+                      placement="right"
                       boxShadow="dark-lg"
                       label="Total revenue"
                       bg="#24292F"

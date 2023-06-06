@@ -214,7 +214,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
-  console.log(activeModal)
+  console.log(activeModal);
 
   useEffect(() => {
     setInputStakeAmount(0);
@@ -384,7 +384,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -422,7 +422,11 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                           </Box>
                           <Box pt="1" className="navbar-button">
-                            {activeModal=="stakeMarketDropDown" ?<ArrowUp/> :<DropdownUp/>}
+                            {activeModal == "stakeMarketDropDown" ? (
+                              <ArrowUp />
+                            ) : (
+                              <DropdownUp />
+                            )}
                           </Box>
                           {modalDropdowns.stakeMarketDropDown && (
                             <Box
@@ -497,7 +501,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -742,7 +746,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -777,7 +781,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -811,7 +815,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -974,7 +978,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -1014,7 +1018,11 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                           </Box>
                           <Box pt="1" className="navbar-button">
-                            {activeModal=="unstakeMarketDropDown" ?<ArrowUp/>:<DropdownUp/>}
+                            {activeModal == "unstakeMarketDropDown" ? (
+                              <ArrowUp />
+                            ) : (
+                              <DropdownUp />
+                            )}
                           </Box>
                           {modalDropdowns.unstakeMarketDropDown && (
                             <Box
@@ -1089,7 +1097,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -1336,7 +1344,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -1371,7 +1379,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -1405,7 +1413,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right-start"
+                              placement="right"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"

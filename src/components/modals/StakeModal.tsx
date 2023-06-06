@@ -208,7 +208,7 @@ const StakeModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -250,7 +250,11 @@ const StakeModal = ({
                   </Box>
 
                   <Box pt="1" className="navbar-button">
-                    {activeModal=="stakeModalSupplyMarketDropDown" ?<ArrowUp/>:<DropdownUp/>}
+                    {activeModal == "stakeModalSupplyMarketDropDown" ? (
+                      <ArrowUp />
+                    ) : (
+                      <DropdownUp />
+                    )}
                   </Box>
                   {modalDropdowns.stakeModalSupplyMarketDropDown && (
                     <Box
@@ -312,7 +316,7 @@ const StakeModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -347,7 +351,11 @@ const StakeModal = ({
                     {currentBorrowId}
                   </Box>
                   <Text pt="1" className="navbar-button">
-                    {activeModal=="stakeModalBorrowIDDropDown" ?<ArrowUp/>:<DropdownUp/>}
+                    {activeModal == "stakeModalBorrowIDDropDown" ? (
+                      <ArrowUp />
+                    ) : (
+                      <DropdownUp />
+                    )}
                   </Text>
                   {modalDropdowns.stakeModalBorrowIDDropDown && (
                     <Box
@@ -412,7 +420,7 @@ const StakeModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -483,7 +491,7 @@ const StakeModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="right-start"
+                      placement="right"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -525,7 +533,7 @@ const StakeModal = ({
                     </Box>
                     <Tooltip
                       hasArrow
-                      placement="right-start"
+                      placement="right"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -560,7 +568,7 @@ const StakeModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="right-start"
+                      placement="right"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -608,7 +616,7 @@ const StakeModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="right-start"
+                      placement="right"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -643,7 +651,7 @@ const StakeModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="right-start"
+                      placement="right"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -678,7 +686,7 @@ const StakeModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="right-start"
+                      placement="right"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -713,7 +721,7 @@ const StakeModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="right-start"
+                      placement="right"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -748,7 +756,7 @@ const StakeModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="right-start"
+                      placement="right"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"

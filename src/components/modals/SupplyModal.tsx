@@ -44,7 +44,7 @@ import {
   setModalDropdown,
   selectModalDropDowns,
   resetModalDropdowns,
-  selectCurrentModalDropdown
+  selectCurrentModalDropdown,
 } from "@/store/slices/dropdownsSlice";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
@@ -196,7 +196,7 @@ const SupplyModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -231,7 +231,7 @@ const SupplyModal = ({
                   </Box>
 
                   <Box pt="1" className="navbar-button">
-                    {activeModal ? <ArrowUp />:<DropdownUp />}
+                    {activeModal ? <ArrowUp /> : <DropdownUp />}
                   </Box>
                   {modalDropdowns.supplyModalDropdown && (
                     <Box
@@ -298,7 +298,7 @@ const SupplyModal = ({
                   </Text>
                   <Tooltip
                     hasArrow
-                    placement="bottom-start"
+                    placement="right"
                     boxShadow="dark-lg"
                     label="all the assets to the market"
                     bg="#24292F"
@@ -520,7 +520,7 @@ const SupplyModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="right-start"
+                      placement="right"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -563,7 +563,7 @@ const SupplyModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="right-start"
+                      placement="right"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
@@ -604,7 +604,7 @@ const SupplyModal = ({
                     </Text>
                     <Tooltip
                       hasArrow
-                      placement="right-start"
+                      placement="right"
                       boxShadow="dark-lg"
                       label="all the assets to the market"
                       bg="#24292F"
