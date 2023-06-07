@@ -24,6 +24,7 @@ import {
   NumberInputField,
   Stack,
   Card,
+  ModalHeader,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -945,9 +946,11 @@ const YourBorrowModal = ({
       >
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
         <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
-          {/* <ModalHeader>Borrow</ModalHeader> */}
+          <ModalHeader  padding="0">
+          </ModalHeader>
           <ModalCloseButton color="white" mt="1rem" mr="1rem" />
-          <ModalBody color={"#E6EDF3"} pt={6} px={7}>
+
+          <ModalBody color={"#E6EDF3"} pt={6} px={7} >
             <Box
               display={"flex"}
               justifyContent={"space-between"}
@@ -955,8 +958,14 @@ const YourBorrowModal = ({
               // my={"2"}
             >
               <Box w="full">
-                <Tabs variant="unstyled">
-                  <TabList borderRadius="md">
+                <Tabs variant="unstyled" >
+                  <Box position="relative" >
+
+                  <TabList borderRadius="md" top="9.5rem" position="fixed"
+  width="100%"
+  zIndex="1">
+
+                    <Box display="flex" width="300px" position="fixed" >
                     <Tab
                       py="1"
                       px="3"
@@ -966,6 +975,7 @@ const YourBorrowModal = ({
                       borderColor="#2B2F35"
                       borderLeftRadius="md"
                       fontWeight="normal"
+                      opacity="100%"
                       _selected={{
                         color: "white",
                         bg: "#0969DA",
@@ -984,6 +994,7 @@ const YourBorrowModal = ({
                       borderColor="#2B2F35"
                       borderRightRadius="md"
                       fontWeight="normal"
+                      opacity="100%"
                       _selected={{
                         color: "white",
                         bg: "#0969DA",
@@ -993,9 +1004,12 @@ const YourBorrowModal = ({
                     >
                       Add Collateral
                     </Tab>
+                    </Box>
+                    
                   </TabList>
-                  <TabPanels>
-                    <TabPanel p="0" m="0">
+                  </Box>
+                  <TabPanels  >
+                    <TabPanel p="0" m="0" mt="1rem" overflowY="auto">
                       <Box
                         display="flex"
                         flexDirection="column"
@@ -1006,7 +1020,7 @@ const YourBorrowModal = ({
                         // my="4"
                         borderRadius="md"
                         gap="3"
-                        mt="1.5rem"
+                        mt="2.5rem"
                       >
                         <Box display="flex" flexDirection="column" gap="1">
                           <Box display="flex">
@@ -1998,7 +2012,7 @@ const YourBorrowModal = ({
                       )}
 
                       {currentAction == "Repay Borrow" ? (
-                        inputRepayAmount > 0 ? (
+                        inputRepayAmount > 0 && inputRepayAmount<=walletBalance ? (
                           <Box onClick={()=>{setTransactionStarted(true)}}>
                           <AnimatedButton
                             bgColor="#101216"
@@ -2089,7 +2103,7 @@ const YourBorrowModal = ({
                         ""
                       )}
                     </TabPanel>
-                    <TabPanel m="0" p="0">
+                    <TabPanel m="0" p="0" mt="1rem" overflowY="auto">
                       <Box
                         display="flex"
                         flexDirection="column"
@@ -2100,7 +2114,7 @@ const YourBorrowModal = ({
                         // my="4"
                         borderRadius="md"
                         gap="3"
-                        mt="1.5rem"
+                        mt="2.5rem"
                       >
                         <Box display="flex" flexDirection="column" gap="1">
                           <Text
