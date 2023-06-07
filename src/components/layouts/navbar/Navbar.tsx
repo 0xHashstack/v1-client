@@ -38,6 +38,7 @@ import {
   Center,
   HStack,
   LinkOverlay,
+  Skeleton,
   Text,
   background,
   useOutsideClick,
@@ -63,15 +64,16 @@ const Navbar = () => {
   const language = useSelector(selectLanguage);
   const [parsedAccount, setParsedAccount] = useState<any>();
   const currentDropdown = useSelector(selectCurrentDropdown);
-  const account = useSelector(selectAccount);
-  useEffect(() => {
-    const storedAccount = localStorage.getItem("account");
-    if (storedAccount) {
-      setParsedAccount(JSON.parse(storedAccount));
-    }
-    // console.log("Sahitya account",typeof account.address)
-    console.log("Sahitya", parsedAccount);
-  }, []);
+  const { account } = useAccount();
+  console.log(account, "Navbar");
+  // useEffect(() => {
+  //   const storedAccount = localStorage.getItem("account");
+  //   if (storedAccount) {
+  //     setParsedAccount(JSON.parse(storedAccount));
+  //   }
+  //   // console.log("Sahitya account",typeof account.address)
+  //   console.log("Sahitya", parsedAccount);
+  // }, []);
   const [dashboardHover, setDashboardHover] = useState(false);
   const [contibutionHover, setContibutionHover] = useState(false);
   const [transferDepositHover, setTransferDepositHover] = useState(false);
@@ -95,7 +97,6 @@ const Navbar = () => {
 
   const router = useRouter();
   const { pathname } = router;
-
 
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
@@ -185,7 +186,7 @@ const Navbar = () => {
           cursor="pointer"
           marginBottom="0px"
           className="button"
-          color={`${pathname=="/market"?"#6e7681":"white"}`}
+          color={`${pathname == "/market" ? "#6e7681" : "white"}`}
           _hover={{
             color: `${router.pathname != "/waitlist" ? "#6e7681" : ""}`,
           }}
@@ -203,17 +204,27 @@ const Navbar = () => {
             alignItems="center"
             gap={"8px"}
           >
-            {router.pathname != "/waitlist" && dashboardHover ? (
-              <Image
-                src={hoverDashboardIcon}
-                alt="Picture of the author"
-                width="16"
-                height="16"
-                style={{ cursor: "pointer" }}
-              />
+            {router.pathname != "/market" ? (
+              dashboardHover ? (
+                <Image
+                  src={hoverDashboardIcon}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                  style={{ cursor: "pointer" }}
+                />
+              ) : (
+                <Image
+                  src={"./dashboardIcon.svg"}
+                  alt="Picture of the author"
+                  width="16"
+                  height="16"
+                  style={{ cursor: "pointer" }}
+                />
+              )
             ) : (
               <Image
-                src={"./dashboardIcon.svg"}
+                src={hoverDashboardIcon}
                 alt="Picture of the author"
                 width="16"
                 height="16"
@@ -480,7 +491,7 @@ const Navbar = () => {
                 dispatch(setNavDropdown("walletConnectionDropdown"));
               }}
             >
-              {parsedAccount ? (
+              {account ? (
                 <Box
                   // bgColor="red"
                   width="100%"
@@ -515,18 +526,18 @@ const Navbar = () => {
                       account.length - 10,
                       account.length
                     )}`}{" "} */}
-                    {`${parsedAccount.address.substring(
+                    {`${account.address.substring(
                       0,
                       3
-                    )}...${parsedAccount.address.substring(
-                      parsedAccount.address.length - 9,
-                      parsedAccount.address.length
+                    )}...${account.address.substring(
+                      account.address.length - 9,
+                      account.address.length
                     )}`}{" "}
                   </Text>
                 </Box>
               ) : (
                 <>
-                  <Text
+                  {/* <Text
                     fontSize="14px"
                     width="100%"
                     display="flex"
@@ -535,7 +546,9 @@ const Navbar = () => {
                     // bgColor={"red"}
                   >
                     Connect Wallet
-                  </Text>
+                  </Text> */}
+                  <Skeleton width="7rem" height="100%" borderRadius="2px" />
+                  {/* 8.25rem */}
                 </>
               )}
               <Box position="absolute" right="0.7rem">
@@ -575,7 +588,7 @@ const Navbar = () => {
                 borderRadius="6px"
                 className="dropdown-container"
               >
-                {parsedAccount ? (
+                {account ? (
                   // walletConnectionDropdown.map((val, idx) => {
                   //   return (
                   <>
@@ -588,7 +601,8 @@ const Navbar = () => {
                       onClick={() => {
                         dispatch(setNavDropdown(""));
                         disconnect();
-                        localStorage.setItem("account", "");
+                        localStorage.setItem("lastUsedConnector", "");
+                        // localStorage.setItem("account", "");
 
                         router.push("./");
                       }}
@@ -620,8 +634,10 @@ const Navbar = () => {
                     borderRadius="6px"
                     border="1px solid #2B2F35"
                     onClick={() => {
-                      connect(connectors[0]);
-                      localStorage.setItem("account", JSON.stringify(account));
+                      // alert("hey");
+                      connect(connectors[1]);
+                      console.log("navbar", account);
+                      // localStorage.setItem("account", JSON.stringify(account));
                     }}
                   >
                     Connect

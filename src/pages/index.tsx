@@ -3,17 +3,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Image from "next/image";
-import {
-  Button,
-  Card,
-  Text,
-  Box,
-  Portal,
-} from "@chakra-ui/react";
+import { Button, Card, Text, Box, Portal } from "@chakra-ui/react";
 import Navbar from "@/components/layouts/navbar/Navbar";
 import PageCard from "@/components/layouts/pageCard";
 // import WalletConnectModal from "@/components/modals/WalletConnectModal";
-import ArgentXLogo from '../assets/images/ArgentXlogo.svg'
+import ArgentXLogo from "../assets/images/ArgentXlogo.svg";
 import BTCLogo from "@/assets/icons/coins/btc";
 import USDCLogo from "@/assets/icons/coins/usdc";
 import BravosIcon from "@/assets/icons/wallets/bravos";
@@ -46,32 +40,20 @@ export default function Home() {
   //   address
   // })
   // console.log(data);
-  const { available, disconnect, connect, connectors } = useConnectors();
-  console.log(available[1]?.options?.id);
+  const { available, disconnect, connect, connectors, refresh } =
+    useConnectors();
   const [render, setRender] = useState(true);
+  const [lastusedConnector, setLastusedConnector] = useState("");
   const [isWhiteListed, setIsWhiteListed] = useState(false);
   const router = useRouter();
   const href = "/waitlist";
   const href2 = "/market";
   const dispatch = useDispatch();
-  const [inputAmount, setinputAmount] = useState(0);
-  const [sliderValue, setSliderValue] = useState(0);
-  const [currentNetwork, setCurrentNetwork] = useState("Select network");
-  const [walletName, setWalletName] = useState("");
   const walletBalance = useSelector(selectWalletBalance);
-  const handleChange = (newValue: any) => {
-    // Calculate the percentage of the new value relative to the wallet balance
-    var percentage = (newValue * 100) / walletBalance;
-    percentage = Math.max(0, percentage);
-    if (percentage > 100) {
-      setSliderValue(100);
-      setinputAmount(newValue);
-    } else {
-      percentage = Math.round(percentage * 100) / 100;
-      setSliderValue(percentage);
-      setinputAmount(newValue);
-    }
-  };
+  useEffect(() => {
+    const interval = setInterval(refresh, 100);
+    return () => clearInterval(interval);
+  }, [refresh]);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const networks = [
     { name: "Starknet", status: "enable" },
@@ -104,28 +86,33 @@ export default function Home() {
         break;
     }
   };
+  // console.log(account ,"index page")
+  // console.log("Index reload check",account);
   useEffect(() => {
     // alert(status)
-    const storedAccount = localStorage.getItem("account");
-    const hasVisited = localStorage.getItem('visited');
+    // const storedAccount = localStorage.getItem("account");
+    const hasVisited = localStorage.getItem("visited");
+
     if (!hasVisited) {
       // Set a local storage item to indicate the user has visited
-      localStorage.setItem('visited', 'true');
+      localStorage.setItem("visited", "true");
     }
-    if(storedAccount){
-      router.push('./market')
-    }
+    // if (storedAccount) {
+    //   router.push('./market')
+    // }
     if (status == "connected") {
       // alert(account?.address);
-      localStorage.setItem("account", JSON.stringify(account));
+      // localStorage.setItem("account", JSON.stringify(account));
       dispatch(setAccount(account));
+
       if (!isWhiteListed) {
+        
         router.replace(href);
       } else {
         router.replace(href2);
       }
     }
-  }, [account, status, dispatch, router]);
+  }, [status]);
 
   return (
     <Box
@@ -141,6 +128,7 @@ export default function Home() {
       backgroundColor="#191922"
       height="100vh"
     > */}
+
       <Box
         display="flex"
         background="#010409"
@@ -182,118 +170,128 @@ export default function Home() {
               </Text>
             </Box>
           </Box>
-          {available[0]?.options?.id ?
-                    <Box
-                    w="full"
-                    backgroundColor="#101216"
-                    py="2"
-                    border="1px solid #2B2F35"
-                    borderRadius="6px"
-                    gap="3px"
-                    display="flex"
-                    justifyContent="space-between"
-                    cursor="pointer"
-                    // onClick={() => router.push("/market")}
-                    onClick={() => 
-                      connect(connectors[0])
-                    }
-                  >
-                    <Text ml="1rem" color="white">
-                      {available[0]?.options?.id ? "Bravos Wallet":"Download Bravos Wallet"}
-                    </Text>
-                    <Box p="1" mr="16px">
-                      <BravosIcon />
-                    </Box>
-                  </Box>
-          :
-          <Link href="https://braavos.app" target="_blank">
-               <Box
-               w="full"
-               backgroundColor="#101216"
-               py="2"
-               border="1px solid #2B2F35"
-               borderRadius="6px"
-               gap="3px"
-               display="flex"
-               justifyContent="space-between"
-               cursor="pointer"
-               // onClick={() => router.push("/market")}
-               onClick={() => 
-                 connect(connectors[0])
-               }
-             >
-               <Text ml="1rem" color="white">
-                 {available[0]?.options?.id ? "Bravos Wallet":"Download Bravos Wallet"}
-               </Text>
-               <Box p="1" mr="16px">
-                 <BravosIcon />
-               </Box>
-             </Box>     
-          </Link>
-          }
+          {available[0]?.options?.id == "braavos" ? (
+            <Box
+              w="full"
+              backgroundColor="#101216"
+              py="2"
+              border="1px solid #2B2F35"
+              borderRadius="6px"
+              gap="3px"
+              display="flex"
+              justifyContent="space-between"
+              cursor="pointer"
+              // onClick={() => router.push("/market")}
+              onClick={() => {
+                connect(connectors[0]);
+                localStorage.setItem("lastUsedConnector", "braavos");
+              }}
+            >
+              <Text ml="1rem" color="white">
+                {available[0]?.options?.id == "braavos"
+                  ? "Braavos Wallet"
+                  : "Download Braavos Wallet"}
+              </Text>
+              <Box p="1" mr="16px">
+                <BravosIcon />
+              </Box>
+            </Box>
+          ) : (
+            <Link href="https://braavos.app" target="_blank">
+              <Box
+                w="full"
+                backgroundColor="#101216"
+                py="2"
+                border="1px solid #2B2F35"
+                borderRadius="6px"
+                gap="3px"
+                display="flex"
+                justifyContent="space-between"
+                cursor="pointer"
+                // onClick={() => router.push("/market")}
+                // onClick={() =>
+                //   connect(connectors[0])
+                // }
+              >
+                <Text ml="1rem" color="white">
+                  {available[0]?.options?.id == "braavos"
+                    ? "Braavos Wallet"
+                    : "Download Braavos Wallet"}
+                </Text>
+                <Box p="1" mr="16px">
+                  <BravosIcon />
+                </Box>
+              </Box>
+            </Link>
+          )}
 
-          {available[1]?.options.id ?
-
-             <Box
-             w="full"
-             backgroundColor="#101216"
-             py="2"
-             border="1px solid #2B2F35"
-             borderRadius="6px"
-             gap="3px"
-             mt="1rem"
-             display="flex"
-             justifyContent="space-between"
-             cursor="pointer"
-             onClick={() => connect(connectors[1])}
-           >
-             
-             <Text ml="1rem" color="white">
-             {available[1]?.options?.id ? "Argent X Wallet":"Download Argent X Wallet"}
-             </Text>
-             <Box p="1" mr="16px">
-             <Image
-                           src={ArgentXLogo}
-                           alt="Picture of the author"
-                           width="15"
-                           height="15"
-                           style={{ cursor: "pointer" }}
-                         />
-             </Box>
-           </Box>       
-          :
-          <Link href="https://www.argent.xyz/argent-x" target="_black">
-          
-                    <Box
-                    w="full"
-                    backgroundColor="#101216"
-                    py="2"
-                    border="1px solid #2B2F35"
-                    borderRadius="6px"
-                    gap="3px"
-                    mt="1rem"
-                    display="flex"
-                    justifyContent="space-between"
-                    cursor="pointer"
-                    onClick={() => connect(connectors[1])}
-                  >
-                    
-                    <Text ml="1rem" color="white">
-                    {available[1]?.options?.id ? "Argent X Wallet":"Download Argent X Wallet"}
-                    </Text>
-                    <Box p="1" mr="16px">
-                    <Image
-                                  src={ArgentXLogo}
-                                  alt="Picture of the author"
-                                  width="15"
-                                  height="15"
-                                  style={{ cursor: "pointer" }}
-                                />
-                    </Box>
-                  </Box>
-          </Link>
-          }
-
+          {available[1]?.options.id == "argentX" ||
+          available[0]?.options.id == "argentX" ? (
+            <Box
+              w="full"
+              backgroundColor="#101216"
+              py="2"
+              border="1px solid #2B2F35"
+              borderRadius="6px"
+              gap="3px"
+              mt="1rem"
+              display="flex"
+              justifyContent="space-between"
+              cursor="pointer"
+              onClick={() => {
+                connect(connectors[1]);
+                localStorage.setItem("lastUsedConnector", "argentx");
+              }}
+            >
+              <Text ml="1rem" color="white">
+                {available[1]?.options.id == "argentX" ||
+                available[0]?.options.id == "argentX"
+                  ? "Argent X Wallet"
+                  : "Download Argent X Wallet"}
+              </Text>
+              <Box p="1" mr="16px">
+                <Image
+                  src={ArgentXLogo}
+                  alt="Picture of the author"
+                  width="15"
+                  height="15"
+                  style={{ cursor: "pointer" }}
+                />
+              </Box>
+            </Box>
+          ) : (
+            <Link href="https://www.argent.xyz/argent-x" target="_black">
+              <Box
+                w="full"
+                backgroundColor="#101216"
+                py="2"
+                border="1px solid #2B2F35"
+                borderRadius="6px"
+                gap="3px"
+                mt="1rem"
+                display="flex"
+                justifyContent="space-between"
+                cursor="pointer"
+                // onClick={() => connect(connectors[1])}
+              >
+                <Text ml="1rem" color="white">
+                  {available[1]?.options.id == "argentX" ||
+                  available[0]?.options.id == "argentX"
+                    ? "Argent X Wallet"
+                    : "Download Argent X Wallet"}
+                </Text>
+                <Box p="1" mr="16px">
+                  <Image
+                    src={ArgentXLogo}
+                    alt="Picture of the author"
+                    width="15"
+                    height="15"
+                    style={{ cursor: "pointer" }}
+                  />
+                </Box>
+              </Box>
+            </Link>
+          )}
         </Card>
         <Box
           display="flex"
@@ -302,8 +300,7 @@ export default function Home() {
           lineHeight="30px"
           fontWeight="400"
           mt="16px"
-        >
-        </Box>
+        ></Box>
         <Box
           alignItems="center"
           fontSize="14px"

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import {
   Table,
@@ -11,11 +11,15 @@ import {
   Box,
   HStack,
   useMediaQuery,
+  Skeleton,
 } from "@chakra-ui/react";
 
 import Image from "next/image";
 import SupplyModal from "@/components/modals/SupplyModal";
 import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
+import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
+import { uint256 } from "starknet";
+import { BNtoNum } from "@/Blockchain/utils/utils";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -41,6 +45,64 @@ const DashboardLeft = ({
   const columnItems = ["Market", "Price", "Total Supply", "Supply APR", "", ""];
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const [isOpenCustom, setIsOpenCustom] = useState(false);
+
+  // const {
+  //   dataBalanceOf,
+  //   errorBalanceOf,
+  //   isFetchingBalanceOf,
+  //   refetchBalanceOf,
+  //   statusBalanceOf,
+  // }: {
+  //   dataBalanceOf: any;
+  //   errorBalanceOf: any;
+  //   isFetchingBalanceOf: any;
+  //   refetchBalanceOf: any;
+  //   statusBalanceOf: any;
+  // } = useBalanceOf(
+  //   "0x03e590241775f3b6b9e0579526eb4103d372b7832521160321eb9a767816199a"
+  // );
+  // useEffect(() => {
+  //   if (errorBalanceOf || isFetchingBalanceOf) {
+  //     console.log("return", errorBalanceOf, statusBalanceOf);
+  //     return;
+  //   }
+  //   if (dataBalanceOf) {
+  //     console.log(
+  //       "return",
+  //       dataBalanceOf,
+  //       BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
+  //     );
+  //   }
+  // }, [dataBalanceOf]);
+
+  const {
+    dataBalanceOf,
+    isFetchingBalanceOf,
+    errorBalanceOf,
+    statusBalanceOf,
+  } = useBalanceOf(
+    "0x03e590241775f3b6b9e0579526eb4103d372b7832521160321eb9a767816199a"
+  );
+  console.log(
+    "balance ret",
+    dataBalanceOf,
+    isFetchingBalanceOf,
+    errorBalanceOf,
+    statusBalanceOf
+  );
+  useEffect(() => {
+    if (errorBalanceOf || isFetchingBalanceOf) {
+      console.log("return error", errorBalanceOf, statusBalanceOf);
+      return;
+    }
+    if (dataBalanceOf) {
+      console.log(
+        "return",
+        dataBalanceOf,
+        BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
+      );
+    }
+  }, [dataBalanceOf]);
 
   return (
     <TableContainer
@@ -141,9 +203,14 @@ const DashboardLeft = ({
                       <Text fontSize="14px" fontWeight="400">
                         {coin.name}
                       </Text>
-                      <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
-                        Wallet Bal. $900
-                      </Text>
+                      {statusBalanceOf != "success" ? (
+                        <Skeleton width="3rem" height="10px" />
+                      ) : (
+                        <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
+                          Wallet Bal.{" "}
+                          {BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))}
+                        </Text>
+                      )}
                     </Box>
                   </HStack>
                 </Td>

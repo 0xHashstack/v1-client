@@ -40,7 +40,7 @@ import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import SmallEth from "@/assets/icons/coins/smallEth";
 import Pagination from "@/components/uiElements/pagination";
-import YourBorrowModal from "@/components/modals/yourBorrowModal";
+import BorrowModal from "../../modals/borrowModal";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -61,14 +61,12 @@ const SpendTable = () => {
     "Health factor",
   ];
   const rows: any[] = [
-    ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "00.00%"],
-    ["Borrow ID 12346", "rBTC", "10,324.556", "BTC", "00.00%"],
-    ["Borrow ID 12347", "rETH", "10,324.556", "BTC", "00.00%"],
-    ["Borrow ID 12348", "rUSDT", "10,324.556", "BTC", "00.00%"],
-    ["Borrow ID 12349", "rBTC", "10,324.556", "BTC", "00.00%"],
-    ["Borrow ID 12350", "rETH", "10,324.556", "BTC", "00.00%"],
-    ["Borrow ID 12351", "rUSDT", "10,324.556", "BTC", "00.00%"],
-    ["Borrow ID 12352", "rBTC", "10,324.556", "BTC", "00.00%"],
+    // ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "00.00%"],
+    // ["Borrow ID 12346", "rBTC", "10,324.556", "BTC", "00.00%"],
+    // ["Borrow ID 12347", "rETH", "10,324.556", "BTC", "00.00%"],
+    // ["Borrow ID 12348", "rUSDT", "10,324.556", "BTC", "00.00%"],
+    // ["Borrow ID 12349", "rBTC", "10,324.556", "BTC", "00.00%"],
+    // ["Borrow ID 12350", "rETH", "10,324.556", "BTC", "00.00%"],
   ];
 
   const dispatch = useDispatch();
@@ -388,7 +386,7 @@ const SpendTable = () => {
             gap="4px"
           >
             <Text color="#FFFFFF">You do not have outstanding borrows</Text>
-            <YourBorrowModal
+            <BorrowModal
               buttonText="Borrow assets"
               variant="link"
               fontSize="16px"

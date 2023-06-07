@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PageCard from "@/components/layouts/pageCard";
 import { Box, HStack, Text, Tooltip, VStack } from "@chakra-ui/react";
 import CancelIcon from "@/assets/icons/cancelIcon";
@@ -14,6 +14,7 @@ import {
   setMetricsDropdown,
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
+import { useAccount, useConnectors } from "@starknet-react/core";
 import TotalRevenueChart from "@/components/layouts/charts/TotalRevenue";
 import Link from "next/link";
 const YourMetrics = () => {
@@ -25,6 +26,21 @@ const YourMetrics = () => {
     // alert(dropdownName);
     dispatch(setMetricsDropdown(dropdownName));
   };
+  const { available, disconnect, connect, connectors, refresh } =
+    useConnectors();
+  const { account: _account } = useAccount();
+  useEffect(() => {
+    if (!_account) {
+      const walletConnected = localStorage.getItem("lastUsedConnector");
+      if (walletConnected == "braavos") {
+        disconnect();
+        connect(connectors[0]);
+      } else if (walletConnected == "argentx") {
+        disconnect();
+        connect(connectors[0]);
+      }
+    }
+  }, []);
   return (
     <PageCard pt="8rem">
       {/* {!metricsCancel && ( */}
