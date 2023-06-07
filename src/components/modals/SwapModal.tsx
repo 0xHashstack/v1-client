@@ -61,6 +61,7 @@ const SwapModal = ({
   const [currentBorrowId, setCurrentBorrowId] = useState(currentId);
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
+  const [transactionStarted, setTransactionStarted] = useState(false);
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
@@ -132,6 +133,7 @@ const SwapModal = ({
     setCurrentBorrowMarketCoin(currentMarketCoin);
     setCurrentSelectedCoin("Select a market");
     setCurrentBorrowId(currentId);
+    setTransactionStarted(false);
     dispatch(resetModalDropdowns());
   };
 
@@ -256,9 +258,13 @@ const SwapModal = ({
                 borderRadius="md"
                 className="navbar"
                 cursor="pointer"
-                onClick={() =>
-                  handleDropdownClick("swapModalSupplyMarketDropDown")
-                }
+                onClick={() =>{
+                  if(transactionStarted){
+                    return;
+                  }else{
+                    handleDropdownClick("swapModalSupplyMarketDropDown")
+                  }
+                }}
               >
                 <Box display="flex" gap="1">
                   {currentSelectedCoin != "Select a market" ? (
@@ -363,7 +369,13 @@ const SwapModal = ({
                 borderRadius="md"
                 color="white"
                 className="navbar"
-                onClick={() => handleDropdownClick("swapModalBorrowIDDropDown")}
+                onClick={() => {
+                  if(transactionStarted){
+                    return;
+                  }else{
+
+                    handleDropdownClick("swapModalBorrowIDDropDown")}}
+                  }
                 as="button"
               >
                 <Box display="flex" gap="1">
@@ -799,6 +811,9 @@ const SwapModal = ({
               </Box>
             </Box>
             {currentSelectedCoin != "Select a market" ? (
+              <Box onClick={()=>{
+                setTransactionStarted(true);
+              }}>
               <Button
                 bg="#101216"
                 color="#8B949E"
@@ -811,6 +826,7 @@ const SwapModal = ({
               >
                 Spend Borrow
               </Button>
+              </Box>
             ) : (
               <Button
                 bg="#101216"

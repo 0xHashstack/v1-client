@@ -65,6 +65,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   //   setRToken, } = useLoanRequest();
 
   const [buttonId, setButtonId] = useState(0);
+  const [transactionStarted, setTransactionStarted] = useState(false);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -147,6 +148,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     setinputCollateralAmount(0);
     setSliderValue(0);
     setsliderValue2(0);
+    setTransactionStarted(false);
     dispatch(resetModalDropdowns());
   };
   useEffect(() => {
@@ -246,9 +248,13 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                   cursor="pointer"
                   borderRadius="md"
                   className="navbar"
-                  onClick={() =>
-                    handleDropdownClick("borrowModalCollateralMarketDropdown")
-                  }
+                  onClick={() =>{
+                    if(transactionStarted){
+                      return;
+                    }else{
+                      handleDropdownClick("borrowModalCollateralMarketDropdown")
+                    }
+                  }}
                   as="button"
                 >
                   <Box display="flex" gap="1">
@@ -375,10 +381,13 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     step={parseFloat(
                       `${inputCollateralAmount <= 99999 ? 0.1 : 0}`
                     )}
+                    isDisabled={transactionStarted == true}
+                    _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentCollateralCoin}`}
                       border="0px"
+                      _disabled={{ color: "#1A7F37" }}
                       _placeholder={{
                         color: "#393D4F",
                         fontSize: ".89rem",
@@ -402,6 +411,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                         setInputBorrowModalCollateralAmount(walletBalance)
                       );
                     }}
+                    isDisabled={transactionStarted == true}
+                    _disabled={{ cursor: "pointer" }}
                   >
                     MAX
                   </Button>
@@ -468,6 +479,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       dispatch(setInputBorrowModalCollateralAmount(ans));
                       setinputCollateralAmount(ans);
                     }}
+                    isDisabled={transactionStarted == true}
+                    _disabled={{ cursor: "pointer" }}
                     focusThumbOnChange={false}
                   >
                     <SliderMark value={sliderValue}>
@@ -548,9 +561,13 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                   borderRadius="md"
                   className="navbar"
                   cursor="pointer"
-                  onClick={() =>
-                    handleDropdownClick("borrowModalBorrowMarketDropdown")
-                  }
+                  onClick={() =>{
+                    if(transactionStarted){
+                      return;
+                    }else{
+                      handleDropdownClick("borrowModalBorrowMarketDropdown")
+                    }
+                  }}
                   as="button"
                 >
                   <Box display="flex" gap="1">
@@ -665,6 +682,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     onChange={handleBorrowChange}
                     value={inputBorrowAmount ? inputBorrowAmount : ""}
                     step={parseFloat(`${inputBorrowAmount <= 99999 ? 0.1 : 0}`)}
+                    isDisabled={transactionStarted == true}
+                    _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
@@ -686,6 +705,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                         fontWeight: "600",
                         outline: "0",
                       }}
+                      _disabled={{ color: "#1A7F37" }}
                       _focus={{
                         outline: "0",
                         boxShadow: "none",
@@ -701,6 +721,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       setsliderValue2(100);
                       dispatch(setInputBorrowModalBorrowAmount(walletBalance));
                     }}
+                    isDisabled={transactionStarted == true}
+                    _disabled={{ cursor: "pointer" }}
                   >
                     MAX
                   </Button>
@@ -766,6 +788,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       dispatch(setInputBorrowModalBorrowAmount(ans));
                       setinputBorrowAmount(ans);
                     }}
+                    isDisabled={transactionStarted == true}
+                    _disabled={{ cursor: "pointer" }}
                     focusThumbOnChange={false}
                   >
                     <SliderMark value={sliderValue2}>
@@ -982,6 +1006,9 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
               ) : buttonId == 2 ? (
                 <ErrorButton errorText="Copy error!" />
               ) : (
+                <Box onClick={()=>{
+                  setTransactionStarted(true);
+                }}>
                 <AnimatedButton
                   bgColor="#101216"
                   // bgColor="red"
@@ -1005,6 +1032,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                 >
                   Borrow
                 </AnimatedButton>
+                </Box>
               )
             ) : (
               <Button

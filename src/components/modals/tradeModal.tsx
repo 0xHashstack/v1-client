@@ -71,6 +71,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
+  const [transactionStarted, setTransactionStarted] = useState(false);
 
   const dapps = [
     { name: "Jediswap", status: "enable" },
@@ -195,6 +196,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
     setCurrentBorrowCoin(coin.name);
     setCurrentPoolCoin("Select a pool");
     setRadioValue("1");
+    setTransactionStarted(false);
     dispatch(resetModalDropdowns());
   };
   const activeModal = Object.keys(modalDropdowns).find(
@@ -317,11 +319,15 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       cursor="pointer"
                       borderRadius="md"
                       className="navbar"
-                      onClick={() =>
-                        handleDropdownClick(
-                          "tradeModalCollateralMarketDropdown"
-                        )
-                      }
+                      onClick={() =>{
+                        if(transactionStarted){
+                          return;
+                        }else{
+                          handleDropdownClick(
+                            "tradeModalCollateralMarketDropdown"
+                          )
+                        }
+                      }}
                       as="button"
                     >
                       <Box display="flex" gap="1">
@@ -440,6 +446,8 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                         step={parseFloat(
                           `${inputCollateralAmount <= 99999 ? 0.1 : 0}`
                         )}
+                        isDisabled={transactionStarted == true}
+                        _disabled={{ cursor: "pointer" }}
                       >
                         <NumberInputField
                           placeholder={`Minimum 0.01536 ${currentCollateralCoin}`}
@@ -454,6 +462,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                               ? "white"
                               : "#1A7F37"
                           }`}
+                          _disabled={{ color: "#1A7F37" }}
                           border="0px"
                           _placeholder={{
                             color: "#393D4F",
@@ -478,6 +487,8 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                             setInputTradeModalCollateralAmount(walletBalance)
                           );
                         }}
+                        isDisabled={transactionStarted == true}
+                        _disabled={{ cursor: "pointer" }}
                       >
                         MAX
                       </Button>
@@ -545,6 +556,8 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                           dispatch(setInputTradeModalCollateralAmount(ans));
                           setinputCollateralAmount(ans);
                         }}
+                        isDisabled={transactionStarted == true}
+                        _disabled={{ cursor: "pointer" }}
                         focusThumbOnChange={false}
                       >
                         <SliderMark value={sliderValue}>
@@ -625,9 +638,13 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       borderRadius="md"
                       className="navbar"
                       cursor="pointer"
-                      onClick={() =>
-                        handleDropdownClick("tradeModalBorrowMarketDropdown")
-                      }
+                      onClick={() =>{
+                        if(transactionStarted){
+                          return;
+                        }else{
+                          handleDropdownClick("tradeModalBorrowMarketDropdown")
+                        }
+                      }}
                       as="button"
                     >
                       <Box display="flex" gap="1">
@@ -746,6 +763,8 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                         step={parseFloat(
                           `${inputBorrowAmount <= 99999 ? 0.1 : 0}`
                         )}
+                        isDisabled={transactionStarted == true}
+                        _disabled={{ cursor: "pointer" }}
                       >
                         <NumberInputField
                           placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
@@ -761,6 +780,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                               : "#1A7F37"
                           }`}
                           border="0px"
+                          _disabled={{ color: "#1A7F37" }}
                           _placeholder={{
                             color: "#393D4F",
                             fontSize: ".89rem",
@@ -784,6 +804,8 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                             setInputTradeModalBorrowAmount(walletBalance)
                           );
                         }}
+                        isDisabled={transactionStarted == true}
+                        _disabled={{ cursor: "pointer" }}
                       >
                         MAX
                       </Button>
@@ -851,6 +873,8 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                           dispatch(setInputTradeModalBorrowAmount(ans));
                           setinputBorrowAmount(ans);
                         }}
+                        isDisabled={transactionStarted == true}
+                        _disabled={{ cursor: "pointer" }}
                         focusThumbOnChange={false}
                       >
                         <SliderMark value={sliderValue2}>
@@ -959,9 +983,13 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       pr="3"
                       borderRadius="md"
                       className="navbar"
-                      onClick={() =>
-                        handleDropdownClick("yourBorrowDappDropdown")
-                      }
+                      onClick={() =>{
+                        if(transactionStarted){
+                          return;
+                        }else{
+                          handleDropdownClick("yourBorrowDappDropdown")
+                        }
+                      }}
                       as="button"
                     >
                       <Box display="flex" gap="1">
@@ -1083,9 +1111,14 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       pr="3"
                       borderRadius="md"
                       className="navbar"
-                      onClick={() =>
-                        handleDropdownClick("yourBorrowPoolDropdown")
-                      }
+                      onClick={() =>{
+                        if(transactionStarted){
+                          return;
+                        }else{
+
+                          handleDropdownClick("yourBorrowPoolDropdown")
+                        }
+                      }}
                       as="button"
                     >
                       <Box display="flex" gap="1">
@@ -1486,6 +1519,9 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                 currentDapp != "Select a dapp" &&
                 (currentPool != "Select a pool" ||
                   currentPoolCoin != "Select a pool") ? (
+                    <Box
+                      onClick={()=>{setTransactionStarted(true)}}
+                     >
                   <AnimatedButton
                     bgColor="#101216"
                     // bgColor="red"
@@ -1512,6 +1548,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                   >
                     Borrow
                   </AnimatedButton>
+                    </Box>
                 ) : (
                   <Button
                     bg="#101216"

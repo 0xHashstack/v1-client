@@ -40,8 +40,8 @@ export default function Market() {
 
   const [render, setRender] = useState(true);
   // console.log(account.address)
-  // const { dataBalanceOf, errorBalanceOf, isFetchingBalanceOf, refetchBalanceOf, statusBalanceOf }=useBalanceOf("0x00cf781b5ef7d4cf7620bee8ae9e8fbcf9c708663c8645d754fbb3263ce3f176");
-  // console.log(JSON.stringify(dataBalanceOf) ,"data")
+  const { dataBalanceOf, errorBalanceOf, isFetchingBalanceOf, refetchBalanceOf, statusBalanceOf }=useBalanceOf("0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7");
+  console.log(JSON.stringify(dataBalanceOf) ,"data")
   // useEffect(()=>{
   //   const storedAccount = localStorage.getItem("account");
   //   if(!storedAccount){

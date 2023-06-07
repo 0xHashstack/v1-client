@@ -70,7 +70,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const [inputStakeAmount, setInputStakeAmount] = useState(0);
   const [inputUnstakeAmount, setInputUnstakeAmount] = useState(0);
   const [isSupplyTap, setIsSupplyTap] = useState(false);
-
+  const [transactionStarted, setTransactionStarted] = useState(false)
+  const [unstakeTransactionStarted, setUnstakeTransactionStarted] = useState(false)
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
@@ -203,6 +204,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     setInputUnstakeAmount(0);
     setCurrentSelectedStakeCoin(coin ? rcoinValue : "rBTC");
     setcurrentSelectedUnstakeCoin(coin ? rcoinValue : "rBTC");
+    setTransactionStarted(false);
+    setUnstakeTransactionStarted(false);
     dispatch(resetModalDropdowns());
   };
   // console.log("testing isopen: ", isOpen);
@@ -214,7 +217,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
-  console.log(activeModal);
+  // console.log(activeModal);
 
   useEffect(() => {
     setInputStakeAmount(0);
@@ -300,6 +303,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         bg: "#0969DA",
                         border: "none",
                       }}
+                      isDisabled={unstakeTransactionStarted==true}
                     >
                       Stake
                     </Tab>
@@ -317,6 +321,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         bg: "#0969DA",
                         border: "none",
                       }}
+                      isDisabled={transactionStarted==true}
                     >
                       Unstake
                     </Tab>
@@ -411,9 +416,13 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           borderRadius="md"
                           className="navbar"
                           cursor="pointer"
-                          onClick={() =>
-                            handleDropdownClick("stakeMarketDropDown")
-                          }
+                          onClick={() =>{
+                            if(transactionStarted){
+                              return;
+                            }else{
+                              handleDropdownClick("stakeMarketDropDown")
+                            }
+                          }}
                         >
                           <Box display="flex" gap="1">
                             <Box p="1">{getCoin(currentSelectedStakeCoin)}</Box>
@@ -542,6 +551,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             step={parseFloat(
                               `${inputStakeAmount <= 99999 ? 0.1 : 0}`
                             )}
+                            isDisabled={transactionStarted==true}
+                            _disabled={{cursor:"pointer"}}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
@@ -554,6 +565,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                                   ? "white"
                                   : "#1A7F37"
                               }`}
+                              _disabled={{color:"#1A7F37"}}
                               border="0px"
                               _placeholder={{
                                 color: "#393D4F",
@@ -575,6 +587,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               setInputStakeAmount(walletBalance);
                               setSliderValue(100);
                             }}
+                            isDisabled={transactionStarted == true}
+                            _disabled={{ cursor: "pointer" }}
                           >
                             MAX
                           </Button>
@@ -641,6 +655,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               // dispatch(setInputSupplyAmount(ans))
                               setInputStakeAmount(ans);
                             }}
+                            isDisabled={transactionStarted == true}
+                            _disabled={{ cursor: "pointer" }}
                             focusThumbOnChange={false}
                           >
                             <SliderMark value={sliderValue}>
@@ -871,6 +887,10 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         ) : buttonId == 2 ? (
                           <ErrorButton errorText="Copy error!" />
                         ) : (
+                          <Box onClick={()=>{
+                            setTransactionStarted(true);
+                          }}>
+
                           <AnimatedButton
                             bgColor="#101216"
                             // bgColor="red"
@@ -900,6 +920,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                                 : "Stake"
                             }`}
                           </AnimatedButton>
+                          </Box>
                         )
                       ) : (
                         <Button
@@ -1005,8 +1026,14 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           borderRadius="md"
                           className="navbar"
                           cursor="pointer"
-                          onClick={() =>
-                            handleDropdownClick("unstakeMarketDropDown")
+                          onClick={() =>{
+                            if(unstakeTransactionStarted==true){
+                              return;
+                            }else{
+
+                              handleDropdownClick("unstakeMarketDropDown")
+                            }
+                          }
                           }
                         >
                           <Box display="flex" gap="1">
@@ -1147,7 +1174,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               `${inputUnstakeAmount <= 99999 ? 0.1 : 0}`
                             )}
                             isDisabled={
-                              !coinsSupplied[currentSelectedUnstakeCoin]
+                              !coinsSupplied[currentSelectedUnstakeCoin] ||
+                              unstakeTransactionStarted==true
                             }
                             _disabled={{ cursor: "pointer" }}
                           >
@@ -1189,6 +1217,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               setInputUnstakeAmount(walletBalance);
                               setSliderValue2(100);
                             }}
+                            isDisabled={unstakeTransactionStarted == true}
+                            _disabled={{ cursor: "pointer" }}
                           >
                             MAX
                           </Button>
@@ -1263,6 +1293,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               // dispatch(setInputSupplyAmount(ans))
                               setInputUnstakeAmount(ans);
                             }}
+                            isDisabled={unstakeTransactionStarted == true}
+                            _disabled={{ cursor: "pointer" }}
                             focusThumbOnChange={false}
                           >
                             <SliderMark
@@ -1433,6 +1465,10 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                       {inputUnstakeAmount > 0 &&
                       inputUnstakeAmount <= walletBalance &&
                       coinsSupplied[currentSelectedUnstakeCoin] ? (
+                        <Box onClick={()=>{
+                          setUnstakeTransactionStarted(true);
+                        }}>
+
                         <AnimatedButton
                           bgColor="#101216"
                           // bgColor="red"
@@ -1458,6 +1494,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         >
                           Unstake
                         </AnimatedButton>
+                        </Box>
                       ) : (
                         <Button
                           bg="#101216"
