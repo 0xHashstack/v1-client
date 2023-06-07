@@ -959,7 +959,7 @@ const YourBorrowModal = ({
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
         <ModalContent mt="8rem" bg={"#010409"} maxW="464px" overflow="hidden">
           <ModalHeader bg="inherit">
-            <Box position="relative">
+            <Box position="relative" pl="5px">
               <Tabs variant="unstyled">
                 <TabList
                   borderRadius="md"
@@ -985,6 +985,9 @@ const YourBorrowModal = ({
                         border: "none",
                       }}
                       isDisabled={collateralTransactionStarted == true}
+                      onClick={() => {
+                        setTabValue(1);
+                      }}
                     >
                       Borrow Actions
                     </Tab>
@@ -1004,6 +1007,9 @@ const YourBorrowModal = ({
                         border: "none",
                       }}
                       isDisabled={transactionStarted == true}
+                      onClick={() => {
+                        setTabValue(2);
+                      }}
                     >
                       Add Collateral
                     </Tab>
@@ -1023,6 +1029,7 @@ const YourBorrowModal = ({
               display={"flex"}
               justifyContent={"space-between"}
               fontSize={"sm"}
+              mt=".4rem"
               // my={"2"}
             >
               <Box w="full">
@@ -2141,7 +2148,6 @@ const YourBorrowModal = ({
                       // my="4"
                       borderRadius="md"
                       gap="3"
-                      mt="2.5rem"
                     >
                       <Box display="flex" flexDirection="column" gap="1">
                         <Text
