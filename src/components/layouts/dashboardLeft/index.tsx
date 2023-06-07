@@ -41,7 +41,7 @@ const DashboardLeft = ({
   const columnItems = ["Market", "Price", "Total Supply", "Supply APR", "", ""];
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const [isOpenCustom, setIsOpenCustom] = useState(false);
-
+    
   return (
     <TableContainer
       bg="#101216"

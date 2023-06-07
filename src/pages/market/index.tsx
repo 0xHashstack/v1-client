@@ -18,6 +18,7 @@ import { Box, Stack, VStack } from "@chakra-ui/react";
 import NavButtons from "@/components/layouts/navButtons";
 import MarketDashboard from "@/components/layouts/marketDashboard";
 import { useEffect, useState } from "react";
+import useBalanceOf from "../../Blockchain/hooks/Reads/useBalanceOf";
 // import { dataInitializer } from "@/utils/functions/dataInitializer";
 // import OffchainAPI from "@/services/offchainapi.service";
 import Link from "next/link";
@@ -25,23 +26,22 @@ import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import PageCard from "@/components/layouts/pageCard";
 import { useRouter } from "next/router";
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
+import { useConnectors } from "@starknet-react/core";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Market() {
   const dispatch = useDispatch();
-  const router=useRouter();
+  const router = useRouter();
   const reserves = useSelector(selectReserves);
   const oracleAndFairPrices = useSelector(selectOracleAndFairPrices);
   const offchainCurrentBlock = useSelector(selectOffchainCurrentBlock);
-  const [parsedAccount, setParsedAccount] = useState<any>()
-  const address = useSelector(selectAccountAddress);
-  const account = useSelector(selectAccount);
+  const [parsedAccount, setParsedAccount] = useState<any>();
+  const { available, disconnect, connect, connectors, refresh } =useConnectors();
 
-  function handleAccount(e: any) {
-    e.preventDefault();
-    dispatch(setAccountAddress(e.target.user.value));
-  }
   const [render, setRender] = useState(true);
+  // console.log(account.address)
+  // const { dataBalanceOf, errorBalanceOf, isFetchingBalanceOf, refetchBalanceOf, statusBalanceOf }=useBalanceOf("0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7");
+  // console.log(JSON.stringify(dataBalanceOf) ,"data")
   // useEffect(()=>{
   //   const storedAccount = localStorage.getItem("account");
   //   if(!storedAccount){

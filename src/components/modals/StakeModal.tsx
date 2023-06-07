@@ -57,6 +57,7 @@ const StakeModal = ({
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] =
     useState(currentMarketCoin);
   const [currentBorrowId, setCurrentBorrowId] = useState(currentId);
+  const [transactionStarted, setTransactionStarted] = useState(false)
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
 
@@ -125,6 +126,7 @@ const StakeModal = ({
     setCurrentBorrowMarketCoin(currentMarketCoin);
     setCurrentSelectedCoin("Select a market");
     setCurrentBorrowId(currentId);
+    setTransactionStarted(false);
     dispatch(resetModalDropdowns());
   };
 
@@ -235,8 +237,13 @@ const StakeModal = ({
                   borderRadius="md"
                   className="navbar"
                   cursor="pointer"
-                  onClick={() =>
-                    handleDropdownClick("stakeModalSupplyMarketDropDown")
+                  onClick={() =>{
+                    if(transactionStarted){
+                      return;
+                    }else{
+
+                      handleDropdownClick("stakeModalSupplyMarketDropDown")
+                    }}
                   }
                 >
                   <Box display="flex" gap="1">
@@ -342,9 +349,14 @@ const StakeModal = ({
                   borderRadius="md"
                   color="white"
                   className="navbar"
-                  onClick={() =>
-                    handleDropdownClick("stakeModalBorrowIDDropDown")
-                  }
+                  onClick={() =>{
+                    if(transactionStarted){
+                      return;
+                    }else{
+
+                      handleDropdownClick("stakeModalBorrowIDDropDown")
+                    }
+                  }}
                   as="button"
                 >
                   <Box display="flex" gap="1">
@@ -781,6 +793,7 @@ const StakeModal = ({
                 </Box>
               </Box>
               {currentSelectedCoin != "Select a market" ? (
+                <Box onClick={()=>{setTransactionStarted(true)}}>
                 <Button
                   bg="#101216"
                   color="#8B949E"
@@ -793,6 +806,7 @@ const StakeModal = ({
                 >
                   Spend Borrow
                 </Button>
+                </Box>
               ) : (
                 <Button
                   bg="#101216"

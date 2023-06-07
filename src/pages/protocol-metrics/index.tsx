@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PageCard from "@/components/layouts/pageCard";
 import { Box, HStack, Text, Tooltip, VStack } from "@chakra-ui/react";
 import CancelIcon from "@/assets/icons/cancelIcon";
@@ -18,6 +18,7 @@ import AssetMetrics from "@/components/layouts/metrics/AssetMetrics";
 import SupplyMetrics from "@/components/layouts/metrics/SupplyMetrics";
 import RiskMetrics from "@/components/layouts/metrics/RiskMetrics";
 import Link from "next/link";
+import { useAccount, useConnectors } from "@starknet-react/core";
 const ProtocolMetrics = () => {
   //   const [metricsCancel, setMetricsCancel] = useState(false);
   const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
@@ -27,6 +28,21 @@ const ProtocolMetrics = () => {
     // alert(dropdownName);
     dispatch(setMetricsDropdown(dropdownName));
   };
+  const { available, disconnect, connect, connectors, refresh } =
+    useConnectors();
+  const { account: _account } = useAccount();
+  useEffect(() => {
+    if (!_account) {
+      const walletConnected = localStorage.getItem("lastUsedConnector");
+      if (walletConnected == "braavos") {
+        disconnect();
+        connect(connectors[0]);
+      } else if (walletConnected == "argentx") {
+        disconnect();
+        connect(connectors[0]);
+      }
+    }
+  }, []);
   return (
     <PageCard pt="8rem">
       {/* {!metricsCancel && ( */}

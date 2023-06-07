@@ -1,5 +1,5 @@
-import { ERC20Abi } from "@/Blockchain/stark-constants";
-import { useAccount, useContractRead } from "@starknet-react/core";
+import { ERC20Abi } from "../../stark-constants";
+import { useAccount,useContractRead } from "@starknet-react/core";
 import { useState } from "react";
 
 const useBalanceOf = ( asset: string) => {

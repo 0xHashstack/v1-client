@@ -36,10 +36,11 @@ const NavButtons = ({
       dispatch(setCurrentPage(storedCurrentPage));
     }
   }, [dispatch]);
-
+  // const router = useRouter();
   const handleButtonClick = (val: string) => {
     dispatch(setCurrentPage(val));
     localStorage.setItem("currentPage", val);
+    router.push("/" + val);
   };
 
   const getButtonLabel = (path: string) => {
@@ -51,7 +52,11 @@ const NavButtons = ({
     <HStack mb={marginBottom} width={`${width}%`}>
       <ButtonGroup>
         {navOptions.map((option, idx) => (
-          <Link key={idx} onClick={() => handleButtonClick(option.path)} href={`/${option.path}`}>
+          <Box
+            key={idx}
+            onClick={() => handleButtonClick(option.path)}
+            // href={`/${option.path}`}
+          >
             <Button
               key={idx}
               bg="transparent"
@@ -64,7 +69,9 @@ const NavButtons = ({
               padding="1.125rem 0.4rem"
               margin="2px"
               color={pathname === `/${option.path}` ? "#ffffff" : "#6e7681"}
-              borderBottom={pathname === `/${option.path}` ? "2px solid #F9826C" : ""}
+              borderBottom={
+                pathname === `/${option.path}` ? "2px solid #F9826C" : ""
+              }
               borderRadius="0px"
               _hover={{ bg: "transparent", color: "#E6EDF3" }}
             >
@@ -82,11 +89,14 @@ const NavButtons = ({
                 </Box>
               )}
               {capitalizeWords(
-                option.path=="market"?(pathname === "/market" ? getButtonLabel(option.path) : "back"):
-                getButtonLabel(option.path)
-                )}
+                option.path == "market"
+                  ? pathname === "/market"
+                    ? getButtonLabel(option.path)
+                    : "back"
+                  : getButtonLabel(option.path)
+              )}
             </Button>
-          </Link>
+          </Box>
         ))}
       </ButtonGroup>
     </HStack>

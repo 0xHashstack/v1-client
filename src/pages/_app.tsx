@@ -61,11 +61,8 @@ export default function App({ Component, pageProps }: AppProps) {
       <ChakraProvider theme={theme}>
         <StarknetProvider autoConnect={true} connectors={connectors}>
         <Provider store={store}>
-          <StarknetProvider connectors={connectors}>
             <Component {...pageProps} />
-          </StarknetProvider>
         </Provider>
-
         </StarknetProvider>
       </ChakraProvider>
     </UserbackProvider>

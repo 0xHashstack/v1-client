@@ -13,8 +13,8 @@ import {
   useBlock,
 } from "@starknet-react/core";
 import { useContract } from "@starknet-react/core";
-import { useDispatch } from "react-redux";
-import { setAccount } from "@/store/slices/userAccountSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { selectAccount, setAccount } from "@/store/slices/userAccountSlice";
 import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 import SupplyEquivalentModal from "@/components/modals/SupplyEquivalentModal";
 import TransferDepositModal from "@/components/modals/TransferDepositModal";
@@ -24,15 +24,24 @@ import ReferFreindsModal from "@/components/modals/ReferFreindsModal";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function WaitList() {
-  const { account, address, status } = useAccount();
+  const account = useSelector(selectAccount);
+  // console.log(account ,"waitlist")
+  const { available, disconnect, connect, connectors, refresh } =
+    useConnectors();
 
-  const dispatch = useDispatch();
+  const { account: _account } = useAccount();
   useEffect(() => {
-    // alert(status)
-    if (status == "connected") {
-      dispatch(setAccount(account));
+    if (!_account) {
+      const walletConnected = localStorage.getItem("lastUsedConnector");
+      if (walletConnected == "braavos") {
+        disconnect();
+        connect(connectors[0]);
+      } else if (walletConnected == "argentx") {
+        disconnect();
+        connect(connectors[0]);
+      }
     }
-  }, [account, status, dispatch]);
+  }, []);
   return (
     <PageCard justifyContent="center">
       <Text color="#D3AC41" fontSize="48px" fontWeight="600" fontStyle="normal">

@@ -79,6 +79,8 @@ const YourSupplyModal = () => {
   const [inputSupplyAmount, setinputSupplyAmount] = useState(0);
   const [inputWithdrawlAmount, setinputWithdrawlAmount] = useState(0);
   const [sliderValue2, setSliderValue2] = useState(0);
+  const [transactionStarted, setTransactionStarted] = useState(false);
+  const [withdrawTransactionStarted, setWithdrawTransactionStarted] = useState(false);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -175,6 +177,8 @@ const YourSupplyModal = () => {
     setinputWithdrawlAmount(0);
     setCurrentSelectedSupplyCoin("BTC");
     setcurrentSelectedWithdrawlCoin("BTC");
+    setTransactionStarted(false);
+    setWithdrawTransactionStarted(false);
     dispatch(resetModalDropdowns());
   };
   const activeModal = Object.keys(modalDropdowns).find(
@@ -215,7 +219,7 @@ const YourSupplyModal = () => {
           resetStates();
         }}
         isCentered
-        //   scrollBehavior="inside"
+          scrollBehavior="inside"
       >
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
         <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
@@ -245,6 +249,7 @@ const YourSupplyModal = () => {
                         bg: "#0969DA",
                         border: "none",
                       }}
+                      isDisabled={withdrawTransactionStarted==true}
                     >
                       Add supply
                     </Tab>
@@ -262,6 +267,7 @@ const YourSupplyModal = () => {
                         bg: "#0969DA",
                         border: "none",
                       }}
+                      isDisabled={transactionStarted==true}
                     >
                       Withdraw supply
                     </Tab>
@@ -317,9 +323,13 @@ const YourSupplyModal = () => {
                           borderRadius="md"
                           className="navbar"
                           cursor="pointer"
-                          onClick={() =>
-                            handleDropdownClick("yourSupplyAddsupplyDropdown")
-                          }
+                          onClick={() =>{
+                            if(transactionStarted){
+                              return;
+                            }else{
+                              handleDropdownClick("yourSupplyAddsupplyDropdown")
+                            }
+                          }}
                         >
                           <Box display="flex" gap="1">
                             <Box p="1">
@@ -451,6 +461,8 @@ const YourSupplyModal = () => {
                             step={parseFloat(
                               `${inputSupplyAmount <= 99999 ? 0.1 : 0}`
                             )}
+                            isDisabled={transactionStarted == true}
+                            _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
@@ -464,6 +476,7 @@ const YourSupplyModal = () => {
                                   : "#1A7F37"
                               }`}
                               border="0px"
+                              _disabled={{ color: "#1A7F37" }}
                               _placeholder={{
                                 color: "#393D4F",
                                 fontSize: ".89rem",
@@ -484,6 +497,8 @@ const YourSupplyModal = () => {
                               setinputSupplyAmount(walletBalance);
                               setSliderValue(100);
                             }}
+                            isDisabled={transactionStarted == true}
+                            _disabled={{ cursor: "pointer" }}
                           >
                             MAX
                           </Button>
@@ -550,6 +565,8 @@ const YourSupplyModal = () => {
                               // dispatch(setInputSupplyAmount(ans))
                               setinputSupplyAmount(ans);
                             }}
+                            isDisabled={transactionStarted == true}
+                            _disabled={{ cursor: "pointer" }}
                             focusThumbOnChange={false}
                           >
                             <SliderMark value={sliderValue}>
@@ -755,6 +772,8 @@ const YourSupplyModal = () => {
                       </Card>
                       {inputSupplyAmount > 0 &&
                       inputSupplyAmount <= walletBalance ? (
+                        <Box onClick={()=>{setTransactionStarted(true)}}>
+
                         <AnimatedButton
                           bgColor="#101216"
                           // bgColor="red"
@@ -781,6 +800,7 @@ const YourSupplyModal = () => {
                         >
                           Supply
                         </AnimatedButton>
+                        </Box>
                       ) : (
                         <Button
                           bg="#101216"
@@ -841,9 +861,13 @@ const YourSupplyModal = () => {
                           borderRadius="md"
                           className="navbar"
                           cursor="pointer"
-                          onClick={() =>
-                            handleDropdownClick("yourSupplyWithdrawlDropdown")
-                          }
+                          onClick={() =>{
+                            if(withdrawTransactionStarted){
+                              return;
+                            }else{
+                              handleDropdownClick("yourSupplyWithdrawlDropdown")
+                            }
+                          }}
                         >
                           <Box display="flex" gap="1">
                             <Box p="1">
@@ -979,6 +1003,8 @@ const YourSupplyModal = () => {
                             step={parseFloat(
                               `${inputWithdrawlAmount <= 99999 ? 0.1 : 0}`
                             )}
+                            isDisabled={withdrawTransactionStarted == true}
+                            _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedWithdrawlCoin}`}
@@ -991,6 +1017,7 @@ const YourSupplyModal = () => {
                                   ? "white"
                                   : "#1A7F37"
                               }`}
+                              _disabled={{ color: "#1A7F37" }}
                               border="0px"
                               _placeholder={{
                                 color: "#393D4F",
@@ -1012,6 +1039,8 @@ const YourSupplyModal = () => {
                               setinputWithdrawlAmount(walletBalance);
                               setSliderValue2(100);
                             }}
+                            isDisabled={withdrawTransactionStarted== true}
+                            _disabled={{ cursor: "pointer" }}
                           >
                             MAX
                           </Button>
@@ -1079,6 +1108,8 @@ const YourSupplyModal = () => {
                               setinputWithdrawlAmount(ans);
                             }}
                             focusThumbOnChange={false}
+                            isDisabled={withdrawTransactionStarted == true}
+                            _disabled={{ cursor: "pointer" }}
                           >
                             <SliderMark value={sliderValue2}>
                               <Box
@@ -1347,6 +1378,8 @@ const YourSupplyModal = () => {
                       </Card>
                       {inputWithdrawlAmount > 0 &&
                       inputWithdrawlAmount <= walletBalance ? (
+                        <Box onClick={()=>{setWithdrawTransactionStarted(true)}}>
+
                         <AnimatedButton
                           bgColor="#101216"
                           // bgColor="red"
@@ -1388,6 +1421,7 @@ const YourSupplyModal = () => {
                         >
                           Withdraw
                         </AnimatedButton>
+                        </Box>
                       ) : (
                         <Button
                           bg="#101216"
