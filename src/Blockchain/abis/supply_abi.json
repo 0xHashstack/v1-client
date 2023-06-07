@@ -462,6 +462,10 @@
     {
         "inputs": [
             {
+                "name": "borrower",
+                "type": "felt"
+            },
+            {
                 "name": "loan_id",
                 "type": "felt"
             }

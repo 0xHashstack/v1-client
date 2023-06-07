@@ -14542,6 +14542,10 @@
                 "type": "const",
                 "value": 84959893733710
             },
+            "core.contracts.open_diamond.storages.constants.INTERACT_WITH_L3_SELECTOR": {
+                "type": "const",
+                "value": 1384822498204236873868501036911793154930680373240145564347484837036506572124
+            },
             "core.contracts.open_diamond.storages.constants.INTEREST_CORRELATION_FACTOR": {
                 "type": "const",
                 "value": 12
@@ -14609,6 +14613,10 @@
             "core.contracts.open_diamond.storages.constants.RESERVE_FACTOR": {
                 "type": "const",
                 "value": 90
+            },
+            "core.contracts.open_diamond.storages.constants.REVERT_INTERACTION_WITH_L3_SELECTOR": {
+                "type": "const",
+                "value": 687102416414474521602307122054095266507372208189528726383250006132584940459
             },
             "core.contracts.open_diamond.storages.constants.REVERT_JEDI_SWAP_SELECTOR": {
                 "type": "const",
