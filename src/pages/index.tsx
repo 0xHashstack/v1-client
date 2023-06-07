@@ -106,6 +106,7 @@ export default function Home() {
       dispatch(setAccount(account));
 
       if (!isWhiteListed) {
+        
         router.replace(href);
       } else {
         router.replace(href2);
