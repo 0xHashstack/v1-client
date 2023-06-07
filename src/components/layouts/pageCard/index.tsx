@@ -37,7 +37,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     }
   };
   const handleRouteChangeComplete = (url: string) => {
-    setTimeout(handleRouteChange, 4000);
+    setTimeout(handleRouteChange, 200);
   };
   useEffect(() => {
     router.events.on("routeChangeComplete", handleRouteChangeComplete);
