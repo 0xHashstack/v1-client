@@ -36,16 +36,7 @@ export default function Market() {
   const oracleAndFairPrices = useSelector(selectOracleAndFairPrices);
   const offchainCurrentBlock = useSelector(selectOffchainCurrentBlock);
   const [parsedAccount, setParsedAccount] = useState<any>();
-  const { available, disconnect, connect, connectors, refresh } =
-    useConnectors();
-  // useEffect(()=>{
-  //   const walletConnected = localStorage.getItem('lastUsedConnector');
-  //   if(walletConnected=="braavos"){
-  //     connect(connectors[0]);
-  //   }else if(walletConnected=="argentx"){
-  //     connect(connectors[1]);
-  //   }
-  // },[])
+  const { available, disconnect, connect, connectors, refresh } =useConnectors();
 
   const [render, setRender] = useState(true);
   // console.log(account.address)

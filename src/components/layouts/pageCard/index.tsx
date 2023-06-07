@@ -61,8 +61,11 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   setRender(true);
   // }, []);
   useEffect(() => {
+    const walletConnected = localStorage.getItem("lastUsedConnector");
+    if(walletConnected==""){
+      router.push('/');
+    }
     if (!_account) {
-      const walletConnected = localStorage.getItem("lastUsedConnector");
       if (walletConnected == "braavos") {
         disconnect();
         connect(connectors[0]);
