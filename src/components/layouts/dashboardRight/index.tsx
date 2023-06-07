@@ -31,8 +31,10 @@ export const Coins: ICoin[] = [
 
 const DashboardRight = ({
   width,
+  oraclePrices
 }: {
   width: string;
+  oraclePrices:any;
   // gap: string;
   // columnItems: Array<Array<string>>;
   // rowItems: any;
@@ -46,6 +48,15 @@ const DashboardRight = ({
     "",
     "",
   ];
+  const coinPrices = Coins.map((coin) => {
+    const matchingCoin = oraclePrices.find((c: { name: string; }) => c?.name?.toLowerCase() === coin.name.toLowerCase());
+    if (matchingCoin) {
+      const formattedPrice = matchingCoin.price.toFixed(3); // Format price to 3 decimal places
+      return { name: coin.name, price: formattedPrice };
+    }
+    return null;
+  });
+  
 
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
 
@@ -156,7 +167,7 @@ const DashboardRight = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    000.00
+                    {coinPrices[idx]?.price}
                   </Text>
                 </Td>
                 <Td

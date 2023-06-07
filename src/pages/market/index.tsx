@@ -18,7 +18,8 @@ import { Box, Stack, VStack } from "@chakra-ui/react";
 import NavButtons from "@/components/layouts/navButtons";
 import MarketDashboard from "@/components/layouts/marketDashboard";
 import { useEffect, useState } from "react";
-import useBalanceOf from "../../Blockchain/hooks/Reads/useBalanceOf";
+// import useBalanceOf from "../../Blockchain/hooks/Reads/useBalanceOf";
+import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 // import { dataInitializer } from "@/utils/functions/dataInitializer";
 // import OffchainAPI from "@/services/offchainapi.service";
 import Link from "next/link";
@@ -27,11 +28,13 @@ import PageCard from "@/components/layouts/pageCard";
 import { useRouter } from "next/router";
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 import { useConnectors } from "@starknet-react/core";
+import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Market() {
   const dispatch = useDispatch();
   const router = useRouter();
+  const [prices, setPrices] = useState([])
   const reserves = useSelector(selectReserves);
   const oracleAndFairPrices = useSelector(selectOracleAndFairPrices);
   const offchainCurrentBlock = useSelector(selectOffchainCurrentBlock);

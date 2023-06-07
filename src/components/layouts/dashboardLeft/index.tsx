@@ -13,7 +13,7 @@ import {
   useMediaQuery,
   Skeleton,
 } from "@chakra-ui/react";
-
+import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
 import Image from "next/image";
 import SupplyModal from "@/components/modals/SupplyModal";
 import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
@@ -34,14 +34,28 @@ export const Coins: ICoin[] = [
   { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
 ];
 
+
 const DashboardLeft = ({
   width,
+  oraclePrices
 }: {
   width: string;
+  oraclePrices:any;
   // columnItems: Array<Array<string>>;
   // gap: string;
   // rowItems: any;
 }) => {
+  const coinPrices = Coins.map((coin) => {
+    const matchingCoin = oraclePrices.find((c: { name: string; }) => c?.name?.toLowerCase() === coin.name.toLowerCase());
+    if (matchingCoin) {
+      const formattedPrice = matchingCoin.price.toFixed(3); // Format price to 3 decimal places
+      return { name: coin.name, price: formattedPrice };
+    }
+    return null;
+  });
+  
+  // console.log(coinPrices)
+ 
   const columnItems = ["Market", "Price", "Total Supply", "Supply APR", "", ""];
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const [isOpenCustom, setIsOpenCustom] = useState(false);
@@ -232,7 +246,7 @@ const DashboardLeft = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    000.00
+                    {coinPrices[idx]?.price}
                   </Text>
                 </Td>
                 <Td
