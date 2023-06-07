@@ -26,6 +26,7 @@ import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import PageCard from "@/components/layouts/pageCard";
 import { useRouter } from "next/router";
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
+import { useConnectors } from "@starknet-react/core";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Market() {
@@ -35,13 +36,20 @@ export default function Market() {
   const oracleAndFairPrices = useSelector(selectOracleAndFairPrices);
   const offchainCurrentBlock = useSelector(selectOffchainCurrentBlock);
   const [parsedAccount, setParsedAccount] = useState<any>()
-
-
+  const { available, disconnect, connect, connectors,refresh } = useConnectors();
+  useEffect(()=>{
+    const walletConnected = localStorage.getItem('lastUsedConnector');
+    if(walletConnected=="bravos"){
+      connect(connectors[0]);
+    }else if(walletConnected=="argentx"){
+      connect(connectors[1]);
+    }
+  },[])
 
   const [render, setRender] = useState(true);
   // console.log(account.address)
-  const { dataBalanceOf, errorBalanceOf, isFetchingBalanceOf, refetchBalanceOf, statusBalanceOf }=useBalanceOf("0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7");
-  console.log(JSON.stringify(dataBalanceOf) ,"data")
+  // const { dataBalanceOf, errorBalanceOf, isFetchingBalanceOf, refetchBalanceOf, statusBalanceOf }=useBalanceOf("0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7");
+  // console.log(JSON.stringify(dataBalanceOf) ,"data")
   // useEffect(()=>{
   //   const storedAccount = localStorage.getItem("account");
   //   if(!storedAccount){

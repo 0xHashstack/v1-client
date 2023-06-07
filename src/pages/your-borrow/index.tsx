@@ -12,9 +12,9 @@ import { HStack, VStack, Text, Box } from "@chakra-ui/react";
 import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 import { useDispatch } from "react-redux";
+import { useConnectors } from "@starknet-react/core";
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 const YourBorrow = () => {
-  const [render, setRender] = useState(false);
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const columnItems = [
     "Borrow ID",
@@ -26,10 +26,16 @@ const YourBorrow = () => {
     "Risk premium",
     "",
   ];
-  useEffect(() => {
-    setRender(true);
-    // console.log("rendered your borrow");
-  }, []);
+  const { available, disconnect, connect, connectors,refresh } = useConnectors();
+  useEffect(()=>{
+    const walletConnected = localStorage.getItem('lastUsedConnector');
+    if(walletConnected=="bravos"){
+      connect(connectors[0]);
+    }else if(walletConnected=="argentx"){
+      connect(connectors[1]);
+    }
+  },[])
+
   return (
     <PageCard pt="6.5rem">
       {/* <StatsBoard /> */}

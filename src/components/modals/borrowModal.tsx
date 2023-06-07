@@ -142,8 +142,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     (key) => modalDropdowns[key] === true
   );
   const resetStates = () => {
-    setCurrentCollateralCoin(coin.name);
-    setCurrentBorrowCoin(coin.name);
+    setCurrentCollateralCoin(coin?.name ? coin?.name:"BTC");
+    setCurrentBorrowCoin(coin?.name ?coin?.name:"BTC");
     setinputBorrowAmount(0);
     setinputCollateralAmount(0);
     setSliderValue(0);
@@ -163,18 +163,10 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   return (
     <Box>
       <Button
-        key="borrow"
-        height={"2rem"}
-        padding="6px 12px"
-        border="1px solid #BDBFC1;"
-        color="#BDBFC1;"
-        fontSize={"12px"}
-        bgColor="#101216"
-        _hover={{ bg: "white", color: "black" }}
-        borderRadius={"6px"}
+        {...restProps}
         onClick={onOpen}
       >
-        Borrow
+        {buttonText}
       </Button>
       {/* <Button onClick={onOpen}>Open Modal</Button> */}
 

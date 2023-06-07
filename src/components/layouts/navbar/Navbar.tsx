@@ -63,8 +63,8 @@ const Navbar = () => {
   const language = useSelector(selectLanguage);
   const [parsedAccount, setParsedAccount] = useState<any>();
   const currentDropdown = useSelector(selectCurrentDropdown);
-  const account = useSelector(selectAccount);
-  // console.log(account,"Navbar")
+  const {account} = useAccount();
+  console.log(account,"Navbar")
   // useEffect(() => {
   //   const storedAccount = localStorage.getItem("account");
   //   if (storedAccount) {
@@ -595,6 +595,7 @@ const Navbar = () => {
                       onClick={() => {
                         dispatch(setNavDropdown(""));
                         disconnect();
+                        localStorage.setItem('lastUsedConnector', '');
                         // localStorage.setItem("account", "");
 
                         router.push("./");

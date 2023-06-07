@@ -48,6 +48,7 @@ export default function Home() {
   // console.log(data);
   const { available, disconnect, connect, connectors,refresh } = useConnectors();
   const [render, setRender] = useState(true);
+  const [lastusedConnector, setLastusedConnector] = useState("")
   const [isWhiteListed, setIsWhiteListed] = useState(false);
   const router = useRouter();
   const href = "/waitlist";
@@ -187,6 +188,7 @@ export default function Home() {
               // onClick={() => router.push("/market")}
               onClick={()=>{
                 connect(connectors[0]);
+                localStorage.setItem('lastUsedConnector', 'bravos');
               }}
 
             >
@@ -239,6 +241,7 @@ export default function Home() {
               cursor="pointer"
               onClick={()=>{
                 connect(connectors[1]);
+                localStorage.setItem('lastUsedConnector', 'argentx');
               }}
             >
 
