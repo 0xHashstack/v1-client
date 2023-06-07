@@ -547,7 +547,8 @@ const Navbar = () => {
                   >
                     Connect Wallet
                   </Text> */}
-                  <Skeleton width="8.35rem" height="100%" />
+                  <Skeleton width="7rem" height="100%" />
+                  {/* 8.25rem */}
                 </>
               )}
               <Box position="absolute" right="0.7rem">
