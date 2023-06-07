@@ -93,7 +93,7 @@ const SpendTable = () => {
     let temp1: any = [];
     let temp2: any = [];
     let temp3: any = [];
-    if(rows.length!=0){
+    if (rows.length != 0) {
       for (let i = 0; i < rows.length; i++) {
         temp1.push({
           id: "ID - " + rows[i][0].slice(10),
@@ -335,7 +335,8 @@ const SpendTable = () => {
                             // gap="2"
                             // bgColor="blue"
                             justifyContent="flex-end"
-                            pr={5}
+                            pr="40px"
+                            // pl="30px"
                           >
                             <Text
                               width="40%"
@@ -344,7 +345,7 @@ const SpendTable = () => {
                               fontStyle="normal"
                               lineHeight="22px"
                               color="#E6EDF3"
-                              textAlign="center"
+                              textAlign="right"
                             >
                               {currentRow[4]}
                             </Text>

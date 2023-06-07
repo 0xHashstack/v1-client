@@ -432,7 +432,23 @@ const SupplyModal = ({
                   </Text>
                 )}
 
-                <Box pt={5} pb={2} mt="0.9rem">
+                <Box
+                  pt={5}
+                  pb={2}
+                  mt="2.1rem"
+                  // width={`${sliderValue > 86 ? "96%" : "100%"}`}
+                  // mr="auto"
+                  // transition="ease-in-out"
+                  display="flex"
+                >
+                  <Box
+                    bg="#343333"
+                    as="span"
+                    w="10px"
+                    h="4px"
+                    borderLeftRadius="5px"
+                    // mt="4px"
+                  ></Box>
                   <Slider
                     aria-label="slider-ex-6"
                     defaultValue={sliderValue}
@@ -446,11 +462,11 @@ const SupplyModal = ({
                     }}
                     focusThumbOnChange={false}
                   >
-                    <SliderMark value={sliderValue}>
+                    <SliderMark value={sliderValue} position="relative">
                       <Box
                         position="absolute"
-                        bottom="-8px"
-                        left="-11px"
+                        bottom="-11px"
+                        left="-14px"
                         zIndex="1"
                       >
                         <SliderTooltip />
@@ -474,9 +490,22 @@ const SupplyModal = ({
                       </Box>
                     </SliderMark>
                     <SliderTrack bg="#343333">
-                      <SliderFilledTrack bg="white" w={`${sliderValue}`} />
+                      <SliderFilledTrack
+                        bg="white"
+                        w={`${sliderValue}`}
+                        // ml="10px"
+                        // mr="10px"
+                      />
                     </SliderTrack>
                   </Slider>
+                  <Box
+                    bg="#343333"
+                    as="span"
+                    w="10px"
+                    h="4px"
+                    borderRightRadius="5px"
+                    // mt="px"
+                  ></Box>{" "}
                 </Box>
               </Card>
               <Checkbox
