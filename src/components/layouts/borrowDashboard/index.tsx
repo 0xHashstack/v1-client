@@ -42,6 +42,13 @@ const BorrowDashboard = ({
   upper_bound = Math.min(Coins.length - 1, upper_bound);
   const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
   const [borrowIds, setBorrowIds] = useState([]);
+  const [currentBorrowId1, setCurrentBorrowId1] = useState("ID - 123456");
+  const [currentBorrowMarketCoin1, setCurrentBorrowMarketCoin1] =
+    useState("BTC");
+  const [currentBorrowId2, setCurrentBorrowId2] = useState("ID - 123456");
+  const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
+    useState("BTC");
+
   useEffect(() => {
     let temp1: any = [];
     let temp2: any = [];
@@ -52,7 +59,7 @@ const BorrowDashboard = ({
     }
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);
-  }, [Coins]);
+  }, []);
 
   return upper_bound >= lower_bound && Coins.length > 0 ? (
     <TableContainer
@@ -416,12 +423,30 @@ const BorrowDashboard = ({
                       alignItems="center"
                       justifyContent="flex-end"
                       fontWeight="400"
+                      onClick={() => {
+                        setCurrentBorrowId1("ID - " + coin.id);
+                        setCurrentBorrowMarketCoin1(coin.name);
+                        setCurrentBorrowId2("ID - " + coin.id);
+                        setCurrentBorrowMarketCoin2(coin.name);
+                      }}
                       // bgColor={"blue"}
                     >
                       <YourBorrowModal
                         currentID={coin.id}
                         currentMarket={coin.name}
                         borrowIDCoinMap={borrowIDCoinMap}
+                        currentBorrowId1={currentBorrowId1}
+                        setCurrentBorrowId1={setCurrentBorrowId1}
+                        currentBorrowMarketCoin1={currentBorrowMarketCoin1}
+                        setCurrentBorrowMarketCoin1={
+                          setCurrentBorrowMarketCoin1
+                        }
+                        currentBorrowId2={currentBorrowId2}
+                        setCurrentBorrowId2={setCurrentBorrowId2}
+                        currentBorrowMarketCoin2={currentBorrowMarketCoin2}
+                        setCurrentBorrowMarketCoin2={
+                          setCurrentBorrowMarketCoin2
+                        }
                         borrowIds={borrowIds}
                         buttonText="Actions"
                         height={"2rem"}

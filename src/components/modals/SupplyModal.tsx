@@ -63,7 +63,7 @@ const SupplyModal = ({
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
-  const [transactionStarted, setTransactionStarted] = useState(false)
+  const [transactionStarted, setTransactionStarted] = useState(false);
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
@@ -128,7 +128,7 @@ const SupplyModal = ({
     setinputAmount(0);
     setSliderValue(0);
     setCurrentSelectedCoin(coin ? coin.name : "BTC");
-    setTransactionStarted(false)
+    setTransactionStarted(false);
     dispatch(resetModalDropdowns());
   };
 
@@ -229,10 +229,9 @@ const SupplyModal = ({
                     if (transactionStarted) {
                       return;
                     } else {
-                      handleDropdownClick("supplyModalDropdown")
+                      handleDropdownClick("supplyModalDropdown");
                     }
-                  }
-                  }
+                  }}
                 >
                   <Box display="flex" gap="1">
                     <Box p="1">{getCoin(currentSelectedCoin)}</Box>
@@ -280,10 +279,11 @@ const SupplyModal = ({
                               py="5px"
                               px={`${coin === currentSelectedCoin ? "1" : "5"}`}
                               gap="1"
-                              bg={`${coin === currentSelectedCoin
+                              bg={`${
+                                coin === currentSelectedCoin
                                   ? "#0C6AD9"
                                   : "inherit"
-                                }`}
+                              }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -323,16 +323,17 @@ const SupplyModal = ({
                 <Box
                   width="100%"
                   color="white"
-                  border={`${inputAmount > walletBalance
+                  border={`${
+                    inputAmount > walletBalance
                       ? "1px solid #CF222E"
                       : inputAmount < 0
-                        ? "1px solid #CF222E"
-                        : isNaN(inputAmount)
-                          ? "1px solid #CF222E"
-                          : inputAmount > 0 && inputAmount <= walletBalance
-                            ? "1px solid #1A7F37"
-                            : "1px solid #2B2F35 "
-                    }`}
+                      ? "1px solid #CF222E"
+                      : isNaN(inputAmount)
+                      ? "1px solid #CF222E"
+                      : inputAmount > 0 && inputAmount <= walletBalance
+                      ? "1px solid #1A7F37"
+                      : "1px solid #2B2F35 "
+                  }`}
                   borderRadius="6px"
                   display="flex"
                   justifyContent="space-between"
@@ -352,16 +353,17 @@ const SupplyModal = ({
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
-                      color={`${inputAmount > walletBalance
+                      color={`${
+                        inputAmount > walletBalance
                           ? "#CF222E"
                           : isNaN(inputAmount)
-                            ? "#CF222E"
-                            : inputAmount < 0
-                              ? "#CF222E"
-                              : inputAmount == 0
-                                ? "white"
-                                : "#1A7F37"
-                        }`}
+                          ? "#CF222E"
+                          : inputAmount < 0
+                          ? "#CF222E"
+                          : inputAmount == 0
+                          ? "white"
+                          : "#1A7F37"
+                      }`}
                       _disabled={{ color: "#1A7F37" }}
                       border="0px"
                       _placeholder={{
@@ -374,7 +376,6 @@ const SupplyModal = ({
                         outline: "0",
                         boxShadow: "none",
                       }}
-
                     />
                   </NumberInput>
                   <Button
@@ -393,8 +394,8 @@ const SupplyModal = ({
                   </Button>
                 </Box>
                 {inputAmount > walletBalance ||
-                  inputAmount < 0 ||
-                  isNaN(inputAmount) ? (
+                inputAmount < 0 ||
+                isNaN(inputAmount) ? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -444,7 +445,23 @@ const SupplyModal = ({
                   </Text>
                 )}
 
-                <Box pt={5} pb={2} mt="0.9rem">
+                <Box
+                  pt={5}
+                  pb={2}
+                  mt="2.1rem"
+                  // width={`${sliderValue > 86 ? "96%" : "100%"}`}
+                  // mr="auto"
+                  // transition="ease-in-out"
+                  display="flex"
+                >
+                  <Box
+                    bg="#343333"
+                    as="span"
+                    w="10px"
+                    h="4px"
+                    borderLeftRadius="5px"
+                    // mt="4px"
+                  ></Box>
                   <Slider
                     aria-label="slider-ex-6"
                     defaultValue={sliderValue}
@@ -460,7 +477,7 @@ const SupplyModal = ({
                     _disabled={{ cursor: "pointer" }}
                     focusThumbOnChange={false}
                   >
-                    <SliderMark value={sliderValue} >
+                    <SliderMark value={sliderValue}>
                       <Box
                         position="absolute"
                         bottom="-8px"
@@ -488,9 +505,21 @@ const SupplyModal = ({
                       </Box>
                     </SliderMark>
                     <SliderTrack bg="#343333">
-                      <SliderFilledTrack bg="white" w={`${sliderValue}`} _disabled={{ bg: "white" }} />
+                      <SliderFilledTrack
+                        bg="white"
+                        w={`${sliderValue}`}
+                        _disabled={{ bg: "white" }}
+                      />
                     </SliderTrack>
                   </Slider>
+                  <Box
+                    bg="#343333"
+                    as="span"
+                    w="10px"
+                    h="4px"
+                    borderRightRadius="5px"
+                    // mt="px"
+                  ></Box>{" "}
                 </Box>
               </Card>
               <Box display="flex" gap="2">
@@ -502,7 +531,11 @@ const SupplyModal = ({
                   mt="1.2rem"
                   borderColor="#2B2F35"
                   isDisabled={transactionStarted == true}
-                  _disabled={{ cursor: "pointer", iconColor: 'blue.400', bg: "blue" }}
+                  _disabled={{
+                    cursor: "pointer",
+                    iconColor: "blue.400",
+                    bg: "blue",
+                  }}
                 />
                 <Text
                   fontSize="12px"
@@ -655,7 +688,6 @@ const SupplyModal = ({
                       setTransactionStarted(true);
                     }}
                   >
-
                     <AnimatedButton
                       bgColor="#101216"
                       // bgColor="red"

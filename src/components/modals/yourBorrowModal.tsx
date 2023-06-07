@@ -70,15 +70,20 @@ const YourBorrowModal = ({
   borrowIDCoinMap,
   currentID,
   currentMarket,
+  currentBorrowId1,
+  setCurrentBorrowId1,
+  currentBorrowMarketCoin1,
+  setCurrentBorrowMarketCoin1,
+  currentBorrowId2,
+  setCurrentBorrowId2,
+  currentBorrowMarketCoin2,
+  setCurrentBorrowMarketCoin2,
   borrowIds,
   buttonText,
   ...restProps
 }: any) => {
   console.log("took map", borrowIDCoinMap, currentID, currentMarket);
   // console.log();
-  useEffect(() => {
-    console.log("got", currentID, currentMarket);
-  }, []);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
   // const dispatch = useDispatch();
@@ -159,7 +164,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -194,7 +199,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -242,7 +247,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -277,7 +282,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -312,7 +317,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -347,7 +352,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -382,7 +387,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -431,7 +436,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -466,7 +471,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -501,7 +506,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -536,7 +541,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -571,7 +576,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -615,7 +620,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -645,7 +650,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -670,7 +675,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -695,7 +700,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -720,7 +725,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -745,7 +750,7 @@ const YourBorrowModal = ({
                 </Text>
                 <Tooltip
                   hasArrow
-                  placement="right"
+                  placement="right-start"
                   boxShadow="dark-lg"
                   label="all the assets to the market"
                   bg="#24292F"
@@ -801,16 +806,20 @@ const YourBorrowModal = ({
 
   const [radioValue, setRadioValue] = useState("1");
 
-  const [currentBorrowMarketCoin1, setCurrentBorrowMarketCoin1] =
-    useState(currentMarket);
-  const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
-    useState(currentMarket);
+  // const [currentBorrowMarketCoin1, setCurrentBorrowMarketCoin1] =
+  //   useState(currentMarket);
+  // const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
+  //   useState(currentMarket);
   const [currentPoolCoin, setCurrentPoolCoin] = useState("Select a pool");
   const [currentAction, setCurrentAction] = useState("Spend Borrow");
-  const [currentBorrowId1, setCurrentBorrowId1] = useState(`ID - ${currentID}`);
-  const [currentBorrowId2, setCurrentBorrowId2] = useState(`ID - ${currentID}`);
+  // const [currentBorrowId1, setCurrentBorrowId1] = useState(`ID - ${currentID}`);
+  // const [currentBorrowId2, setCurrentBorrowId2] = useState(`ID - ${currentID}`);
   const [currentDapp, setCurrentDapp] = useState("Select a dapp");
   const [currentPool, setCurrentPool] = useState("Select a pool");
+
+  useEffect(() => {
+    console.log("got", currentID, currentMarket);
+  }, [currentBorrowId1]);
 
   const [sliderValue, setSliderValue] = useState(0);
   // const dispatch = useDispatch();
@@ -937,8 +946,8 @@ const YourBorrowModal = ({
       <Modal
         isOpen={isOpen}
         onClose={() => {
-          onClose();
           resetStates();
+          onClose();
         }}
         isCentered
         scrollBehavior="inside"
@@ -1029,7 +1038,7 @@ const YourBorrowModal = ({
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -1147,7 +1156,7 @@ const YourBorrowModal = ({
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -1199,8 +1208,12 @@ const YourBorrowModal = ({
                                 left="0"
                                 bg="#03060B"
                                 py="2"
-                                className="dropdown-container"
+                                className="dropdown-container onlyScroll"
                                 boxShadow="dark-lg"
+                                height={`${
+                                  borrowIds.length >= 5 ? "182px" : "none"
+                                }`}
+                                overflowY="scroll"
                               >
                                 {borrowIds.map(
                                   (coin: string, index: number) => {
@@ -1214,7 +1227,7 @@ const YourBorrowModal = ({
                                         gap="1"
                                         pr="2"
                                         onClick={() => {
-                                          setCurrentBorrowId1(coin);
+                                          setCurrentBorrowId1("ID - " + coin);
                                           handleBorrowMarketCoinChange1(coin);
                                         }}
                                       >
@@ -1266,7 +1279,7 @@ const YourBorrowModal = ({
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -1386,7 +1399,7 @@ const YourBorrowModal = ({
                               </Text>
                               <Tooltip
                                 hasArrow
-                                placement="right"
+                                placement="right-start"
                                 boxShadow="dark-lg"
                                 label="all the assets to the market"
                                 bg="#24292F"
@@ -1601,7 +1614,7 @@ const YourBorrowModal = ({
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -1664,7 +1677,7 @@ const YourBorrowModal = ({
                               </Text>
                               <Tooltip
                                 hasArrow
-                                placement="right"
+                                placement="right-start"
                                 boxShadow="dark-lg"
                                 label="all the assets to the market"
                                 bg="#24292F"
@@ -1790,7 +1803,7 @@ const YourBorrowModal = ({
                               </Text>
                               <Tooltip
                                 hasArrow
-                                placement="right"
+                                placement="right-start"
                                 boxShadow="dark-lg"
                                 label="all the assets to the market"
                                 bg="#24292F"
@@ -2132,7 +2145,7 @@ const YourBorrowModal = ({
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -2198,7 +2211,7 @@ const YourBorrowModal = ({
                                         gap="1"
                                         pr="2"
                                         onClick={() => {
-                                          setCurrentBorrowId2(coin);
+                                          setCurrentBorrowId2("ID - " + coin);
                                           handleBorrowMarketCoinChange2(coin);
                                         }}
                                       >
@@ -2254,7 +2267,7 @@ const YourBorrowModal = ({
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -2299,15 +2312,15 @@ const YourBorrowModal = ({
                               </Text>
                             </Box>
 
-                            <Box pt="1" className="navbar-button">
+                            {/* <Box pt="1" className="navbar-button">
                               {activeModal ==
                               "yourBorrowModalBorrowMarketDropdown2" ? (
                                 <ArrowUp />
                               ) : (
                                 <DropdownUp />
                               )}
-                            </Box>
-                            {modalDropdowns.yourBorrowModalBorrowMarketDropdown2 && (
+                            </Box> */}
+                            {/* {modalDropdowns.yourBorrowModalBorrowMarketDropdown2 && (
                               <Box
                                 w="full"
                                 left="0"
@@ -2364,7 +2377,7 @@ const YourBorrowModal = ({
                                   );
                                 })}
                               </Box>
-                            )}
+                            )} */}
                           </Box>
                         </Box>
                         <Text
@@ -2441,7 +2454,7 @@ const YourBorrowModal = ({
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="right"
+                            placement="bottom-start"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -2652,7 +2665,7 @@ const YourBorrowModal = ({
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label=" Actual debt:               12345&#10;accured intrest:        12345"
                               bg="#24292F"
@@ -2701,7 +2714,7 @@ const YourBorrowModal = ({
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="Adding <amount> as collateral will mint
                             <number> r<market_symbol> tokens.
@@ -2755,7 +2768,7 @@ const YourBorrowModal = ({
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -2790,7 +2803,7 @@ const YourBorrowModal = ({
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -2825,7 +2838,7 @@ const YourBorrowModal = ({
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -2860,7 +2873,7 @@ const YourBorrowModal = ({
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"
@@ -2894,7 +2907,7 @@ const YourBorrowModal = ({
                             </Text>
                             <Tooltip
                               hasArrow
-                              placement="right"
+                              placement="right-start"
                               boxShadow="dark-lg"
                               label="all the assets to the market"
                               bg="#24292F"

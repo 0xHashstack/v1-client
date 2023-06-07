@@ -26,26 +26,26 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const dispatch = useDispatch();
   if (className) classes.push(className);
   const router = useRouter();
-  const handleRouteChange = () => {
-    if (!_account) {
-      const walletConnected = localStorage.getItem("lastUsedConnector");
-      if (walletConnected == "braavos") {
-        connect(connectors[0]);
-      } else if (walletConnected == "argentx") {
-        connect(connectors[0]);
-      }
-    }
-  };
-  const handleRouteChangeComplete = (url: string) => {
-    setTimeout(handleRouteChange, 200);
-  };
-  useEffect(() => {
-    router.events.on("routeChangeComplete", handleRouteChangeComplete);
+  // const handleRouteChange = () => {
+  //   if (!_account) {
+  //     const walletConnected = localStorage.getItem("lastUsedConnector");
+  //     if (walletConnected == "braavos") {
+  //       connect(connectors[0]);
+  //     } else if (walletConnected == "argentx") {
+  //       connect(connectors[0]);
+  //     }
+  //   }
+  // };
+  // const handleRouteChangeComplete = (url: string) => {
+  //   setTimeout(handleRouteChange, 200);
+  // };
+  // useEffect(() => {
+  //   router.events.on("routeChangeComplete", handleRouteChangeComplete);
 
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteChangeComplete);
-    };
-  }, [handleRouteChange, router.events]);
+  //   return () => {
+  //     router.events.off("routeChangeComplete", handleRouteChangeComplete);
+  //   };
+  // }, [handleRouteChange, router.events]);
   const { account: _account } = useAccount();
   // connect(connectors[0])
   // console.log(connectors)
@@ -62,8 +62,8 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   // }, []);
   useEffect(() => {
     const walletConnected = localStorage.getItem("lastUsedConnector");
-    if(walletConnected==""){
-      router.push('/');
+    if (walletConnected == "") {
+      router.push("/");
     }
     if (!_account) {
       if (walletConnected == "braavos") {

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   Thead,
@@ -28,6 +28,66 @@ export interface ICoin {
   icon: string;
 }
 
+const supplyCoins: any = [
+  {
+    market: "USDT",
+    rTokenAmount: "1000",
+    ExchangeRate: "1.23",
+    SupplyApr: "8.22%",
+    EffectiveApr: "7.8%",
+    Status: "Active",
+  },
+  {
+    market: "BTC",
+    rTokenAmount: "1000",
+    ExchangeRate: "1.23",
+    SupplyApr: "8.22%",
+    EffectiveApr: "7.8%",
+    Status: "Active",
+  },
+  {
+    market: "DAI",
+    rTokenAmount: "1000",
+    ExchangeRate: "1.23",
+    SupplyApr: "8.22%",
+    EffectiveApr: "7.8%",
+    Status: "Active",
+  },
+  {
+    market: "USDT",
+    rTokenAmount: "1000",
+    ExchangeRate: "1.23",
+    SupplyApr: "8.22%",
+    EffectiveApr: "7.8%",
+    Status: "Active",
+  },
+  {
+    market: "DAI",
+    rTokenAmount: "1000",
+    ExchangeRate: "1.23",
+    SupplyApr: "8.22%",
+    EffectiveApr: "7.8%",
+    Status: "Active",
+  },
+  {
+    market: "BTC",
+    rTokenAmount: "1000",
+    ExchangeRate: "1.23",
+    SupplyApr: "8.22%",
+    EffectiveApr: "7.8%",
+    Status: "Active",
+  },
+  {
+    market: "BTC",
+
+    rTokenAmount: "1000",
+    ExchangeRate: "1.23",
+    SupplyApr: "8.22%",
+    EffectiveApr: "7.8%",
+    Status: "Active",
+  },
+];
+
 const SupplyDashboard = ({
   width,
   currentPagination,
@@ -46,6 +106,21 @@ const SupplyDashboard = ({
   let upper_bound = lower_bound + 5;
   upper_bound = Math.min(Coins.length - 1, upper_bound);
   // console.log("aryan " + lower_bound + " " + upper_bound);
+
+  const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
+    useState("BTC");
+  const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
+    useState("BTC");
+  const [supplyMarkets, setSupplyMarkets] = useState([]);
+  useEffect(() => {
+    let temp: any = [];
+    supplyCoins.map((coin: any) => {
+      if (!temp.includes(coin.market)) {
+        temp.push(coin.market);
+      }
+    });
+    setSupplyMarkets(temp);
+  }, []);
 
   return upper_bound >= lower_bound && Coins.length > 0 ? (
     <TableContainer
@@ -110,8 +185,9 @@ const SupplyDashboard = ({
           //   flexDirection="column"
           //   gap={"1rem"}
         >
-          {Coins.slice(lower_bound, upper_bound + 1).map(
-            (coin: any, idx: number) => (
+          {supplyCoins
+            .slice(lower_bound, upper_bound + 1)
+            .map((coin: any, idx: number) => (
               <>
                 <Tr
                   key={idx}
@@ -157,17 +233,17 @@ const SupplyDashboard = ({
                           justifyContent="center"
                         >
                           <Image
-                            src={`./USDT.svg`}
+                            src={`./${coin.market}.svg`}
                             alt="Picture of the author"
                             width="32"
                             height="32"
                           />
                           <Text fontSize="14px" fontWeight="400">
-                            USDT
+                            {coin.rTokenAmount}
                           </Text>
                         </HStack>
                         <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                          10,000
+                          {coin.rTokenAmount}
                         </Text>
                       </VStack>
                     </Box>
@@ -190,7 +266,7 @@ const SupplyDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      1.23
+                      {coin.ExchangeRate}
                     </Text>
                   </Td>
                   <Td
@@ -211,7 +287,7 @@ const SupplyDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      8.22%
+                      {coin.SupplyApr}
                     </Text>
                   </Td>
                   <Td
@@ -232,7 +308,7 @@ const SupplyDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      7.8%
+                      {coin.EffectiveApr}
                     </Text>
                   </Td>
 
@@ -254,7 +330,7 @@ const SupplyDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      Active
+                      {coin.Status}
                     </Text>
                   </Td>
                   <Td
@@ -273,9 +349,25 @@ const SupplyDashboard = ({
                       justifyContent="flex-end"
                       fontWeight="400"
                       pr={2}
+                      onClick={() => {
+                        setCurrentSelectedSupplyCoin(coin.market);
+                        setcurrentSelectedWithdrawlCoin(coin.market);
+                      }}
                       // bgColor={"blue"}
                     >
-                      <YourSupplyModal />
+                      <YourSupplyModal
+                        currentSelectedSupplyCoin={currentSelectedSupplyCoin}
+                        setCurrentSelectedSupplyCoin={
+                          setCurrentSelectedSupplyCoin
+                        }
+                        currentSelectedWithdrawlCoin={
+                          currentSelectedWithdrawlCoin
+                        }
+                        setcurrentSelectedWithdrawlCoin={
+                          setcurrentSelectedWithdrawlCoin
+                        }
+                        coins={supplyMarkets}
+                      />
                     </Box>
                   </Td>
                 </Tr>
@@ -291,8 +383,7 @@ const SupplyDashboard = ({
                   }}
                 />
               </>
-            )
-          )}
+            ))}
           {(() => {
             const rows = [];
             for (
@@ -323,19 +414,19 @@ const SupplyDashboard = ({
       >
         <Text color="#FFFFFF">Your Ethereum Wallet is empty</Text>
         <SupplyModal
-                      buttonText="Supply"
-                      height={"2rem"}
-                      fontSize={"14px"}
-                      fontWeight="500"
-                      lineHeight="20px"
-                      padding="6px 12px"
-                      border="1px solid rgba(27, 31, 36, 0.15)"
-                      bgColor="#2DA44E"
-                      _hover={{ bg: "#2DA44E", color: "white" }}
-                      borderRadius={"6px"}
-                      color="#fff"
-                      backGroundOverLay="rgba(244, 242, 255, 0.5)"
-                          />
+          buttonText="Supply"
+          height={"2rem"}
+          fontSize={"14px"}
+          fontWeight="500"
+          lineHeight="20px"
+          padding="6px 12px"
+          border="1px solid rgba(27, 31, 36, 0.15)"
+          bgColor="#2DA44E"
+          _hover={{ bg: "#2DA44E", color: "white" }}
+          borderRadius={"6px"}
+          color="#fff"
+          backGroundOverLay="rgba(244, 242, 255, 0.5)"
+        />
       </Box>
     </>
   );

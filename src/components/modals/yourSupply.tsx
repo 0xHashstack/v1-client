@@ -70,7 +70,13 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ArrowUp from "@/assets/icons/arrowup";
-const YourSupplyModal = () => {
+const YourSupplyModal = ({
+  currentSelectedSupplyCoin,
+  setCurrentSelectedSupplyCoin,
+  currentSelectedWithdrawlCoin,
+  setcurrentSelectedWithdrawlCoin,
+  coins,
+}: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const [sliderValue, setSliderValue] = useState(0);
@@ -164,12 +170,12 @@ const YourSupplyModal = () => {
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
-  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const walletBalance = useSelector(selectWalletBalance);
-  const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
-    useState("BTC");
-  const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
-    useState("BTC");
+  // const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
+  //   useState("BTC");
+  // const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
+  //   useState("BTC");
   const resetStates = () => {
     setSliderValue(0);
     setSliderValue2(0);

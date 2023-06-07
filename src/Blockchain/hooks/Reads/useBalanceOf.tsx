@@ -8,8 +8,8 @@ const useBalanceOf = ( asset: string) => {
     const {
         data: dataBalanceOf,
 
-        error: errorBalanceOf,
-        isIdle: isIdleBalanceOf,
+    error: errorBalanceOf,
+    isIdle: isIdleBalanceOf,
 
         isLoading: isLoadingBalanceOf,
         isSuccess: isSuccessBalanceOf,
@@ -24,13 +24,13 @@ const useBalanceOf = ( asset: string) => {
         watch: false,
     })
 
-    return {
-        dataBalanceOf,
-        errorBalanceOf,
-        isFetchingBalanceOf,
-        refetchBalanceOf,
-        statusBalanceOf,
-    };
-}
+  return {
+    dataBalanceOf,
+    errorBalanceOf,
+    isFetchingBalanceOf,
+    refetchBalanceOf,
+    statusBalanceOf,
+  };
+};
 
 export default useBalanceOf;
