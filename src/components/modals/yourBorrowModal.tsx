@@ -91,8 +91,9 @@ const YourBorrowModal = ({
   const [sliderValue1, setSliderValue1] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [inputAmount1, setinputAmount1] = useState(0);
-  const [transactionStarted, setTransactionStarted] = useState(false)
-  const [collateralTransactionStarted, setCollateralTransactionStarted] = useState(false);
+  const [transactionStarted, setTransactionStarted] = useState(false);
+  const [collateralTransactionStarted, setCollateralTransactionStarted] =
+    useState(false);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -937,6 +938,8 @@ const YourBorrowModal = ({
     setSliderValue2(0);
   }, [currentBorrowMarketCoin2]);
 
+  const [tabValue, setTabValue] = useState(1);
+
   return (
     <Box>
       <Button key="suppy" onClick={onOpen} {...restProps}>
@@ -954,27 +957,18 @@ const YourBorrowModal = ({
         // size="sm"
       >
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
-        <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
-          <ModalHeader  padding="0">
-          </ModalHeader>
-          <ModalCloseButton color="white" mt="1rem" mr="1rem" />
-
-          <ModalBody color={"#E6EDF3"} pt={6} px={7} >
-            <Box
-              display={"flex"}
-              justifyContent={"space-between"}
-              fontSize={"sm"}
-              // my={"2"}
-            >
-              <Box w="full">
-                <Tabs variant="unstyled" >
-                  <Box position="relative" >
-
-                  <TabList borderRadius="md" top="9.5rem" position="fixed"
-  width="100%"
-  zIndex="1">
-
-                    <Box display="flex" width="300px" position="fixed" >
+        <ModalContent mt="8rem" bg={"#010409"} maxW="464px" overflow="hidden">
+          <ModalHeader bg="inherit">
+            <Box position="relative">
+              <Tabs variant="unstyled">
+                <TabList
+                  borderRadius="md"
+                  top="9.5rem"
+                  position="fixed"
+                  width="100%"
+                  zIndex="1"
+                >
+                  <Box display="flex" width="300px" position="fixed">
                     <Tab
                       py="1"
                       px="3"
@@ -990,7 +984,7 @@ const YourBorrowModal = ({
                         bg: "#0969DA",
                         border: "none",
                       }}
-                      isDisabled={collateralTransactionStarted==true}
+                      isDisabled={collateralTransactionStarted == true}
                     >
                       Borrow Actions
                     </Tab>
@@ -1009,319 +1003,323 @@ const YourBorrowModal = ({
                         bg: "#0969DA",
                         border: "none",
                       }}
-                      isDisabled={transactionStarted==true}
+                      isDisabled={transactionStarted == true}
                     >
                       Add Collateral
                     </Tab>
-                    </Box>
-                    
-                  </TabList>
                   </Box>
-                  <TabPanels  >
-                    <TabPanel p="0" m="0" mt="1rem" overflowY="auto">
-                      <Box
-                        display="flex"
-                        flexDirection="column"
-                        backgroundColor="#101216"
-                        border="1px"
-                        borderColor="#2B2F35"
-                        p="5"
-                        // my="4"
-                        borderRadius="md"
-                        gap="3"
-                        mt="2.5rem"
-                      >
-                        <Box display="flex" flexDirection="column" gap="1">
-                          <Box display="flex">
-                            <Text fontSize="xs" color="#8B949E">
-                              Action
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="right-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box p="1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
-                          <Box
-                            display="flex"
-                            border="1px"
-                            borderColor="#2B2F35"
-                            justifyContent="space-between"
-                            py="2"
-                            pl="3"
-                            pr="3"
-                            borderRadius="md"
-                            className="navbar"
-                            onClick={() =>{
-                              if(transactionStarted){
-                                return;
-                              }else{
-                                handleDropdownClick(
-                                  "yourBorrowModalActionDropdown"
-                                )
-                              }}
-                            }
-                            as="button"
+                </TabList>
+              </Tabs>
+            </Box>
+            <Text fontSize="18px" color="black">
+              this is just to make it align and Lorem ipsum,
+            </Text>
+          </ModalHeader>
+          {/* <ModalHeader padding="0"></ModalHeader> */}
+          <ModalCloseButton color="white" mt="1rem" mr="1rem" />
+
+          <ModalBody color={"#E6EDF3"} px={7}>
+            <Box
+              display={"flex"}
+              justifyContent={"space-between"}
+              fontSize={"sm"}
+              // my={"2"}
+            >
+              <Box w="full">
+                {tabValue == 1 ? (
+                  <Box p="0" m="0" overflowY="auto">
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      backgroundColor="#101216"
+                      border="1px"
+                      borderColor="#2B2F35"
+                      p="5"
+                      // my="4"
+                      borderRadius="md"
+                      gap="3"
+                    >
+                      <Box display="flex" flexDirection="column" gap="1">
+                        <Box display="flex">
+                          <Text fontSize="xs" color="#8B949E">
+                            Action
+                          </Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right-start"
+                            boxShadow="dark-lg"
+                            label="all the assets to the market"
+                            bg="#24292F"
+                            fontSize={"smaller"}
+                            fontWeight={"thin"}
+                            borderRadius={"lg"}
+                            padding={"2"}
                           >
-                            <Text display="flex" gap="1">
-                              {currentAction}
-                            </Text>
-                            <Box pt="1" className="navbar-button">
-                              {activeModal ==
-                              "yourBorrowModalActionDropdown" ? (
-                                <ArrowUp />
-                              ) : (
-                                <DropdownUp />
-                              )}
+                            <Box p="1">
+                              <InfoIcon />
                             </Box>
-                            {modalDropdowns.yourBorrowModalActionDropdown && (
-                              <Box
-                                w="full"
-                                left="0"
-                                bg="#03060B"
-                                py="2"
-                                className="dropdown-container"
-                                boxShadow="dark-lg"
-                              >
-                                {actions.map((action, index) => {
-                                  return (
+                          </Tooltip>
+                        </Box>
+                        <Box
+                          display="flex"
+                          border="1px"
+                          borderColor="#2B2F35"
+                          justifyContent="space-between"
+                          py="2"
+                          pl="3"
+                          pr="3"
+                          borderRadius="md"
+                          className="navbar"
+                          onClick={() => {
+                            if (transactionStarted) {
+                              return;
+                            } else {
+                              handleDropdownClick(
+                                "yourBorrowModalActionDropdown"
+                              );
+                            }
+                          }}
+                          as="button"
+                        >
+                          <Text display="flex" gap="1">
+                            {currentAction}
+                          </Text>
+                          <Box pt="1" className="navbar-button">
+                            {activeModal == "yourBorrowModalActionDropdown" ? (
+                              <ArrowUp />
+                            ) : (
+                              <DropdownUp />
+                            )}
+                          </Box>
+                          {modalDropdowns.yourBorrowModalActionDropdown && (
+                            <Box
+                              w="full"
+                              left="0"
+                              bg="#03060B"
+                              py="2"
+                              className="dropdown-container"
+                              boxShadow="dark-lg"
+                            >
+                              {actions.map((action, index) => {
+                                return (
+                                  <Box
+                                    key={index}
+                                    as="button"
+                                    w="full"
+                                    display="flex"
+                                    alignItems="center"
+                                    gap="1"
+                                    pr="2"
+                                    onClick={() => {
+                                      if (action === "Zero Repay") {
+                                        setinputRepayAmount(0);
+                                        setSliderValue(0);
+                                      }
+                                      setCurrentAction(action);
+                                    }}
+                                  >
+                                    {action === currentAction && (
+                                      <Box
+                                        w="3px"
+                                        h="28px"
+                                        bg="#0C6AD9"
+                                        borderRightRadius="md"
+                                      ></Box>
+                                    )}
                                     <Box
-                                      key={index}
-                                      as="button"
                                       w="full"
                                       display="flex"
-                                      alignItems="center"
+                                      py="5px"
+                                      px={`${
+                                        action === currentAction ? "2" : "5"
+                                      }`}
                                       gap="1"
-                                      pr="2"
-                                      onClick={() => {
-                                        if (action === "Zero Repay") {
-                                          setinputRepayAmount(0);
-                                          setSliderValue(0);
-                                        }
-                                        setCurrentAction(action);
-                                      }}
+                                      bg={`${
+                                        action === currentAction
+                                          ? "#0C6AD9"
+                                          : "inherit"
+                                      }`}
+                                      borderRadius="md"
                                     >
-                                      {action === currentAction && (
-                                        <Box
-                                          w="3px"
-                                          h="28px"
-                                          bg="#0C6AD9"
-                                          borderRightRadius="md"
-                                        ></Box>
-                                      )}
-                                      <Box
-                                        w="full"
-                                        display="flex"
-                                        py="5px"
-                                        px={`${
-                                          action === currentAction ? "2" : "5"
-                                        }`}
-                                        gap="1"
-                                        bg={`${
-                                          action === currentAction
-                                            ? "#0C6AD9"
-                                            : "inherit"
-                                        }`}
-                                        borderRadius="md"
-                                      >
-                                        {/* <Box p="1">{getCoin(action)}</Box> */}
-                                        <Text>{action}</Text>
-                                      </Box>
+                                      {/* <Box p="1">{getCoin(action)}</Box> */}
+                                      <Text>{action}</Text>
                                     </Box>
-                                  );
-                                })}
-                              </Box>
-                            )}
-                          </Box>
-                        </Box>
-                        <Box display="flex" flexDirection="column" gap="1">
-                          <Box display="flex">
-                            <Text
-                              fontSize="12px"
-                              fontWeight="400"
-                              fontStyle="normal"
-                              color="#8B949E"
-                            >
-                              Borrow ID
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="right-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box p="1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
-                          <Box
-                            display="flex"
-                            border="1px"
-                            borderColor="#2B2F35"
-                            justifyContent="space-between"
-                            py="2"
-                            pl="3"
-                            pr="3"
-                            borderRadius="md"
-                            className="navbar"
-                            onClick={() =>{
-                              if(transactionStarted){
-                                return;
-                              }else{
-
-                                handleDropdownClick(
-                                  "yourBorrowBorrowIDsDropdown1"
-                                )
-                              }
-                            }}
-                            as="button"
-                          >
-                            <Box display="flex" gap="1">
-                              {currentBorrowId1}
+                                  </Box>
+                                );
+                              })}
                             </Box>
-                            <Text pt="1" className="navbar-button">
-                              {activeModal == "yourBorrowBorrowIDsDropdown1" ? (
-                                <ArrowUp />
-                              ) : (
-                                <DropdownUp />
-                              )}
-                            </Text>
-                            {modalDropdowns.yourBorrowBorrowIDsDropdown1 && (
-                              <Box
-                                w="full"
-                                left="0"
-                                bg="#03060B"
-                                py="2"
-                                className="dropdown-container onlyScroll"
-                                boxShadow="dark-lg"
-                                height={`${
-                                  borrowIds.length >= 5 ? "182px" : "none"
-                                }`}
-                                overflowY="scroll"
-                              >
-                                {borrowIds.map(
-                                  (coin: string, index: number) => {
-                                    return (
+                          )}
+                        </Box>
+                      </Box>
+                      <Box display="flex" flexDirection="column" gap="1">
+                        <Box display="flex">
+                          <Text
+                            fontSize="12px"
+                            fontWeight="400"
+                            fontStyle="normal"
+                            color="#8B949E"
+                          >
+                            Borrow ID
+                          </Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right-start"
+                            boxShadow="dark-lg"
+                            label="all the assets to the market"
+                            bg="#24292F"
+                            fontSize={"smaller"}
+                            fontWeight={"thin"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                          >
+                            <Box p="1">
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
+                        </Box>
+                        <Box
+                          display="flex"
+                          border="1px"
+                          borderColor="#2B2F35"
+                          justifyContent="space-between"
+                          py="2"
+                          pl="3"
+                          pr="3"
+                          borderRadius="md"
+                          className="navbar"
+                          onClick={() => {
+                            if (transactionStarted) {
+                              return;
+                            } else {
+                              handleDropdownClick(
+                                "yourBorrowBorrowIDsDropdown1"
+                              );
+                            }
+                          }}
+                          as="button"
+                        >
+                          <Box display="flex" gap="1">
+                            {currentBorrowId1}
+                          </Box>
+                          <Text pt="1" className="navbar-button">
+                            {activeModal == "yourBorrowBorrowIDsDropdown1" ? (
+                              <ArrowUp />
+                            ) : (
+                              <DropdownUp />
+                            )}
+                          </Text>
+                          {modalDropdowns.yourBorrowBorrowIDsDropdown1 && (
+                            <Box
+                              w="full"
+                              left="0"
+                              bg="#03060B"
+                              py="2"
+                              className="dropdown-container onlyScroll"
+                              boxShadow="dark-lg"
+                              height={`${
+                                borrowIds.length >= 5 ? "182px" : "none"
+                              }`}
+                              overflowY="scroll"
+                            >
+                              {borrowIds.map((coin: string, index: number) => {
+                                return (
+                                  <Box
+                                    key={index}
+                                    as="button"
+                                    w="full"
+                                    display="flex"
+                                    alignItems="center"
+                                    gap="1"
+                                    pr="2"
+                                    onClick={() => {
+                                      setCurrentBorrowId1("ID - " + coin);
+                                      handleBorrowMarketCoinChange1(coin);
+                                    }}
+                                  >
+                                    {coin === currentBorrowId1 && (
                                       <Box
-                                        key={index}
-                                        as="button"
-                                        w="full"
-                                        display="flex"
-                                        alignItems="center"
-                                        gap="1"
-                                        pr="2"
-                                        onClick={() => {
-                                          setCurrentBorrowId1("ID - " + coin);
-                                          handleBorrowMarketCoinChange1(coin);
-                                        }}
-                                      >
-                                        {coin === currentBorrowId1 && (
-                                          <Box
-                                            w="3px"
-                                            h="28px"
-                                            bg="#0C6AD9"
-                                            borderRightRadius="md"
-                                          ></Box>
-                                        )}
-                                        <Box
-                                          w="full"
-                                          display="flex"
-                                          py="5px"
-                                          px={`${
-                                            coin === currentBorrowId1
-                                              ? "2"
-                                              : "5"
-                                          }`}
-                                          gap="1"
-                                          bg={`${
-                                            coin === currentBorrowId1
-                                              ? "#0C6AD9"
-                                              : "inherit"
-                                          }`}
-                                          borderRadius="md"
-                                        >
-                                          {/* <Box p="1">{getCoin(coin)}</Box> */}
-                                          <Text>ID - {coin}</Text>
-                                        </Box>
-                                      </Box>
-                                    );
-                                  }
-                                )}
-                              </Box>
-                            )}
-                          </Box>
-                        </Box>
-                        <Box display="flex" flexDirection="column" gap="1">
-                          <Box display="flex">
-                            <Text
-                              fontSize="12px"
-                              fontWeight="400"
-                              fontStyle="normal"
-                              color="#8B949E"
-                            >
-                              Borrow Market
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="right-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box p="1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
-                          <Box
-                            display="flex"
-                            border="1px"
-                            borderColor="#2B2F35"
-                            justifyContent="space-between"
-                            py="2"
-                            pl="3"
-                            pr="3"
-                            borderRadius="md"
-                            className="navbar"
-                            // onClick={() =>
-                            //   handleDropdownClick(
-                            //     "yourBorrowModalBorrowMarketDropdown1"
-                            //   )
-                            // }
-                            as="button"
-                          >
-                            <Box display="flex" gap="1">
-                              <Box p="1">
-                                {getCoin(currentBorrowMarketCoin1)}
-                              </Box>
-                              <Text mt="0.15rem">
-                                {currentBorrowMarketCoin1}
-                              </Text>
+                                        w="3px"
+                                        h="28px"
+                                        bg="#0C6AD9"
+                                        borderRightRadius="md"
+                                      ></Box>
+                                    )}
+                                    <Box
+                                      w="full"
+                                      display="flex"
+                                      py="5px"
+                                      px={`${
+                                        coin === currentBorrowId1 ? "2" : "5"
+                                      }`}
+                                      gap="1"
+                                      bg={`${
+                                        coin === currentBorrowId1
+                                          ? "#0C6AD9"
+                                          : "inherit"
+                                      }`}
+                                      borderRadius="md"
+                                    >
+                                      {/* <Box p="1">{getCoin(coin)}</Box> */}
+                                      <Text>ID - {coin}</Text>
+                                    </Box>
+                                  </Box>
+                                );
+                              })}
                             </Box>
-                            {/* <Box pt="1" className="navbar-button">
+                          )}
+                        </Box>
+                      </Box>
+                      <Box display="flex" flexDirection="column" gap="1">
+                        <Box display="flex">
+                          <Text
+                            fontSize="12px"
+                            fontWeight="400"
+                            fontStyle="normal"
+                            color="#8B949E"
+                          >
+                            Borrow Market
+                          </Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right-start"
+                            boxShadow="dark-lg"
+                            label="all the assets to the market"
+                            bg="#24292F"
+                            fontSize={"smaller"}
+                            fontWeight={"thin"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                          >
+                            <Box p="1">
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
+                        </Box>
+                        <Box
+                          display="flex"
+                          border="1px"
+                          borderColor="#2B2F35"
+                          justifyContent="space-between"
+                          py="2"
+                          pl="3"
+                          pr="3"
+                          borderRadius="md"
+                          className="navbar"
+                          // onClick={() =>
+                          //   handleDropdownClick(
+                          //     "yourBorrowModalBorrowMarketDropdown1"
+                          //   )
+                          // }
+                          as="button"
+                        >
+                          <Box display="flex" gap="1">
+                            <Box p="1">{getCoin(currentBorrowMarketCoin1)}</Box>
+                            <Text mt="0.15rem">{currentBorrowMarketCoin1}</Text>
+                          </Box>
+                          {/* <Box pt="1" className="navbar-button">
                               <DropdownUp />
                             </Box> */}
-                            {/* {modalDropdowns.yourBorrowModalBorrowMarketDropdown1 && (
+                          {/* {modalDropdowns.yourBorrowModalBorrowMarketDropdown1 && (
                               <Box
                                 w="full"
                                 left="0"
@@ -1378,239 +1376,24 @@ const YourBorrowModal = ({
                                 })}
                               </Box>
                             )} */}
-                          </Box>
-                          <Text textAlign="right" fontSize="xs">
-                            Borrow Balance: 0.00{" "}
-                            <Text as="span" color="#8B949E">
-                              {currentBorrowMarketCoin1}
-                            </Text>
-                          </Text>
                         </Box>
-                        {currentAction !== "Spend Borrow" && (
-                          <Box
-                            display="flex"
-                            flexDirection="column"
-                            gap="1"
-                            mt="0"
-                          >
-                            <Box display="flex">
-                              <Text fontSize="xs" color="#8B949E">
-                                Repay Amount
-                              </Text>
-                              <Tooltip
-                                hasArrow
-                                placement="right-start"
-                                boxShadow="dark-lg"
-                                label="all the assets to the market"
-                                bg="#24292F"
-                                fontSize={"smaller"}
-                                fontWeight={"thin"}
-                                borderRadius={"lg"}
-                                padding={"2"}
-                              >
-                                <Box p="1">
-                                  <InfoIcon />
-                                </Box>
-                              </Tooltip>
-                            </Box>
-                            <Box
-                              width="100%"
-                              color="white"
-                              borderRadius="6px"
-                              display="flex"
-                              justifyContent="space-between"
-                              border={`${inputRepayAmount > walletBalance
-                                ? "1px solid #CF222E"
-                                : inputRepayAmount < 0
-                                  ? "1px solid #CF222E"
-                                  : isNaN(inputRepayAmount)
-                                    ? "1px solid #CF222E"
-                                    : inputRepayAmount > 0 && inputRepayAmount <= walletBalance
-                                      ? "1px solid #1A7F37"
-                                      : "1px solid #2B2F35 "
-                              }`}
-                            >
-                              <NumberInput
-                                border="0px"
-                                min={0}
-                                keepWithinRange={true}
-                                onChange={handleChange}
-                                value={inputRepayAmount ? inputRepayAmount:""}
-                                isDisabled={currentAction === "Zero Repay" || transactionStarted==true}
-                                step={parseFloat(
-                                  `${inputRepayAmount <= 99999 ? 0.1 : 0}`
-                                )}
-                                _disabled={{ cursor: "pointer" }}
-                              >
-                                <NumberInputField
-                                  placeholder={`Minimum 0.01536 ${currentBorrowMarketCoin1}`}
-                                  color={`${inputRepayAmount> walletBalance
-                                    ? "#CF222E"
-                                    : isNaN(inputRepayAmount)
-                                      ? "#CF222E"
-                                      : inputRepayAmount < 0
-                                        ? "#CF222E"
-                                        : inputRepayAmount == 0
-                                          ? "white"
-                                          : "#1A7F37"
-                                  }`}
-                                  border="0px"
-                                  _placeholder={{
-                                    color: "#393D4F",
-                                    fontSize: ".89rem",
-                                    fontWeight: "600",
-                                    outline: "0",
-                                  }}
-                                  // _disabled={{ color: "#1A7F37" }}
-                                  _focus={{
-                                    outline: "0",
-                                    boxShadow: "none",
-                                  }}
-                                />
-                              </NumberInput>
-                              <Button
-                                variant="ghost"
-                                color="#0969DA"
-                                _hover={{ bg: "#101216" }}
-                                onClick={() => {
-                                  if (currentAction === "Zero Repay") return;
-                                  setinputRepayAmount(walletBalance);
-                                  setSliderValue(100);
-                                  dispatch(
-                                    setInputYourBorrowModalRepayAmount(
-                                      walletBalance
-                                    )
-                                  );
-                                }}
-                                isDisabled={transactionStarted == true}
-                                _disabled={{ cursor: "pointer" }}
-                              >
-                                MAX
-                              </Button>
-                            </Box>
-                            {inputRepayAmount > walletBalance ||
-                  inputRepayAmount < 0 ||
-                  isNaN(inputRepayAmount) ? (
-                  <Text
-                    display="flex"
-                    justifyContent="space-between"
-                    color="#E6EDF3"
-                    mt="0.4rem"
-                    fontSize="12px"
-                    fontWeight="500"
-                    fontStyle="normal"
-                    fontFamily="Inter"
-                  >
-                    <Text color="#CF222E" display="flex">
-                      <Text mt="0.2rem">
-                        <SmallErrorIcon />{" "}
-                      </Text>
-                      <Text ml="0.3rem">
-                        {inputRepayAmount> walletBalance
-                          ? "Amount exceeds balance"
-                          : "Invalid Input"}
-                      </Text>
-                    </Text>
-                    <Text
-                      color="#E6EDF3"
-                      display="flex"
-                      justifyContent="flex-end"
-                    >
-                      Wallet Balance: {walletBalance}
-                      <Text color="#6E7781" ml="0.2rem">
-                        {` ${currentSelectedCoin}`}
-                      </Text>
-                    </Text>
-                  </Text>
-                ) : (
-                  <Text
-                    color="#E6EDF3"
-                    display="flex"
-                    justifyContent="flex-end"
-                    mt="0.4rem"
-                    fontSize="12px"
-                    fontWeight="500"
-                    fontStyle="normal"
-                    fontFamily="Inter"
-                  >
-                    Wallet Balance: {walletBalance}
-                    <Text color="#6E7781" ml="0.2rem">
-                      {` ${currentSelectedCoin}`}
-                    </Text>
-                  </Text>
-                )}
-                            <Slider
-                              mt="12"
-                              mb="2"
-                              aria-label="slider-ex-6"
-                              defaultValue={sliderValue}
-                              value={sliderValue}
-                              onChange={(val) => {
-                                if (currentAction === "Zero Repay") return;
-                                setSliderValue(val);
-                                var ans = (val / 100) * walletBalance;
-                                ans = Math.round(ans * 100) / 100;
-                                dispatch(
-                                  setInputYourBorrowModalRepayAmount(ans)
-                                );
-                                setinputRepayAmount(ans);
-                              }}
-                              isDisabled={transactionStarted == true}
-                              _disabled={{ cursor: "pointer" }}
-                              focusThumbOnChange={false}
-                            >
-                              <SliderMark value={sliderValue}>
-                                <Box
-                                  position="absolute"
-                                  bottom="-8px"
-                                  left="-11px"
-                                  zIndex="1"
-                                >
-                                  <SliderTooltip
-                                    color={`${
-                                      currentAction === "Zero Repay"
-                                        ? "#6E7681"
-                                        : "#DEDEDE"
-                                    }`}
-                                  />
-                                  <Text
-                                    position="absolute"
-                                    color="black"
-                                    top="6px"
-                                    left={
-                                      sliderValue !== 100
-                                        ? sliderValue >= 10
-                                          ? "15%"
-                                          : "25%"
-                                        : "8%"
-                                    }
-                                    fontSize=".58rem"
-                                    fontWeight="bold"
-                                    textAlign="center"
-                                  >
-                                    {sliderValue}%
-                                  </Text>
-                                </Box>
-                              </SliderMark>
-                              <SliderTrack bg="#343333">
-                                <SliderFilledTrack
-                                  bg={`${
-                                    currentAction === "Zero Repay"
-                                      ? "#6E7681"
-                                      : "white"
-                                  }`}
-                                  w={`${sliderValue}`}
-                                />
-                              </SliderTrack>
-                            </Slider>
-                          </Box>
-                        )}
+                        <Text textAlign="right" fontSize="xs">
+                          Borrow Balance: 0.00{" "}
+                          <Text as="span" color="#8B949E">
+                            {currentBorrowMarketCoin1}
+                          </Text>
+                        </Text>
                       </Box>
-                      {currentAction === "Spend Borrow" && (
-                        <Box display="flex" flexDir="column" p="3" gap="1">
+                      {currentAction !== "Spend Borrow" && (
+                        <Box
+                          display="flex"
+                          flexDirection="column"
+                          gap="1"
+                          mt="0"
+                        >
                           <Box display="flex">
                             <Text fontSize="xs" color="#8B949E">
-                              Purpose
+                              Repay Amount
                             </Text>
                             <Tooltip
                               hasArrow
@@ -1628,361 +1411,582 @@ const YourBorrowModal = ({
                               </Box>
                             </Tooltip>
                           </Box>
-                          <Box>
-                            <RadioGroup
-                              onChange={setRadioValue}
-                              value={radioValue}
-                            >
-                              <Stack spacing={4} direction="row">
-                                <Radio
-                                  value="1"
-                                  bg="#2B2F35"
-                                  border="none"
-                                  colorScheme="customBlue"
-                                  _focus={{ boxShadow: "none", outline: "0" }}
-                                >
-                                  Liquidity provisioning
-                                </Radio>
-                                <Radio
-                                  fontSize="sm"
-                                  value="2"
-                                  bg="#2B2F35"
-                                  border="none"
-                                  colorScheme="customBlue"
-                                  _focus={{ boxShadow: "none", outline: "0" }}
-                                >
-                                  Trade
-                                </Radio>
-                              </Stack>
-                            </RadioGroup>
-                          </Box>
-                        </Box>
-                      )}
-                      {currentAction === "Spend Borrow" && (
-                        <Box
-                          display="flex"
-                          flexDirection="column"
-                          backgroundColor="#101216"
-                          border="1px"
-                          borderColor="#2B2F35"
-                          p="3"
-                          // my="4"
-                          borderRadius="md"
-                          gap="3"
-                        >
-                          <Box display="flex" flexDirection="column" gap="1">
-                            <Box display="flex">
-                              <Text fontSize="xs" color="#8B949E">
-                                Dapp
-                              </Text>
-                              <Tooltip
-                                hasArrow
-                                placement="right-start"
-                                boxShadow="dark-lg"
-                                label="all the assets to the market"
-                                bg="#24292F"
-                                fontSize={"smaller"}
-                                fontWeight={"thin"}
-                                borderRadius={"lg"}
-                                padding={"2"}
-                              >
-                                <Box p="1">
-                                  <InfoIcon />
-                                </Box>
-                              </Tooltip>
-                            </Box>
-                            <Box
-                              display="flex"
-                              border="1px"
-                              borderColor="#2B2F35"
-                              justifyContent="space-between"
-                              py="2"
-                              pl="3"
-                              pr="3"
-                              borderRadius="md"
-                              className="navbar"
-                              onClick={() =>{
-                                if(transactionStarted){
-                                  return;
-                                }else{
-                                  handleDropdownClick("yourBorrowDappDropdown")
-                                }
-                              }}
-                              as="button"
-                            >
-                              <Box display="flex" gap="1">
-                                {currentDapp != "Select a dapp" ? (
-                                  <Box p="1">{getCoin(currentDapp)}</Box>
-                                ) : (
-                                  ""
-                                )}
-
-                                <Text mt="0.15rem">{currentDapp}</Text>
-                              </Box>
-                              <Box pt="1" className="navbar-button">
-                                <DropdownUp />
-                              </Box>
-                              {modalDropdowns.yourBorrowDappDropdown && (
-                                <Box
-                                  w="full"
-                                  left="0"
-                                  bg="#03060B"
-                                  py="2"
-                                  className="dropdown-container"
-                                  boxShadow="dark-lg"
-                                >
-                                  {dapps.map((dapp, index) => {
-                                    return (
-                                      <Button
-                                        // as="button"
-                                        key={index}
-                                        w="full"
-                                        m="0"
-                                        pl="0"
-                                        display="flex"
-                                        alignItems="center"
-                                        gap="1"
-                                        pr="2"
-                                        bg="inherit"
-                                        onClick={() => {
-                                          setCurrentDapp(dapp.name);
-                                        }}
-                                        fontSize="sm"
-                                        _hover={{ background: "inherit" }}
-                                        isDisabled={dapp.status === "disable"}
-                                      >
-                                        {dapp.name === currentDapp && (
-                                          <Box
-                                            w="3px"
-                                            h="28px"
-                                            bg="#0C6AD9"
-                                            borderRightRadius="md"
-                                          ></Box>
-                                        )}
-                                        <Box
-                                          w="full"
-                                          display="flex"
-                                          py="5px"
-                                          px={`${
-                                            dapp.name === currentDapp
-                                              ? "1"
-                                              : "5"
-                                          }`}
-                                          gap="1"
-                                          bg={`${
-                                            dapp.name === currentDapp
-                                              ? "#0C6AD9"
-                                              : "inherit"
-                                          }`}
-                                          borderRadius="md"
-                                        >
-                                          <Box p="1">{getCoin(dapp.name)}</Box>
-                                          <Text pt="1">{dapp.name}</Text>
-                                        </Box>
-                                        {dapp.status === "disable" && (
-                                          <Text
-                                            pt="1"
-                                            pr="3"
-                                            fontSize=".6rem"
-                                            fontWeight="thin"
-                                          >
-                                            paused
-                                          </Text>
-                                        )}
-                                      </Button>
-                                    );
-                                  })}
-                                </Box>
+                          <Box
+                            width="100%"
+                            color="white"
+                            borderRadius="6px"
+                            display="flex"
+                            justifyContent="space-between"
+                            border={`${
+                              inputRepayAmount > walletBalance
+                                ? "1px solid #CF222E"
+                                : inputRepayAmount < 0
+                                ? "1px solid #CF222E"
+                                : isNaN(inputRepayAmount)
+                                ? "1px solid #CF222E"
+                                : inputRepayAmount > 0 &&
+                                  inputRepayAmount <= walletBalance
+                                ? "1px solid #1A7F37"
+                                : "1px solid #2B2F35 "
+                            }`}
+                          >
+                            <NumberInput
+                              border="0px"
+                              min={0}
+                              keepWithinRange={true}
+                              onChange={handleChange}
+                              value={inputRepayAmount ? inputRepayAmount : ""}
+                              isDisabled={
+                                currentAction === "Zero Repay" ||
+                                transactionStarted == true
+                              }
+                              step={parseFloat(
+                                `${inputRepayAmount <= 99999 ? 0.1 : 0}`
                               )}
-                            </Box>
-                          </Box>
-                          <Box display="flex" flexDirection="column" gap="1">
-                            <Box display="flex">
-                              <Text fontSize="xs" color="#8B949E">
-                                Select Pool
-                              </Text>
-                              <Tooltip
-                                hasArrow
-                                placement="right-start"
-                                boxShadow="dark-lg"
-                                label="all the assets to the market"
-                                bg="#24292F"
-                                fontSize={"smaller"}
-                                fontWeight={"thin"}
-                                borderRadius={"lg"}
-                                padding={"2"}
-                              >
-                                <Box p="1">
-                                  <InfoIcon />
-                                </Box>
-                              </Tooltip>
-                            </Box>
-                            <Box
-                              display="flex"
-                              border="1px"
-                              borderColor="#2B2F35"
-                              justifyContent="space-between"
-                              py="2"
-                              pl="3"
-                              pr="3"
-                              borderRadius="md"
-                              className="navbar"
-                              onClick={() =>{
-                                if(transactionStarted){
-                                  return;
-                                }else{
-                                  handleDropdownClick("yourBorrowPoolDropdown")
-                                }
-                              }}
-                              as="button"
+                              _disabled={{ cursor: "pointer" }}
                             >
-                              <Box display="flex" gap="1">
-                                {getCoin(
-                                  radioValue === "1"
-                                    ? currentPool
-                                    : currentPoolCoin
-                                ) ? (
-                                  <Box p="1">
-                                    {getCoin(
-                                      radioValue === "1"
-                                        ? currentPool
-                                        : currentPoolCoin
-                                    )}
-                                  </Box>
-                                ) : (
-                                  ""
-                                )}
-
+                              <NumberInputField
+                                placeholder={`Minimum 0.01536 ${currentBorrowMarketCoin1}`}
+                                color={`${
+                                  inputRepayAmount > walletBalance
+                                    ? "#CF222E"
+                                    : isNaN(inputRepayAmount)
+                                    ? "#CF222E"
+                                    : inputRepayAmount < 0
+                                    ? "#CF222E"
+                                    : inputRepayAmount == 0
+                                    ? "white"
+                                    : "#1A7F37"
+                                }`}
+                                border="0px"
+                                _placeholder={{
+                                  color: "#393D4F",
+                                  fontSize: ".89rem",
+                                  fontWeight: "600",
+                                  outline: "0",
+                                }}
+                                // _disabled={{ color: "#1A7F37" }}
+                                _focus={{
+                                  outline: "0",
+                                  boxShadow: "none",
+                                }}
+                              />
+                            </NumberInput>
+                            <Button
+                              variant="ghost"
+                              color="#0969DA"
+                              _hover={{ bg: "#101216" }}
+                              onClick={() => {
+                                if (currentAction === "Zero Repay") return;
+                                setinputRepayAmount(walletBalance);
+                                setSliderValue(100);
+                                dispatch(
+                                  setInputYourBorrowModalRepayAmount(
+                                    walletBalance
+                                  )
+                                );
+                              }}
+                              isDisabled={transactionStarted == true}
+                              _disabled={{ cursor: "pointer" }}
+                            >
+                              MAX
+                            </Button>
+                          </Box>
+                          {inputRepayAmount > walletBalance ||
+                          inputRepayAmount < 0 ||
+                          isNaN(inputRepayAmount) ? (
+                            <Text
+                              display="flex"
+                              justifyContent="space-between"
+                              color="#E6EDF3"
+                              mt="0.4rem"
+                              fontSize="12px"
+                              fontWeight="500"
+                              fontStyle="normal"
+                              fontFamily="Inter"
+                            >
+                              <Text color="#CF222E" display="flex">
                                 <Text mt="0.2rem">
-                                  {radioValue === "1"
-                                    ? currentPool
-                                    : currentPoolCoin}
+                                  <SmallErrorIcon />{" "}
+                                </Text>
+                                <Text ml="0.3rem">
+                                  {inputRepayAmount > walletBalance
+                                    ? "Amount exceeds balance"
+                                    : "Invalid Input"}
+                                </Text>
+                              </Text>
+                              <Text
+                                color="#E6EDF3"
+                                display="flex"
+                                justifyContent="flex-end"
+                              >
+                                Wallet Balance: {walletBalance}
+                                <Text color="#6E7781" ml="0.2rem">
+                                  {` ${currentSelectedCoin}`}
+                                </Text>
+                              </Text>
+                            </Text>
+                          ) : (
+                            <Text
+                              color="#E6EDF3"
+                              display="flex"
+                              justifyContent="flex-end"
+                              mt="0.4rem"
+                              fontSize="12px"
+                              fontWeight="500"
+                              fontStyle="normal"
+                              fontFamily="Inter"
+                            >
+                              Wallet Balance: {walletBalance}
+                              <Text color="#6E7781" ml="0.2rem">
+                                {` ${currentSelectedCoin}`}
+                              </Text>
+                            </Text>
+                          )}
+                          <Slider
+                            mt="12"
+                            mb="2"
+                            aria-label="slider-ex-6"
+                            defaultValue={sliderValue}
+                            value={sliderValue}
+                            onChange={(val) => {
+                              if (currentAction === "Zero Repay") return;
+                              setSliderValue(val);
+                              var ans = (val / 100) * walletBalance;
+                              ans = Math.round(ans * 100) / 100;
+                              dispatch(setInputYourBorrowModalRepayAmount(ans));
+                              setinputRepayAmount(ans);
+                            }}
+                            isDisabled={transactionStarted == true}
+                            _disabled={{ cursor: "pointer" }}
+                            focusThumbOnChange={false}
+                          >
+                            <SliderMark value={sliderValue}>
+                              <Box
+                                position="absolute"
+                                bottom="-8px"
+                                left="-11px"
+                                zIndex="1"
+                              >
+                                <SliderTooltip
+                                  color={`${
+                                    currentAction === "Zero Repay"
+                                      ? "#6E7681"
+                                      : "#DEDEDE"
+                                  }`}
+                                />
+                                <Text
+                                  position="absolute"
+                                  color="black"
+                                  top="6px"
+                                  left={
+                                    sliderValue !== 100
+                                      ? sliderValue >= 10
+                                        ? "15%"
+                                        : "25%"
+                                      : "8%"
+                                  }
+                                  fontSize=".58rem"
+                                  fontWeight="bold"
+                                  textAlign="center"
+                                >
+                                  {sliderValue}%
                                 </Text>
                               </Box>
-                              <Box pt="1" className="navbar-button">
-                                <DropdownUp />
-                              </Box>
-                              {modalDropdowns.yourBorrowPoolDropdown &&
-                              radioValue === "1" ? (
-                                <Box
-                                  w="full"
-                                  left="0"
-                                  bg="#03060B"
-                                  py="2"
-                                  className="dropdown-container"
-                                  boxShadow="dark-lg"
-                                >
-                                  {pools.map((pool, index) => {
-                                    return (
-                                      <Box
-                                        key={index}
-                                        as="button"
-                                        w="full"
-                                        display="flex"
-                                        alignItems="center"
-                                        gap="1"
-                                        pr="2"
-                                        onClick={() => {
-                                          setCurrentPool(pool);
-                                        }}
-                                      >
-                                        {pool === currentPool && (
-                                          <Box
-                                            w="3px"
-                                            h="28px"
-                                            bg="#0C6AD9"
-                                            borderRightRadius="md"
-                                          ></Box>
-                                        )}
-                                        <Box
-                                          w="full"
-                                          display="flex"
-                                          py="5px"
-                                          px={`${
-                                            pool === currentPool ? "1" : "5"
-                                          }`}
-                                          gap="1"
-                                          bg={`${
-                                            pool === currentPool
-                                              ? "#0C6AD9"
-                                              : "inherit"
-                                          }`}
-                                          borderRadius="md"
-                                        >
-                                          <Box p="1">{getCoin(pool)}</Box>
-                                          <Text>{pool}</Text>
-                                        </Box>
-                                      </Box>
-                                    );
-                                  })}
-                                </Box>
-                              ) : modalDropdowns.yourBorrowPoolDropdown &&
-                                radioValue === "2" ? (
-                                <Box
-                                  w="full"
-                                  left="0"
-                                  bg="#03060B"
-                                  py="2"
-                                  className="dropdown-container"
-                                  boxShadow="dark-lg"
-                                >
-                                  {coins.map((coin: string, index: number) => {
-                                    return (
-                                      <Box
-                                        key={index}
-                                        as="button"
-                                        w="full"
-                                        display="flex"
-                                        alignItems="center"
-                                        gap="1"
-                                        pr="2"
-                                        onClick={() => {
-                                          setCurrentPoolCoin(coin);
-                                        }}
-                                      >
-                                        {coin === currentPoolCoin && (
-                                          <Box
-                                            w="3px"
-                                            h="28px"
-                                            bg="#0C6AD9"
-                                            borderRightRadius="md"
-                                          ></Box>
-                                        )}
-                                        <Box
-                                          w="full"
-                                          display="flex"
-                                          py="5px"
-                                          px={`${
-                                            coin === currentPoolCoin ? "1" : "5"
-                                          }`}
-                                          gap="1"
-                                          bg={`${
-                                            coin === currentPoolCoin
-                                              ? "#0C6AD9"
-                                              : "inherit"
-                                          }`}
-                                          borderRadius="md"
-                                        >
-                                          <Box p="1">{getCoin(coin)}</Box>
-                                          <Text>{coin}</Text>
-                                        </Box>
-                                      </Box>
-                                    );
-                                  })}
-                                </Box>
-                              ) : (
-                                <Box display="none"></Box>
-                              )}
-                            </Box>
-                          </Box>
+                            </SliderMark>
+                            <SliderTrack bg="#343333">
+                              <SliderFilledTrack
+                                bg={`${
+                                  currentAction === "Zero Repay"
+                                    ? "#6E7681"
+                                    : "white"
+                                }`}
+                                w={`${sliderValue}`}
+                              />
+                            </SliderTrack>
+                          </Slider>
                         </Box>
                       )}
-                      {getContainer(currentAction)}
-                      {currentAction == "Spend Borrow" ? (
-                        currentDapp != "Select a dapp" &&
-                        (currentPool != "Select a pool" ||
-                          currentPoolCoin != "Select a pool") ? (
-                            <Box onClick={()=>{setTransactionStarted(true)}}>
+                    </Box>
+                    {currentAction === "Spend Borrow" && (
+                      <Box display="flex" flexDir="column" p="3" gap="1">
+                        <Box display="flex">
+                          <Text fontSize="xs" color="#8B949E">
+                            Purpose
+                          </Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right-start"
+                            boxShadow="dark-lg"
+                            label="all the assets to the market"
+                            bg="#24292F"
+                            fontSize={"smaller"}
+                            fontWeight={"thin"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                          >
+                            <Box p="1">
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
+                        </Box>
+                        <Box>
+                          <RadioGroup
+                            onChange={setRadioValue}
+                            value={radioValue}
+                          >
+                            <Stack spacing={4} direction="row">
+                              <Radio
+                                value="1"
+                                bg="#2B2F35"
+                                border="none"
+                                colorScheme="customBlue"
+                                _focus={{ boxShadow: "none", outline: "0" }}
+                              >
+                                Liquidity provisioning
+                              </Radio>
+                              <Radio
+                                fontSize="sm"
+                                value="2"
+                                bg="#2B2F35"
+                                border="none"
+                                colorScheme="customBlue"
+                                _focus={{ boxShadow: "none", outline: "0" }}
+                              >
+                                Trade
+                              </Radio>
+                            </Stack>
+                          </RadioGroup>
+                        </Box>
+                      </Box>
+                    )}
+                    {currentAction === "Spend Borrow" && (
+                      <Box
+                        display="flex"
+                        flexDirection="column"
+                        backgroundColor="#101216"
+                        border="1px"
+                        borderColor="#2B2F35"
+                        p="3"
+                        // my="4"
+                        borderRadius="md"
+                        gap="3"
+                      >
+                        <Box display="flex" flexDirection="column" gap="1">
+                          <Box display="flex">
+                            <Text fontSize="xs" color="#8B949E">
+                              Dapp
+                            </Text>
+                            <Tooltip
+                              hasArrow
+                              placement="right-start"
+                              boxShadow="dark-lg"
+                              label="all the assets to the market"
+                              bg="#24292F"
+                              fontSize={"smaller"}
+                              fontWeight={"thin"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                            >
+                              <Box p="1">
+                                <InfoIcon />
+                              </Box>
+                            </Tooltip>
+                          </Box>
+                          <Box
+                            display="flex"
+                            border="1px"
+                            borderColor="#2B2F35"
+                            justifyContent="space-between"
+                            py="2"
+                            pl="3"
+                            pr="3"
+                            borderRadius="md"
+                            className="navbar"
+                            onClick={() => {
+                              if (transactionStarted) {
+                                return;
+                              } else {
+                                handleDropdownClick("yourBorrowDappDropdown");
+                              }
+                            }}
+                            as="button"
+                          >
+                            <Box display="flex" gap="1">
+                              {currentDapp != "Select a dapp" ? (
+                                <Box p="1">{getCoin(currentDapp)}</Box>
+                              ) : (
+                                ""
+                              )}
+
+                              <Text mt="0.15rem">{currentDapp}</Text>
+                            </Box>
+                            <Box pt="1" className="navbar-button">
+                              <DropdownUp />
+                            </Box>
+                            {modalDropdowns.yourBorrowDappDropdown && (
+                              <Box
+                                w="full"
+                                left="0"
+                                bg="#03060B"
+                                py="2"
+                                className="dropdown-container"
+                                boxShadow="dark-lg"
+                              >
+                                {dapps.map((dapp, index) => {
+                                  return (
+                                    <Button
+                                      // as="button"
+                                      key={index}
+                                      w="full"
+                                      m="0"
+                                      pl="0"
+                                      display="flex"
+                                      alignItems="center"
+                                      gap="1"
+                                      pr="2"
+                                      bg="inherit"
+                                      onClick={() => {
+                                        setCurrentDapp(dapp.name);
+                                      }}
+                                      fontSize="sm"
+                                      _hover={{ background: "inherit" }}
+                                      isDisabled={dapp.status === "disable"}
+                                    >
+                                      {dapp.name === currentDapp && (
+                                        <Box
+                                          w="3px"
+                                          h="28px"
+                                          bg="#0C6AD9"
+                                          borderRightRadius="md"
+                                        ></Box>
+                                      )}
+                                      <Box
+                                        w="full"
+                                        display="flex"
+                                        py="5px"
+                                        px={`${
+                                          dapp.name === currentDapp ? "1" : "5"
+                                        }`}
+                                        gap="1"
+                                        bg={`${
+                                          dapp.name === currentDapp
+                                            ? "#0C6AD9"
+                                            : "inherit"
+                                        }`}
+                                        borderRadius="md"
+                                      >
+                                        <Box p="1">{getCoin(dapp.name)}</Box>
+                                        <Text pt="1">{dapp.name}</Text>
+                                      </Box>
+                                      {dapp.status === "disable" && (
+                                        <Text
+                                          pt="1"
+                                          pr="3"
+                                          fontSize=".6rem"
+                                          fontWeight="thin"
+                                        >
+                                          paused
+                                        </Text>
+                                      )}
+                                    </Button>
+                                  );
+                                })}
+                              </Box>
+                            )}
+                          </Box>
+                        </Box>
+                        <Box display="flex" flexDirection="column" gap="1">
+                          <Box display="flex">
+                            <Text fontSize="xs" color="#8B949E">
+                              Select Pool
+                            </Text>
+                            <Tooltip
+                              hasArrow
+                              placement="right-start"
+                              boxShadow="dark-lg"
+                              label="all the assets to the market"
+                              bg="#24292F"
+                              fontSize={"smaller"}
+                              fontWeight={"thin"}
+                              borderRadius={"lg"}
+                              padding={"2"}
+                            >
+                              <Box p="1">
+                                <InfoIcon />
+                              </Box>
+                            </Tooltip>
+                          </Box>
+                          <Box
+                            display="flex"
+                            border="1px"
+                            borderColor="#2B2F35"
+                            justifyContent="space-between"
+                            py="2"
+                            pl="3"
+                            pr="3"
+                            borderRadius="md"
+                            className="navbar"
+                            onClick={() => {
+                              if (transactionStarted) {
+                                return;
+                              } else {
+                                handleDropdownClick("yourBorrowPoolDropdown");
+                              }
+                            }}
+                            as="button"
+                          >
+                            <Box display="flex" gap="1">
+                              {getCoin(
+                                radioValue === "1"
+                                  ? currentPool
+                                  : currentPoolCoin
+                              ) ? (
+                                <Box p="1">
+                                  {getCoin(
+                                    radioValue === "1"
+                                      ? currentPool
+                                      : currentPoolCoin
+                                  )}
+                                </Box>
+                              ) : (
+                                ""
+                              )}
+
+                              <Text mt="0.2rem">
+                                {radioValue === "1"
+                                  ? currentPool
+                                  : currentPoolCoin}
+                              </Text>
+                            </Box>
+                            <Box pt="1" className="navbar-button">
+                              <DropdownUp />
+                            </Box>
+                            {modalDropdowns.yourBorrowPoolDropdown &&
+                            radioValue === "1" ? (
+                              <Box
+                                w="full"
+                                left="0"
+                                bg="#03060B"
+                                py="2"
+                                className="dropdown-container"
+                                boxShadow="dark-lg"
+                              >
+                                {pools.map((pool, index) => {
+                                  return (
+                                    <Box
+                                      key={index}
+                                      as="button"
+                                      w="full"
+                                      display="flex"
+                                      alignItems="center"
+                                      gap="1"
+                                      pr="2"
+                                      onClick={() => {
+                                        setCurrentPool(pool);
+                                      }}
+                                    >
+                                      {pool === currentPool && (
+                                        <Box
+                                          w="3px"
+                                          h="28px"
+                                          bg="#0C6AD9"
+                                          borderRightRadius="md"
+                                        ></Box>
+                                      )}
+                                      <Box
+                                        w="full"
+                                        display="flex"
+                                        py="5px"
+                                        px={`${
+                                          pool === currentPool ? "1" : "5"
+                                        }`}
+                                        gap="1"
+                                        bg={`${
+                                          pool === currentPool
+                                            ? "#0C6AD9"
+                                            : "inherit"
+                                        }`}
+                                        borderRadius="md"
+                                      >
+                                        <Box p="1">{getCoin(pool)}</Box>
+                                        <Text>{pool}</Text>
+                                      </Box>
+                                    </Box>
+                                  );
+                                })}
+                              </Box>
+                            ) : modalDropdowns.yourBorrowPoolDropdown &&
+                              radioValue === "2" ? (
+                              <Box
+                                w="full"
+                                left="0"
+                                bg="#03060B"
+                                py="2"
+                                className="dropdown-container"
+                                boxShadow="dark-lg"
+                              >
+                                {coins.map((coin: string, index: number) => {
+                                  return (
+                                    <Box
+                                      key={index}
+                                      as="button"
+                                      w="full"
+                                      display="flex"
+                                      alignItems="center"
+                                      gap="1"
+                                      pr="2"
+                                      onClick={() => {
+                                        setCurrentPoolCoin(coin);
+                                      }}
+                                    >
+                                      {coin === currentPoolCoin && (
+                                        <Box
+                                          w="3px"
+                                          h="28px"
+                                          bg="#0C6AD9"
+                                          borderRightRadius="md"
+                                        ></Box>
+                                      )}
+                                      <Box
+                                        w="full"
+                                        display="flex"
+                                        py="5px"
+                                        px={`${
+                                          coin === currentPoolCoin ? "1" : "5"
+                                        }`}
+                                        gap="1"
+                                        bg={`${
+                                          coin === currentPoolCoin
+                                            ? "#0C6AD9"
+                                            : "inherit"
+                                        }`}
+                                        borderRadius="md"
+                                      >
+                                        <Box p="1">{getCoin(coin)}</Box>
+                                        <Text>{coin}</Text>
+                                      </Box>
+                                    </Box>
+                                  );
+                                })}
+                              </Box>
+                            ) : (
+                              <Box display="none"></Box>
+                            )}
+                          </Box>
+                        </Box>
+                      </Box>
+                    )}
+                    {getContainer(currentAction)}
+                    {currentAction == "Spend Borrow" ? (
+                      currentDapp != "Select a dapp" &&
+                      (currentPool != "Select a pool" ||
+                        currentPoolCoin != "Select a pool") ? (
+                        <Box
+                          onClick={() => {
+                            setTransactionStarted(true);
+                          }}
+                        >
                           <AnimatedButton
                             bgColor="#101216"
                             // bgColor="red"
@@ -2006,27 +2010,32 @@ const YourBorrowModal = ({
                           >
                             Spend
                           </AnimatedButton>
-                            </Box>
-                        ) : (
-                          <Button
-                            bg="#101216"
-                            color="#6E7681"
-                            size="sm"
-                            width="100%"
-                            mb="2rem"
-                            border="1px solid #2B2F35"
-                            _hover={{ bg: "#101216" }}
-                          >
-                            Spend
-                          </Button>
-                        )
+                        </Box>
                       ) : (
-                        ""
-                      )}
+                        <Button
+                          bg="#101216"
+                          color="#6E7681"
+                          size="sm"
+                          width="100%"
+                          mb="2rem"
+                          border="1px solid #2B2F35"
+                          _hover={{ bg: "#101216" }}
+                        >
+                          Spend
+                        </Button>
+                      )
+                    ) : (
+                      ""
+                    )}
 
-                      {currentAction == "Repay Borrow" ? (
-                        inputRepayAmount > 0 && inputRepayAmount<=walletBalance ? (
-                          <Box onClick={()=>{setTransactionStarted(true)}}>
+                    {currentAction == "Repay Borrow" ? (
+                      inputRepayAmount > 0 &&
+                      inputRepayAmount <= walletBalance ? (
+                        <Box
+                          onClick={() => {
+                            setTransactionStarted(true);
+                          }}
+                        >
                           <AnimatedButton
                             bgColor="#101216"
                             // bgColor="red"
@@ -2053,26 +2062,30 @@ const YourBorrowModal = ({
                           >
                             Repay borrow
                           </AnimatedButton>
-                          </Box>
-                        ) : (
-                          <Button
-                            bg="#101216"
-                            color="#6E7681"
-                            size="sm"
-                            width="100%"
-                            mb="2rem"
-                            border="1px solid #2B2F35"
-                            _hover={{ bg: "#101216" }}
-                          >
-                            Repay borrow
-                          </Button>
-                        )
+                        </Box>
                       ) : (
-                        ""
-                      )}
-                      {currentAction == "Zero Repay" ? (
-                        inputRepayAmount == 0 ? (
-                          <Box onClick={()=>{setTransactionStarted(true)}}>
+                        <Button
+                          bg="#101216"
+                          color="#6E7681"
+                          size="sm"
+                          width="100%"
+                          mb="2rem"
+                          border="1px solid #2B2F35"
+                          _hover={{ bg: "#101216" }}
+                        >
+                          Repay borrow
+                        </Button>
+                      )
+                    ) : (
+                      ""
+                    )}
+                    {currentAction == "Zero Repay" ? (
+                      inputRepayAmount == 0 ? (
+                        <Box
+                          onClick={() => {
+                            setTransactionStarted(true);
+                          }}
+                        >
                           <AnimatedButton
                             bgColor="#101216"
                             // bgColor="red"
@@ -2098,221 +2111,216 @@ const YourBorrowModal = ({
                           >
                             Zero repay
                           </AnimatedButton>
-                          </Box>
-                        ) : (
-                          <Button
-                            bg="#101216"
-                            color="#6E7681"
-                            size="sm"
-                            width="100%"
-                            mb="2rem"
-                            border="1px solid #2B2F35"
-                            _hover={{ bg: "#101216" }}
-                          >
-                            Zero repay
-                          </Button>
-                        )
-                      ) : (
-                        ""
-                      )}
-                    </TabPanel>
-                    <TabPanel m="0" p="0" mt="1rem" overflowY="auto">
-                      <Box
-                        display="flex"
-                        flexDirection="column"
-                        backgroundColor="#101216"
-                        border="1px"
-                        borderColor="#2B2F35"
-                        p="5"
-                        // my="4"
-                        borderRadius="md"
-                        gap="3"
-                        mt="2.5rem"
-                      >
-                        <Box display="flex" flexDirection="column" gap="1">
-                          <Text
-                            color="#8B949E"
-                            display="flex"
-                            alignItems="center"
-                          >
-                            <Text
-                              mr="0.3rem"
-                              fontSize="12px"
-                              fontStyle="normal"
-                              fontWeight="400"
-                            >
-                              Borrow ID
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="right-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box>
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Text>
-                          <Box
-                            display="flex"
-                            border="1px"
-                            borderColor="#2B2F35"
-                            justifyContent="space-between"
-                            py="2"
-                            pl="3"
-                            pr="3"
-                            borderRadius="md"
-                            className="navbar"
-                            onClick={() =>{
-                              if(collateralTransactionStarted){
-                                return;
-                              }else{
-                                handleDropdownClick(
-                                  "yourBorrowBorrowIDsDropdown2"
-                                )
-                              }
-                            }}
-                            as="button"
-                          >
-                            <Box display="flex" gap="1" pt="1">
-                              {currentBorrowId2}
-                            </Box>
-                            <Text pt="1" className="navbar-button">
-                              {activeModal == "yourBorrowBorrowIDsDropdown2" ? (
-                                <ArrowUp />
-                              ) : (
-                                <DropdownUp />
-                              )}
-                            </Text>
-                            {modalDropdowns.yourBorrowBorrowIDsDropdown2 && (
-                              <Box
-                                w="full"
-                                left="0"
-                                bg="#03060B"
-                                py="2"
-                                className="dropdown-container"
-                                boxShadow="dark-lg"
-                              >
-                                {borrowIds.map(
-                                  (coin: string, index: number) => {
-                                    return (
-                                      <Box
-                                        key={index}
-                                        as="button"
-                                        w="full"
-                                        display="flex"
-                                        alignItems="center"
-                                        gap="1"
-                                        pr="2"
-                                        onClick={() => {
-                                          setCurrentBorrowId2("ID - " + coin);
-                                          handleBorrowMarketCoinChange2(coin);
-                                        }}
-                                      >
-                                        {coin === currentBorrowId2 && (
-                                          <Box
-                                            w="3px"
-                                            h="28px"
-                                            bg="#0C6AD9"
-                                            borderRightRadius="md"
-                                          ></Box>
-                                        )}
-                                        <Box
-                                          w="full"
-                                          display="flex"
-                                          py="5px"
-                                          px={`${
-                                            coin === currentBorrowId2
-                                              ? "2"
-                                              : "5"
-                                          }`}
-                                          gap="1"
-                                          bg={`${
-                                            coin === currentBorrowId2
-                                              ? "#0C6AD9"
-                                              : "inherit"
-                                          }`}
-                                          borderRadius="md"
-                                        >
-                                          {/* <Box p="1">{getCoin(coin)}</Box> */}
-                                          <Text>{coin}</Text>
-                                        </Box>
-                                      </Box>
-                                    );
-                                  }
-                                )}
-                              </Box>
-                            )}
-                          </Box>
                         </Box>
-                        <Box display="flex" flexDirection="column" gap="1">
+                      ) : (
+                        <Button
+                          bg="#101216"
+                          color="#6E7681"
+                          size="sm"
+                          width="100%"
+                          mb="2rem"
+                          border="1px solid #2B2F35"
+                          _hover={{ bg: "#101216" }}
+                        >
+                          Zero repay
+                        </Button>
+                      )
+                    ) : (
+                      ""
+                    )}
+                  </Box>
+                ) : (
+                  <Box m="0" p="0" overflowY="auto">
+                    <Box
+                      display="flex"
+                      flexDirection="column"
+                      backgroundColor="#101216"
+                      border="1px"
+                      borderColor="#2B2F35"
+                      p="5"
+                      // my="4"
+                      borderRadius="md"
+                      gap="3"
+                      mt="2.5rem"
+                    >
+                      <Box display="flex" flexDirection="column" gap="1">
+                        <Text
+                          color="#8B949E"
+                          display="flex"
+                          alignItems="center"
+                        >
                           <Text
-                            color="#8B949E"
-                            display="flex"
-                            alignItems="center"
+                            mr="0.3rem"
+                            fontSize="12px"
+                            fontStyle="normal"
+                            fontWeight="400"
                           >
-                            <Text
-                              mr="0.3rem"
-                              fontSize="12px"
-                              fontStyle="normal"
-                              fontWeight="400"
-                            >
-                              Borrow Market
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="right-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box>
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
+                            Borrow ID
                           </Text>
-                          <Box
-                            display="flex"
-                            border="1px"
-                            borderColor="#2B2F35"
-                            justifyContent="space-between"
-                            py="2"
-                            pl="3"
-                            pr="3"
-                            mt="-0.1rem"
-                            borderRadius="md"
-                            className="navbar"
-                            cursor="pointer"
-                            onClick={() =>{
-                              if(collateralTransactionStarted){
-                                return;
-                              }else{
-                                handleDropdownClick(
-                                  "yourBorrowModalBorrowMarketDropdown2"
-                                )
-                              }
-                            }}
+                          <Tooltip
+                            hasArrow
+                            placement="right-start"
+                            boxShadow="dark-lg"
+                            label="all the assets to the market"
+                            bg="#24292F"
+                            fontSize={"smaller"}
+                            fontWeight={"thin"}
+                            borderRadius={"lg"}
+                            padding={"2"}
                           >
-                            <Box display="flex" gap="1">
-                              <Box p="1">
-                                {getCoin(currentBorrowMarketCoin2)}
-                              </Box>
-                              <Text color="white" mt="0.12rem">
-                                {currentBorrowMarketCoin2}
-                              </Text>
+                            <Box>
+                              <InfoIcon />
                             </Box>
+                          </Tooltip>
+                        </Text>
+                        <Box
+                          display="flex"
+                          border="1px"
+                          borderColor="#2B2F35"
+                          justifyContent="space-between"
+                          py="2"
+                          pl="3"
+                          pr="3"
+                          borderRadius="md"
+                          className="navbar"
+                          onClick={() => {
+                            if (collateralTransactionStarted) {
+                              return;
+                            } else {
+                              handleDropdownClick(
+                                "yourBorrowBorrowIDsDropdown2"
+                              );
+                            }
+                          }}
+                          as="button"
+                        >
+                          <Box display="flex" gap="1" pt="1">
+                            {currentBorrowId2}
+                          </Box>
+                          <Text pt="1" className="navbar-button">
+                            {activeModal == "yourBorrowBorrowIDsDropdown2" ? (
+                              <ArrowUp />
+                            ) : (
+                              <DropdownUp />
+                            )}
+                          </Text>
+                          {modalDropdowns.yourBorrowBorrowIDsDropdown2 && (
+                            <Box
+                              w="full"
+                              left="0"
+                              bg="#03060B"
+                              py="2"
+                              className="dropdown-container"
+                              boxShadow="dark-lg"
+                            >
+                              {borrowIds.map((coin: string, index: number) => {
+                                return (
+                                  <Box
+                                    key={index}
+                                    as="button"
+                                    w="full"
+                                    display="flex"
+                                    alignItems="center"
+                                    gap="1"
+                                    pr="2"
+                                    onClick={() => {
+                                      setCurrentBorrowId2("ID - " + coin);
+                                      handleBorrowMarketCoinChange2(coin);
+                                    }}
+                                  >
+                                    {coin === currentBorrowId2 && (
+                                      <Box
+                                        w="3px"
+                                        h="28px"
+                                        bg="#0C6AD9"
+                                        borderRightRadius="md"
+                                      ></Box>
+                                    )}
+                                    <Box
+                                      w="full"
+                                      display="flex"
+                                      py="5px"
+                                      px={`${
+                                        coin === currentBorrowId2 ? "2" : "5"
+                                      }`}
+                                      gap="1"
+                                      bg={`${
+                                        coin === currentBorrowId2
+                                          ? "#0C6AD9"
+                                          : "inherit"
+                                      }`}
+                                      borderRadius="md"
+                                    >
+                                      {/* <Box p="1">{getCoin(coin)}</Box> */}
+                                      <Text>{coin}</Text>
+                                    </Box>
+                                  </Box>
+                                );
+                              })}
+                            </Box>
+                          )}
+                        </Box>
+                      </Box>
+                      <Box display="flex" flexDirection="column" gap="1">
+                        <Text
+                          color="#8B949E"
+                          display="flex"
+                          alignItems="center"
+                        >
+                          <Text
+                            mr="0.3rem"
+                            fontSize="12px"
+                            fontStyle="normal"
+                            fontWeight="400"
+                          >
+                            Borrow Market
+                          </Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right-start"
+                            boxShadow="dark-lg"
+                            label="all the assets to the market"
+                            bg="#24292F"
+                            fontSize={"smaller"}
+                            fontWeight={"thin"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                          >
+                            <Box>
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
+                        </Text>
+                        <Box
+                          display="flex"
+                          border="1px"
+                          borderColor="#2B2F35"
+                          justifyContent="space-between"
+                          py="2"
+                          pl="3"
+                          pr="3"
+                          mt="-0.1rem"
+                          borderRadius="md"
+                          className="navbar"
+                          cursor="pointer"
+                          onClick={() => {
+                            if (collateralTransactionStarted) {
+                              return;
+                            } else {
+                              handleDropdownClick(
+                                "yourBorrowModalBorrowMarketDropdown2"
+                              );
+                            }
+                          }}
+                        >
+                          <Box display="flex" gap="1">
+                            <Box p="1">{getCoin(currentBorrowMarketCoin2)}</Box>
+                            <Text color="white" mt="0.12rem">
+                              {currentBorrowMarketCoin2}
+                            </Text>
+                          </Box>
 
-                            {/* <Box pt="1" className="navbar-button">
+                          {/* <Box pt="1" className="navbar-button">
                               {activeModal ==
                               "yourBorrowModalBorrowMarketDropdown2" ? (
                                 <ArrowUp />
@@ -2320,7 +2328,7 @@ const YourBorrowModal = ({
                                 <DropdownUp />
                               )}
                             </Box> */}
-                            {/* {modalDropdowns.yourBorrowModalBorrowMarketDropdown2 && (
+                          {/* {modalDropdowns.yourBorrowModalBorrowMarketDropdown2 && (
                               <Box
                                 w="full"
                                 left="0"
@@ -2378,28 +2386,340 @@ const YourBorrowModal = ({
                                 })}
                               </Box>
                             )} */}
-                          </Box>
                         </Box>
+                      </Box>
+                      <Text color="#8B949E" display="flex" alignItems="center">
                         <Text
-                          color="#8B949E"
-                          display="flex"
-                          alignItems="center"
+                          mr="0.3rem"
+                          fontSize="12px"
+                          fontWeight="400"
+                          fontStyle="normal"
                         >
+                          Collateral Balance
+                        </Text>
+                        <Tooltip
+                          hasArrow
+                          placement="right"
+                          boxShadow="dark-lg"
+                          label="Hashstack self liquidates your collateral
+                            & debt positions to repay the borrow.
+                            The balance will be updated into rTokens"
+                          bg="#24292F"
+                          display="flex"
+                          flexDirection="column"
+                          alignItems="center"
+                          pt="16px"
+                          pl="16px"
+                          fontSize="11px"
+                          fontWeight="400"
+                          fontStyle="normal"
+                          lineHeight="16px"
+                          color="#E6EDF3"
+                          letterSpacing="-0.15px"
+                          borderRadius="6px"
+                          backgroundColor="#101216"
+                          border="1px solid #2B2F35"
+                          flex="none"
+                          order="0"
+                          flexGrow="0"
+                          zIndex="0"
+                          width="240px"
+                          height="80px"
+                        >
+                          <Box>
+                            <InfoIcon />
+                          </Box>
+                        </Tooltip>
+                      </Text>
+                      <Box
+                        w="full"
+                        backgroundColor="#101216"
+                        py="2"
+                        border="1px solid #2B2F35"
+                        borderRadius="6px"
+                        mt="-0.5rem"
+                      >
+                        <Text ml="1rem" color="white">
+                          1234 rBTC
+                        </Text>
+                      </Box>
+                      <Text color="#8B949E" display="flex" alignItems="center">
+                        <Text
+                          mr="0.3rem"
+                          fontSize="12px"
+                          fontWeight="400"
+                          fontStyle="normal"
+                        >
+                          Collateral Amount
+                        </Text>
+                        <Tooltip
+                          hasArrow
+                          placement="bottom-start"
+                          boxShadow="dark-lg"
+                          label="all the assets to the market"
+                          bg="#24292F"
+                          fontSize={"smaller"}
+                          fontWeight={"thin"}
+                          borderRadius={"lg"}
+                          padding={"2"}
+                        >
+                          <Box>
+                            <InfoIcon />
+                          </Box>
+                        </Tooltip>
+                      </Text>
+                      <Box
+                        width="100%"
+                        color="white"
+                        border={`${
+                          inputCollateralAmount > walletBalance
+                            ? "1px solid #CF222E"
+                            : inputCollateralAmount < 0
+                            ? "1px solid #CF222E"
+                            : inputCollateralAmount > 0 &&
+                              inputAmount <= walletBalance
+                            ? "1px solid #1A7F37"
+                            : "1px solid #2B2F35 "
+                        }`}
+                        borderRadius="6px"
+                        display="flex"
+                        justifyContent="space-between"
+                        mt="-0.5rem"
+                      >
+                        <NumberInput
+                          border="0px"
+                          min={0}
+                          color={`${
+                            inputCollateralAmount > walletBalance
+                              ? "#CF222E"
+                              : inputCollateralAmount < 0
+                              ? "#CF222E"
+                              : inputCollateralAmount == 0
+                              ? "white"
+                              : "#1A7F37"
+                          }`}
+                          keepWithinRange={true}
+                          onChange={handleCollateralChange}
+                          value={
+                            inputCollateralAmount ? inputCollateralAmount : ""
+                          }
+                          outline="none"
+                          step={parseFloat(
+                            `${inputCollateralAmount <= 99999 ? 0.1 : 0}`
+                          )}
+                          isDisabled={collateralTransactionStarted == true}
+                          _disabled={{ cursor: "pointer" }}
+                        >
+                          <NumberInputField
+                            placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
+                            border="0px"
+                            _placeholder={{
+                              color: "#393D4F",
+                              fontSize: ".89rem",
+                              fontWeight: "600",
+                              outline: "none",
+                            }}
+                            _disabled={{ color: "#1A7F37" }}
+                            _focus={{
+                              outline: "0",
+                              boxShadow: "none",
+                            }}
+                          />
+                        </NumberInput>
+                        <Button
+                          variant="ghost"
+                          color="#0969DA"
+                          _hover={{ bg: "#101216" }}
+                          onClick={() => {
+                            setinputCollateralAmount(walletBalance);
+                            setSliderValue2(100);
+                          }}
+                          isDisabled={collateralTransactionStarted == true}
+                          _disabled={{ cursor: "pointer" }}
+                        >
+                          MAX
+                        </Button>
+                      </Box>
+                      {inputCollateralAmount > walletBalance ||
+                      inputCollateralAmount < 0 ? (
+                        <Text
+                          display="flex"
+                          justifyContent="space-between"
+                          color="#E6EDF3"
+                          fontSize="12px"
+                          fontWeight="500"
+                          fontStyle="normal"
+                          fontFamily="Inter"
+                        >
+                          <Text color="#CF222E" display="flex">
+                            <Text mt="0.2rem">
+                              <SmallErrorIcon />{" "}
+                            </Text>
+                            <Text ml="0.3rem">
+                              {inputCollateralAmount > walletBalance
+                                ? "Amount exceeds balance"
+                                : "Invalid Input"}{" "}
+                            </Text>
+                          </Text>
                           <Text
-                            mr="0.3rem"
-                            fontSize="12px"
-                            fontWeight="400"
-                            fontStyle="normal"
+                            color="#E6EDF3"
+                            display="flex"
+                            justifyContent="flex-end"
                           >
-                            Collateral Balance
+                            Wallet Balance: {walletBalance}
+                            <Text color="#6E7781" ml="0.2rem">
+                              {` ${currentSelectedCoin}`}
+                            </Text>
+                          </Text>
+                        </Text>
+                      ) : (
+                        <Text
+                          color="#E6EDF3"
+                          display="flex"
+                          justifyContent="flex-end"
+                          fontSize="12px"
+                          fontWeight="500"
+                          fontStyle="normal"
+                          fontFamily="Inter"
+                        >
+                          Wallet Balance: {walletBalance}
+                          <Text color="#6E7781" ml="0.2rem">
+                            {` ${currentSelectedCoin}`}
+                          </Text>
+                        </Text>
+                      )}
+                      <Box pt={5} pb={2} mt="0.8rem">
+                        <Slider
+                          aria-label="slider-ex-6"
+                          defaultValue={sliderValue2}
+                          value={sliderValue2}
+                          onChange={(val) => {
+                            setSliderValue2(val);
+                            var ans = (val / 100) * walletBalance;
+                            ans = Math.round(ans * 100) / 100;
+                            // dispatch(setInputSupplyAmount(ans))
+                            setinputCollateralAmount(ans);
+                          }}
+                          isDisabled={collateralTransactionStarted == true}
+                          _disabled={{ cursor: "pointer" }}
+                          focusThumbOnChange={false}
+                        >
+                          <SliderMark value={sliderValue2}>
+                            <Box
+                              position="absolute"
+                              bottom="-8px"
+                              left="-11px"
+                              zIndex="1"
+                            >
+                              <SliderTooltip />
+                              <Text
+                                position="absolute"
+                                color="black"
+                                top="5px"
+                                left={
+                                  sliderValue2 !== 100
+                                    ? sliderValue2 >= 10
+                                      ? "15%"
+                                      : "25%"
+                                    : "10%"
+                                }
+                                fontSize=".58rem"
+                                fontWeight="bold"
+                                textAlign="center"
+                              >
+                                {sliderValue2}%
+                              </Text>
+                            </Box>
+                          </SliderMark>
+                          <SliderTrack bg="#343333">
+                            <SliderFilledTrack
+                              bg="white"
+                              w={`${sliderValue2}`}
+                            />
+                          </SliderTrack>
+                        </Slider>
+                      </Box>
+                    </Box>
+                    <Card
+                      bg="#101216"
+                      mt="2rem"
+                      p="1rem"
+                      border="1px solid #2B2F35"
+                    >
+                      <Text
+                        display="flex"
+                        justifyContent="space-between"
+                        fontSize="12px"
+                        mb="0.4rem"
+                      >
+                        <Text display="flex" alignItems="center">
+                          <Text
+                            mr="0.2rem"
+                            font-style="normal"
+                            font-weight="400"
+                            font-size="12px"
+                            lineHeight="16px"
+                            color="#6A737D"
+                          >
+                            Borrow amount:
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="right"
+                            placement="right-start"
                             boxShadow="dark-lg"
-                            label="Hashstack self liquidates your collateral
-                            & debt positions to repay the borrow.
-                            The balance will be updated into rTokens"
+                            label=" Actual debt:               12345&#10;accured intrest:        12345"
+                            bg="#24292F"
+                            fontSize="12px"
+                            fontWeight="500"
+                            fontStyle="normal"
+                            borderRadius="6px"
+                            background="#101216"
+                            border="1px solid #2B2F35"
+                            pt="12px"
+                            pl="10px"
+                            gap="80px"
+                            display="flex"
+                            flexDirection="column"
+                            justifyContent="space-between"
+                            width="197px"
+                            height="72px"
+                            whiteSpace="pre-wrap"
+                            color="#E6EDF3"
+                            textAlign="center"
+                            lineHeight="2"
+                          >
+                            <Box>
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
+                        </Text>
+                        <Text color="#6E7681">1 BTC</Text>
+                      </Text>
+                      <Text
+                        display="flex"
+                        justifyContent="space-between"
+                        fontSize="12px"
+                        mb="0.4rem"
+                      >
+                        <Text display="flex" alignItems="center">
+                          <Text
+                            mr="0.2rem"
+                            font-style="normal"
+                            font-weight="400"
+                            font-size="12px"
+                            lineHeight="16px"
+                            color="#6A737D"
+                          >
+                            est rTokens minted:
+                          </Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right-start"
+                            boxShadow="dark-lg"
+                            label="Adding <amount> as collateral will mint
+                            <number> r<market_symbol> tokens.
+                            These tokens will accrue supply apr
+                            and remain locked till the debt is repaid"
                             bg="#24292F"
                             display="flex"
                             flexDirection="column"
@@ -2419,42 +2739,36 @@ const YourBorrowModal = ({
                             order="0"
                             flexGrow="0"
                             zIndex="0"
-                            width="240px"
-                            height="80px"
+                            width="225px"
+                            height="96px"
                           >
                             <Box>
                               <InfoIcon />
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Box
-                          w="full"
-                          backgroundColor="#101216"
-                          py="2"
-                          border="1px solid #2B2F35"
-                          borderRadius="6px"
-                          mt="-0.5rem"
-                        >
-                          <Text ml="1rem" color="white">
-                            1234 rBTC
-                          </Text>
-                        </Box>
-                        <Text
-                          color="#8B949E"
-                          display="flex"
-                          alignItems="center"
-                        >
+                        <Text color="#6E7681">$ 10.91</Text>
+                      </Text>
+                      <Text
+                        color="#8B949E"
+                        display="flex"
+                        justifyContent="space-between"
+                        fontSize="12px"
+                        mb="0.4rem"
+                      >
+                        <Text display="flex" alignItems="center">
                           <Text
-                            mr="0.3rem"
-                            fontSize="12px"
-                            fontWeight="400"
-                            fontStyle="normal"
+                            mr="0.2rem"
+                            font-style="normal"
+                            font-weight="400"
+                            font-size="12px"
+                            color="#6A737D"
                           >
-                            Collateral Amount
+                            Fees:
                           </Text>
                           <Tooltip
                             hasArrow
-                            placement="bottom-start"
+                            placement="right-start"
                             boxShadow="dark-lg"
                             label="all the assets to the market"
                             bg="#24292F"
@@ -2468,466 +2782,155 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Box
-                          width="100%"
-                          color="white"
-                          border={`${
-                            inputCollateralAmount > walletBalance
-                              ? "1px solid #CF222E"
-                              : inputCollateralAmount < 0
-                              ? "1px solid #CF222E"
-                              : inputCollateralAmount > 0 &&
-                                inputAmount <= walletBalance
-                              ? "1px solid #1A7F37"
-                              : "1px solid #2B2F35 "
-                          }`}
-                          borderRadius="6px"
-                          display="flex"
-                          justifyContent="space-between"
-                          mt="-0.5rem"
-                        >
-                          <NumberInput
-                            border="0px"
-                            min={0}
-                            color={`${
-                              inputCollateralAmount > walletBalance
-                                ? "#CF222E"
-                                : inputCollateralAmount < 0
-                                ? "#CF222E"
-                                : inputCollateralAmount == 0
-                                ? "white"
-                                : "#1A7F37"
-                            }`}
-                            keepWithinRange={true}
-                            onChange={handleCollateralChange}
-                            value={
-                              inputCollateralAmount ? inputCollateralAmount : ""
-                            }
-                            outline="none"
-                            step={parseFloat(
-                              `${inputCollateralAmount <= 99999 ? 0.1 : 0}`
-                            )}
-                            isDisabled={collateralTransactionStarted == true}
-                            _disabled={{ cursor: "pointer" }}
-                          >
-                            <NumberInputField
-                              placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
-                              border="0px"
-                              _placeholder={{
-                                color: "#393D4F",
-                                fontSize: ".89rem",
-                                fontWeight: "600",
-                                outline: "none",
-                              }}
-                              _disabled={{ color: "#1A7F37" }}
-                              _focus={{
-                                outline: "0",
-                                boxShadow: "none",
-                              }}
-                            />
-                          </NumberInput>
-                          <Button
-                            variant="ghost"
-                            color="#0969DA"
-                            _hover={{ bg: "#101216" }}
-                            onClick={() => {
-                              setinputCollateralAmount(walletBalance);
-                              setSliderValue2(100);
-                            }}
-                            isDisabled={collateralTransactionStarted == true}
-                            _disabled={{ cursor: "pointer" }}
-                          >
-                            MAX
-                          </Button>
-                        </Box>
-                        {inputCollateralAmount > walletBalance ||
-                        inputCollateralAmount < 0 ? (
-                          <Text
-                            display="flex"
-                            justifyContent="space-between"
-                            color="#E6EDF3"
-                            fontSize="12px"
-                            fontWeight="500"
-                            fontStyle="normal"
-                            fontFamily="Inter"
-                          >
-                            <Text color="#CF222E" display="flex">
-                              <Text mt="0.2rem">
-                                <SmallErrorIcon />{" "}
-                              </Text>
-                              <Text ml="0.3rem">
-                                {inputCollateralAmount > walletBalance
-                                  ? "Amount exceeds balance"
-                                  : "Invalid Input"}{" "}
-                              </Text>
-                            </Text>
-                            <Text
-                              color="#E6EDF3"
-                              display="flex"
-                              justifyContent="flex-end"
-                            >
-                              Wallet Balance: {walletBalance}
-                              <Text color="#6E7781" ml="0.2rem">
-                                {` ${currentSelectedCoin}`}
-                              </Text>
-                            </Text>
-                          </Text>
-                        ) : (
-                          <Text
-                            color="#E6EDF3"
-                            display="flex"
-                            justifyContent="flex-end"
-                            fontSize="12px"
-                            fontWeight="500"
-                            fontStyle="normal"
-                            fontFamily="Inter"
-                          >
-                            Wallet Balance: {walletBalance}
-                            <Text color="#6E7781" ml="0.2rem">
-                              {` ${currentSelectedCoin}`}
-                            </Text>
-                          </Text>
-                        )}
-                        <Box pt={5} pb={2} mt="0.8rem">
-                          <Slider
-                            aria-label="slider-ex-6"
-                            defaultValue={sliderValue2}
-                            value={sliderValue2}
-                            onChange={(val) => {
-                              setSliderValue2(val);
-                              var ans = (val / 100) * walletBalance;
-                              ans = Math.round(ans * 100) / 100;
-                              // dispatch(setInputSupplyAmount(ans))
-                              setinputCollateralAmount(ans);
-                            }}
-                            isDisabled={collateralTransactionStarted == true}
-                            _disabled={{ cursor: "pointer" }}
-                            focusThumbOnChange={false}
-                          >
-                            <SliderMark value={sliderValue2}>
-                              <Box
-                                position="absolute"
-                                bottom="-8px"
-                                left="-11px"
-                                zIndex="1"
-                              >
-                                <SliderTooltip />
-                                <Text
-                                  position="absolute"
-                                  color="black"
-                                  top="5px"
-                                  left={
-                                    sliderValue2 !== 100
-                                      ? sliderValue2 >= 10
-                                        ? "15%"
-                                        : "25%"
-                                      : "10%"
-                                  }
-                                  fontSize=".58rem"
-                                  fontWeight="bold"
-                                  textAlign="center"
-                                >
-                                  {sliderValue2}%
-                                </Text>
-                              </Box>
-                            </SliderMark>
-                            <SliderTrack bg="#343333">
-                              <SliderFilledTrack
-                                bg="white"
-                                w={`${sliderValue2}`}
-                              />
-                            </SliderTrack>
-                          </Slider>
-                        </Box>
-                      </Box>
-                      <Card
-                        bg="#101216"
-                        mt="2rem"
-                        p="1rem"
-                        border="1px solid #2B2F35"
+                        <Text color="#6E7681">0.1%</Text>
+                      </Text>
+                      <Text
+                        color="#8B949E"
+                        display="flex"
+                        justifyContent="space-between"
+                        fontSize="12px"
+                        mb="0.4rem"
                       >
-                        <Text
-                          display="flex"
-                          justifyContent="space-between"
-                          fontSize="12px"
-                          mb="0.4rem"
-                        >
-                          <Text display="flex" alignItems="center">
-                            <Text
-                              mr="0.2rem"
-                              font-style="normal"
-                              font-weight="400"
-                              font-size="12px"
-                              lineHeight="16px"
-                              color="#6A737D"
-                            >
-                              Borrow amount:
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="right-start"
-                              boxShadow="dark-lg"
-                              label=" Actual debt:               12345&#10;accured intrest:        12345"
-                              bg="#24292F"
-                              fontSize="12px"
-                              fontWeight="500"
-                              fontStyle="normal"
-                              borderRadius="6px"
-                              background="#101216"
-                              border="1px solid #2B2F35"
-                              pt="12px"
-                              pl="10px"
-                              gap="80px"
-                              display="flex"
-                              flexDirection="column"
-                              justifyContent="space-between"
-                              width="197px"
-                              height="72px"
-                              whiteSpace="pre-wrap"
-                              color="#E6EDF3"
-                              textAlign="center"
-                              lineHeight="2"
-                            >
-                              <Box>
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
+                        <Text display="flex" alignItems="center">
+                          <Text
+                            mr="0.2rem"
+                            font-style="normal"
+                            font-weight="400"
+                            font-size="12px"
+                            color="#6A737D"
+                          >
+                            Borrow apr:
                           </Text>
-                          <Text color="#6E7681">1 BTC</Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right-start"
+                            boxShadow="dark-lg"
+                            label="all the assets to the market"
+                            bg="#24292F"
+                            fontSize={"smaller"}
+                            fontWeight={"thin"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                          >
+                            <Box>
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
                         </Text>
-                        <Text
-                          display="flex"
-                          justifyContent="space-between"
-                          fontSize="12px"
-                          mb="0.4rem"
-                        >
-                          <Text display="flex" alignItems="center">
-                            <Text
-                              mr="0.2rem"
-                              font-style="normal"
-                              font-weight="400"
-                              font-size="12px"
-                              lineHeight="16px"
-                              color="#6A737D"
-                            >
-                              est rTokens minted:
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="right-start"
-                              boxShadow="dark-lg"
-                              label="Adding <amount> as collateral will mint
-                            <number> r<market_symbol> tokens.
-                            These tokens will accrue supply apr
-                            and remain locked till the debt is repaid"
-                              bg="#24292F"
-                              display="flex"
-                              flexDirection="column"
-                              alignItems="center"
-                              pt="16px"
-                              pl="16px"
-                              fontSize="11px"
-                              fontWeight="400"
-                              fontStyle="normal"
-                              lineHeight="16px"
-                              color="#E6EDF3"
-                              letterSpacing="-0.15px"
-                              borderRadius="6px"
-                              backgroundColor="#101216"
-                              border="1px solid #2B2F35"
-                              flex="none"
-                              order="0"
-                              flexGrow="0"
-                              zIndex="0"
-                              width="225px"
-                              height="96px"
-                            >
-                              <Box>
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
+                        <Text color="#6E7681">5.56%</Text>
+                      </Text>
+                      <Text
+                        display="flex"
+                        justifyContent="space-between"
+                        fontSize="12px"
+                        mb="0.4rem"
+                      >
+                        <Text display="flex" alignItems="center">
+                          <Text
+                            mr="0.2rem"
+                            font-style="normal"
+                            font-weight="400"
+                            font-size="12px"
+                            lineHeight="16px"
+                            color="#6A737D"
+                          >
+                            Gas estimate:
                           </Text>
-                          <Text color="#6E7681">$ 10.91</Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right-start"
+                            boxShadow="dark-lg"
+                            label="all the assets to the market"
+                            bg="#24292F"
+                            fontSize={"smaller"}
+                            fontWeight={"thin"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                          >
+                            <Box>
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
                         </Text>
-                        <Text
-                          color="#8B949E"
-                          display="flex"
-                          justifyContent="space-between"
-                          fontSize="12px"
-                          mb="0.4rem"
-                        >
-                          <Text display="flex" alignItems="center">
-                            <Text
-                              mr="0.2rem"
-                              font-style="normal"
-                              font-weight="400"
-                              font-size="12px"
-                              color="#6A737D"
-                            >
-                              Fees:
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="right-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box>
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
+                        <Text color="#6E7681">5.56%</Text>
+                      </Text>
+                      <Text
+                        display="flex"
+                        justifyContent="space-between"
+                        fontSize="12px"
+                        mb="0.4rem"
+                      >
+                        <Text display="flex" alignItems="center">
+                          <Text
+                            mr="0.2rem"
+                            font-style="normal"
+                            font-weight="400"
+                            font-size="12px"
+                            lineHeight="16px"
+                            color="#6A737D"
+                          >
+                            Effective apr:
                           </Text>
-                          <Text color="#6E7681">0.1%</Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right-start"
+                            boxShadow="dark-lg"
+                            label="all the assets to the market"
+                            bg="#24292F"
+                            fontSize={"smaller"}
+                            fontWeight={"thin"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                          >
+                            <Box>
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
                         </Text>
-                        <Text
-                          color="#8B949E"
-                          display="flex"
-                          justifyContent="space-between"
-                          fontSize="12px"
-                          mb="0.4rem"
-                        >
-                          <Text display="flex" alignItems="center">
-                            <Text
-                              mr="0.2rem"
-                              font-style="normal"
-                              font-weight="400"
-                              font-size="12px"
-                              color="#6A737D"
-                            >
-                              Borrow apr:
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="right-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box>
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
+                        <Text color="#6E7681">5.56%</Text>
+                      </Text>
+                      <Text
+                        display="flex"
+                        justifyContent="space-between"
+                        fontSize="12px"
+                      >
+                        <Text display="flex" alignItems="center">
+                          <Text
+                            mr="0.2rem"
+                            font-style="normal"
+                            font-weight="400"
+                            font-size="12px"
+                            lineHeight="16px"
+                            color="#6A737D"
+                          >
+                            Health factor
                           </Text>
-                          <Text color="#6E7681">5.56%</Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right-start"
+                            boxShadow="dark-lg"
+                            label="all the assets to the market"
+                            bg="#24292F"
+                            fontSize={"smaller"}
+                            fontWeight={"thin"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                          >
+                            <Box>
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
                         </Text>
-                        <Text
-                          display="flex"
-                          justifyContent="space-between"
-                          fontSize="12px"
-                          mb="0.4rem"
-                        >
-                          <Text display="flex" alignItems="center">
-                            <Text
-                              mr="0.2rem"
-                              font-style="normal"
-                              font-weight="400"
-                              font-size="12px"
-                              lineHeight="16px"
-                              color="#6A737D"
-                            >
-                              Gas estimate:
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="right-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box>
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Text>
-                          <Text color="#6E7681">5.56%</Text>
-                        </Text>
-                        <Text
-                          display="flex"
-                          justifyContent="space-between"
-                          fontSize="12px"
-                          mb="0.4rem"
-                        >
-                          <Text display="flex" alignItems="center">
-                            <Text
-                              mr="0.2rem"
-                              font-style="normal"
-                              font-weight="400"
-                              font-size="12px"
-                              lineHeight="16px"
-                              color="#6A737D"
-                            >
-                              Effective apr:
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="right-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box>
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Text>
-                          <Text color="#6E7681">5.56%</Text>
-                        </Text>
-                        <Text
-                          display="flex"
-                          justifyContent="space-between"
-                          fontSize="12px"
-                        >
-                          <Text display="flex" alignItems="center">
-                            <Text
-                              mr="0.2rem"
-                              font-style="normal"
-                              font-weight="400"
-                              font-size="12px"
-                              lineHeight="16px"
-                              color="#6A737D"
-                            >
-                              Health factor
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="right-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box>
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Text>
-                          <Text color="#6E7681">1.10</Text>
-                        </Text>
-                      </Card>
-                      {inputCollateralAmount > 0 &&
-                      inputCollateralAmount <= walletBalance ? (
-                        <Box onClick={()=>{setCollateralTransactionStarted(true)}}>
-
+                        <Text color="#6E7681">1.10</Text>
+                      </Text>
+                    </Card>
+                    {inputCollateralAmount > 0 &&
+                    inputCollateralAmount <= walletBalance ? (
+                      <Box
+                        onClick={() => {
+                          setCollateralTransactionStarted(true);
+                        }}
+                      >
                         <AnimatedButton
                           bgColor="#101216"
                           // bgColor="red"
@@ -2954,24 +2957,25 @@ const YourBorrowModal = ({
                         >
                           Add Collateral
                         </AnimatedButton>
-                        </Box>
-                      ) : (
-                        <Button
-                          bg="#101216"
-                          color="#6E7681"
-                          size="sm"
-                          width="100%"
-                          mt="1.5rem"
-                          mb="1.5rem"
-                          border="1px solid #2B2F35"
-                          _hover={{ bg: "#101216" }}
-                        >
-                          Add Collateral
-                        </Button>
-                      )}
-                    </TabPanel>
-                  </TabPanels>
-                </Tabs>
+                      </Box>
+                    ) : (
+                      <Button
+                        bg="#101216"
+                        color="#6E7681"
+                        size="sm"
+                        width="100%"
+                        mt="1.5rem"
+                        mb="1.5rem"
+                        border="1px solid #2B2F35"
+                        _hover={{ bg: "#101216" }}
+                      >
+                        Add Collateral
+                      </Button>
+                    )}
+                  </Box>
+                )}
+                {/* </TabPanels> */}
+                {/* </Tabs> */}
               </Box>
             </Box>
           </ModalBody>
