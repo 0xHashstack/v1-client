@@ -24,23 +24,24 @@ import ReferFreindsModal from "@/components/modals/ReferFreindsModal";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function WaitList() {
-  const account=useSelector(selectAccount)
+  const account = useSelector(selectAccount);
   // console.log(account ,"waitlist")
-  const { available, disconnect, connect, connectors,refresh } = useConnectors();
-  useEffect(()=>{
-    const walletConnected = localStorage.getItem('lastUsedConnector');
-    if(walletConnected=="bravos"){
-      connect(connectors[0]);
-    }else if(walletConnected=="argentx"){
-      connect(connectors[1]);
+  const { available, disconnect, connect, connectors, refresh } =
+    useConnectors();
+
+  const { account: _account } = useAccount();
+  useEffect(() => {
+    if (!_account) {
+      const walletConnected = localStorage.getItem("lastUsedConnector");
+      if (walletConnected == "braavos") {
+        disconnect();
+        connect(connectors[0]);
+      } else if (walletConnected == "argentx") {
+        disconnect();
+        connect(connectors[0]);
+      }
     }
-  },[])
-  // useEffect(() => {
-  //   // alert(status)
-  //   if (status == "connected") {
-  //     dispatch(setAccount(account));
-  //   }
-  // }, [account, status, dispatch]);
+  }, []);
   return (
     <PageCard justifyContent="center">
       <Text color="#D3AC41" fontSize="48px" fontWeight="600" fontStyle="normal">

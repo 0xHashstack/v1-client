@@ -18,7 +18,7 @@ import { Box, Stack, VStack } from "@chakra-ui/react";
 import NavButtons from "@/components/layouts/navButtons";
 import MarketDashboard from "@/components/layouts/marketDashboard";
 import { useEffect, useState } from "react";
-import useBalanceOf from '../../Blockchain/hooks/Reads/useBalanceOf'
+import useBalanceOf from "../../Blockchain/hooks/Reads/useBalanceOf";
 // import { dataInitializer } from "@/utils/functions/dataInitializer";
 // import OffchainAPI from "@/services/offchainapi.service";
 import Link from "next/link";
@@ -31,20 +31,21 @@ const inter = Inter({ subsets: ["latin"] });
 
 export default function Market() {
   const dispatch = useDispatch();
-  const router=useRouter();
+  const router = useRouter();
   const reserves = useSelector(selectReserves);
   const oracleAndFairPrices = useSelector(selectOracleAndFairPrices);
   const offchainCurrentBlock = useSelector(selectOffchainCurrentBlock);
-  const [parsedAccount, setParsedAccount] = useState<any>()
-  const { available, disconnect, connect, connectors,refresh } = useConnectors();
-  useEffect(()=>{
-    const walletConnected = localStorage.getItem('lastUsedConnector');
-    if(walletConnected=="bravos"){
-      connect(connectors[0]);
-    }else if(walletConnected=="argentx"){
-      connect(connectors[1]);
-    }
-  },[])
+  const [parsedAccount, setParsedAccount] = useState<any>();
+  const { available, disconnect, connect, connectors, refresh } =
+    useConnectors();
+  // useEffect(()=>{
+  //   const walletConnected = localStorage.getItem('lastUsedConnector');
+  //   if(walletConnected=="braavos"){
+  //     connect(connectors[0]);
+  //   }else if(walletConnected=="argentx"){
+  //     connect(connectors[1]);
+  //   }
+  // },[])
 
   const [render, setRender] = useState(true);
   // console.log(account.address)

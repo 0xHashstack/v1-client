@@ -27,14 +27,14 @@ const YourBorrow = () => {
     "",
   ];
   const { available, disconnect, connect, connectors,refresh } = useConnectors();
-  useEffect(()=>{
-    const walletConnected = localStorage.getItem('lastUsedConnector');
-    if(walletConnected=="bravos"){
-      connect(connectors[0]);
-    }else if(walletConnected=="argentx"){
-      connect(connectors[1]);
-    }
-  },[])
+  // useEffect(()=>{
+  //   const walletConnected = localStorage.getItem('lastUsedConnector');
+  //   if(walletConnected=="braavos"){
+  //     connect(connectors[0]);
+  //   }else if(walletConnected=="argentx"){
+  //     connect(connectors[1]);
+  //   }
+  // },[])
 
   return (
     <PageCard pt="6.5rem">

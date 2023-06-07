@@ -18,7 +18,7 @@ import AssetMetrics from "@/components/layouts/metrics/AssetMetrics";
 import SupplyMetrics from "@/components/layouts/metrics/SupplyMetrics";
 import RiskMetrics from "@/components/layouts/metrics/RiskMetrics";
 import Link from "next/link";
-import { useConnectors } from "@starknet-react/core";
+import { useAccount, useConnectors } from "@starknet-react/core";
 const ProtocolMetrics = () => {
   //   const [metricsCancel, setMetricsCancel] = useState(false);
   const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
@@ -28,15 +28,21 @@ const ProtocolMetrics = () => {
     // alert(dropdownName);
     dispatch(setMetricsDropdown(dropdownName));
   };
-  const { available, disconnect, connect, connectors,refresh } = useConnectors();
-  useEffect(()=>{
-    const walletConnected = localStorage.getItem('lastUsedConnector');
-    if(walletConnected=="bravos"){
-      connect(connectors[0]);W
-    }else if(walletConnected=="argentx"){
-      connect(connectors[1]);
+  const { available, disconnect, connect, connectors, refresh } =
+    useConnectors();
+  const { account: _account } = useAccount();
+  useEffect(() => {
+    if (!_account) {
+      const walletConnected = localStorage.getItem("lastUsedConnector");
+      if (walletConnected == "braavos") {
+        disconnect();
+        connect(connectors[0]);
+      } else if (walletConnected == "argentx") {
+        disconnect();
+        connect(connectors[0]);
+      }
     }
-  },[])
+  }, []);
   return (
     <PageCard pt="8rem">
       {/* {!metricsCancel && ( */}

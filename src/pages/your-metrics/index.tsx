@@ -14,7 +14,7 @@ import {
   setMetricsDropdown,
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
-import { useConnectors } from "@starknet-react/core";
+import { useAccount, useConnectors } from "@starknet-react/core";
 import TotalRevenueChart from "@/components/layouts/charts/TotalRevenue";
 import Link from "next/link";
 const YourMetrics = () => {
@@ -26,15 +26,21 @@ const YourMetrics = () => {
     // alert(dropdownName);
     dispatch(setMetricsDropdown(dropdownName));
   };
-  const { available, disconnect, connect, connectors,refresh } = useConnectors();
-  useEffect(()=>{
-    const walletConnected = localStorage.getItem('lastUsedConnector');
-    if(walletConnected=="bravos"){
-      connect(connectors[0]);
-    }else if(walletConnected=="argentx"){
-      connect(connectors[1]);
+  const { available, disconnect, connect, connectors, refresh } =
+    useConnectors();
+  const { account: _account } = useAccount();
+  useEffect(() => {
+    if (!_account) {
+      const walletConnected = localStorage.getItem("lastUsedConnector");
+      if (walletConnected == "braavos") {
+        disconnect();
+        connect(connectors[0]);
+      } else if (walletConnected == "argentx") {
+        disconnect();
+        connect(connectors[0]);
+      }
     }
-  },[])
+  }, []);
   return (
     <PageCard pt="8rem">
       {/* {!metricsCancel && ( */}

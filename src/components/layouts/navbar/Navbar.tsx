@@ -38,6 +38,7 @@ import {
   Center,
   HStack,
   LinkOverlay,
+  Skeleton,
   Text,
   background,
   useOutsideClick,
@@ -63,8 +64,8 @@ const Navbar = () => {
   const language = useSelector(selectLanguage);
   const [parsedAccount, setParsedAccount] = useState<any>();
   const currentDropdown = useSelector(selectCurrentDropdown);
-  const {account} = useAccount();
-  console.log(account,"Navbar")
+  const { account } = useAccount();
+  console.log(account, "Navbar");
   // useEffect(() => {
   //   const storedAccount = localStorage.getItem("account");
   //   if (storedAccount) {
@@ -536,7 +537,7 @@ const Navbar = () => {
                 </Box>
               ) : (
                 <>
-                  <Text
+                  {/* <Text
                     fontSize="14px"
                     width="100%"
                     display="flex"
@@ -545,7 +546,8 @@ const Navbar = () => {
                     // bgColor={"red"}
                   >
                     Connect Wallet
-                  </Text>
+                  </Text> */}
+                  <Skeleton width="8.35rem" height="100%" />
                 </>
               )}
               <Box position="absolute" right="0.7rem">
@@ -598,7 +600,7 @@ const Navbar = () => {
                       onClick={() => {
                         dispatch(setNavDropdown(""));
                         disconnect();
-                        localStorage.setItem('lastUsedConnector', '');
+                        localStorage.setItem("lastUsedConnector", "");
                         // localStorage.setItem("account", "");
 
                         router.push("./");
