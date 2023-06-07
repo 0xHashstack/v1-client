@@ -79,6 +79,7 @@ const LiquidityProvisionModal = ({
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const selectedDapp = useSelector(selectSelectedDapp);
+  const [transactionStarted, setTransactionStarted] = useState(false);
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
@@ -171,6 +172,7 @@ const LiquidityProvisionModal = ({
     setCurrentBorrowId(currentId);
     setCurrentPool("Select a pool");
     setCurrentBorrowMarketCoin(currentMarketCoin);
+    setTransactionStarted(false);
     dispatch(resetModalDropdowns());
   };
 
@@ -316,9 +318,13 @@ const LiquidityProvisionModal = ({
                   className="navbar"
                   color="white"
                   fontSize="16px"
-                  onClick={() =>
-                    handleDropdownClick("liquidityProvisionPoolDropDown")
-                  }
+                  onClick={() =>{
+                    if(transactionStarted){
+                      return;
+                    }else{
+                      handleDropdownClick("liquidityProvisionPoolDropDown")
+                    }
+                  }}
                   as="button"
                 >
                   <Box display="flex" gap="1">
@@ -420,9 +426,13 @@ const LiquidityProvisionModal = ({
                   borderRadius="md"
                   color="white"
                   className="navbar"
-                  onClick={() =>
-                    handleDropdownClick("liquidityProvisionBorrowIDDropDown")
-                  }
+                  onClick={() =>{
+                    if(transactionStarted==true){
+                      return;
+                    }else{
+                      handleDropdownClick("liquidityProvisionBorrowIDDropDown")
+                    }
+                  }}
                   as="button"
                 >
                   <Box display="flex" gap="1" ml="0.2rem">
@@ -860,6 +870,12 @@ const LiquidityProvisionModal = ({
                 </Box>
               </Box>
               {currentPool != "Select a pool" ? (
+                <Box
+                  onClick={()=>{
+                    setTransactionStarted(true)
+                  }}
+                >
+
                 <AnimatedButton
                   bgColor="#101216"
                   // bgColor="red"
@@ -884,6 +900,7 @@ const LiquidityProvisionModal = ({
                 >
                   Spend Borrow
                 </AnimatedButton>
+                </Box>
               ) : (
                 <Button
                   bg="#101216"

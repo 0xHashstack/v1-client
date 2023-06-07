@@ -26,8 +26,15 @@ const inter = Inter({ subsets: ["latin"] });
 export default function WaitList() {
   const account=useSelector(selectAccount)
   // console.log(account ,"waitlist")
-
-  const dispatch = useDispatch();
+  const { available, disconnect, connect, connectors,refresh } = useConnectors();
+  useEffect(()=>{
+    const walletConnected = localStorage.getItem('lastUsedConnector');
+    if(walletConnected=="bravos"){
+      connect(connectors[0]);
+    }else if(walletConnected=="argentx"){
+      connect(connectors[1]);
+    }
+  },[])
   // useEffect(() => {
   //   // alert(status)
   //   if (status == "connected") {

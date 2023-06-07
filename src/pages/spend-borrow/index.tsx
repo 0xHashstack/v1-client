@@ -10,12 +10,18 @@ import YourBorrowModal from "@/components/modals/yourBorrowModal";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import PageCard from "@/components/layouts/pageCard";
 import Pagination from "@/components/uiElements/pagination";
+import { useConnectors } from "@starknet-react/core";
 // import WalletConnectModal from "@/components/modals/WalletConnectModal";
 const SpendBorrow = () => {
-  const [render, setRender] = useState(false);
-  useEffect(() => {
-    setRender(true);
-  }, []);
+  const { available, disconnect, connect, connectors,refresh } = useConnectors();
+  useEffect(()=>{
+    const walletConnected = localStorage.getItem('lastUsedConnector');
+    if(walletConnected=="bravos"){
+      connect(connectors[0]);
+    }else if(walletConnected=="argentx"){
+      connect(connectors[1]);
+    }
+  },[])
   return (
     <PageCard pt="6.5rem">
       <HStack

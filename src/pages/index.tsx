@@ -48,6 +48,7 @@ export default function Home() {
   // console.log(data);
   const { available, disconnect, connect, connectors,refresh } = useConnectors();
   const [render, setRender] = useState(true);
+  const [lastusedConnector, setLastusedConnector] = useState("")
   const [isWhiteListed, setIsWhiteListed] = useState(false);
   const router = useRouter();
   const href = "/waitlist";
@@ -91,10 +92,12 @@ export default function Home() {
     }
   };
   // console.log(account ,"index page")
+  // console.log("Index reload check",account);
   useEffect(() => {
     // alert(status)
     // const storedAccount = localStorage.getItem("account");
     const hasVisited = localStorage.getItem('visited');
+    
     if (!hasVisited) {
       // Set a local storage item to indicate the user has visited
       localStorage.setItem('visited', 'true');
@@ -106,13 +109,14 @@ export default function Home() {
       // alert(account?.address);
       // localStorage.setItem("account", JSON.stringify(account));
       dispatch(setAccount(account));
+      
       if (!isWhiteListed) {
         router.replace(href);
       } else {
         router.replace(href2);
       }
     }
-  }, [account, status, dispatch]);
+  }, [status]);
 
   return (
     <Box
@@ -128,6 +132,7 @@ export default function Home() {
       backgroundColor="#191922"
       height="100vh"
     > */}
+    
       <Box
         display="flex"
         background="#010409"
@@ -183,6 +188,7 @@ export default function Home() {
               // onClick={() => router.push("/market")}
               onClick={()=>{
                 connect(connectors[0]);
+                localStorage.setItem('lastUsedConnector', 'bravos');
               }}
 
             >
@@ -235,6 +241,7 @@ export default function Home() {
               cursor="pointer"
               onClick={()=>{
                 connect(connectors[1]);
+                localStorage.setItem('lastUsedConnector', 'argentx');
               }}
             >
 

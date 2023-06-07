@@ -25,6 +25,8 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
 
   const { available, disconnect, connect, connectors } = useConnectors();
   const dispatch = useDispatch();
+  // connect(connectors[0])
+  // console.log(connectors)
 
   // useEffect(() => {
   //   // if (status == "connected") {

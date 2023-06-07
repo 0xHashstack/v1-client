@@ -85,6 +85,8 @@ const YourBorrowModal = ({
   const [sliderValue1, setSliderValue1] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [inputAmount1, setinputAmount1] = useState(0);
+  const [transactionStarted, setTransactionStarted] = useState(false)
+  const [collateralTransactionStarted, setCollateralTransactionStarted] = useState(false);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -915,6 +917,8 @@ const YourBorrowModal = ({
     setSliderValue(0);
     setSliderValue2(0);
     setinputRepayAmount(0);
+    setCollateralTransactionStarted(false);
+    setTransactionStarted(false);
     dispatch(resetModalDropdowns());
   };
 
@@ -967,6 +971,7 @@ const YourBorrowModal = ({
                         bg: "#0969DA",
                         border: "none",
                       }}
+                      isDisabled={collateralTransactionStarted==true}
                     >
                       Borrow Actions
                     </Tab>
@@ -984,6 +989,7 @@ const YourBorrowModal = ({
                         bg: "#0969DA",
                         border: "none",
                       }}
+                      isDisabled={transactionStarted==true}
                     >
                       Add Collateral
                     </Tab>
@@ -1033,10 +1039,14 @@ const YourBorrowModal = ({
                             pr="3"
                             borderRadius="md"
                             className="navbar"
-                            onClick={() =>
-                              handleDropdownClick(
-                                "yourBorrowModalActionDropdown"
-                              )
+                            onClick={() =>{
+                              if(transactionStarted){
+                                return;
+                              }else{
+                                handleDropdownClick(
+                                  "yourBorrowModalActionDropdown"
+                                )
+                              }}
                             }
                             as="button"
                           >
@@ -1147,11 +1157,16 @@ const YourBorrowModal = ({
                             pr="3"
                             borderRadius="md"
                             className="navbar"
-                            onClick={() =>
-                              handleDropdownClick(
-                                "yourBorrowBorrowIDsDropdown1"
-                              )
-                            }
+                            onClick={() =>{
+                              if(transactionStarted){
+                                return;
+                              }else{
+
+                                handleDropdownClick(
+                                  "yourBorrowBorrowIDsDropdown1"
+                                )
+                              }
+                            }}
                             as="button"
                           >
                             <Box display="flex" gap="1">
@@ -1374,24 +1389,44 @@ const YourBorrowModal = ({
                             <Box
                               width="100%"
                               color="white"
-                              border="1px solid #2B2F35"
                               borderRadius="6px"
                               display="flex"
                               justifyContent="space-between"
+                              border={`${inputRepayAmount > walletBalance
+                                ? "1px solid #CF222E"
+                                : inputRepayAmount < 0
+                                  ? "1px solid #CF222E"
+                                  : isNaN(inputRepayAmount)
+                                    ? "1px solid #CF222E"
+                                    : inputRepayAmount > 0 && inputRepayAmount <= walletBalance
+                                      ? "1px solid #1A7F37"
+                                      : "1px solid #2B2F35 "
+                              }`}
                             >
                               <NumberInput
                                 border="0px"
                                 min={0}
                                 keepWithinRange={true}
                                 onChange={handleChange}
-                                value={inputRepayAmount}
-                                isDisabled={currentAction === "Zero Repay"}
+                                value={inputRepayAmount ? inputRepayAmount:""}
+                                isDisabled={currentAction === "Zero Repay" || transactionStarted==true}
                                 step={parseFloat(
                                   `${inputRepayAmount <= 99999 ? 0.1 : 0}`
                                 )}
+                                _disabled={{ cursor: "pointer" }}
                               >
                                 <NumberInputField
                                   placeholder={`Minimum 0.01536 ${currentBorrowMarketCoin1}`}
+                                  color={`${inputRepayAmount> walletBalance
+                                    ? "#CF222E"
+                                    : isNaN(inputRepayAmount)
+                                      ? "#CF222E"
+                                      : inputRepayAmount < 0
+                                        ? "#CF222E"
+                                        : inputRepayAmount == 0
+                                          ? "white"
+                                          : "#1A7F37"
+                                  }`}
                                   border="0px"
                                   _placeholder={{
                                     color: "#393D4F",
@@ -1399,6 +1434,7 @@ const YourBorrowModal = ({
                                     fontWeight: "600",
                                     outline: "0",
                                   }}
+                                  // _disabled={{ color: "#1A7F37" }}
                                   _focus={{
                                     outline: "0",
                                     boxShadow: "none",
@@ -1419,20 +1455,63 @@ const YourBorrowModal = ({
                                     )
                                   );
                                 }}
+                                isDisabled={transactionStarted == true}
+                                _disabled={{ cursor: "pointer" }}
                               >
                                 MAX
                               </Button>
                             </Box>
-                            <Text
-                              textAlign="right"
-                              fontSize="xs"
-                              fontWeight="thin"
-                            >
-                              Wallet Balance: 0.00{" "}
-                              <Text as="span" color="#8B949E">
-                                BTC
-                              </Text>
-                            </Text>
+                            {inputRepayAmount > walletBalance ||
+                  inputRepayAmount < 0 ||
+                  isNaN(inputRepayAmount) ? (
+                  <Text
+                    display="flex"
+                    justifyContent="space-between"
+                    color="#E6EDF3"
+                    mt="0.4rem"
+                    fontSize="12px"
+                    fontWeight="500"
+                    fontStyle="normal"
+                    fontFamily="Inter"
+                  >
+                    <Text color="#CF222E" display="flex">
+                      <Text mt="0.2rem">
+                        <SmallErrorIcon />{" "}
+                      </Text>
+                      <Text ml="0.3rem">
+                        {inputRepayAmount> walletBalance
+                          ? "Amount exceeds balance"
+                          : "Invalid Input"}
+                      </Text>
+                    </Text>
+                    <Text
+                      color="#E6EDF3"
+                      display="flex"
+                      justifyContent="flex-end"
+                    >
+                      Wallet Balance: {walletBalance}
+                      <Text color="#6E7781" ml="0.2rem">
+                        {` ${currentSelectedCoin}`}
+                      </Text>
+                    </Text>
+                  </Text>
+                ) : (
+                  <Text
+                    color="#E6EDF3"
+                    display="flex"
+                    justifyContent="flex-end"
+                    mt="0.4rem"
+                    fontSize="12px"
+                    fontWeight="500"
+                    fontStyle="normal"
+                    fontFamily="Inter"
+                  >
+                    Wallet Balance: {walletBalance}
+                    <Text color="#6E7781" ml="0.2rem">
+                      {` ${currentSelectedCoin}`}
+                    </Text>
+                  </Text>
+                )}
                             <Slider
                               mt="12"
                               mb="2"
@@ -1449,6 +1528,8 @@ const YourBorrowModal = ({
                                 );
                                 setinputRepayAmount(ans);
                               }}
+                              isDisabled={transactionStarted == true}
+                              _disabled={{ cursor: "pointer" }}
                               focusThumbOnChange={false}
                             >
                               <SliderMark value={sliderValue}>
@@ -1593,9 +1674,13 @@ const YourBorrowModal = ({
                               pr="3"
                               borderRadius="md"
                               className="navbar"
-                              onClick={() =>
-                                handleDropdownClick("yourBorrowDappDropdown")
-                              }
+                              onClick={() =>{
+                                if(transactionStarted){
+                                  return;
+                                }else{
+                                  handleDropdownClick("yourBorrowDappDropdown")
+                                }
+                              }}
                               as="button"
                             >
                               <Box display="flex" gap="1">
@@ -1715,9 +1800,13 @@ const YourBorrowModal = ({
                               pr="3"
                               borderRadius="md"
                               className="navbar"
-                              onClick={() =>
-                                handleDropdownClick("yourBorrowPoolDropdown")
-                              }
+                              onClick={() =>{
+                                if(transactionStarted){
+                                  return;
+                                }else{
+                                  handleDropdownClick("yourBorrowPoolDropdown")
+                                }
+                              }}
                               as="button"
                             >
                               <Box display="flex" gap="1">
@@ -1866,6 +1955,7 @@ const YourBorrowModal = ({
                         currentDapp != "Select a dapp" &&
                         (currentPool != "Select a pool" ||
                           currentPoolCoin != "Select a pool") ? (
+                            <Box onClick={()=>{setTransactionStarted(true)}}>
                           <AnimatedButton
                             bgColor="#101216"
                             // bgColor="red"
@@ -1889,6 +1979,7 @@ const YourBorrowModal = ({
                           >
                             Spend
                           </AnimatedButton>
+                            </Box>
                         ) : (
                           <Button
                             bg="#101216"
@@ -1908,6 +1999,7 @@ const YourBorrowModal = ({
 
                       {currentAction == "Repay Borrow" ? (
                         inputRepayAmount > 0 ? (
+                          <Box onClick={()=>{setTransactionStarted(true)}}>
                           <AnimatedButton
                             bgColor="#101216"
                             // bgColor="red"
@@ -1934,6 +2026,7 @@ const YourBorrowModal = ({
                           >
                             Repay borrow
                           </AnimatedButton>
+                          </Box>
                         ) : (
                           <Button
                             bg="#101216"
@@ -1952,6 +2045,7 @@ const YourBorrowModal = ({
                       )}
                       {currentAction == "Zero Repay" ? (
                         inputRepayAmount == 0 ? (
+                          <Box onClick={()=>{setTransactionStarted(true)}}>
                           <AnimatedButton
                             bgColor="#101216"
                             // bgColor="red"
@@ -1977,6 +2071,7 @@ const YourBorrowModal = ({
                           >
                             Zero repay
                           </AnimatedButton>
+                          </Box>
                         ) : (
                           <Button
                             bg="#101216"
@@ -2047,11 +2142,15 @@ const YourBorrowModal = ({
                             pr="3"
                             borderRadius="md"
                             className="navbar"
-                            onClick={() =>
-                              handleDropdownClick(
-                                "yourBorrowBorrowIDsDropdown2"
-                              )
-                            }
+                            onClick={() =>{
+                              if(collateralTransactionStarted){
+                                return;
+                              }else{
+                                handleDropdownClick(
+                                  "yourBorrowBorrowIDsDropdown2"
+                                )
+                              }
+                            }}
                             as="button"
                           >
                             <Box display="flex" gap="1" pt="1">
@@ -2167,11 +2266,15 @@ const YourBorrowModal = ({
                             borderRadius="md"
                             className="navbar"
                             cursor="pointer"
-                            onClick={() =>
-                              handleDropdownClick(
-                                "yourBorrowModalBorrowMarketDropdown2"
-                              )
-                            }
+                            onClick={() =>{
+                              if(collateralTransactionStarted){
+                                return;
+                              }else{
+                                handleDropdownClick(
+                                  "yourBorrowModalBorrowMarketDropdown2"
+                                )
+                              }
+                            }}
                           >
                             <Box display="flex" gap="1">
                               <Box p="1">
@@ -2377,6 +2480,8 @@ const YourBorrowModal = ({
                             step={parseFloat(
                               `${inputCollateralAmount <= 99999 ? 0.1 : 0}`
                             )}
+                            isDisabled={collateralTransactionStarted == true}
+                            _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
@@ -2387,6 +2492,7 @@ const YourBorrowModal = ({
                                 fontWeight: "600",
                                 outline: "none",
                               }}
+                              _disabled={{ color: "#1A7F37" }}
                               _focus={{
                                 outline: "0",
                                 boxShadow: "none",
@@ -2401,6 +2507,8 @@ const YourBorrowModal = ({
                               setinputCollateralAmount(walletBalance);
                               setSliderValue2(100);
                             }}
+                            isDisabled={collateralTransactionStarted == true}
+                            _disabled={{ cursor: "pointer" }}
                           >
                             MAX
                           </Button>
@@ -2465,6 +2573,8 @@ const YourBorrowModal = ({
                               // dispatch(setInputSupplyAmount(ans))
                               setinputCollateralAmount(ans);
                             }}
+                            isDisabled={collateralTransactionStarted == true}
+                            _disabled={{ cursor: "pointer" }}
                             focusThumbOnChange={false}
                           >
                             <SliderMark value={sliderValue2}>
@@ -2789,6 +2899,8 @@ const YourBorrowModal = ({
                       </Card>
                       {inputCollateralAmount > 0 &&
                       inputCollateralAmount <= walletBalance ? (
+                        <Box onClick={()=>{setCollateralTransactionStarted(true)}}>
+
                         <AnimatedButton
                           bgColor="#101216"
                           // bgColor="red"
@@ -2815,6 +2927,7 @@ const YourBorrowModal = ({
                         >
                           Add Collateral
                         </AnimatedButton>
+                        </Box>
                       ) : (
                         <Button
                           bg="#101216"
