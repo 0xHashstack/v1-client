@@ -83,6 +83,12 @@ const SupplyModal = ({
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
 
+  const handleTransaction=async()=>{
+    console.log(asset);
+    console.log(depositAmount);
+    const deposit=await writeAsyncDeposit();
+  }
+
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
@@ -130,7 +136,7 @@ const SupplyModal = ({
       if (isNaN(percentage)) {
       } else {
         setSliderValue(percentage);
-        setinputAmount(newValue);
+        setDepositAmount(newValue);
         dispatch(setInputSupplyAmount(newValue));
       }
     }
@@ -141,6 +147,7 @@ const SupplyModal = ({
   const resetStates = () => {
     setDepositAmount(0);
     setSliderValue(0);
+    setAsset(coin ? coin.name : "BTC");
     setCurrentSelectedCoin(coin ? coin.name : "BTC");
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
@@ -276,6 +283,7 @@ const SupplyModal = ({
                             pr="2"
                             onClick={() => {
                               setCurrentSelectedCoin(coin);
+                              setAsset(coin);
                               dispatch(setCoinSelectedSupplyModal(coin));
                             }}
                           >
@@ -700,6 +708,9 @@ const SupplyModal = ({
                   <Box
                     onClick={() => {
                       setTransactionStarted(true);
+                      // dataDeposit();
+                      handleTransaction();
+                      console.log(isSuccessDeposit,"status deposit")
                     }}
                   >
                     <AnimatedButton

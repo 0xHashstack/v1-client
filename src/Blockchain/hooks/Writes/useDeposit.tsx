@@ -32,7 +32,7 @@ const useDeposit  = () => {
     } = useContractWrite({
         calls: [
             {
-                contractAddress: asset, 
+                contractAddress: "0x457f2ecab58ceb7ffd3ca658f8ce65820fda4fb9cd2878dd2e001d8d2753503", 
                 entrypoint: "approve",
                 calldata: [
                     diamondAddress,
