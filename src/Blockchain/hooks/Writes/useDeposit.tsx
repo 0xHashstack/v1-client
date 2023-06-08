@@ -61,7 +61,6 @@ const useDeposit  = () => {
         setDepositAmount,
         asset,
         setAsset,
-
         dataDeposit,
         errorDeposit,
         resetDeposit,
