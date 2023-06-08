@@ -34,28 +34,30 @@ export const Coins: ICoin[] = [
   { name: "DAI", icon: "mdi-dai", symbol: "DAI" },
 ];
 
-
 const DashboardLeft = ({
   width,
-  oraclePrices
+  oraclePrices,
 }: {
   width: string;
-  oraclePrices:any;
+  oraclePrices: any;
   // columnItems: Array<Array<string>>;
   // gap: string;
   // rowItems: any;
 }) => {
   const coinPrices = Coins.map((coin) => {
-    const matchingCoin = oraclePrices.find((c: { name: string; }) => c?.name?.toLowerCase() === coin.name.toLowerCase());
+    const matchingCoin = oraclePrices.find(
+      (c: { name: string }) =>
+        c?.name?.toLowerCase() === coin.name.toLowerCase()
+    );
     if (matchingCoin) {
       const formattedPrice = matchingCoin.price.toFixed(3); // Format price to 3 decimal places
       return { name: coin.name, price: formattedPrice };
     }
     return null;
   });
-  
+
   // console.log(coinPrices)
- 
+
   const columnItems = ["Market", "Price", "Total Supply", "Supply APR", "", ""];
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const [isOpenCustom, setIsOpenCustom] = useState(false);
@@ -236,7 +238,7 @@ const DashboardLeft = ({
                   overflow={"hidden"}
                   textAlign={"center"}
                 >
-                  <Text
+                  <Box
                     width="100%"
                     height="100%"
                     display="flex"
@@ -246,8 +248,12 @@ const DashboardLeft = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {coinPrices[idx]?.price}
-                  </Text>
+                    {!coinPrices[idx] ? (
+                      <Skeleton width="3rem" height="1rem" />
+                    ) : (
+                      coinPrices[idx]?.price
+                    )}
+                  </Box>
                 </Td>
                 <Td
                   width={"18%"}
