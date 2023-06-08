@@ -90,7 +90,12 @@ const SupplyModal = ({
   const handleTransaction=async()=>{
     console.log(asset);
     console.log(depositAmount);
-    const deposit=await writeAsyncDeposit();
+    try{
+      const deposit=await writeAsyncDeposit();
+    }catch(err){
+      console.log(err)
+    }
+    
   }
 
   const getCoin = (CoinName: string) => {

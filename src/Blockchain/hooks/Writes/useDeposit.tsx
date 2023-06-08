@@ -32,7 +32,7 @@ const useDeposit  = () => {
     } = useContractWrite({
         calls: [
             {
-                contractAddress: "0x457f2ecab58ceb7ffd3ca658f8ce65820fda4fb9cd2878dd2e001d8d2753503", 
+                contractAddress: tokenAddressMap[asset] || "", 
                 entrypoint: "approve",
                 calldata: [
                     diamondAddress,
@@ -46,7 +46,7 @@ const useDeposit  = () => {
                 contractAddress: diamondAddress,
                 entrypoint: "deposit",
                 calldata: [
-                    asset,
+                    tokenAddressMap[asset],
                     etherToWeiBN(
                         depositAmount as number,
                         tokenAddressMap[asset] || ""
