@@ -33,6 +33,7 @@ const useDeposit  = () => {
         calls: [
             {
                 contractAddress: tokenAddressMap[asset] || "", 
+                contractAddress: tokenAddressMap[asset] || "", 
                 entrypoint: "approve",
                 calldata: [
                     diamondAddress,
