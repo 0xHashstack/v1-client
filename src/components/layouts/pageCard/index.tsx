@@ -57,9 +57,9 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   dispatch(setAccount(account));
   //   // }
   // }, [account, status,dispatch]);
-  // useEffect(() => {
-  //   setRender(true);
-  // }, []);
+  useEffect(() => {
+    setRender(true);
+  }, []);
   useEffect(() => {
     const walletConnected = localStorage.getItem("lastUsedConnector");
     if (walletConnected == "") {
