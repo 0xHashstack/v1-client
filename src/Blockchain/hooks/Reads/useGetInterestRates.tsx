@@ -5,7 +5,7 @@ import dialAbi from "@/Blockchain/abis/module_dynamic_interest_abi.json"
 import { Abi } from "starknet";
 
 const useGetInterestRates = () => {
-    const [market, setMarket] = useState("");
+    const [market, setMarket] = useState("eth");
 
 // data?: Array<any>;
     // /** Error when performing call. */

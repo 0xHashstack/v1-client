@@ -20,6 +20,8 @@ import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { uint256 } from "starknet";
 import { BNtoNum } from "@/Blockchain/utils/utils";
+import useGetInterestRates from "@/Blockchain/hooks/Reads/useGetInterestRates";
+import useGetUnderlyingAsset from "@/Blockchain/hooks/Reads/userGetUnderlyingAsset";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -55,6 +57,10 @@ const DashboardLeft = ({
     }
     return null;
   });
+  const {dataInterestRates}=useGetInterestRates();
+  const {dataUnderlyingAsset}=useGetUnderlyingAsset();
+  console.log(dataUnderlyingAsset,"data underlying assets")
+  // console.log(dataInterestRates,"dataIntrestRates");
 
   // console.log(coinPrices)
 
@@ -220,7 +226,7 @@ const DashboardLeft = ({
                         {coin.name}
                       </Text>
                       {statusBalanceOf != "success" ? (
-                        <Skeleton width="3rem" height="10px" />
+                        <Skeleton width="3rem" height="10px" bg="#101216" startColor="#2B2F35" endColor="#101216"/>
                       ) : (
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
                           Wallet Bal.{" "}
@@ -249,7 +255,7 @@ const DashboardLeft = ({
                   >
                     {/* {checkGap(idx1, idx2)} */}
                     {!coinPrices[idx] ? (
-                      <Skeleton width="3rem" height="1rem" />
+                      <Skeleton width="3rem" height="1rem"  bg="#101216" startColor="#2B2F35" endColor="#101216"/>
                     ) : (
                       coinPrices[idx]?.price
                     )}

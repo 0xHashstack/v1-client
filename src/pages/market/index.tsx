@@ -52,6 +52,9 @@ export default function Market() {
   //   }
   // },[])
   // console.log("degug2", offchainCurrentBlock);
+  useEffect(() => {
+    setRender(true);
+  }, []);
   return (
     <PageCard>
       <StatsBoard />

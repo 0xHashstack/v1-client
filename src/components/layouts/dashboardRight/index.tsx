@@ -157,7 +157,7 @@ const DashboardRight = ({
                   overflow={"hidden"}
                   textAlign={"center"}
                 >
-                  <Text
+                  <Box
                     width="100%"
                     height="100%"
                     display="flex"
@@ -168,11 +168,11 @@ const DashboardRight = ({
                   >
                     {/* {checkGap(idx1, idx2)} */}
                     {!coinPrices[idx] ? (
-                      <Skeleton width="3rem" height="1rem" />
+                      <Skeleton width="3rem" height="10px" bg="#101216" startColor="#2B2F35" endColor="#101216"/>
                     ) : (
                       coinPrices[idx]?.price
                     )}
-                  </Text>
+                  </Box>
                 </Td>
                 <Td
                   width={"17%"}
