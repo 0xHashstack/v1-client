@@ -11,7 +11,7 @@ import {
   HStack,
   useMediaQuery,
 } from "@chakra-ui/react";
-
+import { Skeleton } from "@chakra-ui/react";
 import Image from "next/image";
 import BorrowModal from "@/components/modals/borrowModal";
 import TradeModal from "@/components/modals/tradeModal";
@@ -167,7 +167,11 @@ const DashboardRight = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {coinPrices[idx]?.price}
+                    {!coinPrices[idx] ? (
+                      <Skeleton width="3rem" height="1rem" />
+                    ) : (
+                      coinPrices[idx]?.price
+                    )}
                   </Text>
                 </Td>
                 <Td
