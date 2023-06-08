@@ -107,7 +107,7 @@ export default function Home() {
 
       if (!isWhiteListed) {
         
-        router.replace(href);
+        router.replace(waitlistHref);
       } else {
         router.replace(marketHref2);
       }

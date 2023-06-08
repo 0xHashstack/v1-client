@@ -154,6 +154,9 @@ const SupplyModal = ({
     setSliderValue(0);
   }, [currentSelectedCoin]);
 
+  // const { } = useBalanceOf();
+  // const { } = useTransfer();
+
   return (
     <div>
       <Button onClick={onOpen} {...restProps}>
@@ -696,6 +699,7 @@ const SupplyModal = ({
                           successText={"Success"}
                         />,
                       ]}
+                      onClick={}
                     >
                       Supply
                     </AnimatedButton>
