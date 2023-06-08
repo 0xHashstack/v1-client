@@ -48,7 +48,10 @@ import {
 } from "@/store/slices/dropdownsSlice";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
-import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
+import { useAccount, useBalance } from "@starknet-react/core";
+import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
+import useTransfer from "@/Blockchain/hooks/Writes/useTransfer";
+
 const SupplyModal = ({
   buttonText,
   coin,
@@ -157,6 +160,9 @@ const SupplyModal = ({
     setDepositAmount(0);
     setSliderValue(0);
   }, [currentSelectedCoin]);
+
+  // const { } = useBalanceOf();
+  // const { } = useTransfer();
 
   return (
     <div>
@@ -736,6 +742,7 @@ const SupplyModal = ({
                           successText={"Success"}
                         />,
                       ]}
+                      onClick={}
                     >
                       Supply
                     </AnimatedButton>

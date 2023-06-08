@@ -57,9 +57,9 @@ const DashboardLeft = ({
     }
     return null;
   });
-  const {dataInterestRates}=useGetInterestRates();
-  const {dataUnderlyingAsset}=useGetUnderlyingAsset();
-  console.log(dataUnderlyingAsset,"data underlying assets")
+  const { dataInterestRates } = useGetInterestRates();
+  const { dataUnderlyingAsset } = useGetUnderlyingAsset();
+  console.log(dataUnderlyingAsset, "data underlying assets");
   // console.log(dataInterestRates,"dataIntrestRates");
 
   // console.log(coinPrices)
@@ -238,7 +238,9 @@ const DashboardLeft = ({
                       ) : (
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
                           Wallet Bal.{" "}
-                          {BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))}
+                          {Number(
+                            BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
+                          ).toFixed(5)}
                         </Text>
                       )}
                     </Box>
@@ -265,7 +267,7 @@ const DashboardLeft = ({
                     {!coinPrices[idx] ? (
                       <Skeleton
                         width="6rem"
-                        height="1.5rem"
+                        height="1.4rem"
                         startColor="#101216"
                         endColor="#2B2F35"
                         borderRadius="6px"

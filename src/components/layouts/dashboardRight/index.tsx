@@ -31,10 +31,10 @@ export const Coins: ICoin[] = [
 
 const DashboardRight = ({
   width,
-  oraclePrices
+  oraclePrices,
 }: {
   width: string;
-  oraclePrices:any;
+  oraclePrices: any;
   // gap: string;
   // columnItems: Array<Array<string>>;
   // rowItems: any;
@@ -49,14 +49,16 @@ const DashboardRight = ({
     "",
   ];
   const coinPrices = Coins.map((coin) => {
-    const matchingCoin = oraclePrices.find((c: { name: string; }) => c?.name?.toLowerCase() === coin.name.toLowerCase());
+    const matchingCoin = oraclePrices.find(
+      (c: { name: string }) =>
+        c?.name?.toLowerCase() === coin.name.toLowerCase()
+    );
     if (matchingCoin) {
       const formattedPrice = matchingCoin.price.toFixed(3); // Format price to 3 decimal places
       return { name: coin.name, price: formattedPrice };
     }
     return null;
   });
-  
 
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
 
@@ -168,7 +170,13 @@ const DashboardRight = ({
                   >
                     {/* {checkGap(idx1, idx2)} */}
                     {!coinPrices[idx] ? (
-                      <Skeleton width="3rem" height="10px" bg="#101216" startColor="#2B2F35" endColor="#101216"/>
+                      <Skeleton
+                        width="6rem"
+                        height="1.4rem"
+                        startColor="#101216"
+                        endColor="#2B2F35"
+                        borderRadius="6px"
+                      />
                     ) : (
                       coinPrices[idx]?.price
                     )}
@@ -259,19 +267,18 @@ const DashboardRight = ({
                     fontWeight="400"
                     // bgColor={"blue"}
                   >
-                    <BorrowModal 
-                                          buttonText="Borrow"
-                                          height={"2rem"}
-                                          fontSize={"12px"}
-                                          padding="6px 12px"
-                                          border="1px solid #BDBFC1"
-                                          bgColor="#101216"
-                                          _hover={{ bg: "white", color: "black" }}
-                                          borderRadius={"6px"}
-                                          color="#BDBFC1;"
-                                          backGroundOverLay="rgba(244, 242, 255, 0.5)"
-                                          coin={coin}
-
+                    <BorrowModal
+                      buttonText="Borrow"
+                      height={"2rem"}
+                      fontSize={"12px"}
+                      padding="6px 12px"
+                      border="1px solid #BDBFC1"
+                      bgColor="#101216"
+                      _hover={{ bg: "white", color: "black" }}
+                      borderRadius={"6px"}
+                      color="#BDBFC1;"
+                      backGroundOverLay="rgba(244, 242, 255, 0.5)"
+                      coin={coin}
                     />
                   </Box>
                 </Td>
@@ -288,9 +295,7 @@ const DashboardRight = ({
                   pl={2}
                 >
                   <Box position="relative" display="inline-block">
-                    <TradeModal 
-                      coin={coin}
-                    />
+                    <TradeModal coin={coin} />
                   </Box>
                 </Td>
               </Tr>
