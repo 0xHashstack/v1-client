@@ -61,11 +61,11 @@ const SpendTable = () => {
     "Health factor",
   ];
   const rows: any[] = [
-    // ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "00.00%"],
-    // ["Borrow ID 12346", "rBTC", "10,324.556", "BTC", "00.00%"],
-    // ["Borrow ID 12347", "rETH", "10,324.556", "BTC", "00.00%"],
-    // ["Borrow ID 12348", "rUSDT", "10,324.556", "BTC", "00.00%"],
-    // ["Borrow ID 12349", "rBTC", "10,324.556", "BTC", "00.00%"],
+    ["Borrow ID 12345", "rUSDT", "10,324.556", "BTC", "00.00%"],
+    ["Borrow ID 12346", "rBTC", "10,324.556", "BTC", "00.00%"],
+    ["Borrow ID 12347", "rETH", "10,324.556", "BTC", "00.00%"],
+    ["Borrow ID 12348", "rUSDT", "10,324.556", "BTC", "00.00%"],
+    ["Borrow ID 12349", "rBTC", "10,324.556", "BTC", "00.00%"],
     // ["Borrow ID 12350", "rETH", "10,324.556", "BTC", "00.00%"],
   ];
 
@@ -189,6 +189,7 @@ const SpendTable = () => {
                     fontSize={"12px"}
                     fontWeight={400}
                     p={0}
+                    // bgColor="red"
                   >
                     <Text
                       whiteSpace="pre-wrap"
@@ -203,7 +204,7 @@ const SpendTable = () => {
                           ? "right"
                           : "center"
                       }
-                      pl={idx1 == 0 ? 6 : 0}
+                      pl={idx1 == 0 ? "3rem" : 0}
                       pr={idx1 == columnItems.length - 1 ? 35 : 0}
                       color={"#BDBFC1"}
                     >
@@ -240,7 +241,7 @@ const SpendTable = () => {
                           dispatch(setSpendBorrowSelectedDapp("trade"));
                         }}
                       >
-                        <Td borderLeftRadius="6px">
+                        <Td borderLeftRadius="6px" pl="3rem">
                           <Box
                             position="absolute"
                             height="24px"

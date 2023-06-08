@@ -106,6 +106,7 @@ const DashboardLeft = ({
     errorBalanceOf,
     statusBalanceOf
   );
+
   useEffect(() => {
     if (errorBalanceOf || isFetchingBalanceOf) {
       console.log("return error", errorBalanceOf, statusBalanceOf);
@@ -115,6 +116,7 @@ const DashboardLeft = ({
       console.log(
         "return",
         dataBalanceOf,
+        JSON.stringify(dataBalanceOf),
         BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
       );
     }
@@ -220,7 +222,13 @@ const DashboardLeft = ({
                         {coin.name}
                       </Text>
                       {statusBalanceOf != "success" ? (
-                        <Skeleton width="3rem" height="10px" />
+                        <Skeleton
+                          width="4rem"
+                          height="1rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
                       ) : (
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
                           Wallet Bal.{" "}
@@ -249,7 +257,13 @@ const DashboardLeft = ({
                   >
                     {/* {checkGap(idx1, idx2)} */}
                     {!coinPrices[idx] ? (
-                      <Skeleton width="3rem" height="1rem" />
+                      <Skeleton
+                        width="6rem"
+                        height="1.5rem"
+                        startColor="#101216"
+                        endColor="#2B2F35"
+                        borderRadius="6px"
+                      />
                     ) : (
                       coinPrices[idx]?.price
                     )}
