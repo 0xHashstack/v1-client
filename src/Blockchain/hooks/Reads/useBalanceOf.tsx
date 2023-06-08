@@ -20,7 +20,7 @@ const useBalanceOf = ( asset: string) => {
         address: asset,
         abi: ERC20Abi,
         functionName: "balanceOf",
-        args: ["0x0465e14a806a77cd284873e17b9f067400d90b8169cbd8bcac6430805ca87f69"],
+        args: [accountAddress],
         watch: false,
     })
 
