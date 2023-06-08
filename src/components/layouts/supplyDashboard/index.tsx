@@ -31,7 +31,7 @@ export interface ICoin {
 const supplyCoins: any = [
   {
     market: "USDT",
-    rTokenAmount: "1000",
+    rTokenAmount: "10,000",
     ExchangeRate: "1.23",
     SupplyApr: "8.22%",
     EffectiveApr: "7.8%",
@@ -39,7 +39,7 @@ const supplyCoins: any = [
   },
   {
     market: "BTC",
-    rTokenAmount: "1000",
+    rTokenAmount: "10,000",
     ExchangeRate: "1.23",
     SupplyApr: "8.22%",
     EffectiveApr: "7.8%",
@@ -47,7 +47,7 @@ const supplyCoins: any = [
   },
   {
     market: "DAI",
-    rTokenAmount: "1000",
+    rTokenAmount: "10,000",
     ExchangeRate: "1.23",
     SupplyApr: "8.22%",
     EffectiveApr: "7.8%",
@@ -230,7 +230,7 @@ const SupplyDashboard = ({
                           height="2rem"
                           width="2rem"
                           alignItems="center"
-                          justifyContent="center"
+                          // justifyContent="center"
                         >
                           <Image
                             src={`./${coin.market}.svg`}
@@ -239,7 +239,7 @@ const SupplyDashboard = ({
                             height="32"
                           />
                           <Text fontSize="14px" fontWeight="400">
-                            {coin.rTokenAmount}
+                            {coin.market}
                           </Text>
                         </HStack>
                         <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
