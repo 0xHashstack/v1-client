@@ -1,5 +1,5 @@
 import { Contract, Provider, number, shortString } from "starknet";
-import { contractsEnv } from "../stark-constants";
+import { contractsEnv, getProvider } from "../stark-constants";
 import EmpiricAbi from "../abis/mockups/empiric_proxy.cairo/empiric_proxy.json"
 
 export interface OraclePrice {
@@ -14,13 +14,7 @@ export async function getOraclePrices(): Promise<OraclePrice[]> {
   console.log('Using aggregation mode:', MEDIAN_AGGREGATION_MODE);
   const prices: OraclePrice[] = [];
   const now = new Date();
-  const provider = new Provider({
-    sequencer: {
-      baseUrl: "https://alpha-mainnet.starknet.io",
-      feederGatewayUrl: "feeder_gateway",
-      gatewayUrl: "gateway",
-    },
-  });
+  const provider = getProvider();
   const empiricContract = new Contract(EmpiricAbi.abi, contractsEnv.EMPIRIC_PROXY_ADDRESS, provider);
   const promises: Promise<any>[] = [];
   for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
