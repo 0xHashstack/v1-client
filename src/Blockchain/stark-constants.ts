@@ -28,7 +28,7 @@ export function processAddress(address: string) {
 
 // : DeployDetailsProd.goerli_2;
 
-let contractsEnv = DeployDetailsProd.mainnet;
+let contractsEnv = DeployDetailsProd.goerli;
 
 contractsEnv.DIAMOND_ADDRESS = processAddress(contractsEnv.DIAMOND_ADDRESS);
 
