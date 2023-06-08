@@ -259,7 +259,7 @@ const DashboardLeft = ({
                     {!coinPrices[idx] ? (
                       <Skeleton
                         width="6rem"
-                        height="1.5rem"
+                        height="1.4rem"
                         startColor="#101216"
                         endColor="#2B2F35"
                         borderRadius="6px"

@@ -1,11 +1,11 @@
 import { HStack } from "@chakra-ui/react";
 import React from "react";
-import { useState,useEffect } from "react";
+import { useState, useEffect } from "react";
 import DashboardLeft from "../dashboardLeft";
 import DashboardRight from "../dashboardRight";
 import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
 const MarketDashboard = () => {
-  const [oraclePrices, setOraclePrices]:any = useState([]);
+  const [oraclePrices, setOraclePrices]: any = useState([]);
   useEffect(() => {
     fetchOraclePrices();
   }, []);
