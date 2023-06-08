@@ -160,6 +160,7 @@ const DashboardRight = ({
                   textAlign={"center"}
                 >
                   <Box
+                  <Box
                     width="100%"
                     height="100%"
                     display="flex"
@@ -180,6 +181,7 @@ const DashboardRight = ({
                     ) : (
                       coinPrices[idx]?.price
                     )}
+                  </Box>
                   </Box>
                 </Td>
                 <Td

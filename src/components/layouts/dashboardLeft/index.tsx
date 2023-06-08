@@ -20,6 +20,8 @@ import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { uint256 } from "starknet";
 import { BNtoNum } from "@/Blockchain/utils/utils";
+import useGetInterestRates from "@/Blockchain/hooks/Reads/useGetInterestRates";
+import useGetUnderlyingAsset from "@/Blockchain/hooks/Reads/userGetUnderlyingAsset";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -55,6 +57,10 @@ const DashboardLeft = ({
     }
     return null;
   });
+  const {dataInterestRates}=useGetInterestRates();
+  const {dataUnderlyingAsset}=useGetUnderlyingAsset();
+  console.log(dataUnderlyingAsset,"data underlying assets")
+  // console.log(dataInterestRates,"dataIntrestRates");
 
   // console.log(coinPrices)
 

@@ -48,7 +48,7 @@ import {
 } from "@/store/slices/dropdownsSlice";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
-
+import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 const SupplyModal = ({
   buttonText,
   coin,
@@ -56,6 +56,20 @@ const SupplyModal = ({
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {        depositAmount,
+    setDepositAmount,
+    asset,
+    setAsset,
+    dataDeposit,
+    errorDeposit,
+    resetDeposit,
+    writeAsyncDeposit,
+    isErrorDeposit,
+    isIdleDeposit,
+    isLoadingDeposit,
+    isSuccessDeposit,
+    statusDeposit,
+}=useDeposit();
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
     coin ? coin.name : "BTC"
@@ -109,7 +123,7 @@ const SupplyModal = ({
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue(100);
-      setinputAmount(newValue);
+      setDepositAmount(newValue);
       dispatch(setInputSupplyAmount(newValue));
     } else {
       percentage = Math.round(percentage);
@@ -125,7 +139,7 @@ const SupplyModal = ({
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
   const resetStates = () => {
-    setinputAmount(0);
+    setDepositAmount(0);
     setSliderValue(0);
     setCurrentSelectedCoin(coin ? coin.name : "BTC");
     setTransactionStarted(false);
@@ -133,7 +147,7 @@ const SupplyModal = ({
   };
 
   useEffect(() => {
-    setinputAmount(0);
+    setDepositAmount(0);
     setSliderValue(0);
   }, [currentSelectedCoin]);
 
@@ -324,13 +338,13 @@ const SupplyModal = ({
                   width="100%"
                   color="white"
                   border={`${
-                    inputAmount > walletBalance
+                    depositAmount > walletBalance
                       ? "1px solid #CF222E"
-                      : inputAmount < 0
+                      : depositAmount < 0
                       ? "1px solid #CF222E"
-                      : isNaN(inputAmount)
+                      : isNaN(depositAmount)
                       ? "1px solid #CF222E"
-                      : inputAmount > 0 && inputAmount <= walletBalance
+                      : depositAmount > 0 && depositAmount <= walletBalance
                       ? "1px solid #1A7F37"
                       : "1px solid #2B2F35 "
                   }`}
@@ -344,23 +358,23 @@ const SupplyModal = ({
                     min={0}
                     keepWithinRange={true}
                     onChange={handleChange}
-                    value={inputAmount ? inputAmount : ""}
+                    value={depositAmount ? depositAmount : ""}
                     outline="none"
                     // precision={1}
-                    step={parseFloat(`${inputAmount <= 99999 ? 0.1 : 0}`)}
+                    step={parseFloat(`${depositAmount <= 99999 ? 0.1 : 0}`)}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
                       color={`${
-                        inputAmount > walletBalance
+                        depositAmount > walletBalance
                           ? "#CF222E"
-                          : isNaN(inputAmount)
+                          : isNaN(depositAmount)
                           ? "#CF222E"
-                          : inputAmount < 0
+                          : depositAmount < 0
                           ? "#CF222E"
-                          : inputAmount == 0
+                          : depositAmount == 0
                           ? "white"
                           : "#1A7F37"
                       }`}
@@ -383,7 +397,7 @@ const SupplyModal = ({
                     color="#0969DA"
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
-                      setinputAmount(walletBalance);
+                      setDepositAmount(walletBalance);
                       setSliderValue(100);
                       dispatch(setInputSupplyAmount(walletBalance));
                     }}
@@ -393,9 +407,9 @@ const SupplyModal = ({
                     MAX
                   </Button>
                 </Box>
-                {inputAmount > walletBalance ||
-                inputAmount < 0 ||
-                isNaN(inputAmount) ? (
+                {depositAmount > walletBalance ||
+                depositAmount < 0 ||
+                isNaN(depositAmount) ? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -411,7 +425,7 @@ const SupplyModal = ({
                         <SmallErrorIcon />{" "}
                       </Text>
                       <Text ml="0.3rem">
-                        {inputAmount > walletBalance
+                        {depositAmount > walletBalance
                           ? "Amount exceeds balance"
                           : "Invalid Input"}
                       </Text>
@@ -471,7 +485,7 @@ const SupplyModal = ({
                       var ans = (val / 100) * walletBalance;
                       ans = Math.round(ans * 100) / 100;
                       dispatch(setInputSupplyAmount(ans));
-                      setinputAmount(ans);
+                      setDepositAmount(ans);
                     }}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}
@@ -677,7 +691,7 @@ const SupplyModal = ({
                   </Text>
                 </Text>
               </Card>
-              {inputAmount > 0 && inputAmount <= walletBalance ? (
+              {depositAmount > 0 && depositAmount <= walletBalance ? (
                 buttonId == 1 ? (
                   <SuccessButton successText="Supply success" />
                 ) : buttonId == 2 ? (
