@@ -48,7 +48,10 @@ import {
 } from "@/store/slices/dropdownsSlice";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
-import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
+import { useAccount, useBalance } from "@starknet-react/core";
+import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
+import useTransfer from "@/Blockchain/hooks/Writes/useTransfer";
+
 const SupplyModal = ({
   buttonText,
   coin,
@@ -82,6 +85,20 @@ const SupplyModal = ({
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
+
+  const { address, account, status } = useAccount();
+  console.log("account market", address, status);
+  
+  const { handleTransfer } = useTransfer("ja")
+
+
+
+  // const {dataBalanceOf,
+  //   errorBalanceOf,
+  //   isFetchingBalanceOf,
+  //   refetchBalanceOf,
+  //   statusBalanceOf,} = useBalanceOf("0x5b2a7c089e36c6caf4724d2df5bd7687fcdc9bd76d280ecb1e411410811b54e");
+  // console.log("dataaaaa",dataBalanceOf, errorBalanceOf, isFetchingBalanceOf, statusBalanceOf)
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -150,6 +167,9 @@ const SupplyModal = ({
     setDepositAmount(0);
     setSliderValue(0);
   }, [currentSelectedCoin]);
+
+  // const { } = useBalanceOf();
+  // const { } = useTransfer();
 
   return (
     <div>
@@ -725,6 +745,7 @@ const SupplyModal = ({
                           successText={"Success"}
                         />,
                       ]}
+                      onClick={}
                     >
                       Supply
                     </AnimatedButton>
