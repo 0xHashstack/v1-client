@@ -57,9 +57,9 @@ const DashboardLeft = ({
     }
     return null;
   });
-  const {dataInterestRates}=useGetInterestRates();
-  const {dataUnderlyingAsset}=useGetUnderlyingAsset();
-  console.log(dataUnderlyingAsset,"data underlying assets")
+  const { dataInterestRates } = useGetInterestRates();
+  const { dataUnderlyingAsset } = useGetUnderlyingAsset();
+  console.log(dataUnderlyingAsset, "data underlying assets");
   // console.log(dataInterestRates,"dataIntrestRates");
 
   // console.log(coinPrices)
@@ -103,7 +103,7 @@ const DashboardLeft = ({
     errorBalanceOf,
     statusBalanceOf,
   } = useBalanceOf(
-    "0x03e590241775f3b6b9e0579526eb4103d372b7832521160321eb9a767816199a"
+    "0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7"
   );
   console.log(
     "balance ret",
@@ -238,7 +238,9 @@ const DashboardLeft = ({
                       ) : (
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
                           Wallet Bal.{" "}
-                          {BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))}
+                          {Number(
+                            BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
+                          ).toFixed(5)}
                         </Text>
                       )}
                     </Box>
