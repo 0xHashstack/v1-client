@@ -51,6 +51,7 @@ import ErrorButton from "../uiElements/buttons/ErrorButton";
 import { useAccount, useBalance } from "@starknet-react/core";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import useTransfer from "@/Blockchain/hooks/Writes/useTransfer";
+import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 
 const SupplyModal = ({
   buttonText,
@@ -742,7 +743,7 @@ const SupplyModal = ({
                           successText={"Success"}
                         />,
                       ]}
-                      onClick={}
+                      // onClick={}
                     >
                       Supply
                     </AnimatedButton>
