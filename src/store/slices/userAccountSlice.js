@@ -12,7 +12,7 @@ const initialState = {
   coinSelectedSupplyModal: "BTC",
   collateralCoinSelectedBorrowModal: "BTC",
   borrowCoinSelectedBorrowModal: "BTC",
-  spendBorrowselectedDapp:"",
+  spendBorrowselectedDapp: "",
   walletBalance: 90,
   inputYourBorrowModalRepayAmount: 0,
 
@@ -21,6 +21,14 @@ const initialState = {
   reserves: undefined,
   oracleAndFairPrices: undefined,
   offchainCurrentBlock: undefined,
+
+  // walletBalance: {
+  //   BTC: 0,
+  //   USDT: 0,
+  //   USDC: 0,
+  //   ETH: 0,
+  //   DAI: 0,
+  // },
 };
 
 export const userAccountSlice = createSlice({
@@ -60,8 +68,8 @@ export const userAccountSlice = createSlice({
     setInputBorrowModalBorrowAmount(state, action) {
       state.inputBorrowModalBorrowAmount = action.payload;
     },
-    setSpendBorrowSelectedDapp(state,action){
-      state.spendBorrowselectedDapp=action.payload;
+    setSpendBorrowSelectedDapp(state, action) {
+      state.spendBorrowselectedDapp = action.payload;
     },
     setInputTradeModalCollateralAmount(state, action) {
       state.inputTradeModalCollateralAmount = action.payload;
@@ -81,6 +89,9 @@ export const userAccountSlice = createSlice({
     setInputYourBorrowModalRepayAmount(state, action) {
       state.inputYourBorrowModalRepayAmount = action.payload;
     },
+    // setWalletBalance(state, action) {
+    //   state.walletBalance = action.payload;
+    // },
 
     extraReducers: {
       [HYDRATE]: (state, action) => {
@@ -101,7 +112,7 @@ export const {
   setReserves,
   setOracleAndFairPrices,
   setOffchainCurrentBlock,
-  setSpendBorrowSelectedDapp
+  setSpendBorrowSelectedDapp,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
