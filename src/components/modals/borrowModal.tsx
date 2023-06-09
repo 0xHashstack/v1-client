@@ -47,6 +47,7 @@ import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ArrowUp from "@/assets/icons/arrowup";
+import useLoanRequest from "@/Blockchain/hooks/Writes/useLoanRequest";
 const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [sliderValue, setSliderValue] = useState(0);
@@ -57,12 +58,39 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
 
+  const handleBorrow=async()=>{
+    try{
+      const borrow=await writeAsyncLoanRequest();
+    }catch(err){
+      console.log(err)
+    }
+  }
+
   // const {  market,
   //   setMarket,
   //   amount,
   //   setAmount,
   //   rToken,
   //   setRToken, } = useLoanRequest();
+
+  const {
+    market,
+    setMarket,
+    amount,
+    setAmount,
+    rToken,
+    setRToken,
+    rTokenAmount,
+    setRTokenAmount,
+    dataLoanRequest,
+    errorLoanRequest,
+    resetLoanRequest,
+    writeLoanRequest,
+    writeAsyncLoanRequest,
+    isErrorLoanRequest,
+    isIdleLoanRequest,
+    isLoadingLoanRequest,
+}=useLoanRequest();
 
   const [buttonId, setButtonId] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
@@ -97,14 +125,14 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue(100);
-      setinputCollateralAmount(newValue);
+      setRTokenAmount(newValue);
       dispatch(setInputBorrowModalCollateralAmount(newValue));
     } else {
       percentage = Math.round(percentage);
       if (isNaN(percentage)) {
       } else {
         setSliderValue(percentage);
-        setinputCollateralAmount(newValue);
+        setRTokenAmount(newValue);
         dispatch(setInputBorrowModalCollateralAmount(newValue));
       }
       // dispatch((newValue));
@@ -115,14 +143,14 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setsliderValue2(100);
-      setinputBorrowAmount(newValue);
+      setAmount(newValue);
       dispatch(setInputBorrowModalCollateralAmount(newValue));
     } else {
       percentage = Math.round(percentage);
       if (isNaN(percentage)) {
       } else {
         setsliderValue2(percentage);
-        setinputBorrowAmount(newValue);
+        setAmount(newValue);
         dispatch(setInputBorrowModalCollateralAmount(newValue));
       }
       // dispatch((newValue));
@@ -143,20 +171,22 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   );
   const resetStates = () => {
     setCurrentCollateralCoin(coin?.name ? coin?.name:"BTC");
+    setRToken(coin?.name ?coin?.name:"BTC");
     setCurrentBorrowCoin(coin?.name ?coin?.name:"BTC");
-    setinputBorrowAmount(0);
-    setinputCollateralAmount(0);
+    setMarket(coin?.name ?coin?.name:"BTC");
+    setAmount(0);
+    setRTokenAmount(0);
     setSliderValue(0);
     setsliderValue2(0);
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
   };
   useEffect(() => {
-    setinputCollateralAmount(0);
+    setRTokenAmount(0);
     setSliderValue(0);
   }, [currentCollateralCoin]);
   useEffect(() => {
-    setinputBorrowAmount(0);
+    setAmount(0);
     setsliderValue2(0);
   }, [currentBorrowCoin]);
 
@@ -281,6 +311,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                             pr="2"
                             onClick={() => {
                               setCurrentCollateralCoin(coin);
+                              setRToken(coin);
                             }}
                           >
                             {coin === currentCollateralCoin && (
@@ -340,21 +371,21 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                 <Box
                   width="100%"
                   color={`${
-                    inputCollateralAmount > walletBalance
+                    rTokenAmount > walletBalance
                       ? "#CF222E"
-                      : inputCollateralAmount < 0
+                      : rTokenAmount < 0
                       ? "#CF222E"
-                      : inputCollateralAmount == 0
+                      : rTokenAmount == 0
                       ? "white"
                       : "#1A7F37"
                   }`}
                   border={`${
-                    inputCollateralAmount > walletBalance
+                    rTokenAmount > walletBalance
                       ? "1px solid #CF222E"
-                      : inputCollateralAmount < 0
+                      : rTokenAmount < 0
                       ? "1px solid #CF222E"
-                      : inputCollateralAmount > 0 &&
-                        inputCollateralAmount <= walletBalance
+                      : rTokenAmount > 0 &&
+                        rTokenAmount <= walletBalance
                       ? "1px solid #1A7F37"
                       : "1px solid #2B2F35 "
                   }`}
@@ -367,11 +398,11 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     min={0}
                     keepWithinRange={true}
                     onChange={handleChange}
-                    value={inputCollateralAmount ? inputCollateralAmount : ""}
+                    value={rTokenAmount ? rTokenAmount : ""}
                     // outline="none"
                     // precision={1}
                     step={parseFloat(
-                      `${inputCollateralAmount <= 99999 ? 0.1 : 0}`
+                      `${rTokenAmount <= 99999 ? 0.1 : 0}`
                     )}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}
@@ -397,7 +428,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     color="#0969DA"
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
-                      setinputCollateralAmount(walletBalance);
+                      setRTokenAmount(walletBalance);
                       setSliderValue(100);
                       dispatch(
                         setInputBorrowModalCollateralAmount(walletBalance)
@@ -409,8 +440,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     MAX
                   </Button>
                 </Box>
-                {inputCollateralAmount > walletBalance ||
-                inputCollateralAmount < 0 ? (
+                {rTokenAmount > walletBalance ||
+                rTokenAmount < 0 ? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -426,7 +457,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                         <SmallErrorIcon />{" "}
                       </Text>
                       <Text ml="0.3rem">
-                        {inputCollateralAmount > walletBalance
+                        {rTokenAmount > walletBalance
                           ? "Amount exceeds balance"
                           : "Invalid Input"}
                       </Text>
@@ -469,7 +500,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       var ans = (val / 100) * walletBalance;
                       ans = Math.round(ans * 100) / 100;
                       dispatch(setInputBorrowModalCollateralAmount(ans));
-                      setinputCollateralAmount(ans);
+                      setRTokenAmount(ans);
                     }}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}
@@ -594,6 +625,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                             pr="2"
                             onClick={() => {
                               setCurrentBorrowCoin(coin);
+                              setMarket(coin);
                             }}
                           >
                             {coin === currentBorrowCoin && (
@@ -652,14 +684,14 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                   width="100%"
                   color="white"
                   border={`${
-                    inputBorrowAmount > walletBalance
+                    amount > walletBalance
                       ? "1px solid #CF222E"
-                      : inputBorrowAmount < 0
+                      : amount< 0
                       ? "1px solid #CF222E"
-                      : isNaN(inputBorrowAmount)
+                      : isNaN(amount)
                       ? "1px solid #CF222E"
-                      : inputBorrowAmount > 0 &&
-                        inputBorrowAmount <= walletBalance
+                      : amount > 0 &&
+                        amount <= walletBalance
                       ? "1px solid #1A7F37"
                       : "1px solid #2B2F35 "
                   }`}
@@ -672,21 +704,21 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     min={0}
                     keepWithinRange={true}
                     onChange={handleBorrowChange}
-                    value={inputBorrowAmount ? inputBorrowAmount : ""}
-                    step={parseFloat(`${inputBorrowAmount <= 99999 ? 0.1 : 0}`)}
+                    value={amount ? amount : ""}
+                    step={parseFloat(`${amount<= 99999 ? 0.1 : 0}`)}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
                       color={`${
-                        inputBorrowAmount > walletBalance
+                        amount > walletBalance
                           ? "#CF222E"
-                          : isNaN(inputBorrowAmount)
+                          : isNaN(amount)
                           ? "#CF222E"
-                          : inputBorrowAmount < 0
+                          : amount < 0
                           ? "#CF222E"
-                          : inputBorrowAmount == 0
+                          : amount == 0
                           ? "white"
                           : "#1A7F37"
                       }`}
@@ -709,7 +741,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     color="#0969DA"
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
-                      setinputBorrowAmount(walletBalance);
+                      setAmount(walletBalance);
                       setsliderValue2(100);
                       dispatch(setInputBorrowModalBorrowAmount(walletBalance));
                     }}
@@ -719,7 +751,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     MAX
                   </Button>
                 </Box>
-                {inputBorrowAmount > walletBalance || inputBorrowAmount < 0 ? (
+                {amount > walletBalance || amount < 0 ? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -735,7 +767,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                         <SmallErrorIcon />{" "}
                       </Text>
                       <Text ml="0.3rem">
-                        {inputBorrowAmount > walletBalance
+                        {amount > walletBalance
                           ? "Amount exceeds balance"
                           : "Invalid Input"}
                       </Text>
@@ -778,7 +810,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       var ans = (val / 100) * walletBalance;
                       ans = Math.round(ans * 100) / 100;
                       dispatch(setInputBorrowModalBorrowAmount(ans));
-                      setinputBorrowAmount(ans);
+                      setAmount(ans);
                     }}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}
@@ -989,10 +1021,10 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
               </Text>
             </Card>
 
-            {inputCollateralAmount > 0 &&
-            inputBorrowAmount > 0 &&
-            inputCollateralAmount <= walletBalance &&
-            inputBorrowAmount <= walletBalance ? (
+            {rTokenAmount > 0 &&
+            amount > 0 &&
+            rTokenAmount <= walletBalance &&
+            amount <= walletBalance ? (
               buttonId == 1 ? (
                 <SuccessButton successText="Borrow successful." />
               ) : buttonId == 2 ? (
