@@ -19,6 +19,7 @@ import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 import SupplyEquivalentModal from "@/components/modals/SupplyEquivalentModal";
 import TransferDepositModal from "@/components/modals/TransferDepositModal";
 import ReferFreindsModal from "@/components/modals/ReferFreindsModal";
+import { get_user_loans } from "@/Blockchain/scripts/getUserLoans";
 // import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -42,6 +43,13 @@ export default function WaitList() {
       }
     }
   }, []);
+
+  const { address: accountm } = useAccount();
+  useEffect(() => {
+    if (accountm) 
+      get_user_loans(accountm);
+  }, [accountm]);
+
   return (
     <PageCard justifyContent="center">
       <Text color="#D3AC41" fontSize="48px" fontWeight="600" fontStyle="normal">

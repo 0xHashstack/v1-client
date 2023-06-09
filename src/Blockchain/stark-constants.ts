@@ -1,4 +1,4 @@
-import * as DeployDetailsProd from "../../contract_addresses.json";
+import DeployDetailsProd from "../../contract_addresses.json";
 import ERC20Abi from "./abis/erc20_abi.json";
 import { Provider, number } from "starknet";
 import {
