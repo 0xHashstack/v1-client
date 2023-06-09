@@ -2,7 +2,7 @@ import { BigNumber } from "bignumber.js";
 import { number } from "starknet";
 import { utils } from "ethers";
 import { Logger } from "ethers/lib/utils";
-import { getTokenFromAddress, getTokenFromName } from "../stark-constants";
+import { getTokenFromAddress } from "../stark-constants";
 
 export const fixedSpecial = (num: number, n: number) => {
   var str = num.toPrecision();
