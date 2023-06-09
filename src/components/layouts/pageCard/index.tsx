@@ -99,7 +99,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           >
             {children}
           </Stack>
-          {/* <Footer />   */}
+          <Footer block={83207} />
         </>
       )}
     </>

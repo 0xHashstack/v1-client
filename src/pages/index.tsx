@@ -89,7 +89,7 @@ export default function Home() {
   // console.log(account ,"index page")
   // console.log("Index reload check",account);
   useEffect(() => {
-    alert(status)
+    // alert(status)
     // const storedAccount = localStorage.getItem("account");
     const hasVisited = localStorage.getItem("visited");
 
@@ -106,7 +106,6 @@ export default function Home() {
       dispatch(setAccount(account));
 
       if (!isWhiteListed) {
-        
         router.replace(waitlistHref);
       } else {
         router.replace(marketHref2);

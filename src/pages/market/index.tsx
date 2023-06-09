@@ -34,12 +34,13 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Market() {
   const dispatch = useDispatch();
   const router = useRouter();
-  const [prices, setPrices] = useState([])
+  const [prices, setPrices] = useState([]);
   const reserves = useSelector(selectReserves);
   const oracleAndFairPrices = useSelector(selectOracleAndFairPrices);
   const offchainCurrentBlock = useSelector(selectOffchainCurrentBlock);
   const [parsedAccount, setParsedAccount] = useState<any>();
-  const { available, disconnect, connect, connectors, refresh } =useConnectors();
+  const { available, disconnect, connect, connectors, refresh } =
+    useConnectors();
 
   const [render, setRender] = useState(true);
   // console.log(account.address)
@@ -61,7 +62,7 @@ export default function Market() {
       <NavButtons width={95} marginBottom={"1.125rem"} />
       <MarketDashboard />
       {/* <SupplyModal /> */}
-      <Box
+      {/* <Box
         paddingY="1rem"
         // height="2rem"
         // bgColor={"blue"}
@@ -71,7 +72,7 @@ export default function Market() {
         alignItems="center"
       >
         <LatestSyncedBlock width="16rem" height="100%" block={83207} />
-      </Box>
+      </Box> */}
     </PageCard>
   );
 }
