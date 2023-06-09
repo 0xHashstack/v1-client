@@ -58,13 +58,13 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
 
-  const handleBorrow=async()=>{
-    try{
-      const borrow=await writeAsyncLoanRequest();
-    }catch(err){
-      console.log(err)
+  const handleBorrow = async () => {
+    try {
+      const borrow = await writeAsyncLoanRequest();
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
   // const {  market,
   //   setMarket,
@@ -90,7 +90,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     isErrorLoanRequest,
     isIdleLoanRequest,
     isLoadingLoanRequest,
-}=useLoanRequest();
+  } = useLoanRequest();
 
   const [buttonId, setButtonId] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
@@ -100,16 +100,31 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
       case "BTC":
         return <BTCLogo height={"16px"} width={"16px"} />;
         break;
+      case "rBTC":
+        return <BTCLogo height={"16px"} width={"16px"} />;
+        break;
       case "USDC":
+        return <USDCLogo height={"16px"} width={"16px"} />;
+        break;
+      case "rUSDC":
         return <USDCLogo height={"16px"} width={"16px"} />;
         break;
       case "USDT":
         return <USDTLogo height={"16px"} width={"16px"} />;
         break;
+      case "rUSDT":
+        return <USDTLogo height={"16px"} width={"16px"} />;
+        break;
       case "ETH":
         return <ETHLogo height={"16px"} width={"16px"} />;
         break;
+      case "rETH":
+        return <ETHLogo height={"16px"} width={"16px"} />;
+        break;
       case "DAI":
+        return <DAILogo height={"16px"} width={"16px"} />;
+        break;
+      case "rDAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
       default:
@@ -170,10 +185,10 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     (key) => modalDropdowns[key] === true
   );
   const resetStates = () => {
-    setCurrentCollateralCoin(coin?.name ? coin?.name:"BTC");
-    setRToken(coin?.name ?coin?.name:"BTC");
-    setCurrentBorrowCoin(coin?.name ?coin?.name:"BTC");
-    setMarket(coin?.name ?coin?.name:"BTC");
+    setCurrentCollateralCoin(coin?.name ? coin?.name : "BTC");
+    setRToken(coin?.name ? coin?.name : "BTC");
+    setCurrentBorrowCoin(coin?.name ? coin?.name : "BTC");
+    setMarket(coin?.name ? coin?.name : "BTC");
     setAmount(0);
     setRTokenAmount(0);
     setSliderValue(0);
@@ -190,12 +205,10 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     setsliderValue2(0);
   }, [currentBorrowCoin]);
 
+  const rTokens = ["rBTC", "rUSDT"];
   return (
     <Box>
-      <Button
-        {...restProps}
-        onClick={onOpen}
-      >
+      <Button {...restProps} onClick={onOpen}>
         {buttonText}
       </Button>
       {/* <Button onClick={onOpen}>Open Modal</Button> */}
@@ -270,11 +283,13 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                   cursor="pointer"
                   borderRadius="md"
                   className="navbar"
-                  onClick={() =>{
-                    if(transactionStarted){
+                  onClick={() => {
+                    if (transactionStarted) {
                       return;
-                    }else{
-                      handleDropdownClick("borrowModalCollateralMarketDropdown")
+                    } else {
+                      handleDropdownClick(
+                        "borrowModalCollateralMarketDropdown"
+                      );
                     }
                   }}
                   as="button"
@@ -299,6 +314,61 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
+                      {rTokens.map((coin: string, index: number) => {
+                        return (
+                          <Box
+                            key={index}
+                            as="button"
+                            w="full"
+                            display="flex"
+                            alignItems="center"
+                            gap="1"
+                            pr="2"
+                            onClick={() => {
+                              setCurrentCollateralCoin(coin);
+                              setRToken(coin);
+                            }}
+                          >
+                            {coin === currentCollateralCoin && (
+                              <Box
+                                w="3px"
+                                h="28px"
+                                bg="#0C6AD9"
+                                borderRightRadius="md"
+                              ></Box>
+                            )}
+                            <Box
+                              w="full"
+                              display="flex"
+                              py="5px"
+                              px={`${
+                                coin === currentCollateralCoin ? "1" : "5"
+                              }`}
+                              gap="1"
+                              bg={`${
+                                coin === currentCollateralCoin
+                                  ? "#0C6AD9"
+                                  : "inherit"
+                              }`}
+                              borderRadius="md"
+                            >
+                              <Box p="1">{getCoin(coin)}</Box>
+                              <Text>{coin}</Text>
+                            </Box>
+                          </Box>
+                        );
+                      })}
+                      <hr
+                        style={{
+                          height: "1px",
+                          borderWidth: "0",
+                          backgroundColor: "#2B2F35",
+                          width: "96%",
+                          marginTop: "4px 0",
+                          // marginRight: "5px",
+                          marginLeft: "5px",
+                        }}
+                      />
                       {coins.map((coin: string, index: number) => {
                         return (
                           <Box
@@ -384,8 +454,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       ? "1px solid #CF222E"
                       : rTokenAmount < 0
                       ? "1px solid #CF222E"
-                      : rTokenAmount > 0 &&
-                        rTokenAmount <= walletBalance
+                      : rTokenAmount > 0 && rTokenAmount <= walletBalance
                       ? "1px solid #1A7F37"
                       : "1px solid #2B2F35 "
                   }`}
@@ -401,9 +470,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     value={rTokenAmount ? rTokenAmount : ""}
                     // outline="none"
                     // precision={1}
-                    step={parseFloat(
-                      `${rTokenAmount <= 99999 ? 0.1 : 0}`
-                    )}
+                    step={parseFloat(`${rTokenAmount <= 99999 ? 0.1 : 0}`)}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}
                   >
@@ -440,8 +507,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     MAX
                   </Button>
                 </Box>
-                {rTokenAmount > walletBalance ||
-                rTokenAmount < 0 ? (
+                {rTokenAmount > walletBalance || rTokenAmount < 0 ? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -584,11 +650,11 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                   borderRadius="md"
                   className="navbar"
                   cursor="pointer"
-                  onClick={() =>{
-                    if(transactionStarted){
+                  onClick={() => {
+                    if (transactionStarted) {
                       return;
-                    }else{
-                      handleDropdownClick("borrowModalBorrowMarketDropdown")
+                    } else {
+                      handleDropdownClick("borrowModalBorrowMarketDropdown");
                     }
                   }}
                   as="button"
@@ -686,12 +752,11 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                   border={`${
                     amount > walletBalance
                       ? "1px solid #CF222E"
-                      : amount< 0
+                      : amount < 0
                       ? "1px solid #CF222E"
                       : isNaN(amount)
                       ? "1px solid #CF222E"
-                      : amount > 0 &&
-                        amount <= walletBalance
+                      : amount > 0 && amount <= walletBalance
                       ? "1px solid #1A7F37"
                       : "1px solid #2B2F35 "
                   }`}
@@ -705,7 +770,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     keepWithinRange={true}
                     onChange={handleBorrowChange}
                     value={amount ? amount : ""}
-                    step={parseFloat(`${amount<= 99999 ? 0.1 : 0}`)}
+                    step={parseFloat(`${amount <= 99999 ? 0.1 : 0}`)}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}
                   >
@@ -1030,32 +1095,34 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
               ) : buttonId == 2 ? (
                 <ErrorButton errorText="Copy error!" />
               ) : (
-                <Box onClick={()=>{
-                  setTransactionStarted(true);
-                }}>
-                <AnimatedButton
-                  bgColor="#101216"
-                  // bgColor="red"
-                  // p={0}
-                  color="#8B949E"
-                  size="sm"
-                  width="100%"
-                  mt="1.5rem"
-                  mb="1.5rem"
-                  border="1px solid #8B949E"
-                  labelArray={[
-                    "Collateral received",
-                    "Processing the borrow request.",
-                    // <ErrorButton errorText="Transaction failed" />,
-                    // <ErrorButton errorText="Copy error!" />,
-                    <SuccessButton
-                      key={"successButton"}
-                      successText={"Borrow successful."}
-                    />,
-                  ]}
+                <Box
+                  onClick={() => {
+                    setTransactionStarted(true);
+                  }}
                 >
-                  Borrow
-                </AnimatedButton>
+                  <AnimatedButton
+                    bgColor="#101216"
+                    // bgColor="red"
+                    // p={0}
+                    color="#8B949E"
+                    size="sm"
+                    width="100%"
+                    mt="1.5rem"
+                    mb="1.5rem"
+                    border="1px solid #8B949E"
+                    labelArray={[
+                      "Collateral received",
+                      "Processing the borrow request.",
+                      // <ErrorButton errorText="Transaction failed" />,
+                      // <ErrorButton errorText="Copy error!" />,
+                      <SuccessButton
+                        key={"successButton"}
+                        successText={"Borrow successful."}
+                      />,
+                    ]}
+                  >
+                    Borrow
+                  </AnimatedButton>
                 </Box>
               )
             ) : (
