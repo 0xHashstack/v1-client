@@ -1,9 +1,9 @@
-import { Contract, Provider, number, shortString, uint256 } from "starknet";
-import { contractsEnv, diamondAddress, getProvider, getTokenFromAddress } from "../stark-constants";
+import { Contract, number, uint256 } from "starknet";
+import { diamondAddress, getProvider, getTokenFromAddress } from "../stark-constants";
 import routerAbi from "@/Blockchain/abis/router_abi.json";
-import { get } from "http";
 import { BNtoNum } from "../utils/utils";
 import { getDTokenFromAddress, getRTokenFromAddress } from "../utils/addressServices";
+import { ILoan } from "../interfaces/interfaces";
 
 function parseLoansData(
   loansData: any,
