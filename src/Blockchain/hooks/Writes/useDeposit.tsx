@@ -46,11 +46,12 @@ const useDeposit  = () => {
                 contractAddress: diamondAddress,
                 entrypoint: "deposit",
                 calldata: [
-                    tokenAddressMap[asset] || "",
+                    tokenAddressMap[asset],
                     etherToWeiBN(
                         depositAmount as number,
                         tokenAddressMap[asset] || ""
                     ).toString(),
+                    account,
                 ],
             }
         ],
