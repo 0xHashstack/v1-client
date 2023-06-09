@@ -106,7 +106,6 @@ export default function Home() {
       dispatch(setAccount(account));
 
       if (!isWhiteListed) {
-        
         router.replace(waitlistHref);
       } else {
         router.replace(marketHref2);
@@ -114,7 +113,7 @@ export default function Home() {
     }
     console.log("account home", address, status);
   }, [status]);
-
+  console.log("available", available);
   return (
     <Box
       display="flex"
@@ -241,7 +240,7 @@ export default function Home() {
               cursor="pointer"
               onClick={() => {
                 connect(connectors[1]);
-                localStorage.setItem("lastUsedConnector", "argentx");
+                localStorage.setItem("lastUsedConnector", "argentX");
               }}
             >
               <Text ml="1rem" color="white">

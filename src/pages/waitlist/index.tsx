@@ -30,18 +30,18 @@ export default function WaitList() {
     useConnectors();
 
   const { account: _account } = useAccount();
-  useEffect(() => {
-    if (!_account) {
-      const walletConnected = localStorage.getItem("lastUsedConnector");
-      if (walletConnected == "braavos") {
-        disconnect();
-        connect(connectors[0]);
-      } else if (walletConnected == "argentx") {
-        disconnect();
-        connect(connectors[0]);
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!_account) {
+  //     const walletConnected = localStorage.getItem("lastUsedConnector");
+  //     if (walletConnected == "braavos") {
+  //       disconnect();
+  //       connect(connectors[0]);
+  //     } else if (walletConnected == "argentx") {
+  //       disconnect();
+  //       connect(connectors[0]);
+  //     }
+  //   }
+  // }, []);
   return (
     <PageCard justifyContent="center">
       <Text color="#D3AC41" fontSize="48px" fontWeight="600" fontStyle="normal">

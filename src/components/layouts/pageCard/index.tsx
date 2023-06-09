@@ -12,6 +12,7 @@ import {
 import { useContract } from "@starknet-react/core";
 import { setAccount } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
+import Footer from "../footer";
 interface Props extends StackProps {
   children: ReactNode;
 }
@@ -69,9 +70,9 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       if (walletConnected == "braavos") {
         disconnect();
         connect(connectors[0]);
-      } else if (walletConnected == "argentx") {
+      } else if (walletConnected == "argentX") {
         disconnect();
-        connect(connectors[0]);
+        connect(connectors[1]);
       }
     }
   }, []);
@@ -98,6 +99,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           >
             {children}
           </Stack>
+          <Footer block={83207} />
         </>
       )}
     </>
