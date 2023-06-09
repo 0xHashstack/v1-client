@@ -18,6 +18,7 @@ import {
   Heading,
   Card,
   ModalHeader,
+  Checkbox,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -48,6 +49,8 @@ import ErrorButton from "../uiElements/buttons/ErrorButton";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ArrowUp from "@/assets/icons/arrowup";
 import useLoanRequest from "@/Blockchain/hooks/Writes/useLoanRequest";
+import WarningIcon from "@/assets/icons/coins/warningIcon";
+import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [sliderValue, setSliderValue] = useState(0);
@@ -58,10 +61,10 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
 
-  const handleBorrow=async()=>{
-    try{
-      const borrow=await writeAsyncLoanRequest();
-    }catch(err){
+  const handleBorrow = async () => {
+    try {
+      const borrow = await writeAsyncLoanRequest();
+    } catch (err) {
       console.log(err)
     }
   }
@@ -90,7 +93,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     isErrorLoanRequest,
     isIdleLoanRequest,
     isLoadingLoanRequest,
-}=useLoanRequest();
+  } = useLoanRequest();
 
   const [buttonId, setButtonId] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
@@ -170,10 +173,10 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     (key) => modalDropdowns[key] === true
   );
   const resetStates = () => {
-    setCurrentCollateralCoin(coin?.name ? coin?.name:"BTC");
-    setRToken(coin?.name ?coin?.name:"BTC");
-    setCurrentBorrowCoin(coin?.name ?coin?.name:"BTC");
-    setMarket(coin?.name ?coin?.name:"BTC");
+    setCurrentCollateralCoin(coin?.name ? coin?.name : "BTC");
+    setRToken(coin?.name ? coin?.name : "BTC");
+    setCurrentBorrowCoin(coin?.name ? coin?.name : "BTC");
+    setMarket(coin?.name ? coin?.name : "BTC");
     setAmount(0);
     setRTokenAmount(0);
     setSliderValue(0);
@@ -270,10 +273,10 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                   cursor="pointer"
                   borderRadius="md"
                   className="navbar"
-                  onClick={() =>{
-                    if(transactionStarted){
+                  onClick={() => {
+                    if (transactionStarted) {
                       return;
-                    }else{
+                    } else {
                       handleDropdownClick("borrowModalCollateralMarketDropdown")
                     }
                   }}
@@ -326,15 +329,13 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                               w="full"
                               display="flex"
                               py="5px"
-                              px={`${
-                                coin === currentCollateralCoin ? "1" : "5"
-                              }`}
+                              px={`${coin === currentCollateralCoin ? "1" : "5"
+                                }`}
                               gap="1"
-                              bg={`${
-                                coin === currentCollateralCoin
+                              bg={`${coin === currentCollateralCoin
                                   ? "#0C6AD9"
                                   : "inherit"
-                              }`}
+                                }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -370,25 +371,23 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                 </Box>
                 <Box
                   width="100%"
-                  color={`${
-                    rTokenAmount > walletBalance
+                  color={`${rTokenAmount > walletBalance
                       ? "#CF222E"
                       : rTokenAmount < 0
-                      ? "#CF222E"
-                      : rTokenAmount == 0
-                      ? "white"
-                      : "#1A7F37"
-                  }`}
-                  border={`${
-                    rTokenAmount > walletBalance
+                        ? "#CF222E"
+                        : rTokenAmount == 0
+                          ? "white"
+                          : "#1A7F37"
+                    }`}
+                  border={`${rTokenAmount > walletBalance
                       ? "1px solid #CF222E"
                       : rTokenAmount < 0
-                      ? "1px solid #CF222E"
-                      : rTokenAmount > 0 &&
-                        rTokenAmount <= walletBalance
-                      ? "1px solid #1A7F37"
-                      : "1px solid #2B2F35 "
-                  }`}
+                        ? "1px solid #CF222E"
+                        : rTokenAmount > 0 &&
+                          rTokenAmount <= walletBalance
+                          ? "1px solid #1A7F37"
+                          : "1px solid #2B2F35 "
+                    }`}
                   borderRadius="6px"
                   display="flex"
                   justifyContent="space-between"
@@ -441,7 +440,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                   </Button>
                 </Box>
                 {rTokenAmount > walletBalance ||
-                rTokenAmount < 0 ? (
+                  rTokenAmount < 0 ? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -538,6 +537,71 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     </SliderTrack>
                   </Slider>
                 </Box>
+                <Box
+                  // display="flex"
+                  // justifyContent="left"
+                  w="100%"
+                  pb="4"
+                  height="64px"
+                  display="flex"
+                  alignItems="center"
+                  mt="1rem"
+                >
+                  <Box
+                    display="flex"
+                    bg="#0C425C"
+                    color="white"
+                    fontSize="12px"
+                    p="4"
+                    border="1px solid rgba(84, 174, 255, 0.4)"
+                    fontStyle="normal"
+                    fontWeight="400"
+                    lineHeight="18px"
+
+                    borderRadius="6px"
+                  // textAlign="center"
+                  >
+                    <Box pr="3" mt="0.5" cursor="pointer">
+                      <BlueInfoIcon />
+                    </Box>
+                    You have selected native token as collateral which will
+                    be converted to rtokens 1rBTC = XXBTC
+                    {/* <Box
+                                py="1"
+                                pl="4"
+                                cursor="pointer"
+                                // onClick={handleClick}
+                              >
+                                <TableClose />
+                              </Box> */}
+                  </Box>
+                </Box>
+                <Box display="flex" gap="2">
+                <Checkbox
+                  size="md"
+                  colorScheme="customBlue"
+                  defaultChecked
+                  mb="auto"
+                  mt="0.5rem"
+                  borderColor="#2B2F35"
+                  isDisabled={transactionStarted == true}
+                  _disabled={{
+                    cursor: "pointer",
+                    iconColor: "blue.400",
+                    bg: "blue",
+                  }}
+                />
+                <Text
+                  fontSize="12px"
+                  fontWeight="400"
+                  color="#6E7681"
+                  mt="0.3rem"
+                  lineHeight="20px"
+                >
+                  Ticking would stake the received rTokens. unchecking
+                  woudn&apos;t stake rTokens
+                </Text>
+              </Box>
               </Box>
             </Box>
 
@@ -584,10 +648,10 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                   borderRadius="md"
                   className="navbar"
                   cursor="pointer"
-                  onClick={() =>{
-                    if(transactionStarted){
+                  onClick={() => {
+                    if (transactionStarted) {
                       return;
-                    }else{
+                    } else {
                       handleDropdownClick("borrowModalBorrowMarketDropdown")
                     }
                   }}
@@ -642,11 +706,10 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                               py="5px"
                               px={`${coin === currentBorrowCoin ? "1" : "5"}`}
                               gap="1"
-                              bg={`${
-                                coin === currentBorrowCoin
+                              bg={`${coin === currentBorrowCoin
                                   ? "#0C6AD9"
                                   : "inherit"
-                              }`}
+                                }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -683,18 +746,17 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                 <Box
                   width="100%"
                   color="white"
-                  border={`${
-                    amount > walletBalance
+                  border={`${amount > walletBalance
                       ? "1px solid #CF222E"
-                      : amount< 0
-                      ? "1px solid #CF222E"
-                      : isNaN(amount)
-                      ? "1px solid #CF222E"
-                      : amount > 0 &&
-                        amount <= walletBalance
-                      ? "1px solid #1A7F37"
-                      : "1px solid #2B2F35 "
-                  }`}
+                      : amount < 0
+                        ? "1px solid #CF222E"
+                        : isNaN(amount)
+                          ? "1px solid #CF222E"
+                          : amount > 0 &&
+                            amount <= walletBalance
+                            ? "1px solid #1A7F37"
+                            : "1px solid #2B2F35 "
+                    }`}
                   borderRadius="6px"
                   display="flex"
                   justifyContent="space-between"
@@ -705,23 +767,22 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     keepWithinRange={true}
                     onChange={handleBorrowChange}
                     value={amount ? amount : ""}
-                    step={parseFloat(`${amount<= 99999 ? 0.1 : 0}`)}
+                    step={parseFloat(`${amount <= 99999 ? 0.1 : 0}`)}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
-                      color={`${
-                        amount > walletBalance
+                      color={`${amount > walletBalance
                           ? "#CF222E"
                           : isNaN(amount)
-                          ? "#CF222E"
-                          : amount < 0
-                          ? "#CF222E"
-                          : amount == 0
-                          ? "white"
-                          : "#1A7F37"
-                      }`}
+                            ? "#CF222E"
+                            : amount < 0
+                              ? "#CF222E"
+                              : amount == 0
+                                ? "white"
+                                : "#1A7F37"
+                        }`}
                       border="0px"
                       _placeholder={{
                         color: "#393D4F",
@@ -1022,40 +1083,41 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
             </Card>
 
             {rTokenAmount > 0 &&
-            amount > 0 &&
-            rTokenAmount <= walletBalance &&
-            amount <= walletBalance ? (
+              amount > 0 &&
+              rTokenAmount <= walletBalance &&
+              amount <= walletBalance ? (
               buttonId == 1 ? (
                 <SuccessButton successText="Borrow successful." />
               ) : buttonId == 2 ? (
                 <ErrorButton errorText="Copy error!" />
               ) : (
-                <Box onClick={()=>{
+                <Box onClick={() => {
+                  handleBorrow();
                   setTransactionStarted(true);
                 }}>
-                <AnimatedButton
-                  bgColor="#101216"
-                  // bgColor="red"
-                  // p={0}
-                  color="#8B949E"
-                  size="sm"
-                  width="100%"
-                  mt="1.5rem"
-                  mb="1.5rem"
-                  border="1px solid #8B949E"
-                  labelArray={[
-                    "Collateral received",
-                    "Processing the borrow request.",
-                    // <ErrorButton errorText="Transaction failed" />,
-                    // <ErrorButton errorText="Copy error!" />,
-                    <SuccessButton
-                      key={"successButton"}
-                      successText={"Borrow successful."}
-                    />,
-                  ]}
-                >
-                  Borrow
-                </AnimatedButton>
+                  <AnimatedButton
+                    bgColor="#101216"
+                    // bgColor="red"
+                    // p={0}
+                    color="#8B949E"
+                    size="sm"
+                    width="100%"
+                    mt="1.5rem"
+                    mb="1.5rem"
+                    border="1px solid #8B949E"
+                    labelArray={[
+                      "Collateral received",
+                      "Processing the borrow request.",
+                      // <ErrorButton errorText="Transaction failed" />,
+                      // <ErrorButton errorText="Copy error!" />,
+                      <SuccessButton
+                        key={"successButton"}
+                        successText={"Borrow successful."}
+                      />,
+                    ]}
+                  >
+                    Borrow
+                  </AnimatedButton>
                 </Box>
               )
             ) : (
