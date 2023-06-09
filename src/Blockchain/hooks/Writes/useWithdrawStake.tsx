@@ -3,7 +3,7 @@ import { useAccount, useContractWrite } from '@starknet-react/core';
 import React, { useState } from 'react'
 
 const useWithdrawStake = () => {
-    const [rToken, setRToken] = useState("")
+    const [unstakeRToken, setUnstakeRToken] = useState("")
     const [rTokenToWithdraw, setRTokenToWithdraw] = useState(0)
     const { address: owner } = useAccount();
 
@@ -26,7 +26,7 @@ const useWithdrawStake = () => {
             contractAddress: diamondAddress,
             entrypoint: "withdraw_stake",
             calldata: [
-                rToken,
+                unstakeRToken,
                 rTokenToWithdraw,
                 reciever,
             ]
@@ -34,13 +34,12 @@ const useWithdrawStake = () => {
     })
 
     return {
-        rToken,
-        setRToken,
+        unstakeRToken,
+        setUnstakeRToken,
         rTokenToWithdraw,
         setRTokenToWithdraw,
         reciever,
         setReciever, 
-
         dataWithdrawStake,
         errorWithdrawStake,
         resetWithdrawStake,

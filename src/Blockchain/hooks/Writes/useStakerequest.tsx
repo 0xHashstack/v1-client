@@ -41,7 +41,6 @@ const useStakeRequest = () => {
         setRTokenAmount,
         reciever,
         setReciever,
-
         dataStakeRequest,
         errorStakeRequest,
         resetStakeRequest,

@@ -50,15 +50,12 @@ import DaiToEth from "@/assets/icons/pools/daiToEth";
 import BtcToEth from "@/assets/icons/pools/btcToEth";
 import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
-
+import useStakeRequest from "@/Blockchain/hooks/Writes/useStakerequest";
+import useWithdrawStake from "@/Blockchain/hooks/Writes/useWithdrawStake";
 import { selectWalletBalance } from "@/store/slices/userAccountSlice";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
-import SupplyModal from "./SupplyModal";
-import TableInfoIcon from "../layouts/table/tableIcons/infoIcon";
-import Link from "next/link";
-import TableClose from "../layouts/table/tableIcons/close";
 import WarningIcon from "@/assets/icons/coins/warningIcon";
 import ArrowUp from "@/assets/icons/arrowup";
 const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
@@ -72,6 +69,41 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const [isSupplyTap, setIsSupplyTap] = useState(false);
   const [transactionStarted, setTransactionStarted] = useState(false)
   const [unstakeTransactionStarted, setUnstakeTransactionStarted] = useState(false)
+
+  const {
+    rToken,
+    setRToken,
+    rTokenAmount,
+    setRTokenAmount,
+    dataStakeRequest,
+    errorStakeRequest,
+    resetStakeRequest,
+    writeStakeRequest,
+    writeAsyncStakeRequest,
+    isErrorStakeRequest,
+    isIdleStakeRequest,
+    isLoadingStakeRequest,
+    isSuccessStakeRequest,
+    statusStakeRequest,
+}=useStakeRequest();
+
+  const {
+    unstakeRToken,
+    setUnstakeRToken,
+    rTokenToWithdraw,
+    setRTokenToWithdraw,
+    dataWithdrawStake,
+    errorWithdrawStake,
+    resetWithdrawStake,
+    writeWithdrawStake,
+    writeAsyncWithdrawStake,
+    isErrorWithdrawStake,
+    isIdleWithdrawStake,
+    isLoadingWithdrawStake,
+    isSuccessWithdrawStake,
+    statusWithdrawStake,
+}=useWithdrawStake();
+
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
@@ -132,19 +164,39 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
         break;
     }
   };
+
+  const handleStakeTransaction=async()=>{
+    try{
+      const stake=await writeAsyncStakeRequest();
+      // console.log(stake);
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+  const hanldeUnstakeTransaction=async()=>{
+    try{
+      const unstake=await writeAsyncWithdrawStake();
+
+    }catch(err){
+      console.log(err)
+    }
+  }
+
+
   const handleChange = (newValue: any) => {
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue(100);
-      setInputStakeAmount(newValue);
+      setRTokenAmount(newValue);
       // dispatch(setInputSupplyAmount(newValue));
     } else {
       percentage = Math.round(percentage);
       if (isNaN(percentage)) {
       } else {
         setSliderValue(percentage);
-        setInputStakeAmount(newValue);
+        setRTokenAmount(newValue);
       }
       // dispatch(setInputSupplyAmount(newValue));
     }
@@ -154,14 +206,14 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue2(100);
-      setInputUnstakeAmount(newValue);
+      setRTokenToWithdraw(newValue);
       // dispatch(setInputSupplyAmount(newValue));
     } else {
       percentage = Math.round(percentage);
       if (isNaN(percentage)) {
       } else {
         setSliderValue2(percentage);
-        setInputUnstakeAmount(newValue);
+        setRTokenToWithdraw(newValue);
       }
       // dispatch(setInputSupplyAmount(newValue));
     }
@@ -200,10 +252,12 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const resetStates = () => {
     setSliderValue(0);
     setSliderValue2(0);
-    setInputStakeAmount(0);
-    setInputUnstakeAmount(0);
+    setRTokenAmount(0);
+    setRTokenToWithdraw(0);
     setCurrentSelectedStakeCoin(coin ? rcoinValue : "rBTC");
+    setRToken("")
     setcurrentSelectedUnstakeCoin(coin ? rcoinValue : "rBTC");
+    setUnstakeRToken(coin ? rcoinValue : "rBTC")
     setTransactionStarted(false);
     setUnstakeTransactionStarted(false);
     dispatch(resetModalDropdowns());
@@ -220,12 +274,12 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   // console.log(activeModal);
 
   useEffect(() => {
-    setInputStakeAmount(0);
+    setRTokenAmount(0);
     setSliderValue(0);
   }, [currentSelectedStakeCoin]);
 
   useEffect(() => {
-    setInputUnstakeAmount(0);
+    setRTokenToWithdraw(0);
     setSliderValue2(0);
   }, [currentSelectedUnstakeCoin]);
 
@@ -458,6 +512,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                                     pr="2"
                                     onClick={() => {
                                       setCurrentSelectedStakeCoin(coin);
+                                      setRToken(coin);
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
@@ -528,12 +583,12 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           width="100%"
                           color="white"
                           border={`${
-                            inputStakeAmount > walletBalance
+                            rTokenAmount > walletBalance
                               ? "1px solid #CF222E"
-                              : inputStakeAmount < 0
+                              : rTokenAmount < 0
                               ? "1px solid #CF222E"
-                              : inputStakeAmount > 0 &&
-                                inputStakeAmount <= walletBalance
+                              : rTokenAmount > 0 &&
+                              rTokenAmount <= walletBalance
                               ? "1px solid #1A7F37"
                               : "1px solid #2B2F35 "
                           }`}
@@ -546,10 +601,10 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             min={0}
                             keepWithinRange={true}
                             onChange={handleChange}
-                            value={inputStakeAmount ? inputStakeAmount : ""}
+                            value={rTokenAmount ? rTokenAmount : ""}
                             outline="none"
                             step={parseFloat(
-                              `${inputStakeAmount <= 99999 ? 0.1 : 0}`
+                              `${rTokenAmount <= 99999 ? 0.1 : 0}`
                             )}
                             isDisabled={transactionStarted==true}
                             _disabled={{cursor:"pointer"}}
@@ -557,11 +612,11 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
                               color={`${
-                                inputStakeAmount > walletBalance
+                                rTokenAmount > walletBalance
                                   ? "#CF222E"
-                                  : inputStakeAmount < 0
+                                  : rTokenAmount < 0
                                   ? "#CF222E"
-                                  : inputStakeAmount == 0
+                                  : rTokenAmount == 0
                                   ? "white"
                                   : "#1A7F37"
                               }`}
@@ -584,7 +639,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             color="#0969DA"
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
-                              setInputStakeAmount(walletBalance);
+                              setRTokenAmount(walletBalance);
                               setSliderValue(100);
                             }}
                             isDisabled={transactionStarted == true}
@@ -593,8 +648,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             MAX
                           </Button>
                         </Box>
-                        {inputStakeAmount > walletBalance ||
-                        inputStakeAmount < 0 ? (
+                        {rTokenAmount > walletBalance ||
+                        rTokenAmount < 0 ? (
                           <Text
                             display="flex"
                             justifyContent="space-between"
@@ -610,7 +665,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                                 <SmallErrorIcon />{" "}
                               </Text>
                               <Text ml="0.3rem">
-                                {inputStakeAmount > walletBalance
+                                {rTokenAmount > walletBalance
                                   ? "Amount exceeds balance"
                                   : "Invalid Input"}{" "}
                               </Text>
@@ -653,7 +708,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               var ans = (val / 100) * walletBalance;
                               ans = Math.round(ans * 100) / 100;
                               // dispatch(setInputSupplyAmount(ans))
-                              setInputStakeAmount(ans);
+                              setRTokenAmount(ans);
                             }}
                             isDisabled={transactionStarted == true}
                             _disabled={{ cursor: "pointer" }}
@@ -880,14 +935,15 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           />
                         </Text>
                       </Text> */}
-                      {inputStakeAmount > 0 &&
-                      inputStakeAmount <= walletBalance ? (
+                      {rTokenAmount> 0 &&
+                      rTokenAmount <= walletBalance ? (
                         buttonId == 1 ? (
                           <SuccessButton successText="Stake success" />
                         ) : buttonId == 2 ? (
                           <ErrorButton errorText="Copy error!" />
                         ) : (
                           <Box onClick={()=>{
+                            handleStakeTransaction()
                             setTransactionStarted(true);
                           }}>
 
@@ -1072,6 +1128,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                                     pr="2"
                                     onClick={() => {
                                       setcurrentSelectedUnstakeCoin(coin);
+                                      setUnstakeRToken(coin);
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
@@ -1144,12 +1201,12 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           border={`${
                             !coinsSupplied[currentSelectedUnstakeCoin]
                               ? "1px solid #2B2F35"
-                              : inputUnstakeAmount > walletBalance
+                              : rTokenToWithdraw > walletBalance
                               ? "1px solid #CF222E"
-                              : inputUnstakeAmount < 0
+                              : rTokenToWithdraw < 0
                               ? "1px solid #CF222E"
-                              : inputUnstakeAmount > 0 &&
-                                inputUnstakeAmount <= walletBalance
+                              : rTokenToWithdraw > 0 &&
+                              rTokenToWithdraw <= walletBalance
                               ? "1px solid #1A7F37"
                               : "1px solid #2B2F35 "
                           }`}
@@ -1164,14 +1221,14 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             onChange={handleUnstakeChange}
                             value={
                               coinsSupplied[currentSelectedUnstakeCoin]
-                                ? inputUnstakeAmount
-                                  ? inputUnstakeAmount
+                                ? rTokenToWithdraw
+                                  ? rTokenToWithdraw
                                   : ""
                                 : ""
                             }
                             outline="none"
                             step={parseFloat(
-                              `${inputUnstakeAmount <= 99999 ? 0.1 : 0}`
+                              `${rTokenToWithdraw <= 99999 ? 0.1 : 0}`
                             )}
                             isDisabled={
                               !coinsSupplied[currentSelectedUnstakeCoin] ||
@@ -1184,11 +1241,11 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               color={`${
                                 !coinsSupplied[currentSelectedUnstakeCoin]
                                   ? "#1A7F37"
-                                  : inputUnstakeAmount > walletBalance
+                                  : rTokenToWithdraw > walletBalance
                                   ? "#CF222E"
-                                  : inputUnstakeAmount < 0
+                                  : rTokenToWithdraw < 0
                                   ? "#CF222E"
-                                  : inputUnstakeAmount == 0
+                                  : rTokenToWithdraw == 0
                                   ? "white"
                                   : "#1A7F37"
                               }`}
@@ -1214,7 +1271,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               if (!coinsSupplied[currentSelectedUnstakeCoin]) {
                                 return;
                               }
-                              setInputUnstakeAmount(walletBalance);
+                              setRTokenToWithdraw(walletBalance);
                               setSliderValue2(100);
                             }}
                             isDisabled={unstakeTransactionStarted == true}
@@ -1223,8 +1280,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             MAX
                           </Button>
                         </Box>
-                        {(inputUnstakeAmount > walletBalance ||
-                          inputUnstakeAmount < 0) &&
+                        {(rTokenToWithdraw > walletBalance ||
+                          rTokenToWithdraw < 0) &&
                         coinsSupplied[currentSelectedUnstakeCoin] ? (
                           <Text
                             display="flex"
@@ -1241,7 +1298,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                                 <SmallErrorIcon />{" "}
                               </Text>
                               <Text ml="0.3rem">
-                                {inputUnstakeAmount > walletBalance
+                                {rTokenToWithdraw > walletBalance
                                   ? "Amount exceeds balance"
                                   : "Invalid Input"}{" "}
                               </Text>
@@ -1291,7 +1348,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               var ans = (val / 100) * walletBalance;
                               ans = Math.round(ans * 100) / 100;
                               // dispatch(setInputSupplyAmount(ans))
-                              setInputUnstakeAmount(ans);
+                              setRTokenToWithdraw(ans);
                             }}
                             isDisabled={unstakeTransactionStarted == true}
                             _disabled={{ cursor: "pointer" }}
@@ -1462,10 +1519,11 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           <Text color="#6E7681">0.3%</Text>
                         </Text>
                       </Card>
-                      {inputUnstakeAmount > 0 &&
-                      inputUnstakeAmount <= walletBalance &&
+                      {rTokenToWithdraw > 0 &&
+                      rTokenToWithdraw<= walletBalance &&
                       coinsSupplied[currentSelectedUnstakeCoin] ? (
                         <Box onClick={()=>{
+                          hanldeUnstakeTransaction();
                           setUnstakeTransactionStarted(true);
                         }}>
 
