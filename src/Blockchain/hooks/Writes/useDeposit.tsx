@@ -13,7 +13,7 @@ import {
 } from "../../stark-constants";
 import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 
-const useDeposit  = () => {
+const useDeposit = () => {
     const { address: account } = useAccount();
     const [depositAmount, setDepositAmount] = useState(0);
     const [asset, setAsset] = useState("");
@@ -32,7 +32,7 @@ const useDeposit  = () => {
     } = useContractWrite({
         calls: [
             {
-                contractAddress: tokenAddressMap[asset] || "", 
+                contractAddress: tokenAddressMap[asset] || "",
                 entrypoint: "approve",
                 calldata: [
                     diamondAddress,
@@ -40,6 +40,7 @@ const useDeposit  = () => {
                         depositAmount as number,
                         tokenAddressMap[asset] || ""
                     ).toString(),
+                    "0"
                 ],
             },
             {
@@ -51,6 +52,7 @@ const useDeposit  = () => {
                         depositAmount as number,
                         tokenAddressMap[asset] || ""
                     ).toString(),
+                    0,
                     account,
                 ],
             }

@@ -1,6 +1,6 @@
-import * as DeployDetailsProd from "../../contract_addresses.json";
+import DeployDetailsProd from "../../contract_addresses.json";
 import ERC20Abi from "./abis/erc20_abi.json";
-import { number } from "starknet";
+import { Provider, number } from "starknet";
 import {
   UseWaitForTransactionResult,
   UseTransactionResult,
@@ -21,6 +21,37 @@ for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
   contractsEnv.TOKENS[i].address = processAddress(
     contractsEnv.TOKENS[i].address
   );
+}
+
+export const getProvider = () => {
+  if (contractsEnv == DeployDetailsProd.goerli) {
+    const provider = new Provider({
+      sequencer: {
+        baseUrl: "https://alpha4.starknet.io",
+        feederGatewayUrl: "feeder_gateway",
+        gatewayUrl: "gateway",
+      },
+    });
+    return provider;
+  } else if(contractsEnv == DeployDetailsProd.goerli_2){
+    const provider = new Provider({
+      sequencer: {
+        baseUrl: "https://alpha4-2.starknet.io",
+        feederGatewayUrl: "feeder_gateway",
+        gatewayUrl: "gateway",
+      },
+    });
+    return provider;
+  } else {
+    const provider = new Provider({
+      sequencer: {
+        baseUrl: "https://alpha-mainnet.starknet.io",
+        feederGatewayUrl: "feeder_gateway",
+        gatewayUrl: "gateway",
+      },
+    });
+    return provider;
+  }
 }
 
 export const getTokenFromName = (name: string) => {
@@ -52,7 +83,7 @@ export function isTransactionLoading(receipt: UseWaitForTransactionResult) {
   if (receipt.data?.status == "RECEIVED") return true;
 }
 
-export function handleTransactionToast(receipt: UseWaitForTransactionResult) {}
+export function handleTransactionToast(receipt: UseWaitForTransactionResult) { }
 
 export const diamondAddress: string = contractsEnv.DIAMOND_ADDRESS;
 
