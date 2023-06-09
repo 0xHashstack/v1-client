@@ -365,7 +365,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                           borderWidth: "0",
                           backgroundColor: "#2B2F35",
                           width: "96%",
-                          marginTop: "4px 0",
+                          marginTop: "7px",
                           // marginRight: "5px",
                           marginLeft: "5px",
                         }}
@@ -603,7 +603,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     </SliderTrack>
                   </Slider>
                 </Box>
-                <Box
+                {(currentCollateralCoin!="rBTC" && currentCollateralCoin!="rUSDT") &&                <Box
                   // display="flex"
                   // justifyContent="left"
                   w="100%"
@@ -641,8 +641,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                                 <TableClose />
                               </Box> */}
                   </Box>
-                </Box>
-                <Box display="flex" gap="2">
+                </Box>}
+                  {(currentCollateralCoin!="rBTC" && currentCollateralCoin!="rUSDT") &&                <Box display="flex" gap="2">
                 <Checkbox
                   size="md"
                   colorScheme="customBlue"
@@ -667,7 +667,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                   Ticking would stake the received rTokens. unchecking
                   woudn&apos;t stake rTokens
                 </Text>
-              </Box>
+              </Box>}
+
               </Box>
             </Box>
 
@@ -714,8 +715,6 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                   borderRadius="md"
                   className="navbar"
                   cursor="pointer"
-                  onClick={() => {
-                    if (transactionStarted) {
                   onClick={() => {
                     if (transactionStarted) {
                       return;
