@@ -54,29 +54,6 @@ export const getProvider = () => {
   }
 }
 
-export const getTokenFromName = (name: string) => {
-  let something = contractsEnv.TOKENS.map((item) => item.name);
-  console.log("getTokenFromName", name);
-  let index = contractsEnv.TOKENS.map((item) => item.name).indexOf(name);
-  return contractsEnv.TOKENS[index];
-};
-
-export const tokenAddressMap: ItokenAddressMap = {
-  BTC: getTokenFromName("BTC")?.address,
-  USDT: getTokenFromName("USDT")?.address,
-  USDC: getTokenFromName("USDC")?.address,
-  ETH: getTokenFromName("ETH")?.address,
-  DAI: getTokenFromName("DAI")?.address,
-};
-
-export const tokenDecimalsMap: ItokenDecimalsMap = {
-  BTC: getTokenFromName("BTC")?.decimals,
-  USDT: getTokenFromName("USDT")?.decimals,
-  USDC: getTokenFromName("USDC")?.decimals,
-  ETH: getTokenFromName("ETH")?.decimals,
-  DAI: getTokenFromName("DAI")?.decimals,
-};
-
 export function isTransactionLoading(receipt: UseWaitForTransactionResult) {
   // if(receipt.loading)
   // 	return true

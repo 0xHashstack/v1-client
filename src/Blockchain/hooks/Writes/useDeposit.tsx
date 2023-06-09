@@ -8,10 +8,10 @@ import { useEffect, useState } from "react";
 import { Abi, uint256 } from "starknet";
 import {
     ERC20Abi,
-    tokenAddressMap,
     diamondAddress
 } from "../../stark-constants";
 import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 
 const useDeposit = () => {
     const { address: account } = useAccount();

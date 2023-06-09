@@ -434,7 +434,7 @@
     },
     {
         "inputs": [
-            {
+            { 
                 "name": "user",
                 "type": "felt"
             }

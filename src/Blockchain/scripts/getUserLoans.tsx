@@ -1,29 +1,69 @@
-import { Contract, Provider, number, shortString } from "starknet";
-import { contractsEnv, diamondAddress, getProvider } from "../stark-constants";
+import { Contract, Provider, number, shortString, uint256 } from "starknet";
+import { contractsEnv, diamondAddress, getProvider, getTokenFromAddress } from "../stark-constants";
 import routerAbi from "@/Blockchain/abis/router_abi.json";
 import { get } from "http";
-import { useAccount } from "@starknet-react/core";
-import { useEffect } from "react";
+import { BNtoNum } from "../utils/utils";
+import { getDTokenFromAddress, getRTokenFromAddress } from "../utils/addressServices";
 
-interface ILoans {
-  loanMarket: string | undefined;
-  loanMarketAddress: string | undefined;
-  loanAmount: number;
-  commitment: string | null;
-  commitmentIndex: number | null;
-  collateralMarket: string | undefined;
-  collateralAmount: number;
-  loanInterest: number;
-  interestRate: number;
-  account: string | undefined;
-  cdr: number;
-  debtCategory: number | undefined;
-  loanId: number;
-  isSwapped: boolean;
-  state: string;
-  stateType: number;
-  currentLoanMarket: string | undefined;
-  currentLoanAmount: number;
+function parseLoansData(
+  loansData: any,
+  collateralsData: any,
+  interestRecords: any
+): ILoan[] {
+  const loans: ILoan[] = [];
+  for (let i = 0; i < loansData?.length; ++i) {
+    let loanData = loansData[i];
+    let collateralData = collateralsData[i];
+    let loan: ILoan  = {
+      loanId: Number(BNtoNum(loanData?.id, 0)),
+      borrower: number.toHex(loanData?.borrower),
+
+      loanMarket: getDTokenFromAddress(number.toHex(loanData?.market))?.name,
+      loanMarketAddress: number.toHex(loanData?.market),
+      underlyingMarket: getTokenFromAddress(getDTokenFromAddress(number.toHex(loanData?.market))?.underlying_asset || "")?.name || "",
+      underlyingMarketAddress: getDTokenFromAddress(number.toHex(loanData?.market))?.underlying_asset,
+      currentLoanMarket: getTokenFromAddress(
+        number.toHex(loanData?.current_market)
+      )?.name, // Borrow market(current)
+      currentLoanMarketAddress: number.toHex(loanData?.current_market),
+      collateralMarket: getRTokenFromAddress(
+        number.toHex(collateralData?.collateral_token)
+      )?.name, //  Collateral Market
+      collateralMarketAddress: number.toHex(collateralData?.collateral_token),
+
+      loanAmount: uint256.uint256ToBN(loanData?.amount).toString(), //  Amount
+      currentLoanAmount: uint256.uint256ToBN(loanData?.current_amount).toString(), //  Amount
+      collateralAmount: uint256
+        .uint256ToBN(collateralData?.amount)
+        .toString(), // 5 Collateral Amount
+
+      createdAt: new Date(Number(loanData?.created_at)),
+  
+      state:
+        Number(BNtoNum(loanData?.state, 0)) === 1
+          ? "OPEN"
+          : Number(BNtoNum(loanData?.state, 0)) === 2
+          ? "SWAPPED"
+          : Number(BNtoNum(loanData?.state, 0)) === 3
+          ? "REPAID"
+          : Number(BNtoNum(loanData?.state, 0)) === 4
+          ? "LIQUIDATED"
+          : null,
+
+      l3App:
+        number.toBN(loanData?.l3_integration).toString() ===
+          "1962660952167394271600"
+          ? "jediSwap"
+          : number.toBN(loanData?.l3_integration, 0).toString() ===
+            "30814223327519088"
+            ? "mySwap"
+            : null,
+      l3_integration: number.toBN(loanData?.l3_integration).toString(),
+      l3_category: number.toBN(loanData?.l3_category).toString(),
+    };
+    loans.push(JSON.parse(JSON.stringify(loan)));
+  }
+  return loans;
 }
 
 export async function get_user_loans(account: string) {
@@ -34,9 +74,9 @@ export async function get_user_loans(account: string) {
     blockIdentifier: "pending",
   });
   console.log(res, "res")
-  // parseLoansData(
-  //   res?.loan_records_arr,
-  //   res?.collateral_records_arr,
-  //   res?.interest_records_arr
-  // );
+  return parseLoansData(
+    res?.loan_records_arr,
+    res?.collateral_records_arr,
+    res?.interest_records_arr
+  );
 }
