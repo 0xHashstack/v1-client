@@ -88,8 +88,6 @@ const SupplyModal = ({
   const walletBalance = useSelector(selectWalletBalance);
 
   const handleTransaction=async()=>{
-    console.log(asset);
-    console.log(depositAmount);
     try{
       const deposit=await writeAsyncDeposit();
     }catch(err){
