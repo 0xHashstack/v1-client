@@ -32,3 +32,41 @@ export interface ILoan {
     l3_category: string;
 }
 
+export interface IDeposit {
+    tokenAddress: string;
+    rTokenAmount: number;
+    underlyingAssetAmount: number;
+}
+
+export interface IMarketInfo {
+    borrowRate: number;
+    supplyRate: number;
+    stakingRate: number;
+
+    totalSupply: number;
+    lentAssets: number;
+    totalBorrow: number;
+
+    utilisationPerMarket: number;
+    exchangeRateRtokenToUnderlying: number;
+    exchangeRateDTokenToUnderlying: number;
+    exchangeRateUnderlyingToRtoken: number;
+    exchangeRateUnderlyingToDtoken: number;
+
+    tokenAddress: string;
+}
+
+export interface IProtocolReserves {
+    totalReserves: number;
+    availableReserves: number;
+    avgAssetUtilisation: number;
+}
+
+export interface IUserStats {
+    netWorth: number;
+    yourSupply: number;
+    yourBorrow: number;
+    netSupplyAPR: number;
+    netBorrowAPR: number;
+}
+

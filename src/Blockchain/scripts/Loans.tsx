@@ -8,7 +8,6 @@ import { ILoan } from "../interfaces/interfaces";
 function parseLoansData(
   loansData: any,
   collateralsData: any,
-  interestRecords: any
 ): ILoan[] {
   const loans: ILoan[] = [];
   for (let i = 0; i < loansData?.length; ++i) {
@@ -66,7 +65,7 @@ function parseLoansData(
   return loans;
 }
 
-export async function get_user_loans(account: string) {
+export async function getUserLoans(account: string) {
   const provider = getProvider();
   console.log("user loans", diamondAddress, account)
   const routerContract = new Contract(routerAbi, diamondAddress, provider);
@@ -77,6 +76,5 @@ export async function get_user_loans(account: string) {
   return parseLoansData(
     res?.loan_records_arr,
     res?.collateral_records_arr,
-    res?.interest_records_arr
   );
 }
