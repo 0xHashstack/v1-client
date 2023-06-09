@@ -16,6 +16,7 @@ import {
   SliderMark,
   SliderTrack,
   SliderFilledTrack,
+  SliderThumb,
   TabList,
   Tab,
   TabPanel,
@@ -58,6 +59,8 @@ import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import WarningIcon from "@/assets/icons/coins/warningIcon";
 import ArrowUp from "@/assets/icons/arrowup";
+import SliderPointer from "@/assets/icons/sliderPointer";
+import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
@@ -714,40 +717,47 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             _disabled={{ cursor: "pointer" }}
                             focusThumbOnChange={false}
                           >
-                            <SliderMark value={sliderValue}>
-                              <Box
-                                position="absolute"
-                                bottom="-8px"
-                                left="-11px"
-                                zIndex="1"
-                              >
-                                <SliderTooltip />
-                                <Text
-                                  position="absolute"
-                                  color="black"
-                                  top="7px"
-                                  left={
-                                    sliderValue !== 100
-                                      ? sliderValue >= 10
-                                        ? "15%"
-                                        : "25%"
-                                      : "5%"
-                                  }
-                                  fontSize=".58rem"
-                                  fontWeight="bold"
-                                  textAlign="center"
-                                >
-                                  {sliderValue}%
-                                </Text>
-                              </Box>
-                            </SliderMark>
-                            <SliderTrack bg="#343333">
-                              <SliderFilledTrack
-                                bg="white"
-                                w={`${sliderValue}`}
-                              />
-                            </SliderTrack>
-                          </Slider>
+                                        <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
+                      {sliderValue >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
+                    </SliderMark>
+                    <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
+                      {sliderValue >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
+                    </SliderMark>
+                    <SliderMark value={50} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                      {sliderValue >= 50 ? <SliderPointerWhite /> : <SliderPointer />}
+                    </SliderMark>
+                    <SliderMark value={75} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                      {sliderValue >= 75 ? <SliderPointerWhite /> : <SliderPointer />}
+                    </SliderMark>
+                    <SliderMark value={100} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                      {sliderValue == 100 ? <SliderPointerWhite /> : <SliderPointer />}
+                    </SliderMark>
+                    <SliderMark
+                      value={sliderValue}
+                      textAlign='center'
+                      // bg='blue.500'
+                      color='white'
+                      mt='-8'
+                      ml={
+                        sliderValue !== 100 ? "-5" : "-6"
+                      }
+                      w='12'
+                      fontSize="12px"
+                      fontWeight="400"
+                      lineHeight="20px"
+                      letterSpacing="0.25px"
+                    >
+                      {sliderValue}%
+                    </SliderMark>
+                    <SliderTrack bg="#343333">
+                      <SliderFilledTrack
+                        bg="white"
+                        w={`${sliderValue}`}
+                        _disabled={{ bg: "white" }}
+                      />
+                    </SliderTrack>
+                    <SliderThumb />
+                  </Slider>
                         </Box>
                       </Card>
                       {!coinsSupplied[currentSelectedStakeCoin] && (
@@ -1354,57 +1364,50 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             _disabled={{ cursor: "pointer" }}
                             focusThumbOnChange={false}
                           >
-                            <SliderMark
-                              value={
-                                !coinsSupplied[currentSelectedUnstakeCoin]
-                                  ? 0
-                                  : sliderValue2
-                              }
-                            >
-                              <Box
-                                position="absolute"
-                                bottom="-8px"
-                                left="-11px"
-                                zIndex="1"
-                              >
-                                <SliderTooltip
-                                  color={`${
-                                    !coinsSupplied[currentSelectedUnstakeCoin]
-                                      ? "#6E7681"
-                                      : "#DEDEDE"
-                                  }`}
-                                />
-                                <Text
-                                  position="absolute"
-                                  color="black"
-                                  top="7px"
-                                  left={
-                                    !coinsSupplied[currentSelectedUnstakeCoin]
-                                      ? "25%"
-                                      : sliderValue2 !== 100
-                                      ? sliderValue2 >= 10
-                                        ? "15%"
-                                        : "25%"
-                                      : "5%"
-                                  }
-                                  fontSize=".58rem"
-                                  fontWeight="bold"
-                                  textAlign="center"
-                                >
-                                  {!coinsSupplied[currentSelectedUnstakeCoin]
-                                    ? 0
-                                    : sliderValue2}
-                                  %
-                                </Text>
-                              </Box>
-                            </SliderMark>
-                            <SliderTrack bg="#343333">
-                              <SliderFilledTrack
-                                bg="white"
-                                w={`${sliderValue2}`}
-                              />
-                            </SliderTrack>
-                          </Slider>
+                                        <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
+                      {sliderValue2 >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
+                    </SliderMark>
+                    <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
+                      {sliderValue2 >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
+                    </SliderMark>
+                    <SliderMark value={50} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                      {sliderValue2 >= 50 ? <SliderPointerWhite /> : <SliderPointer />}
+                    </SliderMark>
+                    <SliderMark value={75} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                      {sliderValue2 >= 75 ? <SliderPointerWhite /> : <SliderPointer />}
+                    </SliderMark>
+                    <SliderMark value={100} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                      {sliderValue2 == 100 ? <SliderPointerWhite /> : <SliderPointer />}
+                    </SliderMark>
+                    <SliderMark                          value={
+                        !coinsSupplied[currentSelectedUnstakeCoin]
+                          ? 0
+                          : sliderValue2
+                      }
+                      textAlign='center'
+                      // bg='blue.500'
+                      color='white'
+                      mt='-8'
+                      ml={
+                        sliderValue2 !== 100 ? "-5" : "-6"
+                      }
+                      w='12'
+                      fontSize="12px"
+                      fontWeight="400"
+                      lineHeight="20px"
+                      letterSpacing="0.25px"
+                    >
+                      {sliderValue2}%
+                    </SliderMark>
+                    <SliderTrack bg="#343333">
+                      <SliderFilledTrack
+                        bg="white"
+                        w={`${sliderValue2}`}
+                        _disabled={{ bg: "white" }}
+                      />
+                    </SliderTrack>
+                    <SliderThumb />
+                  </Slider>
                         </Box>
                       </Card>
 

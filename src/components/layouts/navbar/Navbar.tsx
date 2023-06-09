@@ -65,7 +65,7 @@ const Navbar = () => {
   const [parsedAccount, setParsedAccount] = useState<any>();
   const currentDropdown = useSelector(selectCurrentDropdown);
   const { account } = useAccount();
-  console.log(account, "Navbar");
+  // console.log(account, "Navbar");
   // useEffect(() => {
   //   const storedAccount = localStorage.getItem("account");
   //   if (storedAccount) {
@@ -131,7 +131,7 @@ const Navbar = () => {
 
   const switchWallet = () => {
     const walletConnected = localStorage.getItem("lastUsedConnector");
-    console.log(connector);
+    // console.log(connector);
     if (connector?.options?.id == "braavos") {
       connect(connectors[1]);
     } else {
@@ -637,7 +637,7 @@ const Navbar = () => {
                     onClick={() => {
                       // alert("hey");
                       connect(connectors[1]);
-                      console.log("navbar", account);
+                      // console.log("navbar", account);
                       // localStorage.setItem("account", JSON.stringify(account));
                     }}
                   >

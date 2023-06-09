@@ -4,7 +4,7 @@ import { useState } from "react";
 
 const useBalanceOf = ( asset: string) => {
     const { address: accountAddress } = useAccount();
-    console.log("dataaaa balance of", asset, accountAddress)
+    // console.log("dataaaa balance of", asset, accountAddress)
     const {
         data: dataBalanceOf,
 

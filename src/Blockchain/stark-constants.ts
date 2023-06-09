@@ -56,7 +56,7 @@ export const getProvider = () => {
 
 export const getTokenFromName = (name: string) => {
   let something = contractsEnv.TOKENS.map((item) => item.name);
-  console.log("getTokenFromName", name);
+  // console.log("getTokenFromName", name);
   let index = contractsEnv.TOKENS.map((item) => item.name).indexOf(name);
   return contractsEnv.TOKENS[index];
 };
@@ -92,7 +92,7 @@ export const l3DiamondAddress: string = contractsEnv.L3_DIAMOND_ADDRESS;
 export const getTokenFromAddress = (address: string) => {
   let index = contractsEnv.TOKENS.map((item) => item.address).indexOf(address);
   let token = contractsEnv.TOKENS[index];
-  console.log("getTokenFromAddress", address, token);
+  // console.log("getTokenFromAddress", address, token);
   return token;
 };
 

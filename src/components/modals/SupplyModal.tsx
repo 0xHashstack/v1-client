@@ -93,6 +93,8 @@ const SupplyModal = ({
   const handleTransaction = async () => {
     try {
       const deposit = await writeAsyncDeposit();
+      console.log("Status transaction",statusDeposit)
+      console.log(isSuccessDeposit,"success ?")
     } catch (err) {
       console.log(err)
     }
@@ -120,14 +122,6 @@ const SupplyModal = ({
         break;
     }
   };
-  const labelStyles = {
-    mt: '2',
-    ml: '-2.5',
-    fontSize: 'sm',
-  }
-  const markColor = (value) => {
-    return value <= sliderValue ? 'white' : 'currentColor'
-  }
   // console.log(inputAmount);
 
   //This Function handles the modalDropDowns
@@ -510,6 +504,9 @@ const SupplyModal = ({
                     _disabled={{ cursor: "pointer" }}
                     focusThumbOnChange={false}
                   >
+                                        <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
+                      {sliderValue >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
+                    </SliderMark>
                     <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
                       {sliderValue >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
                     </SliderMark>
@@ -716,7 +713,7 @@ const SupplyModal = ({
                       setTransactionStarted(true);
                       // dataDeposit();
                       handleTransaction();
-                      console.log(isSuccessDeposit, "status deposit")
+                      // console.log(isSuccessDeposit, "status deposit")
                     }}
                   >
                     <AnimatedButton
