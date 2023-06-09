@@ -65,6 +65,7 @@ import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ArrowUp from "@/assets/icons/arrowup";
+import useRepay from "@/Blockchain/hooks/Writes/useRepay";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -140,6 +141,27 @@ const YourBorrowModal = ({
         break;
     }
   };
+
+  //   const {
+  //     repayAmount,
+  //     setRepayAmount,
+  //     handleApprove,
+  //     writeAsyncRepay,
+  //     transRepayHash,
+  //     setTransRepayHash,
+  //     repayTransactionReceipt,
+  //     isLoadingRepay,
+  //     errorRepay,
+  //     handleRepayBorrow,
+
+  //     //SelfLiquidate - Repay with 0 amount
+  //     writeAsyncSelfLiquidate,
+  //     isLoadingSelfLiquidate,
+  //     errorSelfLiquidate,
+  //     selfLiquidateTransactionReceipt,
+  //     setIsSelfLiquidateHash,
+  // };
+  // }=useRepay();
 
   const getContainer = (action: string) => {
     switch (action) {

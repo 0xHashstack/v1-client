@@ -264,7 +264,7 @@ const DashboardLeft = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {!coinPrices[idx] ? (
+                    {/* {!coinPrices[idx] ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -274,7 +274,8 @@ const DashboardLeft = ({
                       />
                     ) : (
                       coinPrices[idx]?.price
-                    )}
+                    )} */}
+                    0000.00
                   </Box>
                 </Td>
                 <Td

@@ -70,6 +70,7 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ArrowUp from "@/assets/icons/arrowup";
+import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
@@ -86,7 +87,8 @@ const YourSupplyModal = ({
   const [inputWithdrawlAmount, setinputWithdrawlAmount] = useState(0);
   const [sliderValue2, setSliderValue2] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
-  const [withdrawTransactionStarted, setWithdrawTransactionStarted] = useState(false);
+  const [withdrawTransactionStarted, setWithdrawTransactionStarted] =
+    useState(false);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -201,6 +203,34 @@ const YourSupplyModal = ({
     setSliderValue2(0);
   }, [currentSelectedWithdrawlCoin]);
 
+  const {
+    // asset,
+    // setAsset,
+    // rTokenShares,
+    // setRTokenShares,
+    reciever,
+    setReciever,
+
+    dataWithdrawDeposit,
+    errorWithdrawDeposit,
+    resetWithdrawDeposit,
+    writeWithdrawDeposit,
+    writeAsyncWithdrawDeposit,
+    isErrorWithdrawDeposit,
+    isIdleWithdrawDeposit,
+    isLoadingWithdrawDeposit,
+    isSuccessWithdrawDeposit,
+    statusWithdrawDeposit,
+  } = useWithdrawDeposit(inputWithdrawlAmount, currentSelectedWithdrawlCoin);
+
+  const handleWithdrawSupply = async () => {
+    try {
+      const withdraw = await writeAsyncWithdrawDeposit();
+    } catch (err) {
+      console.log("withraw", err);
+    }
+  };
+
   return (
     <Box>
       <Button
@@ -225,7 +255,7 @@ const YourSupplyModal = ({
           resetStates();
         }}
         isCentered
-          scrollBehavior="inside"
+        scrollBehavior="inside"
       >
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
         <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
@@ -255,7 +285,7 @@ const YourSupplyModal = ({
                         bg: "#0969DA",
                         border: "none",
                       }}
-                      isDisabled={withdrawTransactionStarted==true}
+                      isDisabled={withdrawTransactionStarted == true}
                     >
                       Add supply
                     </Tab>
@@ -273,7 +303,7 @@ const YourSupplyModal = ({
                         bg: "#0969DA",
                         border: "none",
                       }}
-                      isDisabled={transactionStarted==true}
+                      isDisabled={transactionStarted == true}
                     >
                       Withdraw supply
                     </Tab>
@@ -329,11 +359,13 @@ const YourSupplyModal = ({
                           borderRadius="md"
                           className="navbar"
                           cursor="pointer"
-                          onClick={() =>{
-                            if(transactionStarted){
+                          onClick={() => {
+                            if (transactionStarted) {
                               return;
-                            }else{
-                              handleDropdownClick("yourSupplyAddsupplyDropdown")
+                            } else {
+                              handleDropdownClick(
+                                "yourSupplyAddsupplyDropdown"
+                              );
                             }
                           }}
                         >
@@ -778,34 +810,37 @@ const YourSupplyModal = ({
                       </Card>
                       {inputSupplyAmount > 0 &&
                       inputSupplyAmount <= walletBalance ? (
-                        <Box onClick={()=>{setTransactionStarted(true)}}>
-
-                        <AnimatedButton
-                          bgColor="#101216"
-                          // bgColor="red"
-                          // p={0}
-                          color="#8B949E"
-                          size="sm"
-                          width="100%"
-                          mt="1.5rem"
-                          mb="1.5rem"
-                          border="1px solid #8B949E"
-                          labelArray={[
-                            "Deposit Amount approved",
-                            "Successfully transfered to Hashstack's supply vault.",
-                            "Determining the rToken amount to mint.",
-                            "rTokens have been minted successfully.",
-                            "Transaction complete.",
-                            // <ErrorButton errorText="Transaction failed" />,
-                            // <ErrorButton errorText="Copy error!" />,
-                            <SuccessButton
-                              key={"successButton"}
-                              successText={"Supply success"}
-                            />,
-                          ]}
+                        <Box
+                          onClick={() => {
+                            setTransactionStarted(true);
+                          }}
                         >
-                          Supply
-                        </AnimatedButton>
+                          <AnimatedButton
+                            bgColor="#101216"
+                            // bgColor="red"
+                            // p={0}
+                            color="#8B949E"
+                            size="sm"
+                            width="100%"
+                            mt="1.5rem"
+                            mb="1.5rem"
+                            border="1px solid #8B949E"
+                            labelArray={[
+                              "Deposit Amount approved",
+                              "Successfully transfered to Hashstack's supply vault.",
+                              "Determining the rToken amount to mint.",
+                              "rTokens have been minted successfully.",
+                              "Transaction complete.",
+                              // <ErrorButton errorText="Transaction failed" />,
+                              // <ErrorButton errorText="Copy error!" />,
+                              <SuccessButton
+                                key={"successButton"}
+                                successText={"Supply success"}
+                              />,
+                            ]}
+                          >
+                            Supply
+                          </AnimatedButton>
                         </Box>
                       ) : (
                         <Button
@@ -867,11 +902,13 @@ const YourSupplyModal = ({
                           borderRadius="md"
                           className="navbar"
                           cursor="pointer"
-                          onClick={() =>{
-                            if(withdrawTransactionStarted){
+                          onClick={() => {
+                            if (withdrawTransactionStarted) {
                               return;
-                            }else{
-                              handleDropdownClick("yourSupplyWithdrawlDropdown")
+                            } else {
+                              handleDropdownClick(
+                                "yourSupplyWithdrawlDropdown"
+                              );
                             }
                           }}
                         >
@@ -1045,7 +1082,7 @@ const YourSupplyModal = ({
                               setinputWithdrawlAmount(walletBalance);
                               setSliderValue2(100);
                             }}
-                            isDisabled={withdrawTransactionStarted== true}
+                            isDisabled={withdrawTransactionStarted == true}
                             _disabled={{ cursor: "pointer" }}
                           >
                             MAX
@@ -1384,49 +1421,53 @@ const YourSupplyModal = ({
                       </Card>
                       {inputWithdrawlAmount > 0 &&
                       inputWithdrawlAmount <= walletBalance ? (
-                        <Box onClick={()=>{setWithdrawTransactionStarted(true)}}>
-
-                        <AnimatedButton
-                          bgColor="#101216"
-                          // bgColor="red"
-                          // p={0}
-                          color="#8B949E"
-                          size="sm"
-                          width="100%"
-                          mt="1.5rem"
-                          mb="1.5rem"
-                          border="1px solid #8B949E"
-                          labelArray={[
-                            "Checking if sufficient rTokens are available",
-                            <Text key={0} display="flex">
-                              Fetching the exchange between{" "}
-                              <Text ml="0.4rem" mr="0.1rem">
-                                <BTCLogo height={"16px"} width={"16px"} />
-                              </Text>{" "}
-                              rbtc &
-                              <Text key={1} ml="0.3rem" mr="0.1rem">
-                                <BTCLogo height={"16px"} width={"16px"} />
-                              </Text>
-                              BTC
-                            </Text>,
-                            <Text key={2} display="flex">
-                              Burning 12345
-                              <Text ml="0.5rem" mr="0.1rem">
-                                <BTCLogo height={"16px"} width={"16px"} />
-                              </Text>{" "}
-                              rBTC
-                            </Text>,
-                            "Processing Withdrawl",
-                            // <ErrorButton errorText="Transaction failed" />,
-                            // <ErrorButton errorText="Copy error!" />,
-                            <SuccessButton
-                              key={"successButton"}
-                              successText={"Withdrawl Success"}
-                            />,
-                          ]}
+                        <Box
+                          onClick={() => {
+                            setWithdrawTransactionStarted(true);
+                            handleWithdrawSupply();
+                          }}
                         >
-                          Withdraw
-                        </AnimatedButton>
+                          <AnimatedButton
+                            bgColor="#101216"
+                            // bgColor="red"
+                            // p={0}
+                            color="#8B949E"
+                            size="sm"
+                            width="100%"
+                            mt="1.5rem"
+                            mb="1.5rem"
+                            border="1px solid #8B949E"
+                            labelArray={[
+                              "Checking if sufficient rTokens are available",
+                              <Text key={0} display="flex">
+                                Fetching the exchange between{" "}
+                                <Text ml="0.4rem" mr="0.1rem">
+                                  <BTCLogo height={"16px"} width={"16px"} />
+                                </Text>{" "}
+                                rbtc &
+                                <Text key={1} ml="0.3rem" mr="0.1rem">
+                                  <BTCLogo height={"16px"} width={"16px"} />
+                                </Text>
+                                BTC
+                              </Text>,
+                              <Text key={2} display="flex">
+                                Burning 12345
+                                <Text ml="0.5rem" mr="0.1rem">
+                                  <BTCLogo height={"16px"} width={"16px"} />
+                                </Text>{" "}
+                                rBTC
+                              </Text>,
+                              "Processing Withdrawl",
+                              // <ErrorButton errorText="Transaction failed" />,
+                              // <ErrorButton errorText="Copy error!" />,
+                              <SuccessButton
+                                key={"successButton"}
+                                successText={"Withdrawl Success"}
+                              />,
+                            ]}
+                          >
+                            Withdraw
+                          </AnimatedButton>
                         </Box>
                       ) : (
                         <Button

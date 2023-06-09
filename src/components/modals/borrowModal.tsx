@@ -67,7 +67,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     } catch (err) {
       console.log(err)
     }
-  }
+  };
 
   // const {  market,
   //   setMarket,
@@ -103,16 +103,31 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
       case "BTC":
         return <BTCLogo height={"16px"} width={"16px"} />;
         break;
+      case "rBTC":
+        return <BTCLogo height={"16px"} width={"16px"} />;
+        break;
       case "USDC":
+        return <USDCLogo height={"16px"} width={"16px"} />;
+        break;
+      case "rUSDC":
         return <USDCLogo height={"16px"} width={"16px"} />;
         break;
       case "USDT":
         return <USDTLogo height={"16px"} width={"16px"} />;
         break;
+      case "rUSDT":
+        return <USDTLogo height={"16px"} width={"16px"} />;
+        break;
       case "ETH":
         return <ETHLogo height={"16px"} width={"16px"} />;
         break;
+      case "rETH":
+        return <ETHLogo height={"16px"} width={"16px"} />;
+        break;
       case "DAI":
+        return <DAILogo height={"16px"} width={"16px"} />;
+        break;
+      case "rDAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
       default:
@@ -193,12 +208,10 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     setsliderValue2(0);
   }, [currentBorrowCoin]);
 
+  const rTokens = ["rBTC", "rUSDT"];
   return (
     <Box>
-      <Button
-        {...restProps}
-        onClick={onOpen}
-      >
+      <Button {...restProps} onClick={onOpen}>
         {buttonText}
       </Button>
       {/* <Button onClick={onOpen}>Open Modal</Button> */}
@@ -302,6 +315,61 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
+                      {rTokens.map((coin: string, index: number) => {
+                        return (
+                          <Box
+                            key={index}
+                            as="button"
+                            w="full"
+                            display="flex"
+                            alignItems="center"
+                            gap="1"
+                            pr="2"
+                            onClick={() => {
+                              setCurrentCollateralCoin(coin);
+                              setRToken(coin);
+                            }}
+                          >
+                            {coin === currentCollateralCoin && (
+                              <Box
+                                w="3px"
+                                h="28px"
+                                bg="#0C6AD9"
+                                borderRightRadius="md"
+                              ></Box>
+                            )}
+                            <Box
+                              w="full"
+                              display="flex"
+                              py="5px"
+                              px={`${
+                                coin === currentCollateralCoin ? "1" : "5"
+                              }`}
+                              gap="1"
+                              bg={`${
+                                coin === currentCollateralCoin
+                                  ? "#0C6AD9"
+                                  : "inherit"
+                              }`}
+                              borderRadius="md"
+                            >
+                              <Box p="1">{getCoin(coin)}</Box>
+                              <Text>{coin}</Text>
+                            </Box>
+                          </Box>
+                        );
+                      })}
+                      <hr
+                        style={{
+                          height: "1px",
+                          borderWidth: "0",
+                          backgroundColor: "#2B2F35",
+                          width: "96%",
+                          marginTop: "4px 0",
+                          // marginRight: "5px",
+                          marginLeft: "5px",
+                        }}
+                      />
                       {coins.map((coin: string, index: number) => {
                         return (
                           <Box
@@ -400,9 +468,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     value={rTokenAmount ? rTokenAmount : ""}
                     // outline="none"
                     // precision={1}
-                    step={parseFloat(
-                      `${rTokenAmount <= 99999 ? 0.1 : 0}`
-                    )}
+                    step={parseFloat(`${rTokenAmount <= 99999 ? 0.1 : 0}`)}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}
                   >
@@ -648,6 +714,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                   borderRadius="md"
                   className="navbar"
                   cursor="pointer"
+                  onClick={() => {
+                    if (transactionStarted) {
                   onClick={() => {
                     if (transactionStarted) {
                       return;
