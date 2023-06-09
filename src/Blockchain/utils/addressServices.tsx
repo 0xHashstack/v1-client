@@ -35,23 +35,21 @@ export const tokenAddressMap: ItokenAddressMap = {
 
 export const tokenDecimalsMap: ItokenDecimalsMap = {
   BTC: getTokenFromName("BTC")?.decimals,
-  rBTC: getRTokenFromAddress("rBTC")?.decimals,
-  dBTC: getDTokenFromAddress("dBTC")?.decimals,
-  
   USDT: getTokenFromName("USDT")?.decimals,
-  rUSDT: getRTokenFromAddress("rUSDT")?.decimals,
-  dUSDT: getDTokenFromAddress("dUSDT")?.decimals,
-  
   USDC: getTokenFromName("USDC")?.decimals,
-  rUSDC: getRTokenFromAddress("rUSDC")?.decimals,
-  dUSDC: getDTokenFromAddress("dUSDC")?.decimals,
-
   ETH: getTokenFromName("ETH")?.decimals,
-  rETH: getRTokenFromAddress("rETH")?.decimals,
-  dETH: getDTokenFromAddress("dETH")?.decimals,
-
   DAI: getTokenFromName("DAI")?.decimals,
+
+  rBTC: getRTokenFromAddress("rBTC")?.decimals,
+  rUSDT: getRTokenFromAddress("rUSDT")?.decimals,
+  rUSDC: getRTokenFromAddress("rUSDC")?.decimals,
+  rETH: getRTokenFromAddress("rETH")?.decimals,
   rDAI: getRTokenFromAddress("rDAI")?.decimals,
+
+  dBTC: getDTokenFromAddress("dBTC")?.decimals,
+  dUSDT: getDTokenFromAddress("dUSDT")?.decimals,
+  dUSDC: getDTokenFromAddress("dUSDC")?.decimals,
+  dETH: getDTokenFromAddress("dETH")?.decimals,
   dDAI: getDTokenFromAddress("dDAI")?.decimals,
 };
 
