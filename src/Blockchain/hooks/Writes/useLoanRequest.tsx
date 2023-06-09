@@ -74,7 +74,8 @@ const useLoanRequest = () => {
         setAmount,
         rToken,
         setRToken,
-
+        rTokenAmount,
+        setRTokenAmount,
         dataLoanRequest,
         errorLoanRequest,
         resetLoanRequest,
