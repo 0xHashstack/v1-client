@@ -20,7 +20,7 @@ export interface ILoan {
     collateralMarketAddress: string | undefined; // rToken Address
   
     loanAmount: number;  // dToken amount
-    currentLoanAmount: number;  // dToken amount
+    currentLoanAmount: number;  // native tokens
     collateralAmount: number;  // rToken amount
   
     createdAt: Date;
@@ -39,17 +39,17 @@ export interface IDeposit {
 }
 
 export interface IMarketInfo {
-    borrowRate: number;
+    borrowRate: number; // borrow rate
     supplyRate: number;
     stakingRate: number;
 
-    totalSupply: number;
+    totalSupply: number; // 
     lentAssets: number;
     totalBorrow: number;
 
     utilisationPerMarket: number;
-    exchangeRateRtokenToUnderlying: number;
-    exchangeRateDTokenToUnderlying: number;
+    exchangeRateRtokenToUnderlying: number;  // 10^18 precision 
+    exchangeRateDTokenToUnderlying: number;  // 10^18 precision
     exchangeRateUnderlyingToRtoken: number;
     exchangeRateUnderlyingToDtoken: number;
 
@@ -59,14 +59,15 @@ export interface IMarketInfo {
 export interface IProtocolReserves {
     totalReserves: number;
     availableReserves: number;
-    avgAssetUtilisation: number;
+    avgAssetUtilisation: number; // weighted avg of all the utilisations of markets
 }
 
 export interface IUserStats {
-    netWorth: number;
-    yourSupply: number;
-    yourBorrow: number;
-    netSupplyAPR: number;
-    netBorrowAPR: number;
+    netWorth: number;   // current values of loans - total borrow + total supply
+    yourSupply: number; // usd terms
+    yourBorrow: number; // usd terms
+    netSupplyAPR: number; // usd terms
+    netBorrowAPR: number; // usd terms
 }
 
+// Net apr = (total supply * supply apr - total borrow * borrow apr) / networth
