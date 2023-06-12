@@ -122,7 +122,7 @@ const DashboardLeft = ({
   }
   const assetBalance: assetB = {
     USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
-    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
+    USDC: 87,
     BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
@@ -377,6 +377,7 @@ const DashboardLeft = ({
                       color="#BDBFC1;"
                       backGroundOverLay="rgba(244, 242, 255, 0.5)"
                       coin={coin}
+                      walletBalance={assetBalance[coin.name]?.statusBalanceOf === "success" ? BNtoNum(uint256.uint256ToBN(assetBalance[coin.name]?.dataBalanceOf?.balance)) : 0}
                     />
                   </Box>
                 </Td>

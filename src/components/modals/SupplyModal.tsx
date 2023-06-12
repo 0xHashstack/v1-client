@@ -60,6 +60,7 @@ import { useToast } from "@chakra-ui/react";
 const SupplyModal = ({
   buttonText,
   coin,
+  walletBalance,
   backGroundOverLay,
   ...restProps
 }: any) => {
@@ -90,7 +91,7 @@ const SupplyModal = ({
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
-  const walletBalance = useSelector(selectWalletBalance);
+  // const walletBalance = useSelector(selectWalletBalance);
   const [depostiTransactionHash, setDepostiTransactionHash] = useState()
   // const [transactionFailed, setTransactionFailed] = useState(false);
 

@@ -1305,7 +1305,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     mt="1.5rem"
                     mb="1.5rem"
                     border="1px solid #8B949E"
-                    labelArray={[
+                    labelSuccessArray={[
                       "Collateral received",
                       "Processing the borrow request.",
                       // <ErrorButton errorText="Transaction failed" />,
@@ -1314,6 +1314,13 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                         key={"successButton"}
                         successText={"Borrow successful."}
                       />,
+                    ]}
+                    labelErrorArray={[
+                      "Collateral received",
+                      "Processing the borrow request.",
+                      <ErrorButton errorText="Transaction failed" />,
+                      <ErrorButton errorText="Copy error!" />,
+
                     ]}
                   >
                     Borrow
