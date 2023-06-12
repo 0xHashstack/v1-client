@@ -10,6 +10,7 @@ import {
   Slider,
   SliderMark,
   SliderTrack,
+  SliderThumb,
   SliderFilledTrack,
   NumberInput,
   NumberInputField,
@@ -27,7 +28,8 @@ import USDCLogo from "@/assets/icons/coins/usdc";
 import USDTLogo from "@/assets/icons/coins/usdt";
 import ETHLogo from "@/assets/icons/coins/eth";
 import DAILogo from "@/assets/icons/coins/dai";
-
+import SliderPointer from "@/assets/icons/sliderPointer";
+import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import DropdownUp from "../../assets/icons/dropdownUpIcon";
 import InfoIcon from "../../assets/icons/infoIcon";
 import { useDispatch, useSelector } from "react-redux";
@@ -273,7 +275,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
               display="flex"
               justifyContent="space-around"
               gap="5"
-              //   alignItems="center"
+            //   alignItems="center"
             >
               <Box w="48%">
                 <Box
@@ -319,10 +321,10 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       cursor="pointer"
                       borderRadius="md"
                       className="navbar"
-                      onClick={() =>{
-                        if(transactionStarted){
+                      onClick={() => {
+                        if (transactionStarted) {
                           return;
-                        }else{
+                        } else {
                           handleDropdownClick(
                             "tradeModalCollateralMarketDropdown"
                           )
@@ -376,15 +378,13 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                                   w="full"
                                   display="flex"
                                   py="5px"
-                                  px={`${
-                                    coin === currentCollateralCoin ? "1" : "5"
-                                  }`}
+                                  px={`${coin === currentCollateralCoin ? "1" : "5"
+                                    }`}
                                   gap="1"
-                                  bg={`${
-                                    coin === currentCollateralCoin
+                                  bg={`${coin === currentCollateralCoin
                                       ? "#0C6AD9"
                                       : "inherit"
-                                  }`}
+                                    }`}
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(coin)}</Box>
@@ -421,18 +421,17 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                     <Box
                       width="100%"
                       color="white"
-                      border={`${
-                        inputCollateralAmount > walletBalance
+                      border={`${inputCollateralAmount > walletBalance
                           ? "1px solid #CF222E"
                           : inputCollateralAmount < 0
-                          ? "1px solid #CF222E"
-                          : isNaN(inputCollateralAmount)
-                          ? "1px solid #CF222E"
-                          : inputCollateralAmount > 0 &&
-                            inputCollateralAmount <= walletBalance
-                          ? "1px solid #1A7F37"
-                          : "1px solid #2B2F35 "
-                      }`}
+                            ? "1px solid #CF222E"
+                            : isNaN(inputCollateralAmount)
+                              ? "1px solid #CF222E"
+                              : inputCollateralAmount > 0 &&
+                                inputCollateralAmount <= walletBalance
+                                ? "1px solid #1A7F37"
+                                : "1px solid #2B2F35 "
+                        }`}
                       borderRadius="6px"
                       display="flex"
                       justifyContent="space-between"
@@ -451,17 +450,16 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       >
                         <NumberInputField
                           placeholder={`Minimum 0.01536 ${currentCollateralCoin}`}
-                          color={`${
-                            inputCollateralAmount > walletBalance
+                          color={`${inputCollateralAmount > walletBalance
                               ? "#CF222E"
                               : isNaN(inputCollateralAmount)
-                              ? "#CF222E"
-                              : inputCollateralAmount < 0
-                              ? "#CF222E"
-                              : inputCollateralAmount == 0
-                              ? "white"
-                              : "#1A7F37"
-                          }`}
+                                ? "#CF222E"
+                                : inputCollateralAmount < 0
+                                  ? "#CF222E"
+                                  : inputCollateralAmount == 0
+                                    ? "white"
+                                    : "#1A7F37"
+                            }`}
                           _disabled={{ color: "#1A7F37" }}
                           border="0px"
                           _placeholder={{
@@ -494,8 +492,8 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       </Button>
                     </Box>
                     {inputCollateralAmount > walletBalance ||
-                    inputCollateralAmount < 0 ||
-                    isNaN(inputCollateralAmount) ? (
+                      inputCollateralAmount < 0 ||
+                      isNaN(inputCollateralAmount) ? (
                       <Text
                         display="flex"
                         justifyContent="space-between"
@@ -560,36 +558,46 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                         _disabled={{ cursor: "pointer" }}
                         focusThumbOnChange={false}
                       >
-                        <SliderMark value={sliderValue}>
-                          <Box
-                            position="absolute"
-                            bottom="-8px"
-                            left="-11px"
-                            zIndex="1"
-                          >
-                            <SliderTooltip />
-                            <Text
-                              position="absolute"
-                              color="black"
-                              top="6px"
-                              left={
-                                sliderValue !== 100
-                                  ? sliderValue >= 10
-                                    ? "15%"
-                                    : "25%"
-                                  : "8%"
-                              }
-                              fontSize=".58rem"
-                              fontWeight="bold"
-                              textAlign="center"
-                            >
-                              {sliderValue}%
-                            </Text>
-                          </Box>
+                        <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
+                          {sliderValue >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
+                        </SliderMark>
+                        <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
+                          {sliderValue >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
+                        </SliderMark>
+                        <SliderMark value={50} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                          {sliderValue >= 50 ? <SliderPointerWhite /> : <SliderPointer />}
+                        </SliderMark>
+                        <SliderMark value={75} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                          {sliderValue >= 75 ? <SliderPointerWhite /> : <SliderPointer />}
+                        </SliderMark>
+                        <SliderMark value={100} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                          {sliderValue == 100 ? <SliderPointerWhite /> : <SliderPointer />}
+                        </SliderMark>
+                        <SliderMark
+                          value={sliderValue}
+                          textAlign='center'
+                          // bg='blue.500'
+                          color='white'
+                          mt='-8'
+                          ml={
+                            sliderValue !== 100 ? "-5" : "-6"
+                          }
+                          w='12'
+                          fontSize="12px"
+                          fontWeight="400"
+                          lineHeight="20px"
+                          letterSpacing="0.25px"
+                        >
+                          {sliderValue}%
                         </SliderMark>
                         <SliderTrack bg="#343333">
-                          <SliderFilledTrack bg="white" w={`${sliderValue}`} />
+                          <SliderFilledTrack
+                            bg="white"
+                            w={`${sliderValue}`}
+                            _disabled={{ bg: "white" }}
+                          />
                         </SliderTrack>
+                        <SliderThumb />
                       </Slider>
                     </Box>
                   </Box>
@@ -638,10 +646,10 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       borderRadius="md"
                       className="navbar"
                       cursor="pointer"
-                      onClick={() =>{
-                        if(transactionStarted){
+                      onClick={() => {
+                        if (transactionStarted) {
                           return;
-                        }else{
+                        } else {
                           handleDropdownClick("tradeModalBorrowMarketDropdown")
                         }
                       }}
@@ -693,15 +701,13 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                                   w="full"
                                   display="flex"
                                   py="5px"
-                                  px={`${
-                                    coin === currentBorrowCoin ? "1" : "5"
-                                  }`}
+                                  px={`${coin === currentBorrowCoin ? "1" : "5"
+                                    }`}
                                   gap="1"
-                                  bg={`${
-                                    coin === currentBorrowCoin
+                                  bg={`${coin === currentBorrowCoin
                                       ? "#0C6AD9"
                                       : "inherit"
-                                  }`}
+                                    }`}
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(coin)}</Box>
@@ -738,18 +744,17 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                     <Box
                       width="100%"
                       color="white"
-                      border={`${
-                        inputBorrowAmount > walletBalance
+                      border={`${inputBorrowAmount > walletBalance
                           ? "1px solid #CF222E"
                           : inputBorrowAmount < 0
-                          ? "1px solid #CF222E"
-                          : isNaN(inputBorrowAmount)
-                          ? "1px solid #CF222E"
-                          : inputBorrowAmount > 0 &&
-                            inputBorrowAmount <= walletBalance
-                          ? "1px solid #1A7F37"
-                          : "1px solid #2B2F35 "
-                      }`}
+                            ? "1px solid #CF222E"
+                            : isNaN(inputBorrowAmount)
+                              ? "1px solid #CF222E"
+                              : inputBorrowAmount > 0 &&
+                                inputBorrowAmount <= walletBalance
+                                ? "1px solid #1A7F37"
+                                : "1px solid #2B2F35 "
+                        }`}
                       borderRadius="6px"
                       display="flex"
                       justifyContent="space-between"
@@ -768,17 +773,16 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       >
                         <NumberInputField
                           placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
-                          color={`${
-                            inputBorrowAmount > walletBalance
+                          color={`${inputBorrowAmount > walletBalance
                               ? "#CF222E"
                               : isNaN(inputBorrowAmount)
-                              ? "#CF222E"
-                              : inputBorrowAmount < 0
-                              ? "#CF222E"
-                              : inputBorrowAmount == 0
-                              ? "white"
-                              : "#1A7F37"
-                          }`}
+                                ? "#CF222E"
+                                : inputBorrowAmount < 0
+                                  ? "#CF222E"
+                                  : inputBorrowAmount == 0
+                                    ? "white"
+                                    : "#1A7F37"
+                            }`}
                           border="0px"
                           _disabled={{ color: "#1A7F37" }}
                           _placeholder={{
@@ -811,8 +815,8 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       </Button>
                     </Box>
                     {inputBorrowAmount > walletBalance ||
-                    inputBorrowAmount < 0 ||
-                    isNaN(inputBorrowAmount) ? (
+                      inputBorrowAmount < 0 ||
+                      isNaN(inputBorrowAmount) ? (
                       <Text
                         display="flex"
                         justifyContent="space-between"
@@ -877,36 +881,46 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                         _disabled={{ cursor: "pointer" }}
                         focusThumbOnChange={false}
                       >
-                        <SliderMark value={sliderValue2}>
-                          <Box
-                            position="absolute"
-                            bottom="-8px"
-                            left="-11px"
-                            zIndex="1"
-                          >
-                            <SliderTooltip />
-                            <Text
-                              position="absolute"
-                              color="black"
-                              top="6px"
-                              left={
-                                sliderValue2 !== 100
-                                  ? sliderValue2 >= 10
-                                    ? "15%"
-                                    : "25%"
-                                  : "8%"
-                              }
-                              fontSize=".58rem"
-                              fontWeight="bold"
-                              textAlign="center"
-                            >
-                              {sliderValue2}%
-                            </Text>
-                          </Box>
+                        <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
+                          {sliderValue2 >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
+                        </SliderMark>
+                        <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
+                          {sliderValue2 >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
+                        </SliderMark>
+                        <SliderMark value={50} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                          {sliderValue2 >= 50 ? <SliderPointerWhite /> : <SliderPointer />}
+                        </SliderMark>
+                        <SliderMark value={75} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                          {sliderValue2 >= 75 ? <SliderPointerWhite /> : <SliderPointer />}
+                        </SliderMark>
+                        <SliderMark value={100} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                          {sliderValue2 == 100 ? <SliderPointerWhite /> : <SliderPointer />}
+                        </SliderMark>
+                        <SliderMark
+                          value={sliderValue2}
+                          textAlign='center'
+                          // bg='blue.500'
+                          color='white'
+                          mt='-8'
+                          ml={
+                            sliderValue2 !== 100 ? "-5" : "-6"
+                          }
+                          w='12'
+                          fontSize="12px"
+                          fontWeight="400"
+                          lineHeight="20px"
+                          letterSpacing="0.25px"
+                        >
+                          {sliderValue2}%
                         </SliderMark>
                         <SliderTrack bg="#343333">
-                          <SliderFilledTrack bg="white" w={`${sliderValue2}`} />
+                          <SliderFilledTrack
+                            bg="white"
+                            w={`${sliderValue2}`}
+                            _disabled={{ bg: "white" }}
+                          />
                         </SliderTrack>
+                        <SliderThumb />
                       </Slider>
                     </Box>
                   </Box>
@@ -983,10 +997,10 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       pr="3"
                       borderRadius="md"
                       className="navbar"
-                      onClick={() =>{
-                        if(transactionStarted){
+                      onClick={() => {
+                        if (transactionStarted) {
                           return;
-                        }else{
+                        } else {
                           handleDropdownClick("yourBorrowDappDropdown")
                         }
                       }}
@@ -1049,15 +1063,13 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                                   w="full"
                                   display="flex"
                                   py="5px"
-                                  px={`${
-                                    dapp.name === currentDapp ? "1" : "5"
-                                  }`}
+                                  px={`${dapp.name === currentDapp ? "1" : "5"
+                                    }`}
                                   gap="1"
-                                  bg={`${
-                                    dapp.name === currentDapp
+                                  bg={`${dapp.name === currentDapp
                                       ? "#0C6AD9"
                                       : "inherit"
-                                  }`}
+                                    }`}
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(dapp.name)}</Box>
@@ -1111,10 +1123,10 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       pr="3"
                       borderRadius="md"
                       className="navbar"
-                      onClick={() =>{
-                        if(transactionStarted){
+                      onClick={() => {
+                        if (transactionStarted) {
                           return;
-                        }else{
+                        } else {
 
                           handleDropdownClick("yourBorrowPoolDropdown")
                         }
@@ -1145,7 +1157,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                         )}
                       </Box>
                       {modalDropdowns.yourBorrowPoolDropdown &&
-                      radioValue === "1" ? (
+                        radioValue === "1" ? (
                         <Box
                           w="full"
                           left="0"
@@ -1182,9 +1194,8 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                                   py="5px"
                                   px={`${pool === currentPool ? "1" : "5"}`}
                                   gap="1"
-                                  bg={`${
-                                    pool === currentPool ? "#0C6AD9" : "inherit"
-                                  }`}
+                                  bg={`${pool === currentPool ? "#0C6AD9" : "inherit"
+                                    }`}
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(pool)}</Box>
@@ -1232,11 +1243,10 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                                   py="5px"
                                   px={`${coin === currentPoolCoin ? "1" : "5"}`}
                                   gap="1"
-                                  bg={`${
-                                    coin === currentPoolCoin
+                                  bg={`${coin === currentPoolCoin
                                       ? "#0C6AD9"
                                       : "inherit"
-                                  }`}
+                                    }`}
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(coin)}</Box>
@@ -1515,40 +1525,40 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                   </Box>
                 </Box>
                 {inputCollateralAmount > 0 &&
-                inputBorrowAmount > 0 &&
-                currentDapp != "Select a dapp" &&
-                (currentPool != "Select a pool" ||
-                  currentPoolCoin != "Select a pool") ? (
-                    <Box
-                      onClick={()=>{setTransactionStarted(true)}}
-                     >
-                  <AnimatedButton
-                    bgColor="#101216"
-                    // bgColor="red"
-                    // p={0}
-                    color="#8B949E"
-                    size="sm"
-                    width="100%"
-                    mt="1.5rem"
-                    mb="1.5rem"
-                    border="1px solid #8B949E"
-                    labelArray={[
-                      "Performing Checks",
-                      "Processing",
-                      "Collateral received",
-                      "Processing the borrow request.",
-                      "Checking the reserves for sufficient liquidity",
-                      "Reserves are sufficient",
-                      "Borrow successful.",
-                      <SuccessButton
-                        key={"successButton"}
-                        successText={"Borrow successful"}
-                      />,
-                    ]}
+                  inputBorrowAmount > 0 &&
+                  currentDapp != "Select a dapp" &&
+                  (currentPool != "Select a pool" ||
+                    currentPoolCoin != "Select a pool") ? (
+                  <Box
+                    onClick={() => { setTransactionStarted(true) }}
                   >
-                    Borrow
-                  </AnimatedButton>
-                    </Box>
+                    <AnimatedButton
+                      bgColor="#101216"
+                      // bgColor="red"
+                      // p={0}
+                      color="#8B949E"
+                      size="sm"
+                      width="100%"
+                      mt="1.5rem"
+                      mb="1.5rem"
+                      border="1px solid #8B949E"
+                      labelArray={[
+                        "Performing Checks",
+                        "Processing",
+                        "Collateral received",
+                        "Processing the borrow request.",
+                        "Checking the reserves for sufficient liquidity",
+                        "Reserves are sufficient",
+                        "Borrow successful.",
+                        <SuccessButton
+                          key={"successButton"}
+                          successText={"Borrow successful"}
+                        />,
+                      ]}
+                    >
+                      Borrow
+                    </AnimatedButton>
+                  </Box>
                 ) : (
                   <Button
                     bg="#101216"

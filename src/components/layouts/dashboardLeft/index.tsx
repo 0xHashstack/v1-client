@@ -20,8 +20,7 @@ import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { uint256 } from "starknet";
 import { BNtoNum } from "@/Blockchain/utils/utils";
-import useGetInterestRates from "@/Blockchain/hooks/Reads/useGetInterestRates";
-import useGetUnderlyingAsset from "@/Blockchain/hooks/Reads/userGetUnderlyingAsset";
+
 import numberFormatter from "@/utils/functions/numberFormatter";
 export interface ICoin {
   name: string;
@@ -58,9 +57,9 @@ const DashboardLeft = ({
     }
     return null;
   });
-  const { dataInterestRates } = useGetInterestRates();
-  const { dataUnderlyingAsset } = useGetUnderlyingAsset();
-  console.log(dataUnderlyingAsset, "data underlying assets");
+  // const { dataInterestRates } = useGetInterestRates();
+  // const { dataUnderlyingAsset } = useGetUnderlyingAsset();
+  // console.log(dataUnderlyingAsset, "data underlying assets");
   // console.log(dataInterestRates,"dataIntrestRates");
 
   // console.log(coinPrices)
@@ -106,13 +105,13 @@ const DashboardLeft = ({
   } = useBalanceOf(
     "0x457f2ecab58ceb7ffd3ca658f8ce65820fda4fb9cd2878dd2e001d8d2753503"
   );
-  console.log(
-    "balance ret",
-    dataBalanceOf,
-    isFetchingBalanceOf,
-    errorBalanceOf,
-    statusBalanceOf
-  );
+  // console.log(
+  //   "balance ret",
+  //   dataBalanceOf,
+  //   isFetchingBalanceOf,
+  //   errorBalanceOf,
+  //   statusBalanceOf
+  // );
 
   useEffect(() => {
     if (errorBalanceOf || isFetchingBalanceOf) {
@@ -120,12 +119,12 @@ const DashboardLeft = ({
       return;
     }
     if (dataBalanceOf) {
-      console.log(
-        "return",
-        dataBalanceOf,
-        JSON.stringify(dataBalanceOf),
-        BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
-      );
+      // console.log(
+      //   "return",
+      //   dataBalanceOf,
+      //   JSON.stringify(dataBalanceOf),
+      //   BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
+      // );
     }
   }, [dataBalanceOf]);
 

@@ -170,6 +170,7 @@ const DashboardRight = ({
                   >
                     {/* {checkGap(idx1, idx2)} */}
                     {/* {!coinPrices[idx] ? (
+                    {/* {!coinPrices[idx] ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"

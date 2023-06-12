@@ -19,6 +19,7 @@ import {
   NumberInput,
   NumberInputField,
   Portal,
+  SliderThumb,
 } from "@chakra-ui/react";
 import ArrowUp from "@/assets/icons/arrowup";
 import TickIcon from "@/assets/icons/tickIcon";
@@ -52,6 +53,8 @@ import { useAccount, useBalance } from "@starknet-react/core";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import useTransfer from "@/Blockchain/hooks/Writes/useTransfer";
 import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
+import SliderPointer from "@/assets/icons/sliderPointer";
+import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 
 const SupplyModal = ({
   buttonText,
@@ -60,7 +63,7 @@ const SupplyModal = ({
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const {        depositAmount,
+  const { depositAmount,
     setDepositAmount,
     asset,
     setAsset,
@@ -73,7 +76,7 @@ const SupplyModal = ({
     isLoadingDeposit,
     isSuccessDeposit,
     statusDeposit,
-}=useDeposit();
+  } = useDeposit();
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
     coin ? coin.name : "BTC"
@@ -87,13 +90,15 @@ const SupplyModal = ({
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
 
-  const handleTransaction=async()=>{
-    try{
-      const deposit=await writeAsyncDeposit();
-    }catch(err){
+  const handleTransaction = async () => {
+    try {
+      const deposit = await writeAsyncDeposit();
+      console.log("Status transaction",statusDeposit)
+      console.log(isSuccessDeposit,"success ?")
+    } catch (err) {
       console.log(err)
     }
-    
+
   }
 
   const getCoin = (CoinName: string) => {
@@ -311,11 +316,10 @@ const SupplyModal = ({
                               py="5px"
                               px={`${coin === currentSelectedCoin ? "1" : "5"}`}
                               gap="1"
-                              bg={`${
-                                coin === currentSelectedCoin
+                              bg={`${coin === currentSelectedCoin
                                   ? "#0C6AD9"
                                   : "inherit"
-                              }`}
+                                }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -355,17 +359,16 @@ const SupplyModal = ({
                 <Box
                   width="100%"
                   color="white"
-                  border={`${
-                    depositAmount > walletBalance
+                  border={`${depositAmount > walletBalance
                       ? "1px solid #CF222E"
                       : depositAmount < 0
-                      ? "1px solid #CF222E"
-                      : isNaN(depositAmount)
-                      ? "1px solid #CF222E"
-                      : depositAmount > 0 && depositAmount <= walletBalance
-                      ? "1px solid #1A7F37"
-                      : "1px solid #2B2F35 "
-                  }`}
+                        ? "1px solid #CF222E"
+                        : isNaN(depositAmount)
+                          ? "1px solid #CF222E"
+                          : depositAmount > 0 && depositAmount <= walletBalance
+                            ? "1px solid #1A7F37"
+                            : "1px solid #2B2F35 "
+                    }`}
                   borderRadius="6px"
                   display="flex"
                   justifyContent="space-between"
@@ -385,17 +388,16 @@ const SupplyModal = ({
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
-                      color={`${
-                        depositAmount > walletBalance
+                      color={`${depositAmount > walletBalance
                           ? "#CF222E"
                           : isNaN(depositAmount)
-                          ? "#CF222E"
-                          : depositAmount < 0
-                          ? "#CF222E"
-                          : depositAmount == 0
-                          ? "white"
-                          : "#1A7F37"
-                      }`}
+                            ? "#CF222E"
+                            : depositAmount < 0
+                              ? "#CF222E"
+                              : depositAmount == 0
+                                ? "white"
+                                : "#1A7F37"
+                        }`}
                       _disabled={{ color: "#1A7F37" }}
                       border="0px"
                       _placeholder={{
@@ -426,8 +428,8 @@ const SupplyModal = ({
                   </Button>
                 </Box>
                 {depositAmount > walletBalance ||
-                depositAmount < 0 ||
-                isNaN(depositAmount) ? (
+                  depositAmount < 0 ||
+                  isNaN(depositAmount) ? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -480,20 +482,13 @@ const SupplyModal = ({
                 <Box
                   pt={5}
                   pb={2}
-                  mt="2.1rem"
+                  pr="0.5"
+                  mt="1rem"
                   // width={`${sliderValue > 86 ? "96%" : "100%"}`}
                   // mr="auto"
                   // transition="ease-in-out"
                   display="flex"
                 >
-                  <Box
-                    bg="#343333"
-                    as="span"
-                    w="10px"
-                    h="4px"
-                    borderLeftRadius="5px"
-                    // mt="4px"
-                  ></Box>
                   <Slider
                     aria-label="slider-ex-6"
                     defaultValue={sliderValue}
@@ -509,32 +504,37 @@ const SupplyModal = ({
                     _disabled={{ cursor: "pointer" }}
                     focusThumbOnChange={false}
                   >
-                    <SliderMark value={sliderValue}>
-                      <Box
-                        position="absolute"
-                        bottom="-8px"
-                        left="-13.5px"
-                        zIndex="1"
-                      >
-                        <SliderTooltip />
-                        <Text
-                          position="absolute"
-                          color="black"
-                          top="7px"
-                          left={
-                            sliderValue !== 100
-                              ? sliderValue >= 10
-                                ? "15%"
-                                : "25%"
-                              : "8%"
-                          }
-                          fontSize=".58rem"
-                          fontWeight="bold"
-                          textAlign="center"
-                        >
-                          {sliderValue}%
-                        </Text>
-                      </Box>
+                                        <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
+                      {sliderValue >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
+                    </SliderMark>
+                    <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
+                      {sliderValue >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
+                    </SliderMark>
+                    <SliderMark value={50} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                      {sliderValue >= 50 ? <SliderPointerWhite /> : <SliderPointer />}
+                    </SliderMark>
+                    <SliderMark value={75} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                      {sliderValue >= 75 ? <SliderPointerWhite /> : <SliderPointer />}
+                    </SliderMark>
+                    <SliderMark value={100} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                      {sliderValue == 100 ? <SliderPointerWhite /> : <SliderPointer />}
+                    </SliderMark>
+                    <SliderMark
+                      value={sliderValue}
+                      textAlign='center'
+                      // bg='blue.500'
+                      color='white'
+                      mt='-8'
+                      ml={
+                        sliderValue !== 100 ? "-5" : "-6"
+                      }
+                      w='12'
+                      fontSize="12px"
+                      fontWeight="400"
+                      lineHeight="20px"
+                      letterSpacing="0.25px"
+                    >
+                      {sliderValue}%
                     </SliderMark>
                     <SliderTrack bg="#343333">
                       <SliderFilledTrack
@@ -543,15 +543,8 @@ const SupplyModal = ({
                         _disabled={{ bg: "white" }}
                       />
                     </SliderTrack>
+                    <SliderThumb />
                   </Slider>
-                  <Box
-                    bg="#343333"
-                    as="span"
-                    w="10px"
-                    h="4px"
-                    borderRightRadius="5px"
-                    // mt="px"
-                  ></Box>{" "}
                 </Box>
               </Card>
               <Box display="flex" gap="2">
@@ -720,7 +713,7 @@ const SupplyModal = ({
                       setTransactionStarted(true);
                       // dataDeposit();
                       handleTransaction();
-                      console.log(isSuccessDeposit,"status deposit")
+                      // console.log(isSuccessDeposit, "status deposit")
                     }}
                   >
                     <AnimatedButton
@@ -746,7 +739,7 @@ const SupplyModal = ({
                           successText={"Success"}
                         />,
                       ]}
-                      // onClick={}
+                    // onClick={}
                     >
                       Supply
                     </AnimatedButton>

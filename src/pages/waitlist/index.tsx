@@ -19,7 +19,7 @@ import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 import SupplyEquivalentModal from "@/components/modals/SupplyEquivalentModal";
 import TransferDepositModal from "@/components/modals/TransferDepositModal";
 import ReferFreindsModal from "@/components/modals/ReferFreindsModal";
-import { get_user_loans } from "@/Blockchain/scripts/getUserLoans";
+import { get_user_loans } from "@/Blockchain/scripts/Loans";
 // import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 
 const inter = Inter({ subsets: ["latin"] });
