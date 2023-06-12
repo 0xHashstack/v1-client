@@ -16,7 +16,7 @@ function parseUserStats(
   return userStats;
 }
 
-export async function getProtocolReserves() {
+export async function getUserReserves() {
   const provider = getProvider();
   const metricsContract = new Contract(metricsAbi, metricsContractAddress, provider);
   const res = await metricsContract.call("get_user_stats", [], {

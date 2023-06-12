@@ -4,11 +4,24 @@ import { useState, useEffect } from "react";
 import DashboardLeft from "../dashboardLeft";
 import DashboardRight from "../dashboardRight";
 import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
+import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
+import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
+import { getUserReserves } from "@/Blockchain/scripts/userStats";
 const MarketDashboard = () => {
   const [oraclePrices, setOraclePrices]: any = useState([]);
   useEffect(() => {
-    fetchOraclePrices();
+    // fetchOraclePrices();
+    fetchProtocolReserves();
   }, []);
+
+  const fetchProtocolReserves=async()=>{
+    try{
+      const reserves=await getProtocolReserves();
+      console.log(reserves,"protocol");
+    }catch(err){
+      console.log("Error fetching protocol reserves",err)
+    }
+  }
 
   const fetchOraclePrices = async () => {
     try {

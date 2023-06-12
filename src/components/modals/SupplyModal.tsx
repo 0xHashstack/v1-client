@@ -34,11 +34,14 @@ import DAILogo from "@/assets/icons/coins/dai";
 import DropdownUp from "@/assets/icons/dropdownUpIcon";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
+import ErrorToast from "../uiElements/toasts/ErrorToast";
 import {
   selectInputSupplyAmount,
   setCoinSelectedSupplyModal,
   selectWalletBalance,
   setInputSupplyAmount,
+  selectTransactionStatus,
+  setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -49,13 +52,11 @@ import {
 } from "@/store/slices/dropdownsSlice";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
-import { useAccount, useBalance } from "@starknet-react/core";
-import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
-import useTransfer from "@/Blockchain/hooks/Writes/useTransfer";
+import { useAccount, useBalance, useWaitForTransaction } from "@starknet-react/core";
 import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
-
+import { useToast } from "@chakra-ui/react";
 const SupplyModal = ({
   buttonText,
   coin,
@@ -77,6 +78,7 @@ const SupplyModal = ({
     isSuccessDeposit,
     statusDeposit,
   } = useDeposit();
+  const toast=useToast();
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
     coin ? coin.name : "BTC"
@@ -89,17 +91,46 @@ const SupplyModal = ({
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
+  const [depostiTransactionHash, setDepostiTransactionHash] = useState()
+  // const [transactionFailed, setTransactionFailed] = useState(false);
+
+    const recipetData=useWaitForTransaction({hash:depostiTransactionHash});
 
   const handleTransaction = async () => {
     try {
       const deposit = await writeAsyncDeposit();
-      console.log("Status transaction",statusDeposit)
+      setDepostiTransactionHash(deposit?.transaction_hash);
+      dispatch(setTransactionStatus("success"));
+      if(isSuccessDeposit){
+        toast({
+          title: 'Success',
+          description: 'Success',
+          variant:'subtle',
+          position:'bottom-right',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+      console.log("Status transaction",deposit)
       console.log(isSuccessDeposit,"success ?")
     } catch (err) {
+      // setTransactionFailed(true);
+      dispatch(setTransactionStatus("failed"))
       console.log(err)
+      toast({
+        description: 'An error occurred while handling the transaction.',
+        variant:'subtle',
+        position:'bottom-right',
+        status: 'error',
+        isClosable: true,
+      });
     }
-
   }
+  useEffect(()=>{
+    console.log("Status transaction",statusDeposit)
+    // console.log(recipetData.data,"recipet");
+  },[statusDeposit])
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -154,6 +185,7 @@ const SupplyModal = ({
     }
   };
 
+
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
   const resetStates = () => {
@@ -163,6 +195,7 @@ const SupplyModal = ({
     setCurrentSelectedCoin(coin ? coin.name : "BTC");
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
+    dispatch(setTransactionStatus(""));
   };
 
   useEffect(() => {
@@ -712,10 +745,15 @@ const SupplyModal = ({
                     onClick={() => {
                       setTransactionStarted(true);
                       // dataDeposit();
+                      if(transactionStarted){
+                        return;
+                      }
                       handleTransaction();
                       // console.log(isSuccessDeposit, "status deposit")
                     }}
                   >
+                    
+
                     <AnimatedButton
                       bgColor="#101216"
                       // bgColor="red"
@@ -725,8 +763,8 @@ const SupplyModal = ({
                       width="100%"
                       mt="1.5rem"
                       mb="1.5rem"
-                      border="1px solid #8B949E"
-                      labelArray={[
+                      
+                      labelSuccessArray={[
                         "Deposit Amount approved",
                         "Successfully transferred to Hashstack’s supply vault.",
                         "Determining the rToken amount to mint.",
@@ -739,6 +777,16 @@ const SupplyModal = ({
                           successText={"Success"}
                         />,
                       ]}
+                      labelErrorArray={[
+                        "Deposit Amount approved",
+                        "Successfully transferred to Hashstack’s supply vault.",
+                        <ErrorButton errorText="Transaction failed" />,
+                        <ErrorButton errorText="Copy error!" />,
+
+                      ]}
+                      // transactionStarted={(depostiTransactionHash!="" || transactionFailed==true)}
+                      _disabled={{bgColor:"white",color:"black"}}
+                      isDisabled={transactionStarted==true}
                     // onClick={}
                     >
                       Supply
