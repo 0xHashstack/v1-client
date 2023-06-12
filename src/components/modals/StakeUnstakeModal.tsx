@@ -325,7 +325,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
           resetStates();
         }}
         isCentered
-        //   scrollBehavior="inside"
+          scrollBehavior="inside"
       >
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
         <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
