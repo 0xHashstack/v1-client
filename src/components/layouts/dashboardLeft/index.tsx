@@ -22,6 +22,7 @@ import { uint256 } from "starknet";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 
 import numberFormatter from "@/utils/functions/numberFormatter";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -97,14 +98,14 @@ const DashboardLeft = ({
   //   }
   // }, [dataBalanceOf]);
 
-  const {
-    dataBalanceOf,
-    isFetchingBalanceOf,
-    errorBalanceOf,
-    statusBalanceOf,
-  } = useBalanceOf(
-    "0x457f2ecab58ceb7ffd3ca658f8ce65820fda4fb9cd2878dd2e001d8d2753503"
-  );
+  // const {
+  //   dataBalanceOf,
+  //   isFetchingBalanceOf,
+  //   errorBalanceOf,
+  //   statusBalanceOf,
+  // } = useBalanceOf(
+  //   "0x457f2ecab58ceb7ffd3ca658f8ce65820fda4fb9cd2878dd2e001d8d2753503"
+  // );
   // console.log(
   //   "balance ret",
   //   dataBalanceOf,
@@ -112,21 +113,39 @@ const DashboardLeft = ({
   //   errorBalanceOf,
   //   statusBalanceOf
   // );
-
+  interface assetB {
+    USDT: any;
+    USDC: any;
+    BTC: any;
+    ETH: any;
+    DAI: any;
+  }
+  const assetBalance: assetB = {
+    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
+    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
+    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
+    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
+    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+  };
   useEffect(() => {
-    if (errorBalanceOf || isFetchingBalanceOf) {
-      console.log("return error", errorBalanceOf, statusBalanceOf);
-      return;
+    for (let i of Coins) {
     }
-    if (dataBalanceOf) {
-      // console.log(
-      //   "return",
-      //   dataBalanceOf,
-      //   JSON.stringify(dataBalanceOf),
-      //   BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
-      // );
-    }
-  }, [dataBalanceOf]);
+  }, []);
+
+  // useEffect(() => {
+  //   if (errorBalanceOf || isFetchingBalanceOf) {
+  //     console.log("return error", errorBalanceOf, statusBalanceOf);
+  //     return;
+  //   }
+  //   if (dataBalanceOf) {
+  //     // console.log(
+  //     //   "return",
+  //     //   dataBalanceOf,
+  //     //   JSON.stringify(dataBalanceOf),
+  //     //   BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
+  //     // );
+  //   }
+  // }, [dataBalanceOf]);
 
   return (
     <TableContainer
@@ -227,7 +246,7 @@ const DashboardLeft = ({
                       <Text fontSize="14px" fontWeight="400">
                         {coin.name}
                       </Text>
-                      {statusBalanceOf != "success" ? (
+                      {assetBalance[coin.name]?.statusBalanceOf != "success" ? (
                         <Skeleton
                           width="4rem"
                           height="1rem"
@@ -239,7 +258,12 @@ const DashboardLeft = ({
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
                           Wallet Bal. {/* {numberFormatter( */}
                           {Number(
-                            BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
+                            // BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
+                            BNtoNum(
+                              uint256.uint256ToBN(
+                                assetBalance[coin.name]?.dataBalanceOf?.balance
+                              )
+                            )
                           )}
                           {/* )} */}
                         </Text>

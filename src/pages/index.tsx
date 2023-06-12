@@ -107,13 +107,18 @@ export default function Home() {
       // localStorage.setItem("account", JSON.stringify(account));
       dispatch(setAccount(account));
 
+      if (isWaitListed) {
+        router.replace(waitlistHref);
+      } else {
+        router.replace(marketHref2);
+      }
       // if (!isWhiteListed) {
-      router.replace(whitelistHref);
+      //   router.replace(whitelistHref);
       // } else if (isWaitListed) {
       //   router.replace(waitlistHref);
       // }
       // {
-      // router.replace(marketHref2);
+      //   router.replace(marketHref2);
       // }
     }
     console.log("account home", address, status);
