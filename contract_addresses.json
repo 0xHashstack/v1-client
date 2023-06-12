@@ -3,6 +3,7 @@
     "goerli": {
       "DIAMOND_ADDRESS": "0x745b5e20def64cfc77f89fc385eda2bc67b7e9cc3d02f7d712bb13e4700644f",
       "L3_DIAMOND_ADDRESS": "0x3cb5772c9250a1b6be2ec5d8eaec04afcc0863a268a86be27cf93960c65f6a",
+      "METRICS_CONTRACT_ADDRESS": "0x0",
       "TOKENS": [
         {
           "name": "BTC",
@@ -218,6 +219,7 @@
     "goerli_2": {
       "DIAMOND_ADDRESS": "0x745b5e20def64cfc77f89fc385eda2bc67b7e9cc3d02f7d712bb13e4700644f",
       "L3_DIAMOND_ADDRESS": "0x3cb5772c9250a1b6be2ec5d8eaec04afcc0863a268a86be27cf93960c65f6a",
+      "METRICS_CONTRACT_ADDRESS": "0x0",
       "TOKENS": [
         {
           "name": "BTC",
@@ -490,6 +492,7 @@
     "mainnet": {
       "DIAMOND_ADDRESS": "0x3dcf5c72ba60eb7b2fe151032769d49dd3df6b04fa3141dffd6e2aa162b7a6e",
       "L3_DIAMOND_ADDRESS": "0x253bc2e5399c56121491559813d8a854718473eb2d31a6ca4624dc715ac6fe9",
+      "METRICS_CONTRACT_ADDRESS": "0x0",
       "TOKENS": [
         {
           "name": "BTC",

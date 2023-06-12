@@ -3,9 +3,7 @@ import ERC20Abi from "./abis/erc20_abi.json";
 import { Provider, number } from "starknet";
 import {
   UseWaitForTransactionResult,
-  UseTransactionResult,
 } from "@starknet-react/core";
-import { ItokenAddressMap, ItokenDecimalsMap } from "./interfaces/interfaces";
 
 export function processAddress(address: string) {
   return number.toHex(number.toBN(number.toFelt(address)));
@@ -64,6 +62,8 @@ export function handleTransactionToast(receipt: UseWaitForTransactionResult) { }
 
 export const diamondAddress: string = contractsEnv.DIAMOND_ADDRESS;
 
+export const metricsContractAddress: string = contractsEnv.METRICS_CONTRACT_ADDRESS;
+
 export const l3DiamondAddress: string = contractsEnv.L3_DIAMOND_ADDRESS;
 
 export const getTokenFromAddress = (address: string) => {
@@ -73,23 +73,4 @@ export const getTokenFromAddress = (address: string) => {
   return token;
 };
 
-// export const getTokenDecimalsFromName = (name: string) =>
-
-export const getCommitmentNameFromIndexDeposit = (index: string) => {
-  if (index === "0") {
-    return "NONE";
-  } else if (index === "1") {
-    return "TWO WEEKS";
-  } else if (index === "2") {
-    return "ONE MONTH";
-  } else if (index === "3") {
-    return "THREE MONTHS";
-  }
-
-  return null;
-};
-
-export const getCommitmentIndex = (index: string) => {
-  return parseInt(index);
-};
 export { ERC20Abi, contractsEnv };

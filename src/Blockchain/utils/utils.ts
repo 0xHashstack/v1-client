@@ -120,43 +120,6 @@ export const borrowInterestAccrued = (asset: any) => {
   //   return new BigNumber(0).toFixed(6);
 };
 
-export const currentDepositInterestRate = (asset: any, historicalAPRs: any) => {
-  const marketHistoricalAPRs = historicalAPRs.filter((aprRecords: any) => {
-    // console.log(aprRecords, asset);
-    return (
-      aprRecords.market === asset.marketAddress &&
-      parseInt(aprRecords.commitment) === asset.commitmentIndex
-    );
-  });
-  const aprWithMultiplier =
-    marketHistoricalAPRs[marketHistoricalAPRs.length - 1]?.apr100x;
-  const multiplier = new BigNumber("100");
-  const aprWithMultiplierBigNumber = new BigNumber(aprWithMultiplier);
-  const aprBigNumber = aprWithMultiplierBigNumber.dividedBy(multiplier);
-  return aprBigNumber.toFixed(6);
-};
-
-export const currentBorrowInterestRate = (asset: any, historicalAPRs: any) => {
-  // console.log(historicalAPRs, asset);
-  let key = `${getTokenFromName(asset.loanMarket).address}__${
-    asset.commitmentIndex
-  }`;
-  // console.log("currentBorrowInterestRate", key);
-  return (historicalAPRs[key]?.borrowAPR?.apr100x / 100).toFixed(2);
-  // const marketHistoricalAPRs = historicalAPRs.filter((aprRecords: any) => {
-  //   return (
-  //     aprRecords.market === asset.loanMarketAddress &&
-  //     parseInt(aprRecords.commitment) === asset.commitmentIndex
-  //   );
-  // });
-  // console.log(marketHistoricalAPRs);
-  // const aprWithMultiplier =
-  //   marketHistoricalAPRs[marketHistoricalAPRs.length - 1].apr100x;
-  // const multiplier = new BigNumber("100");
-  // const aprWithMultiplierBigNumber = new BigNumber(aprWithMultiplier);
-  // const aprBigNumber = aprWithMultiplierBigNumber.dividedBy(multiplier);
-  // return aprBigNumber.toFixed(6);
-};
 
 export const etherToWeiBN = (amount: number, tokenAddress: string) => {
   const token = getTokenFromAddress(tokenAddress);
