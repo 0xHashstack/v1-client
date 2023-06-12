@@ -74,8 +74,8 @@ import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
-  currentSelectedWithdrawlCoin,
-  setcurrentSelectedWithdrawlCoin,
+  currentSelectedWithdrawlCoin: _asset,
+  // setcurrentSelectedWithdrawlCoin,
   coins,
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -84,12 +84,30 @@ const YourSupplyModal = ({
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [inputAmount, setinputAmount] = useState(0);
   const [inputSupplyAmount, setinputSupplyAmount] = useState(0);
-  const [inputWithdrawlAmount, setinputWithdrawlAmount] = useState(0);
+  // const [inputWithdrawlAmount, setinputWithdrawlAmount] = useState(0);
   const [sliderValue2, setSliderValue2] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
   const [withdrawTransactionStarted, setWithdrawTransactionStarted] =
     useState(false);
+  const {
+    asset: currentSelectedWithdrawlCoin,
+    setAsset: setcurrentSelectedWithdrawlCoin,
+    rTokenShares: inputWithdrawlAmount,
+    setRTokenShares: setinputWithdrawlAmount,
+    reciever,
+    setReciever,
 
+    dataWithdrawDeposit,
+    errorWithdrawDeposit,
+    resetWithdrawDeposit,
+    writeWithdrawDeposit,
+    writeAsyncWithdrawDeposit,
+    isErrorWithdrawDeposit,
+    isIdleWithdrawDeposit,
+    isLoadingWithdrawDeposit,
+    isSuccessWithdrawDeposit,
+    statusWithdrawDeposit,
+  } = useWithdrawDeposit();
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
@@ -203,26 +221,6 @@ const YourSupplyModal = ({
     setSliderValue2(0);
   }, [currentSelectedWithdrawlCoin]);
 
-  const {
-    // asset,
-    // setAsset,
-    // rTokenShares,
-    // setRTokenShares,
-    reciever,
-    setReciever,
-
-    dataWithdrawDeposit,
-    errorWithdrawDeposit,
-    resetWithdrawDeposit,
-    writeWithdrawDeposit,
-    writeAsyncWithdrawDeposit,
-    isErrorWithdrawDeposit,
-    isIdleWithdrawDeposit,
-    isLoadingWithdrawDeposit,
-    isSuccessWithdrawDeposit,
-    statusWithdrawDeposit,
-  } = useWithdrawDeposit(inputWithdrawlAmount, currentSelectedWithdrawlCoin);
-
   const handleWithdrawSupply = async () => {
     try {
       const withdraw = await writeAsyncWithdrawDeposit();
@@ -230,6 +228,9 @@ const YourSupplyModal = ({
       console.log("withraw", err);
     }
   };
+  useEffect(() => {
+    setcurrentSelectedWithdrawlCoin(_asset);
+  }, []);
 
   return (
     <Box>

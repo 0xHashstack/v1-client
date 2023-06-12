@@ -22,6 +22,7 @@ import { uint256 } from "starknet";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import useGetInterestRates from "@/Blockchain/hooks/Reads/useGetInterestRates";
 import useGetUnderlyingAsset from "@/Blockchain/hooks/Reads/userGetUnderlyingAsset";
+import numberFormatter from "@/utils/functions/numberFormatter";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -237,10 +238,11 @@ const DashboardLeft = ({
                         />
                       ) : (
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
-                          Wallet Bal.{" "}
+                          Wallet Bal. {/* {numberFormatter( */}
                           {Number(
                             BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
-                          ).toFixed(5)}
+                          )}
+                          {/* )} */}
                         </Text>
                       )}
                     </Box>

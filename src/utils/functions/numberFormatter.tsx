@@ -2,11 +2,11 @@ const numberFormatter = (num: number) => {
   // const absNum = Math.abs(num);
   const absNum = num;
   if (absNum >= 1e9) {
-    return (num / 1e9).toFixed(9) + "B";
+    return (num / 1e9).toFixed(9) + "b";
   } else if (absNum >= 1e6) {
-    return (num / 1e6).toFixed(6) + "M";
+    return (num / 1e6).toFixed(6) + "m";
   } else if (absNum >= 1e3) {
-    return (num / 1e3).toFixed(3) + "K";
+    return (num / 1e3).toFixed(3) + "k";
   }
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
