@@ -68,6 +68,7 @@ import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ArrowUp from "@/assets/icons/arrowup";
 import useRepay from "@/Blockchain/hooks/Writes/useRepay";
+import ErrorButton from "../uiElements/buttons/ErrorButton";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -2011,7 +2012,7 @@ const YourBorrowModal = ({
                             width="100%"
                             mb="1.5rem"
                             border="1px solid #8B949E"
-                            labelArray={[
+                            labelSuccessArray={[
                               "Performing pre-checks",
                               "Processing the spend borrow",
                               "Updating the l3 records.",
@@ -2021,6 +2022,13 @@ const YourBorrowModal = ({
                                 key={"successButton"}
                                 successText={"Spend borrow successful."}
                               />,
+                            ]}
+                            labelErrorArray={[
+                              "Performing pre-checks",
+                              "Processing the spend borrow",
+                              <ErrorButton errorText="Transaction failed" />,
+                              <ErrorButton errorText="Copy error!" />,
+
                             ]}
                           >
                             Spend
@@ -2060,7 +2068,7 @@ const YourBorrowModal = ({
                             width="100%"
                             mb="1.5rem"
                             border="1px solid #8B949E"
-                            labelArray={[
+                            labelSuccessArray={[
                               "Calculating the outstanding borrow amount.",
                               "transferring the repay amount to the borrow vault.",
                               "Burning the rTokens.",
@@ -2073,6 +2081,13 @@ const YourBorrowModal = ({
                                 key={"successButton"}
                                 successText={"Repay loan success"}
                               />,
+                            ]}
+                            labelErrorArray={[
+                              "Calculating the outstanding borrow amount.",
+                              "transferring the repay amount to the borrow vault.",
+                              <ErrorButton errorText="Transaction failed" />,
+                              <ErrorButton errorText="Copy error!" />,
+
                             ]}
                           >
                             Repay borrow
@@ -2110,7 +2125,7 @@ const YourBorrowModal = ({
                             width="100%"
                             mb="1.5rem"
                             border="1px solid #8B949E"
-                            labelArray={[
+                            labelSuccessArray={[
                               "Performing prechecks.",
                               "Processing self liquidation.",
                               "Borrow closed successfully.",
@@ -2122,6 +2137,13 @@ const YourBorrowModal = ({
                                 key={"successButton"}
                                 successText={"Self liqudidation successfull."}
                               />,
+                            ]}
+                            labelErrorArray={[
+                              "Performing prechecks.",
+                              "Processing self liquidation.",
+                              <ErrorButton errorText="Transaction failed" />,
+                              <ErrorButton errorText="Copy error!" />,
+
                             ]}
                           >
                             Zero repay
@@ -2958,7 +2980,7 @@ const YourBorrowModal = ({
                           mt="1.5rem"
                           mb="1.5rem"
                           border="1px solid #8B949E"
-                          labelArray={[
+                          labelSuccessArray={[
                             "Processing",
                             "Transferring collateral to supply vault.",
                             "Minting & transferring rTokens to the user account.",
@@ -2970,6 +2992,13 @@ const YourBorrowModal = ({
                               key={"successButton"}
                               successText={"Add collateral successful."}
                             />,
+                          ]}
+                          labelErrorArray={[
+                            "Processing",
+                            "Transferring collateral to supply vault.",
+                            <ErrorButton errorText="Transaction failed" />,
+                            <ErrorButton errorText="Copy error!" />,
+
                           ]}
                         >
                           Add Collateral

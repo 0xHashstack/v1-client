@@ -61,7 +61,7 @@ import EthToUsdc from "@/assets/icons/pools/ethToUsdc";
 import DaiToEth from "@/assets/icons/pools/daiToEth";
 import BtcToEth from "@/assets/icons/pools/btcToEth";
 import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
-
+import ErrorButton from "../uiElements/buttons/ErrorButton";
 import {
   selectInputSupplyAmount,
   selectCoinSelectedSupplyModal,
@@ -883,7 +883,20 @@ const YourSupplyModal = ({
                             mt="1.5rem"
                             mb="1.5rem"
                             border="1px solid #8B949E"
-                            labelArray={[
+                            labelSuccessArray={[
+                              "Deposit Amount approved",
+                              "Successfully transfered to Hashstack's supply vault.",
+                              "Determining the rToken amount to mint.",
+                              "rTokens have been minted successfully.",
+                              "Transaction complete.",
+                              // <ErrorButton errorText="Transaction failed" />,
+                              // <ErrorButton errorText="Copy error!" />,
+                              <SuccessButton
+                                key={"successButton"}
+                                successText={"Supply success"}
+                              />,
+                            ]}
+                            labelErrorArray={[
                               "Deposit Amount approved",
                               "Successfully transfered to Hashstack's supply vault.",
                               "Determining the rToken amount to mint.",
@@ -1550,7 +1563,7 @@ const YourSupplyModal = ({
                             mt="1.5rem"
                             mb="1.5rem"
                             border="1px solid #8B949E"
-                            labelArray={[
+                            labelSuccessArray={[
                               "Checking if sufficient rTokens are available",
                               <Text key={0} display="flex">
                                 Fetching the exchange between{" "}
@@ -1577,6 +1590,23 @@ const YourSupplyModal = ({
                                 key={"successButton"}
                                 successText={"Withdrawl Success"}
                               />,
+                            ]}
+                            labelErrorArray={[
+                              "Checking if sufficient rTokens are available",
+                              <Text key={0} display="flex">
+                                Fetching the exchange between{" "}
+                                <Text ml="0.4rem" mr="0.1rem">
+                                  <BTCLogo height={"16px"} width={"16px"} />
+                                </Text>{" "}
+                                rbtc &
+                                <Text key={1} ml="0.3rem" mr="0.1rem">
+                                  <BTCLogo height={"16px"} width={"16px"} />
+                                </Text>
+                                BTC
+                              </Text>,
+                              <ErrorButton errorText="Transaction failed" />,
+                              <ErrorButton errorText="Copy error!" />,
+
                             ]}
                           >
                             Withdraw

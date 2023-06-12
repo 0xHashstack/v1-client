@@ -967,7 +967,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             mt="1.5rem"
                             mb="1.5rem"
                             border="1px solid #8B949E"
-                            labelArray={[
+                            labelSuccessArray={[
                               "Processing",
                               "Checking for sufficient rtoken balance.",
                               "Transferring rTokens to the supply vault",
@@ -978,6 +978,12 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                                 key={"successButton"}
                                 successText={"Stake successful."}
                               />,
+                            ]}
+                            labelErrorArray={[
+                              "Processing",
+                              "Checking for sufficient rtoken balance.",
+                              <ErrorButton errorText="Transaction failed" />,
+                              <ErrorButton errorText="Copy error!" />,
                             ]}
                           >
                             {`${
@@ -1540,7 +1546,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           mt="1.5rem"
                           mb="1.5rem"
                           border="1px solid #8B949E"
-                          labelArray={[
+                          labelSuccessArray={[
                             "Processing",
                             "Unstake amount matches staked rToken balance",
                             "Unstaking the rTokens.",
@@ -1551,6 +1557,12 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               key={"successButton"}
                               successText={"Unstake successful."}
                             />,
+                          ]}
+                          labelErrorArray={[
+                            "Processing",
+                            "Unstake amount matches staked rToken balance",
+                            <ErrorButton errorText="Transaction failed" />,
+                            <ErrorButton errorText="Copy error!" />,
                           ]}
                         >
                           Unstake

@@ -888,7 +888,18 @@ const LiquidityProvisionModal = ({
                   mt="1.5rem"
                   mb="1.5rem"
                   border="1px solid #8B949E"
-                  labelArray={[
+                  labelSuccessArray={[
+                    "Performing pre-checks",
+                    "Processing the spend borrow",
+                    "Updating the l3 records.",
+                    // <ErrorButton errorText="Transaction failed" />,
+                    // <ErrorButton errorText="Copy error!" />,
+                    <SuccessButton
+                      key={"successButton"}
+                      successText={"Spend successful."}
+                    />,
+                  ]}
+                  labelErrorArray={[
                     "Performing pre-checks",
                     "Processing the spend borrow",
                     "Updating the l3 records.",

@@ -1542,7 +1542,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       mt="1.5rem"
                       mb="1.5rem"
                       border="1px solid #8B949E"
-                      labelArray={[
+                      labelSuccessArray={[
                         "Performing Checks",
                         "Processing",
                         "Collateral received",
@@ -1554,6 +1554,12 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                           key={"successButton"}
                           successText={"Borrow successful"}
                         />,
+                      ]}
+                      labelErrorArray={[
+                        "Performing Checks",
+                        "Processing",
+                        <ErrorButton errorText="Transaction failed" />,
+                        <ErrorButton errorText="Copy error!" />,
                       ]}
                     >
                       Borrow
