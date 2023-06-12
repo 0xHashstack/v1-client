@@ -127,12 +127,12 @@ const AnimatedButton: React.FC<Props> = ({
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
           const nextIndex = prevIndex + 1;
-          if (nextIndex === labelErrorArray.length) {
+          if (nextIndex === labelErrorArray?.length) {
             setIsAnimationStarted(false);
             return prevIndex; // Reset currentStringIndex to -1 after the animation completes
           }
           // return nextIndex % labelArray.length;
-          return nextIndex % labelErrorArray.length;
+          return nextIndex % labelErrorArray?.length;
         });
       }, 2000);
     }
@@ -219,7 +219,7 @@ const AnimatedButton: React.FC<Props> = ({
         </AnimatePresence>
       </Box>
       <Box
-        bgColor={transactionStatus=="success" ? "#2DA44E": currentStringIndex==labelErrorArray.length-2 || currentStringIndex==labelErrorArray.length-1 ?"#CF222E":"#2DA44E"}
+        bgColor={transactionStatus=="success" ? "#2DA44E": currentStringIndex==labelErrorArray?.length-2 || currentStringIndex==labelErrorArray?.length-1 ?"#CF222E":"#2DA44E"}
         position="absolute"
         bottom={0}
         left={0}
