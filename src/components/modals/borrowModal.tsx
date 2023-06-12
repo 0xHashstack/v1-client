@@ -68,7 +68,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     try {
       const borrow = await writeAsyncLoanRequest();
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
   };
 
@@ -97,6 +97,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     isIdleLoanRequest,
     isLoadingLoanRequest,
   } = useLoanRequest();
+
+  console.log("loading", isLoadingLoanRequest);
 
   const [buttonId, setButtonId] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
@@ -211,7 +213,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     setsliderValue2(0);
   }, [currentBorrowCoin]);
 
-  const rTokens = ["rBTC", "rUSDT"];
+  const rTokens = ["rBTC", "rUSDT", "rETH"];
   return (
     <Box>
       <Button {...restProps} onClick={onOpen}>
@@ -293,7 +295,9 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     if (transactionStarted) {
                       return;
                     } else {
-                      handleDropdownClick("borrowModalCollateralMarketDropdown")
+                      handleDropdownClick(
+                        "borrowModalCollateralMarketDropdown"
+                      );
                     }
                   }}
                   as="button"
@@ -400,13 +404,15 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                               w="full"
                               display="flex"
                               py="5px"
-                              px={`${coin === currentCollateralCoin ? "1" : "5"
-                                }`}
+                              px={`${
+                                coin === currentCollateralCoin ? "1" : "5"
+                              }`}
                               gap="1"
-                              bg={`${coin === currentCollateralCoin
+                              bg={`${
+                                coin === currentCollateralCoin
                                   ? "#0C6AD9"
                                   : "inherit"
-                                }`}
+                              }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -442,23 +448,24 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                 </Box>
                 <Box
                   width="100%"
-                  color={`${rTokenAmount > walletBalance
+                  color={`${
+                    rTokenAmount > walletBalance
                       ? "#CF222E"
                       : rTokenAmount < 0
-                        ? "#CF222E"
-                        : rTokenAmount == 0
-                          ? "white"
-                          : "#1A7F37"
-                    }`}
-                  border={`${rTokenAmount > walletBalance
+                      ? "#CF222E"
+                      : rTokenAmount == 0
+                      ? "white"
+                      : "#1A7F37"
+                  }`}
+                  border={`${
+                    rTokenAmount > walletBalance
                       ? "1px solid #CF222E"
                       : rTokenAmount < 0
-                        ? "1px solid #CF222E"
-                        : rTokenAmount > 0 &&
-                          rTokenAmount <= walletBalance
-                          ? "1px solid #1A7F37"
-                          : "1px solid #2B2F35 "
-                    }`}
+                      ? "1px solid #CF222E"
+                      : rTokenAmount > 0 && rTokenAmount <= walletBalance
+                      ? "1px solid #1A7F37"
+                      : "1px solid #2B2F35 "
+                  }`}
                   borderRadius="6px"
                   display="flex"
                   justifyContent="space-between"
@@ -508,8 +515,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     MAX
                   </Button>
                 </Box>
-                {rTokenAmount > walletBalance ||
-                  rTokenAmount < 0 ? (
+                {rTokenAmount > walletBalance || rTokenAmount < 0 ? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -574,31 +580,79 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     _disabled={{ cursor: "pointer" }}
                     focusThumbOnChange={false}
                   >
-                                        <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
+                    <SliderMark
+                      value={0}
+                      mt="-1.5"
+                      ml="-1.5"
+                      fontSize="sm"
+                      zIndex="1"
+                    >
+                      {sliderValue >= 0 ? (
+                        <SliderPointerWhite />
+                      ) : (
+                        <SliderPointer />
+                      )}
                     </SliderMark>
-                    <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
+                    <SliderMark
+                      value={25}
+                      mt="-1.5"
+                      ml="-1.5"
+                      fontSize="sm"
+                      zIndex="1"
+                    >
+                      {sliderValue >= 25 ? (
+                        <SliderPointerWhite />
+                      ) : (
+                        <SliderPointer />
+                      )}
                     </SliderMark>
-                    <SliderMark value={50} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue >= 50 ? <SliderPointerWhite /> : <SliderPointer />}
+                    <SliderMark
+                      value={50}
+                      mt="-1.5"
+                      ml="-1.5"
+                      fontSize="sm"
+                      zIndex="1"
+                    >
+                      {sliderValue >= 50 ? (
+                        <SliderPointerWhite />
+                      ) : (
+                        <SliderPointer />
+                      )}
                     </SliderMark>
-                    <SliderMark value={75} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue >= 75 ? <SliderPointerWhite /> : <SliderPointer />}
+                    <SliderMark
+                      value={75}
+                      mt="-1.5"
+                      ml="-1.5"
+                      fontSize="sm"
+                      zIndex="1"
+                    >
+                      {sliderValue >= 75 ? (
+                        <SliderPointerWhite />
+                      ) : (
+                        <SliderPointer />
+                      )}
                     </SliderMark>
-                    <SliderMark value={100} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue == 100 ? <SliderPointerWhite /> : <SliderPointer />}
+                    <SliderMark
+                      value={100}
+                      mt="-1.5"
+                      ml="-1.5"
+                      fontSize="sm"
+                      zIndex="1"
+                    >
+                      {sliderValue == 100 ? (
+                        <SliderPointerWhite />
+                      ) : (
+                        <SliderPointer />
+                      )}
                     </SliderMark>
                     <SliderMark
                       value={sliderValue}
-                      textAlign='center'
+                      textAlign="center"
                       // bg='blue.500'
-                      color='white'
-                      mt='-8'
-                      ml={
-                        sliderValue !== 100 ? "-5" : "-6"
-                      }
-                      w='12'
+                      color="white"
+                      mt="-8"
+                      ml={sliderValue !== 100 ? "-5" : "-6"}
+                      w="12"
                       fontSize="12px"
                       fontWeight="400"
                       lineHeight="20px"
@@ -616,36 +670,37 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     <SliderThumb />
                   </Slider>
                 </Box>
-                {(currentCollateralCoin!="rBTC" && currentCollateralCoin!="rUSDT") &&                <Box
-                  // display="flex"
-                  // justifyContent="left"
-                  w="100%"
-                  pb="4"
-                  height="64px"
-                  display="flex"
-                  alignItems="center"
-                  mt="1rem"
-                >
-                  <Box
-                    display="flex"
-                    bg="#0C425C"
-                    color="white"
-                    fontSize="12px"
-                    p="4"
-                    border="1px solid rgba(84, 174, 255, 0.4)"
-                    fontStyle="normal"
-                    fontWeight="400"
-                    lineHeight="18px"
-
-                    borderRadius="6px"
-                  // textAlign="center"
-                  >
-                    <Box pr="3" mt="0.5" cursor="pointer">
-                      <BlueInfoIcon />
-                    </Box>
-                    You have selected native token as collateral which will
-                    be converted to rtokens 1rBTC = XXBTC
-                    {/* <Box
+                {currentCollateralCoin != "rBTC" &&
+                  currentCollateralCoin != "rUSDT" && (
+                    <Box
+                      // display="flex"
+                      // justifyContent="left"
+                      w="100%"
+                      pb="4"
+                      height="64px"
+                      display="flex"
+                      alignItems="center"
+                      mt="1rem"
+                    >
+                      <Box
+                        display="flex"
+                        bg="#0C425C"
+                        color="white"
+                        fontSize="12px"
+                        p="4"
+                        border="1px solid rgba(84, 174, 255, 0.4)"
+                        fontStyle="normal"
+                        fontWeight="400"
+                        lineHeight="18px"
+                        borderRadius="6px"
+                        // textAlign="center"
+                      >
+                        <Box pr="3" mt="0.5" cursor="pointer">
+                          <BlueInfoIcon />
+                        </Box>
+                        You have selected native token as collateral which will
+                        be converted to rtokens 1rBTC = XXBTC
+                        {/* <Box
                                 py="1"
                                 pl="4"
                                 cursor="pointer"
@@ -653,35 +708,38 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                               >
                                 <TableClose />
                               </Box> */}
-                  </Box>
-                </Box>}
-                  {(currentCollateralCoin!="rBTC" && currentCollateralCoin!="rUSDT") &&                <Box display="flex" gap="2">
-                <Checkbox
-                  size="md"
-                  colorScheme="customBlue"
-                  defaultChecked
-                  mb="auto"
-                  mt="0.5rem"
-                  borderColor="#2B2F35"
-                  isDisabled={transactionStarted == true}
-                  _disabled={{
-                    cursor: "pointer",
-                    iconColor: "blue.400",
-                    bg: "blue",
-                  }}
-                />
-                <Text
-                  fontSize="12px"
-                  fontWeight="400"
-                  color="#6E7681"
-                  mt="0.3rem"
-                  lineHeight="20px"
-                >
-                  Ticking would stake the received rTokens. unchecking
-                  woudn&apos;t stake rTokens
-                </Text>
-              </Box>}
-
+                      </Box>
+                    </Box>
+                  )}
+                {currentCollateralCoin != "rBTC" &&
+                  currentCollateralCoin != "rUSDT" && (
+                    <Box display="flex" gap="2">
+                      <Checkbox
+                        size="md"
+                        colorScheme="customBlue"
+                        defaultChecked
+                        mb="auto"
+                        mt="0.5rem"
+                        borderColor="#2B2F35"
+                        isDisabled={transactionStarted == true}
+                        _disabled={{
+                          cursor: "pointer",
+                          iconColor: "blue.400",
+                          bg: "blue",
+                        }}
+                      />
+                      <Text
+                        fontSize="12px"
+                        fontWeight="400"
+                        color="#6E7681"
+                        mt="0.3rem"
+                        lineHeight="20px"
+                      >
+                        Ticking would stake the received rTokens. unchecking
+                        woudn&apos;t stake rTokens
+                      </Text>
+                    </Box>
+                  )}
               </Box>
             </Box>
 
@@ -732,7 +790,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     if (transactionStarted) {
                       return;
                     } else {
-                      handleDropdownClick("borrowModalBorrowMarketDropdown")
+                      handleDropdownClick("borrowModalBorrowMarketDropdown");
                     }
                   }}
                   as="button"
@@ -786,10 +844,11 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                               py="5px"
                               px={`${coin === currentBorrowCoin ? "1" : "5"}`}
                               gap="1"
-                              bg={`${coin === currentBorrowCoin
+                              bg={`${
+                                coin === currentBorrowCoin
                                   ? "#0C6AD9"
                                   : "inherit"
-                                }`}
+                              }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -826,17 +885,17 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                 <Box
                   width="100%"
                   color="white"
-                  border={`${amount > walletBalance
+                  border={`${
+                    amount > walletBalance
                       ? "1px solid #CF222E"
                       : amount < 0
-                        ? "1px solid #CF222E"
-                        : isNaN(amount)
-                          ? "1px solid #CF222E"
-                          : amount > 0 &&
-                            amount <= walletBalance
-                            ? "1px solid #1A7F37"
-                            : "1px solid #2B2F35 "
-                    }`}
+                      ? "1px solid #CF222E"
+                      : isNaN(amount)
+                      ? "1px solid #CF222E"
+                      : amount > 0 && amount <= walletBalance
+                      ? "1px solid #1A7F37"
+                      : "1px solid #2B2F35 "
+                  }`}
                   borderRadius="6px"
                   display="flex"
                   justifyContent="space-between"
@@ -853,16 +912,17 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
-                      color={`${amount > walletBalance
+                      color={`${
+                        amount > walletBalance
                           ? "#CF222E"
                           : isNaN(amount)
-                            ? "#CF222E"
-                            : amount < 0
-                              ? "#CF222E"
-                              : amount == 0
-                                ? "white"
-                                : "#1A7F37"
-                        }`}
+                          ? "#CF222E"
+                          : amount < 0
+                          ? "#CF222E"
+                          : amount == 0
+                          ? "white"
+                          : "#1A7F37"
+                      }`}
                       border="0px"
                       _placeholder={{
                         color: "#393D4F",
@@ -957,31 +1017,79 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     _disabled={{ cursor: "pointer" }}
                     focusThumbOnChange={false}
                   >
-                                        <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue2 >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
+                    <SliderMark
+                      value={0}
+                      mt="-1.5"
+                      ml="-1.5"
+                      fontSize="sm"
+                      zIndex="1"
+                    >
+                      {sliderValue2 >= 0 ? (
+                        <SliderPointerWhite />
+                      ) : (
+                        <SliderPointer />
+                      )}
                     </SliderMark>
-                    <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue2 >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
+                    <SliderMark
+                      value={25}
+                      mt="-1.5"
+                      ml="-1.5"
+                      fontSize="sm"
+                      zIndex="1"
+                    >
+                      {sliderValue2 >= 25 ? (
+                        <SliderPointerWhite />
+                      ) : (
+                        <SliderPointer />
+                      )}
                     </SliderMark>
-                    <SliderMark value={50} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue2 >= 50 ? <SliderPointerWhite /> : <SliderPointer />}
+                    <SliderMark
+                      value={50}
+                      mt="-1.5"
+                      ml="-1.5"
+                      fontSize="sm"
+                      zIndex="1"
+                    >
+                      {sliderValue2 >= 50 ? (
+                        <SliderPointerWhite />
+                      ) : (
+                        <SliderPointer />
+                      )}
                     </SliderMark>
-                    <SliderMark value={75} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue2 >= 75 ? <SliderPointerWhite /> : <SliderPointer />}
+                    <SliderMark
+                      value={75}
+                      mt="-1.5"
+                      ml="-1.5"
+                      fontSize="sm"
+                      zIndex="1"
+                    >
+                      {sliderValue2 >= 75 ? (
+                        <SliderPointerWhite />
+                      ) : (
+                        <SliderPointer />
+                      )}
                     </SliderMark>
-                    <SliderMark value={100} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue2 == 100 ? <SliderPointerWhite /> : <SliderPointer />}
+                    <SliderMark
+                      value={100}
+                      mt="-1.5"
+                      ml="-1.5"
+                      fontSize="sm"
+                      zIndex="1"
+                    >
+                      {sliderValue2 == 100 ? (
+                        <SliderPointerWhite />
+                      ) : (
+                        <SliderPointer />
+                      )}
                     </SliderMark>
                     <SliderMark
                       value={sliderValue2}
-                      textAlign='center'
+                      textAlign="center"
                       // bg='blue.500'
-                      color='white'
-                      mt='-8'
-                      ml={
-                        sliderValue2 !== 100 ? "-5" : "-6"
-                      }
-                      w='12'
+                      color="white"
+                      mt="-8"
+                      ml={sliderValue2 !== 100 ? "-5" : "-6"}
+                      w="12"
                       fontSize="12px"
                       fontWeight="400"
                       lineHeight="20px"
@@ -1173,18 +1281,20 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
             </Card>
 
             {rTokenAmount > 0 &&
-              amount > 0 &&
-              rTokenAmount <= walletBalance &&
-              amount <= walletBalance ? (
+            amount > 0 &&
+            rTokenAmount <= walletBalance &&
+            amount <= walletBalance ? (
               buttonId == 1 ? (
                 <SuccessButton successText="Borrow successful." />
               ) : buttonId == 2 ? (
                 <ErrorButton errorText="Copy error!" />
               ) : (
-                <Box onClick={() => {
-                  handleBorrow();
-                  setTransactionStarted(true);
-                }}>
+                <Box
+                  onClick={() => {
+                    handleBorrow();
+                    setTransactionStarted(true);
+                  }}
+                >
                   <AnimatedButton
                     bgColor="#101216"
                     // bgColor="red"

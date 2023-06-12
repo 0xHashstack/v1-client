@@ -45,9 +45,11 @@ export default function Home() {
   const [render, setRender] = useState(true);
   const [lastusedConnector, setLastusedConnector] = useState("");
   const [isWhiteListed, setIsWhiteListed] = useState(false);
+  const [isWaitListed, setIsWaitListed] = useState(true);
   const router = useRouter();
   const waitlistHref = "/waitlist";
   const marketHref2 = "/market";
+  const whitelistHref = "/whitelist";
   const dispatch = useDispatch();
   const walletBalance = useSelector(selectWalletBalance);
   useEffect(() => {
@@ -105,11 +107,19 @@ export default function Home() {
       // localStorage.setItem("account", JSON.stringify(account));
       dispatch(setAccount(account));
 
-      if (!isWhiteListed) {
+      if (isWaitListed) {
         router.replace(waitlistHref);
       } else {
         router.replace(marketHref2);
       }
+      // if (!isWhiteListed) {
+      //   router.replace(whitelistHref);
+      // } else if (isWaitListed) {
+      //   router.replace(waitlistHref);
+      // }
+      // {
+      //   router.replace(marketHref2);
+      // }
     }
     console.log("account home", address, status);
   }, [status]);
