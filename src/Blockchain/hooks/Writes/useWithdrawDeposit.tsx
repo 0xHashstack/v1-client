@@ -1,14 +1,18 @@
 import { diamondAddress } from "@/Blockchain/stark-constants";
 import { useAccount, useContractWrite } from "@starknet-react/core";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-const useWithdrawDeposit = (rTokenShares: Number, asset: any) => {
-  //   const [asset, setAsset] = useState("");
-  //   const [rTokenShares, setRTokenShares] = useState(0);
+const useWithdrawDeposit = () => {
+  const [asset, setAsset] = useState("");
+  const [rTokenShares, setRTokenShares] = useState(0);
   const { address: owner } = useAccount();
 
   const [reciever, setReciever] = useState(owner);
+  useEffect(() => {
+    // console.log("withdrawing", asset, rTokenShares);
+  }, [asset, rTokenShares]);
 
+  console.log(asset, rTokenShares);
   const {
     data: dataWithdrawDeposit,
     error: errorWithdrawDeposit,
@@ -29,10 +33,10 @@ const useWithdrawDeposit = (rTokenShares: Number, asset: any) => {
   });
 
   return {
-    // asset,
-    // setAsset,
-    // rTokenShares,
-    // setRTokenShares,
+    asset,
+    setAsset,
+    rTokenShares,
+    setRTokenShares,
     reciever,
     setReciever,
 
