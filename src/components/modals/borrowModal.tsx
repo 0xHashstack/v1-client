@@ -38,6 +38,7 @@ import {
   setInputBorrowModalCollateralAmount,
   setInputBorrowModalBorrowAmount,
   setTransactionStatus,
+  selectAssetWalletBalance
 } from "@/store/slices/userAccountSlice";
 import {
   setModalDropdown,
@@ -56,16 +57,23 @@ import WarningIcon from "@/assets/icons/coins/warningIcon";
 import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import SliderPointer from "@/assets/icons/sliderPointer";
+import { useWaitForTransaction } from "@starknet-react/core";
+import { BNtoNum } from "@/Blockchain/utils/utils";
+import { uint256 } from "starknet";
 const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [sliderValue, setSliderValue] = useState(0);
   const [sliderValue2, setsliderValue2] = useState(0);
   const dispatch = useDispatch();
-  const walletBalance = useSelector(selectWalletBalance);
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
-
+  const walletBalances=useSelector(selectAssetWalletBalance);
+  const [walletBalance, setwalletBalance] = useState(0)
+  useEffect(()=>{
+    setwalletBalance(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 24)
+    // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
+  },[walletBalances[coin.name]?.statusBalanceOf])
   const {
     market,
     setMarket,
@@ -81,7 +89,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     setCollateralMarket,
     collateralAmount,
     setCollateralAmount,
-
+    transLoanRequestHash,
     setIsLoanRequestHash,
 
     dataLoanRequestrToken,
@@ -106,10 +114,13 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   } = useLoanRequest();
   useEffect(()=>{
     setMarket(coin? coin.name:"BTC");
-    setRToken(coin ? coin.name:"BTC");
+    setRToken(coin ? coin.name:"rBTC");
+    setCollateralMarket(coin ? coin.name:"BTC")
+
   },[coin])
 
   const toast=useToast();
+  const recieptData = useWaitForTransaction({ hash: transLoanRequestHash, watch: true});
 
   const handleBorrow = async () => {
     try {
@@ -117,6 +128,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
       if (currentCollateralCoin[0] === "r") {
         const borrow = await writeAsyncLoanRequestrToken();
         setIsLoanRequestHash(borrow?.transaction_hash);
+        
         dispatch(setTransactionStatus("success"));
       } else {
         const borrow = await writeAsyncLoanRequest();

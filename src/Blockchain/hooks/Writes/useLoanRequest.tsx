@@ -32,18 +32,18 @@ const useLoanRequest = () => {
     hash: transLoanRequestHash,
     watch: true,
   });
-  console.log(
-    "useLoanRequest - ",
-    market,
-    amount,
-    rToken,
-    rTokenAmount,
-    "toto",
-    collateralMarket,
-    collateralAmount,
-    transLoanRequestHash,
-    "hey"
-  );
+//   console.log(
+//     "useLoanRequest - ",
+//     market,
+//     amount,
+//     rToken,
+//     rTokenAmount,
+//     "toto",
+//     collateralMarket,
+//     collateralAmount,
+//     transLoanRequestHash,
+//     "hey"
+//   );
   const {
     data: dataLoanRequest,
     error: errorLoanRequest,
@@ -135,7 +135,7 @@ const useLoanRequest = () => {
     setCollateralMarket,
     collateralAmount,
     setCollateralAmount,
-
+    transLoanRequestHash,
     setIsLoanRequestHash,
 
     dataLoanRequestrToken,

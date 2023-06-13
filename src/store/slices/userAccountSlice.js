@@ -128,7 +128,7 @@ export const {
   setOracleAndFairPrices,
   setOffchainCurrentBlock,
   setSpendBorrowSelectedDapp,
-  setAssetWalletBalance
+  setAssetWalletBalance,
   setToastTransactionStarted,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;

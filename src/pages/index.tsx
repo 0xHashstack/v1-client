@@ -121,9 +121,9 @@ export default function Home() {
       //   router.replace(marketHref2);
       // }
     }
-    console.log("account home", address, status);
+    // console.log("account home", address, status);
   }, [status]);
-  console.log("available", available);
+  // console.log("available", available);
   return (
     <Box
       display="flex"

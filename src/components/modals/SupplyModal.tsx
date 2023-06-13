@@ -42,7 +42,7 @@ import {
   setInputSupplyAmount,
   selectTransactionStatus,
   setTransactionStatus,
-  selectAssetWalletBalance
+  selectAssetWalletBalance,
   setToastTransactionStarted,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -88,8 +88,6 @@ const SupplyModal = ({
     resetDeposit,
     depositTransHash,
     setDepositTransHash,
-    depositTransHash,
-    setDepositTransHash,
     writeAsyncDeposit,
 
     isErrorDeposit,
@@ -109,7 +107,7 @@ const SupplyModal = ({
     coin ? coin.name : "BTC"
   );
   // console.log("wallet balance",typeof Number(walletBalance))
-  console.log("deposit amount", typeof depositAmount);
+  // console.log("deposit amount", typeof depositAmount);
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
@@ -119,11 +117,10 @@ const SupplyModal = ({
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalances=useSelector(selectAssetWalletBalance);
-  console.log(walletBalances[coin.name]?.statusBalanceOf === "success")
   const [walletBalance, setwalletBalance] = useState(0)
   useEffect(()=>{
     setwalletBalance(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 24)
-    console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
+    // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
   },[walletBalances[coin.name]?.statusBalanceOf])
   // console.log(walletBalances['BTC']);
   // const walletBalance = useSelector(selectWalletBalance);
@@ -143,13 +140,15 @@ const SupplyModal = ({
 
   // // }
 
-  // const recieptData = useWaitForTransaction({ hash: depositTransHash, watch: true});
+  const recieptData = useWaitForTransaction({ hash: depositTransHash, watch: true});
 
   const handleTransaction = async () => {
     try {
       const deposit = await writeAsyncDeposit();
       console.log("Supply Modal - deposit ",deposit)
       setDepositTransHash(deposit?.transaction_hash);
+      if(recieptData?.data?.status=="ACCEPTED_ON_L2"){
+      }
       dispatch(setTransactionStatus("success"));
       if (isSuccessDeposit) {
         toast({
@@ -162,7 +161,7 @@ const SupplyModal = ({
           isClosable: true,
         });
       }
-      console.log("Status transaction", deposit);
+      // console.log("Status transaction", deposit);
       console.log(isSuccessDeposit, "success ?");
     } catch (err) {
       // setTransactionFailed(true);
