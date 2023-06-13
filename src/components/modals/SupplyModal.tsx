@@ -52,7 +52,11 @@ import {
 } from "@/store/slices/dropdownsSlice";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
-import { useAccount, useBalance, useWaitForTransaction } from "@starknet-react/core";
+import {
+  useAccount,
+  useBalance,
+  useWaitForTransaction,
+} from "@starknet-react/core";
 import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
@@ -65,7 +69,11 @@ const SupplyModal = ({
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { depositAmount,
+  const toastHandler = () => {
+    console.log("toast called");
+  };
+  const {
+    depositAmount,
     setDepositAmount,
     asset,
     setAsset,
@@ -78,8 +86,8 @@ const SupplyModal = ({
     isLoadingDeposit,
     isSuccessDeposit,
     statusDeposit,
-  } = useDeposit();
-  const toast=useToast();
+  } = useDeposit(toastHandler);
+  const toast = useToast();
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
     coin ? coin.name : "BTC"
@@ -99,7 +107,13 @@ const SupplyModal = ({
 
   // const [depositTransHash, setDepositTransHash] = useState();
 
-  
+  const showToast = () => {};
+
+  const recieptData = useWaitForTransaction({
+    hash: depositTransHash,
+    watch: true,
+    onPending: showToast,
+  });
 
   // const showToast = () => {
 
@@ -111,34 +125,34 @@ const SupplyModal = ({
   const handleTransaction = async () => {
     try {
       const deposit = await writeAsyncDeposit();
-      setDepostiTransactionHash(deposit?.transaction_hash);
+      setDepositTransHash(deposit?.transaction_hash);
       dispatch(setTransactionStatus("success"));
-      if(isSuccessDeposit){
+      if (isSuccessDeposit) {
         toast({
-          title: 'Success',
-          description: 'Success',
-          variant:'subtle',
-          position:'bottom-right',
-          status: 'error',
+          title: "Success",
+          description: "Success",
+          variant: "subtle",
+          position: "bottom-right",
+          status: "error",
           duration: 5000,
           isClosable: true,
         });
       }
-      console.log("Status transaction",deposit)
-      console.log(isSuccessDeposit,"success ?")
+      console.log("Status transaction", deposit);
+      console.log(isSuccessDeposit, "success ?");
     } catch (err) {
       // setTransactionFailed(true);
-      dispatch(setTransactionStatus("failed"))
-      console.log(err)
+      dispatch(setTransactionStatus("failed"));
+      console.log(err);
       toast({
-        description: 'An error occurred while handling the transaction.',
-        variant:'subtle',
-        position:'bottom-right',
-        status: 'error',
+        description: "An error occurred while handling the transaction.",
+        variant: "subtle",
+        position: "bottom-right",
+        status: "error",
         isClosable: true,
       });
     }
-  }
+  };
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -195,7 +209,6 @@ const SupplyModal = ({
       }
     }
   };
-
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
@@ -360,10 +373,11 @@ const SupplyModal = ({
                               py="5px"
                               px={`${coin === currentSelectedCoin ? "1" : "5"}`}
                               gap="1"
-                              bg={`${coin === currentSelectedCoin
-                                ? "#0C6AD9"
-                                : "inherit"
-                                }`}
+                              bg={`${
+                                coin === currentSelectedCoin
+                                  ? "#0C6AD9"
+                                  : "inherit"
+                              }`}
                               borderRadius="md"
                             >
                               <Box p="1">{getCoin(coin)}</Box>
@@ -403,16 +417,17 @@ const SupplyModal = ({
                 <Box
                   width="100%"
                   color="white"
-                  border={`${depositAmount > walletBalance
-                    ? "1px solid #CF222E"
-                    : depositAmount < 0
+                  border={`${
+                    depositAmount > walletBalance
+                      ? "1px solid #CF222E"
+                      : depositAmount < 0
                       ? "1px solid #CF222E"
                       : isNaN(depositAmount)
-                        ? "1px solid #CF222E"
-                        : depositAmount > 0 && depositAmount <= walletBalance
-                          ? "1px solid #1A7F37"
-                          : "1px solid #2B2F35 "
-                    }`}
+                      ? "1px solid #CF222E"
+                      : depositAmount > 0 && depositAmount <= walletBalance
+                      ? "1px solid #1A7F37"
+                      : "1px solid #2B2F35 "
+                  }`}
                   borderRadius="6px"
                   display="flex"
                   justifyContent="space-between"
@@ -432,16 +447,17 @@ const SupplyModal = ({
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
-                      color={`${depositAmount > walletBalance
-                        ? "#CF222E"
-                        : isNaN(depositAmount)
+                      color={`${
+                        depositAmount > walletBalance
+                          ? "#CF222E"
+                          : isNaN(depositAmount)
                           ? "#CF222E"
                           : depositAmount < 0
-                            ? "#CF222E"
-                            : depositAmount == 0
-                              ? "white"
-                              : "#1A7F37"
-                        }`}
+                          ? "#CF222E"
+                          : depositAmount == 0
+                          ? "white"
+                          : "#1A7F37"
+                      }`}
                       _disabled={{ color: "#1A7F37" }}
                       border="0px"
                       _placeholder={{
@@ -472,8 +488,8 @@ const SupplyModal = ({
                   </Button>
                 </Box>
                 {depositAmount > walletBalance ||
-                  depositAmount < 0 ||
-                  isNaN(depositAmount) ? (
+                depositAmount < 0 ||
+                isNaN(depositAmount) ? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -550,31 +566,79 @@ const SupplyModal = ({
                     _disabled={{ cursor: "pointer" }}
                     focusThumbOnChange={false}
                   >
-                    <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
+                    <SliderMark
+                      value={0}
+                      mt="-1.5"
+                      ml="-1.5"
+                      fontSize="sm"
+                      zIndex="1"
+                    >
+                      {sliderValue >= 0 ? (
+                        <SliderPointerWhite />
+                      ) : (
+                        <SliderPointer />
+                      )}
                     </SliderMark>
-                    <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
+                    <SliderMark
+                      value={25}
+                      mt="-1.5"
+                      ml="-1.5"
+                      fontSize="sm"
+                      zIndex="1"
+                    >
+                      {sliderValue >= 25 ? (
+                        <SliderPointerWhite />
+                      ) : (
+                        <SliderPointer />
+                      )}
                     </SliderMark>
-                    <SliderMark value={50} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue >= 50 ? <SliderPointerWhite /> : <SliderPointer />}
+                    <SliderMark
+                      value={50}
+                      mt="-1.5"
+                      ml="-1.5"
+                      fontSize="sm"
+                      zIndex="1"
+                    >
+                      {sliderValue >= 50 ? (
+                        <SliderPointerWhite />
+                      ) : (
+                        <SliderPointer />
+                      )}
                     </SliderMark>
-                    <SliderMark value={75} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue >= 75 ? <SliderPointerWhite /> : <SliderPointer />}
+                    <SliderMark
+                      value={75}
+                      mt="-1.5"
+                      ml="-1.5"
+                      fontSize="sm"
+                      zIndex="1"
+                    >
+                      {sliderValue >= 75 ? (
+                        <SliderPointerWhite />
+                      ) : (
+                        <SliderPointer />
+                      )}
                     </SliderMark>
-                    <SliderMark value={100} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue == 100 ? <SliderPointerWhite /> : <SliderPointer />}
+                    <SliderMark
+                      value={100}
+                      mt="-1.5"
+                      ml="-1.5"
+                      fontSize="sm"
+                      zIndex="1"
+                    >
+                      {sliderValue == 100 ? (
+                        <SliderPointerWhite />
+                      ) : (
+                        <SliderPointer />
+                      )}
                     </SliderMark>
                     <SliderMark
                       value={sliderValue}
-                      textAlign='center'
+                      textAlign="center"
                       // bg='blue.500'
-                      color='white'
-                      mt='-8'
-                      ml={
-                        sliderValue !== 100 ? "-5" : "-6"
-                      }
-                      w='12'
+                      color="white"
+                      mt="-8"
+                      ml={sliderValue !== 100 ? "-5" : "-6"}
+                      w="12"
                       fontSize="12px"
                       fontWeight="400"
                       lineHeight="20px"
@@ -765,8 +829,6 @@ const SupplyModal = ({
                       // console.log(isSuccessDeposit, "status deposit")
                     }}
                   >
-                    
-
                     <AnimatedButton
                       bgColor="#101216"
                       // bgColor="red"
@@ -776,7 +838,6 @@ const SupplyModal = ({
                       width="100%"
                       mt="1.5rem"
                       mb="1.5rem"
-                      
                       labelSuccessArray={[
                         "Deposit Amount approved",
                         "Successfully transferred to Hashstack’s supply vault.",
@@ -795,12 +856,11 @@ const SupplyModal = ({
                         "Successfully transferred to Hashstack’s supply vault.",
                         <ErrorButton errorText="Transaction failed" />,
                         <ErrorButton errorText="Copy error!" />,
-
                       ]}
                       // transactionStarted={(depostiTransactionHash!="" || transactionFailed==true)}
-                      _disabled={{bgColor:"white",color:"black"}}
-                      isDisabled={transactionStarted==true}
-                    // onClick={}
+                      _disabled={{ bgColor: "white", color: "black" }}
+                      isDisabled={transactionStarted == true}
+                      // onClick={}
                     >
                       Supply
                     </AnimatedButton>

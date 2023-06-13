@@ -127,10 +127,6 @@ const DashboardLeft = ({
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
-  useEffect(() => {
-    for (let i of Coins) {
-    }
-  }, []);
 
   // useEffect(() => {
   //   if (errorBalanceOf || isFetchingBalanceOf) {
