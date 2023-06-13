@@ -3,6 +3,7 @@ import { number } from "starknet";
 import { utils } from "ethers";
 import { Logger } from "ethers/lib/utils";
 import { getTokenFromAddress } from "../stark-constants";
+import { tokenDecimalsMap } from "./addressServices";
 
 export const fixedSpecial = (num: number, n: number) => {
   var str = num.toPrecision();
@@ -121,13 +122,11 @@ export const borrowInterestAccrued = (asset: any) => {
 };
 
 
-export const etherToWeiBN = (amount: number, tokenAddress: string) => {
-  const token = getTokenFromAddress(tokenAddress);
-  if (!token) {
-    // alert(`Token not found ${tokenAddress}`);
+export const etherToWeiBN = (amount: number, tokenName: string) => {
+  const decimals = tokenDecimalsMap[tokenName];
+  if(!decimals) {
     return 0;
   }
-  const decimals = token.decimals; // @todo should avoid using 18 default
   const factor = 1000_000;
   const amountBN = number
     .toBN(amount * factor)

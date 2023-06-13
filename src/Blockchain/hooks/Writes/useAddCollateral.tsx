@@ -53,7 +53,7 @@ const useAddCollateral  = (loanIdParam: any) => {
                     collateralAsset,
                     etherToWeiBN(
                         collateralAmount as number,
-                        tokenAddressMap[collateralAsset] || ""
+                        collateralAsset
                     ).toString(),
                 ],
             }
@@ -80,8 +80,8 @@ const useAddCollateral  = (loanIdParam: any) => {
                     loanId,
                     rToken,
                     etherToWeiBN(
-                        rTokenAmount as number,
-                        tokenAddressMap[collateralAsset] || ""
+                        rTokenAmount,
+                        collateralAsset
                     ).toString(),
                 ],
             }

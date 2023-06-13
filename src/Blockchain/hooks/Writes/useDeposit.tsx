@@ -16,48 +16,48 @@ const useDeposit = () => {
   const [asset, setAsset] = useState("");
   const [depositTransHash, setDepositTransHash] = useState("");
 
-  //   const recietpData = useWaitForTransaction({ hash: depositTransHash });
-  //   console.log("receipt", recietpData);
-  const {
-    data: dataDeposit,
-    error: errorDeposit,
-    reset: resetDeposit,
-    write: writeDeposit,
-    writeAsync: writeAsyncDeposit,
-    isError: isErrorDeposit,
-    isIdle: isIdleDeposit,
-    isLoading: isLoadingDeposit,
-    isSuccess: isSuccessDeposit,
-    status: statusDeposit,
-  } = useContractWrite({
-    calls: [
-      {
-        contractAddress: tokenAddressMap[asset] || "",
-        entrypoint: "approve",
-        calldata: [
-          diamondAddress,
-          etherToWeiBN(
-            depositAmount as number,
-            tokenAddressMap[asset] || ""
-          ).toString(),
-          "0",
+    const recietpData = useWaitForTransaction({ hash: depositTransHash });
+
+    const {
+        data: dataDeposit,
+        error: errorDeposit,
+        reset: resetDeposit,
+        write: writeDeposit,
+        writeAsync: writeAsyncDeposit,
+        isError: isErrorDeposit,
+        isIdle: isIdleDeposit,
+        isLoading: isLoadingDeposit,
+        isSuccess: isSuccessDeposit,
+        status: statusDeposit,
+    } = useContractWrite({
+        calls: [
+            {
+                contractAddress: tokenAddressMap[asset] || "",
+                entrypoint: "approve",
+                calldata: [
+                    diamondAddress,
+                    etherToWeiBN(
+                        depositAmount,
+                        asset
+                    ).toString(),
+                    "0"
+                ],
+            },
+            {
+                contractAddress: diamondAddress,
+                entrypoint: "deposit",
+                calldata: [
+                    tokenAddressMap[asset],
+                    etherToWeiBN(
+                        depositAmount,
+                        asset
+                    ).toString(),
+                    0,
+                    account,
+                ],
+            }
         ],
-      },
-      {
-        contractAddress: diamondAddress,
-        entrypoint: "deposit",
-        calldata: [
-          tokenAddressMap[asset],
-          etherToWeiBN(
-            depositAmount as number,
-            tokenAddressMap[asset] || ""
-          ).toString(),
-          0,
-          account,
-        ],
-      },
-    ],
-  });
+    });
 
   return {
     depositAmount,

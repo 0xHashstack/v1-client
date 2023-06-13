@@ -5,11 +5,11 @@ export const getTokenFromName = (name: string) => {
   return contractsEnv.TOKENS.find((Token) => Token.name == name)
 };
 
-export const getRTokenFromAddress = (name: string) => {
+export const getRTokenFromName = (name: string) => {
   return contractsEnv.rTOKENS.find((rToken) => rToken.name == name)
 }
 
-export const getDTokenFromAddress = (name: string) => {
+export const getDTokenFromName = (name: string) => {
   return contractsEnv.dTOKENS.find((dToken) => dToken.name == name)
 }
 
@@ -20,17 +20,17 @@ export const tokenAddressMap: ItokenAddressMap = {
   ETH: getTokenFromName("ETH")?.address,
   DAI: getTokenFromName("DAI")?.address,
 
-  rBTC: getRTokenFromAddress("rBTC")?.address,
-  rUSDT: getRTokenFromAddress("rUSDT")?.address,
-  rUSDC: getRTokenFromAddress("rUSDC")?.address,
-  rETH: getRTokenFromAddress("rETH")?.address,
-  rDAI: getRTokenFromAddress("rDAI")?.address,
+  rBTC: getRTokenFromName("rBTC")?.address,
+  rUSDT: getRTokenFromName("rUSDT")?.address,
+  rUSDC: getRTokenFromName("rUSDC")?.address,
+  rETH: getRTokenFromName("rETH")?.address,
+  rDAI: getRTokenFromName("rDAI")?.address,
 
-  dBTC: getDTokenFromAddress("dBTC")?.address,
-  dUSDT: getDTokenFromAddress("dUSDT")?.address,
-  dUSDC: getDTokenFromAddress("dUSDC")?.address,
-  dETH: getDTokenFromAddress("dETH")?.address,
-  dDAI: getDTokenFromAddress("dDAI")?.address,
+  dBTC: getDTokenFromName("dBTC")?.address,
+  dUSDT: getDTokenFromName("dUSDT")?.address,
+  dUSDC: getDTokenFromName("dUSDC")?.address,
+  dETH: getDTokenFromName("dETH")?.address,
+  dDAI: getDTokenFromName("dDAI")?.address,
 };
 
 export const tokenDecimalsMap: ItokenDecimalsMap = {
@@ -40,16 +40,16 @@ export const tokenDecimalsMap: ItokenDecimalsMap = {
   ETH: getTokenFromName("ETH")?.decimals,
   DAI: getTokenFromName("DAI")?.decimals,
 
-  rBTC: getRTokenFromAddress("rBTC")?.decimals,
-  rUSDT: getRTokenFromAddress("rUSDT")?.decimals,
-  rUSDC: getRTokenFromAddress("rUSDC")?.decimals,
-  rETH: getRTokenFromAddress("rETH")?.decimals,
-  rDAI: getRTokenFromAddress("rDAI")?.decimals,
+  rBTC: getRTokenFromName("rBTC")?.decimals,
+  rUSDT: getRTokenFromName("rUSDT")?.decimals,
+  rUSDC: getRTokenFromName("rUSDC")?.decimals,
+  rETH: getRTokenFromName("rETH")?.decimals,
+  rDAI: getRTokenFromName("rDAI")?.decimals,
 
-  dBTC: getDTokenFromAddress("dBTC")?.decimals,
-  dUSDT: getDTokenFromAddress("dUSDT")?.decimals,
-  dUSDC: getDTokenFromAddress("dUSDC")?.decimals,
-  dETH: getDTokenFromAddress("dETH")?.decimals,
-  dDAI: getDTokenFromAddress("dDAI")?.decimals,
+  dBTC: getDTokenFromName("dBTC")?.decimals,
+  dUSDT: getDTokenFromName("dUSDT")?.decimals,
+  dUSDC: getDTokenFromName("dUSDC")?.decimals,
+  dETH: getDTokenFromName("dETH")?.decimals,
+  dDAI: getDTokenFromName("dDAI")?.decimals,
 };
 
