@@ -1,4 +1,6 @@
 import { diamondAddress } from "@/Blockchain/stark-constants";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import { etherToWeiBN } from "@/Blockchain/utils/utils";
 import { useAccount, useContractWrite } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 
@@ -28,7 +30,15 @@ const useWithdrawDeposit = () => {
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "withdraw_deposit",
-      calldata: [asset, rTokenShares, reciever, owner],
+      calldata: [
+        tokenAddressMap[asset],
+        etherToWeiBN(
+          rTokenShares,
+          asset
+        ),
+        reciever,
+        owner
+      ],
     },
   });
 
