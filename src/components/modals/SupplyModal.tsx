@@ -52,7 +52,7 @@ import {
 } from "@/store/slices/dropdownsSlice";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
-import { useAccount, useBalance, useWaitForTransaction, useWaitForTransaction } from "@starknet-react/core";
+import { useAccount, useBalance, useWaitForTransaction } from "@starknet-react/core";
 import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
@@ -95,15 +95,15 @@ const SupplyModal = ({
   const [depostiTransactionHash, setDepostiTransactionHash] = useState()
   // const [transactionFailed, setTransactionFailed] = useState(false);
 
-  const [depositTransHash, setDepositTransHash] = useState();
+  // const [depositTransHash, setDepositTransHash] = useState();
 
   
 
-  const showToast = () => {
+  // const showToast = () => {
 
-  }
+  // }
 
-  const recieptData = useWaitForTransaction({ hash: depositTransHash, watch: true, onPending: showToast});
+  const recieptData = useWaitForTransaction({ hash: depostiTransactionHash, watch: true});
 
 
   const handleTransaction = async () => {
