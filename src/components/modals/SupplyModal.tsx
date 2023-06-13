@@ -109,11 +109,11 @@ const SupplyModal = ({
 
   const showToast = () => {};
 
-  const recieptData = useWaitForTransaction({
-    hash: depositTransHash,
-    watch: true,
-    onPending: showToast,
-  });
+  // const recieptData = useWaitForTransaction({
+  //   hash: depositTransHash,
+  //   watch: true,
+  //   onPending: showToast,
+  // });
 
   // const showToast = () => {
 
