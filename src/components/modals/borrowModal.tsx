@@ -68,7 +68,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     try {
       const borrow = await writeAsyncLoanRequest();
     } catch (err) {
-      console.log(err);
+      console.log("handle borrow", err);
     }
   };
 
@@ -98,7 +98,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     isLoadingLoanRequest,
   } = useLoanRequest();
 
-  console.log("loading", isLoadingLoanRequest);
+  // console.log("loadingg", isLoadingLoanRequest);
 
   const [buttonId, setButtonId] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
