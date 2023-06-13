@@ -84,6 +84,8 @@ const SupplyModal = ({
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
     coin ? coin.name : "BTC"
   );
+  // console.log("wallet balance",typeof Number(walletBalance))
+  console.log("deposit amount",typeof depositAmount)
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
@@ -175,6 +177,9 @@ const SupplyModal = ({
   const handleChange = (newValue: any) => {
     // Calculate the percentage of the new value relative to the wallet balance
     var percentage = (newValue * 100) / walletBalance;
+    if(walletBalance==0){
+      setDepositAmount(0);
+    }
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue(100);
@@ -418,7 +423,7 @@ const SupplyModal = ({
                     min={0}
                     keepWithinRange={true}
                     onChange={handleChange}
-                    value={depositAmount ? depositAmount : ""}
+                    value={depositAmount ? depositAmount : walletBalance==0 ? 0: ""}
                     outline="none"
                     // precision={1}
                     step={parseFloat(`${depositAmount <= 99999 ? 0.1 : 0}`)}
@@ -535,8 +540,10 @@ const SupplyModal = ({
                     onChange={(val) => {
                       setSliderValue(val);
                       var ans = (val / 100) * walletBalance;
-                      ans = Math.round(ans * 100) / 100;
-                      dispatch(setInputSupplyAmount(ans));
+                      // console.log(ans);
+                      // ans = Math.round(ans * 100) / 100;
+                      // console.log(ans)
+                      // dispatch(setInputSupplyAmount(ans));
                       setDepositAmount(ans);
                     }}
                     isDisabled={transactionStarted == true}
@@ -751,9 +758,9 @@ const SupplyModal = ({
                     onClick={() => {
                       setTransactionStarted(true);
                       // dataDeposit();
-                      if(transactionStarted){
-                        return;
-                      }
+                      // if(transactionStarted){
+                      //   return;
+                      // }
                       handleTransaction();
                       // console.log(isSuccessDeposit, "status deposit")
                     }}

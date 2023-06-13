@@ -377,7 +377,7 @@ const DashboardLeft = ({
                       color="#BDBFC1;"
                       backGroundOverLay="rgba(244, 242, 255, 0.5)"
                       coin={coin}
-                      walletBalance={assetBalance[coin.name]?.statusBalanceOf === "success" ? BNtoNum(uint256.uint256ToBN(assetBalance[coin.name]?.dataBalanceOf?.balance)) : 0}
+                      walletBalance={assetBalance[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(assetBalance[coin.name]?.dataBalanceOf?.balance))) : 0}
                     />
                   </Box>
                 </Td>
