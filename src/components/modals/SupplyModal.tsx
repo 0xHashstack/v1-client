@@ -43,6 +43,7 @@ import {
   selectTransactionStatus,
   setTransactionStatus,
   selectAssetWalletBalance
+  setToastTransactionStarted,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -65,6 +66,7 @@ import { useToast } from "@chakra-ui/react";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
+import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
 const SupplyModal = ({
   buttonText,
   coin,
@@ -86,6 +88,8 @@ const SupplyModal = ({
     resetDeposit,
     depositTransHash,
     setDepositTransHash,
+    depositTransHash,
+    setDepositTransHash,
     writeAsyncDeposit,
 
     isErrorDeposit,
@@ -99,15 +103,18 @@ const SupplyModal = ({
     setAsset(coin ? coin.name:"BTC");
   },[coin])
 
+
+
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
     coin ? coin.name : "BTC"
   );
   // console.log("wallet balance",typeof Number(walletBalance))
-  console.log("deposit amount",typeof depositAmount)
+  console.log("deposit amount", typeof depositAmount);
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
+  // const [toastTransactionStarted, setToastTransactionStarted] = useState(false);
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
@@ -138,7 +145,6 @@ const SupplyModal = ({
 
   // const recieptData = useWaitForTransaction({ hash: depositTransHash, watch: true});
 
-
   const handleTransaction = async () => {
     try {
       const deposit = await writeAsyncDeposit();
@@ -163,7 +169,7 @@ const SupplyModal = ({
       dispatch(setTransactionStatus("failed"));
       console.log(err);
       toast({
-        description: "An error occurred while handling the transaction.",
+        description: "An error occurred while handling the transaction. " + err,
         variant: "subtle",
         position: "bottom-right",
         status: "error",
@@ -215,7 +221,7 @@ const SupplyModal = ({
   const handleChange = (newValue: any) => {
     // Calculate the percentage of the new value relative to the wallet balance
     var percentage = (newValue * 100) / walletBalance;
-    if(walletBalance==0){
+    if (walletBalance == 0) {
       setDepositAmount(0);
     }
     percentage = Math.max(0, percentage);
@@ -265,6 +271,7 @@ const SupplyModal = ({
           onClose={() => {
             onClose();
             resetStates();
+            dispatch(setToastTransactionStarted(""));
             // if (setIsOpenCustom) setIsOpenCustom(false);
           }}
           size={{ width: "700px", height: "100px" }}
@@ -463,7 +470,13 @@ const SupplyModal = ({
                     min={0}
                     keepWithinRange={true}
                     onChange={handleChange}
-                    value={depositAmount ? depositAmount : walletBalance==0 ? 0: ""}
+                    value={
+                      depositAmount
+                        ? depositAmount
+                        : walletBalance == 0
+                        ? 0
+                        : ""
+                    }
                     outline="none"
                     // precision={1}
                     step={parseFloat(`${depositAmount <= 99999 ? 0.1 : 0}`)}
@@ -886,6 +899,7 @@ const SupplyModal = ({
                       // transactionStarted={(depostiTransactionHash!="" || transactionFailed==true)}
                       _disabled={{ bgColor: "white", color: "black" }}
                       isDisabled={transactionStarted == true}
+                      // transactionStarted={toastTransactionStarted}
                       // onClick={}
                     >
                       Supply

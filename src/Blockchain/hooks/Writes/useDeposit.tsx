@@ -1,23 +1,20 @@
 import {
-    useAccount,
-    useContractRead,
-    useContractWrite,
-    useWaitForTransaction,
+  useAccount,
+  useContractRead,
+  useContractWrite,
+  useWaitForTransaction,
 } from "@starknet-react/core";
 import { useEffect, useState } from "react";
 import { Abi, uint256 } from "starknet";
-import {
-    ERC20Abi,
-    diamondAddress
-} from "../../stark-constants";
+import { ERC20Abi, diamondAddress } from "../../stark-constants";
 import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 
 const useDeposit = () => {
-    const { address: account } = useAccount();
-    const [depositAmount, setDepositAmount] = useState(0);
-    const [asset, setAsset] = useState("");
-    const [depositTransHash, setDepositTransHash] = useState("");
+  const { address: account } = useAccount();
+  const [depositAmount, setDepositAmount] = useState(0);
+  const [asset, setAsset] = useState("");
+  const [depositTransHash, setDepositTransHash] = useState("");
 
     const recietpData = useWaitForTransaction({ hash: depositTransHash });
 
@@ -62,23 +59,23 @@ const useDeposit = () => {
         ],
     });
 
-    return {
-        depositAmount,
-        setDepositAmount,
-        asset,
-        setAsset,
-        dataDeposit,
-        depositTransHash,
-        setDepositTransHash,
-        errorDeposit,
-        resetDeposit,
-        writeAsyncDeposit,
-        isErrorDeposit,
-        isIdleDeposit,
-        isLoadingDeposit,
-        isSuccessDeposit,
-        statusDeposit,
-    };
+  return {
+    depositAmount,
+    setDepositAmount,
+    asset,
+    setAsset,
+    dataDeposit,
+    errorDeposit,
+    resetDeposit,
+    depositTransHash,
+    setDepositTransHash,
+    writeAsyncDeposit,
+    isErrorDeposit,
+    isIdleDeposit,
+    isLoadingDeposit,
+    isSuccessDeposit,
+    statusDeposit,
+  };
 };
 
 export default useDeposit;

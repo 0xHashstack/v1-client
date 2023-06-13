@@ -6,7 +6,7 @@ import {
 } from "@starknet-react/core";
 import { useEffect, useState } from "react";
 import { Abi, uint256 } from "starknet";
-import { ERC20Abi } from "../../stark-constants";
+import { ERC20Abi, diamondAddress } from "../../stark-constants";
 import { TxToastManager } from "../../tx-ToastManager";
 import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 import {
@@ -15,7 +15,7 @@ import {
 } from "@/Blockchain/utils/addressServices";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
 
-const useRepay = (loanParam: any, diamondAddress: string) => {
+const useRepay = (loanParam: any) => {
   const [repayAmount, setRepayAmount] = useState<number>();
   const [loan, setLoan] = useState<ILoan>(loanParam);
 
@@ -143,7 +143,7 @@ const useRepay = (loanParam: any, diamondAddress: string) => {
   return {
     repayAmount,
     setRepayAmount,
-    handleApprove,
+    // handleApprove,
     writeAsyncRepay,
     transRepayHash,
     setTransRepayHash,

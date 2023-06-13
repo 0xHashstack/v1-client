@@ -20,6 +20,7 @@ import {
   Card,
   ModalHeader,
   Checkbox,
+  useToast,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -36,13 +37,14 @@ import {
   selectWalletBalance,
   setInputBorrowModalCollateralAmount,
   setInputBorrowModalBorrowAmount,
+  setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 import {
   setModalDropdown,
   selectModalDropDowns,
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
@@ -64,12 +66,73 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
 
+  const {
+    market,
+    setMarket,
+    amount,
+    setAmount,
+
+    rToken,
+    setRToken,
+    rTokenAmount,
+    setRTokenAmount,
+
+    collateralMarket,
+    setCollateralMarket,
+    collateralAmount,
+    setCollateralAmount,
+
+    setIsLoanRequestHash,
+
+    dataLoanRequestrToken,
+    errorLoanRequestrToken,
+    resetLoanRequestrToken,
+    writeLoanRequestrToken,
+    writeAsyncLoanRequestrToken,
+    isErrorLoanRequestrToken,
+    isIdleLoanRequestrToken,
+    isLoadingLoanRequestrToken,
+    statusLoanRequestrToken,
+
+    dataLoanRequest,
+    errorLoanRequest,
+    resetLoanRequest,
+    writeLoanRequest,
+    writeAsyncLoanRequest,
+    isErrorLoanRequest,
+    isIdleLoanRequest,
+    isLoadingLoanRequest,
+    statusLoanRequest,
+  } = useLoanRequest();
+  useEffect(()=>{
+    setMarket(coin? coin.name:"BTC");
+    setRToken(coin ? coin.name:"BTC");
+  },[coin])
+
+  const toast=useToast();
+
   const handleBorrow = async () => {
     try {
-      console.log("borrowing", amount, market, rToken, rTokenAmount);
-      const borrow = await writeAsyncLoanRequestrToken();
+      // console.log("borrowing", amount, market, rToken, rTokenAmount);
+      if (currentCollateralCoin[0] === "r") {
+        const borrow = await writeAsyncLoanRequestrToken();
+        setIsLoanRequestHash(borrow?.transaction_hash);
+        dispatch(setTransactionStatus("success"));
+      } else {
+        const borrow = await writeAsyncLoanRequest();
+        setIsLoanRequestHash(borrow?.transaction_hash);
+        dispatch(setTransactionStatus("success"));
+      }
     } catch (err) {
+      dispatch(setTransactionStatus("failed"));
       console.log("handle borrow", err);
+      toast({
+        description: "An error occurred while handling the transaction. " + err,
+        variant: "subtle",
+        position: "bottom-right",
+        status: "error",
+        isClosable: true,
+      });
     }
   };
 
@@ -80,29 +143,13 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   //   rToken,
   //   setRToken, } = useLoanRequest();
 
-  const {
-    market,
-    setMarket,
-    amount,
-    setAmount,
-    rToken,
-    setRToken,
-    rTokenAmount,
-    setRTokenAmount,
-    dataLoanRequest,
-    errorLoanRequest,
-    resetLoanRequest,
-    writeLoanRequest,
-    writeAsyncLoanRequest,
-    writeAsyncLoanRequestrToken,
-    isErrorLoanRequest,
-    isIdleLoanRequest,
-    isLoadingLoanRequest,
-  } = useLoanRequest();
-  useEffect(()=>{
-    setMarket(coin? coin.name:"BTC");
-    setRToken(coin ? coin.name:"BTC");
-  },[coin])
+
+  // const {  market,
+  //   setMarket,
+  //   amount,
+  //   setAmount,
+  //   rToken,
+  //   setRToken, } = useLoanRequest();
 
   // console.log("loadingg", isLoadingLoanRequest);
 
@@ -155,6 +202,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     if (percentage > 100) {
       setSliderValue(100);
       setRTokenAmount(newValue);
+      setCollateralAmount(newValue);
       dispatch(setInputBorrowModalCollateralAmount(newValue));
     } else {
       percentage = Math.round(percentage);
@@ -162,6 +210,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
       } else {
         setSliderValue(percentage);
         setRTokenAmount(newValue);
+        setCollateralAmount(newValue);
         dispatch(setInputBorrowModalCollateralAmount(newValue));
       }
       // dispatch((newValue));
@@ -209,6 +258,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     setsliderValue2(0);
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
+    dispatch(setTransactionStatus(""))
   };
   useEffect(() => {
     setRTokenAmount(0);
@@ -218,6 +268,10 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     setAmount(0);
     setsliderValue2(0);
   }, [currentBorrowCoin]);
+  // useEffect(() => {
+  //   setCollateralMarket("DAI");
+  //   setCollateralAmount("4000");
+  // }, []);
 
   const rTokens = ["rBTC", "rUSDT", "rETH"];
   return (
@@ -341,6 +395,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                             onClick={() => {
                               setCurrentCollateralCoin(coin);
                               setRToken(coin);
+                              setCollateralMarket(coin);
                             }}
                           >
                             {coin === currentCollateralCoin && (
@@ -395,6 +450,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                             pr="2"
                             onClick={() => {
                               setCurrentCollateralCoin(coin);
+                              setCollateralMarket(coin);
                               setRToken(coin);
                             }}
                           >
@@ -509,6 +565,9 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     color="#0969DA"
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
+                      // setRTokenAmount(walletBalance);
+                      // setAmount(walletBalance);
+                      setCollateralAmount(walletBalance);
                       setRTokenAmount(walletBalance);
                       setSliderValue(100);
                       dispatch(
@@ -577,9 +636,12 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     value={sliderValue}
                     onChange={(val) => {
                       setSliderValue(val);
-                      var ans = (val * walletBalance)/100;
+                      var ans = (val * walletBalance) / 100;
                       ans = Math.round(ans * 100) / 100;
                       dispatch(setInputBorrowModalCollateralAmount(ans));
+                      // setRTokenAmount(ans);
+                      // setAmount(ans);
+                      setCollateralAmount(ans);
                       setRTokenAmount(ans);
                     }}
                     isDisabled={transactionStarted == true}
@@ -833,6 +895,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                             pr="2"
                             onClick={() => {
                               setCurrentBorrowCoin(coin);
+                              // setMarket(coin);
                               setMarket(coin);
                             }}
                           >
@@ -1296,9 +1359,11 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                 <ErrorButton errorText="Copy error!" />
               ) : (
                 <Box
-                  onClick={() => {
-                    handleBorrow();
+                  onClick={() => {        
                     setTransactionStarted(true);
+                    if(transactionStarted==false){
+                      handleBorrow();
+                    }
                   }}
                 >
                   <AnimatedButton
@@ -1326,7 +1391,6 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       "Processing the borrow request.",
                       <ErrorButton errorText="Transaction failed" />,
                       <ErrorButton errorText="Copy error!" />,
-
                     ]}
                   >
                     Borrow
@@ -1361,4 +1425,4 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   );
 };
 
-export default BorrowModal;
+export default memo(BorrowModal);

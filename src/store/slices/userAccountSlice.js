@@ -15,7 +15,7 @@ const initialState = {
   spendBorrowselectedDapp: "",
   walletBalance: 90,
   inputYourBorrowModalRepayAmount: 0,
-  transactionStatus:"",
+  transactionStatus: "",
 
   language: "English",
   currentPage: "market",
@@ -23,6 +23,10 @@ const initialState = {
   oracleAndFairPrices: undefined,
   offchainCurrentBlock: undefined,
   assetWalletBalance:{},
+
+  toastTransactionStarted: false,
+
+  toastTransactionStarted: false,
 
   // walletBalance: {
   //   BTC: 0,
@@ -46,8 +50,8 @@ export const userAccountSlice = createSlice({
     setAccountAddress(state, action) {
       state.accountAddress = action.payload;
     },
-    setTransactionStatus(state,action){
-      state.transactionStatus=action.payload;
+    setTransactionStatus(state, action) {
+      state.transactionStatus = action.payload;
     },
     setLanguage(state, action) {
       state.language = action.payload;
@@ -97,6 +101,9 @@ export const userAccountSlice = createSlice({
     setInputYourBorrowModalRepayAmount(state, action) {
       state.inputYourBorrowModalRepayAmount = action.payload;
     },
+    setToastTransactionStarted(state, action) {
+      state.toastTransactionStarted = !state.toastTransactionStarted;
+    },
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;
     // },
@@ -122,10 +129,11 @@ export const {
   setOffchainCurrentBlock,
   setSpendBorrowSelectedDapp,
   setAssetWalletBalance
+  setToastTransactionStarted,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
-export const {setTransactionStatus}=userAccountSlice.actions;
+export const { setTransactionStatus } = userAccountSlice.actions;
 export const { setInputBorrowModalCollateralAmount } = userAccountSlice.actions;
 export const { setInputBorrowModalBorrowAmount } = userAccountSlice.actions;
 export const { setInputTradeModalCollateralAmount } = userAccountSlice.actions;
@@ -137,7 +145,7 @@ export const { setBorrowCoinSelectedBorrowModal } = userAccountSlice.actions;
 export const { setInputYourBorrowModalRepayAmount } = userAccountSlice.actions;
 export const selectSelectedDapp = (state) =>
   state.user_account.spendBorrowselectedDapp;
-  export const selectTransactionStatus = (state) =>
+export const selectTransactionStatus = (state) =>
   state.user_account.transactionStatus;
 export const selectAssetWalletBalance = (state) => state.user_account.assetWalletBalance;
 
@@ -159,4 +167,6 @@ export const selectOracleAndFairPrices = (state) =>
   state.user_account.oracleAndFairPrices;
 export const selectOffchainCurrentBlock = (state) =>
   state.user_account.offchainCurrentBlock;
+export const selectToastTransactionStarted = (state) =>
+  state.user_account.toastTransactionStarted;
 export default userAccountSlice.reducer;

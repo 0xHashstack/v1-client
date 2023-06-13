@@ -1,4 +1,6 @@
 import { diamondAddress } from "@/Blockchain/stark-constants";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import { etherToWeiBN } from "@/Blockchain/utils/utils";
 import {
     useAccount,
     useContractWrite
@@ -9,7 +11,6 @@ const useStakeRequest = () => {
     const [rToken, setRToken] = useState("")
     const [rTokenAmount, setRTokenAmount] = useState(0)
     const { address: owner } = useAccount();
-    const [reciever, setReciever] = useState(owner)
 
     const {
         data: dataStakeRequest,
@@ -23,15 +24,33 @@ const useStakeRequest = () => {
         isSuccess: isSuccessStakeRequest,
         status: statusStakeRequest,
     } = useContractWrite({
-        calls: {
-            contractAddress: diamondAddress,
-            entrypoint: "stake_request",
-            calldata: [
-                rToken,
-                rTokenAmount,
-                reciever,
-            ]
-        }
+        calls:[
+            {
+                contractAddress: tokenAddressMap[rToken] || "",
+                entrypoint: "approve",
+                calldata: [
+                    diamondAddress,
+                    etherToWeiBN(
+                        rTokenAmount,
+                        rToken
+                    ).toString(),
+                    "0"
+                ]
+            },
+            {
+                contractAddress: diamondAddress,
+                entrypoint: "stake_request",
+                calldata: [
+                    tokenAddressMap[rToken] || "",
+                    etherToWeiBN(
+                        rTokenAmount,
+                        rToken
+                    ).toString(),
+                    "0",
+                    owner,
+                ]
+            }
+        ] 
     })
 
     return {
@@ -39,8 +58,6 @@ const useStakeRequest = () => {
         setRToken,
         rTokenAmount,
         setRTokenAmount,
-        reciever,
-        setReciever,
         dataStakeRequest,
         errorStakeRequest,
         resetStakeRequest,
