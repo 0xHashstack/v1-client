@@ -9,7 +9,6 @@ const useWithdrawDeposit = () => {
   const [rTokenShares, setRTokenShares] = useState(0);
   const { address: owner } = useAccount();
 
-  const [reciever, setReciever] = useState(owner);
   useEffect(() => {
     // console.log("withdrawing", asset, rTokenShares);
   }, [asset, rTokenShares]);
@@ -35,8 +34,9 @@ const useWithdrawDeposit = () => {
         etherToWeiBN(
           rTokenShares,
           asset
-        ),
-        reciever,
+        ).toString(),
+        "0",
+        owner,
         owner
       ],
     },
@@ -47,8 +47,6 @@ const useWithdrawDeposit = () => {
     setAsset,
     rTokenShares,
     setRTokenShares,
-    reciever,
-    setReciever,
 
     dataWithdrawDeposit,
     errorWithdrawDeposit,

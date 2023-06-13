@@ -63,6 +63,7 @@ import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import { useToast } from "@chakra-ui/react";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
+import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
 const SupplyModal = ({
   buttonText,
   coin,
@@ -92,6 +93,8 @@ const SupplyModal = ({
     statusDeposit,
   } = useDeposit();
   const toast = useToast();
+
+
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
     coin ? coin.name : "BTC"

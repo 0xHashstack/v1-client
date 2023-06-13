@@ -1,4 +1,6 @@
 import { diamondAddress } from '@/Blockchain/stark-constants';
+import { tokenAddressMap } from '@/Blockchain/utils/addressServices';
+import { etherToWeiBN } from '@/Blockchain/utils/utils';
 import { useAccount, useContractWrite } from '@starknet-react/core';
 import React, { useState } from 'react'
 
@@ -6,8 +8,6 @@ const useWithdrawStake = () => {
     const [unstakeRToken, setUnstakeRToken] = useState("")
     const [rTokenToWithdraw, setRTokenToWithdraw] = useState(0)
     const { address: owner } = useAccount();
-
-    const [reciever, setReciever] = useState(owner)
 
 
     const {
@@ -26,9 +26,13 @@ const useWithdrawStake = () => {
             contractAddress: diamondAddress,
             entrypoint: "withdraw_stake",
             calldata: [
-                unstakeRToken,
-                rTokenToWithdraw,
-                reciever,
+                tokenAddressMap[unstakeRToken],
+                etherToWeiBN(
+                    rTokenToWithdraw,
+                    unstakeRToken
+                ).toString(),
+                "0",
+                owner,
             ]
         }
     })
@@ -38,8 +42,6 @@ const useWithdrawStake = () => {
         setUnstakeRToken,
         rTokenToWithdraw,
         setRTokenToWithdraw,
-        reciever,
-        setReciever, 
         dataWithdrawStake,
         errorWithdrawStake,
         resetWithdrawStake,
