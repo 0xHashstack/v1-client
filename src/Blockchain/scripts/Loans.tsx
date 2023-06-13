@@ -72,7 +72,7 @@ export async function getUserLoans(account: string) {
   const res = await routerContract.call("get_user_loans", [account], {
     blockIdentifier: "pending",
   });
-  console.log(res, "res")
+  console.log(res, "res user loans")
   return parseLoansData(
     res?.loan_records_arr,
     res?.collateral_records_arr,

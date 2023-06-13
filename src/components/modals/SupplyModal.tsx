@@ -64,6 +64,7 @@ import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import { useToast } from "@chakra-ui/react";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
+import { getUserLoans } from "@/Blockchain/scripts/Loans";
 const SupplyModal = ({
   buttonText,
   coin,
@@ -111,7 +112,12 @@ const SupplyModal = ({
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalances=useSelector(selectAssetWalletBalance);
-  const [walletBalance, setwalletBalance] = useState(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 0)
+  console.log(walletBalances[coin.name]?.statusBalanceOf === "success")
+  const [walletBalance, setwalletBalance] = useState(0)
+  useEffect(()=>{
+    setwalletBalance(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 24)
+    console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
+  },[walletBalances[coin.name]?.statusBalanceOf])
   // console.log(walletBalances['BTC']);
   // const walletBalance = useSelector(selectWalletBalance);
   // const [transactionFailed, setTransactionFailed] = useState(false);
@@ -187,6 +193,12 @@ const SupplyModal = ({
         break;
     }
   };
+
+
+  
+  // useEffect(() => {
+  //   getUserLoans("0x05f2a945005c66ee80bc3873ade42f5e29901fc43de1992cd902ca1f75a1480b");
+  // }, [])
   // console.log(inputAmount);
 
   //This Function handles the modalDropDowns
@@ -868,8 +880,6 @@ const SupplyModal = ({
                         />,
                       ]}
                       labelErrorArray={[
-                        "Deposit Amount approved",
-                        "Successfully transferred to Hashstack’s supply vault.",
                         <ErrorButton errorText="Transaction failed" />,
                         <ErrorButton errorText="Copy error!" />,
                       ]}
