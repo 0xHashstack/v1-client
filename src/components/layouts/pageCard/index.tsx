@@ -1,7 +1,7 @@
 import Navbar from "@/components/layouts/navbar/Navbar";
 import { Box, Stack, StackProps, useMediaQuery } from "@chakra-ui/react";
 import React, { ReactNode, useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import {
   useAccount,
@@ -10,9 +10,15 @@ import {
   useBlock,
 } from "@starknet-react/core";
 import { useContract } from "@starknet-react/core";
-import { setAccount } from "@/store/slices/userAccountSlice";
+import {
+  selectToastTransactionStarted,
+  setAccount,
+} from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import Footer from "../footer";
+import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
+import SuccessButton from "@/components/uiElements/buttons/SuccessButton";
+import ErrorButton from "@/components/uiElements/buttons/ErrorButton";
 interface Props extends StackProps {
   children: ReactNode;
 }
@@ -27,6 +33,9 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const dispatch = useDispatch();
   if (className) classes.push(className);
   const router = useRouter();
+
+  const toastTransactionStarted = useSelector(selectToastTransactionStarted);
+
   // const handleRouteChange = () => {
   //   if (!_account) {
   //     const walletConnected = localStorage.getItem("lastUsedConnector");
@@ -99,6 +108,46 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           >
             {children}
           </Stack>
+          <Box
+            bgColor="red"
+            display={toastTransactionStarted ? "block" : "none"}
+          >
+            <AnimatedButton
+              position="fixed"
+              bgColor="#101216"
+              // p={0}
+              color="#8B949E"
+              size="sm"
+              width="20%"
+              // mt="1.5rem"
+              // mb="1.5rem"
+              right="2rem"
+              bottom="3rem"
+              borderRadius="2px"
+              labelSuccessArray={[
+                "Deposit Amount approved",
+                "Successfully transferred to Hashstack’s supply vault.",
+                "Determining the rToken amount to mint.",
+                "rTokens have been minted successfully.",
+                "Transaction complete.",
+                // <ErrorButton errorText="Transaction failed" />,
+                // <ErrorButton errorText="Copy error!" />,
+                <SuccessButton key={"successButton"} successText={"Success"} />,
+              ]}
+              labelErrorArray={[
+                "Deposit Amount approved",
+                "Successfully transferred to Hashstack’s supply vault.",
+                <ErrorButton errorText="Transaction failed" />,
+                <ErrorButton errorText="Copy error!" />,
+              ]}
+              // transactionStarted={(depostiTransactionHash!="" || transactionFailed==true)}
+              _disabled={{ bgColor: "white", color: "black" }}
+              isDisabled={toastTransactionStarted != true}
+              // onClick={}
+            >
+              Supply
+            </AnimatedButton>
+          </Box>
           <Footer block={83207} />
         </>
       )}

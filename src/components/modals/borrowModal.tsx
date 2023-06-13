@@ -67,7 +67,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const handleBorrow = async () => {
     try {
       const borrow = await writeAsyncLoanRequest();
-    } catch (err) {
+    } catch (err)  {
       console.log("handle borrow", err);
     }
   };

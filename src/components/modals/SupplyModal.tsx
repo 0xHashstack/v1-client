@@ -42,6 +42,7 @@ import {
   setInputSupplyAmount,
   selectTransactionStatus,
   setTransactionStatus,
+  setToastTransactionStarted,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -80,6 +81,8 @@ const SupplyModal = ({
     dataDeposit,
     errorDeposit,
     resetDeposit,
+    depositTransHash,
+    setDepositTransHash,
     writeAsyncDeposit,
     isErrorDeposit,
     isIdleDeposit,
@@ -93,16 +96,17 @@ const SupplyModal = ({
     coin ? coin.name : "BTC"
   );
   // console.log("wallet balance",typeof Number(walletBalance))
-  console.log("deposit amount",typeof depositAmount)
+  console.log("deposit amount", typeof depositAmount);
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
+  // const [toastTransactionStarted, setToastTransactionStarted] = useState(false);
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
   // const walletBalance = useSelector(selectWalletBalance);
-  const [depostiTransactionHash, setDepostiTransactionHash] = useState()
+  // const [depostiTransactionHash, setDepostiTransactionHash] = useState()
   // const [transactionFailed, setTransactionFailed] = useState(false);
 
   // const [depositTransHash, setDepositTransHash] = useState();
@@ -119,8 +123,10 @@ const SupplyModal = ({
 
   // // }
 
-  const recieptData = useWaitForTransaction({ hash: depostiTransactionHash, watch: true});
-
+  // const recieptData = useWaitForTransaction({
+  //   hash: depostiTransactionHash,
+  //   watch: true,
+  // });
 
   const handleTransaction = async () => {
     try {
@@ -145,7 +151,7 @@ const SupplyModal = ({
       dispatch(setTransactionStatus("failed"));
       console.log(err);
       toast({
-        description: "An error occurred while handling the transaction.",
+        description: "An error occurred while handling the transaction. " + err,
         variant: "subtle",
         position: "bottom-right",
         status: "error",
@@ -191,7 +197,7 @@ const SupplyModal = ({
   const handleChange = (newValue: any) => {
     // Calculate the percentage of the new value relative to the wallet balance
     var percentage = (newValue * 100) / walletBalance;
-    if(walletBalance==0){
+    if (walletBalance == 0) {
       setDepositAmount(0);
     }
     percentage = Math.max(0, percentage);
@@ -241,6 +247,7 @@ const SupplyModal = ({
           onClose={() => {
             onClose();
             resetStates();
+            dispatch(setToastTransactionStarted(""));
             // if (setIsOpenCustom) setIsOpenCustom(false);
           }}
           size={{ width: "700px", height: "100px" }}
@@ -438,7 +445,13 @@ const SupplyModal = ({
                     min={0}
                     keepWithinRange={true}
                     onChange={handleChange}
-                    value={depositAmount ? depositAmount : walletBalance==0 ? 0: ""}
+                    value={
+                      depositAmount
+                        ? depositAmount
+                        : walletBalance == 0
+                        ? 0
+                        : ""
+                    }
                     outline="none"
                     // precision={1}
                     step={parseFloat(`${depositAmount <= 99999 ? 0.1 : 0}`)}
@@ -860,6 +873,7 @@ const SupplyModal = ({
                       // transactionStarted={(depostiTransactionHash!="" || transactionFailed==true)}
                       _disabled={{ bgColor: "white", color: "black" }}
                       isDisabled={transactionStarted == true}
+                      // transactionStarted={toastTransactionStarted}
                       // onClick={}
                     >
                       Supply
