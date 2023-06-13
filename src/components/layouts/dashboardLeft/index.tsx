@@ -25,6 +25,7 @@ import { setAssetWalletBalance } from "@/store/slices/userAccountSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { useDispatch } from "react-redux";
+import { useAccount } from "@starknet-react/core";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -70,6 +71,7 @@ const DashboardLeft = ({
   const columnItems = ["Market", "Price", "Total Supply", "Supply APR", "", ""];
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const [isOpenCustom, setIsOpenCustom] = useState(false);
+  const {account}=useAccount();
   const dispatch = useDispatch();
 
   // const {
@@ -131,7 +133,6 @@ const DashboardLeft = ({
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
   useEffect(()=>{
-
     dispatch(setAssetWalletBalance(assetBalance));
   },[assetBalance])
 
