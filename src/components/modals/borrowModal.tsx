@@ -66,7 +66,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
 
   const handleBorrow = async () => {
     try {
-      const borrow = await writeAsyncLoanRequest();
+      console.log("borrowing", amount, market, rToken, rTokenAmount);
+      const borrow = await writeAsyncLoanRequestrToken();
     } catch (err) {
       console.log("handle borrow", err);
     }
@@ -93,6 +94,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     resetLoanRequest,
     writeLoanRequest,
     writeAsyncLoanRequest,
+    writeAsyncLoanRequestrToken,
     isErrorLoanRequest,
     isIdleLoanRequest,
     isLoadingLoanRequest,
@@ -571,7 +573,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     value={sliderValue}
                     onChange={(val) => {
                       setSliderValue(val);
-                      var ans = (val / 100) * walletBalance;
+                      var ans = (val * walletBalance)/100;
                       ans = Math.round(ans * 100) / 100;
                       dispatch(setInputBorrowModalCollateralAmount(ans));
                       setRTokenAmount(ans);

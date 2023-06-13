@@ -40,8 +40,8 @@ const useDeposit = () => {
                 calldata: [
                     diamondAddress,
                     etherToWeiBN(
-                        depositAmount as number,
-                        tokenAddressMap[asset] || ""
+                        depositAmount,
+                        asset
                     ).toString(),
                     "0"
                 ],
@@ -52,8 +52,8 @@ const useDeposit = () => {
                 calldata: [
                     tokenAddressMap[asset],
                     etherToWeiBN(
-                        depositAmount as number,
-                        tokenAddressMap[asset] || ""
+                        depositAmount,
+                        asset
                     ).toString(),
                     0,
                     account,

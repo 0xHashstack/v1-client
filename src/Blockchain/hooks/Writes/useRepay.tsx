@@ -70,7 +70,7 @@ const useRepay = (loanParam: any, diamondAddress: string) => {
           diamondAddress,
           etherToWeiBN(
             repayAmount as number,
-            loan.underlyingMarketAddress || ""
+            loan.underlyingMarket || ""
           ).toString(),
           0,
         ],
@@ -82,7 +82,7 @@ const useRepay = (loanParam: any, diamondAddress: string) => {
           loan.loanId,
           etherToWeiBN(
             repayAmount as number,
-            loan.underlyingMarketAddress || ""
+            loan.underlyingMarket || ""
           ).toString(),
           0,
         ],

@@ -61,6 +61,7 @@ import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import { useToast } from "@chakra-ui/react";
+import { getUserLoans } from "@/Blockchain/scripts/Loans";
 const SupplyModal = ({
   buttonText,
   coin,
@@ -175,6 +176,12 @@ const SupplyModal = ({
         break;
     }
   };
+
+
+  
+  // useEffect(() => {
+  //   getUserLoans("0x05f2a945005c66ee80bc3873ade42f5e29901fc43de1992cd902ca1f75a1480b");
+  // }, [])
   // console.log(inputAmount);
 
   //This Function handles the modalDropDowns

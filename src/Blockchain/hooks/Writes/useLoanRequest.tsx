@@ -18,15 +18,19 @@ import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 const useLoanRequest = () => {
     const {address: account} = useAccount();
 
+    // Native token Market
     const [market, setMarket] = useState<string>("");
     const [amount, setAmount] = useState<number>(0);
     
-    // Collateral
+    // Collateral - rToken
     const [rToken, setRToken] = useState<string>("");
     const [rTokenAmount, setRTokenAmount] = useState<number>(0);
 
-    const [transLoanRequestHash, setIsLoanRequestHash] = useState("");
+    // Collateral - native token Market
+    const [collateralMarket, setCollateralMarket] = useState<string>("");
+    const [collateralAmount, setCollateralAmount] = useState<number>(0);
 
+    const [transLoanRequestHash, setIsLoanRequestHash] = useState("");
     const loanRequestTransactionReceipt = useWaitForTransaction({
         hash: transLoanRequestHash,
         watch: true,
@@ -49,16 +53,51 @@ const useLoanRequest = () => {
                 contractAddress: diamondAddress,
                 entrypoint: "loan_request",
                 calldata: [
-                    market,
+                    tokenAddressMap[market] || "",
                     etherToWeiBN(
                         amount as number,
-                        tokenAddressMap[market] || ""
+                        market
                     ).toString(), 
                     0, 
-                    rToken,
+                    tokenAddressMap[collateralMarket] || "",
                     etherToWeiBN(
-                        rTokenAmount as number,
-                        tokenAddressMap[rToken] || ""
+                        collateralAmount as number,
+                        collateralMarket
+                    ).toString(),
+                    0,
+                    account
+                ],
+            },
+        ],
+    });
+
+    const {
+        data: dataLoanRequestrToken,
+        error: errorLoanRequestrToken,
+        reset: resetLoanRequestrToken,
+        write: writeLoanRequestrToken,
+        writeAsync: writeAsyncLoanRequestrToken,
+        isError: isErrorLoanRequestrToken,
+        isIdle: isIdleLoanRequestrToken,
+        isLoading: isLoadingLoanRequestrToken,
+        isSuccess: isSuccessLoanRequestrToken,
+        status: statusLoanRequestrToken,
+    } = useContractWrite({
+        calls: [
+            {
+                contractAddress: diamondAddress,
+                entrypoint: "loan_request_with_rToken",
+                calldata: [
+                    tokenAddressMap[market] || "",
+                    etherToWeiBN(
+                        amount,
+                        market
+                    ).toString(), 
+                    0, 
+                    tokenAddressMap[rToken] || "",
+                    etherToWeiBN(
+                        rTokenAmount,
+                        rToken
                     ).toString(),
                     0,
                     account
@@ -72,10 +111,28 @@ const useLoanRequest = () => {
         setMarket,
         amount,
         setAmount,
+
         rToken,
         setRToken,
         rTokenAmount,
         setRTokenAmount,
+
+        collateralMarket,
+        setCollateralMarket,
+        collateralAmount,
+        setCollateralAmount,
+
+        dataLoanRequestrToken,
+        errorLoanRequestrToken,
+        resetLoanRequestrToken,
+        writeLoanRequestrToken,
+        writeAsyncLoanRequestrToken,
+        isErrorLoanRequestrToken,
+        isIdleLoanRequestrToken,
+        isLoadingLoanRequestrToken,
+        statusLoanRequestrToken,
+
+
         dataLoanRequest,
         errorLoanRequest,
         resetLoanRequest,
@@ -84,6 +141,7 @@ const useLoanRequest = () => {
         isErrorLoanRequest,
         isIdleLoanRequest,
         isLoadingLoanRequest,
+        statusLoanRequest,
     };
 };
 
