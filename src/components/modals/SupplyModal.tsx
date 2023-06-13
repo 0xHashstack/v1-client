@@ -52,7 +52,7 @@ import {
 } from "@/store/slices/dropdownsSlice";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
-import { useAccount, useBalance, useWaitForTransaction } from "@starknet-react/core";
+import { useAccount, useBalance, useWaitForTransaction, useWaitForTransaction } from "@starknet-react/core";
 import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
@@ -95,7 +95,16 @@ const SupplyModal = ({
   const [depostiTransactionHash, setDepostiTransactionHash] = useState()
   // const [transactionFailed, setTransactionFailed] = useState(false);
 
-    const recipetData=useWaitForTransaction({hash:depostiTransactionHash});
+  const [depositTransHash, setDepositTransHash] = useState();
+
+  
+
+  const showToast = () => {
+
+  }
+
+  const recieptData = useWaitForTransaction({ hash: depositTransHash, watch: true, onPending: showToast});
+
 
   const handleTransaction = async () => {
     try {
@@ -128,10 +137,6 @@ const SupplyModal = ({
       });
     }
   }
-  useEffect(()=>{
-    console.log("Status transaction",statusDeposit)
-    // console.log(recipetData.data,"recipet");
-  },[statusDeposit])
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -351,8 +356,8 @@ const SupplyModal = ({
                               px={`${coin === currentSelectedCoin ? "1" : "5"}`}
                               gap="1"
                               bg={`${coin === currentSelectedCoin
-                                  ? "#0C6AD9"
-                                  : "inherit"
+                                ? "#0C6AD9"
+                                : "inherit"
                                 }`}
                               borderRadius="md"
                             >
@@ -394,14 +399,14 @@ const SupplyModal = ({
                   width="100%"
                   color="white"
                   border={`${depositAmount > walletBalance
+                    ? "1px solid #CF222E"
+                    : depositAmount < 0
                       ? "1px solid #CF222E"
-                      : depositAmount < 0
+                      : isNaN(depositAmount)
                         ? "1px solid #CF222E"
-                        : isNaN(depositAmount)
-                          ? "1px solid #CF222E"
-                          : depositAmount > 0 && depositAmount <= walletBalance
-                            ? "1px solid #1A7F37"
-                            : "1px solid #2B2F35 "
+                        : depositAmount > 0 && depositAmount <= walletBalance
+                          ? "1px solid #1A7F37"
+                          : "1px solid #2B2F35 "
                     }`}
                   borderRadius="6px"
                   display="flex"
@@ -423,14 +428,14 @@ const SupplyModal = ({
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentSelectedCoin}`}
                       color={`${depositAmount > walletBalance
+                        ? "#CF222E"
+                        : isNaN(depositAmount)
                           ? "#CF222E"
-                          : isNaN(depositAmount)
+                          : depositAmount < 0
                             ? "#CF222E"
-                            : depositAmount < 0
-                              ? "#CF222E"
-                              : depositAmount == 0
-                                ? "white"
-                                : "#1A7F37"
+                            : depositAmount == 0
+                              ? "white"
+                              : "#1A7F37"
                         }`}
                       _disabled={{ color: "#1A7F37" }}
                       border="0px"
@@ -538,7 +543,7 @@ const SupplyModal = ({
                     _disabled={{ cursor: "pointer" }}
                     focusThumbOnChange={false}
                   >
-                                        <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
+                    <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
                       {sliderValue >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
                     </SliderMark>
                     <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
