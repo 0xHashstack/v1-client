@@ -88,7 +88,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     isLoadingStakeRequest,
     isSuccessStakeRequest,
     statusStakeRequest,
-}=useStakeRequest();
+  } = useStakeRequest();
 
   const {
     unstakeRToken,
@@ -105,7 +105,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     isLoadingWithdrawStake,
     isSuccessWithdrawStake,
     statusWithdrawStake,
-}=useWithdrawStake();
+  } = useWithdrawStake();
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -168,20 +168,21 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     }
   };
 
-  const handleStakeTransaction=async()=>{
-    try{
-      const stake=await writeAsyncStakeRequest();
-      // console.log(stake);
-    }catch(err){
+  const handleStakeTransaction = async () => {
+    try {
+      console.log("staking", rToken, rTokenAmount);
+      const stake = await writeAsyncStakeRequest();
+      console.log(stake);
+    } catch (err) {
       console.log(err)
     }
   }
 
-  const hanldeUnstakeTransaction=async()=>{
-    try{
-      const unstake=await writeAsyncWithdrawStake();
+  const hanldeUnstakeTransaction = async () => {
+    try {
+      const unstake = await writeAsyncWithdrawStake();
 
-    }catch(err){
+    } catch (err) {
       console.log(err)
     }
   }
@@ -325,7 +326,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
           resetStates();
         }}
         isCentered
-          scrollBehavior="inside"
+        scrollBehavior="inside"
       >
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
         <ModalContent mt="8rem" bg={"#010409"} maxW="464px">
@@ -341,7 +342,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
               display={"flex"}
               justifyContent={"space-between"}
               fontSize={"sm"}
-              // my={"2"}
+            // my={"2"}
             >
               <Box w="full">
                 <Tabs variant="unstyled">
@@ -360,7 +361,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         bg: "#0969DA",
                         border: "none",
                       }}
-                      isDisabled={unstakeTransactionStarted==true}
+                      isDisabled={unstakeTransactionStarted == true}
                     >
                       Stake
                     </Tab>
@@ -378,7 +379,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         bg: "#0969DA",
                         border: "none",
                       }}
-                      isDisabled={transactionStarted==true}
+                      isDisabled={transactionStarted == true}
                     >
                       Unstake
                     </Tab>
@@ -408,7 +409,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               fontStyle="normal"
                               fontWeight="500"
                               borderRadius="6px"
-                              // textAlign="center"
+                            // textAlign="center"
                             >
                               <Box pr="3" my="auto" cursor="pointer">
                                 <WarningIcon />
@@ -437,11 +438,10 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             fontWeight="400"
                             fontStyle="normal"
                           >
-                            {`${
-                              !coinsSupplied[currentSelectedStakeCoin]
+                            {`${!coinsSupplied[currentSelectedStakeCoin]
                                 ? "Select"
                                 : "Supply"
-                            }`}{" "}
+                              }`}{" "}
                             Market
                           </Text>
                           <Tooltip
@@ -473,10 +473,10 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           borderRadius="md"
                           className="navbar"
                           cursor="pointer"
-                          onClick={() =>{
-                            if(transactionStarted){
+                          onClick={() => {
+                            if (transactionStarted) {
                               return;
-                            }else{
+                            } else {
                               handleDropdownClick("stakeMarketDropDown")
                             }
                           }}
@@ -531,17 +531,15 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                                       w="full"
                                       display="flex"
                                       py="5px"
-                                      px={`${
-                                        coin === currentSelectedStakeCoin
+                                      px={`${coin === currentSelectedStakeCoin
                                           ? "1"
                                           : "5"
-                                      }`}
+                                        }`}
                                       gap="1"
-                                      bg={`${
-                                        coin === currentSelectedStakeCoin
+                                      bg={`${coin === currentSelectedStakeCoin
                                           ? "#0C6AD9"
                                           : "inherit"
-                                      }`}
+                                        }`}
                                       borderRadius="md"
                                     >
                                       <Box p="1">{getCoin(coin)}</Box>
@@ -585,16 +583,15 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         <Box
                           width="100%"
                           color="white"
-                          border={`${
-                            rTokenAmount > walletBalance
+                          border={`${rTokenAmount > walletBalance
                               ? "1px solid #CF222E"
                               : rTokenAmount < 0
-                              ? "1px solid #CF222E"
-                              : rTokenAmount > 0 &&
-                              rTokenAmount <= walletBalance
-                              ? "1px solid #1A7F37"
-                              : "1px solid #2B2F35 "
-                          }`}
+                                ? "1px solid #CF222E"
+                                : rTokenAmount > 0 &&
+                                  rTokenAmount <= walletBalance
+                                  ? "1px solid #1A7F37"
+                                  : "1px solid #2B2F35 "
+                            }`}
                           borderRadius="6px"
                           display="flex"
                           justifyContent="space-between"
@@ -609,21 +606,20 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             step={parseFloat(
                               `${rTokenAmount <= 99999 ? 0.1 : 0}`
                             )}
-                            isDisabled={transactionStarted==true}
-                            _disabled={{cursor:"pointer"}}
+                            isDisabled={transactionStarted == true}
+                            _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
-                              color={`${
-                                rTokenAmount > walletBalance
+                              color={`${rTokenAmount > walletBalance
                                   ? "#CF222E"
                                   : rTokenAmount < 0
-                                  ? "#CF222E"
-                                  : rTokenAmount == 0
-                                  ? "white"
-                                  : "#1A7F37"
-                              }`}
-                              _disabled={{color:"#1A7F37"}}
+                                    ? "#CF222E"
+                                    : rTokenAmount == 0
+                                      ? "white"
+                                      : "#1A7F37"
+                                }`}
+                              _disabled={{ color: "#1A7F37" }}
                               border="0px"
                               _placeholder={{
                                 color: "#393D4F",
@@ -652,7 +648,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           </Button>
                         </Box>
                         {rTokenAmount > walletBalance ||
-                        rTokenAmount < 0 ? (
+                          rTokenAmount < 0 ? (
                           <Text
                             display="flex"
                             justifyContent="space-between"
@@ -717,47 +713,47 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             _disabled={{ cursor: "pointer" }}
                             focusThumbOnChange={false}
                           >
-                                        <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
-                    </SliderMark>
-                    <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
-                    </SliderMark>
-                    <SliderMark value={50} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue >= 50 ? <SliderPointerWhite /> : <SliderPointer />}
-                    </SliderMark>
-                    <SliderMark value={75} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue >= 75 ? <SliderPointerWhite /> : <SliderPointer />}
-                    </SliderMark>
-                    <SliderMark value={100} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue == 100 ? <SliderPointerWhite /> : <SliderPointer />}
-                    </SliderMark>
-                    <SliderMark
-                      value={sliderValue}
-                      textAlign='center'
-                      // bg='blue.500'
-                      color='white'
-                      mt='-8'
-                      ml={
-                        sliderValue !== 100 ? "-5" : "-6"
-                      }
-                      w='12'
-                      fontSize="12px"
-                      fontWeight="400"
-                      lineHeight="20px"
-                      letterSpacing="0.25px"
-                    >
-                      {sliderValue}%
-                    </SliderMark>
-                    <SliderTrack bg="#343333">
-                      <SliderFilledTrack
-                        bg="white"
-                        w={`${sliderValue}`}
-                        _disabled={{ bg: "white" }}
-                      />
-                    </SliderTrack>
-                    <SliderThumb />
-                  </Slider>
+                            <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
+                              {sliderValue >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
+                            </SliderMark>
+                            <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
+                              {sliderValue >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
+                            </SliderMark>
+                            <SliderMark value={50} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                              {sliderValue >= 50 ? <SliderPointerWhite /> : <SliderPointer />}
+                            </SliderMark>
+                            <SliderMark value={75} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                              {sliderValue >= 75 ? <SliderPointerWhite /> : <SliderPointer />}
+                            </SliderMark>
+                            <SliderMark value={100} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                              {sliderValue == 100 ? <SliderPointerWhite /> : <SliderPointer />}
+                            </SliderMark>
+                            <SliderMark
+                              value={sliderValue}
+                              textAlign='center'
+                              // bg='blue.500'
+                              color='white'
+                              mt='-8'
+                              ml={
+                                sliderValue !== 100 ? "-5" : "-6"
+                              }
+                              w='12'
+                              fontSize="12px"
+                              fontWeight="400"
+                              lineHeight="20px"
+                              letterSpacing="0.25px"
+                            >
+                              {sliderValue}%
+                            </SliderMark>
+                            <SliderTrack bg="#343333">
+                              <SliderFilledTrack
+                                bg="white"
+                                w={`${sliderValue}`}
+                                _disabled={{ bg: "white" }}
+                              />
+                            </SliderTrack>
+                            <SliderThumb />
+                          </Slider>
                         </Box>
                       </Card>
                       {!coinsSupplied[currentSelectedStakeCoin] && (
@@ -945,53 +941,52 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           />
                         </Text>
                       </Text> */}
-                      {rTokenAmount> 0 &&
-                      rTokenAmount <= walletBalance ? (
+                      {rTokenAmount > 0 &&
+                        rTokenAmount <= walletBalance ? (
                         buttonId == 1 ? (
                           <SuccessButton successText="Stake success" />
                         ) : buttonId == 2 ? (
                           <ErrorButton errorText="Copy error!" />
                         ) : (
-                          <Box onClick={()=>{
+                          <Box onClick={() => {
                             handleStakeTransaction()
                             setTransactionStarted(true);
                           }}>
 
-                          <AnimatedButton
-                            bgColor="#101216"
-                            // bgColor="red"
-                            // p={0}
-                            color="#8B949E"
-                            size="sm"
-                            width="100%"
-                            mt="1.5rem"
-                            mb="1.5rem"
-                            border="1px solid #8B949E"
-                            labelSuccessArray={[
-                              "Processing",
-                              "Checking for sufficient rtoken balance.",
-                              "Transferring rTokens to the supply vault",
-                              "Updating the supply records.",
-                              // <ErrorButton errorText="Transaction failed" />,
-                              // <ErrorButton errorText="Copy error!" />,
-                              <SuccessButton
-                                key={"successButton"}
-                                successText={"Stake successful."}
-                              />,
-                            ]}
-                            labelErrorArray={[
-                              "Processing",
-                              "Checking for sufficient rtoken balance.",
-                              <ErrorButton errorText="Transaction failed" />,
-                              <ErrorButton errorText="Copy error!" />,
-                            ]}
-                          >
-                            {`${
-                              !coinsSupplied[currentSelectedStakeCoin]
-                                ? "Stake and Supply"
-                                : "Stake"
-                            }`}
-                          </AnimatedButton>
+                            <AnimatedButton
+                              bgColor="#101216"
+                              // bgColor="red"
+                              // p={0}
+                              color="#8B949E"
+                              size="sm"
+                              width="100%"
+                              mt="1.5rem"
+                              mb="1.5rem"
+                              border="1px solid #8B949E"
+                              labelSuccessArray={[
+                                "Processing",
+                                "Checking for sufficient rtoken balance.",
+                                "Transferring rTokens to the supply vault",
+                                "Updating the supply records.",
+                                // <ErrorButton errorText="Transaction failed" />,
+                                // <ErrorButton errorText="Copy error!" />,
+                                <SuccessButton
+                                  key={"successButton"}
+                                  successText={"Stake successful."}
+                                />,
+                              ]}
+                              labelErrorArray={[
+                                "Processing",
+                                "Checking for sufficient rtoken balance.",
+                                <ErrorButton errorText="Transaction failed" />,
+                                <ErrorButton errorText="Copy error!" />,
+                              ]}
+                            >
+                              {`${!coinsSupplied[currentSelectedStakeCoin]
+                                  ? "Stake and Supply"
+                                  : "Stake"
+                                }`}
+                            </AnimatedButton>
                           </Box>
                         )
                       ) : (
@@ -1005,11 +1000,10 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           border="1px solid #2B2F35"
                           _hover={{ bg: "#101216" }}
                         >
-                          {`${
-                            !coinsSupplied[currentSelectedStakeCoin]
+                          {`${!coinsSupplied[currentSelectedStakeCoin]
                               ? "Stake and Supply"
                               : "Stake"
-                          }`}
+                            }`}
                         </Button>
                       )}
                     </TabPanel>
@@ -1038,7 +1032,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               fontStyle="normal"
                               fontWeight="500"
                               borderRadius="6px"
-                              // textAlign="center"
+                            // textAlign="center"
                             >
                               <Box pr="3" my="auto" cursor="pointer">
                                 <WarningIcon />
@@ -1098,10 +1092,10 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           borderRadius="md"
                           className="navbar"
                           cursor="pointer"
-                          onClick={() =>{
-                            if(unstakeTransactionStarted==true){
+                          onClick={() => {
+                            if (unstakeTransactionStarted == true) {
                               return;
-                            }else{
+                            } else {
 
                               handleDropdownClick("unstakeMarketDropDown")
                             }
@@ -1160,17 +1154,15 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                                       w="full"
                                       display="flex"
                                       py="5px"
-                                      px={`${
-                                        coin === currentSelectedUnstakeCoin
+                                      px={`${coin === currentSelectedUnstakeCoin
                                           ? "1"
                                           : "5"
-                                      }`}
+                                        }`}
                                       gap="1"
-                                      bg={`${
-                                        coin === currentSelectedUnstakeCoin
+                                      bg={`${coin === currentSelectedUnstakeCoin
                                           ? "#0C6AD9"
                                           : "inherit"
-                                      }`}
+                                        }`}
                                       borderRadius="md"
                                     >
                                       <Box p="1">{getCoin(coin)}</Box>
@@ -1214,18 +1206,17 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         <Box
                           width="100%"
                           color="white"
-                          border={`${
-                            !coinsSupplied[currentSelectedUnstakeCoin]
+                          border={`${!coinsSupplied[currentSelectedUnstakeCoin]
                               ? "1px solid #2B2F35"
                               : rTokenToWithdraw > walletBalance
-                              ? "1px solid #CF222E"
-                              : rTokenToWithdraw < 0
-                              ? "1px solid #CF222E"
-                              : rTokenToWithdraw > 0 &&
-                              rTokenToWithdraw <= walletBalance
-                              ? "1px solid #1A7F37"
-                              : "1px solid #2B2F35 "
-                          }`}
+                                ? "1px solid #CF222E"
+                                : rTokenToWithdraw < 0
+                                  ? "1px solid #CF222E"
+                                  : rTokenToWithdraw > 0 &&
+                                    rTokenToWithdraw <= walletBalance
+                                    ? "1px solid #1A7F37"
+                                    : "1px solid #2B2F35 "
+                            }`}
                           borderRadius="6px"
                           display="flex"
                           justifyContent="space-between"
@@ -1248,23 +1239,22 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             )}
                             isDisabled={
                               !coinsSupplied[currentSelectedUnstakeCoin] ||
-                              unstakeTransactionStarted==true
+                              unstakeTransactionStarted == true
                             }
                             _disabled={{ cursor: "pointer" }}
                           >
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
-                              color={`${
-                                !coinsSupplied[currentSelectedUnstakeCoin]
+                              color={`${!coinsSupplied[currentSelectedUnstakeCoin]
                                   ? "#1A7F37"
                                   : rTokenToWithdraw > walletBalance
-                                  ? "#CF222E"
-                                  : rTokenToWithdraw < 0
-                                  ? "#CF222E"
-                                  : rTokenToWithdraw == 0
-                                  ? "white"
-                                  : "#1A7F37"
-                              }`}
+                                    ? "#CF222E"
+                                    : rTokenToWithdraw < 0
+                                      ? "#CF222E"
+                                      : rTokenToWithdraw == 0
+                                        ? "white"
+                                        : "#1A7F37"
+                                }`}
                               _disabled={{ cursor: "pointer" }}
                               border="0px"
                               _placeholder={{
@@ -1298,7 +1288,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         </Box>
                         {(rTokenToWithdraw > walletBalance ||
                           rTokenToWithdraw < 0) &&
-                        coinsSupplied[currentSelectedUnstakeCoin] ? (
+                          coinsSupplied[currentSelectedUnstakeCoin] ? (
                           <Text
                             display="flex"
                             justifyContent="space-between"
@@ -1370,50 +1360,50 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             _disabled={{ cursor: "pointer" }}
                             focusThumbOnChange={false}
                           >
-                                        <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue2 >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
-                    </SliderMark>
-                    <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue2 >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
-                    </SliderMark>
-                    <SliderMark value={50} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue2 >= 50 ? <SliderPointerWhite /> : <SliderPointer />}
-                    </SliderMark>
-                    <SliderMark value={75} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue2 >= 75 ? <SliderPointerWhite /> : <SliderPointer />}
-                    </SliderMark>
-                    <SliderMark value={100} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                      {sliderValue2 == 100 ? <SliderPointerWhite /> : <SliderPointer />}
-                    </SliderMark>
-                    <SliderMark                          value={
-                        !coinsSupplied[currentSelectedUnstakeCoin]
-                          ? 0
-                          : sliderValue2
-                      }
-                      textAlign='center'
-                      // bg='blue.500'
-                      color='white'
-                      mt='-8'
-                      ml={
-                        sliderValue2 !== 100 ? "-5" : "-6"
-                      }
-                      w='12'
-                      fontSize="12px"
-                      fontWeight="400"
-                      lineHeight="20px"
-                      letterSpacing="0.25px"
-                    >
-                      {sliderValue2}%
-                    </SliderMark>
-                    <SliderTrack bg="#343333">
-                      <SliderFilledTrack
-                        bg="white"
-                        w={`${sliderValue2}`}
-                        _disabled={{ bg: "white" }}
-                      />
-                    </SliderTrack>
-                    <SliderThumb />
-                  </Slider>
+                            <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
+                              {sliderValue2 >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
+                            </SliderMark>
+                            <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
+                              {sliderValue2 >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
+                            </SliderMark>
+                            <SliderMark value={50} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                              {sliderValue2 >= 50 ? <SliderPointerWhite /> : <SliderPointer />}
+                            </SliderMark>
+                            <SliderMark value={75} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                              {sliderValue2 >= 75 ? <SliderPointerWhite /> : <SliderPointer />}
+                            </SliderMark>
+                            <SliderMark value={100} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
+                              {sliderValue2 == 100 ? <SliderPointerWhite /> : <SliderPointer />}
+                            </SliderMark>
+                            <SliderMark value={
+                              !coinsSupplied[currentSelectedUnstakeCoin]
+                                ? 0
+                                : sliderValue2
+                            }
+                              textAlign='center'
+                              // bg='blue.500'
+                              color='white'
+                              mt='-8'
+                              ml={
+                                sliderValue2 !== 100 ? "-5" : "-6"
+                              }
+                              w='12'
+                              fontSize="12px"
+                              fontWeight="400"
+                              lineHeight="20px"
+                              letterSpacing="0.25px"
+                            >
+                              {sliderValue2}%
+                            </SliderMark>
+                            <SliderTrack bg="#343333">
+                              <SliderFilledTrack
+                                bg="white"
+                                w={`${sliderValue2}`}
+                                _disabled={{ bg: "white" }}
+                              />
+                            </SliderTrack>
+                            <SliderThumb />
+                          </Slider>
                         </Box>
                       </Card>
 
@@ -1529,44 +1519,44 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         </Text>
                       </Card>
                       {rTokenToWithdraw > 0 &&
-                      rTokenToWithdraw<= walletBalance &&
-                      coinsSupplied[currentSelectedUnstakeCoin] ? (
-                        <Box onClick={()=>{
+                        rTokenToWithdraw <= walletBalance &&
+                        coinsSupplied[currentSelectedUnstakeCoin] ? (
+                        <Box onClick={() => {
                           hanldeUnstakeTransaction();
                           setUnstakeTransactionStarted(true);
                         }}>
 
-                        <AnimatedButton
-                          bgColor="#101216"
-                          // bgColor="red"
-                          // p={0}
-                          color="#8B949E"
-                          size="sm"
-                          width="100%"
-                          mt="1.5rem"
-                          mb="1.5rem"
-                          border="1px solid #8B949E"
-                          labelSuccessArray={[
-                            "Processing",
-                            "Unstake amount matches staked rToken balance",
-                            "Unstaking the rTokens.",
-                            "Transferring to the user account",
-                            // <ErrorButton errorText="Transaction failed" />,
-                            // <ErrorButton errorText="Copy error!" />,
-                            <SuccessButton
-                              key={"successButton"}
-                              successText={"Unstake successful."}
-                            />,
-                          ]}
-                          labelErrorArray={[
-                            "Processing",
-                            "Unstake amount matches staked rToken balance",
-                            <ErrorButton errorText="Transaction failed" />,
-                            <ErrorButton errorText="Copy error!" />,
-                          ]}
-                        >
-                          Unstake
-                        </AnimatedButton>
+                          <AnimatedButton
+                            bgColor="#101216"
+                            // bgColor="red"
+                            // p={0}
+                            color="#8B949E"
+                            size="sm"
+                            width="100%"
+                            mt="1.5rem"
+                            mb="1.5rem"
+                            border="1px solid #8B949E"
+                            labelSuccessArray={[
+                              "Processing",
+                              "Unstake amount matches staked rToken balance",
+                              "Unstaking the rTokens.",
+                              "Transferring to the user account",
+                              // <ErrorButton errorText="Transaction failed" />,
+                              // <ErrorButton errorText="Copy error!" />,
+                              <SuccessButton
+                                key={"successButton"}
+                                successText={"Unstake successful."}
+                              />,
+                            ]}
+                            labelErrorArray={[
+                              "Processing",
+                              "Unstake amount matches staked rToken balance",
+                              <ErrorButton errorText="Transaction failed" />,
+                              <ErrorButton errorText="Copy error!" />,
+                            ]}
+                          >
+                            Unstake
+                          </AnimatedButton>
                         </Box>
                       ) : (
                         <Button
