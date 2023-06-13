@@ -68,6 +68,8 @@ const useDeposit = () => {
         asset,
         setAsset,
         dataDeposit,
+        depositTransHash,
+        setDepositTransHash,
         errorDeposit,
         resetDeposit,
         writeAsyncDeposit,

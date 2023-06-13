@@ -22,6 +22,7 @@ const initialState = {
   reserves: undefined,
   oracleAndFairPrices: undefined,
   offchainCurrentBlock: undefined,
+  assetWalletBalance:{},
 
   // walletBalance: {
   //   BTC: 0,
@@ -38,6 +39,9 @@ export const userAccountSlice = createSlice({
   reducers: {
     setAccount(state, action) {
       state.account = action.payload;
+    },
+    setAssetWalletBalance(state, action) {
+      state.assetWalletBalance = action.payload;
     },
     setAccountAddress(state, action) {
       state.accountAddress = action.payload;
@@ -117,6 +121,7 @@ export const {
   setOracleAndFairPrices,
   setOffchainCurrentBlock,
   setSpendBorrowSelectedDapp,
+  setAssetWalletBalance
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -134,6 +139,7 @@ export const selectSelectedDapp = (state) =>
   state.user_account.spendBorrowselectedDapp;
   export const selectTransactionStatus = (state) =>
   state.user_account.transactionStatus;
+export const selectAssetWalletBalance = (state) => state.user_account.assetWalletBalance;
 
 export const selectInputSupplyAmount = (state) =>
   state.user_account.inputSupplyAmount;

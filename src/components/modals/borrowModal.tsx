@@ -97,6 +97,10 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     isIdleLoanRequest,
     isLoadingLoanRequest,
   } = useLoanRequest();
+  useEffect(()=>{
+    setMarket(coin? coin.name:"BTC");
+    setRToken(coin ? coin.name:"BTC");
+  },[coin])
 
   // console.log("loadingg", isLoadingLoanRequest);
 

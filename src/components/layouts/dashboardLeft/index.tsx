@@ -20,9 +20,11 @@ import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { uint256 } from "starknet";
 import { BNtoNum } from "@/Blockchain/utils/utils";
-
+import { Dispatch } from "@reduxjs/toolkit";
+import { setAssetWalletBalance } from "@/store/slices/userAccountSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import { useDispatch } from "react-redux";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -68,6 +70,7 @@ const DashboardLeft = ({
   const columnItems = ["Market", "Price", "Total Supply", "Supply APR", "", ""];
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const [isOpenCustom, setIsOpenCustom] = useState(false);
+  const dispatch = useDispatch();
 
   // const {
   //   dataBalanceOf,
@@ -122,11 +125,22 @@ const DashboardLeft = ({
   }
   const assetBalance: assetB = {
     USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
-    USDC: 87,
+    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
     BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
+  useEffect(()=>{
+
+    dispatch(setAssetWalletBalance(assetBalance));
+  },[assetBalance])
+
+  
+  
+  useEffect(() => {
+    for (let i of Coins) {
+    }
+  }, []);
 
   // useEffect(() => {
   //   if (errorBalanceOf || isFetchingBalanceOf) {
@@ -373,7 +387,7 @@ const DashboardLeft = ({
                       color="#BDBFC1;"
                       backGroundOverLay="rgba(244, 242, 255, 0.5)"
                       coin={coin}
-                      walletBalance={assetBalance[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(assetBalance[coin.name]?.dataBalanceOf?.balance))) : 0}
+                      // walletBalance={assetBalance[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(assetBalance[coin.name]?.dataBalanceOf?.balance))) : 0}
                     />
                   </Box>
                 </Td>
