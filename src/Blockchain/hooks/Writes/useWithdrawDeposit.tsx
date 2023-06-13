@@ -9,7 +9,6 @@ const useWithdrawDeposit = () => {
   const [rTokenShares, setRTokenShares] = useState(0);
   const { address: owner } = useAccount();
 
-  const [reciever, setReciever] = useState(owner);
   useEffect(() => {
     // console.log("withdrawing", asset, rTokenShares);
   }, [asset, rTokenShares]);
@@ -37,7 +36,7 @@ const useWithdrawDeposit = () => {
           asset
         ).toString(),
         "0",
-        reciever,
+        owner,
         owner
       ],
     },
@@ -48,8 +47,6 @@ const useWithdrawDeposit = () => {
     setAsset,
     rTokenShares,
     setRTokenShares,
-    reciever,
-    setReciever,
 
     dataWithdrawDeposit,
     errorWithdrawDeposit,
