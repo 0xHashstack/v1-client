@@ -86,7 +86,7 @@ const SupplyModal = ({
     isLoadingDeposit,
     isSuccessDeposit,
     statusDeposit,
-  } = useDeposit(toastHandler);
+  } = useDeposit();
   const toast = useToast();
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
@@ -107,17 +107,17 @@ const SupplyModal = ({
 
   // const [depositTransHash, setDepositTransHash] = useState();
 
-  const showToast = () => {};
+  // const showToast = () => {};
 
-  // const recieptData = useWaitForTransaction({
-  //   hash: depositTransHash,
-  //   watch: true,
-  //   onPending: showToast,
-  // });
+  // // const recieptData = useWaitForTransaction({
+  // //   hash: depositTransHash,
+  // //   watch: true,
+  // //   onPending: showToast,
+  // // });
 
-  // const showToast = () => {
+  // // const showToast = () => {
 
-  // }
+  // // }
 
   const recieptData = useWaitForTransaction({ hash: depostiTransactionHash, watch: true});
 

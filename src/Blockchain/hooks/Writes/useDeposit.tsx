@@ -13,13 +13,13 @@ import {
 import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 
-const useDeposit = (onPendingCallback: any) => {
+const useDeposit = () => {
     const { address: account } = useAccount();
     const [depositAmount, setDepositAmount] = useState(0);
     const [asset, setAsset] = useState("");
     const [depositTransHash, setDepositTransHash] = useState("");
 
-    const recietpData = useWaitForTransaction({ hash: depositTransHash, onPending: onPendingCallback });
+    const recietpData = useWaitForTransaction({ hash: depositTransHash });
 
     const {
         data: dataDeposit,
