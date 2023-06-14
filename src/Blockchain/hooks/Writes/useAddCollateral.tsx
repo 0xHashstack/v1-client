@@ -8,7 +8,6 @@ import { useEffect, useState } from "react";
 import { Abi, uint256 } from "starknet";
 import {
     ERC20Abi,
-    tokenAddressMap,
     diamondAddress
 } from "../../stark-constants";
 import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
@@ -55,6 +54,7 @@ const useAddCollateral  = (loanIdParam: any) => {
                         collateralAmount as number,
                         collateralAsset
                     ).toString(),
+                    "0"
                 ],
             }
         ],
@@ -83,6 +83,7 @@ const useAddCollateral  = (loanIdParam: any) => {
                         rTokenAmount,
                         collateralAsset
                     ).toString(),
+                    "0"
                 ],
             }
         ],
