@@ -1016,22 +1016,26 @@ const YourBorrowModal = ({
   // const walletBalance = useSelector(selectWalletBalance);
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const resetStates = () => {
-    setRadioValue("1");
-    setCurrentAction("Spend Borrow");
-    setCurrentBorrowMarketCoin1("BTC");
-    setCurrentBorrowMarketCoin2("BTC");
-    setCurrentBorrowId1("ID - 123456");
-    setCurrentBorrowId2("ID - 123456");
-    setCurrentDapp("Select a dapp");
-    setCurrentPool("Select a pool");
-    setCurrentPoolCoin("Select a pool");
-    setinputCollateralAmount(0);
-    setSliderValue(0);
-    setSliderValue2(0);
-    setRepayAmount(0);
-    setCollateralTransactionStarted(false);
-    setTransactionStarted(false);
-    dispatch(resetModalDropdowns());
+    try {
+      setRadioValue("1");
+      setCurrentAction("Spend Borrow");
+      setCurrentBorrowMarketCoin1("BTC");
+      setCurrentBorrowMarketCoin2("BTC");
+      setCurrentBorrowId1("ID - 123456");
+      setCurrentBorrowId2("ID - 123456");
+      setCurrentDapp("Select a dapp");
+      setCurrentPool("Select a pool");
+      setCurrentPoolCoin("Select a pool");
+      setinputCollateralAmount(0);
+      setSliderValue(0);
+      setSliderValue2(0);
+      setRepayAmount(0);
+      setCollateralTransactionStarted(false);
+      setTransactionStarted(false);
+      dispatch(resetModalDropdowns());
+    } catch (err) {
+      console.log("yourBorrowModal reset states - ", err);
+    }
   };
 
   useEffect(() => {
