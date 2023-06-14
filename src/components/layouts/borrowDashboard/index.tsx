@@ -16,6 +16,7 @@ import {
 import Image from "next/image";
 import YourBorrowModal from "@/components/modals/yourBorrowModal";
 import { Coins } from "../dashboardLeft";
+import BorrowModal from "@/components/modals/borrowModal";
 
 export interface ICoin {
   name: string;
@@ -128,12 +129,14 @@ const BorrowDashboard = ({
   Coins,
   columnItems,
   Borrows,
+  userLoans
 }: {
   width: string;
   currentPagination: any;
   Coins: any;
   columnItems: any;
   Borrows: ILoan[] | null;
+  userLoans:any
   // columnItems: Array<Array<string>>;
   // gap: string;
   // rowItems: any;
@@ -603,7 +606,7 @@ const BorrowDashboard = ({
         borderRadius="8px"
       >
         <Text color="#FFFFFF">You do not have outstanding borrows</Text>
-        <YourBorrowModal
+        <BorrowModal
           buttonText="Borrow assets"
           variant="link"
           fontSize="16px"
@@ -613,6 +616,7 @@ const BorrowDashboard = ({
           cursor="pointer"
           ml="0.4rem"
           lineHeight="24px"
+          coin={"BTC"}
         />
       </Box>
     </>

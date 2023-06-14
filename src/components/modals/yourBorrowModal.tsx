@@ -59,6 +59,7 @@ import BtcToEth from "@/assets/icons/pools/btcToEth";
 import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
 
 import {
+  selectUserLoans,
   selectWalletBalance,
   setInputYourBorrowModalRepayAmount,
 } from "@/store/slices/userAccountSlice";
@@ -810,6 +811,8 @@ const YourBorrowModal = ({
     "BTC/ETH",
     "BTC/USDT",
   ];
+  const userLoans:any=useSelector(selectUserLoans);
+  console.log(userLoans,"user loans in borrow modal")
   const {
     repayAmount,
     setRepayAmount,
@@ -828,8 +831,8 @@ const YourBorrowModal = ({
     errorSelfLiquidate,
     selfLiquidateTransactionReceipt,
     setIsSelfLiquidateHash,
-  }=useRepay("123456");
-
+  }=useRepay(userLoans[0]);
+  // console.log(userLoans[0],"User loans")
   const [radioValue, setRadioValue] = useState("1");
 
   // const [currentBorrowMarketCoin1, setCurrentBorrowMarketCoin1] =
@@ -854,6 +857,16 @@ const YourBorrowModal = ({
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
   const [sliderValue2, setSliderValue2] = useState(0);
   const [inputRepayAmount, setinputRepayAmount] = useState(0);
+
+  const handleRepayTransaction=async()=>{
+    try{
+      const repay=await writeAsyncRepay();
+      // const repay2=await writeAsyncSelfLiquidate();
+      console.log("repay ",repay)
+    }catch(err){
+      console.log(err)
+    }
+  }
 
   const handleChange = (newValue: any) => {
     var percentage = (newValue * 100) / walletBalance;
@@ -2058,6 +2071,10 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
+                            if(transactionStarted==false){
+                              handleRepayTransaction();
+                            }
+                            
                           }}
                         >
                           <AnimatedButton

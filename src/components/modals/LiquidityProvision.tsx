@@ -60,6 +60,7 @@ const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
   coins,
+  BorrowBalance,
   currentId,
   currentMarketCoin,
 }: any) => {
@@ -556,7 +557,7 @@ const LiquidityProvisionModal = ({
                   fontStyle="normal"
                   fontFamily="Inter"
                 >
-                  Borrow Balance: {walletBalance}
+                  Borrow Balance: {BorrowBalance}
                   <Text color="#6E7781" ml="0.2rem">
                     {` ${currentBorrowMarketCoin}`}
                   </Text>

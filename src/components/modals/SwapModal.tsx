@@ -51,6 +51,7 @@ const SwapModal = ({
   borrowIds,
   currentId,
   currentMarketCoin,
+  BorrowBalance
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -494,7 +495,7 @@ const SwapModal = ({
                 fontStyle="normal"
                 fontFamily="Inter"
               >
-                Borrow Balance: {walletBalance}
+                Borrow Balance: {BorrowBalance}
                 <Text color="#6E7781" ml="0.2rem">
                   {` ${currentBorrowMarketCoin}`}
                 </Text>
