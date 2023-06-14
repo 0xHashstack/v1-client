@@ -389,7 +389,7 @@ const BorrowDashboard = ({
                         justifyContent="center"
                       >
                         <Image
-                          src={`./${borrow.collateralMarket}.svg`}
+                          src={`./${borrow.collateralMarket.slice(1)}.svg`}
                           alt="Picture of the author"
                           width="32"
                           height="32"

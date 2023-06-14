@@ -77,7 +77,7 @@ const useRepay = (loanParam: any) => {
       },
       {
         contractAddress: diamondAddress,
-        entrypoint: "loan_repay",
+        entrypoint: "repay_loan",
         calldata: [
           loan?.loanId,
           etherToWeiBN(
