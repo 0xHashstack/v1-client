@@ -1,8 +1,7 @@
 import { Contract, number, uint256 } from "starknet";
-import { diamondAddress, getProvider, getTokenFromAddress } from "../stark-constants";
+import { diamondAddress, getDTokenFromAddress, getProvider, getRTokenFromAddress, getTokenFromAddress } from "../stark-constants";
 import routerAbi from "@/Blockchain/abis/router_abi.json";
-import { BNtoNum } from "../utils/utils";
-import { getDTokenFromAddress, getRTokenFromAddress } from "../utils/addressServices";
+import { BNtoNum, etherToWeiBN, weiToEtherNumber } from "../utils/utils";
 import { ILoan } from "../interfaces/interfaces";
 
 function parseLoansData(
@@ -13,8 +12,8 @@ function parseLoansData(
   for (let i = 0; i < loansData?.length; ++i) {
     let loanData = loansData[i];
     let collateralData = collateralsData[i];
-    let loan: ILoan  = {
-      loanId: Number(BNtoNum(loanData?.id, 0)),
+    let loan: ILoan = {
+      loanId: Number(BNtoNum(loanData?.loan_id, 0)),
       borrower: number.toHex(loanData?.borrower),
 
       loanMarket: getDTokenFromAddress(number.toHex(loanData?.market))?.name,
@@ -31,50 +30,73 @@ function parseLoansData(
       collateralMarketAddress: number.toHex(collateralData?.collateral_token),
 
       loanAmount: uint256.uint256ToBN(loanData?.amount).toString(), //  Amount
+      loanAmountParsed: weiToEtherNumber(
+        uint256.uint256ToBN(loanData?.amount).toString(),
+        getDTokenFromAddress(number.toHex(loanData?.market))?.name || ""
+      ),
+
       currentLoanAmount: uint256.uint256ToBN(loanData?.current_amount).toString(), //  Amount
-      collateralAmount: uint256
-        .uint256ToBN(collateralData?.amount)
-        .toString(), // 5 Collateral Amount
+      currentLoanAmountParsed: weiToEtherNumber(
+        uint256.uint256ToBN(loanData?.current_amount).toString(),
+        getTokenFromAddress(number.toHex(loanData?.current_market))?.name || ""
+      ),
+
+      collateralAmount: uint256.uint256ToBN(collateralData?.amount).toString(), // 5 Collateral Amount
+      collateralAmountParsed: weiToEtherNumber(
+        uint256.uint256ToBN(collateralData?.amount).toString(),
+        getRTokenFromAddress(number.toHex(collateralData?.collateral_token))?.name || ""
+      ),
 
       createdAt: new Date(Number(loanData?.created_at)),
-  
-      state:
-        Number(BNtoNum(loanData?.state, 0)) === 1
-          ? "OPEN"
-          : Number(BNtoNum(loanData?.state, 0)) === 2
-          ? "SWAPPED"
-          : Number(BNtoNum(loanData?.state, 0)) === 3
-          ? "REPAID"
-          : Number(BNtoNum(loanData?.state, 0)) === 4
-          ? "LIQUIDATED"
-          : null,
+
+      loanState:
+        number.toBN(loanData?.state).toString() === "1"
+          ? "ACTIVE"
+          : number.toBN(loanData?.state).toString() === "2"
+            ? "SPENT"
+            : number.toBN(loanData?.state).toString() === "3"
+              ? "REPAID"
+              : number.toBN(loanData?.state).toString() === "4"
+                ? "LIQUIDATED"
+                : null,
 
       l3App:
-        number.toBN(loanData?.l3_integration).toString() ===
-          "1962660952167394271600"
+        number.toBN(loanData?.l3_integration).toString() === "1962660952167394271600"
           ? "jediSwap"
-          : number.toBN(loanData?.l3_integration, 0).toString() ===
-            "30814223327519088"
+          : number.toBN(loanData?.l3_integration, 0).toString() === "30814223327519088"
             ? "mySwap"
+            : number.toBN(loanData?.l3_integration, 0).toString() === "30814223327519089"
+              ? "Yagi"
+              : null,
+      spendType: 
+        number.toBN(loanData?.l3_category).toString() === "0"
+        ? "UNSPENT"
+        : number.toBN(loanData?.l3_category).toString() === "1"
+          ? "SWAP"
+          : number.toBN(loanData?.l3_category).toString() === "2"
+            ? "LIQUIDITY"
             : null,
+        
+      state: number.toBN(loanData?.state).toString(),
       l3_integration: number.toBN(loanData?.l3_integration).toString(),
       l3_category: number.toBN(loanData?.l3_category).toString(),
     };
     loans.push(JSON.parse(JSON.stringify(loan)));
   }
+  console.log("loans parsed", loans);
   return loans;
 }
 
 export async function getUserLoans(account: string) {
   const provider = getProvider();
-  console.log("user loans", diamondAddress, account)
+  console.log("loans params", diamondAddress, account)
   const routerContract = new Contract(routerAbi, diamondAddress, provider);
   const res = await routerContract.call("get_user_loans", [account], {
     blockIdentifier: "pending",
   });
-  console.log(res, "res user loans")
+  console.log(res, "loans called")
   return parseLoansData(
-    res?.loan_records_arr,
-    res?.collateral_records_arr,
+    res?.loans,
+    res?.collaterals,
   );
 }

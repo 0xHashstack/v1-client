@@ -137,6 +137,12 @@ const SupplyModal = ({
   // // const showToast = () => {
 
   // // }
+  // const {address: account } = useAccount();
+  // useEffect(() => {
+  //   if(!account) return;
+  //   console.log("loans calling")
+  //   getUserLoans(account);
+  // }, [account])
 
   const recieptData = useWaitForTransaction({ hash: depositTransHash, watch: true});
 
