@@ -418,7 +418,7 @@ const SpendTable = () => {
         <Pagination
           currentPagination={currentPagination}
           setCurrentPagination={(x: any) => setCurrentPagination(x)}
-          max={rows.length}
+          max={userLoans.length}
           rows={3}
         />
       </Box>
