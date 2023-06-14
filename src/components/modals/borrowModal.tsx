@@ -36,6 +36,7 @@ import {
   selectWalletBalance,
   setInputBorrowModalCollateralAmount,
   setInputBorrowModalBorrowAmount,
+  setToastTransactionStarted,
 } from "@/store/slices/userAccountSlice";
 import {
   setModalDropdown,
@@ -259,6 +260,9 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
         onClose={() => {
           onClose();
           resetStates();
+          if (transactionStarted) {
+            dispatch(setToastTransactionStarted(""));
+          }
         }}
         isCentered
         scrollBehavior="inside"
