@@ -26,8 +26,6 @@ const useWithdrawStake = () => {
       entrypoint: "withdraw_stake",
       calldata: [
         tokenAddressMap[unstakeRToken],
-        etherToWeiBN(rTokenToWithdraw, unstakeRToken).toString(),
-        "0",
         owner,
       ],
     },
