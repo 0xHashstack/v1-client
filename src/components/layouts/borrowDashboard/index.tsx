@@ -23,6 +23,105 @@ export interface ICoin {
   icon: string;
 }
 
+export interface ILoan {
+  loanId: number; // loan id
+  borrower: string; // borrower address
+
+  loanMarket: string | undefined; // dToken like dBTC
+  loanMarketAddress: string | undefined; // dToken Address
+  underlyingMarket: string | undefined; // BTC
+  underlyingMarketAddress: string | undefined; // BTC Address
+  currentLoanMarket: string | undefined; // USDT, will be native only
+  currentLoanMarketAddress: string | undefined; // USDT Address
+  collateralMarket: string | undefined; // rToken like rUSDC
+  collateralMarketAddress: string | undefined; // rToken Address
+
+  loanAmount: number; // dToken amount
+  currentLoanAmount: number; // native tokens
+  collateralAmount: number; // rToken amount
+
+  createdAt: Date;
+  state: string | null;
+
+  l3_integration: string;
+  l3App: string | null;
+
+  l3_category: string;
+}
+
+export const Borrows = [
+  {
+    loanId: "123456",
+    loanMarket: "BTC",
+    loanAmount: "1000",
+    collateralMarket: "USDT",
+    collateralAmount: "9,868",
+  },
+  {
+    loanId: "123457",
+    loanMarket: "USDT",
+    loanAmount: "1000",
+    collateralMarket: "USDT",
+    collateralAmount: "9,868",
+  },
+  {
+    loanId: "123458",
+    loanMarket: "USDC",
+    loanAmount: "1000",
+    collateralMarket: "USDT",
+    collateralAmount: "9,868",
+  },
+  {
+    loanId: "123459",
+    loanMarket: "ETH",
+    loanAmount: "1000",
+    collateralMarket: "USDT",
+    collateralAmount: "9,868",
+  },
+  {
+    loanId: "1234510",
+    loanMarket: "DAI",
+    loanAmount: "1000",
+    collateralMarket: "USDT",
+    collateralAmount: "9,868",
+  },
+  {
+    loanId: "1234511",
+    loanMarket: "BTC",
+    loanAmount: "1000",
+    collateralMarket: "USDT",
+    collateralAmount: "9,868",
+  },
+  {
+    loanId: "1234512",
+    loanMarket: "USDT",
+    loanAmount: "1000",
+    collateralMarket: "USDT",
+    collateralAmount: "9,868",
+  },
+  {
+    loanId: "1234513",
+    loanMarket: "USDC",
+    loanAmount: "1000",
+    collateralMarket: "USDT",
+    collateralAmount: "9,868",
+  },
+  {
+    loanId: "1234514",
+    loanMarket: "ETH",
+    loanAmount: "1000",
+    collateralMarket: "USDT",
+    collateralAmount: "9,868",
+  },
+  {
+    loanId: "1234515",
+    loanMarket: "DAI",
+    loanAmount: 1000,
+    collateralMarket: "USDT",
+    collateralAmount: "9,868",
+  },
+];
+
 const BorrowDashboard = ({
   width,
   currentPagination,
@@ -130,13 +229,13 @@ const BorrowDashboard = ({
           //   flexDirection="column"
           //   gap={"1rem"}
         >
-          {Coins.slice(lower_bound, upper_bound + 1).map((coin: any) => {
+          {Borrows.slice(lower_bound, upper_bound + 1).map((borrow: any) => {
             // console.log("faisal coin check", coin);
             // borrowIDCoinMap.push([coin.id, coin.name]);
             return (
               <>
                 <Tr
-                  key={coin.idx}
+                  key={borrow.idx}
                   width={"100%"}
                   // height={"5rem"}
                   // bgColor="green"
@@ -164,7 +263,7 @@ const BorrowDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      {coin.id}{" "}
+                      {borrow.loanId}{" "}
                     </Text>
                   </Td>
                   <Td
@@ -203,7 +302,7 @@ const BorrowDashboard = ({
                         >
                           <Image
                             // src={`./BTC.svg`}
-                            src={`${coin.name}.svg`}
+                            src={`${borrow.loanMarket}.svg`}
                             alt="Picture of the author"
                             width="32"
                             height="32"
@@ -213,11 +312,11 @@ const BorrowDashboard = ({
                             fontWeight="400"
                             color="#E6EDF3"
                           >
-                            {coin.name}
+                            {borrow.loanMarket}
                           </Text>
                         </HStack>
                         <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                          10,000
+                          {borrow.loanAmount}
                         </Text>
                       </VStack>
                     </Box>
@@ -288,17 +387,17 @@ const BorrowDashboard = ({
                         justifyContent="center"
                       >
                         <Image
-                          src={`./USDT.svg`}
+                          src={`./${borrow.collateralMarket}.svg`}
                           alt="Picture of the author"
                           width="32"
                           height="32"
                         />
                         <Text fontSize="14px" fontWeight="400">
-                          USDT
+                          {borrow.collateralMarket}
                         </Text>
                       </HStack>
                       <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                        9,868
+                        {borrow.collateralAmount}
                       </Text>
                     </VStack>
                   </Td>
@@ -424,16 +523,16 @@ const BorrowDashboard = ({
                       justifyContent="flex-end"
                       fontWeight="400"
                       onClick={() => {
-                        setCurrentBorrowId1("ID - " + coin.id);
-                        setCurrentBorrowMarketCoin1(coin.name);
-                        setCurrentBorrowId2("ID - " + coin.id);
-                        setCurrentBorrowMarketCoin2(coin.name);
+                        setCurrentBorrowId1("ID - " + borrow.loanId);
+                        setCurrentBorrowMarketCoin1(borrow.loanMarket);
+                        setCurrentBorrowId2("ID - " + borrow.loanId);
+                        setCurrentBorrowMarketCoin2(borrow.loanMarket);
                       }}
                       // bgColor={"blue"}
                     >
                       <YourBorrowModal
-                        currentID={coin.id}
-                        currentMarket={coin.name}
+                        currentID={borrow.loanId}
+                        currentMarket={borrow.loanMarket}
                         borrowIDCoinMap={borrowIDCoinMap}
                         currentBorrowId1={currentBorrowId1}
                         setCurrentBorrowId1={setCurrentBorrowId1}
@@ -468,7 +567,7 @@ const BorrowDashboard = ({
                     width: "100%",
                     height: "1px",
                     borderBottom: "1px solid #2b2f35",
-                    display: `${coin.idx == 5 ? "none" : "block"}`,
+                    display: `${borrow.idx == 5 ? "none" : "block"}`,
                   }}
                 />
               </>
