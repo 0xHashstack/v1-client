@@ -127,7 +127,7 @@ const YourBorrow = () => {
           <Pagination
             currentPagination={currentPagination}
             setCurrentPagination={(x: any) => setCurrentPagination(x)}
-            max={Coins.length}
+            max={UserLoans?.length || 0}
             rows={6}
           />
         </Box>

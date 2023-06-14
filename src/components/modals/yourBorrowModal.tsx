@@ -84,6 +84,7 @@ const YourBorrowModal = ({
   setCurrentBorrowMarketCoin2,
   borrowIds,
   buttonText,
+  loan,
   ...restProps
 }: any) => {
   console.log("took map", borrowIDCoinMap, currentID, currentMarket);
@@ -98,6 +99,26 @@ const YourBorrowModal = ({
   const [transactionStarted, setTransactionStarted] = useState(false);
   const [collateralTransactionStarted, setCollateralTransactionStarted] =
     useState(false);
+
+  const {
+    repayAmount,
+    setRepayAmount,
+    // handleApprove,
+    writeAsyncRepay,
+    transRepayHash,
+    setTransRepayHash,
+    repayTransactionReceipt,
+    isLoadingRepay,
+    errorRepay,
+    handleRepayBorrow,
+
+    //SelfLiquidate - Repay with 0 amount
+    writeAsyncSelfLiquidate,
+    isLoadingSelfLiquidate,
+    errorSelfLiquidate,
+    selfLiquidateTransactionReceipt,
+    setIsSelfLiquidateHash,
+  } = useRepay(loan);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -808,17 +829,6 @@ const YourBorrowModal = ({
     "BTC/ETH",
     "BTC/USDT",
   ];
-  const {
-    repayAmount,
-    setRepayAmount,
-    // handleApprove,
-    writeAsyncRepay,
-    transRepayHash,
-    setTransRepayHash,
-    repayTransactionReceipt,
-    isLoadingRepay,
-    errorRepay,
-    handleRepayBorrow,
 
     //SelfLiquidate - Repay with 0 amount
     writeAsyncSelfLiquidate,

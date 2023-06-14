@@ -548,6 +548,7 @@ const BorrowDashboard = ({
                         setCurrentBorrowMarketCoin2={
                           setCurrentBorrowMarketCoin2
                         }
+                        loan={borrow}
                         borrowIds={borrowIds}
                         buttonText="Actions"
                         height={"2rem"}
