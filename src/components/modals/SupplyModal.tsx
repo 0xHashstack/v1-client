@@ -535,8 +535,9 @@ const SupplyModal = ({
                     fontWeight="500"
                     fontStyle="normal"
                     fontFamily="Inter"
+                    whiteSpace="nowrap"
                   >
-                    <Text color="#CF222E" display="flex">
+                    <Text color="#CF222E" display="flex" flexDirection="row">
                       <Text mt="0.2rem">
                         <SmallErrorIcon />{" "}
                       </Text>
@@ -550,8 +551,9 @@ const SupplyModal = ({
                       color="#E6EDF3"
                       display="flex"
                       justifyContent="flex-end"
+                      flexDirection="row"
                     >
-                      Wallet Balance: {walletBalance}
+                      Wallet Balance: {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5 ? Math.floor(walletBalance) : walletBalance}
                       <Text color="#6E7781" ml="0.2rem">
                         {` ${currentSelectedCoin}`}
                       </Text>
@@ -568,7 +570,7 @@ const SupplyModal = ({
                     fontStyle="normal"
                     fontFamily="Inter"
                   >
-                    Wallet Balance: {walletBalance}
+                   Wallet Balance: {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5 ? Math.floor(walletBalance) : walletBalance}
                     <Text color="#6E7781" ml="0.2rem">
                       {` ${currentSelectedCoin}`}
                     </Text>

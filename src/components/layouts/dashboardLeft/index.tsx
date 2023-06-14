@@ -268,14 +268,14 @@ const DashboardLeft = ({
                       ) : (
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
                           Wallet Bal. {/* {numberFormatter( */}
-                          {Number(
+                          {Math.floor(Number(
                             // BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
                             BNtoNum(
                               uint256.uint256ToBN(
                                 assetBalance[coin.name]?.dataBalanceOf?.balance
                               )
                             )
-                          )}
+                          ))}
                           {/* )} */}
                         </Text>
                       )}
