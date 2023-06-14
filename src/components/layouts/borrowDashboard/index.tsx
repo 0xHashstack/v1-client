@@ -155,8 +155,8 @@ const BorrowDashboard = ({
     let temp2: any = [];
 
     for (let i = 0; i < Borrows?.length; i++) {
-      temp1.push({ id: Borrows[i].id, name: Borrows[i].name });
-      temp2.push(Borrows[i].id);
+      temp1.push({ id: Borrows[i].loanId, name: Borrows[i].loanMarket });
+      temp2.push(Borrows[i].loanId);
     }
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);
@@ -168,7 +168,7 @@ const BorrowDashboard = ({
       border="1px"
       borderColor="#2B2F35"
       color="white"
-      borderRadius="md" 
+      borderRadius="md"
       w={width}
       display="flex"
       justifyContent="flex-start"
