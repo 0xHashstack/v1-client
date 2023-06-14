@@ -6,6 +6,9 @@ export interface ItokenDecimalsMap {
     [key: string]: number | undefined;
 }
 
+type LoanState = "ACTIVE" | "SPENT" | "REPAID" | "LIQUIDATED" | null;
+type SpendType = "UNSPENT" | "SWAP" | "LIQUIDITY" | null;
+type L3App = "jediSwap" | "mySwap" | "Yagi" | null;
 export interface ILoan {
     loanId: number; // loan id
     borrower: string; // borrower address
@@ -28,21 +31,22 @@ export interface ILoan {
     collateralAmount: string;  // rToken amount
     collateralAmountParsed: number;
   
+    loanState: LoanState;
+    spendType: SpendType;
+    l3App: L3App;
     createdAt: Date;
-    loanState: string | null;
-    spendType: string | null;
+    
     state: string | null;
-  
     l3_integration: string;
-    l3App: string | null;
-  
     l3_category: string;
 }
 
 export interface IDeposit {
     tokenAddress: string;
     rTokenAmount: number;
+    // rTokenAmountParsed: number;
     underlyingAssetAmount: number;
+    // underlyingAssetAmountParsed: number;
 }
 
 export interface IMarketInfo {
