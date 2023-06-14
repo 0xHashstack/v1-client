@@ -28,7 +28,13 @@ export interface ICoin {
   icon: string;
 }
 
-const supplyCoins: any = [
+export interface IDeposit {
+  tokenAddress: string;
+  rTokenAmount: number;
+  underlyingAssetAmount: number;
+}
+
+const supplies: any = [
   {
     market: "USDT",
     rTokenAmount: "10,000",
@@ -114,7 +120,7 @@ const SupplyDashboard = ({
   const [supplyMarkets, setSupplyMarkets] = useState([]);
   useEffect(() => {
     let temp: any = [];
-    supplyCoins.map((coin: any) => {
+    supplies.map((coin: any) => {
       if (!temp.includes(coin.market)) {
         temp.push(coin.market);
       }
@@ -185,9 +191,9 @@ const SupplyDashboard = ({
           //   flexDirection="column"
           //   gap={"1rem"}
         >
-          {supplyCoins
+          {supplies
             .slice(lower_bound, upper_bound + 1)
-            .map((coin: any, idx: number) => (
+            .map((supply: any, idx: number) => (
               <>
                 <Tr
                   key={idx}
@@ -233,17 +239,17 @@ const SupplyDashboard = ({
                           // justifyContent="center"
                         >
                           <Image
-                            src={`./${coin.market}.svg`}
+                            src={`./${supply.market}.svg`}
                             alt="Picture of the author"
                             width="32"
                             height="32"
                           />
                           <Text fontSize="14px" fontWeight="400">
-                            {coin.market}
+                            {supply.market}
                           </Text>
                         </HStack>
                         <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                          {coin.rTokenAmount}
+                          {supply.rTokenAmount}
                         </Text>
                       </VStack>
                     </Box>
@@ -266,7 +272,7 @@ const SupplyDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      {coin.ExchangeRate}
+                      {supply.ExchangeRate}
                     </Text>
                   </Td>
                   <Td
@@ -287,7 +293,7 @@ const SupplyDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      {coin.SupplyApr}
+                      {supply.SupplyApr}
                     </Text>
                   </Td>
                   <Td
@@ -308,7 +314,7 @@ const SupplyDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      {coin.EffectiveApr}
+                      {supply.EffectiveApr}
                     </Text>
                   </Td>
 
@@ -330,7 +336,7 @@ const SupplyDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      {coin.Status}
+                      {supply.Status}
                     </Text>
                   </Td>
                   <Td
@@ -350,8 +356,8 @@ const SupplyDashboard = ({
                       fontWeight="400"
                       pr={2}
                       onClick={() => {
-                        setCurrentSelectedSupplyCoin(coin.market);
-                        setcurrentSelectedWithdrawlCoin(coin.market);
+                        setCurrentSelectedSupplyCoin(supply.market);
+                        setcurrentSelectedWithdrawlCoin(supply.market);
                       }}
                       // bgColor={"blue"}
                     >
