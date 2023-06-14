@@ -109,7 +109,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           >
             {children}
           </Stack>
-          <TransactionToast />
+          {/* <TransactionToast /> */}
           <Footer block={83207} />
         </>
       )}
