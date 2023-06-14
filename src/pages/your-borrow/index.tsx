@@ -15,6 +15,7 @@ import { useDispatch } from "react-redux";
 import { useAccount, useConnectors } from "@starknet-react/core";
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
+import { ILoan } from "@/Blockchain/interfaces/interfaces";
 const YourBorrow = () => {
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const columnItems = [
@@ -30,6 +31,7 @@ const YourBorrow = () => {
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
   const { account, address } = useAccount();
+  const [UserLoans, setUserLoans] = useState<ILoan[] | null>([]);
   // useEffect(()=>{
   //   const walletConnected = localStorage.getItem('lastUsedConnector');
   //   if(walletConnected=="braavos"){
@@ -41,6 +43,7 @@ const YourBorrow = () => {
   useEffect(() => {
     const loan = async () => {
       const loans = await getUserLoans(address || "");
+      setUserLoans(loans);
       console.log("loans", loans);
     };
     if (account) {
@@ -105,6 +108,7 @@ const YourBorrow = () => {
         currentPagination={currentPagination}
         Coins={Coins}
         columnItems={columnItems}
+        Borrows={UserLoans}
       />
       <Box
         paddingY="1rem"

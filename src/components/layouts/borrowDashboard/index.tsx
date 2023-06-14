@@ -49,96 +49,98 @@ export interface ILoan {
   l3_category: string;
 }
 
-export const Borrows = [
-  {
-    loanId: "123456",
-    loanMarket: "BTC",
-    loanAmount: "1000",
-    collateralMarket: "USDT",
-    collateralAmount: "9,868",
-  },
-  {
-    loanId: "123457",
-    loanMarket: "USDT",
-    loanAmount: "1000",
-    collateralMarket: "USDT",
-    collateralAmount: "9,868",
-  },
-  {
-    loanId: "123458",
-    loanMarket: "USDC",
-    loanAmount: "1000",
-    collateralMarket: "USDT",
-    collateralAmount: "9,868",
-  },
-  {
-    loanId: "123459",
-    loanMarket: "ETH",
-    loanAmount: "1000",
-    collateralMarket: "USDT",
-    collateralAmount: "9,868",
-  },
-  {
-    loanId: "1234510",
-    loanMarket: "DAI",
-    loanAmount: "1000",
-    collateralMarket: "USDT",
-    collateralAmount: "9,868",
-  },
-  {
-    loanId: "1234511",
-    loanMarket: "BTC",
-    loanAmount: "1000",
-    collateralMarket: "USDT",
-    collateralAmount: "9,868",
-  },
-  {
-    loanId: "1234512",
-    loanMarket: "USDT",
-    loanAmount: "1000",
-    collateralMarket: "USDT",
-    collateralAmount: "9,868",
-  },
-  {
-    loanId: "1234513",
-    loanMarket: "USDC",
-    loanAmount: "1000",
-    collateralMarket: "USDT",
-    collateralAmount: "9,868",
-  },
-  {
-    loanId: "1234514",
-    loanMarket: "ETH",
-    loanAmount: "1000",
-    collateralMarket: "USDT",
-    collateralAmount: "9,868",
-  },
-  {
-    loanId: "1234515",
-    loanMarket: "DAI",
-    loanAmount: 1000,
-    collateralMarket: "USDT",
-    collateralAmount: "9,868",
-  },
-];
+// export const Borrows = [
+//   {
+//     loanId: "123456",
+//     loanMarket: "BTC",
+//     loanAmount: "1000",
+//     collateralMarket: "USDT",
+//     collateralAmount: "9,868",
+//   },
+//   {
+//     loanId: "123457",
+//     loanMarket: "USDT",
+//     loanAmount: "1000",
+//     collateralMarket: "USDT",
+//     collateralAmount: "9,868",
+//   },
+//   {
+//     loanId: "123458",
+//     loanMarket: "USDC",
+//     loanAmount: "1000",
+//     collateralMarket: "USDT",
+//     collateralAmount: "9,868",
+//   },
+//   {
+//     loanId: "123459",
+//     loanMarket: "ETH",
+//     loanAmount: "1000",
+//     collateralMarket: "USDT",
+//     collateralAmount: "9,868",
+//   },
+//   {
+//     loanId: "1234510",
+//     loanMarket: "DAI",
+//     loanAmount: "1000",
+//     collateralMarket: "USDT",
+//     collateralAmount: "9,868",
+//   },
+//   {
+//     loanId: "1234511",
+//     loanMarket: "BTC",
+//     loanAmount: "1000",
+//     collateralMarket: "USDT",
+//     collateralAmount: "9,868",
+//   },
+//   {
+//     loanId: "1234512",
+//     loanMarket: "USDT",
+//     loanAmount: "1000",
+//     collateralMarket: "USDT",
+//     collateralAmount: "9,868",
+//   },
+//   {
+//     loanId: "1234513",
+//     loanMarket: "USDC",
+//     loanAmount: "1000",
+//     collateralMarket: "USDT",
+//     collateralAmount: "9,868",
+//   },
+//   {
+//     loanId: "1234514",
+//     loanMarket: "ETH",
+//     loanAmount: "1000",
+//     collateralMarket: "USDT",
+//     collateralAmount: "9,868",
+//   },
+//   {
+//     loanId: "1234515",
+//     loanMarket: "DAI",
+//     loanAmount: 1000,
+//     collateralMarket: "USDT",
+//     collateralAmount: "9,868",
+//   },
+// ];
 
 const BorrowDashboard = ({
   width,
   currentPagination,
   Coins,
   columnItems,
+  Borrows,
 }: {
   width: string;
   currentPagination: any;
   Coins: any;
   columnItems: any;
+  Borrows: ILoan[] | null;
   // columnItems: Array<Array<string>>;
   // gap: string;
   // rowItems: any;
 }) => {
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
-  upper_bound = Math.min(Coins.length - 1, upper_bound);
+  upper_bound = Math.min(Borrows?.length - 1, upper_bound);
   const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
   const [borrowIds, setBorrowIds] = useState([]);
   const [currentBorrowId1, setCurrentBorrowId1] = useState("ID - 123456");
@@ -152,15 +154,15 @@ const BorrowDashboard = ({
     let temp1: any = [];
     let temp2: any = [];
 
-    for (let i = 0; i < Coins.length; i++) {
-      temp1.push({ id: Coins[i].id, name: Coins[i].name });
-      temp2.push(Coins[i].id);
+    for (let i = 0; i < Borrows?.length; i++) {
+      temp1.push({ id: Borrows[i].id, name: Borrows[i].name });
+      temp2.push(Borrows[i].id);
     }
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);
   }, []);
 
-  return upper_bound >= lower_bound && Coins.length > 0 ? (
+  return upper_bound >= lower_bound && Borrows?.length > 0 ? (
     <TableContainer
       bg="#101216"
       border="1px"
@@ -229,7 +231,7 @@ const BorrowDashboard = ({
           //   flexDirection="column"
           //   gap={"1rem"}
         >
-          {Borrows.slice(lower_bound, upper_bound + 1).map((borrow: any) => {
+          {Borrows?.slice(lower_bound, upper_bound + 1).map((borrow: any) => {
             // console.log("faisal coin check", coin);
             // borrowIDCoinMap.push([coin.id, coin.name]);
             return (
@@ -316,7 +318,7 @@ const BorrowDashboard = ({
                           </Text>
                         </HStack>
                         <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                          {borrow.loanAmount}
+                          {borrow.loanAmountParsed}
                         </Text>
                       </VStack>
                     </Box>
@@ -397,7 +399,7 @@ const BorrowDashboard = ({
                         </Text>
                       </HStack>
                       <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                        {borrow.collateralAmount}
+                        {borrow.collateralAmountParsed}
                       </Text>
                     </VStack>
                   </Td>
@@ -580,7 +582,7 @@ const BorrowDashboard = ({
               i < 6 - (upper_bound - lower_bound + 1);
               i++
             ) {
-              rows.push(<Tr height="5.15rem"></Tr>);
+              rows.push(<Tr height="5.15rem" bgColor="red"></Tr>);
             }
             return rows;
           })()}
