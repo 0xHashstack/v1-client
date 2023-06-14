@@ -27,7 +27,10 @@ import TableClose from "./tableIcons/close";
 import TableInfoIcon from "./tableIcons/infoIcon";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUserLoans, setCurrentPage } from "@/store/slices/userAccountSlice";
+import {
+  selectUserLoans,
+  setCurrentPage,
+} from "@/store/slices/userAccountSlice";
 import HazardIcon from "@/assets/icons/hazardIcon";
 import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
 import TableYagiLogoDull from "./tableIcons/yagiLogoDull";
@@ -60,8 +63,8 @@ const SpendTable = () => {
     "LTV",
     "Health factor",
   ];
-  const userLoans:any=useSelector(selectUserLoans);
-  console.log(userLoans,"user loans in spend table")
+  const userLoans: any = useSelector(selectUserLoans);
+  console.log(userLoans, "user loans in spend table");
   const rows: any[] = [
     ["Borrow ID 12345", "rUSDT", "7%", "BTC", "00.00%"],
     ["Borrow ID 12346", "rBTC", "7%", "BTC", "00.00%"],
@@ -94,21 +97,21 @@ const SpendTable = () => {
     let temp1: any = [];
     let temp2: any = [];
     let temp3: any = [];
-    if (rows.length != 0) {
-      for (let i = 0; i < rows.length; i++) {
+    if (userLoans.length != 0) {
+      for (let i = 0; i < userLoans.length; i++) {
         temp1.push({
-          id: "ID - " + rows[i][0].slice(10),
-          name: rows[i][1].slice(1),
+          id: userLoans[i].loanId,
+          name: userLoans[i].loanMarket,
         });
-        temp2.push("ID - " + rows[i][0].slice(10));
-        temp3.push(rows[i][1].slice(1));
+        temp2.push(userLoans[i].loanId);
+        temp3.push(userLoans[i].loanMarket);
       }
     }
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);
     setCoins(temp3);
-    // console.log("faisal coin mapping", borrowIDCoinMap);
-  }, []);
+    console.log("faisal coin mapping", borrowIDCoinMap);
+  }, [userLoans]);
 
   useEffect(() => {
     setCurrentBorrow(-1);
@@ -221,8 +224,8 @@ const SpendTable = () => {
             <Tbody bg="inherit" position="relative">
               {userLoans
                 .slice(lower_bound, upper_bound + 1)
-                .filter((borrow:any) => borrow.spendType === "UNSPENT")
-                .map((borrow:any) => {
+                .filter((borrow: any) => borrow.spendType === "UNSPENT")
+                .map((borrow: any) => {
                   return (
                     <>
                       <Tr
@@ -235,15 +238,16 @@ const SpendTable = () => {
                         height="4rem"
                         key={borrow.idx}
                         cursor="pointer"
-                        bgColor={currentBorrow == borrow.loanId? "#2B2F35" : "none "}
+                        bgColor={
+                          currentBorrow == borrow.loanId ? "#2B2F35" : "none "
+                        }
                         // bgColor="green"
                         onClick={() => {
                           setSelectedDapp("trade");
                           setCurrentBorrow(borrow.loanId);
-                          setBorrowAmount(borrow.currentLoanAmountParsed
-                            )
+                          setBorrowAmount(borrow.currentLoanAmountParsed);
                           setCurrentId("ID - " + borrow.loanId);
-                          setCurrentMarketCoin(borrow.currentLoanMarket);  
+                          setCurrentMarketCoin(borrow.currentLoanMarket);
                           dispatch(setSpendBorrowSelectedDapp("trade"));
                         }}
                       >
@@ -255,7 +259,9 @@ const SpendTable = () => {
                             // borderRadius="6px"
                             bgColor="#2B2F35"
                             left={-2}
-                            display={currentBorrow == borrow.loanId ? "block" : "none"}
+                            display={
+                              currentBorrow == borrow.loanId ? "block" : "none"
+                            }
                           />
                           <Box
                             display="flex"
@@ -271,7 +277,7 @@ const SpendTable = () => {
                               color="#E6EDF3"
                               textAlign="left"
                             >
-                              BORROW ID  {borrow.loanId}
+                              BORROW ID {borrow.loanId}
                             </Text>
                           </Box>
                         </Td>
