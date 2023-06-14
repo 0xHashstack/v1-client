@@ -30,15 +30,6 @@ const YourBorrow = () => {
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
 
-  useEffect(() => {
-    console.log(
-      // "faisal loans",
-      getUserLoans(
-        "0x06561ce61e0c21c2c234b52f557b392a38abd10b30374692983c110048331efc"
-      ).then((response) => console.log("response", response))
-    );
-  }, []);
-
   // useEffect(()=>{
   //   const walletConnected = localStorage.getItem('lastUsedConnector');
   //   if(walletConnected=="braavos"){
