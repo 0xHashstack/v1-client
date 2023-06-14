@@ -48,6 +48,7 @@ const StakeModal = ({
   borrowIds,
   currentId,
   currentMarketCoin,
+  BorrowBalance,
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
@@ -477,7 +478,7 @@ const StakeModal = ({
                   fontStyle="normal"
                   fontFamily="Inter"
                 >
-                  Borrow Balance: {walletBalance}
+                  Borrow Balance: {BorrowBalance}
                   <Text color="#6E7781" ml="0.2rem">
                     {` ${currentBorrowMarketCoin}`}
                   </Text>

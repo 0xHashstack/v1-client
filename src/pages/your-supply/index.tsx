@@ -94,7 +94,7 @@ const YourSupply = () => {
             rows={6}
           />
         </Box>
-        <LatestSyncedBlock width="16rem" height="100%" block={83207} />
+        {/* <LatestSyncedBlock width="16rem" height="100%" block={83207} /> */}
       </Box>
       {/* <SupplyModal /> */}
     </PageCard>
