@@ -623,7 +623,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       display="flex"
                       justifyContent="flex-end"
                     >
-                      Wallet Balance: {walletBalance}
+                      Wallet Balance: {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5 ? Math.floor(walletBalance) : walletBalance}
                       <Text color="#6E7781" ml="0.2rem">
                         {` ${currentCollateralCoin}`}
                       </Text>
@@ -640,7 +640,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     fontStyle="normal"
                     fontFamily="Inter"
                   >
-                    Wallet Balance: {walletBalance}
+                    Wallet Balance: {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5 ? Math.floor(walletBalance) : walletBalance}
                     <Text color="#6E7781" ml="0.2rem">
                       {` ${currentCollateralCoin}`}
                     </Text>

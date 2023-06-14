@@ -12,7 +12,7 @@ import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 
 const useDeposit = () => {
   const { address: account } = useAccount();
-  const [depositAmount, setDepositAmount] = useState(0);
+  const [depositAmount, setDepositAmount] = useState<number>(0);
   const [asset, setAsset] = useState("");
   const [depositTransHash, setDepositTransHash] = useState("");
 

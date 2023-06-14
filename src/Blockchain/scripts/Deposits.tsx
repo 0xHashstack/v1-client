@@ -22,7 +22,7 @@ function parseDeposits(
 export async function getUserDeposits(account: string) {
   const provider = getProvider();
   const metricsContract = new Contract(metricsAbi, metricsContractAddress, provider);
-  const res = await metricsContract.call("get_user_deposits", [], {
+  const res = await metricsContract.call("get_user_deposits", [account], {
     blockIdentifier: "pending",
   });
   return parseDeposits(

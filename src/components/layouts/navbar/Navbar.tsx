@@ -58,6 +58,7 @@ import {
 import { languages } from "@/utils/constants/languages";
 import { useRouter } from "next/router";
 import { type } from "os";
+import GetTokensModal from "@/components/modals/getTokens";
 const Navbar = () => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
@@ -394,6 +395,19 @@ const Navbar = () => {
           alignItems="center"
           marginRight="1rem"
         >
+          <GetTokensModal
+                                buttonText="Get Tokens"
+                                height={"2rem"}
+                                fontSize={"12px"}
+                                padding="6px 12px"
+                                border="1px solid #BDBFC1"
+                                bgColor="#101216"
+                                _hover={{ bg: "white", color: "black" }}
+                                borderRadius={"6px"}
+                                color="#BDBFC1;"
+                                backGroundOverLay="rgba(244, 242, 255, 0.5)"
+          
+          />
           <Box
             borderRadius="6px"
             cursor="pointer"
