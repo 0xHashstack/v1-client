@@ -19,6 +19,7 @@ const MarketDashboard = () => {
     // fetchProtocolReserves();
     // fetchUserDeposits();
     // fetchUserReserves();
+    // fetchUserLoans();
   }, []);
   // useEffect(()=>{
   //   fetchUserLoans();
