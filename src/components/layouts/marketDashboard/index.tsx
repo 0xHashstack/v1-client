@@ -13,9 +13,10 @@ const MarketDashboard = () => {
   const [oraclePrices, setOraclePrices]: any = useState([]);
   const {account}=useAccount();
   useEffect(() => {
-    // fetchOraclePrices();
+    fetchOraclePrices();
     // fetchProtocolReserves();
     // fetchUserDeposits();
+    fetchUserReserves();
   }, []);
   // const fetchUserDeposits = async () => {
   //   try {
@@ -37,7 +38,7 @@ const MarketDashboard = () => {
   const fetchOraclePrices = async () => {
     try {
       const prices = await getOraclePrices();
-      console.log("prices", prices);
+      // console.log("prices", prices);
       setOraclePrices(prices);
     } catch (error) {
       console.error("Error fetching Oracle prices:", error);
