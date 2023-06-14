@@ -12,9 +12,10 @@ import { HStack, VStack, Text, Box } from "@chakra-ui/react";
 import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 import { useDispatch } from "react-redux";
-import { useConnectors } from "@starknet-react/core";
+import { useAccount, useConnectors } from "@starknet-react/core";
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
+import { ILoan } from "@/Blockchain/interfaces/interfaces";
 const YourBorrow = () => {
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const columnItems = [
@@ -29,7 +30,8 @@ const YourBorrow = () => {
   ];
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
-
+  const { account, address } = useAccount();
+  const [UserLoans, setUserLoans] = useState<ILoan[] | null>([]);
   // useEffect(()=>{
   //   const walletConnected = localStorage.getItem('lastUsedConnector');
   //   if(walletConnected=="braavos"){
@@ -38,6 +40,16 @@ const YourBorrow = () => {
   //     connect(connectors[1]);
   //   }
   // },[])
+  useEffect(() => {
+    const loan = async () => {
+      const loans = await getUserLoans(address || "");
+      setUserLoans(loans);
+      console.log("loans", loans);
+    };
+    if (account) {
+      loan();
+    }
+  }, [account]);
 
   return (
     <PageCard pt="6.5rem">
@@ -96,6 +108,7 @@ const YourBorrow = () => {
         currentPagination={currentPagination}
         Coins={Coins}
         columnItems={columnItems}
+        Borrows={UserLoans}
       />
       <Box
         paddingY="1rem"
