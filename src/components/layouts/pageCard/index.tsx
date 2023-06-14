@@ -67,9 +67,9 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   dispatch(setAccount(account));
   //   // }
   // }, [account, status,dispatch]);
-  useEffect(() => {
-    setRender(false);
-  }, []);
+  // useEffect(() => {
+  //   setRender(false);
+  // }, []);
   useEffect(() => {
     const walletConnected = localStorage.getItem("lastUsedConnector");
     if (walletConnected == "") {
@@ -122,7 +122,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           >
             {children}
           </Stack>
-          <Box
+          {/* <Box
             bgColor="red"
             display={toastTransactionStarted ? "block" : "none"}
           >
@@ -161,7 +161,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             >
               Supply
             </AnimatedButton>
-          </Box>
+          </Box> */}
           <Footer block={83207} />
         </>
       ) : (

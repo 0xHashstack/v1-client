@@ -29,7 +29,7 @@ const Stats = ({
       //   flexGrow={1}
       //   marginBottom="3resm"
     >
-      {Object.entries(statsData).map(([key, value]) => {
+      {Object.entries(statsData).map(([key, value], idx) => {
         return (
           <VStack
             key={key}
@@ -40,10 +40,11 @@ const Stats = ({
             // backgroundColor={"red"}
           >
             <Text color="#6e7681" fontSize={14}>
-              {key}
+              {header[idx]}
             </Text>
             <Text color="#E6EDF3" fontSize="20px">
-              {key == "Net APR" || key == "Avg. asset utillization"
+              {header[idx] == "Net APR" ||
+              header[idx] == "Avg. asset utillization"
                 ? value + "%"
                 : "$" + numberFormatter(value)}
             </Text>
