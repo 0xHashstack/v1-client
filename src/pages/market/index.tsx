@@ -88,7 +88,7 @@ export default function Market() {
       >
         <LatestSyncedBlock width="16rem" height="100%" block={83207} />
       </Box> */}
-      <SuccessToast/>
+      {/* <SuccessToast/> */}
     </PageCard>
   );
 }
