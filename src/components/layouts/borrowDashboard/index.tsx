@@ -158,12 +158,12 @@ const BorrowDashboard = ({
     let temp2: any = [];
 
     for (let i = 0; i < Borrows?.length; i++) {
-      temp1.push({ id: Borrows[i].id, name: Borrows[i].name });
-      temp2.push(Borrows[i].id);
+      temp1.push({ id: Borrows[i].loanId, name: Borrows[i].loanMarket });
+      temp2.push(Borrows[i].loanId);
     }
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);
-  }, []);
+  }, [Borrows]);
 
   return upper_bound >= lower_bound && Borrows?.length > 0 ? (
     <TableContainer
@@ -307,7 +307,7 @@ const BorrowDashboard = ({
                         >
                           <Image
                             // src={`./BTC.svg`}
-                            src={`${borrow.loanMarket}.svg`}
+                            src={`${borrow.loanMarket.slice(1)}.svg`}
                             alt="Picture of the author"
                             width="32"
                             height="32"
@@ -392,7 +392,7 @@ const BorrowDashboard = ({
                         justifyContent="center"
                       >
                         <Image
-                          src={`./${borrow.collateralMarket}.svg`}
+                          src={`./${borrow.collateralMarket.slice(1)}.svg`}
                           alt="Picture of the author"
                           width="32"
                           height="32"
@@ -507,7 +507,7 @@ const BorrowDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      1,234
+                      N/A
                     </Text>
                   </Td>
                   <Td
@@ -551,6 +551,7 @@ const BorrowDashboard = ({
                         setCurrentBorrowMarketCoin2={
                           setCurrentBorrowMarketCoin2
                         }
+                        loan={borrow}
                         borrowIds={borrowIds}
                         buttonText="Actions"
                         height={"2rem"}

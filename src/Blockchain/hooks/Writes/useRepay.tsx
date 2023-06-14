@@ -16,9 +16,9 @@ import {
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
 
 const useRepay = (loanParam: any) => {
+  console.log("loan here", loanParam);
   const [repayAmount, setRepayAmount] = useState<number>(0);
   const [loan, setLoan] = useState<ILoan>(loanParam);
-
   const [allowanceVal, setAllowance] = useState(0);
 
   const { address: account } = useAccount();
@@ -64,25 +64,25 @@ const useRepay = (loanParam: any) => {
   } = useContractWrite({
     calls: [
       {
-        contractAddress: loan.underlyingMarketAddress as string,
+        contractAddress: loan?.underlyingMarketAddress as string,
         entrypoint: "approve",
         calldata: [
           diamondAddress,
           etherToWeiBN(
             repayAmount as number,
-            loan.underlyingMarket || ""
+            loan?.underlyingMarket || ""
           ).toString(),
           0,
         ],
       },
       {
         contractAddress: diamondAddress,
-        entrypoint: "loan_repay",
+        entrypoint: "repay_loan",
         calldata: [
-          loan.loanId,
+          loan?.loanId,
           etherToWeiBN(
             repayAmount as number,
-            loan.underlyingMarket || ""
+            loan?.underlyingMarket || ""
           ).toString(),
           0,
         ],
@@ -106,13 +106,13 @@ const useRepay = (loanParam: any) => {
       {
         contractAddress: diamondAddress,
         entrypoint: "repay_loan",
-        calldata: [loan.loanId, 0, 0],
+        calldata: [loan?.loanId, 0, 0],
       },
     ],
   });
 
   const handleRepayBorrow = async () => {
-    if (!repayAmount && loan.loanId! && !diamondAddress) {
+    if (!repayAmount && loan?.loanId! && !diamondAddress) {
       return;
     }
     // if (!repayAmount || repayAmount < 0) {
@@ -121,7 +121,7 @@ const useRepay = (loanParam: any) => {
     }
     try {
       const val = await writeAsyncRepay();
-      setTransRepayHash(val.transaction_hash);
+      setTransRepayHash(val?.transaction_hash);
       const toastParamValue = {
         success: true,
         heading: "Success",

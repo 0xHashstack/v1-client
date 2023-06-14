@@ -43,11 +43,13 @@ const YourBorrow = () => {
   // },[])
   useEffect(() => {
     const loan = async () => {
-      const loans = await getUserLoans(address || "");
-      setUuserLoans(loans);
-      dispatch(setUserLoans(loans));
-      
-      console.log("loans", loans);
+      try {
+        const loans = await getUserLoans(address || "");
+        setUserLoans(loans);
+      } catch (err) {
+        console.log("your-borrow : unable to fetch user loans");
+      }
+      // console.log("loans", loans);
     };
     if (account) {
       loan();
@@ -127,7 +129,7 @@ const YourBorrow = () => {
           <Pagination
             currentPagination={currentPagination}
             setCurrentPagination={(x: any) => setCurrentPagination(x)}
-            max={Coins.length}
+            max={UserLoans?.length || 0}
             rows={6}
           />
         </Box>
