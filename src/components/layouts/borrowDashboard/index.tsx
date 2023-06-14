@@ -141,6 +141,7 @@ const BorrowDashboard = ({
   // gap: string;
   // rowItems: any;
 }) => {
+  console.log(Borrows,"Borrow loans in borrow dashboard")
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
   upper_bound = Math.min(Borrows?.length - 1, upper_bound);

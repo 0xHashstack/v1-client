@@ -32,7 +32,7 @@ const YourBorrow = () => {
     useConnectors();
     const dispatch=useDispatch();
   const { account, address } = useAccount();
-  const [UserLoans, setUuserLoans] = useState<ILoan[] | null>([]);
+  const [UserLoans, setuserLoans] = useState<ILoan[] | null>([]);
   // useEffect(()=>{
   //   const walletConnected = localStorage.getItem('lastUsedConnector');
   //   if(walletConnected=="braavos"){
@@ -45,7 +45,9 @@ const YourBorrow = () => {
     const loan = async () => {
       try {
         const loans = await getUserLoans(address || "");
-        setUserLoans(loans);
+        setuserLoans(loans);
+        // console.log(loans,"Loans from your borrow index page")
+        dispatch(setUserLoans(loans));
       } catch (err) {
         console.log("your-borrow : unable to fetch user loans");
       }

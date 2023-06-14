@@ -101,25 +101,6 @@ const YourBorrowModal = ({
   const [collateralTransactionStarted, setCollateralTransactionStarted] =
     useState(false);
 
-  const {
-    repayAmount,
-    setRepayAmount,
-    // handleApprove,
-    writeAsyncRepay,
-    transRepayHash,
-    setTransRepayHash,
-    repayTransactionReceipt,
-    isLoadingRepay,
-    errorRepay,
-    handleRepayBorrow,
-
-    //SelfLiquidate - Repay with 0 amount
-    writeAsyncSelfLiquidate,
-    isLoadingSelfLiquidate,
-    errorSelfLiquidate,
-    selfLiquidateTransactionReceipt,
-    setIsSelfLiquidateHash,
-  } = useRepay(loan);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
