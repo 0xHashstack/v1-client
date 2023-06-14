@@ -67,10 +67,15 @@ export const metricsContractAddress: string = contractsEnv.METRICS_CONTRACT_ADDR
 export const l3DiamondAddress: string = contractsEnv.L3_DIAMOND_ADDRESS;
 
 export const getTokenFromAddress = (address: string) => {
-  let index = contractsEnv.TOKENS.map((item) => item.address).indexOf(address);
-  let token = contractsEnv.TOKENS[index];
-  // console.log("getTokenFromAddress", address, token);
-  return token;
+  return contractsEnv.TOKENS.find((item) => item.address === address);
+};
+
+export const getRTokenFromAddress = (address: string) => {
+  return contractsEnv.rTOKENS.find((item) => item.address === address);
+};
+
+export const getDTokenFromAddress = (address: string) => {
+  return contractsEnv.dTOKENS.find((item) => item.address === address);
 };
 
 export { ERC20Abi, contractsEnv };

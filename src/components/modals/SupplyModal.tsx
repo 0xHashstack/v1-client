@@ -44,6 +44,8 @@ import {
   setTransactionStatus,
   selectAssetWalletBalance,
   setToastTransactionStarted,
+  selectTransactionStarted,
+  setTransactionStarted,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -77,7 +79,7 @@ const SupplyModal = ({
   const toastHandler = () => {
     console.log("toast called");
   };
-  
+
   const {
     depositAmount,
     setDepositAmount,
@@ -97,11 +99,9 @@ const SupplyModal = ({
     statusDeposit,
   } = useDeposit();
   const toast = useToast();
-  useEffect(()=>{
-    setAsset(coin ? coin.name:"BTC");
-  },[coin])
-
-
+  useEffect(() => {
+    setAsset(coin ? coin.name : "BTC");
+  }, [coin]);
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState(
     coin ? coin.name : "BTC"
@@ -111,17 +111,40 @@ const SupplyModal = ({
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
-  const [transactionStarted, setTransactionStarted] = useState(false);
+
+  const transactionStarted = useSelector(selectTransactionStarted);
+
+  // const [transactionStarted, setTransactionStarted] = useState(false);
   // const [toastTransactionStarted, setToastTransactionStarted] = useState(false);
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
-  const walletBalances=useSelector(selectAssetWalletBalance);
-  const [walletBalance, setwalletBalance] = useState(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 0)
-  useEffect(()=>{
-    setwalletBalance(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 0)
+  const walletBalances = useSelector(selectAssetWalletBalance);
+  const [walletBalance, setwalletBalance] = useState(
+    walletBalances[coin.name]?.statusBalanceOf === "success"
+      ? Number(
+          BNtoNum(
+            uint256.uint256ToBN(
+              walletBalances[coin.name]?.dataBalanceOf?.balance
+            )
+          )
+        )
+      : 0
+  );
+  useEffect(() => {
+    setwalletBalance(
+      walletBalances[coin.name]?.statusBalanceOf === "success"
+        ? Number(
+            BNtoNum(
+              uint256.uint256ToBN(
+                walletBalances[coin.name]?.dataBalanceOf?.balance
+              )
+            )
+          )
+        : 0
+    );
     // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
-  },[walletBalances[coin.name]?.statusBalanceOf,coin])
+  }, [walletBalances[coin.name]?.statusBalanceOf, coin]);
   // console.log(walletBalances['BTC']);
   // const walletBalance = useSelector(selectWalletBalance);
   // const [transactionFailed, setTransactionFailed] = useState(false);
@@ -139,15 +162,24 @@ const SupplyModal = ({
   // // const showToast = () => {
 
   // // }
+  // const {address: account } = useAccount();
+  // useEffect(() => {
+  //   if(!account) return;
+  //   console.log("loans calling")
+  //   getUserLoans(account);
+  // }, [account])
 
-  const recieptData = useWaitForTransaction({ hash: depositTransHash, watch: true});
+  const recieptData = useWaitForTransaction({
+    hash: depositTransHash,
+    watch: true,
+  });
 
   const handleTransaction = async () => {
     try {
       const deposit = await writeAsyncDeposit();
-      console.log("Supply Modal - deposit ",deposit)
+      console.log("Supply Modal - deposit ", deposit);
       setDepositTransHash(deposit?.transaction_hash);
-      if(recieptData?.data?.status=="ACCEPTED_ON_L2"){
+      if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
       }
       dispatch(setTransactionStatus("success"));
       if (isSuccessDeposit) {
@@ -166,14 +198,14 @@ const SupplyModal = ({
     } catch (err) {
       // setTransactionFailed(true);
       dispatch(setTransactionStatus("failed"));
-      console.log(err);
-      toast({
-        description: "An error occurred while handling the transaction. " + err,
-        variant: "subtle",
-        position: "bottom-right",
-        status: "error",
-        isClosable: true,
-      });
+      // console.log(err);
+      // toast({
+      //   description: "An error occurred while handling the transaction. " + err,
+      //   variant: "subtle",
+      //   position: "bottom-right",
+      //   status: "error",
+      //   isClosable: true,
+      // });
     }
   };
 
@@ -199,8 +231,6 @@ const SupplyModal = ({
     }
   };
 
-
-  
   // useEffect(() => {
   //   getUserLoans("0x05f2a945005c66ee80bc3873ade42f5e29901fc43de1992cd902ca1f75a1480b");
   // }, [])
@@ -246,8 +276,19 @@ const SupplyModal = ({
     setSliderValue(0);
     setAsset(coin ? coin.name : "BTC");
     setCurrentSelectedCoin(coin ? coin.name : "BTC");
-    setwalletBalance(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 0)
-    setTransactionStarted(false);
+    setwalletBalance(
+      walletBalances[coin.name]?.statusBalanceOf === "success"
+        ? Number(
+            BNtoNum(
+              uint256.uint256ToBN(
+                walletBalances[coin.name]?.dataBalanceOf?.balance
+              )
+            )
+          )
+        : 0
+    );
+
+    if (transactionStarted) dispatch(setTransactionStarted(""));
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
   };
@@ -271,7 +312,7 @@ const SupplyModal = ({
           onClose={() => {
             onClose();
             resetStates();
-            dispatch(setToastTransactionStarted(""));
+            if (transactionStarted) dispatch(setToastTransactionStarted(""));
             // if (setIsOpenCustom) setIsOpenCustom(false);
           }}
           size={{ width: "700px", height: "100px" }}
@@ -387,7 +428,19 @@ const SupplyModal = ({
                             onClick={() => {
                               setCurrentSelectedCoin(coin);
                               setAsset(coin);
-                              setwalletBalance(walletBalances[coin]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin]?.dataBalanceOf?.balance))) : 0)
+                              setwalletBalance(
+                                walletBalances[coin]?.statusBalanceOf ===
+                                  "success"
+                                  ? Number(
+                                      BNtoNum(
+                                        uint256.uint256ToBN(
+                                          walletBalances[coin]?.dataBalanceOf
+                                            ?.balance
+                                        )
+                                      )
+                                    )
+                                  : 0
+                              );
                               dispatch(setCoinSelectedSupplyModal(coin));
                             }}
                           >
@@ -858,8 +911,8 @@ const SupplyModal = ({
                 ) : (
                   <Box
                     onClick={() => {
-                      setTransactionStarted(true);
-                      if(transactionStarted==false){
+                      dispatch(setTransactionStarted(""));
+                      if (transactionStarted === false) {
                         handleTransaction();
                       }
                       // handleTransaction();
