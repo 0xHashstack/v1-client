@@ -122,6 +122,21 @@ const YourBorrowModal = ({
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
+      case "BTC":
+        return <BTCLogo height={"16px"} width={"16px"} />;
+        break;
+      case "USDC":
+        return <USDCLogo height={"16px"} width={"16px"} />;
+        break;
+      case "USDT":
+        return <USDTLogo height={"16px"} width={"16px"} />;
+        break;
+      case "ETH":
+        return <ETHLogo height={"16px"} width={"16px"} />;
+        break;
+      case "DAI":
+        return <DAILogo height={"16px"} width={"16px"} />;
+        break;
       case "dBTC":
         return <BTCLogo height={"16px"} width={"16px"} />;
         break;
