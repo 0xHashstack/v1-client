@@ -84,6 +84,7 @@ const YourBorrowModal = ({
   setCurrentBorrowMarketCoin2,
   borrowIds,
   buttonText,
+  loan,
   ...restProps
 }: any) => {
   console.log("took map", borrowIDCoinMap, currentID, currentMarket);
@@ -98,6 +99,26 @@ const YourBorrowModal = ({
   const [transactionStarted, setTransactionStarted] = useState(false);
   const [collateralTransactionStarted, setCollateralTransactionStarted] =
     useState(false);
+
+  const {
+    repayAmount,
+    setRepayAmount,
+    // handleApprove,
+    writeAsyncRepay,
+    transRepayHash,
+    setTransRepayHash,
+    repayTransactionReceipt,
+    isLoadingRepay,
+    errorRepay,
+    handleRepayBorrow,
+
+    //SelfLiquidate - Repay with 0 amount
+    writeAsyncSelfLiquidate,
+    isLoadingSelfLiquidate,
+    errorSelfLiquidate,
+    selfLiquidateTransactionReceipt,
+    setIsSelfLiquidateHash,
+  } = useRepay(loan);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -144,8 +165,6 @@ const YourBorrowModal = ({
         break;
     }
   };
-
-
 
   const getContainer = (action: string) => {
     switch (action) {
@@ -810,25 +829,6 @@ const YourBorrowModal = ({
     "BTC/ETH",
     "BTC/USDT",
   ];
-  const {
-    repayAmount,
-    setRepayAmount,
-    // handleApprove,
-    writeAsyncRepay,
-    transRepayHash,
-    setTransRepayHash,
-    repayTransactionReceipt,
-    isLoadingRepay,
-    errorRepay,
-    handleRepayBorrow,
-
-    //SelfLiquidate - Repay with 0 amount
-    writeAsyncSelfLiquidate,
-    isLoadingSelfLiquidate,
-    errorSelfLiquidate,
-    selfLiquidateTransactionReceipt,
-    setIsSelfLiquidateHash,
-  }=useRepay("123456");
 
   const [radioValue, setRadioValue] = useState("1");
 
@@ -860,14 +860,14 @@ const YourBorrowModal = ({
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue(100);
-      setRepayAmount(newValue)
+      setRepayAmount(newValue);
       dispatch(setInputYourBorrowModalRepayAmount(newValue));
     } else {
       percentage = Math.round(percentage);
       if (isNaN(percentage)) {
       } else {
         setSliderValue(percentage);
-        setRepayAmount(newValue)
+        setRepayAmount(newValue);
         dispatch(setInputYourBorrowModalRepayAmount(newValue));
       }
       // dispatch((newValue));
@@ -979,7 +979,7 @@ const YourBorrowModal = ({
         }}
         isCentered
         scrollBehavior="inside"
-      // size="sm"
+        // size="sm"
       >
         <ModalOverlay mt="3.8rem" bg="rgba(244, 242, 255, 0.5);" />
         <ModalContent mt="8rem" bg={"#010409"} maxW="464px" overflow="hidden">
@@ -1055,7 +1055,7 @@ const YourBorrowModal = ({
               justifyContent={"space-between"}
               fontSize={"sm"}
               mt=".4rem"
-            // my={"2"}
+              // my={"2"}
             >
               <Box w="full">
                 {tabValue == 1 ? (
@@ -1162,13 +1162,15 @@ const YourBorrowModal = ({
                                       w="full"
                                       display="flex"
                                       py="5px"
-                                      px={`${action === currentAction ? "2" : "5"
-                                        }`}
+                                      px={`${
+                                        action === currentAction ? "2" : "5"
+                                      }`}
                                       gap="1"
-                                      bg={`${action === currentAction
+                                      bg={`${
+                                        action === currentAction
                                           ? "#0C6AD9"
                                           : "inherit"
-                                        }`}
+                                      }`}
                                       borderRadius="md"
                                     >
                                       {/* <Box p="1">{getCoin(action)}</Box> */}
@@ -1246,8 +1248,9 @@ const YourBorrowModal = ({
                               py="2"
                               className="dropdown-container onlyScroll"
                               boxShadow="dark-lg"
-                              height={`${borrowIds.length >= 5 ? "182px" : "none"
-                                }`}
+                              height={`${
+                                borrowIds.length >= 5 ? "182px" : "none"
+                              }`}
                               overflowY="scroll"
                             >
                               {borrowIds.map((coin: string, index: number) => {
@@ -1277,13 +1280,15 @@ const YourBorrowModal = ({
                                       w="full"
                                       display="flex"
                                       py="5px"
-                                      px={`${coin === currentBorrowId1 ? "2" : "5"
-                                        }`}
+                                      px={`${
+                                        coin === currentBorrowId1 ? "2" : "5"
+                                      }`}
                                       gap="1"
-                                      bg={`${coin === currentBorrowId1
+                                      bg={`${
+                                        coin === currentBorrowId1
                                           ? "#0C6AD9"
                                           : "inherit"
-                                        }`}
+                                      }`}
                                       borderRadius="md"
                                     >
                                       {/* <Box p="1">{getCoin(coin)}</Box> */}
@@ -1444,17 +1449,18 @@ const YourBorrowModal = ({
                             borderRadius="6px"
                             display="flex"
                             justifyContent="space-between"
-                            border={`${repayAmount > walletBalance
+                            border={`${
+                              repayAmount > walletBalance
                                 ? "1px solid #CF222E"
                                 : repayAmount < 0
-                                  ? "1px solid #CF222E"
-                                  : isNaN(repayAmount)
-                                    ? "1px solid #CF222E"
-                                    : repayAmount > 0 &&
-                                      repayAmount <= walletBalance
-                                      ? "1px solid #1A7F37"
-                                      : "1px solid #2B2F35 "
-                              }`}
+                                ? "1px solid #CF222E"
+                                : isNaN(repayAmount)
+                                ? "1px solid #CF222E"
+                                : repayAmount > 0 &&
+                                  repayAmount <= walletBalance
+                                ? "1px solid #1A7F37"
+                                : "1px solid #2B2F35 "
+                            }`}
                           >
                             <NumberInput
                               border="0px"
@@ -1473,18 +1479,19 @@ const YourBorrowModal = ({
                             >
                               <NumberInputField
                                 placeholder={`Minimum 0.01536 ${currentBorrowMarketCoin1}`}
-                                color={`${repayAmount> walletBalance
+                                color={`${
+                                  repayAmount > walletBalance
                                     ? "#CF222E"
                                     : isNaN(repayAmount)
-                                      ? "#CF222E"
-                                      : repayAmount < 0
-                                        ? "#CF222E"
-                                        : repayAmount == 0
-                                          ? "white"
-                                          : "#1A7F37"
-                                  }`}
+                                    ? "#CF222E"
+                                    : repayAmount < 0
+                                    ? "#CF222E"
+                                    : repayAmount == 0
+                                    ? "white"
+                                    : "#1A7F37"
+                                }`}
                                 border="0px"
-                                _disabled={{color:"#1A7F37"}}
+                                _disabled={{ color: "#1A7F37" }}
                                 _placeholder={{
                                   color: "#393D4F",
                                   fontSize: ".89rem",
@@ -1519,8 +1526,8 @@ const YourBorrowModal = ({
                             </Button>
                           </Box>
                           {repayAmount > walletBalance ||
-                            repayAmount < 0 ||
-                            isNaN(repayAmount) ? (
+                          repayAmount < 0 ||
+                          isNaN(repayAmount) ? (
                             <Text
                               display="flex"
                               justifyContent="space-between"
@@ -1587,31 +1594,79 @@ const YourBorrowModal = ({
                             _disabled={{ cursor: "pointer" }}
                             focusThumbOnChange={false}
                           >
-                            <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                              {sliderValue >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
+                            <SliderMark
+                              value={0}
+                              mt="-1.5"
+                              ml="-1.5"
+                              fontSize="sm"
+                              zIndex="1"
+                            >
+                              {sliderValue >= 0 ? (
+                                <SliderPointerWhite />
+                              ) : (
+                                <SliderPointer />
+                              )}
                             </SliderMark>
-                            <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                              {sliderValue >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
+                            <SliderMark
+                              value={25}
+                              mt="-1.5"
+                              ml="-1.5"
+                              fontSize="sm"
+                              zIndex="1"
+                            >
+                              {sliderValue >= 25 ? (
+                                <SliderPointerWhite />
+                              ) : (
+                                <SliderPointer />
+                              )}
                             </SliderMark>
-                            <SliderMark value={50} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                              {sliderValue >= 50 ? <SliderPointerWhite /> : <SliderPointer />}
+                            <SliderMark
+                              value={50}
+                              mt="-1.5"
+                              ml="-1.5"
+                              fontSize="sm"
+                              zIndex="1"
+                            >
+                              {sliderValue >= 50 ? (
+                                <SliderPointerWhite />
+                              ) : (
+                                <SliderPointer />
+                              )}
                             </SliderMark>
-                            <SliderMark value={75} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                              {sliderValue >= 75 ? <SliderPointerWhite /> : <SliderPointer />}
+                            <SliderMark
+                              value={75}
+                              mt="-1.5"
+                              ml="-1.5"
+                              fontSize="sm"
+                              zIndex="1"
+                            >
+                              {sliderValue >= 75 ? (
+                                <SliderPointerWhite />
+                              ) : (
+                                <SliderPointer />
+                              )}
                             </SliderMark>
-                            <SliderMark value={100} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                              {sliderValue == 100 ? <SliderPointerWhite /> : <SliderPointer />}
+                            <SliderMark
+                              value={100}
+                              mt="-1.5"
+                              ml="-1.5"
+                              fontSize="sm"
+                              zIndex="1"
+                            >
+                              {sliderValue == 100 ? (
+                                <SliderPointerWhite />
+                              ) : (
+                                <SliderPointer />
+                              )}
                             </SliderMark>
                             <SliderMark
                               value={sliderValue}
-                              textAlign='center'
+                              textAlign="center"
                               // bg='blue.500'
-                              color='white'
-                              mt='-8'
-                              ml={
-                                sliderValue !== 100 ? "-5" : "-6"
-                              }
-                              w='12'
+                              color="white"
+                              mt="-8"
+                              ml={sliderValue !== 100 ? "-5" : "-6"}
+                              w="12"
                               fontSize="12px"
                               fontWeight="400"
                               lineHeight="20px"
@@ -1788,13 +1843,15 @@ const YourBorrowModal = ({
                                         w="full"
                                         display="flex"
                                         py="5px"
-                                        px={`${dapp.name === currentDapp ? "1" : "5"
-                                          }`}
+                                        px={`${
+                                          dapp.name === currentDapp ? "1" : "5"
+                                        }`}
                                         gap="1"
-                                        bg={`${dapp.name === currentDapp
+                                        bg={`${
+                                          dapp.name === currentDapp
                                             ? "#0C6AD9"
                                             : "inherit"
-                                          }`}
+                                        }`}
                                         borderRadius="md"
                                       >
                                         <Box p="1">{getCoin(dapp.name)}</Box>
@@ -1884,7 +1941,7 @@ const YourBorrowModal = ({
                               <DropdownUp />
                             </Box>
                             {modalDropdowns.yourBorrowPoolDropdown &&
-                              radioValue === "1" ? (
+                            radioValue === "1" ? (
                               <Box
                                 w="full"
                                 left="0"
@@ -1919,13 +1976,15 @@ const YourBorrowModal = ({
                                         w="full"
                                         display="flex"
                                         py="5px"
-                                        px={`${pool === currentPool ? "1" : "5"
-                                          }`}
+                                        px={`${
+                                          pool === currentPool ? "1" : "5"
+                                        }`}
                                         gap="1"
-                                        bg={`${pool === currentPool
+                                        bg={`${
+                                          pool === currentPool
                                             ? "#0C6AD9"
                                             : "inherit"
-                                          }`}
+                                        }`}
                                         borderRadius="md"
                                       >
                                         <Box p="1">{getCoin(pool)}</Box>
@@ -1971,13 +2030,15 @@ const YourBorrowModal = ({
                                         w="full"
                                         display="flex"
                                         py="5px"
-                                        px={`${coin === currentPoolCoin ? "1" : "5"
-                                          }`}
+                                        px={`${
+                                          coin === currentPoolCoin ? "1" : "5"
+                                        }`}
                                         gap="1"
-                                        bg={`${coin === currentPoolCoin
+                                        bg={`${
+                                          coin === currentPoolCoin
                                             ? "#0C6AD9"
                                             : "inherit"
-                                          }`}
+                                        }`}
                                         borderRadius="md"
                                       >
                                         <Box p="1">{getCoin(coin)}</Box>
@@ -1997,8 +2058,8 @@ const YourBorrowModal = ({
                     {getContainer(currentAction)}
                     {currentAction == "Spend Borrow" ? (
                       currentDapp != "Select a dapp" &&
-                        (currentPool != "Select a pool" ||
-                          currentPoolCoin != "Select a pool") ? (
+                      (currentPool != "Select a pool" ||
+                        currentPoolCoin != "Select a pool") ? (
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
@@ -2029,7 +2090,6 @@ const YourBorrowModal = ({
                               "Processing the spend borrow",
                               <ErrorButton errorText="Transaction failed" />,
                               <ErrorButton errorText="Copy error!" />,
-
                             ]}
                           >
                             Spend
@@ -2053,8 +2113,7 @@ const YourBorrowModal = ({
                     )}
 
                     {currentAction == "Repay Borrow" ? (
-                      repayAmount > 0 &&
-                        repayAmount <= walletBalance ? (
+                      repayAmount > 0 && repayAmount <= walletBalance ? (
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
@@ -2088,7 +2147,6 @@ const YourBorrowModal = ({
                               "transferring the repay amount to the borrow vault.",
                               <ErrorButton errorText="Transaction failed" />,
                               <ErrorButton errorText="Copy error!" />,
-
                             ]}
                           >
                             Repay borrow
@@ -2144,7 +2202,6 @@ const YourBorrowModal = ({
                               "Processing self liquidation.",
                               <ErrorButton errorText="Transaction failed" />,
                               <ErrorButton errorText="Copy error!" />,
-
                             ]}
                           >
                             Zero repay
@@ -2277,13 +2334,15 @@ const YourBorrowModal = ({
                                       w="full"
                                       display="flex"
                                       py="5px"
-                                      px={`${coin === currentBorrowId2 ? "2" : "5"
-                                        }`}
+                                      px={`${
+                                        coin === currentBorrowId2 ? "2" : "5"
+                                      }`}
                                       gap="1"
-                                      bg={`${coin === currentBorrowId2
+                                      bg={`${
+                                        coin === currentBorrowId2
                                           ? "#0C6AD9"
                                           : "inherit"
-                                        }`}
+                                      }`}
                                       borderRadius="md"
                                     >
                                       {/* <Box p="1">{getCoin(coin)}</Box> */}
@@ -2506,15 +2565,16 @@ const YourBorrowModal = ({
                       <Box
                         width="100%"
                         color="white"
-                        border={`${inputCollateralAmount > walletBalance
+                        border={`${
+                          inputCollateralAmount > walletBalance
                             ? "1px solid #CF222E"
                             : inputCollateralAmount < 0
-                              ? "1px solid #CF222E"
-                              : inputCollateralAmount > 0 &&
-                                inputAmount <= walletBalance
-                                ? "1px solid #1A7F37"
-                                : "1px solid #2B2F35 "
-                          }`}
+                            ? "1px solid #CF222E"
+                            : inputCollateralAmount > 0 &&
+                              inputAmount <= walletBalance
+                            ? "1px solid #1A7F37"
+                            : "1px solid #2B2F35 "
+                        }`}
                         borderRadius="6px"
                         display="flex"
                         justifyContent="space-between"
@@ -2523,14 +2583,15 @@ const YourBorrowModal = ({
                         <NumberInput
                           border="0px"
                           min={0}
-                          color={`${inputCollateralAmount > walletBalance
+                          color={`${
+                            inputCollateralAmount > walletBalance
                               ? "#CF222E"
                               : inputCollateralAmount < 0
-                                ? "#CF222E"
-                                : inputCollateralAmount == 0
-                                  ? "white"
-                                  : "#1A7F37"
-                            }`}
+                              ? "#CF222E"
+                              : inputCollateralAmount == 0
+                              ? "white"
+                              : "#1A7F37"
+                          }`}
                           keepWithinRange={true}
                           onChange={handleCollateralChange}
                           value={
@@ -2574,7 +2635,7 @@ const YourBorrowModal = ({
                         </Button>
                       </Box>
                       {inputCollateralAmount > walletBalance ||
-                        inputCollateralAmount < 0 ? (
+                      inputCollateralAmount < 0 ? (
                         <Text
                           display="flex"
                           justifyContent="space-between"
@@ -2621,7 +2682,7 @@ const YourBorrowModal = ({
                           </Text>
                         </Text>
                       )}
-                      <Box pt={5} pb={2} >
+                      <Box pt={5} pb={2}>
                         <Slider
                           aria-label="slider-ex-6"
                           defaultValue={sliderValue2}
@@ -2637,31 +2698,79 @@ const YourBorrowModal = ({
                           _disabled={{ cursor: "pointer" }}
                           focusThumbOnChange={false}
                         >
-                          <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                            {sliderValue2 >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
+                          <SliderMark
+                            value={0}
+                            mt="-1.5"
+                            ml="-1.5"
+                            fontSize="sm"
+                            zIndex="1"
+                          >
+                            {sliderValue2 >= 0 ? (
+                              <SliderPointerWhite />
+                            ) : (
+                              <SliderPointer />
+                            )}
                           </SliderMark>
-                          <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                            {sliderValue2 >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
+                          <SliderMark
+                            value={25}
+                            mt="-1.5"
+                            ml="-1.5"
+                            fontSize="sm"
+                            zIndex="1"
+                          >
+                            {sliderValue2 >= 25 ? (
+                              <SliderPointerWhite />
+                            ) : (
+                              <SliderPointer />
+                            )}
                           </SliderMark>
-                          <SliderMark value={50} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                            {sliderValue2 >= 50 ? <SliderPointerWhite /> : <SliderPointer />}
+                          <SliderMark
+                            value={50}
+                            mt="-1.5"
+                            ml="-1.5"
+                            fontSize="sm"
+                            zIndex="1"
+                          >
+                            {sliderValue2 >= 50 ? (
+                              <SliderPointerWhite />
+                            ) : (
+                              <SliderPointer />
+                            )}
                           </SliderMark>
-                          <SliderMark value={75} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                            {sliderValue2 >= 75 ? <SliderPointerWhite /> : <SliderPointer />}
+                          <SliderMark
+                            value={75}
+                            mt="-1.5"
+                            ml="-1.5"
+                            fontSize="sm"
+                            zIndex="1"
+                          >
+                            {sliderValue2 >= 75 ? (
+                              <SliderPointerWhite />
+                            ) : (
+                              <SliderPointer />
+                            )}
                           </SliderMark>
-                          <SliderMark value={100} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                            {sliderValue2 == 100 ? <SliderPointerWhite /> : <SliderPointer />}
+                          <SliderMark
+                            value={100}
+                            mt="-1.5"
+                            ml="-1.5"
+                            fontSize="sm"
+                            zIndex="1"
+                          >
+                            {sliderValue2 == 100 ? (
+                              <SliderPointerWhite />
+                            ) : (
+                              <SliderPointer />
+                            )}
                           </SliderMark>
                           <SliderMark
                             value={sliderValue2}
-                            textAlign='center'
+                            textAlign="center"
                             // bg='blue.500'
-                            color='white'
-                            mt='-8'
-                            ml={
-                              sliderValue2 !== 100 ? "-5" : "-6"
-                            }
-                            w='12'
+                            color="white"
+                            mt="-8"
+                            ml={sliderValue2 !== 100 ? "-5" : "-6"}
+                            w="12"
                             fontSize="12px"
                             fontWeight="400"
                             lineHeight="20px"
@@ -2965,7 +3074,7 @@ const YourBorrowModal = ({
                       </Text>
                     </Card>
                     {inputCollateralAmount > 0 &&
-                      inputCollateralAmount <= walletBalance ? (
+                    inputCollateralAmount <= walletBalance ? (
                       <Box
                         onClick={() => {
                           setCollateralTransactionStarted(true);
@@ -2999,7 +3108,6 @@ const YourBorrowModal = ({
                             "Transferring collateral to supply vault.",
                             <ErrorButton errorText="Transaction failed" />,
                             <ErrorButton errorText="Copy error!" />,
-
                           ]}
                         >
                           Add Collateral

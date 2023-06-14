@@ -168,7 +168,7 @@ const BorrowDashboard = ({
       border="1px"
       borderColor="#2B2F35"
       color="white"
-      borderRadius="md" 
+      borderRadius="md"
       w={width}
       display="flex"
       justifyContent="flex-start"
@@ -548,6 +548,7 @@ const BorrowDashboard = ({
                         setCurrentBorrowMarketCoin2={
                           setCurrentBorrowMarketCoin2
                         }
+                        loan={borrow}
                         borrowIds={borrowIds}
                         buttonText="Actions"
                         height={"2rem"}
