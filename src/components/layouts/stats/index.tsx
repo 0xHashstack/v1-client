@@ -8,7 +8,7 @@ const Stats = ({
   statsData,
 }: {
   header: string[];
-  statsData: any[];
+  statsData: Object;
   onclick: () => void;
 }) => {
   const gap: number = 100 / (header.length + 1);
@@ -29,10 +29,10 @@ const Stats = ({
       //   flexGrow={1}
       //   marginBottom="3resm"
     >
-      {header.map((val: string, idx: number) => {
+      {Object.entries(statsData).map(([key, value]) => {
         return (
           <VStack
-            key={idx}
+            key={key}
             h="100%"
             w={`${gap}%`}
             justifyContent="center"
@@ -40,12 +40,12 @@ const Stats = ({
             // backgroundColor={"red"}
           >
             <Text color="#6e7681" fontSize={14}>
-              {val}
+              {key}
             </Text>
             <Text color="#E6EDF3" fontSize="20px">
-              {val == "Net APR" || val == "Avg. asset utillization"
-                ? statsData[idx] + "%"
-                : "$" + numberFormatter(statsData[idx])}
+              {key == "Net APR" || key == "Avg. asset utillization"
+                ? value + "%"
+                : "$" + numberFormatter(value)}
             </Text>
           </VStack>
         );

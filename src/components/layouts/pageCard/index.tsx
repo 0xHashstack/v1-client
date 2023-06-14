@@ -1,5 +1,5 @@
 import Navbar from "@/components/layouts/navbar/Navbar";
-import { Box, Stack, StackProps, useMediaQuery } from "@chakra-ui/react";
+import { Box, Stack, StackProps, Text, useMediaQuery } from "@chakra-ui/react";
 import React, { ReactNode, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -68,7 +68,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   // }
   // }, [account, status,dispatch]);
   useEffect(() => {
-    setRender(true);
+    setRender(false);
   }, []);
   useEffect(() => {
     const walletConnected = localStorage.getItem("lastUsedConnector");
@@ -85,6 +85,20 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       }
     }
   }, []);
+  useEffect(() => {
+    function isCorrectNetwork() {
+      console.log("starknetAccount", account);
+      return (
+        account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+        account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+      );
+    }
+    if (account && !isCorrectNetwork()) {
+      setRender(false);
+    } else {
+      setRender(true);
+    }
+  }, [account]);
   // useEffect(() => {
   //   const timer = setTimeout(() => {
   //     connect(connectors[0]);
@@ -94,7 +108,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
 
   return (
     <>
-      {render && (
+      {render ? (
         <>
           <Navbar />
           <Stack
@@ -149,6 +163,25 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             </AnimatedButton>
           </Box>
           <Footer block={83207} />
+        </>
+      ) : (
+        <>
+          <Navbar />
+          <Stack
+            alignItems="center"
+            minHeight={"100vh"}
+            pt="8rem"
+            backgroundColor="#010409"
+            pb={isLargerThan1280 ? "7rem" : "0rem"}
+            className={classes.join(" ")}
+            {...rest}
+          >
+            <Box>
+              <Text color="white" fontSize="25px">
+                Please switch to Starknet Goerli
+              </Text>
+            </Box>
+          </Stack>
         </>
       )}
     </>
