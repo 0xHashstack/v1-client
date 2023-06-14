@@ -164,9 +164,9 @@ const SupplyModal = ({
   // // }
   // const {address: account } = useAccount();
   // useEffect(() => {
-  //   if(!account) return;
-  //   console.log("loans calling")
-  //   getUserLoans(account);
+  //     if(!account) return;
+  //     console.log("loans calling")
+  //     getUserLoans(account);
   // }, [account])
 
   const recieptData = useWaitForTransaction({
