@@ -145,26 +145,7 @@ const YourBorrowModal = ({
     }
   };
 
-  //   const {
-  //     repayAmount,
-  //     setRepayAmount,
-  //     handleApprove,
-  //     writeAsyncRepay,
-  //     transRepayHash,
-  //     setTransRepayHash,
-  //     repayTransactionReceipt,
-  //     isLoadingRepay,
-  //     errorRepay,
-  //     handleRepayBorrow,
 
-  //     //SelfLiquidate - Repay with 0 amount
-  //     writeAsyncSelfLiquidate,
-  //     isLoadingSelfLiquidate,
-  //     errorSelfLiquidate,
-  //     selfLiquidateTransactionReceipt,
-  //     setIsSelfLiquidateHash,
-  // };
-  // }=useRepay();
 
   const getContainer = (action: string) => {
     switch (action) {
@@ -829,6 +810,25 @@ const YourBorrowModal = ({
     "BTC/ETH",
     "BTC/USDT",
   ];
+  const {
+    repayAmount,
+    setRepayAmount,
+    // handleApprove,
+    writeAsyncRepay,
+    transRepayHash,
+    setTransRepayHash,
+    repayTransactionReceipt,
+    isLoadingRepay,
+    errorRepay,
+    handleRepayBorrow,
+
+    //SelfLiquidate - Repay with 0 amount
+    writeAsyncSelfLiquidate,
+    isLoadingSelfLiquidate,
+    errorSelfLiquidate,
+    selfLiquidateTransactionReceipt,
+    setIsSelfLiquidateHash,
+  }=useRepay("123456");
 
   const [radioValue, setRadioValue] = useState("1");
 
@@ -860,14 +860,14 @@ const YourBorrowModal = ({
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue(100);
-      setinputRepayAmount(newValue);
+      setRepayAmount(newValue)
       dispatch(setInputYourBorrowModalRepayAmount(newValue));
     } else {
       percentage = Math.round(percentage);
       if (isNaN(percentage)) {
       } else {
         setSliderValue(percentage);
-        setinputRepayAmount(newValue);
+        setRepayAmount(newValue)
         dispatch(setInputYourBorrowModalRepayAmount(newValue));
       }
       // dispatch((newValue));
@@ -952,7 +952,7 @@ const YourBorrowModal = ({
     setinputCollateralAmount(0);
     setSliderValue(0);
     setSliderValue2(0);
-    setinputRepayAmount(0);
+    setRepayAmount(0);
     setCollateralTransactionStarted(false);
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
@@ -1144,7 +1144,7 @@ const YourBorrowModal = ({
                                     pr="2"
                                     onClick={() => {
                                       if (action === "Zero Repay") {
-                                        setinputRepayAmount(0);
+                                        setRepayAmount(0);
                                         setSliderValue(0);
                                       }
                                       setCurrentAction(action);
@@ -1444,14 +1444,14 @@ const YourBorrowModal = ({
                             borderRadius="6px"
                             display="flex"
                             justifyContent="space-between"
-                            border={`${inputRepayAmount > walletBalance
+                            border={`${repayAmount > walletBalance
                                 ? "1px solid #CF222E"
-                                : inputRepayAmount < 0
+                                : repayAmount < 0
                                   ? "1px solid #CF222E"
-                                  : isNaN(inputRepayAmount)
+                                  : isNaN(repayAmount)
                                     ? "1px solid #CF222E"
-                                    : inputRepayAmount > 0 &&
-                                      inputRepayAmount <= walletBalance
+                                    : repayAmount > 0 &&
+                                      repayAmount <= walletBalance
                                       ? "1px solid #1A7F37"
                                       : "1px solid #2B2F35 "
                               }`}
@@ -1461,29 +1461,30 @@ const YourBorrowModal = ({
                               min={0}
                               keepWithinRange={true}
                               onChange={handleChange}
-                              value={inputRepayAmount ? inputRepayAmount : ""}
+                              value={repayAmount ? repayAmount : ""}
                               isDisabled={
                                 currentAction === "Zero Repay" ||
                                 transactionStarted == true
                               }
                               step={parseFloat(
-                                `${inputRepayAmount <= 99999 ? 0.1 : 0}`
+                                `${repayAmount <= 99999 ? 0.1 : 0}`
                               )}
                               _disabled={{ cursor: "pointer" }}
                             >
                               <NumberInputField
                                 placeholder={`Minimum 0.01536 ${currentBorrowMarketCoin1}`}
-                                color={`${inputRepayAmount > walletBalance
+                                color={`${repayAmount> walletBalance
                                     ? "#CF222E"
-                                    : isNaN(inputRepayAmount)
+                                    : isNaN(repayAmount)
                                       ? "#CF222E"
-                                      : inputRepayAmount < 0
+                                      : repayAmount < 0
                                         ? "#CF222E"
-                                        : inputRepayAmount == 0
+                                        : repayAmount == 0
                                           ? "white"
                                           : "#1A7F37"
                                   }`}
                                 border="0px"
+                                _disabled={{color:"#1A7F37"}}
                                 _placeholder={{
                                   color: "#393D4F",
                                   fontSize: ".89rem",
@@ -1503,7 +1504,7 @@ const YourBorrowModal = ({
                               _hover={{ bg: "#101216" }}
                               onClick={() => {
                                 if (currentAction === "Zero Repay") return;
-                                setinputRepayAmount(walletBalance);
+                                setRepayAmount(walletBalance);
                                 setSliderValue(100);
                                 dispatch(
                                   setInputYourBorrowModalRepayAmount(
@@ -1517,9 +1518,9 @@ const YourBorrowModal = ({
                               MAX
                             </Button>
                           </Box>
-                          {inputRepayAmount > walletBalance ||
-                            inputRepayAmount < 0 ||
-                            isNaN(inputRepayAmount) ? (
+                          {repayAmount > walletBalance ||
+                            repayAmount < 0 ||
+                            isNaN(repayAmount) ? (
                             <Text
                               display="flex"
                               justifyContent="space-between"
@@ -1535,7 +1536,7 @@ const YourBorrowModal = ({
                                   <SmallErrorIcon />{" "}
                                 </Text>
                                 <Text ml="0.3rem">
-                                  {inputRepayAmount > walletBalance
+                                  {repayAmount > walletBalance
                                     ? "Amount exceeds balance"
                                     : "Invalid Input"}
                                 </Text>
@@ -1580,7 +1581,7 @@ const YourBorrowModal = ({
                               var ans = (val / 100) * walletBalance;
                               ans = Math.round(ans * 100) / 100;
                               dispatch(setInputYourBorrowModalRepayAmount(ans));
-                              setinputRepayAmount(ans);
+                              setRepayAmount(ans);
                             }}
                             isDisabled={transactionStarted == true}
                             _disabled={{ cursor: "pointer" }}
@@ -2052,8 +2053,8 @@ const YourBorrowModal = ({
                     )}
 
                     {currentAction == "Repay Borrow" ? (
-                      inputRepayAmount > 0 &&
-                        inputRepayAmount <= walletBalance ? (
+                      repayAmount > 0 &&
+                        repayAmount <= walletBalance ? (
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
@@ -2110,7 +2111,7 @@ const YourBorrowModal = ({
                       ""
                     )}
                     {currentAction == "Zero Repay" ? (
-                      inputRepayAmount == 0 ? (
+                      repayAmount == 0 ? (
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);

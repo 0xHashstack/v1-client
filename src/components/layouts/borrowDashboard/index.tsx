@@ -168,7 +168,7 @@ const BorrowDashboard = ({
       border="1px"
       borderColor="#2B2F35"
       color="white"
-      borderRadius="md"
+      borderRadius="md" 
       w={width}
       display="flex"
       justifyContent="flex-start"
@@ -504,7 +504,7 @@ const BorrowDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      1,234
+                      N/A
                     </Text>
                   </Td>
                   <Td

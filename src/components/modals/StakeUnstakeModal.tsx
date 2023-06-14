@@ -179,8 +179,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
       const stake = await writeAsyncStakeRequest();
       setDepositTransHash(stake?.transaction_hash);
       if(recieptData?.data?.status=="ACCEPTED_ON_L2"){
-        dispatch(setTransactionStatus("success"));
       }
+      dispatch(setTransactionStatus("success"));
       console.log("Staking Modal-stake transaction check",recieptData?.data?.status=="ACCEPTED_ON_L2");
     } catch (err) {
       dispatch(setTransactionStatus("failed"));
@@ -198,9 +198,17 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const hanldeUnstakeTransaction = async () => {
     try {
       const unstake = await writeAsyncWithdrawStake();
-
+      console.log(unstake);
     } catch (err) {
+      dispatch(setTransactionStatus("failed"))
       console.log(err)
+      toast({
+        description: "An error occurred while handling the transaction. " + err,
+        variant: "subtle",
+        position: "bottom-right",
+        status: "error",
+        isClosable: true,
+      });
     }
   }
 

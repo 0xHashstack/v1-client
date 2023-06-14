@@ -111,7 +111,7 @@ export default function Home() {
         router.replace(waitlistHref);
       } else {
         router.replace(marketHref2);
-      }
+      // }
       // if (!isWhiteListed) {
       //   router.replace(whitelistHref);
       // } else if (isWaitListed) {

@@ -7,14 +7,32 @@ import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
 import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import { getUserReserves } from "@/Blockchain/scripts/userStats";
+import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
+import { useAccount } from "@starknet-react/core";
+import { getUserLoans } from "@/Blockchain/scripts/Loans";
 const MarketDashboard = () => {
   const [oraclePrices, setOraclePrices]: any = useState([]);
+  const {account,address}=useAccount();
+  // console.log(account,"Market Page")
   useEffect(() => {
     fetchOraclePrices();
-    fetchProtocolReserves();
+    // fetchProtocolReserves();
+    // fetchUserDeposits();
+    // fetchUserReserves();
+    // fetchUserLoans();
   }, []);
-
-  const fetchProtocolReserves = async () => {
+  // useEffect(()=>{
+  //   fetchUserLoans();
+  // },[account])
+  // const fetchUserDeposits = async () => {
+  //   try {
+  //     const reserves = await getUserDeposits(account);
+  //     console.log(reserves, "market page -user supply");
+  //   } catch (err) {
+  //     console.log("Error fetching protocol reserves", err);
+  //   }
+  // };
+  const fetchUserReserves = async () => {
     try {
       const reserves = await getUserReserves();
       console.log(reserves, "market page -user supply");
@@ -22,11 +40,20 @@ const MarketDashboard = () => {
       console.log("Error fetching protocol reserves", err);
     }
   };
+  const fetchUserLoans = async () => {
+    try {
+      const loans = await getUserLoans(address || "");
+      console.log(loans, "market page -user supply");
+    } catch (err) {
+      console.log("Error fetching protocol reserves", err);
+    }
+  };
+
 
   const fetchOraclePrices = async () => {
     try {
       const prices = await getOraclePrices();
-      console.log("prices", prices);
+      // console.log("prices", prices);
       setOraclePrices(prices);
     } catch (error) {
       console.error("Error fetching Oracle prices:", error);

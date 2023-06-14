@@ -50,6 +50,7 @@ const DashboardLeft = ({
   // gap: string;
   // rowItems: any;
 }) => {
+  // console.log(oraclePrices)
   const coinPrices = Coins.map((coin) => {
     const matchingCoin = oraclePrices.find(
       (c: { name: string }) =>
@@ -268,14 +269,14 @@ const DashboardLeft = ({
                       ) : (
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
                           Wallet Bal. {/* {numberFormatter( */}
-                          {Number(
+                          {Math.floor(Number(
                             // BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
                             BNtoNum(
                               uint256.uint256ToBN(
                                 assetBalance[coin.name]?.dataBalanceOf?.balance
                               )
                             )
-                          )}
+                          ))}
                           {/* )} */}
                         </Text>
                       )}
@@ -300,7 +301,7 @@ const DashboardLeft = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    {/* {!coinPrices[idx] ? (
+                    {!coinPrices[idx] ? (
                       <Skeleton
                         width="6rem"
                         height="1.4rem"
@@ -310,8 +311,8 @@ const DashboardLeft = ({
                       />
                     ) : (
                       coinPrices[idx]?.price
-                    )} */}
-                    0000.00
+                    )}
+                    {/* 0000.00 */}
                   </Box>
                 </Td>
                 <Td

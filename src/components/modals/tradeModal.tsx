@@ -37,6 +37,7 @@ import {
   selectWalletBalance,
   setInputTradeModalCollateralAmount,
   setInputTradeModalBorrowAmount,
+  selectAssetWalletBalance
 } from "@/store/slices/userAccountSlice";
 import {
   selectNavDropdowns,
@@ -62,19 +63,25 @@ import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import ArrowUp from "@/assets/icons/arrowup";
+import { BNtoNum } from "@/Blockchain/utils/utils";
+import { uint256 } from "starknet";
 const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   //   console.log("isopen", isOpen, "onopen", onOpen, "onClose", onClose);
   const [sliderValue, setSliderValue] = useState(0);
   const [sliderValue2, setsliderValue2] = useState(0);
   const dispatch = useDispatch();
-  const walletBalance = useSelector(selectWalletBalance);
   const [inputAmount, setinputAmount] = useState(0);
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [transactionStarted, setTransactionStarted] = useState(false);
-
+  const walletBalances=useSelector(selectAssetWalletBalance);
+  const [walletBalance, setwalletBalance] = useState(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 0)
+  useEffect(()=>{
+    setwalletBalance(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 0)
+    // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
+  },[walletBalances[coin.name]?.statusBalanceOf,coin])
   const dapps = [
     { name: "Jediswap", status: "enable" },
     { name: "mySwap", status: "disable" },
@@ -200,6 +207,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
     setRadioValue("1");
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
+    setwalletBalance(walletBalances[coin]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin]?.dataBalanceOf?.balance))) : 0)
   };
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
@@ -364,6 +372,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                                 pr="2"
                                 onClick={() => {
                                   setCurrentCollateralCoin(coin);
+                                  setwalletBalance(walletBalances[coin]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin]?.dataBalanceOf?.balance))) : 0)
                                 }}
                               >
                                 {coin === currentCollateralCoin && (
@@ -519,7 +528,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                           display="flex"
                           justifyContent="flex-end"
                         >
-                          Wallet Balance: {walletBalance}
+                          Wallet Balance: {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5 ? Math.floor(walletBalance) : walletBalance}
                           <Text color="#6E7781" ml="0.2rem">
                             {` ${currentCollateralCoin}`}
                           </Text>
@@ -536,7 +545,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                         fontStyle="normal"
                         fontFamily="Inter"
                       >
-                        Wallet Balance: {walletBalance}
+                        Wallet Balance: {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5 ? Math.floor(walletBalance) : walletBalance}
                         <Text color="#6E7781" ml="0.2rem">
                           {` ${currentCollateralCoin}`}
                         </Text>

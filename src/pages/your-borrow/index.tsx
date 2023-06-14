@@ -42,9 +42,13 @@ const YourBorrow = () => {
   // },[])
   useEffect(() => {
     const loan = async () => {
-      const loans = await getUserLoans(address || "");
-      setUserLoans(loans);
-      console.log("loans", loans);
+      try {
+        const loans = await getUserLoans(address || "");
+        setUserLoans(loans);
+      } catch (err) {
+        console.log("your-borrow : unable to fetch user loans");
+      }
+      // console.log("loans", loans);
     };
     if (account) {
       loan();

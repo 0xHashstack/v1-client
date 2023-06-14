@@ -16,7 +16,7 @@ import {
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
 
 const useRepay = (loanParam: any) => {
-  const [repayAmount, setRepayAmount] = useState<number>();
+  const [repayAmount, setRepayAmount] = useState<number>(0);
   const [loan, setLoan] = useState<ILoan>(loanParam);
 
   const [allowanceVal, setAllowance] = useState(0);
@@ -36,19 +36,19 @@ const useRepay = (loanParam: any) => {
     watch: true,
   });
 
-  useEffect(() => {
-    TxToastManager.handleTxToast(
-      repayTransactionReceipt,
-      `Repay Loan ID ${loan?.loanId}`
-    );
-  }, [repayTransactionReceipt]);
+  // useEffect(() => {
+  //   TxToastManager.handleTxToast(
+  //     repayTransactionReceipt,
+  //     `Repay Loan ID ${loan?.loanId}`
+  //   );
+  // }, [repayTransactionReceipt]);
 
-  useEffect(() => {
-    TxToastManager.handleTxToast(
-      selfLiquidateTransactionReceipt,
-      `Liquidate Loan ID ${loan?.loanId}`
-    );
-  }, [selfLiquidateTransactionReceipt]);
+  // useEffect(() => {
+  //   TxToastManager.handleTxToast(
+  //     selfLiquidateTransactionReceipt,
+  //     `Liquidate Loan ID ${loan?.loanId}`
+  //   );
+  // }, [selfLiquidateTransactionReceipt]);
 
   const {
     data: dataRepay,
@@ -77,7 +77,7 @@ const useRepay = (loanParam: any) => {
       },
       {
         contractAddress: diamondAddress,
-        entrypoint: "loan_repay",
+        entrypoint: "repay_loan",
         calldata: [
           loan.loanId,
           etherToWeiBN(

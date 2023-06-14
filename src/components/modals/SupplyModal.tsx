@@ -22,8 +22,6 @@ import {
   SliderThumb,
 } from "@chakra-ui/react";
 import ArrowUp from "@/assets/icons/arrowup";
-import TickIcon from "@/assets/icons/tickIcon";
-import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
 import InfoIcon from "@/assets/icons/infoIcon";
 import BTCLogo from "../../assets/icons/coins/btc";
@@ -69,6 +67,10 @@ import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
+import SuccessToast from "../uiElements/toasts/SuccessToast";
+import SuccessTick from "@/assets/icons/successTick";
+import CancelIcon from "@/assets/icons/cancelIcon";
+import CancelSuccessToast from "@/assets/icons/cancelSuccessToast";
 const SupplyModal = ({
   buttonText,
   coin,
@@ -198,7 +200,7 @@ const SupplyModal = ({
     } catch (err) {
       // setTransactionFailed(true);
       dispatch(setTransactionStatus("failed"));
-      // console.log(err);
+      console.log(err);
       // toast({
       //   description: "An error occurred while handling the transaction. " + err,
       //   variant: "subtle",
@@ -206,6 +208,20 @@ const SupplyModal = ({
       //   status: "error",
       //   isClosable: true,
       // });
+      toast({
+        variant:'subtle',
+        position:'bottom-right',
+        render:()=>(
+            <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center" bg="rgba(40, 167, 69, 0.5)" height="48px" borderRadius="6px" border="1px solid rgba(74, 194, 107, 0.4)" padding="8px">
+                <Box><SuccessTick/></Box>
+                <Text>You have successfully supplied 1000USDT to check go to </Text>
+                <Button variant="link">Your Supply</Button>
+                <Box><CancelSuccessToast/></Box>
+            </Box>
+      ),
+        isClosable: true,
+      });
+
     }
   };
 
@@ -230,6 +246,7 @@ const SupplyModal = ({
         break;
     }
   };
+
 
   // useEffect(() => {
   //   getUserLoans("0x05f2a945005c66ee80bc3873ade42f5e29901fc43de1992cd902ca1f75a1480b");
@@ -590,8 +607,9 @@ const SupplyModal = ({
                     fontWeight="500"
                     fontStyle="normal"
                     fontFamily="Inter"
+                    whiteSpace="nowrap"
                   >
-                    <Text color="#CF222E" display="flex">
+                    <Text color="#CF222E" display="flex" flexDirection="row">
                       <Text mt="0.2rem">
                         <SmallErrorIcon />{" "}
                       </Text>
@@ -605,8 +623,9 @@ const SupplyModal = ({
                       color="#E6EDF3"
                       display="flex"
                       justifyContent="flex-end"
+                      flexDirection="row"
                     >
-                      Wallet Balance: {walletBalance}
+                      Wallet Balance: {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5 ? Math.floor(walletBalance) : walletBalance}
                       <Text color="#6E7781" ml="0.2rem">
                         {` ${currentSelectedCoin}`}
                       </Text>
@@ -623,7 +642,7 @@ const SupplyModal = ({
                     fontStyle="normal"
                     fontFamily="Inter"
                   >
-                    Wallet Balance: {walletBalance}
+                   Wallet Balance: {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5 ? Math.floor(walletBalance) : walletBalance}
                     <Text color="#6E7781" ml="0.2rem">
                       {` ${currentSelectedCoin}`}
                     </Text>
