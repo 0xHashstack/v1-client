@@ -11,13 +11,13 @@ const MarketDashboard = () => {
   const [oraclePrices, setOraclePrices]: any = useState([]);
   useEffect(() => {
     // fetchOraclePrices();
-    // fetchProtocolReserves();
+    fetchProtocolReserves();
   }, []);
 
   const fetchProtocolReserves = async () => {
     try {
-      const reserves = await getProtocolReserves();
-      console.log(reserves, "protocol");
+      const reserves = await getUserReserves();
+      console.log(reserves, "market page -user supply");
     } catch (err) {
       console.log("Error fetching protocol reserves", err);
     }

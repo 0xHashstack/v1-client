@@ -23,6 +23,7 @@ import {
   Tabs,
   TabPanels,
   Checkbox,
+  useToast,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -53,7 +54,7 @@ import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import useStakeRequest from "@/Blockchain/hooks/Writes/useStakerequest";
 import useWithdrawStake from "@/Blockchain/hooks/Writes/useWithdrawStake";
-import { selectWalletBalance } from "@/store/slices/userAccountSlice";
+import { selectWalletBalance, setTransactionStatus } from "@/store/slices/userAccountSlice";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
@@ -61,6 +62,7 @@ import WarningIcon from "@/assets/icons/coins/warningIcon";
 import ArrowUp from "@/assets/icons/arrowup";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
+import { useWaitForTransaction } from "@starknet-react/core";
 const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
@@ -106,6 +108,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     isSuccessWithdrawStake,
     statusWithdrawStake,
   } = useWithdrawStake();
+
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -167,14 +170,28 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
         break;
     }
   };
-
+  const toast=useToast();
+ const [depositTransHash, setDepositTransHash] = useState("");
+ const recieptData = useWaitForTransaction({ hash: depositTransHash, watch: true});
   const handleStakeTransaction = async () => {
     try {
-      console.log("staking", rToken, rTokenAmount);
+      // console.log("staking", rToken, rTokenAmount);
       const stake = await writeAsyncStakeRequest();
-      console.log(stake);
+      setDepositTransHash(stake?.transaction_hash);
+      if(recieptData?.data?.status=="ACCEPTED_ON_L2"){
+        dispatch(setTransactionStatus("success"));
+      }
+      console.log("Staking Modal-stake transaction check",recieptData?.data?.status=="ACCEPTED_ON_L2");
     } catch (err) {
+      dispatch(setTransactionStatus("failed"));
       console.log(err)
+      toast({
+        description: "An error occurred while handling the transaction. " + err,
+        variant: "subtle",
+        position: "bottom-right",
+        status: "error",
+        isClosable: true,
+      });
     }
   }
 
@@ -265,6 +282,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     setTransactionStarted(false);
     setUnstakeTransactionStarted(false);
     dispatch(resetModalDropdowns());
+    dispatch(setTransactionStatus(""))
   };
   // console.log("testing isopen: ", isOpen);
   // console.log("testing custom isopen: ", isOpenCustom);
@@ -286,6 +304,11 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     setRTokenToWithdraw(0);
     setSliderValue2(0);
   }, [currentSelectedUnstakeCoin]);
+
+    useEffect(()=>{
+    setRToken(coin ? rcoinValue : "rBTC")
+    setUnstakeRToken(coin ? rcoinValue : "rBTC")
+  },[coin,coinObj,rcoinValue])
 
   return (
     <Box>
@@ -949,7 +972,9 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                           <ErrorButton errorText="Copy error!" />
                         ) : (
                           <Box onClick={() => {
-                            handleStakeTransaction()
+                            if(transactionStarted==false){
+                              handleStakeTransaction()
+                            }
                             setTransactionStarted(true);
                           }}>
 
@@ -1522,7 +1547,9 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                         rTokenToWithdraw <= walletBalance &&
                         coinsSupplied[currentSelectedUnstakeCoin] ? (
                         <Box onClick={() => {
-                          hanldeUnstakeTransaction();
+                          if(unstakeTransactionStarted==false){
+                            hanldeUnstakeTransaction();
+                          }
                           setUnstakeTransactionStarted(true);
                         }}>
 

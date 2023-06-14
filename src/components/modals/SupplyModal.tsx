@@ -42,6 +42,7 @@ import {
   setInputSupplyAmount,
   selectTransactionStatus,
   setTransactionStatus,
+  selectAssetWalletBalance,
   setToastTransactionStarted,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -62,12 +63,13 @@ import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import { useToast } from "@chakra-ui/react";
+import { BNtoNum } from "@/Blockchain/utils/utils";
+import { uint256 } from "starknet";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
 const SupplyModal = ({
   buttonText,
   coin,
-  walletBalance,
   backGroundOverLay,
   ...restProps
 }: any) => {
@@ -75,6 +77,7 @@ const SupplyModal = ({
   const toastHandler = () => {
     console.log("toast called");
   };
+  
   const {
     depositAmount,
     setDepositAmount,
@@ -86,6 +89,7 @@ const SupplyModal = ({
     depositTransHash,
     setDepositTransHash,
     writeAsyncDeposit,
+
     isErrorDeposit,
     isIdleDeposit,
     isLoadingDeposit,
@@ -93,6 +97,9 @@ const SupplyModal = ({
     statusDeposit,
   } = useDeposit();
   const toast = useToast();
+  useEffect(()=>{
+    setAsset(coin ? coin.name:"BTC");
+  },[coin])
 
 
 
@@ -100,7 +107,7 @@ const SupplyModal = ({
     coin ? coin.name : "BTC"
   );
   // console.log("wallet balance",typeof Number(walletBalance))
-  console.log("deposit amount", typeof depositAmount);
+  // console.log("deposit amount", typeof depositAmount);
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
@@ -109,8 +116,14 @@ const SupplyModal = ({
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
+  const walletBalances=useSelector(selectAssetWalletBalance);
+  const [walletBalance, setwalletBalance] = useState(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 0)
+  useEffect(()=>{
+    setwalletBalance(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 0)
+    // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
+  },[walletBalances[coin.name]?.statusBalanceOf,coin])
+  // console.log(walletBalances['BTC']);
   // const walletBalance = useSelector(selectWalletBalance);
-  // const [depostiTransactionHash, setDepostiTransactionHash] = useState()
   // const [transactionFailed, setTransactionFailed] = useState(false);
 
   // const [depositTransHash, setDepositTransHash] = useState();
@@ -127,15 +140,15 @@ const SupplyModal = ({
 
   // // }
 
-  // const recieptData = useWaitForTransaction({
-  //   hash: depostiTransactionHash,
-  //   watch: true,
-  // });
+  const recieptData = useWaitForTransaction({ hash: depositTransHash, watch: true});
 
   const handleTransaction = async () => {
     try {
       const deposit = await writeAsyncDeposit();
+      console.log("Supply Modal - deposit ",deposit)
       setDepositTransHash(deposit?.transaction_hash);
+      if(recieptData?.data?.status=="ACCEPTED_ON_L2"){
+      }
       dispatch(setTransactionStatus("success"));
       if (isSuccessDeposit) {
         toast({
@@ -148,7 +161,7 @@ const SupplyModal = ({
           isClosable: true,
         });
       }
-      console.log("Status transaction", deposit);
+      // console.log("Status transaction", deposit);
       console.log(isSuccessDeposit, "success ?");
     } catch (err) {
       // setTransactionFailed(true);
@@ -233,6 +246,7 @@ const SupplyModal = ({
     setSliderValue(0);
     setAsset(coin ? coin.name : "BTC");
     setCurrentSelectedCoin(coin ? coin.name : "BTC");
+    setwalletBalance(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 0)
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
@@ -373,6 +387,7 @@ const SupplyModal = ({
                             onClick={() => {
                               setCurrentSelectedCoin(coin);
                               setAsset(coin);
+                              setwalletBalance(walletBalances[coin]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin]?.dataBalanceOf?.balance))) : 0)
                               dispatch(setCoinSelectedSupplyModal(coin));
                             }}
                           >
@@ -844,11 +859,14 @@ const SupplyModal = ({
                   <Box
                     onClick={() => {
                       setTransactionStarted(true);
+                      if(transactionStarted==false){
+                        handleTransaction();
+                      }
+                      // handleTransaction();
                       // dataDeposit();
                       // if(transactionStarted){
                       //   return;
                       // }
-                      handleTransaction();
                       // console.log(isSuccessDeposit, "status deposit")
                     }}
                   >
@@ -875,8 +893,6 @@ const SupplyModal = ({
                         />,
                       ]}
                       labelErrorArray={[
-                        "Deposit Amount approved",
-                        "Successfully transferred to Hashstack’s supply vault.",
                         <ErrorButton errorText="Transaction failed" />,
                         <ErrorButton errorText="Copy error!" />,
                       ]}
