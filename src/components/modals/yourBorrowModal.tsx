@@ -69,6 +69,7 @@ import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ArrowUp from "@/assets/icons/arrowup";
 import useRepay from "@/Blockchain/hooks/Writes/useRepay";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
+import useAddCollateral from "@/Blockchain/hooks/Writes/useAddCollateral";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -99,6 +100,42 @@ const YourBorrowModal = ({
   const [transactionStarted, setTransactionStarted] = useState(false);
   const [collateralTransactionStarted, setCollateralTransactionStarted] =
     useState(false);
+
+  const {
+    loanId,
+    setLoanId,
+    collateralAsset,
+    setCollateralAsset,
+    collateralAmount,
+    setCollateralAmount,
+
+    rToken,
+    setRToken,
+    rTokenAmount,
+    setRTokenAmount,
+
+    dataAddCollateral,
+    errorAddCollateral,
+    resetAddCollateral,
+    writeAddCollateral,
+    writeAsyncAddCollateral,
+    isErrorAddCollateral,
+    isIdleAddCollateral,
+    isLoadingAddCollateral,
+    isSuccessAddCollateral,
+    statusAddCollateral,
+
+    dataAddCollateralRToken,
+    errorAddCollateralRToken,
+    resetAddCollateralRToken,
+    writeAddCollateralRToken,
+    writeAsyncAddCollateralRToken,
+    isErrorAddCollateralRToken,
+    isIdleAddCollateralRToken,
+    isLoadingAddCollateralRToken,
+    isSuccessAddCollateralRToken,
+    statusAddCollateralRToken,
+  } = useAddCollateral(loan?.loan_id || "");
 
   const {
     repayAmount,
@@ -163,6 +200,18 @@ const YourBorrowModal = ({
         break;
       default:
         break;
+    }
+  };
+
+  const handleZeroRepay = async () => {
+    try {
+      if (!loan?.loanId) {
+        throw new Error("loan or loanID issue");
+      }
+      const zeroRepay = await writeAsyncSelfLiquidate();
+      console.log("zero repay success");
+    } catch (err) {
+      console.log("zero repay failed - ", err);
     }
   };
 
@@ -855,6 +904,12 @@ const YourBorrowModal = ({
   const [sliderValue2, setSliderValue2] = useState(0);
   const [inputRepayAmount, setinputRepayAmount] = useState(0);
 
+  useEffect(() => {
+    if (loan) {
+      setRToken(loan);
+    }
+  }, [loan]);
+
   const handleChange = (newValue: any) => {
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
@@ -880,6 +935,7 @@ const YourBorrowModal = ({
     if (percentage > 100) {
       setSliderValue2(100);
       setinputCollateralAmount(newValue);
+      setCollateralAmount(newValue);
       // dispatch(setInputYourBorrowModalRepayAmount(newValue));
     } else {
       percentage = Math.round(percentage);
@@ -887,6 +943,7 @@ const YourBorrowModal = ({
       } else {
         setSliderValue2(percentage);
         setinputCollateralAmount(newValue);
+        setCollateralAmount(newValue);
       }
       // dispatch(setInputYourBorrowModalRepayAmount(newValue));
       // dispatch((newValue));
@@ -2117,6 +2174,7 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
+                            handleRepayBorrow();
                           }}
                         >
                           <AnimatedButton
@@ -2173,6 +2231,7 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
+                            handleZeroRepay();
                           }}
                         >
                           <AnimatedButton
@@ -2408,7 +2467,7 @@ const YourBorrowModal = ({
                           }}
                         >
                           <Box display="flex" gap="1">
-                            <Box p="1">{getCoin(currentBorrowMarketCoin2)}</Box>
+                            <Box p="1">{getCoin(loan.currentLoanMarket)}</Box>
                             <Text color="white" mt="0.12rem">
                               {currentBorrowMarketCoin2}
                             </Text>
@@ -2534,7 +2593,8 @@ const YourBorrowModal = ({
                         mt="-0.5rem"
                       >
                         <Text ml="1rem" color="white">
-                          1234 rBTC
+                          {loan?.collateralAmountParsed + " "}
+                          {loan?.collateralMarket}
                         </Text>
                       </Box>
                       <Text color="#8B949E" display="flex" alignItems="center">
@@ -2626,6 +2686,7 @@ const YourBorrowModal = ({
                           _hover={{ bg: "#101216" }}
                           onClick={() => {
                             setinputCollateralAmount(walletBalance);
+                            setCollateralAmount(walletBalance);
                             setSliderValue2(100);
                           }}
                           isDisabled={collateralTransactionStarted == true}
@@ -2693,6 +2754,7 @@ const YourBorrowModal = ({
                             ans = Math.round(ans * 100) / 100;
                             // dispatch(setInputSupplyAmount(ans))
                             setinputCollateralAmount(ans);
+                            setCollateralAmount(ans);
                           }}
                           isDisabled={collateralTransactionStarted == true}
                           _disabled={{ cursor: "pointer" }}

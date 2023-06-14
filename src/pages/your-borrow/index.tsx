@@ -44,7 +44,22 @@ const YourBorrow = () => {
     const loan = async () => {
       try {
         const loans = await getUserLoans(address || "");
-        setUserLoans(loans);
+        // loans.filter(
+        //   (loan) =>
+        //     loan.collateralAmountParsed &&
+        //     loan.collateralAmountParsed > 0 &&
+        //     loan.loanAmountParsed &&
+        //     loan.loanAmountParsed > 0
+        // );
+        setUserLoans(
+          loans.filter(
+            (loan) =>
+              loan.collateralAmountParsed &&
+              loan.collateralAmountParsed > 0 &&
+              loan.loanAmountParsed &&
+              loan.loanAmountParsed > 0
+          )
+        );
       } catch (err) {
         console.log("your-borrow : unable to fetch user loans");
       }

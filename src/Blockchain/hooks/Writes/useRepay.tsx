@@ -16,10 +16,10 @@ import {
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
 
 const useRepay = (loanParam: any) => {
-  console.log("loan here", loanParam);
   const [repayAmount, setRepayAmount] = useState<number>(0);
   const [loan, setLoan] = useState<ILoan>(loanParam);
   const [allowanceVal, setAllowance] = useState(0);
+  console.log(repayAmount, "loan here", loanParam);
 
   const { address: account } = useAccount();
   const [transApprove, setTransApprove] = useState("");
