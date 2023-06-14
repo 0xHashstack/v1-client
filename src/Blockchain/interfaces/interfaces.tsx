@@ -19,11 +19,18 @@ export interface ILoan {
     collateralMarket: string | undefined;  // rToken like rUSDC
     collateralMarketAddress: string | undefined; // rToken Address
   
-    loanAmount: number;  // dToken amount
-    currentLoanAmount: number;  // native tokens
-    collateralAmount: number;  // rToken amount
+    loanAmount: string;  // dToken amount
+    loanAmountParsed: number;
+
+    currentLoanAmount: string;  // native tokens
+    currentLoanAmountParsed: number;
+
+    collateralAmount: string;  // rToken amount
+    collateralAmountParsed: number;
   
     createdAt: Date;
+    loanState: string | null;
+    spendType: string | null;
     state: string | null;
   
     l3_integration: string;
