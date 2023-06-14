@@ -34,6 +34,7 @@ import {
   getProtocolReserves,
   getProtocolStats,
 } from "@/Blockchain/scripts/protocolStats";
+import SuccessToast from "@/components/uiElements/toasts/SuccessToast";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Market() {
@@ -87,6 +88,7 @@ export default function Market() {
       >
         <LatestSyncedBlock width="16rem" height="100%" block={83207} />
       </Box> */}
+      <SuccessToast/>
     </PageCard>
   );
 }

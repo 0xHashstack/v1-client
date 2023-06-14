@@ -65,6 +65,10 @@ import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
+import SuccessToast from "../uiElements/toasts/SuccessToast";
+import SuccessTick from "@/assets/icons/successTick";
+import CancelIcon from "@/assets/icons/cancelIcon";
+import CancelSuccessToast from "@/assets/icons/cancelSuccessToast";
 const SupplyModal = ({
   buttonText,
   coin,
@@ -171,13 +175,27 @@ const SupplyModal = ({
       // setTransactionFailed(true);
       dispatch(setTransactionStatus("failed"));
       console.log(err);
+      // toast({
+      //   description: "An error occurred while handling the transaction. " + err,
+      //   variant: "subtle",
+      //   position: "bottom-right",
+      //   status: "error",
+      //   isClosable: true,
+      // });
       toast({
-        description: "An error occurred while handling the transaction. " + err,
-        variant: "subtle",
-        position: "bottom-right",
-        status: "error",
+        variant:'subtle',
+        position:'bottom-right',
+        render:()=>(
+            <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center" bg="rgba(40, 167, 69, 0.5)" height="48px" borderRadius="6px" border="1px solid rgba(74, 194, 107, 0.4)" padding="8px">
+                <Box><SuccessTick/></Box>
+                <Text>You have successfully supplied 1000USDT to check go to </Text>
+                <Button variant="link">Your Supply</Button>
+                <Box><CancelSuccessToast/></Box>
+            </Box>
+      ),
         isClosable: true,
       });
+
     }
   };
 
