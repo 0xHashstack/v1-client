@@ -168,7 +168,7 @@ const BorrowDashboard = ({
       border="1px"
       borderColor="#2B2F35"
       color="white"
-      borderRadius="md"
+      borderRadius="md" 
       w={width}
       display="flex"
       justifyContent="flex-start"
@@ -304,7 +304,7 @@ const BorrowDashboard = ({
                         >
                           <Image
                             // src={`./BTC.svg`}
-                            src={`${borrow.loanMarket}.svg`}
+                            src={`${borrow.loanMarket.slice(1)}.svg`}
                             alt="Picture of the author"
                             width="32"
                             height="32"
@@ -504,7 +504,7 @@ const BorrowDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      1,234
+                      N/A
                     </Text>
                   </Td>
                   <Td
