@@ -13,7 +13,7 @@ const TransactionToast = () => {
     <Box
       backgroundColor="inherit"
       // display={toastTransactionStarted ? "block" : "hidden"}
-      visibility={toastTransactionStarted ? "visible" : "hidden"}
+      //   visibility={toastTransactionStarted ? "visible" : "hidden"}
       position="fixed"
       width="20vw"
       height="2rem"

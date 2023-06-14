@@ -155,12 +155,12 @@ const BorrowDashboard = ({
     let temp2: any = [];
 
     for (let i = 0; i < Borrows?.length; i++) {
-      temp1.push({ id: Borrows[i].id, name: Borrows[i].name });
-      temp2.push(Borrows[i].id);
+      temp1.push({ id: Borrows[i].loanId, name: Borrows[i].loanMarket });
+      temp2.push(Borrows[i].loanId);
     }
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);
-  }, []);
+  }, [Borrows]);
 
   return upper_bound >= lower_bound && Borrows?.length > 0 ? (
     <TableContainer

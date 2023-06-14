@@ -159,19 +159,19 @@ const YourBorrowModal = ({
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
-      case "BTC":
+      case "dBTC":
         return <BTCLogo height={"16px"} width={"16px"} />;
         break;
-      case "USDC":
+      case "dUSDC":
         return <USDCLogo height={"16px"} width={"16px"} />;
         break;
-      case "USDT":
+      case "dUSDT":
         return <USDTLogo height={"16px"} width={"16px"} />;
         break;
-      case "ETH":
+      case "dETH":
         return <ETHLogo height={"16px"} width={"16px"} />;
         break;
-      case "DAI":
+      case "dDAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
       case "Jediswap":
@@ -878,6 +878,25 @@ const YourBorrowModal = ({
     "BTC/ETH",
     "BTC/USDT",
   ];
+  // const {
+  //   repayAmount,
+  //   setRepayAmount,
+  //   // handleApprove,
+  //   writeAsyncRepay,
+  //   transRepayHash,
+  //   setTransRepayHash,
+  //   repayTransactionReceipt,
+  //   isLoadingRepay,
+  //   errorRepay,
+  //   handleRepayBorrow,
+
+  //   //SelfLiquidate - Repay with 0 amount
+  //   writeAsyncSelfLiquidate,
+  //   isLoadingSelfLiquidate,
+  //   errorSelfLiquidate,
+  //   selfLiquidateTransactionReceipt,
+  //   setIsSelfLiquidateHash,
+  // } = useRepay("123456");
 
   const [radioValue, setRadioValue] = useState("1");
 
@@ -2405,7 +2424,7 @@ const YourBorrowModal = ({
                                       borderRadius="md"
                                     >
                                       {/* <Box p="1">{getCoin(coin)}</Box> */}
-                                      <Text>{coin}</Text>
+                                      <Text>ID - {coin}</Text>
                                     </Box>
                                   </Box>
                                 );
