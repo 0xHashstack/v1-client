@@ -829,14 +829,25 @@ const YourBorrowModal = ({
     "BTC/ETH",
     "BTC/USDT",
   ];
+  // const {
+  //   repayAmount,
+  //   setRepayAmount,
+  //   // handleApprove,
+  //   writeAsyncRepay,
+  //   transRepayHash,
+  //   setTransRepayHash,
+  //   repayTransactionReceipt,
+  //   isLoadingRepay,
+  //   errorRepay,
+  //   handleRepayBorrow,
 
-    //SelfLiquidate - Repay with 0 amount
-    writeAsyncSelfLiquidate,
-    isLoadingSelfLiquidate,
-    errorSelfLiquidate,
-    selfLiquidateTransactionReceipt,
-    setIsSelfLiquidateHash,
-  } = useRepay("123456");
+  //   //SelfLiquidate - Repay with 0 amount
+  //   writeAsyncSelfLiquidate,
+  //   isLoadingSelfLiquidate,
+  //   errorSelfLiquidate,
+  //   selfLiquidateTransactionReceipt,
+  //   setIsSelfLiquidateHash,
+  // } = useRepay("123456");
 
   const [radioValue, setRadioValue] = useState("1");
 
@@ -2354,7 +2365,7 @@ const YourBorrowModal = ({
                                       borderRadius="md"
                                     >
                                       {/* <Box p="1">{getCoin(coin)}</Box> */}
-                                      <Text>{coin}</Text>
+                                      <Text>ID - {coin}</Text>
                                     </Box>
                                   </Box>
                                 );

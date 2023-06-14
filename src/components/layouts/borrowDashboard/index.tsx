@@ -160,7 +160,7 @@ const BorrowDashboard = ({
     }
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);
-  }, []);
+  }, [Borrows]);
 
   return upper_bound >= lower_bound && Borrows?.length > 0 ? (
     <TableContainer
