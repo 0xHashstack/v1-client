@@ -2,7 +2,10 @@ import { Button, Box, ButtonProps } from "@chakra-ui/react";
 import { ReactNode, useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import SuccessButton from "./SuccessButton";
-import { selectCollateralCoinSelectedBorrowModal, selectTransactionStatus } from "@/store/slices/userAccountSlice";
+import {
+  selectCollateralCoinSelectedBorrowModal,
+  selectTransactionStatus,
+} from "@/store/slices/userAccountSlice";
 import { useSelector } from "react-redux";
 interface Props extends ButtonProps {
   children: ReactNode;
@@ -34,14 +37,13 @@ const AnimatedButton: React.FC<Props> = ({
   const [currentStringIndex, setCurrentStringIndex] = useState(-1);
   const [progressBarWidth, setProgressBarWidth] = useState("0%");
   const [isAnimationStarted, setIsAnimationStarted] = useState(false);
-  const transactionStatus=useSelector(selectTransactionStatus);
+  const transactionStatus = useSelector(selectTransactionStatus);
   // console.log(transactionStatus,"transaction from button");
 
   useEffect(() => {
-    if (isAnimationStarted && transactionStatus=="success") {
-      
+    if (isAnimationStarted && transactionStatus == "success") {
       setProgressBarWidth(
-        `${((currentStringIndex + 1) /  labelSuccessArray.length) * 100 + 2}%`
+        `${((currentStringIndex + 1) / labelSuccessArray.length) * 100 + 2}%`
       );
 
       // setProgressBarWidth(
@@ -54,9 +56,9 @@ const AnimatedButton: React.FC<Props> = ({
       }, 500);
 
       return () => clearInterval(interval);
-    }else if(isAnimationStarted && transactionStatus=="failed"){
+    } else if (isAnimationStarted && transactionStatus == "failed") {
       setProgressBarWidth(
-        `${((currentStringIndex + 1) /  labelErrorArray.length) * 100 + 2}%`
+        `${((currentStringIndex + 1) / labelErrorArray.length) * 100 + 2}%`
       );
 
       // setProgressBarWidth(
@@ -73,7 +75,7 @@ const AnimatedButton: React.FC<Props> = ({
   }, [currentStringIndex]);
 
   useEffect(() => {
-    if (isAnimationStarted &&transactionStatus=="success") {
+    if (isAnimationStarted && transactionStatus == "success") {
       // setProgressBarWidth(
       //   `${((currentStringIndex + 1) / labelArray.length) * 100 + 4}%`
       // );
@@ -85,7 +87,7 @@ const AnimatedButton: React.FC<Props> = ({
       }, 1500);
 
       return () => clearInterval(interval);
-    }else if(isAnimationStarted && transactionStatus=="failed"){
+    } else if (isAnimationStarted && transactionStatus == "failed") {
       let interval: any = setInterval(() => {
         setProgressBarWidth(
           `${((currentStringIndex + 1) / labelErrorArray.length) * 100}%`
@@ -103,15 +105,15 @@ const AnimatedButton: React.FC<Props> = ({
   //     setCurrentStringIndex(-1);
   //   }
   // };
-  useEffect(()=>{
-    if(transactionStatus=="success" || transactionStatus=="failed"){
+  useEffect(() => {
+    if (transactionStatus == "success" || transactionStatus == "failed") {
       setIsAnimationStarted(true);
     }
-  },[transactionStatus])
+  }, [transactionStatus]);
 
   useEffect(() => {
     let interval: any;
-    if (isAnimationStarted && transactionStatus=="success") {
+    if (isAnimationStarted && transactionStatus == "success") {
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
           const nextIndex = prevIndex + 1;
@@ -123,7 +125,7 @@ const AnimatedButton: React.FC<Props> = ({
           return nextIndex % labelSuccessArray.length;
         });
       }, 2000);
-    }else if(isAnimationStarted && transactionStatus=="failed"){
+    } else if (isAnimationStarted && transactionStatus == "failed") {
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
           const nextIndex = prevIndex + 1;
@@ -153,7 +155,11 @@ const AnimatedButton: React.FC<Props> = ({
       // _hover={{ bg: "white", color: "black !important" }}
       _active={{ border: isAnimationStarted ? "" : "3px solid grey" }}
       {...rest}
-      border={isAnimationStarted && transactionStatus=="failed" ?"1px solid #9A131D":"1px solid #8B949E"}
+      border={
+        isAnimationStarted && transactionStatus == "failed"
+          ? "1px solid #9A131D"
+          : "1px solid #8B949E"
+      }
       bgColor={isAnimationStarted ? "#eeeff2" : bgColor}
       color={isAnimationStarted ? "#010409" : "#6A737D"}
       _hover={{ color: "#010409", bgColor: "#eeeff2" }}
@@ -210,8 +216,10 @@ const AnimatedButton: React.FC<Props> = ({
               }}
             >
               {currentStringIndex === -1
-                ? children 
-                : transactionStatus=="success" ? labelSuccessArray[currentStringIndex] :labelErrorArray[currentStringIndex]}
+                ? children
+                : transactionStatus == "success"
+                ? labelSuccessArray[currentStringIndex]
+                : labelErrorArray[currentStringIndex]}
               {/* {labelArray[currentStringIndex]} */}
             </motion.div>
           )}
@@ -219,7 +227,14 @@ const AnimatedButton: React.FC<Props> = ({
         </AnimatePresence>
       </Box>
       <Box
-        bgColor={transactionStatus=="success" ? "#2DA44E": currentStringIndex==labelErrorArray?.length-2 || currentStringIndex==labelErrorArray?.length-1 ?"#CF222E":"#2DA44E"}
+        bgColor={
+          transactionStatus == "success"
+            ? "#2DA44E"
+            : currentStringIndex == labelErrorArray?.length - 2 ||
+              currentStringIndex == labelErrorArray?.length - 1
+            ? "#CF222E"
+            : "#2DA44E"
+        }
         position="absolute"
         bottom={0}
         left={0}
