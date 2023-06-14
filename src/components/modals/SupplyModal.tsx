@@ -117,11 +117,11 @@ const SupplyModal = ({
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalances=useSelector(selectAssetWalletBalance);
-  const [walletBalance, setwalletBalance] = useState(0)
+  const [walletBalance, setwalletBalance] = useState(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 0)
   useEffect(()=>{
-    setwalletBalance(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 24)
+    setwalletBalance(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 0)
     // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
-  },[walletBalances[coin.name]?.statusBalanceOf])
+  },[walletBalances[coin.name]?.statusBalanceOf,coin])
   // console.log(walletBalances['BTC']);
   // const walletBalance = useSelector(selectWalletBalance);
   // const [transactionFailed, setTransactionFailed] = useState(false);
@@ -246,6 +246,7 @@ const SupplyModal = ({
     setSliderValue(0);
     setAsset(coin ? coin.name : "BTC");
     setCurrentSelectedCoin(coin ? coin.name : "BTC");
+    setwalletBalance(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 0)
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));

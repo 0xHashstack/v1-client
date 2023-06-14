@@ -11,7 +11,7 @@ const MarketDashboard = () => {
   const [oraclePrices, setOraclePrices]: any = useState([]);
   useEffect(() => {
     // fetchOraclePrices();
-    // fetchProtocolReserves();
+    fetchProtocolReserves();
   }, []);
 
   const fetchProtocolReserves = async () => {

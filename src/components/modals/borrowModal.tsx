@@ -62,8 +62,8 @@ import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const [sliderValue, setSliderValue] = useState(0);
-  const [sliderValue2, setsliderValue2] = useState(0);
+  const [sliderValue, setSliderValue] = useState<number>(0);
+  const [sliderValue2, setsliderValue2] = useState<number>(0);
   const dispatch = useDispatch();
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
@@ -464,6 +464,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                               setCurrentCollateralCoin(coin);
                               setCollateralMarket(coin);
                               setRToken(coin);
+                              setwalletBalance(walletBalances[coin]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin]?.dataBalanceOf?.balance))) : 0)
                             }}
                           >
                             {coin === currentCollateralCoin && (

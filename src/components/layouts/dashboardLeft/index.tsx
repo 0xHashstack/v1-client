@@ -133,7 +133,7 @@ const DashboardLeft = ({
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
   useEffect(()=>{
-    dispatch(setAssetWalletBalance(assetBalance));
+    dispatch(setAssetWalletBalance( assetBalance));
   },[assetBalance])
 
   
