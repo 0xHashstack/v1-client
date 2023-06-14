@@ -107,7 +107,7 @@ export default function Home() {
       // localStorage.setItem("account", JSON.stringify(account));
       dispatch(setAccount(account));
 
-      if (isWaitListed) {
+      if (!isWaitListed) {
         router.replace(waitlistHref);
       } else {
         router.replace(marketHref2);

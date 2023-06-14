@@ -109,8 +109,14 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             {children}
           </Stack>
           <Box
-            bgColor="red"
-            display={toastTransactionStarted ? "block" : "none"}
+            backgroundColor="inherit"
+            // display={toastTransactionStarted ? "block" : "none"}
+            position="fixed"
+            width="20vw"
+            height="2rem"
+            bottom="3rem"
+            right="2rem"
+            color="white"
           >
             <AnimatedButton
               position="fixed"
@@ -121,8 +127,8 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
               width="20%"
               // mt="1.5rem"
               // mb="1.5rem"
-              right="2rem"
-              bottom="3rem"
+              // right="2rem"
+              // bottom="3rem"
               borderRadius="2px"
               labelSuccessArray={[
                 "Deposit Amount approved",
@@ -135,8 +141,8 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
                 <SuccessButton key={"successButton"} successText={"Success"} />,
               ]}
               labelErrorArray={[
-                "Deposit Amount approved",
-                "Successfully transferred to Hashstack’s supply vault.",
+                // "Deposit Amount approved",
+                // "Successfully transferred to Hashstack’s supply vault.",
                 <ErrorButton errorText="Transaction failed" />,
                 <ErrorButton errorText="Copy error!" />,
               ]}
