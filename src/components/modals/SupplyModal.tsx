@@ -22,8 +22,6 @@ import {
   SliderThumb,
 } from "@chakra-ui/react";
 import ArrowUp from "@/assets/icons/arrowup";
-import TickIcon from "@/assets/icons/tickIcon";
-import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
 import InfoIcon from "@/assets/icons/infoIcon";
 import BTCLogo from "../../assets/icons/coins/btc";

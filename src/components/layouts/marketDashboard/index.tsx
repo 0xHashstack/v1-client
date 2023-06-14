@@ -7,14 +7,25 @@ import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
 import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import { getUserReserves } from "@/Blockchain/scripts/userStats";
+import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
+import { useAccount } from "@starknet-react/core";
 const MarketDashboard = () => {
   const [oraclePrices, setOraclePrices]: any = useState([]);
+  const {account}=useAccount();
   useEffect(() => {
     // fetchOraclePrices();
-    fetchProtocolReserves();
+    // fetchProtocolReserves();
+    // fetchUserDeposits();
   }, []);
-
-  const fetchProtocolReserves = async () => {
+  // const fetchUserDeposits = async () => {
+  //   try {
+  //     const reserves = await getUserDeposits(account);
+  //     console.log(reserves, "market page -user supply");
+  //   } catch (err) {
+  //     console.log("Error fetching protocol reserves", err);
+  //   }
+  // };
+  const fetchUserReserves = async () => {
     try {
       const reserves = await getUserReserves();
       console.log(reserves, "market page -user supply");
