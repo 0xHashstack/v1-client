@@ -396,17 +396,16 @@ const Navbar = () => {
           marginRight="1rem"
         >
           <GetTokensModal
-                                buttonText="Get Tokens"
-                                height={"2rem"}
-                                fontSize={"12px"}
-                                padding="6px 12px"
-                                border="1px solid #BDBFC1"
-                                bgColor="#101216"
-                                _hover={{ bg: "white", color: "black" }}
-                                borderRadius={"6px"}
-                                color="#BDBFC1;"
-                                backGroundOverLay="rgba(244, 242, 255, 0.5)"
-          
+            buttonText="Get Tokens"
+            height={"2rem"}
+            fontSize={"12px"}
+            padding="6px 12px"
+            border="1px solid white"
+            bgColor="#101216"
+            _hover={{ bg: "white", color: "black" }}
+            borderRadius={"6px"}
+            color="white"
+            backGroundOverLay="rgba(244, 242, 255, 0.5)"
           />
           <Box
             borderRadius="6px"
@@ -432,8 +431,8 @@ const Navbar = () => {
                 : "#FFF"
             }
             // _hover={{ color: "#010409", bgColor: "#f6f8fa" }}
-            onMouseEnter={() => setTransferDepositHover(true)}
-            onMouseLeave={() => setTransferDepositHover(false)}
+            // onMouseEnter={() => setTransferDepositHover(true)}
+            // onMouseLeave={() => setTransferDepositHover(false)}
           >
             <Box
               display="flex"

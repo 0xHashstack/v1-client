@@ -215,6 +215,12 @@ const YourBorrowModal = ({
     }
   };
 
+  const handleAddCollateral = async () => {
+    try {
+      const addCollateral = await writeAsyncAddCollateral();
+    } catch (err) { }
+  };
+
   const getContainer = (action: string) => {
     switch (action) {
       case "Spend Borrow":
@@ -3163,6 +3169,7 @@ const YourBorrowModal = ({
                       <Box
                         onClick={() => {
                           setCollateralTransactionStarted(true);
+                          handleAddCollateral();
                         }}
                       >
                         <AnimatedButton
