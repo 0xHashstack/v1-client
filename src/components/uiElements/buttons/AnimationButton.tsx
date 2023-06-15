@@ -60,20 +60,18 @@ const AnimatedButton: React.FC<Props> = ({
 
       return () => clearInterval(interval);
     } else if (isAnimationStarted && transactionStatus == "failed") {
-      setProgressBarWidth(
-        `${((currentStringIndex + 1) / labelErrorArray.length) * 100 + 2}%`
-      );
+      setProgressBarWidth(`${100}%`);
 
       // setProgressBarWidth(
       //   `${((currentStringIndex + 1) / labelArray.length) * 100 + 2}%`
       // );
-      let interval: any = setInterval(() => {
-        setProgressBarWidth(
-          `${((currentStringIndex + 1) / labelErrorArray.length) * 100 + 1}%`
-        );
-      }, 500);
+      // let interval: any = setInterval(() => {
+      //   setProgressBarWidth(
+      //     `${((currentStringIndex + 1) / labelErrorArray.length) * 100 + 1}%`
+      //   );
+      // }, 500);
 
-      return () => clearInterval(interval);
+      // return () => clearInterval(interval);
     }
   }, [currentStringIndex]);
 
@@ -91,13 +89,12 @@ const AnimatedButton: React.FC<Props> = ({
 
       return () => clearInterval(interval);
     } else if (isAnimationStarted && transactionStatus == "failed") {
-      let interval: any = setInterval(() => {
-        setProgressBarWidth(
-          `${((currentStringIndex + 1) / labelErrorArray.length) * 100}%`
-        );
-      }, 1500);
-
-      return () => clearInterval(interval);
+      // let interval: any = setInterval(() => {
+      //   setProgressBarWidth(
+      //     `${((currentStringIndex + 1) / labelErrorArray.length) * 100}%`
+      //   );
+      // }, 1500);
+      // return () => clearInterval(interval);
     }
   }, [currentStringIndex]);
 
