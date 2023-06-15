@@ -150,7 +150,7 @@ const SupplyModal = ({
     // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
   }, [walletBalances[coin.name]?.statusBalanceOf, coin]);
   // console.log(walletBalances['BTC']);
-  // const walletBalance = useSelector(selectWalletBalance);
+  // const walletBalance = JSON.parse(useSelector(selectWalletBalance))
   // const [transactionFailed, setTransactionFailed] = useState(false);
 
   // const [depositTransHash, setDepositTransHash] = useState();
@@ -167,11 +167,11 @@ const SupplyModal = ({
 
   // // }
   const { address: account } = useAccount();
-  useEffect(() => {
-    if (!account) return;
-    console.log("loans calling");
-    getUserLoans(account);
-  }, [account]);
+  // useEffect(() => {
+  //   if (!account) return;
+  //   console.log("loans calling");
+  //   getUserLoans(account);
+  // }, [account]);
 
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,

@@ -72,7 +72,7 @@ const DashboardLeft = ({
   const columnItems = ["Market", "Price", "Total Supply", "Supply APR", "", ""];
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const [isOpenCustom, setIsOpenCustom] = useState(false);
-  const {account}=useAccount();
+  const { account } = useAccount();
   const dispatch = useDispatch();
 
   // const {
@@ -128,7 +128,8 @@ const DashboardLeft = ({
   }
   const assetBalance: assetB = {
     USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
-    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
+    USDC: 1,
+    // USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
     BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
@@ -139,10 +140,10 @@ const DashboardLeft = ({
 
   
   
-  useEffect(() => {
-    for (let i of Coins) {
-    }
-  }, []);
+  // useEffect(() => {
+  //   for (let i of Coins) {
+  //   }
+  // }, []);
 
   // useEffect(() => {
   //   if (errorBalanceOf || isFetchingBalanceOf) {
@@ -258,7 +259,12 @@ const DashboardLeft = ({
                       <Text fontSize="14px" fontWeight="400">
                         {coin.name}
                       </Text>
-                      {assetBalance[coin.name]?.statusBalanceOf != "success" ? (
+                      {coin.name == "USDC" ? (
+                        <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
+                          Wallet Bal. N/A
+                        </Text>
+                      ) : assetBalance[coin.name]?.statusBalanceOf !=
+                        "success" ? (
                         <Skeleton
                           width="4rem"
                           height="1rem"
@@ -269,14 +275,17 @@ const DashboardLeft = ({
                       ) : (
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
                           Wallet Bal. {/* {numberFormatter( */}
-                          {Math.floor(Number(
-                            // BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
-                            BNtoNum(
-                              uint256.uint256ToBN(
-                                assetBalance[coin.name]?.dataBalanceOf?.balance
+                          {Math.floor(
+                            Number(
+                              // BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
+                              BNtoNum(
+                                uint256.uint256ToBN(
+                                  assetBalance[coin.name]?.dataBalanceOf
+                                    ?.balance
+                                )
                               )
                             )
-                          ))}
+                          )}
                           {/* )} */}
                         </Text>
                       )}

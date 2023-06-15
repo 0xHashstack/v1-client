@@ -1606,7 +1606,6 @@ const YourSupplyModal = ({
                               </Text>,
                               <ErrorButton errorText="Transaction failed" />,
                               <ErrorButton errorText="Copy error!" />,
-
                             ]}
                           >
                             Withdraw
