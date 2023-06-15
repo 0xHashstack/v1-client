@@ -43,7 +43,7 @@ const MarketDashboard = () => {
   const fetchUserLoans = async () => {
     try {
       const loans = await getUserLoans(address || "");
-      console.log(loans, "market page -user supply");
+      // console.log(loans, "market page -user supply");
     } catch (err) {
       console.log("Error fetching protocol reserves", err);
     }

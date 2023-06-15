@@ -78,9 +78,9 @@ const SupplyModal = ({
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const toastHandler = () => {
-    console.log("toast called");
-  };
+  // const toastHandler = () => {
+  //   console.log("toast called");
+  // };
 
   const {
     depositAmount,
@@ -180,8 +180,8 @@ const SupplyModal = ({
 
   const handleTransaction = async () => {
     try {
-      // const deposit = await writeAsyncDeposit();
-      const deposit = await writeAsyncDepositStake();
+      const deposit = await writeAsyncDeposit();
+      // const deposit = await writeAsyncDepositStake();
       console.log("Supply Modal - deposit ", deposit);
       setDepositTransHash(deposit?.transaction_hash);
       if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
