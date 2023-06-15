@@ -1040,7 +1040,7 @@ const YourBorrowModal = ({
   // const walletBalance = JSON.parse(useSelector(selectWalletBalance))
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [tabValue, setTabValue] = useState(1);
-  const [tokens, setTokens] = useState("rToken");
+  const [currentTokenSelected, setcurrentTokenSelected] = useState("rToken");
   const tokensArray=["rToken","Native Token"]
   const resetStates = () => {
     try {
@@ -2646,18 +2646,18 @@ const YourBorrowModal = ({
                     if (transactionStarted) {
                       return;
                     } else {
-                      handleDropdownClick("supplyModalDropdown");
+                      handleDropdownClick("yourBorrowTokenDropdown");
                     }
                   }}
                 >
                   <Box display="flex" gap="1">
-                    <Text color="white">{tokens}</Text>
+                    <Text color="white">{currentTokenSelected}</Text>
                   </Box>
 
                   <Box pt="1" className="navbar-button">
                     {activeModal ? <ArrowUp /> : <DropdownUp />}
                   </Box>
-                  {modalDropdowns.supplyModalDropdown && (
+                  {modalDropdowns.yourBorrowTokenDropdown && (
                     <Box
                       w="full"
                       left="0"
@@ -2677,10 +2677,10 @@ const YourBorrowModal = ({
                             gap="1"
                             pr="2"
                             onClick={() => {
-                              setTokens(coin)
+                              setcurrentTokenSelected(coin)
                             }}
                           >
-                            {coin === tokens && (
+                            {coin === currentTokenSelected && (
                               <Box
                                 w="3px"
                                 h="28px"
@@ -2692,10 +2692,10 @@ const YourBorrowModal = ({
                               w="full"
                               display="flex"
                               py="5px"
-                              px={`${coin === tokens ? "1" : "5"}`}
+                              px={`${coin === currentTokenSelected ? "1" : "5"}`}
                               gap="1"
                               bg={`${
-                                coin === tokens
+                                coin === currentTokenSelected
                                   ? "#0C6AD9"
                                   : "inherit"
                               }`}

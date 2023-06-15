@@ -42,6 +42,7 @@ const initialState = {
     supplyEquivalentMarketDropDown:false,
     transferDepositProtocolDropdown:false,
     transferDepostMarketDropdown:false,
+    yourBorrowTokenDropdown:false,
   },
   metricsDropdowns: {
     yourMetricsMarketDropdown: false,
