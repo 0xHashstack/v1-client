@@ -1,3 +1,4 @@
+import { RToken } from "@/Blockchain/interfaces/interfaces";
 import { diamondAddress } from "@/Blockchain/stark-constants";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { etherToWeiBN } from "@/Blockchain/utils/utils";
@@ -5,7 +6,7 @@ import { useAccount, useContractWrite } from "@starknet-react/core";
 import React, { useState } from "react";
 
 const useWithdrawStake = () => {
-  const [unstakeRToken, setUnstakeRToken] = useState("");
+  const [unstakeRToken, setUnstakeRToken] = useState<RToken>("rBTC");
   const [rTokenToWithdraw, setRTokenToWithdraw] = useState(0);
   const { address: owner } = useAccount();
 

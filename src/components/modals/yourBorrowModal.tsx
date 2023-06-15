@@ -84,6 +84,8 @@ const YourBorrowModal = ({
   setCurrentBorrowId2,
   currentBorrowMarketCoin2,
   setCurrentBorrowMarketCoin2,
+  collateralBalance,
+  setCollateralBalance,
   borrowIds,
   buttonText,
   loan,
@@ -158,6 +160,17 @@ const YourBorrowModal = ({
     setIsSelfLiquidateHash,
   } = useRepay(loan);
 
+  useEffect(() => {
+    if (loan) {
+      setLoanId(loan?.loanId);
+      setCollateralAsset(
+        loan?.collateralMarket[0] == "r"
+          ? loan?.collateralMarket.slice(1)
+          : loan?.collateralMarket
+      );
+      setRToken(loan?.collateralMarket);
+    }
+  }, [loan]);
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
@@ -233,11 +246,14 @@ const YourBorrowModal = ({
     }
   };
 
-  // const handleAddCollateral = async () => {
-  //   try {
-  //     const addCollateral = await writeAsyncAddCollateral();
-  //   } catch (err) { }
-  // };
+  const handleAddCollateral = async () => {
+    try {
+      const addCollateral = await writeAddCollateralRToken();
+      console.log("add collateral - ", addCollateral);
+    } catch (err) {
+      console.log("add collateral error");
+    }
+  };
 
   const getContainer = (action: string) => {
     switch (action) {
@@ -891,7 +907,7 @@ const YourBorrowModal = ({
 
   const dapps = [
     { name: "Jediswap", status: "enable" },
-    { name: "mySwap", status: "disable" },
+    { name: "mySwap", status: "enable" },
   ];
 
   const pools = [
@@ -947,12 +963,6 @@ const YourBorrowModal = ({
   const [sliderValue2, setSliderValue2] = useState(0);
   const [inputRepayAmount, setinputRepayAmount] = useState(0);
 
-  useEffect(() => {
-    if (loan) {
-      setRToken(loan);
-    }
-  }, [loan]);
-
   const handleChange = (newValue: any) => {
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
@@ -979,6 +989,7 @@ const YourBorrowModal = ({
       setSliderValue2(100);
       setinputCollateralAmount(newValue);
       setCollateralAmount(newValue);
+      setRTokenAmount(newValue);
       // dispatch(setInputYourBorrowModalRepayAmount(newValue));
     } else {
       percentage = Math.round(percentage);
@@ -987,6 +998,7 @@ const YourBorrowModal = ({
         setSliderValue2(percentage);
         setinputCollateralAmount(newValue);
         setCollateralAmount(newValue);
+        setRTokenAmount(newValue);
       }
       // dispatch(setInputYourBorrowModalRepayAmount(newValue));
       // dispatch((newValue));
@@ -1008,6 +1020,7 @@ const YourBorrowModal = ({
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
       if (borrowIDCoinMap[i].id === id) {
         setCurrentBorrowMarketCoin2(borrowIDCoinMap[i].name);
+        setCollateralBalance(borrowIDCoinMap[i].collateralBalance);
         return;
       }
     }
@@ -1041,7 +1054,7 @@ const YourBorrowModal = ({
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [tabValue, setTabValue] = useState(1);
   const [currentTokenSelected, setcurrentTokenSelected] = useState("rToken");
-  const tokensArray=["rToken","Native Token"]
+  const tokensArray = ["rToken", "Native Token"];
   const resetStates = () => {
     try {
       setRadioValue("1");
@@ -1054,6 +1067,8 @@ const YourBorrowModal = ({
       setCurrentPool("Select a pool");
       setCurrentPoolCoin("Select a pool");
       setinputCollateralAmount(0);
+      setCollateralAmount(0);
+      setRTokenAmount(0);
       setSliderValue(0);
       setSliderValue2(0);
       setRepayAmount(0);
@@ -2630,85 +2645,91 @@ const YourBorrowModal = ({
                           </Tooltip>
                         </Text>
                         <Box
-                  display="flex"
-                  border="1px"
-                  borderColor="#2B2F35"
-                  justifyContent="space-between"
-                  py="2"
-                  pl="3"
-                  pr="3"
-                  // mb="1rem"
-                  // mt="0.3rem"
-                  borderRadius="md"
-                  className="navbar"
-                  cursor="pointer"
-                  onClick={() => {
-                    if (transactionStarted) {
-                      return;
-                    } else {
-                      handleDropdownClick("yourBorrowTokenDropdown");
-                    }
-                  }}
-                >
-                  <Box display="flex" gap="1">
-                    <Text color="white">{currentTokenSelected}</Text>
-                  </Box>
+                          display="flex"
+                          border="1px"
+                          borderColor="#2B2F35"
+                          justifyContent="space-between"
+                          py="2"
+                          pl="3"
+                          pr="3"
+                          // mb="1rem"
+                          // mt="0.3rem"
+                          borderRadius="md"
+                          className="navbar"
+                          cursor="pointer"
+                          onClick={() => {
+                            if (transactionStarted) {
+                              return;
+                            } else {
+                              handleDropdownClick("yourBorrowTokenDropdown");
+                            }
+                          }}
+                        >
+                          <Box display="flex" gap="1">
+                            <Text color="white">{currentTokenSelected}</Text>
+                          </Box>
 
-                  <Box pt="1" className="navbar-button">
-                    {activeModal ? <ArrowUp /> : <DropdownUp />}
-                  </Box>
-                  {modalDropdowns.yourBorrowTokenDropdown && (
-                    <Box
-                      w="full"
-                      left="0"
-                      bg="#03060B"
-                      py="2"
-                      className="dropdown-container"
-                      boxShadow="dark-lg"
-                    >
-                      {tokensArray.map((coin: string, index: number) => {
-                        return (
-                          <Box
-                            key={index}
-                            as="button"
-                            w="full"
-                            display="flex"
-                            alignItems="center"
-                            gap="1"
-                            pr="2"
-                            onClick={() => {
-                              setcurrentTokenSelected(coin)
-                            }}
-                          >
-                            {coin === currentTokenSelected && (
-                              <Box
-                                w="3px"
-                                h="28px"
-                                bg="#0C6AD9"
-                                borderRightRadius="md"
-                              ></Box>
-                            )}
+                          <Box pt="1" className="navbar-button">
+                            {activeModal ? <ArrowUp /> : <DropdownUp />}
+                          </Box>
+                          {modalDropdowns.yourBorrowTokenDropdown && (
                             <Box
                               w="full"
-                              display="flex"
-                              py="5px"
-                              px={`${coin === currentTokenSelected ? "1" : "5"}`}
-                              gap="1"
-                              bg={`${
-                                coin === currentTokenSelected
-                                  ? "#0C6AD9"
-                                  : "inherit"
-                              }`}
-                              borderRadius="md"
+                              left="0"
+                              bg="#03060B"
+                              py="2"
+                              className="dropdown-container"
+                              boxShadow="dark-lg"
                             >
-                              <Text color="white">{coin}</Text>
+                              {tokensArray.map(
+                                (coin: string, index: number) => {
+                                  return (
+                                    <Box
+                                      key={index}
+                                      as="button"
+                                      w="full"
+                                      display="flex"
+                                      alignItems="center"
+                                      gap="1"
+                                      pr="2"
+                                      onClick={() => {
+                                        setcurrentTokenSelected(coin);
+                                      }}
+                                    >
+                                      {coin === currentTokenSelected && (
+                                        <Box
+                                          w="3px"
+                                          h="28px"
+                                          bg="#0C6AD9"
+                                          borderRightRadius="md"
+                                        ></Box>
+                                      )}
+                                      <Box
+                                        w="full"
+                                        display="flex"
+                                        py="5px"
+                                        px={`${
+                                          coin === currentTokenSelected
+                                            ? "1"
+                                            : "5"
+                                        }`}
+                                        gap="1"
+                                        bg={`${
+                                          coin === currentTokenSelected
+                                            ? "#0C6AD9"
+                                            : "inherit"
+                                        }`}
+                                        borderRadius="md"
+                                      >
+                                        <Text color="white">{coin}</Text>
+                                      </Box>
+                                    </Box>
+                                  );
+                                }
+                              )}
                             </Box>
-                          </Box>
-                        );
-                      })}
-                    </Box>
-                  )}
-                </Box>
+                          )}
+                        </Box>
                       </Box>
                       <Text color="#8B949E" display="flex" alignItems="center">
                         <Text
@@ -2762,8 +2783,7 @@ const YourBorrowModal = ({
                         mt="-0.5rem"
                       >
                         <Text ml="1rem" color="white">
-                          {loan?.collateralAmountParsed + " "}
-                          {loan?.collateralMarket}
+                          {collateralBalance}
                         </Text>
                       </Box>
                       <Text color="#8B949E" display="flex" alignItems="center">
@@ -2856,6 +2876,7 @@ const YourBorrowModal = ({
                           onClick={() => {
                             setinputCollateralAmount(walletBalance);
                             setCollateralAmount(walletBalance);
+                            setRTokenAmount(walletBalance);
                             setSliderValue2(100);
                           }}
                           isDisabled={collateralTransactionStarted == true}
@@ -2924,6 +2945,7 @@ const YourBorrowModal = ({
                             // dispatch(setInputSupplyAmount(ans))
                             setinputCollateralAmount(ans);
                             setCollateralAmount(ans);
+                            setRTokenAmount(ans);
                           }}
                           isDisabled={collateralTransactionStarted == true}
                           _disabled={{ cursor: "pointer" }}

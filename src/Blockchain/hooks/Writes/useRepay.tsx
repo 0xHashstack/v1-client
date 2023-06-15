@@ -13,7 +13,7 @@ import {
   tokenAddressMap,
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
-import { ILoan } from "@/Blockchain/interfaces/interfaces";
+import { ILoan, Token } from "@/Blockchain/interfaces/interfaces";
 
 const useRepay = (loanParam: any) => {
   const [repayAmount, setRepayAmount] = useState<number>(0);
@@ -21,7 +21,6 @@ const useRepay = (loanParam: any) => {
   const [allowanceVal, setAllowance] = useState(0);
   // console.log(repayAmount, "loan here", loanParam);
 
-  const { address: account } = useAccount();
   const [transApprove, setTransApprove] = useState("");
   const [transRepayHash, setTransRepayHash] = useState("");
   const [transSelfLiquidateHash, setIsSelfLiquidateHash] = useState("");
@@ -70,7 +69,7 @@ const useRepay = (loanParam: any) => {
           diamondAddress,
           etherToWeiBN(
             repayAmount as number,
-            loan?.underlyingMarket || ""
+            loan?.underlyingMarket as Token
           ).toString(),
           0,
         ],
@@ -82,7 +81,7 @@ const useRepay = (loanParam: any) => {
           loan?.loanId,
           etherToWeiBN(
             repayAmount as number,
-            loan?.underlyingMarket || ""
+            loan?.underlyingMarket as Token
           ).toString(),
           0,
         ],

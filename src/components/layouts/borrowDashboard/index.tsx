@@ -155,6 +155,7 @@ const BorrowDashboard = ({
   const [currentBorrowId2, setCurrentBorrowId2] = useState("ID - 123456");
   const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
     useState("BTC");
+  const [collateralBalance, setCollateralBalance] = useState("123 eth");
 
   useEffect(() => {
     let temp1: any = [];
@@ -165,7 +166,7 @@ const BorrowDashboard = ({
         id: Borrows[i].loanId,
         name: Borrows[i].loanMarket,
         collateralBalance:
-          Borrows[i].collateralAmount + " " + Borrows[i].collateralMarket,
+          Borrows[i].collateralAmountParsed + " " + Borrows[i].collateralMarket,
       });
       temp2.push(Borrows[i].loanId);
     }
@@ -578,6 +579,11 @@ const BorrowDashboard = ({
                         setCurrentBorrowMarketCoin1(borrow.loanMarket);
                         setCurrentBorrowId2("ID - " + borrow.loanId);
                         setCurrentBorrowMarketCoin2(borrow.loanMarket);
+                        setCollateralBalance(
+                          borrow.collateralAmountParsed +
+                            " " +
+                            borrow.collateralMarket
+                        );
                       }}
                       // bgColor={"blue"}
                     >
@@ -597,6 +603,8 @@ const BorrowDashboard = ({
                         setCurrentBorrowMarketCoin2={
                           setCurrentBorrowMarketCoin2
                         }
+                        collateralBalance={collateralBalance}
+                        setCollateralBalance={setCollateralBalance}
                         loan={borrow}
                         borrowIds={borrowIds}
                         buttonText="Actions"

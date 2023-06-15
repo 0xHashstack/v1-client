@@ -17,7 +17,7 @@ import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 const useAddCollateral  = () => {
     const [loanId, setLoanId] = useState("");
     const [collateralAsset, setCollateralAsset] = useState<NativeToken>("USDT");
-    const [collateralAmount, setCollateralAmount] = useState(0);
+    const [collateralAmount, setCollateralAmount] = useState<number>(0);
 
     const [rToken, setRToken] = useState<RToken>("rUSDT");
     const [rTokenAmount, setRTokenAmount] = useState<number>(0);
@@ -52,7 +52,7 @@ const useAddCollateral  = () => {
                 calldata: [
                     diamondAddress,
                     etherToWeiBN(
-                        collateralAmount,
+                        collateralAmount as number,
                         collateralAsset
                     ).toString(),
                     "0" 
@@ -94,7 +94,7 @@ const useAddCollateral  = () => {
                     loanId,
                     tokenAddressMap[rToken],
                     etherToWeiBN(
-                        rTokenAmount,
+                        rTokenAmount as number,
                         collateralAsset
                     ).toString(),
                     "0"
