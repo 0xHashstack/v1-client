@@ -114,6 +114,7 @@ const SupplyModal = ({
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
+  const [stakeCheck, setStakeCheck] = useState(true);
 
   const transactionStarted = useSelector(selectTransactionStarted);
 
@@ -165,8 +166,7 @@ const SupplyModal = ({
   // // const showToast = () => {
 
   // // }
-  const {address: account } = useAccount();
-
+  // const { address: account } = useAccount();
 
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
@@ -180,6 +180,7 @@ const SupplyModal = ({
       console.log("Supply Modal - deposit ", deposit);
       setDepositTransHash(deposit?.transaction_hash);
       if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
+        
       }
       dispatch(setTransactionStatus("success"));
       if (isSuccessDeposit) {
@@ -207,19 +208,32 @@ const SupplyModal = ({
       //   isClosable: true,
       // });
       toast({
-        variant:'subtle',
-        position:'bottom-right',
-        render:()=>(
-            <Box display="flex" flexDirection="row" justifyContent="center" alignItems="center" bg="rgba(40, 167, 69, 0.5)" height="48px" borderRadius="6px" border="1px solid rgba(74, 194, 107, 0.4)" padding="8px">
-                <Box><SuccessTick/></Box>
-                <Text>You have successfully supplied 1000USDT to check go to </Text>
-                <Button variant="link">Your Supply</Button>
-                <Box><CancelSuccessToast/></Box>
+        variant: "subtle",
+        position: "bottom-right",
+        render: () => (
+          <Box
+            display="flex"
+            flexDirection="row"
+            justifyContent="center"
+            alignItems="center"
+            bg="rgba(40, 167, 69, 0.5)"
+            height="48px"
+            borderRadius="6px"
+            border="1px solid rgba(74, 194, 107, 0.4)"
+            padding="8px"
+          >
+            <Box>
+              <SuccessTick />
             </Box>
-      ),
+            <Text>You have successfully supplied 1000USDT to check go to </Text>
+            <Button variant="link">Your Supply</Button>
+            <Box>
+              <CancelSuccessToast />
+            </Box>
+          </Box>
+        ),
         isClosable: true,
       });
-
     }
   };
 
@@ -244,7 +258,6 @@ const SupplyModal = ({
         break;
     }
   };
-
 
   // useEffect(() => {
   //   getUserLoans("0x05f2a945005c66ee80bc3873ade42f5e29901fc43de1992cd902ca1f75a1480b");
@@ -623,7 +636,10 @@ const SupplyModal = ({
                       justifyContent="flex-end"
                       flexDirection="row"
                     >
-                      Wallet Balance: {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5 ? Math.floor(walletBalance) : walletBalance}
+                      Wallet Balance:{" "}
+                      {walletBalance.toFixed(5).replace(/\.?0+$/, "").length > 5
+                        ? Math.floor(walletBalance)
+                        : walletBalance}
                       <Text color="#6E7781" ml="0.2rem">
                         {` ${currentSelectedCoin}`}
                       </Text>
@@ -640,7 +656,10 @@ const SupplyModal = ({
                     fontStyle="normal"
                     fontFamily="Inter"
                   >
-                   Wallet Balance: {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5 ? Math.floor(walletBalance) : walletBalance}
+                    Wallet Balance:{" "}
+                    {walletBalance.toFixed(5).replace(/\.?0+$/, "").length > 5
+                      ? Math.floor(walletBalance)
+                      : walletBalance}
                     <Text color="#6E7781" ml="0.2rem">
                       {` ${currentSelectedCoin}`}
                     </Text>

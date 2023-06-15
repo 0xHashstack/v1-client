@@ -11,8 +11,9 @@ import React, { useEffect, useState } from "react";
 import { Coins } from "@/utils/constants/coin";
 import YourSupplyModal from "@/components/modals/yourSupply";
 import { useDispatch } from "react-redux/es/hooks/useDispatch";
-import { useConnectors } from "@starknet-react/core";
+import { useAccount, useConnectors } from "@starknet-react/core";
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
+import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 const YourSupply = () => {
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const columnItems = [
@@ -25,6 +26,7 @@ const YourSupply = () => {
   ];
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
+  const { account, address } = useAccount();
   // useEffect(()=>{
   //   const walletConnected = localStorage.getItem('lastUsedConnector');
   //   if(walletConnected=="braavos"){
@@ -33,6 +35,13 @@ const YourSupply = () => {
   //     connect(connectors[1]);
   //   }
   // },[])
+  useEffect(() => {
+    const getSupply = async () => {
+      const supply = await getUserDeposits(address || "");
+      console.log("supplies", supply);
+    };
+    // getSupply();
+  }, []);
   return (
     <PageCard pt="6.5rem">
       <HStack

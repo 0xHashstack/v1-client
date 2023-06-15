@@ -39,7 +39,7 @@ import {
   setInputBorrowModalBorrowAmount,
   setToastTransactionStarted,
   setTransactionStatus,
-  selectAssetWalletBalance
+  selectAssetWalletBalance,
 } from "@/store/slices/userAccountSlice";
 import {
   setModalDropdown,
@@ -113,15 +113,17 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     isLoadingLoanRequest,
     statusLoanRequest,
   } = useLoanRequest();
-  useEffect(()=>{
-    setMarket(coin? coin.name:"BTC");
-    setRToken(coin ? coin.name:"rBTC");
-    setCollateralMarket(coin ? coin.name:"BTC")
+  useEffect(() => {
+    setMarket(coin ? coin.name : "BTC");
+    setRToken(coin ? coin.name : "rBTC");
+    setCollateralMarket(coin ? coin.name : "BTC");
+  }, [coin]);
 
-  },[coin])
-
-  const toast=useToast();
-  const recieptData = useWaitForTransaction({ hash: transLoanRequestHash, watch: true});
+  const toast = useToast();
+  const recieptData = useWaitForTransaction({
+    hash: transLoanRequestHash,
+    watch: true,
+  });
 
   const handleBorrow = async () => {
     try {
@@ -129,7 +131,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
       if (currentCollateralCoin[0] === "r") {
         const borrow = await writeAsyncLoanRequestrToken();
         setIsLoanRequestHash(borrow?.transaction_hash);
-        
+
         dispatch(setTransactionStatus("success"));
       } else {
         const borrow = await writeAsyncLoanRequest();
@@ -155,7 +157,6 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   //   setAmount,
   //   rToken,
   //   setRToken, } = useLoanRequest();
-
 
   // const {  market,
   //   setMarket,
@@ -271,7 +272,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     setsliderValue2(0);
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
-    dispatch(setTransactionStatus(""))
+    dispatch(setTransactionStatus(""));
   };
   useEffect(() => {
     setRTokenAmount(0);
@@ -468,7 +469,19 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                               setCurrentCollateralCoin(coin);
                               setCollateralMarket(coin);
                               setRToken(coin);
-                              setwalletBalance(walletBalances[coin]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin]?.dataBalanceOf?.balance))) : 0)
+                              setwalletBalance(
+                                walletBalances[coin]?.statusBalanceOf ===
+                                  "success"
+                                  ? Number(
+                                      BNtoNum(
+                                        uint256.uint256ToBN(
+                                          walletBalances[coin]?.dataBalanceOf
+                                            ?.balance
+                                        )
+                                      )
+                                    )
+                                  : 0
+                              );
                             }}
                           >
                             {coin === currentCollateralCoin && (
@@ -623,7 +636,10 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       display="flex"
                       justifyContent="flex-end"
                     >
-                      Wallet Balance: {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5 ? Math.floor(walletBalance) : walletBalance}
+                      Wallet Balance:{" "}
+                      {walletBalance.toFixed(5).replace(/\.?0+$/, "").length > 5
+                        ? Math.floor(walletBalance)
+                        : walletBalance}
                       <Text color="#6E7781" ml="0.2rem">
                         {` ${currentCollateralCoin}`}
                       </Text>
@@ -640,7 +656,10 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     fontStyle="normal"
                     fontFamily="Inter"
                   >
-                    Wallet Balance: {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5 ? Math.floor(walletBalance) : walletBalance}
+                    Wallet Balance:{" "}
+                    {walletBalance.toFixed(5).replace(/\.?0+$/, "").length > 5
+                      ? Math.floor(walletBalance)
+                      : walletBalance}
                     <Text color="#6E7781" ml="0.2rem">
                       {` ${currentCollateralCoin}`}
                     </Text>
@@ -1376,9 +1395,9 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                 <ErrorButton errorText="Copy error!" />
               ) : (
                 <Box
-                  onClick={() => {        
+                  onClick={() => {
                     setTransactionStarted(true);
-                    if(transactionStarted==false){
+                    if (transactionStarted == false) {
                       handleBorrow();
                     }
                   }}

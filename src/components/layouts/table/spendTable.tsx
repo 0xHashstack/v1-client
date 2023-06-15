@@ -66,11 +66,11 @@ const SpendTable = () => {
   const userLoans: any = useSelector(selectUserLoans);
   console.log(userLoans, "user loans in spend table");
   const rows: any[] = [
-    ["Borrow ID 12345", "rUSDT", "7%", "BTC", "00.00%"],
-    ["Borrow ID 12346", "rBTC", "7%", "BTC", "00.00%"],
-    ["Borrow ID 12347", "rETH", "7%", "BTC", "00.00%"],
-    ["Borrow ID 12348", "rUSDT", "7%", "BTC", "00.00%"],
-    ["Borrow ID 12349", "rBTC", "7%", "BTC", "00.00%"],
+    // ["Borrow ID 12345", "rUSDT", "7%", "BTC", "00.00%"],
+    // ["Borrow ID 12346", "rBTC", "7%", "BTC", "00.00%"],
+    // ["Borrow ID 12347", "rETH", "7%", "BTC", "00.00%"],
+    // ["Borrow ID 12348", "rUSDT", "7%", "BTC", "00.00%"],
+    // ["Borrow ID 12349", "rBTC", "7%", "BTC", "00.00%"],
     // ["Borrow ID 12350", "rETH", "10,324.556", "BTC", "00.00%"],
   ];
 

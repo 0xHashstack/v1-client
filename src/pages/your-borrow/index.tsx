@@ -54,15 +54,17 @@ const YourBorrow = () => {
         //     loan.loanAmountParsed &&
         //     loan.loanAmountParsed > 0
         // );
-        setuserLoans(
-          loans.filter(
-            (loan) =>
-              loan.collateralAmountParsed &&
-              loan.collateralAmountParsed > 0 &&
-              loan.loanAmountParsed &&
-              loan.loanAmountParsed > 0
-          )
-        );
+        if (loans) {
+          setuserLoans(
+            loans.filter(
+              (loan) =>
+                loan?.collateralAmountParsed &&
+                loan?.collateralAmountParsed > 0 &&
+                loan?.loanAmountParsed &&
+                loan?.loanAmountParsed > 0
+            )
+          );
+        }
         dispatch(setUserLoans(loans.filter(
           (loan) =>
             loan.collateralAmountParsed &&
