@@ -66,6 +66,8 @@ export const metricsContractAddress: string = contractsEnv.METRICS_CONTRACT_ADDR
 
 export const l3DiamondAddress: string = contractsEnv.L3_DIAMOND_ADDRESS;
 
+export const faucetAddress: string = contractsEnv.FAUCET_ADDRESS;
+
 export const getTokenFromAddress = (address: string) => {
   return contractsEnv.TOKENS.find((item) => item.address === address);
 };

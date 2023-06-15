@@ -160,6 +160,21 @@ const YourBorrowModal = ({
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
+      case "BTC":
+        return <BTCLogo height={"16px"} width={"16px"} />;
+        break;
+      case "USDC":
+        return <USDCLogo height={"16px"} width={"16px"} />;
+        break;
+      case "USDT":
+        return <USDTLogo height={"16px"} width={"16px"} />;
+        break;
+      case "ETH":
+        return <ETHLogo height={"16px"} width={"16px"} />;
+        break;
+      case "DAI":
+        return <DAILogo height={"16px"} width={"16px"} />;
+        break;
       case "dBTC":
         return <BTCLogo height={"16px"} width={"16px"} />;
         break;
@@ -1049,8 +1064,6 @@ const YourBorrowModal = ({
     setSliderValue2(0);
   }, [currentBorrowMarketCoin2]);
 
- 
-
   return (
     <Box>
       <Button key="suppy" onClick={onOpen} {...restProps}>
@@ -1354,7 +1367,7 @@ const YourBorrowModal = ({
                                       handleBorrowMarketCoinChange1(coin);
                                     }}
                                   >
-                                    {coin === currentBorrowId1 && (
+                                    {"ID - " + coin === currentBorrowId1 && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -1367,11 +1380,13 @@ const YourBorrowModal = ({
                                       display="flex"
                                       py="5px"
                                       px={`${
-                                        coin === currentBorrowId1 ? "2" : "5"
+                                        "ID - " + coin === currentBorrowId1
+                                          ? "2"
+                                          : "5"
                                       }`}
                                       gap="1"
                                       bg={`${
-                                        coin === currentBorrowId1
+                                        "ID - " + coin === currentBorrowId1
                                           ? "#0C6AD9"
                                           : "inherit"
                                       }`}
@@ -2413,7 +2428,7 @@ const YourBorrowModal = ({
                                       handleBorrowMarketCoinChange2(coin);
                                     }}
                                   >
-                                    {coin === currentBorrowId2 && (
+                                    {"ID - " + coin === currentBorrowId2 && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -2426,11 +2441,13 @@ const YourBorrowModal = ({
                                       display="flex"
                                       py="5px"
                                       px={`${
-                                        coin === currentBorrowId2 ? "2" : "5"
+                                        "ID - " + coin === currentBorrowId2
+                                          ? "2"
+                                          : "5"
                                       }`}
                                       gap="1"
                                       bg={`${
-                                        coin === currentBorrowId2
+                                        "ID - " + coin === currentBorrowId2
                                           ? "#0C6AD9"
                                           : "inherit"
                                       }`}
@@ -2499,7 +2516,7 @@ const YourBorrowModal = ({
                           }}
                         >
                           <Box display="flex" gap="1">
-                            <Box p="1">{getCoin(loan.currentLoanMarket)}</Box>
+                            <Box p="1">{getCoin(currentBorrowMarketCoin2)}</Box>
                             <Text color="white" mt="0.12rem">
                               {currentBorrowMarketCoin2}
                             </Text>
