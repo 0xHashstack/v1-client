@@ -158,6 +158,17 @@ const YourBorrowModal = ({
     setIsSelfLiquidateHash,
   } = useRepay(loan);
 
+  useEffect(() => {
+    if (loan) {
+      setLoanId(loan?.loanId);
+      setCollateralAsset(
+        loan?.collateralMarket[0] == "r"
+          ? loan?.collateralMarket.slice(1)
+          : loan?.collateralMarket
+      );
+      setRToken(loan?.collateralMarket);
+    }
+  }, [loan]);
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
@@ -235,7 +246,7 @@ const YourBorrowModal = ({
 
   const handleAddCollateral = async () => {
     try {
-      const addCollateral = await writeAsyncAddCollateral();
+      const addCollateral = await writeAddCollateralRToken();
       console.log("add collateral - ", addCollateral);
     } catch (err) {
       console.log("add collateral error");
@@ -950,12 +961,6 @@ const YourBorrowModal = ({
   const [sliderValue2, setSliderValue2] = useState(0);
   const [inputRepayAmount, setinputRepayAmount] = useState(0);
 
-  useEffect(() => {
-    if (loan) {
-      setRToken(loan);
-    }
-  }, [loan]);
-
   const handleChange = (newValue: any) => {
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
@@ -982,6 +987,7 @@ const YourBorrowModal = ({
       setSliderValue2(100);
       setinputCollateralAmount(newValue);
       setCollateralAmount(newValue);
+      setRTokenAmount(newValue);
       // dispatch(setInputYourBorrowModalRepayAmount(newValue));
     } else {
       percentage = Math.round(percentage);
@@ -990,6 +996,7 @@ const YourBorrowModal = ({
         setSliderValue2(percentage);
         setinputCollateralAmount(newValue);
         setCollateralAmount(newValue);
+        setRTokenAmount(newValue);
       }
       // dispatch(setInputYourBorrowModalRepayAmount(newValue));
       // dispatch((newValue));
@@ -1055,6 +1062,8 @@ const YourBorrowModal = ({
       setCurrentPool("Select a pool");
       setCurrentPoolCoin("Select a pool");
       setinputCollateralAmount(0);
+      setCollateralAmount(0);
+      setRTokenAmount(0);
       setSliderValue(0);
       setSliderValue2(0);
       setRepayAmount(0);
@@ -2745,6 +2754,7 @@ const YourBorrowModal = ({
                           onClick={() => {
                             setinputCollateralAmount(walletBalance);
                             setCollateralAmount(walletBalance);
+                            setRTokenAmount(walletBalance);
                             setSliderValue2(100);
                           }}
                           isDisabled={collateralTransactionStarted == true}
@@ -2813,6 +2823,7 @@ const YourBorrowModal = ({
                             // dispatch(setInputSupplyAmount(ans))
                             setinputCollateralAmount(ans);
                             setCollateralAmount(ans);
+                            setRTokenAmount(ans);
                           }}
                           isDisabled={collateralTransactionStarted == true}
                           _disabled={{ cursor: "pointer" }}
