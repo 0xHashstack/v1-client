@@ -481,7 +481,7 @@ const LiquidityProvisionModal = ({
                             display="flex"
                             alignItems="center"
                             gap="1"
-                            pr="2"
+                            px="2"
                             onClick={() => {
                               setCurrentBorrowId("ID - " + coin);
                               handleBorrowMarketCoinChange(coin);
@@ -504,10 +504,14 @@ const LiquidityProvisionModal = ({
                               w="full"
                               display="flex"
                               py="5px"
-                              px={`${coin === currentBorrowId ? "2" : "5"}`}
+                              px={`${
+                                "ID - " + coin === currentBorrowId ? "2" : "5"
+                              }`}
                               gap="1"
                               bg={`${
-                                coin === currentBorrowId ? "#0C6AD9" : "inherit"
+                                "ID - " + coin === currentBorrowId
+                                  ? "#0C6AD9"
+                                  : "inherit"
                               }`}
                               borderRadius="md"
                             >
