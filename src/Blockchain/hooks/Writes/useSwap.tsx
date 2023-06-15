@@ -24,8 +24,8 @@
         calldata: [
           constants.JEDI_SWAP,
           "3",
-          loanId,
           constants.SWAP,
+          loanId,
           tokenAddressMap[toMarket],
         ]
       }
@@ -46,8 +46,8 @@
         calldata: [
           constants.JEDI_SWAP,
           "3",
-          loanId,
           constants.SWAP,
+          loanId,
           tokenAddressMap[toMarket],
         ]
       }

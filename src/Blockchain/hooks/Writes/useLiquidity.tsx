@@ -24,9 +24,9 @@ const useLiquidity = () => {
       entrypoint: "interact_with_l3",
       calldata: [
         constants.JEDI_SWAP,
-        "3",
-        loanId,
+        "4",
         constants.ADD_LIQUIDITY,
+        loanId,
         tokenAddressMap[toMarketA],
         tokenAddressMap[toMarketB]
       ]
@@ -47,9 +47,9 @@ const useLiquidity = () => {
       entrypoint: "interact_with_l3",
       calldata: [
         constants.JEDI_SWAP,
-        "3",
-        loanId,
+        "4",
         constants.ADD_LIQUIDITY,
+        loanId,
         tokenAddressMap[toMarketA],
         tokenAddressMap[toMarketB]
       ]
