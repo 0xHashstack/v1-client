@@ -127,16 +127,18 @@ const SupplyModal = ({
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalances = useSelector(selectAssetWalletBalance);
+  // console.log(walletBalances,"balance in supply modal");
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin.name]?.statusBalanceOf === "success"
-      ? Number(
-          BNtoNum(
-            uint256.uint256ToBN(
-              walletBalances[coin.name]?.dataBalanceOf?.balance
-            )
+    ? Number(
+        BNtoNum(
+          uint256.uint256ToBN(
+            walletBalances[coin.name]?.dataBalanceOf?.balance
           )
         )
-      : 0
+      )
+    : 0
+  
   );
   useEffect(() => {
     setwalletBalance(
