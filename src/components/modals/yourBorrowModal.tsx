@@ -136,7 +136,7 @@ const YourBorrowModal = ({
     isLoadingAddCollateralRToken,
     isSuccessAddCollateralRToken,
     statusAddCollateralRToken,
-  } = useAddCollateral(loan?.loan_id || "");
+  } = useAddCollateral();
 
   const {
     repayAmount,

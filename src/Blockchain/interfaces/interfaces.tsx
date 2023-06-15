@@ -1,11 +1,3 @@
-export interface ItokenAddressMap {
-    [key: string]: string | undefined;
-}
-
-export interface ItokenDecimalsMap {
-    [key: string]: number | undefined;
-}
-
 export type NativeToken = "BTC" | "ETH" | "DAI" | "USDC" | "USDT";
 export type DToken = "dBTC" | "dETH" | "dDAI" | "dUSDC" | "dUSDT";
 export type RToken = "rBTC" | "rETH" | "rDAI" | "rUSDC" | "rUSDT";
@@ -15,6 +7,15 @@ export type Token = NativeToken | DToken | RToken;
 type LoanState = "ACTIVE" | "SPENT" | "REPAID" | "LIQUIDATED" | null;
 type SpendType = "UNSPENT" | "SWAP" | "LIQUIDITY" | null;
 type L3App = "jediSwap" | "mySwap" | "Yagi" | null;
+
+export type ItokenAddressMap {
+    [key in Token]: string | undefined;
+}
+
+export type ItokenDecimalsMap {
+    [key in Token]: number | undefined;
+}
+
 export interface ILoan {
     loanId: number; // loan id
     borrower: string; // borrower address
