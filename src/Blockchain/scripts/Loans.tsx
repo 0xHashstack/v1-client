@@ -2,7 +2,7 @@ import { Contract, number, uint256 } from "starknet";
 import { diamondAddress, getDTokenFromAddress, getProvider, getRTokenFromAddress, getTokenFromAddress } from "../stark-constants";
 import routerAbi from "@/Blockchain/abis/router_abi.json";
 import { BNtoNum, etherToWeiBN, weiToEtherNumber } from "../utils/utils";
-import { ILoan } from "../interfaces/interfaces";
+import { ILoan, Token } from "../interfaces/interfaces";
 
 function parseLoansData(
   loansData: any,
@@ -32,19 +32,19 @@ function parseLoansData(
       loanAmount: uint256.uint256ToBN(loanData?.amount).toString(), //  Amount
       loanAmountParsed: weiToEtherNumber(
         uint256.uint256ToBN(loanData?.amount).toString(),
-        getDTokenFromAddress(number.toHex(loanData?.market))?.name || ""
+        getDTokenFromAddress(number.toHex(loanData?.market))?.name as Token
       ),
 
       currentLoanAmount: uint256.uint256ToBN(loanData?.current_amount).toString(), //  Amount
       currentLoanAmountParsed: weiToEtherNumber(
         uint256.uint256ToBN(loanData?.current_amount).toString(),
-        getTokenFromAddress(number.toHex(loanData?.current_market))?.name || ""
+        getTokenFromAddress(number.toHex(loanData?.current_market))?.name as Token
       ),
 
       collateralAmount: uint256.uint256ToBN(collateralData?.amount).toString(), // 5 Collateral Amount
       collateralAmountParsed: weiToEtherNumber(
         uint256.uint256ToBN(collateralData?.amount).toString(),
-        getRTokenFromAddress(number.toHex(collateralData?.collateral_token))?.name || ""
+        getRTokenFromAddress(number.toHex(collateralData?.collateral_token))?.name as Token
       ),
 
       createdAt: new Date(Number(loanData?.created_at)),

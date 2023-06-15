@@ -11,20 +11,21 @@ import { ERC20Abi, diamondAddress } from "../../stark-constants";
 import { TxToastManager } from "../../tx-ToastManager";
 import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 
 const useLoanRequest = () => {
   const { address: account } = useAccount();
 
   // Native token Market
-  const [market, setMarket] = useState<string>("");
+  const [market, setMarket] = useState<NativeToken>("BTC");
   const [amount, setAmount] = useState<number>(0);
 
   // Collateral - rToken
-  const [rToken, setRToken] = useState<string>("");
+  const [rToken, setRToken] = useState<RToken>("rBTC");
   const [rTokenAmount, setRTokenAmount] = useState<number>(0);
 
   // Collateral - native token Market
-  const [collateralMarket, setCollateralMarket] = useState<string>("HUN");
+  const [collateralMarket, setCollateralMarket] = useState<NativeToken>("BTC");
   const [collateralAmount, setCollateralAmount] = useState<number>(0);
 
   const [transLoanRequestHash, setIsLoanRequestHash] = useState("");
@@ -69,15 +70,6 @@ const useLoanRequest = () => {
       {
         contractAddress: diamondAddress,
         entrypoint: "loan_request",
-        // calldata: [
-        //   tokenAddressMap["USDT"] || "",
-        //   etherToWeiBN(200 as number, "USDT").toString(),
-        //   0,
-        //   tokenAddressMap["USDT"] || "",
-        //   etherToWeiBN(400 as number, "USDT").toString(),
-        //   0,
-        //   account,
-        // ],
         calldata: [
           tokenAddressMap[market] || "",
           etherToWeiBN(amount as number, market).toString(),

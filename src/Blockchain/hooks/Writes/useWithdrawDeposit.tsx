@@ -1,3 +1,4 @@
+import { NativeToken } from "@/Blockchain/interfaces/interfaces";
 import { diamondAddress } from "@/Blockchain/stark-constants";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { etherToWeiBN } from "@/Blockchain/utils/utils";
@@ -5,7 +6,7 @@ import { useAccount, useContractWrite } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 
 const useWithdrawDeposit = () => {
-  const [asset, setAsset] = useState("");
+  const [asset, setAsset] = useState<NativeToken>("BTC");
   const [rTokenShares, setRTokenShares] = useState(0);
   const { address: owner } = useAccount();
 
