@@ -1050,6 +1050,8 @@ const YourBorrowModal = ({
   // const walletBalance = JSON.parse(useSelector(selectWalletBalance))
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [tabValue, setTabValue] = useState(1);
+  const [tokens, setTokens] = useState("rToken");
+  const tokensArray=["rToken","Native Token"]
   const resetStates = () => {
     try {
       setRadioValue("1");
@@ -1071,6 +1073,7 @@ const YourBorrowModal = ({
       setCollateralTransactionStarted(false);
       setTransactionStarted(false);
       dispatch(resetModalDropdowns());
+      setTokens("rToken")
       dispatch(setTransactionStatus(""));
     } catch (err) {
       console.log("yourBorrowModal reset states - ", err);
@@ -2607,6 +2610,117 @@ const YourBorrowModal = ({
                               </Box>
                             )} */}
                         </Box>
+                      </Box>
+                      <Box display="flex" flexDirection="column" gap="1">
+                        <Text
+                          color="#8B949E"
+                          display="flex"
+                          alignItems="center"
+                        >
+                          <Text
+                            mr="0.3rem"
+                            fontSize="12px"
+                            fontStyle="normal"
+                            fontWeight="400"
+                          >
+                            Token Type
+                          </Text>
+                          <Tooltip
+                            hasArrow
+                            placement="right-start"
+                            boxShadow="dark-lg"
+                            label="all the assets to the market"
+                            bg="#24292F"
+                            fontSize={"smaller"}
+                            fontWeight={"thin"}
+                            borderRadius={"lg"}
+                            padding={"2"}
+                          >
+                            <Box>
+                              <InfoIcon />
+                            </Box>
+                          </Tooltip>
+                        </Text>
+                        <Box
+                  display="flex"
+                  border="1px"
+                  borderColor="#2B2F35"
+                  justifyContent="space-between"
+                  py="2"
+                  pl="3"
+                  pr="3"
+                  // mb="1rem"
+                  // mt="0.3rem"
+                  borderRadius="md"
+                  className="navbar"
+                  cursor="pointer"
+                  onClick={() => {
+                    if (transactionStarted) {
+                      return;
+                    } else {
+                      handleDropdownClick("supplyModalDropdown");
+                    }
+                  }}
+                >
+                  <Box display="flex" gap="1">
+                    <Text color="white">{tokens}</Text>
+                  </Box>
+
+                  <Box pt="1" className="navbar-button">
+                    {activeModal ? <ArrowUp /> : <DropdownUp />}
+                  </Box>
+                  {modalDropdowns.supplyModalDropdown && (
+                    <Box
+                      w="full"
+                      left="0"
+                      bg="#03060B"
+                      py="2"
+                      className="dropdown-container"
+                      boxShadow="dark-lg"
+                    >
+                      {tokensArray.map((coin: string, index: number) => {
+                        return (
+                          <Box
+                            key={index}
+                            as="button"
+                            w="full"
+                            display="flex"
+                            alignItems="center"
+                            gap="1"
+                            pr="2"
+                            onClick={() => {
+                              setTokens(coin)
+                            }}
+                          >
+                            {coin === tokens && (
+                              <Box
+                                w="3px"
+                                h="28px"
+                                bg="#0C6AD9"
+                                borderRightRadius="md"
+                              ></Box>
+                            )}
+                            <Box
+                              w="full"
+                              display="flex"
+                              py="5px"
+                              px={`${coin === tokens ? "1" : "5"}`}
+                              gap="1"
+                              bg={`${
+                                coin === tokens
+                                  ? "#0C6AD9"
+                                  : "inherit"
+                              }`}
+                              borderRadius="md"
+                            >
+                              <Text color="white">{coin}</Text>
+                            </Box>
+                          </Box>
+                        );
+                      })}
+                    </Box>
+                  )}
+                </Box>
                       </Box>
                       <Text color="#8B949E" display="flex" alignItems="center">
                         <Text

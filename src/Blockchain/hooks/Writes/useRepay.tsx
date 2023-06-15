@@ -19,7 +19,7 @@ const useRepay = (loanParam: any) => {
   const [repayAmount, setRepayAmount] = useState<number>(0);
   const [loan, setLoan] = useState<ILoan>(loanParam);
   const [allowanceVal, setAllowance] = useState(0);
-  console.log(repayAmount, "loan here", loanParam);
+  // console.log(repayAmount, "loan here", loanParam);
 
   const { address: account } = useAccount();
   const [transApprove, setTransApprove] = useState("");

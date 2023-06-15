@@ -67,19 +67,25 @@ import {
   selectCoinSelectedSupplyModal,
   setCoinSelectedSupplyModal,
   selectWalletBalance,
+  setTransactionStatus,
+  selectAssetWalletBalance,
 } from "@/store/slices/userAccountSlice";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ArrowUp from "@/assets/icons/arrowup";
 import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
+import { useWaitForTransaction } from "@starknet-react/core";
+import { BNtoNum } from "@/Blockchain/utils/utils";
+import { uint256 } from "starknet";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
-  currentSelectedWithdrawlCoin: _asset,
-  // setcurrentSelectedWithdrawlCoin,
+  currentSelectedWithdrawlCoin,
+  setcurrentSelectedWithdrawlCoin,
   coins,
 }: any) => {
+  // console.log(currentSelectedSupplyCoin,"coin in your suppply");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const [sliderValue, setSliderValue] = useState(0);
@@ -89,15 +95,65 @@ const YourSupplyModal = ({
   // const [inputWithdrawlAmount, setinputWithdrawlAmount] = useState(0);
   const [sliderValue2, setSliderValue2] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
+  const walletBalances = useSelector(selectAssetWalletBalance);
+  const [walletBalance, setwalletBalance] = useState(
+    walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
+      ? Number(
+          BNtoNum(
+            uint256.uint256ToBN(
+              walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
+            )
+          )
+        )
+      : 0
+  );
+  const [withdrawWalletBalance, setWithdrawWalletBalance] = useState(
+    walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf === "success"
+      ? Number(
+          BNtoNum(
+            uint256.uint256ToBN(
+              walletBalances[currentSelectedWithdrawlCoin]?.dataBalanceOf?.balance
+            )
+          )
+        )
+      : 0
+  );
+  
+  useEffect(() => {
+    setwalletBalance(
+      walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
+        ? Number(
+            BNtoNum(
+              uint256.uint256ToBN(
+                walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
+              )
+            )
+          )
+        : 0
+    );
+    // console.log("supply modal status wallet balance",walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf)
+  }, [walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf, currentSelectedSupplyCoin]);
+  useEffect(() => {
+    setWithdrawWalletBalance(
+      walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf === "success"
+        ? Number(
+            BNtoNum(
+              uint256.uint256ToBN(
+                walletBalances[currentSelectedWithdrawlCoin]?.dataBalanceOf?.balance
+              )
+            )
+          )
+        : 0
+    );
+    // console.log("supply modal status wallet balance",walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf)
+  }, [walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf, currentSelectedWithdrawlCoin]);
   const [withdrawTransactionStarted, setWithdrawTransactionStarted] =
     useState(false);
   const {
-    asset: currentSelectedWithdrawlCoin,
-    setAsset: setcurrentSelectedWithdrawlCoin,
+    asset,
+    setAsset,
     rTokenShares: inputWithdrawlAmount,
     setRTokenShares: setinputWithdrawlAmount,
-    reciever,
-    setReciever,
 
     dataWithdrawDeposit,
     errorWithdrawDeposit,
@@ -193,7 +249,7 @@ const YourSupplyModal = ({
     dispatch(setModalDropdown(dropdownName));
   };
   // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-  const walletBalance = useSelector(selectWalletBalance);
+  // const walletBalance = useSelector(selectWalletBalance);
   // const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
   //   useState("BTC");
   // const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
@@ -205,9 +261,11 @@ const YourSupplyModal = ({
     setinputWithdrawlAmount(0);
     setCurrentSelectedSupplyCoin("BTC");
     setcurrentSelectedWithdrawlCoin("BTC");
+    setAsset("");
     setTransactionStarted(false);
     setWithdrawTransactionStarted(false);
     dispatch(resetModalDropdowns());
+    dispatch(setTransactionStatus(''));
   };
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
@@ -218,21 +276,34 @@ const YourSupplyModal = ({
     setSliderValue(0);
   }, [currentSelectedSupplyCoin]);
 
+  useEffect(()=>{
+    setAsset(currentSelectedWithdrawlCoin);
+  },[currentSelectedWithdrawlCoin])
+
   useEffect(() => {
     setinputWithdrawlAmount(0);
     setSliderValue2(0);
   }, [currentSelectedWithdrawlCoin]);
 
+  const [depositTransHash, setDepositTransHash] = useState<any>();
+  const recieptData = useWaitForTransaction({
+    hash: depositTransHash,
+    watch: true,
+  });
+
   const handleWithdrawSupply = async () => {
     try {
       const withdraw = await writeAsyncWithdrawDeposit();
+      setDepositTransHash(withdraw?.transaction_hash);
+      if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
+      }
+      dispatch(setTransactionStatus("success"));
+      console.log(withdraw);
     } catch (err) {
       console.log("withraw", err);
+      dispatch(setTransactionStatus("failed"));
     }
   };
-  useEffect(() => {
-    setcurrentSelectedWithdrawlCoin(_asset);
-  }, []);
 
   return (
     <Box>
@@ -1019,6 +1090,7 @@ const YourSupplyModal = ({
                                     pr="2"
                                     onClick={() => {
                                       setcurrentSelectedWithdrawlCoin(coin);
+                                      setAsset(coin);
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
@@ -1203,7 +1275,7 @@ const YourSupplyModal = ({
                             fontStyle="normal"
                             fontFamily="Inter"
                           >
-                            Wallet Balance: {walletBalance}
+                            Wallet Balance: {withdrawWalletBalance}
                             <Text color="#6E7781" ml="0.2rem">
                               {` ${currentSelectedWithdrawlCoin}`}
                             </Text>
@@ -1316,27 +1388,10 @@ const YourSupplyModal = ({
                           </Slider>
                         </Box>
                       </Card>
-                      <Checkbox
-                        defaultChecked
-                        mt="0.7rem"
-                        w="390px"
-                        borderColor="#2B2F35"
-                      >
-                        <Text
-                          fontSize="10px"
-                          color="#6E7681"
-                          fontStyle="normal"
-                          fontWeight="400"
-                          lineHeight="20px"
-                        >
-                          Ticking would stake the received rTokens unchecking
-                          wouldn&apos;t stake rTokens
-                        </Text>
-                      </Checkbox>
 
                       <Card
                         bg="#101216"
-                        mt="1rem"
+                        mt="1.5rem"
                         p="1rem"
                         border="1px solid #2B2F35"
                         mb="0.5rem"
@@ -1606,7 +1661,11 @@ const YourSupplyModal = ({
                               </Text>,
                               <ErrorButton errorText="Transaction failed" />,
                               <ErrorButton errorText="Copy error!" />,
+                              
+
                             ]}
+                            _disabled={{ bgColor: "white", color: "black" }}
+                            isDisabled={withdrawTransactionStarted== true}
                           >
                             Withdraw
                           </AnimatedButton>

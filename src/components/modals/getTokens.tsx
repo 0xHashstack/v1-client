@@ -33,27 +33,7 @@ import DropdownUp from "@/assets/icons/dropdownUpIcon";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorToast from "../uiElements/toasts/ErrorToast";
-import {
-    selectInputSupplyAmount,
-    setCoinSelectedSupplyModal,
-    selectWalletBalance,
-    setInputSupplyAmount,
-    selectTransactionStatus,
-    setTransactionStatus,
-    selectAssetWalletBalance,
-    setToastTransactionStarted,
-    selectTransactionStarted,
-    setTransactionStarted,
-} from "@/store/slices/userAccountSlice";
-import { useDispatch, useSelector } from "react-redux";
-import {
-    setModalDropdown,
-    selectModalDropDowns,
-    resetModalDropdowns,
-    selectCurrentModalDropdown,
-} from "@/store/slices/dropdownsSlice";
-import AnimatedButton from "../uiElements/buttons/AnimationButton";
-import ErrorButton from "../uiElements/buttons/ErrorButton";
+import useGetTokens from "@/Blockchain/hooks/Writes/useGetTokens";
 import {
     useAccount,
     useBalance,
@@ -72,6 +52,7 @@ import SuccessTick from "@/assets/icons/successTick";
 import CancelIcon from "@/assets/icons/cancelIcon";
 import CancelSuccessToast from "@/assets/icons/cancelSuccessToast";
 import Link from "next/link";
+import { NativeToken } from "@/Blockchain/interfaces/interfaces";
 const GetTokensModal = ({
     buttonText,
     coin,
@@ -116,6 +97,35 @@ const GetTokensModal = ({
 
 
     const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+    const [currentSelectedCoin, setCurrentSelectedCoin] = useState<any>("")
+    const {
+        token,
+        setToken,
+
+        dataGetTokens,
+        errorGetTokens,
+        resetGetTokens,
+        writeGetTokens,
+        writeAsyncGetTokens,
+        isErrorGetTokens,
+        isIdleGetTokens,
+        isLoadingGetTokens,
+        isSuccessGetTokens,
+        statusGetTokens,
+    }
+=useGetTokens(currentSelectedCoin);
+
+    const handleGetToken=async()=>{
+        try{
+            console.log(token)
+            const getTokens=await writeAsyncGetTokens();
+            console.log(getTokens)
+        }catch(err){
+            console.log(err);
+        }
+
+    }
+    
 
 
 
@@ -176,6 +186,11 @@ const GetTokensModal = ({
                                     border="1px solid #8B949E"
                                     _hover={{  bgColor: "white", color: "black" }}
                                     _active={{border:"3px solid grey"}}
+                                    onClick={()=>{
+                                        setCurrentSelectedCoin("USDT")
+                                        setToken("USDT");
+                                        handleGetToken();
+                                    }}
                                     >USDT</Button>
                                 <Button bg="#101216"
                                     color="#6E7681"
@@ -186,6 +201,11 @@ const GetTokensModal = ({
                                     border="1px solid #8B949E"
                                     _hover={{  bgColor: "white", color: "black" }}
                                     _active={{border:"3px solid grey"}}
+                                    onClick={()=>{
+                                        setCurrentSelectedCoin("BTC")
+                                        setToken("BTC");
+                                        handleGetToken();
+                                    }}
                                     >BTC</Button>
                                 <Button bg="#101216"
                                     color="#6E7681"
@@ -196,6 +216,11 @@ const GetTokensModal = ({
                                     border="1px solid #8B949E"
                                     _hover={{  bgColor: "white", color: "black" }}
                                     _active={{border:"3px solid grey"}}
+                                    onClick={()=>{
+                                        setCurrentSelectedCoin("ETH")
+                                        setToken("ETH");
+                                        handleGetToken();
+                                    }}
                                     >ETH</Button>
                                 <Button bg="#101216"
                                     color="#6E7681"
@@ -206,6 +231,11 @@ const GetTokensModal = ({
                                     border="1px solid #8B949E"
                                     _hover={{  bgColor: "white", color: "black" }}
                                     _active={{border:"3px solid grey"}}
+                                    onClick={()=>{
+                                        setCurrentSelectedCoin("DAI")
+                                        setToken("DAI");
+                                        handleGetToken();
+                                    }}
                                     >DAI</Button>
                             </Box>
                             <Box display="flex" justifyContent="center" alignItems="center" mt="0.5rem" mb="2rem" bg="#101216" padding="8px" border="1px solid #101216" borderRadius="6px" >

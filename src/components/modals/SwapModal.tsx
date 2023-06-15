@@ -37,6 +37,7 @@ import {
   selectWalletBalance,
   setInputSupplyAmount,
   selectSelectedDapp,
+  selectUserLoans,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -63,6 +64,7 @@ const SwapModal = ({
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
+  const [borrowAmount, setBorrowAmount] = useState(BorrowBalance)
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
@@ -102,7 +104,7 @@ const SwapModal = ({
   //     "ID - 123459",
   //     "ID - 1234510",
   // ];
-
+  const userLoans=useSelector(selectUserLoans);
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {
     // Dispatches an action called setModalDropdown with the dropdownName as the payload
@@ -125,6 +127,13 @@ const SwapModal = ({
       dispatch(setInputSupplyAmount(newValue));
     }
   };
+  useEffect(() => {
+    const result = userLoans.find((item:any) => item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim());
+    setBorrowAmount(result?.loanAmountParsed)
+    // console.log(borrowAmount)
+    // Rest of your code using the 'result' variable
+    
+  }, [currentId]);
   // console.log(onOpen)
 
   // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
@@ -136,6 +145,8 @@ const SwapModal = ({
     setCurrentBorrowId(currentId);
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
+    const result = userLoans.find((item: { loanId: any; }):any => item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim());
+    setBorrowAmount(result?.loanAmountParsed)
   };
 
   useEffect(() => {
@@ -413,6 +424,10 @@ const SwapModal = ({
                           onClick={() => {
                             setCurrentBorrowId("ID - " + coin);
                             handleBorrowMarketCoinChange(coin);
+                            const borrowIdString = String(coin);
+                            const result = userLoans.find((item: { loanId: string; }):any => item?.loanId == borrowIdString.slice(borrowIdString.indexOf("-") + 1).trim());
+                            // console.log(result)
+                            setBorrowAmount(result?.loanAmountParsed)
                           }}
                         >
                           {coin === currentBorrowId && (
@@ -499,7 +514,7 @@ const SwapModal = ({
                 fontStyle="normal"
                 fontFamily="Inter"
               >
-                Borrow Balance: {BorrowBalance}
+                Borrow Balance: {borrowAmount}
                 <Text color="#6E7781" ml="0.2rem">
                   {` ${currentBorrowMarketCoin}`}
                 </Text>

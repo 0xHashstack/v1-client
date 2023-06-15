@@ -38,7 +38,7 @@ const YourSupply = () => {
   useEffect(() => {
     const getSupply = async () => {
       const supply = await getUserDeposits(address || "");
-      console.log("supplies", supply);
+      // console.log("supplies", supply);
     };
     // getSupply();
   }, []);

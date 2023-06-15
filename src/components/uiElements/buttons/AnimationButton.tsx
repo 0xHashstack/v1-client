@@ -5,6 +5,8 @@ import SuccessButton from "./SuccessButton";
 import {
   selectCollateralCoinSelectedBorrowModal,
   selectTransactionStatus,
+  setCurrentTransactionStatus,
+  selectCurrentTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 import { useSelector } from "react-redux";
 interface Props extends ButtonProps {
@@ -38,6 +40,7 @@ const AnimatedButton: React.FC<Props> = ({
   const [progressBarWidth, setProgressBarWidth] = useState("0%");
   const [isAnimationStarted, setIsAnimationStarted] = useState(false);
   const transactionStatus = useSelector(selectTransactionStatus);
+  const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
   // console.log(transactionStatus,"transaction from button");
 
   useEffect(() => {
@@ -117,6 +120,9 @@ const AnimatedButton: React.FC<Props> = ({
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
           const nextIndex = prevIndex + 1;
+          if (nextIndex === labelSuccessArray?.length - 2) {
+            if (!currentTransactionStatus) return prevIndex;
+          }
           if (nextIndex === labelSuccessArray.length) {
             setIsAnimationStarted(false);
             return prevIndex; // Reset currentStringIndex to -1 after the animation completes
@@ -129,6 +135,9 @@ const AnimatedButton: React.FC<Props> = ({
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
           const nextIndex = prevIndex + 1;
+          if (nextIndex === labelErrorArray?.length - 1) {
+            if (!currentTransactionStatus) return prevIndex;
+          }
           if (nextIndex === labelErrorArray?.length) {
             setIsAnimationStarted(false);
             return prevIndex; // Reset currentStringIndex to -1 after the animation completes
@@ -140,7 +149,7 @@ const AnimatedButton: React.FC<Props> = ({
     }
 
     return () => clearInterval(interval);
-  }, [isAnimationStarted]);
+  }, [isAnimationStarted, currentTransactionStatus]);
   const { bgColor } = rest;
   return (
     <Button

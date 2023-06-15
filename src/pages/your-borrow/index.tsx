@@ -11,9 +11,9 @@ import React, { useEffect, useState } from "react";
 import { HStack, VStack, Text, Box } from "@chakra-ui/react";
 import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useAccount, useConnectors } from "@starknet-react/core";
-import { setSpendBorrowSelectedDapp, setUserLoans } from "@/store/slices/userAccountSlice";
+import { selectUserLoans, setSpendBorrowSelectedDapp, setUserLoans } from "@/store/slices/userAccountSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
 const YourBorrow = () => {
@@ -32,7 +32,7 @@ const YourBorrow = () => {
     useConnectors();
   const dispatch = useDispatch();
   const { account, address } = useAccount();
-  const [UserLoans, setuserLoans] = useState<ILoan[] | null>([]);
+  const UserLoans=useSelector(selectUserLoans);
   // useEffect(()=>{
   //   const walletConnected = localStorage.getItem('lastUsedConnector');
   //   if(walletConnected=="braavos"){
@@ -41,46 +41,46 @@ const YourBorrow = () => {
   //     connect(connectors[1]);
   //   }
   // },[])
-  useEffect(() => {
-    const loan = async () => {
-      try {
-        const loans = await getUserLoans(address || "");
-        // console.log(loans,"Loans from your borrow index page")
+  // useEffect(() => {
+  //   const loan = async () => {
+  //     try {
+  //       const loans = await getUserLoans(address || "");
+  //       // console.log(loans,"Loans from your borrow index page")
 
-        // loans.filter(
-        //   (loan) =>
-        //     loan.collateralAmountParsed &&
-        //     loan.collateralAmountParsed > 0 &&
-        //     loan.loanAmountParsed &&
-        //     loan.loanAmountParsed > 0
-        // );
-        if (loans) {
-          setuserLoans(
-            loans.filter(
-              (loan) =>
-                loan?.collateralAmountParsed &&
-                loan?.collateralAmountParsed > 0 &&
-                loan?.loanAmountParsed &&
-                loan?.loanAmountParsed > 0
-            )
-          );
-        }
-        dispatch(setUserLoans(loans.filter(
-          (loan) =>
-            loan.collateralAmountParsed &&
-            loan.collateralAmountParsed > 0 &&
-            loan.loanAmountParsed &&
-            loan.loanAmountParsed > 0
-        )));
-      } catch (err) {
-        console.log("your-borrow : unable to fetch user loans");
-      }
-      // console.log("loans", loans);
-    };
-    if (account) {
-      loan();
-    }
-  }, [account, UserLoans]);
+  //       // loans.filter(
+  //       //   (loan) =>
+  //       //     loan.collateralAmountParsed &&
+  //       //     loan.collateralAmountParsed > 0 &&
+  //       //     loan.loanAmountParsed &&
+  //       //     loan.loanAmountParsed > 0
+  //       // );
+  //       if (loans) {
+  //         setuserLoans(
+  //           loans.filter(
+  //             (loan) =>
+  //               loan?.collateralAmountParsed &&
+  //               loan?.collateralAmountParsed > 0 &&
+  //               loan?.loanAmountParsed &&
+  //               loan?.loanAmountParsed > 0
+  //           )
+  //         );
+  //       }
+  //       dispatch(setUserLoans(loans.filter(
+  //         (loan) =>
+  //           loan.collateralAmountParsed &&
+  //           loan.collateralAmountParsed > 0 &&
+  //           loan.loanAmountParsed &&
+  //           loan.loanAmountParsed > 0
+  //       )));
+  //     } catch (err) {
+  //       console.log("your-borrow : unable to fetch user loans");
+  //     }
+  //     // console.log("loans", loans);
+  //   };
+  //   if (account) {
+  //     loan();
+  //   }
+  // }, [account, UserLoans]);
 
   return (
     <PageCard pt="6.5rem">

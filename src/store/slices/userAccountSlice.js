@@ -16,7 +16,7 @@ const initialState = {
   walletBalance: 90,
   inputYourBorrowModalRepayAmount: 0,
   transactionStatus: "",
-
+  currentTransactionStatus: "",
   language: "English",
   currentPage: "market",
   reserves: undefined,
@@ -57,6 +57,9 @@ export const userAccountSlice = createSlice({
     },
     setTransactionStatus(state, action) {
       state.transactionStatus = action.payload;
+    },
+    setCurrentTransactionStatus(state, action) {
+      state.currentTransactionStatus = action.payload;
     },
     setLanguage(state, action) {
       state.language = action.payload;
@@ -144,6 +147,7 @@ export const {
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
 export const { setTransactionStatus } = userAccountSlice.actions;
+export const { setCurrentTransactionStatus } = userAccountSlice.actions;
 export const { setInputBorrowModalCollateralAmount } = userAccountSlice.actions;
 export const { setInputBorrowModalBorrowAmount } = userAccountSlice.actions;
 export const { setInputTradeModalCollateralAmount } = userAccountSlice.actions;
@@ -157,6 +161,8 @@ export const selectSelectedDapp = (state) =>
   state.user_account.spendBorrowselectedDapp;
 export const selectTransactionStatus = (state) =>
   state.user_account.transactionStatus;
+export const selectCurrentTransactionStatus = (state) =>
+  state.user_account.currentTransactionStatus;
 export const selectAssetWalletBalance = (state) =>
   state.user_account.assetWalletBalance;
 export const selectUserLoans = (state) => state.user_account.userLoans;
