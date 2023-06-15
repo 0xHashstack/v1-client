@@ -48,6 +48,7 @@
           "3",
           swapLoanId,
           constants.SWAP,
+          loanId,
           tokenAddressMap[toMarket],
         ]
       }
