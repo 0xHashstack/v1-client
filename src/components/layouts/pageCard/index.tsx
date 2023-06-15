@@ -116,13 +116,17 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             )
           );
         }
-        dispatch(setUserLoans(loans.filter(
-          (loan) =>
-            loan.collateralAmountParsed &&
-            loan.collateralAmountParsed > 0 &&
-            loan.loanAmountParsed &&
-            loan.loanAmountParsed > 0
-        )));
+        dispatch(
+          setUserLoans(
+            loans.filter(
+              (loan) =>
+                loan.collateralAmountParsed &&
+                loan.collateralAmountParsed > 0 &&
+                loan.loanAmountParsed &&
+                loan.loanAmountParsed > 0
+            )
+          )
+        );
       } catch (err) {
         console.log("your-borrow : unable to fetch user loans");
       }
@@ -147,9 +151,9 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
-  useEffect(()=>{
-    dispatch(setAssetWalletBalance( assetBalance));
-  },[assetBalance])
+  useEffect(() => {
+    dispatch(setAssetWalletBalance(assetBalance));
+  }, [assetBalance]);
   // useEffect(() => {
   //   const timer = setTimeout(() => {
   //     connect(connectors[0]);
@@ -173,7 +177,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           >
             {children}
           </Stack>
-          {/* <TransactionToast /> */}
+          <TransactionToast />
           <Footer block={83207} />
         </>
       )}
