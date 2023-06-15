@@ -134,12 +134,10 @@ const DashboardLeft = ({
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
-  useEffect(()=>{
-    dispatch(setAssetWalletBalance( assetBalance));
-  },[assetBalance])
+  useEffect(() => {
+    dispatch(setAssetWalletBalance(assetBalance));
+  }, [assetBalance]);
 
-  
-  
   // useEffect(() => {
   //   for (let i of Coins) {
   //   }

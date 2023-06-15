@@ -233,11 +233,14 @@ const YourBorrowModal = ({
     }
   };
 
-  // const handleAddCollateral = async () => {
-  //   try {
-  //     const addCollateral = await writeAsyncAddCollateral();
-  //   } catch (err) { }
-  // };
+  const handleAddCollateral = async () => {
+    try {
+      const addCollateral = await writeAsyncAddCollateral();
+      console.log("add collateral - ", addCollateral);
+    } catch (err) {
+      console.log("add collateral error");
+    }
+  };
 
   const getContainer = (action: string) => {
     switch (action) {
