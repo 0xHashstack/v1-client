@@ -71,10 +71,13 @@ const LiquidityProvisionModal = ({
   // console.log("liquidity found current id: ", currentMarketCoin);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] =
     useState(currentMarketCoin);
+    const [borrowAmount, setBorrowAmount] = useState(BorrowBalance)
+    console.log(borrowAmount)
   const [currentBorrowId, setCurrentBorrowId] = useState(currentId);
   const [currentPool, setCurrentPool] = useState("Select a pool");
   const [inputAmount, setinputAmount] = useState(0);
