@@ -120,7 +120,7 @@ const AnimatedButton: React.FC<Props> = ({
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
           const nextIndex = prevIndex + 1;
-          if (nextIndex === labelSuccessArray?.length - 2) {
+          if (nextIndex === labelSuccessArray?.length - 3) {
             if (!currentTransactionStatus) return prevIndex;
           }
           if (nextIndex === labelSuccessArray.length) {
@@ -135,9 +135,9 @@ const AnimatedButton: React.FC<Props> = ({
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
           const nextIndex = prevIndex + 1;
-          if (nextIndex === labelErrorArray?.length - 1) {
-            if (!currentTransactionStatus) return prevIndex;
-          }
+          // if (nextIndex === labelErrorArray?.length - 1) {
+          //   if (!currentTransactionStatus) return prevIndex;
+          // }
           if (nextIndex === labelErrorArray?.length) {
             setIsAnimationStarted(false);
             return prevIndex; // Reset currentStringIndex to -1 after the animation completes

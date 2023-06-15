@@ -131,14 +131,14 @@ const BorrowDashboard = ({
   Coins,
   columnItems,
   Borrows,
-  userLoans
+  userLoans,
 }: {
   width: string;
   currentPagination: any;
   Coins: any;
   columnItems: any;
   Borrows: ILoan[] | null;
-  userLoans:any
+  userLoans: any;
   // columnItems: Array<Array<string>>;
   // gap: string;
   // rowItems: any;
@@ -161,7 +161,12 @@ const BorrowDashboard = ({
     let temp2: any = [];
 
     for (let i = 0; i < Borrows?.length; i++) {
-      temp1.push({ id: Borrows[i].loanId, name: Borrows[i].loanMarket });
+      temp1.push({
+        id: Borrows[i].loanId,
+        name: Borrows[i].loanMarket,
+        collateralBalance:
+          Borrows[i].collateralAmount + " " + Borrows[i].collateralMarket,
+      });
       temp2.push(Borrows[i].loanId);
     }
     setBorrowIDCoinMap(temp1);
