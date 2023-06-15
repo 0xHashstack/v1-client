@@ -72,7 +72,6 @@ const LiquidityProvisionModal = ({
   // console.log("liquidity found current id: ", currentMarketCoin);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
-  
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] =
@@ -86,7 +85,7 @@ const LiquidityProvisionModal = ({
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
-  const [walletBalance,setwalletBalance]=useState(BorrowBalance)
+  const [walletBalance, setwalletBalance] = useState(BorrowBalance);
   const inputAmount1 = useSelector(selectInputSupplyAmount);
   const userLoans=useSelector(selectUserLoans);
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance)
@@ -335,11 +334,11 @@ const LiquidityProvisionModal = ({
                   className="navbar"
                   color="white"
                   fontSize="16px"
-                  onClick={() =>{
-                    if(transactionStarted){
+                  onClick={() => {
+                    if (transactionStarted) {
                       return;
-                    }else{
-                      handleDropdownClick("liquidityProvisionPoolDropDown")
+                    } else {
+                      handleDropdownClick("liquidityProvisionPoolDropDown");
                     }
                   }}
                   as="button"
@@ -443,11 +442,11 @@ const LiquidityProvisionModal = ({
                   borderRadius="md"
                   color="white"
                   className="navbar"
-                  onClick={() =>{
-                    if(transactionStarted==true){
+                  onClick={() => {
+                    if (transactionStarted == true) {
                       return;
-                    }else{
-                      handleDropdownClick("liquidityProvisionBorrowIDDropDown")
+                    } else {
+                      handleDropdownClick("liquidityProvisionBorrowIDDropDown");
                     }
                   }}
                   as="button"
@@ -484,7 +483,7 @@ const LiquidityProvisionModal = ({
                             gap="1"
                             pr="2"
                             onClick={() => {
-                              setCurrentBorrowId(coin);
+                              setCurrentBorrowId("ID - " + coin);
                               handleBorrowMarketCoinChange(coin);
                               // console.log(typeof coin,"coin")
                               const borrowIdString = String(coin);
@@ -513,7 +512,7 @@ const LiquidityProvisionModal = ({
                               borderRadius="md"
                             >
                               {/* <Box p="1">{getCoin(coin)}</Box> */}
-                              <Text>{coin}</Text>
+                              <Text>ID - {coin}</Text>
                             </Box>
                           </Box>
                         );
@@ -564,7 +563,7 @@ const LiquidityProvisionModal = ({
                   // }
                 >
                   <Box display="flex" gap="1">
-                    <Box p="1">{getCoin(currentBorrowMarketCoin)}</Box>
+                    <Box p="1">{getCoin(currentBorrowMarketCoin.slice(1))}</Box>
                     <Text color="white">{currentBorrowMarketCoin}</Text>
                   </Box>
                 </Box>
@@ -895,46 +894,45 @@ const LiquidityProvisionModal = ({
               </Box>
               {currentPool != "Select a pool" ? (
                 <Box
-                  onClick={()=>{
-                    setTransactionStarted(true)
+                  onClick={() => {
+                    setTransactionStarted(true);
                   }}
                 >
-
-                <AnimatedButton
-                  bgColor="#101216"
-                  // bgColor="red"
-                  // p={0}
-                  color="#8B949E"
-                  size="sm"
-                  width="100%"
-                  mt="1.5rem"
-                  mb="1.5rem"
-                  border="1px solid #8B949E"
-                  labelSuccessArray={[
-                    "Performing pre-checks",
-                    "Processing the spend borrow",
-                    "Updating the l3 records.",
-                    // <ErrorButton errorText="Transaction failed" />,
-                    // <ErrorButton errorText="Copy error!" />,
-                    <SuccessButton
-                      key={"successButton"}
-                      successText={"Spend successful."}
-                    />,
-                  ]}
-                  labelErrorArray={[
-                    "Performing pre-checks",
-                    "Processing the spend borrow",
-                    "Updating the l3 records.",
-                    // <ErrorButton errorText="Transaction failed" />,
-                    // <ErrorButton errorText="Copy error!" />,
-                    <SuccessButton
-                      key={"successButton"}
-                      successText={"Spend successful."}
-                    />,
-                  ]}
-                >
-                  Spend Borrow
-                </AnimatedButton>
+                  <AnimatedButton
+                    bgColor="#101216"
+                    // bgColor="red"
+                    // p={0}
+                    color="#8B949E"
+                    size="sm"
+                    width="100%"
+                    mt="1.5rem"
+                    mb="1.5rem"
+                    border="1px solid #8B949E"
+                    labelSuccessArray={[
+                      "Performing pre-checks",
+                      "Processing the spend borrow",
+                      "Updating the l3 records.",
+                      // <ErrorButton errorText="Transaction failed" />,
+                      // <ErrorButton errorText="Copy error!" />,
+                      <SuccessButton
+                        key={"successButton"}
+                        successText={"Spend successful."}
+                      />,
+                    ]}
+                    labelErrorArray={[
+                      "Performing pre-checks",
+                      "Processing the spend borrow",
+                      "Updating the l3 records.",
+                      // <ErrorButton errorText="Transaction failed" />,
+                      // <ErrorButton errorText="Copy error!" />,
+                      <SuccessButton
+                        key={"successButton"}
+                        successText={"Spend successful."}
+                      />,
+                    ]}
+                  >
+                    Spend Borrow
+                  </AnimatedButton>
                 </Box>
               ) : (
                 <Button

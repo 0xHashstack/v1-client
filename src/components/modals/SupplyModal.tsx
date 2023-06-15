@@ -44,6 +44,8 @@ import {
   setToastTransactionStarted,
   selectTransactionStarted,
   setTransactionStarted,
+  selectCurrentTransactionStatus,
+  setCurrentTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -117,6 +119,7 @@ const SupplyModal = ({
   const [stakeCheck, setStakeCheck] = useState(true);
 
   const transactionStarted = useSelector(selectTransactionStarted);
+  const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
 
   // const [transactionStarted, setTransactionStarted] = useState(false);
   // const [toastTransactionStarted, setToastTransactionStarted] = useState(false);
@@ -175,15 +178,20 @@ const SupplyModal = ({
       console.log("trans received");
     },
     onPending: () => {
+      dispatch(setCurrentTransactionStatus("Accepted"));
       console.log("trans pending");
     },
     onRejected(transaction) {
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
+      dispatch(setCurrentTransactionStatus("Accepted"));
+
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction) {
+      dispatch(setCurrentTransactionStatus("Accepted"));
+
       console.log("trans onAcceptedOnL2 - ", transaction);
     },
   });
@@ -198,7 +206,6 @@ const SupplyModal = ({
       console.log("Supply Modal - deposit ", deposit);
       setDepositTransHash(deposit?.transaction_hash);
       if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
-        
       }
       dispatch(setTransactionStatus("success"));
       if (isSuccessDeposit) {
@@ -358,7 +365,7 @@ const SupplyModal = ({
           onClose={() => {
             onClose();
             resetStates();
-            if (transactionStarted) dispatch(setToastTransactionStarted(""));
+            if (transactionStarted) dispatch(setToastTransactionStarted(true));
             // if (setIsOpenCustom) setIsOpenCustom(false);
           }}
           size={{ width: "700px", height: "100px" }}

@@ -122,7 +122,7 @@ export default function Home() {
       // }
     }
     // console.log("account home", address, status);
-  } ,[status]);
+  }, [status]);
   // console.log("available", available);
   return (
     <Box
