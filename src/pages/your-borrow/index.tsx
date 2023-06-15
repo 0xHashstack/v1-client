@@ -51,15 +51,17 @@ const YourBorrow = () => {
         //     loan.loanAmountParsed &&
         //     loan.loanAmountParsed > 0
         // );
-        setUserLoans(
-          loans.filter(
-            (loan) =>
-              loan.collateralAmountParsed &&
-              loan.collateralAmountParsed > 0 &&
-              loan.loanAmountParsed &&
-              loan.loanAmountParsed > 0
-          )
-        );
+        if (loans) {
+          setUserLoans(
+            loans.filter(
+              (loan) =>
+                loan?.collateralAmountParsed &&
+                loan?.collateralAmountParsed > 0 &&
+                loan?.loanAmountParsed &&
+                loan?.loanAmountParsed > 0
+            )
+          );
+        }
       } catch (err) {
         console.log("your-borrow : unable to fetch user loans");
       }
