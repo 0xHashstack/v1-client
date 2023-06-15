@@ -61,7 +61,7 @@ const AnimatedButton: React.FC<Props> = ({
       return () => clearInterval(interval);
     } else if (isAnimationStarted && transactionStatus == "failed") {
       setProgressBarWidth(
-        `${((currentStringIndex + 1) / labelErrorArray.length) * 100 + 2}%`
+        `100%`
       );
 
       // setProgressBarWidth(
