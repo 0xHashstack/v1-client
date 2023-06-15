@@ -61,6 +61,7 @@ import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
 import {
   selectWalletBalance,
   setInputYourBorrowModalRepayAmount,
+  setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
@@ -88,7 +89,7 @@ const YourBorrowModal = ({
   loan,
   ...restProps
 }: any) => {
-  console.log("took map", borrowIDCoinMap, currentID, currentMarket);
+  // console.log("took map", borrowIDCoinMap, currentID, currentMarket);
   // console.log();
 
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -209,9 +210,11 @@ const YourBorrowModal = ({
         throw new Error("loan or loanID issue");
       }
       const zeroRepay = await writeAsyncSelfLiquidate();
+      dispatch(setTransactionStatus("success"))
       console.log("zero repay success");
     } catch (err) {
       console.log("zero repay failed - ", err);
+      dispatch(setTransactionStatus("failed"))
     }
   };
 
@@ -911,9 +914,9 @@ const YourBorrowModal = ({
   const [currentDapp, setCurrentDapp] = useState("Select a dapp");
   const [currentPool, setCurrentPool] = useState("Select a pool");
 
-  useEffect(() => {
-    console.log("got", currentID, currentMarket);
-  }, [currentBorrowId1]);
+  // useEffect(() => {
+  //   console.log("got", currentID, currentMarket);
+  // }, [currentBorrowId1]);
 
   const [sliderValue, setSliderValue] = useState(0);
   // const dispatch = useDispatch();
@@ -1035,6 +1038,7 @@ const YourBorrowModal = ({
       setCollateralTransactionStarted(false);
       setTransactionStarted(false);
       dispatch(resetModalDropdowns());
+      dispatch(setTransactionStatus(""))
     } catch (err) {
       console.log("yourBorrowModal reset states - ", err);
     }
@@ -2268,6 +2272,7 @@ const YourBorrowModal = ({
                             width="100%"
                             mb="1.5rem"
                             border="1px solid #8B949E"
+                            // _active={{color:"black",bg:"white"}}
                             labelSuccessArray={[
                               "Performing prechecks.",
                               "Processing self liquidation.",
@@ -2287,6 +2292,8 @@ const YourBorrowModal = ({
                               <ErrorButton errorText="Transaction failed" />,
                               <ErrorButton errorText="Copy error!" />,
                             ]}
+                            _disabled={{ bgColor: "white", color: "black" }}
+                            isDisabled={transactionStarted == true}
                           >
                             Zero repay
                           </AnimatedButton>
