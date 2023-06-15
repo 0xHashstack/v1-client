@@ -12,7 +12,7 @@ import { useAccount } from "@starknet-react/core";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 const MarketDashboard = () => {
   const [oraclePrices, setOraclePrices]: any = useState([]);
-  const {account,address}=useAccount();
+  const { account, address } = useAccount();
   // console.log(account,"Market Page")
   useEffect(() => {
     fetchOraclePrices();
@@ -48,7 +48,6 @@ const MarketDashboard = () => {
       console.log("Error fetching protocol reserves", err);
     }
   };
-
 
   const fetchOraclePrices = async () => {
     try {

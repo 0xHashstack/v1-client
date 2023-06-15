@@ -11,14 +11,16 @@ import {
     diamondAddress
 } from "../../stark-constants";
 import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 
-const useAddCollateral  = (loanIdParam: any) => {
-    const [loanId, setLoanId] = useState(loanIdParam);
-    const [collateralAsset, setCollateralAsset] = useState("");
+const useAddCollateral  = () => {
+    const [loanId, setLoanId] = useState("");
+    const [collateralAsset, setCollateralAsset] = useState<NativeToken>("USDT");
     const [collateralAmount, setCollateralAmount] = useState(0);
 
-    const [rToken, setRToken] = useState("");
-    const [rTokenAmount, setRTokenAmount] = useState(0);
+    const [rToken, setRToken] = useState<RToken>("rUSDT");
+    const [rTokenAmount, setRTokenAmount] = useState<number>(0);
 
 
     //     data: dataLoanRequest,
@@ -45,11 +47,23 @@ const useAddCollateral  = (loanIdParam: any) => {
     } = useContractWrite({
         calls: [
             {
+                contractAddress: tokenAddressMap[collateralAsset] || "",
+                entrypoint: "approve",
+                calldata: [
+                    diamondAddress,
+                    etherToWeiBN(
+                        collateralAmount,
+                        collateralAsset
+                    ).toString(),
+                    "0" 
+                ],
+            },
+            {
                 contractAddress: diamondAddress,
                 entrypoint: "add_collateral",
                 calldata: [
                     loanId,
-                    collateralAsset,
+                    tokenAddressMap[collateralAsset],
                     etherToWeiBN(
                         collateralAmount as number,
                         collateralAsset
@@ -78,7 +92,7 @@ const useAddCollateral  = (loanIdParam: any) => {
                 entrypoint: "add_rToken_collateral",
                 calldata: [
                     loanId,
-                    rToken,
+                    tokenAddressMap[rToken],
                     etherToWeiBN(
                         rTokenAmount,
                         collateralAsset

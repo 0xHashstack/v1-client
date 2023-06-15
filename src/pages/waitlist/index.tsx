@@ -25,7 +25,7 @@ import { get_user_loans } from "@/Blockchain/scripts/Loans";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function WaitList() {
-  const account = useSelector(selectAccount);
+  const account = JSON.parse(useSelector(selectAccount));
   // console.log(account ,"waitlist")
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();

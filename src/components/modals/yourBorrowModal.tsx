@@ -136,7 +136,7 @@ const YourBorrowModal = ({
     isLoadingAddCollateralRToken,
     isSuccessAddCollateralRToken,
     statusAddCollateralRToken,
-  } = useAddCollateral(loan?.loan_id || "");
+  } = useAddCollateral();
 
   const {
     repayAmount,
@@ -225,19 +225,19 @@ const YourBorrowModal = ({
         throw new Error("loan or loanID issue");
       }
       const zeroRepay = await writeAsyncSelfLiquidate();
-      dispatch(setTransactionStatus("success"))
+      dispatch(setTransactionStatus("success"));
       console.log("zero repay success");
     } catch (err) {
       console.log("zero repay failed - ", err);
-      dispatch(setTransactionStatus("failed"))
+      dispatch(setTransactionStatus("failed"));
     }
   };
 
-  const handleAddCollateral = async () => {
-    try {
-      const addCollateral = await writeAsyncAddCollateral();
-    } catch (err) { }
-  };
+  // const handleAddCollateral = async () => {
+  //   try {
+  //     const addCollateral = await writeAsyncAddCollateral();
+  //   } catch (err) { }
+  // };
 
   const getContainer = (action: string) => {
     switch (action) {
@@ -1037,7 +1037,7 @@ const YourBorrowModal = ({
   //   }
   // };
 
-  // const walletBalance = useSelector(selectWalletBalance);
+  // const walletBalance = JSON.parse(useSelector(selectWalletBalance))
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [tabValue, setTabValue] = useState(1);
   const resetStates = () => {
@@ -1059,7 +1059,7 @@ const YourBorrowModal = ({
       setCollateralTransactionStarted(false);
       setTransactionStarted(false);
       dispatch(resetModalDropdowns());
-      dispatch(setTransactionStatus(""))
+      dispatch(setTransactionStatus(""));
     } catch (err) {
       console.log("yourBorrowModal reset states - ", err);
     }

@@ -150,7 +150,7 @@ const SupplyModal = ({
     // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
   }, [walletBalances[coin.name]?.statusBalanceOf, coin]);
   // console.log(walletBalances['BTC']);
-  // const walletBalance = useSelector(selectWalletBalance);
+  // const walletBalance = JSON.parse(useSelector(selectWalletBalance))
   // const [transactionFailed, setTransactionFailed] = useState(false);
 
   // const [depositTransHash, setDepositTransHash] = useState();
@@ -171,11 +171,29 @@ const SupplyModal = ({
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
+    onReceived: () => {
+      console.log("trans received");
+    },
+    onPending: () => {
+      console.log("trans pending");
+    },
+    onRejected(transaction) {
+      console.log("treans rejected");
+    },
+    onAcceptedOnL1: () => {
+      console.log("trans onAcceptedOnL1");
+    },
+    onAcceptedOnL2(transaction) {
+      console.log("trans onAcceptedOnL2 - ", transaction);
+    },
   });
 
   const handleTransaction = async () => {
     try {
       const deposit = await writeAsyncDeposit();
+      if (deposit?.transaction_hash) {
+        console.log("trans transaction hash created");
+      }
       // const deposit = await writeAsyncDepositStake();
       console.log("Supply Modal - deposit ", deposit);
       setDepositTransHash(deposit?.transaction_hash);
