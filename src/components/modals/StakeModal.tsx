@@ -33,6 +33,7 @@ import {
   setCoinSelectedSupplyModal,
   selectWalletBalance,
   setInputSupplyAmount,
+  selectUserLoans,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -66,6 +67,17 @@ const StakeModal = ({
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
   const inputAmount1 = useSelector(selectInputSupplyAmount);
+  const userLoans=useSelector(selectUserLoans);
+  const [borrowAmount, setBorrowAmount] = useState(BorrowBalance)
+
+  useEffect(() => {
+    const result = userLoans.find((item:any) => item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim());
+    setBorrowAmount(result?.loanAmountParsed)
+    // console.log(borrowAmount)
+    // Rest of your code using the 'result' variable
+    
+  }, [currentId]);
+
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -129,6 +141,8 @@ const StakeModal = ({
     setCurrentBorrowId(currentId);
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
+    const result = userLoans.find((item):any => item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim());
+    setBorrowAmount(result?.loanAmountParsed)
   };
 
   useEffect(() => {
@@ -390,6 +404,10 @@ const StakeModal = ({
                             onClick={() => {
                               setCurrentBorrowId("ID - " + coin);
                               handleBorrowMarketCoinChange(coin);
+                              const borrowIdString = String(coin);
+                              const result = userLoans.find((item):any => item?.loanId == borrowIdString.slice(borrowIdString.indexOf("-") + 1).trim());
+                              // console.log(result)
+                              setBorrowAmount(result?.loanAmountParsed)
                             }}
                           >
                             {coin === currentBorrowId && (
@@ -480,7 +498,7 @@ const StakeModal = ({
                   fontStyle="normal"
                   fontFamily="Inter"
                 >
-                  Borrow Balance: {BorrowBalance}
+                  Borrow Balance: {borrowAmount}
                   <Text color="#6E7781" ml="0.2rem">
                     {` ${currentBorrowMarketCoin}`}
                   </Text>
