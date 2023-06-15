@@ -13,6 +13,8 @@ import { useContract } from "@starknet-react/core";
 import {
   selectToastTransactionStarted,
   setAccount,
+  setAssetWalletBalance,
+  setUserLoans,
 } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import Footer from "../footer";
@@ -20,6 +22,10 @@ import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 import SuccessButton from "@/components/uiElements/buttons/SuccessButton";
 import ErrorButton from "@/components/uiElements/buttons/ErrorButton";
 import TransactionToast from "./transactionToast";
+import { ILoan } from "@/Blockchain/interfaces/interfaces";
+import { getUserLoans } from "@/Blockchain/scripts/Loans";
+import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 interface Props extends StackProps {
   children: ReactNode;
 }
@@ -29,9 +35,9 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const classes = [];
   const { account, address, status } = useAccount();
+  const dispatch = useDispatch();
 
   const { available, disconnect, connect, connectors } = useConnectors();
-  const dispatch = useDispatch();
   if (className) classes.push(className);
   const router = useRouter();
 
@@ -57,7 +63,6 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //     router.events.off("routeChangeComplete", handleRouteChangeComplete);
   //   };
   // }, [handleRouteChange, router.events]);
-  const { account: _account } = useAccount();
   // connect(connectors[0])
   // console.log(connectors)
 
@@ -76,7 +81,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     if (walletConnected == "") {
       router.push("/");
     }
-    if (!_account) {
+    if (!account) {
       if (walletConnected == "braavos") {
         disconnect();
         connect(connectors[0]);
@@ -86,6 +91,65 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       }
     }
   }, []);
+  const [UserLoans, setuserLoans] = useState<ILoan[] | null>([]);
+  useEffect(() => {
+    const loan = async () => {
+      try {
+        const loans = await getUserLoans(address || "");
+        // console.log(loans,"Loans from your borrow index page")
+
+        // loans.filter(
+        //   (loan) =>
+        //     loan.collateralAmountParsed &&
+        //     loan.collateralAmountParsed > 0 &&
+        //     loan.loanAmountParsed &&
+        //     loan.loanAmountParsed > 0
+        // );
+        if (loans) {
+          setuserLoans(
+            loans.filter(
+              (loan) =>
+                loan?.collateralAmountParsed &&
+                loan?.collateralAmountParsed > 0 &&
+                loan?.loanAmountParsed &&
+                loan?.loanAmountParsed > 0
+            )
+          );
+        }
+        dispatch(setUserLoans(loans.filter(
+          (loan) =>
+            loan.collateralAmountParsed &&
+            loan.collateralAmountParsed > 0 &&
+            loan.loanAmountParsed &&
+            loan.loanAmountParsed > 0
+        )));
+      } catch (err) {
+        console.log("your-borrow : unable to fetch user loans");
+      }
+      // console.log("loans", loans);
+    };
+    if (account) {
+      loan();
+    }
+  }, [account, UserLoans]);
+  // const dispatch=useDispatch();
+  interface assetB {
+    USDT: any;
+    USDC: any;
+    BTC: any;
+    ETH: any;
+    DAI: any;
+  }
+  const assetBalance: assetB = {
+    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
+    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
+    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
+    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
+    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+  };
+  useEffect(()=>{
+    dispatch(setAssetWalletBalance( assetBalance));
+  },[assetBalance])
   // useEffect(() => {
   //   const timer = setTimeout(() => {
   //     connect(connectors[0]);

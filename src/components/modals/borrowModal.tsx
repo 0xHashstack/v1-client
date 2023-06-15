@@ -1428,6 +1428,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       <ErrorButton errorText="Transaction failed" />,
                       <ErrorButton errorText="Copy error!" />,
                     ]}
+                    _disabled={{ bgColor: "white", color: "black" }}
+                    isDisabled={transactionStarted == true}
                   >
                     Borrow
                   </AnimatedButton>

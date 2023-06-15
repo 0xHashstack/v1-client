@@ -17,7 +17,7 @@ const MarketDashboard = () => {
   useEffect(() => {
     fetchOraclePrices();
     // fetchProtocolReserves();
-    fetchUserDeposits();
+    // fetchUserDeposits();
     // fetchUserReserves();
     // fetchUserLoans();
   }, []);

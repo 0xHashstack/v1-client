@@ -64,7 +64,7 @@ const SpendTable = () => {
     "Health factor",
   ];
   const userLoans: any = useSelector(selectUserLoans);
-  console.log(userLoans, "user loans in spend table");
+  // console.log(userLoans, "user loans in spend table");
   const rows: any[] = [
     // ["Borrow ID 12345", "rUSDT", "7%", "BTC", "00.00%"],
     // ["Borrow ID 12346", "rBTC", "7%", "BTC", "00.00%"],
@@ -110,7 +110,7 @@ const SpendTable = () => {
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);
     setCoins(temp3);
-    console.log("faisal coin mapping", borrowIDCoinMap);
+    // console.log("faisal coin mapping", borrowIDCoinMap);
   }, [userLoans]);
 
   useEffect(() => {
@@ -321,14 +321,11 @@ const SpendTable = () => {
                         <Td textAlign="center">
                           <Box
                             display="flex"
-                            gap="1"
+                            gap="2"
                             justifyContent="center"
                             h="full"
                             alignItems="center"
                           >
-                            <Box my="1">
-                              <TableBtcLogo />
-                            </Box>
                             <Text
                               fontSize="14px"
                               fontWeight="400"
@@ -336,7 +333,7 @@ const SpendTable = () => {
                               lineHeight="22px"
                               color="#E6EDF3"
                             >
-                              BTC
+                              3.63
                             </Text>
                           </Box>
                         </Td>

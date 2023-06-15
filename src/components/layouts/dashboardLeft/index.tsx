@@ -21,10 +21,10 @@ import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { uint256 } from "starknet";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setAssetWalletBalance } from "@/store/slices/userAccountSlice";
+import { selectAssetWalletBalance, setAssetWalletBalance } from "@/store/slices/userAccountSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "@starknet-react/core";
 export interface ICoin {
   name: string;
@@ -119,23 +119,7 @@ const DashboardLeft = ({
   //   errorBalanceOf,
   //   statusBalanceOf
   // );
-  interface assetB {
-    USDT: any;
-    USDC: any;
-    BTC: any;
-    ETH: any;
-    DAI: any;
-  }
-  const assetBalance: assetB = {
-    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
-    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
-    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
-    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
-    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
-  };
-  useEffect(()=>{
-    dispatch(setAssetWalletBalance( assetBalance));
-  },[assetBalance])
+  const assetBalance=useSelector(selectAssetWalletBalance);
 
   
   
