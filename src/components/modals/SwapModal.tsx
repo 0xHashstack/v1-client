@@ -145,7 +145,7 @@ const SwapModal = ({
     setCurrentBorrowId(currentId);
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
-    const result = userLoans.find((item):any => item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim());
+    const result = userLoans.find((item: { loanId: any; }):any => item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim());
     setBorrowAmount(result?.loanAmountParsed)
   };
 
@@ -425,7 +425,7 @@ const SwapModal = ({
                             setCurrentBorrowId("ID - " + coin);
                             handleBorrowMarketCoinChange(coin);
                             const borrowIdString = String(coin);
-                            const result = userLoans.find((item):any => item?.loanId == borrowIdString.slice(borrowIdString.indexOf("-") + 1).trim());
+                            const result = userLoans.find((item: { loanId: string; }):any => item?.loanId == borrowIdString.slice(borrowIdString.indexOf("-") + 1).trim());
                             // console.log(result)
                             setBorrowAmount(result?.loanAmountParsed)
                           }}
