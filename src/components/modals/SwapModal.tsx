@@ -51,6 +51,7 @@ const SwapModal = ({
   borrowIds,
   currentId,
   currentMarketCoin,
+  BorrowBalance,
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -146,7 +147,7 @@ const SwapModal = ({
     // console.log("got id", id);
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
       if (borrowIDCoinMap[i].id === id) {
-        setCurrentBorrowMarketCoin(borrowIDCoinMap[i].name);
+        setCurrentBorrowMarketCoin(borrowIDCoinMap[i].name.slice(1));
         return;
       }
     }
@@ -258,11 +259,11 @@ const SwapModal = ({
                 borderRadius="md"
                 className="navbar"
                 cursor="pointer"
-                onClick={() =>{
-                  if(transactionStarted){
+                onClick={() => {
+                  if (transactionStarted) {
                     return;
-                  }else{
-                    handleDropdownClick("swapModalSupplyMarketDropDown")
+                  } else {
+                    handleDropdownClick("swapModalSupplyMarketDropDown");
                   }
                 }}
               >
@@ -370,12 +371,12 @@ const SwapModal = ({
                 color="white"
                 className="navbar"
                 onClick={() => {
-                  if(transactionStarted){
+                  if (transactionStarted) {
                     return;
-                  }else{
-
-                    handleDropdownClick("swapModalBorrowIDDropDown")}}
+                  } else {
+                    handleDropdownClick("swapModalBorrowIDDropDown");
                   }
+                }}
                 as="button"
               >
                 <Box display="flex" gap="1">
@@ -408,9 +409,9 @@ const SwapModal = ({
                           display="flex"
                           alignItems="center"
                           gap="1"
-                          pr="2"
+                          px="2"
                           onClick={() => {
-                            setCurrentBorrowId(coin);
+                            setCurrentBorrowId("ID - " + coin);
                             handleBorrowMarketCoinChange(coin);
                           }}
                         >
@@ -426,15 +427,19 @@ const SwapModal = ({
                             w="full"
                             display="flex"
                             py="5px"
-                            px={`${coin === currentBorrowId ? "2" : "5"}`}
+                            px={`${
+                              "ID - " + coin === currentBorrowId ? "2" : "5"
+                            }`}
                             gap="1"
                             bg={`${
-                              coin === currentBorrowId ? "#0C6AD9" : "inherit"
+                              "ID - " + coin === currentBorrowId
+                                ? "#0C6AD9"
+                                : "inherit"
                             }`}
                             borderRadius="md"
                           >
                             {/* <Box p="1">{getCoin(coin)}</Box> */}
-                            <Text>{coin}</Text>
+                            <Text>ID - {coin}</Text>
                           </Box>
                         </Box>
                       );
@@ -494,7 +499,7 @@ const SwapModal = ({
                 fontStyle="normal"
                 fontFamily="Inter"
               >
-                Borrow Balance: {walletBalance}
+                Borrow Balance: {BorrowBalance}
                 <Text color="#6E7781" ml="0.2rem">
                   {` ${currentBorrowMarketCoin}`}
                 </Text>
@@ -813,21 +818,23 @@ const SwapModal = ({
               </Box>
             </Box>
             {currentSelectedCoin != "Select a market" ? (
-              <Box onClick={()=>{
-                setTransactionStarted(true);
-              }}>
-              <Button
-                bg="#101216"
-                color="#8B949E"
-                size="sm"
-                width="100%"
-                mt="1.5rem"
-                mb="1.5rem"
-                border="1px solid #8B949E"
-                _hover={{ bg: "#10216" }}
+              <Box
+                onClick={() => {
+                  setTransactionStarted(true);
+                }}
               >
-                Spend Borrow
-              </Button>
+                <Button
+                  bg="#101216"
+                  color="#8B949E"
+                  size="sm"
+                  width="100%"
+                  mt="1.5rem"
+                  mb="1.5rem"
+                  border="1px solid #8B949E"
+                  _hover={{ bg: "#10216" }}
+                >
+                  Spend Borrow
+                </Button>
               </Box>
             ) : (
               <Button

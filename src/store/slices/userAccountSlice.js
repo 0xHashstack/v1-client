@@ -23,6 +23,7 @@ const initialState = {
   oracleAndFairPrices: undefined,
   offchainCurrentBlock: undefined,
   assetWalletBalance: {},
+  userLoans:[],
 
   toastTransactionStarted: false,
   transactionStarted: false,
@@ -47,6 +48,9 @@ export const userAccountSlice = createSlice({
     },
     setAssetWalletBalance(state, action) {
       state.assetWalletBalance = action.payload;
+    },
+    setUserLoans(state,action){
+      state.userLoans=action.payload;
     },
     setAccountAddress(state, action) {
       state.accountAddress = action.payload;
@@ -135,6 +139,7 @@ export const {
   setAssetWalletBalance,
   setToastTransactionStarted,
   setTransactionStarted,
+  setUserLoans,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -154,6 +159,7 @@ export const selectTransactionStatus = (state) =>
   state.user_account.transactionStatus;
 export const selectAssetWalletBalance = (state) =>
   state.user_account.assetWalletBalance;
+  export const selectUserLoans = (state) => state.user_account.userLoans;
 
 export const selectInputSupplyAmount = (state) =>
   state.user_account.inputSupplyAmount;

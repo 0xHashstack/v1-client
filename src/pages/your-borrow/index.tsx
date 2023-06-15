@@ -13,7 +13,7 @@ import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 import { useDispatch } from "react-redux";
 import { useAccount, useConnectors } from "@starknet-react/core";
-import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
+import { setSpendBorrowSelectedDapp, setUserLoans } from "@/store/slices/userAccountSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
 const YourBorrow = () => {
@@ -30,8 +30,9 @@ const YourBorrow = () => {
   ];
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
+  const dispatch = useDispatch();
   const { account, address } = useAccount();
-  const [UserLoans, setUserLoans] = useState<ILoan[] | null>([]);
+  const [UserLoans, setuserLoans] = useState<ILoan[] | null>([]);
   // useEffect(()=>{
   //   const walletConnected = localStorage.getItem('lastUsedConnector');
   //   if(walletConnected=="braavos"){
@@ -44,6 +45,8 @@ const YourBorrow = () => {
     const loan = async () => {
       try {
         const loans = await getUserLoans(address || "");
+        // console.log(loans,"Loans from your borrow index page")
+
         // loans.filter(
         //   (loan) =>
         //     loan.collateralAmountParsed &&
@@ -52,7 +55,7 @@ const YourBorrow = () => {
         //     loan.loanAmountParsed > 0
         // );
         if (loans) {
-          setUserLoans(
+          setuserLoans(
             loans.filter(
               (loan) =>
                 loan?.collateralAmountParsed &&
@@ -62,6 +65,13 @@ const YourBorrow = () => {
             )
           );
         }
+        dispatch(setUserLoans(loans.filter(
+          (loan) =>
+            loan.collateralAmountParsed &&
+            loan.collateralAmountParsed > 0 &&
+            loan.loanAmountParsed &&
+            loan.loanAmountParsed > 0
+        )));
       } catch (err) {
         console.log("your-borrow : unable to fetch user loans");
       }
@@ -70,7 +80,7 @@ const YourBorrow = () => {
     if (account) {
       loan();
     }
-  }, [account]);
+  }, [account, UserLoans]);
 
   return (
     <PageCard pt="6.5rem">
@@ -98,7 +108,7 @@ const YourBorrow = () => {
           display="flex"
           justifyContent="space-between"
           alignItems="flex-end"
-          // bgColor="blue"
+        // bgColor="blue"
         >
           <VStack
             display="flex"
@@ -130,6 +140,7 @@ const YourBorrow = () => {
         Coins={Coins}
         columnItems={columnItems}
         Borrows={UserLoans}
+        userLoans={UserLoans}
       />
       <Box
         paddingY="1rem"
@@ -148,7 +159,7 @@ const YourBorrow = () => {
             rows={6}
           />
         </Box>
-        <LatestSyncedBlock width="16rem" height="100%" block={83207} />
+        {/* <LatestSyncedBlock width="16rem" height="100%" block={83207} /> */}
       </Box>
       {/* <SupplyModal /> */}
     </PageCard>

@@ -48,6 +48,7 @@ const StakeModal = ({
   borrowIds,
   currentId,
   currentMarketCoin,
+  BorrowBalance,
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
@@ -57,7 +58,7 @@ const StakeModal = ({
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] =
     useState(currentMarketCoin);
   const [currentBorrowId, setCurrentBorrowId] = useState(currentId);
-  const [transactionStarted, setTransactionStarted] = useState(false)
+  const [transactionStarted, setTransactionStarted] = useState(false);
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
 
@@ -139,7 +140,7 @@ const StakeModal = ({
     // console.log("got id", id);
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
       if (borrowIDCoinMap[i].id === id) {
-        setCurrentBorrowMarketCoin(borrowIDCoinMap[i].name);
+        setCurrentBorrowMarketCoin(borrowIDCoinMap[i].name.slice(1));
         return;
       }
     }
@@ -237,14 +238,13 @@ const StakeModal = ({
                   borderRadius="md"
                   className="navbar"
                   cursor="pointer"
-                  onClick={() =>{
-                    if(transactionStarted){
+                  onClick={() => {
+                    if (transactionStarted) {
                       return;
-                    }else{
-
-                      handleDropdownClick("stakeModalSupplyMarketDropDown")
-                    }}
-                  }
+                    } else {
+                      handleDropdownClick("stakeModalSupplyMarketDropDown");
+                    }
+                  }}
                 >
                   <Box display="flex" gap="1">
                     {currentSelectedCoin != "Select a market" ? (
@@ -349,12 +349,11 @@ const StakeModal = ({
                   borderRadius="md"
                   color="white"
                   className="navbar"
-                  onClick={() =>{
-                    if(transactionStarted){
+                  onClick={() => {
+                    if (transactionStarted) {
                       return;
-                    }else{
-
-                      handleDropdownClick("stakeModalBorrowIDDropDown")
+                    } else {
+                      handleDropdownClick("stakeModalBorrowIDDropDown");
                     }
                   }}
                   as="button"
@@ -387,9 +386,9 @@ const StakeModal = ({
                             display="flex"
                             alignItems="center"
                             gap="1"
-                            pr="2"
+                            paddingX="2"
                             onClick={() => {
-                              setCurrentBorrowId(coin);
+                              setCurrentBorrowId("ID - " + coin);
                               handleBorrowMarketCoinChange(coin);
                             }}
                           >
@@ -405,15 +404,19 @@ const StakeModal = ({
                               w="full"
                               display="flex"
                               py="5px"
-                              px={`${coin === currentBorrowId ? "2" : "5"}`}
+                              px={`${
+                                "ID - " + coin === currentBorrowId ? "2" : "5"
+                              }`}
                               gap="1"
                               bg={`${
-                                coin === currentBorrowId ? "#0C6AD9" : "inherit"
+                                "ID - " + coin === currentBorrowId
+                                  ? "#0C6AD9"
+                                  : "inherit"
                               }`}
                               borderRadius="md"
                             >
                               {/* <Box p="1">{getCoin(coin)}</Box> */}
-                              <Text>{coin}</Text>
+                              <Text>ID - {coin}</Text>
                             </Box>
                           </Box>
                         );
@@ -477,7 +480,7 @@ const StakeModal = ({
                   fontStyle="normal"
                   fontFamily="Inter"
                 >
-                  Borrow Balance: {walletBalance}
+                  Borrow Balance: {BorrowBalance}
                   <Text color="#6E7781" ml="0.2rem">
                     {` ${currentBorrowMarketCoin}`}
                   </Text>
@@ -793,19 +796,23 @@ const StakeModal = ({
                 </Box>
               </Box>
               {currentSelectedCoin != "Select a market" ? (
-                <Box onClick={()=>{setTransactionStarted(true)}}>
-                <Button
-                  bg="#101216"
-                  color="#8B949E"
-                  size="sm"
-                  width="100%"
-                  mt="1.5rem"
-                  mb="1.5rem"
-                  border="1px solid #8B949E"
-                  _hover={{ bg: "#10216" }}
+                <Box
+                  onClick={() => {
+                    setTransactionStarted(true);
+                  }}
                 >
-                  Spend Borrow
-                </Button>
+                  <Button
+                    bg="#101216"
+                    color="#8B949E"
+                    size="sm"
+                    width="100%"
+                    mt="1.5rem"
+                    mb="1.5rem"
+                    border="1px solid #8B949E"
+                    _hover={{ bg: "#10216" }}
+                  >
+                    Spend Borrow
+                  </Button>
                 </Box>
               ) : (
                 <Button

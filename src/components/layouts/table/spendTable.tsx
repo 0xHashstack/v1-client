@@ -27,7 +27,10 @@ import TableClose from "./tableIcons/close";
 import TableInfoIcon from "./tableIcons/infoIcon";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
-import { setCurrentPage } from "@/store/slices/userAccountSlice";
+import {
+  selectUserLoans,
+  setCurrentPage,
+} from "@/store/slices/userAccountSlice";
 import HazardIcon from "@/assets/icons/hazardIcon";
 import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
 import TableYagiLogoDull from "./tableIcons/yagiLogoDull";
@@ -60,6 +63,8 @@ const SpendTable = () => {
     "LTV",
     "Health factor",
   ];
+  const userLoans: any = useSelector(selectUserLoans);
+  console.log(userLoans, "user loans in spend table");
   const rows: any[] = [
     // ["Borrow ID 12345", "rUSDT", "7%", "BTC", "00.00%"],
     // ["Borrow ID 12346", "rBTC", "7%", "BTC", "00.00%"],
@@ -80,6 +85,7 @@ const SpendTable = () => {
   const [borrowIds, setBorrowIds] = useState([]);
   const [currentId, setCurrentId] = useState("");
   const [currentMarketCoin, setCurrentMarketCoin] = useState("");
+  const [borrowAmount, setBorrowAmount] = useState<number>(0);
   const [coins, setCoins] = useState([]);
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const [tabIndex, setTabIndex] = useState(0);
@@ -91,21 +97,21 @@ const SpendTable = () => {
     let temp1: any = [];
     let temp2: any = [];
     let temp3: any = [];
-    if (rows.length != 0) {
-      for (let i = 0; i < rows.length; i++) {
+    if (userLoans.length != 0) {
+      for (let i = 0; i < userLoans.length; i++) {
         temp1.push({
-          id: "ID - " + rows[i][0].slice(10),
-          name: rows[i][1].slice(1),
+          id: userLoans[i].loanId,
+          name: userLoans[i].loanMarket,
         });
-        temp2.push("ID - " + rows[i][0].slice(10));
-        temp3.push(rows[i][1].slice(1));
+        temp2.push(userLoans[i].loanId);
+        temp3.push(userLoans[i].loanMarket);
       }
     }
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);
     setCoins(temp3);
-    // console.log("faisal coin mapping", borrowIDCoinMap);
-  }, []);
+    console.log("faisal coin mapping", borrowIDCoinMap);
+  }, [userLoans]);
 
   useEffect(() => {
     setCurrentBorrow(-1);
@@ -216,9 +222,10 @@ const SpendTable = () => {
             </Thead>
 
             <Tbody bg="inherit" position="relative">
-              {rows
+              {userLoans
                 .slice(lower_bound, upper_bound + 1)
-                .map((currentRow, index) => {
+                .filter((borrow: any) => borrow.spendType === "UNSPENT")
+                .map((borrow: any) => {
                   return (
                     <>
                       <Tr
@@ -229,15 +236,18 @@ const SpendTable = () => {
                         }}
                         position="relative"
                         height="4rem"
-                        key={index}
+                        key={borrow.idx}
                         cursor="pointer"
-                        bgColor={currentBorrow == index ? "#2B2F35" : "none "}
+                        bgColor={
+                          currentBorrow == borrow.loanId ? "#2B2F35" : "none "
+                        }
                         // bgColor="green"
                         onClick={() => {
                           setSelectedDapp("trade");
-                          setCurrentBorrow(index);
-                          setCurrentId("ID - " + currentRow[0].slice(10));
-                          setCurrentMarketCoin(currentRow[1].slice(1));
+                          setCurrentBorrow(borrow.loanId);
+                          setBorrowAmount(borrow.currentLoanAmountParsed);
+                          setCurrentId("ID - " + borrow.loanId);
+                          setCurrentMarketCoin(borrow.currentLoanMarket);
                           dispatch(setSpendBorrowSelectedDapp("trade"));
                         }}
                       >
@@ -249,7 +259,9 @@ const SpendTable = () => {
                             // borderRadius="6px"
                             bgColor="#2B2F35"
                             left={-2}
-                            display={currentBorrow == index ? "block" : "none"}
+                            display={
+                              currentBorrow == borrow.loanId ? "block" : "none"
+                            }
                           />
                           <Box
                             display="flex"
@@ -265,7 +277,7 @@ const SpendTable = () => {
                               color="#E6EDF3"
                               textAlign="left"
                             >
-                              {currentRow[0]}
+                              BORROW ID {borrow.loanId}
                             </Text>
                           </Box>
                         </Td>
@@ -279,7 +291,7 @@ const SpendTable = () => {
                           >
                             <Box my="1">
                               <Image
-                                src={`./${currentRow[1].slice(1)}.svg`}
+                                src={`./${borrow.currentLoanMarket}.svg`}
                                 alt="Picture of the author"
                                 width={16}
                                 height={16}
@@ -292,7 +304,7 @@ const SpendTable = () => {
                               lineHeight="22px"
                               color="#E6EDF3"
                             >
-                              {currentRow[1]}
+                              {borrow.currentLoanMarket}
                             </Text>
                           </Box>
                         </Td>
@@ -304,7 +316,7 @@ const SpendTable = () => {
                           fontStyle="normal"
                           lineHeight="22px"
                         >
-                          {currentRow[2]}
+                          7%
                         </Td>
                         <Td textAlign="center">
                           <Box
@@ -324,7 +336,7 @@ const SpendTable = () => {
                               lineHeight="22px"
                               color="#E6EDF3"
                             >
-                              {currentRow[3]}
+                              BTC
                             </Text>
                           </Box>
                         </Td>
@@ -346,7 +358,7 @@ const SpendTable = () => {
                               color="#E6EDF3"
                               textAlign="right"
                             >
-                              {currentRow[4]}
+                              00.00%
                             </Text>
                           </Box>
                         </Td>
@@ -412,7 +424,7 @@ const SpendTable = () => {
         <Pagination
           currentPagination={currentPagination}
           setCurrentPagination={(x: any) => setCurrentPagination(x)}
-          max={rows.length}
+          max={userLoans.length}
           rows={3}
         />
       </Box>
@@ -554,6 +566,7 @@ const SpendTable = () => {
                   borrowIds={borrowIds}
                   currentId={currentId}
                   currentMarketCoin={currentMarketCoin}
+                  BorrowBalance={borrowAmount}
                 />
               </Box>
             </TabPanel>
@@ -571,6 +584,7 @@ const SpendTable = () => {
                   borrowIds={borrowIds}
                   currentId={currentId}
                   currentMarketCoin={currentMarketCoin}
+                  BorrowBalance={borrowAmount}
                 />
               </Box>
             </TabPanel>
@@ -590,6 +604,7 @@ const SpendTable = () => {
                         borrowIds={borrowIds}
                         currentId={currentId}
                         currentMarketCoin={currentMarketCoin}
+                        BorrowBalance={borrowAmount}
                       />
                     ) : (
                       <TableYagiLogoDull />
@@ -654,7 +669,7 @@ const SpendTable = () => {
           justifyContent="flex-end"
           alignItems="flex-end"
         >
-          <LatestSyncedBlock width="16rem" height="100%" block={83207} />
+          {/* <LatestSyncedBlock width="16rem" height="100%" block={83207} /> */}
         </Box>
       </Box>
     </>

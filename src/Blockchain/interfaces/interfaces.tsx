@@ -6,6 +6,12 @@ export interface ItokenDecimalsMap {
     [key: string]: number | undefined;
 }
 
+export type NativeToken = "BTC" | "ETH" | "DAI" | "USDC" | "USDT";
+export type DToken = "dBTC" | "dETH" | "dDAI" | "dUSDC" | "dUSDT";
+export type RToken = "rBTC" | "rETH" | "rDAI" | "rUSDC" | "rUSDT";
+
+export type Token = NativeToken | DToken | RToken;
+
 type LoanState = "ACTIVE" | "SPENT" | "REPAID" | "LIQUIDATED" | null;
 type SpendType = "UNSPENT" | "SWAP" | "LIQUIDITY" | null;
 type L3App = "jediSwap" | "mySwap" | "Yagi" | null;
@@ -13,13 +19,13 @@ export interface ILoan {
     loanId: number; // loan id
     borrower: string; // borrower address
   
-    loanMarket: string | undefined;    // dToken like dBTC
+    loanMarket: DToken | undefined;    // dToken like dBTC
     loanMarketAddress: string | undefined; // dToken Address 
-    underlyingMarket: string | undefined;  // BTC
+    underlyingMarket: NativeToken | undefined;  // BTC
     underlyingMarketAddress: string | undefined; // BTC Address
-    currentLoanMarket: string | undefined;  // USDT, will be native only
+    currentLoanMarket: string | undefined;  // USDT, will be native only or any lpToken
     currentLoanMarketAddress: string | undefined; // USDT Address
-    collateralMarket: string | undefined;  // rToken like rUSDC
+    collateralMarket: RToken | undefined;  // rToken like rUSDC
     collateralMarketAddress: string | undefined; // rToken Address
   
     loanAmount: string;  // dToken amount
@@ -42,7 +48,7 @@ export interface ILoan {
 }
 
 export interface IDeposit {
-    tokenAddress: string;
+    tokenAddress: RToken;
     rTokenAmount: number;
     // rTokenAmountParsed: number;
     underlyingAssetAmount: number;
@@ -64,7 +70,7 @@ export interface IMarketInfo {
     exchangeRateUnderlyingToRtoken: number;
     exchangeRateUnderlyingToDtoken: number;
 
-    tokenAddress: string;
+    tokenAddress: NativeToken;
 }
 
 export interface IProtocolReserves {

@@ -159,6 +159,21 @@ const YourBorrowModal = ({
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
+      case "BTC":
+        return <BTCLogo height={"16px"} width={"16px"} />;
+        break;
+      case "USDC":
+        return <USDCLogo height={"16px"} width={"16px"} />;
+        break;
+      case "USDT":
+        return <USDTLogo height={"16px"} width={"16px"} />;
+        break;
+      case "ETH":
+        return <ETHLogo height={"16px"} width={"16px"} />;
+        break;
+      case "DAI":
+        return <DAILogo height={"16px"} width={"16px"} />;
+        break;
       case "dBTC":
         return <BTCLogo height={"16px"} width={"16px"} />;
         break;
@@ -1021,6 +1036,7 @@ const YourBorrowModal = ({
 
   // const walletBalance = useSelector(selectWalletBalance);
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
+  const [tabValue, setTabValue] = useState(1);
   const resetStates = () => {
     try {
       setRadioValue("1");
@@ -1036,6 +1052,7 @@ const YourBorrowModal = ({
       setSliderValue(0);
       setSliderValue2(0);
       setRepayAmount(0);
+      setTabValue(1);
       setCollateralTransactionStarted(false);
       setTransactionStarted(false);
       dispatch(resetModalDropdowns());
@@ -1048,8 +1065,6 @@ const YourBorrowModal = ({
     setinputCollateralAmount(0);
     setSliderValue2(0);
   }, [currentBorrowMarketCoin2]);
-
-  const [tabValue, setTabValue] = useState(1);
 
   return (
     <Box>
@@ -1354,7 +1369,7 @@ const YourBorrowModal = ({
                                       handleBorrowMarketCoinChange1(coin);
                                     }}
                                   >
-                                    {coin === currentBorrowId1 && (
+                                    {"ID - " + coin === currentBorrowId1 && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -1367,11 +1382,13 @@ const YourBorrowModal = ({
                                       display="flex"
                                       py="5px"
                                       px={`${
-                                        coin === currentBorrowId1 ? "2" : "5"
+                                        "ID - " + coin === currentBorrowId1
+                                          ? "2"
+                                          : "5"
                                       }`}
                                       gap="1"
                                       bg={`${
-                                        coin === currentBorrowId1
+                                        "ID - " + coin === currentBorrowId1
                                           ? "#0C6AD9"
                                           : "inherit"
                                       }`}
@@ -2410,7 +2427,7 @@ const YourBorrowModal = ({
                                       handleBorrowMarketCoinChange2(coin);
                                     }}
                                   >
-                                    {coin === currentBorrowId2 && (
+                                    {"ID - " + coin === currentBorrowId2 && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -2423,11 +2440,13 @@ const YourBorrowModal = ({
                                       display="flex"
                                       py="5px"
                                       px={`${
-                                        coin === currentBorrowId2 ? "2" : "5"
+                                        "ID - " + coin === currentBorrowId2
+                                          ? "2"
+                                          : "5"
                                       }`}
                                       gap="1"
                                       bg={`${
-                                        coin === currentBorrowId2
+                                        "ID - " + coin === currentBorrowId2
                                           ? "#0C6AD9"
                                           : "inherit"
                                       }`}
@@ -2496,7 +2515,7 @@ const YourBorrowModal = ({
                           }}
                         >
                           <Box display="flex" gap="1">
-                            <Box p="1">{getCoin(loan.currentLoanMarket)}</Box>
+                            <Box p="1">{getCoin(currentBorrowMarketCoin2)}</Box>
                             <Text color="white" mt="0.12rem">
                               {currentBorrowMarketCoin2}
                             </Text>
