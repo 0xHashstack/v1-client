@@ -1061,7 +1061,7 @@ const YourBorrowModal = ({
       setCollateralTransactionStarted(false);
       setTransactionStarted(false);
       dispatch(resetModalDropdowns());
-      setTokens("rToken")
+      setcurrentTokenSelected("rToken");
       dispatch(setTransactionStatus(""));
     } catch (err) {
       console.log("yourBorrowModal reset states - ", err);
