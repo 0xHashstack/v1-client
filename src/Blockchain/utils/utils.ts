@@ -4,6 +4,7 @@ import { utils } from "ethers";
 import { Logger } from "ethers/lib/utils";
 import { getTokenFromAddress } from "../stark-constants";
 import { tokenDecimalsMap } from "./addressServices";
+import { Token } from "../interfaces/interfaces";
 
 export const fixedSpecial = (num: number, n: number) => {
   var str = num.toPrecision();
@@ -122,7 +123,10 @@ export const borrowInterestAccrued = (asset: any) => {
 };
 
 
-export const etherToWeiBN = (amount: number, tokenName: string) => {
+export const etherToWeiBN = (amount: number, tokenName: Token) => {
+  if(!amount) {
+    return 0;
+  }
   const decimals = tokenDecimalsMap[tokenName];
   if(!decimals) {
     return 0;
@@ -135,7 +139,7 @@ export const etherToWeiBN = (amount: number, tokenName: string) => {
   return amountBN;
 };
 
-export const weiToEtherNumber = (amount: string, tokenName: string) => {
+export const weiToEtherNumber = (amount: string, tokenName: Token) => {
   const decimals = tokenDecimalsMap[tokenName];
   if(!decimals) {
     return 0;
