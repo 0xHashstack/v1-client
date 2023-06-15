@@ -12,7 +12,7 @@ const TransactionToast = () => {
   return (
     <Box
       backgroundColor="inherit"
-      display={toastTransactionStarted ? "block" : "none"}
+      display={!toastTransactionStarted ? "block" : "none"}
       // visibility={toastTransactionStarted ? "visible" : "hidden"}
       position="fixed"
       width="20vw"
@@ -25,8 +25,8 @@ const TransactionToast = () => {
         position="fixed"
         bgColor="#101216"
         // p={0}
-Expand All
-	@@ -30,7 +30,7 @@ const TransactionToast = () => {
+        color="#8B949E"
+        size="sm"
         width="20%"
         // mt="1.5rem"
         // mb="1.5rem"
@@ -34,13 +34,18 @@ Expand All
         // bottom="3rem"
         borderRadius="2px"
         labelSuccessArray={[
-Expand All
-	@@ -44,20 +44,299 @@ const TransactionToast = () => {
+          "Deposit Amount approved",
+          "Successfully transferred to Hashstack’s supply vault.",
+          "Determining the rToken amount to mint.",
+          "rTokens have been minted successfully.",
+          "Transaction complete.",
+          // <ErrorButton errorText="Transaction failed" />,
+          // <ErrorButton errorText="Copy error!" />,
           <SuccessButton key={"successButton"} successText={"Success"} />,
         ]}
         labelErrorArray={[
-          "Deposit Amount approved",
-          "Successfully transferred to Hashstack’s supply vault.",
+          // "Deposit Amount approved",
+          // "Successfully transferred to Hashstack’s supply vault.",
           <ErrorButton errorText="Transaction failed" />,
           <ErrorButton errorText="Copy error!" />,
         ]}
