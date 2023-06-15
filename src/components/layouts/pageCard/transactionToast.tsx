@@ -62,8 +62,8 @@ const TransactionToast = () => {
           <SuccessButton key={"successButton"} successText={"Success"} />,
         ]}
         labelErrorArray={[
-          // "Deposit Amount approved",
-          // "Successfully transferred to Hashstack’s supply vault.",
+          "Deposit Amount approved",
+          "Successfully transferred to Hashstack’s supply vault.",
           <ErrorButton errorText="Transaction failed" />,
           <ErrorButton errorText="Copy error!" />,
         ]}

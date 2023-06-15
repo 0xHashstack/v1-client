@@ -60,9 +60,7 @@ const AnimatedButton: React.FC<Props> = ({
 
       return () => clearInterval(interval);
     } else if (isAnimationStarted && transactionStatus == "failed") {
-      setProgressBarWidth(
-        `100%`
-      );
+      setProgressBarWidth(`${100}%`);
 
       // setProgressBarWidth(
       //   `${((currentStringIndex + 1) / labelArray.length) * 100 + 2}%`
@@ -91,13 +89,12 @@ const AnimatedButton: React.FC<Props> = ({
 
       return () => clearInterval(interval);
     } else if (isAnimationStarted && transactionStatus == "failed") {
-      let interval: any = setInterval(() => {
-        setProgressBarWidth(
-          `${((currentStringIndex + 1) / labelErrorArray.length) * 100}%`
-        );
-      }, 1500);
-
-      return () => clearInterval(interval);
+      // let interval: any = setInterval(() => {
+      //   setProgressBarWidth(
+      //     `${((currentStringIndex + 1) / labelErrorArray.length) * 100}%`
+      //   );
+      // }, 1500);
+      // return () => clearInterval(interval);
     }
   }, [currentStringIndex]);
 
