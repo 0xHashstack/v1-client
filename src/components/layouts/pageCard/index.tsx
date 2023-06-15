@@ -152,7 +152,12 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
   useEffect(() => {
-    dispatch(setAssetWalletBalance(assetBalance));
+    // console.log(assetBalance);
+    try {
+      dispatch(setAssetWalletBalance(assetBalance));
+    } catch (error) {
+      console.log("serializing warning");
+    }
   }, [assetBalance]);
   // useEffect(() => {
   //   const timer = setTimeout(() => {
