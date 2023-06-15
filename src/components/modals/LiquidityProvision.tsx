@@ -47,6 +47,7 @@ import {
   selectWalletBalance,
   setInputSupplyAmount,
   selectSelectedDapp,
+  selectUserLoans,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -76,8 +77,6 @@ const LiquidityProvisionModal = ({
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] =
     useState(currentMarketCoin);
-    const [borrowAmount, setBorrowAmount] = useState(BorrowBalance)
-    console.log(borrowAmount)
   const [currentBorrowId, setCurrentBorrowId] = useState(currentId);
   const [currentPool, setCurrentPool] = useState("Select a pool");
   const [inputAmount, setinputAmount] = useState(0);
@@ -89,6 +88,18 @@ const LiquidityProvisionModal = ({
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [walletBalance,setwalletBalance]=useState(BorrowBalance)
   const inputAmount1 = useSelector(selectInputSupplyAmount);
+  const userLoans=useSelector(selectUserLoans);
+  const [borrowAmount, setBorrowAmount] = useState(BorrowBalance)
+  // console.log(userLoans)
+  // console.log(currentId.slice(currentId.indexOf("-") + 1).trim())
+  useEffect(() => {
+    const result = userLoans.find((item:any) => item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim());
+    setBorrowAmount(result?.loanAmountParsed)
+    // console.log(borrowAmount)
+    // Rest of your code using the 'result' variable
+    
+  }, [currentId]);
+  
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -178,6 +189,8 @@ const LiquidityProvisionModal = ({
     setCurrentBorrowMarketCoin(currentMarketCoin);
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
+    const result = userLoans.find((item):any => item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim());
+    setBorrowAmount(result?.loanAmountParsed)
   };
 
   useEffect(() => {
@@ -473,6 +486,11 @@ const LiquidityProvisionModal = ({
                             onClick={() => {
                               setCurrentBorrowId(coin);
                               handleBorrowMarketCoinChange(coin);
+                              // console.log(typeof coin,"coin")
+                              const borrowIdString = String(coin);
+                              const result = userLoans.find((item):any => item?.loanId == borrowIdString.slice(borrowIdString.indexOf("-") + 1).trim());
+                              // console.log(result)
+                              setBorrowAmount(result?.loanAmountParsed)
                             }}
                           >
                             {coin === currentBorrowId && (
@@ -560,7 +578,7 @@ const LiquidityProvisionModal = ({
                   fontStyle="normal"
                   fontFamily="Inter"
                 >
-                  Borrow Balance: {BorrowBalance}
+                  Borrow Balance: {borrowAmount}
                   <Text color="#6E7781" ml="0.2rem">
                     {` ${currentBorrowMarketCoin}`}
                   </Text>
