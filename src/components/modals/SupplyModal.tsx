@@ -176,11 +176,29 @@ const SupplyModal = ({
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
+    onReceived: () => {
+      console.log("trans received");
+    },
+    onPending: () => {
+      console.log("trans pending");
+    },
+    onRejected(transaction) {
+      console.log("treans rejected");
+    },
+    onAcceptedOnL1: () => {
+      console.log("trans onAcceptedOnL1");
+    },
+    onAcceptedOnL2(transaction) {
+      console.log("trans onAcceptedOnL2 - ", transaction);
+    },
   });
 
   const handleTransaction = async () => {
     try {
       const deposit = await writeAsyncDeposit();
+      if (deposit?.transaction_hash) {
+        console.log("trans transaction hash created");
+      }
       // const deposit = await writeAsyncDepositStake();
       console.log("Supply Modal - deposit ", deposit);
       setDepositTransHash(deposit?.transaction_hash);
