@@ -172,7 +172,7 @@ const SpendTable = () => {
           </Box>
         </Box>
       )}
-      {upper_bound >= lower_bound && rows.length > 0 ? (
+      {upper_bound >= lower_bound && userLoans.length > 0 ? (
         <TableContainer
           //   bg="#101216"
           border="1px"

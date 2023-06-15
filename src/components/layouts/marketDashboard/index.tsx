@@ -17,21 +17,21 @@ const MarketDashboard = () => {
   useEffect(() => {
     fetchOraclePrices();
     // fetchProtocolReserves();
-    // fetchUserDeposits();
+    fetchUserDeposits();
     // fetchUserReserves();
     // fetchUserLoans();
   }, []);
   // useEffect(()=>{
   //   fetchUserLoans();
   // },[account])
-  // const fetchUserDeposits = async () => {
-  //   try {
-  //     const reserves = await getUserDeposits(account);
-  //     console.log(reserves, "market page -user supply");
-  //   } catch (err) {
-  //     console.log("Error fetching protocol reserves", err);
-  //   }
-  // };
+  const fetchUserDeposits = async () => {
+    try {
+      const reserves = await getUserDeposits(address || "");
+      console.log(reserves, "market page -user supply");
+    } catch (err) {
+      console.log("Error fetching protocol reserves", err);
+    }
+  };
   const fetchUserReserves = async () => {
     try {
       const reserves = await getUserReserves();

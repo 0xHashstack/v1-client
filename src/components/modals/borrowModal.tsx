@@ -72,9 +72,9 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const walletBalances=useSelector(selectAssetWalletBalance);
   const [walletBalance, setwalletBalance] = useState(0)
   useEffect(()=>{
-    setwalletBalance(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 24)
+    setwalletBalance(walletBalances[coin?.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 24)
     // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
-  },[walletBalances[coin.name]?.statusBalanceOf])
+  },[coin, walletBalances[coin?.name]?.statusBalanceOf])
   const {
     market,
     setMarket,
