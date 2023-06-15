@@ -71,7 +71,8 @@ import ArrowUp from "@/assets/icons/arrowup";
 import useRepay from "@/Blockchain/hooks/Writes/useRepay";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import useAddCollateral from "@/Blockchain/hooks/Writes/useAddCollateral";
-
+import useSwap from "../../Blockchain/hooks/Writes/useSwap";
+import useLiquidity from "@/Blockchain/hooks/Writes/useLiquidity";
 const YourBorrowModal = ({
   borrowIDCoinMap,
   currentID,
@@ -91,6 +92,8 @@ const YourBorrowModal = ({
   loan,
   ...restProps
 }: any) => {
+  // console.log(currentID)
+  // console.log(borrowIds);
   // console.log("took map", borrowIDCoinMap, currentID, currentMarket);
   // console.log();
 
@@ -160,9 +163,61 @@ const YourBorrowModal = ({
     setIsSelfLiquidateHash,
   } = useRepay(loan);
 
+  const {
+    swapLoanId,
+    setSwapLoanId,
+    toMarket,
+    setToMarket,
+
+    dataJediSwap_swap,
+    errorJediSwap_swap,
+    writeJediSwap_swap,
+    writeAsyncJediSwap_swap,
+    isIdleJediSwap_swap,
+    isLoadingJediSwap_swap,
+    statusJediSwap_swap,
+
+    datamySwap_swap,
+    errormySwap_swap,
+    writemySwap_swap,
+    writeAsyncmySwap_swap,
+    isIdlemySwap_swap,
+    isLoadingmySwap_swap,
+    statusmySwap_swap,
+  }=useSwap();
+
+  const {
+    liquidityLoanId,
+    setLiquidityLoanId,
+    toMarketA,
+    setToMarketA,
+
+    toMarketB,
+    setToMarketB,
+
+    dataJediSwap_addLiquidity,
+    errorJediSwap_addLiquidity,
+    writeJediSwap_addLiquidity,
+    writeAsyncJediSwap_addLiquidity,
+    isIdleJediSwap_addLiquidity,
+    isLoadingJediSwap_addLiquidity,
+    statusJediSwap_addLiquidity,
+
+    datamySwap_addLiquidity,
+    errormySwap_addLiquidity,
+    writemySwap_addLiquidity,
+    writeAsyncmySwap_addLiquidity,
+    isIdlemySwap_addLiquidity,
+    isLoadingmySwap_addLiquidity,
+    statusmySwap_addLiquidity,
+  }=useLiquidity();
+
   useEffect(() => {
     if (loan) {
       setLoanId(loan?.loanId);
+      setSwapLoanId("11");
+      // console.log(swapLoanId,"swap loan id")
+      setLiquidityLoanId(loan?.loanId);
       setCollateralAsset(
         loan?.collateralMarket[0] == "r"
           ? loan?.collateralMarket.slice(1)
@@ -245,6 +300,22 @@ const YourBorrowModal = ({
       dispatch(setTransactionStatus("failed"));
     }
   };
+  const hanldeTrade=async()=>{
+    try{
+      const trade=await writeAsyncJediSwap_swap();
+      console.log(trade);
+    }catch(err){
+      console.log(err)
+    }
+  }
+  const hanldeLiquidation=async()=>{
+    try{
+      const liquidity=await writeAsyncJediSwap_addLiquidity();
+      console.log(liquidity);
+    }catch(err){
+      console.log(err)
+    }
+  }
 
   const handleAddCollateral = async () => {
     try {
@@ -918,25 +989,6 @@ const YourBorrowModal = ({
     "BTC/ETH",
     "BTC/USDT",
   ];
-  // const {
-  //   repayAmount,
-  //   setRepayAmount,
-  //   // handleApprove,
-  //   writeAsyncRepay,
-  //   transRepayHash,
-  //   setTransRepayHash,
-  //   repayTransactionReceipt,
-  //   isLoadingRepay,
-  //   errorRepay,
-  //   handleRepayBorrow,
-
-  //   //SelfLiquidate - Repay with 0 amount
-  //   writeAsyncSelfLiquidate,
-  //   isLoadingSelfLiquidate,
-  //   errorSelfLiquidate,
-  //   selfLiquidateTransactionReceipt,
-  //   setIsSelfLiquidateHash,
-  // } = useRepay("123456");
 
   const [radioValue, setRadioValue] = useState("1");
 
@@ -2188,6 +2240,11 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
+                            if(radioValue==2){
+                              hanldeTrade();
+                            }else{
+                              hanldeLiquidation();
+                            }
                           }}
                         >
                           <AnimatedButton

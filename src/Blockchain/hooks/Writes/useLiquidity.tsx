@@ -6,7 +6,7 @@ import { tokenAddressMap } from "@/Blockchain/utils/addressServices"
 import { NativeToken, Token } from "@/Blockchain/interfaces/interfaces"
 
 const useLiquidity = () => {
-  const [loanId, setLoanId] = useState<string>("")
+  const [liquidityLoanId, setLiquidityLoanId] = useState<string>("")
   const [toMarketA, setToMarketA] = useState<NativeToken>("USDT")
   const [toMarketB, setToMarketB] = useState<NativeToken>("BTC")
 
@@ -25,8 +25,8 @@ const useLiquidity = () => {
       calldata: [
         constants.JEDI_SWAP,
         "3",
-        loanId,
         constants.ADD_LIQUIDITY,
+        liquidityLoanId,
         tokenAddressMap[toMarketA],
         tokenAddressMap[toMarketB]
       ]
@@ -48,7 +48,7 @@ const useLiquidity = () => {
       calldata: [
         constants.JEDI_SWAP,
         "3",
-        loanId,
+        liquidityLoanId,
         constants.ADD_LIQUIDITY,
         tokenAddressMap[toMarketA],
         tokenAddressMap[toMarketB]
@@ -57,8 +57,8 @@ const useLiquidity = () => {
   })
 
   return {
-    loanId,
-    setLoanId,
+    liquidityLoanId,
+    setLiquidityLoanId,
     toMarketA,
     setToMarketA,
 
