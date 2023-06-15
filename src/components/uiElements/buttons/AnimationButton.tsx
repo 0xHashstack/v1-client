@@ -67,13 +67,13 @@ const AnimatedButton: React.FC<Props> = ({
       // setProgressBarWidth(
       //   `${((currentStringIndex + 1) / labelArray.length) * 100 + 2}%`
       // );
-      let interval: any = setInterval(() => {
-        setProgressBarWidth(
-          `${((currentStringIndex + 1) / labelErrorArray.length) * 100 + 1}%`
-        );
-      }, 500);
+      // let interval: any = setInterval(() => {
+      //   setProgressBarWidth(
+      //     `${((currentStringIndex + 1) / labelErrorArray.length) * 100 + 1}%`
+      //   );
+      // }, 500);
 
-      return () => clearInterval(interval);
+      // return () => clearInterval(interval);
     }
   }, [currentStringIndex]);
 
