@@ -3,16 +3,33 @@ import ErrorButton from "@/components/uiElements/buttons/ErrorButton";
 import SuccessButton from "@/components/uiElements/buttons/SuccessButton";
 import { Box } from "@chakra-ui/react";
 import React, { useEffect } from "react";
-import { selectToastTransactionStarted } from "@/store/slices/userAccountSlice";
+import {
+  selectToastTransactionStarted,
+  selectCurrentTransactionStatus,
+  setCurrentTransactionStatus,
+} from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 const TransactionToast = () => {
   const toastTransactionStarted = useSelector(selectToastTransactionStarted);
-
-  useEffect(() => {}, [toastTransactionStarted]);
+  const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
+  const dispatch = useDispatch();
+  const [toastVisible, setToastVisible] = useState(false);
+  useEffect(() => {
+    if (toastTransactionStarted && currentTransactionStatus) {
+      const timer = setTimeout(() => {
+        setToastVisible(toastTransactionStarted);
+        dispatch(setCurrentTransactionStatus(""));
+        return;
+        // console.log('This will run after 1 second!')
+      }, 2000);
+      return () => clearTimeout(timer);
+    }
+    setToastVisible(toastTransactionStarted);
+  }, [toastTransactionStarted]);
   return (
     <Box
       backgroundColor="inherit"
-      display={!toastTransactionStarted ? "block" : "none"}
+      display={toastVisible ? "block" : "none"}
       // visibility={toastTransactionStarted ? "visible" : "hidden"}
       position="fixed"
       width="20vw"
@@ -20,6 +37,7 @@ const TransactionToast = () => {
       bottom="3rem"
       right="2rem"
       color="white"
+      zIndex="10"
     >
       <AnimatedButtonToast
         position="fixed"
@@ -105,6 +123,7 @@ const AnimatedButtonToast: React.FC<Props> = ({
   const [isAnimationStarted, setIsAnimationStarted] = useState(false);
   const transactionStatus = useSelector(selectTransactionStatus);
   const [toastTransactionStatus, setToastTransactionStatus] = useState("");
+  const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
   // console.log(transactionStatus,"transaction from button");
 
   useEffect(() => {
@@ -200,6 +219,9 @@ const AnimatedButtonToast: React.FC<Props> = ({
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
           const nextIndex = prevIndex + 1;
+          if (nextIndex === labelSuccessArray?.length - 3) {
+            if (!currentTransactionStatus) return prevIndex;
+          }
           if (nextIndex === labelSuccessArray.length) {
             setIsAnimationStarted(false);
             dispatch(setToastTransactionStarted(false));
@@ -229,7 +251,7 @@ const AnimatedButtonToast: React.FC<Props> = ({
     }
 
     return () => clearInterval(interval);
-  }, [isAnimationStarted]);
+  }, [isAnimationStarted, currentTransactionStatus]);
   const { bgColor } = rest;
   return (
     <Button
