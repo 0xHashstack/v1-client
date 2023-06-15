@@ -12,7 +12,7 @@ import { useAccount } from "@starknet-react/core";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 const MarketDashboard = () => {
   const [oraclePrices, setOraclePrices]: any = useState([]);
-  const {account,address}=useAccount();
+  const { account, address } = useAccount();
   // console.log(account,"Market Page")
   useEffect(() => {
     fetchOraclePrices();
@@ -24,14 +24,14 @@ const MarketDashboard = () => {
   // useEffect(()=>{
   //   fetchUserLoans();
   // },[account])
-  // const fetchUserDeposits = async () => {
-  //   try {
-  //     const reserves = await getUserDeposits(account);
-  //     console.log(reserves, "market page -user supply");
-  //   } catch (err) {
-  //     console.log("Error fetching protocol reserves", err);
-  //   }
-  // };
+  const fetchUserDeposits = async () => {
+    try {
+      const reserves = await getUserDeposits(address || "");
+      console.log(reserves, "market page -user supply");
+    } catch (err) {
+      console.log("Error fetching protocol reserves", err);
+    }
+  };
   const fetchUserReserves = async () => {
     try {
       const reserves = await getUserReserves();
@@ -43,12 +43,11 @@ const MarketDashboard = () => {
   const fetchUserLoans = async () => {
     try {
       const loans = await getUserLoans(address || "");
-      console.log(loans, "market page -user supply");
+      // console.log(loans, "market page -user supply");
     } catch (err) {
       console.log("Error fetching protocol reserves", err);
     }
   };
-
 
   const fetchOraclePrices = async () => {
     try {

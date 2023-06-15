@@ -120,6 +120,9 @@ const AnimatedButton: React.FC<Props> = ({
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
           const nextIndex = prevIndex + 1;
+          if (nextIndex === labelSuccessArray?.length - 2) {
+            if (!currentTransactionStatus) return prevIndex;
+          }
           if (nextIndex === labelSuccessArray.length) {
             setIsAnimationStarted(false);
             return prevIndex; // Reset currentStringIndex to -1 after the animation completes
@@ -146,7 +149,7 @@ const AnimatedButton: React.FC<Props> = ({
     }
 
     return () => clearInterval(interval);
-  }, [isAnimationStarted]);
+  }, [isAnimationStarted, currentTransactionStatus]);
   const { bgColor } = rest;
   return (
     <Button

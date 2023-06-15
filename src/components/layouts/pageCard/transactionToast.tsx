@@ -12,7 +12,7 @@ const TransactionToast = () => {
   return (
     <Box
       backgroundColor="inherit"
-      display={toastTransactionStarted ? "block" : "none"}
+      display={!toastTransactionStarted ? "block" : "none"}
       // visibility={toastTransactionStarted ? "visible" : "hidden"}
       position="fixed"
       width="20vw"
@@ -44,8 +44,8 @@ const TransactionToast = () => {
           <SuccessButton key={"successButton"} successText={"Success"} />,
         ]}
         labelErrorArray={[
-          "Deposit Amount approved",
-          "Successfully transferred to Hashstack’s supply vault.",
+          // "Deposit Amount approved",
+          // "Successfully transferred to Hashstack’s supply vault.",
           <ErrorButton errorText="Transaction failed" />,
           <ErrorButton errorText="Copy error!" />,
         ]}

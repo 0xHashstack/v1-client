@@ -64,13 +64,13 @@ const SpendTable = () => {
     "Health factor",
   ];
   const userLoans: any = useSelector(selectUserLoans);
-  console.log(userLoans, "user loans in spend table");
+  // console.log(userLoans, "user loans in spend table");
   const rows: any[] = [
-    ["Borrow ID 12345", "rUSDT", "7%", "BTC", "00.00%"],
-    ["Borrow ID 12346", "rBTC", "7%", "BTC", "00.00%"],
-    ["Borrow ID 12347", "rETH", "7%", "BTC", "00.00%"],
-    ["Borrow ID 12348", "rUSDT", "7%", "BTC", "00.00%"],
-    ["Borrow ID 12349", "rBTC", "7%", "BTC", "00.00%"],
+    // ["Borrow ID 12345", "rUSDT", "7%", "BTC", "00.00%"],
+    // ["Borrow ID 12346", "rBTC", "7%", "BTC", "00.00%"],
+    // ["Borrow ID 12347", "rETH", "7%", "BTC", "00.00%"],
+    // ["Borrow ID 12348", "rUSDT", "7%", "BTC", "00.00%"],
+    // ["Borrow ID 12349", "rBTC", "7%", "BTC", "00.00%"],
     // ["Borrow ID 12350", "rETH", "10,324.556", "BTC", "00.00%"],
   ];
 
@@ -92,7 +92,7 @@ const SpendTable = () => {
   const [selectedIndex, setselectedIndex] = useState(0);
   let lower_bound = 3 * (currentPagination - 1);
   let upper_bound = lower_bound + 2;
-  upper_bound = Math.min(rows.length - 1, upper_bound);
+  upper_bound = Math.min(userLoans.length - 1, upper_bound);
   useEffect(() => {
     let temp1: any = [];
     let temp2: any = [];
@@ -110,7 +110,7 @@ const SpendTable = () => {
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);
     setCoins(temp3);
-    console.log("faisal coin mapping", borrowIDCoinMap);
+    // console.log("faisal coin mapping", borrowIDCoinMap);
   }, [userLoans]);
 
   useEffect(() => {
@@ -172,7 +172,7 @@ const SpendTable = () => {
           </Box>
         </Box>
       )}
-      {upper_bound >= lower_bound && rows.length > 0 ? (
+      {upper_bound >= lower_bound && userLoans.length > 0 ? (
         <TableContainer
           //   bg="#101216"
           border="1px"
@@ -321,14 +321,11 @@ const SpendTable = () => {
                         <Td textAlign="center">
                           <Box
                             display="flex"
-                            gap="1"
+                            gap="2"
                             justifyContent="center"
                             h="full"
                             alignItems="center"
                           >
-                            <Box my="1">
-                              <TableBtcLogo />
-                            </Box>
                             <Text
                               fontSize="14px"
                               fontWeight="400"
@@ -336,7 +333,7 @@ const SpendTable = () => {
                               lineHeight="22px"
                               color="#E6EDF3"
                             >
-                              BTC
+                              3.63
                             </Text>
                           </Box>
                         </Td>

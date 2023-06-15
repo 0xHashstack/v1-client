@@ -11,6 +11,8 @@ import {
   Box,
   HStack,
   VStack,
+  useTimeout,
+  Spinner,
 } from "@chakra-ui/react";
 
 import Image from "next/image";
@@ -141,7 +143,7 @@ const BorrowDashboard = ({
   // gap: string;
   // rowItems: any;
 }) => {
-  console.log(Borrows,"Borrow loans in borrow dashboard")
+  // console.log(Borrows,"Borrow loans in borrow dashboard")
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
   upper_bound = Math.min(Borrows?.length - 1, upper_bound);
@@ -165,8 +167,46 @@ const BorrowDashboard = ({
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);
   }, [Borrows]);
-
-  return upper_bound >= lower_bound && Borrows?.length > 0 ? (
+  const [loading, setLoading] = useState(true);
+  const loadingTimeout = useTimeout(() => setLoading(false), 1800);
+  // console.log("Borrows", loading, Borrows);
+  return loading ? (
+    <>
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        width="95%"
+        height={"37rem"}
+        // height="552px"
+        bgColor="#101216"
+        borderRadius="8px"
+      >
+        {/* <Text color="#FFFFFF" fontSize="20px">
+          Loading...
+        </Text> */}
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="#010409"
+          size="xl"
+        />
+        {/* <YourBorrowModal
+          buttonText="Borrow assets"
+          variant="link"
+          fontSize="16px"
+          fontWeight="400"
+          display="inline"
+          color="#0969DA"
+          cursor="pointer"
+          ml="0.4rem"
+          lineHeight="24px"
+        /> */}
+      </Box>
+    </>
+  ) : upper_bound >= lower_bound && Borrows?.length > 0 ? (
     <TableContainer
       bg="#101216"
       border="1px"

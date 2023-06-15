@@ -80,9 +80,9 @@ const SupplyModal = ({
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const toastHandler = () => {
-    console.log("toast called");
-  };
+  // const toastHandler = () => {
+  //   console.log("toast called");
+  // };
 
   const {
     depositAmount,
@@ -116,6 +116,7 @@ const SupplyModal = ({
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
+  const [stakeCheck, setStakeCheck] = useState(true);
 
   const transactionStarted = useSelector(selectTransactionStarted);
   const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
@@ -152,7 +153,7 @@ const SupplyModal = ({
     // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
   }, [walletBalances[coin.name]?.statusBalanceOf, coin]);
   // console.log(walletBalances['BTC']);
-  // const walletBalance = useSelector(selectWalletBalance);
+  // const walletBalance = JSON.parse(useSelector(selectWalletBalance))
   // const [transactionFailed, setTransactionFailed] = useState(false);
 
   // const [depositTransHash, setDepositTransHash] = useState();
@@ -168,12 +169,7 @@ const SupplyModal = ({
   // // const showToast = () => {
 
   // // }
-  const { address: account } = useAccount();
-  useEffect(() => {
-    if (!account) return;
-    console.log("loans calling");
-    getUserLoans(account);
-  }, [account]);
+  // const { address: account } = useAccount();
 
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
@@ -182,27 +178,31 @@ const SupplyModal = ({
       console.log("trans received");
     },
     onPending: () => {
-      dispatch(selectCurrentTransactionStatus("Accepted"));
+      dispatch(setCurrentTransactionStatus("Accepted"));
       console.log("trans pending");
     },
     onRejected(transaction) {
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
+      dispatch(setCurrentTransactionStatus("Accepted"));
+
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction) {
+      dispatch(setCurrentTransactionStatus("Accepted"));
+
       console.log("trans onAcceptedOnL2 - ", transaction);
     },
   });
 
   const handleTransaction = async () => {
     try {
-      // const deposit = await writeAsyncDeposit();
-      const deposit = await writeAsyncDepositStake();
+      const deposit = await writeAsyncDeposit();
       if (deposit?.transaction_hash) {
         console.log("trans transaction hash created");
       }
+      // const deposit = await writeAsyncDepositStake();
       console.log("Supply Modal - deposit ", deposit);
       setDepositTransHash(deposit?.transaction_hash);
       if (recieptData?.data?.status == "ACCEPTED_ON_L2") {

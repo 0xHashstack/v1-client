@@ -105,7 +105,7 @@ export default function Home() {
     if (status == "connected") {
       // alert(account?.address);
       // localStorage.setItem("account", JSON.stringify(account));
-      dispatch(setAccount(account));
+      dispatch(setAccount(JSON.stringify(account)));
 
       if (!isWaitListed) {
         router.replace(waitlistHref);
@@ -121,7 +121,6 @@ export default function Home() {
       //   router.replace(marketHref2);
       // }
     }
-
     // console.log("account home", address, status);
   }, [status]);
   // console.log("available", available);

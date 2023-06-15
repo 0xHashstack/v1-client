@@ -60,8 +60,8 @@ const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
   coins,
-  BorrowBalance,
   currentId,
+  BorrowBalance,
   currentMarketCoin,
 }: any) => {
   // console.log("liquidity found map: ", borrowIDCoinMap);
@@ -75,6 +75,8 @@ const LiquidityProvisionModal = ({
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] =
     useState(currentMarketCoin);
+  const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
+  console.log(borrowAmount);
   const [currentBorrowId, setCurrentBorrowId] = useState(currentId);
   const [currentPool, setCurrentPool] = useState("Select a pool");
   const [inputAmount, setinputAmount] = useState(0);
@@ -84,7 +86,7 @@ const LiquidityProvisionModal = ({
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
-  const walletBalance = useSelector(selectWalletBalance);
+  const [walletBalance, setwalletBalance] = useState(BorrowBalance);
   const inputAmount1 = useSelector(selectInputSupplyAmount);
 
   const getCoin = (CoinName: string) => {
@@ -186,7 +188,7 @@ const LiquidityProvisionModal = ({
     // console.log("got id", id);
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
       if (borrowIDCoinMap[i].id === id) {
-        setCurrentBorrowMarketCoin(borrowIDCoinMap[i].name.slice(1));
+        setCurrentBorrowMarketCoin(borrowIDCoinMap[i].name);
         return;
       }
     }
@@ -466,7 +468,7 @@ const LiquidityProvisionModal = ({
                             display="flex"
                             alignItems="center"
                             gap="1"
-                            px="2"
+                            pr="2"
                             onClick={() => {
                               setCurrentBorrowId("ID - " + coin);
                               handleBorrowMarketCoinChange(coin);
@@ -484,14 +486,10 @@ const LiquidityProvisionModal = ({
                               w="full"
                               display="flex"
                               py="5px"
-                              px={`${
-                                "ID - " + coin === currentBorrowId ? "2" : "5"
-                              }`}
+                              px={`${coin === currentBorrowId ? "2" : "5"}`}
                               gap="1"
                               bg={`${
-                                "ID - " + coin === currentBorrowId
-                                  ? "#0C6AD9"
-                                  : "inherit"
+                                coin === currentBorrowId ? "#0C6AD9" : "inherit"
                               }`}
                               borderRadius="md"
                             >
@@ -547,7 +545,7 @@ const LiquidityProvisionModal = ({
                   // }
                 >
                   <Box display="flex" gap="1">
-                    <Box p="1">{getCoin(currentBorrowMarketCoin)}</Box>
+                    <Box p="1">{getCoin(currentBorrowMarketCoin.slice(1))}</Box>
                     <Text color="white">{currentBorrowMarketCoin}</Text>
                   </Box>
                 </Box>

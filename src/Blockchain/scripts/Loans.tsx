@@ -83,13 +83,13 @@ function parseLoansData(
     };
     loans.push(JSON.parse(JSON.stringify(loan)));
   }
-  console.log("loans parsed", loans);
+  // console.log("loans parsed", loans);
   return loans;
 }
 
 export async function getUserLoans(account: string) {
   const provider = getProvider();
-  console.log("loans params", diamondAddress, account)
+  // console.log("loans params", diamondAddress, account)
   const routerContract = new Contract(routerAbi, diamondAddress, provider);
   const res = await routerContract.call("get_user_loans", [account], {
     blockIdentifier: "pending",
