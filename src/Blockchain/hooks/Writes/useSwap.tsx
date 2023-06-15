@@ -24,8 +24,8 @@
         calldata: [
           constants.JEDI_SWAP,
           "3",
-          constants.SWAP,
           swapLoanId,
+          constants.SWAP,
           tokenAddressMap[toMarket],
         ]
       }
@@ -44,11 +44,10 @@
         contractAddress: diamondAddress,
         entrypoint: "interact_with_l3",
         calldata: [
-          constants.JEDI_SWAP,
+          constants.MY_SWAP,
           "3",
-          swapLoanId,
           constants.SWAP,
-          loanId,
+          swapLoanId,
           tokenAddressMap[toMarket],
         ]
       }

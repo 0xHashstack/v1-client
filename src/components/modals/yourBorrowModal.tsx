@@ -92,6 +92,7 @@ const YourBorrowModal = ({
   loan,
   ...restProps
 }: any) => {
+  // console.log(currentBorrowId1);
   // console.log(currentID)
   // console.log(borrowIds);
   // console.log("took map", borrowIDCoinMap, currentID, currentMarket);
@@ -103,6 +104,8 @@ const YourBorrowModal = ({
   const [sliderValue1, setSliderValue1] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [inputAmount1, setinputAmount1] = useState(0);
+  // const [currentBorrowId, setCurrentBorrowId] = useState(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
+  // console.log(currentBorrowId);
   const [transactionStarted, setTransactionStarted] = useState(false);
   const [collateralTransactionStarted, setCollateralTransactionStarted] =
     useState(false);
@@ -212,20 +215,27 @@ const YourBorrowModal = ({
     statusmySwap_addLiquidity,
   }=useLiquidity();
 
-  useEffect(() => {
-    if (loan) {
-      setLoanId(loan?.loanId);
-      setSwapLoanId("11");
-      // console.log(swapLoanId,"swap loan id")
-      setLiquidityLoanId(loan?.loanId);
-      setCollateralAsset(
-        loan?.collateralMarket[0] == "r"
-          ? loan?.collateralMarket.slice(1)
-          : loan?.collateralMarket
-      );
-      setRToken(loan?.collateralMarket);
-    }
-  }, [loan]);
+  // useEffect(() => {
+  //   if (loan) {
+  //     setLoanId(loan?.loanId);
+  //     setSwapLoanId(loan?.loanId);
+  //     // console.log(swapLoanId,"swap loan id")
+  //     // console.log(typeof loan?.loanId)
+  //     setLiquidityLoanId(loan?.loanId);
+  //     setCollateralAsset(
+  //       loan?.collateralMarket[0] == "r"
+  //         ? loan?.collateralMarket.slice(1)
+  //         : loan?.collateralMarket
+  //     );
+  //     setRToken(loan?.collateralMarket);
+  //   }
+  // }, [loan]);
+  useEffect(()=>{
+    // setSwapLoanId(currentBorrowId1);
+    setSwapLoanId(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
+    setLiquidityLoanId(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
+    setLoanId(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
+  },[currentBorrowId1])
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
@@ -1440,7 +1450,13 @@ const YourBorrowModal = ({
                                     pr="2"
                                     onClick={() => {
                                       setCurrentBorrowId1("ID - " + coin);
+                                      console.log(coin,"coin in borrow id")
                                       handleBorrowMarketCoinChange1(coin);
+                                      setLoanId(coin);
+                                      setSwapLoanId(coin);
+                                      // console.log(swapLoanId,"swap loan id")
+                                      setLiquidityLoanId(coin);
+                                      console.log(liquidityLoanId);
                                     }}
                                   >
                                     {"ID - " + coin === currentBorrowId1 && (

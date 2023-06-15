@@ -49,9 +49,9 @@ const useLiquidity = () => {
         constants.JEDI_SWAP,
         "4",
         "3",
-        liquidityLoanId,
         constants.ADD_LIQUIDITY,
-        loanId,
+        liquidityLoanId,
+
         tokenAddressMap[toMarketA],
         tokenAddressMap[toMarketB]
       ]
