@@ -16,14 +16,14 @@ const initialState = {
   walletBalance: 90,
   inputYourBorrowModalRepayAmount: 0,
   transactionStatus: "",
-
+  currentTransactionStatus: "",
   language: "English",
   currentPage: "market",
   reserves: undefined,
   oracleAndFairPrices: undefined,
   offchainCurrentBlock: undefined,
   assetWalletBalance: {},
-  userLoans:[],
+  userLoans: [],
 
   toastTransactionStarted: false,
   transactionStarted: false,
@@ -49,14 +49,17 @@ export const userAccountSlice = createSlice({
     setAssetWalletBalance(state, action) {
       state.assetWalletBalance = action.payload;
     },
-    setUserLoans(state,action){
-      state.userLoans=action.payload;
+    setUserLoans(state, action) {
+      state.userLoans = action.payload;
     },
     setAccountAddress(state, action) {
       state.accountAddress = action.payload;
     },
     setTransactionStatus(state, action) {
       state.transactionStatus = action.payload;
+    },
+    setCurrentTransactionStatus(state, action) {
+      state.currentTransactionStatus = action.payload;
     },
     setLanguage(state, action) {
       state.language = action.payload;
@@ -144,6 +147,7 @@ export const {
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
 export const { setTransactionStatus } = userAccountSlice.actions;
+export const { setCurrentTransactionStatus } = userAccountSlice.actions;
 export const { setInputBorrowModalCollateralAmount } = userAccountSlice.actions;
 export const { setInputBorrowModalBorrowAmount } = userAccountSlice.actions;
 export const { setInputTradeModalCollateralAmount } = userAccountSlice.actions;
@@ -157,9 +161,11 @@ export const selectSelectedDapp = (state) =>
   state.user_account.spendBorrowselectedDapp;
 export const selectTransactionStatus = (state) =>
   state.user_account.transactionStatus;
+export const selectCurrentTransactionStatus = (state) =>
+  state.user_account.currentTransactionStatus;
 export const selectAssetWalletBalance = (state) =>
   state.user_account.assetWalletBalance;
-  export const selectUserLoans = (state) => state.user_account.userLoans;
+export const selectUserLoans = (state) => state.user_account.userLoans;
 
 export const selectInputSupplyAmount = (state) =>
   state.user_account.inputSupplyAmount;

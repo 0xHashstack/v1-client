@@ -121,7 +121,7 @@ export default function Home() {
       //   router.replace(marketHref2);
       // }
     }
-  }
+
     // console.log("account home", address, status);
   }, [status]);
   // console.log("available", available);
