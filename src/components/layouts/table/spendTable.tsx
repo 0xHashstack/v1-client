@@ -92,7 +92,7 @@ const SpendTable = () => {
   const [selectedIndex, setselectedIndex] = useState(0);
   let lower_bound = 3 * (currentPagination - 1);
   let upper_bound = lower_bound + 2;
-  upper_bound = Math.min(rows.length - 1, upper_bound);
+  upper_bound = Math.min(userLoans.length - 1, upper_bound);
   useEffect(() => {
     let temp1: any = [];
     let temp2: any = [];
@@ -172,7 +172,7 @@ const SpendTable = () => {
           </Box>
         </Box>
       )}
-      {upper_bound >= lower_bound && rows.length > 0 ? (
+      {upper_bound >= lower_bound && userLoans.length > 0 ? (
         <TableContainer
           //   bg="#101216"
           border="1px"
