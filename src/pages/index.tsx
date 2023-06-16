@@ -105,7 +105,7 @@ export default function Home() {
     if (status == "connected") {
       // alert(account?.address);
       // localStorage.setItem("account", JSON.stringify(account));
-      dispatch(setAccount(JSON.stringify(account)));
+      // dispatch(setAccount(JSON.stringify(account)));
 
       if (!isWaitListed) {
         router.replace(waitlistHref);

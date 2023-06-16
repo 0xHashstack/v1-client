@@ -88,7 +88,7 @@ const YourSupply = () => {
         Coins={Coins}
         columnItems={columnItems}
       />
-      <Box
+      {/* <Box
         paddingY="1rem"
         width="95%"
         display="flex"
@@ -103,8 +103,8 @@ const YourSupply = () => {
             rows={6}
           />
         </Box>
-        {/* <LatestSyncedBlock width="16rem" height="100%" block={83207} /> */}
-      </Box>
+        <LatestSyncedBlock width="16rem" height="100%" block={83207} />
+      </Box> */}
       {/* <SupplyModal /> */}
     </PageCard>
   );

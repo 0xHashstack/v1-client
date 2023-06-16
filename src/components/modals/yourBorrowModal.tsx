@@ -115,15 +115,18 @@ const YourBorrowModal = ({
   const [transactionStarted, setTransactionStarted] = useState(false);
   const [collateralTransactionStarted, setCollateralTransactionStarted] =
     useState(false);
-    const [borrowAmount, setBorrowAmount] = useState(BorrowBalance)
-    const userLoans=useSelector(selectUserLoans);
-    useEffect(() => {
-      const result = userLoans.find((item:any) => item?.loanId == currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
-      setBorrowAmount(result?.loanAmountParsed)
-      // console.log(borrowAmount)
-      // Rest of your code using the 'result' variable
-      
-    }, [currentBorrowId1]);
+  const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
+  const userLoans = useSelector(selectUserLoans);
+  useEffect(() => {
+    const result = userLoans.find(
+      (item: any) =>
+        item?.loanId ==
+        currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+    );
+    setBorrowAmount(result?.loanAmountParsed);
+    // console.log(borrowAmount)
+    // Rest of your code using the 'result' variable
+  }, [currentBorrowId1]);
   const {
     loanId,
     setLoanId,
@@ -279,7 +282,7 @@ const YourBorrowModal = ({
     }
   }, [loan]);
 
-  useEffect(()=>{
+  useEffect(() => {
     // setSwapLoanId(currentBorrowId1);
     setSwapLoanId(
       currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
@@ -375,7 +378,7 @@ const YourBorrowModal = ({
         throw new Error("loan or loanID issue");
       }
       const zeroRepay = await writeAsyncSelfLiquidate();
-      console.log(zeroRepay)
+      console.log(zeroRepay);
       dispatch(setTransactionStatus("success"));
       console.log("zero repay success");
     } catch (err) {
@@ -383,40 +386,37 @@ const YourBorrowModal = ({
       dispatch(setTransactionStatus("failed"));
     }
   };
- 
 
-  
-  const hanldeTrade=async()=>{
-    try{
-
+  const hanldeTrade = async () => {
+    try {
       // if(currentDapp)
-      if(currentDapp=="Jediswap"){
-        const trade=await writeAsyncJediSwap_swap();
+      if (currentDapp == "Jediswap") {
+        const trade = await writeAsyncJediSwap_swap();
         console.log(trade);
         dispatch(setTransactionStatus("success"));
-      }else if(currentDapp=="mySwap"){
-        const tradeMySwap=await writeAsyncmySwap_swap();
+      } else if (currentDapp == "mySwap") {
+        const tradeMySwap = await writeAsyncmySwap_swap();
         console.log(tradeMySwap);
         dispatch(setTransactionStatus("success"));
       }
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
       dispatch(setTransactionStatus("failed"));
     }
-  }
-  const hanldeLiquidation=async()=>{
-    try{
-      if(currentDapp=="Jediswap"){
-        const liquidity=await writeAsyncJediSwap_addLiquidity();
+  };
+  const hanldeLiquidation = async () => {
+    try {
+      if (currentDapp == "Jediswap") {
+        const liquidity = await writeAsyncJediSwap_addLiquidity();
         console.log(liquidity);
         dispatch(setTransactionStatus("success"));
-      }else if(currentDapp=="mySwap"){
-        const mySwapLiquidity=await writeAsyncmySwap_addLiquidity();
+      } else if (currentDapp == "mySwap") {
+        const mySwapLiquidity = await writeAsyncmySwap_addLiquidity();
         console.log(mySwapLiquidity);
         dispatch(setTransactionStatus("success"));
       }
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
       dispatch(setTransactionStatus("failed"));
     }
   };
@@ -432,10 +432,10 @@ const YourBorrowModal = ({
     }
   };
 
-  useEffect(()=>{
-    setToMarketA(currentPool.split('/')[0]);
-    setToMarketB(currentPool.split('/')[1]);
-  },[currentPool])
+  useEffect(() => {
+    setToMarketA(currentPool.split("/")[0]);
+    setToMarketB(currentPool.split("/")[1]);
+  }, [currentPool]);
 
   const getContainer = (action: string) => {
     switch (action) {
@@ -1101,8 +1101,6 @@ const YourBorrowModal = ({
     "BTC/USDT",
   ];
 
-
-
   // useEffect(() => {
   //   console.log("got", currentID, currentMarket);
   // }, [currentBorrowId1]);
@@ -1240,10 +1238,10 @@ const YourBorrowModal = ({
     setSliderValue2(0);
   }, [currentBorrowMarketCoin2]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setToMarket(currentPoolCoin);
-    console.log(toMarket)
-  },[currentPoolCoin])
+    console.log(toMarket);
+  }, [currentPoolCoin]);
 
   return (
     <Box>
@@ -2088,7 +2086,11 @@ const YourBorrowModal = ({
                               <Text mt="0.15rem">{currentDapp}</Text>
                             </Box>
                             <Box pt="1" className="navbar-button">
-                              {activeModal=="yourBorrowDappDropdown" ? <ArrowUp/>:<DropdownUp/>} 
+                              {activeModal == "yourBorrowDappDropdown" ? (
+                                <ArrowUp />
+                              ) : (
+                                <DropdownUp />
+                              )}
                             </Box>
                             {modalDropdowns.yourBorrowDappDropdown && (
                               <Box
@@ -2226,7 +2228,11 @@ const YourBorrowModal = ({
                               </Text>
                             </Box>
                             <Box pt="1" className="navbar-button">
-                            {activeModal=="yourBorrowPoolDropdown" ? <ArrowUp/>:<DropdownUp/>} 
+                              {activeModal == "yourBorrowPoolDropdown" ? (
+                                <ArrowUp />
+                              ) : (
+                                <DropdownUp />
+                              )}
                             </Box>
                             {modalDropdowns.yourBorrowPoolDropdown &&
                             radioValue === "1" ? (
@@ -2250,8 +2256,8 @@ const YourBorrowModal = ({
                                       pr="2"
                                       onClick={() => {
                                         setCurrentPool(pool);
-                                        setToMarketA(pool.split('/')[0])
-                                        setToMarketB(pool.split('/')[1])
+                                        setToMarketA(pool.split("/")[0]);
+                                        setToMarketB(pool.split("/")[1]);
                                       }}
                                     >
                                       {pool === currentPool && (
@@ -2471,7 +2477,7 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            if(transactionStarted==false){
+                            if (transactionStarted == false) {
                               handleZeroRepay();
                             }
                           }}
@@ -3505,7 +3511,7 @@ const YourBorrowModal = ({
                       <Box
                         onClick={() => {
                           setCollateralTransactionStarted(true);
-                          if(collateralTransactionStarted==false){
+                          if (collateralTransactionStarted == false) {
                             handleAddCollateral();
                           }
                         }}

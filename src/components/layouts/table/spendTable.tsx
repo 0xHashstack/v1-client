@@ -15,6 +15,8 @@ import {
   TabPanels,
   Tab,
   Td,
+  useTimeout,
+  Spinner,
 } from "@chakra-ui/react";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import TableUsdtLogo from "./usdtLogo";
@@ -131,6 +133,8 @@ const SpendTable = () => {
       router.events.off("routeChangeComplete", handleRouteChangeComplete);
     };
   }, [handleRouteChange, router.events]);
+  const [loading, setLoading] = useState(true);
+  const loadingTimeout = useTimeout(() => setLoading(false), 0);
   return (
     <>
       {showWarning && (
@@ -173,7 +177,32 @@ const SpendTable = () => {
           </Box>
         </Box>
       )}
-      {upper_bound >= lower_bound && userLoans.length > 0 ? (
+      {loading ? (
+        <Box
+          border="1px"
+          borderColor="#2B2F35"
+          // py="6"
+          color="white"
+          borderRadius="md"
+          w="94%"
+          // px="3"
+          p="2rem 1rem 24px"
+          h="283px"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          flexDirection="column"
+          gap="4px"
+        >
+          <Spinner
+            thickness="4px"
+            speed="0.65s"
+            emptyColor="gray.200"
+            color="#010409"
+            size="xl"
+          />
+        </Box>
+      ) : upper_bound >= lower_bound && userLoans.length > 0 ? (
         <TableContainer
           //   bg="#101216"
           border="1px"
