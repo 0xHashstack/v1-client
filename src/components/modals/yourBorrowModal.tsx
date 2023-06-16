@@ -247,12 +247,11 @@ const YourBorrowModal = ({
     setLiquidityLoanId(
       currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
     );
-    
-  },[currentBorrowId1])
-  
-  useEffect(()=>{
+  }, [currentBorrowId1]);
+
+  useEffect(() => {
     setLoanId(currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim());
-  },[currentBorrowId2])
+  }, [currentBorrowId2]);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -380,7 +379,10 @@ const YourBorrowModal = ({
 
   const handleAddCollateral = async () => {
     try {
-      const addCollateral = await writeAddCollateralRToken();
+      const addCollateral = await writeAsyncAddCollateralRToken();
+      if (addCollateral?.transaction_hash) {
+        console.log("addCollateral", addCollateral.transaction_hash);
+      }
       console.log("add collateral - ", addCollateral);
       dispatch(setTransactionStatus("success"));
     } catch (err) {
