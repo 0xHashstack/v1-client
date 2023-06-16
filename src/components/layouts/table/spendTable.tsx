@@ -85,6 +85,7 @@ const SpendTable = () => {
   const [borrowIds, setBorrowIds] = useState([]);
   const [currentId, setCurrentId] = useState("");
   const [currentMarketCoin, setCurrentMarketCoin] = useState("");
+  const [currentSwap, setCurrentSwap] = useState("");
   const [borrowAmount, setBorrowAmount] = useState<number>(0);
   const [coins, setCoins] = useState([]);
   const [currentPagination, setCurrentPagination] = useState<number>(1);
@@ -564,6 +565,8 @@ const SpendTable = () => {
                   currentId={currentId}
                   currentMarketCoin={currentMarketCoin}
                   BorrowBalance={borrowAmount}
+                  currentSwap={currentSwap}
+                  setCurrentSwap={setCurrentSwap}
                 />
               </Box>
             </TabPanel>
@@ -582,6 +585,8 @@ const SpendTable = () => {
                   currentId={currentId}
                   currentMarketCoin={currentMarketCoin}
                   BorrowBalance={borrowAmount}
+                  currentSwap={currentSwap}
+                  setCurrentSwap={setCurrentSwap}
                 />
               </Box>
             </TabPanel>

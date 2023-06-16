@@ -356,7 +356,13 @@ const SupplyModal = ({
 
   return (
     <div>
-      <Button onClick={onOpen} {...restProps}>
+      <Button
+        onClick={() => {
+          onOpen();
+          dispatch(setToastTransactionStarted(false));
+        }}
+        {...restProps}
+      >
         {buttonText}
       </Button>
       <Portal>
