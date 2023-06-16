@@ -187,7 +187,7 @@ const YourBorrowModal = ({
     isIdlemySwap_swap,
     isLoadingmySwap_swap,
     statusmySwap_swap,
-  }=useSwap();
+  } = useSwap();
 
   const {
     liquidityLoanId,
@@ -213,7 +213,7 @@ const YourBorrowModal = ({
     isIdlemySwap_addLiquidity,
     isLoadingmySwap_addLiquidity,
     statusmySwap_addLiquidity,
-  }=useLiquidity();
+  } = useLiquidity();
 
   // useEffect(() => {
   //   if (loan) {
@@ -230,12 +230,16 @@ const YourBorrowModal = ({
   //     setRToken(loan?.collateralMarket);
   //   }
   // }, [loan]);
-  useEffect(()=>{
+  useEffect(() => {
     // setSwapLoanId(currentBorrowId1);
-    setSwapLoanId(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
-    setLiquidityLoanId(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
+    setSwapLoanId(
+      currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+    );
+    setLiquidityLoanId(
+      currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+    );
     setLoanId(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
-  },[currentBorrowId1])
+  }, [currentBorrowId1]);
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
@@ -310,22 +314,22 @@ const YourBorrowModal = ({
       dispatch(setTransactionStatus("failed"));
     }
   };
-  const hanldeTrade=async()=>{
-    try{
-      const trade=await writeAsyncJediSwap_swap();
+  const hanldeTrade = async () => {
+    try {
+      const trade = await writeAsyncJediSwap_swap();
       console.log(trade);
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-  }
-  const hanldeLiquidation=async()=>{
-    try{
-      const liquidity=await writeAsyncJediSwap_addLiquidity();
+  };
+  const hanldeLiquidation = async () => {
+    try {
+      const liquidity = await writeAsyncJediSwap_addLiquidity();
       console.log(liquidity);
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
     }
-  }
+  };
 
   const handleAddCollateral = async () => {
     try {
@@ -1450,7 +1454,7 @@ const YourBorrowModal = ({
                                     pr="2"
                                     onClick={() => {
                                       setCurrentBorrowId1("ID - " + coin);
-                                      console.log(coin,"coin in borrow id")
+                                      console.log(coin, "coin in borrow id");
                                       handleBorrowMarketCoinChange1(coin);
                                       setLoanId(coin);
                                       setSwapLoanId(coin);
@@ -2256,9 +2260,9 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            if(radioValue==2){
+                            if (radioValue == 2) {
                               hanldeTrade();
-                            }else{
+                            } else {
                               hanldeLiquidation();
                             }
                           }}

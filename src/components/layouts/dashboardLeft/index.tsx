@@ -131,7 +131,21 @@ const DashboardLeft = ({
   //     return false;
   //   }
   // }
-  const assetBalance = useSelector(selectAssetWalletBalance);
+  // const assetBalance = useSelector(selectAssetWalletBalance);
+  interface assetB {
+    USDT: any;
+    USDC: any;
+    BTC: any;
+    ETH: any;
+    DAI: any;
+  }
+  const assetBalance: assetB = {
+    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
+    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
+    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
+    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
+    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+  };
   // useEffect(() => {
   //   if (isJSON(assetBalance)) {
   //     assetBalance = JSON.parse(assetBalance);

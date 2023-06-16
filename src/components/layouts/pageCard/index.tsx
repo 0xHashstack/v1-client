@@ -26,6 +26,10 @@ import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 interface Props extends StackProps {
   children: ReactNode;
 }
@@ -151,14 +155,14 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
-  useEffect(() => {
-    // console.log(assetBalance);
-    try {
-      dispatch(setAssetWalletBalance(assetBalance));
-    } catch (error) {
-      console.log("serializing warning");
-    }
-  }, [assetBalance]);
+  // useEffect(() => {
+  //   // console.log(assetBalance);
+  //   try {
+  //     dispatch(setAssetWalletBalance(assetBalance));
+  //   } catch (error) {
+  //     console.log("serializing warning");
+  //   }
+  // }, [assetBalance]);
   // useEffect(() => {
   //   const timer = setTimeout(() => {
   //     connect(connectors[0]);
@@ -182,7 +186,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           >
             {children}
           </Stack>
-          <TransactionToast />
+          {/* <TransactionToast /> */}
           <Footer block={83207} />
         </>
       )}
