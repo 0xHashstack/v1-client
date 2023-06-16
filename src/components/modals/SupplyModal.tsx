@@ -217,6 +217,9 @@ const SupplyModal = ({
     },
     onPending: () => {
       dispatch(setCurrentTransactionStatus("Accepted"));
+      toast.success(`You successfully supplied ${depositAmount} {asset}`, {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
       console.log("trans pending");
     },
     onRejected(transaction) {
@@ -228,7 +231,6 @@ const SupplyModal = ({
     },
     onAcceptedOnL2(transaction) {
       dispatch(setCurrentTransactionStatus("Accepted"));
-
       console.log("trans onAcceptedOnL2 - ", transaction);
     },
   });
