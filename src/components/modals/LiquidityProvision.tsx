@@ -41,6 +41,7 @@ import TableYagiLogoDull from "../layouts/table/tableIcons/yagiLogoDull";
 import TableMySwapDull from "../layouts/table/tableIcons/mySwapDull";
 import TableJediswapLogo from "../layouts/table/tableIcons/jediswapLogo";
 import useSwap from "@/Blockchain/hooks/Writes/useSwap";
+import ErrorButton from "../uiElements/buttons/ErrorButton";
 import {
   selectInputSupplyAmount,
   setCoinSelectedSupplyModal,
@@ -1003,15 +1004,9 @@ const LiquidityProvisionModal = ({
                       />,
                     ]}
                     labelErrorArray={[
-                      "Performing pre-checks",
-                      "Processing the spend borrow",
-                      "Updating the l3 records.",
-                      // <ErrorButton errorText="Transaction failed" />,
-                      // <ErrorButton errorText="Copy error!" />,
-                      <SuccessButton
-                        key={"successButton"}
-                        successText={"Spend successful."}
-                      />,
+                      <ErrorButton errorText="Transaction failed" />,
+                      <ErrorButton errorText="Copy error!" />,
+
                     ]}
                   >
                     Spend Borrow

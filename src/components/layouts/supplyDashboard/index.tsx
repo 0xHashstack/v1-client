@@ -83,15 +83,6 @@ const supplies: any = [
     EffectiveApr: "7.8%",
     Status: "Active",
   },
-  {
-    market: "BTC",
-
-    rTokenAmount: "1000",
-    ExchangeRate: "1.23",
-    SupplyApr: "8.22%",
-    EffectiveApr: "7.8%",
-    Status: "Active",
-  },
 ];
 
 const SupplyDashboard = ({
