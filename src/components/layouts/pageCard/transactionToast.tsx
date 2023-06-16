@@ -19,8 +19,8 @@ const TransactionToast = () => {
       const timer = setTimeout(() => {
         setToastVisible(toastTransactionStarted);
         dispatch(setCurrentTransactionStatus(""));
+        // dispatch(setToastTransactionStarted(false));
         return;
-        // console.log('This will run after 1 second!')
       }, 2000);
       return () => clearTimeout(timer);
     }
@@ -72,7 +72,7 @@ const TransactionToast = () => {
         isDisabled={toastTransactionStarted === false}
         // onClick={}
       >
-        Supply
+        {/* Supply */}
       </AnimatedButtonToast>
     </Box>
   );
@@ -157,9 +157,7 @@ const AnimatedButtonToast: React.FC<Props> = ({
       //   `${((currentStringIndex + 1) / labelArray.length) * 100 + 2}%`
       // );
       let interval: any = setInterval(() => {
-        setProgressBarWidth(
-          `${((currentStringIndex + 1) / labelErrorArray.length) * 100 + 1}%`
-        );
+        setProgressBarWidth(`${100}%`);
       }, 500);
 
       return () => clearInterval(interval);
@@ -186,13 +184,12 @@ const AnimatedButtonToast: React.FC<Props> = ({
       isAnimationStarted &&
       (toastTransactionStatus == "failed" || transactionStatus == "failed")
     ) {
-      let interval: any = setInterval(() => {
-        setProgressBarWidth(
-          `${((currentStringIndex + 1) / labelErrorArray.length) * 100}%`
-        );
-      }, 1500);
-
-      return () => clearInterval(interval);
+      // let interval: any = setInterval(() => {
+      //   setProgressBarWidth(
+      //     `${((currentStringIndex + 1) / labelErrorArray.length) * 100}%`
+      //   );
+      // }, 1500);
+      // return () => clearInterval(interval);
     }
   }, [currentStringIndex]);
 

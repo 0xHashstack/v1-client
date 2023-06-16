@@ -119,7 +119,7 @@ export const userAccountSlice = createSlice({
       state.inputYourBorrowModalRepayAmount = action.payload;
     },
     setToastTransactionStarted(state, action) {
-      state.toastTransactionStarted = !state.toastTransactionStarted;
+      state.toastTransactionStarted = action.payload;
     },
     setTransactionStarted(state, action) {
       state.transactionStarted = !state.transactionStarted;
