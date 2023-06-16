@@ -75,6 +75,10 @@ import ErrorButton from "../uiElements/buttons/ErrorButton";
 import useAddCollateral from "@/Blockchain/hooks/Writes/useAddCollateral";
 import useSwap from "../../Blockchain/hooks/Writes/useSwap";
 import useLiquidity from "@/Blockchain/hooks/Writes/useLiquidity";
+import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import { BNtoNum } from "@/Blockchain/utils/utils";
+import { uint256 } from "starknet";
 import { useWaitForTransaction } from "@starknet-react/core";
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -229,6 +233,45 @@ const YourBorrowModal = ({
     isLoadingmySwap_addLiquidity,
     statusmySwap_addLiquidity,
   } = useLiquidity();
+  interface assetB {
+    USDT: any;
+    USDC: any;
+    BTC: any;
+    ETH: any;
+    DAI: any;
+  }
+  const walletBalances: assetB = {
+    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
+    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
+    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
+    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
+    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+  };
+  const [walletBalance, setwalletBalance] = useState(
+    walletBalances[collateralAsset]?.statusBalanceOf === "success"
+      ? Number(
+          BNtoNum(
+            uint256.uint256ToBN(
+              walletBalances[collateralAsset]?.dataBalanceOf?.balance
+            )
+          )
+        )
+      : 0
+  );
+  useEffect(() => {
+    setwalletBalance(
+      walletBalances[collateralAsset]?.statusBalanceOf === "success"
+        ? Number(
+            BNtoNum(
+              uint256.uint256ToBN(
+                walletBalances[collateralAsset]?.dataBalanceOf?.balance
+              )
+            )
+          )
+        : 0
+    );
+    // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
+  }, [walletBalances[collateralAsset]?.statusBalanceOf, collateralAsset]);
 
   useEffect(() => {
     if (loan) {
@@ -249,9 +292,10 @@ const YourBorrowModal = ({
     setLiquidityLoanId(
       currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
     );
-  }, [currentBorrowId1]);
+    
+  },[currentBorrowId1])
 
-  useEffect(() => {
+  useEffect(()=>{
     setLoanId(currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim());
   }, [currentBorrowId2]);
 
@@ -1094,7 +1138,7 @@ const YourBorrowModal = ({
 
   const [sliderValue, setSliderValue] = useState(0);
   // const dispatch = useDispatch();
-  const walletBalance = useSelector(selectWalletBalance);
+
   const [inputAmount, setinputAmount] = useState(0);
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
   const [sliderValue2, setSliderValue2] = useState(0);
@@ -2950,7 +2994,7 @@ const YourBorrowModal = ({
                         mt="-0.5rem"
                       >
                         <Text ml="1rem" color="white">
-                          {collateralBalance}
+                          {currentTokenSelected=="rToken" ? collateralBalance: `${walletBalance} ${collateralAsset}`}  
                         </Text>
                       </Box>
                       <Text color="#8B949E" display="flex" alignItems="center">
@@ -3052,7 +3096,7 @@ const YourBorrowModal = ({
                           MAX
                         </Button>
                       </Box>
-                      {inputCollateralAmount > walletBalance ||
+                      {/* {inputCollateralAmount > walletBalance ||
                       inputCollateralAmount < 0 ? (
                         <Text
                           display="flex"
@@ -3080,7 +3124,7 @@ const YourBorrowModal = ({
                           >
                             Wallet Balance: {walletBalance}
                             <Text color="#6E7781" ml="0.2rem">
-                              {` ${currentSelectedCoin}`}
+                              {` ${collateralAsset}`}
                             </Text>
                           </Text>
                         </Text>
@@ -3096,11 +3140,11 @@ const YourBorrowModal = ({
                         >
                           Wallet Balance: {walletBalance}
                           <Text color="#6E7781" ml="0.2rem">
-                            {` ${currentSelectedCoin}`}
+                            {` ${collateralAsset}`}
                           </Text>
                         </Text>
-                      )}
-                      <Box pt={5} pb={2}>
+                      )} */}
+                      <Box pt={5} pb={2} mt="1.5rem">
                         <Slider
                           aria-label="slider-ex-6"
                           defaultValue={sliderValue2}
