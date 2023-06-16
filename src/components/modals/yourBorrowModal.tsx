@@ -61,6 +61,7 @@ import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
 import {
   selectUserLoans,
   selectWalletBalance,
+  setCurrentTransactionStatus,
   setInputYourBorrowModalRepayAmount,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
@@ -74,6 +75,7 @@ import ErrorButton from "../uiElements/buttons/ErrorButton";
 import useAddCollateral from "@/Blockchain/hooks/Writes/useAddCollateral";
 import useSwap from "../../Blockchain/hooks/Writes/useSwap";
 import useLiquidity from "@/Blockchain/hooks/Writes/useLiquidity";
+import { useWaitForTransaction } from "@starknet-react/core";
 const YourBorrowModal = ({
   borrowIDCoinMap,
   currentID,
@@ -327,7 +329,7 @@ const YourBorrowModal = ({
   const [currentPool, setCurrentPool] = useState("Select a pool");
   // console.log(currentDapp)
   // console.log(currentPool.split('/')[0])
-
+  const [depositTransHash, setDepositTransHash] = useState("");
   const handleZeroRepay = async () => {
     try {
       if (!loan?.loanId) {
@@ -376,13 +378,39 @@ const YourBorrowModal = ({
       dispatch(setTransactionStatus("failed"));
     }
   };
-
+  const recieptData = useWaitForTransaction({
+    hash: depositTransHash,
+    watch: true,
+    onReceived: () => {
+      console.log("trans received");
+    },
+    onPending: () => {
+      dispatch(setCurrentTransactionStatus("Accepted"));
+      // toast.success(`You successfully supplied ${depositAmount} {asset}`, {
+      //   position: toast.POSITION.BOTTOM_RIGHT,
+      // });
+      console.log("trans pending");
+    },
+    onRejected(transaction) {
+      console.log("treans rejected");
+    },
+    onAcceptedOnL1: () => {
+      dispatch(setCurrentTransactionStatus("Accepted"));
+      console.log("trans onAcceptedOnL1");
+    },
+    onAcceptedOnL2(transaction) {
+      dispatch(setCurrentTransactionStatus("Accepted"));
+      console.log("trans onAcceptedOnL2 - ", transaction);
+    },
+  });
   const handleAddCollateral = async () => {
     try {
       const addCollateral = await writeAsyncAddCollateralRToken();
       if (addCollateral?.transaction_hash) {
         console.log("addCollateral", addCollateral.transaction_hash);
       }
+      setDepositTransHash(addCollateral?.transaction_hash);
+
       console.log("add collateral - ", addCollateral);
       dispatch(setTransactionStatus("success"));
     } catch (err) {
