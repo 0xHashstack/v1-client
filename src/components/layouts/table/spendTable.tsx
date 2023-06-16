@@ -590,7 +590,7 @@ const SpendTable = () => {
                 />
               </Box>
             </TabPanel>
-            <TabPanel p={0}>
+            {/* <TabPanel p={0}>
               <Box>
                 <Text
                   color={selectedDapp != "" ? "white" : "#2B2F35"}
@@ -611,6 +611,51 @@ const SpendTable = () => {
                     ) : (
                       <TableYagiLogoDull />
                     )}
+                  </Box>
+                </Box>
+              </Box>
+            </TabPanel> */}
+            
+            <TabPanel p={0}>
+              <Box
+                display={tradeNote ? "flex" : "none"}
+                bg="#DDF4FF"
+                fontSize="14px"
+                p="8px"
+                fontStyle="normal"
+                fontWeight="400"
+                borderRadius="6px"
+                justifyContent="center"
+                alignItems="flex-start"
+                bgColor="#fff8c5"
+                // textAlign="center"
+                // bgColor="red"
+              >
+                <Box
+                  cursor="pointer"
+                  // bgColor="blue"
+                  display="flex"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  pt="1px"
+                >
+                  <Image
+                    src="./alertTrade.svg"
+                    alt="Picture of the author"
+                    width="46"
+                    height="46"
+                  />
+                </Box>
+                <Box p="6px 2px" display="flex">
+                  We are evaluating few promising DEXes to integrate. Please
+                  check back at a late time.
+                  <Box
+                    p="2px 0px"
+                    cursor="pointer"
+                    // bgColor="pink"
+                    onClick={() => setTradeNote(false)}
+                  >
+                    <TableClose />
                   </Box>
                 </Box>
               </Box>
