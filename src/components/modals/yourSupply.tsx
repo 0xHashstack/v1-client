@@ -78,6 +78,8 @@ import useWithdrawDeposit from "@/Blockchain/hooks/Writes/useWithdrawDeposit";
 import { useWaitForTransaction } from "@starknet-react/core";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
+import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
@@ -95,7 +97,21 @@ const YourSupplyModal = ({
   // const [inputWithdrawlAmount, setinputWithdrawlAmount] = useState(0);
   const [sliderValue2, setSliderValue2] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
-  const walletBalances = useSelector(selectAssetWalletBalance);
+  // const walletBalances = useSelector(selectAssetWalletBalance);
+  interface assetB {
+    USDT: any;
+    USDC: any;
+    BTC: any;
+    ETH: any;
+    DAI: any;
+  }
+  const walletBalances: assetB = {
+    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
+    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
+    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
+    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
+    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+  };
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
       ? Number(
@@ -112,41 +128,51 @@ const YourSupplyModal = ({
       ? Number(
           BNtoNum(
             uint256.uint256ToBN(
-              walletBalances[currentSelectedWithdrawlCoin]?.dataBalanceOf?.balance
+              walletBalances[currentSelectedWithdrawlCoin]?.dataBalanceOf
+                ?.balance
             )
           )
         )
       : 0
   );
-  
+
   useEffect(() => {
     setwalletBalance(
       walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
         ? Number(
             BNtoNum(
               uint256.uint256ToBN(
-                walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
+                walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf
+                  ?.balance
               )
             )
           )
         : 0
     );
     // console.log("supply modal status wallet balance",walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf)
-  }, [walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf, currentSelectedSupplyCoin]);
+  }, [
+    walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf,
+    currentSelectedSupplyCoin,
+  ]);
   useEffect(() => {
     setWithdrawWalletBalance(
-      walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf === "success"
+      walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf ===
+        "success"
         ? Number(
             BNtoNum(
               uint256.uint256ToBN(
-                walletBalances[currentSelectedWithdrawlCoin]?.dataBalanceOf?.balance
+                walletBalances[currentSelectedWithdrawlCoin]?.dataBalanceOf
+                  ?.balance
               )
             )
           )
         : 0
     );
     // console.log("supply modal status wallet balance",walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf)
-  }, [walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf, currentSelectedWithdrawlCoin]);
+  }, [
+    walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf,
+    currentSelectedWithdrawlCoin,
+  ]);
   const [withdrawTransactionStarted, setWithdrawTransactionStarted] =
     useState(false);
   const {
@@ -265,7 +291,7 @@ const YourSupplyModal = ({
     setTransactionStarted(false);
     setWithdrawTransactionStarted(false);
     dispatch(resetModalDropdowns());
-    dispatch(setTransactionStatus(''));
+    dispatch(setTransactionStatus(""));
   };
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
@@ -276,9 +302,9 @@ const YourSupplyModal = ({
     setSliderValue(0);
   }, [currentSelectedSupplyCoin]);
 
-  useEffect(()=>{
+  useEffect(() => {
     setAsset(currentSelectedWithdrawlCoin);
-  },[currentSelectedWithdrawlCoin])
+  }, [currentSelectedWithdrawlCoin]);
 
   useEffect(() => {
     setinputWithdrawlAmount(0);
@@ -1661,11 +1687,9 @@ const YourSupplyModal = ({
                               </Text>,
                               <ErrorButton errorText="Transaction failed" />,
                               <ErrorButton errorText="Copy error!" />,
-                              
-
                             ]}
                             _disabled={{ bgColor: "white", color: "black" }}
-                            isDisabled={withdrawTransactionStarted== true}
+                            isDisabled={withdrawTransactionStarted == true}
                           >
                             Withdraw
                           </AnimatedButton>

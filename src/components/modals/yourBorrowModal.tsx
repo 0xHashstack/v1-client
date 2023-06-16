@@ -197,7 +197,7 @@ const YourBorrowModal = ({
     isIdlemySwap_swap,
     isLoadingmySwap_swap,
     statusmySwap_swap,
-  }=useSwap();
+  } = useSwap();
 
   const {
     liquidityLoanId,
@@ -223,7 +223,7 @@ const YourBorrowModal = ({
     isIdlemySwap_addLiquidity,
     isLoadingmySwap_addLiquidity,
     statusmySwap_addLiquidity,
-  }=useLiquidity();
+  } = useLiquidity();
 
   useEffect(() => {
     if (loan) {
@@ -238,8 +238,12 @@ const YourBorrowModal = ({
 
   useEffect(()=>{
     // setSwapLoanId(currentBorrowId1);
-    setSwapLoanId(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
-    setLiquidityLoanId(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
+    setSwapLoanId(
+      currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+    );
+    setLiquidityLoanId(
+      currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+    );
     setLoanId(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
   },[currentBorrowId1])
 
@@ -368,7 +372,7 @@ const YourBorrowModal = ({
       console.log(err)
       dispatch(setTransactionStatus("failed"));
     }
-  }
+  };
 
   const handleAddCollateral = async () => {
     try {
@@ -1494,7 +1498,7 @@ const YourBorrowModal = ({
                                     pr="2"
                                     onClick={() => {
                                       setCurrentBorrowId1("ID - " + coin);
-                                      console.log(coin,"coin in borrow id")
+                                      console.log(coin, "coin in borrow id");
                                       handleBorrowMarketCoinChange1(coin);
                                       setLoanId(coin);
                                       setSwapLoanId(coin);
@@ -2304,9 +2308,9 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            if(radioValue==2){
+                            if (radioValue == 2) {
                               hanldeTrade();
-                            }else{
+                            } else {
                               hanldeLiquidation();
                             }
                           }}

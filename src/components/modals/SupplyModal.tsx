@@ -20,6 +20,7 @@ import {
   NumberInputField,
   Portal,
   SliderThumb,
+  Toast,
 } from "@chakra-ui/react";
 import ArrowUp from "@/assets/icons/arrowup";
 import { useDisclosure } from "@chakra-ui/react";
@@ -73,6 +74,10 @@ import SuccessToast from "../uiElements/toasts/SuccessToast";
 import SuccessTick from "@/assets/icons/successTick";
 import CancelIcon from "@/assets/icons/cancelIcon";
 import CancelSuccessToast from "@/assets/icons/cancelSuccessToast";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const SupplyModal = ({
@@ -130,19 +135,32 @@ const SupplyModal = ({
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
-  const walletBalances = useSelector(selectAssetWalletBalance);
+  // const walletBalances = useSelector(selectAssetWalletBalance);
+  interface assetB {
+    USDT: any;
+    USDC: any;
+    BTC: any;
+    ETH: any;
+    DAI: any;
+  }
+  const walletBalances: assetB = {
+    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
+    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
+    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
+    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
+    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+  };
   // console.log(walletBalances,"balance in supply modal");
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin.name]?.statusBalanceOf === "success"
-    ? Number(
-        BNtoNum(
-          uint256.uint256ToBN(
-            walletBalances[coin.name]?.dataBalanceOf?.balance
+      ? Number(
+          BNtoNum(
+            uint256.uint256ToBN(
+              walletBalances[coin.name]?.dataBalanceOf?.balance
+            )
           )
         )
-      )
-    : 0
-  
+      : 0
   );
   useEffect(() => {
     setwalletBalance(
@@ -177,6 +195,21 @@ const SupplyModal = ({
   // // }
   // const { address: account } = useAccount();
 
+  const labelSuccessArray = [
+    "Deposit Amount approved",
+    "Successfully transferred to Hashstack’s supply vault.",
+    "Determining the rToken amount to mint.",
+    "rTokens have been minted successfully.",
+    "Transaction complete.",
+    // <ErrorButton errorText="Transaction failed" />,
+    // <ErrorButton errorText="Copy error!" />,
+    // <SuccessButton key={"successButton"} successText={"Success"} />,
+  ];
+  const labelErrorArray = [
+    <ErrorButton errorText="Transaction failed" />,
+    <ErrorButton errorText="Copy error!" />,
+  ];
+
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
@@ -200,7 +233,7 @@ const SupplyModal = ({
       console.log("trans onAcceptedOnL2 - ", transaction);
     },
   });
-
+  // const toast = useToast();
   const handleTransaction = async () => {
     try {
       if(isChecked){
@@ -239,6 +272,18 @@ const SupplyModal = ({
       });
       // setTransactionFailed(true);
       dispatch(setTransactionStatus("failed"));
+      // labelErrorArray.forEach(async (element, idx) => {
+      //   await setTimeout(
+      //     () =>
+      //       toast({
+      //         title: element,
+      //         position: "bottom-right",
+      //         isClosable: true,
+      //         duration: 5000,
+      //       }),
+      //     2000
+      //   );
+      // });
       console.log(err);
 
       // toast({

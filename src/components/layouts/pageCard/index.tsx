@@ -152,22 +152,14 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
-  useEffect(() => {
-    try{
-      dispatch(setAssetWalletBalance( assetBalance));
-    }catch(err){
-      console.log(err);
-    }
-    
-  }, [assetBalance]);
-  // const handleToast = useCallback(() => {
-//   toast.success('You have successfully supplied 1000USDT coins!', {
-//     position: toast.POSITION.BOTTOM_RIGHT
-//   });
-// }, []);
-// useEffect(()=>{
-//   handleToast();
-// },[handleToast])
+  // useEffect(() => {
+  //   // console.log(assetBalance);
+  //   try {
+  //     dispatch(setAssetWalletBalance(assetBalance));
+  //   } catch (error) {
+  //     console.log("serializing warning");
+  //   }
+  // }, [assetBalance]);
   // useEffect(() => {
   //   const timer = setTimeout(() => {
   //     connect(connectors[0]);
