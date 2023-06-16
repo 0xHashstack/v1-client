@@ -35,6 +35,8 @@ import {
   getProtocolStats,
 } from "@/Blockchain/scripts/protocolStats";
 import SuccessToast from "@/components/uiElements/toasts/SuccessToast";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Market() {
@@ -49,6 +51,7 @@ export default function Market() {
     useConnectors();
   const { address, account } = useAccount();
   const [render, setRender] = useState(true);
+
   // console.log(account.address)
   // const { dataBalanceOf, errorBalanceOf, isFetchingBalanceOf, refetchBalanceOf, statusBalanceOf }=useBalanceOf("0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7");
   // console.log(JSON.stringify(dataBalanceOf) ,"data")
@@ -89,6 +92,7 @@ export default function Market() {
         <LatestSyncedBlock width="16rem" height="100%" block={83207} />
       </Box> */}
       {/* <SuccessToast/> */}
+      
     </PageCard>
   );
 }
