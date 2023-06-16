@@ -53,6 +53,9 @@ import CancelIcon from "@/assets/icons/cancelIcon";
 import CancelSuccessToast from "@/assets/icons/cancelSuccessToast";
 import Link from "next/link";
 import { NativeToken } from "@/Blockchain/interfaces/interfaces";
+import { useDispatch } from "react-redux";
+import { setTransactionStatus } from "@/store/slices/userAccountSlice";
+import { toast } from "react-toastify";
 const GetTokensModal = ({
     buttonText,
     coin,
@@ -114,14 +117,21 @@ const GetTokensModal = ({
         statusGetTokens,
     }
 =useGetTokens(currentSelectedCoin);
+const dispatch=useDispatch();
+
 
     const handleGetToken=async()=>{
         try{
             console.log(token)
             const getTokens=await writeAsyncGetTokens();
             console.log(getTokens)
+            dispatch(setTransactionStatus("success"));
         }catch(err){
             console.log(err);
+            dispatch(setTransactionStatus("failed"));
+            toast.error(`Failed to mint TestToken: ${currentSelectedCoin}`, {
+                position: toast.POSITION.BOTTOM_RIGHT
+              });
         }
 
     }
@@ -146,7 +156,7 @@ const GetTokensModal = ({
                         onClose();
                         // if (setIsOpenCustom) setIsOpenCustom(false);
                     }}
-                    size={{ width: "700px", height: "100px" }}
+                    size={{ width: "800px", height: "100px" }}
                     isCentered
                 >
                     <ModalOverlay bg={backGroundOverLay} mt="3.8rem" />
@@ -176,7 +186,7 @@ const GetTokensModal = ({
                             mr="1rem"
                         />
                         <ModalBody>
-                            <Box display="flex" flexDirection="row" justifyContent="space-between" gap="9px">
+                            <Box display="flex" flexDirection="row" justifyContent="space-between" gap="20px">
                                 <Button bg="#101216"
                                     color="#6E7681"
                                     size="sm"

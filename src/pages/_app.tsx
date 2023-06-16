@@ -11,7 +11,6 @@ import {
   InjectedConnector,
   StarknetProvider,
 } from "@starknet-react/core";
-
 const theme = extendTheme({
   components: {
     Tabs: {

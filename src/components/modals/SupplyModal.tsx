@@ -73,6 +73,8 @@ import SuccessToast from "../uiElements/toasts/SuccessToast";
 import SuccessTick from "@/assets/icons/successTick";
 import CancelIcon from "@/assets/icons/cancelIcon";
 import CancelSuccessToast from "@/assets/icons/cancelSuccessToast";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 const SupplyModal = ({
   buttonText,
   coin,
@@ -103,7 +105,7 @@ const SupplyModal = ({
     isSuccessDeposit,
     statusDeposit,
   } = useDeposit();
-  const toast = useToast();
+  // const toast = useToast();
   useEffect(() => {
     setAsset(coin ? coin.name : "BTC");
   }, [coin]);
@@ -190,7 +192,6 @@ const SupplyModal = ({
     },
     onAcceptedOnL1: () => {
       dispatch(setCurrentTransactionStatus("Accepted"));
-
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction) {
@@ -217,24 +218,29 @@ const SupplyModal = ({
         if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
         }
         dispatch(setTransactionStatus("success"));
-        if (isSuccessDeposit) {
-          toast({
-            title: "Success",
-            description: "Success",
-            variant: "subtle",
-            position: "bottom-right",
-            status: "error",
-            duration: 5000,
-            isClosable: true,
-          });
-        }
+        // if (isSuccessDeposit) {
+        //   toast({
+        //     title: "Success",
+        //     description: "Success",
+        //     variant: "subtle",
+        //     position: "bottom-right",
+        //     status: "error",
+        //     duration: 5000,
+        //     isClosable: true,
+        //   });
+        // }
         // console.log("Status transaction", deposit);
         console.log(isSuccessDeposit, "success ?");
+
       }
     } catch (err) {
+      toast.error(`Transaction cancelled ${err}`, {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
       // setTransactionFailed(true);
       dispatch(setTransactionStatus("failed"));
       console.log(err);
+
       // toast({
       //   description: "An error occurred while handling the transaction. " + err,
       //   variant: "subtle",
@@ -242,33 +248,6 @@ const SupplyModal = ({
       //   status: "error",
       //   isClosable: true,
       // });
-      toast({
-        variant: "subtle",
-        position: "bottom-right",
-        render: () => (
-          <Box
-            display="flex"
-            flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
-            bg="rgba(40, 167, 69, 0.5)"
-            height="48px"
-            borderRadius="6px"
-            border="1px solid rgba(74, 194, 107, 0.4)"
-            padding="8px"
-          >
-            <Box>
-              <SuccessTick />
-            </Box>
-            <Text>You have successfully supplied 1000USDT to check go to </Text>
-            <Button variant="link">Your Supply</Button>
-            <Box>
-              <CancelSuccessToast />
-            </Box>
-          </Box>
-        ),
-        isClosable: true,
-      });
     }
   };
 
