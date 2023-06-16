@@ -20,6 +20,7 @@ import {
   NumberInputField,
   Portal,
   SliderThumb,
+  Toast,
 } from "@chakra-ui/react";
 import ArrowUp from "@/assets/icons/arrowup";
 import { useDisclosure } from "@chakra-ui/react";
@@ -73,6 +74,11 @@ import SuccessToast from "../uiElements/toasts/SuccessToast";
 import SuccessTick from "@/assets/icons/successTick";
 import CancelIcon from "@/assets/icons/cancelIcon";
 import CancelSuccessToast from "@/assets/icons/cancelSuccessToast";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import 'react-toastify/dist/ReactToastify.css';
 const SupplyModal = ({
   buttonText,
   coin,
@@ -103,7 +109,7 @@ const SupplyModal = ({
     isSuccessDeposit,
     statusDeposit,
   } = useDeposit();
-  const toast = useToast();
+  // const toast = useToast();
   useEffect(() => {
     setAsset(coin ? coin.name : "BTC");
   }, [coin]);
@@ -118,15 +124,32 @@ const SupplyModal = ({
   const [buttonId, setButtonId] = useState(0);
   const [stakeCheck, setStakeCheck] = useState(true);
 
-  const transactionStarted = useSelector(selectTransactionStarted);
+  const transactionStarted1 = useSelector(selectTransactionStarted);
   const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
+  const [stakeAndSupply, setStakeAndSupply] = useState(true);
 
-  // const [transactionStarted, setTransactionStarted] = useState(false);
+  const [transactionStarted, settransactionStarted] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
   // const [toastTransactionStarted, setToastTransactionStarted] = useState(false);
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
-  const walletBalances = useSelector(selectAssetWalletBalance);
+  // const walletBalances = useSelector(selectAssetWalletBalance);
+  interface assetB {
+    USDT: any;
+    USDC: any;
+    BTC: any;
+    ETH: any;
+    DAI: any;
+  }
+  const walletBalances: assetB = {
+    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
+    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
+    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
+    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
+    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+  };
+  // console.log(walletBalances,"balance in supply modal");
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin.name]?.statusBalanceOf === "success"
       ? Number(
@@ -171,6 +194,21 @@ const SupplyModal = ({
   // // }
   // const { address: account } = useAccount();
 
+  const labelSuccessArray = [
+    "Deposit Amount approved",
+    "Successfully transferred to Hashstack’s supply vault.",
+    "Determining the rToken amount to mint.",
+    "rTokens have been minted successfully.",
+    "Transaction complete.",
+    // <ErrorButton errorText="Transaction failed" />,
+    // <ErrorButton errorText="Copy error!" />,
+    // <SuccessButton key={"successButton"} successText={"Success"} />,
+  ];
+  const labelErrorArray = [
+    <ErrorButton errorText="Transaction failed" />,
+    <ErrorButton errorText="Copy error!" />,
+  ];
+
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
@@ -186,7 +224,6 @@ const SupplyModal = ({
     },
     onAcceptedOnL1: () => {
       dispatch(setCurrentTransactionStatus("Accepted"));
-
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction) {
@@ -195,36 +232,59 @@ const SupplyModal = ({
       console.log("trans onAcceptedOnL2 - ", transaction);
     },
   });
-
+  // const toast = useToast();
   const handleTransaction = async () => {
     try {
-      const deposit = await writeAsyncDeposit();
-      if (deposit?.transaction_hash) {
-        console.log("trans transaction hash created");
+      if(isChecked){
+        const stakeAndSupply=await writeAsyncDepositStake();
+        console.log(stakeAndSupply);
+        dispatch(setTransactionStatus("success"));
+      }else{
+        const deposit = await writeAsyncDeposit();
+        if (deposit?.transaction_hash) {
+          console.log("trans transaction hash created");
+        }
+        // const deposit = await writeAsyncDepositStake();
+        console.log("Supply Modal - deposit ", deposit);
+        setDepositTransHash(deposit?.transaction_hash);
+        if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
+        }
+        dispatch(setTransactionStatus("success"));
+        // if (isSuccessDeposit) {
+        //   toast({
+        //     title: "Success",
+        //     description: "Success",
+        //     variant: "subtle",
+        //     position: "bottom-right",
+        //     status: "error",
+        //     duration: 5000,
+        //     isClosable: true,
+        //   });
+        // }
+        // console.log("Status transaction", deposit);
+        console.log(isSuccessDeposit, "success ?");
+
       }
-      // const deposit = await writeAsyncDepositStake();
-      console.log("Supply Modal - deposit ", deposit);
-      setDepositTransHash(deposit?.transaction_hash);
-      if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
-      }
-      dispatch(setTransactionStatus("success"));
-      if (isSuccessDeposit) {
-        toast({
-          title: "Success",
-          description: "Success",
-          variant: "subtle",
-          position: "bottom-right",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-      }
-      // console.log("Status transaction", deposit);
-      console.log(isSuccessDeposit, "success ?");
     } catch (err) {
+      toast.error(`Transaction cancelled ${err}`, {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
       // setTransactionFailed(true);
       dispatch(setTransactionStatus("failed"));
+      // labelErrorArray.forEach(async (element, idx) => {
+      //   await setTimeout(
+      //     () =>
+      //       toast({
+      //         title: element,
+      //         position: "bottom-right",
+      //         isClosable: true,
+      //         duration: 5000,
+      //       }),
+      //     2000
+      //   );
+      // });
       console.log(err);
+
       // toast({
       //   description: "An error occurred while handling the transaction. " + err,
       //   variant: "subtle",
@@ -232,33 +292,6 @@ const SupplyModal = ({
       //   status: "error",
       //   isClosable: true,
       // });
-      toast({
-        variant: "subtle",
-        position: "bottom-right",
-        render: () => (
-          <Box
-            display="flex"
-            flexDirection="row"
-            justifyContent="center"
-            alignItems="center"
-            bg="rgba(40, 167, 69, 0.5)"
-            height="48px"
-            borderRadius="6px"
-            border="1px solid rgba(74, 194, 107, 0.4)"
-            padding="8px"
-          >
-            <Box>
-              <SuccessTick />
-            </Box>
-            <Text>You have successfully supplied 1000USDT to check go to </Text>
-            <Button variant="link">Your Supply</Button>
-            <Box>
-              <CancelSuccessToast />
-            </Box>
-          </Box>
-        ),
-        isClosable: true,
-      });
     }
   };
 
@@ -340,8 +373,9 @@ const SupplyModal = ({
           )
         : 0
     );
+    settransactionStarted(false);
 
-    if (transactionStarted) dispatch(setTransactionStarted(""));
+    if (transactionStarted1) dispatch(setTransactionStarted(""));
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
   };
@@ -371,7 +405,7 @@ const SupplyModal = ({
           onClose={() => {
             onClose();
             resetStates();
-            if (transactionStarted) dispatch(setToastTransactionStarted(true));
+            if (transactionStarted1) dispatch(setToastTransactionStarted(true));
             // if (setIsOpenCustom) setIsOpenCustom(false);
           }}
           size={{ width: "700px", height: "100px" }}
@@ -829,6 +863,10 @@ const SupplyModal = ({
                     iconColor: "blue.400",
                     bg: "blue",
                   }}
+                  onChange={()=>{setStakeAndSupply(!stakeAndSupply);
+                    console.log(stakeAndSupply)
+                    setIsChecked(!isChecked);
+                  }}
                 />
                 <Text
                   fontSize="12px"
@@ -979,6 +1017,7 @@ const SupplyModal = ({
                   <Box
                     onClick={() => {
                       dispatch(setTransactionStarted(""));
+                      settransactionStarted(true);
                       if (transactionStarted === false) {
                         handleTransaction();
                       }

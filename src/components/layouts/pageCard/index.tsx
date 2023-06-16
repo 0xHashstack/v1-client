@@ -1,6 +1,6 @@
 import Navbar from "@/components/layouts/navbar/Navbar";
 import { Box, Stack, StackProps, useMediaQuery } from "@chakra-ui/react";
-import React, { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
@@ -26,6 +26,8 @@ import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import { ToastContainer, toast } from 'react-toastify';
+
 interface Props extends StackProps {
   children: ReactNode;
 }
@@ -42,7 +44,6 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const router = useRouter();
 
   const toastTransactionStarted = useSelector(selectToastTransactionStarted);
-
   // const handleRouteChange = () => {
   //   if (!_account) {
   //     const walletConnected = localStorage.getItem("lastUsedConnector");
@@ -151,9 +152,14 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
-  useEffect(() => {
-    dispatch(setAssetWalletBalance(assetBalance));
-  }, [assetBalance]);
+  // useEffect(() => {
+  //   // console.log(assetBalance);
+  //   try {
+  //     dispatch(setAssetWalletBalance(assetBalance));
+  //   } catch (error) {
+  //     console.log("serializing warning");
+  //   }
+  // }, [assetBalance]);
   // useEffect(() => {
   //   const timer = setTimeout(() => {
   //     connect(connectors[0]);
@@ -177,7 +183,8 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           >
             {children}
           </Stack>
-          <TransactionToast />
+          {/* <TransactionToast /> */}
+          <ToastContainer theme="dark"/>
           <Footer block={83207} />
         </>
       )}

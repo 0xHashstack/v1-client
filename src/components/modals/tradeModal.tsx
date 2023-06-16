@@ -37,7 +37,7 @@ import {
   selectWalletBalance,
   setInputTradeModalCollateralAmount,
   setInputTradeModalBorrowAmount,
-  selectAssetWalletBalance
+  selectAssetWalletBalance,
 } from "@/store/slices/userAccountSlice";
 import {
   selectNavDropdowns,
@@ -65,6 +65,8 @@ import ErrorButton from "../uiElements/buttons/ErrorButton";
 import ArrowUp from "@/assets/icons/arrowup";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   //   console.log("isopen", isOpen, "onopen", onOpen, "onClose", onClose);
@@ -76,12 +78,47 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [transactionStarted, setTransactionStarted] = useState(false);
-  const walletBalances=useSelector(selectAssetWalletBalance);
-  const [walletBalance, setwalletBalance] = useState(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 0)
-  useEffect(()=>{
-    setwalletBalance(walletBalances[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 0)
+  // const walletBalances=useSelector(selectAssetWalletBalance);
+  interface assetB {
+    USDT: any;
+    USDC: any;
+    BTC: any;
+    ETH: any;
+    DAI: any;
+  }
+
+  const walletBalances: assetB = {
+    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
+    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
+    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
+    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
+    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+  };
+  const [walletBalance, setwalletBalance] = useState(
+    walletBalances[coin.name]?.statusBalanceOf === "success"
+      ? Number(
+          BNtoNum(
+            uint256.uint256ToBN(
+              walletBalances[coin.name]?.dataBalanceOf?.balance
+            )
+          )
+        )
+      : 0
+  );
+  useEffect(() => {
+    setwalletBalance(
+      walletBalances[coin.name]?.statusBalanceOf === "success"
+        ? Number(
+            BNtoNum(
+              uint256.uint256ToBN(
+                walletBalances[coin.name]?.dataBalanceOf?.balance
+              )
+            )
+          )
+        : 0
+    );
     // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
-  },[walletBalances[coin.name]?.statusBalanceOf,coin])
+  }, [walletBalances[coin.name]?.statusBalanceOf, coin]);
   const dapps = [
     { name: "Jediswap", status: "enable" },
     { name: "mySwap", status: "disable" },
@@ -207,7 +244,15 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
     setRadioValue("1");
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
-    setwalletBalance(walletBalances[coin]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin]?.dataBalanceOf?.balance))) : 0)
+    setwalletBalance(
+      walletBalances[coin]?.statusBalanceOf === "success"
+        ? Number(
+            BNtoNum(
+              uint256.uint256ToBN(walletBalances[coin]?.dataBalanceOf?.balance)
+            )
+          )
+        : 0
+    );
   };
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
@@ -283,7 +328,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
               display="flex"
               justifyContent="space-around"
               gap="5"
-            //   alignItems="center"
+              //   alignItems="center"
             >
               <Box w="48%">
                 <Box
@@ -335,7 +380,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                         } else {
                           handleDropdownClick(
                             "tradeModalCollateralMarketDropdown"
-                          )
+                          );
                         }
                       }}
                       as="button"
@@ -372,7 +417,19 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                                 pr="2"
                                 onClick={() => {
                                   setCurrentCollateralCoin(coin);
-                                  setwalletBalance(walletBalances[coin]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin]?.dataBalanceOf?.balance))) : 0)
+                                  setwalletBalance(
+                                    walletBalances[coin]?.statusBalanceOf ===
+                                      "success"
+                                      ? Number(
+                                          BNtoNum(
+                                            uint256.uint256ToBN(
+                                              walletBalances[coin]
+                                                ?.dataBalanceOf?.balance
+                                            )
+                                          )
+                                        )
+                                      : 0
+                                  );
                                 }}
                               >
                                 {coin === currentCollateralCoin && (
@@ -387,13 +444,15 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                                   w="full"
                                   display="flex"
                                   py="5px"
-                                  px={`${coin === currentCollateralCoin ? "1" : "5"
-                                    }`}
+                                  px={`${
+                                    coin === currentCollateralCoin ? "1" : "5"
+                                  }`}
                                   gap="1"
-                                  bg={`${coin === currentCollateralCoin
+                                  bg={`${
+                                    coin === currentCollateralCoin
                                       ? "#0C6AD9"
                                       : "inherit"
-                                    }`}
+                                  }`}
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(coin)}</Box>
@@ -430,17 +489,18 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                     <Box
                       width="100%"
                       color="white"
-                      border={`${inputCollateralAmount > walletBalance
+                      border={`${
+                        inputCollateralAmount > walletBalance
                           ? "1px solid #CF222E"
                           : inputCollateralAmount < 0
-                            ? "1px solid #CF222E"
-                            : isNaN(inputCollateralAmount)
-                              ? "1px solid #CF222E"
-                              : inputCollateralAmount > 0 &&
-                                inputCollateralAmount <= walletBalance
-                                ? "1px solid #1A7F37"
-                                : "1px solid #2B2F35 "
-                        }`}
+                          ? "1px solid #CF222E"
+                          : isNaN(inputCollateralAmount)
+                          ? "1px solid #CF222E"
+                          : inputCollateralAmount > 0 &&
+                            inputCollateralAmount <= walletBalance
+                          ? "1px solid #1A7F37"
+                          : "1px solid #2B2F35 "
+                      }`}
                       borderRadius="6px"
                       display="flex"
                       justifyContent="space-between"
@@ -459,16 +519,17 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       >
                         <NumberInputField
                           placeholder={`Minimum 0.01536 ${currentCollateralCoin}`}
-                          color={`${inputCollateralAmount > walletBalance
+                          color={`${
+                            inputCollateralAmount > walletBalance
                               ? "#CF222E"
                               : isNaN(inputCollateralAmount)
-                                ? "#CF222E"
-                                : inputCollateralAmount < 0
-                                  ? "#CF222E"
-                                  : inputCollateralAmount == 0
-                                    ? "white"
-                                    : "#1A7F37"
-                            }`}
+                              ? "#CF222E"
+                              : inputCollateralAmount < 0
+                              ? "#CF222E"
+                              : inputCollateralAmount == 0
+                              ? "white"
+                              : "#1A7F37"
+                          }`}
                           _disabled={{ color: "#1A7F37" }}
                           border="0px"
                           _placeholder={{
@@ -501,8 +562,8 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       </Button>
                     </Box>
                     {inputCollateralAmount > walletBalance ||
-                      inputCollateralAmount < 0 ||
-                      isNaN(inputCollateralAmount) ? (
+                    inputCollateralAmount < 0 ||
+                    isNaN(inputCollateralAmount) ? (
                       <Text
                         display="flex"
                         justifyContent="space-between"
@@ -528,7 +589,11 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                           display="flex"
                           justifyContent="flex-end"
                         >
-                          Wallet Balance: {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5 ? Math.floor(walletBalance) : walletBalance}
+                          Wallet Balance:{" "}
+                          {walletBalance.toFixed(5).replace(/\.?0+$/, "")
+                            .length > 5
+                            ? Math.floor(walletBalance)
+                            : walletBalance}
                           <Text color="#6E7781" ml="0.2rem">
                             {` ${currentCollateralCoin}`}
                           </Text>
@@ -545,7 +610,11 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                         fontStyle="normal"
                         fontFamily="Inter"
                       >
-                        Wallet Balance: {walletBalance.toFixed(5).replace(/\.?0+$/, '').length > 5 ? Math.floor(walletBalance) : walletBalance}
+                        Wallet Balance:{" "}
+                        {walletBalance.toFixed(5).replace(/\.?0+$/, "").length >
+                        5
+                          ? Math.floor(walletBalance)
+                          : walletBalance}
                         <Text color="#6E7781" ml="0.2rem">
                           {` ${currentCollateralCoin}`}
                         </Text>
@@ -567,31 +636,79 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                         _disabled={{ cursor: "pointer" }}
                         focusThumbOnChange={false}
                       >
-                        <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                          {sliderValue >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
+                        <SliderMark
+                          value={0}
+                          mt="-1.5"
+                          ml="-1.5"
+                          fontSize="sm"
+                          zIndex="1"
+                        >
+                          {sliderValue >= 0 ? (
+                            <SliderPointerWhite />
+                          ) : (
+                            <SliderPointer />
+                          )}
                         </SliderMark>
-                        <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                          {sliderValue >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
+                        <SliderMark
+                          value={25}
+                          mt="-1.5"
+                          ml="-1.5"
+                          fontSize="sm"
+                          zIndex="1"
+                        >
+                          {sliderValue >= 25 ? (
+                            <SliderPointerWhite />
+                          ) : (
+                            <SliderPointer />
+                          )}
                         </SliderMark>
-                        <SliderMark value={50} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                          {sliderValue >= 50 ? <SliderPointerWhite /> : <SliderPointer />}
+                        <SliderMark
+                          value={50}
+                          mt="-1.5"
+                          ml="-1.5"
+                          fontSize="sm"
+                          zIndex="1"
+                        >
+                          {sliderValue >= 50 ? (
+                            <SliderPointerWhite />
+                          ) : (
+                            <SliderPointer />
+                          )}
                         </SliderMark>
-                        <SliderMark value={75} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                          {sliderValue >= 75 ? <SliderPointerWhite /> : <SliderPointer />}
+                        <SliderMark
+                          value={75}
+                          mt="-1.5"
+                          ml="-1.5"
+                          fontSize="sm"
+                          zIndex="1"
+                        >
+                          {sliderValue >= 75 ? (
+                            <SliderPointerWhite />
+                          ) : (
+                            <SliderPointer />
+                          )}
                         </SliderMark>
-                        <SliderMark value={100} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                          {sliderValue == 100 ? <SliderPointerWhite /> : <SliderPointer />}
+                        <SliderMark
+                          value={100}
+                          mt="-1.5"
+                          ml="-1.5"
+                          fontSize="sm"
+                          zIndex="1"
+                        >
+                          {sliderValue == 100 ? (
+                            <SliderPointerWhite />
+                          ) : (
+                            <SliderPointer />
+                          )}
                         </SliderMark>
                         <SliderMark
                           value={sliderValue}
-                          textAlign='center'
+                          textAlign="center"
                           // bg='blue.500'
-                          color='white'
-                          mt='-8'
-                          ml={
-                            sliderValue !== 100 ? "-5" : "-6"
-                          }
-                          w='12'
+                          color="white"
+                          mt="-8"
+                          ml={sliderValue !== 100 ? "-5" : "-6"}
+                          w="12"
                           fontSize="12px"
                           fontWeight="400"
                           lineHeight="20px"
@@ -659,7 +776,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                         if (transactionStarted) {
                           return;
                         } else {
-                          handleDropdownClick("tradeModalBorrowMarketDropdown")
+                          handleDropdownClick("tradeModalBorrowMarketDropdown");
                         }
                       }}
                       as="button"
@@ -710,13 +827,15 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                                   w="full"
                                   display="flex"
                                   py="5px"
-                                  px={`${coin === currentBorrowCoin ? "1" : "5"
-                                    }`}
+                                  px={`${
+                                    coin === currentBorrowCoin ? "1" : "5"
+                                  }`}
                                   gap="1"
-                                  bg={`${coin === currentBorrowCoin
+                                  bg={`${
+                                    coin === currentBorrowCoin
                                       ? "#0C6AD9"
                                       : "inherit"
-                                    }`}
+                                  }`}
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(coin)}</Box>
@@ -753,17 +872,18 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                     <Box
                       width="100%"
                       color="white"
-                      border={`${inputBorrowAmount > walletBalance
+                      border={`${
+                        inputBorrowAmount > walletBalance
                           ? "1px solid #CF222E"
                           : inputBorrowAmount < 0
-                            ? "1px solid #CF222E"
-                            : isNaN(inputBorrowAmount)
-                              ? "1px solid #CF222E"
-                              : inputBorrowAmount > 0 &&
-                                inputBorrowAmount <= walletBalance
-                                ? "1px solid #1A7F37"
-                                : "1px solid #2B2F35 "
-                        }`}
+                          ? "1px solid #CF222E"
+                          : isNaN(inputBorrowAmount)
+                          ? "1px solid #CF222E"
+                          : inputBorrowAmount > 0 &&
+                            inputBorrowAmount <= walletBalance
+                          ? "1px solid #1A7F37"
+                          : "1px solid #2B2F35 "
+                      }`}
                       borderRadius="6px"
                       display="flex"
                       justifyContent="space-between"
@@ -782,16 +902,17 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       >
                         <NumberInputField
                           placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
-                          color={`${inputBorrowAmount > walletBalance
+                          color={`${
+                            inputBorrowAmount > walletBalance
                               ? "#CF222E"
                               : isNaN(inputBorrowAmount)
-                                ? "#CF222E"
-                                : inputBorrowAmount < 0
-                                  ? "#CF222E"
-                                  : inputBorrowAmount == 0
-                                    ? "white"
-                                    : "#1A7F37"
-                            }`}
+                              ? "#CF222E"
+                              : inputBorrowAmount < 0
+                              ? "#CF222E"
+                              : inputBorrowAmount == 0
+                              ? "white"
+                              : "#1A7F37"
+                          }`}
                           border="0px"
                           _disabled={{ color: "#1A7F37" }}
                           _placeholder={{
@@ -824,8 +945,8 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       </Button>
                     </Box>
                     {inputBorrowAmount > walletBalance ||
-                      inputBorrowAmount < 0 ||
-                      isNaN(inputBorrowAmount) ? (
+                    inputBorrowAmount < 0 ||
+                    isNaN(inputBorrowAmount) ? (
                       <Text
                         display="flex"
                         justifyContent="space-between"
@@ -890,31 +1011,79 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                         _disabled={{ cursor: "pointer" }}
                         focusThumbOnChange={false}
                       >
-                        <SliderMark value={0} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                          {sliderValue2 >= 0 ? <SliderPointerWhite /> : <SliderPointer />}
+                        <SliderMark
+                          value={0}
+                          mt="-1.5"
+                          ml="-1.5"
+                          fontSize="sm"
+                          zIndex="1"
+                        >
+                          {sliderValue2 >= 0 ? (
+                            <SliderPointerWhite />
+                          ) : (
+                            <SliderPointer />
+                          )}
                         </SliderMark>
-                        <SliderMark value={25} mt="-1.5" ml="-1.5" fontSize='sm' zIndex="1">
-                          {sliderValue2 >= 25 ? <SliderPointerWhite /> : <SliderPointer />}
+                        <SliderMark
+                          value={25}
+                          mt="-1.5"
+                          ml="-1.5"
+                          fontSize="sm"
+                          zIndex="1"
+                        >
+                          {sliderValue2 >= 25 ? (
+                            <SliderPointerWhite />
+                          ) : (
+                            <SliderPointer />
+                          )}
                         </SliderMark>
-                        <SliderMark value={50} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                          {sliderValue2 >= 50 ? <SliderPointerWhite /> : <SliderPointer />}
+                        <SliderMark
+                          value={50}
+                          mt="-1.5"
+                          ml="-1.5"
+                          fontSize="sm"
+                          zIndex="1"
+                        >
+                          {sliderValue2 >= 50 ? (
+                            <SliderPointerWhite />
+                          ) : (
+                            <SliderPointer />
+                          )}
                         </SliderMark>
-                        <SliderMark value={75} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                          {sliderValue2 >= 75 ? <SliderPointerWhite /> : <SliderPointer />}
+                        <SliderMark
+                          value={75}
+                          mt="-1.5"
+                          ml="-1.5"
+                          fontSize="sm"
+                          zIndex="1"
+                        >
+                          {sliderValue2 >= 75 ? (
+                            <SliderPointerWhite />
+                          ) : (
+                            <SliderPointer />
+                          )}
                         </SliderMark>
-                        <SliderMark value={100} mt='-1.5' ml="-1.5" fontSize='sm' zIndex="1">
-                          {sliderValue2 == 100 ? <SliderPointerWhite /> : <SliderPointer />}
+                        <SliderMark
+                          value={100}
+                          mt="-1.5"
+                          ml="-1.5"
+                          fontSize="sm"
+                          zIndex="1"
+                        >
+                          {sliderValue2 == 100 ? (
+                            <SliderPointerWhite />
+                          ) : (
+                            <SliderPointer />
+                          )}
                         </SliderMark>
                         <SliderMark
                           value={sliderValue2}
-                          textAlign='center'
+                          textAlign="center"
                           // bg='blue.500'
-                          color='white'
-                          mt='-8'
-                          ml={
-                            sliderValue2 !== 100 ? "-5" : "-6"
-                          }
-                          w='12'
+                          color="white"
+                          mt="-8"
+                          ml={sliderValue2 !== 100 ? "-5" : "-6"}
+                          w="12"
                           fontSize="12px"
                           fontWeight="400"
                           lineHeight="20px"
@@ -1010,7 +1179,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                         if (transactionStarted) {
                           return;
                         } else {
-                          handleDropdownClick("yourBorrowDappDropdown")
+                          handleDropdownClick("yourBorrowDappDropdown");
                         }
                       }}
                       as="button"
@@ -1072,13 +1241,15 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                                   w="full"
                                   display="flex"
                                   py="5px"
-                                  px={`${dapp.name === currentDapp ? "1" : "5"
-                                    }`}
+                                  px={`${
+                                    dapp.name === currentDapp ? "1" : "5"
+                                  }`}
                                   gap="1"
-                                  bg={`${dapp.name === currentDapp
+                                  bg={`${
+                                    dapp.name === currentDapp
                                       ? "#0C6AD9"
                                       : "inherit"
-                                    }`}
+                                  }`}
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(dapp.name)}</Box>
@@ -1136,8 +1307,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                         if (transactionStarted) {
                           return;
                         } else {
-
-                          handleDropdownClick("yourBorrowPoolDropdown")
+                          handleDropdownClick("yourBorrowPoolDropdown");
                         }
                       }}
                       as="button"
@@ -1166,7 +1336,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                         )}
                       </Box>
                       {modalDropdowns.yourBorrowPoolDropdown &&
-                        radioValue === "1" ? (
+                      radioValue === "1" ? (
                         <Box
                           w="full"
                           left="0"
@@ -1203,8 +1373,9 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                                   py="5px"
                                   px={`${pool === currentPool ? "1" : "5"}`}
                                   gap="1"
-                                  bg={`${pool === currentPool ? "#0C6AD9" : "inherit"
-                                    }`}
+                                  bg={`${
+                                    pool === currentPool ? "#0C6AD9" : "inherit"
+                                  }`}
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(pool)}</Box>
@@ -1252,10 +1423,11 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                                   py="5px"
                                   px={`${coin === currentPoolCoin ? "1" : "5"}`}
                                   gap="1"
-                                  bg={`${coin === currentPoolCoin
+                                  bg={`${
+                                    coin === currentPoolCoin
                                       ? "#0C6AD9"
                                       : "inherit"
-                                    }`}
+                                  }`}
                                   borderRadius="md"
                                 >
                                   <Box p="1">{getCoin(coin)}</Box>
@@ -1534,12 +1706,14 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                   </Box>
                 </Box>
                 {inputCollateralAmount > 0 &&
-                  inputBorrowAmount > 0 &&
-                  currentDapp != "Select a dapp" &&
-                  (currentPool != "Select a pool" ||
-                    currentPoolCoin != "Select a pool") ? (
+                inputBorrowAmount > 0 &&
+                currentDapp != "Select a dapp" &&
+                (currentPool != "Select a pool" ||
+                  currentPoolCoin != "Select a pool") ? (
                   <Box
-                    onClick={() => { setTransactionStarted(true) }}
+                    onClick={() => {
+                      setTransactionStarted(true);
+                    }}
                   >
                     <AnimatedButton
                       bgColor="#101216"

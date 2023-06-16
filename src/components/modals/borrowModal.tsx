@@ -61,6 +61,8 @@ import SliderPointer from "@/assets/icons/sliderPointer";
 import { useWaitForTransaction } from "@starknet-react/core";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
+import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [sliderValue, setSliderValue] = useState<number>(0);
@@ -69,12 +71,37 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
-  const walletBalances=useSelector(selectAssetWalletBalance);
-  const [walletBalance, setwalletBalance] = useState(0)
-  useEffect(()=>{
-    setwalletBalance(walletBalances[coin?.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance))) : 24)
+  // const walletBalances = useSelector(selectAssetWalletBalance);
+  const [walletBalance, setwalletBalance] = useState(0);
+
+  interface assetB {
+    USDT: any;
+    USDC: any;
+    BTC: any;
+    ETH: any;
+    DAI: any;
+  }
+  const walletBalances: assetB = {
+    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
+    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
+    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
+    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
+    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+  };
+  useEffect(() => {
+    setwalletBalance(
+      walletBalances[coin?.name]?.statusBalanceOf === "success"
+        ? Number(
+            BNtoNum(
+              uint256.uint256ToBN(
+                walletBalances[coin.name]?.dataBalanceOf?.balance
+              )
+            )
+          )
+        : 24
+    );
     // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
-  },[coin, walletBalances[coin?.name]?.statusBalanceOf])
+  }, [coin, walletBalances[coin?.name]?.statusBalanceOf]);
   const {
     market,
     setMarket,

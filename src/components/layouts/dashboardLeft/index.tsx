@@ -21,7 +21,10 @@ import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { uint256 } from "starknet";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { Dispatch } from "@reduxjs/toolkit";
-import { selectAssetWalletBalance, setAssetWalletBalance } from "@/store/slices/userAccountSlice";
+import {
+  selectAssetWalletBalance,
+  setAssetWalletBalance,
+} from "@/store/slices/userAccountSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { useDispatch, useSelector } from "react-redux";
@@ -119,10 +122,36 @@ const DashboardLeft = ({
   //   errorBalanceOf,
   //   statusBalanceOf
   // );
-  const assetBalance=useSelector(selectAssetWalletBalance);
 
-  
-  
+  // function isJSON(str) {
+  //   try {
+  //     JSON.parse(str);
+  //     return true;
+  //   } catch (error) {
+  //     return false;
+  //   }
+  // }
+  // const assetBalance = useSelector(selectAssetWalletBalance);
+  interface assetB {
+    USDT: any;
+    USDC: any;
+    BTC: any;
+    ETH: any;
+    DAI: any;
+  }
+  const assetBalance: assetB = {
+    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
+    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
+    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
+    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
+    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+  };
+  // useEffect(() => {
+  //   if (isJSON(assetBalance)) {
+  //     assetBalance = JSON.parse(assetBalance);
+  //   }
+  // }, [assetBalance]);
+  // console.log("aryan", assetBalance);
   // useEffect(() => {
   //   for (let i of Coins) {
   //   }

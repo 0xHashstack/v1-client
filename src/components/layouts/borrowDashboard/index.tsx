@@ -149,10 +149,11 @@ const BorrowDashboard = ({
   upper_bound = Math.min(Borrows?.length - 1, upper_bound);
   const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
   const [borrowIds, setBorrowIds] = useState([]);
-  const [currentBorrowId1, setCurrentBorrowId1] = useState("ID - 123456");
+  const [borrowAmount, setBorrowAmount] = useState<number>(0);
+  const [currentBorrowId1, setCurrentBorrowId1] = useState("");
   const [currentBorrowMarketCoin1, setCurrentBorrowMarketCoin1] =
     useState("BTC");
-  const [currentBorrowId2, setCurrentBorrowId2] = useState("ID - 123456");
+  const [currentBorrowId2, setCurrentBorrowId2] = useState("");
   const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
     useState("BTC");
   const [collateralBalance, setCollateralBalance] = useState("123 eth");
@@ -579,6 +580,7 @@ const BorrowDashboard = ({
                         setCurrentBorrowMarketCoin1(borrow.loanMarket);
                         setCurrentBorrowId2("ID - " + borrow.loanId);
                         setCurrentBorrowMarketCoin2(borrow.loanMarket);
+                        setBorrowAmount(borrow.loanAmountParsed);
                         setCollateralBalance(
                           borrow.collateralAmountParsed +
                             " " +
@@ -607,6 +609,7 @@ const BorrowDashboard = ({
                         setCollateralBalance={setCollateralBalance}
                         loan={borrow}
                         borrowIds={borrowIds}
+                        BorrowBalance={borrowAmount}
                         buttonText="Actions"
                         height={"2rem"}
                         fontSize={"12px"}

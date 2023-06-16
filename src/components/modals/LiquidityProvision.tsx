@@ -40,7 +40,7 @@ import TableYagiLogo from "../layouts/table/tableIcons/yagiLogo";
 import TableYagiLogoDull from "../layouts/table/tableIcons/yagiLogoDull";
 import TableMySwapDull from "../layouts/table/tableIcons/mySwapDull";
 import TableJediswapLogo from "../layouts/table/tableIcons/jediswapLogo";
-
+import useSwap from "@/Blockchain/hooks/Writes/useSwap";
 import {
   selectInputSupplyAmount,
   setCoinSelectedSupplyModal,
@@ -48,6 +48,7 @@ import {
   setInputSupplyAmount,
   selectSelectedDapp,
   selectUserLoans,
+  setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -56,7 +57,7 @@ import {
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
 import ArrowUp from "@/assets/icons/arrowup";
-
+import useLiquidity from "@/Blockchain/hooks/Writes/useLiquidity";
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -74,6 +75,31 @@ const LiquidityProvisionModal = ({
   // console.log("liquidity found current id: ", currentMarketCoin);
 
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    liquidityLoanId,
+    setLiquidityLoanId,
+    toMarketA,
+    setToMarketA,
+
+    toMarketB,
+    setToMarketB,
+
+    dataJediSwap_addLiquidity,
+    errorJediSwap_addLiquidity,
+    writeJediSwap_addLiquidity,
+    writeAsyncJediSwap_addLiquidity,
+    isIdleJediSwap_addLiquidity,
+    isLoadingJediSwap_addLiquidity,
+    statusJediSwap_addLiquidity,
+
+    datamySwap_addLiquidity,
+    errormySwap_addLiquidity,
+    writemySwap_addLiquidity,
+    writeAsyncmySwap_addLiquidity,
+    isIdlemySwap_addLiquidity,
+    isLoadingmySwap_addLiquidity,
+    statusmySwap_addLiquidity,
+  } = useLiquidity();
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] =
@@ -102,8 +128,15 @@ const LiquidityProvisionModal = ({
     // console.log(borrowAmount)
     // Rest of your code using the 'result' variable
   }, [currentId]);
-
-  useEffect(() => {}, [currentSwap]);
+  useEffect(() => {
+    setLiquidityLoanId(
+      currentBorrowId.slice(currentBorrowId.indexOf("-") + 1).trim()
+    );
+  }, [currentBorrowId]);
+  useEffect(() => {
+    setToMarketA(currentPool.split("/")[0]);
+    setToMarketB(currentPool.split("/")[1]);
+  }, [currentPool]);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -186,6 +219,17 @@ const LiquidityProvisionModal = ({
     }
   };
 
+  const handleLiquidity = async () => {
+    try {
+      const liquidity = await writeAsyncJediSwap_addLiquidity();
+      console.log(liquidity);
+      dispatch(setTransactionStatus("success"));
+    } catch (err) {
+      console.log(err);
+      dispatch(setTransactionStatus("failed"));
+    }
+  };
+
   // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const resetStates = () => {
     setCurrentBorrowId(currentId);
@@ -198,6 +242,7 @@ const LiquidityProvisionModal = ({
         item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
     );
     setBorrowAmount(result?.loanAmountParsed);
+    dispatch(setTransactionStatus(""));
   };
 
   useEffect(() => {
@@ -394,6 +439,9 @@ const LiquidityProvisionModal = ({
                             pr="2"
                             onClick={() => {
                               setCurrentPool(pool);
+                              // console.log(pool)
+                              setToMarketA(pool.split("/")[0]);
+                              setToMarketB(pool.split("/")[1]);
                             }}
                           >
                             {pool === currentPool && (
@@ -928,6 +976,9 @@ const LiquidityProvisionModal = ({
                 <Box
                   onClick={() => {
                     setTransactionStarted(true);
+                    if (transactionStarted == false) {
+                      handleLiquidity();
+                    }
                   }}
                 >
                   <AnimatedButton

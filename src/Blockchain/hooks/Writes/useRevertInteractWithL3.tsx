@@ -8,6 +8,8 @@ const useRevertInteractWithL3 = (loanIdParam: string) => {
   const {
     data: dataRevertInteractWithL3,
     error: errorRevertInteractWithL3,
+    write: writeRevertInteractWithL3,
+    writeAsync: writeAsyncRevertInteractWithL3,
     isIdle: isIdleRevertInteractWithL3,
     isLoading: isLoadingRevertInteractWithL3,
   } = useContractWrite({
@@ -19,7 +21,12 @@ const useRevertInteractWithL3 = (loanIdParam: string) => {
   })
 
   return {
+    loanId,
+    setLoanId,
+
     dataRevertInteractWithL3,
+    writeAsyncRevertInteractWithL3,
+    writeRevertInteractWithL3,
     errorRevertInteractWithL3,
     isIdleRevertInteractWithL3,
     isLoadingRevertInteractWithL3,

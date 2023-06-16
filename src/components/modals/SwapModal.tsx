@@ -38,6 +38,7 @@ import {
   setInputSupplyAmount,
   selectSelectedDapp,
   selectUserLoans,
+  setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -46,7 +47,10 @@ import {
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
 import ArrowUp from "@/assets/icons/arrowup";
-
+import useSwap from "@/Blockchain/hooks/Writes/useSwap";
+import AnimatedButton from "../uiElements/buttons/AnimationButton";
+import ErrorButton from "../uiElements/buttons/ErrorButton";
+import SuccessButton from "../uiElements/buttons/SuccessButton";
 const SwapModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -57,6 +61,28 @@ const SwapModal = ({
   setCurrentSwap,
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const {
+    swapLoanId,
+    setSwapLoanId,
+    toMarket,
+    setToMarket,
+
+    dataJediSwap_swap,
+    errorJediSwap_swap,
+    writeJediSwap_swap,
+    writeAsyncJediSwap_swap,
+    isIdleJediSwap_swap,
+    isLoadingJediSwap_swap,
+    statusJediSwap_swap,
+
+    datamySwap_swap,
+    errormySwap_swap,
+    writemySwap_swap,
+    writeAsyncmySwap_swap,
+    isIdlemySwap_swap,
+    isLoadingmySwap_swap,
+    statusmySwap_swap,
+  } = useSwap();
 
   const [currentSelectedCoin, setCurrentSelectedCoin] =
     useState("Select a market");
@@ -115,6 +141,17 @@ const SwapModal = ({
     dispatch(setModalDropdown(dropdownName));
   };
 
+  const handleSwap = async () => {
+    try {
+      const swap = await writeAsyncJediSwap_swap();
+      console.log(swap);
+      dispatch(setTransactionStatus("success"));
+    } catch (err) {
+      console.log(err);
+      dispatch(setTransactionStatus("failed"));
+    }
+  };
+
   //This function is used to find the percentage of the slider from the input given by the user
   const handleChange = (newValue: any) => {
     // Calculate the percentage of the new value relative to the wallet balance
@@ -140,7 +177,15 @@ const SwapModal = ({
     // console.log(borrowAmount)
     // Rest of your code using the 'result' variable
   }, [currentId]);
+  useEffect(() => {
+    setSwapLoanId(
+      currentBorrowId.slice(currentBorrowId.indexOf("-") + 1).trim()
+    );
+  }, [currentBorrowId]);
   // console.log(onOpen)
+  useEffect(() => {
+    setToMarket(currentSelectedCoin);
+  }, [currentSelectedCoin]);
 
   // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const resetStates = () => {
@@ -156,6 +201,7 @@ const SwapModal = ({
         item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
     );
     setBorrowAmount(result?.loanAmountParsed);
+    dispatch(setTransactionStatus(""));
   };
 
   useEffect(() => {
@@ -329,6 +375,7 @@ const SwapModal = ({
                           pr="2"
                           onClick={() => {
                             setCurrentSelectedCoin(coin);
+                            setToMarket(coin);
                             dispatch(setCoinSelectedSupplyModal(coin));
                           }}
                         >
@@ -437,6 +484,7 @@ const SwapModal = ({
                           onClick={() => {
                             setCurrentBorrowId("ID - " + coin);
                             handleBorrowMarketCoinChange(coin);
+                            setSwapLoanId(coin);
                             const borrowIdString = String(coin);
                             const result = userLoans.find(
                               (item: { loanId: string }): any =>
@@ -855,20 +903,43 @@ const SwapModal = ({
               <Box
                 onClick={() => {
                   setTransactionStarted(true);
+                  if (transactionStarted == false) {
+                    handleSwap();
+                  }
                 }}
               >
-                <Button
-                  bg="#101216"
+                <AnimatedButton
+                  bgColor="#101216"
+                  // bgColor="red"
+                  // p={0}
                   color="#8B949E"
                   size="sm"
                   width="100%"
                   mt="1.5rem"
                   mb="1.5rem"
                   border="1px solid #8B949E"
-                  _hover={{ bg: "#10216" }}
+                  labelSuccessArray={[
+                    "Processing",
+                    "Transferring collateral to supply vault.",
+                    "Minting & transferring rTokens to the user account.",
+                    "Locking rTokens.",
+                    "Updating collateral records",
+                    <SuccessButton
+                      key={"successButton"}
+                      successText={"Add collateral successful."}
+                    />,
+                  ]}
+                  labelErrorArray={[
+                    "Processing",
+                    "Transferring collateral to supply vault.",
+                    <ErrorButton errorText="Transaction failed" />,
+                    <ErrorButton errorText="Copy error!" />,
+                  ]}
+                  _disabled={{ bgColor: "white", color: "black" }}
+                  isDisabled={transactionStarted == true}
                 >
                   Spend Borrow
-                </Button>
+                </AnimatedButton>
               </Box>
             ) : (
               <Button

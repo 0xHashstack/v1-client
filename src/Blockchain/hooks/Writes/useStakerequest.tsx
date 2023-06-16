@@ -1,3 +1,4 @@
+import { RToken } from "@/Blockchain/interfaces/interfaces";
 import { diamondAddress } from "@/Blockchain/stark-constants";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { etherToWeiBN } from "@/Blockchain/utils/utils";
@@ -8,7 +9,7 @@ import {
 import { useState } from "react";
 
 const useStakeRequest = () => {
-    const [rToken, setRToken] = useState("")
+    const [rToken, setRToken] = useState<RToken>("rBTC")
     const [rTokenAmount, setRTokenAmount] = useState(0)
     const { address: owner } = useAccount();
     // console.log()

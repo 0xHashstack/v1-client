@@ -22,7 +22,7 @@ const initialState = {
   reserves: undefined,
   oracleAndFairPrices: undefined,
   offchainCurrentBlock: undefined,
-  assetWalletBalance: {},
+  assetWalletBalance: "",
   userLoans: [],
 
   toastTransactionStarted: false,

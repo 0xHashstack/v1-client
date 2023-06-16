@@ -59,6 +59,7 @@ import BtcToEth from "@/assets/icons/pools/btcToEth";
 import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
 
 import {
+  selectUserLoans,
   selectWalletBalance,
   setInputYourBorrowModalRepayAmount,
   setTransactionStatus,
@@ -71,7 +72,8 @@ import ArrowUp from "@/assets/icons/arrowup";
 import useRepay from "@/Blockchain/hooks/Writes/useRepay";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import useAddCollateral from "@/Blockchain/hooks/Writes/useAddCollateral";
-
+import useSwap from "../../Blockchain/hooks/Writes/useSwap";
+import useLiquidity from "@/Blockchain/hooks/Writes/useLiquidity";
 const YourBorrowModal = ({
   borrowIDCoinMap,
   currentID,
@@ -88,9 +90,13 @@ const YourBorrowModal = ({
   setCollateralBalance,
   borrowIds,
   buttonText,
+  BorrowBalance,
   loan,
   ...restProps
 }: any) => {
+  // console.log(currentBorrowId1);
+  // console.log(currentID)
+  // console.log(borrowIds);
   // console.log("took map", borrowIDCoinMap, currentID, currentMarket);
   // console.log();
 
@@ -100,10 +106,20 @@ const YourBorrowModal = ({
   const [sliderValue1, setSliderValue1] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [inputAmount1, setinputAmount1] = useState(0);
+  // const [currentBorrowId, setCurrentBorrowId] = useState(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
+  // console.log(currentBorrowId);
   const [transactionStarted, setTransactionStarted] = useState(false);
   const [collateralTransactionStarted, setCollateralTransactionStarted] =
     useState(false);
-
+    const [borrowAmount, setBorrowAmount] = useState(BorrowBalance)
+    const userLoans=useSelector(selectUserLoans);
+    useEffect(() => {
+      const result = userLoans.find((item:any) => item?.loanId == currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
+      setBorrowAmount(result?.loanAmountParsed)
+      // console.log(borrowAmount)
+      // Rest of your code using the 'result' variable
+      
+    }, [currentBorrowId1]);
   const {
     loanId,
     setLoanId,
@@ -159,6 +175,77 @@ const YourBorrowModal = ({
     selfLiquidateTransactionReceipt,
     setIsSelfLiquidateHash,
   } = useRepay(loan);
+
+  const {
+    swapLoanId,
+    setSwapLoanId,
+    toMarket,
+    setToMarket,
+
+    dataJediSwap_swap,
+    errorJediSwap_swap,
+    writeJediSwap_swap,
+    writeAsyncJediSwap_swap,
+    isIdleJediSwap_swap,
+    isLoadingJediSwap_swap,
+    statusJediSwap_swap,
+
+    datamySwap_swap,
+    errormySwap_swap,
+    writemySwap_swap,
+    writeAsyncmySwap_swap,
+    isIdlemySwap_swap,
+    isLoadingmySwap_swap,
+    statusmySwap_swap,
+  } = useSwap();
+
+  const {
+    liquidityLoanId,
+    setLiquidityLoanId,
+    toMarketA,
+    setToMarketA,
+
+    toMarketB,
+    setToMarketB,
+
+    dataJediSwap_addLiquidity,
+    errorJediSwap_addLiquidity,
+    writeJediSwap_addLiquidity,
+    writeAsyncJediSwap_addLiquidity,
+    isIdleJediSwap_addLiquidity,
+    isLoadingJediSwap_addLiquidity,
+    statusJediSwap_addLiquidity,
+
+    datamySwap_addLiquidity,
+    errormySwap_addLiquidity,
+    writemySwap_addLiquidity,
+    writeAsyncmySwap_addLiquidity,
+    isIdlemySwap_addLiquidity,
+    isLoadingmySwap_addLiquidity,
+    statusmySwap_addLiquidity,
+  } = useLiquidity();
+
+  useEffect(() => {
+    if (loan) {
+      setCollateralAsset(
+        loan?.collateralMarket[0] == "r"
+          ? loan?.collateralMarket.slice(1)
+          : loan?.collateralMarket
+      );
+      setRToken(loan?.collateralMarket);
+    }
+  }, [loan]);
+
+  useEffect(()=>{
+    // setSwapLoanId(currentBorrowId1);
+    setSwapLoanId(
+      currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+    );
+    setLiquidityLoanId(
+      currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+    );
+    setLoanId(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
+  },[currentBorrowId1])
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -220,6 +307,20 @@ const YourBorrowModal = ({
         break;
     }
   };
+  const [radioValue, setRadioValue] = useState("1");
+
+  // const [currentBorrowMarketCoin1, setCurrentBorrowMarketCoin1] =
+  //   useState(currentMarket);
+  // const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
+  //   useState(currentMarket);
+  const [currentPoolCoin, setCurrentPoolCoin] = useState("Select a pool");
+  const [currentAction, setCurrentAction] = useState("Spend Borrow");
+  // const [currentBorrowId1, setCurrentBorrowId1] = useState(`ID - ${currentID}`);
+  // const [currentBorrowId2, setCurrentBorrowId2] = useState(`ID - ${currentID}`);
+  const [currentDapp, setCurrentDapp] = useState("Select a dapp");
+  const [currentPool, setCurrentPool] = useState("Select a pool");
+  // console.log(currentDapp)
+  // console.log(currentPool.split('/')[0])
 
   const handleZeroRepay = async () => {
     try {
@@ -227,6 +328,7 @@ const YourBorrowModal = ({
         throw new Error("loan or loanID issue");
       }
       const zeroRepay = await writeAsyncSelfLiquidate();
+      console.log(zeroRepay)
       dispatch(setTransactionStatus("success"));
       console.log("zero repay success");
     } catch (err) {
@@ -234,12 +336,59 @@ const YourBorrowModal = ({
       dispatch(setTransactionStatus("failed"));
     }
   };
+ 
 
-  // const handleAddCollateral = async () => {
-  //   try {
-  //     const addCollateral = await writeAsyncAddCollateral();
-  //   } catch (err) { }
-  // };
+  
+  const hanldeTrade=async()=>{
+    try{
+
+      // if(currentDapp)
+      if(currentDapp=="Jediswap"){
+        const trade=await writeAsyncJediSwap_swap();
+        console.log(trade);
+        dispatch(setTransactionStatus("success"));
+      }else if(currentDapp=="mySwap"){
+        const tradeMySwap=await writeAsyncmySwap_swap();
+        console.log(tradeMySwap);
+        dispatch(setTransactionStatus("success"));
+      }
+    }catch(err){
+      console.log(err)
+      dispatch(setTransactionStatus("failed"));
+    }
+  }
+  const hanldeLiquidation=async()=>{
+    try{
+      if(currentDapp=="Jediswap"){
+        const liquidity=await writeAsyncJediSwap_addLiquidity();
+        console.log(liquidity);
+        dispatch(setTransactionStatus("success"));
+      }else if(currentDapp=="mySwap"){
+        const mySwapLiquidity=await writeAsyncmySwap_addLiquidity();
+        console.log(mySwapLiquidity);
+        dispatch(setTransactionStatus("success"));
+      }
+    }catch(err){
+      console.log(err)
+      dispatch(setTransactionStatus("failed"));
+    }
+  };
+
+  const handleAddCollateral = async () => {
+    try {
+      const addCollateral = await writeAddCollateralRToken();
+      console.log("add collateral - ", addCollateral);
+      dispatch(setTransactionStatus("success"));
+    } catch (err) {
+      console.log("add collateral error");
+      dispatch(setTransactionStatus("failed"));
+    }
+  };
+
+  useEffect(()=>{
+    setToMarketA(currentPool.split('/')[0]);
+    setToMarketB(currentPool.split('/')[1]);
+  },[currentPool])
 
   const getContainer = (action: string) => {
     switch (action) {
@@ -904,38 +1053,8 @@ const YourBorrowModal = ({
     "BTC/ETH",
     "BTC/USDT",
   ];
-  // const {
-  //   repayAmount,
-  //   setRepayAmount,
-  //   // handleApprove,
-  //   writeAsyncRepay,
-  //   transRepayHash,
-  //   setTransRepayHash,
-  //   repayTransactionReceipt,
-  //   isLoadingRepay,
-  //   errorRepay,
-  //   handleRepayBorrow,
 
-  //   //SelfLiquidate - Repay with 0 amount
-  //   writeAsyncSelfLiquidate,
-  //   isLoadingSelfLiquidate,
-  //   errorSelfLiquidate,
-  //   selfLiquidateTransactionReceipt,
-  //   setIsSelfLiquidateHash,
-  // } = useRepay("123456");
 
-  const [radioValue, setRadioValue] = useState("1");
-
-  // const [currentBorrowMarketCoin1, setCurrentBorrowMarketCoin1] =
-  //   useState(currentMarket);
-  // const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
-  //   useState(currentMarket);
-  const [currentPoolCoin, setCurrentPoolCoin] = useState("Select a pool");
-  const [currentAction, setCurrentAction] = useState("Spend Borrow");
-  // const [currentBorrowId1, setCurrentBorrowId1] = useState(`ID - ${currentID}`);
-  // const [currentBorrowId2, setCurrentBorrowId2] = useState(`ID - ${currentID}`);
-  const [currentDapp, setCurrentDapp] = useState("Select a dapp");
-  const [currentPool, setCurrentPool] = useState("Select a pool");
 
   // useEffect(() => {
   //   console.log("got", currentID, currentMarket);
@@ -948,12 +1067,6 @@ const YourBorrowModal = ({
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
   const [sliderValue2, setSliderValue2] = useState(0);
   const [inputRepayAmount, setinputRepayAmount] = useState(0);
-
-  useEffect(() => {
-    if (loan) {
-      setRToken(loan);
-    }
-  }, [loan]);
 
   const handleChange = (newValue: any) => {
     var percentage = (newValue * 100) / walletBalance;
@@ -981,6 +1094,7 @@ const YourBorrowModal = ({
       setSliderValue2(100);
       setinputCollateralAmount(newValue);
       setCollateralAmount(newValue);
+      setRTokenAmount(newValue);
       // dispatch(setInputYourBorrowModalRepayAmount(newValue));
     } else {
       percentage = Math.round(percentage);
@@ -989,6 +1103,7 @@ const YourBorrowModal = ({
         setSliderValue2(percentage);
         setinputCollateralAmount(newValue);
         setCollateralAmount(newValue);
+        setRTokenAmount(newValue);
       }
       // dispatch(setInputYourBorrowModalRepayAmount(newValue));
       // dispatch((newValue));
@@ -1057,6 +1172,8 @@ const YourBorrowModal = ({
       setCurrentPool("Select a pool");
       setCurrentPoolCoin("Select a pool");
       setinputCollateralAmount(0);
+      setCollateralAmount(0);
+      setRTokenAmount(0);
       setSliderValue(0);
       setSliderValue2(0);
       setRepayAmount(0);
@@ -1075,6 +1192,11 @@ const YourBorrowModal = ({
     setinputCollateralAmount(0);
     setSliderValue2(0);
   }, [currentBorrowMarketCoin2]);
+
+  useEffect(()=>{
+    setToMarket(currentPoolCoin);
+    console.log(toMarket)
+  },[currentPoolCoin])
 
   return (
     <Box>
@@ -1376,7 +1498,13 @@ const YourBorrowModal = ({
                                     pr="2"
                                     onClick={() => {
                                       setCurrentBorrowId1("ID - " + coin);
+                                      console.log(coin, "coin in borrow id");
                                       handleBorrowMarketCoinChange1(coin);
+                                      setLoanId(coin);
+                                      setSwapLoanId(coin);
+                                      // console.log(swapLoanId,"swap loan id")
+                                      setLiquidityLoanId(coin);
+                                      console.log(liquidityLoanId);
                                     }}
                                   >
                                     {"ID - " + coin === currentBorrowId1 && (
@@ -1522,9 +1650,9 @@ const YourBorrowModal = ({
                               </Box>
                             )} */}
                         </Box>
-                        <Text textAlign="right" fontSize="xs">
-                          Borrow Balance: 0.00{" "}
-                          <Text as="span" color="#8B949E">
+                        <Text textAlign="right" fontSize="xs" mt="0.2rem">
+                          Borrow Balance: {borrowAmount}
+                          <Text as="span" color="#8B949E" ml="0.2rem">
                             {currentBorrowMarketCoin1}
                           </Text>
                         </Text>
@@ -1913,7 +2041,7 @@ const YourBorrowModal = ({
                               <Text mt="0.15rem">{currentDapp}</Text>
                             </Box>
                             <Box pt="1" className="navbar-button">
-                              <DropdownUp />
+                              {activeModal=="yourBorrowDappDropdown" ? <ArrowUp/>:<DropdownUp/>} 
                             </Box>
                             {modalDropdowns.yourBorrowDappDropdown && (
                               <Box
@@ -2051,7 +2179,7 @@ const YourBorrowModal = ({
                               </Text>
                             </Box>
                             <Box pt="1" className="navbar-button">
-                              <DropdownUp />
+                            {activeModal=="yourBorrowPoolDropdown" ? <ArrowUp/>:<DropdownUp/>} 
                             </Box>
                             {modalDropdowns.yourBorrowPoolDropdown &&
                             radioValue === "1" ? (
@@ -2075,6 +2203,8 @@ const YourBorrowModal = ({
                                       pr="2"
                                       onClick={() => {
                                         setCurrentPool(pool);
+                                        setToMarketA(pool.split('/')[0])
+                                        setToMarketB(pool.split('/')[1])
                                       }}
                                     >
                                       {pool === currentPool && (
@@ -2129,6 +2259,8 @@ const YourBorrowModal = ({
                                       pr="2"
                                       onClick={() => {
                                         setCurrentPoolCoin(coin);
+                                        setToMarket(coin);
+                                        // console.log(toMarket);
                                       }}
                                     >
                                       {coin === currentPoolCoin && (
@@ -2176,6 +2308,11 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
+                            if (radioValue == 2) {
+                              hanldeTrade();
+                            } else {
+                              hanldeLiquidation();
+                            }
                           }}
                         >
                           <AnimatedButton
@@ -2287,7 +2424,9 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            handleZeroRepay();
+                            if(transactionStarted==false){
+                              handleZeroRepay();
+                            }
                           }}
                         >
                           <AnimatedButton
@@ -2864,6 +3003,7 @@ const YourBorrowModal = ({
                           onClick={() => {
                             setinputCollateralAmount(walletBalance);
                             setCollateralAmount(walletBalance);
+                            setRTokenAmount(walletBalance);
                             setSliderValue2(100);
                           }}
                           isDisabled={collateralTransactionStarted == true}
@@ -2932,6 +3072,7 @@ const YourBorrowModal = ({
                             // dispatch(setInputSupplyAmount(ans))
                             setinputCollateralAmount(ans);
                             setCollateralAmount(ans);
+                            setRTokenAmount(ans);
                           }}
                           isDisabled={collateralTransactionStarted == true}
                           _disabled={{ cursor: "pointer" }}
@@ -3317,7 +3458,9 @@ const YourBorrowModal = ({
                       <Box
                         onClick={() => {
                           setCollateralTransactionStarted(true);
-                          handleAddCollateral();
+                          if(collateralTransactionStarted==false){
+                            handleAddCollateral();
+                          }
                         }}
                       >
                         <AnimatedButton

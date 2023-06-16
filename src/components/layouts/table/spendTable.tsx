@@ -305,7 +305,7 @@ const SpendTable = () => {
                               lineHeight="22px"
                               color="#E6EDF3"
                             >
-                              {borrow.currentLoanMarket}
+                              d{borrow.currentLoanMarket}
                             </Text>
                           </Box>
                         </Td>
