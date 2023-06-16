@@ -59,6 +59,7 @@ import BtcToEth from "@/assets/icons/pools/btcToEth";
 import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
 
 import {
+  selectUserLoans,
   selectWalletBalance,
   setInputYourBorrowModalRepayAmount,
   setTransactionStatus,
@@ -89,6 +90,7 @@ const YourBorrowModal = ({
   setCollateralBalance,
   borrowIds,
   buttonText,
+  BorrowBalance,
   loan,
   ...restProps
 }: any) => {
@@ -109,7 +111,15 @@ const YourBorrowModal = ({
   const [transactionStarted, setTransactionStarted] = useState(false);
   const [collateralTransactionStarted, setCollateralTransactionStarted] =
     useState(false);
-
+    const [borrowAmount, setBorrowAmount] = useState(BorrowBalance)
+    const userLoans=useSelector(selectUserLoans);
+    useEffect(() => {
+      const result = userLoans.find((item:any) => item?.loanId == currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
+      setBorrowAmount(result?.loanAmountParsed)
+      // console.log(borrowAmount)
+      // Rest of your code using the 'result' variable
+      
+    }, [currentBorrowId1]);
   const {
     loanId,
     setLoanId,
@@ -215,27 +225,24 @@ const YourBorrowModal = ({
     statusmySwap_addLiquidity,
   }=useLiquidity();
 
-  // useEffect(() => {
-  //   if (loan) {
-  //     setLoanId(loan?.loanId);
-  //     setSwapLoanId(loan?.loanId);
-  //     // console.log(swapLoanId,"swap loan id")
-  //     // console.log(typeof loan?.loanId)
-  //     setLiquidityLoanId(loan?.loanId);
-  //     setCollateralAsset(
-  //       loan?.collateralMarket[0] == "r"
-  //         ? loan?.collateralMarket.slice(1)
-  //         : loan?.collateralMarket
-  //     );
-  //     setRToken(loan?.collateralMarket);
-  //   }
-  // }, [loan]);
+  useEffect(() => {
+    if (loan) {
+      setCollateralAsset(
+        loan?.collateralMarket[0] == "r"
+          ? loan?.collateralMarket.slice(1)
+          : loan?.collateralMarket
+      );
+      setRToken(loan?.collateralMarket);
+    }
+  }, [loan]);
+
   useEffect(()=>{
     // setSwapLoanId(currentBorrowId1);
     setSwapLoanId(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
     setLiquidityLoanId(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
     setLoanId(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
   },[currentBorrowId1])
+
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
@@ -296,6 +303,20 @@ const YourBorrowModal = ({
         break;
     }
   };
+  const [radioValue, setRadioValue] = useState("1");
+
+  // const [currentBorrowMarketCoin1, setCurrentBorrowMarketCoin1] =
+  //   useState(currentMarket);
+  // const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
+  //   useState(currentMarket);
+  const [currentPoolCoin, setCurrentPoolCoin] = useState("Select a pool");
+  const [currentAction, setCurrentAction] = useState("Spend Borrow");
+  // const [currentBorrowId1, setCurrentBorrowId1] = useState(`ID - ${currentID}`);
+  // const [currentBorrowId2, setCurrentBorrowId2] = useState(`ID - ${currentID}`);
+  const [currentDapp, setCurrentDapp] = useState("Select a dapp");
+  const [currentPool, setCurrentPool] = useState("Select a pool");
+  // console.log(currentDapp)
+  // console.log(currentPool.split('/')[0])
 
   const handleZeroRepay = async () => {
     try {
@@ -303,6 +324,7 @@ const YourBorrowModal = ({
         throw new Error("loan or loanID issue");
       }
       const zeroRepay = await writeAsyncSelfLiquidate();
+      console.log(zeroRepay)
       dispatch(setTransactionStatus("success"));
       console.log("zero repay success");
     } catch (err) {
@@ -310,20 +332,41 @@ const YourBorrowModal = ({
       dispatch(setTransactionStatus("failed"));
     }
   };
+ 
+
+  
   const hanldeTrade=async()=>{
     try{
-      const trade=await writeAsyncJediSwap_swap();
-      console.log(trade);
+
+      // if(currentDapp)
+      if(currentDapp=="Jediswap"){
+        const trade=await writeAsyncJediSwap_swap();
+        console.log(trade);
+        dispatch(setTransactionStatus("success"));
+      }else if(currentDapp=="mySwap"){
+        const tradeMySwap=await writeAsyncmySwap_swap();
+        console.log(tradeMySwap);
+        dispatch(setTransactionStatus("success"));
+      }
     }catch(err){
       console.log(err)
+      dispatch(setTransactionStatus("failed"));
     }
   }
   const hanldeLiquidation=async()=>{
     try{
-      const liquidity=await writeAsyncJediSwap_addLiquidity();
-      console.log(liquidity);
+      if(currentDapp=="Jediswap"){
+        const liquidity=await writeAsyncJediSwap_addLiquidity();
+        console.log(liquidity);
+        dispatch(setTransactionStatus("success"));
+      }else if(currentDapp=="mySwap"){
+        const mySwapLiquidity=await writeAsyncmySwap_addLiquidity();
+        console.log(mySwapLiquidity);
+        dispatch(setTransactionStatus("success"));
+      }
     }catch(err){
       console.log(err)
+      dispatch(setTransactionStatus("failed"));
     }
   }
 
@@ -331,10 +374,17 @@ const YourBorrowModal = ({
     try {
       const addCollateral = await writeAddCollateralRToken();
       console.log("add collateral - ", addCollateral);
+      dispatch(setTransactionStatus("success"));
     } catch (err) {
       console.log("add collateral error");
+      dispatch(setTransactionStatus("failed"));
     }
   };
+
+  useEffect(()=>{
+    setToMarketA(currentPool.split('/')[0]);
+    setToMarketB(currentPool.split('/')[1]);
+  },[currentPool])
 
   const getContainer = (action: string) => {
     switch (action) {
@@ -1000,18 +1050,7 @@ const YourBorrowModal = ({
     "BTC/USDT",
   ];
 
-  const [radioValue, setRadioValue] = useState("1");
 
-  // const [currentBorrowMarketCoin1, setCurrentBorrowMarketCoin1] =
-  //   useState(currentMarket);
-  // const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
-  //   useState(currentMarket);
-  const [currentPoolCoin, setCurrentPoolCoin] = useState("Select a pool");
-  const [currentAction, setCurrentAction] = useState("Spend Borrow");
-  // const [currentBorrowId1, setCurrentBorrowId1] = useState(`ID - ${currentID}`);
-  // const [currentBorrowId2, setCurrentBorrowId2] = useState(`ID - ${currentID}`);
-  const [currentDapp, setCurrentDapp] = useState("Select a dapp");
-  const [currentPool, setCurrentPool] = useState("Select a pool");
 
   // useEffect(() => {
   //   console.log("got", currentID, currentMarket);
@@ -1149,6 +1188,11 @@ const YourBorrowModal = ({
     setinputCollateralAmount(0);
     setSliderValue2(0);
   }, [currentBorrowMarketCoin2]);
+
+  useEffect(()=>{
+    setToMarket(currentPoolCoin);
+    console.log(toMarket)
+  },[currentPoolCoin])
 
   return (
     <Box>
@@ -1602,9 +1646,9 @@ const YourBorrowModal = ({
                               </Box>
                             )} */}
                         </Box>
-                        <Text textAlign="right" fontSize="xs">
-                          Borrow Balance: 0.00{" "}
-                          <Text as="span" color="#8B949E">
+                        <Text textAlign="right" fontSize="xs" mt="0.2rem">
+                          Borrow Balance: {borrowAmount}
+                          <Text as="span" color="#8B949E" ml="0.2rem">
                             {currentBorrowMarketCoin1}
                           </Text>
                         </Text>
@@ -1993,7 +2037,7 @@ const YourBorrowModal = ({
                               <Text mt="0.15rem">{currentDapp}</Text>
                             </Box>
                             <Box pt="1" className="navbar-button">
-                              <DropdownUp />
+                              {activeModal=="yourBorrowDappDropdown" ? <ArrowUp/>:<DropdownUp/>} 
                             </Box>
                             {modalDropdowns.yourBorrowDappDropdown && (
                               <Box
@@ -2131,7 +2175,7 @@ const YourBorrowModal = ({
                               </Text>
                             </Box>
                             <Box pt="1" className="navbar-button">
-                              <DropdownUp />
+                            {activeModal=="yourBorrowPoolDropdown" ? <ArrowUp/>:<DropdownUp/>} 
                             </Box>
                             {modalDropdowns.yourBorrowPoolDropdown &&
                             radioValue === "1" ? (
@@ -2155,6 +2199,8 @@ const YourBorrowModal = ({
                                       pr="2"
                                       onClick={() => {
                                         setCurrentPool(pool);
+                                        setToMarketA(pool.split('/')[0])
+                                        setToMarketB(pool.split('/')[1])
                                       }}
                                     >
                                       {pool === currentPool && (
@@ -2209,6 +2255,8 @@ const YourBorrowModal = ({
                                       pr="2"
                                       onClick={() => {
                                         setCurrentPoolCoin(coin);
+                                        setToMarket(coin);
+                                        // console.log(toMarket);
                                       }}
                                     >
                                       {coin === currentPoolCoin && (
@@ -2372,7 +2420,9 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            handleZeroRepay();
+                            if(transactionStarted==false){
+                              handleZeroRepay();
+                            }
                           }}
                         >
                           <AnimatedButton
@@ -3404,7 +3454,9 @@ const YourBorrowModal = ({
                       <Box
                         onClick={() => {
                           setCollateralTransactionStarted(true);
-                          handleAddCollateral();
+                          if(collateralTransactionStarted==false){
+                            handleAddCollateral();
+                          }
                         }}
                       >
                         <AnimatedButton

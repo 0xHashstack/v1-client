@@ -118,10 +118,12 @@ const SupplyModal = ({
   const [buttonId, setButtonId] = useState(0);
   const [stakeCheck, setStakeCheck] = useState(true);
 
-  const transactionStarted = useSelector(selectTransactionStarted);
+  const transactionStarted1 = useSelector(selectTransactionStarted);
   const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
+  const [stakeAndSupply, setStakeAndSupply] = useState(true);
 
-  // const [transactionStarted, setTransactionStarted] = useState(false);
+  const [transactionStarted, settransactionStarted] = useState(false);
+  const [isChecked, setIsChecked] = useState(true);
   // const [toastTransactionStarted, setToastTransactionStarted] = useState(false);
 
   const dispatch = useDispatch();
@@ -200,29 +202,35 @@ const SupplyModal = ({
 
   const handleTransaction = async () => {
     try {
-      const deposit = await writeAsyncDeposit();
-      if (deposit?.transaction_hash) {
-        console.log("trans transaction hash created");
+      if(isChecked){
+        const stakeAndSupply=await writeAsyncDepositStake();
+        console.log(stakeAndSupply);
+        dispatch(setTransactionStatus("success"));
+      }else{
+        const deposit = await writeAsyncDeposit();
+        if (deposit?.transaction_hash) {
+          console.log("trans transaction hash created");
+        }
+        // const deposit = await writeAsyncDepositStake();
+        console.log("Supply Modal - deposit ", deposit);
+        setDepositTransHash(deposit?.transaction_hash);
+        if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
+        }
+        dispatch(setTransactionStatus("success"));
+        if (isSuccessDeposit) {
+          toast({
+            title: "Success",
+            description: "Success",
+            variant: "subtle",
+            position: "bottom-right",
+            status: "error",
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+        // console.log("Status transaction", deposit);
+        console.log(isSuccessDeposit, "success ?");
       }
-      // const deposit = await writeAsyncDepositStake();
-      console.log("Supply Modal - deposit ", deposit);
-      setDepositTransHash(deposit?.transaction_hash);
-      if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
-      }
-      dispatch(setTransactionStatus("success"));
-      if (isSuccessDeposit) {
-        toast({
-          title: "Success",
-          description: "Success",
-          variant: "subtle",
-          position: "bottom-right",
-          status: "error",
-          duration: 5000,
-          isClosable: true,
-        });
-      }
-      // console.log("Status transaction", deposit);
-      console.log(isSuccessDeposit, "success ?");
     } catch (err) {
       // setTransactionFailed(true);
       dispatch(setTransactionStatus("failed"));
@@ -342,8 +350,9 @@ const SupplyModal = ({
           )
         : 0
     );
+    settransactionStarted(false);
 
-    if (transactionStarted) dispatch(setTransactionStarted(""));
+    if (transactionStarted1) dispatch(setTransactionStarted(""));
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
   };
@@ -367,7 +376,7 @@ const SupplyModal = ({
           onClose={() => {
             onClose();
             resetStates();
-            if (transactionStarted) dispatch(setToastTransactionStarted(true));
+            if (transactionStarted1) dispatch(setToastTransactionStarted(true));
             // if (setIsOpenCustom) setIsOpenCustom(false);
           }}
           size={{ width: "700px", height: "100px" }}
@@ -825,6 +834,10 @@ const SupplyModal = ({
                     iconColor: "blue.400",
                     bg: "blue",
                   }}
+                  onChange={()=>{setStakeAndSupply(!stakeAndSupply);
+                    console.log(stakeAndSupply)
+                    setIsChecked(!isChecked);
+                  }}
                 />
                 <Text
                   fontSize="12px"
@@ -975,6 +988,7 @@ const SupplyModal = ({
                   <Box
                     onClick={() => {
                       dispatch(setTransactionStarted(""));
+                      settransactionStarted(true);
                       if (transactionStarted === false) {
                         handleTransaction();
                       }

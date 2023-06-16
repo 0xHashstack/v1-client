@@ -7,8 +7,8 @@ import { NativeToken, Token } from "@/Blockchain/interfaces/interfaces"
 
 const useLiquidity = () => {
   const [liquidityLoanId, setLiquidityLoanId] = useState<string>("")
-  const [toMarketA, setToMarketA] = useState<NativeToken>("USDT")
-  const [toMarketB, setToMarketB] = useState<NativeToken>("BTC")
+  const [toMarketA, setToMarketA] = useState<NativeToken>("")
+  const [toMarketB, setToMarketB] = useState<NativeToken>("")
 
   const {
     data: dataJediSwap_addLiquidity,
@@ -25,8 +25,8 @@ const useLiquidity = () => {
       calldata: [
         constants.JEDI_SWAP,
         "4",
-        constants.ADD_LIQUIDITY,
         liquidityLoanId,
+        constants.ADD_LIQUIDITY,
         tokenAddressMap[toMarketA],
         tokenAddressMap[toMarketB]
       ]
@@ -46,12 +46,10 @@ const useLiquidity = () => {
       contractAddress: diamondAddress,
       entrypoint: "interact_with_l3",
       calldata: [
-        constants.JEDI_SWAP,
+        constants.MY_SWAP,
         "4",
-        "3",
-        constants.ADD_LIQUIDITY,
         liquidityLoanId,
-
+        constants.ADD_LIQUIDITY,
         tokenAddressMap[toMarketA],
         tokenAddressMap[toMarketB]
       ]
