@@ -244,8 +244,12 @@ const YourBorrowModal = ({
     setLiquidityLoanId(
       currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
     );
-    setLoanId(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
+    
   },[currentBorrowId1])
+  
+  useEffect(()=>{
+    setLoanId(currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim());
+  },[currentBorrowId2])
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
