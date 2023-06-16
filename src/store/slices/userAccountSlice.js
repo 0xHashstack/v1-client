@@ -24,6 +24,9 @@ const initialState = {
   offchainCurrentBlock: undefined,
   assetWalletBalance: "",
   userLoans: [],
+  transactionSuccessArray:[],
+  transactionFailureArray:[],
+  transactionStartedAndStartToast:false,
 
   toastTransactionStarted: false,
   transactionStarted: false,
@@ -48,6 +51,12 @@ export const userAccountSlice = createSlice({
     },
     setAssetWalletBalance(state, action) {
       state.assetWalletBalance = action.payload;
+    },
+    setTransactionSuccessArray(state,action){
+      state.transactionSuccessArray=action.payload;
+    },
+    setTransactionFailureArray(state,action){
+      state.transactionFailureArray=action.payload;
     },
     setUserLoans(state, action) {
       state.userLoans = action.payload;
@@ -110,7 +119,7 @@ export const userAccountSlice = createSlice({
       state.inputYourBorrowModalRepayAmount = action.payload;
     },
     setToastTransactionStarted(state, action) {
-      state.toastTransactionStarted = !state.toastTransactionStarted;
+      state.toastTransactionStarted = action.payload;
     },
     setTransactionStarted(state, action) {
       state.transactionStarted = !state.transactionStarted;
@@ -143,6 +152,8 @@ export const {
   setToastTransactionStarted,
   setTransactionStarted,
   setUserLoans,
+  setTransactionSuccessArray,
+  setTransactionFailureArray
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -157,6 +168,10 @@ export const { setCollateralCoinSelectedBorrowModal } =
   userAccountSlice.actions;
 export const { setBorrowCoinSelectedBorrowModal } = userAccountSlice.actions;
 export const { setInputYourBorrowModalRepayAmount } = userAccountSlice.actions;
+export const selectTransactionSuccessArray=(state)=>
+  state.user_account.transactionSuccessArray;
+  export const selectTransactionFailureArray=(state)=>
+  state.user_account.transactionFailureArray;
 export const selectSelectedDapp = (state) =>
   state.user_account.spendBorrowselectedDapp;
 export const selectTransactionStatus = (state) =>

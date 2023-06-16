@@ -57,6 +57,8 @@ const SwapModal = ({
   currentId,
   currentMarketCoin,
   BorrowBalance,
+  currentSwap,
+  setCurrentSwap,
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -80,7 +82,7 @@ const SwapModal = ({
     isIdlemySwap_swap,
     isLoadingmySwap_swap,
     statusmySwap_swap,
-  }=useSwap();
+  } = useSwap();
 
   const [currentSelectedCoin, setCurrentSelectedCoin] =
     useState("Select a market");
@@ -90,7 +92,7 @@ const SwapModal = ({
   const [inputAmount, setinputAmount] = useState(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
-  const [borrowAmount, setBorrowAmount] = useState(BorrowBalance)
+  const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
@@ -98,6 +100,8 @@ const SwapModal = ({
   const inputAmount1 = useSelector(selectInputSupplyAmount);
   const selectedDapp = useSelector(selectSelectedDapp);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+
+  useEffect(() => {}, [currentSwap]);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -130,24 +134,23 @@ const SwapModal = ({
   //     "ID - 123459",
   //     "ID - 1234510",
   // ];
-  const userLoans=useSelector(selectUserLoans);
+  const userLoans = useSelector(selectUserLoans);
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {
     // Dispatches an action called setModalDropdown with the dropdownName as the payload
     dispatch(setModalDropdown(dropdownName));
   };
 
-
-  const handleSwap=async()=>{
-    try{
-      const swap=await writeAsyncJediSwap_swap();
+  const handleSwap = async () => {
+    try {
+      const swap = await writeAsyncJediSwap_swap();
       console.log(swap);
       dispatch(setTransactionStatus("success"));
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
       dispatch(setTransactionStatus("failed"));
     }
-  }
+  };
 
   //This function is used to find the percentage of the slider from the input given by the user
   const handleChange = (newValue: any) => {
@@ -166,19 +169,23 @@ const SwapModal = ({
     }
   };
   useEffect(() => {
-    const result = userLoans.find((item:any) => item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim());
-    setBorrowAmount(result?.loanAmountParsed)
+    const result = userLoans.find(
+      (item: any) =>
+        item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
+    );
+    setBorrowAmount(result?.loanAmountParsed);
     // console.log(borrowAmount)
     // Rest of your code using the 'result' variable
-    
   }, [currentId]);
-  useEffect(()=>{
-    setSwapLoanId(currentBorrowId.slice(currentBorrowId.indexOf("-") + 1).trim())
-  },[currentBorrowId])
+  useEffect(() => {
+    setSwapLoanId(
+      currentBorrowId.slice(currentBorrowId.indexOf("-") + 1).trim()
+    );
+  }, [currentBorrowId]);
   // console.log(onOpen)
-  useEffect(()=>{
+  useEffect(() => {
     setToMarket(currentSelectedCoin);
-  },[currentSelectedCoin])
+  }, [currentSelectedCoin]);
 
   // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const resetStates = () => {
@@ -189,9 +196,12 @@ const SwapModal = ({
     setCurrentBorrowId(currentId);
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
-    const result = userLoans.find((item: { loanId: any; }):any => item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim());
-    setBorrowAmount(result?.loanAmountParsed)
-    dispatch(setTransactionStatus(""))
+    const result = userLoans.find(
+      (item: { loanId: any }): any =>
+        item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
+    );
+    setBorrowAmount(result?.loanAmountParsed);
+    dispatch(setTransactionStatus(""));
   };
 
   useEffect(() => {
@@ -231,7 +241,9 @@ const SwapModal = ({
             }
           }}
         >
-          {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
+          <Box onClick={() => setCurrentSwap("Myswap")}>
+            {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
+          </Box>
         </Box>
         <Box
           cursor="pointer"
@@ -242,13 +254,15 @@ const SwapModal = ({
             }
           }}
         >
-          {selectedDapp != "" ? (
-            <Box>
-              <TableJediswapLogo />
-            </Box>
-          ) : (
-            <TableJediswapLogoDull />
-          )}
+          <Box onClick={() => setCurrentSwap("Jediswap")}>
+            {selectedDapp != "" ? (
+              <Box>
+                <TableJediswapLogo />
+              </Box>
+            ) : (
+              <TableJediswapLogoDull />
+            )}
+          </Box>
         </Box>
       </Box>
       <Modal
@@ -470,11 +484,17 @@ const SwapModal = ({
                           onClick={() => {
                             setCurrentBorrowId("ID - " + coin);
                             handleBorrowMarketCoinChange(coin);
-                            setSwapLoanId(coin)
+                            setSwapLoanId(coin);
                             const borrowIdString = String(coin);
-                            const result = userLoans.find((item: { loanId: string; }):any => item?.loanId == borrowIdString.slice(borrowIdString.indexOf("-") + 1).trim());
+                            const result = userLoans.find(
+                              (item: { loanId: string }): any =>
+                                item?.loanId ==
+                                borrowIdString
+                                  .slice(borrowIdString.indexOf("-") + 1)
+                                  .trim()
+                            );
                             // console.log(result)
-                            setBorrowAmount(result?.loanAmountParsed)
+                            setBorrowAmount(result?.loanAmountParsed);
                           }}
                         >
                           {coin === currentBorrowId && (
@@ -611,7 +631,7 @@ const SwapModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    Jediswap
+                    {currentSwap}
                   </Text>
                 </Box>
               </Box>
@@ -883,43 +903,43 @@ const SwapModal = ({
               <Box
                 onClick={() => {
                   setTransactionStarted(true);
-                  if(transactionStarted==false){
+                  if (transactionStarted == false) {
                     handleSwap();
                   }
                 }}
               >
-                        <AnimatedButton
-                          bgColor="#101216"
-                          // bgColor="red"
-                          // p={0}
-                          color="#8B949E"
-                          size="sm"
-                          width="100%"
-                          mt="1.5rem"
-                          mb="1.5rem"
-                          border="1px solid #8B949E"
-                          labelSuccessArray={[
-                            "Processing",
-                            "Transferring collateral to supply vault.",
-                            "Minting & transferring rTokens to the user account.",
-                            "Locking rTokens.",
-                            "Updating collateral records",
-                            <SuccessButton
-                              key={"successButton"}
-                              successText={"Add collateral successful."}
-                            />,
-                          ]}
-                          labelErrorArray={[
-                            "Processing",
-                            "Transferring collateral to supply vault.",
-                            <ErrorButton errorText="Transaction failed" />,
-                            <ErrorButton errorText="Copy error!" />,
-                          ]}
-                          _disabled={{ bgColor: "white", color: "black" }}
-                          isDisabled={transactionStarted == true}
-                        >
-                          Spend Borrow
-                        </AnimatedButton>
+                <AnimatedButton
+                  bgColor="#101216"
+                  // bgColor="red"
+                  // p={0}
+                  color="#8B949E"
+                  size="sm"
+                  width="100%"
+                  mt="1.5rem"
+                  mb="1.5rem"
+                  border="1px solid #8B949E"
+                  labelSuccessArray={[
+                    "Processing",
+                    "Transferring collateral to supply vault.",
+                    "Minting & transferring rTokens to the user account.",
+                    "Locking rTokens.",
+                    "Updating collateral records",
+                    <SuccessButton
+                      key={"successButton"}
+                      successText={"Add collateral successful."}
+                    />,
+                  ]}
+                  labelErrorArray={[
+                    "Processing",
+                    "Transferring collateral to supply vault.",
+                    <ErrorButton errorText="Transaction failed" />,
+                    <ErrorButton errorText="Copy error!" />,
+                  ]}
+                  _disabled={{ bgColor: "white", color: "black" }}
+                  isDisabled={transactionStarted == true}
+                >
+                  Spend Borrow
+                </AnimatedButton>
               </Box>
             ) : (
               <Button

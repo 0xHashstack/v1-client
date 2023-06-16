@@ -65,6 +65,8 @@ const LiquidityProvisionModal = ({
   currentId,
   BorrowBalance,
   currentMarketCoin,
+  currentSwap,
+  setCurrentSwap,
 }: any) => {
   // console.log("liquidity found map: ", borrowIDCoinMap);
   // console.log("liquidity found borrow ids: ", borrowIds);
@@ -97,7 +99,7 @@ const LiquidityProvisionModal = ({
     isIdlemySwap_addLiquidity,
     isLoadingmySwap_addLiquidity,
     statusmySwap_addLiquidity,
-  }=useLiquidity();
+  } = useLiquidity();
 
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState("BTC");
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] =
@@ -113,25 +115,28 @@ const LiquidityProvisionModal = ({
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [walletBalance, setwalletBalance] = useState(BorrowBalance);
   const inputAmount1 = useSelector(selectInputSupplyAmount);
-  const userLoans=useSelector(selectUserLoans);
-  const [borrowAmount, setBorrowAmount] = useState(BorrowBalance)
+  const userLoans = useSelector(selectUserLoans);
+  const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
   // console.log(userLoans)
   // console.log(currentId.slice(currentId.indexOf("-") + 1).trim())
   useEffect(() => {
-    const result = userLoans.find((item:any) => item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim());
-    setBorrowAmount(result?.loanAmountParsed)
+    const result = userLoans.find(
+      (item: any) =>
+        item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
+    );
+    setBorrowAmount(result?.loanAmountParsed);
     // console.log(borrowAmount)
     // Rest of your code using the 'result' variable
-    
   }, [currentId]);
-  useEffect(()=>{
-    setLiquidityLoanId(currentBorrowId.slice(currentBorrowId.indexOf("-") + 1).trim());
-  },[currentBorrowId])
-  useEffect(()=>{
-    setToMarketA(currentPool.split('/')[0])
-    setToMarketB(currentPool.split('/')[1])
-  },[currentPool])
-  
+  useEffect(() => {
+    setLiquidityLoanId(
+      currentBorrowId.slice(currentBorrowId.indexOf("-") + 1).trim()
+    );
+  }, [currentBorrowId]);
+  useEffect(() => {
+    setToMarketA(currentPool.split("/")[0]);
+    setToMarketB(currentPool.split("/")[1]);
+  }, [currentPool]);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -214,16 +219,16 @@ const LiquidityProvisionModal = ({
     }
   };
 
-  const handleLiquidity=async()=>{
-    try{
-      const liquidity=await writeAsyncJediSwap_addLiquidity();
+  const handleLiquidity = async () => {
+    try {
+      const liquidity = await writeAsyncJediSwap_addLiquidity();
       console.log(liquidity);
       dispatch(setTransactionStatus("success"));
-    }catch(err){
-      console.log(err)
+    } catch (err) {
+      console.log(err);
       dispatch(setTransactionStatus("failed"));
     }
-  }
+  };
 
   // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const resetStates = () => {
@@ -232,8 +237,11 @@ const LiquidityProvisionModal = ({
     setCurrentBorrowMarketCoin(currentMarketCoin);
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
-    const result = userLoans.find((item: { loanId: any; }):any => item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim());
-    setBorrowAmount(result?.loanAmountParsed)
+    const result = userLoans.find(
+      (item: { loanId: any }): any =>
+        item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
+    );
+    setBorrowAmount(result?.loanAmountParsed);
     dispatch(setTransactionStatus(""));
   };
 
@@ -277,7 +285,9 @@ const LiquidityProvisionModal = ({
             }
           }}
         >
-          {selectedDapp != "" ? <TableYagiLogo /> : <TableYagiLogoDull />}
+          <Box onClick={() => setCurrentSwap("Yagi")}>
+            {selectedDapp != "" ? <TableYagiLogo /> : <TableYagiLogoDull />}
+          </Box>
         </Box>
         <Box
           cursor="pointer"
@@ -289,7 +299,9 @@ const LiquidityProvisionModal = ({
             }
           }}
         >
-          {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
+          <Box onClick={() => setCurrentSwap("Myswap")}>
+            {selectedDapp != "" ? <TableMySwap /> : <TableMySwapDull />}
+          </Box>
         </Box>
         <Box
           cursor="pointer"
@@ -301,11 +313,13 @@ const LiquidityProvisionModal = ({
             }
           }}
         >
-          {selectedDapp != "" ? (
-            <TableJediswapLogo />
-          ) : (
-            <TableJediswapLogoDull />
-          )}
+          <Box onClick={() => setCurrentSwap("Jediswap")}>
+            {selectedDapp != "" ? (
+              <TableJediswapLogo />
+            ) : (
+              <TableJediswapLogoDull />
+            )}
+          </Box>
         </Box>
       </Box>
       <Portal>
@@ -426,8 +440,8 @@ const LiquidityProvisionModal = ({
                             onClick={() => {
                               setCurrentPool(pool);
                               // console.log(pool)
-                              setToMarketA(pool.split('/')[0])
-                              setToMarketB(pool.split('/')[1])
+                              setToMarketA(pool.split("/")[0]);
+                              setToMarketB(pool.split("/")[1]);
                             }}
                           >
                             {pool === currentPool && (
@@ -535,9 +549,15 @@ const LiquidityProvisionModal = ({
                               handleBorrowMarketCoinChange(coin);
                               // console.log(typeof coin,"coin")
                               const borrowIdString = String(coin);
-                              const result = userLoans.find((item: { loanId: string; }):any => item?.loanId == borrowIdString.slice(borrowIdString.indexOf("-") + 1).trim());
+                              const result = userLoans.find(
+                                (item: { loanId: string }): any =>
+                                  item?.loanId ==
+                                  borrowIdString
+                                    .slice(borrowIdString.indexOf("-") + 1)
+                                    .trim()
+                              );
                               // console.log(result)
-                              setBorrowAmount(result?.loanAmountParsed)
+                              setBorrowAmount(result?.loanAmountParsed);
                             }}
                           >
                             {coin === currentBorrowId && (
@@ -615,8 +635,16 @@ const LiquidityProvisionModal = ({
                   // }
                 >
                   <Box display="flex" gap="1">
-                    <Box p="1">{getCoin(currentBorrowMarketCoin.slice(1))}</Box>
-                    <Text color="white">{currentBorrowMarketCoin}</Text>
+                    <Box p="1">
+                      {currentBorrowMarketCoin[0] === "d"
+                        ? getCoin(currentBorrowMarketCoin.slice(1))
+                        : getCoin(currentBorrowMarketCoin)}
+                    </Box>
+                    <Text color="white">
+                      {currentBorrowMarketCoin[0] !== "d"
+                        ? "d" + currentBorrowMarketCoin
+                        : currentBorrowMarketCoin}
+                    </Text>
                   </Box>
                 </Box>
                 <Text
@@ -679,7 +707,7 @@ const LiquidityProvisionModal = ({
                       fontWeight="400"
                       fontStyle="normal"
                     >
-                      Jediswap
+                      {currentSwap}
                     </Text>
                   </Box>
                 </Box>
@@ -948,7 +976,7 @@ const LiquidityProvisionModal = ({
                 <Box
                   onClick={() => {
                     setTransactionStarted(true);
-                    if(transactionStarted==false){
+                    if (transactionStarted == false) {
                       handleLiquidity();
                     }
                   }}

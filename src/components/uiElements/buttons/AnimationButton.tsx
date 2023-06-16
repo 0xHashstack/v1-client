@@ -7,8 +7,9 @@ import {
   selectTransactionStatus,
   setCurrentTransactionStatus,
   selectCurrentTransactionStatus,
+  setToastTransactionStarted,
 } from "@/store/slices/userAccountSlice";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 interface Props extends ButtonProps {
   children: ReactNode;
   labelSuccessArray: Array<string | ReactNode>;
@@ -98,6 +99,7 @@ const AnimatedButton: React.FC<Props> = ({
     }
   }, [currentStringIndex]);
 
+  const dispatch = useDispatch();
   // const handleClick = () => {
   //   // console.log("clicked");
   //   if (!isAnimationStarted && currentStringIndex != labelSuccessArray.length - 1) {
@@ -137,6 +139,8 @@ const AnimatedButton: React.FC<Props> = ({
           // }
           if (nextIndex === labelErrorArray?.length) {
             setIsAnimationStarted(false);
+            dispatch(setToastTransactionStarted(false));
+
             return prevIndex; // Reset currentStringIndex to -1 after the animation completes
           }
           // return nextIndex % labelArray.length;
