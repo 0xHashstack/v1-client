@@ -78,7 +78,6 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
-import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 const SupplyModal = ({
   buttonText,
