@@ -271,7 +271,7 @@ const YourBorrowModal = ({
         : 0
     );
     // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
-  }, [walletBalances[collateralAsset]?.statusBalanceOf, collateralAsset]);
+  }, [walletBalances[collateralAsset]?.statusBalanceOf, collateralAsset,currentBorrowId2]);
 
   useEffect(() => {
     if (loan) {
@@ -294,10 +294,22 @@ const YourBorrowModal = ({
     );
     
   },[currentBorrowId1])
+  // console.log(userLoans);
 
   useEffect(()=>{
     setLoanId(currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim());
-  }, [currentBorrowId2]);
+    // console.log(currentBorrowMarketCoin2);
+      const result = userLoans.find(
+        (item: any) =>
+          item?.loanId == currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim()
+      );
+      setCollateralAsset(        result?.collateralMarket[0] == "r"
+      ? result?.collateralMarket.slice(1)
+      : result?.collateralMarket);
+      setRToken(result?.collateralMarket);
+
+    console.log(rToken);
+  }, [currentBorrowId2,currentBorrowMarketCoin2]);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -2661,6 +2673,10 @@ const YourBorrowModal = ({
                                     onClick={() => {
                                       setCurrentBorrowId2("ID - " + coin);
                                       handleBorrowMarketCoinChange2(coin);
+                                      setCollateralAsset(
+                                        currentBorrowMarketCoin2.slice(1)
+                                      )
+                                      setRToken(currentBorrowMarketCoin2.slice(1))
                                     }}
                                   >
                                     {"ID - " + coin === currentBorrowId2 && (
@@ -2994,7 +3010,7 @@ const YourBorrowModal = ({
                         mt="-0.5rem"
                       >
                         <Text ml="1rem" color="white">
-                          {currentTokenSelected=="rToken" ? collateralBalance: `${walletBalance} ${collateralAsset}`}  
+                          {collateralBalance}  
                         </Text>
                       </Box>
                       <Text color="#8B949E" display="flex" alignItems="center">
@@ -3096,7 +3112,7 @@ const YourBorrowModal = ({
                           MAX
                         </Button>
                       </Box>
-                      {/* {inputCollateralAmount > walletBalance ||
+                      {inputCollateralAmount > walletBalance ||
                       inputCollateralAmount < 0 ? (
                         <Text
                           display="flex"
@@ -3143,7 +3159,7 @@ const YourBorrowModal = ({
                             {` ${collateralAsset}`}
                           </Text>
                         </Text>
-                      )} */}
+                      )}
                       <Box pt={5} pb={2} mt="1.5rem">
                         <Slider
                           aria-label="slider-ex-6"
