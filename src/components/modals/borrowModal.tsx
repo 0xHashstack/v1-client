@@ -152,6 +152,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
 
   const toast = useToast();
   const [borrowTransHash, setBorrowTransHash] = useState("");
+  const [currentTransactionStatus, setCurrentTransactionStatus] =
+    useState(false);
 
   const recieptData = useWaitForTransaction({
     hash: borrowTransHash,
@@ -1485,6 +1487,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     ]}
                     _disabled={{ bgColor: "white", color: "black" }}
                     isDisabled={transactionStarted == true}
+                    currentTransactionStatus={currentTransactionStatus}
+                    setCurrentTransactionStatus={setCurrentTransactionStatus}
                   >
                     Borrow
                   </AnimatedButton>

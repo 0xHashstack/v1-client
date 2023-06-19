@@ -80,6 +80,7 @@ import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
+import {toast} from 'react-toastify'
 import {
   tokenAddressMap,
   tokenDecimalsMap,
@@ -280,6 +281,7 @@ const YourSupplyModal = ({
       setSliderValue(100);
       setinputSupplyAmount(newValue);
       setDepositAmount(newValue);
+      setinputSupplyAmount(newValue)
       // dispatch(setInputSupplyAmount(newValue));
     } else {
       percentage = Math.round(percentage);
@@ -288,6 +290,7 @@ const YourSupplyModal = ({
         setSliderValue(percentage);
         setinputSupplyAmount(newValue);
         setDepositAmount(newValue);
+        setinputSupplyAmount(newValue)
       }
       // dispatch(setInputSupplyAmount(newValue));
     }
@@ -332,6 +335,9 @@ const YourSupplyModal = ({
     setWithdrawTransactionStarted(false);
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
+    setCurrentTransactionStatus(false);
+    setToastDisplayed(false);
+    setDepositTransHash("");
   };
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
@@ -352,10 +358,44 @@ const YourSupplyModal = ({
     setSliderValue2(0);
   }, [currentSelectedWithdrawlCoin]);
 
-  const [depositTransHash, setDepositTransHash] = useState<any>();
+  const [depositTransHash, setDepositTransHash] = useState("");
+  const [isToastDisplayed, setToastDisplayed] = useState(false);
+  const [actionSelected,setActionSelected]=useState("Supply")
+  const [currentTransactionStatus, setCurrentTransactionStatus] =
+    useState(false);
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
+    onReceived: () => {
+      console.log("trans received");
+    },
+    onPending: () => {
+      setCurrentTransactionStatus(true);
+      console.log("trans pending");
+      if (!isToastDisplayed) {
+        toast.success(`You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        setToastDisplayed(true);
+      }
+    },
+    onRejected(transaction) {
+      console.log("treans rejected");
+    },
+    onAcceptedOnL1: () => {
+      setCurrentTransactionStatus(true);
+      console.log("trans onAcceptedOnL1");
+    },
+    onAcceptedOnL2(transaction) {
+      setCurrentTransactionStatus(true);
+      console.log("trans onAcceptedOnL2 - ", transaction);
+      if (!isToastDisplayed) {
+        toast.success(`You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        setToastDisplayed(true);
+      }
+    },
   });
 
   const handleWithdrawSupply = async () => {
@@ -368,6 +408,9 @@ const YourSupplyModal = ({
       console.log(withdraw);
     } catch (err) {
       console.log("withraw", err);
+      toast.error('Transaction cancelled', {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
       dispatch(setTransactionStatus("failed"));
     }
   };
@@ -380,6 +423,9 @@ const YourSupplyModal = ({
       console.log("addSupply", addSupply);
     } catch (err) {
       console.log("Unable to add supply ", err);
+      toast.error('Transaction cancelled', {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
       dispatch(setTransactionStatus("failed"));
     }
   };
@@ -693,6 +739,7 @@ const YourSupplyModal = ({
                             onClick={() => {
                               setinputSupplyAmount(walletBalance);
                               setDepositAmount(walletBalance);
+                              setinputSupplyAmount(walletBalance)
                               setSliderValue(100);
                             }}
                             isDisabled={transactionStarted == true}
@@ -763,6 +810,7 @@ const YourSupplyModal = ({
                               // dispatch(setInputSupplyAmount(ans))
                               setinputSupplyAmount(ans);
                               setDepositAmount(ans);
+                              setinputSupplyAmount(ans);
                             }}
                             isDisabled={transactionStarted == true}
                             _disabled={{ cursor: "pointer" }}
@@ -1056,18 +1104,14 @@ const YourSupplyModal = ({
                               />,
                             ]}
                             labelErrorArray={[
-                              "Deposit Amount approved",
-                              "Successfully transfered to Hashstack's supply vault.",
-                              "Determining the rToken amount to mint.",
-                              "rTokens have been minted successfully.",
-                              "Transaction complete.",
-                              // <ErrorButton errorText="Transaction failed" />,
-                              // <ErrorButton errorText="Copy error!" />,
-                              <SuccessButton
-                                key={"successButton"}
-                                successText={"Supply success"}
-                              />,
+                              <ErrorButton errorText="Transaction failed" />,
+                              <ErrorButton errorText="Copy error!" />,
+
                             ]}
+                            currentTransactionStatus={currentTransactionStatus}
+                            setCurrentTransactionStatus={
+                              setCurrentTransactionStatus
+                            }
                           >
                             Supply
                           </AnimatedButton>
@@ -1735,23 +1779,15 @@ const YourSupplyModal = ({
                               />,
                             ]}
                             labelErrorArray={[
-                              "Checking if sufficient rTokens are available",
-                              <Text key={0} display="flex">
-                                Fetching the exchange between{" "}
-                                <Text ml="0.4rem" mr="0.1rem">
-                                  <BTCLogo height={"16px"} width={"16px"} />
-                                </Text>{" "}
-                                rbtc &
-                                <Text key={1} ml="0.3rem" mr="0.1rem">
-                                  <BTCLogo height={"16px"} width={"16px"} />
-                                </Text>
-                                BTC
-                              </Text>,
                               <ErrorButton errorText="Transaction failed" />,
                               <ErrorButton errorText="Copy error!" />,
                             ]}
                             _disabled={{ bgColor: "white", color: "black" }}
                             isDisabled={withdrawTransactionStarted == true}
+                            currentTransactionStatus={currentTransactionStatus}
+                            setCurrentTransactionStatus={
+                              setCurrentTransactionStatus
+                            }
                           >
                             Withdraw
                           </AnimatedButton>

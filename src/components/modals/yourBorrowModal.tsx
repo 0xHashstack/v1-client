@@ -397,6 +397,33 @@ const YourBorrowModal = ({
   // console.log(currentDapp)
   // console.log(currentPool.split('/')[0])
   const [depositTransHash, setDepositTransHash] = useState("");
+
+  const [currentTransactionStatus, setCurrentTransactionStatus] =
+    useState(false);
+
+  const recieptData = useWaitForTransaction({
+    hash: depositTransHash,
+    watch: true,
+    onReceived: () => {
+      console.log("trans received");
+    },
+    onPending: () => {
+      setCurrentTransactionStatus(true);
+      console.log("trans pending");
+    },
+    onRejected(transaction) {
+      console.log("treans rejected");
+    },
+    onAcceptedOnL1: () => {
+      setCurrentTransactionStatus(true);
+      console.log("trans onAcceptedOnL1");
+    },
+    onAcceptedOnL2(transaction) {
+      setCurrentTransactionStatus(true);
+      console.log("trans onAcceptedOnL2 - ", transaction);
+    },
+  });
+
   const handleZeroRepay = async () => {
     try {
       if (!loan?.loanId) {
@@ -446,31 +473,6 @@ const YourBorrowModal = ({
     }
   };
 
-  const [currentTransactionStatus, setCurrentTransactionStatus] =
-    useState(false);
-
-  const recieptData = useWaitForTransaction({
-    hash: depositTransHash,
-    watch: true,
-    onReceived: () => {
-      console.log("trans received");
-    },
-    onPending: () => {
-      setCurrentTransactionStatus(true);
-      console.log("trans pending");
-    },
-    onRejected(transaction) {
-      console.log("treans rejected");
-    },
-    onAcceptedOnL1: () => {
-      setCurrentTransactionStatus(true);
-      console.log("trans onAcceptedOnL1");
-    },
-    onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus(true);
-      console.log("trans onAcceptedOnL2 - ", transaction);
-    },
-  });
   const handleAddCollateral = async () => {
     try {
       const addCollateral = await writeAsyncAddCollateralRToken();
@@ -1286,6 +1288,8 @@ const YourBorrowModal = ({
     } catch (err) {
       console.log("yourBorrowModal reset states - ", err);
     }
+    setCurrentTransactionStatus(false);
+    setDepositTransHash("");
   };
 
   useEffect(() => {
