@@ -257,7 +257,7 @@ const YourBorrowModal = ({
             uint256.uint256ToBN(
               walletBalances[collateralAsset]?.dataBalanceOf?.balance
             ),
-            tokenDecimalsMap[currentSelectedWithdrawlCoin]
+            tokenDecimalsMap[collateralAsset]
           )
         )
       : 0
@@ -270,7 +270,7 @@ const YourBorrowModal = ({
               uint256.uint256ToBN(
                 walletBalances[collateralAsset]?.dataBalanceOf?.balance
               ),
-              tokenDecimalsMap[currentSelectedWithdrawlCoin]
+              tokenDecimalsMap[collateralAsset]
             )
           )
         : 0

@@ -155,6 +155,7 @@ const AnimatedButton: React.FC<Props> = ({
   return (
     <Button
       // onClick={handleClick}
+
       // w="35rem"
       // h="2.5rem"
       borderRadius="8px"
@@ -227,7 +228,7 @@ const AnimatedButton: React.FC<Props> = ({
             >
               {currentStringIndex === -1
                 ? children
-                : transactionStatus == "success"
+                :  transactionStatus == "success"
                 ? labelSuccessArray[currentStringIndex]
                 : labelErrorArray[currentStringIndex]}
               {/* {labelArray[currentStringIndex]} */}
