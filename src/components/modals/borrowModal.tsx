@@ -62,11 +62,12 @@ import { useWaitForTransaction } from "@starknet-react/core";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
 import {
   tokenAddressMap,
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
+import CopyToClipboard from "react-copy-to-clipboard";
 const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [sliderValue, setSliderValue] = useState<number>(0);
@@ -154,7 +155,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const [borrowTransHash, setBorrowTransHash] = useState("");
   const [currentTransactionStatus, setCurrentTransactionStatus] =
     useState(false);
-    const [isToastDisplayed, setToastDisplayed] = useState(false);
+  const [isToastDisplayed, setToastDisplayed] = useState(false);
 
   const recieptData = useWaitForTransaction({
     hash: borrowTransHash,
@@ -165,10 +166,13 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     onPending: () => {
       setCurrentTransactionStatus(true);
       console.log("trans pending");
-      if (isToastDisplayed==false) {
-        toast.success(`You have successfully borrowed ${inputBorrowAmount} d${currentBorrowCoin}`, {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
+      if (isToastDisplayed == false) {
+        toast.success(
+          `You have successfully borrowed ${inputBorrowAmount} d${currentBorrowCoin}`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
         setToastDisplayed(true);
       }
     },
@@ -182,10 +186,13 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     },
     onAcceptedOnL2(transaction) {
       setCurrentTransactionStatus(true);
-      if (isToastDisplayed==false) {
-        toast.success(`You have successfully borrowed ${inputBorrowAmount} d${currentBorrowCoin} `, {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
+      if (isToastDisplayed == false) {
+        toast.success(
+          `You have successfully borrowed ${inputBorrowAmount} d${currentBorrowCoin} `,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
         setToastDisplayed(true);
       }
       console.log("trans onAcceptedOnL2 - ", transaction);
@@ -209,8 +216,17 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     } catch (err) {
       dispatch(setTransactionStatus("failed"));
       console.log("handle borrow", err);
-      toast.error('Transaction cancelled', {
-        position: toast.POSITION.BOTTOM_RIGHT
+      const toastContent = (
+        <div>
+          Transaction cancelled{" "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
       });
     }
   };

@@ -84,6 +84,7 @@ import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import { useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
+import CopyToClipboard from "react-copy-to-clipboard";
 const YourBorrowModal = ({
   borrowIDCoinMap,
   currentID,
@@ -401,7 +402,7 @@ const YourBorrowModal = ({
 
   const [currentTransactionStatus, setCurrentTransactionStatus] =
     useState(false);
-    const [isToastDisplayed, setToastDisplayed] = useState(false);
+  const [isToastDisplayed, setToastDisplayed] = useState(false);
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
@@ -413,7 +414,7 @@ const YourBorrowModal = ({
       console.log("trans pending");
       if (!isToastDisplayed) {
         toast.success(`You have successfully supplied `, {
-          position: toast.POSITION.BOTTOM_RIGHT
+          position: toast.POSITION.BOTTOM_RIGHT,
         });
         setToastDisplayed(true);
       }
@@ -430,7 +431,7 @@ const YourBorrowModal = ({
       console.log("trans onAcceptedOnL2 - ", transaction);
       if (!isToastDisplayed) {
         toast.success(`You have successfully supplied `, {
-          position: toast.POSITION.BOTTOM_RIGHT
+          position: toast.POSITION.BOTTOM_RIGHT,
         });
         setToastDisplayed(true);
       }
@@ -449,8 +450,17 @@ const YourBorrowModal = ({
     } catch (err) {
       console.log("zero repay failed - ", err);
       dispatch(setTransactionStatus("failed"));
-      toast.error('Transaction cancelled', {
-        position: toast.POSITION.BOTTOM_RIGHT
+      const toastContent = (
+        <div>
+          Transaction cancelled{" "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
       });
     }
   };
@@ -486,8 +496,17 @@ const YourBorrowModal = ({
     } catch (err) {
       console.log(err);
       dispatch(setTransactionStatus("failed"));
-      toast.error('Transaction cancelled', {
-        position: toast.POSITION.BOTTOM_RIGHT
+      const toastContent = (
+        <div>
+          Transaction cancelled{" "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
       });
     }
   };
@@ -505,8 +524,17 @@ const YourBorrowModal = ({
     } catch (err) {
       console.log("add collateral error");
       dispatch(setTransactionStatus("failed"));
-      toast.error('Transaction cancelled', {
-        position: toast.POSITION.BOTTOM_RIGHT
+      const toastContent = (
+        <div>
+          Transaction cancelled{" "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
       });
     }
   };

@@ -42,7 +42,7 @@ import TableMySwapDull from "../layouts/table/tableIcons/mySwapDull";
 import TableJediswapLogo from "../layouts/table/tableIcons/jediswapLogo";
 import useSwap from "@/Blockchain/hooks/Writes/useSwap";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
 import {
   selectInputSupplyAmount,
   setCoinSelectedSupplyModal,
@@ -61,6 +61,7 @@ import {
 import ArrowUp from "@/assets/icons/arrowup";
 import useLiquidity from "@/Blockchain/hooks/Writes/useLiquidity";
 import { useWaitForTransaction } from "@starknet-react/core";
+import CopyToClipboard from "react-copy-to-clipboard";
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -225,7 +226,7 @@ const LiquidityProvisionModal = ({
   const [depositTransHash, setDepositTransHash] = useState("");
   const [currentTransactionStatus, setCurrentTransactionStatus] =
     useState(false);
-    const [isToastDisplayed, setToastDisplayed] = useState(false);
+  const [isToastDisplayed, setToastDisplayed] = useState(false);
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
@@ -233,7 +234,7 @@ const LiquidityProvisionModal = ({
       console.log("trans received");
       if (!isToastDisplayed) {
         toast.success(`You have successfully supplied `, {
-          position: toast.POSITION.BOTTOM_RIGHT
+          position: toast.POSITION.BOTTOM_RIGHT,
         });
         setToastDisplayed(true);
       }
@@ -254,7 +255,7 @@ const LiquidityProvisionModal = ({
       console.log("trans onAcceptedOnL2 - ", transaction);
       if (!isToastDisplayed) {
         toast.success(`You have successfully supplied `, {
-          position: toast.POSITION.BOTTOM_RIGHT
+          position: toast.POSITION.BOTTOM_RIGHT,
         });
         setToastDisplayed(true);
       }
@@ -270,8 +271,17 @@ const LiquidityProvisionModal = ({
     } catch (err) {
       console.log(err);
       dispatch(setTransactionStatus("failed"));
-      toast.error('Transaction cancelled', {
-        position: toast.POSITION.BOTTOM_RIGHT
+      const toastContent = (
+        <div>
+          Transaction cancelled{" "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
       });
     }
   };

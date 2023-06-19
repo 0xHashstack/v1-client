@@ -81,6 +81,7 @@ import {
 import { NativeToken, Token } from "@/Blockchain/interfaces/interfaces";
 import WarningIcon from "@/assets/icons/coins/warningIcon";
 import { toast } from "react-toastify";
+import CopyToClipboard from "react-copy-to-clipboard";
 const SupplyModal = ({
   buttonText,
   coin,
@@ -319,8 +320,17 @@ const SupplyModal = ({
     } catch (err) {
       // setTransactionFailed(true);
       dispatch(setTransactionStatus("failed"));
-      toast.error('Transaction cancelled', {
-        position: toast.POSITION.BOTTOM_RIGHT
+      const toastContent = (
+        <div>
+          Transaction cancelled{" "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
       });
       console.log("supply", err);
       // toast({

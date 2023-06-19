@@ -80,11 +80,12 @@ import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
-import {toast} from 'react-toastify'
+import { toast } from "react-toastify";
 import {
   tokenAddressMap,
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
+import CopyToClipboard from "react-copy-to-clipboard";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
@@ -281,7 +282,7 @@ const YourSupplyModal = ({
       setSliderValue(100);
       setinputSupplyAmount(newValue);
       setDepositAmount(newValue);
-      setinputSupplyAmount(newValue)
+      setinputSupplyAmount(newValue);
       // dispatch(setInputSupplyAmount(newValue));
     } else {
       percentage = Math.round(percentage);
@@ -290,7 +291,7 @@ const YourSupplyModal = ({
         setSliderValue(percentage);
         setinputSupplyAmount(newValue);
         setDepositAmount(newValue);
-        setinputSupplyAmount(newValue)
+        setinputSupplyAmount(newValue);
       }
       // dispatch(setInputSupplyAmount(newValue));
     }
@@ -360,7 +361,7 @@ const YourSupplyModal = ({
 
   const [depositTransHash, setDepositTransHash] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
-  const [actionSelected,setActionSelected]=useState("Supply")
+  const [actionSelected, setActionSelected] = useState("Supply");
   const [currentTransactionStatus, setCurrentTransactionStatus] =
     useState(false);
   const recieptData = useWaitForTransaction({
@@ -373,9 +374,12 @@ const YourSupplyModal = ({
       setCurrentTransactionStatus(true);
       console.log("trans pending");
       if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`, {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
+        toast.success(
+          `You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
         setToastDisplayed(true);
       }
     },
@@ -390,9 +394,12 @@ const YourSupplyModal = ({
       setCurrentTransactionStatus(true);
       console.log("trans onAcceptedOnL2 - ", transaction);
       if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`, {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
+        toast.success(
+          `You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
         setToastDisplayed(true);
       }
     },
@@ -408,10 +415,19 @@ const YourSupplyModal = ({
       console.log(withdraw);
     } catch (err) {
       console.log("withraw", err);
-      toast.error('Transaction cancelled', {
-        position: toast.POSITION.BOTTOM_RIGHT
-      });
       dispatch(setTransactionStatus("failed"));
+      const toastContent = (
+        <div>
+          Transaction cancelled{" "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      });
     }
   };
 
@@ -423,10 +439,19 @@ const YourSupplyModal = ({
       console.log("addSupply", addSupply);
     } catch (err) {
       console.log("Unable to add supply ", err);
-      toast.error('Transaction cancelled', {
-        position: toast.POSITION.BOTTOM_RIGHT
-      });
       dispatch(setTransactionStatus("failed"));
+      const toastContent = (
+        <div>
+          Transaction cancelled{" "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      });
     }
   };
   useEffect(() => {
@@ -760,7 +785,7 @@ const YourSupplyModal = ({
                             onClick={() => {
                               setinputSupplyAmount(walletBalance);
                               setDepositAmount(walletBalance);
-                              setinputSupplyAmount(walletBalance)
+                              setinputSupplyAmount(walletBalance);
                               setSliderValue(100);
                             }}
                             isDisabled={transactionStarted == true}
@@ -1127,7 +1152,6 @@ const YourSupplyModal = ({
                             labelErrorArray={[
                               <ErrorButton errorText="Transaction failed" />,
                               <ErrorButton errorText="Copy error!" />,
-
                             ]}
                             currentTransactionStatus={currentTransactionStatus}
                             setCurrentTransactionStatus={

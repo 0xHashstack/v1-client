@@ -67,6 +67,7 @@ import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import { useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
+import CopyToClipboard from "react-copy-to-clipboard";
 const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
@@ -186,10 +187,13 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     onPending: () => {
       setCurrentTransactionStatus(true);
       console.log("trans pending");
-      if (isToastDisplayed==false) {
-        toast.success(`You have successfully staked ${inputStakeAmount} ${currentSelectedStakeCoin}`, {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
+      if (isToastDisplayed == false) {
+        toast.success(
+          `You have successfully staked ${inputStakeAmount} ${currentSelectedStakeCoin}`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
         setToastDisplayed(true);
       }
     },
@@ -203,10 +207,13 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     onAcceptedOnL2(transaction) {
       setCurrentTransactionStatus(true);
       console.log("trans onAcceptedOnL2 - ", transaction);
-      if (isToastDisplayed==false) {
-        toast.success(`You have successfully staked ${inputStakeAmount} ${currentSelectedStakeCoin}`, {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
+      if (isToastDisplayed == false) {
+        toast.success(
+          `You have successfully staked ${inputStakeAmount} ${currentSelectedStakeCoin}`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
         setToastDisplayed(true);
       }
     },
@@ -225,9 +232,18 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
       );
     } catch (err) {
       dispatch(setTransactionStatus("failed"));
-      console.log(err)
-      toast.error('Transaction cancelled', {
-        position: toast.POSITION.BOTTOM_RIGHT
+      console.log("stake transaction failed : ", err);
+      const toastContent = (
+        <div>
+          Transaction cancelled{" "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
       });
     }
   };
@@ -239,10 +255,19 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
       dispatch(setTransactionStatus("success"));
       console.log(unstake);
     } catch (err) {
-      dispatch(setTransactionStatus("failed"))
-      console.log(err)
-      toast.error('Transaction cancelled', {
-        position: toast.POSITION.BOTTOM_RIGHT
+      dispatch(setTransactionStatus("failed"));
+      console.log("Unstake transaction failed : ", err);
+      const toastContent = (
+        <div>
+          Transaction cancelled{" "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
       });
     }
   };
