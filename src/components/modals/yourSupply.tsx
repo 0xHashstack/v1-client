@@ -625,11 +625,12 @@ const YourSupplyModal = ({
                                       w="full"
                                       display="flex"
                                       py="5px"
-                                      px={`${
+                                      pl={`${
                                         coin === currentSelectedSupplyCoin
                                           ? "1"
                                           : "5"
                                       }`}
+                                      pr="6px"
                                       gap="1"
                                       bg={`${
                                         coin === currentSelectedSupplyCoin
@@ -637,9 +638,29 @@ const YourSupplyModal = ({
                                           : "inherit"
                                       }`}
                                       borderRadius="md"
+                                      justifyContent="space-between"
                                     >
-                                      <Box p="1">{getCoin(coin)}</Box>
-                                      <Text color="white">{coin}</Text>
+                                      <Box display="flex">
+                                        <Box p="1">{getCoin(coin)}</Box>
+                                        <Text color="white">{coin}</Text>
+                                      </Box>
+                                      <Box
+                                        fontSize="9px"
+                                        color="white"
+                                        mt="6px"
+                                        fontWeight="thin"
+                                      >
+                                        Wallet Balance:{" "}
+                                        {Number(
+                                          BNtoNum(
+                                            uint256.uint256ToBN(
+                                              walletBalances[coin]
+                                                ?.dataBalanceOf?.balance
+                                            ),
+                                            tokenDecimalsMap[coin]
+                                          )
+                                        )}
+                                      </Box>
                                     </Box>
                                   </Box>
                                 );
@@ -1238,11 +1259,12 @@ const YourSupplyModal = ({
                                       w="full"
                                       display="flex"
                                       py="5px"
-                                      px={`${
+                                      pl={`${
                                         coin === currentSelectedWithdrawlCoin
                                           ? "1"
                                           : "5"
                                       }`}
+                                      pr="6px"
                                       gap="1"
                                       bg={`${
                                         coin === currentSelectedWithdrawlCoin
@@ -1250,9 +1272,29 @@ const YourSupplyModal = ({
                                           : "inherit"
                                       }`}
                                       borderRadius="md"
+                                      justifyContent="space-between"
                                     >
-                                      <Box p="1">{getCoin(coin)}</Box>
-                                      <Text color="white">{coin}</Text>
+                                      <Box display="flex">
+                                        <Box p="1">{getCoin(coin)}</Box>
+                                        <Text color="white">{coin}</Text>
+                                      </Box>
+                                      <Box
+                                        fontSize="9px"
+                                        color="white"
+                                        mt="6px"
+                                        fontWeight="thin"
+                                      >
+                                        Wallet Balance:{" "}
+                                        {Number(
+                                          BNtoNum(
+                                            uint256.uint256ToBN(
+                                              walletBalances[coin]
+                                                ?.dataBalanceOf?.balance
+                                            ),
+                                            tokenDecimalsMap[coin]
+                                          )
+                                        )}
+                                      </Box>
                                     </Box>
                                   </Box>
                                 );
