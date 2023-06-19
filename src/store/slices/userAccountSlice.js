@@ -16,7 +16,7 @@ const initialState = {
   walletBalance: 90,
   inputYourBorrowModalRepayAmount: 0,
   transactionStatus: "",
-  currentTransactionStatus: "",
+  // currentTransactionStatus: "",
   language: "English",
   currentPage: "market",
   reserves: undefined,
@@ -24,9 +24,9 @@ const initialState = {
   offchainCurrentBlock: undefined,
   assetWalletBalance: "",
   userLoans: [],
-  transactionSuccessArray:[],
-  transactionFailureArray:[],
-  transactionStartedAndStartToast:false,
+  transactionSuccessArray: [],
+  transactionFailureArray: [],
+  transactionStartedAndStartToast: false,
 
   toastTransactionStarted: false,
   transactionStarted: false,
@@ -52,11 +52,11 @@ export const userAccountSlice = createSlice({
     setAssetWalletBalance(state, action) {
       state.assetWalletBalance = action.payload;
     },
-    setTransactionSuccessArray(state,action){
-      state.transactionSuccessArray=action.payload;
+    setTransactionSuccessArray(state, action) {
+      state.transactionSuccessArray = action.payload;
     },
-    setTransactionFailureArray(state,action){
-      state.transactionFailureArray=action.payload;
+    setTransactionFailureArray(state, action) {
+      state.transactionFailureArray = action.payload;
     },
     setUserLoans(state, action) {
       state.userLoans = action.payload;
@@ -67,9 +67,9 @@ export const userAccountSlice = createSlice({
     setTransactionStatus(state, action) {
       state.transactionStatus = action.payload;
     },
-    setCurrentTransactionStatus(state, action) {
-      state.currentTransactionStatus = action.payload;
-    },
+    // setCurrentTransactionStatus(state, action) {
+    //   state.currentTransactionStatus = action.payload;
+    // },
     setLanguage(state, action) {
       state.language = action.payload;
     },
@@ -153,12 +153,12 @@ export const {
   setTransactionStarted,
   setUserLoans,
   setTransactionSuccessArray,
-  setTransactionFailureArray
+  setTransactionFailureArray,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
 export const { setTransactionStatus } = userAccountSlice.actions;
-export const { setCurrentTransactionStatus } = userAccountSlice.actions;
+// export const { setCurrentTransactionStatus } = userAccountSlice.actions;
 export const { setInputBorrowModalCollateralAmount } = userAccountSlice.actions;
 export const { setInputBorrowModalBorrowAmount } = userAccountSlice.actions;
 export const { setInputTradeModalCollateralAmount } = userAccountSlice.actions;
@@ -168,16 +168,16 @@ export const { setCollateralCoinSelectedBorrowModal } =
   userAccountSlice.actions;
 export const { setBorrowCoinSelectedBorrowModal } = userAccountSlice.actions;
 export const { setInputYourBorrowModalRepayAmount } = userAccountSlice.actions;
-export const selectTransactionSuccessArray=(state)=>
+export const selectTransactionSuccessArray = (state) =>
   state.user_account.transactionSuccessArray;
-  export const selectTransactionFailureArray=(state)=>
+export const selectTransactionFailureArray = (state) =>
   state.user_account.transactionFailureArray;
 export const selectSelectedDapp = (state) =>
   state.user_account.spendBorrowselectedDapp;
 export const selectTransactionStatus = (state) =>
   state.user_account.transactionStatus;
-export const selectCurrentTransactionStatus = (state) =>
-  state.user_account.currentTransactionStatus;
+// export const selectCurrentTransactionStatus = (state) =>
+//   state.user_account.currentTransactionStatus;
 export const selectAssetWalletBalance = (state) =>
   state.user_account.assetWalletBalance;
 export const selectUserLoans = (state) => state.user_account.userLoans;
