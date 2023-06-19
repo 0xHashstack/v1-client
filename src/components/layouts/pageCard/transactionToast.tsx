@@ -64,8 +64,8 @@ const TransactionToast = () => {
         labelErrorArray={[
           // "Deposit Amount approved",
           // "Successfully transferred to Hashstack’s supply vault.",
-          <ErrorButton errorText="Transaction failed" />,
-          <ErrorButton errorText="Copy error!" />,
+          <ErrorButton errorText="Transaction failed" key={"error 1"} />,
+          <ErrorButton errorText="Copy error!" key={"error 2"} />,
         ]}
         // transactionStarted={(depostiTransactionHash!="" || transactionFailed==true)}
         _disabled={{ bgColor: "white", color: "black" }}

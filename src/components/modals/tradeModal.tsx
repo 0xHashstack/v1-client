@@ -65,7 +65,10 @@ import ErrorButton from "../uiElements/buttons/ErrorButton";
 import ArrowUp from "@/assets/icons/arrowup";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
-import { tokenAddressMap, tokenDecimalsMap } from "@/Blockchain/utils/addressServices";
+import {
+  tokenAddressMap,
+  tokenDecimalsMap,
+} from "@/Blockchain/utils/addressServices";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -1745,8 +1748,11 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       labelErrorArray={[
                         "Performing Checks",
                         "Processing",
-                        <ErrorButton errorText="Transaction failed" />,
-                        <ErrorButton errorText="Copy error!" />,
+                        <ErrorButton
+                          errorText="Transaction failed"
+                          key={"error1"}
+                        />,
+                        <ErrorButton errorText="Copy error!" key={"error2"} />,
                       ]}
                     >
                       Borrow

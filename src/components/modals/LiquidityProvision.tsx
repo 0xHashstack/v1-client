@@ -1060,8 +1060,11 @@ const LiquidityProvisionModal = ({
                       />,
                     ]}
                     labelErrorArray={[
-                      <ErrorButton errorText="Transaction failed" />,
-                      <ErrorButton errorText="Copy error!" />,
+                      <ErrorButton
+                        errorText="Transaction failed"
+                        key={"error1"}
+                      />,
+                      <ErrorButton errorText="Copy error!" key={"error2"} />,
                     ]}
                     currentTransactionStatus={currentTransactionStatus}
                     setCurrentTransactionStatus={setCurrentTransactionStatus}
