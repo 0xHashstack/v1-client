@@ -24,7 +24,7 @@ export interface ILoan {
   loanMarketAddress: string | undefined; // dToken Address
   underlyingMarket: NativeToken | undefined; // BTC
   underlyingMarketAddress: string | undefined; // BTC Address
-  currentLoanMarket: string | undefined; // USDT, will be native only or any lpToken
+  currentLoanMarket: string | undefined; // USDT, will be native only or any lpToken  after swap this is pair(lp) address
   currentLoanMarketAddress: string | undefined; // USDT Address
   collateralMarket: RToken | undefined; // rToken like rUSDC
   collateralMarketAddress: string | undefined; // rToken Address
