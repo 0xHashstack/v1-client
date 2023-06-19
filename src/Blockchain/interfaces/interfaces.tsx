@@ -50,10 +50,13 @@ export interface ILoan {
 
 export interface IDeposit {
     tokenAddress: string;
+    token: NativeToken;
+    rToken: RToken;
+    rTokenAddress: string;
     rTokenAmount: number;
-    // rTokenAmountParsed: number;
+    rTokenAmountParsed: number;
     underlyingAssetAmount: number;
-    // underlyingAssetAmountParsed: number;
+    underlyingAssetAmountParsed: number;
 }
 
 export interface IMarketInfo {
