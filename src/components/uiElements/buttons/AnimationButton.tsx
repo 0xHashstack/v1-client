@@ -14,6 +14,8 @@ interface Props extends ButtonProps {
   children: ReactNode;
   labelSuccessArray: Array<string | ReactNode>;
   labelErrorArray: Array<string | ReactNode>;
+  currentTransactionStatus: any;
+  setCurrentTransactionStatus: any;
 }
 
 const AnimatedButton: React.FC<Props> = ({
@@ -231,7 +233,7 @@ const AnimatedButton: React.FC<Props> = ({
             >
               {currentStringIndex === -1
                 ? children
-                :  transactionStatus == "success"
+                : transactionStatus == "success"
                 ? labelSuccessArray[currentStringIndex]
                 : labelErrorArray[currentStringIndex]}
               {/* {labelArray[currentStringIndex]} */}

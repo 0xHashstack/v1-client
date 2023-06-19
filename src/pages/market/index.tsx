@@ -35,8 +35,9 @@ import {
   getProtocolStats,
 } from "@/Blockchain/scripts/protocolStats";
 import SuccessToast from "@/components/uiElements/toasts/SuccessToast";
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Market() {
@@ -92,7 +93,9 @@ export default function Market() {
         <LatestSyncedBlock width="16rem" height="100%" block={83207} />
       </Box> */}
       {/* <SuccessToast/> */}
-      
+      {/* <CopyToClipboard text="error found">
+        <div className="copy">Copy</div>
+      </CopyToClipboard> */}
     </PageCard>
   );
 }
