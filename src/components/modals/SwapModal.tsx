@@ -51,6 +51,7 @@ import useSwap from "@/Blockchain/hooks/Writes/useSwap";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
+import { useWaitForTransaction } from "@starknet-react/core";
 const SwapModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -141,10 +142,37 @@ const SwapModal = ({
     dispatch(setModalDropdown(dropdownName));
   };
 
+  const [depositTransHash, setDepositTransHash] = useState("");
+  const [currentTransactionStatus, setCurrentTransactionStatus] =
+    useState(false);
+  const recieptData = useWaitForTransaction({
+    hash: depositTransHash,
+    watch: true,
+    onReceived: () => {
+      console.log("trans received");
+    },
+    onPending: () => {
+      setCurrentTransactionStatus(true);
+      console.log("trans pending");
+    },
+    onRejected(transaction) {
+      console.log("treans rejected");
+    },
+    onAcceptedOnL1: () => {
+      setCurrentTransactionStatus(true);
+      console.log("trans onAcceptedOnL1");
+    },
+    onAcceptedOnL2(transaction) {
+      setCurrentTransactionStatus(true);
+      console.log("trans onAcceptedOnL2 - ", transaction);
+    },
+  });
+
   const handleSwap = async () => {
     try {
       const swap = await writeAsyncJediSwap_swap();
       console.log(swap);
+      setDepositTransHash(swap?.transaction_hash);
       dispatch(setTransactionStatus("success"));
     } catch (err) {
       console.log(err);
@@ -937,6 +965,8 @@ const SwapModal = ({
                   ]}
                   _disabled={{ bgColor: "white", color: "black" }}
                   isDisabled={transactionStarted == true}
+                  currentTransactionStatus={currentTransactionStatus}
+                  setCurrentTransactionStatus={setCurrentTransactionStatus}
                 >
                   Spend Borrow
                 </AnimatedButton>

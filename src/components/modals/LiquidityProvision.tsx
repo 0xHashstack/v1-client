@@ -59,6 +59,7 @@ import {
 } from "@/store/slices/dropdownsSlice";
 import ArrowUp from "@/assets/icons/arrowup";
 import useLiquidity from "@/Blockchain/hooks/Writes/useLiquidity";
+import { useWaitForTransaction } from "@starknet-react/core";
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -220,10 +221,37 @@ const LiquidityProvisionModal = ({
     }
   };
 
+  const [depositTransHash, setDepositTransHash] = useState("");
+  const [currentTransactionStatus, setCurrentTransactionStatus] =
+    useState(false);
+  const recieptData = useWaitForTransaction({
+    hash: depositTransHash,
+    watch: true,
+    onReceived: () => {
+      console.log("trans received");
+    },
+    onPending: () => {
+      setCurrentTransactionStatus(true);
+      console.log("trans pending");
+    },
+    onRejected(transaction) {
+      console.log("treans rejected");
+    },
+    onAcceptedOnL1: () => {
+      setCurrentTransactionStatus(true);
+      console.log("trans onAcceptedOnL1");
+    },
+    onAcceptedOnL2(transaction) {
+      setCurrentTransactionStatus(true);
+      console.log("trans onAcceptedOnL2 - ", transaction);
+    },
+  });
+
   const handleLiquidity = async () => {
     try {
       const liquidity = await writeAsyncJediSwap_addLiquidity();
       console.log(liquidity);
+      setDepositTransHash(liquidity?.transaction_hash);
       dispatch(setTransactionStatus("success"));
     } catch (err) {
       console.log(err);
@@ -1006,8 +1034,9 @@ const LiquidityProvisionModal = ({
                     labelErrorArray={[
                       <ErrorButton errorText="Transaction failed" />,
                       <ErrorButton errorText="Copy error!" />,
-
                     ]}
+                    currentTransactionStatus={currentTransactionStatus}
+                    setCurrentTransactionStatus={setCurrentTransactionStatus}
                   >
                     Spend Borrow
                   </AnimatedButton>
