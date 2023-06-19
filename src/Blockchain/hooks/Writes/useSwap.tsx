@@ -7,7 +7,7 @@
 
   const useSwap = () => {
     const [swapLoanId, setSwapLoanId] = useState<string>("")
-    const [toMarket, setToMarket] = useState<Token>("")
+    const [toMarket, setToMarket] = useState<Token>("BTC")
 
     const {
       data: dataJediSwap_swap,
@@ -24,8 +24,8 @@
         calldata: [
           constants.JEDI_SWAP,
           "3",
-          constants.SWAP,
           swapLoanId,
+          constants.SWAP,
           tokenAddressMap[toMarket],
         ]
       }
@@ -46,8 +46,8 @@
         calldata: [
           constants.MY_SWAP,
           "3",
-          constants.SWAP,
           swapLoanId,
+          constants.SWAP,
           tokenAddressMap[toMarket],
         ]
       }
