@@ -26,7 +26,7 @@ import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer, toast } from "react-toastify";
 
 interface Props extends StackProps {
   children: ReactNode;
@@ -167,9 +167,45 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   return () => clearTimeout(timer);
   // }, []);
 
+  useEffect(() => {
+    const walletConnected = localStorage.getItem("lastUsedConnector");
+    if (walletConnected == "") {
+      router.push("/");
+    }
+    if (!_account) {
+      if (walletConnected == "braavos") {
+        disconnect();
+        connect(connectors[0]);
+      } else if (walletConnected == "argentX") {
+        disconnect();
+        connect(connectors[1]);
+      }
+    }
+  }, []);
+  useEffect(() => {
+    function isCorrectNetwork() {
+      console.log("starknetAccount", account);
+      return (
+        account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+        account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+      );
+    }
+    if (account && !isCorrectNetwork()) {
+      setRender(false);
+    } else {
+      setRender(true);
+    }
+  }, [account]);
+  // useEffect(() => {
+  //   const timer = setTimeout(() => {
+  //     connect(connectors[0]);
+  //   }, 1000);
+  //   return () => clearTimeout(timer);
+  // }, []);
+
   return (
     <>
-      {render && (
+      {render ? (
         <>
           <Navbar />
           <Stack
@@ -183,9 +219,66 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           >
             {children}
           </Stack>
-          {/* <TransactionToast /> */}
-          <ToastContainer theme="dark"/>
+          <Box
+            bgColor="red"
+            display={toastTransactionStarted ? "block" : "none"}
+          >
+            <AnimatedButton
+              position="fixed"
+              bgColor="#101216"
+              // p={0}
+              color="#8B949E"
+              size="sm"
+              width="20%"
+              // mt="1.5rem"
+              // mb="1.5rem"
+              right="2rem"
+              bottom="3rem"
+              borderRadius="2px"
+              labelSuccessArray={[
+                "Deposit Amount approved",
+                "Successfully transferred to Hashstack’s supply vault.",
+                "Determining the rToken amount to mint.",
+                "rTokens have been minted successfully.",
+                "Transaction complete.",
+                // <ErrorButton errorText="Transaction failed" />,
+                // <ErrorButton errorText="Copy error!" />,
+                <SuccessButton key={"successButton"} successText={"Success"} />,
+              ]}
+              labelErrorArray={[
+                "Deposit Amount approved",
+                "Successfully transferred to Hashstack’s supply vault.",
+                <ErrorButton errorText="Transaction failed" />,
+                <ErrorButton errorText="Copy error!" />,
+              ]}
+              // transactionStarted={(depostiTransactionHash!="" || transactionFailed==true)}
+              _disabled={{ bgColor: "white", color: "black" }}
+              isDisabled={toastTransactionStarted != true}
+              // onClick={}
+            >
+              Supply
+            </AnimatedButton>
+          </Box>
           <Footer block={83207} />
+        </>
+      ) : (
+        <>
+          <Navbar />
+          <Stack
+            alignItems="center"
+            minHeight={"100vh"}
+            pt="8rem"
+            backgroundColor="#010409"
+            pb={isLargerThan1280 ? "7rem" : "0rem"}
+            className={classes.join(" ")}
+            {...rest}
+          >
+            <Box>
+              <Text color="white" fontSize="25px">
+                Please switch to Starknet Goerli
+              </Text>
+            </Box>
+          </Stack>
         </>
       )}
     </>
