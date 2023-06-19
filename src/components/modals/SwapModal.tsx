@@ -988,8 +988,11 @@ const SwapModal = ({
                   labelErrorArray={[
                     "Processing",
                     "Transferring collateral to supply vault.",
-                    <ErrorButton errorText="Transaction failed" />,
-                    <ErrorButton errorText="Copy error!" />,
+                    <ErrorButton
+                      errorText="Transaction failed"
+                      key={"error1"}
+                    />,
+                    <ErrorButton errorText="Copy error!" key={"error2"} />,
                   ]}
                   _disabled={{ bgColor: "white", color: "black" }}
                   isDisabled={transactionStarted == true}

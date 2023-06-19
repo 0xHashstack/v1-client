@@ -1202,8 +1202,11 @@ const SupplyModal = ({
                         />,
                       ]}
                       labelErrorArray={[
-                        <ErrorButton errorText="Transaction failed" />,
-                        <ErrorButton errorText="Copy error!" />,
+                        <ErrorButton
+                          errorText="Transaction failed"
+                          key={"error1"}
+                        />,
+                        <ErrorButton errorText="Copy error!" key={"error2"} />,
                       ]}
                       // transactionStarted={(depostiTransactionHash!="" || transactionFailed==true)}
                       _disabled={{ bgColor: "white", color: "black" }}

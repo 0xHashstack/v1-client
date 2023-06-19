@@ -1150,8 +1150,14 @@ const YourSupplyModal = ({
                               />,
                             ]}
                             labelErrorArray={[
-                              <ErrorButton errorText="Transaction failed" />,
-                              <ErrorButton errorText="Copy error!" />,
+                              <ErrorButton
+                                errorText="Transaction failed"
+                                key={"error1"}
+                              />,
+                              <ErrorButton
+                                errorText="Copy error!"
+                                key={"error2"}
+                              />,
                             ]}
                             currentTransactionStatus={currentTransactionStatus}
                             setCurrentTransactionStatus={
@@ -1845,8 +1851,14 @@ const YourSupplyModal = ({
                               />,
                             ]}
                             labelErrorArray={[
-                              <ErrorButton errorText="Transaction failed" />,
-                              <ErrorButton errorText="Copy error!" />,
+                              <ErrorButton
+                                errorText="Transaction failed"
+                                key={"error1"}
+                              />,
+                              <ErrorButton
+                                errorText="Copy error!"
+                                key={"error2"}
+                              />,
                             ]}
                             _disabled={{ bgColor: "white", color: "black" }}
                             isDisabled={withdrawTransactionStarted == true}

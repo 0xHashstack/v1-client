@@ -8,87 +8,87 @@ type LoanState = "ACTIVE" | "SPENT" | "REPAID" | "LIQUIDATED" | null;
 type SpendType = "UNSPENT" | "SWAP" | "LIQUIDITY" | null;
 type L3App = "jediSwap" | "mySwap" | "Yagi" | null;
 
-export type ItokenAddressMap {
-    [key in Token]: string | undefined;
-}
+export type ItokenAddressMap = {
+  [key in Token]: string | undefined;
+};
 
-export type ItokenDecimalsMap {
-    [key in Token]: number | undefined;
-}
+export type ItokenDecimalsMap = {
+  [key in Token]: number | undefined;
+};
 
 export interface ILoan {
-    loanId: number; // loan id
-    borrower: string; // borrower address
-  
-    loanMarket: DToken | undefined;    // dToken like dBTC
-    loanMarketAddress: string | undefined; // dToken Address 
-    underlyingMarket: NativeToken | undefined;  // BTC
-    underlyingMarketAddress: string | undefined; // BTC Address
-    currentLoanMarket: string | undefined;  // USDT, will be native only or any lpToken
-    currentLoanMarketAddress: string | undefined; // USDT Address
-    collateralMarket: RToken | undefined;  // rToken like rUSDC
-    collateralMarketAddress: string | undefined; // rToken Address
-  
-    loanAmount: string;  // dToken amount
-    loanAmountParsed: number;
+  loanId: number; // loan id
+  borrower: string; // borrower address
 
-    currentLoanAmount: string;  // native tokens
-    currentLoanAmountParsed: number;
+  loanMarket: DToken | undefined; // dToken like dBTC
+  loanMarketAddress: string | undefined; // dToken Address
+  underlyingMarket: NativeToken | undefined; // BTC
+  underlyingMarketAddress: string | undefined; // BTC Address
+  currentLoanMarket: string | undefined; // USDT, will be native only or any lpToken
+  currentLoanMarketAddress: string | undefined; // USDT Address
+  collateralMarket: RToken | undefined; // rToken like rUSDC
+  collateralMarketAddress: string | undefined; // rToken Address
 
-    collateralAmount: string;  // rToken amount
-    collateralAmountParsed: number;
-  
-    loanState: LoanState;
-    spendType: SpendType;
-    l3App: L3App;
-    createdAt: Date;
-    
-    state: string | null;
-    l3_integration: string;
-    l3_category: string;
+  loanAmount: string; // dToken amount
+  loanAmountParsed: number;
+
+  currentLoanAmount: string; // native tokens
+  currentLoanAmountParsed: number;
+
+  collateralAmount: string; // rToken amount
+  collateralAmountParsed: number;
+
+  loanState: LoanState;
+  spendType: SpendType;
+  l3App: L3App;
+  createdAt: Date;
+
+  state: string | null;
+  l3_integration: string;
+  l3_category: string;
 }
 
 export interface IDeposit {
-    tokenAddress: string;
-    token: NativeToken;
-    rToken: RToken;
-    rTokenAddress: string;
-    rTokenAmount: number;
-    rTokenAmountParsed: number;
-    underlyingAssetAmount: number;
-    underlyingAssetAmountParsed: number;
+  tokenAddress: string;
+  token: NativeToken;
+  rToken: RToken;
+  rTokenAddress: string;
+  rTokenAmount: number;
+  rTokenAmountParsed: number;
+  underlyingAssetAmount: number;
+  underlyingAssetAmountParsed: number;
 }
 
 export interface IMarketInfo {
-    borrowRate: number; // borrow rate
-    supplyRate: number;
-    stakingRate: number;
+  borrowRate: number; // borrow rate
+  supplyRate: number;
+  stakingRate: number;
 
-    totalSupply: number; // 
-    lentAssets: number;
-    totalBorrow: number;
+  totalSupply: number; //
+  lentAssets: number;
+  totalBorrow: number;
 
-    utilisationPerMarket: number;
-    exchangeRateRtokenToUnderlying: number;  // 10^18 precision 
-    exchangeRateDTokenToUnderlying: number;  // 10^18 precision
-    exchangeRateUnderlyingToRtoken: number;
-    exchangeRateUnderlyingToDtoken: number;
+  utilisationPerMarket: number;
+  exchangeRateRtokenToUnderlying: number; // 10^18 precision
+  exchangeRateDTokenToUnderlying: number; // 10^18 precision
+  exchangeRateUnderlyingToRtoken: number;
+  exchangeRateUnderlyingToDtoken: number;
 
-    tokenAddress: NativeToken;
+  tokenAddress: String;
 }
 
 export interface IProtocolReserves {
-    totalReserves: number | null;
-    availableReserves: number | null;
-    avgAssetUtilisation: number | null; // weighted avg of all the utilisations of markets
+  totalReserves: number | null;
+  availableReserves: number | null;
+  avgAssetUtilisation: number | null; // weighted avg of all the utilisations of markets
 }
 
 export interface IUserStats {
-    netWorth: number;   // current values of loans - total borrow + total supply
-    yourSupply: number; // usd terms
-    yourBorrow: number; // usd terms
-    netSupplyAPR: number; // usd terms
-    netBorrowAPR: number; // usd terms
+  netWorth: number; // current values of loans - total borrow + total supply
+  yourSupply: number; // usd terms
+  yourBorrow: number; // usd terms
+  netSupplyAPR: number; // usd terms
+  netBorrowAPR: number; // usd terms
 }
 
 // Net apr = (total supply * supply apr - total borrow * borrow apr) / networth
