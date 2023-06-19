@@ -83,6 +83,7 @@ import {
   tokenAddressMap,
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
+import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
@@ -183,6 +184,34 @@ const YourSupplyModal = ({
   const [withdrawTransactionStarted, setWithdrawTransactionStarted] =
     useState(false);
   const {
+    depositAmount,
+    setDepositAmount,
+    asset: supplyAsset,
+    setAsset: setSupplyAsset,
+
+    dataDepositStake,
+    errorDepositStake,
+    resetDepositStake,
+    writeAsyncDepositStake,
+    isErrorDepositStake,
+    isIdleDepositStake,
+    isLoadingDepositStake,
+    isSuccessDepositStake,
+    statusDepositStake,
+
+    dataDeposit,
+    errorDeposit,
+    resetDeposit,
+    // depositTransHash,
+    // setDepositTransHash,
+    writeAsyncDeposit,
+    isErrorDeposit,
+    isIdleDeposit,
+    isLoadingDeposit,
+    isSuccessDeposit,
+    statusDeposit,
+  } = useDeposit();
+  const {
     asset,
     setAsset,
     rTokenShares: inputWithdrawlAmount,
@@ -250,6 +279,7 @@ const YourSupplyModal = ({
     if (percentage > 100) {
       setSliderValue(100);
       setinputSupplyAmount(newValue);
+      setDepositAmount(newValue);
       // dispatch(setInputSupplyAmount(newValue));
     } else {
       percentage = Math.round(percentage);
@@ -257,6 +287,7 @@ const YourSupplyModal = ({
       } else {
         setSliderValue(percentage);
         setinputSupplyAmount(newValue);
+        setDepositAmount(newValue);
       }
       // dispatch(setInputSupplyAmount(newValue));
     }
@@ -291,8 +322,10 @@ const YourSupplyModal = ({
     setSliderValue(0);
     setSliderValue2(0);
     setinputSupplyAmount(0);
+    setDepositAmount(0);
     setinputWithdrawlAmount(0);
     setCurrentSelectedSupplyCoin("BTC");
+    setSupplyAsset("BTC");
     setcurrentSelectedWithdrawlCoin("BTC");
     setAsset("");
     setTransactionStarted(false);
@@ -306,6 +339,7 @@ const YourSupplyModal = ({
 
   useEffect(() => {
     setinputSupplyAmount(0);
+    setDepositAmount(0);
     setSliderValue(0);
   }, [currentSelectedSupplyCoin]);
 
@@ -337,6 +371,23 @@ const YourSupplyModal = ({
       dispatch(setTransactionStatus("failed"));
     }
   };
+
+  const handleAddSupply = async () => {
+    try {
+      const addSupply = await writeAsyncDeposit();
+      setDepositTransHash(addSupply.transaction_hash);
+      dispatch(setTransactionStatus("success"));
+      console.log("addSupply", addSupply);
+    } catch (err) {
+      console.log("Unable to add supply ", err);
+      dispatch(setTransactionStatus("failed"));
+    }
+  };
+  useEffect(() => {
+    if (currentSelectedSupplyCoin) {
+      setSupplyAsset(currentSelectedSupplyCoin);
+    }
+  }, [currentSelectedSupplyCoin]);
 
   return (
     <Box>
@@ -512,6 +563,7 @@ const YourSupplyModal = ({
                                     pr="2"
                                     onClick={() => {
                                       setCurrentSelectedSupplyCoin(coin);
+                                      setSupplyAsset(coin);
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
@@ -640,6 +692,7 @@ const YourSupplyModal = ({
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
                               setinputSupplyAmount(walletBalance);
+                              setDepositAmount(walletBalance);
                               setSliderValue(100);
                             }}
                             isDisabled={transactionStarted == true}
@@ -709,6 +762,7 @@ const YourSupplyModal = ({
                               ans = Math.round(ans * 100) / 100;
                               // dispatch(setInputSupplyAmount(ans))
                               setinputSupplyAmount(ans);
+                              setDepositAmount(ans);
                             }}
                             isDisabled={transactionStarted == true}
                             _disabled={{ cursor: "pointer" }}
@@ -975,6 +1029,7 @@ const YourSupplyModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
+                            handleAddSupply();
                           }}
                         >
                           <AnimatedButton

@@ -101,8 +101,8 @@ const SupplyModal = ({
     dataDeposit,
     errorDeposit,
     resetDeposit,
-    depositTransHash,
-    setDepositTransHash,
+    // depositTransHash,
+    // setDepositTransHash,
     writeAsyncDeposit,
     writeAsyncDepositStake,
 
@@ -201,8 +201,6 @@ const SupplyModal = ({
   // const walletBalance = JSON.parse(useSelector(selectWalletBalance))
   // const [transactionFailed, setTransactionFailed] = useState(false);
 
-  // const [depositTransHash, setDepositTransHash] = useState();
-
   // const showToast = () => {};
 
   // // const recieptData = useWaitForTransaction({
@@ -215,6 +213,7 @@ const SupplyModal = ({
 
   // // }
   // const { address: account } = useAccount();
+  const [depositTransHash, setDepositTransHash] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
@@ -274,7 +273,7 @@ const SupplyModal = ({
     } catch (err) {
       // setTransactionFailed(true);
       dispatch(setTransactionStatus("failed"));
-      console.log(err);
+      console.log("supply", err);
       // toast({
       //   description: "An error occurred while handling the transaction. " + err,
       //   variant: "subtle",
