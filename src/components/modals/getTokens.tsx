@@ -125,10 +125,10 @@ const dispatch=useDispatch();
             console.log(token)
             const getTokens=await writeAsyncGetTokens();
             console.log(getTokens)
-            dispatch(setTransactionStatus("success"));
+            // dispatch(setTransactionStatus("success"));
         }catch(err){
             console.log(err);
-            dispatch(setTransactionStatus("failed"));
+            // dispatch(setTransactionStatus("failed"));
             toast.error(`Failed to mint TestToken: ${currentSelectedCoin}`, {
                 position: toast.POSITION.BOTTOM_RIGHT
               });

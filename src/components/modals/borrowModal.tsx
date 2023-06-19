@@ -62,6 +62,7 @@ import { useWaitForTransaction } from "@starknet-react/core";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
+import {toast} from 'react-toastify'
 import {
   tokenAddressMap,
   tokenDecimalsMap,
@@ -150,10 +151,10 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     setCollateralMarket(coin ? coin.name : "BTC");
   }, [coin]);
 
-  const toast = useToast();
   const [borrowTransHash, setBorrowTransHash] = useState("");
   const [currentTransactionStatus, setCurrentTransactionStatus] =
     useState(false);
+    const [isToastDisplayed, setToastDisplayed] = useState(false);
 
   const recieptData = useWaitForTransaction({
     hash: borrowTransHash,
@@ -164,6 +165,12 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     onPending: () => {
       setCurrentTransactionStatus(true);
       console.log("trans pending");
+      if (isToastDisplayed==false) {
+        toast.success(`You have successfully borrowed ${inputBorrowAmount} d${currentBorrowCoin}`, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        setToastDisplayed(true);
+      }
     },
     onRejected(transaction) {
       console.log("treans rejected");
@@ -175,7 +182,12 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     },
     onAcceptedOnL2(transaction) {
       setCurrentTransactionStatus(true);
-
+      if (isToastDisplayed==false) {
+        toast.success(`You have successfully borrowed ${inputBorrowAmount} d${currentBorrowCoin} `, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        setToastDisplayed(true);
+      }
       console.log("trans onAcceptedOnL2 - ", transaction);
     },
   });
@@ -197,12 +209,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     } catch (err) {
       dispatch(setTransactionStatus("failed"));
       console.log("handle borrow", err);
-      toast({
-        description: "An error occurred while handling the transaction. " + err,
-        variant: "subtle",
-        position: "bottom-right",
-        status: "error",
-        isClosable: true,
+      toast.error('Transaction cancelled', {
+        position: toast.POSITION.BOTTOM_RIGHT
       });
     }
   };
@@ -292,6 +300,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     if (percentage > 100) {
       setsliderValue2(100);
       setAmount(newValue);
+      setinputBorrowAmount(newValue);
       dispatch(setInputBorrowModalCollateralAmount(newValue));
     } else {
       percentage = Math.round(percentage);
@@ -299,6 +308,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
       } else {
         setsliderValue2(percentage);
         setAmount(newValue);
+        setinputBorrowAmount(newValue);
         dispatch(setInputBorrowModalCollateralAmount(newValue));
       }
       // dispatch((newValue));
@@ -326,6 +336,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     setRTokenAmount(0);
     setSliderValue(0);
     setsliderValue2(0);
+    setToastDisplayed(false);
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
@@ -534,7 +545,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                                           walletBalances[coin]?.dataBalanceOf
                                             ?.balance
                                         ),
-                                        tokenDecimalsMap[coin.name]
+                                        tokenDecimalsMap[coin]
                                       )
                                     )
                                   : 0
@@ -1105,6 +1116,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
                       setAmount(walletBalance);
+                      setinputBorrowAmount(walletBalance);
                       setsliderValue2(100);
                       dispatch(setInputBorrowModalBorrowAmount(walletBalance));
                     }}
@@ -1174,6 +1186,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       ans = Math.round(ans * 100) / 100;
                       dispatch(setInputBorrowModalBorrowAmount(ans));
                       setAmount(ans);
+                      setinputBorrowAmount(ans);
                     }}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}
@@ -1480,8 +1493,6 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       />,
                     ]}
                     labelErrorArray={[
-                      "Collateral received",
-                      "Processing the borrow request.",
                       <ErrorButton errorText="Transaction failed" />,
                       <ErrorButton errorText="Copy error!" />,
                     ]}

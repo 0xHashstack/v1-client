@@ -174,7 +174,6 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
         break;
     }
   };
-  const toast = useToast();
   const [depositTransHash, setDepositTransHash] = useState("");
   const [currentTransactionStatus, setCurrentTransactionStatus] =
     useState(false);
@@ -187,6 +186,12 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     onPending: () => {
       setCurrentTransactionStatus(true);
       console.log("trans pending");
+      if (isToastDisplayed==false) {
+        toast.success(`You have successfully staked ${inputStakeAmount} ${currentSelectedStakeCoin}`, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        setToastDisplayed(true);
+      }
     },
     onRejected(transaction) {
       console.log("treans rejected");
@@ -198,6 +203,12 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     onAcceptedOnL2(transaction) {
       setCurrentTransactionStatus(true);
       console.log("trans onAcceptedOnL2 - ", transaction);
+      if (isToastDisplayed==false) {
+        toast.success(`You have successfully staked ${inputStakeAmount} ${currentSelectedStakeCoin}`, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        setToastDisplayed(true);
+      }
     },
   });
   const handleStakeTransaction = async () => {
@@ -242,6 +253,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     if (percentage > 100) {
       setSliderValue(100);
       setRTokenAmount(newValue);
+      setInputStakeAmount(newValue);
       // dispatch(setInputSupplyAmount(newValue));
     } else {
       percentage = Math.round(percentage);
@@ -249,6 +261,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
       } else {
         setSliderValue(percentage);
         setRTokenAmount(newValue);
+        setInputStakeAmount(newValue);
       }
       // dispatch(setInputSupplyAmount(newValue));
     }
@@ -301,11 +314,13 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const [currentSelectedUnstakeCoin, setcurrentSelectedUnstakeCoin] =
     useState(rcoinValue);
   const [buttonId, setButtonId] = useState(0);
+  const [isToastDisplayed, setToastDisplayed] = useState(false);
   const resetStates = () => {
     setSliderValue(0);
     setSliderValue2(0);
     setRTokenAmount(0);
     setRTokenToWithdraw(0);
+    setToastDisplayed(false);
     setCurrentSelectedStakeCoin(coin ? rcoinValue : "rBTC");
     setRToken("");
     setcurrentSelectedUnstakeCoin(coin ? rcoinValue : "rBTC");
@@ -706,6 +721,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
                               setRTokenAmount(walletBalance);
+                              setInputStakeAmount(walletBalance);
                               setSliderValue(100);
                             }}
                             isDisabled={transactionStarted == true}
@@ -774,6 +790,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               ans = Math.round(ans * 100) / 100;
                               // dispatch(setInputSupplyAmount(ans))
                               setRTokenAmount(ans);
+                              setInputStakeAmount(ans);
                             }}
                             isDisabled={transactionStarted == true}
                             _disabled={{ cursor: "pointer" }}

@@ -52,6 +52,7 @@ import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import { useWaitForTransaction } from "@starknet-react/core";
+import {toast} from 'react-toastify'
 const SwapModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -143,6 +144,7 @@ const SwapModal = ({
   };
 
   const [depositTransHash, setDepositTransHash] = useState("");
+  const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [currentTransactionStatus, setCurrentTransactionStatus] =
     useState(false);
   const recieptData = useWaitForTransaction({
@@ -154,6 +156,12 @@ const SwapModal = ({
     onPending: () => {
       setCurrentTransactionStatus(true);
       console.log("trans pending");
+      if (!isToastDisplayed) {
+        toast.success(`You have successfully supplied `, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        setToastDisplayed(true);
+      }
     },
     onRejected(transaction) {
       console.log("treans rejected");
@@ -165,6 +173,12 @@ const SwapModal = ({
     onAcceptedOnL2(transaction) {
       setCurrentTransactionStatus(true);
       console.log("trans onAcceptedOnL2 - ", transaction);
+      if (!isToastDisplayed) {
+        toast.success(`You have successfully supplied `, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        setToastDisplayed(true);
+      }
     },
   });
 
@@ -177,6 +191,9 @@ const SwapModal = ({
     } catch (err) {
       console.log(err);
       dispatch(setTransactionStatus("failed"));
+      toast.error('Transaction cancelled', {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
     }
   };
 
@@ -222,6 +239,7 @@ const SwapModal = ({
     setCurrentBorrowMarketCoin(currentMarketCoin);
     setCurrentSelectedCoin("Select a market");
     setCurrentBorrowId(currentId);
+    setToastDisplayed(false);
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
     const result = userLoans.find(

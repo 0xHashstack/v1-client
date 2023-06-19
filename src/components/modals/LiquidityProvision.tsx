@@ -42,6 +42,7 @@ import TableMySwapDull from "../layouts/table/tableIcons/mySwapDull";
 import TableJediswapLogo from "../layouts/table/tableIcons/jediswapLogo";
 import useSwap from "@/Blockchain/hooks/Writes/useSwap";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
+import {toast} from 'react-toastify'
 import {
   selectInputSupplyAmount,
   setCoinSelectedSupplyModal,
@@ -224,11 +225,18 @@ const LiquidityProvisionModal = ({
   const [depositTransHash, setDepositTransHash] = useState("");
   const [currentTransactionStatus, setCurrentTransactionStatus] =
     useState(false);
+    const [isToastDisplayed, setToastDisplayed] = useState(false);
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
     onReceived: () => {
       console.log("trans received");
+      if (!isToastDisplayed) {
+        toast.success(`You have successfully supplied `, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        setToastDisplayed(true);
+      }
     },
     onPending: () => {
       setCurrentTransactionStatus(true);
@@ -244,6 +252,12 @@ const LiquidityProvisionModal = ({
     onAcceptedOnL2(transaction) {
       setCurrentTransactionStatus(true);
       console.log("trans onAcceptedOnL2 - ", transaction);
+      if (!isToastDisplayed) {
+        toast.success(`You have successfully supplied `, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        setToastDisplayed(true);
+      }
     },
   });
 
@@ -256,6 +270,9 @@ const LiquidityProvisionModal = ({
     } catch (err) {
       console.log(err);
       dispatch(setTransactionStatus("failed"));
+      toast.error('Transaction cancelled', {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
     }
   };
 
@@ -271,6 +288,7 @@ const LiquidityProvisionModal = ({
         item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
     );
     setBorrowAmount(result?.loanAmountParsed);
+    setToastDisplayed(false);
     dispatch(setTransactionStatus(""));
   };
 
