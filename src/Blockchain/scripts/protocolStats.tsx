@@ -1,13 +1,13 @@
 import { Contract, number, uint256 } from "starknet";
-import { getProvider, metricsContractAddress } from "../stark-constants";
+import { getProvider, getTokenFromAddress, metricsContractAddress } from "../stark-constants";
 import metricsAbi from "../abis/metrics_abi.json";
-import { IMarketInfo, IProtocolReserves } from "../interfaces/interfaces";
+import { IMarketInfo, IProtocolReserves, NativeToken } from "../interfaces/interfaces";
 
 function parseProtocolStats(market_infos: any): IMarketInfo[] {
   const marketStats: IMarketInfo[] = [];
   for (let i = 0; i < market_infos?.length; ++i) {
     let marketData = market_infos[i];
-    let loan: IMarketInfo = {
+    let marketInfo: IMarketInfo = {
       borrowRate: uint256.uint256ToBN(marketData?.borrow_rate).toString(),
       supplyRate: uint256.uint256ToBN(marketData?.supply_rate).toString(),
       stakingRate: uint256.uint256ToBN(marketData?.staking_rate).toString(),
@@ -33,8 +33,9 @@ function parseProtocolStats(market_infos: any): IMarketInfo[] {
         .toString(),
 
       tokenAddress: number.toHex(marketData?.token_address),
+      token: getTokenFromAddress(number.toHex(marketData?.token_address))?.name as NativeToken,
     };
-    marketStats.push(JSON.parse(JSON.stringify(loan)));
+    marketStats.push(JSON.parse(JSON.stringify(marketInfo)));
   }
   return marketStats;
 }

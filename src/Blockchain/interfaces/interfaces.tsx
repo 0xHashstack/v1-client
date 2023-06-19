@@ -75,6 +75,7 @@ export interface IMarketInfo {
   exchangeRateUnderlyingToDtoken: number;
 
   tokenAddress: String;
+  token: NativeToken;
 }
 
 export interface IProtocolReserves {
