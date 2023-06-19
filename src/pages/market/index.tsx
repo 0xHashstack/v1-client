@@ -94,7 +94,7 @@ export default function Market() {
       </Box> */}
       {/* <SuccessToast/> */}
       {/* <CopyToClipboard text="error found">
-        <div className="copy">Copy</div>
+        <Text as="u">Underline</Text>
       </CopyToClipboard> */}
     </PageCard>
   );

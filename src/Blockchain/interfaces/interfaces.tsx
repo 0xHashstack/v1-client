@@ -78,9 +78,9 @@ export interface IMarketInfo {
 }
 
 export interface IProtocolReserves {
-    totalReserves: number;
-    availableReserves: number;
-    avgAssetUtilisation: number; // weighted avg of all the utilisations of markets
+    totalReserves: number | null;
+    availableReserves: number | null;
+    avgAssetUtilisation: number | null; // weighted avg of all the utilisations of markets
 }
 
 export interface IUserStats {
