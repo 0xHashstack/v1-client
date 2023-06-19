@@ -219,7 +219,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           >
             {children}
           </Stack>
-          <Box
+          {/* <Box
             bgColor="red"
             display={toastTransactionStarted ? "block" : "none"}
           >
@@ -258,7 +258,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             >
               Supply
             </AnimatedButton>
-          </Box>
+          </Box> */}
           <Footer block={83207} />
         </>
       ) : (
