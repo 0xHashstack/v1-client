@@ -43,6 +43,8 @@ import {
 } from "@/store/slices/dropdownsSlice";
 import TableYagiLogo from "../layouts/table/tableIcons/yagiLogo";
 import ArrowUp from "@/assets/icons/arrowup";
+import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
+import { useAccount } from "@starknet-react/core";
 
 const StakeModal = ({
   borrowIDCoinMap,
@@ -67,17 +69,30 @@ const StakeModal = ({
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
   const inputAmount1 = useSelector(selectInputSupplyAmount);
-  const userLoans=useSelector(selectUserLoans);
-  const [borrowAmount, setBorrowAmount] = useState(BorrowBalance)
+  const userLoans = useSelector(selectUserLoans);
+  const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
 
   useEffect(() => {
-    const result = userLoans.find((item:any) => item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim());
-    setBorrowAmount(result?.loanAmountParsed)
+    const result = userLoans.find(
+      (item: any) =>
+        item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
+    );
+    setBorrowAmount(result?.loanAmountParsed);
     // console.log(borrowAmount)
     // Rest of your code using the 'result' variable
-    
   }, [currentId]);
 
+  const [userDeposits, setUserDeposits] = useState([]);
+  const { address } = useAccount();
+  useEffect(() => {
+    try {
+      const fetchUserDeposits = async () => {
+        const userDeposit = await getUserDeposits(address);
+        setUserDeposits(userDeposit);
+      };
+      fetchUserDeposits();
+    } catch (err) {}
+  }, []);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -141,8 +156,11 @@ const StakeModal = ({
     setCurrentBorrowId(currentId);
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
-    const result = userLoans.find((item: { loanId: any; }):any => item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim());
-    setBorrowAmount(result?.loanAmountParsed)
+    const result = userLoans.find(
+      (item: { loanId: any }): any =>
+        item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
+    );
+    setBorrowAmount(result?.loanAmountParsed);
   };
 
   useEffect(() => {
@@ -405,9 +423,15 @@ const StakeModal = ({
                               setCurrentBorrowId("ID - " + coin);
                               handleBorrowMarketCoinChange(coin);
                               const borrowIdString = String(coin);
-                              const result = userLoans.find((item: { loanId: string; }):any => item?.loanId == borrowIdString.slice(borrowIdString.indexOf("-") + 1).trim());
+                              const result = userLoans.find(
+                                (item: { loanId: string }): any =>
+                                  item?.loanId ==
+                                  borrowIdString
+                                    .slice(borrowIdString.indexOf("-") + 1)
+                                    .trim()
+                              );
                               // console.log(result)
-                              setBorrowAmount(result?.loanAmountParsed)
+                              setBorrowAmount(result?.loanAmountParsed);
                             }}
                           >
                             {coin === currentBorrowId && (
