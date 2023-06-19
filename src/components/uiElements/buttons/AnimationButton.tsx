@@ -47,6 +47,7 @@ const AnimatedButton: React.FC<Props> = ({
   // console.log(transactionStatus,"transaction from button");
 
   useEffect(() => {
+    console.log(transactionStatus)
     if (isAnimationStarted && transactionStatus == "success") {
       setProgressBarWidth(
         `${((currentStringIndex + 1) / labelSuccessArray.length) * 100 + 2}%`

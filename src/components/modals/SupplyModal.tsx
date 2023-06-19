@@ -312,6 +312,7 @@ const SupplyModal = ({
       }
     } catch (err) {
       // setTransactionFailed(true);
+
       dispatch(setTransactionStatus("failed"));
       toast.error('Transaction cancelled', {
         position: toast.POSITION.BOTTOM_RIGHT
