@@ -62,7 +62,10 @@ import { useWaitForTransaction } from "@starknet-react/core";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
-import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import {
+  tokenAddressMap,
+  tokenDecimalsMap,
+} from "@/Blockchain/utils/addressServices";
 const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [sliderValue, setSliderValue] = useState<number>(0);
@@ -95,7 +98,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
             BNtoNum(
               uint256.uint256ToBN(
                 walletBalances[coin.name]?.dataBalanceOf?.balance
-              )
+              ),
+              tokenDecimalsMap[coin.name]
             )
           )
         : 24
@@ -504,7 +508,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                                         uint256.uint256ToBN(
                                           walletBalances[coin]?.dataBalanceOf
                                             ?.balance
-                                        )
+                                        ),
+                                        tokenDecimalsMap[coin.name]
                                       )
                                     )
                                   : 0

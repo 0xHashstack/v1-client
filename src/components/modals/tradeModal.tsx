@@ -65,7 +65,7 @@ import ErrorButton from "../uiElements/buttons/ErrorButton";
 import ArrowUp from "@/assets/icons/arrowup";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
-import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import { tokenAddressMap, tokenDecimalsMap } from "@/Blockchain/utils/addressServices";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -100,7 +100,8 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
           BNtoNum(
             uint256.uint256ToBN(
               walletBalances[coin.name]?.dataBalanceOf?.balance
-            )
+            ),
+            tokenDecimalsMap[coin.name]
           )
         )
       : 0
@@ -112,7 +113,8 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
             BNtoNum(
               uint256.uint256ToBN(
                 walletBalances[coin.name]?.dataBalanceOf?.balance
-              )
+              ),
+              tokenDecimalsMap[coin.name]
             )
           )
         : 0
@@ -249,7 +251,8 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
         ? Number(
             BNtoNum(
               uint256.uint256ToBN(walletBalances[coin]?.dataBalanceOf?.balance)
-            )
+            ),
+            tokenDecimalsMap[coin.name]
           )
         : 0
     );
@@ -425,7 +428,8 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                                             uint256.uint256ToBN(
                                               walletBalances[coin]
                                                 ?.dataBalanceOf?.balance
-                                            )
+                                            ),
+                                            tokenDecimalsMap[coin.name]
                                           )
                                         )
                                       : 0

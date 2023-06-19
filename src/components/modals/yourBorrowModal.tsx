@@ -76,7 +76,10 @@ import useAddCollateral from "@/Blockchain/hooks/Writes/useAddCollateral";
 import useSwap from "../../Blockchain/hooks/Writes/useSwap";
 import useLiquidity from "@/Blockchain/hooks/Writes/useLiquidity";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
-import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import {
+  tokenAddressMap,
+  tokenDecimalsMap,
+} from "@/Blockchain/utils/addressServices";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import { useWaitForTransaction } from "@starknet-react/core";
@@ -253,7 +256,8 @@ const YourBorrowModal = ({
           BNtoNum(
             uint256.uint256ToBN(
               walletBalances[collateralAsset]?.dataBalanceOf?.balance
-            )
+            ),
+            tokenDecimalsMap[currentSelectedWithdrawlCoin]
           )
         )
       : 0
@@ -265,13 +269,18 @@ const YourBorrowModal = ({
             BNtoNum(
               uint256.uint256ToBN(
                 walletBalances[collateralAsset]?.dataBalanceOf?.balance
-              )
+              ),
+              tokenDecimalsMap[currentSelectedWithdrawlCoin]
             )
           )
         : 0
     );
     // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
-  }, [walletBalances[collateralAsset]?.statusBalanceOf, collateralAsset,currentBorrowId2]);
+  }, [
+    walletBalances[collateralAsset]?.statusBalanceOf,
+    collateralAsset,
+    currentBorrowId2,
+  ]);
 
   useEffect(() => {
     if (loan) {
@@ -292,24 +301,26 @@ const YourBorrowModal = ({
     setLiquidityLoanId(
       currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
     );
-    
-  },[currentBorrowId1])
+  }, [currentBorrowId1]);
   // console.log(userLoans);
 
-  useEffect(()=>{
+  useEffect(() => {
     setLoanId(currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim());
     // console.log(currentBorrowMarketCoin2);
-      const result = userLoans.find(
-        (item: any) =>
-          item?.loanId == currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim()
-      );
-      setCollateralAsset(        result?.collateralMarket[0] == "r"
-      ? result?.collateralMarket.slice(1)
-      : result?.collateralMarket);
-      setRToken(result?.collateralMarket);
+    const result = userLoans.find(
+      (item: any) =>
+        item?.loanId ==
+        currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim()
+    );
+    setCollateralAsset(
+      result?.collateralMarket[0] == "r"
+        ? result?.collateralMarket.slice(1)
+        : result?.collateralMarket
+    );
+    setRToken(result?.collateralMarket);
 
     console.log(rToken);
-  }, [currentBorrowId2,currentBorrowMarketCoin2]);
+  }, [currentBorrowId2, currentBorrowMarketCoin2]);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
@@ -2675,8 +2686,10 @@ const YourBorrowModal = ({
                                       handleBorrowMarketCoinChange2(coin);
                                       setCollateralAsset(
                                         currentBorrowMarketCoin2.slice(1)
-                                      )
-                                      setRToken(currentBorrowMarketCoin2.slice(1))
+                                      );
+                                      setRToken(
+                                        currentBorrowMarketCoin2.slice(1)
+                                      );
                                     }}
                                   >
                                     {"ID - " + coin === currentBorrowId2 && (
@@ -3010,7 +3023,7 @@ const YourBorrowModal = ({
                         mt="-0.5rem"
                       >
                         <Text ml="1rem" color="white">
-                          {collateralBalance}  
+                          {collateralBalance}
                         </Text>
                       </Box>
                       <Text color="#8B949E" display="flex" alignItems="center">

@@ -26,7 +26,7 @@ import {
   setAssetWalletBalance,
 } from "@/store/slices/userAccountSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
-import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import { tokenAddressMap, tokenDecimalsMap } from "@/Blockchain/utils/addressServices";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "@starknet-react/core";
 export interface ICoin {
@@ -294,7 +294,8 @@ const DashboardLeft = ({
                                 uint256.uint256ToBN(
                                   assetBalance[coin.name]?.dataBalanceOf
                                     ?.balance
-                                )
+                                ),
+                                tokenDecimalsMap[coin.name]
                               )
                             )
                           )}

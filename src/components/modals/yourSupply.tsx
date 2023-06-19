@@ -79,7 +79,10 @@ import { useWaitForTransaction } from "@starknet-react/core";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
-import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import {
+  tokenAddressMap,
+  tokenDecimalsMap,
+} from "@/Blockchain/utils/addressServices";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
@@ -118,7 +121,8 @@ const YourSupplyModal = ({
           BNtoNum(
             uint256.uint256ToBN(
               walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf?.balance
-            )
+            ),
+            tokenDecimalsMap[currentSelectedSupplyCoin]
           )
         )
       : 0
@@ -130,7 +134,8 @@ const YourSupplyModal = ({
             uint256.uint256ToBN(
               walletBalances[currentSelectedWithdrawlCoin]?.dataBalanceOf
                 ?.balance
-            )
+            ),
+            tokenDecimalsMap[currentSelectedWithdrawlCoin]
           )
         )
       : 0
@@ -144,7 +149,8 @@ const YourSupplyModal = ({
               uint256.uint256ToBN(
                 walletBalances[currentSelectedSupplyCoin]?.dataBalanceOf
                   ?.balance
-              )
+              ),
+              tokenDecimalsMap[currentSelectedSupplyCoin]
             )
           )
         : 0
@@ -163,7 +169,8 @@ const YourSupplyModal = ({
               uint256.uint256ToBN(
                 walletBalances[currentSelectedWithdrawlCoin]?.dataBalanceOf
                   ?.balance
-              )
+              ),
+              tokenDecimalsMap[currentSelectedWithdrawlCoin]
             )
           )
         : 0

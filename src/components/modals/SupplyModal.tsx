@@ -77,8 +77,11 @@ import CancelSuccessToast from "@/assets/icons/cancelSuccessToast";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
-import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
-import 'react-toastify/dist/ReactToastify.css';
+import {
+  tokenAddressMap,
+  tokenDecimalsMap,
+} from "@/Blockchain/utils/addressServices";
+import "react-toastify/dist/ReactToastify.css";
 const SupplyModal = ({
   buttonText,
   coin,
@@ -156,7 +159,8 @@ const SupplyModal = ({
           BNtoNum(
             uint256.uint256ToBN(
               walletBalances[coin.name]?.dataBalanceOf?.balance
-            )
+            ),
+            tokenDecimalsMap[coin.name]
           )
         )
       : 0
@@ -168,7 +172,8 @@ const SupplyModal = ({
             BNtoNum(
               uint256.uint256ToBN(
                 walletBalances[coin.name]?.dataBalanceOf?.balance
-              )
+              ),
+              tokenDecimalsMap[coin.name]
             )
           )
         : 0
@@ -218,7 +223,7 @@ const SupplyModal = ({
     onPending: () => {
       dispatch(setCurrentTransactionStatus("Accepted"));
       toast.success(`You successfully supplied ${depositAmount} {asset}`, {
-        position: toast.POSITION.BOTTOM_RIGHT
+        position: toast.POSITION.BOTTOM_RIGHT,
       });
       console.log("trans pending");
     },
@@ -237,11 +242,11 @@ const SupplyModal = ({
   // const toast = useToast();
   const handleTransaction = async () => {
     try {
-      if(isChecked){
-        const stakeAndSupply=await writeAsyncDepositStake();
+      if (isChecked) {
+        const stakeAndSupply = await writeAsyncDepositStake();
         console.log(stakeAndSupply);
         dispatch(setTransactionStatus("success"));
-      }else{
+      } else {
         const deposit = await writeAsyncDeposit();
         if (deposit?.transaction_hash) {
           console.log("trans transaction hash created");
@@ -265,11 +270,10 @@ const SupplyModal = ({
         // }
         // console.log("Status transaction", deposit);
         console.log(isSuccessDeposit, "success ?");
-
       }
     } catch (err) {
       toast.error(`Transaction cancelled ${err}`, {
-        position: toast.POSITION.BOTTOM_RIGHT
+        position: toast.POSITION.BOTTOM_RIGHT,
       });
       // setTransactionFailed(true);
       dispatch(setTransactionStatus("failed"));
@@ -370,7 +374,8 @@ const SupplyModal = ({
             BNtoNum(
               uint256.uint256ToBN(
                 walletBalances[coin.name]?.dataBalanceOf?.balance
-              )
+              ),
+              tokenDecimalsMap[coin.name]
             )
           )
         : 0
@@ -531,7 +536,8 @@ const SupplyModal = ({
                                         uint256.uint256ToBN(
                                           walletBalances[coin]?.dataBalanceOf
                                             ?.balance
-                                        )
+                                        ),
+                                        tokenDecimalsMap[coin]
                                       )
                                     )
                                   : 0
@@ -865,8 +871,9 @@ const SupplyModal = ({
                     iconColor: "blue.400",
                     bg: "blue",
                   }}
-                  onChange={()=>{setStakeAndSupply(!stakeAndSupply);
-                    console.log(stakeAndSupply)
+                  onChange={() => {
+                    setStakeAndSupply(!stakeAndSupply);
+                    console.log(stakeAndSupply);
                     setIsChecked(!isChecked);
                   }}
                 />
