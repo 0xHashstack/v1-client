@@ -16,6 +16,7 @@ const MarketDashboard = () => {
   // console.log(account,"Market Page")
   useEffect(() => {
     fetchOraclePrices();
+    fetchProtocolStats();
     // fetchProtocolReserves();
     // fetchUserReserves();
     // fetchUserLoans();
@@ -51,12 +52,22 @@ const MarketDashboard = () => {
   const fetchOraclePrices = async () => {
     try {
       const prices = await getOraclePrices();
-      // console.log("prices", prices);
+      console.log("oracleprices", prices);
       setOraclePrices(prices);
     } catch (error) {
       console.error("Error fetching Oracle prices:", error);
     }
   };
+
+  const fetchProtocolStats = async () => {
+    try {
+      const stats = await getProtocolStats();
+      console.log("fetchprotocolstats", stats);
+    } catch (error) {
+      console.log("error on getting protocol stats");
+    }
+  };
+
   return (
     <HStack
       w="95%"
