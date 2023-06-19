@@ -226,7 +226,7 @@ const SupplyModal = ({
       setCurrentTransactionStatus(true);
       console.log("trans pending");
       if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied ${depositAmount} ${currentSelectedCoin}`, {
+        toast.success(`You have successfully supplied ${inputAmount} ${currentSelectedCoin}`, {
           position: toast.POSITION.BOTTOM_RIGHT
         });
         setToastDisplayed(true);
@@ -242,7 +242,7 @@ const SupplyModal = ({
     onAcceptedOnL2(transaction) {
       setCurrentTransactionStatus(true);
       if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied ${depositAmount} ${currentSelectedCoin}`, {
+        toast.success(`You have successfully supplied ${inputAmount} ${currentSelectedCoin}`, {
           position: toast.POSITION.BOTTOM_RIGHT
         });
         setToastDisplayed(true);
@@ -349,11 +349,13 @@ const SupplyModal = ({
     var percentage = (newValue * 100) / walletBalance;
     if (walletBalance == 0) {
       setDepositAmount(0);
+      setinputAmount(0);
     }
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue(100);
       setDepositAmount(newValue);
+      setinputAmount(newValue);
       dispatch(setInputSupplyAmount(newValue));
     } else {
       percentage = Math.round(percentage);
@@ -361,6 +363,7 @@ const SupplyModal = ({
       } else {
         setSliderValue(percentage);
         setDepositAmount(newValue);
+        setinputAmount(newValue);
         dispatch(setInputSupplyAmount(newValue));
       }
     }
@@ -370,6 +373,7 @@ const SupplyModal = ({
 
   const resetStates = () => {
     setDepositAmount(0);
+    setinputAmount(0);
     setSliderValue(0);
     setAsset(coin ? coin.name : "BTC");
     setCurrentSelectedCoin(coin ? coin.name : "BTC");
@@ -393,6 +397,7 @@ const SupplyModal = ({
 
   useEffect(() => {
     setDepositAmount(0);
+    setinputAmount(0);
     setSliderValue(0);
   }, [currentSelectedCoin]);
 
@@ -742,6 +747,7 @@ const SupplyModal = ({
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
                       setDepositAmount(walletBalance);
+                      setinputAmount(walletBalance);
                       setSliderValue(100);
                       dispatch(setInputSupplyAmount(walletBalance));
                     }}
@@ -833,6 +839,7 @@ const SupplyModal = ({
                       // console.log(ans)
                       // dispatch(setInputSupplyAmount(ans));
                       setDepositAmount(ans);
+                      setinputAmount(ans);
                     }}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}
