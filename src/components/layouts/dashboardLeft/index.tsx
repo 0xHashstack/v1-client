@@ -55,6 +55,7 @@ const DashboardLeft = ({
   width: string;
   oraclePrices: any;
   totalSupplies: any;
+  supplyAPRs: any;
   // columnItems: Array<Array<string>>;
   // gap: string;
   // rowItems: any;
@@ -145,7 +146,7 @@ const DashboardLeft = ({
     ETH: any;
     DAI: any;
   }
-  const assetBalance: assetB = {
+  const assetBalance: any = {
     USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
     USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
     BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),

@@ -42,6 +42,7 @@ export interface ILoan {
   loanAmount: number; // dToken amount
   currentLoanAmount: number; // native tokens
   collateralAmount: number; // rToken amount
+  collateralAmountParsed: number;
 
   createdAt: Date;
   state: string | null;
@@ -146,7 +147,7 @@ const BorrowDashboard = ({
   // console.log(Borrows,"Borrow loans in borrow dashboard")
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
-  upper_bound = Math.min(Borrows?.length - 1, upper_bound);
+  upper_bound = Borrows ? Math.min(Borrows?.length - 1, upper_bound) : 0;
   const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
   const [borrowIds, setBorrowIds] = useState([]);
   const [borrowAmount, setBorrowAmount] = useState<number>(0);
@@ -162,14 +163,18 @@ const BorrowDashboard = ({
     let temp1: any = [];
     let temp2: any = [];
 
-    for (let i = 0; i < Borrows?.length; i++) {
-      temp1.push({
-        id: Borrows[i].loanId,
-        name: Borrows[i].loanMarket,
-        collateralBalance:
-          Borrows[i].collateralAmountParsed + " " + Borrows[i].collateralMarket,
-      });
-      temp2.push(Borrows[i].loanId);
+    for (let i = 0; i < (Borrows ? Borrows?.length : 0); i++) {
+      if (Borrows) {
+        temp1.push({
+          id: Borrows[i].loanId,
+          name: Borrows[i].loanMarket,
+          collateralBalance:
+            Borrows[i].collateralAmountParsed +
+            " " +
+            Borrows[i].collateralMarket,
+        });
+        temp2.push(Borrows[i].loanId);
+      }
     }
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);
@@ -213,7 +218,7 @@ const BorrowDashboard = ({
         /> */}
       </Box>
     </>
-  ) : upper_bound >= lower_bound && Borrows?.length > 0 ? (
+  ) : upper_bound >= lower_bound && Borrows && Borrows?.length > 0 ? (
     <TableContainer
       bg="#101216"
       border="1px"

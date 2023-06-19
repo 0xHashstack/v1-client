@@ -2,16 +2,16 @@ import { ItokenAddressMap, ItokenDecimalsMap } from "../interfaces/interfaces";
 import { contractsEnv } from "../stark-constants";
 
 export const getTokenFromName = (name: string) => {
-  return contractsEnv.TOKENS.find((Token) => Token.name == name)
+  return contractsEnv.TOKENS.find((Token) => Token.name == name);
 };
 
 export const getRTokenFromName = (name: string) => {
-  return contractsEnv.rTOKENS.find((rToken) => rToken.name == name)
-}
+  return contractsEnv.rTOKENS.find((rToken) => rToken.name == name);
+};
 
 export const getDTokenFromName = (name: string) => {
-  return contractsEnv.dTOKENS.find((dToken) => dToken.name == name)
-}
+  return contractsEnv.dTOKENS.find((dToken) => dToken.name == name);
+};
 
 export const tokenAddressMap: ItokenAddressMap = {
   BTC: getTokenFromName("BTC")?.address,
@@ -52,4 +52,3 @@ export const tokenDecimalsMap: ItokenDecimalsMap = {
   dETH: getDTokenFromName("dETH")?.decimals,
   dDAI: getDTokenFromName("dDAI")?.decimals,
 };
-

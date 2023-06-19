@@ -38,6 +38,9 @@ const DashboardRight = ({
 }: {
   width: string;
   oraclePrices: any;
+  utilization: any;
+  totalBorrows: any;
+  borrowAPRs: any;
   // gap: string;
   // columnItems: Array<Array<string>>;
   // rowItems: any;
