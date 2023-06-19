@@ -271,11 +271,7 @@ const DashboardLeft = ({
                       <Text fontSize="14px" fontWeight="400">
                         {coin.name}
                       </Text>
-                      {coin.name == "USDC" ? (
-                        <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
-                          Wallet Bal. N/A
-                        </Text>
-                      ) : assetBalance[coin.name]?.statusBalanceOf !=
+                      { assetBalance[coin.name]?.statusBalanceOf !=
                         "success" ? (
                         <Skeleton
                           width="4rem"
@@ -287,7 +283,7 @@ const DashboardLeft = ({
                       ) : (
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
                           Wallet Bal. {/* {numberFormatter( */}
-                          {Math.floor(
+                          {
                             Number(
                               // BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
                               BNtoNum(
@@ -298,7 +294,7 @@ const DashboardLeft = ({
                                 tokenDecimalsMap[coin.name]
                               )
                             )
-                          )}
+                          }
                           {/* )} */}
                         </Text>
                       )}
