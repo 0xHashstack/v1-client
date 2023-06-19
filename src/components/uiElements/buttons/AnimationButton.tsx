@@ -5,8 +5,8 @@ import SuccessButton from "./SuccessButton";
 import {
   selectCollateralCoinSelectedBorrowModal,
   selectTransactionStatus,
-  setCurrentTransactionStatus,
-  selectCurrentTransactionStatus,
+  // setCurrentTransactionStatus,
+  // selectCurrentTransactionStatus,
   setToastTransactionStarted,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +21,8 @@ const AnimatedButton: React.FC<Props> = ({
   labelErrorArray,
   children,
   className,
+  currentTransactionStatus,
+  setCurrentTransactionStatus,
   ...rest
 }) => {
   const classes = [];
@@ -41,7 +43,7 @@ const AnimatedButton: React.FC<Props> = ({
   const [progressBarWidth, setProgressBarWidth] = useState("0%");
   const [isAnimationStarted, setIsAnimationStarted] = useState(false);
   const transactionStatus = useSelector(selectTransactionStatus);
-  const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
+  // const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
   // console.log(transactionStatus,"transaction from button");
 
   useEffect(() => {
@@ -119,11 +121,12 @@ const AnimatedButton: React.FC<Props> = ({
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
           const nextIndex = prevIndex + 1;
-          if (nextIndex === labelSuccessArray?.length - 3) {
+          if (nextIndex === labelSuccessArray?.length - 2) {
             if (!currentTransactionStatus) return prevIndex;
           }
           if (nextIndex === labelSuccessArray.length) {
             setIsAnimationStarted(false);
+            setCurrentTransactionStatus(false);
             return prevIndex; // Reset currentStringIndex to -1 after the animation completes
           }
           // return nextIndex % labelArray.length;
@@ -155,6 +158,7 @@ const AnimatedButton: React.FC<Props> = ({
   return (
     <Button
       // onClick={handleClick}
+
       // w="35rem"
       // h="2.5rem"
       borderRadius="8px"
@@ -227,7 +231,7 @@ const AnimatedButton: React.FC<Props> = ({
             >
               {currentStringIndex === -1
                 ? children
-                : transactionStatus == "success"
+                :  transactionStatus == "success"
                 ? labelSuccessArray[currentStringIndex]
                 : labelErrorArray[currentStringIndex]}
               {/* {labelArray[currentStringIndex]} */}

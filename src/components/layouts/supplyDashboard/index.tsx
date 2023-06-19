@@ -21,6 +21,8 @@ import Image from "next/image";
 import BorrowModal from "@/components/modals/borrowModal";
 import SupplyModal from "@/components/modals/SupplyModal";
 import YourSupplyModal from "@/components/modals/yourSupply";
+import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
+import { useAccount } from "@starknet-react/core";
 
 export interface ICoin {
   name: string;
@@ -117,6 +119,18 @@ const SupplyDashboard = ({
       }
     });
     setSupplyMarkets(temp);
+  }, []);
+  const { address } = useAccount();
+  useEffect(() => {
+    try {
+      const supply = async () => {
+        const userSupply = await getUserDeposits(address || "");
+        console.log("userDeposits", userSupply);
+      };
+      // supply();
+    } catch (err) {
+      console.log("userDeposits", err);
+    }
   }, []);
 
   return upper_bound >= lower_bound && Coins.length > 0 ? (

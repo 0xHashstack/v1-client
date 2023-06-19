@@ -151,9 +151,31 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   }, [coin]);
 
   const toast = useToast();
+  const [borrowTransHash, setBorrowTransHash] = useState("");
+
   const recieptData = useWaitForTransaction({
-    hash: transLoanRequestHash,
+    hash: borrowTransHash,
     watch: true,
+    onReceived: () => {
+      console.log("trans received");
+    },
+    onPending: () => {
+      setCurrentTransactionStatus(true);
+      console.log("trans pending");
+    },
+    onRejected(transaction) {
+      console.log("treans rejected");
+    },
+    onAcceptedOnL1: () => {
+      setCurrentTransactionStatus(true);
+
+      console.log("trans onAcceptedOnL1");
+    },
+    onAcceptedOnL2(transaction) {
+      setCurrentTransactionStatus(true);
+
+      console.log("trans onAcceptedOnL2 - ", transaction);
+    },
   });
 
   const handleBorrow = async () => {
@@ -162,12 +184,13 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
       if (currentCollateralCoin[0] === "r") {
         const borrow = await writeAsyncLoanRequestrToken();
         setIsLoanRequestHash(borrow?.transaction_hash);
-
+        setBorrowTransHash(borrow?.transaction_hash);
         dispatch(setTransactionStatus("success"));
       } else {
         const borrow = await writeAsyncLoanRequest();
         setIsLoanRequestHash(borrow?.transaction_hash);
         dispatch(setTransactionStatus("success"));
+        setBorrowTransHash(borrow?.transaction_hash);
       }
     } catch (err) {
       dispatch(setTransactionStatus("failed"));
