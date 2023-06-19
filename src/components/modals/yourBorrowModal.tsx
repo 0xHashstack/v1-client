@@ -61,7 +61,7 @@ import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
 import {
   selectUserLoans,
   selectWalletBalance,
-  setCurrentTransactionStatus,
+  // setCurrentTransactionStatus,
   setInputYourBorrowModalRepayAmount,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
@@ -445,6 +445,10 @@ const YourBorrowModal = ({
       dispatch(setTransactionStatus("failed"));
     }
   };
+
+  const [currentTransactionStatus, setCurrentTransactionStatus] =
+    useState(false);
+
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
@@ -452,21 +456,18 @@ const YourBorrowModal = ({
       console.log("trans received");
     },
     onPending: () => {
-      dispatch(setCurrentTransactionStatus("Accepted"));
-      // toast.success(`You successfully supplied ${depositAmount} {asset}`, {
-      //   position: toast.POSITION.BOTTOM_RIGHT,
-      // });
+      setCurrentTransactionStatus(true);
       console.log("trans pending");
     },
     onRejected(transaction) {
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
-      dispatch(setCurrentTransactionStatus("Accepted"));
+      setCurrentTransactionStatus(true);
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction) {
-      dispatch(setCurrentTransactionStatus("Accepted"));
+      setCurrentTransactionStatus(true);
       console.log("trans onAcceptedOnL2 - ", transaction);
     },
   });
@@ -2448,6 +2449,10 @@ const YourBorrowModal = ({
                               <ErrorButton errorText="Transaction failed" />,
                               <ErrorButton errorText="Copy error!" />,
                             ]}
+                            currentTransactionStatus={currentTransactionStatus}
+                            setCurrentTransactionStatus={
+                              setCurrentTransactionStatus
+                            }
                           >
                             Spend
                           </AnimatedButton>
@@ -2506,6 +2511,10 @@ const YourBorrowModal = ({
                               <ErrorButton errorText="Transaction failed" />,
                               <ErrorButton errorText="Copy error!" />,
                             ]}
+                            currentTransactionStatus={currentTransactionStatus}
+                            setCurrentTransactionStatus={
+                              setCurrentTransactionStatus
+                            }
                           >
                             Repay borrow
                           </AnimatedButton>
@@ -2567,6 +2576,10 @@ const YourBorrowModal = ({
                             ]}
                             _disabled={{ bgColor: "white", color: "black" }}
                             isDisabled={transactionStarted == true}
+                            currentTransactionStatus={currentTransactionStatus}
+                            setCurrentTransactionStatus={
+                              setCurrentTransactionStatus
+                            }
                           >
                             Zero repay
                           </AnimatedButton>
@@ -3605,6 +3618,10 @@ const YourBorrowModal = ({
                             <ErrorButton errorText="Transaction failed" />,
                             <ErrorButton errorText="Copy error!" />,
                           ]}
+                          currentTransactionStatus={currentTransactionStatus}
+                          setCurrentTransactionStatus={
+                            setCurrentTransactionStatus
+                          }
                         >
                           Add Collateral
                         </AnimatedButton>

@@ -226,9 +226,12 @@ const SupplyModal = ({
       setCurrentTransactionStatus(true);
       console.log("trans pending");
       if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied ${depositAmount} ${currentSelectedCoin}`, {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
+        toast.success(
+          `You have successfully supplied ${depositAmount} ${currentSelectedCoin}`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
         setToastDisplayed(true);
       }
     },
@@ -242,9 +245,12 @@ const SupplyModal = ({
     onAcceptedOnL2(transaction) {
       setCurrentTransactionStatus(true);
       if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied ${depositAmount} ${currentSelectedCoin}`, {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
+        toast.success(
+          `You have successfully supplied ${depositAmount} ${currentSelectedCoin}`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
         setToastDisplayed(true);
       }
       console.log("trans onAcceptedOnL2 - ", transaction);
