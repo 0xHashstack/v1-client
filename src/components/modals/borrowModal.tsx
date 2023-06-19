@@ -920,7 +920,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       </Box>
                     </Box>
                   )}
-                {currentCollateralCoin != "rBTC" &&
+                {/* {currentCollateralCoin != "rBTC" &&
                   currentCollateralCoin != "rUSDT" && (
                     <Box display="flex" gap="2">
                       <Checkbox
@@ -948,7 +948,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                         woudn&apos;t stake rTokens
                       </Text>
                     </Box>
-                  )}
+                  )} */}
               </Box>
             </Box>
 

@@ -26,9 +26,9 @@ const StatsBoard = () => {
       const fetchProtocolStats = async () => {
         const reserves = await getProtocolReserves();
         console.log("protocol reserves", reserves);
-        // setProtocolReserves(reserves);
+        setProtocolReserves(reserves);
       };
-      // fetchProtocolStats();
+      fetchProtocolStats();
     } catch (err) {
       console.log("error fetching protocol reserves ", err);
     }
