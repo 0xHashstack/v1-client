@@ -2,7 +2,7 @@ import { Contract, number, uint256 } from "starknet";
 import { diamondAddress, getDTokenFromAddress, getProvider, getRTokenFromAddress, getTokenFromAddress } from "../stark-constants";
 import routerAbi from "@/Blockchain/abis/router_abi.json";
 import { BNtoNum, etherToWeiBN, weiToEtherNumber } from "../utils/utils";
-import { ILoan, Token } from "../interfaces/interfaces";
+import { ILoan, NativeToken, RToken, Token } from "../interfaces/interfaces";
 
 function parseLoansData(
   loansData: any,
@@ -16,9 +16,9 @@ function parseLoansData(
       loanId: Number(BNtoNum(loanData?.loan_id, 0)),
       borrower: number.toHex(loanData?.borrower),
 
-      loanMarket: getDTokenFromAddress(number.toHex(loanData?.market))?.name,
+      loanMarket: getDTokenFromAddress(number.toHex(loanData?.market))?.name as any,
       loanMarketAddress: number.toHex(loanData?.market),
-      underlyingMarket: getTokenFromAddress(getDTokenFromAddress(number.toHex(loanData?.market))?.underlying_asset || "")?.name || "",
+      underlyingMarket: getTokenFromAddress(getDTokenFromAddress(number.toHex(loanData?.market))?.underlying_asset || "")?.name as NativeToken,
       underlyingMarketAddress: getDTokenFromAddress(number.toHex(loanData?.market))?.underlying_asset,
       currentLoanMarket: getTokenFromAddress(
         number.toHex(loanData?.current_market)
@@ -26,7 +26,7 @@ function parseLoansData(
       currentLoanMarketAddress: number.toHex(loanData?.current_market),
       collateralMarket: getRTokenFromAddress(
         number.toHex(collateralData?.collateral_token)
-      )?.name, //  Collateral Market
+      )?.name as RToken, //  Collateral Market
       collateralMarketAddress: number.toHex(collateralData?.collateral_token),
 
       loanAmount: uint256.uint256ToBN(loanData?.amount).toString(), //  Amount

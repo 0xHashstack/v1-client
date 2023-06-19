@@ -124,7 +124,7 @@ export const borrowInterestAccrued = (asset: any) => {
 
 
 export const etherToWeiBN = (amount: number, tokenName: Token) => {
-  if(!amount) {
+  if(!amount || amount === undefined || amount === null) {
     return 0;
   }
   const decimals = tokenDecimalsMap[tokenName];
@@ -133,7 +133,8 @@ export const etherToWeiBN = (amount: number, tokenName: Token) => {
   }
   const factor = 1000_000;
   const amountBN = number
-    .toBN(amount * factor)
+    .toBN(amount)
+    .mul(number.toBN(factor))
     .mul(number.toBN(10).pow(number.toBN(decimals)))
     .div(number.toBN(factor));
   return amountBN;
