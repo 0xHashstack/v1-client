@@ -2,7 +2,7 @@ import { Contract, number, uint256 } from "starknet";
 import { getProvider, metricsContractAddress } from "../stark-constants";
 import metricsAbi from "../abis/metrics_abi.json";
 import { IDeposit } from "../interfaces/interfaces";
-
+ 
 function parseDeposits(
   deposits: any,
 ): IDeposit[] {
@@ -16,6 +16,7 @@ function parseDeposits(
     };
     parsedDeposits.push(JSON.parse(JSON.stringify(deposit)));
   }
+  console.log("all deposits", parsedDeposits)
   return parsedDeposits;
 }
 
