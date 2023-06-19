@@ -42,6 +42,7 @@ import TableMySwapDull from "../layouts/table/tableIcons/mySwapDull";
 import TableJediswapLogo from "../layouts/table/tableIcons/jediswapLogo";
 import useSwap from "@/Blockchain/hooks/Writes/useSwap";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
+import {toast} from 'react-toastify'
 import {
   selectInputSupplyAmount,
   setCoinSelectedSupplyModal,
@@ -59,6 +60,7 @@ import {
 } from "@/store/slices/dropdownsSlice";
 import ArrowUp from "@/assets/icons/arrowup";
 import useLiquidity from "@/Blockchain/hooks/Writes/useLiquidity";
+import { useWaitForTransaction } from "@starknet-react/core";
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -220,14 +222,57 @@ const LiquidityProvisionModal = ({
     }
   };
 
+  const [depositTransHash, setDepositTransHash] = useState("");
+  const [currentTransactionStatus, setCurrentTransactionStatus] =
+    useState(false);
+    const [isToastDisplayed, setToastDisplayed] = useState(false);
+  const recieptData = useWaitForTransaction({
+    hash: depositTransHash,
+    watch: true,
+    onReceived: () => {
+      console.log("trans received");
+      if (!isToastDisplayed) {
+        toast.success(`You have successfully supplied `, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        setToastDisplayed(true);
+      }
+    },
+    onPending: () => {
+      setCurrentTransactionStatus(true);
+      console.log("trans pending");
+    },
+    onRejected(transaction) {
+      console.log("treans rejected");
+    },
+    onAcceptedOnL1: () => {
+      setCurrentTransactionStatus(true);
+      console.log("trans onAcceptedOnL1");
+    },
+    onAcceptedOnL2(transaction) {
+      setCurrentTransactionStatus(true);
+      console.log("trans onAcceptedOnL2 - ", transaction);
+      if (!isToastDisplayed) {
+        toast.success(`You have successfully supplied `, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        setToastDisplayed(true);
+      }
+    },
+  });
+
   const handleLiquidity = async () => {
     try {
       const liquidity = await writeAsyncJediSwap_addLiquidity();
       console.log(liquidity);
+      setDepositTransHash(liquidity?.transaction_hash);
       dispatch(setTransactionStatus("success"));
     } catch (err) {
       console.log(err);
       dispatch(setTransactionStatus("failed"));
+      toast.error('Transaction cancelled', {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
     }
   };
 
@@ -243,6 +288,7 @@ const LiquidityProvisionModal = ({
         item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
     );
     setBorrowAmount(result?.loanAmountParsed);
+    setToastDisplayed(false);
     dispatch(setTransactionStatus(""));
   };
 
@@ -1006,8 +1052,9 @@ const LiquidityProvisionModal = ({
                     labelErrorArray={[
                       <ErrorButton errorText="Transaction failed" />,
                       <ErrorButton errorText="Copy error!" />,
-
                     ]}
+                    currentTransactionStatus={currentTransactionStatus}
+                    setCurrentTransactionStatus={setCurrentTransactionStatus}
                   >
                     Spend Borrow
                   </AnimatedButton>

@@ -74,7 +74,6 @@ import SuccessTick from "@/assets/icons/successTick";
 import CancelIcon from "@/assets/icons/cancelIcon";
 import CancelSuccessToast from "@/assets/icons/cancelSuccessToast";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
-import { Toast } from "react-toastify/dist/components";
 import {
   tokenAddressMap,
   tokenDecimalsMap,
@@ -257,6 +256,41 @@ const SupplyModal = ({
     },
   });
 
+  // const recieptData2 = useWaitForTransaction({
+  //   hash: depositTransHash,
+  //   watch: true,
+  //   onReceived: () => {
+  //     console.log("trans received");
+  //   },
+  //   onPending: () => {
+  //     setCurrentTransactionStatus(true);
+  //     console.log("trans pending");
+  //     if (isToastDisplayed==false) {
+  //       toast.success(`You have successfully supplied ${inputAmount} ${currentSelectedCoin}`, {
+  //         position: toast.POSITION.BOTTOM_RIGHT
+  //       });
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  //   onRejected(transaction) {
+  //     console.log("treans rejected");
+  //   },
+  //   onAcceptedOnL1: () => {
+  //     setCurrentTransactionStatus(true);
+  //     console.log("trans onAcceptedOnL1");
+  //   },
+  //   onAcceptedOnL2(transaction) {
+  //     setCurrentTransactionStatus(true);
+  //     if (!isToastDisplayed) {
+  //       toast.success(`You have successfully supplied ${inputAmount} ${currentSelectedCoin}`, {
+  //         position: toast.POSITION.BOTTOM_RIGHT
+  //       });
+  //       setToastDisplayed(true);
+  //     }
+  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //   },
+  // });
+
   const handleTransaction = async () => {
     try {
       if (ischecked) {
@@ -285,6 +319,9 @@ const SupplyModal = ({
     } catch (err) {
       // setTransactionFailed(true);
       dispatch(setTransactionStatus("failed"));
+      toast.error('Transaction cancelled', {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
       console.log("supply", err);
       // toast({
       //   description: "An error occurred while handling the transaction. " + err,
@@ -390,10 +427,11 @@ const SupplyModal = ({
 
   const resetStates = () => {
     setDepositAmount(0);
-    setinputAmount(0);
     setSliderValue(0);
+    setToastDisplayed(false);
     setAsset(coin ? coin.name : "BTC");
     setCurrentSelectedCoin(coin ? coin.name : "BTC");
+    setIsChecked(true);
     setwalletBalance(
       walletBalances[coin.name]?.statusBalanceOf === "success"
         ? Number(

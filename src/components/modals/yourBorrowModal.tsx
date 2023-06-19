@@ -83,6 +83,7 @@ import {
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import { useWaitForTransaction } from "@starknet-react/core";
+import { toast } from "react-toastify";
 const YourBorrowModal = ({
   borrowIDCoinMap,
   currentID,
@@ -397,6 +398,45 @@ const YourBorrowModal = ({
   // console.log(currentDapp)
   // console.log(currentPool.split('/')[0])
   const [depositTransHash, setDepositTransHash] = useState("");
+
+  const [currentTransactionStatus, setCurrentTransactionStatus] =
+    useState(false);
+    const [isToastDisplayed, setToastDisplayed] = useState(false);
+  const recieptData = useWaitForTransaction({
+    hash: depositTransHash,
+    watch: true,
+    onReceived: () => {
+      console.log("trans received");
+    },
+    onPending: () => {
+      setCurrentTransactionStatus(true);
+      console.log("trans pending");
+      if (!isToastDisplayed) {
+        toast.success(`You have successfully supplied `, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        setToastDisplayed(true);
+      }
+    },
+    onRejected(transaction) {
+      console.log("treans rejected");
+    },
+    onAcceptedOnL1: () => {
+      setCurrentTransactionStatus(true);
+      console.log("trans onAcceptedOnL1");
+    },
+    onAcceptedOnL2(transaction) {
+      setCurrentTransactionStatus(true);
+      console.log("trans onAcceptedOnL2 - ", transaction);
+      if (!isToastDisplayed) {
+        toast.success(`You have successfully supplied `, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        setToastDisplayed(true);
+      }
+    },
+  });
+
   const handleZeroRepay = async () => {
     try {
       if (!loan?.loanId) {
@@ -409,6 +449,9 @@ const YourBorrowModal = ({
     } catch (err) {
       console.log("zero repay failed - ", err);
       dispatch(setTransactionStatus("failed"));
+      toast.error('Transaction cancelled', {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
     }
   };
 
@@ -443,34 +486,12 @@ const YourBorrowModal = ({
     } catch (err) {
       console.log(err);
       dispatch(setTransactionStatus("failed"));
+      toast.error('Transaction cancelled', {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
     }
   };
 
-  const [currentTransactionStatus, setCurrentTransactionStatus] =
-    useState(false);
-
-  const recieptData = useWaitForTransaction({
-    hash: depositTransHash,
-    watch: true,
-    onReceived: () => {
-      console.log("trans received");
-    },
-    onPending: () => {
-      setCurrentTransactionStatus(true);
-      console.log("trans pending");
-    },
-    onRejected(transaction) {
-      console.log("treans rejected");
-    },
-    onAcceptedOnL1: () => {
-      setCurrentTransactionStatus(true);
-      console.log("trans onAcceptedOnL1");
-    },
-    onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus(true);
-      console.log("trans onAcceptedOnL2 - ", transaction);
-    },
-  });
   const handleAddCollateral = async () => {
     try {
       const addCollateral = await writeAsyncAddCollateralRToken();
@@ -484,6 +505,9 @@ const YourBorrowModal = ({
     } catch (err) {
       console.log("add collateral error");
       dispatch(setTransactionStatus("failed"));
+      toast.error('Transaction cancelled', {
+        position: toast.POSITION.BOTTOM_RIGHT
+      });
     }
   };
 
@@ -1286,6 +1310,8 @@ const YourBorrowModal = ({
     } catch (err) {
       console.log("yourBorrowModal reset states - ", err);
     }
+    setCurrentTransactionStatus(false);
+    setDepositTransHash("");
   };
 
   useEffect(() => {
