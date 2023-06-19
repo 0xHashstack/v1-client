@@ -85,6 +85,7 @@ import {
   tokenAddressMap,
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
+import { isConstructorDeclaration } from "typescript";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
@@ -182,6 +183,7 @@ const YourSupplyModal = ({
     walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf,
     currentSelectedWithdrawlCoin,
   ]);
+  const [ischecked, setIsChecked] = useState(true)
   const [withdrawTransactionStarted, setWithdrawTransactionStarted] =
     useState(false);
   const {
@@ -331,6 +333,7 @@ const YourSupplyModal = ({
     setSupplyAsset("BTC");
     setcurrentSelectedWithdrawlCoin("BTC");
     setAsset("");
+    setIsChecked(true);
     setTransactionStarted(false);
     setWithdrawTransactionStarted(false);
     dispatch(resetModalDropdowns());
@@ -417,10 +420,18 @@ const YourSupplyModal = ({
 
   const handleAddSupply = async () => {
     try {
-      const addSupply = await writeAsyncDeposit();
-      setDepositTransHash(addSupply.transaction_hash);
-      dispatch(setTransactionStatus("success"));
-      console.log("addSupply", addSupply);
+      if(ischecked){
+        const addSupplyAndStake=await writeAsyncDepositStake();
+        console.log(addSupplyAndStake);
+        setDepositTransHash(addSupplyAndStake?.transaction_hash);
+        dispatch(setTransactionStatus("success"));
+        console.log("addSupply", addSupplyAndStake);
+      }else{
+        const addSupply = await writeAsyncDeposit();
+        setDepositTransHash(addSupply?.transaction_hash);
+        dispatch(setTransactionStatus("success"));
+        console.log("addSupply", addSupply);
+      }
     } catch (err) {
       console.log("Unable to add supply ", err);
       toast.error('Transaction cancelled', {
@@ -928,23 +939,35 @@ const YourSupplyModal = ({
                           </Slider>
                         </Box>
                       </Card>
-                      <Checkbox
-                        defaultChecked
-                        mt="0.7rem"
-                        w="390px"
-                        borderColor="#2B2F35"
-                      >
-                        <Text
-                          fontSize="10px"
-                          color="#6E7681"
-                          fontStyle="normal"
-                          fontWeight="400"
-                          lineHeight="20px"
-                        >
-                          Ticking would stake the received rTokens unchecking
-                          wouldn&apos;t stake rTokens
-                        </Text>
-                      </Checkbox>
+                      <Box display="flex" gap="2">
+                <Checkbox
+                  size="md"
+                  colorScheme="customBlue"
+                  defaultChecked
+                  mb="auto"
+                  mt="1.2rem"
+                  borderColor="#2B2F35"
+                  isDisabled={transactionStarted == true}
+                  _disabled={{
+                    cursor: "pointer",
+                    iconColor: "blue.400",
+                    bg: "blue",
+                  }}
+                  onChange={()=>{
+                    setIsChecked(!ischecked);
+                  }}
+                />
+                <Text
+                  fontSize="12px"
+                  fontWeight="400"
+                  color="#6E7681"
+                  mt="1rem"
+                  lineHeight="20px"
+                >
+                  Ticking would stake the received rTokens. unchecking
+                  woudn&apos;t stake rTokens
+                </Text>
+              </Box>
 
                       <Card
                         bg="#101216"
@@ -1133,6 +1156,8 @@ const YourSupplyModal = ({
                             setCurrentTransactionStatus={
                               setCurrentTransactionStatus
                             }
+                            _disabled={{ bgColor: "white", color: "black" }}
+                            isDisabled={transactionStarted == true}
                           >
                             Supply
                           </AnimatedButton>
@@ -1779,7 +1804,9 @@ const YourSupplyModal = ({
                         <Box
                           onClick={() => {
                             setWithdrawTransactionStarted(true);
-                            handleWithdrawSupply();
+                            if(withdrawTransactionStarted==false){
+                              handleWithdrawSupply();
+                            }
                           }}
                         >
                           <AnimatedButton
@@ -1830,6 +1857,8 @@ const YourSupplyModal = ({
                             setCurrentTransactionStatus={
                               setCurrentTransactionStatus
                             }
+                            _disabled={{ bgColor: "white", color: "black" }}
+                            isDisabled={withdrawTransactionStarted == true}
                           >
                             Withdraw
                           </AnimatedButton>

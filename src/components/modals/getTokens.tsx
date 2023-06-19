@@ -117,6 +117,10 @@ const GetTokensModal = ({
         statusGetTokens,
     }
 =useGetTokens(currentSelectedCoin);
+
+useEffect(()=>{
+    setCurrentSelectedCoin(token);
+},[token,currentSelectedCoin])
 const dispatch=useDispatch();
 
 
