@@ -1,6 +1,6 @@
 import { Contract } from "starknet";
 import jediSwapAbi from "../abis/jedi_swap_abi.json";
-import myswapAbi from "../abis/myswap_abi.json";
+import mySwapAbi from "../abis/my_swap_abi.json";
 import { getProvider, l3DiamondAddress } from "../stark-constants";
 import { tokenAddressMap } from "../utils/addressServices";
 
@@ -66,6 +66,11 @@ export async function getSupportedPoolsJediSwap() {
 
 export async function getSupportedPoolsMyswap() {
   const provider = getProvider();
-  const l3Contract = new Contract(, l3DiamondAddress, provider);
-
+  const l3Contract = new Contract(mySwapAbi, l3DiamondAddress, provider);
+  const res = await l3Contract.call("get_supported_pools_my_swap", [], {
+    blockIdentifier: "pending",
+  });
+  console.log(
+    "supported pools for Myswap is: ", res
+  )
 }
