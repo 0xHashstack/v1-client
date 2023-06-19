@@ -63,18 +63,18 @@ export default function Market() {
   //   }
   // },[])
   // // console.log("degug2", offchainCurrentBlock);
-  // useEffect(() => {
-  //   const loans = async () => {
-  //     // const reserves = await getProtocolReserves();
-  //     // const reserves = await getProtocolStats();
-  //     // const reserves = await getProtocolStats();
-  //     console.log("reserves - ", reserves);
-  //   };
-  //   if (account) {
-  //     loans();
-  //   }
-  //   // setRender(true);
-  // }, [account]);
+  useEffect(() => {
+    const loans = async () => {
+      // const reserves = await getProtocolReserves();
+      // const reserves = await getProtocolStats();
+      const reserves = await getProtocolStats();
+      console.log("reserves - ", reserves);
+    };
+    if (account) {
+      loans();
+    }
+    // setRender(true);
+  }, [account]);
   return (
     <PageCard>
       <StatsBoard />
