@@ -7,7 +7,7 @@ import {
 import { useEffect, useState } from "react";
 import { Abi, uint256 } from "starknet";
 import { ERC20Abi, diamondAddress } from "../../stark-constants";
-import { TxToastManager } from "../../tx-ToastManager";
+// import { TxToastManager } from "../../tx-ToastManager";
 import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 import {
   tokenAddressMap,
