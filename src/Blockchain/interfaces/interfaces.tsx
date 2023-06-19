@@ -49,7 +49,7 @@ export interface ILoan {
 }
 
 export interface IDeposit {
-    tokenAddress: RToken;
+    tokenAddress: string;
     rTokenAmount: number;
     // rTokenAmountParsed: number;
     underlyingAssetAmount: number;

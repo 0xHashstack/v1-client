@@ -37,10 +37,11 @@ const YourSupply = () => {
   // },[])
   useEffect(() => {
     const getSupply = async () => {
+      console.log("all deposits calling started")
       const supply = await getUserDeposits(address || "");
       // console.log("supplies", supply);
     };
-    // getSupply();
+    getSupply();
   }, []);
   return (
     <PageCard pt="6.5rem">

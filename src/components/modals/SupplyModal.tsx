@@ -74,12 +74,14 @@ import SuccessTick from "@/assets/icons/successTick";
 import CancelIcon from "@/assets/icons/cancelIcon";
 import CancelSuccessToast from "@/assets/icons/cancelSuccessToast";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
+import { Toast } from "react-toastify/dist/components";
 import {
   tokenAddressMap,
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
-import "react-toastify/dist/ReactToastify.css";
+import { NativeToken, Token } from "@/Blockchain/interfaces/interfaces";
 import WarningIcon from "@/assets/icons/coins/warningIcon";
+import { toast } from "react-toastify";
 const SupplyModal = ({
   buttonText,
   coin,
@@ -110,7 +112,6 @@ const SupplyModal = ({
     isSuccessDeposit,
     statusDeposit,
   } = useDeposit();
-  const toast = useToast();
   useEffect(() => {
     setAsset(coin ? coin.name : "BTC");
   }, [coin]);
@@ -214,7 +215,7 @@ const SupplyModal = ({
 
   // // }
   // const { address: account } = useAccount();
-
+  const [isToastDisplayed, setToastDisplayed] = useState(false);
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
@@ -222,62 +223,55 @@ const SupplyModal = ({
       console.log("trans received");
     },
     onPending: () => {
-      dispatch(setCurrentTransactionStatus("Accepted"));
-      toast.success(`You successfully supplied ${depositAmount} {asset}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
+      setCurrentTransactionStatus(true);
       console.log("trans pending");
+      if (!isToastDisplayed) {
+        toast.success(
+          `You have successfully supplied ${depositAmount} ${currentSelectedCoin}`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
+        setToastDisplayed(true);
+      }
     },
     onRejected(transaction) {
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
       setCurrentTransactionStatus(true);
-
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction) {
       setCurrentTransactionStatus(true);
-
+      if (!isToastDisplayed) {
+        toast.success(
+          `You have successfully supplied ${depositAmount} ${currentSelectedCoin}`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
+        setToastDisplayed(true);
+      }
       console.log("trans onAcceptedOnL2 - ", transaction);
     },
   });
 
   const handleTransaction = async () => {
     try {
-      if (isChecked) {
-        const stakeAndSupply = await writeAsyncDepositStake();
-        console.log(stakeAndSupply);
-        dispatch(setTransactionStatus("success"));
-      } else {
-        const deposit = await writeAsyncDeposit();
-        if (deposit?.transaction_hash) {
-          console.log("trans transaction hash created");
-        }
-        // const deposit = await writeAsyncDepositStake();
-        console.log("Supply Modal - deposit ", deposit);
-        setDepositTransHash(deposit?.transaction_hash);
-        if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
-        }
-        dispatch(setTransactionStatus("success"));
-        // if (isSuccessDeposit) {
-        //   toast({
-        //     title: "Success",
-        //     description: "Success",
-        //     variant: "subtle",
-        //     position: "bottom-right",
-        //     status: "error",
-        //     duration: 5000,
-        //     isClosable: true,
-        //   });
-        // }
-        // console.log("Status transaction", deposit);
-        console.log(isSuccessDeposit, "success ?");
+      const deposit = await writeAsyncDeposit();
+      if (deposit?.transaction_hash) {
+        console.log("trans transaction hash created");
       }
+      // const deposit = await writeAsyncDepositStake();
+      console.log("Supply Modal - deposit ", deposit);
+      setDepositTransHash(deposit?.transaction_hash);
+      if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
+      }
+      dispatch(setTransactionStatus("success"));
+      // console.log("Status transaction", deposit);
+      console.log(isSuccessDeposit, "success ?");
     } catch (err) {
-      // toast.error(`Transaction cancelled ${err}`, {
-      //   position: toast.POSITION.BOTTOM_RIGHT,
-      // });
       // setTransactionFailed(true);
       dispatch(setTransactionStatus("failed"));
       console.log(err);
@@ -391,7 +385,8 @@ const SupplyModal = ({
             BNtoNum(
               uint256.uint256ToBN(
                 walletBalances[coin.name]?.dataBalanceOf?.balance
-              )
+              ),
+              tokenDecimalsMap[coin?.name]
             )
           )
         : 0
@@ -639,7 +634,7 @@ const SupplyModal = ({
                                 fontSize="9px"
                                 color="white"
                                 mt="6px"
-                                // fontWeight="thin"
+                                fontWeight="thin"
                               >
                                 Wallet Balance:{" "}
                                 {Number(
@@ -953,11 +948,6 @@ const SupplyModal = ({
                     cursor: "pointer",
                     iconColor: "blue.400",
                     bg: "blue",
-                  }}
-                  onChange={() => {
-                    setStakeAndSupply(!stakeAndSupply);
-                    console.log(stakeAndSupply);
-                    setIsChecked(!isChecked);
                   }}
                 />
                 <Text
