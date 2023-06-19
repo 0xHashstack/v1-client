@@ -172,7 +172,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     if (walletConnected == "") {
       router.push("/");
     }
-    if (!_account) {
+    if (account) {
       if (walletConnected == "braavos") {
         disconnect();
         connect(connectors[0]);
