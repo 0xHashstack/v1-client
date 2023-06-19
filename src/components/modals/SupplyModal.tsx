@@ -213,6 +213,7 @@ const SupplyModal = ({
 
   // // }
   // const { address: account } = useAccount();
+  const [ischecked, setIsChecked] = useState(true)
   const [depositTransHash, setDepositTransHash] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const recieptData = useWaitForTransaction({
@@ -224,7 +225,7 @@ const SupplyModal = ({
     onPending: () => {
       setCurrentTransactionStatus(true);
       console.log("trans pending");
-      if (!isToastDisplayed) {
+      if (isToastDisplayed==false) {
         toast.success(`You have successfully supplied ${inputAmount} ${currentSelectedCoin}`, {
           position: toast.POSITION.BOTTOM_RIGHT
         });
@@ -252,18 +253,29 @@ const SupplyModal = ({
 
   const handleTransaction = async () => {
     try {
-      const deposit = await writeAsyncDeposit();
-      if (deposit?.transaction_hash) {
-        console.log("trans transaction hash created");
+      if(ischecked){
+        const depositStake=await writeAsyncDepositStake();
+        if(depositStake?.transaction_hash){
+          console.log("trans transaction hash created");
+        }
+        setDepositTransHash(depositStake?.transaction_hash);
+        dispatch(setTransactionStatus("success"));
+        // console.log("Status transaction", deposit);
+        console.log(isSuccessDeposit, "success ?");
+      }else{
+        const deposit = await writeAsyncDeposit();
+        if (deposit?.transaction_hash) {
+          console.log("trans transaction hash created");
+        }
+        // const deposit = await writeAsyncDepositStake();
+        console.log("Supply Modal - deposit ", deposit);
+        setDepositTransHash(deposit?.transaction_hash);
+        if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
+        }
+        dispatch(setTransactionStatus("success"));
+        // console.log("Status transaction", deposit);
+        console.log(isSuccessDeposit, "success ?");
       }
-      // const deposit = await writeAsyncDepositStake();
-      console.log("Supply Modal - deposit ", deposit);
-      setDepositTransHash(deposit?.transaction_hash);
-      if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
-      }
-      dispatch(setTransactionStatus("success"));
-      // console.log("Status transaction", deposit);
-      console.log(isSuccessDeposit, "success ?");
     } catch (err) {
       // setTransactionFailed(true);
       dispatch(setTransactionStatus("failed"));
@@ -948,6 +960,9 @@ const SupplyModal = ({
                     cursor: "pointer",
                     iconColor: "blue.400",
                     bg: "blue",
+                  }}
+                  onChange={()=>{
+                    setIsChecked(!ischecked);
                   }}
                 />
                 <Text
