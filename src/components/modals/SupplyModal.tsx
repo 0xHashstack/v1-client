@@ -20,7 +20,6 @@ import {
   NumberInputField,
   Portal,
   SliderThumb,
-  Toast,
 } from "@chakra-ui/react";
 import ArrowUp from "@/assets/icons/arrowup";
 import { useDisclosure } from "@chakra-ui/react";
@@ -45,8 +44,8 @@ import {
   setToastTransactionStarted,
   selectTransactionStarted,
   setTransactionStarted,
-  selectCurrentTransactionStatus,
-  setCurrentTransactionStatus,
+  // selectCurrentTransactionStatus,
+  // setCurrentTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -74,14 +73,15 @@ import SuccessToast from "../uiElements/toasts/SuccessToast";
 import SuccessTick from "@/assets/icons/successTick";
 import CancelIcon from "@/assets/icons/cancelIcon";
 import CancelSuccessToast from "@/assets/icons/cancelSuccessToast";
-import { ToastContainer, toast } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
+import { Toast } from "react-toastify/dist/components";
 import {
   tokenAddressMap,
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
-import "react-toastify/dist/ReactToastify.css";
+import { NativeToken, Token } from "@/Blockchain/interfaces/interfaces";
+import WarningIcon from "@/assets/icons/coins/warningIcon";
+import { toast } from "react-toastify";
 const SupplyModal = ({
   buttonText,
   coin,
@@ -112,7 +112,6 @@ const SupplyModal = ({
     isSuccessDeposit,
     statusDeposit,
   } = useDeposit();
-  // const toast = useToast();
   useEffect(() => {
     setAsset(coin ? coin.name : "BTC");
   }, [coin]);
@@ -126,18 +125,8 @@ const SupplyModal = ({
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
   const [stakeCheck, setStakeCheck] = useState(true);
-
-  const transactionStarted1 = useSelector(selectTransactionStarted);
-  const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
-  const [stakeAndSupply, setStakeAndSupply] = useState(true);
-
-  const [transactionStarted, settransactionStarted] = useState(false);
-  const [isChecked, setIsChecked] = useState(true);
-  // const [toastTransactionStarted, setToastTransactionStarted] = useState(false);
-
-  const dispatch = useDispatch();
-  const modalDropdowns = useSelector(selectModalDropDowns);
-  // const walletBalances = useSelector(selectAssetWalletBalance);
+  const [currentTransactionStatus, setCurrentTransactionStatus] =
+    useState(false);
   interface assetB {
     USDT: any;
     USDC: any;
@@ -152,7 +141,32 @@ const SupplyModal = ({
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
-  // console.log(walletBalances,"balance in supply modal");
+
+  const assetBalance: assetB = {
+    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
+    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
+    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
+    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
+    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+  };
+  // console.log(walletBalances,"wallet balances in supply modal")
+
+  const transactionStarted = useSelector(selectTransactionStarted);
+  // const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
+
+  // const [transactionStarted, setTransactionStarted] = useState(false);
+  // const [toastTransactionStarted, setToastTransactionStarted] = useState(false);
+  // console.log(Number(
+  //   BNtoNum(
+  //     uint256.uint256ToBN(
+  //       walletBalances["ETH"]?.dataBalanceOf?.balance
+  //     ),tokenDecimalsMap["ETH"]
+  //   )
+  // ))
+
+  const dispatch = useDispatch();
+  const modalDropdowns = useSelector(selectModalDropDowns);
+  // const walletBalances = useSelector(selectAssetWalletBalance);
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin.name]?.statusBalanceOf === "success"
       ? Number(
@@ -180,6 +194,9 @@ const SupplyModal = ({
     );
     // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
   }, [walletBalances[coin.name]?.statusBalanceOf, coin]);
+  // useEffect(()=>{
+
+  // },[currentSelectedCoin])
   // console.log(walletBalances['BTC']);
   // const walletBalance = JSON.parse(useSelector(selectWalletBalance))
   // const [transactionFailed, setTransactionFailed] = useState(false);
@@ -198,22 +215,7 @@ const SupplyModal = ({
 
   // // }
   // const { address: account } = useAccount();
-
-  const labelSuccessArray = [
-    "Deposit Amount approved",
-    "Successfully transferred to Hashstack’s supply vault.",
-    "Determining the rToken amount to mint.",
-    "rTokens have been minted successfully.",
-    "Transaction complete.",
-    // <ErrorButton errorText="Transaction failed" />,
-    // <ErrorButton errorText="Copy error!" />,
-    // <SuccessButton key={"successButton"} successText={"Success"} />,
-  ];
-  const labelErrorArray = [
-    <ErrorButton errorText="Transaction failed" />,
-    <ErrorButton errorText="Copy error!" />,
-  ];
-
+  const [isToastDisplayed, setToastDisplayed] = useState(false);
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
@@ -221,81 +223,84 @@ const SupplyModal = ({
       console.log("trans received");
     },
     onPending: () => {
-      dispatch(setCurrentTransactionStatus("Accepted"));
-      toast.success(`You successfully supplied ${depositAmount} {asset}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
+      setCurrentTransactionStatus(true);
       console.log("trans pending");
+      if (!isToastDisplayed) {
+        toast.success(`You have successfully supplied ${depositAmount} ${currentSelectedCoin}`, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        setToastDisplayed(true);
+      }
     },
     onRejected(transaction) {
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
-      dispatch(setCurrentTransactionStatus("Accepted"));
+      setCurrentTransactionStatus(true);
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction) {
-      dispatch(setCurrentTransactionStatus("Accepted"));
+      setCurrentTransactionStatus(true);
+      if (!isToastDisplayed) {
+        toast.success(`You have successfully supplied ${depositAmount} ${currentSelectedCoin}`, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
+        setToastDisplayed(true);
+      }
       console.log("trans onAcceptedOnL2 - ", transaction);
     },
   });
-  // const toast = useToast();
+
   const handleTransaction = async () => {
     try {
-      if (isChecked) {
-        const stakeAndSupply = await writeAsyncDepositStake();
-        console.log(stakeAndSupply);
-        dispatch(setTransactionStatus("success"));
-      } else {
-        const deposit = await writeAsyncDeposit();
-        if (deposit?.transaction_hash) {
-          console.log("trans transaction hash created");
-        }
-        // const deposit = await writeAsyncDepositStake();
-        console.log("Supply Modal - deposit ", deposit);
-        setDepositTransHash(deposit?.transaction_hash);
-        if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
-        }
-        dispatch(setTransactionStatus("success"));
-        // if (isSuccessDeposit) {
-        //   toast({
-        //     title: "Success",
-        //     description: "Success",
-        //     variant: "subtle",
-        //     position: "bottom-right",
-        //     status: "error",
-        //     duration: 5000,
-        //     isClosable: true,
-        //   });
-        // }
-        // console.log("Status transaction", deposit);
-        console.log(isSuccessDeposit, "success ?");
+      const deposit = await writeAsyncDeposit();
+      if (deposit?.transaction_hash) {
+        console.log("trans transaction hash created");
       }
+      // const deposit = await writeAsyncDepositStake();
+      console.log("Supply Modal - deposit ", deposit);
+      setDepositTransHash(deposit?.transaction_hash);
+      if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
+      }
+      dispatch(setTransactionStatus("success"));
+      // console.log("Status transaction", deposit);
+      console.log(isSuccessDeposit, "success ?");
     } catch (err) {
-      toast.error(`Transaction cancelled ${err}`, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-      });
       // setTransactionFailed(true);
       dispatch(setTransactionStatus("failed"));
-      // labelErrorArray.forEach(async (element, idx) => {
-      //   await setTimeout(
-      //     () =>
-      //       toast({
-      //         title: element,
-      //         position: "bottom-right",
-      //         isClosable: true,
-      //         duration: 5000,
-      //       }),
-      //     2000
-      //   );
-      // });
       console.log(err);
-
       // toast({
       //   description: "An error occurred while handling the transaction. " + err,
       //   variant: "subtle",
       //   position: "bottom-right",
       //   status: "error",
+      //   isClosable: true,
+      // });
+      // toast({
+      //   variant: "subtle",
+      //   position: "bottom-right",
+      //   render: () => (
+      //     <Box
+      //       display="flex"
+      //       flexDirection="row"
+      //       justifyContent="center"
+      //       alignItems="center"
+      //       bg="rgba(40, 167, 69, 0.5)"
+      //       height="48px"
+      //       borderRadius="6px"
+      //       border="1px solid rgba(74, 194, 107, 0.4)"
+      //       padding="8px"
+      //     >
+      //       <Box>
+      //         <SuccessTick />
+      //       </Box>
+      //       <Text>You have successfully supplied 1000USDT to check go to </Text>
+      //       <Button variant="link">Your Supply</Button>
+      //       <Box>
+      //         <CancelSuccessToast />
+      //       </Box>
+      //     </Box>
+      //   ),
       //   isClosable: true,
       // });
     }
@@ -361,7 +366,7 @@ const SupplyModal = ({
     }
   };
 
-  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
   const resetStates = () => {
     setDepositAmount(0);
@@ -375,14 +380,13 @@ const SupplyModal = ({
               uint256.uint256ToBN(
                 walletBalances[coin.name]?.dataBalanceOf?.balance
               ),
-              tokenDecimalsMap[coin.name]
+              tokenDecimalsMap[coin?.name]
             )
           )
         : 0
     );
-    settransactionStarted(false);
 
-    if (transactionStarted1) dispatch(setTransactionStarted(""));
+    if (transactionStarted) dispatch(setTransactionStarted(""));
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
   };
@@ -412,7 +416,7 @@ const SupplyModal = ({
           onClose={() => {
             onClose();
             resetStates();
-            if (transactionStarted1) dispatch(setToastTransactionStarted(true));
+            if (transactionStarted) dispatch(setToastTransactionStarted(true));
             // if (setIsOpenCustom) setIsOpenCustom(false);
           }}
           size={{ width: "700px", height: "100px" }}
@@ -452,6 +456,41 @@ const SupplyModal = ({
                 border="1px solid #2B2F35"
                 mt="-1.5"
               >
+                {walletBalance === 0 && (
+                  <Box
+                    // display="flex"
+                    // justifyContent="left"
+                    w="100%"
+                    pb="4"
+                  >
+                    <Box
+                      display="flex"
+                      bg="#FFF8C5"
+                      color="black"
+                      fontSize="xs"
+                      p="4"
+                      fontStyle="normal"
+                      fontWeight="500"
+                      borderRadius="6px"
+                      // textAlign="center"
+                    >
+                      <Box pr="3" my="auto" cursor="pointer">
+                        <WarningIcon />
+                      </Box>
+                      Selected market does not have balance in your wallet.
+                      Please add the balance in the current market or select the
+                      valid market from the dropdown below
+                      {/* <Box
+                                py="1"
+                                pl="4"
+                                cursor="pointer"
+                                // onClick={handleClick}
+                              >
+                                <TableClose />
+                              </Box> */}
+                    </Box>
+                  </Box>
+                )}
                 <Text color="#8B949E" display="flex" alignItems="center">
                   <Text
                     mr="0.3rem"
@@ -515,19 +554,32 @@ const SupplyModal = ({
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {coins.map((coin: string, index: number) => {
+                      {coins.map((coin: NativeToken, index: number) => {
                         return (
                           <Box
                             key={index}
                             as="button"
                             w="full"
-                            display="flex"
+                            // display="flex"
                             alignItems="center"
                             gap="1"
                             pr="2"
+                            display={
+                              Number(
+                                BNtoNum(
+                                  uint256.uint256ToBN(
+                                    assetBalance[coin]?.dataBalanceOf?.balance
+                                  ),
+                                  tokenDecimalsMap[coin]
+                                )
+                              ) === 0
+                                ? "none"
+                                : "flex"
+                            }
                             onClick={() => {
                               setCurrentSelectedCoin(coin);
                               setAsset(coin);
+                              // console.log(coin,"coin in supply modal")
                               setwalletBalance(
                                 walletBalances[coin]?.statusBalanceOf ===
                                   "success"
@@ -557,8 +609,10 @@ const SupplyModal = ({
                               w="full"
                               display="flex"
                               py="5px"
-                              px={`${coin === currentSelectedCoin ? "1" : "5"}`}
+                              pl={`${coin === currentSelectedCoin ? "1" : "5"}`}
+                              pr="6px"
                               gap="1"
+                              justifyContent="space-between"
                               bg={`${
                                 coin === currentSelectedCoin
                                   ? "#0C6AD9"
@@ -566,8 +620,26 @@ const SupplyModal = ({
                               }`}
                               borderRadius="md"
                             >
-                              <Box p="1">{getCoin(coin)}</Box>
-                              <Text color="white">{coin}</Text>
+                              <Box display="flex">
+                                <Box p="1">{getCoin(coin)}</Box>
+                                <Text color="white">{coin}</Text>
+                              </Box>
+                              <Box
+                                fontSize="9px"
+                                color="white"
+                                mt="6px"
+                                fontWeight="thin"
+                              >
+                                Wallet Balance:{" "}
+                                {Number(
+                                  BNtoNum(
+                                    uint256.uint256ToBN(
+                                      assetBalance[coin]?.dataBalanceOf?.balance
+                                    ),
+                                    tokenDecimalsMap[coin]
+                                  )
+                                )}
+                              </Box>
                             </Box>
                           </Box>
                         );
@@ -871,11 +943,6 @@ const SupplyModal = ({
                     iconColor: "blue.400",
                     bg: "blue",
                   }}
-                  onChange={() => {
-                    setStakeAndSupply(!stakeAndSupply);
-                    console.log(stakeAndSupply);
-                    setIsChecked(!isChecked);
-                  }}
                 />
                 <Text
                   fontSize="12px"
@@ -1026,7 +1093,6 @@ const SupplyModal = ({
                   <Box
                     onClick={() => {
                       dispatch(setTransactionStarted(""));
-                      settransactionStarted(true);
                       if (transactionStarted === false) {
                         handleTransaction();
                       }
@@ -1069,6 +1135,8 @@ const SupplyModal = ({
                       isDisabled={transactionStarted == true}
                       // transactionStarted={toastTransactionStarted}
                       // onClick={}
+                      currentTransactionStatus={currentTransactionStatus}
+                      setCurrentTransactionStatus={setCurrentTransactionStatus}
                     >
                       Supply
                     </AnimatedButton>
