@@ -1,5 +1,5 @@
 import Navbar from "@/components/layouts/navbar/Navbar";
-import { Box, Stack, StackProps, useMediaQuery } from "@chakra-ui/react";
+import { Box, Stack, StackProps, Text, useMediaQuery } from "@chakra-ui/react";
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -275,7 +275,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           >
             <Box>
               <Text color="white" fontSize="25px">
-                Please switch to Starknet Goerli
+                Please switch to Starknet Goerli and refresh
               </Text>
             </Box>
           </Stack>
