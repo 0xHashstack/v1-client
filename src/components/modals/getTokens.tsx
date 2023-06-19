@@ -187,6 +187,36 @@ const dispatch=useDispatch();
                         />
                         <ModalBody>
                             <Box display="flex" flexDirection="row" justifyContent="space-between" gap="20px">
+                            <Button bg="#101216"
+                                    color="#6E7681"
+                                    size="sm"
+                                    width="100%"
+                                    mt="1.5rem"
+                                    mb="1.5rem"
+                                    border="1px solid #8B949E"
+                                    _hover={{  bgColor: "white", color: "black" }}
+                                    _active={{border:"3px solid grey"}}
+                                    onClick={()=>{
+                                        setCurrentSelectedCoin("BTC")
+                                        setToken("BTC");
+                                        handleGetToken();
+                                    }}
+                                    >wBTC</Button>
+                                                                    <Button bg="#101216"
+                                    color="#6E7681"
+                                    size="sm"
+                                    width="100%"
+                                    mt="1.5rem"
+                                    mb="1.5rem"
+                                    border="1px solid #8B949E"
+                                    _hover={{  bgColor: "white", color: "black" }}
+                                    _active={{border:"3px solid grey"}}
+                                    onClick={()=>{
+                                        setCurrentSelectedCoin("ETH")
+                                        setToken("ETH");
+                                        handleGetToken();
+                                    }}
+                                    >wETH</Button>
                                 <Button bg="#101216"
                                     color="#6E7681"
                                     size="sm"
@@ -202,7 +232,8 @@ const dispatch=useDispatch();
                                         handleGetToken();
                                     }}
                                     >USDT</Button>
-                                <Button bg="#101216"
+
+                                                                    <Button bg="#101216"
                                     color="#6E7681"
                                     size="sm"
                                     width="100%"
@@ -212,26 +243,12 @@ const dispatch=useDispatch();
                                     _hover={{  bgColor: "white", color: "black" }}
                                     _active={{border:"3px solid grey"}}
                                     onClick={()=>{
-                                        setCurrentSelectedCoin("BTC")
-                                        setToken("BTC");
+                                        setCurrentSelectedCoin("USDC")
+                                        setToken("USDC");
                                         handleGetToken();
                                     }}
-                                    >BTC</Button>
-                                <Button bg="#101216"
-                                    color="#6E7681"
-                                    size="sm"
-                                    width="100%"
-                                    mt="1.5rem"
-                                    mb="1.5rem"
-                                    border="1px solid #8B949E"
-                                    _hover={{  bgColor: "white", color: "black" }}
-                                    _active={{border:"3px solid grey"}}
-                                    onClick={()=>{
-                                        setCurrentSelectedCoin("ETH")
-                                        setToken("ETH");
-                                        handleGetToken();
-                                    }}
-                                    >ETH</Button>
+                                    >USDC</Button>
+
                                 <Button bg="#101216"
                                     color="#6E7681"
                                     size="sm"

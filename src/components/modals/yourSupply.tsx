@@ -79,11 +79,11 @@ import { useWaitForTransaction } from "@starknet-react/core";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import { uint256 } from "starknet";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
+import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 import {
   tokenAddressMap,
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
-import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,

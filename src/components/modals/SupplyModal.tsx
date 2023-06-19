@@ -121,7 +121,7 @@ const SupplyModal = ({
   );
   // console.log("wallet balance",typeof Number(walletBalance))
   // console.log("deposit amount", typeof depositAmount);
-  const [inputAmount, setinputAmount] = useState(0);
+  const [inputAmount, setinputAmount] = useState<number>(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
   const [stakeCheck, setStakeCheck] = useState(true);
@@ -213,6 +213,7 @@ const SupplyModal = ({
 
   // // }
   // const { address: account } = useAccount();
+  const [ischecked, setIsChecked] = useState(true)
   const [depositTransHash, setDepositTransHash] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const recieptData = useWaitForTransaction({
@@ -224,13 +225,10 @@ const SupplyModal = ({
     onPending: () => {
       setCurrentTransactionStatus(true);
       console.log("trans pending");
-      if (!isToastDisplayed) {
-        toast.success(
-          `You have successfully supplied ${depositAmount} ${currentSelectedCoin}`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          }
-        );
+      if (isToastDisplayed==false) {
+        toast.success(`You have successfully supplied ${inputAmount} ${currentSelectedCoin}`, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
         setToastDisplayed(true);
       }
     },
@@ -244,12 +242,9 @@ const SupplyModal = ({
     onAcceptedOnL2(transaction) {
       setCurrentTransactionStatus(true);
       if (!isToastDisplayed) {
-        toast.success(
-          `You have successfully supplied ${depositAmount} ${currentSelectedCoin}`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          }
-        );
+        toast.success(`You have successfully supplied ${inputAmount} ${currentSelectedCoin}`, {
+          position: toast.POSITION.BOTTOM_RIGHT
+        });
         setToastDisplayed(true);
       }
       console.log("trans onAcceptedOnL2 - ", transaction);
@@ -258,18 +253,29 @@ const SupplyModal = ({
 
   const handleTransaction = async () => {
     try {
-      const deposit = await writeAsyncDeposit();
-      if (deposit?.transaction_hash) {
-        console.log("trans transaction hash created");
+      if(ischecked){
+        const depositStake=await writeAsyncDepositStake();
+        if(depositStake?.transaction_hash){
+          console.log("trans transaction hash created");
+        }
+        setDepositTransHash(depositStake?.transaction_hash);
+        dispatch(setTransactionStatus("success"));
+        // console.log("Status transaction", deposit);
+        console.log(isSuccessDeposit, "success ?");
+      }else{
+        const deposit = await writeAsyncDeposit();
+        if (deposit?.transaction_hash) {
+          console.log("trans transaction hash created");
+        }
+        // const deposit = await writeAsyncDepositStake();
+        console.log("Supply Modal - deposit ", deposit);
+        setDepositTransHash(deposit?.transaction_hash);
+        if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
+        }
+        dispatch(setTransactionStatus("success"));
+        // console.log("Status transaction", deposit);
+        console.log(isSuccessDeposit, "success ?");
       }
-      // const deposit = await writeAsyncDepositStake();
-      console.log("Supply Modal - deposit ", deposit);
-      setDepositTransHash(deposit?.transaction_hash);
-      if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
-      }
-      dispatch(setTransactionStatus("success"));
-      // console.log("Status transaction", deposit);
-      console.log(isSuccessDeposit, "success ?");
     } catch (err) {
       // setTransactionFailed(true);
       dispatch(setTransactionStatus("failed"));
@@ -354,11 +360,13 @@ const SupplyModal = ({
     var percentage = (newValue * 100) / walletBalance;
     if (walletBalance == 0) {
       setDepositAmount(0);
+      setinputAmount(0);
     }
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue(100);
       setDepositAmount(newValue);
+      setinputAmount(newValue);
       dispatch(setInputSupplyAmount(newValue));
     } else {
       percentage = Math.round(percentage);
@@ -366,6 +374,7 @@ const SupplyModal = ({
       } else {
         setSliderValue(percentage);
         setDepositAmount(newValue);
+        setinputAmount(newValue);
         dispatch(setInputSupplyAmount(newValue));
       }
     }
@@ -375,6 +384,7 @@ const SupplyModal = ({
 
   const resetStates = () => {
     setDepositAmount(0);
+    setinputAmount(0);
     setSliderValue(0);
     setAsset(coin ? coin.name : "BTC");
     setCurrentSelectedCoin(coin ? coin.name : "BTC");
@@ -398,6 +408,7 @@ const SupplyModal = ({
 
   useEffect(() => {
     setDepositAmount(0);
+    setinputAmount(0);
     setSliderValue(0);
   }, [currentSelectedCoin]);
 
@@ -747,6 +758,7 @@ const SupplyModal = ({
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
                       setDepositAmount(walletBalance);
+                      setinputAmount(walletBalance);
                       setSliderValue(100);
                       dispatch(setInputSupplyAmount(walletBalance));
                     }}
@@ -838,6 +850,7 @@ const SupplyModal = ({
                       // console.log(ans)
                       // dispatch(setInputSupplyAmount(ans));
                       setDepositAmount(ans);
+                      setinputAmount(ans);
                     }}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}
@@ -947,6 +960,9 @@ const SupplyModal = ({
                     cursor: "pointer",
                     iconColor: "blue.400",
                     bg: "blue",
+                  }}
+                  onChange={()=>{
+                    setIsChecked(!ischecked);
                   }}
                 />
                 <Text
