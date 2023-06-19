@@ -121,7 +121,7 @@ const SupplyModal = ({
   );
   // console.log("wallet balance",typeof Number(walletBalance))
   // console.log("deposit amount", typeof depositAmount);
-  const [inputAmount, setinputAmount] = useState(0);
+  const [inputAmount, setinputAmount] = useState<number>(0);
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
   const [stakeCheck, setStakeCheck] = useState(true);
