@@ -227,6 +227,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const hanldeUnstakeTransaction = async () => {
     try {
       const unstake = await writeAsyncWithdrawStake();
+      setDepositTransHash(unstake?.transaction_hash);
+      dispatch(setTransactionStatus("success"));
       console.log(unstake);
     } catch (err) {
       dispatch(setTransactionStatus("failed"));
@@ -319,6 +321,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     setUnstakeTransactionStarted(false);
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
+    setCurrentTransactionStatus(false);
+    setDepositTransHash("");
   };
   // console.log("testing isopen: ", isOpen);
   // console.log("testing custom isopen: ", isOpenCustom);

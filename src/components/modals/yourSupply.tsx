@@ -332,6 +332,8 @@ const YourSupplyModal = ({
     setWithdrawTransactionStarted(false);
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
+    setCurrentTransactionStatus(false);
+    setDepositTransHash("");
   };
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
@@ -352,10 +354,30 @@ const YourSupplyModal = ({
     setSliderValue2(0);
   }, [currentSelectedWithdrawlCoin]);
 
-  const [depositTransHash, setDepositTransHash] = useState<any>();
+  const [depositTransHash, setDepositTransHash] = useState("");
+  const [currentTransactionStatus, setCurrentTransactionStatus] =
+    useState(false);
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
+    onReceived: () => {
+      console.log("trans received");
+    },
+    onPending: () => {
+      setCurrentTransactionStatus(true);
+      console.log("trans pending");
+    },
+    onRejected(transaction) {
+      console.log("treans rejected");
+    },
+    onAcceptedOnL1: () => {
+      setCurrentTransactionStatus(true);
+      console.log("trans onAcceptedOnL1");
+    },
+    onAcceptedOnL2(transaction) {
+      setCurrentTransactionStatus(true);
+      console.log("trans onAcceptedOnL2 - ", transaction);
+    },
   });
 
   const handleWithdrawSupply = async () => {
@@ -1068,6 +1090,10 @@ const YourSupplyModal = ({
                                 successText={"Supply success"}
                               />,
                             ]}
+                            currentTransactionStatus={currentTransactionStatus}
+                            setCurrentTransactionStatus={
+                              setCurrentTransactionStatus
+                            }
                           >
                             Supply
                           </AnimatedButton>
@@ -1752,6 +1778,10 @@ const YourSupplyModal = ({
                             ]}
                             _disabled={{ bgColor: "white", color: "black" }}
                             isDisabled={withdrawTransactionStarted == true}
+                            currentTransactionStatus={currentTransactionStatus}
+                            setCurrentTransactionStatus={
+                              setCurrentTransactionStatus
+                            }
                           >
                             Withdraw
                           </AnimatedButton>
