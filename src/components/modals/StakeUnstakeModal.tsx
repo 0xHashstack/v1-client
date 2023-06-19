@@ -63,6 +63,7 @@ import ArrowUp from "@/assets/icons/arrowup";
 import SliderPointer from "@/assets/icons/sliderPointer";
 import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import { useWaitForTransaction } from "@starknet-react/core";
+import { toast } from "react-toastify";
 const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
@@ -170,7 +171,6 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
         break;
     }
   };
-  const toast=useToast();
  const [depositTransHash, setDepositTransHash] = useState("");
  const recieptData = useWaitForTransaction({ hash: depositTransHash, watch: true});
   const handleStakeTransaction = async () => {
@@ -185,12 +185,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     } catch (err) {
       dispatch(setTransactionStatus("failed"));
       console.log(err)
-      toast({
-        description: "An error occurred while handling the transaction. " + err,
-        variant: "subtle",
-        position: "bottom-right",
-        status: "error",
-        isClosable: true,
+      toast.error('Transaction cancelled', {
+        position: toast.POSITION.BOTTOM_RIGHT
       });
     }
   }
@@ -202,12 +198,8 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     } catch (err) {
       dispatch(setTransactionStatus("failed"))
       console.log(err)
-      toast({
-        description: "An error occurred while handling the transaction. " + err,
-        variant: "subtle",
-        position: "bottom-right",
-        status: "error",
-        isClosable: true,
+      toast.error('Transaction cancelled', {
+        position: toast.POSITION.BOTTOM_RIGHT
       });
     }
   }
@@ -1008,9 +1000,9 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                                   successText={"Stake successful."}
                                 />,
                               ]}
+                              _disabled={{ bgColor: "white", color: "black" }}
+                              isDisabled={transactionStarted == true}
                               labelErrorArray={[
-                                "Processing",
-                                "Checking for sufficient rtoken balance.",
                                 <ErrorButton errorText="Transaction failed" />,
                                 <ErrorButton errorText="Copy error!" />,
                               ]}
@@ -1584,11 +1576,11 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               />,
                             ]}
                             labelErrorArray={[
-                              "Processing",
-                              "Unstake amount matches staked rToken balance",
                               <ErrorButton errorText="Transaction failed" />,
                               <ErrorButton errorText="Copy error!" />,
                             ]}
+                            _disabled={{ bgColor: "white", color: "black" }}
+                            isDisabled={unstakeTransactionStarted == true}
                           >
                             Unstake
                           </AnimatedButton>
