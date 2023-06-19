@@ -81,6 +81,7 @@ import {
 import { NativeToken, Token } from "@/Blockchain/interfaces/interfaces";
 import WarningIcon from "@/assets/icons/coins/warningIcon";
 import { toast } from "react-toastify";
+import CopyToClipboard from "react-copy-to-clipboard";
 const SupplyModal = ({
   buttonText,
   coin,
@@ -212,7 +213,7 @@ const SupplyModal = ({
 
   // // }
   // const { address: account } = useAccount();
-  const [ischecked, setIsChecked] = useState(true)
+  const [ischecked, setIsChecked] = useState(true);
   const [depositTransHash, setDepositTransHash] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const recieptData = useWaitForTransaction({
@@ -224,15 +225,18 @@ const SupplyModal = ({
     onPending: () => {
       setCurrentTransactionStatus(true);
       console.log("trans pending");
-      if (isToastDisplayed==false) {
-        toast.success(`You have successfully supplied ${inputAmount} ${currentSelectedCoin}`, {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
+      if (isToastDisplayed == false) {
+        toast.success(
+          `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
         setToastDisplayed(true);
       }
     },
     onRejected(transaction) {
-      console.log("treans rejected");
+      console.log("treans rejected", transaction);
     },
     onAcceptedOnL1: () => {
       setCurrentTransactionStatus(true);
@@ -241,9 +245,12 @@ const SupplyModal = ({
     onAcceptedOnL2(transaction) {
       setCurrentTransactionStatus(true);
       if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied ${inputAmount} ${currentSelectedCoin}`, {
-          position: toast.POSITION.BOTTOM_RIGHT
-        });
+        toast.success(
+          `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
         setToastDisplayed(true);
       }
       console.log("trans onAcceptedOnL2 - ", transaction);
@@ -287,16 +294,16 @@ const SupplyModal = ({
 
   const handleTransaction = async () => {
     try {
-      if(ischecked){
-        const depositStake=await writeAsyncDepositStake();
-        if(depositStake?.transaction_hash){
+      if (ischecked) {
+        const depositStake = await writeAsyncDepositStake();
+        if (depositStake?.transaction_hash) {
           console.log("trans transaction hash created");
         }
         setDepositTransHash(depositStake?.transaction_hash);
         dispatch(setTransactionStatus("success"));
         // console.log("Status transaction", deposit);
         console.log(isSuccessDeposit, "success ?");
-      }else{
+      } else {
         const deposit = await writeAsyncDeposit();
         if (deposit?.transaction_hash) {
           console.log("trans transaction hash created");
@@ -314,8 +321,17 @@ const SupplyModal = ({
       // setTransactionFailed(true);
 
       dispatch(setTransactionStatus("failed"));
-      toast.error('Transaction cancelled', {
-        position: toast.POSITION.BOTTOM_RIGHT
+      const toastContent = (
+        <div>
+          Transaction cancelled{" "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
       });
       console.log("supply", err);
       // toast({
@@ -1000,7 +1016,7 @@ const SupplyModal = ({
                     iconColor: "blue.400",
                     bg: "blue",
                   }}
-                  onChange={()=>{
+                  onChange={() => {
                     setIsChecked(!ischecked);
                   }}
                 />
@@ -1187,8 +1203,11 @@ const SupplyModal = ({
                         />,
                       ]}
                       labelErrorArray={[
-                        <ErrorButton errorText="Transaction failed" />,
-                        <ErrorButton errorText="Copy error!" />,
+                        <ErrorButton
+                          errorText="Transaction failed"
+                          key={"error1"}
+                        />,
+                        <ErrorButton errorText="Copy error!" key={"error2"} />,
                       ]}
                       // transactionStarted={(depostiTransactionHash!="" || transactionFailed==true)}
                       _disabled={{ bgColor: "white", color: "black" }}

@@ -1,14 +1,35 @@
-const numberFormatter = (num: number) => {
-  // const absNum = Math.abs(num);
-  const absNum = num;
-  if (absNum >= 1e9) {
-    return (num / 1e9).toFixed(9) + "b";
-  } else if (absNum >= 1e6) {
-    return (num / 1e6).toFixed(6) + "m";
-  } else if (absNum >= 1e3) {
-    return (num / 1e3).toFixed(3) + "k";
+const numberFormatter = (input: any) => {
+  var number = parseFloat(input);
+
+  if (isNaN(number)) {
+    return "Invalid input";
   }
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  var suffixes = [
+    "",
+    "k",
+    "M",
+    "B",
+    "T",
+    "Qa",
+    "Qi",
+    "Sx",
+    "Sp",
+    "Oc",
+    "No",
+    "Dc",
+    "Un",
+  ];
+  var magnitude = 0;
+  while (Math.abs(number) >= 1000) {
+    magnitude++;
+    number /= 1000.0;
+  }
+
+  // Format the number with the appropriate magnitude and suffix
+  var formattedNumber = number.toFixed(2).replace(/\.?0+$/, ""); // Remove trailing zeros and decimal point if unnecessary
+
+  return formattedNumber + suffixes[magnitude];
 };
 // console.log("hey");
 // console.log(formatNumber(2028222220.2222));

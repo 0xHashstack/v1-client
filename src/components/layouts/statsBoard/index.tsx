@@ -1,23 +1,62 @@
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
 import { Flex, HStack, VStack } from "@chakra-ui/react";
 import Stats from "@/components/layouts/stats";
 import { useRouter } from "next/router";
+import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
+import { getUserReserves } from "@/Blockchain/scripts/userStats";
+import { IProtocolReserves } from "@/Blockchain/interfaces/interfaces";
 const StatsBoard = () => {
   const router = useRouter();
   const handleRouteChange = (path: string) => {
     router.push(path);
   };
-  const protocolReserves = {
-    totalReserves: 531025.0,
-    availableReserves: 53104.0,
-    avgAssetUtilisation: 53.1, // weighted avg of all the utilisations of markets
-  };
-  const userStats = {
+  const [protocolReserves, setProtocolReserves] = useState<IProtocolReserves>({
+    totalReserves: 12312,
+    availableReserves: 12131,
+    avgAssetUtilisation: 112, // weighted avg of all the utilisations of markets
+  });
+  const [userStats, setUserStats] = useState({
     netWorth: 8392.14, // current values of loans - total borrow + total supply
     yourSupply: 5536.83, // usd terms
     yourBorrow: 536.83, // usd terms
     netSupplyAPR: 15.5, // usd terms
-  };
+  });
+  useEffect(() => {
+    try {
+      const fetchProtocolStats = async () => {
+        const reserves = await getProtocolReserves();
+        console.log("protocol reserves", reserves);
+        setProtocolReserves(reserves);
+      };
+      fetchProtocolStats();
+    } catch (err) {
+      console.log("error fetching protocol reserves ", err);
+    }
+  }, []);
+  // useEffect(() => {
+  //   try {
+  //     const fetchUserStats = async () => {
+  //       const reserves = await getUserReserves();
+  //       console.log("user reserves", reserves);
+  //       setUserStats(reserves);
+  //     };
+  //     fetchUserStats();
+  //   } catch (err) {
+  //     console.log("error fetching user stats ", err);
+  //   }
+  // }, []);
+
+  // const protocolReserves = {
+  //   totalReserves: 531025.0,
+  //   availableReserves: 53104.0,
+  //   avgAssetUtilisation: 53.1, // weighted avg of all the utilisations of markets
+  // };
+  // const userStats = {
+  //   netWorth: 8392.14, // current values of loans - total borrow + total supply
+  //   yourSupply: 5536.83, // usd terms
+  //   yourBorrow: 536.83, // usd terms
+  //   netSupplyAPR: 15.5, // usd terms
+  // };
   return (
     <Flex
       display="flex"

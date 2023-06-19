@@ -462,80 +462,111 @@ const BorrowDashboard = ({
                     //   overflow={"hidden"}
                     textAlign={"center"}
                   >
-                    <Box
-                      // gap="3px"
-                      width="100%"
-                      display="flex"
-                      flexDirection="column"
-                      justifyContent="center"
-                      alignItems="center"
-                      height="3rem"
-                      // bgColor="red"
-                      // pl="3.4rem"
-                    >
-                      <HStack
-                        height="50%"
+                    {borrow.loanState == "ACTIVE" ? (
+                      <Box
+                        // gap="3px"
                         width="100%"
-                        alignItems="center"
+                        display="flex"
+                        flexDirection="column"
                         justifyContent="center"
-                        // gap={0.2}
+                        alignItems="center"
+                        height="3rem"
+                        // bgColor="red"
+                        // pl="3.4rem"
                       >
-                        <Box minWidth={"16px"}>
-                          <Image
-                            src={`./Swap.svg`}
-                            alt="Picture of the author"
-                            width="16"
-                            height="16"
-                          />
-                        </Box>
-                        <Text fontSize="14px" fontWeight="400">
-                          Swap
-                        </Text>
-                      </HStack>
-                      <HStack
-                        height="50%"
+                        {borrow.spendType}
+                      </Box>
+                    ) : borrow.loanState == "REPAID" ||
+                      borrow.loanState == "LIQUIDATED" ? (
+                      <Box
+                        // gap="3px"
                         width="100%"
-                        alignItems="center"
+                        display="flex"
+                        flexDirection="column"
                         justifyContent="center"
-                        // bgColor={"red"}
+                        alignItems="center"
+                        height="3rem"
+                        // bgColor="red"
+                        // pl="3.4rem"
                       >
-                        <Box
-                          display="flex"
-                          // gap={0.5}
-                          // bgColor={"blue"}
+                        {borrow.loanState}
+                      </Box>
+                    ) : (
+                      <Box
+                        // gap="3px"
+                        width="100%"
+                        display="flex"
+                        flexDirection="column"
+                        justifyContent="center"
+                        alignItems="center"
+                        height="3rem"
+                        // bgColor="red"
+                        // pl="3.4rem"
+                      >
+                        <HStack
+                          height="50%"
+                          width="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                          // gap={0.2}
+                        >
+                          <Box minWidth={"16px"}>
+                            <Image
+                              src={`./${borrow.l3App}.svg`}
+                              alt="Picture of the author"
+                              width="16"
+                              height="16"
+                            />
+                          </Box>
+                          <Text fontSize="14px" fontWeight="400">
+                            {borrow.spendType}
+                          </Text>
+                        </HStack>
+                        <HStack
+                          height="50%"
+                          width="100%"
+                          alignItems="center"
+                          justifyContent="center"
+                          // bgColor={"red"}
                         >
                           <Box
                             display="flex"
-                            gap={0.5}
-                            minWidth={"16px"}
+                            // gap={0.5}
                             // bgColor={"blue"}
                           >
-                            <Image
-                              src={`./USDT.svg`}
-                              alt="Picture of the author"
-                              width="16"
-                              height="16"
-                            />
+                            <Box
+                              display="flex"
+                              gap={0.5}
+                              minWidth={"16px"}
+                              // bgColor={"blue"}
+                            >
+                              <Image
+                                src={`./USDT.svg`}
+                                alt="Picture of the author"
+                                width="16"
+                                height="16"
+                              />
+                            </Box>
+                            <Box
+                              display="flex"
+                              gap={0.5}
+                              minWidth={"16px"}
+                              // bgColor={"blue"}
+                            >
+                              <Image
+                                src={`./ETH.svg`}
+                                alt="Picture of the author"
+                                width="16"
+                                height="16"
+                              />
+                            </Box>
                           </Box>
-                          <Box
-                            display="flex"
-                            gap={0.5}
-                            minWidth={"16px"}
-                            // bgColor={"blue"}
-                          >
-                            <Image
-                              src={`./ETH.svg`}
-                              alt="Picture of the author"
-                              width="16"
-                              height="16"
-                            />
-                          </Box>
-                        </Box>
-                        <Text fontSize="14px" fontWeight="400">
-                          1.234/2.23
-                        </Text>
-                      </HStack>
-                    </Box>
+                          <Text fontSize="14px" fontWeight="400">
+                            1.234/2.23
+                          </Text>
+                        </HStack>
+                      </Box>
+                    )}
                   </Td>
                   <Td
                     width={"12.5%"}

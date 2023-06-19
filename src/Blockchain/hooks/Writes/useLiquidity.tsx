@@ -1,14 +1,14 @@
-import { diamondAddress } from "@/Blockchain/stark-constants"
-import { useContractWrite } from "@starknet-react/core"
-import { useState } from "react"
-import { constants } from "../../utils/constants"
-import { tokenAddressMap } from "@/Blockchain/utils/addressServices"
-import { NativeToken, Token } from "@/Blockchain/interfaces/interfaces"
+import { diamondAddress } from "@/Blockchain/stark-constants";
+import { useContractWrite } from "@starknet-react/core";
+import { useState } from "react";
+import { constants } from "../../utils/constants";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import { NativeToken, Token } from "@/Blockchain/interfaces/interfaces";
 
 const useLiquidity = () => {
-  const [liquidityLoanId, setLiquidityLoanId] = useState<string>("")
-  const [toMarketA, setToMarketA] = useState<NativeToken>("")
-  const [toMarketB, setToMarketB] = useState<NativeToken>("")
+  const [liquidityLoanId, setLiquidityLoanId] = useState<string>("");
+  const [toMarketA, setToMarketA] = useState<NativeToken>("USDT");
+  const [toMarketB, setToMarketB] = useState<NativeToken>("USDT");
 
   const {
     data: dataJediSwap_addLiquidity,
@@ -28,10 +28,10 @@ const useLiquidity = () => {
         liquidityLoanId,
         constants.ADD_LIQUIDITY,
         tokenAddressMap[toMarketA],
-        tokenAddressMap[toMarketB]
-      ]
-    }
-  })
+        tokenAddressMap[toMarketB],
+      ],
+    },
+  });
 
   const {
     data: datamySwap_addLiquidity,
@@ -51,10 +51,10 @@ const useLiquidity = () => {
         liquidityLoanId,
         constants.ADD_LIQUIDITY,
         tokenAddressMap[toMarketA],
-        tokenAddressMap[toMarketB]
-      ]
-    }
-  })
+        tokenAddressMap[toMarketB],
+      ],
+    },
+  });
 
   return {
     liquidityLoanId,
@@ -80,7 +80,7 @@ const useLiquidity = () => {
     isIdlemySwap_addLiquidity,
     isLoadingmySwap_addLiquidity,
     statusmySwap_addLiquidity,
-  }
-}
+  };
+};
 
-export default useLiquidity  
+export default useLiquidity;
