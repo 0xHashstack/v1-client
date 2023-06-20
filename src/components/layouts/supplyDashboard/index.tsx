@@ -112,9 +112,9 @@ const SupplyDashboard = ({
   // console.log("aryan " + lower_bound + " " + upper_bound);
 
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
-    useState("BTC");
+    useState("rBTC");
   const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
-    useState("BTC");
+    useState("rBTC");
   const [supplyMarkets, setSupplyMarkets] = useState([]);
 
   const [supplies, setSupplies] = useState<IDeposit[]>([]);
@@ -458,8 +458,8 @@ const SupplyDashboard = ({
                       fontWeight="400"
                       pr={2}
                       onClick={() => {
-                        setCurrentSelectedSupplyCoin(supply.market);
-                        setcurrentSelectedWithdrawlCoin(supply.market);
+                        setCurrentSelectedSupplyCoin(supply?.rToken);
+                        setcurrentSelectedWithdrawlCoin(supply?.rToken);
                       }}
                       // bgColor={"blue"}
                     >
