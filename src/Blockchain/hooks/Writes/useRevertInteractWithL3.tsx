@@ -3,7 +3,7 @@ import { useContractWrite } from "@starknet-react/core";
 import { useState } from "react";
 
 const useRevertInteractWithL3 = (loanIdParam: string) => {
-  const [loanId, setLoanId] = useState<string>(loanIdParam)
+  const [revertLoanId, setRevertLoanId] = useState<string>(loanIdParam)
 
   const {
     data: dataRevertInteractWithL3,
@@ -16,13 +16,13 @@ const useRevertInteractWithL3 = (loanIdParam: string) => {
     calls: {
       contractAddress: diamondAddress,
       entrypoint: "revert_interaction_with_l3",
-      calldata: [loanId],
+      calldata: [revertLoanId],
     }
   })
 
   return {
-    loanId,
-    setLoanId,
+    revertLoanId,
+    setRevertLoanId,
 
     dataRevertInteractWithL3,
     writeAsyncRevertInteractWithL3,

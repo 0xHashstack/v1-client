@@ -85,6 +85,7 @@ import { uint256 } from "starknet";
 import { useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
+import useRevertInteractWithL3 from "@/Blockchain/hooks/Writes/useRevertInteractWithL3";
 const YourBorrowModal = ({
   borrowIDCoinMap,
   currentID,
@@ -238,6 +239,31 @@ const YourBorrowModal = ({
     isLoadingmySwap_addLiquidity,
     statusmySwap_addLiquidity,
   } = useLiquidity();
+  const {
+    revertLoanId,
+    setRevertLoanId,
+
+    dataRevertInteractWithL3,
+    writeAsyncRevertInteractWithL3,
+    writeRevertInteractWithL3,
+    errorRevertInteractWithL3,
+    isIdleRevertInteractWithL3,
+    isLoadingRevertInteractWithL3,
+  }=useRevertInteractWithL3(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
+  
+  const handleRevertTransaction=async()=>{
+    try{
+      const revert=await writeAsyncRevertInteractWithL3();
+      console.log(revert);
+      dispatch(setTransactionStatus("success"));
+
+    }catch(err){
+      console.log(err);
+      dispatch(setTransactionStatus("failed"))
+
+    }
+  }
+
   interface assetB {
     USDT: any;
     USDC: any;
@@ -1176,6 +1202,139 @@ const YourBorrowModal = ({
         );
         break;
 
+        case "Convert to borrow market":
+          return (
+            <Box
+              bg="#101216"
+              borderRadius="6px"
+              p="1rem"
+              border="1px solid #2B2F35"
+              mt="1.5rem"
+              mb="1.5rem"
+            >
+              <Box display="flex" justifyContent="space-between" mb="0.2rem">
+                <Box display="flex">
+                  <Text
+                    color="#6A737D"
+                    fontSize="12px"
+                    fontWeight="400"
+                    fontStyle="normal"
+                  >
+                    est conversion:{" "}
+                  </Text>
+                  <Tooltip
+                    hasArrow
+                    placement="right-start"
+                    boxShadow="dark-lg"
+                    label="all the assets to the market"
+                    bg="#24292F"
+                    fontSize={"smaller"}
+                    fontWeight={"thin"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                  >
+                    <Box ml="0.1rem" mt="0.1rem">
+                      <InfoIcon />
+                    </Box>
+                  </Tooltip>
+                </Box>
+                <Box
+                  display="flex"
+                  gap="2"
+                  color="#6A737D"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  <Box display="flex" gap="2px">
+                    <Box mt="2px">
+                      <SmallEth />
+                    </Box>
+                    <Text>1.23</Text>
+                  </Box>
+                  <Box display="flex" gap="2px">
+                    <Box mt="2px">
+                      <SmallUsdt />
+                    </Box>
+                    <Text>1.23</Text>
+                  </Box>
+                </Box>
+              </Box>
+              <Box display="flex" justifyContent="space-between" mb="0.2rem">
+                <Box display="flex">
+                  <Text
+                    color="#6A737D"
+                    fontSize="12px"
+                    fontWeight="400"
+                    fontStyle="normal"
+                  >
+                    Fees:{" "}
+                  </Text>
+                  <Tooltip
+                    hasArrow
+                    placement="right-start"
+                    boxShadow="dark-lg"
+                    label="all the assets to the market"
+                    bg="#24292F"
+                    fontSize={"smaller"}
+                    fontWeight={"thin"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                  >
+                    <Box ml="0.1rem" mt="0.1rem">
+                      <InfoIcon />
+                    </Box>
+                  </Tooltip>
+                </Box>
+                <Text
+                  color="#6A737D"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  0.1%
+                </Text>
+              </Box>
+              <Box display="flex" justifyContent="space-between" mb="0.2rem">
+                <Box display="flex">
+                  <Text
+                    color="#6A737D"
+                    fontSize="12px"
+                    fontWeight="400"
+                    fontStyle="normal"
+                  >
+                    Gas estimate:{" "}
+                  </Text>
+                  <Tooltip
+                    hasArrow
+                    placement="right-start"
+                    boxShadow="dark-lg"
+                    label="all the assets to the market"
+                    bg="#24292F"
+                    fontSize={"smaller"}
+                    fontWeight={"thin"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                  >
+                    <Box ml="0.1rem" mt="0.1rem">
+                      <InfoIcon />
+                    </Box>
+                  </Tooltip>
+                </Box>
+                <Text
+                  color="#6A737D"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  5.56%
+                </Text>
+              </Box>
+            </Box>
+          );
+          break;
+          
+
       default:
         break;
     }
@@ -1185,7 +1344,7 @@ const YourBorrowModal = ({
     dispatch(setModalDropdown(dropdownName));
   };
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-  const actions = ["Spend Borrow", "Repay Borrow", "Zero Repay"];
+  const actions = ["Spend Borrow","Convert to borrow market", "Repay Borrow", "Zero Repay"];
   // const borrowIds = [
   //   "ID - 123456",
   //   "ID - 123457",
@@ -1596,7 +1755,22 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Box>
-                        <Box
+                        {currentAction=="Convert to borrow market" ?                        <Box
+                          display="flex"
+                          border="1px"
+                          borderColor="#2B2F35"
+                          justifyContent="space-between"
+                          py="2"
+                          pl="3"
+                          pr="3"
+                          borderRadius="md"
+                          className="navbar"
+                          as="button"
+                        >
+                          <Box display="flex" gap="1">
+                            {currentBorrowId1}
+                          </Box>
+                        </Box>:                        <Box
                           display="flex"
                           border="1px"
                           borderColor="#2B2F35"
@@ -1694,7 +1868,7 @@ const YourBorrowModal = ({
                               })}
                             </Box>
                           )}
-                        </Box>
+                        </Box>}
                       </Box>
                       <Box display="flex" flexDirection="column" gap="1">
                         <Box display="flex">
@@ -1804,14 +1978,15 @@ const YourBorrowModal = ({
                               </Box>
                             )} */}
                         </Box>
-                        <Text textAlign="right" fontSize="xs" mt="0.2rem">
+                        {currentAction=="Convert to borrow market" ? "":                        <Text textAlign="right" fontSize="xs" mt="0.2rem">
                           Borrow Balance: {borrowAmount}
                           <Text as="span" color="#8B949E" ml="0.2rem">
                             {currentBorrowMarketCoin1}
                           </Text>
-                        </Text>
+                        </Text>}
+
                       </Box>
-                      {currentAction !== "Spend Borrow" && (
+                      {currentAction !== "Spend Borrow" && currentAction!="Convert to borrow market" && (
                         <Box
                           display="flex"
                           flexDirection="column"
@@ -2539,7 +2714,10 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            handleRepayBorrow();
+                            if(transactionStarted==false){
+
+                              handleRepayBorrow();
+                            }
                           }}
                         >
                           <AnimatedButton
@@ -2601,6 +2779,60 @@ const YourBorrowModal = ({
                     ) : (
                       ""
                     )}
+                    {currentAction=="Convert to borrow market" ?
+                    <Box onClick={()=>{
+                      setTransactionStarted(true)
+                      if(transactionStarted==false){
+                        handleRevertTransaction();
+                      }
+                    }}>
+                      <AnimatedButton
+                      bgColor="#101216"
+                      // bgColor="red"
+                      // p={0}
+                      color="#8B949E"
+                      size="sm"
+                      width="100%"
+                      mb="1.5rem"
+                      border="1px solid #8B949E"
+                      // _active={{color:"black",bg:"white"}}
+                      labelSuccessArray={[
+                        "Performing prechecks.",
+                        "Processing self liquidation.",
+                        "Borrow closed successfully.",
+                        "Determine rToken balance.",
+                        "Transferring rtokens to your account.",
+                        // <ErrorButton errorText="Transaction failed" />,
+                        // <ErrorButton errorText="Copy error!" />,
+                        <SuccessButton
+                          key={"successButton"}
+                          successText={"Self liqudidation successfull."}
+                        />,
+                      ]}
+                      labelErrorArray={[
+                        "Performing prechecks.",
+                        "Processing self liquidation.",
+                        <ErrorButton
+                          errorText="Transaction failed"
+                          key={"error1"}
+                        />,
+                        <ErrorButton
+                          errorText="Copy error!"
+                          key={"error2"}
+                        />,
+                      ]}
+                      _disabled={{ bgColor: "white", color: "black" }}
+                      isDisabled={transactionStarted == true}
+                      currentTransactionStatus={currentTransactionStatus}
+                      setCurrentTransactionStatus={
+                        setCurrentTransactionStatus
+                      }
+                    >
+                      convert to borrow market
+                    </AnimatedButton>
+                    </Box>
+                    :""
+                    }
                     {currentAction == "Zero Repay" ? (
                       repayAmount == 0 ? (
                         <Box

@@ -1204,7 +1204,7 @@ const SupplyModal = ({
                       ]}
                       labelErrorArray={[
                         <ErrorButton
-                          errorText="Transaction failed"
+                          errorText="Transaction cancelled"
                           key={"error1"}
                         />,
                         <ErrorButton errorText="Copy error!" key={"error2"} />,
