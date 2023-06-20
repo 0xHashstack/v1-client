@@ -363,7 +363,7 @@ const DashboardLeft = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      totalSupplies[idx]
+                      numberFormatter(totalSupplies[idx])
                     )}
                   </Box>
                 </Td>
@@ -375,7 +375,7 @@ const DashboardLeft = ({
                   overflow={"hidden"}
                   textAlign={"center"}
                 >
-                  <Text
+                  <Box
                     width="100%"
                     height="100%"
                     display="flex"
@@ -396,7 +396,7 @@ const DashboardLeft = ({
                     ) : (
                       supplyAPRs[idx] + "%"
                     )}
-                  </Text>
+                  </Box>
                 </Td>
                 <Td
                   width={"4%"}

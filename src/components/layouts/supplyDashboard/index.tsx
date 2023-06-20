@@ -15,6 +15,7 @@ import {
   Button,
   Spinner,
   useTimeout,
+  Skeleton,
 } from "@chakra-ui/react";
 
 import BTCLogo from "@/assets/images/stakeIcon.svg";
@@ -26,6 +27,7 @@ import YourSupplyModal from "@/components/modals/yourSupply";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { useAccount } from "@starknet-react/core";
 import { IDeposit } from "@/Blockchain/interfaces/interfaces";
+import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 
 export interface ICoin {
   name: string;
@@ -121,13 +123,27 @@ const SupplyDashboard = ({
       console.log("all deposits calling started");
       try {
         const supply = await getUserDeposits(address || "");
-        setSupplies(supply);
-        // console.log("supplies", supply);
+        setSupplies([supply[2], supply[3], supply[0], supply[1], supply[4]]);
+        console.log("supplies", supply);
       } catch (err) {
         console.log("supplies", err);
       }
     };
     getSupply();
+  }, [supplies]);
+  const [protocolStats, setProtocolStats]: any = useState([]);
+  useEffect(() => {
+    const getMarketData = async () => {
+      try {
+        const stats = await getProtocolStats();
+        console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
+        // const temp: any = ;
+        setProtocolStats([stats[2], stats[3], stats[0], stats[1], stats[4]]);
+      } catch (error) {
+        console.log("error on getting protocol stats");
+      }
+    };
+    getMarketData();
   }, []);
 
   useEffect(() => {
@@ -338,7 +354,17 @@ const SupplyDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      {supply.ExchangeRate}
+                      {!protocolStats || !protocolStats[idx] ? (
+                        <Skeleton
+                          width="4rem"
+                          height="1.4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      ) : (
+                          protocolStats[idx]?.exchangeRateRtokenToUnderlying + "%"
+                      )}
                     </Text>
                   </Td>
                   <Td
@@ -349,7 +375,7 @@ const SupplyDashboard = ({
                     overflow={"hidden"}
                     textAlign={"center"}
                   >
-                    <Text
+                    <Box
                       width="100%"
                       height="100%"
                       display="flex"
@@ -359,8 +385,18 @@ const SupplyDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      {supply.SupplyApr}
-                    </Text>
+                      {!protocolStats || !protocolStats[idx] ? (
+                        <Skeleton
+                          width="4rem"
+                          height="1.4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      ) : (
+                        protocolStats[idx]?.supplyRate + "%"
+                      )}
+                    </Box>
                   </Td>
                   <Td
                     width={"12.5%"}

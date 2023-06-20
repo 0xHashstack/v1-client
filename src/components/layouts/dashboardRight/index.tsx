@@ -15,6 +15,7 @@ import { Skeleton } from "@chakra-ui/react";
 import Image from "next/image";
 import BorrowModal from "@/components/modals/borrowModal";
 import TradeModal from "@/components/modals/tradeModal";
+import numberFormatter from "@/utils/functions/numberFormatter";
 export interface ICoin {
   name: string;
   symbol: string;
@@ -215,7 +216,7 @@ const DashboardRight = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      totalBorrows[idx]
+                      numberFormatter(totalBorrows[idx])
                     )}
                   </Box>
                 </Td>
