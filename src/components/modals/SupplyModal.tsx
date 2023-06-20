@@ -134,7 +134,7 @@ const SupplyModal = ({
     ETH: any;
     DAI: any;
   }
-  const walletBalances: assetB = {
+  const walletBalances: assetB | any = {
     USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
     USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
     BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
@@ -142,7 +142,7 @@ const SupplyModal = ({
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
 
-  const assetBalance: assetB = {
+  const assetBalance: assetB | any = {
     USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
     USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
     BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
@@ -317,7 +317,7 @@ const SupplyModal = ({
         // console.log("Status transaction", deposit);
         console.log(isSuccessDeposit, "success ?");
       }
-    } catch (err) {
+    } catch (err: any) {
       // setTransactionFailed(true);
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
@@ -1202,8 +1202,11 @@ const SupplyModal = ({
                         />,
                       ]}
                       labelErrorArray={[
-                        <ErrorButton errorText="Transaction failed" key={"error1"} />,
-                              <ErrorButton errorText="Copy error!" key={"error2"} />,
+                        <ErrorButton
+                          errorText="Transaction failed"
+                          key={"error1"}
+                        />,
+                        <ErrorButton errorText="Copy error!" key={"error2"} />,
                       ]}
                       // transactionStarted={(depostiTransactionHash!="" || transactionFailed==true)}
                       _disabled={{ bgColor: "white", color: "black" }}

@@ -13,7 +13,7 @@ export const getDTokenFromName = (name: string) => {
   return contractsEnv.dTOKENS.find((dToken) => dToken.name == name);
 };
 
-export const tokenAddressMap: ItokenAddressMap = {
+export const tokenAddressMap: ItokenAddressMap | any = {
   BTC: getTokenFromName("BTC")?.address,
   USDT: getTokenFromName("USDT")?.address,
   USDC: getTokenFromName("USDC")?.address,
@@ -33,7 +33,7 @@ export const tokenAddressMap: ItokenAddressMap = {
   dDAI: getDTokenFromName("dDAI")?.address,
 };
 
-export const tokenDecimalsMap: ItokenDecimalsMap = {
+export const tokenDecimalsMap: ItokenDecimalsMap | any = {
   BTC: getTokenFromName("BTC")?.decimals,
   USDT: getTokenFromName("USDT")?.decimals,
   USDC: getTokenFromName("USDC")?.decimals,

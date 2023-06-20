@@ -14,7 +14,7 @@ import { Token } from "@/Blockchain/interfaces/interfaces";
 const useDeposit = () => {
   const { address: account } = useAccount();
   const [depositAmount, setDepositAmount] = useState(0);
-  const [asset, setAsset] = useState<Token>("USDT");
+  const [asset, setAsset] = useState<Token | any>("USDT");
   //   const [depositTransHash, setDepositTransHash] = useState("");
 
   //   const recieptData = useWaitForTransaction({ hash: depositTransHash });

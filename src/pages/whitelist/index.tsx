@@ -27,7 +27,7 @@ const WhitelistModal = () => {
     // });
     try {
       const result = await OffchainAPI.setWhitelistData(
-        accountAddress,
+        accountAddress || "",
         email,
         name
       );

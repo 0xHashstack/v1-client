@@ -45,6 +45,7 @@ import TableYagiLogo from "../layouts/table/tableIcons/yagiLogo";
 import ArrowUp from "@/assets/icons/arrowup";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { useAccount } from "@starknet-react/core";
+import { IDeposit } from "@/Blockchain/interfaces/interfaces";
 
 const StakeModal = ({
   borrowIDCoinMap,
@@ -82,12 +83,12 @@ const StakeModal = ({
     // Rest of your code using the 'result' variable
   }, [currentId]);
 
-  const [userDeposits, setUserDeposits] = useState([]);
+  const [userDeposits, setUserDeposits] = useState<IDeposit[]>([]);
   const { address } = useAccount();
   useEffect(() => {
     try {
       const fetchUserDeposits = async () => {
-        const userDeposit = await getUserDeposits(address);
+        const userDeposit = await getUserDeposits(address || "");
         setUserDeposits(userDeposit);
       };
       fetchUserDeposits();

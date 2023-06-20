@@ -111,7 +111,7 @@ const YourSupplyModal = ({
     ETH: any;
     DAI: any;
   }
-  const walletBalances: assetB = {
+  const walletBalances: assetB | any = {
     USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
     USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
     BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
@@ -413,7 +413,7 @@ const YourSupplyModal = ({
       }
       dispatch(setTransactionStatus("success"));
       console.log(withdraw);
-    } catch (err) {
+    } catch (err: any) {
       console.log("withraw", err);
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
@@ -437,7 +437,7 @@ const YourSupplyModal = ({
       setDepositTransHash(addSupply.transaction_hash);
       dispatch(setTransactionStatus("success"));
       console.log("addSupply", addSupply);
-    } catch (err) {
+    } catch (err: any) {
       console.log("Unable to add supply ", err);
       dispatch(setTransactionStatus("failed"));
       const toastContent = (

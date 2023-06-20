@@ -6,7 +6,7 @@ import { useAccount, useContractWrite } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 
 const useWithdrawDeposit = () => {
-  const [asset, setAsset] = useState<NativeToken>("BTC");
+  const [asset, setAsset] = useState<NativeToken | any>("BTC");
   const [rTokenShares, setRTokenShares] = useState(0);
   const { address: owner } = useAccount();
 
@@ -32,13 +32,10 @@ const useWithdrawDeposit = () => {
       entrypoint: "withdraw_deposit",
       calldata: [
         tokenAddressMap[asset],
-        etherToWeiBN(
-          rTokenShares,
-          asset
-        ).toString(),
+        etherToWeiBN(rTokenShares, asset).toString(),
         "0",
         owner,
-        owner
+        owner,
       ],
     },
   });

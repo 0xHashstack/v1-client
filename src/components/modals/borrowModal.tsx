@@ -68,6 +68,7 @@ import {
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
 import CopyToClipboard from "react-copy-to-clipboard";
+import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [sliderValue, setSliderValue] = useState<number>(0);
@@ -86,7 +87,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     ETH: any;
     DAI: any;
   }
-  const walletBalances: assetB = {
+  const walletBalances: assetB | any = {
     USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
     USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
     BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
@@ -213,7 +214,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
         dispatch(setTransactionStatus("success"));
         setBorrowTransHash(borrow?.transaction_hash);
       }
-    } catch (err) {
+    } catch (err: any) {
       dispatch(setTransactionStatus("failed"));
       console.log("handle borrow", err);
       const toastContent = (
@@ -332,7 +333,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   };
 
   const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
-  const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
     coin ? coin.name : "BTC"
@@ -370,7 +371,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   //   setCollateralAmount("4000");
   // }, []);
 
-  const rTokens = ["rBTC", "rUSDT", "rETH"];
+  const rTokens: RToken[] = ["rBTC", "rUSDT", "rETH"];
   return (
     <Box>
       <Button {...restProps} onClick={onOpen}>
@@ -482,7 +483,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {rTokens.map((coin: string, index: number) => {
+                      {rTokens.map((coin: RToken, index: number) => {
                         return (
                           <Box
                             key={index}
@@ -495,7 +496,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                             onClick={() => {
                               setCurrentCollateralCoin(coin);
                               setRToken(coin);
-                              setCollateralMarket(coin);
+                              // setCollateralMarket(coin);
                             }}
                           >
                             {coin === currentCollateralCoin && (
@@ -538,7 +539,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                           marginLeft: "5px",
                         }}
                       />
-                      {coins.map((coin: string, index: number) => {
+                      {coins.map((coin: NativeToken, index: number) => {
                         return (
                           <Box
                             key={index}
@@ -551,7 +552,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                             onClick={() => {
                               setCurrentCollateralCoin(coin);
                               setCollateralMarket(coin);
-                              setRToken(coin);
+                              // setRToken(coin);
                               setwalletBalance(
                                 walletBalances[coin]?.statusBalanceOf ===
                                   "success"

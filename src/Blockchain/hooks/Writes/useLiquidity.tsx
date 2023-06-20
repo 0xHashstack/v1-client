@@ -7,8 +7,8 @@ import { NativeToken, Token } from "@/Blockchain/interfaces/interfaces";
 
 const useLiquidity = () => {
   const [liquidityLoanId, setLiquidityLoanId] = useState<string>("");
-  const [toMarketA, setToMarketA] = useState<NativeToken>("USDT");
-  const [toMarketB, setToMarketB] = useState<NativeToken>("USDT");
+  const [toMarketA, setToMarketA] = useState<NativeToken | any>("USDT");
+  const [toMarketB, setToMarketB] = useState<NativeToken | any>("USDT");
 
   const {
     data: dataJediSwap_addLiquidity,

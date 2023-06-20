@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {
   Modal,
   ModalOverlay,
@@ -447,7 +449,7 @@ const YourBorrowModal = ({
       console.log(zeroRepay);
       dispatch(setTransactionStatus("success"));
       console.log("zero repay success");
-    } catch (err) {
+    } catch (err: any) {
       console.log("zero repay failed - ", err);
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
@@ -493,7 +495,7 @@ const YourBorrowModal = ({
         console.log(mySwapLiquidity);
         dispatch(setTransactionStatus("success"));
       }
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
@@ -521,7 +523,7 @@ const YourBorrowModal = ({
 
       console.log("add collateral - ", addCollateral);
       dispatch(setTransactionStatus("success"));
-    } catch (err) {
+    } catch (err: any) {
       console.log("add collateral error");
       dispatch(setTransactionStatus("failed"));
       const toastContent = (

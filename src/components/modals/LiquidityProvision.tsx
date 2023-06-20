@@ -268,7 +268,7 @@ const LiquidityProvisionModal = ({
       console.log(liquidity);
       setDepositTransHash(liquidity?.transaction_hash);
       dispatch(setTransactionStatus("success"));
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
