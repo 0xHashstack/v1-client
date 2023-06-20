@@ -506,6 +506,8 @@ const YourBorrowModal = ({
         dispatch(setTransactionStatus("success"));
       } else if (currentDapp == "mySwap") {
         const tradeMySwap = await writeAsyncmySwap_swap();
+        setDepositTransHash(tradeMySwap?.transaction_hash);
+
         console.log(tradeMySwap);
         dispatch(setTransactionStatus("success"));
       }
@@ -524,6 +526,7 @@ const YourBorrowModal = ({
       } else if (currentDapp == "mySwap") {
         const mySwapLiquidity = await writeAsyncmySwap_addLiquidity();
         console.log(mySwapLiquidity);
+        setDepositTransHash(mySwapLiquidity?.transaction_hash);
         dispatch(setTransactionStatus("success"));
       }
     } catch (err: any) {
