@@ -78,7 +78,7 @@ const NavButtons = ({
               {option.path === "market" && pathname !== "/market" && (
                 <Box marginRight={1.5}>
                   <Image
-                    src={"/arrowNavLeft.svg"}
+                    src={"./arrowNavLeft.svg"}
                     alt="Arrow Navigation Left"
                     width="6"
                     height="6"

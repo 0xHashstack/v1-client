@@ -53,7 +53,7 @@ export default function Home() {
   const dispatch = useDispatch();
   const walletBalance = useSelector(selectWalletBalance);
   useEffect(() => {
-    const interval = setInterval(refresh, 100);
+    const interval = setInterval(refresh, 1000);
     return () => clearInterval(interval);
   }, [refresh]);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
@@ -123,7 +123,7 @@ export default function Home() {
     }
     // console.log("account home", address, status);
   }, [status]);
-  // console.log("available", available);
+  console.log("available", available);
   return (
     <Box
       display="flex"
@@ -180,7 +180,8 @@ export default function Home() {
               </Text>
             </Box>
           </Box>
-          {available[0]?.options?.id == "braavos" ? (
+          {available[0]?.options?.id == "braavos" ||
+          available[1]?.options?.id == "braavos" ? (
             <Box
               w="full"
               backgroundColor="#101216"
@@ -261,7 +262,7 @@ export default function Home() {
               </Text>
               <Box p="1" mr="16px">
                 <Image
-                  src={ArgentXLogo}
+                  src="./ArgentXlogo.svg"
                   alt="Picture of the author"
                   width="15"
                   height="15"
@@ -292,7 +293,7 @@ export default function Home() {
                 </Text>
                 <Box p="1" mr="16px">
                   <Image
-                    src={ArgentXLogo}
+                    src="./ArgentXlogo.svg"
                     alt="Picture of the author"
                     width="15"
                     height="15"
