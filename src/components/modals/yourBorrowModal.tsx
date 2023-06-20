@@ -2680,8 +2680,6 @@ const YourBorrowModal = ({
                               />,
                             ]}
                             labelErrorArray={[
-                              "Performing pre-checks",
-                              "Processing the spend borrow",
                               <ErrorButton
                                 errorText="Transaction failed"
                                 key={"error1"}
@@ -2751,8 +2749,6 @@ const YourBorrowModal = ({
                               />,
                             ]}
                             labelErrorArray={[
-                              "Calculating the outstanding borrow amount.",
-                              "transferring the repay amount to the borrow vault.",
                               <ErrorButton
                                 errorText="Transaction failed"
                                 key={"error1"}
@@ -2817,8 +2813,6 @@ const YourBorrowModal = ({
                         />,
                       ]}
                       labelErrorArray={[
-                        "Performing prechecks.",
-                        "Processing self liquidation.",
                         <ErrorButton
                           errorText="Transaction failed"
                           key={"error1"}
@@ -2874,8 +2868,6 @@ const YourBorrowModal = ({
                               />,
                             ]}
                             labelErrorArray={[
-                              "Performing prechecks.",
-                              "Processing self liquidation.",
                               <ErrorButton
                                 errorText="Transaction failed"
                                 key={"error1"}
@@ -3924,8 +3916,6 @@ const YourBorrowModal = ({
                             />,
                           ]}
                           labelErrorArray={[
-                            "Processing",
-                            "Transferring collateral to supply vault.",
                             <ErrorButton
                               errorText="Transaction failed"
                               key={"error1"}
