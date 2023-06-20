@@ -124,7 +124,7 @@ const SupplyDashboard = ({
       try {
         const supply = await getUserDeposits(address || "");
         setSupplies([supply[2], supply[3], supply[0], supply[1], supply[4]]);
-        console.log("supplies", supply);
+        // console.log("supplies", supply);
       } catch (err) {
         console.log("supplies", err);
       }
@@ -136,7 +136,7 @@ const SupplyDashboard = ({
     const getMarketData = async () => {
       try {
         const stats = await getProtocolStats();
-        console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
+        // console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
         // const temp: any = ;
         setProtocolStats([stats[2], stats[3], stats[0], stats[1], stats[4]]);
       } catch (error) {
@@ -149,18 +149,18 @@ const SupplyDashboard = ({
   useEffect(() => {
     let temp: any = [];
     supplies.map((coin: any) => {
-      if (!temp.includes(coin.market)) {
-        temp.push(coin.market);
+      if(coin?.rTokenAmountParsed!=0){
+        temp.push(coin?.rToken);
       }
     });
     setSupplyMarkets(temp);
-  }, []);
+  }, [supplies]);
   const { address } = useAccount();
   useEffect(() => {
     try {
       const supply = async () => {
         const userSupply = await getUserDeposits(address || "");
-        console.log("userDeposits", userSupply);
+        // console.log("userDeposits", userSupply);
       };
       // supply();
     } catch (err) {

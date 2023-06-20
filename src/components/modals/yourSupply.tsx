@@ -93,6 +93,7 @@ const YourSupplyModal = ({
   setcurrentSelectedWithdrawlCoin,
   coins,
 }: any) => {
+  // console.log(coins,"coins in supply modal")
   // console.log(currentSelectedSupplyCoin,"coin in your suppply");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
@@ -103,6 +104,7 @@ const YourSupplyModal = ({
   // const [inputWithdrawlAmount, setinputWithdrawlAmount] = useState(0);
   const [sliderValue2, setSliderValue2] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
+  // const [coins, setCoins] = useState([])
   // const walletBalances = useSelector(selectAssetWalletBalance);
   interface assetB {
     USDT: any;
@@ -117,6 +119,11 @@ const YourSupplyModal = ({
     BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+    rBTC:useBalanceOf(tokenAddressMap["rBTC"] || ""),
+    rUSDT:useBalanceOf(tokenAddressMap["rUSDT"] || ""),
+    rUSDC:useBalanceOf(tokenAddressMap["rUSDC"] || ""),
+    rETH:useBalanceOf(tokenAddressMap["rETH"] || ""),
+    rDAI:useBalanceOf(tokenAddressMap["rDAI"] || "")
   };
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
@@ -248,6 +255,21 @@ const YourSupplyModal = ({
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
+        case "rBTC":
+          return <BTCLogo height={"16px"} width={"16px"} />;
+          break;
+        case "rUSDC":
+          return <USDCLogo height={"16px"} width={"16px"} />;
+          break;
+        case "rUSDT":
+          return <USDTLogo height={"16px"} width={"16px"} />;
+          break;
+        case "rETH":
+          return <ETHLogo height={"16px"} width={"16px"} />;
+          break;
+        case "rDAI":
+          return <DAILogo height={"16px"} width={"16px"} />;
+          break;
       case "Jediswap":
         return <JediswapLogo />;
         break;
