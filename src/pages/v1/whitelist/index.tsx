@@ -205,7 +205,7 @@ const WhitelistModal = () => {
                         //   setConnectWallet(false);
                         // }}
                         alt=""
-                        src={"./starknetLogoBordered.svg"}
+                        src={"/starknetLogoBordered.svg"}
                         width="16"
                         height="16"
                         style={{ cursor: "pointer" }}
