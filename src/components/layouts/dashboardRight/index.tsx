@@ -149,7 +149,7 @@ const DashboardRight = ({
                   <HStack gap={1.5}>
                     <Box height="32px" width="32px">
                       <Image
-                        src={`./${coin.name}.svg`}
+                        src={`/${coin.name}.svg`}
                         alt="Picture of the author"
                         width="32"
                         height="32"

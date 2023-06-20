@@ -321,7 +321,7 @@ const SupplyDashboard = ({
                           // justifyContent="center"
                         >
                           <Image
-                            src={`./${supply?.rToken?.slice(1)}.svg`}
+                            src={`/${supply?.rToken?.slice(1)}.svg`}
                             alt="Picture of the author"
                             width="32"
                             height="32"

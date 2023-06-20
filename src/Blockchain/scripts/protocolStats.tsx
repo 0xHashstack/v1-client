@@ -1,7 +1,7 @@
 import { Contract, number, uint256 } from "starknet";
 import { getProvider, getTokenFromAddress, metricsContractAddress } from "../stark-constants";
 import metricsAbi from "../abis/metrics_abi.json";
-import { IMarketInfo, IProtocolReserves, NativeToken } from "../interfaces/interfaces";
+import { IMarketInfo, IProtocolReserves, NativeToken, Token } from "../interfaces/interfaces";
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
 
 function parseProtocolStats(market_infos: any): IMarketInfo[] {
@@ -13,9 +13,18 @@ function parseProtocolStats(market_infos: any): IMarketInfo[] {
       supplyRate: parseAmount(uint256.uint256ToBN(marketData?.supply_rate).toString(), 2),
       stakingRate: parseAmount(uint256.uint256ToBN(marketData?.staking_rate).toString(), 2),
 
-      totalSupply: uint256.uint256ToBN(marketData?.total_supply).toString(),
-      lentAssets: uint256.uint256ToBN(marketData?.lent_assets).toString(),
-      totalBorrow: uint256.uint256ToBN(marketData?.total_borrow).toString(),
+      totalSupply: weiToEtherNumber(
+        uint256.uint256ToBN(marketData?.total_supply).toString(),
+        getTokenFromAddress(number.toHex(marketData?.token_address))?.name as Token
+      ),
+      lentAssets: weiToEtherNumber(
+       uint256.uint256ToBN(marketData?.lent_assets).toString(),
+       getTokenFromAddress(number.toHex(marketData?.token_address))?.name as Token
+      ),
+      totalBorrow: weiToEtherNumber(
+        uint256.uint256ToBN(marketData?.total_borrow).toString(),
+        getTokenFromAddress(number.toHex(marketData?.token_address))?.name as Token
+      ),
       utilisationPerMarket: parseAmount(uint256
         .uint256ToBN(marketData?.utilisation_per_market)
         .toString(),

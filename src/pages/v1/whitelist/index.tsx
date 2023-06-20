@@ -4,7 +4,7 @@ import "react-toastify/dist/ReactToastify.css";
 import React, { useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import starknetLogoBordered from "../../assets/images/starknetLogoBordered.svg";
-import OffchainAPI from "../../services/offchainapi.service";
+import OffchainAPI from "../../../services/offchainapi.service";
 import { useAccount } from "@starknet-react/core";
 import PageCard from "@/components/layouts/pageCard";
 import { Box, Text } from "@chakra-ui/react";
@@ -205,7 +205,7 @@ const WhitelistModal = () => {
                         //   setConnectWallet(false);
                         // }}
                         alt=""
-                        src={"./starknetLogoBordered.svg"}
+                        src={"/starknetLogoBordered.svg"}
                         width="16"
                         height="16"
                         style={{ cursor: "pointer" }}

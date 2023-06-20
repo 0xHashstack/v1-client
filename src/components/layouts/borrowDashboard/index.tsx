@@ -360,7 +360,7 @@ const BorrowDashboard = ({
                         >
                           <Image
                             // src={`./BTC.svg`}
-                            src={`${borrow.loanMarket.slice(1)}.svg`}
+                            src={`/${borrow.loanMarket.slice(1)}.svg`}
                             alt="Picture of the author"
                             width="32"
                             height="32"
@@ -445,7 +445,7 @@ const BorrowDashboard = ({
                         justifyContent="center"
                       >
                         <Image
-                          src={`./${borrow.collateralMarket.slice(1)}.svg`}
+                          src={`/${borrow.collateralMarket.slice(1)}.svg`}
                           alt="Picture of the author"
                           width="32"
                           height="32"
@@ -517,7 +517,7 @@ const BorrowDashboard = ({
                         >
                           <Box minWidth={"16px"}>
                             <Image
-                              src={`./${borrow.l3App}.svg`}
+                              src={`/${borrow.l3App}.svg`}
                               alt="Picture of the author"
                               width="16"
                               height="16"
@@ -546,7 +546,7 @@ const BorrowDashboard = ({
                               // bgColor={"blue"}
                             >
                               <Image
-                                src={`./${borrow.underlyingMarket}.svg`}
+                                src={`/${borrow.underlyingMarket}.svg`}
                                 alt="Picture of the author"
                                 width="16"
                                 height="16"
@@ -559,7 +559,7 @@ const BorrowDashboard = ({
                               // bgColor={"blue"}
                             >
                               <Image
-                                src={`./${borrow.underlyingMarket}.svg`}
+                                src={`/${borrow.underlyingMarket}.svg`}
                                 alt="Picture of the author"
                                 width="16"
                                 height="16"
