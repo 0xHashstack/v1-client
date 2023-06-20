@@ -4,6 +4,8 @@ import mySwapAbi from "../abis/my_swap_abi.json";
 import { getProvider, l3DiamondAddress } from "../stark-constants";
 import { tokenAddressMap } from "../utils/addressServices";
 
+
+// before interaction
 export async function getJediEstimateLiquiditySplit(loanId, tokenA, tokenB) {
   let tokenAAddress = tokenAddressMap[tokenA];
   let tokenBAddress = tokenAddressMap[tokenB];
@@ -21,6 +23,7 @@ export async function getJediEstimateLiquiditySplit(loanId, tokenA, tokenB) {
   // )
 }
 
+// before interaction
 export async function getJediEstimatedLpAmountOut(loanId, tokenA, tokenB) {
   let tokenAAddress = tokenAddressMap[tokenA];
   let tokenBAddress = tokenAddressMap[tokenB];
@@ -38,6 +41,7 @@ export async function getJediEstimatedLpAmountOut(loanId, tokenA, tokenB) {
   // )
 }
 
+// after interaction, in borrow screen, after getting getUserLoans
 export async function getJediEstimatedLiqALiqBfromLp(liquidity, pairAddress) {
   const provider = getProvider();
   const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);

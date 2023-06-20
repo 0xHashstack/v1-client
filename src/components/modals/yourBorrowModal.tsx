@@ -1546,11 +1546,11 @@ const YourBorrowModal = ({
   }, [toMarketA, toMarketB]);
 
   const fetchLiquiditySplit = async () => {
-    const split = await getJediEstimatedLpAmountOut(
-      currentBorrowId1.slice(5),
-      toMarketA,
-      toMarketB
-    );
+    // const split = await getJediEstimatedLpAmountOut(
+    //   currentBorrowId1.slice(5),
+    //   toMarketA,
+    //   toMarketB
+    // );
     console.log("toMarketSplit");
   };
 

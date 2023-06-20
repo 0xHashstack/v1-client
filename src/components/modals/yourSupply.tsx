@@ -222,7 +222,7 @@ const YourSupplyModal = ({
     statusDeposit,
   } = useDeposit();
   const {
-    asset,
+    asset, // this should be native token
     setAsset,
     rTokenShares: inputWithdrawlAmount,
     setRTokenShares: setinputWithdrawlAmount,
@@ -354,7 +354,7 @@ const YourSupplyModal = ({
     setCurrentSelectedSupplyCoin("BTC");
     setSupplyAsset("BTC");
     setcurrentSelectedWithdrawlCoin("BTC");
-    setAsset("");
+    setAsset("BTC");
     setIsChecked(true);
     setTransactionStarted(false);
     setWithdrawTransactionStarted(false);
@@ -375,7 +375,7 @@ const YourSupplyModal = ({
   }, [currentSelectedSupplyCoin]);
 
   useEffect(() => {
-    setAsset(currentSelectedWithdrawlCoin);
+    setAsset(currentSelectedWithdrawlCoin[0] == 'r' ? currentSelectedWithdrawlCoin.slice(1) : currentSelectedWithdrawlCoin);
   }, [currentSelectedWithdrawlCoin]);
 
   useEffect(() => {
@@ -1319,7 +1319,7 @@ const YourSupplyModal = ({
                                     pr="2"
                                     onClick={() => {
                                       setcurrentSelectedWithdrawlCoin(coin);
-                                      setAsset(coin);
+                                      setAsset(coin[0] == 'r' ? coin.slice(1) : coin);
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
