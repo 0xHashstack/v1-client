@@ -35,7 +35,7 @@ import Banner2 from "@/components/uiElements/loaders/Banner2";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Home() {
-  const { account, address, status } = useAccount();
+  const { account, address, status, isConnected } = useAccount();
   // const { data, isLoading, error, refetch } = useBalance({
   //   address
   // })
@@ -100,7 +100,14 @@ export default function Home() {
     // alert(status)
     // const storedAccount = localStorage.getItem("account");
     const hasVisited = localStorage.getItem("visited");
-
+    const walletConnected = localStorage.getItem("lastUsedConnector");
+    if (walletConnected == "braavos") {
+      disconnect();
+      connect(connectors[0]);
+    } else if (walletConnected == "argentX") {
+      disconnect();
+      connect(connectors[1]);
+    }
     if (!hasVisited) {
       // Set a local storage item to indicate the user has visited
       localStorage.setItem("visited", "true");
@@ -108,7 +115,7 @@ export default function Home() {
     // if (storedAccount) {
     //   router.push('./market')
     // }
-    if (status == "connected") {
+    if (status == "connected" || isConnected) {
       // alert(account?.address);
       // localStorage.setItem("account", JSON.stringify(account));
       // dispatch(setAccount(JSON.stringify(account)));
@@ -128,7 +135,8 @@ export default function Home() {
       // }
     }
     // console.log("account home", address, status);
-  }, [status]);
+  }, [status, isConnected]);
+
   return (
     <Box
       display="flex"
