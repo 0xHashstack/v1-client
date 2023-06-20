@@ -173,7 +173,7 @@ const Navbar = () => {
             marginRight="1.4em"
           >
             <Image
-              src="./hashstackLogo.svg"
+              src="/hashstackLogo.svg"
               alt="Navbar Logo"
               height="32"
               width="140"
@@ -217,7 +217,7 @@ const Navbar = () => {
                 />
               ) : (
                 <Image
-                  src={"./dashboardIcon.svg"}
+                  src={"/dashboardIcon.svg"}
                   alt="Picture of the author"
                   width="16"
                   height="16"
@@ -266,7 +266,7 @@ const Navbar = () => {
                 />
               ) : (
                 <Image
-                  src={"./contributeEarnIcon.svg"}
+                  src={"/contributeEarnIcon.svg"}
                   alt="Picture of the author"
                   width="16"
                   height="16"
@@ -307,7 +307,7 @@ const Navbar = () => {
               />
             ) : (
               <Image
-                src="./stake.svg"
+                src="/stake.svg"
                 alt="Picture of the author"
                 width="16"
                 height="16"
@@ -450,7 +450,7 @@ const Navbar = () => {
               /> */}
               {router.pathname == "/waitlist" || !transferDepositHover ? (
                 <Image
-                  src={"./transferDeposit.svg"}
+                  src={"/transferDeposit.svg"}
                   alt="Picture of the author"
                   width="20"
                   height="20"
@@ -458,7 +458,7 @@ const Navbar = () => {
                 />
               ) : (
                 <Image
-                  src={"./transferDepositDull.svg"}
+                  src={"/transferDepositDull.svg"}
                   alt="Picture of the author"
                   width="20"
                   height="20"
@@ -521,7 +521,7 @@ const Navbar = () => {
                     //   setConnectWallet(false);
                     // }}
                     alt=""
-                    src={"./starknetLogoBordered.svg"}
+                    src={"/starknetLogoBordered.svg"}
                     width="16"
                     height="16"
                     style={{ cursor: "pointer" }}
@@ -568,7 +568,7 @@ const Navbar = () => {
               <Box position="absolute" right="0.7rem">
                 {!navDropdowns.walletConnectionDropdown ? (
                   <Image
-                    src={"./connectWalletArrowDown.svg"}
+                    src={"/connectWalletArrowDown.svg"}
                     alt="arrow"
                     width="16"
                     height="16"
@@ -578,7 +578,7 @@ const Navbar = () => {
                   />
                 ) : (
                   <Image
-                    src={"./connectWalletArrowDown.svg"}
+                    src={"/connectWalletArrowDown.svg"}
                     alt="arrow"
                     width="16"
                     height="16"
@@ -687,7 +687,7 @@ const Navbar = () => {
                     marginRight="10px"
                   >
                     <Image
-                      src="./green.svg"
+                      src="/green.svg"
                       alt="Picture of the author"
                       height="6"
                       width="6"
@@ -704,7 +704,7 @@ const Navbar = () => {
                     }}
                   /> */}
                     <Image
-                      src={"./connectWalletArrowDown.svg"}
+                      src={"/connectWalletArrowDown.svg"}
                       alt="arrow"
                       width="16"
                       height="16"
@@ -765,7 +765,7 @@ const Navbar = () => {
                 //     direction: "./connectWalletArrowDown.svg",
                 //   });
                 // }}
-                src="./settingIcon.svg"
+                src="/settingIcon.svg"
                 alt="Picture of the author"
                 width="18"
                 height="18"

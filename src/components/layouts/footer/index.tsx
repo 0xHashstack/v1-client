@@ -24,7 +24,7 @@ const Footer = ({ block }: { block: number }) => {
         <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 3.9rem">
           <Box>
             <Image
-              src="./stableConnectionIcon.svg"
+              src="/stableConnectionIcon.svg"
               alt="Picture of the author"
               width={10}
               height={10}
@@ -49,7 +49,7 @@ const Footer = ({ block }: { block: number }) => {
               {block}
             </Text>
             <Image
-              src="latestSyncedBlockGreenDot.svg"
+              src="/latestSyncedBlockGreenDot.svg"
               alt="Picture of the author"
               width="6"
               height="6"
@@ -68,7 +68,7 @@ const Footer = ({ block }: { block: number }) => {
             gap={1}
           >
             <Image
-              src="latestSyncedBlockGreenDot.svg"
+              src="/latestSyncedBlockGreenDot.svg"
               alt="Picture of the author"
               width="6"
               height="6"

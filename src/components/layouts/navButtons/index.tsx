@@ -21,10 +21,10 @@ const NavButtons = ({
   const currentPage = useSelector(selectCurrentPage);
 
   const navOptions = [
-    { path: "market", label: "Market" },
-    { path: "spend-borrow", label: "Spend Borrow" },
-    { path: "your-supply", label: "Your Supply" },
-    { path: "your-borrow", label: "Your Borrow" },
+    { path: "v1/market", label: "Market" },
+    { path: "v1/spend-borrow", label: "Spend Borrow" },
+    { path: "v1/your-supply", label: "Your Supply" },
+    { path: "v1/your-borrow", label: "Your Borrow" },
   ];
 
   const router = useRouter();
@@ -78,7 +78,7 @@ const NavButtons = ({
               {option.path === "market" && pathname !== "/market" && (
                 <Box marginRight={1.5}>
                   <Image
-                    src={"./arrowNavLeft.svg"}
+                    src={"/arrowNavLeft.svg"}
                     alt="Arrow Navigation Left"
                     width="6"
                     height="6"

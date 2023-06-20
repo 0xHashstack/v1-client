@@ -322,7 +322,7 @@ const SpendTable = () => {
                           >
                             <Box my="1">
                               <Image
-                                src={`./${borrow.currentLoanMarket}.svg`}
+                                src={`/${borrow.currentLoanMarket}.svg`}
                                 alt="Picture of the author"
                                 width={16}
                                 height={16}
@@ -670,7 +670,7 @@ const SpendTable = () => {
                   pt="1px"
                 >
                   <Image
-                    src="./alertTrade.svg"
+                    src="/alertTrade.svg"
                     alt="Picture of the author"
                     width="46"
                     height="46"
@@ -715,7 +715,7 @@ const SpendTable = () => {
                   pt="1px"
                 >
                   <Image
-                    src="./alertTrade.svg"
+                    src="/alertTrade.svg"
                     alt="Picture of the author"
                     width="46"
                     height="46"
