@@ -1532,17 +1532,17 @@ const YourBorrowModal = ({
     console.log(toMarket);
   }, [currentPoolCoin]);
 
-  useEffect(() => {
-    console.log(
-      "marketsAB",
-      toMarketA,
-      toMarketB,
-      currentBorrowId1.slice(5),
-      tokenAddressMap[toMarketA],
-      tokenAddressMap[toMarketB]
-    );
-    fetchLiquiditySplit(toMarketA, toMarketB);
-  }, [toMarketA, toMarketB]);
+  // useEffect(() => {
+  //   console.log(
+  //     "marketsAB",
+  //     toMarketA,
+  //     toMarketB,
+  //     currentBorrowId1.slice(5),
+  //     tokenAddressMap[toMarketA],
+  //     tokenAddressMap[toMarketB]
+  //   );
+  //   fetchLiquiditySplit(toMarketA, toMarketB);
+  // }, [toMarketA, toMarketB]);
 
   const fetchLiquiditySplit = async () => {
     const split = await getJediEstimatedLpAmountOut(
