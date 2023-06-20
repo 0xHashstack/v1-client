@@ -42,7 +42,7 @@ function parseDeposits(deposits: any): IDeposit[] {
     };
     parsedDeposits.push(JSON.parse(JSON.stringify(deposit)));
   }
-  console.log("all deposits", parsedDeposits);
+  // console.log("all deposits", parsedDeposits);
   return parsedDeposits;
 }
 
