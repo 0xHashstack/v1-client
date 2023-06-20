@@ -446,6 +446,7 @@ const YourBorrowModal = ({
         throw new Error("loan or loanID issue");
       }
       const zeroRepay = await writeAsyncSelfLiquidate();
+      setDepositTransHash(zeroRepay?.transaction_hash);
       console.log(zeroRepay);
       dispatch(setTransactionStatus("success"));
       console.log("zero repay success");
@@ -472,6 +473,8 @@ const YourBorrowModal = ({
       // if(currentDapp)
       if (currentDapp == "Jediswap") {
         const trade = await writeAsyncJediSwap_swap();
+        setDepositTransHash(trade?.transaction_hash);
+
         console.log(trade);
         dispatch(setTransactionStatus("success"));
       } else if (currentDapp == "mySwap") {
@@ -488,6 +491,7 @@ const YourBorrowModal = ({
     try {
       if (currentDapp == "Jediswap") {
         const liquidity = await writeAsyncJediSwap_addLiquidity();
+        setDepositTransHash(liquidity?.transaction_hash);
         console.log(liquidity);
         dispatch(setTransactionStatus("success"));
       } else if (currentDapp == "mySwap") {
