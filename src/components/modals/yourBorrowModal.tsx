@@ -265,6 +265,7 @@ const YourBorrowModal = ({
         currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
       );
       const revert = await writeAsyncRevertInteractWithL3();
+      setCurrentTransactionStatus(revert?.transaction_hash);
       console.log(revert);
       dispatch(setTransactionStatus("success"));
     } catch (err) {
@@ -1532,24 +1533,24 @@ const YourBorrowModal = ({
     console.log(toMarket);
   }, [currentPoolCoin]);
 
-  // useEffect(() => {
-  //   console.log(
-  //     "marketsAB",
-  //     toMarketA,
-  //     toMarketB,
-  //     currentBorrowId1.slice(5),
-  //     tokenAddressMap[toMarketA],
-  //     tokenAddressMap[toMarketB]
-  //   );
-  //   fetchLiquiditySplit(toMarketA, toMarketB);
-  // }, [toMarketA, toMarketB]);
+  useEffect(() => {
+    console.log(
+      "marketsAB",
+      toMarketA,
+      toMarketB,
+      currentBorrowId1.slice(5),
+      tokenAddressMap[toMarketA],
+      tokenAddressMap[toMarketB]
+    );
+    fetchLiquiditySplit(toMarketA, toMarketB);
+  }, [toMarketA, toMarketB]);
 
   const fetchLiquiditySplit = async () => {
-    // const split = await getJediEstimatedLpAmountOut(
-    //   currentBorrowId1.slice(5),
-    //   toMarketA,
-    //   toMarketB
-    // );
+    const split = await getJediEstimatedLpAmountOut(
+      currentBorrowId1.slice(5),
+      toMarketA,
+      toMarketB
+    );
     console.log("toMarketSplit");
   };
 
