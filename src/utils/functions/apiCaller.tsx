@@ -4,7 +4,7 @@ export async function callWithRetries(func: any, args: any, retriesCount = 3) {
     i++
     try {
       return await func(...args)
-    } catch (ex) {
+    } catch (ex: any) {
       if (i === retriesCount) {
         console.error("call failed %s times. throwing error", retriesCount)
         throw ex

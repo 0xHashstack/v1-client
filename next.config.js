@@ -43,7 +43,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
-  basePath: '/v1',
+  // basePath: '/v1',
 };
 
 module.exports = nextConfig;
