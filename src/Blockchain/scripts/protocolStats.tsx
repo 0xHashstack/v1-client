@@ -69,15 +69,21 @@ export async function getProtocolStats() {
 
 function parseProtocolReserves(protocolReservesData: any): IProtocolReserves {
   let protocolReserves: IProtocolReserves = {
-    totalReserves: uint256
+    totalReserves: parseAmount(uint256
       .uint256ToBN(protocolReservesData?.total_reserves)
       .toString(),
-    availableReserves: uint256
+      8
+    ),
+    availableReserves: parseAmount(uint256
       .uint256ToBN(protocolReservesData?.available_reserves)
       .toString(),
-    avgAssetUtilisation: uint256
+      8
+    ),
+    avgAssetUtilisation: parseAmount(uint256
       .uint256ToBN(protocolReservesData?.avg_asset_utilisation)
       .toString(),
+      2
+    )
   };
   return protocolReserves;
 }
