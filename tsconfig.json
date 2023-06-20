@@ -24,6 +24,6 @@
     "**/*.tsx",
     "src/utils/functions/numberFormatter.tsx",
     "src/components/uiElements/buttons/AnimationButton.tsx"
-  ],
+, "src/utils/functions/apiCaller.tsx"  ],
   "exclude": ["node_modules"]
 }

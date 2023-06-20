@@ -52,8 +52,14 @@ export default function Home() {
   const whitelistHref = "/whitelist";
   const dispatch = useDispatch();
   const walletBalance = useSelector(selectWalletBalance);
+
+  const refreshCallWrapper = () => {
+    console.log("refresh called", available)
+    refresh();
+  };
+
   useEffect(() => {
-    const interval = setInterval(refresh, 100);
+    const interval = setInterval(refreshCallWrapper, 2000);
     return () => clearInterval(interval);
   }, [refresh]);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
@@ -123,7 +129,6 @@ export default function Home() {
     }
     // console.log("account home", address, status);
   }, [status]);
-  // console.log("available", available);
   return (
     <Box
       display="flex"
@@ -180,7 +185,7 @@ export default function Home() {
               </Text>
             </Box>
           </Box>
-          {available[0]?.options?.id == "braavos" ? (
+          {available?.[0]?.options?.id == "braavos" ? (
             <Box
               w="full"
               backgroundColor="#101216"
@@ -198,7 +203,7 @@ export default function Home() {
               }}
             >
               <Text ml="1rem" color="white">
-                {available[0]?.options?.id == "braavos"
+                {available?.[0]?.options?.id == "braavos"
                   ? "Braavos Wallet"
                   : "Download Braavos Wallet"}
               </Text>

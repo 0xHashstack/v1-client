@@ -29,6 +29,7 @@ import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { ToastContainer, toast } from "react-toastify";
+import { callWithRetries } from "@/utils/functions/apiCaller";
 
 interface Props extends StackProps {
   children: ReactNode;
@@ -38,7 +39,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const [render, setRender] = useState(true);
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const classes = [];
-  const { account, address, status } = useAccount();
+  const { account, address, status, isConnected } = useAccount();
   const dispatch = useDispatch();
 
   const { available, disconnect, connect, connectors } = useConnectors();
@@ -94,7 +95,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       }
     }
   }, []);
-  const [UserLoans, setuserLoans] = useState<ILoan[] | null>([]);
+  const [UserLoans, setuserLoans] = useState<ILoan[] | null>([]); 
   useEffect(() => {
     const loan = async () => {
       try {
@@ -112,8 +113,6 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           setuserLoans(
             loans.filter(
               (loan) =>
-                loan?.collateralAmountParsed &&
-                loan?.collateralAmountParsed > 0 &&
                 loan?.loanAmountParsed &&
                 loan?.loanAmountParsed > 0
             )
@@ -123,8 +122,6 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           setUserLoans(
             loans.filter(
               (loan) =>
-                loan.collateralAmountParsed &&
-                loan.collateralAmountParsed > 0 &&
                 loan.loanAmountParsed &&
                 loan.loanAmountParsed > 0
             )
@@ -135,10 +132,11 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       }
       // console.log("loans", loans);
     };
-    if (account) {
-      loan();
+    if (account && isConnected) {
+      // callWithRetries(loan, [], 3);
+      loan()
     }
-  }, [account, UserLoans]);
+  }, [account, isConnected]);
   // const dispatch=useDispatch();
   interface assetB {
     USDT: any;
