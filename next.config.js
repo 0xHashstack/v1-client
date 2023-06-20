@@ -40,10 +40,10 @@ const nextConfig = {
       },
     ];
   },
-  images: {
-    loader: 'custom',
-    loaderFile: 'loader.js',
-  },
+  // images: {
+  //   loader: 'custom',
+  //   loaderFile: 'loader.js',
+  // },
 };
 
  
