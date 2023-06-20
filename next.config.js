@@ -1,6 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
+  images: {
+    unoptimized: true,
+  },
   swcMinify: true,
   async headers() {
     return [
@@ -36,6 +39,9 @@ const nextConfig = {
         ],
       },
     ];
+  },
+  images: {
+    unoptimized: true,
   },
 };
 
