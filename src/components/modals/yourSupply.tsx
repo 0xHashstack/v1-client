@@ -119,11 +119,11 @@ const YourSupplyModal = ({
     BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
-    rBTC:useBalanceOf(tokenAddressMap["rBTC"] || ""),
-    rUSDT:useBalanceOf(tokenAddressMap["rUSDT"] || ""),
-    rUSDC:useBalanceOf(tokenAddressMap["rUSDC"] || ""),
-    rETH:useBalanceOf(tokenAddressMap["rETH"] || ""),
-    rDAI:useBalanceOf(tokenAddressMap["rDAI"] || "")
+    rBTC: useBalanceOf(tokenAddressMap["rBTC"] || ""),
+    rUSDT: useBalanceOf(tokenAddressMap["rUSDT"] || ""),
+    rUSDC: useBalanceOf(tokenAddressMap["rUSDC"] || ""),
+    rETH: useBalanceOf(tokenAddressMap["rETH"] || ""),
+    rDAI: useBalanceOf(tokenAddressMap["rDAI"] || ""),
   };
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
@@ -190,7 +190,7 @@ const YourSupplyModal = ({
     walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf,
     currentSelectedWithdrawlCoin,
   ]);
-  const [ischecked, setIsChecked] = useState(true)
+  const [ischecked, setIsChecked] = useState(true);
   const [withdrawTransactionStarted, setWithdrawTransactionStarted] =
     useState(false);
   const {
@@ -255,21 +255,21 @@ const YourSupplyModal = ({
       case "DAI":
         return <DAILogo height={"16px"} width={"16px"} />;
         break;
-        case "rBTC":
-          return <BTCLogo height={"16px"} width={"16px"} />;
-          break;
-        case "rUSDC":
-          return <USDCLogo height={"16px"} width={"16px"} />;
-          break;
-        case "rUSDT":
-          return <USDTLogo height={"16px"} width={"16px"} />;
-          break;
-        case "rETH":
-          return <ETHLogo height={"16px"} width={"16px"} />;
-          break;
-        case "rDAI":
-          return <DAILogo height={"16px"} width={"16px"} />;
-          break;
+      case "rBTC":
+        return <BTCLogo height={"16px"} width={"16px"} />;
+        break;
+      case "rUSDC":
+        return <USDCLogo height={"16px"} width={"16px"} />;
+        break;
+      case "rUSDT":
+        return <USDTLogo height={"16px"} width={"16px"} />;
+        break;
+      case "rETH":
+        return <ETHLogo height={"16px"} width={"16px"} />;
+        break;
+      case "rDAI":
+        return <DAILogo height={"16px"} width={"16px"} />;
+        break;
       case "Jediswap":
         return <JediswapLogo />;
         break;
@@ -457,13 +457,13 @@ const YourSupplyModal = ({
 
   const handleAddSupply = async () => {
     try {
-      if(ischecked){
-        const addSupplyAndStake=await writeAsyncDepositStake();
+      if (ischecked) {
+        const addSupplyAndStake = await writeAsyncDepositStake();
         console.log(addSupplyAndStake);
         setDepositTransHash(addSupplyAndStake?.transaction_hash);
         dispatch(setTransactionStatus("success"));
         console.log("addSupply", addSupplyAndStake);
-      }else{
+      } else {
         const addSupply = await writeAsyncDeposit();
         setDepositTransHash(addSupply?.transaction_hash);
         dispatch(setTransactionStatus("success"));
@@ -475,7 +475,7 @@ const YourSupplyModal = ({
       const toastContent = (
         <div>
           Transaction failed{" "}
-          <CopyToClipboard text={err}>
+          <CopyToClipboard text={err as string}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
         </div>
@@ -986,34 +986,34 @@ const YourSupplyModal = ({
                         </Box>
                       </Card>
                       <Box display="flex" gap="2">
-                <Checkbox
-                  size="md"
-                  colorScheme="customBlue"
-                  defaultChecked
-                  mb="auto"
-                  mt="1.2rem"
-                  borderColor="#2B2F35"
-                  isDisabled={transactionStarted == true}
-                  _disabled={{
-                    cursor: "pointer",
-                    iconColor: "blue.400",
-                    bg: "blue",
-                  }}
-                  onChange={()=>{
-                    setIsChecked(!ischecked);
-                  }}
-                />
-                <Text
-                  fontSize="12px"
-                  fontWeight="400"
-                  color="#6E7681"
-                  mt="1rem"
-                  lineHeight="20px"
-                >
-                  Ticking would stake the received rTokens. unchecking
-                  woudn&apos;t stake rTokens
-                </Text>
-              </Box>
+                        <Checkbox
+                          size="md"
+                          colorScheme="customBlue"
+                          defaultChecked
+                          mb="auto"
+                          mt="1.2rem"
+                          borderColor="#2B2F35"
+                          isDisabled={transactionStarted == true}
+                          _disabled={{
+                            cursor: "pointer",
+                            iconColor: "blue.400",
+                            bg: "blue",
+                          }}
+                          onChange={() => {
+                            setIsChecked(!ischecked);
+                          }}
+                        />
+                        <Text
+                          fontSize="12px"
+                          fontWeight="400"
+                          color="#6E7681"
+                          mt="1rem"
+                          lineHeight="20px"
+                        >
+                          Ticking would stake the received rTokens. unchecking
+                          woudn&apos;t stake rTokens
+                        </Text>
+                      </Box>
 
                       <Card
                         bg="#101216"
@@ -1855,7 +1855,7 @@ const YourSupplyModal = ({
                         <Box
                           onClick={() => {
                             setWithdrawTransactionStarted(true);
-                            if(withdrawTransactionStarted==false){
+                            if (withdrawTransactionStarted == false) {
                               handleWithdrawSupply();
                             }
                           }}
@@ -1914,8 +1914,8 @@ const YourSupplyModal = ({
                             setCurrentTransactionStatus={
                               setCurrentTransactionStatus
                             }
-                            _disabled={{ bgColor: "white", color: "black" }}
-                            isDisabled={withdrawTransactionStarted == true}
+                            // _disabled={{ bgColor: "white", color: "black" }}
+                            // isDisabled={withdrawTransactionStarted == true}
                           >
                             Withdraw
                           </AnimatedButton>
