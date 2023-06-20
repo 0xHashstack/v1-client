@@ -19,6 +19,7 @@ import Image from "next/image";
 import YourBorrowModal from "@/components/modals/yourBorrowModal";
 import { Coins } from "../dashboardLeft";
 import BorrowModal from "@/components/modals/borrowModal";
+import { ILoan } from "@/Blockchain/interfaces/interfaces";
 
 export interface ICoin {
   name: string;
@@ -26,31 +27,31 @@ export interface ICoin {
   icon: string;
 }
 
-export interface ILoan {
-  loanId: number; // loan id
-  borrower: string; // borrower address
+// export interface ILoan {
+//   loanId: number; // loan id
+//   borrower: string; // borrower address
 
-  loanMarket: string | undefined; // dToken like dBTC
-  loanMarketAddress: string | undefined; // dToken Address
-  underlyingMarket: string | undefined; // BTC
-  underlyingMarketAddress: string | undefined; // BTC Address
-  currentLoanMarket: string | undefined; // USDT, will be native only
-  currentLoanMarketAddress: string | undefined; // USDT Address
-  collateralMarket: string | undefined; // rToken like rUSDC
-  collateralMarketAddress: string | undefined; // rToken Address
+//   loanMarket: string | undefined; // dToken like dBTC
+//   loanMarketAddress: string | undefined; // dToken Address
+//   underlyingMarket: string | undefined; // BTC
+//   underlyingMarketAddress: string | undefined; // BTC Address
+//   currentLoanMarket: string | undefined; // USDT, will be native only
+//   currentLoanMarketAddress: string | undefined; // USDT Address
+//   collateralMarket: string | undefined; // rToken like rUSDC
+//   collateralMarketAddress: string | undefined; // rToken Address
 
-  loanAmount: number; // dToken amount
-  currentLoanAmount: number; // native tokens
-  collateralAmount: number; // rToken amount
+//   loanAmount: number; // dToken amount
+//   currentLoanAmount: number; // native tokens
+//   collateralAmount: number; // rToken amount
 
-  createdAt: Date;
-  state: string | null;
+//   createdAt: Date;
+//   state: string | null;
 
-  l3_integration: string;
-  l3App: string | null;
+//   l3_integration: string;
+//   l3App: string | null;
 
-  l3_category: string;
-}
+//   l3_category: string;
+// }
 
 // export const Borrows = [
 //   {
@@ -137,7 +138,7 @@ const BorrowDashboard = ({
   currentPagination: any;
   Coins: any;
   columnItems: any;
-  Borrows: ILoan[] | null;
+  Borrows: ILoan[];
   userLoans: any;
   // columnItems: Array<Array<string>>;
   // gap: string;
@@ -146,7 +147,7 @@ const BorrowDashboard = ({
   // console.log(Borrows,"Borrow loans in borrow dashboard")
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
-  upper_bound = Math.min(Borrows?.length - 1, upper_bound);
+  upper_bound = Math.min(Borrows ? Borrows.length - 1 : 0, upper_bound);
   const [borrowIDCoinMap, setBorrowIDCoinMap] = useState([]);
   const [borrowIds, setBorrowIds] = useState([]);
   const [borrowAmount, setBorrowAmount] = useState<number>(0);

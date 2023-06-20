@@ -13,6 +13,8 @@ import {
   HStack,
   VStack,
   Button,
+  Spinner,
+  useTimeout,
 } from "@chakra-ui/react";
 
 import BTCLogo from "@/assets/images/stakeIcon.svg";
@@ -23,6 +25,7 @@ import SupplyModal from "@/components/modals/SupplyModal";
 import YourSupplyModal from "@/components/modals/yourSupply";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { useAccount } from "@starknet-react/core";
+import { IDeposit } from "@/Blockchain/interfaces/interfaces";
 
 export interface ICoin {
   name: string;
@@ -30,62 +33,62 @@ export interface ICoin {
   icon: string;
 }
 
-export interface IDeposit {
-  tokenAddress: string;
-  rTokenAmount: number;
-  underlyingAssetAmount: number;
-}
+// export interface IDeposit {
+//   tokenAddress: string;
+//   rTokenAmount: number;
+//   underlyingAssetAmount: number;
+// }
 
-const supplies: any = [
-  {
-    market: "USDT",
-    rTokenAmount: "10,000",
-    ExchangeRate: "1.23",
-    SupplyApr: "8.22%",
-    EffectiveApr: "7.8%",
-    Status: "Active",
-  },
-  {
-    market: "BTC",
-    rTokenAmount: "10,000",
-    ExchangeRate: "1.23",
-    SupplyApr: "8.22%",
-    EffectiveApr: "7.8%",
-    Status: "Active",
-  },
-  {
-    market: "DAI",
-    rTokenAmount: "10,000",
-    ExchangeRate: "1.23",
-    SupplyApr: "8.22%",
-    EffectiveApr: "7.8%",
-    Status: "Active",
-  },
-  {
-    market: "USDT",
-    rTokenAmount: "1000",
-    ExchangeRate: "1.23",
-    SupplyApr: "8.22%",
-    EffectiveApr: "7.8%",
-    Status: "Active",
-  },
-  {
-    market: "DAI",
-    rTokenAmount: "1000",
-    ExchangeRate: "1.23",
-    SupplyApr: "8.22%",
-    EffectiveApr: "7.8%",
-    Status: "Active",
-  },
-  {
-    market: "BTC",
-    rTokenAmount: "1000",
-    ExchangeRate: "1.23",
-    SupplyApr: "8.22%",
-    EffectiveApr: "7.8%",
-    Status: "Active",
-  },
-];
+// const supplies: any = [
+//   {
+//     market: "USDT",
+//     rTokenAmount: "10,000",
+//     ExchangeRate: "1.23",
+//     SupplyApr: "8.22%",
+//     EffectiveApr: "7.8%",
+//     Status: "Active",
+//   },
+//   {
+//     market: "BTC",
+//     rTokenAmount: "10,000",
+//     ExchangeRate: "1.23",
+//     SupplyApr: "8.22%",
+//     EffectiveApr: "7.8%",
+//     Status: "Active",
+//   },
+//   {
+//     market: "DAI",
+//     rTokenAmount: "10,000",
+//     ExchangeRate: "1.23",
+//     SupplyApr: "8.22%",
+//     EffectiveApr: "7.8%",
+//     Status: "Active",
+//   },
+//   {
+//     market: "USDT",
+//     rTokenAmount: "1000",
+//     ExchangeRate: "1.23",
+//     SupplyApr: "8.22%",
+//     EffectiveApr: "7.8%",
+//     Status: "Active",
+//   },
+//   {
+//     market: "DAI",
+//     rTokenAmount: "1000",
+//     ExchangeRate: "1.23",
+//     SupplyApr: "8.22%",
+//     EffectiveApr: "7.8%",
+//     Status: "Active",
+//   },
+//   {
+//     market: "BTC",
+//     rTokenAmount: "1000",
+//     ExchangeRate: "1.23",
+//     SupplyApr: "8.22%",
+//     EffectiveApr: "7.8%",
+//     Status: "Active",
+//   },
+// ];
 
 const SupplyDashboard = ({
   width,
@@ -111,6 +114,22 @@ const SupplyDashboard = ({
   const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
     useState("BTC");
   const [supplyMarkets, setSupplyMarkets] = useState([]);
+
+  const [supplies, setSupplies] = useState<IDeposit[]>([]);
+  useEffect(() => {
+    const getSupply = async () => {
+      console.log("all deposits calling started");
+      try {
+        const supply = await getUserDeposits(address || "");
+        setSupplies(supply);
+        // console.log("supplies", supply);
+      } catch (err) {
+        console.log("supplies", err);
+      }
+    };
+    getSupply();
+  }, []);
+
   useEffect(() => {
     let temp: any = [];
     supplies.map((coin: any) => {
@@ -132,8 +151,50 @@ const SupplyDashboard = ({
       console.log("userDeposits", err);
     }
   }, []);
-
-  return upper_bound >= lower_bound && Coins.length > 0 ? (
+  const [loading, setLoading] = useState(true);
+  // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
+  useEffect(() => {
+    if (supplies?.length > 0) {
+      setLoading(false);
+    }
+  }, [supplies]);
+  return loading ? (
+    <>
+      <Box
+        display="flex"
+        flexDirection="column"
+        justifyContent="center"
+        alignItems="center"
+        width="95%"
+        height={"37rem"}
+        // height="552px"
+        bgColor="#101216"
+        borderRadius="8px"
+      >
+        {/* <Text color="#FFFFFF" fontSize="20px">
+          Loading...
+        </Text> */}
+        <Spinner
+          thickness="4px"
+          speed="0.65s"
+          emptyColor="gray.200"
+          color="#010409"
+          size="xl"
+        />
+        {/* <YourBorrowModal
+          buttonText="Borrow assets"
+          variant="link"
+          fontSize="16px"
+          fontWeight="400"
+          display="inline"
+          color="#0969DA"
+          cursor="pointer"
+          ml="0.4rem"
+          lineHeight="24px"
+        /> */}
+      </Box>
+    </>
+  ) : upper_bound >= lower_bound && supplies?.length > 0 ? (
     <TableContainer
       bg="#101216"
       border="1px"
@@ -235,7 +296,7 @@ const SupplyDashboard = ({
                         justifyContent="center"
                         alignItems="flex-start"
                         height="2.5rem"
-                        // bgColor="red"
+                        // bgColor="  red"
                       >
                         <HStack
                           height="2rem"
@@ -244,17 +305,17 @@ const SupplyDashboard = ({
                           // justifyContent="center"
                         >
                           <Image
-                            src={`./${supply.market}.svg`}
+                            src={`./${supply?.rToken?.slice(1)}.svg`}
                             alt="Picture of the author"
                             width="32"
                             height="32"
                           />
                           <Text fontSize="14px" fontWeight="400">
-                            {supply.market}
+                            {supply?.rToken}
                           </Text>
                         </HStack>
                         <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                          {supply.rTokenAmount}
+                          {supply.rTokenAmountParsed}
                         </Text>
                       </VStack>
                     </Box>
@@ -341,7 +402,7 @@ const SupplyDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      {supply.Status}
+                      {supply.Status || "UNUSED"}
                     </Text>
                   </Td>
                   <Td
@@ -390,7 +451,7 @@ const SupplyDashboard = ({
                     backgroundColor: "#2b2f35",
                     width: "100%",
                     // left: "3%",
-                    display: `${idx == 5 ? "none" : "block"}`,
+                    display: `${idx == 4 ? "none" : "block"}`,
                   }}
                 />
               </>
@@ -399,10 +460,11 @@ const SupplyDashboard = ({
             const rows = [];
             for (
               let i: number = 0;
-              i < 6 - (upper_bound - lower_bound + 1);
+              // i < 6 - (upper_bound - lower_bound + 1);
+              i < 0;
               i++
             ) {
-              rows.push(<Tr height="4.99rem"></Tr>);
+              rows.push(<Tr height="4rem"></Tr>);
             }
             return rows;
           })()}
