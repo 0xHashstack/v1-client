@@ -132,8 +132,8 @@ const BorrowDashboard = ({
   Coins,
   columnItems,
   Borrows,
-  userLoans,
-}: {
+}: // userLoans,
+{
   width: string;
   currentPagination: any;
   Coins: any;
@@ -144,7 +144,7 @@ const BorrowDashboard = ({
   // gap: string;
   // rowItems: any;
 }) => {
-  // console.log(Borrows,"Borrow loans in borrow dashboard")
+  // console.log(Borrows, "Borrow loans in borrow dashboard");
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
   upper_bound = Math.min(Borrows ? Borrows.length - 1 : 0, upper_bound);
@@ -546,7 +546,7 @@ const BorrowDashboard = ({
                               // bgColor={"blue"}
                             >
                               <Image
-                                src={`./USDT.svg`}
+                                src={`./${borrow.underlyingMarket}.svg`}
                                 alt="Picture of the author"
                                 width="16"
                                 height="16"
@@ -559,7 +559,7 @@ const BorrowDashboard = ({
                               // bgColor={"blue"}
                             >
                               <Image
-                                src={`./ETH.svg`}
+                                src={`./${borrow.underlyingMarket}.svg`}
                                 alt="Picture of the author"
                                 width="16"
                                 height="16"

@@ -331,7 +331,7 @@ const SupplyDashboard = ({
                           </Text>
                         </HStack>
                         <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                          {supply.rTokenAmountParsed}
+                          {supply?.rTokenAmountParsed}
                         </Text>
                       </VStack>
                     </Box>
@@ -363,7 +363,7 @@ const SupplyDashboard = ({
                           borderRadius="6px"
                         />
                       ) : (
-                          protocolStats[idx]?.exchangeRateRtokenToUnderlying + "%"
+                        protocolStats[idx]?.exchangeRateRtokenToUnderlying + "%"
                       )}
                     </Text>
                   </Td>
@@ -416,7 +416,7 @@ const SupplyDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      {supply.EffectiveApr}
+                      {supply?.EffectiveApr || "8.00%"}
                     </Text>
                   </Td>
 
@@ -438,7 +438,7 @@ const SupplyDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      {supply.Status || "UNUSED"}
+                      {supply?.Status || "UNUSED"}
                     </Text>
                   </Td>
                   <Td
