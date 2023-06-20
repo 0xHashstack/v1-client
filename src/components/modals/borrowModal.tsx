@@ -16,11 +16,8 @@ import {
   NumberInputField,
   Box,
   Text,
-  Heading,
   Card,
   ModalHeader,
-  Checkbox,
-  useToast,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */

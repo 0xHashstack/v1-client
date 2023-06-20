@@ -16,9 +16,9 @@ export async function getJediEstimateLiquiditySplit(loanId, tokenA, tokenB) {
   ], {
     blockIdentifier: "pending",
   });
-  console.log(
-    "estimated liquidity split for loanId: ", loanId, " is: ", res
-  )
+  // console.log(
+  //   "estimated liquidity split for loanId: ", loanId, " is: ", res
+  // )
 }
 
 export async function getJediEstimatedLpAmountOut(loanId, tokenA, tokenB) {
@@ -33,9 +33,9 @@ export async function getJediEstimatedLpAmountOut(loanId, tokenA, tokenB) {
   ], {
     blockIdentifier: "pending",
   });
-  console.log(
-    "estimated lp amount out for loanId: ", loanId, " is: ", res
-  )
+  // console.log(
+  //   "estimated lp amount out for loanId: ", loanId, " is: ", res
+  // )
 }
 
 export async function getJediEstimatedLiqALiqBfromLp(liquidity, pairAddress) {
@@ -47,9 +47,9 @@ export async function getJediEstimatedLiqALiqBfromLp(liquidity, pairAddress) {
   ], {
     blockIdentifier: "pending",
   });
-  console.log(
-    "estimated liquidity A, B for liquidity: ", liquidity, " is: ", res
-  )
+  // console.log(
+  //   "estimated liquidity A, B for liquidity: ", liquidity, " is: ", res
+  // )
 }
 
 export async function getSupportedPoolsJediSwap() {
