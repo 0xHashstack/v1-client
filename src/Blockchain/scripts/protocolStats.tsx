@@ -16,9 +16,11 @@ function parseProtocolStats(market_infos: any): IMarketInfo[] {
       totalSupply: uint256.uint256ToBN(marketData?.total_supply).toString(),
       lentAssets: uint256.uint256ToBN(marketData?.lent_assets).toString(),
       totalBorrow: uint256.uint256ToBN(marketData?.total_borrow).toString(),
-      utilisationPerMarket: uint256
+      utilisationPerMarket: parseAmount(uint256
         .uint256ToBN(marketData?.utilisation_per_market)
         .toString(),
+        2
+      ),
 
       exchangeRateRtokenToUnderlying: parseAmount(
         uint256
@@ -72,12 +74,12 @@ function parseProtocolReserves(protocolReservesData: any): IProtocolReserves {
     totalReserves: parseAmount(uint256
       .uint256ToBN(protocolReservesData?.total_reserves)
       .toString(),
-      8
+      26
     ),
     availableReserves: parseAmount(uint256
       .uint256ToBN(protocolReservesData?.available_reserves)
       .toString(),
-      8
+      26
     ),
     avgAssetUtilisation: parseAmount(uint256
       .uint256ToBN(protocolReservesData?.avg_asset_utilisation)

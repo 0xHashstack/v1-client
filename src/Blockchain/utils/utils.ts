@@ -150,7 +150,7 @@ export const weiToEtherNumber = (amount: string, tokenName: Token) => {
     .toBN(amount)
     .mul(number.toBN(factor))
     .div(number.toBN(10).pow(number.toBN(decimals)));
-  return amountBN.toNumber() / factor;
+  return amountBN / factor;
 };
 
 export const parseAmount = (amount: string, decimals = 18) => {
