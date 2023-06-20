@@ -26,7 +26,10 @@ import {
   setAssetWalletBalance,
 } from "@/store/slices/userAccountSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
-import { tokenAddressMap, tokenDecimalsMap } from "@/Blockchain/utils/addressServices";
+import {
+  tokenAddressMap,
+  tokenDecimalsMap,
+} from "@/Blockchain/utils/addressServices";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount } from "@starknet-react/core";
 export interface ICoin {
@@ -46,9 +49,13 @@ export const Coins: ICoin[] = [
 const DashboardLeft = ({
   width,
   oraclePrices,
+  totalSupplies,
+  supplyAPRs,
 }: {
   width: string;
   oraclePrices: any;
+  totalSupplies: any;
+  supplyAPRs: any;
   // columnItems: Array<Array<string>>;
   // gap: string;
   // rowItems: any;
@@ -139,7 +146,7 @@ const DashboardLeft = ({
     ETH: any;
     DAI: any;
   }
-  const assetBalance: assetB = {
+  const assetBalance: any = {
     USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
     USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
     BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
@@ -271,8 +278,7 @@ const DashboardLeft = ({
                       <Text fontSize="14px" fontWeight="400">
                         {coin.name}
                       </Text>
-                      { assetBalance[coin.name]?.statusBalanceOf !=
-                        "success" ? (
+                      {assetBalance[coin.name]?.statusBalanceOf != "success" ? (
                         <Skeleton
                           width="4rem"
                           height="1rem"
@@ -283,18 +289,15 @@ const DashboardLeft = ({
                       ) : (
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
                           Wallet Bal. {/* {numberFormatter( */}
-                          {
-                            Number(
-                              // BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
-                              BNtoNum(
-                                uint256.uint256ToBN(
-                                  assetBalance[coin.name]?.dataBalanceOf
-                                    ?.balance
-                                ),
-                                tokenDecimalsMap[coin.name]
-                              )
+                          {Number(
+                            // BNtoNum(uint256.uint256ToBN(dataBalanceOf?.balance))
+                            BNtoNum(
+                              uint256.uint256ToBN(
+                                assetBalance[coin.name]?.dataBalanceOf?.balance
+                              ),
+                              tokenDecimalsMap[coin.name]
                             )
-                          }
+                          )}
                           {/* )} */}
                         </Text>
                       )}
@@ -341,7 +344,7 @@ const DashboardLeft = ({
                   overflow={"hidden"}
                   textAlign={"center"}
                 >
-                  <Text
+                  <Box
                     width="100%"
                     height="100%"
                     display="flex"
@@ -351,8 +354,18 @@ const DashboardLeft = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    000.00
-                  </Text>
+                    {!totalSupplies[idx] ? (
+                      <Skeleton
+                        width="6rem"
+                        height="1.4rem"
+                        startColor="#101216"
+                        endColor="#2B2F35"
+                        borderRadius="6px"
+                      />
+                    ) : (
+                      totalSupplies[idx]
+                    )}
+                  </Box>
                 </Td>
                 <Td
                   width={"18%"}
@@ -372,7 +385,17 @@ const DashboardLeft = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    7.00%
+                    {!supplyAPRs[idx] ? (
+                      <Skeleton
+                        width="6rem"
+                        height="1.4rem"
+                        startColor="#101216"
+                        endColor="#2B2F35"
+                        borderRadius="6px"
+                      />
+                    ) : (
+                      supplyAPRs[idx] + "%"
+                    )}
                   </Text>
                 </Td>
                 <Td

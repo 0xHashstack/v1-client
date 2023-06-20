@@ -32,9 +32,15 @@ export const Coins: ICoin[] = [
 const DashboardRight = ({
   width,
   oraclePrices,
+  utilization,
+  totalBorrows,
+  borrowAPRs,
 }: {
   width: string;
   oraclePrices: any;
+  utilization: any;
+  totalBorrows: any;
+  borrowAPRs: any;
   // gap: string;
   // columnItems: Array<Array<string>>;
   // rowItems: any;
@@ -190,7 +196,7 @@ const DashboardRight = ({
                   overflow={"hidden"}
                   textAlign={"center"}
                 >
-                  <Text
+                  <Box
                     width="100%"
                     height="100%"
                     display="flex"
@@ -200,8 +206,18 @@ const DashboardRight = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    000.00
-                  </Text>
+                    {!totalBorrows[idx] ? (
+                      <Skeleton
+                        width="6rem"
+                        height="1.4rem"
+                        startColor="#101216"
+                        endColor="#2B2F35"
+                        borderRadius="6px"
+                      />
+                    ) : (
+                      totalBorrows[idx]
+                    )}
+                  </Box>
                 </Td>
                 <Td
                   width={"15%"}
@@ -211,7 +227,7 @@ const DashboardRight = ({
                   overflow={"hidden"}
                   textAlign={"center"}
                 >
-                  <Text
+                  <Box
                     width="100%"
                     height="100%"
                     display="flex"
@@ -221,8 +237,18 @@ const DashboardRight = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    7.00%
-                  </Text>
+                    {!utilization[idx] ? (
+                      <Skeleton
+                        width="6rem"
+                        height="1.4rem"
+                        startColor="#101216"
+                        endColor="#2B2F35"
+                        borderRadius="6px"
+                      />
+                    ) : (
+                      utilization[idx] + "%"
+                    )}
+                  </Box>
                 </Td>
                 <Td
                   width={"15%"}
@@ -232,7 +258,7 @@ const DashboardRight = ({
                   overflow={"hidden"}
                   textAlign={"center"}
                 >
-                  <Text
+                  <Box
                     width="100%"
                     height="100%"
                     display="flex"
@@ -242,8 +268,18 @@ const DashboardRight = ({
                     // bgColor={"blue"}
                   >
                     {/* {checkGap(idx1, idx2)} */}
-                    19.00%
-                  </Text>
+                    {!borrowAPRs[idx] ? (
+                      <Skeleton
+                        width="6rem"
+                        height="1.4rem"
+                        startColor="#101216"
+                        endColor="#2B2F35"
+                        borderRadius="6px"
+                      />
+                    ) : (
+                      borrowAPRs[idx] + "%"
+                    )}
+                  </Box>
                 </Td>
                 <Td
                   width={"8%"}

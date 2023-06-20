@@ -163,14 +163,18 @@ const BorrowDashboard = ({
     let temp1: any = [];
     let temp2: any = [];
 
-    for (let i = 0; i < Borrows?.length; i++) {
-      temp1.push({
-        id: Borrows[i].loanId,
-        name: Borrows[i].loanMarket,
-        collateralBalance:
-          Borrows[i].collateralAmountParsed + " " + Borrows[i].collateralMarket,
-      });
-      temp2.push(Borrows[i].loanId);
+    for (let i = 0; i < (Borrows ? Borrows?.length : 0); i++) {
+      if (Borrows) {
+        temp1.push({
+          id: Borrows[i].loanId,
+          name: Borrows[i].loanMarket,
+          collateralBalance:
+            Borrows[i].collateralAmountParsed +
+            " " +
+            Borrows[i].collateralMarket,
+        });
+        temp2.push(Borrows[i].loanId);
+      }
     }
     setBorrowIDCoinMap(temp1);
     setBorrowIds(temp2);
@@ -214,7 +218,7 @@ const BorrowDashboard = ({
         /> */}
       </Box>
     </>
-  ) : upper_bound >= lower_bound && Borrows?.length > 0 ? (
+  ) : upper_bound >= lower_bound && Borrows && Borrows?.length > 0 ? (
     <TableContainer
       bg="#101216"
       border="1px"
