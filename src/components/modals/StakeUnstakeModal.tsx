@@ -236,7 +236,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
       console.log("stake transaction failed : ", err);
       const toastContent = (
         <div>
-          Transaction cancelled{" "}
+          Transaction failed{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -260,7 +260,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
       console.log("Unstake transaction failed : ", err);
       const toastContent = (
         <div>
-          Transaction cancelled{" "}
+          Transaction failed{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>

@@ -209,6 +209,7 @@ const SpendTable = () => {
           borderColor="#2B2F35"
           // py="6"
           color="white"
+          h="283px"
           borderRadius="md"
           w="94%"
           // px="3"

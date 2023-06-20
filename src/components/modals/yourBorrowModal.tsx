@@ -88,6 +88,7 @@ import { uint256 } from "starknet";
 import { useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
+import useRevertInteractWithL3 from "@/Blockchain/hooks/Writes/useRevertInteractWithL3";
 
 import { getJediEstimatedLpAmountOut } from "../../Blockchain/scripts/l3interaction";
 import { getAddress } from "ethers/lib/utils";
@@ -246,6 +247,32 @@ const YourBorrowModal = ({
     isLoadingmySwap_addLiquidity,
     statusmySwap_addLiquidity,
   } = useLiquidity();
+  const {
+    revertLoanId,
+    setRevertLoanId,
+
+    dataRevertInteractWithL3,
+    writeAsyncRevertInteractWithL3,
+    writeRevertInteractWithL3,
+    errorRevertInteractWithL3,
+    isIdleRevertInteractWithL3,
+    isLoadingRevertInteractWithL3,
+  } = useRevertInteractWithL3();
+
+  const handleRevertTransaction = async () => {
+    try {
+      setRevertLoanId(
+        currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+      );
+      const revert = await writeAsyncRevertInteractWithL3();
+      console.log(revert);
+      dispatch(setTransactionStatus("success"));
+    } catch (err) {
+      console.log(err);
+      dispatch(setTransactionStatus("failed"));
+    }
+  };
+
   interface assetB {
     USDT: any;
     USDC: any;
@@ -421,7 +448,7 @@ const YourBorrowModal = ({
       setCurrentTransactionStatus(true);
       console.log("trans pending");
       if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied `, {
+        toast.success(`You have successfully spend the loan `, {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
         setToastDisplayed(true);
@@ -438,7 +465,7 @@ const YourBorrowModal = ({
       setCurrentTransactionStatus(true);
       console.log("trans onAcceptedOnL2 - ", transaction);
       if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied `, {
+        toast.success(`You have successfully supplied spend the loan `, {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
         setToastDisplayed(true);
@@ -461,7 +488,7 @@ const YourBorrowModal = ({
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
-          Transaction cancelled{" "}
+          Transaction failed{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -513,7 +540,7 @@ const YourBorrowModal = ({
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
-          Transaction cancelled{" "}
+          Transaction failed{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -541,7 +568,7 @@ const YourBorrowModal = ({
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
-          Transaction cancelled{" "}
+          Transaction failed{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -1192,6 +1219,138 @@ const YourBorrowModal = ({
         );
         break;
 
+      case "Convert to borrow market":
+        return (
+          <Box
+            bg="#101216"
+            borderRadius="6px"
+            p="1rem"
+            border="1px solid #2B2F35"
+            mt="1.5rem"
+            mb="1.5rem"
+          >
+            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box display="flex">
+                <Text
+                  color="#6A737D"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  est conversion:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="right-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box ml="0.1rem" mt="0.1rem">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Box
+                display="flex"
+                gap="2"
+                color="#6A737D"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+                <Box display="flex" gap="2px">
+                  <Box mt="2px">
+                    <SmallEth />
+                  </Box>
+                  <Text>1.23</Text>
+                </Box>
+                <Box display="flex" gap="2px">
+                  <Box mt="2px">
+                    <SmallUsdt />
+                  </Box>
+                  <Text>1.23</Text>
+                </Box>
+              </Box>
+            </Box>
+            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box display="flex">
+                <Text
+                  color="#6A737D"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  Fees:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="right-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box ml="0.1rem" mt="0.1rem">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text
+                color="#6A737D"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+                0.1%
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+              <Box display="flex">
+                <Text
+                  color="#6A737D"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  Gas estimate:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="right-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box ml="0.1rem" mt="0.1rem">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text
+                color="#6A737D"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+                5.56%
+              </Text>
+            </Box>
+          </Box>
+        );
+        break;
+
       default:
         break;
     }
@@ -1201,7 +1360,12 @@ const YourBorrowModal = ({
     dispatch(setModalDropdown(dropdownName));
   };
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-  const actions = ["Spend Borrow", "Repay Borrow", "Zero Repay"];
+  const actions = [
+    "Spend Borrow",
+    "Convert to borrow market",
+    "Repay Borrow",
+    "Zero Repay",
+  ];
   // const borrowIds = [
   //   "ID - 123456",
   //   "ID - 123457",
@@ -1633,105 +1797,130 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Box>
-                        <Box
-                          display="flex"
-                          border="1px"
-                          borderColor="#2B2F35"
-                          justifyContent="space-between"
-                          py="2"
-                          pl="3"
-                          pr="3"
-                          borderRadius="md"
-                          className="navbar"
-                          onClick={() => {
-                            if (transactionStarted) {
-                              return;
-                            } else {
-                              handleDropdownClick(
-                                "yourBorrowBorrowIDsDropdown1"
-                              );
-                            }
-                          }}
-                          as="button"
-                        >
-                          <Box display="flex" gap="1">
-                            {currentBorrowId1}
-                          </Box>
-                          <Text pt="1" className="navbar-button">
-                            {activeModal == "yourBorrowBorrowIDsDropdown1" ? (
-                              <ArrowUp />
-                            ) : (
-                              <DropdownUp />
-                            )}
-                          </Text>
-                          {modalDropdowns.yourBorrowBorrowIDsDropdown1 && (
-                            <Box
-                              w="full"
-                              left="0"
-                              bg="#03060B"
-                              py="2"
-                              className="dropdown-container onlyScroll"
-                              boxShadow="dark-lg"
-                              height={`${
-                                borrowIds.length >= 5 ? "182px" : "none"
-                              }`}
-                              overflowY="scroll"
-                            >
-                              {borrowIds.map((coin: string, index: number) => {
-                                return (
-                                  <Box
-                                    key={index}
-                                    as="button"
-                                    w="full"
-                                    display="flex"
-                                    alignItems="center"
-                                    gap="1"
-                                    pr="2"
-                                    onClick={() => {
-                                      setCurrentBorrowId1("ID - " + coin);
-                                      console.log(coin, "coin in borrow id");
-                                      handleBorrowMarketCoinChange1(coin);
-                                      setLoanId(coin);
-                                      setSwapLoanId(coin);
-                                      // console.log(swapLoanId,"swap loan id")
-                                      setLiquidityLoanId(coin);
-                                      console.log(liquidityLoanId);
-                                    }}
-                                  >
-                                    {"ID - " + coin === currentBorrowId1 && (
-                                      <Box
-                                        w="3px"
-                                        h="28px"
-                                        bg="#0C6AD9"
-                                        borderRightRadius="md"
-                                      ></Box>
-                                    )}
-                                    <Box
-                                      w="full"
-                                      display="flex"
-                                      py="5px"
-                                      px={`${
-                                        "ID - " + coin === currentBorrowId1
-                                          ? "2"
-                                          : "5"
-                                      }`}
-                                      gap="1"
-                                      bg={`${
-                                        "ID - " + coin === currentBorrowId1
-                                          ? "#0C6AD9"
-                                          : "inherit"
-                                      }`}
-                                      borderRadius="md"
-                                    >
-                                      {/* <Box p="1">{getCoin(coin)}</Box> */}
-                                      <Text>ID - {coin}</Text>
-                                    </Box>
-                                  </Box>
-                                );
-                              })}
+                        {currentAction == "Convert to borrow market" ? (
+                          <Box
+                            display="flex"
+                            border="1px"
+                            borderColor="#2B2F35"
+                            justifyContent="space-between"
+                            py="2"
+                            pl="3"
+                            pr="3"
+                            borderRadius="md"
+                            className="navbar"
+                            as="button"
+                          >
+                            <Box display="flex" gap="1">
+                              {currentBorrowId1}
                             </Box>
-                          )}
-                        </Box>
+                          </Box>
+                        ) : (
+                          <Box
+                            display="flex"
+                            border="1px"
+                            borderColor="#2B2F35"
+                            justifyContent="space-between"
+                            py="2"
+                            pl="3"
+                            pr="3"
+                            borderRadius="md"
+                            className="navbar"
+                            onClick={() => {
+                              if (transactionStarted) {
+                                return;
+                              } else {
+                                handleDropdownClick(
+                                  "yourBorrowBorrowIDsDropdown1"
+                                );
+                              }
+                            }}
+                            as="button"
+                          >
+                            <Box display="flex" gap="1">
+                              {currentBorrowId1}
+                            </Box>
+                            <Text pt="1" className="navbar-button">
+                              {activeModal == "yourBorrowBorrowIDsDropdown1" ? (
+                                <ArrowUp />
+                              ) : (
+                                <DropdownUp />
+                              )}
+                            </Text>
+                            {modalDropdowns.yourBorrowBorrowIDsDropdown1 && (
+                              <Box
+                                w="full"
+                                left="0"
+                                bg="#03060B"
+                                py="2"
+                                className="dropdown-container onlyScroll"
+                                boxShadow="dark-lg"
+                                height={`${
+                                  borrowIds.length >= 5 ? "182px" : "none"
+                                }`}
+                                overflowY="scroll"
+                              >
+                                {borrowIds.map(
+                                  (coin: string, index: number) => {
+                                    return (
+                                      <Box
+                                        key={index}
+                                        as="button"
+                                        w="full"
+                                        display="flex"
+                                        alignItems="center"
+                                        gap="1"
+                                        pr="2"
+                                        onClick={() => {
+                                          setCurrentBorrowId1("ID - " + coin);
+                                          console.log(
+                                            coin,
+                                            "coin in borrow id"
+                                          );
+                                          handleBorrowMarketCoinChange1(coin);
+                                          setLoanId(coin);
+                                          setSwapLoanId(coin);
+                                          // console.log(swapLoanId,"swap loan id")
+                                          setLiquidityLoanId(coin);
+                                          console.log(liquidityLoanId);
+                                        }}
+                                      >
+                                        {"ID - " + coin ===
+                                          currentBorrowId1 && (
+                                          <Box
+                                            w="3px"
+                                            h="28px"
+                                            bg="#0C6AD9"
+                                            borderRightRadius="md"
+                                          ></Box>
+                                        )}
+                                        <Box
+                                          w="full"
+                                          display="flex"
+                                          py="5px"
+                                          px={`${
+                                            "ID - " + coin === currentBorrowId1
+                                              ? "2"
+                                              : "5"
+                                          }`}
+                                          gap="1"
+                                          bg={`${
+                                            "ID - " + coin === currentBorrowId1
+                                              ? "#0C6AD9"
+                                              : "inherit"
+                                          }`}
+                                          borderRadius="md"
+                                        >
+                                          {/* <Box p="1">{getCoin(coin)}</Box> */}
+                                          <Text>ID - {coin}</Text>
+                                        </Box>
+                                      </Box>
+                                    );
+                                  }
+                                )}
+                              </Box>
+                            )}
+                          </Box>
+                        )}
                       </Box>
                       <Box display="flex" flexDirection="column" gap="1">
                         <Box display="flex">
@@ -1841,282 +2030,289 @@ const YourBorrowModal = ({
                               </Box>
                             )} */}
                         </Box>
-                        <Text textAlign="right" fontSize="xs" mt="0.2rem">
-                          Borrow Balance: {borrowAmount}
-                          <Text as="span" color="#8B949E" ml="0.2rem">
-                            {currentBorrowMarketCoin1}
-                          </Text>
-                        </Text>
-                      </Box>
-                      {currentAction !== "Spend Borrow" && (
-                        <Box
-                          display="flex"
-                          flexDirection="column"
-                          gap="1"
-                          mt="0"
-                        >
-                          <Box display="flex">
-                            <Text fontSize="xs" color="#8B949E">
-                              Repay Amount
+                        {currentAction == "Convert to borrow market" ? (
+                          ""
+                        ) : (
+                          <Text textAlign="right" fontSize="xs" mt="0.2rem">
+                            Borrow Balance: {borrowAmount}
+                            <Text as="span" color="#8B949E" ml="0.2rem">
+                              {currentBorrowMarketCoin1}
                             </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="right-start"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box p="1">
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Box>
+                          </Text>
+                        )}
+                      </Box>
+                      {currentAction !== "Spend Borrow" &&
+                        currentAction != "Convert to borrow market" && (
                           <Box
-                            width="100%"
-                            color="white"
-                            borderRadius="6px"
                             display="flex"
-                            justifyContent="space-between"
-                            border={`${
-                              repayAmount > walletBalance
-                                ? "1px solid #CF222E"
-                                : repayAmount < 0
-                                ? "1px solid #CF222E"
-                                : isNaN(repayAmount)
-                                ? "1px solid #CF222E"
-                                : repayAmount > 0 &&
-                                  repayAmount <= walletBalance
-                                ? "1px solid #1A7F37"
-                                : "1px solid #2B2F35 "
-                            }`}
+                            flexDirection="column"
+                            gap="1"
+                            mt="0"
                           >
-                            <NumberInput
-                              border="0px"
-                              min={0}
-                              keepWithinRange={true}
-                              onChange={handleChange}
-                              value={repayAmount ? repayAmount : ""}
-                              isDisabled={
-                                currentAction === "Zero Repay" ||
-                                transactionStarted == true
-                              }
-                              step={parseFloat(
-                                `${repayAmount <= 99999 ? 0.1 : 0}`
-                              )}
-                              _disabled={{ cursor: "pointer" }}
-                            >
-                              <NumberInputField
-                                placeholder={`Minimum 0.01536 ${currentBorrowMarketCoin1}`}
-                                color={`${
-                                  repayAmount > walletBalance
-                                    ? "#CF222E"
-                                    : isNaN(repayAmount)
-                                    ? "#CF222E"
-                                    : repayAmount < 0
-                                    ? "#CF222E"
-                                    : repayAmount == 0
-                                    ? "white"
-                                    : "#1A7F37"
-                                }`}
-                                border="0px"
-                                _disabled={{ color: "#1A7F37" }}
-                                _placeholder={{
-                                  color: "#393D4F",
-                                  fontSize: ".89rem",
-                                  fontWeight: "600",
-                                  outline: "0",
-                                }}
-                                // _disabled={{ color: "#1A7F37" }}
-                                _focus={{
-                                  outline: "0",
-                                  boxShadow: "none",
-                                }}
-                              />
-                            </NumberInput>
-                            <Button
-                              variant="ghost"
-                              color="#0969DA"
-                              _hover={{ bg: "#101216" }}
-                              onClick={() => {
-                                if (currentAction === "Zero Repay") return;
-                                setRepayAmount(walletBalance);
-                                setSliderValue(100);
-                                dispatch(
-                                  setInputYourBorrowModalRepayAmount(
-                                    walletBalance
-                                  )
-                                );
-                              }}
-                              isDisabled={transactionStarted == true}
-                              _disabled={{ cursor: "pointer" }}
-                            >
-                              MAX
-                            </Button>
-                          </Box>
-                          {repayAmount > walletBalance ||
-                          repayAmount < 0 ||
-                          isNaN(repayAmount) ? (
-                            <Text
+                            <Box display="flex">
+                              <Text fontSize="xs" color="#8B949E">
+                                Repay Amount
+                              </Text>
+                              <Tooltip
+                                hasArrow
+                                placement="right-start"
+                                boxShadow="dark-lg"
+                                label="all the assets to the market"
+                                bg="#24292F"
+                                fontSize={"smaller"}
+                                fontWeight={"thin"}
+                                borderRadius={"lg"}
+                                padding={"2"}
+                              >
+                                <Box p="1">
+                                  <InfoIcon />
+                                </Box>
+                              </Tooltip>
+                            </Box>
+                            <Box
+                              width="100%"
+                              color="white"
+                              borderRadius="6px"
                               display="flex"
                               justifyContent="space-between"
-                              color="#E6EDF3"
-                              mt="0.4rem"
-                              fontSize="12px"
-                              fontWeight="500"
-                              fontStyle="normal"
-                              fontFamily="Inter"
+                              border={`${
+                                repayAmount > walletBalance
+                                  ? "1px solid #CF222E"
+                                  : repayAmount < 0
+                                  ? "1px solid #CF222E"
+                                  : isNaN(repayAmount)
+                                  ? "1px solid #CF222E"
+                                  : repayAmount > 0 &&
+                                    repayAmount <= walletBalance
+                                  ? "1px solid #1A7F37"
+                                  : "1px solid #2B2F35 "
+                              }`}
                             >
-                              <Text color="#CF222E" display="flex">
-                                <Text mt="0.2rem">
-                                  <SmallErrorIcon />{" "}
+                              <NumberInput
+                                border="0px"
+                                min={0}
+                                keepWithinRange={true}
+                                onChange={handleChange}
+                                value={repayAmount ? repayAmount : ""}
+                                isDisabled={
+                                  currentAction === "Zero Repay" ||
+                                  transactionStarted == true
+                                }
+                                step={parseFloat(
+                                  `${repayAmount <= 99999 ? 0.1 : 0}`
+                                )}
+                                _disabled={{ cursor: "pointer" }}
+                              >
+                                <NumberInputField
+                                  placeholder={`Minimum 0.01536 ${currentBorrowMarketCoin1}`}
+                                  color={`${
+                                    repayAmount > walletBalance
+                                      ? "#CF222E"
+                                      : isNaN(repayAmount)
+                                      ? "#CF222E"
+                                      : repayAmount < 0
+                                      ? "#CF222E"
+                                      : repayAmount == 0
+                                      ? "white"
+                                      : "#1A7F37"
+                                  }`}
+                                  border="0px"
+                                  _disabled={{ color: "#1A7F37" }}
+                                  _placeholder={{
+                                    color: "#393D4F",
+                                    fontSize: ".89rem",
+                                    fontWeight: "600",
+                                    outline: "0",
+                                  }}
+                                  // _disabled={{ color: "#1A7F37" }}
+                                  _focus={{
+                                    outline: "0",
+                                    boxShadow: "none",
+                                  }}
+                                />
+                              </NumberInput>
+                              <Button
+                                variant="ghost"
+                                color="#0969DA"
+                                _hover={{ bg: "#101216" }}
+                                onClick={() => {
+                                  if (currentAction === "Zero Repay") return;
+                                  setRepayAmount(walletBalance);
+                                  setSliderValue(100);
+                                  dispatch(
+                                    setInputYourBorrowModalRepayAmount(
+                                      walletBalance
+                                    )
+                                  );
+                                }}
+                                isDisabled={transactionStarted == true}
+                                _disabled={{ cursor: "pointer" }}
+                              >
+                                MAX
+                              </Button>
+                            </Box>
+                            {repayAmount > walletBalance ||
+                            repayAmount < 0 ||
+                            isNaN(repayAmount) ? (
+                              <Text
+                                display="flex"
+                                justifyContent="space-between"
+                                color="#E6EDF3"
+                                mt="0.4rem"
+                                fontSize="12px"
+                                fontWeight="500"
+                                fontStyle="normal"
+                                fontFamily="Inter"
+                              >
+                                <Text color="#CF222E" display="flex">
+                                  <Text mt="0.2rem">
+                                    <SmallErrorIcon />{" "}
+                                  </Text>
+                                  <Text ml="0.3rem">
+                                    {repayAmount > walletBalance
+                                      ? "Amount exceeds balance"
+                                      : "Invalid Input"}
+                                  </Text>
                                 </Text>
-                                <Text ml="0.3rem">
-                                  {repayAmount > walletBalance
-                                    ? "Amount exceeds balance"
-                                    : "Invalid Input"}
+                                <Text
+                                  color="#E6EDF3"
+                                  display="flex"
+                                  justifyContent="flex-end"
+                                >
+                                  Wallet Balance: {walletBalance}
+                                  <Text color="#6E7781" ml="0.2rem">
+                                    {` ${currentSelectedCoin}`}
+                                  </Text>
                                 </Text>
                               </Text>
+                            ) : (
                               <Text
                                 color="#E6EDF3"
                                 display="flex"
                                 justifyContent="flex-end"
+                                mt="0.4rem"
+                                fontSize="12px"
+                                fontWeight="500"
+                                fontStyle="normal"
+                                fontFamily="Inter"
                               >
                                 Wallet Balance: {walletBalance}
                                 <Text color="#6E7781" ml="0.2rem">
                                   {` ${currentSelectedCoin}`}
                                 </Text>
                               </Text>
-                            </Text>
-                          ) : (
-                            <Text
-                              color="#E6EDF3"
-                              display="flex"
-                              justifyContent="flex-end"
-                              mt="0.4rem"
-                              fontSize="12px"
-                              fontWeight="500"
-                              fontStyle="normal"
-                              fontFamily="Inter"
-                            >
-                              Wallet Balance: {walletBalance}
-                              <Text color="#6E7781" ml="0.2rem">
-                                {` ${currentSelectedCoin}`}
-                              </Text>
-                            </Text>
-                          )}
-                          <Slider
-                            mt="9"
-                            mb="2"
-                            aria-label="slider-ex-6"
-                            defaultValue={sliderValue}
-                            value={sliderValue}
-                            onChange={(val) => {
-                              if (currentAction === "Zero Repay") return;
-                              setSliderValue(val);
-                              var ans = (val / 100) * walletBalance;
-                              ans = Math.round(ans * 100) / 100;
-                              dispatch(setInputYourBorrowModalRepayAmount(ans));
-                              setRepayAmount(ans);
-                            }}
-                            isDisabled={transactionStarted == true}
-                            _disabled={{ cursor: "pointer" }}
-                            focusThumbOnChange={false}
-                          >
-                            <SliderMark
-                              value={0}
-                              mt="-1.5"
-                              ml="-1.5"
-                              fontSize="sm"
-                              zIndex="1"
-                            >
-                              {sliderValue >= 0 ? (
-                                <SliderPointerWhite />
-                              ) : (
-                                <SliderPointer />
-                              )}
-                            </SliderMark>
-                            <SliderMark
-                              value={25}
-                              mt="-1.5"
-                              ml="-1.5"
-                              fontSize="sm"
-                              zIndex="1"
-                            >
-                              {sliderValue >= 25 ? (
-                                <SliderPointerWhite />
-                              ) : (
-                                <SliderPointer />
-                              )}
-                            </SliderMark>
-                            <SliderMark
-                              value={50}
-                              mt="-1.5"
-                              ml="-1.5"
-                              fontSize="sm"
-                              zIndex="1"
-                            >
-                              {sliderValue >= 50 ? (
-                                <SliderPointerWhite />
-                              ) : (
-                                <SliderPointer />
-                              )}
-                            </SliderMark>
-                            <SliderMark
-                              value={75}
-                              mt="-1.5"
-                              ml="-1.5"
-                              fontSize="sm"
-                              zIndex="1"
-                            >
-                              {sliderValue >= 75 ? (
-                                <SliderPointerWhite />
-                              ) : (
-                                <SliderPointer />
-                              )}
-                            </SliderMark>
-                            <SliderMark
-                              value={100}
-                              mt="-1.5"
-                              ml="-1.5"
-                              fontSize="sm"
-                              zIndex="1"
-                            >
-                              {sliderValue == 100 ? (
-                                <SliderPointerWhite />
-                              ) : (
-                                <SliderPointer />
-                              )}
-                            </SliderMark>
-                            <SliderMark
+                            )}
+                            <Slider
+                              mt="9"
+                              mb="2"
+                              aria-label="slider-ex-6"
+                              defaultValue={sliderValue}
                               value={sliderValue}
-                              textAlign="center"
-                              // bg='blue.500'
-                              color="white"
-                              mt="-8"
-                              ml={sliderValue !== 100 ? "-5" : "-6"}
-                              w="12"
-                              fontSize="12px"
-                              fontWeight="400"
-                              lineHeight="20px"
-                              letterSpacing="0.25px"
+                              onChange={(val) => {
+                                if (currentAction === "Zero Repay") return;
+                                setSliderValue(val);
+                                var ans = (val / 100) * walletBalance;
+                                ans = Math.round(ans * 100) / 100;
+                                dispatch(
+                                  setInputYourBorrowModalRepayAmount(ans)
+                                );
+                                setRepayAmount(ans);
+                              }}
+                              isDisabled={transactionStarted == true}
+                              _disabled={{ cursor: "pointer" }}
+                              focusThumbOnChange={false}
                             >
-                              {sliderValue}%
-                            </SliderMark>
-                            <SliderTrack bg="#343333">
-                              <SliderFilledTrack
-                                bg="white"
-                                w={`${sliderValue}`}
-                                _disabled={{ bg: "white" }}
-                              />
-                            </SliderTrack>
-                            <SliderThumb />
-                          </Slider>
-                        </Box>
-                      )}
+                              <SliderMark
+                                value={0}
+                                mt="-1.5"
+                                ml="-1.5"
+                                fontSize="sm"
+                                zIndex="1"
+                              >
+                                {sliderValue >= 0 ? (
+                                  <SliderPointerWhite />
+                                ) : (
+                                  <SliderPointer />
+                                )}
+                              </SliderMark>
+                              <SliderMark
+                                value={25}
+                                mt="-1.5"
+                                ml="-1.5"
+                                fontSize="sm"
+                                zIndex="1"
+                              >
+                                {sliderValue >= 25 ? (
+                                  <SliderPointerWhite />
+                                ) : (
+                                  <SliderPointer />
+                                )}
+                              </SliderMark>
+                              <SliderMark
+                                value={50}
+                                mt="-1.5"
+                                ml="-1.5"
+                                fontSize="sm"
+                                zIndex="1"
+                              >
+                                {sliderValue >= 50 ? (
+                                  <SliderPointerWhite />
+                                ) : (
+                                  <SliderPointer />
+                                )}
+                              </SliderMark>
+                              <SliderMark
+                                value={75}
+                                mt="-1.5"
+                                ml="-1.5"
+                                fontSize="sm"
+                                zIndex="1"
+                              >
+                                {sliderValue >= 75 ? (
+                                  <SliderPointerWhite />
+                                ) : (
+                                  <SliderPointer />
+                                )}
+                              </SliderMark>
+                              <SliderMark
+                                value={100}
+                                mt="-1.5"
+                                ml="-1.5"
+                                fontSize="sm"
+                                zIndex="1"
+                              >
+                                {sliderValue == 100 ? (
+                                  <SliderPointerWhite />
+                                ) : (
+                                  <SliderPointer />
+                                )}
+                              </SliderMark>
+                              <SliderMark
+                                value={sliderValue}
+                                textAlign="center"
+                                // bg='blue.500'
+                                color="white"
+                                mt="-8"
+                                ml={sliderValue !== 100 ? "-5" : "-6"}
+                                w="12"
+                                fontSize="12px"
+                                fontWeight="400"
+                                lineHeight="20px"
+                                letterSpacing="0.25px"
+                              >
+                                {sliderValue}%
+                              </SliderMark>
+                              <SliderTrack bg="#343333">
+                                <SliderFilledTrack
+                                  bg="white"
+                                  w={`${sliderValue}`}
+                                  _disabled={{ bg: "white" }}
+                                />
+                              </SliderTrack>
+                              <SliderThumb />
+                            </Slider>
+                          </Box>
+                        )}
                     </Box>
                     {currentAction === "Spend Borrow" && (
                       <Box display="flex" flexDir="column" p="3" gap="1">
@@ -2535,8 +2731,6 @@ const YourBorrowModal = ({
                               />,
                             ]}
                             labelErrorArray={[
-                              "Performing pre-checks",
-                              "Processing the spend borrow",
                               <ErrorButton
                                 errorText="Transaction failed"
                                 key={"error1"}
@@ -2576,7 +2770,9 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            handleRepayBorrow();
+                            if (transactionStarted == false) {
+                              handleRepayBorrow();
+                            }
                           }}
                         >
                           <AnimatedButton
@@ -2603,8 +2799,6 @@ const YourBorrowModal = ({
                               />,
                             ]}
                             labelErrorArray={[
-                              "Calculating the outstanding borrow amount.",
-                              "transferring the repay amount to the borrow vault.",
                               <ErrorButton
                                 errorText="Transaction failed"
                                 key={"error1"}
@@ -2635,6 +2829,61 @@ const YourBorrowModal = ({
                           Repay borrow
                         </Button>
                       )
+                    ) : (
+                      ""
+                    )}
+                    {currentAction == "Convert to borrow market" ? (
+                      <Box
+                        onClick={() => {
+                          setTransactionStarted(true);
+                          if (transactionStarted == false) {
+                            handleRevertTransaction();
+                          }
+                        }}
+                      >
+                        <AnimatedButton
+                          bgColor="#101216"
+                          // bgColor="red"
+                          // p={0}
+                          color="#8B949E"
+                          size="sm"
+                          width="100%"
+                          mb="1.5rem"
+                          border="1px solid #8B949E"
+                          // _active={{color:"black",bg:"white"}}
+                          labelSuccessArray={[
+                            "Performing prechecks.",
+                            "Processing self liquidation.",
+                            "Borrow closed successfully.",
+                            "Determine rToken balance.",
+                            "Transferring rtokens to your account.",
+                            // <ErrorButton errorText="Transaction failed" />,
+                            // <ErrorButton errorText="Copy error!" />,
+                            <SuccessButton
+                              key={"successButton"}
+                              successText={"Self liqudidation successfull."}
+                            />,
+                          ]}
+                          labelErrorArray={[
+                            <ErrorButton
+                              errorText="Transaction failed"
+                              key={"error1"}
+                            />,
+                            <ErrorButton
+                              errorText="Copy error!"
+                              key={"error2"}
+                            />,
+                          ]}
+                          _disabled={{ bgColor: "white", color: "black" }}
+                          isDisabled={transactionStarted == true}
+                          currentTransactionStatus={currentTransactionStatus}
+                          setCurrentTransactionStatus={
+                            setCurrentTransactionStatus
+                          }
+                        >
+                          convert to borrow market
+                        </AnimatedButton>
+                      </Box>
                     ) : (
                       ""
                     )}
@@ -2672,8 +2921,6 @@ const YourBorrowModal = ({
                               />,
                             ]}
                             labelErrorArray={[
-                              "Performing prechecks.",
-                              "Processing self liquidation.",
                               <ErrorButton
                                 errorText="Transaction failed"
                                 key={"error1"}
@@ -3722,8 +3969,6 @@ const YourBorrowModal = ({
                             />,
                           ]}
                           labelErrorArray={[
-                            "Processing",
-                            "Transferring collateral to supply vault.",
                             <ErrorButton
                               errorText="Transaction failed"
                               key={"error1"}

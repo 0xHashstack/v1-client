@@ -11,6 +11,7 @@ import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import PageCard from "@/components/layouts/pageCard";
 import Pagination from "@/components/uiElements/pagination";
 import { useConnectors } from "@starknet-react/core";
+import { ToastContainer } from "react-toastify";
 // import WalletConnectModal from "@/components/modals/WalletConnectModal";
 const SpendBorrow = () => {
   const { available, disconnect, connect, connectors, refresh } =
@@ -67,6 +68,7 @@ const SpendBorrow = () => {
         </HStack>
       </HStack>
       <SpendTable />
+      {/* <ToastContainer theme="dark"/> */}
 
       {/* <WalletConnectModal/> */}
     </PageCard>

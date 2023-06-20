@@ -319,10 +319,11 @@ const SupplyModal = ({
       }
     } catch (err: any) {
       // setTransactionFailed(true);
+
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
-          Transaction cancelled{" "}
+          Transaction failed{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -900,7 +901,7 @@ const SupplyModal = ({
                       setSliderValue(val);
                       var ans = (val / 100) * walletBalance;
                       // console.log(ans);
-                      // ans = Math.round(ans * 100) / 100;
+                      ans = Math.round(ans * 100) / 100;
                       // console.log(ans)
                       // dispatch(setInputSupplyAmount(ans));
                       setDepositAmount(ans);
