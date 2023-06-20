@@ -189,7 +189,7 @@ const SwapModal = ({
       console.log(swap);
       setDepositTransHash(swap?.transaction_hash);
       dispatch(setTransactionStatus("success"));
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
       dispatch(setTransactionStatus("failed"));
       const toastContent = (

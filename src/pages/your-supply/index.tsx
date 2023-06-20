@@ -14,6 +14,7 @@ import { useDispatch } from "react-redux/es/hooks/useDispatch";
 import { useAccount, useConnectors } from "@starknet-react/core";
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
+import { IDeposit } from "@/Blockchain/interfaces/interfaces";
 const YourSupply = () => {
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const columnItems = [
@@ -35,14 +36,20 @@ const YourSupply = () => {
   //     connect(connectors[1]);
   //   }
   // },[])
-  useEffect(() => {
-    const getSupply = async () => {
-      console.log("all deposits calling started")
-      const supply = await getUserDeposits(address || "");
-      // console.log("supplies", supply);
-    };
-    getSupply();
-  }, []);
+  // const [userDeposits, setUserDeposits] = useState<IDeposit[]>([]);
+  // useEffect(() => {
+  //   const getSupply = async () => {
+  //     console.log("all deposits calling started");
+  //     try {
+  //       const supply = await getUserDeposits(address || "");
+  //       setUserDeposits(supply);
+  //       console.log("supplies", supply);
+  //     } catch (err) {
+  //       console.log("supplies", err);
+  //     }
+  //   };
+  //   getSupply();
+  // }, []);
   return (
     <PageCard pt="6.5rem">
       <HStack

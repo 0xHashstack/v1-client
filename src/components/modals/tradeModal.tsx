@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import {
   Modal,
   ModalOverlay,
@@ -90,7 +92,7 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
     DAI: any;
   }
 
-  const walletBalances: assetB = {
+  const walletBalances: assetB | any = {
     USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
     USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
     BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),

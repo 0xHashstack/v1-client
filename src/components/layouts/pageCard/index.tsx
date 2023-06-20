@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import Navbar from "@/components/layouts/navbar/Navbar";
 import { Box, Stack, StackProps, Text, useMediaQuery } from "@chakra-ui/react";
 import React, { ReactNode, useCallback, useEffect, useState } from "react";

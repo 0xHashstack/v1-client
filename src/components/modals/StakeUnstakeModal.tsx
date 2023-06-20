@@ -68,6 +68,7 @@ import SliderPointerWhite from "@/assets/icons/sliderPointerWhite";
 import { useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
+import { RToken } from "@/Blockchain/interfaces/interfaces";
 const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
@@ -230,7 +231,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
         "Staking Modal-stake transaction check",
         recieptData?.data?.status == "ACCEPTED_ON_L2"
       );
-    } catch (err) {
+    } catch (err: any) {
       dispatch(setTransactionStatus("failed"));
       console.log("stake transaction failed : ", err);
       const toastContent = (
@@ -254,7 +255,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
       setDepositTransHash(unstake?.transaction_hash);
       dispatch(setTransactionStatus("success"));
       console.log(unstake);
-    } catch (err) {
+    } catch (err: any) {
       dispatch(setTransactionStatus("failed"));
       console.log("Unstake transaction failed : ", err);
       const toastContent = (
@@ -327,7 +328,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     rDAI: true,
   };
 
-  const rcoins = ["rBTC", "rUSDT", "rUSDC", "rETH", "rDAI"];
+  const rcoins: RToken[] = ["rBTC", "rUSDT", "rUSDC", "rETH", "rDAI"];
   const walletBalance = useSelector(selectWalletBalance);
   const coinObj: any = coins.find((obj) => coin.name in obj);
   const rcoinValue = coinObj ? coinObj[coin.name] : undefined;
@@ -347,7 +348,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     setRTokenToWithdraw(0);
     setToastDisplayed(false);
     setCurrentSelectedStakeCoin(coin ? rcoinValue : "rBTC");
-    setRToken("");
+    setRToken("rBTC");
     setcurrentSelectedUnstakeCoin(coin ? rcoinValue : "rBTC");
     setUnstakeRToken(coin ? rcoinValue : "rBTC");
     setTransactionStarted(false);
@@ -606,7 +607,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               className="dropdown-container"
                               boxShadow="dark-lg"
                             >
-                              {rcoins.map((coin: string, index: number) => {
+                              {rcoins.map((coin: RToken, index: number) => {
                                 return (
                                   <Box
                                     key={index}
@@ -1296,7 +1297,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
                               className="dropdown-container"
                               boxShadow="dark-lg"
                             >
-                              {rcoins.map((coin: string, index: number) => {
+                              {rcoins.map((coin: RToken, index: number) => {
                                 return (
                                   <Box
                                     key={index}

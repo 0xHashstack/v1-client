@@ -12,8 +12,18 @@ import { useAccount } from "@starknet-react/core";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 const MarketDashboard = () => {
   const [oraclePrices, setOraclePrices]: any = useState([]);
+  const [totalSupplies, setTotalSupplies]: any = useState([]);
+  const [totalBorrows, setTotalBorrows]: any = useState([]);
+  const [supplyAPRs, setSupplyAPRs]: any = useState([]);
+  const [borrowAPRs, setBorrowAPRs]: any = useState([]);
+  const [utilization, setUtilizations]: any = useState([]);
   const { account, address } = useAccount();
   // console.log(account,"Market Page")
+
+  useEffect(() => {
+    fetchProtocolStats();
+  });
+
   useEffect(() => {
     fetchOraclePrices();
     // fetchProtocolReserves();
@@ -51,12 +61,58 @@ const MarketDashboard = () => {
   const fetchOraclePrices = async () => {
     try {
       const prices = await getOraclePrices();
-      // console.log("prices", prices);
+      console.log("oracleprices", prices);
       setOraclePrices(prices);
     } catch (error) {
       console.error("Error fetching Oracle prices:", error);
     }
   };
+
+  const fetchProtocolStats = async () => {
+    try {
+      const stats = await getProtocolStats();
+      console.log("fetchprotocolstats", stats); //23014
+      // const temp: any = ;
+      setTotalSupplies([
+        stats[2].totalSupply,
+        stats[3].totalSupply,
+        stats[0].totalSupply,
+        stats[1].totalSupply,
+        stats[4].totalSupply,
+      ]);
+      setTotalBorrows([
+        stats[2].totalBorrow,
+        stats[3].totalBorrow,
+        stats[0].totalBorrow,
+        stats[1].totalBorrow,
+        stats[4].totalBorrow,
+      ]);
+      setBorrowAPRs([
+        stats[2].borrowRate,
+        stats[3].borrowRate,
+        stats[0].borrowRate,
+        stats[1].borrowRate,
+        stats[4].borrowRate,
+      ]);
+      setSupplyAPRs([
+        stats[2].supplyRate,
+        stats[3].supplyRate,
+        stats[0].supplyRate,
+        stats[1].supplyRate,
+        stats[4].supplyRate,
+      ]);
+      setUtilizations([
+        stats[2].utilisationPerMarket,
+        stats[3].utilisationPerMarket,
+        stats[0].utilisationPerMarket,
+        stats[1].utilisationPerMarket,
+        stats[4].utilisationPerMarket,
+      ]);
+    } catch (error) {
+      console.log("error on getting protocol stats");
+    }
+  };
+
   return (
     <HStack
       w="95%"
@@ -68,6 +124,8 @@ const MarketDashboard = () => {
       <DashboardLeft
         width={"49%"}
         oraclePrices={oraclePrices}
+        totalSupplies={totalSupplies}
+        supplyAPRs={supplyAPRs}
         // columnItems={dashboardItems1}
         // gap={"16.6"}
         // rowItems={rowItems1}
@@ -75,6 +133,9 @@ const MarketDashboard = () => {
       <DashboardRight
         width={"49%"}
         oraclePrices={oraclePrices}
+        borrowAPRs={borrowAPRs}
+        totalBorrows={totalBorrows}
+        utilization={utilization}
         // gap={"14.2"}
         // columnItems={dashboardItems2}
         // rowItems={rowItems2}

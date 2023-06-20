@@ -8,7 +8,7 @@ import {
 import { useEffect, useState } from "react";
 import { Abi, uint256 } from "starknet";
 import { ERC20Abi, diamondAddress } from "../../stark-constants";
-import { TxToastManager } from "../../tx-ToastManager";
+// import { TxToastManager } from "../../tx-ToastManager";
 import { etherToWeiBN, weiToEtherNumber } from "../../utils/utils";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
@@ -17,7 +17,7 @@ const useLoanRequest = () => {
   const { address: account } = useAccount();
 
   // Native token Market
-  const [market, setMarket] = useState<NativeToken>("BTC");
+  const [market, setMarket] = useState<any>("BTC");
   const [amount, setAmount] = useState<number>(0);
 
   // Collateral - rToken
@@ -33,18 +33,18 @@ const useLoanRequest = () => {
     hash: transLoanRequestHash,
     watch: true,
   });
-//   console.log(
-//     "useLoanRequest - ",
-//     market,
-//     amount,
-//     rToken,
-//     rTokenAmount,
-//     "toto",
-//     collateralMarket,
-//     collateralAmount,
-//     transLoanRequestHash,
-//     "hey"
-//   );
+  //   console.log(
+  //     "useLoanRequest - ",
+  //     market,
+  //     amount,
+  //     rToken,
+  //     rTokenAmount,
+  //     "toto",
+  //     collateralMarket,
+  //     collateralAmount,
+  //     transLoanRequestHash,
+  //     "hey"
+  //   );
   const {
     data: dataLoanRequest,
     error: errorLoanRequest,

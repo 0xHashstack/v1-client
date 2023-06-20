@@ -2,18 +2,18 @@ import { ItokenAddressMap, ItokenDecimalsMap } from "../interfaces/interfaces";
 import { contractsEnv } from "../stark-constants";
 
 export const getTokenFromName = (name: string) => {
-  return contractsEnv.TOKENS.find((Token) => Token.name == name)
+  return contractsEnv.TOKENS.find((Token) => Token.name == name);
 };
 
 export const getRTokenFromName = (name: string) => {
-  return contractsEnv.rTOKENS.find((rToken) => rToken.name == name)
-}
+  return contractsEnv.rTOKENS.find((rToken) => rToken.name == name);
+};
 
 export const getDTokenFromName = (name: string) => {
-  return contractsEnv.dTOKENS.find((dToken) => dToken.name == name)
-}
+  return contractsEnv.dTOKENS.find((dToken) => dToken.name == name);
+};
 
-export const tokenAddressMap: ItokenAddressMap = {
+export const tokenAddressMap: ItokenAddressMap | any = {
   BTC: getTokenFromName("BTC")?.address,
   USDT: getTokenFromName("USDT")?.address,
   USDC: getTokenFromName("USDC")?.address,
@@ -33,7 +33,7 @@ export const tokenAddressMap: ItokenAddressMap = {
   dDAI: getDTokenFromName("dDAI")?.address,
 };
 
-export const tokenDecimalsMap: ItokenDecimalsMap = {
+export const tokenDecimalsMap: ItokenDecimalsMap | any = {
   BTC: getTokenFromName("BTC")?.decimals,
   USDT: getTokenFromName("USDT")?.decimals,
   USDC: getTokenFromName("USDC")?.decimals,
@@ -52,4 +52,3 @@ export const tokenDecimalsMap: ItokenDecimalsMap = {
   dETH: getDTokenFromName("dETH")?.decimals,
   dDAI: getDTokenFromName("dDAI")?.decimals,
 };
-

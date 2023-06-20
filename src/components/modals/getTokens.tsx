@@ -126,7 +126,7 @@ const dispatch=useDispatch();
       const getTokens = await writeAsyncGetTokens();
       console.log(getTokens);
       // dispatch(setTransactionStatus("success"));
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
       // dispatch(setTransactionStatus("failed"));
       const toastContent = (

@@ -245,33 +245,34 @@ const ReferFreindsModal = ({ buttonText, ...restProps }: any) => {
                 ) : buttonId == 2 ? (
                   <ErrorButton errorText="Copy error!" />
                 ) : (
-                  <AnimatedButton
-                    bgColor="#101216"
-                    // bgColor="red"
-                    // p={0}
-                    color="#8B949E"
-                    size="sm"
-                    width="100%"
-                    mt="1.5rem"
-                    mb="1.5rem"
-                    border="1px solid #8B949E"
-                    labelArray={[
-                      "Deposit Amount approved",
-                      "Successfully transferred to Hashstac&apos;s supply vault.",
-                      "Determining the rToken amount to mint.",
-                      "rTokens have been minted successfully.",
-                      "Transaction complete.",
-                      // <ErrorButton errorText="Transaction failed" />,
-                      // <ErrorButton errorText="Copy error!" />,
-                      <SuccessButton
-                        key={"successButton"}
-                        successText={"Success"}
-                      />,
-                    ]}
-                    onClick={onClose}
-                  >
-                    Copy Referal Link
-                  </AnimatedButton>
+                  <></>
+                  // <AnimatedButton
+                  //   bgColor="#101216"
+                  //   // bgColor="red"
+                  //   // p={0}
+                  //   color="#8B949E"
+                  //   size="sm"
+                  //   width="100%"
+                  //   mt="1.5rem"
+                  //   mb="1.5rem"
+                  //   border="1px solid #8B949E"
+                  //   labelSuccessArray={[
+                  //     "Deposit Amount approved",
+                  //     "Successfully transferred to Hashstac&apos;s supply vault.",
+                  //     "Determining the rToken amount to mint.",
+                  //     "rTokens have been minted successfully.",
+                  //     "Transaction complete.",
+                  //     // <ErrorButton errorText="Transaction failed" />,
+                  //     // <ErrorButton errorText="Copy error!" />,
+                  //     <SuccessButton
+                  //       key={"successButton"}
+                  //       successText={"Success"}
+                  //     />,
+                  //   ]}
+                  //   onClick={onClose}
+                  // >
+                  //   Copy Referal Link
+                  // </AnimatedButton>
                 )
               ) : (
                 <Button
