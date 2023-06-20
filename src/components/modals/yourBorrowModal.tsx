@@ -79,6 +79,7 @@ import useSwap from "../../Blockchain/hooks/Writes/useSwap";
 import useLiquidity from "@/Blockchain/hooks/Writes/useLiquidity";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import {
+  getTokenFromName,
   tokenAddressMap,
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
@@ -87,6 +88,11 @@ import { uint256 } from "starknet";
 import { useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
+
+import { getJediEstimatedLpAmountOut } from "../../Blockchain/scripts/l3interaction";
+import { getAddress } from "ethers/lib/utils";
+import { getTokenFromAddress } from "@/Blockchain/stark-constants";
+
 const YourBorrowModal = ({
   borrowIDCoinMap,
   currentID,
@@ -548,10 +554,11 @@ const YourBorrowModal = ({
     }
   };
 
-  useEffect(() => {
-    setToMarketA(currentPool.split("/")[0]);
-    setToMarketB(currentPool.split("/")[1]);
-  }, [currentPool]);
+  // useEffect(() => {
+  //   setToMarketA(currentPool.split("/")[0]);
+  //   setToMarketB(currentPool.split("/")[1]);
+  //   console.log("marketsAB", toMarketA, toMarketB);
+  // }, [currentPool]);
 
   const getContainer = (action: string) => {
     switch (action) {
@@ -1360,6 +1367,27 @@ const YourBorrowModal = ({
     setToMarket(currentPoolCoin);
     console.log(toMarket);
   }, [currentPoolCoin]);
+
+  useEffect(() => {
+    console.log(
+      "marketsAB",
+      toMarketA,
+      toMarketB,
+      currentBorrowId1.slice(5),
+      tokenAddressMap[toMarketA],
+      tokenAddressMap[toMarketB]
+    );
+    fetchLiquiditySplit(toMarketA, toMarketB);
+  }, [toMarketA, toMarketB]);
+
+  const fetchLiquiditySplit = async () => {
+    const split = await getJediEstimatedLpAmountOut(
+      currentBorrowId1.slice(5),
+      toMarketA,
+      toMarketB
+    );
+    console.log("toMarketSplit", split);
+  };
 
   return (
     <Box>
