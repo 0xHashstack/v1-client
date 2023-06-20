@@ -37,8 +37,13 @@ const nextConfig = {
       },
     ];
   },
+  images: {
+    loader: 'custom',
+    loaderFile: 'loader.js',
+  },
 };
 
+ 
 module.exports = nextConfig;
 
 // const nextConfig = {
