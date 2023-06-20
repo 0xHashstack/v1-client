@@ -194,7 +194,7 @@ const SwapModal = ({
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
-          Transaction cancelled{" "}
+          Transaction failed{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -986,8 +986,6 @@ const SwapModal = ({
                     />,
                   ]}
                   labelErrorArray={[
-                    "Processing",
-                    "Transferring collateral to supply vault.",
                     <ErrorButton
                       errorText="Transaction failed"
                       key={"error1"}

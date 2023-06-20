@@ -442,7 +442,7 @@ const YourBorrowModal = ({
       setCurrentTransactionStatus(true);
       console.log("trans pending");
       if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied `, {
+        toast.success(`You have successfully spend the loan `, {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
         setToastDisplayed(true);
@@ -459,7 +459,7 @@ const YourBorrowModal = ({
       setCurrentTransactionStatus(true);
       console.log("trans onAcceptedOnL2 - ", transaction);
       if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied `, {
+        toast.success(`You have successfully supplied spend the loan `, {
           position: toast.POSITION.BOTTOM_RIGHT,
         });
         setToastDisplayed(true);
@@ -482,7 +482,7 @@ const YourBorrowModal = ({
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
-          Transaction cancelled{" "}
+          Transaction failed{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -534,7 +534,7 @@ const YourBorrowModal = ({
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
-          Transaction cancelled{" "}
+          Transaction failed{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -562,7 +562,7 @@ const YourBorrowModal = ({
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
-          Transaction cancelled{" "}
+          Transaction failed{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>

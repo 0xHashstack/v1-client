@@ -323,7 +323,7 @@ const SupplyModal = ({
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
-          Transaction cancelled{" "}
+          Transaction failed{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>

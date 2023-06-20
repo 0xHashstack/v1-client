@@ -219,7 +219,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
       console.log("handle borrow", err);
       const toastContent = (
         <div>
-          Transaction cancelled{" "}
+          Transaction failed{" "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>

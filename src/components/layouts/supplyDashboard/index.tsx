@@ -363,7 +363,7 @@ const SupplyDashboard = ({
                           borderRadius="6px"
                         />
                       ) : (
-                        protocolStats[idx]?.exchangeRateRtokenToUnderlying + "%"
+                        protocolStats[idx]?.exchangeRateRtokenToUnderlying 
                       )}
                     </Text>
                   </Td>
