@@ -251,10 +251,11 @@ const YourBorrowModal = ({
     errorRevertInteractWithL3,
     isIdleRevertInteractWithL3,
     isLoadingRevertInteractWithL3,
-  }=useRevertInteractWithL3(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
+  }=useRevertInteractWithL3();
   
   const handleRevertTransaction=async()=>{
     try{
+      setRevertLoanId(currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim());
       const revert=await writeAsyncRevertInteractWithL3();
       console.log(revert);
       dispatch(setTransactionStatus("success"));

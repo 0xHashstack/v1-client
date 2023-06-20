@@ -2,8 +2,8 @@ import { diamondAddress } from "@/Blockchain/stark-constants";
 import { useContractWrite } from "@starknet-react/core";
 import { useState } from "react";
 
-const useRevertInteractWithL3 = (loanIdParam: string) => {
-  const [revertLoanId, setRevertLoanId] = useState<string>(loanIdParam)
+const useRevertInteractWithL3 = () => {
+  const [revertLoanId, setRevertLoanId] = useState<string>("")
 
   const {
     data: dataRevertInteractWithL3,
