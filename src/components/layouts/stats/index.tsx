@@ -59,7 +59,7 @@ const Stats = ({
         onClick={onclick}
       >
         <Image
-          src="./statsIcon.svg"
+          src="/statsIcon.svg"
           alt="Navbar Logo"
           style={{
             marginRight: "24px",

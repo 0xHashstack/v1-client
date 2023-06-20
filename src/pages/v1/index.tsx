@@ -267,7 +267,7 @@ export default function Home() {
               </Text>
               <Box p="1" mr="16px">
                 <Image
-                  src="./ArgentXlogo.svg"
+                  src="/ArgentXlogo.svg"
                   alt="Picture of the author"
                   width="15"
                   height="15"
@@ -298,7 +298,7 @@ export default function Home() {
                 </Text>
                 <Box p="1" mr="16px">
                   <Image
-                    src="./ArgentXlogo.svg"
+                    src="/ArgentXlogo.svg"
                     alt="Picture of the author"
                     width="15"
                     height="15"

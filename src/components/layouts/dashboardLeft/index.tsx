@@ -260,8 +260,8 @@ const DashboardLeft = ({
                   >
                     <Box height="2rem" width="2rem">
                       <Image
-                        src={`./${coin.name}.svg`}
-                        alt="Picture of the author"
+                        src={`/${coin.name}.svg`}
+                        alt={`Picture of the coin that I want to access ${coin.name}`}
                         width="32"
                         height="32"
                       />
