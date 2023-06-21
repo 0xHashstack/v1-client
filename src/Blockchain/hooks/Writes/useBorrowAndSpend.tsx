@@ -51,27 +51,6 @@ const useBorrowAndSpend = () => {
   type L3Calldata = SwapCalldata | AddLiquidityCalldata;
 
   const generateCalldata = (): L3Calldata => {
-    // let calldata: L3Calldata = [constants.JEDI_SWAP, "3", constants.SWAP, tokenAddressMap[toMarketSwap]];
-
-    // if(l3App === constants.JEDI_SWAP) {
-    //   calldata[0] = constants.JEDI_SWAP;
-    // }
-    // else if(l3App === constants.MY_SWAP){
-    //   calldata[0] = constants.MY_SWAP;
-    // }
-
-    // if(method === "ADD_LIQUIDITY") {
-    //   calldata[1] = "4";
-    //   calldata[2] = tokenAddressMap[toMarketLiqA]
-    //   calldata[3] = tokenAddressMap[toMarketLiqB]
-    // } 
-    // else if(method === "SWAP") {
-    //   calldata[1] = "3";
-    //   calldata[2] = tokenAddressMap[toMarketSwap];
-    // }
-    // return calldata;
-
-
     let calldata: L3Calldata;
 
     let integration: typeof constants.JEDI_SWAP | typeof constants.MY_SWAP;
