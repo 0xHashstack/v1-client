@@ -123,7 +123,7 @@ export const borrowInterestAccrued = (asset: any) => {
 };
 
 
-export const etherToWeiBN = (amount: number, tokenName: Token) => {
+export const etherToWeiBN = (amount: string, tokenName: Token) => {
   if(!amount || amount === undefined || amount === null) {
     return 0;
   }
@@ -131,10 +131,11 @@ export const etherToWeiBN = (amount: number, tokenName: Token) => {
   if(!decimals) {
     return 0;
   }
-  const factor = 1000_000;
+  const factor = 1000_000; 
+  console.log("amount passed", amount);
   const amountBN = number
-    .toBN(amount*factor)
-    // .mul(number.toBN(factor))
+    .toBN(amount)
+    .mul(number.toBN(factor))
     .mul(number.toBN(10).pow(number.toBN(decimals)))
     .div(number.toBN(factor));
   return amountBN;

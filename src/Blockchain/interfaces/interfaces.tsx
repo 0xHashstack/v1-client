@@ -4,9 +4,10 @@ export type RToken = "rBTC" | "rETH" | "rDAI" | "rUSDC" | "rUSDT";
 
 export type Token = NativeToken | DToken | RToken;
 
-type LoanState = "ACTIVE" | "SPENT" | "REPAID" | "LIQUIDATED" | null;
-type SpendType = "UNSPENT" | "SWAP" | "LIQUIDITY" | null;
-type L3App = "jediSwap" | "mySwap" | "Yagi" | null;
+export type LoanState = "ACTIVE" | "SPENT" | "REPAID" | "LIQUIDATED" | null;
+export type SpendType = "UNSPENT" | "SWAP" | "LIQUIDITY" | null;
+export type L3App = "JEDI_SWAP" | "MY_SWAP" | "YAGI" | "NONE";
+export type Method = "SWAP" | "ADD_LIQUIDITY";
 
 export type ItokenAddressMap = {
   [key in Token]: string | undefined;

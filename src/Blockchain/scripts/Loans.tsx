@@ -62,12 +62,12 @@ function parseLoansData(
 
       l3App:
         number.toBN(loanData?.l3_integration).toString() === "1962660952167394271600"
-          ? "jediSwap"
+          ? "JEDI_SWAP"
           : number.toBN(loanData?.l3_integration, 0).toString() === "30814223327519088"
-            ? "mySwap"
+            ? "MY_SWAP"
             : number.toBN(loanData?.l3_integration, 0).toString() === "30814223327519089"
-              ? "Yagi"
-              : null,
+              ? "YAGI"
+              : "NONE",
       spendType: 
         number.toBN(loanData?.l3_category).toString() === "0"
         ? "UNSPENT"
