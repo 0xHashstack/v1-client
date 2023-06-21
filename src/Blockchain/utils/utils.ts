@@ -132,14 +132,18 @@ export const etherToWeiBN = (amount: number, tokenName: Token) => {
     return 0;
   }
   console.log("amount", amount);
-  const factor = 1000_000; 
-  const amountBN = number
-    .toBN(amount.toString(10), 10)
-    .mul(number.toBN(factor))
-    .mul(number.toBN(10).pow(number.toBN(decimals)))
-    .div(number.toBN(factor));
-  return amountBN;
-  // return amount;
+  // try {
+    const factor = 1000_000; 
+    const amountBN = number
+      .toBN(amount*factor) 
+      .mul(number.toBN(10).pow(number.toBN(decimals)))
+      .div(number.toBN(factor));
+    return amountBN;
+  // }
+  // catch(e) {
+  //   console.warn("etherToWeiBN fails with error: ", e);
+  //   return amount;
+  // }
 };
 
 export const weiToEtherNumber = (amount: string, tokenName: Token) => {

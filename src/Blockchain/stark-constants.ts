@@ -29,6 +29,10 @@ export const getProvider = () => {
         feederGatewayUrl: "feeder_gateway",
         gatewayUrl: "gateway",
       },
+      // rpc: {
+      //   nodeUrl: "https://starknet-goerli.infura.io/v3/b496d6ea1c414d3eb6be4a7d6c5f4b05",
+      //   blockIdentifier: "pending",
+      // }
     });
     return provider;
   } else if(contractsEnv == DeployDetailsProd.goerli_2){
