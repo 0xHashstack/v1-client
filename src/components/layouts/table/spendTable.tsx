@@ -46,6 +46,7 @@ import { useRouter } from "next/router";
 import SmallEth from "@/assets/icons/coins/smallEth";
 import Pagination from "@/components/uiElements/pagination";
 import BorrowModal from "../../modals/borrowModal";
+import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -116,6 +117,28 @@ const SpendTable = () => {
     // console.log("faisal coin mapping", borrowIDCoinMap);
   }, [userLoans]);
 
+  const [borrowAPRs, setBorrowAPRs] = useState([]);
+
+  useEffect(() => {
+    fetchProtocolStats();
+  }, []);
+
+  const fetchProtocolStats = async () => {
+    try {
+      const stats = await getProtocolStats();
+      console.log("fetchprotocolstats", stats); //23014
+      setBorrowAPRs([
+        stats?.[2].borrowRate,
+        stats?.[3].borrowRate,
+        stats?.[0].borrowRate,
+        stats?.[1].borrowRate,
+        stats?.[4].borrowRate,
+      ]);
+    } catch (error) {
+      console.log("error on getting protocol stats");
+    }
+  };
+
   useEffect(() => {
     setCurrentBorrow(-1);
     setSelectedDapp("");
@@ -155,7 +178,7 @@ const SpendTable = () => {
             Only unspent loans are displayed here. For comprehensive list of
             active loans go to
             <Link
-              href="/your-borrow"
+              href="/v1/your-borrow"
               onClick={() => {
                 dispatch(setCurrentPage("your borrow"));
                 localStorage.setItem("currentPage", "your borrow");
@@ -597,6 +620,7 @@ const SpendTable = () => {
                   BorrowBalance={borrowAmount}
                   currentSwap={currentSwap}
                   setCurrentSwap={setCurrentSwap}
+                  borrowAPRs={borrowAPRs}
                 />
               </Box>
             </TabPanel>
@@ -645,7 +669,7 @@ const SpendTable = () => {
                 </Box>
               </Box>
             </TabPanel> */}
-            
+
             <TabPanel p={0}>
               <Box
                 display={tradeNote ? "flex" : "none"}

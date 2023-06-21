@@ -12,6 +12,7 @@ import {
   Tooltip,
   Box,
   Portal,
+  Skeleton,
 } from "@chakra-ui/react";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
@@ -71,6 +72,7 @@ const LiquidityProvisionModal = ({
   currentMarketCoin,
   currentSwap,
   setCurrentSwap,
+  borrowAPRs,
 }: any) => {
   // console.log("liquidity found map: ", borrowIDCoinMap);
   // console.log("liquidity found borrow ids: ", borrowIds);
@@ -209,7 +211,7 @@ const LiquidityProvisionModal = ({
   //This function is used to find the percentage of the slider from the input given by the user
   const handleChange = (newValue: any) => {
     // Calculate the percentage of the new value relative to the wallet balance
-    if(newValue > 9_000_000_000) return;
+    if (newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
@@ -327,6 +329,30 @@ const LiquidityProvisionModal = ({
         setCurrentBorrowId(borrowIDCoinMap[i].id);
         return;
       }
+    }
+  };
+
+  // const getIndex = (borrowMarket: string) => {
+  const getBorrowAPR = (borrowMarket: string) => {
+    switch (borrowMarket) {
+      case "USDT":
+        return borrowAPRs[0];
+        break;
+      case "USDC":
+        return borrowAPRs[1];
+        break;
+      case "BTC":
+        return borrowAPRs[2];
+        break;
+      case "ETH":
+        return borrowAPRs[3];
+        break;
+      case "DAI":
+        return borrowAPRs[4];
+        break;
+
+      default:
+        break;
     }
   };
 
@@ -956,7 +982,22 @@ const LiquidityProvisionModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    5.56%
+                    {!borrowAPRs ||
+                    borrowAPRs.length === 0 ||
+                    !getBorrowAPR(currentBorrowMarketCoin) ? (
+                      <Box pt="2px">
+                        <Skeleton
+                          width="2.3rem"
+                          height=".85rem"
+                          startColor="#2B2F35"
+                          endColor="#101216"
+                          borderRadius="6px"
+                        />
+                      </Box>
+                    ) : (
+                      getBorrowAPR(currentBorrowMarketCoin) + "%"
+                    )}
+                    {/* 5.56% */}
                   </Text>
                 </Box>
                 <Box display="flex" justifyContent="space-between" mb="0.3rem">

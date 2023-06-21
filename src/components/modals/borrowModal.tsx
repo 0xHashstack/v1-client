@@ -18,6 +18,7 @@ import {
   Text,
   Card,
   ModalHeader,
+  Skeleton,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -66,7 +67,13 @@ import {
 } from "@/Blockchain/utils/addressServices";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
-const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
+const BorrowModal = ({
+  buttonText,
+  coin,
+  borrowAPRs,
+  currentBorrowAPR,
+  ...restProps
+}: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [sliderValue2, setsliderValue2] = useState<number>(0);
@@ -289,8 +296,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
   const handleChange = (newValue: any) => {
-    if(newValue > 9_000_000_000) return;
-    newValue = Math.round(newValue*1000_000/1000_000)
+    if (newValue > 9_000_000_000) return;
+    newValue = Math.round((newValue * 1000_000) / 1000_000);
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
@@ -1425,7 +1432,22 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                   font-size="14px"
                   color="#6A737D"
                 >
-                  5.56%
+                  {!borrowAPRs ||
+                  borrowAPRs.length === 0 ||
+                  !borrowAPRs[currentBorrowAPR] ? (
+                    <Box pt="1px">
+                      <Skeleton
+                        width="2.3rem"
+                        height=".85rem"
+                        startColor="#2B2F35"
+                        endColor="#101216"
+                        borderRadius="6px"
+                      />
+                    </Box>
+                  ) : (
+                    borrowAPRs[currentBorrowAPR] + "%"
+                  )}
+                  {/* 5.56% */}
                 </Text>
               </Text>
               <Text

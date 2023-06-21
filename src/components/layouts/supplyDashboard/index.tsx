@@ -138,7 +138,13 @@ const SupplyDashboard = ({
         const stats = await getProtocolStats();
         // console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
         // const temp: any = ;
-        setProtocolStats([stats?.[2], stats?.[3], stats?.[0], stats?.[1], stats?.[4]]);
+        setProtocolStats([
+          stats?.[2],
+          stats?.[3],
+          stats?.[0],
+          stats?.[1],
+          stats?.[4],
+        ]);
       } catch (error) {
         console.log("error on getting protocol stats");
       }
@@ -149,7 +155,7 @@ const SupplyDashboard = ({
   useEffect(() => {
     let temp: any = [];
     supplies.map((coin: any) => {
-      if(coin?.rTokenAmountParsed!=0){
+      if (coin?.rTokenAmountParsed != 0) {
         temp.push(coin?.rToken);
       }
     });
@@ -363,7 +369,7 @@ const SupplyDashboard = ({
                           borderRadius="6px"
                         />
                       ) : (
-                        protocolStats[idx]?.exchangeRateRtokenToUnderlying 
+                        protocolStats[idx]?.exchangeRateRtokenToUnderlying
                       )}
                     </Text>
                   </Td>
@@ -475,6 +481,7 @@ const SupplyDashboard = ({
                           setcurrentSelectedWithdrawlCoin
                         }
                         coins={supplyMarkets}
+                        protocolStats={protocolStats}
                       />
                     </Box>
                   </Td>

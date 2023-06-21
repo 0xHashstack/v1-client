@@ -26,6 +26,7 @@ import {
   RadioGroup,
   Radio,
   Stack,
+  Skeleton,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -92,6 +93,7 @@ const YourSupplyModal = ({
   currentSelectedWithdrawlCoin,
   setcurrentSelectedWithdrawlCoin,
   coins,
+  protocolStats,
 }: any) => {
   // console.log(coins,"coins in supply modal")
   // console.log(currentSelectedSupplyCoin,"coin in your suppply");
@@ -299,7 +301,7 @@ const YourSupplyModal = ({
     }
   };
   const handleChange = (newValue: any) => {
-    if(newValue > 9_000_000_000) return;
+    if (newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
@@ -376,7 +378,11 @@ const YourSupplyModal = ({
   }, [currentSelectedSupplyCoin]);
 
   useEffect(() => {
-    setAsset(currentSelectedWithdrawlCoin[0] == 'r' ? currentSelectedWithdrawlCoin.slice(1) : currentSelectedWithdrawlCoin);
+    setAsset(
+      currentSelectedWithdrawlCoin[0] == "r"
+        ? currentSelectedWithdrawlCoin.slice(1)
+        : currentSelectedWithdrawlCoin
+    );
   }, [currentSelectedWithdrawlCoin]);
 
   useEffect(() => {
@@ -492,6 +498,29 @@ const YourSupplyModal = ({
       setSupplyAsset(currentSelectedSupplyCoin);
     }
   }, [currentSelectedSupplyCoin]);
+
+  const getBorrowAPR = (borrowMarket: string) => {
+    switch (borrowMarket) {
+      case "USDT":
+        return protocolStats[0]?.supplyRate;
+        break;
+      case "USDC":
+        return protocolStats[1]?.supplyRate;
+        break;
+      case "BTC":
+        return protocolStats[2]?.supplyRate;
+        break;
+      case "ETH":
+        return protocolStats[3]?.supplyRate;
+        break;
+      case "DAI":
+        return protocolStats[4]?.supplyRate;
+        break;
+
+      default:
+        break;
+    }
+  };
 
   return (
     <Box>
@@ -1160,7 +1189,28 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">7.75%</Text>
+                          <Text color="#6E7681">
+                            {!protocolStats ||
+                            protocolStats.length === 0 ||
+                            !getBorrowAPR(
+                              currentSelectedSupplyCoin.slice(1)
+                            ) ? (
+                              <Box pt="2px">
+                                <Skeleton
+                                  width="2.3rem"
+                                  height=".85rem"
+                                  startColor="#2B2F35"
+                                  endColor="#101216"
+                                  borderRadius="6px"
+                                />
+                              </Box>
+                            ) : (
+                              getBorrowAPR(currentSelectedSupplyCoin.slice(1)) +
+                              "%"
+                            )}
+
+                            {/* 7.75% */}
+                          </Text>
                         </Text>
                       </Card>
                       {inputSupplyAmount > 0 &&
@@ -1320,7 +1370,9 @@ const YourSupplyModal = ({
                                     pr="2"
                                     onClick={() => {
                                       setcurrentSelectedWithdrawlCoin(coin);
-                                      setAsset(coin[0] == 'r' ? coin.slice(1) : coin);
+                                      setAsset(
+                                        coin[0] == "r" ? coin.slice(1) : coin
+                                      );
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >

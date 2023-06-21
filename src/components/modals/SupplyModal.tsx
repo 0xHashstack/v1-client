@@ -89,6 +89,7 @@ const SupplyModal = ({
   coin,
   backGroundOverLay,
   currentSupplyAPR,
+  supplyAPRs,
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -1162,18 +1163,22 @@ const SupplyModal = ({
                     font-size="12px"
                     color="#6A737D"
                   >
-                    {/* {currentSupplyAPR ? (
-                      <Skeleton
-                        width="2.4rem"
-                        height="1.1rem"
-                        startColor="black"
-                        endColor="grey"
-                        borderRadius="6px"
-                      />
+                    {!supplyAPRs ||
+                    supplyAPRs.length === 0 ||
+                    !supplyAPRs[currentSupplyAPR] ? (
+                      <Box pt="3px">
+                        <Skeleton
+                          width="2.3rem"
+                          height=".85rem"
+                          startColor="#2B2F35"
+                          endColor="#101216"
+                          borderRadius="6px"
+                        />
+                      </Box>
                     ) : (
-                      currentSupplyAPR + "%"
-                    )} */}
-                    5.566%
+                      supplyAPRs[currentSupplyAPR] + "%"
+                    )}
+                    {/* 5.566% */}
                   </Text>
                 </Text>
               </Card>
