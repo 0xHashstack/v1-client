@@ -411,6 +411,9 @@ const SupplyModal = ({
   //This function is used to find the percentage of the slider from the input given by the user
   const handleChange = (newValue: any) => {
     // Calculate the percentage of the new value relative to the wallet balance
+    if(newValue > 9_000_000_000) return;
+    // check if newValue is float, if it is then round off to 6 decimals 
+
     var percentage = (newValue * 100) / walletBalance;
     if (walletBalance == 0) {
       setDepositAmount(0);
@@ -426,6 +429,7 @@ const SupplyModal = ({
       percentage = Math.round(percentage);
       if (isNaN(percentage)) {
       } else {
+
         setSliderValue(percentage);
         setDepositAmount(newValue);
         setinputAmount(newValue);

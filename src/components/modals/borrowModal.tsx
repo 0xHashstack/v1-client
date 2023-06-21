@@ -289,6 +289,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
   const handleChange = (newValue: any) => {
+    if(newValue > 9_000_000_000) return;
+    newValue = Math.round(newValue*1000_000/1000_000)
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
