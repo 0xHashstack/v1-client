@@ -138,7 +138,7 @@ const SupplyDashboard = ({
         const stats = await getProtocolStats();
         // console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
         // const temp: any = ;
-        setProtocolStats([stats[2], stats[3], stats[0], stats[1], stats[4]]);
+        setProtocolStats([stats?.[2], stats?.[3], stats?.[0], stats?.[1], stats?.[4]]);
       } catch (error) {
         console.log("error on getting protocol stats");
       }

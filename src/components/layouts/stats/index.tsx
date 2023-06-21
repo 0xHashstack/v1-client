@@ -29,7 +29,7 @@ const Stats = ({
       //   flexGrow={1}
       //   marginBottom="3resm"
     >
-      {Object.entries(statsData).map(([key, value], idx) => {
+      {Object?.entries(statsData).map(([key, value], idx) => {
         return (
           <VStack
             key={key}

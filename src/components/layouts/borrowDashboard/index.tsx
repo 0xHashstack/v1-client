@@ -184,7 +184,7 @@ const BorrowDashboard = ({
   const [loading, setLoading] = useState(true);
   const loadingTimeout = useTimeout(() => setLoading(false), 1800);
 
-  const [borrowAPRs, setBorrowAPRs] = useState([]);
+  const [borrowAPRs, setBorrowAPRs] = useState<(number|undefined)[]>([]);
 
   useEffect(() => {
     fetchProtocolStats();
@@ -195,11 +195,11 @@ const BorrowDashboard = ({
       const stats = await getProtocolStats();
       console.log("fetchprotocolstats", stats); //23014
       setBorrowAPRs([
-        stats[2].borrowRate,
-        stats[3].borrowRate,
-        stats[0].borrowRate,
-        stats[1].borrowRate,
-        stats[4].borrowRate,
+        stats?.[2].borrowRate,
+        stats?.[3].borrowRate,
+        stats?.[0].borrowRate,
+        stats?.[1].borrowRate,
+        stats?.[4].borrowRate,
       ]);
     } catch (error) {
       console.log("error on getting protocol stats");
