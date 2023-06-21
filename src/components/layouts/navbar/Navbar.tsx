@@ -194,7 +194,7 @@ const Navbar = () => {
           }}
           onClick={() => {
             if (router.pathname != "/waitlist") {
-              router.push("/market");
+              router.push("/v1/market");
             }
           }}
           onMouseEnter={() => setDashboardHover(true)}
