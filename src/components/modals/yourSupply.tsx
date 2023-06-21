@@ -299,6 +299,7 @@ const YourSupplyModal = ({
     }
   };
   const handleChange = (newValue: any) => {
+    if(newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
