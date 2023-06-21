@@ -11,9 +11,9 @@ const StatsBoard = () => {
     router.push(path);
   };
   const [protocolReserves, setProtocolReserves] = useState<IProtocolReserves>({
-    totalReserves: 12312,
-    availableReserves: 12131,
-    avgAssetUtilisation: 112, // weighted avg of all the utilisations of markets
+    totalReserves: null,
+    availableReserves: null,
+    avgAssetUtilisation: null, // weighted avg of all the utilisations of markets
   });
   const [userStats, setUserStats] = useState({
     netWorth: 8392.14, // current values of loans - total borrow + total supply
