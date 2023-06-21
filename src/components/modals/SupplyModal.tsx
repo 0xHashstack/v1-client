@@ -1173,7 +1173,7 @@ const SupplyModal = ({
                     ) : (
                       currentSupplyAPR + "%"
                     )} */}
-                    5.56%
+                    5.566%
                   </Text>
                 </Text>
               </Card>
