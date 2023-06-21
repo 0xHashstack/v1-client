@@ -1387,6 +1387,10 @@ const YourBorrowModal = ({
     "DAI/ETH",
     "BTC/ETH",
     "BTC/USDT",
+    "BTC/USDC",
+    "BTC/DAI",
+    "USDT/DAI",
+    "USDC/DAI",
   ];
 
   // useEffect(() => {
@@ -2586,6 +2590,8 @@ const YourBorrowModal = ({
                                 py="2"
                                 className="dropdown-container"
                                 boxShadow="dark-lg"
+                                height="198px"
+                                overflow="scroll"
                               >
                                 {pools.map((pool, index) => {
                                   return (

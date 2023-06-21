@@ -81,7 +81,7 @@ const StatsBoard = () => {
           header={["Your networth", "Your Supply", "Your borrow", "Net APR"]}
           statsData={userStats}
           onclick={() => {
-            handleRouteChange("/your-metrics");
+            handleRouteChange("/v1/your-metrics");
           }}
         />
         <Stats
@@ -92,7 +92,7 @@ const StatsBoard = () => {
           ]}
           statsData={protocolReserves}
           onclick={() => {
-            handleRouteChange("/protocol-metrics");
+            handleRouteChange("/v1/protocol-metrics");
           }}
         />
       </HStack>
