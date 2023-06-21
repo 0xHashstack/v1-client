@@ -1,9 +1,11 @@
-import {
-  useAccount,
-  useContractWrite,
-} from "@starknet-react/core";
+import { useAccount, useContractWrite } from "@starknet-react/core";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
-import { Method, NativeToken, RToken, Token } from "@/Blockchain/interfaces/interfaces";
+import {
+  Method,
+  NativeToken,
+  RToken,
+  Token,
+} from "@/Blockchain/interfaces/interfaces";
 import { useState } from "react";
 import { diamondAddress } from "@/Blockchain/stark-constants";
 import { etherToWeiBN } from "@/Blockchain/utils/utils";
@@ -11,7 +13,6 @@ import { L3App } from "../../interfaces/interfaces";
 import { constants } from "@/Blockchain/utils/constants";
 
 const useBorrowAndSpend = () => {
-
   const [loanMarket, setLoanMarket] = useState<NativeToken>("USDT"); // asset
   const [loanAmount, setLoanAmount] = useState<number>(0); // amount
 
@@ -23,8 +24,8 @@ const useBorrowAndSpend = () => {
 
   const { address: recipient } = useAccount();
 
-  const [l3App, setL3App] = useState<L3App>("JEDI_SWAP");  // integration
-  const [method, setMethod] = useState<Method>("SWAP");  // calldata[1]
+  const [l3App, setL3App] = useState<L3App>("JEDI_SWAP"); // integration
+  const [method, setMethod] = useState<Method>("ADD_LIQUIDITY"); // calldata[1]
 
   const [toMarketSwap, setToMarketSwap] = useState<NativeToken>("BTC");
 
@@ -54,7 +55,8 @@ const useBorrowAndSpend = () => {
     let calldata: L3Calldata;
 
     let integration: typeof constants.JEDI_SWAP | typeof constants.MY_SWAP;
-    integration = l3App === "JEDI_SWAP" ? constants.JEDI_SWAP : constants.MY_SWAP;
+    integration =
+      l3App === "JEDI_SWAP" ? constants.JEDI_SWAP : constants.MY_SWAP;
 
     if (method === "ADD_LIQUIDITY") {
       calldata = [
@@ -62,14 +64,14 @@ const useBorrowAndSpend = () => {
         "4",
         constants.ADD_LIQUIDITY,
         tokenAddressMap[toMarketLiqA],
-        tokenAddressMap[toMarketLiqB]
+        tokenAddressMap[toMarketLiqB],
       ];
     } else if (method === "SWAP") {
       calldata = [
         integration,
-        "3", 
-        constants.SWAP, 
-        tokenAddressMap[toMarketSwap]
+        "3",
+        constants.SWAP,
+        tokenAddressMap[toMarketSwap],
       ];
     } else {
       // Handle the case when the method is neither "ADD_LIQUIDITY" nor "SWAP"
@@ -77,7 +79,7 @@ const useBorrowAndSpend = () => {
     }
 
     return calldata;
-  }
+  };
 
   const {
     data: dataBorrowAndSpend,
@@ -113,10 +115,10 @@ const useBorrowAndSpend = () => {
           "0",
 
           recipient,
-          ...generateCalldata()
-        ]
-      }
-    ]
+          ...generateCalldata(),
+        ],
+      },
+    ],
   });
 
   const {
@@ -142,10 +144,10 @@ const useBorrowAndSpend = () => {
         etherToWeiBN(rTokenAmount, rToken).toString(),
         "0",
         recipient,
-        ...generateCalldata()
-      ]
-    }
-  })
+        ...generateCalldata(),
+      ],
+    },
+  });
 
   return {
     loanMarket,
