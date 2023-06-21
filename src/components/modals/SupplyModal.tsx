@@ -20,6 +20,8 @@ import {
   NumberInputField,
   Portal,
   SliderThumb,
+  Spinner,
+  Skeleton,
 } from "@chakra-ui/react";
 import ArrowUp from "@/assets/icons/arrowup";
 import { useDisclosure } from "@chakra-ui/react";
@@ -86,6 +88,7 @@ const SupplyModal = ({
   buttonText,
   coin,
   backGroundOverLay,
+  currentSupplyAPR,
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -411,6 +414,9 @@ const SupplyModal = ({
   //This function is used to find the percentage of the slider from the input given by the user
   const handleChange = (newValue: any) => {
     // Calculate the percentage of the new value relative to the wallet balance
+    if (newValue > 9_000_000_000) return;
+    // check if newValue is float, if it is then round off to 6 decimals
+
     var percentage = (newValue * 100) / walletBalance;
     if (walletBalance == 0) {
       setDepositAmount(0);
@@ -1156,7 +1162,18 @@ const SupplyModal = ({
                     font-size="12px"
                     color="#6A737D"
                   >
-                    5.56%
+                    {/* {currentSupplyAPR ? (
+                      <Skeleton
+                        width="2.4rem"
+                        height="1.1rem"
+                        startColor="black"
+                        endColor="grey"
+                        borderRadius="6px"
+                      />
+                    ) : (
+                      currentSupplyAPR + "%"
+                    )} */}
+                    5.566%
                   </Text>
                 </Text>
               </Card>

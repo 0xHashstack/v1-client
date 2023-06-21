@@ -124,20 +124,26 @@ export const borrowInterestAccrued = (asset: any) => {
 
 
 export const etherToWeiBN = (amount: number, tokenName: Token) => {
-  if(!amount || amount === undefined || amount === null) {
+  if(!amount) {
     return 0;
   }
   const decimals = tokenDecimalsMap[tokenName];
   if(!decimals) {
     return 0;
   }
-  const factor = 1000_000;
-  const amountBN = number
-    .toBN(amount*factor)
-    // .mul(number.toBN(factor))
-    .mul(number.toBN(10).pow(number.toBN(decimals)))
-    .div(number.toBN(factor));
-  return amountBN;
+  console.log("amount", amount);
+  // try {
+    const factor = 1000_000; 
+    const amountBN = number
+      .toBN(amount*factor) 
+      .mul(number.toBN(10).pow(number.toBN(decimals)))
+      .div(number.toBN(factor));
+    return amountBN;
+  // }
+  // catch(e) {
+  //   console.warn("etherToWeiBN fails with error: ", e);
+  //   return amount;
+  // }
 };
 
 export const weiToEtherNumber = (amount: string, tokenName: Token) => {

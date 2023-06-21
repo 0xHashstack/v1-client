@@ -1387,6 +1387,10 @@ const YourBorrowModal = ({
     "DAI/ETH",
     "BTC/ETH",
     "BTC/USDT",
+    "BTC/USDC",
+    "BTC/DAI",
+    "USDT/DAI",
+    "USDC/DAI",
   ];
 
   // useEffect(() => {
@@ -1402,6 +1406,7 @@ const YourBorrowModal = ({
   const [inputRepayAmount, setinputRepayAmount] = useState(0);
 
   const handleChange = (newValue: any) => {
+    if(newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
@@ -2586,6 +2591,8 @@ const YourBorrowModal = ({
                                 py="2"
                                 className="dropdown-container"
                                 boxShadow="dark-lg"
+                                height="198px"
+                                overflow="scroll"
                               >
                                 {pools.map((pool, index) => {
                                   return (

@@ -84,7 +84,7 @@ const DashboardLeft = ({
   const [isOpenCustom, setIsOpenCustom] = useState(false);
   const { account } = useAccount();
   const dispatch = useDispatch();
-
+  const [currentSupplyAPR, setCurrentSupplyAPR] = useState("");
   // const {
   //   dataBalanceOf,
   //   errorBalanceOf,
@@ -153,6 +153,11 @@ const DashboardLeft = ({
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
+
+  useEffect(() => {
+    console.log("supply apr", currentSupplyAPR);
+  }, [supplyAPRs, currentSupplyAPR]);
+
   // useEffect(() => {
   //   if (isJSON(assetBalance)) {
   //     assetBalance = JSON.parse(assetBalance);
@@ -416,7 +421,12 @@ const DashboardLeft = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
-                    onClick={() => setIsOpenCustom(false)}
+                    onClick={() => {
+                      setIsOpenCustom(false);
+                      setCurrentSupplyAPR(
+                        supplyAPRs[idx] ? supplyAPRs[idx] : ""
+                      );
+                    }}
                   >
                     <SupplyModal
                       buttonText="Supply"
@@ -430,6 +440,7 @@ const DashboardLeft = ({
                       color="#BDBFC1;"
                       backGroundOverLay="rgba(244, 242, 255, 0.5)"
                       coin={coin}
+                      currentSupplyAPR={currentSupplyAPR}
                       // walletBalance={assetBalance[coin.name]?.statusBalanceOf === "success" ?Number(BNtoNum(uint256.uint256ToBN(assetBalance[coin.name]?.dataBalanceOf?.balance))) : 0}
                     />
                   </Box>

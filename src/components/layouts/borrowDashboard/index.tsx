@@ -13,6 +13,7 @@ import {
   VStack,
   useTimeout,
   Spinner,
+  Skeleton,
 } from "@chakra-ui/react";
 
 import Image from "next/image";
@@ -20,6 +21,7 @@ import YourBorrowModal from "@/components/modals/yourBorrowModal";
 import { Coins } from "../dashboardLeft";
 import BorrowModal from "@/components/modals/borrowModal";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
+import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 
 export interface ICoin {
   name: string;
@@ -181,6 +183,52 @@ const BorrowDashboard = ({
   }, [Borrows]);
   const [loading, setLoading] = useState(true);
   const loadingTimeout = useTimeout(() => setLoading(false), 1800);
+
+  const [borrowAPRs, setBorrowAPRs] = useState<(number|undefined)[]>([]);
+
+  useEffect(() => {
+    fetchProtocolStats();
+  }, []);
+
+  const fetchProtocolStats = async () => {
+    try {
+      const stats = await getProtocolStats();
+      console.log("fetchprotocolstats", stats); //23014
+      setBorrowAPRs([
+        stats?.[2].borrowRate,
+        stats?.[3].borrowRate,
+        stats?.[0].borrowRate,
+        stats?.[1].borrowRate,
+        stats?.[4].borrowRate,
+      ]);
+    } catch (error) {
+      console.log("error on getting protocol stats");
+    }
+  };
+
+  const getBorrowAPR = (borrowMarket: string) => {
+    switch (borrowMarket) {
+      case "USDT":
+        return borrowAPRs[0];
+        break;
+      case "USDC":
+        return borrowAPRs[1];
+        break;
+      case "BTC":
+        return borrowAPRs[2];
+        break;
+      case "ETH":
+        return borrowAPRs[3];
+        break;
+      case "DAI":
+        return borrowAPRs[4];
+        break;
+
+      default:
+        break;
+    }
+  };
+
   // console.log("Borrows", loading, Borrows);
   return loading ? (
     <>
@@ -287,61 +335,162 @@ const BorrowDashboard = ({
           //   flexDirection="column"
           //   gap={"1rem"}
         >
-          {Borrows?.slice(lower_bound, upper_bound + 1).map((borrow: any) => {
-            // console.log("faisal coin check", coin);
-            // borrowIDCoinMap.push([coin.id, coin.name]);
-            return (
-              <>
-                <Tr
-                  key={borrow.idx}
-                  width={"100%"}
-                  // height={"5rem"}
-                  // bgColor="green"
-                  // borderBottom="1px solid #2b2f35"
-                  position="relative"
-                  p={0}
-                >
-                  <Td
-                    width={"12.5%"}
-                    // maxWidth={`${gap[idx1][idx2]}%`}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    padding={2}
-                    textAlign="center"
+          {Borrows?.slice(lower_bound, upper_bound + 1).map(
+            (borrow: any, idx: any) => {
+              // console.log("faisal coin check", coin);
+              // borrowIDCoinMap.push([coin.id, coin.name]);
+              return (
+                <>
+                  <Tr
+                    key={borrow.idx}
+                    width={"100%"}
+                    // height={"5rem"}
+                    // bgColor="green"
+                    // borderBottom="1px solid #2b2f35"
+                    position="relative"
+                    p={0}
                   >
-                    <Text
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="flex-start"
-                      fontWeight="400"
-                      fontSize="14px"
-                      color="#E6EDF3"
-                      // bgColor={"blue"}
-                    >
-                      {/* {checkGap(idx1, idx2)} */}
-                      {borrow.loanId}{" "}
-                    </Text>
-                  </Td>
-                  <Td
-                    width={"12.5%"}
-                    // maxWidth={"3rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    overflow={"hidden"}
-                    textAlign={"center"}
-                    // bgColor={"green"}
-                  >
-                    <Box
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
+                    <Td
+                      width={"12.5%"}
+                      // maxWidth={`${gap[idx1][idx2]}%`}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      padding={2}
                       textAlign="center"
-                      // bgColor={"blue"}
+                    >
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="flex-start"
+                        fontWeight="400"
+                        fontSize="14px"
+                        color="#E6EDF3"
+                        // bgColor={"blue"}
+                      >
+                        {/* {checkGap(idx1, idx2)} */}
+                        {borrow.loanId}{" "}
+                      </Text>
+                    </Td>
+                    <Td
+                      width={"12.5%"}
+                      // maxWidth={"3rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      overflow={"hidden"}
+                      textAlign={"center"}
+                      // bgColor={"green"}
+                    >
+                      <Box
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                        textAlign="center"
+                        // bgColor={"blue"}
+                      >
+                        <VStack
+                          // gap="3px"
+                          width="100%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="center"
+                          height="2.5rem"
+                          // bgColor="red"
+                        >
+                          <HStack
+                            height="2rem"
+                            width="2rem"
+                            alignItems="center"
+                            justifyContent="center"
+                          >
+                            <Image
+                              // src={`./BTC.svg`}
+                              src={`/${borrow.loanMarket.slice(1)}.svg`}
+                              alt="Picture of the author"
+                              width="32"
+                              height="32"
+                            />
+                            <Text
+                              fontSize="14px"
+                              fontWeight="400"
+                              color="#E6EDF3"
+                            >
+                              {borrow.loanMarket}
+                            </Text>
+                          </HStack>
+                          <Text
+                            fontSize="14px"
+                            fontWeight="500"
+                            color="#F7BB5B"
+                          >
+                            {borrow.loanAmountParsed}
+                          </Text>
+                        </VStack>
+                      </Box>
+                    </Td>
+                    <Td
+                      width={"12.5%"}
+                      maxWidth={"3rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      overflow={"hidden"}
+                      textAlign={"center"}
+                    >
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                        // bgColor={"blue"}
+                      >
+                        {/* {checkGap(idx1, idx2)} */}
+                        {borrowAPRs.length === 0 ? (
+                          <Skeleton
+                            width="6rem"
+                            height="1.4rem"
+                            startColor="#101216"
+                            endColor="#2B2F35"
+                            borderRadius="6px"
+                          />
+                        ) : (
+                          getBorrowAPR(borrow.loanMarket.slice(1)) + "%"
+                        )}
+                      </Text>
+                    </Td>
+                    <Td
+                      width={"12.5%"}
+                      maxWidth={"3rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      overflow={"hidden"}
+                      textAlign={"center"}
+                    >
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                        // bgColor={"blue"}
+                      >
+                        {/* {checkGap(idx1, idx2)} */}
+                        7.00%
+                      </Text>
+                    </Td>
+                    <Td
+                      width={"12.5%"}
+                      maxWidth={"5rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      //   overflow={"hidden"}
+                      textAlign={"center"}
                     >
                       <VStack
                         // gap="3px"
@@ -359,319 +508,234 @@ const BorrowDashboard = ({
                           justifyContent="center"
                         >
                           <Image
-                            // src={`./BTC.svg`}
-                            src={`/${borrow.loanMarket.slice(1)}.svg`}
+                            src={`/${borrow.collateralMarket.slice(1)}.svg`}
                             alt="Picture of the author"
                             width="32"
                             height="32"
                           />
-                          <Text
-                            fontSize="14px"
-                            fontWeight="400"
-                            color="#E6EDF3"
-                          >
-                            {borrow.loanMarket}
+                          <Text fontSize="14px" fontWeight="400">
+                            {borrow.collateralMarket}
                           </Text>
                         </HStack>
                         <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                          {borrow.loanAmountParsed}
+                          {borrow.collateralAmountParsed}
                         </Text>
                       </VStack>
-                    </Box>
-                  </Td>
-                  <Td
-                    width={"12.5%"}
-                    maxWidth={"3rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    overflow={"hidden"}
-                    textAlign={"center"}
-                  >
-                    <Text
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
-                      // bgColor={"blue"}
+                    </Td>
+                    <Td
+                      // width={"13%"}
+                      maxWidth={"5rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      //   overflow={"hidden"}
+                      textAlign={"center"}
                     >
-                      {/* {checkGap(idx1, idx2)} */}
-                      8%
-                    </Text>
-                  </Td>
-                  <Td
-                    width={"12.5%"}
-                    maxWidth={"3rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    overflow={"hidden"}
-                    textAlign={"center"}
-                  >
-                    <Text
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
-                      // bgColor={"blue"}
-                    >
-                      {/* {checkGap(idx1, idx2)} */}
-                      7.00%
-                    </Text>
-                  </Td>
-                  <Td
-                    width={"12.5%"}
-                    maxWidth={"5rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    //   overflow={"hidden"}
-                    textAlign={"center"}
-                  >
-                    <VStack
-                      // gap="3px"
-                      width="100%"
-                      display="flex"
-                      justifyContent="center"
-                      alignItems="center"
-                      height="2.5rem"
-                      // bgColor="red"
-                    >
-                      <HStack
-                        height="2rem"
-                        width="2rem"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <Image
-                          src={`/${borrow.collateralMarket.slice(1)}.svg`}
-                          alt="Picture of the author"
-                          width="32"
-                          height="32"
-                        />
-                        <Text fontSize="14px" fontWeight="400">
-                          {borrow.collateralMarket}
-                        </Text>
-                      </HStack>
-                      <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                        {borrow.collateralAmountParsed}
-                      </Text>
-                    </VStack>
-                  </Td>
-                  <Td
-                    // width={"13%"}
-                    maxWidth={"5rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    //   overflow={"hidden"}
-                    textAlign={"center"}
-                  >
-                    {borrow.loanState == "ACTIVE" ? (
-                      <Box
-                        // gap="3px"
-                        width="100%"
-                        display="flex"
-                        flexDirection="column"
-                        justifyContent="center"
-                        alignItems="center"
-                        height="3rem"
-                        // bgColor="red"
-                        // pl="3.4rem"
-                      >
-                        {borrow.spendType}
-                      </Box>
-                    ) : borrow.loanState == "REPAID" ||
-                      borrow.loanState == "LIQUIDATED" ? (
-                      <Box
-                        // gap="3px"
-                        width="100%"
-                        display="flex"
-                        flexDirection="column"
-                        justifyContent="center"
-                        alignItems="center"
-                        height="3rem"
-                        // bgColor="red"
-                        // pl="3.4rem"
-                      >
-                        {borrow.loanState}
-                      </Box>
-                    ) : (
-                      <Box
-                        // gap="3px"
-                        width="100%"
-                        display="flex"
-                        flexDirection="column"
-                        justifyContent="center"
-                        alignItems="center"
-                        height="3rem"
-                        // bgColor="red"
-                        // pl="3.4rem"
-                      >
-                        <HStack
-                          height="50%"
+                      {borrow.loanState == "ACTIVE" ? (
+                        <Box
+                          // gap="3px"
                           width="100%"
-                          alignItems="center"
+                          display="flex"
+                          flexDirection="column"
                           justifyContent="center"
-                          // gap={0.2}
+                          alignItems="center"
+                          height="3rem"
+                          // bgColor="red"
+                          // pl="3.4rem"
                         >
-                          <Box minWidth={"16px"}>
-                            <Image
-                              src={`/${borrow.l3App}.svg`}
-                              alt="Picture of the author"
-                              width="16"
-                              height="16"
-                            />
-                          </Box>
-                          <Text fontSize="14px" fontWeight="400">
-                            {borrow.spendType}
-                          </Text>
-                        </HStack>
-                        <HStack
-                          height="50%"
+                          {borrow.spendType}
+                        </Box>
+                      ) : borrow.loanState == "REPAID" ||
+                        borrow.loanState == "LIQUIDATED" ? (
+                        <Box
+                          // gap="3px"
                           width="100%"
-                          alignItems="center"
+                          display="flex"
+                          flexDirection="column"
                           justifyContent="center"
-                          // bgColor={"red"}
+                          alignItems="center"
+                          height="3rem"
+                          // bgColor="red"
+                          // pl="3.4rem"
                         >
-                          <Box
-                            display="flex"
-                            // gap={0.5}
-                            // bgColor={"blue"}
+                          {borrow.loanState}
+                        </Box>
+                      ) : (
+                        <Box
+                          // gap="3px"
+                          width="100%"
+                          display="flex"
+                          flexDirection="column"
+                          justifyContent="center"
+                          alignItems="center"
+                          height="3rem"
+                          // bgColor="red"
+                          // pl="3.4rem"
+                        >
+                          <HStack
+                            height="50%"
+                            width="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                            // gap={0.2}
+                          >
+                            <Box minWidth={"16px"}>
+                              <Image
+                                src={`/${borrow.l3App}.svg`}
+                                alt="Picture of the author"
+                                width="16"
+                                height="16"
+                              />
+                            </Box>
+                            <Text fontSize="14px" fontWeight="400">
+                              {borrow.spendType}
+                            </Text>
+                          </HStack>
+                          <HStack
+                            height="50%"
+                            width="100%"
+                            alignItems="center"
+                            justifyContent="center"
+                            // bgColor={"red"}
                           >
                             <Box
                               display="flex"
-                              gap={0.5}
-                              minWidth={"16px"}
+                              // gap={0.5}
                               // bgColor={"blue"}
                             >
-                              <Image
-                                src={`/${borrow.underlyingMarket}.svg`}
-                                alt="Picture of the author"
-                                width="16"
-                                height="16"
-                              />
+                              <Box
+                                display="flex"
+                                gap={0.5}
+                                minWidth={"16px"}
+                                // bgColor={"blue"}
+                              >
+                                <Image
+                                  src={`/${borrow.underlyingMarket}.svg`}
+                                  alt="Picture of the author"
+                                  width="16"
+                                  height="16"
+                                />
+                              </Box>
+                              <Box
+                                display="flex"
+                                gap={0.5}
+                                minWidth={"16px"}
+                                // bgColor={"blue"}
+                              >
+                                <Image
+                                  src={`/${borrow.underlyingMarket}.svg`}
+                                  alt="Picture of the author"
+                                  width="16"
+                                  height="16"
+                                />
+                              </Box>
                             </Box>
-                            <Box
-                              display="flex"
-                              gap={0.5}
-                              minWidth={"16px"}
-                              // bgColor={"blue"}
-                            >
-                              <Image
-                                src={`/${borrow.underlyingMarket}.svg`}
-                                alt="Picture of the author"
-                                width="16"
-                                height="16"
-                              />
-                            </Box>
-                          </Box>
-                          <Text fontSize="14px" fontWeight="400">
-                            1.234/2.23
-                          </Text>
-                        </HStack>
+                            <Text fontSize="14px" fontWeight="400">
+                              1.234/2.23
+                            </Text>
+                          </HStack>
+                        </Box>
+                      )}
+                    </Td>
+                    <Td
+                      width={"12.5%"}
+                      maxWidth={"3rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      overflow={"hidden"}
+                      textAlign={"center"}
+                    >
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                        // bgColor={"blue"}
+                      >
+                        {/* {checkGap(idx1, idx2)} */}
+                        N/A
+                      </Text>
+                    </Td>
+                    <Td
+                      width={"12.5%"}
+                      maxWidth={"5rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      //   overflow={"hidden"}
+                      textAlign={"right"}
+                      // bgColor={"pink"}
+                      p={0}
+                    >
+                      <Box
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="flex-end"
+                        fontWeight="400"
+                        onClick={() => {
+                          setCurrentBorrowId1("ID - " + borrow.loanId);
+                          setCurrentBorrowMarketCoin1(borrow.loanMarket);
+                          setCurrentBorrowId2("ID - " + borrow.loanId);
+                          setCurrentBorrowMarketCoin2(borrow.loanMarket);
+                          setBorrowAmount(borrow.loanAmountParsed);
+                          setCollateralBalance(
+                            borrow.collateralAmountParsed +
+                              " " +
+                              borrow.collateralMarket
+                          );
+                        }}
+                        // bgColor={"blue"}
+                      >
+                        <YourBorrowModal
+                          currentID={borrow.loanId}
+                          currentMarket={borrow.loanMarket}
+                          borrowIDCoinMap={borrowIDCoinMap}
+                          currentBorrowId1={currentBorrowId1}
+                          setCurrentBorrowId1={setCurrentBorrowId1}
+                          currentBorrowMarketCoin1={currentBorrowMarketCoin1}
+                          setCurrentBorrowMarketCoin1={
+                            setCurrentBorrowMarketCoin1
+                          }
+                          currentBorrowId2={currentBorrowId2}
+                          setCurrentBorrowId2={setCurrentBorrowId2}
+                          currentBorrowMarketCoin2={currentBorrowMarketCoin2}
+                          setCurrentBorrowMarketCoin2={
+                            setCurrentBorrowMarketCoin2
+                          }
+                          collateralBalance={collateralBalance}
+                          setCollateralBalance={setCollateralBalance}
+                          loan={borrow}
+                          borrowIds={borrowIds}
+                          BorrowBalance={borrowAmount}
+                          buttonText="Actions"
+                          height={"2rem"}
+                          fontSize={"12px"}
+                          padding="6px 12px"
+                          border="1px solid #BDBFC1"
+                          bgColor="#101216"
+                          _hover={{ bg: "white", color: "black" }}
+                          borderRadius={"6px"}
+                          color="#BDBFC1;"
+                        />
                       </Box>
-                    )}
-                  </Td>
-                  <Td
-                    width={"12.5%"}
-                    maxWidth={"3rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    overflow={"hidden"}
-                    textAlign={"center"}
-                  >
-                    <Text
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
-                      // bgColor={"blue"}
-                    >
-                      {/* {checkGap(idx1, idx2)} */}
-                      N/A
-                    </Text>
-                  </Td>
-                  <Td
-                    width={"12.5%"}
-                    maxWidth={"5rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    //   overflow={"hidden"}
-                    textAlign={"right"}
-                    // bgColor={"pink"}
-                    p={0}
-                  >
-                    <Box
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="flex-end"
-                      fontWeight="400"
-                      onClick={() => {
-                        setCurrentBorrowId1("ID - " + borrow.loanId);
-                        setCurrentBorrowMarketCoin1(borrow.loanMarket);
-                        setCurrentBorrowId2("ID - " + borrow.loanId);
-                        setCurrentBorrowMarketCoin2(borrow.loanMarket);
-                        setBorrowAmount(borrow.loanAmountParsed);
-                        setCollateralBalance(
-                          borrow.collateralAmountParsed +
-                            " " +
-                            borrow.collateralMarket
-                        );
-                      }}
-                      // bgColor={"blue"}
-                    >
-                      <YourBorrowModal
-                        currentID={borrow.loanId}
-                        currentMarket={borrow.loanMarket}
-                        borrowIDCoinMap={borrowIDCoinMap}
-                        currentBorrowId1={currentBorrowId1}
-                        setCurrentBorrowId1={setCurrentBorrowId1}
-                        currentBorrowMarketCoin1={currentBorrowMarketCoin1}
-                        setCurrentBorrowMarketCoin1={
-                          setCurrentBorrowMarketCoin1
-                        }
-                        currentBorrowId2={currentBorrowId2}
-                        setCurrentBorrowId2={setCurrentBorrowId2}
-                        currentBorrowMarketCoin2={currentBorrowMarketCoin2}
-                        setCurrentBorrowMarketCoin2={
-                          setCurrentBorrowMarketCoin2
-                        }
-                        collateralBalance={collateralBalance}
-                        setCollateralBalance={setCollateralBalance}
-                        loan={borrow}
-                        borrowIds={borrowIds}
-                        BorrowBalance={borrowAmount}
-                        buttonText="Actions"
-                        height={"2rem"}
-                        fontSize={"12px"}
-                        padding="6px 12px"
-                        border="1px solid #BDBFC1"
-                        bgColor="#101216"
-                        _hover={{ bg: "white", color: "black" }}
-                        borderRadius={"6px"}
-                        color="#BDBFC1;"
-                      />
-                    </Box>
-                  </Td>
-                </Tr>
-                <Tr
-                  style={{
-                    position: "absolute",
-                    // left: "0%",
-                    width: "100%",
-                    height: "1px",
-                    borderBottom: "1px solid #2b2f35",
-                    display: `${borrow.idx == 5 ? "none" : "block"}`,
-                  }}
-                />
-              </>
-            );
-          })}
+                    </Td>
+                  </Tr>
+                  <Tr
+                    style={{
+                      position: "absolute",
+                      // left: "0%",
+                      width: "100%",
+                      height: "1px",
+                      borderBottom: "1px solid #2b2f35",
+                      display: `${borrow.idx == 5 ? "none" : "block"}`,
+                    }}
+                  />
+                </>
+              );
+            }
+          )}
           {(() => {
             const rows = [];
             for (
