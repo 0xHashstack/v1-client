@@ -91,7 +91,11 @@ import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import useRevertInteractWithL3 from "@/Blockchain/hooks/Writes/useRevertInteractWithL3";
 
-import { getJediEstimatedLpAmountOut } from "../../Blockchain/scripts/l3interaction";
+import {
+  getJediEstimateLiquiditySplit,
+  getJediEstimatedLiqALiqBfromLp,
+  getJediEstimatedLpAmountOut,
+} from "../../Blockchain/scripts/l3interaction";
 import { getAddress } from "ethers/lib/utils";
 import { getTokenFromAddress } from "@/Blockchain/stark-constants";
 
@@ -114,6 +118,7 @@ const YourBorrowModal = ({
   BorrowBalance,
   loan,
   borrowAPRs,
+  borrow,
   ...restProps
 }: any) => {
   // console.log(currentBorrowId1);
@@ -678,7 +683,7 @@ const YourBorrowModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                  Liquidity spill:{" "}
+                  Liquidity split:{" "}
                 </Text>
                 <Tooltip
                   hasArrow
@@ -1589,23 +1594,28 @@ const YourBorrowModal = ({
 
   useEffect(() => {
     console.log(
-      "marketsAB",
-      toMarketA,
-      toMarketB,
+      "toMarketSplitConsole",
       currentBorrowId1.slice(5),
-      tokenAddressMap[toMarketA],
-      tokenAddressMap[toMarketB]
+      toMarketA,
+      toMarketB
+      // borrow
     );
-    fetchLiquiditySplit(toMarketA, toMarketB);
+    fetchLiquiditySplit();
   }, [toMarketA, toMarketB]);
 
   const fetchLiquiditySplit = async () => {
-    // const split = await getJediEstimatedLpAmountOut(
-    //   currentBorrowId1.slice(5),
-    //   toMarketA,
-    //   toMarketB
-    // );
-    console.log("toMarketSplit");
+    const lp_tokon = await getJediEstimatedLpAmountOut(
+      currentBorrowId1.slice(5),
+      toMarketA,
+      toMarketB
+    );
+    console.log("toMarketSplitLP", lp_tokon);
+    const split = await getJediEstimateLiquiditySplit(
+      currentBorrowId1.slice(5),
+      toMarketA,
+      toMarketB
+    );
+    console.log("toMarketSplit", split);
   };
 
   return (

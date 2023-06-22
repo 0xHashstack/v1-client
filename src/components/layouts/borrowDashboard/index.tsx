@@ -721,6 +721,7 @@ const BorrowDashboard = ({
                           borderRadius={"6px"}
                           color="#BDBFC1;"
                           borrowAPRs={borrowAPRs}
+                          borrow={borrow}
                         />
                       </Box>
                     </Td>
