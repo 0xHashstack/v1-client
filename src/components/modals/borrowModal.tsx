@@ -44,7 +44,7 @@ import {
   selectModalDropDowns,
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
@@ -161,7 +161,8 @@ const BorrowModal = ({
   const [currentTransactionStatus, setCurrentTransactionStatus] =
     useState(false);
   const [isToastDisplayed, setToastDisplayed] = useState(false);
-
+  const [showToast, setShowToast] = useState("true");
+  const [toastId, setToastId] = useState<any>();
   const recieptData = useWaitForTransaction({
     hash: borrowTransHash,
     watch: true,
@@ -170,6 +171,7 @@ const BorrowModal = ({
     },
     onPending: () => {
       setCurrentTransactionStatus(true);
+      toast.dismiss(toastId);
       console.log("trans pending");
       if (isToastDisplayed == false) {
         toast.success(
@@ -181,8 +183,22 @@ const BorrowModal = ({
         setToastDisplayed(true);
       }
     },
-    onRejected(transaction) {
+    onRejected(transaction: any) {
       console.log("treans rejected");
+      dispatch(setTransactionStatus("failed"));
+      console.log("handle borrow", transaction?.status);
+      const toastContent = (
+        <div>
+          Transaction failed{" "}
+          <CopyToClipboard text={transaction?.status}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      });
     },
     onAcceptedOnL1: () => {
       setCurrentTransactionStatus(true);
@@ -191,29 +207,57 @@ const BorrowModal = ({
     },
     onAcceptedOnL2(transaction) {
       setCurrentTransactionStatus(true);
-      if (isToastDisplayed == false) {
-        toast.success(
-          `You have successfully borrowed ${inputBorrowAmount} d${currentBorrowCoin} `,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          }
-        );
-        setToastDisplayed(true);
-      }
+      // if (isToastDisplayed == false) {
+      //   toast.success(
+      //     `You have successfully borrowed ${inputBorrowAmount} d${currentBorrowCoin} `,
+      //     {
+      //       position: toast.POSITION.BOTTOM_RIGHT,
+      //     }
+      //   );
+      //   setToastDisplayed(true);
+      // }
       console.log("trans onAcceptedOnL2 - ", transaction);
     },
   });
-
   const handleBorrow = async () => {
     try {
       // console.log("borrowing", amount, market, rToken, rTokenAmount);
       if (currentCollateralCoin[0] === "r") {
         const borrow = await writeAsyncLoanRequestrToken();
+        if (borrow?.transaction_hash) {
+          // setShowToast("true");
+          // console.log();
+          // if (showToast == "true") {
+          console.log("toast here");
+          const toastid = toast.info(
+            `Please wait, your transaction is running in background ${inputBorrowAmount} d${currentBorrowCoin} `,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          // }
+        }
         setIsLoanRequestHash(borrow?.transaction_hash);
         setBorrowTransHash(borrow?.transaction_hash);
         dispatch(setTransactionStatus("success"));
       } else {
         const borrow = await writeAsyncLoanRequest();
+        if (borrow?.transaction_hash) {
+          // setShowToast("true");
+          if (showToast == "true") {
+            console.log("toast here");
+            const toastid = toast.info(
+              `Please wait, your transaction is running in background ${inputBorrowAmount} d${currentBorrowCoin} `,
+              {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: false,
+              }
+            );
+            setToastId(toastid);
+          }
+        }
         setIsLoanRequestHash(borrow?.transaction_hash);
         dispatch(setTransactionStatus("success"));
         setBorrowTransHash(borrow?.transaction_hash);

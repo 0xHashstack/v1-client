@@ -17,7 +17,7 @@ const Layout = ({ children }: LayoutProps) => {
   return (
     <div>
       {children}
-      <ToastContainer />
+      <ToastContainer theme="dark" />
     </div>
   );
 };

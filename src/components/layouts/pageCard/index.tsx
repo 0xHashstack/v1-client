@@ -95,7 +95,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       }
     }
   }, []);
-  const [UserLoans, setuserLoans] = useState<ILoan[] | null>([]); 
+  const [UserLoans, setuserLoans] = useState<ILoan[] | null>([]);
   useEffect(() => {
     const loan = async () => {
       try {
@@ -112,18 +112,14 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         if (loans) {
           setuserLoans(
             loans.filter(
-              (loan) =>
-                loan?.loanAmountParsed &&
-                loan?.loanAmountParsed > 0
+              (loan) => loan?.loanAmountParsed && loan?.loanAmountParsed > 0
             )
           );
         }
         dispatch(
           setUserLoans(
             loans.filter(
-              (loan) =>
-                loan.loanAmountParsed &&
-                loan.loanAmountParsed > 0
+              (loan) => loan.loanAmountParsed && loan.loanAmountParsed > 0
             )
           )
         );
@@ -134,7 +130,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     };
     if (account && isConnected) {
       // callWithRetries(loan, [], 3);
-      loan()
+      loan();
     }
   }, [account, isConnected]);
   // const dispatch=useDispatch();
@@ -259,7 +255,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
               Supply
             </AnimatedButton>
           </Box> */}
-          <ToastContainer theme="dark" />
+          {/* <ToastContainer theme="dark" /> */}
           <Footer block={83207} />
         </>
       ) : (

@@ -184,7 +184,7 @@ const BorrowDashboard = ({
   const [loading, setLoading] = useState(true);
   const loadingTimeout = useTimeout(() => setLoading(false), 1800);
 
-  const [borrowAPRs, setBorrowAPRs] = useState<(number|undefined)[]>([]);
+  const [borrowAPRs, setBorrowAPRs] = useState<(number | undefined)[]>([]);
 
   useEffect(() => {
     fetchProtocolStats();
@@ -370,7 +370,7 @@ const BorrowDashboard = ({
                         // bgColor={"blue"}
                       >
                         {/* {checkGap(idx1, idx2)} */}
-                        {borrow.loanId}{" "}
+                        BORROW ID - {borrow.loanId}{" "}
                       </Text>
                     </Td>
                     <Td

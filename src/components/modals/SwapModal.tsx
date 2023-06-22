@@ -146,6 +146,7 @@ const SwapModal = ({
 
   const [depositTransHash, setDepositTransHash] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
+  const [toastId, setToastId] = useState<any>();
   const [currentTransactionStatus, setCurrentTransactionStatus] =
     useState(false);
   const recieptData = useWaitForTransaction({
@@ -156,6 +157,7 @@ const SwapModal = ({
     },
     onPending: () => {
       setCurrentTransactionStatus(true);
+      toast.dismiss(toastId);
       console.log("trans pending");
       if (!isToastDisplayed) {
         toast.success(`You have successfully supplied `, {
@@ -165,6 +167,7 @@ const SwapModal = ({
       }
     },
     onRejected(transaction) {
+      toast.dismiss(toastId);
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
@@ -188,6 +191,17 @@ const SwapModal = ({
       const swap = await writeAsyncJediSwap_swap();
       console.log(swap);
       setDepositTransHash(swap?.transaction_hash);
+      if (swap?.transaction_hash) {
+        console.log("toast here");
+        const toastid = toast.info(
+          `Please wait, your transaction is running in background`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        );
+        setToastId(toastid);
+      }
       dispatch(setTransactionStatus("success"));
     } catch (err: any) {
       console.log(err);
@@ -210,7 +224,7 @@ const SwapModal = ({
   //This function is used to find the percentage of the slider from the input given by the user
   const handleChange = (newValue: any) => {
     // Calculate the percentage of the new value relative to the wallet balance
-    if(newValue > 9_000_000_000) return;
+    if (newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {

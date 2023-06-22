@@ -179,6 +179,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const [depositTransHash, setDepositTransHash] = useState("");
   const [currentTransactionStatus, setCurrentTransactionStatus] =
     useState(false);
+  const [toastId, setToastId] = useState<any>();
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
@@ -187,6 +188,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     },
     onPending: () => {
       setCurrentTransactionStatus(true);
+      toast.dismiss(toastId);
       console.log("trans pending");
       if (isToastDisplayed == false) {
         toast.success(
@@ -199,6 +201,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
       }
     },
     onRejected(transaction) {
+      toast.dismiss(toastId);
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
@@ -224,6 +227,17 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
       // console.log("staking", rToken, rTokenAmount);
       const stake = await writeAsyncStakeRequest();
       setDepositTransHash(stake?.transaction_hash);
+      if (stake?.transaction_hash) {
+        console.log("toast here");
+        const toastid = toast.info(
+          `Please wait, your transaction is running in background ${inputStakeAmount} ${currentSelectedStakeCoin} `,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        );
+        setToastId(toastid);
+      }
       if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
       }
       dispatch(setTransactionStatus("success"));
@@ -274,7 +288,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   };
 
   const handleChange = (newValue: any) => {
-    if(newValue > 9_000_000_000) return;
+    if (newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
