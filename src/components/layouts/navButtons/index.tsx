@@ -75,7 +75,7 @@ const NavButtons = ({
               borderRadius="0px"
               _hover={{ bg: "transparent", color: "#E6EDF3" }}
             >
-              {option.path === "market" && pathname !== "/market" && (
+              {option.path === "v1/market" && pathname !== "/v1/market" && (
                 <Box marginRight={1.5}>
                   <Image
                     src={"/arrowNavLeft.svg"}
@@ -89,8 +89,8 @@ const NavButtons = ({
                 </Box>
               )}
               {capitalizeWords(
-                option.path == "market"
-                  ? pathname === "/market"
+                option.path == "v1/market"
+                  ? pathname === "/v1/market"
                     ? getButtonLabel(option.path)
                     : "back"
                   : getButtonLabel(option.path)

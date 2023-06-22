@@ -444,7 +444,7 @@ const SupplyDashboard = ({
                       // bgColor={"blue"}
                     >
                       {/* {checkGap(idx1, idx2)} */}
-                      {supply?.Status || "UNUSED"}
+                      {supply?.Status || "ACTIVE"}
                     </Text>
                   </Td>
                   <Td

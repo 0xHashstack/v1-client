@@ -11,12 +11,20 @@ import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { useAccount } from "@starknet-react/core";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 const MarketDashboard = () => {
-  const [oraclePrices, setOraclePrices]: any = useState<(undefined | number)[]>([]);
-  const [totalSupplies, setTotalSupplies]: any = useState<(undefined | number)[]>([]);
-  const [totalBorrows, setTotalBorrows]: any = useState<(undefined | number)[]>([]);
+  const [oraclePrices, setOraclePrices]: any = useState<(undefined | number)[]>(
+    []
+  );
+  const [totalSupplies, setTotalSupplies]: any = useState<
+    (undefined | number)[]
+  >([]);
+  const [totalBorrows, setTotalBorrows]: any = useState<(undefined | number)[]>(
+    []
+  );
   const [supplyAPRs, setSupplyAPRs]: any = useState<(undefined | number)[]>([]);
   const [borrowAPRs, setBorrowAPRs]: any = useState<(undefined | number)[]>([]);
-  const [utilization, setUtilizations]: any = useState<(undefined | number)[]>([]);
+  const [utilization, setUtilizations]: any = useState<(undefined | number)[]>(
+    []
+  );
   const { account, address } = useAccount();
   // console.log(account,"Market Page")
 

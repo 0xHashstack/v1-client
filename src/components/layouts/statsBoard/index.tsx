@@ -7,6 +7,7 @@ import { getUserReserves } from "@/Blockchain/scripts/userStats";
 import { IProtocolReserves } from "@/Blockchain/interfaces/interfaces";
 import { useAccount } from "@starknet-react/core";
 const StatsBoard = () => {
+  const { address } = useAccount();
   const router = useRouter();
   const handleRouteChange = (path: string) => {
     router.push(path);
@@ -37,7 +38,7 @@ const StatsBoard = () => {
   // useEffect(() => {
   //   try {
   //     const fetchUserStats = async () => {
-  //       const reserves = await getUserReserves();
+  //       const reserves = await getUserReserves(address);
   //       console.log("user reserves", reserves);
   //       setUserStats(reserves);
   //     };
