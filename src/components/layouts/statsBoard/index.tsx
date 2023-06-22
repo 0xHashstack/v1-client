@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
 import { getUserReserves } from "@/Blockchain/scripts/userStats";
 import { IProtocolReserves } from "@/Blockchain/interfaces/interfaces";
+import { useAccount } from "@starknet-react/core";
 const StatsBoard = () => {
   const router = useRouter();
   const handleRouteChange = (path: string) => {
