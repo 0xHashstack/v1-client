@@ -1074,7 +1074,7 @@ const BorrowModal = ({
                                 <Box p="1">{getCoin(coin)}</Box>
                                 <Text color="white">{coin}</Text>
                               </Box>
-                              <Box
+                              {/* <Box
                                 fontSize="9px"
                                 color="white"
                                 mt="6px"
@@ -1090,7 +1090,7 @@ const BorrowModal = ({
                                     tokenDecimalsMap[coin]
                                   )
                                 )}
-                              </Box>
+                              </Box> */}
                             </Box>
                           </Box>
                         );

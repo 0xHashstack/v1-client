@@ -184,7 +184,7 @@ const BorrowDashboard = ({
   const [loading, setLoading] = useState(true);
   const loadingTimeout = useTimeout(() => setLoading(false), 1800);
 
-  const [borrowAPRs, setBorrowAPRs] = useState<(number|undefined)[]>([]);
+  const [borrowAPRs, setBorrowAPRs] = useState<(number | undefined)[]>([]);
 
   useEffect(() => {
     fetchProtocolStats();
@@ -370,7 +370,7 @@ const BorrowDashboard = ({
                         // bgColor={"blue"}
                       >
                         {/* {checkGap(idx1, idx2)} */}
-                        {borrow.loanId}{" "}
+                        {"BORROW ID " + borrow.loanId}{" "}
                       </Text>
                     </Td>
                     <Td
@@ -450,7 +450,9 @@ const BorrowDashboard = ({
                         // bgColor={"blue"}
                       >
                         {/* {checkGap(idx1, idx2)} */}
-                        {borrowAPRs.length === 0 ? (
+                        {!borrowAPRs ||
+                        borrowAPRs.length === 0 ||
+                        !getBorrowAPR(borrow.loanMarket.slice(1)) ? (
                           <Skeleton
                             width="6rem"
                             height="1.4rem"
@@ -718,6 +720,7 @@ const BorrowDashboard = ({
                           _hover={{ bg: "white", color: "black" }}
                           borderRadius={"6px"}
                           color="#BDBFC1;"
+                          borrowAPRs={borrowAPRs}
                         />
                       </Box>
                     </Td>
