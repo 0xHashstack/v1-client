@@ -3895,7 +3895,24 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">5.56%</Text>
+                        <Text color="#6E7681">
+                          {!borrowAPRs ||
+                          borrowAPRs.length === 0 ||
+                          !getBorrowAPR(currentBorrowMarketCoin2.slice(1)) ? (
+                            <Box pt="2px">
+                              <Skeleton
+                                width="2.3rem"
+                                height=".85rem"
+                                startColor="#2B2F35"
+                                endColor="#101216"
+                                borderRadius="6px"
+                              />
+                            </Box>
+                          ) : (
+                            getBorrowAPR(currentBorrowMarketCoin2.slice(1)) +
+                            "%"
+                          )}
+                        </Text>
                       </Text>
                       <Text
                         display="flex"
