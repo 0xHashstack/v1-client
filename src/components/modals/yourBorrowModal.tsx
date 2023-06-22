@@ -690,31 +690,33 @@ const YourBorrowModal = ({
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
-              <Box display="flex">
-                <Text
-                  color="#6A737D"
-                  fontSize="12px"
-                  fontWeight="400"
-                  fontStyle="normal"
-                >
-                  Liquidity split:{" "}
-                </Text>
-                <Tooltip
-                  hasArrow
-                  placement="right-start"
-                  boxShadow="dark-lg"
-                  label="all the assets to the market"
-                  bg="#24292F"
-                  fontSize={"smaller"}
-                  fontWeight={"thin"}
-                  borderRadius={"lg"}
-                  padding={"2"}
-                >
-                  <Box ml="0.1rem" mt="0.3rem">
-                    <InfoIcon />
-                  </Box>
-                </Tooltip>
-              </Box>
+              {radioValue === "1" && (
+                <Box display="flex">
+                  <Text
+                    color="#6A737D"
+                    fontSize="12px"
+                    fontWeight="400"
+                    fontStyle="normal"
+                  >
+                    Liquidity split:{" "}
+                  </Text>
+                  <Tooltip
+                    hasArrow
+                    placement="right-start"
+                    boxShadow="dark-lg"
+                    label="all the assets to the market"
+                    bg="#24292F"
+                    fontSize={"smaller"}
+                    fontWeight={"thin"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                  >
+                    <Box ml="0.1rem" mt="0.3rem">
+                      <InfoIcon />
+                    </Box>
+                  </Tooltip>
+                </Box>
+              )}
               <Box
                 display="flex"
                 gap="2"

@@ -910,7 +910,7 @@ const BorrowModal = ({
                     <SliderThumb />
                   </Slider>
                 </Box>
-                {currentCollateralCoin[0] !== "r" && (
+                {currentCollateralCoin && currentCollateralCoin[0] !== "r" && (
                   <Box
                     // display="flex"
                     // justifyContent="left"
