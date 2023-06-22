@@ -98,6 +98,7 @@ import {
 } from "../../Blockchain/scripts/l3interaction";
 import { getAddress } from "ethers/lib/utils";
 import { getTokenFromAddress } from "@/Blockchain/stark-constants";
+import MySwap from "@/assets/icons/dapps/mySwap";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -403,7 +404,7 @@ const YourBorrowModal = ({
         return <JediswapLogo />;
         break;
       case "mySwap":
-        return <MySwapDisabled />;
+        return <MySwap />;
         break;
       case "ETH/USDT":
         return <EthToUsdt />;
@@ -672,7 +673,20 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                $ 10.91
+                {currentLPTokenAmount === null ? (
+                  <Box pt="2px">
+                    <Skeleton
+                      width="2.3rem"
+                      height=".85rem"
+                      startColor="#2B2F35"
+                      endColor="#101216"
+                      borderRadius="6px"
+                    />
+                  </Box>
+                ) : (
+                  "$" + currentLPTokenAmount
+                )}
+                {/* $ 10.91 */}
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
@@ -1592,6 +1606,9 @@ const YourBorrowModal = ({
     console.log(toMarket);
   }, [currentPoolCoin]);
 
+  const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState(null);
+  const [currentSplit, setCurrentSplit] = useState(null);
+
   useEffect(() => {
     console.log(
       "toMarketSplitConsole",
@@ -1600,8 +1617,10 @@ const YourBorrowModal = ({
       toMarketB
       // borrow
     );
+    setCurrentLPTokenAmount(null);
+    setCurrentSplit(null);
     fetchLiquiditySplit();
-  }, [toMarketA, toMarketB]);
+  }, [toMarketA]);
 
   const fetchLiquiditySplit = async () => {
     const lp_tokon = await getJediEstimatedLpAmountOut(
@@ -1610,12 +1629,14 @@ const YourBorrowModal = ({
       toMarketB
     );
     console.log("toMarketSplitLP", lp_tokon);
+    setCurrentLPTokenAmount(lp_tokon);
     const split = await getJediEstimateLiquiditySplit(
       currentBorrowId1.slice(5),
       toMarketA,
       toMarketB
     );
     console.log("toMarketSplit", split);
+    setCurrentSplit(split);
   };
 
   return (
@@ -2490,7 +2511,7 @@ const YourBorrowModal = ({
                                 ""
                               )}
 
-                              <Text mt="0.15rem">{currentDapp}</Text>
+                              <Text mt="0.10rem">{currentDapp}</Text>
                             </Box>
                             <Box pt="1" className="navbar-button">
                               {activeModal == "yourBorrowDappDropdown" ? (

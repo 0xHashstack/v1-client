@@ -42,6 +42,8 @@ import {
   setInputTradeModalBorrowAmount,
   selectAssetWalletBalance,
   setTransactionStatus,
+  setTransactionStarted,
+  selectTransactionStarted,
 } from "@/store/slices/userAccountSlice";
 import {
   selectNavDropdowns,
@@ -83,6 +85,7 @@ const TradeModal = ({
   coin,
   borrowAPRs,
   currentBorrowAPR,
+  validRTokens,
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -136,6 +139,7 @@ const TradeModal = ({
   } = useBorrowAndSpend();
 
   const rTokens: RToken[] = ["rBTC", "rUSDT", "rETH"];
+  const transactionStarted = useSelector(selectTransactionStarted);
 
   const [sliderValue, setSliderValue] = useState(0);
   const [sliderValue2, setsliderValue2] = useState(0);
@@ -144,7 +148,7 @@ const TradeModal = ({
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
-  const [transactionStarted, setTransactionStarted] = useState(false);
+  // const [transactionStarted, setTransactionStarted] = useState(false);
   // const walletBalances=useSelector(selectAssetWalletBalance);
   interface assetB {
     USDT: any;
@@ -335,7 +339,7 @@ const TradeModal = ({
     setCurrentBorrowCoin(coin.name);
     setCurrentPoolCoin("Select a pool");
     setRadioValue("1");
-    setTransactionStarted(false);
+    // setTransactionStarted(false);
     dispatch(resetModalDropdowns());
     setwalletBalance(
       walletBalances[coin]?.statusBalanceOf === "success"
@@ -347,6 +351,9 @@ const TradeModal = ({
           )
         : 0
     );
+    if (transactionStarted) dispatch(setTransactionStarted(""));
+    dispatch(resetModalDropdowns());
+    dispatch(setTransactionStatus(""));
   };
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
@@ -642,51 +649,75 @@ const TradeModal = ({
                           className="dropdown-container"
                           boxShadow="dark-lg"
                         >
-                          {rTokens.map((coin: RToken, index: number) => {
-                            return (
-                              <Box
-                                key={index}
-                                as="button"
-                                w="full"
-                                display="flex"
-                                alignItems="center"
-                                gap="1"
-                                pr="2"
-                                onClick={() => {
-                                  setCurrentCollateralCoin(coin);
-                                  setRToken(coin);
-                                  setCollateralMarket("");
-                                }}
-                              >
-                                {coin === currentCollateralCoin && (
+                          {validRTokens &&
+                            validRTokens.length > 0 &&
+                            validRTokens.map(
+                              (
+                                { rToken: coin, rTokenAmount: amount }: any,
+                                index: number
+                              ) => {
+                                return (
                                   <Box
-                                    w="3px"
-                                    h="28px"
-                                    bg="#0C6AD9"
-                                    borderRightRadius="md"
-                                  ></Box>
-                                )}
-                                <Box
-                                  w="full"
-                                  display="flex"
-                                  py="5px"
-                                  px={`${
-                                    coin === currentCollateralCoin ? "1" : "5"
-                                  }`}
-                                  gap="1"
-                                  bg={`${
-                                    coin === currentCollateralCoin
-                                      ? "#0C6AD9"
-                                      : "inherit"
-                                  }`}
-                                  borderRadius="md"
-                                >
-                                  <Box p="1">{getCoin(coin)}</Box>
-                                  <Text>{coin}</Text>
-                                </Box>
-                              </Box>
-                            );
-                          })}
+                                    key={index}
+                                    as="button"
+                                    w="full"
+                                    display="flex"
+                                    alignItems="center"
+                                    gap="1"
+                                    pr="2"
+                                    onClick={() => {
+                                      setCurrentCollateralCoin(coin);
+                                      setRToken(coin);
+                                      // dispatch(setCoinSelectedSupplyModal(coin))
+                                    }}
+                                  >
+                                    {coin === currentCollateralCoin && (
+                                      <Box
+                                        w="3px"
+                                        h="28px"
+                                        bg="#0C6AD9"
+                                        borderRightRadius="md"
+                                      ></Box>
+                                    )}
+                                    <Box
+                                      w="full"
+                                      display="flex"
+                                      py="5px"
+                                      pl={`${
+                                        coin === currentCollateralCoin
+                                          ? "1"
+                                          : "5"
+                                      }`}
+                                      pr="6px"
+                                      gap="1"
+                                      justifyContent="space-between"
+                                      bg={`${
+                                        coin === currentCollateralCoin
+                                          ? "#0C6AD9"
+                                          : "inherit"
+                                      }`}
+                                      borderRadius="md"
+                                    >
+                                      <Box display="flex">
+                                        <Box p="1">{getCoin(coin)}</Box>
+                                        <Text color="white">{coin}</Text>
+                                      </Box>
+                                      <Box
+                                        fontSize="9px"
+                                        color="white"
+                                        mt="6px"
+                                        fontWeight="thin"
+                                      >
+                                        rToken Balance:{" "}
+                                        {validRTokens && validRTokens.length > 0
+                                          ? amount
+                                          : "loading..."}
+                                      </Box>
+                                    </Box>
+                                  </Box>
+                                );
+                              }
+                            )}
                           <hr
                             style={{
                               height: "1px",
@@ -2064,7 +2095,7 @@ const TradeModal = ({
                   currentPoolCoin != "Select a pool") ? (
                   <Box
                     onClick={() => {
-                      setTransactionStarted(true);
+                      // setTransactionStarted(true);
                       console.log(
                         "trade clicked",
                         "rToken",
