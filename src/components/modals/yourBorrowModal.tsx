@@ -689,8 +689,8 @@ const YourBorrowModal = ({
                 {/* $ 10.91 */}
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between" mb="0.2rem">
-              {radioValue === "1" && (
+            {radioValue === "1" && (
+              <Box display="flex" justifyContent="space-between" mb="0.2rem">
                 <Box display="flex">
                   <Text
                     color="#6A737D"
@@ -716,29 +716,29 @@ const YourBorrowModal = ({
                     </Box>
                   </Tooltip>
                 </Box>
-              )}
-              <Box
-                display="flex"
-                gap="2"
-                color="#6A737D"
-                fontSize="12px"
-                fontWeight="400"
-                fontStyle="normal"
-              >
-                <Box display="flex" gap="2px">
-                  <Box mt="2px">
-                    <SmallEth />
+                <Box
+                  display="flex"
+                  gap="2"
+                  color="#6A737D"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  <Box display="flex" gap="2px">
+                    <Box mt="2px">
+                      <SmallEth />
+                    </Box>
+                    <Text>1.23</Text>
                   </Box>
-                  <Text>1.23</Text>
-                </Box>
-                <Box display="flex" gap="2px">
-                  <Box mt="2px">
-                    <SmallUsdt />
+                  <Box display="flex" gap="2px">
+                    <Box mt="2px">
+                      <SmallUsdt />
+                    </Box>
+                    <Text>1.23</Text>
                   </Box>
-                  <Text>1.23</Text>
                 </Box>
               </Box>
-            </Box>
+            )}
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
