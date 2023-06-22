@@ -7,7 +7,7 @@ import React, { useState } from "react";
 
 const useWithdrawStake = () => {
   const [unstakeRToken, setUnstakeRToken] = useState<RToken>("rBTC");
-  const [rTokenToWithdraw, setRTokenToWithdraw] = useState(0);
+  const [rTokenToWithdraw, setRTokenToWithdraw] = useState<number>(0);
   const { address: owner } = useAccount();
 
   const {
@@ -28,6 +28,8 @@ const useWithdrawStake = () => {
       calldata: [
         tokenAddressMap[unstakeRToken],
         owner,
+        etherToWeiBN(rTokenToWithdraw, unstakeRToken).toString(), 
+        "0"
       ],
     },
   });
