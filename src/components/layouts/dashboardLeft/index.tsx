@@ -51,11 +51,13 @@ const DashboardLeft = ({
   oraclePrices,
   totalSupplies,
   supplyAPRs,
+  validRTokens,
 }: {
   width: string;
   oraclePrices: any;
   totalSupplies: any;
   supplyAPRs: any;
+  validRTokens: any;
   // columnItems: Array<Array<string>>;
   // gap: string;
   // rowItems: any;
@@ -456,7 +458,11 @@ const DashboardLeft = ({
                   pl={2}
                 >
                   <Box position="relative" display="inline-block">
-                    <StakeUnstakeModal coin={coin} nav={false} />
+                    <StakeUnstakeModal
+                      coin={coin}
+                      nav={false}
+                      validRTokens={validRTokens}
+                    />
                   </Box>
                 </Td>
               </Tr>

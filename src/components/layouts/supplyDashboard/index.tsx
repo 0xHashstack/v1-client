@@ -124,7 +124,7 @@ const SupplyDashboard = ({
       try {
         const supply = await getUserDeposits(address || "");
         setSupplies([supply[2], supply[3], supply[0], supply[1], supply[4]]);
-        // console.log("supplies", supply);
+        console.log("supplies", supply);
       } catch (err) {
         console.log("supplies", err);
       }

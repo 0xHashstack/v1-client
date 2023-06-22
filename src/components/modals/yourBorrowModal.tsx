@@ -98,6 +98,7 @@ import {
 } from "../../Blockchain/scripts/l3interaction";
 import { getAddress } from "ethers/lib/utils";
 import { getTokenFromAddress } from "@/Blockchain/stark-constants";
+import MySwap from "@/assets/icons/dapps/mySwap";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -403,7 +404,7 @@ const YourBorrowModal = ({
         return <JediswapLogo />;
         break;
       case "mySwap":
-        return <MySwapDisabled />;
+        return <MySwap />;
         break;
       case "ETH/USDT":
         return <EthToUsdt />;
@@ -672,35 +673,50 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                $ 10.91
+                {currentLPTokenAmount === null ? (
+                  <Box pt="2px">
+                    <Skeleton
+                      width="2.3rem"
+                      height=".85rem"
+                      startColor="#2B2F35"
+                      endColor="#101216"
+                      borderRadius="6px"
+                    />
+                  </Box>
+                ) : (
+                  "$" + currentLPTokenAmount
+                )}
+                {/* $ 10.91 */}
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
-              <Box display="flex">
-                <Text
-                  color="#6A737D"
-                  fontSize="12px"
-                  fontWeight="400"
-                  fontStyle="normal"
-                >
-                  Liquidity split:{" "}
-                </Text>
-                <Tooltip
-                  hasArrow
-                  placement="right-start"
-                  boxShadow="dark-lg"
-                  label="all the assets to the market"
-                  bg="#24292F"
-                  fontSize={"smaller"}
-                  fontWeight={"thin"}
-                  borderRadius={"lg"}
-                  padding={"2"}
-                >
-                  <Box ml="0.1rem" mt="0.3rem">
-                    <InfoIcon />
-                  </Box>
-                </Tooltip>
-              </Box>
+              {radioValue === "1" && (
+                <Box display="flex">
+                  <Text
+                    color="#6A737D"
+                    fontSize="12px"
+                    fontWeight="400"
+                    fontStyle="normal"
+                  >
+                    Liquidity split:{" "}
+                  </Text>
+                  <Tooltip
+                    hasArrow
+                    placement="right-start"
+                    boxShadow="dark-lg"
+                    label="all the assets to the market"
+                    bg="#24292F"
+                    fontSize={"smaller"}
+                    fontWeight={"thin"}
+                    borderRadius={"lg"}
+                    padding={"2"}
+                  >
+                    <Box ml="0.1rem" mt="0.3rem">
+                      <InfoIcon />
+                    </Box>
+                  </Tooltip>
+                </Box>
+              )}
               <Box
                 display="flex"
                 gap="2"
@@ -1592,6 +1608,9 @@ const YourBorrowModal = ({
     console.log(toMarket);
   }, [currentPoolCoin]);
 
+  const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState(null);
+  const [currentSplit, setCurrentSplit] = useState(null);
+
   useEffect(() => {
     console.log(
       "toMarketSplitConsole",
@@ -1600,8 +1619,10 @@ const YourBorrowModal = ({
       toMarketB
       // borrow
     );
+    setCurrentLPTokenAmount(null);
+    setCurrentSplit(null);
     fetchLiquiditySplit();
-  }, [toMarketA, toMarketB]);
+  }, [toMarketA]);
 
   const fetchLiquiditySplit = async () => {
     const lp_tokon = await getJediEstimatedLpAmountOut(
@@ -1610,12 +1631,14 @@ const YourBorrowModal = ({
       toMarketB
     );
     console.log("toMarketSplitLP", lp_tokon);
+    setCurrentLPTokenAmount(lp_tokon);
     const split = await getJediEstimateLiquiditySplit(
       currentBorrowId1.slice(5),
       toMarketA,
       toMarketB
     );
     console.log("toMarketSplit", split);
+    setCurrentSplit(split);
   };
 
   return (
@@ -2490,7 +2513,7 @@ const YourBorrowModal = ({
                                 ""
                               )}
 
-                              <Text mt="0.15rem">{currentDapp}</Text>
+                              <Text mt="0.10rem">{currentDapp}</Text>
                             </Box>
                             <Box pt="1" className="navbar-button">
                               {activeModal == "yourBorrowDappDropdown" ? (
@@ -3895,7 +3918,24 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">5.56%</Text>
+                        <Text color="#6E7681">
+                          {!borrowAPRs ||
+                          borrowAPRs.length === 0 ||
+                          !getBorrowAPR(currentBorrowMarketCoin2.slice(1)) ? (
+                            <Box pt="2px">
+                              <Skeleton
+                                width="2.3rem"
+                                height=".85rem"
+                                startColor="#2B2F35"
+                                endColor="#101216"
+                                borderRadius="6px"
+                              />
+                            </Box>
+                          ) : (
+                            getBorrowAPR(currentBorrowMarketCoin2.slice(1)) +
+                            "%"
+                          )}
+                        </Text>
                       </Text>
                       <Text
                         display="flex"
