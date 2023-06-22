@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   Thead,
@@ -68,6 +68,7 @@ const DashboardRight = ({
   });
 
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
+  const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>();
 
   return (
     <TableContainer
@@ -302,6 +303,9 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
+                    onClick={() => {
+                      setCurrentBorrowAPR(idx);
+                    }}
                     // bgColor={"blue"}
                   >
                     <BorrowModal
@@ -316,6 +320,8 @@ const DashboardRight = ({
                       color="#BDBFC1;"
                       backGroundOverLay="rgba(244, 242, 255, 0.5)"
                       coin={coin}
+                      borrowAPRs={borrowAPRs}
+                      currentBorrowAPR={currentBorrowAPR}
                     />
                   </Box>
                 </Td>
@@ -331,8 +337,18 @@ const DashboardRight = ({
                   p={0}
                   pl={2}
                 >
-                  <Box position="relative" display="inline-block">
-                    <TradeModal coin={coin} />
+                  <Box
+                    position="relative"
+                    display="inline-block"
+                    onClick={() => {
+                      setCurrentBorrowAPR(idx);
+                    }}
+                  >
+                    <TradeModal
+                      coin={coin}
+                      borrowAPRs={borrowAPRs}
+                      currentBorrowAPR={currentBorrowAPR}
+                    />
                   </Box>
                 </Td>
               </Tr>

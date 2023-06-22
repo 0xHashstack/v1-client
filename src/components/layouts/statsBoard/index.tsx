@@ -5,15 +5,17 @@ import { useRouter } from "next/router";
 import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
 import { getUserReserves } from "@/Blockchain/scripts/userStats";
 import { IProtocolReserves } from "@/Blockchain/interfaces/interfaces";
+import { useAccount } from "@starknet-react/core";
 const StatsBoard = () => {
+  const { address } = useAccount();
   const router = useRouter();
   const handleRouteChange = (path: string) => {
     router.push(path);
   };
   const [protocolReserves, setProtocolReserves] = useState<IProtocolReserves>({
-    totalReserves: 12312,
-    availableReserves: 12131,
-    avgAssetUtilisation: 112, // weighted avg of all the utilisations of markets
+    totalReserves: null,
+    availableReserves: null,
+    avgAssetUtilisation: null, // weighted avg of all the utilisations of markets
   });
   const [userStats, setUserStats] = useState({
     netWorth: 8392.14, // current values of loans - total borrow + total supply
@@ -36,7 +38,7 @@ const StatsBoard = () => {
   // useEffect(() => {
   //   try {
   //     const fetchUserStats = async () => {
-  //       const reserves = await getUserReserves();
+  //       const reserves = await getUserReserves(address);
   //       console.log("user reserves", reserves);
   //       setUserStats(reserves);
   //     };
@@ -81,7 +83,7 @@ const StatsBoard = () => {
           header={["Your networth", "Your Supply", "Your borrow", "Net APR"]}
           statsData={userStats}
           onclick={() => {
-            handleRouteChange("/your-metrics");
+            handleRouteChange("/v1/your-metrics");
           }}
         />
         <Stats
@@ -92,7 +94,7 @@ const StatsBoard = () => {
           ]}
           statsData={protocolReserves}
           onclick={() => {
-            handleRouteChange("/protocol-metrics");
+            handleRouteChange("/v1/protocol-metrics");
           }}
         />
       </HStack>

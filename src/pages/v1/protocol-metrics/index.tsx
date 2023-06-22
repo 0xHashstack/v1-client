@@ -62,7 +62,7 @@ const ProtocolMetrics = () => {
             <Text color="#E6EDF3" fontSize="28px">
               Protocol metrics
             </Text>
-            <Link href={"/market"}>
+            <Link href={"/v1/market"}>
               <Box cursor="pointer">
                 <CancelIcon />
               </Box>

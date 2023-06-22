@@ -1,5 +1,5 @@
 import React from "react";
-import { HStack, VStack, Text, Box } from "@chakra-ui/react";
+import { HStack, VStack, Text, Box, Skeleton } from "@chakra-ui/react";
 import Image from "next/image";
 import numberFormatter from "@/utils/functions/numberFormatter";
 const Stats = ({
@@ -29,7 +29,7 @@ const Stats = ({
       //   flexGrow={1}
       //   marginBottom="3resm"
     >
-      {Object.entries(statsData).map(([key, value], idx) => {
+      {Object?.entries(statsData).map(([key, value], idx) => {
         return (
           <VStack
             key={key}
@@ -42,12 +42,22 @@ const Stats = ({
             <Text color="#6e7681" fontSize={14}>
               {header[idx]}
             </Text>
-            <Text color="#E6EDF3" fontSize="20px">
-              {header[idx] == "Net APR" ||
-              header[idx] == "Avg. asset utillization"
-                ? value + "%"
-                : "$" + numberFormatter(value)}
-            </Text>
+            <Box color="#E6EDF3" fontSize="20px">
+              {value === null ? (
+                <Skeleton
+                  width="6rem"
+                  height="1.9rem"
+                  startColor="#101216"
+                  endColor="#2B2F35"
+                  borderRadius="6px"
+                />
+              ) : header[idx] == "Net APR" ||
+                header[idx] == "Avg. asset utillization" ? (
+                value + "%"
+              ) : (
+                "$" + numberFormatter(value)
+              )}
+            </Box>
           </VStack>
         );
       })}

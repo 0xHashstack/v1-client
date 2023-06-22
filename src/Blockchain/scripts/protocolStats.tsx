@@ -24,6 +24,12 @@ function parseProtocolStats(market_infos: any): IMarketInfo[] {
       totalBorrow: weiToEtherNumber(
         uint256.uint256ToBN(marketData?.total_borrow).toString(),
         getTokenFromAddress(number.toHex(marketData?.token_address))?.name as Token
+      ), 
+      availableReserves: weiToEtherNumber(
+        uint256.uint256ToBN(marketData?.total_supply).sub(
+          uint256.uint256ToBN(marketData?.total_borrow)
+        ).toString(),
+        getTokenFromAddress(number.toHex(marketData?.token_address))?.name as Token
       ),
       utilisationPerMarket: parseAmount(uint256
         .uint256ToBN(marketData?.utilisation_per_market)
@@ -72,10 +78,15 @@ export async function getProtocolStats() {
     metricsContractAddress,
     provider
   );
-  const res = await metricsContract.call("get_protocol_stats", [], {
-    blockIdentifier: "pending",
-  });
-  return parseProtocolStats(res?.market_infos);
+  try {
+    const res = await metricsContract.call("get_protocol_stats", [], {
+      blockIdentifier: "pending",
+    });
+    return parseProtocolStats(res?.market_infos);
+  }
+  catch(error) {
+    console.error("getProtocolStats fails: ", error);
+  }
 }
 
 function parseProtocolReserves(protocolReservesData: any): IProtocolReserves {

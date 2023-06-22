@@ -43,6 +43,7 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  trailingSlash: true,
   // basePath: '/v1',
 };
 

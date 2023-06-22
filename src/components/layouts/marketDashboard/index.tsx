@@ -11,12 +11,20 @@ import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { useAccount } from "@starknet-react/core";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 const MarketDashboard = () => {
-  const [oraclePrices, setOraclePrices]: any = useState([]);
-  const [totalSupplies, setTotalSupplies]: any = useState([]);
-  const [totalBorrows, setTotalBorrows]: any = useState([]);
-  const [supplyAPRs, setSupplyAPRs]: any = useState([]);
-  const [borrowAPRs, setBorrowAPRs]: any = useState([]);
-  const [utilization, setUtilizations]: any = useState([]);
+  const [oraclePrices, setOraclePrices]: any = useState<(undefined | number)[]>(
+    []
+  );
+  const [totalSupplies, setTotalSupplies]: any = useState<
+    (undefined | number)[]
+  >([]);
+  const [totalBorrows, setTotalBorrows]: any = useState<(undefined | number)[]>(
+    []
+  );
+  const [supplyAPRs, setSupplyAPRs]: any = useState<(undefined | number)[]>([]);
+  const [borrowAPRs, setBorrowAPRs]: any = useState<(undefined | number)[]>([]);
+  const [utilization, setUtilizations]: any = useState<(undefined | number)[]>(
+    []
+  );
   const { account, address } = useAccount();
   // console.log(account,"Market Page")
 
@@ -38,14 +46,14 @@ const MarketDashboard = () => {
       console.log("Error fetching protocol reserves", err);
     }
   };
-  const fetchUserReserves = async () => {
-    try {
-      const reserves = await getUserReserves();
-      console.log(reserves, "market page -user supply");
-    } catch (err) {
-      console.log("Error fetching protocol reserves", err);
-    }
-  };
+  // const fetchUserReserves = async () => {
+  //   try {
+  //     const reserves = await getUserReserves();
+  //     console.log(reserves, "market page -user supply");
+  //   } catch (err) {
+  //     console.log("Error fetching protocol reserves", err);
+  //   }
+  // };
 
   const fetchOraclePrices = async () => {
     try {
@@ -63,39 +71,39 @@ const MarketDashboard = () => {
       console.log("fetchprotocolstats", stats); //23014
       // const temp: any = ;
       setTotalSupplies([
-        stats[2].totalSupply,
-        stats[3].totalSupply,
-        stats[0].totalSupply,
-        stats[1].totalSupply,
-        stats[4].totalSupply,
+        stats?.[2].totalSupply,
+        stats?.[3].totalSupply,
+        stats?.[0].totalSupply,
+        stats?.[1].totalSupply,
+        stats?.[4].totalSupply,
       ]);
       setTotalBorrows([
-        stats[2].totalBorrow,
-        stats[3].totalBorrow,
-        stats[0].totalBorrow,
-        stats[1].totalBorrow,
-        stats[4].totalBorrow,
+        stats?.[2].totalBorrow,
+        stats?.[3].totalBorrow,
+        stats?.[0].totalBorrow,
+        stats?.[1].totalBorrow,
+        stats?.[4].totalBorrow,
       ]);
       setBorrowAPRs([
-        stats[2].borrowRate,
-        stats[3].borrowRate,
-        stats[0].borrowRate,
-        stats[1].borrowRate,
-        stats[4].borrowRate,
+        stats?.[2].borrowRate,
+        stats?.[3].borrowRate,
+        stats?.[0].borrowRate,
+        stats?.[1].borrowRate,
+        stats?.[4].borrowRate,
       ]);
       setSupplyAPRs([
-        stats[2].supplyRate,
-        stats[3].supplyRate,
-        stats[0].supplyRate,
-        stats[1].supplyRate,
-        stats[4].supplyRate,
+        stats?.[2].supplyRate,
+        stats?.[3].supplyRate,
+        stats?.[0].supplyRate,
+        stats?.[1].supplyRate,
+        stats?.[4].supplyRate,
       ]);
       setUtilizations([
-        stats[2].utilisationPerMarket,
-        stats[3].utilisationPerMarket,
-        stats[0].utilisationPerMarket,
-        stats[1].utilisationPerMarket,
-        stats[4].utilisationPerMarket,
+        stats?.[2].utilisationPerMarket,
+        stats?.[3].utilisationPerMarket,
+        stats?.[0].utilisationPerMarket,
+        stats?.[1].utilisationPerMarket,
+        stats?.[4].utilisationPerMarket,
       ]);
     } catch (error) {
       console.log("error on getting protocol stats");

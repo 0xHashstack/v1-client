@@ -26,6 +26,8 @@ import {
   useToast,
 } from "@chakra-ui/react";
 
+import hoverStake from "../../assets/images/hoverStakeIcon.svg";
+
 /* Coins logo import  */
 import BTCLogo from "../../assets/icons/coins/btc";
 import USDCLogo from "@/assets/icons/coins/usdc";
@@ -69,7 +71,15 @@ import { useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { RToken } from "@/Blockchain/interfaces/interfaces";
-const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
+import { useRouter } from "next/router";
+import Image from "next/image";
+const StakeUnstakeModal = ({
+  buttonText,
+  coin,
+  nav,
+  stakeHover,
+  ...restProps
+}: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const dispatch = useDispatch();
   const [sliderValue, setSliderValue] = useState(0);
@@ -274,6 +284,7 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   };
 
   const handleChange = (newValue: any) => {
+    if (newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
@@ -331,14 +342,16 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
   const rcoins: RToken[] = ["rBTC", "rUSDT", "rUSDC", "rETH", "rDAI"];
   const walletBalance = useSelector(selectWalletBalance);
   const coinObj: any = coins.find((obj) => coin.name in obj);
-  const rcoinValue = coinObj ? coinObj[coin.name] : undefined;
+  const rcoinValue = coinObj ? coinObj[coin.name] : "rUSDT";
   const [isSupplied, setIsSupplied] = useState(false);
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
     useState("BTC");
-  const [currentSelectedStakeCoin, setCurrentSelectedStakeCoin] =
-    useState(rcoinValue);
-  const [currentSelectedUnstakeCoin, setcurrentSelectedUnstakeCoin] =
-    useState(rcoinValue);
+  const [currentSelectedStakeCoin, setCurrentSelectedStakeCoin] = useState(
+    !nav ? rcoinValue : "rUSDT"
+  );
+  const [currentSelectedUnstakeCoin, setcurrentSelectedUnstakeCoin] = useState(
+    !nav ? rcoinValue : "rUSDT"
+  );
   const [buttonId, setButtonId] = useState(0);
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const resetStates = () => {
@@ -384,35 +397,71 @@ const StakeUnstakeModal = ({ buttonText, coin, ...restProps }: any) => {
     setUnstakeRToken(coin ? rcoinValue : "rBTC");
   }, [coin, coinObj, rcoinValue]);
 
+  const router = useRouter();
+  const { pathname } = router;
+
   return (
     <Box>
-      <Text
-        key="borrow-details"
-        as="span"
-        position="relative"
-        color="#0969DA"
-        fontSize="14px"
-        width="100%"
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-        fontWeight="400"
-        cursor="pointer"
-        _hover={{
-          "::before": {
-            content: '""',
-            position: "absolute",
-            left: 0,
-            bottom: "-0px",
-            width: "100%",
-            height: "1px",
-            backgroundColor: "#0969DA",
-          },
-        }}
-        onClick={onOpen}
-      >
-        Details
-      </Text>
+      {nav ? (
+        <Box
+          display="flex"
+          justifyContent="space-between"
+          alignItems="center"
+          gap={"8px"}
+          onClick={onOpen}
+        >
+          {router.pathname != "/waitlist" && stakeHover ? (
+            <Image
+              src={hoverStake}
+              alt="Picture of the author"
+              width="16"
+              height="16"
+              style={{ cursor: "pointer" }}
+            />
+          ) : (
+            <Image
+              src="/stake.svg"
+              alt="Picture of the author"
+              width="16"
+              height="16"
+              style={{ cursor: "pointer" }}
+            />
+          )}
+          <Box fontSize="14px">
+            <Box position="relative" display="inline-block">
+              <Text>Stake</Text>
+            </Box>
+          </Box>
+        </Box>
+      ) : (
+        <Text
+          key="borrow-details"
+          as="span"
+          position="relative"
+          color="#0969DA"
+          fontSize="14px"
+          width="100%"
+          display="flex"
+          alignItems="center"
+          justifyContent="center"
+          fontWeight="400"
+          cursor="pointer"
+          _hover={{
+            "::before": {
+              content: '""',
+              position: "absolute",
+              left: 0,
+              bottom: "-0px",
+              width: "100%",
+              height: "1px",
+              backgroundColor: "#0969DA",
+            },
+          }}
+          onClick={onOpen}
+        >
+          Details
+        </Text>
+      )}
 
       <Modal
         isOpen={isOpen}

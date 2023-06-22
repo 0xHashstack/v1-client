@@ -59,6 +59,8 @@ import { languages } from "@/utils/constants/languages";
 import { useRouter } from "next/router";
 import { type } from "os";
 import GetTokensModal from "@/components/modals/getTokens";
+import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
+import { Coins } from "../dashboardLeft";
 const Navbar = () => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
@@ -194,7 +196,7 @@ const Navbar = () => {
           }}
           onClick={() => {
             if (router.pathname != "/waitlist") {
-              router.push("/market");
+              router.push("/v1/market");
             }
           }}
           onMouseEnter={() => setDashboardHover(true)}
@@ -291,7 +293,7 @@ const Navbar = () => {
           onMouseEnter={() => setStakeHover(true)}
           onMouseLeave={() => setStakeHover(false)}
         >
-          <Box
+          {/* <Box
             display="flex"
             justifyContent="space-between"
             alignItems="center"
@@ -314,8 +316,13 @@ const Navbar = () => {
                 style={{ cursor: "pointer" }}
               />
             )}
-            <Text fontSize="14px">Stake</Text>
-          </Box>
+            <Box fontSize="14px">
+              <Box position="relative" display="inline-block">
+                <StakeUnstakeModal coin={Coins} nav={true} stakeHover={stakeHover} />
+              </Box>
+            </Box>
+          </Box> */}
+          <StakeUnstakeModal coin={Coins} nav={true} stakeHover={stakeHover} />
         </Box>
         {/* <Box
           style={{
@@ -343,7 +350,7 @@ const Navbar = () => {
           >
             {" "}
             <Image
-              src={"./moreIcon.svg"}
+              src={".moreIcon.svg"}
               alt="Picture of the author"
               width="20"
               height="20"
@@ -442,7 +449,7 @@ const Navbar = () => {
               margin="6px 12px"
             >
               {/* <Image
-                src={"./transferDepositDisabled.svg"}
+                src={"/transferDepositDisabled.svg"}
                 alt="Picture of the author"
                 width="20"
                 height="20"
