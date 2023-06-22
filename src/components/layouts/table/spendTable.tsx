@@ -117,7 +117,7 @@ const SpendTable = () => {
     // console.log("faisal coin mapping", borrowIDCoinMap);
   }, [userLoans]);
 
-  const [borrowAPRs, setBorrowAPRs] = useState([]);
+  const [borrowAPRs, setBorrowAPRs] = useState<any>([]);
 
   useEffect(() => {
     fetchProtocolStats();

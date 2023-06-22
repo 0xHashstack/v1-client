@@ -36,14 +36,14 @@ const useBorrowAndSpend = () => {
 
   type SwapCalldata = [
     typeof constants.JEDI_SWAP | typeof constants.MY_SWAP,
-    "3",
+    "2",
     typeof constants.SWAP,
     NativeToken
   ];
 
   type AddLiquidityCalldata = [
     typeof constants.JEDI_SWAP | typeof constants.MY_SWAP,
-    "4",
+    "3",
     typeof constants.ADD_LIQUIDITY,
     NativeToken,
     NativeToken
@@ -61,7 +61,7 @@ const useBorrowAndSpend = () => {
     if (method === "ADD_LIQUIDITY") {
       calldata = [
         integration,
-        "4",
+        "3",
         constants.ADD_LIQUIDITY,
         tokenAddressMap[toMarketLiqA],
         tokenAddressMap[toMarketLiqB],
@@ -69,7 +69,7 @@ const useBorrowAndSpend = () => {
     } else if (method === "SWAP") {
       calldata = [
         integration,
-        "3",
+        "2",
         constants.SWAP,
         tokenAddressMap[toMarketSwap],
       ];

@@ -68,6 +68,7 @@ export interface IMarketInfo {
   totalSupply: number; //
   lentAssets: number;
   totalBorrow: number;
+  availableReserves: number;
 
   utilisationPerMarket: number;
   exchangeRateRtokenToUnderlying: number; // 10^18 precision

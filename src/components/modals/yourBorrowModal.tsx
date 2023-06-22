@@ -580,14 +580,25 @@ const YourBorrowModal = ({
 
   const handleAddCollateral = async () => {
     try {
-      const addCollateral = await writeAsyncAddCollateralRToken();
-      if (addCollateral?.transaction_hash) {
-        console.log("addCollateral", addCollateral.transaction_hash);
-      }
-      setDepositTransHash(addCollateral?.transaction_hash);
+      if (currentTokenSelected == "rToken") {
+        const addCollateral = await writeAsyncAddCollateralRToken();
+        if (addCollateral?.transaction_hash) {
+          console.log("addCollateral", addCollateral.transaction_hash);
+        }
+        setDepositTransHash(addCollateral?.transaction_hash);
 
-      console.log("add collateral - ", addCollateral);
-      dispatch(setTransactionStatus("success"));
+        console.log("add collateral - ", addCollateral);
+        dispatch(setTransactionStatus("success"));
+      } else {
+        const addCollateral = await writeAsyncAddCollateral();
+        if (addCollateral?.transaction_hash) {
+          console.log("addCollateral", addCollateral.transaction_hash);
+        }
+        setDepositTransHash(addCollateral?.transaction_hash);
+
+        console.log("add collateral - ", addCollateral);
+        dispatch(setTransactionStatus("success"));
+      }
     } catch (err: any) {
       console.log("add collateral error");
       dispatch(setTransactionStatus("failed"));

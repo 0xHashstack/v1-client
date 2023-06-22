@@ -84,7 +84,7 @@ const DashboardLeft = ({
   const [isOpenCustom, setIsOpenCustom] = useState(false);
   const { account } = useAccount();
   const dispatch = useDispatch();
-  const [currentSupplyAPR, setCurrentSupplyAPR] = useState();
+  const [currentSupplyAPR, setCurrentSupplyAPR] = useState<Number>();
   // const {
   //   dataBalanceOf,
   //   errorBalanceOf,
