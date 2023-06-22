@@ -343,7 +343,7 @@ const Navbar = () => {
           >
             {" "}
             <Image
-              src={"./moreIcon.svg"}
+              src={".moreIcon.svg"}
               alt="Picture of the author"
               width="20"
               height="20"
@@ -442,7 +442,7 @@ const Navbar = () => {
               margin="6px 12px"
             >
               {/* <Image
-                src={"./transferDepositDisabled.svg"}
+                src={"/transferDepositDisabled.svg"}
                 alt="Picture of the author"
                 width="20"
                 height="20"

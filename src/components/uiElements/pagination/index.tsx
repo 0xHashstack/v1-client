@@ -41,7 +41,7 @@ const Pagination = ({
             cursor="pointer"
           >
             <Image
-              src={`paginationLeftArrow${
+              src={`/paginationLeftArrow${
                 currentPagination <= 1 ? "Dull" : "Glow"
               }.svg`}
               alt="Picture of the author"
@@ -118,7 +118,7 @@ const Pagination = ({
               Next
             </Text> */}
             <Image
-              src={`paginationRightArrow${
+              src={`/paginationRightArrow${
                 rows * currentPagination >= max ? "Dull" : "Glow"
               }.svg`}
               alt="Picture of the author"

@@ -58,7 +58,7 @@ const Footer = ({ block }: { block: number }) => {
         </HStack>
         <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
           <Text color="#BDBFC1" fontSize="12px">
-            Network: Etherum Goreli
+            Network: Ethereum Goerli
           </Text>
           <Box
             height={"100%"}
