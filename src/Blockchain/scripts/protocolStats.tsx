@@ -24,6 +24,12 @@ function parseProtocolStats(market_infos: any): IMarketInfo[] {
       totalBorrow: weiToEtherNumber(
         uint256.uint256ToBN(marketData?.total_borrow).toString(),
         getTokenFromAddress(number.toHex(marketData?.token_address))?.name as Token
+      ), 
+      availableReserves: weiToEtherNumber(
+        uint256.uint256ToBN(marketData?.total_supply).sub(
+          uint256.uint256ToBN(marketData?.total_borrow)
+        ).toString(),
+        getTokenFromAddress(number.toHex(marketData?.token_address))?.name as Token
       ),
       utilisationPerMarket: parseAmount(uint256
         .uint256ToBN(marketData?.utilisation_per_market)

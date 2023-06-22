@@ -22,6 +22,7 @@ import {
   RadioGroup,
   Stack,
   Radio,
+  Skeleton,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -77,7 +78,13 @@ import useBorrowAndSpend from "@/Blockchain/hooks/Writes/useBorrowAndSpend";
 import { useWaitForTransaction } from "@starknet-react/core";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
-const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
+const TradeModal = ({
+  buttonText,
+  coin,
+  borrowAPRs,
+  currentBorrowAPR,
+  ...restProps
+}: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   //   console.log("isopen", isOpen, "onopen", onOpen, "onClose", onClose);
 
@@ -1994,7 +2001,22 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       </Tooltip>
                     </Box>
                     <Text color="#6E7681" fontSize="xs">
-                      5.56%
+                      {!borrowAPRs ||
+                      borrowAPRs.length === 0 ||
+                      !borrowAPRs[currentBorrowAPR] ? (
+                        <Box pt="1px">
+                          <Skeleton
+                            width="2.3rem"
+                            height=".85rem"
+                            startColor="#2B2F35"
+                            endColor="#101216"
+                            borderRadius="6px"
+                          />
+                        </Box>
+                      ) : (
+                        borrowAPRs[currentBorrowAPR] + "%"
+                      )}
+                      {/* 5.56% */}
                     </Text>
                   </Box>
                   <Box display="flex" justifyContent="space-between" mb="1">
@@ -2058,16 +2080,27 @@ const TradeModal = ({ buttonText, coin, ...restProps }: any) => {
                       setTransactionStarted(true);
                       console.log(
                         "trade clicked",
+                        "rToken",
                         rToken,
+                        "rTokenAmount",
                         rTokenAmount,
+                        "collateralMarket",
                         collateralMarket,
+                        "collateralAmount",
                         collateralAmount,
+                        "loanMarket",
                         loanMarket,
+                        "loanAmount",
                         loanAmount,
+                        "method",
                         method,
+                        "l3App",
                         l3App,
+                        "toMarketSwap",
                         toMarketSwap,
+                        "toMarketLiqA",
                         toMarketLiqA,
+                        "toMarketLiqB",
                         toMarketLiqB
                       );
 

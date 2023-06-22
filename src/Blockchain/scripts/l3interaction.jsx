@@ -1,8 +1,9 @@
-import { Contract } from "starknet";
+import { Contract, uint256 } from "starknet";
 import jediSwapAbi from "../abis/jedi_swap_abi.json";
 import mySwapAbi from "../abis/my_swap_abi.json";
 import { getProvider, l3DiamondAddress } from "../stark-constants";
 import { tokenAddressMap } from "../utils/addressServices";
+import { weiToEtherNumber } from "../utils/utils";
 
 // before interaction
 export async function getJediEstimateLiquiditySplit(loanId, tokenA, tokenB) {
@@ -17,9 +18,7 @@ export async function getJediEstimateLiquiditySplit(loanId, tokenA, tokenB) {
       blockIdentifier: "pending",
     }
   );
-  // console.log(
-  //   "estimated liquidity split for loanId: ", loanId, " is: ", res
-  // )
+  console.log("estimated liquidity split for loanId: ", loanId, " is: ", res);
 }
 
 // before interaction
@@ -35,13 +34,18 @@ export async function getJediEstimatedLpAmountOut(loanId, tokenA, tokenB) {
       blockIdentifier: "pending",
     }
   );
-  // console.log(
-  //   "estimated lp amount out for loanId: ", loanId, " is: ", res
-  // )
+  console.log(
+    "estimated lp amount out for loanId: ",
+    loanId,
+    " is: ",
+    weiToEtherNumber(uint256.uint256ToBN(res?.lp_amount_out))
+  );
+  return weiToEtherNumber(uint256.uint256ToBN(res?.lp_amount_out));
 }
 
 // after interaction, in borrow screen, after getting getUserLoans
-export async function getJediEstimatedLiqALiqBfromLp(liquidity, pairAddress) { // currentMarketAmount, currentMarketAddress
+export async function getJediEstimatedLiqALiqBfromLp(liquidity, pairAddress) {
+  // currentMarketAmount, currentMarketAddress
   const provider = getProvider();
   const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
   const res = await l3Contract.call(

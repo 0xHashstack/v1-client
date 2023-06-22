@@ -337,8 +337,18 @@ const DashboardRight = ({
                   p={0}
                   pl={2}
                 >
-                  <Box position="relative" display="inline-block">
-                    <TradeModal coin={coin} />
+                  <Box
+                    position="relative"
+                    display="inline-block"
+                    onClick={() => {
+                      setCurrentBorrowAPR(idx);
+                    }}
+                  >
+                    <TradeModal
+                      coin={coin}
+                      borrowAPRs={borrowAPRs}
+                      currentBorrowAPR={currentBorrowAPR}
+                    />
                   </Box>
                 </Td>
               </Tr>

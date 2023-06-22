@@ -641,6 +641,7 @@ const SpendTable = () => {
                   BorrowBalance={borrowAmount}
                   currentSwap={currentSwap}
                   setCurrentSwap={setCurrentSwap}
+                  borrowAPRs={borrowAPRs}
                 />
               </Box>
             </TabPanel>

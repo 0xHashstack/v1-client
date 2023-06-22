@@ -28,6 +28,7 @@ import {
   Stack,
   Card,
   ModalHeader,
+  Skeleton,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -90,7 +91,11 @@ import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import useRevertInteractWithL3 from "@/Blockchain/hooks/Writes/useRevertInteractWithL3";
 
-import { getJediEstimatedLpAmountOut } from "../../Blockchain/scripts/l3interaction";
+import {
+  getJediEstimateLiquiditySplit,
+  getJediEstimatedLiqALiqBfromLp,
+  getJediEstimatedLpAmountOut,
+} from "../../Blockchain/scripts/l3interaction";
 import { getAddress } from "ethers/lib/utils";
 import { getTokenFromAddress } from "@/Blockchain/stark-constants";
 
@@ -112,6 +117,8 @@ const YourBorrowModal = ({
   buttonText,
   BorrowBalance,
   loan,
+  borrowAPRs,
+  borrow,
   ...restProps
 }: any) => {
   // console.log(currentBorrowId1);
@@ -438,6 +445,28 @@ const YourBorrowModal = ({
   // const [currentBorrowId2, setCurrentBorrowId2] = useState(`ID - ${currentID}`);
   const [currentDapp, setCurrentDapp] = useState("Select a dapp");
   const [currentPool, setCurrentPool] = useState("Select a pool");
+  const getBorrowAPR = (borrowMarket: string) => {
+    switch (borrowMarket) {
+      case "USDT":
+        return borrowAPRs[0];
+        break;
+      case "USDC":
+        return borrowAPRs[1];
+        break;
+      case "BTC":
+        return borrowAPRs[2];
+        break;
+      case "ETH":
+        return borrowAPRs[3];
+        break;
+      case "DAI":
+        return borrowAPRs[4];
+        break;
+
+      default:
+        break;
+    }
+  };
   // console.log(currentDapp)
   // console.log(currentPool.split('/')[0])
   const [depositTransHash, setDepositTransHash] = useState("");
@@ -674,7 +703,7 @@ const YourBorrowModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                  Liquidity spill:{" "}
+                  Liquidity split:{" "}
                 </Text>
                 <Tooltip
                   hasArrow
@@ -781,7 +810,21 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                5.56%
+                {!borrowAPRs ||
+                borrowAPRs.length === 0 ||
+                !getBorrowAPR(currentBorrowMarketCoin1.slice(1)) ? (
+                  <Box pt="2px">
+                    <Skeleton
+                      width="2.3rem"
+                      height=".85rem"
+                      startColor="#2B2F35"
+                      endColor="#101216"
+                      borderRadius="6px"
+                    />
+                  </Box>
+                ) : (
+                  getBorrowAPR(currentBorrowMarketCoin1.slice(1)) + "%"
+                )}
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
@@ -1583,23 +1626,28 @@ const YourBorrowModal = ({
 
   useEffect(() => {
     console.log(
-      "marketsAB",
-      toMarketA,
-      toMarketB,
+      "toMarketSplitConsole",
       currentBorrowId1.slice(5),
-      tokenAddressMap[toMarketA],
-      tokenAddressMap[toMarketB]
+      toMarketA,
+      toMarketB
+      // borrow
     );
-    fetchLiquiditySplit(toMarketA, toMarketB);
+    fetchLiquiditySplit();
   }, [toMarketA, toMarketB]);
 
   const fetchLiquiditySplit = async () => {
-    // const split = await getJediEstimatedLpAmountOut(
-    //   currentBorrowId1.slice(5),
-    //   toMarketA,
-    //   toMarketB
-    // );
-    console.log("toMarketSplit");
+    const lp_tokon = await getJediEstimatedLpAmountOut(
+      currentBorrowId1.slice(5),
+      toMarketA,
+      toMarketB
+    );
+    console.log("toMarketSplitLP", lp_tokon);
+    const split = await getJediEstimateLiquiditySplit(
+      currentBorrowId1.slice(5),
+      toMarketA,
+      toMarketB
+    );
+    console.log("toMarketSplit", split);
   };
 
   return (

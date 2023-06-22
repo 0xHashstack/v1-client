@@ -456,7 +456,7 @@ const DashboardLeft = ({
                   pl={2}
                 >
                   <Box position="relative" display="inline-block">
-                    <StakeUnstakeModal coin={coin} />
+                    <StakeUnstakeModal coin={coin} nav={false} />
                   </Box>
                 </Td>
               </Tr>
