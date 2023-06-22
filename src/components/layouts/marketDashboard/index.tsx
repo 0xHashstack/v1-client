@@ -46,14 +46,14 @@ const MarketDashboard = () => {
       console.log("Error fetching protocol reserves", err);
     }
   };
-  const fetchUserReserves = async () => {
-    try {
-      const reserves = await getUserReserves();
-      console.log(reserves, "market page -user supply");
-    } catch (err) {
-      console.log("Error fetching protocol reserves", err);
-    }
-  };
+  // const fetchUserReserves = async () => {
+  //   try {
+  //     const reserves = await getUserReserves();
+  //     console.log(reserves, "market page -user supply");
+  //   } catch (err) {
+  //     console.log("Error fetching protocol reserves", err);
+  //   }
+  // };
 
   const fetchOraclePrices = async () => {
     try {
