@@ -72,10 +72,15 @@ export async function getProtocolStats() {
     metricsContractAddress,
     provider
   );
-  const res = await metricsContract.call("get_protocol_stats", [], {
-    blockIdentifier: "pending",
-  });
-  return parseProtocolStats(res?.market_infos);
+  try {
+    const res = await metricsContract.call("get_protocol_stats", [], {
+      blockIdentifier: "pending",
+    });
+    return parseProtocolStats(res?.market_infos);
+  }
+  catch(error) {
+    console.error("getProtocolStats fails: ", error);
+  }
 }
 
 function parseProtocolReserves(protocolReservesData: any): IProtocolReserves {
