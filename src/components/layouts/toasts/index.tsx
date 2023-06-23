@@ -1,9 +1,35 @@
+import {
+  UseWaitForTransactionArgs,
+  useWaitForTransaction,
+} from "@starknet-react/core";
 import { ReactNode } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 type LayoutProps = {
   children: ReactNode;
+};
+export const useFetchToastStatus = ({
+  hash,
+  // watch,
+  onAcceptedOnL1,
+  onAcceptedOnL2,
+  // onNotReceived,
+  onPending,
+  onReceived,
+  onRejected,
+}: any) => {
+  // useState
+  return useWaitForTransaction({
+    hash,
+    watch: true,
+    onReceived,
+    onPending,
+    // onNotReceived,
+    onRejected,
+    onAcceptedOnL1,
+    onAcceptedOnL2,
+  });
 };
 
 const Layout = ({ children }: LayoutProps) => {

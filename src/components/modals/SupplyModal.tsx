@@ -84,6 +84,8 @@ import { NativeToken, Token } from "@/Blockchain/interfaces/interfaces";
 import WarningIcon from "@/assets/icons/coins/warningIcon";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
+import { useFetchToastStatus } from "../layouts/toasts";
+// import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
   coin,
@@ -222,48 +224,48 @@ const SupplyModal = ({
   const [depositTransHash, setDepositTransHash] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   // const [toastId, setToastId] = useState<any>();
-  const recieptData = useWaitForTransaction({
-    hash: depositTransHash,
-    watch: true,
-    onReceived: () => {
-      console.log("trans received");
-    },
-    onPending: () => {
-      setCurrentTransactionStatus(true);
-      toast.dismiss(toastId);
-      console.log("trans pending");
-      if (isToastDisplayed == false) {
-        toast.success(
-          `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          }
-        );
-        setToastDisplayed(true);
-      }
-    },
-    onRejected(transaction) {
-      toast.dismiss(toastId);
-      console.log("treans rejected", transaction);
-    },
-    onAcceptedOnL1: () => {
-      setCurrentTransactionStatus(true);
-      console.log("trans onAcceptedOnL1");
-    },
-    onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus(true);
-      if (!isToastDisplayed) {
-        toast.success(
-          `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          }
-        );
-        setToastDisplayed(true);
-      }
-      console.log("trans onAcceptedOnL2 - ", transaction);
-    },
-  });
+  // const recieptData = useWaitForTransaction({
+  //   hash: depositTransHash,
+  //   watch: true,
+  //   onReceived: () => {
+  //     console.log("trans received");
+  //   },
+  //   onPending: () => {
+  //     setCurrentTransactionStatus(true);
+  //     toast.dismiss(toastId);
+  //     console.log("trans pending");
+  //     if (isToastDisplayed == false) {
+  //       toast.success(
+  //         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+  //         {
+  //           position: toast.POSITION.BOTTOM_RIGHT,
+  //         }
+  //       );
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  //   onRejected(transaction) {
+  //     toast.dismiss(toastId);
+  //     console.log("treans rejected", transaction);
+  //   },
+  //   onAcceptedOnL1: () => {
+  //     setCurrentTransactionStatus(true);
+  //     console.log("trans onAcceptedOnL1");
+  //   },
+  //   onAcceptedOnL2(transaction) {
+  //     setCurrentTransactionStatus(true);
+  //     if (!isToastDisplayed) {
+  //       toast.success(
+  //         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+  //         {
+  //           position: toast.POSITION.BOTTOM_RIGHT,
+  //         }
+  //       );
+  //       setToastDisplayed(true);
+  //     }
+  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //   },
+  // });
   // useEffect(() => {
   //   // const status = recieptData?.data?.status;
   //   console.log("trans supply modal ", recieptData?.data?.status);
@@ -339,6 +341,66 @@ const SupplyModal = ({
   //   },
   // });
 
+  const [failureToastDisplayed, setFailureToastDisplayed] = useState(false);
+  const recieptData = useFetchToastStatus({
+    hash: depositTransHash,
+    watch: true,
+    onReceived: () => {
+      console.log("trans received");
+    },
+    onPending: () => {
+      setCurrentTransactionStatus(true);
+      toast.dismiss(toastId);
+      console.log("trans pending");
+      if (isToastDisplayed == false) {
+        toast.success(
+          `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
+        setToastDisplayed(true);
+      }
+    },
+    onRejected(transaction: any) {
+      toast.dismiss(toastId);
+      if (!failureToastDisplayed) {
+        console.log("treans rejected", transaction);
+        dispatch(setTransactionStatus("failed"));
+        const toastContent = (
+          <div>
+            Transaction failed{" "}
+            <CopyToClipboard text={"Transaction failed"}>
+              <Text as="u">copy error!</Text>
+            </CopyToClipboard>
+          </div>
+        );
+        setFailureToastDisplayed(true);
+        toast.error(toastContent, {
+          position: toast.POSITION.BOTTOM_RIGHT,
+          autoClose: false,
+        });
+      }
+    },
+    onAcceptedOnL1: () => {
+      setCurrentTransactionStatus(true);
+      console.log("trans onAcceptedOnL1");
+    },
+    onAcceptedOnL2(transaction: any) {
+      toast.dismiss(toastId);
+      setCurrentTransactionStatus(true);
+      if (!isToastDisplayed) {
+        toast.success(
+          `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+          }
+        );
+        setToastDisplayed(true);
+      }
+      console.log("trans onAcceptedOnL2 - ", transaction);
+    },
+  });
   const handleTransaction = async () => {
     try {
       if (ischecked) {
