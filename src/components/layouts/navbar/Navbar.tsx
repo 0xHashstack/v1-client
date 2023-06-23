@@ -61,7 +61,7 @@ import { type } from "os";
 import GetTokensModal from "@/components/modals/getTokens";
 import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import { Coins } from "../dashboardLeft";
-const Navbar = () => {
+const Navbar = ({ validRTokens }: any) => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
   const language = useSelector(selectLanguage);
@@ -322,7 +322,12 @@ const Navbar = () => {
               </Box>
             </Box>
           </Box> */}
-          <StakeUnstakeModal coin={Coins} nav={true} stakeHover={stakeHover} />
+          <StakeUnstakeModal
+            coin={Coins}
+            nav={true}
+            stakeHover={stakeHover}
+            validRTokens={validRTokens}
+          />
         </Box>
         {/* <Box
           style={{

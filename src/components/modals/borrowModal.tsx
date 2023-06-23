@@ -72,6 +72,7 @@ const BorrowModal = ({
   coin,
   borrowAPRs,
   currentBorrowAPR,
+  validRTokens,
   ...restProps
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -98,6 +99,7 @@ const BorrowModal = ({
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
+
   useEffect(() => {
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
@@ -533,51 +535,73 @@ const BorrowModal = ({
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {rTokens.map((coin: RToken, index: number) => {
-                        return (
-                          <Box
-                            key={index}
-                            as="button"
-                            w="full"
-                            display="flex"
-                            alignItems="center"
-                            gap="1"
-                            pr="2"
-                            onClick={() => {
-                              setCurrentCollateralCoin(coin);
-                              setRToken(coin);
-                              // setCollateralMarket(coin);
-                            }}
-                          >
-                            {coin === currentCollateralCoin && (
+                      {validRTokens &&
+                        validRTokens.length > 0 &&
+                        validRTokens.map(
+                          (
+                            { rToken: coin, rTokenAmount: amount }: any,
+                            index: number
+                          ) => {
+                            return (
                               <Box
-                                w="3px"
-                                h="28px"
-                                bg="#0C6AD9"
-                                borderRightRadius="md"
-                              ></Box>
-                            )}
-                            <Box
-                              w="full"
-                              display="flex"
-                              py="5px"
-                              px={`${
-                                coin === currentCollateralCoin ? "1" : "5"
-                              }`}
-                              gap="1"
-                              bg={`${
-                                coin === currentCollateralCoin
-                                  ? "#0C6AD9"
-                                  : "inherit"
-                              }`}
-                              borderRadius="md"
-                            >
-                              <Box p="1">{getCoin(coin)}</Box>
-                              <Text>{coin}</Text>
-                            </Box>
-                          </Box>
-                        );
-                      })}
+                                key={index}
+                                as="button"
+                                w="full"
+                                display="flex"
+                                alignItems="center"
+                                gap="1"
+                                pr="2"
+                                onClick={() => {
+                                  setCurrentCollateralCoin(coin);
+                                  setRToken(coin);
+                                  // dispatch(setCoinSelectedSupplyModal(coin))
+                                }}
+                              >
+                                {coin === currentCollateralCoin && (
+                                  <Box
+                                    w="3px"
+                                    h="28px"
+                                    bg="#0C6AD9"
+                                    borderRightRadius="md"
+                                  ></Box>
+                                )}
+                                <Box
+                                  w="full"
+                                  display="flex"
+                                  py="5px"
+                                  pl={`${
+                                    coin === currentCollateralCoin ? "1" : "5"
+                                  }`}
+                                  pr="6px"
+                                  gap="1"
+                                  justifyContent="space-between"
+                                  bg={`${
+                                    coin === currentCollateralCoin
+                                      ? "#0C6AD9"
+                                      : "inherit"
+                                  }`}
+                                  borderRadius="md"
+                                >
+                                  <Box display="flex">
+                                    <Box p="1">{getCoin(coin)}</Box>
+                                    <Text color="white">{coin}</Text>
+                                  </Box>
+                                  <Box
+                                    fontSize="9px"
+                                    color="white"
+                                    mt="6px"
+                                    fontWeight="thin"
+                                  >
+                                    rToken Balance:{" "}
+                                    {validRTokens && validRTokens.length > 0
+                                      ? amount
+                                      : "loading..."}
+                                  </Box>
+                                </Box>
+                              </Box>
+                            );
+                          }
+                        )}
                       <hr
                         style={{
                           height: "1px",
@@ -930,37 +954,36 @@ const BorrowModal = ({
                     <SliderThumb />
                   </Slider>
                 </Box>
-                {currentCollateralCoin != "rBTC" &&
-                  currentCollateralCoin != "rUSDT" && (
+                {currentCollateralCoin && currentCollateralCoin[0] !== "r" && (
+                  <Box
+                    // display="flex"
+                    // justifyContent="left"
+                    w="100%"
+                    pb="4"
+                    height="64px"
+                    display="flex"
+                    alignItems="center"
+                    mt="1rem"
+                  >
                     <Box
-                      // display="flex"
-                      // justifyContent="left"
-                      w="100%"
-                      pb="4"
-                      height="64px"
                       display="flex"
-                      alignItems="center"
-                      mt="1rem"
+                      bg="#0C425C"
+                      color="white"
+                      fontSize="12px"
+                      p="4"
+                      border="1px solid rgba(84, 174, 255, 0.4)"
+                      fontStyle="normal"
+                      fontWeight="400"
+                      lineHeight="18px"
+                      borderRadius="6px"
+                      // textAlign="center"
                     >
-                      <Box
-                        display="flex"
-                        bg="#0C425C"
-                        color="white"
-                        fontSize="12px"
-                        p="4"
-                        border="1px solid rgba(84, 174, 255, 0.4)"
-                        fontStyle="normal"
-                        fontWeight="400"
-                        lineHeight="18px"
-                        borderRadius="6px"
-                        // textAlign="center"
-                      >
-                        <Box pr="3" mt="0.5" cursor="pointer">
-                          <BlueInfoIcon />
-                        </Box>
-                        You have selected native token as collateral which will
-                        be converted to rtokens 1rBTC = XXBTC
-                        {/* <Box
+                      <Box pr="3" mt="0.5" cursor="pointer">
+                        <BlueInfoIcon />
+                      </Box>
+                      You have selected native token as collateral which will be
+                      converted to rtokens 1rBTC = XXBTC
+                      {/* <Box
                                 py="1"
                                 pl="4"
                                 cursor="pointer"
@@ -968,9 +991,9 @@ const BorrowModal = ({
                               >
                                 <TableClose />
                               </Box> */}
-                      </Box>
                     </Box>
-                  )}
+                  </Box>
+                )}
                 {/* {currentCollateralCoin != "rBTC" &&
                   currentCollateralCoin != "rUSDT" && (
                     <Box display="flex" gap="2">

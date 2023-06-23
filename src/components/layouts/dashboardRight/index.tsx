@@ -36,12 +36,14 @@ const DashboardRight = ({
   utilization,
   totalBorrows,
   borrowAPRs,
+  validRTokens,
 }: {
   width: string;
   oraclePrices: any;
   utilization: any;
   totalBorrows: any;
   borrowAPRs: any;
+  validRTokens: any;
   // gap: string;
   // columnItems: Array<Array<string>>;
   // rowItems: any;
@@ -322,6 +324,7 @@ const DashboardRight = ({
                       coin={coin}
                       borrowAPRs={borrowAPRs}
                       currentBorrowAPR={currentBorrowAPR}
+                      validRTokens={validRTokens}
                     />
                   </Box>
                 </Td>
@@ -348,6 +351,7 @@ const DashboardRight = ({
                       coin={coin}
                       borrowAPRs={borrowAPRs}
                       currentBorrowAPR={currentBorrowAPR}
+                      validRTokens={validRTokens}
                     />
                   </Box>
                 </Td>

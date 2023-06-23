@@ -38,12 +38,37 @@ const MarketDashboard = () => {
   // useEffect(()=>{
   //   fetchUserLoans();
   // },[account])
+
+  const [validRTokens, setValidRTokens] = useState([]);
+  useEffect(() => {
+    if (validRTokens.length === 0) {
+      fetchUserDeposits();
+    }
+  }, [validRTokens]);
+
   const fetchUserDeposits = async () => {
     try {
       const reserves = await getUserDeposits(address || "");
-      console.log(reserves, "market page -user supply");
+      console.log("got reservers", reserves);
+
+      const rTokens: any = [];
+      if (reserves) {
+        reserves.map((reserve: any) => {
+          if (reserve.rTokenAmountParsed > 0) {
+            rTokens.push({
+              rToken: reserve.rToken,
+              rTokenAmount: reserve.rTokenAmountParsed,
+            });
+          }
+        });
+      }
+      // console.log("rtokens", rTokens);
+
+      setValidRTokens(rTokens);
+      // console.log("valid rtoken", validRTokens);
+      // console.log("market page -user supply", reserves);
     } catch (err) {
-      console.log("Error fetching protocol reserves", err);
+      // console.log("Error fetching protocol reserves", err);
     }
   };
   // const fetchUserReserves = async () => {
@@ -123,6 +148,7 @@ const MarketDashboard = () => {
         oraclePrices={oraclePrices}
         totalSupplies={totalSupplies}
         supplyAPRs={supplyAPRs}
+        validRTokens={validRTokens}
         // columnItems={dashboardItems1}
         // gap={"16.6"}
         // rowItems={rowItems1}
@@ -133,6 +159,8 @@ const MarketDashboard = () => {
         borrowAPRs={borrowAPRs}
         totalBorrows={totalBorrows}
         utilization={utilization}
+        validRTokens={validRTokens}
+
         // gap={"14.2"}
         // columnItems={dashboardItems2}
         // rowItems={rowItems2}

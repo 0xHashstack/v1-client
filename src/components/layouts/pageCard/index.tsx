@@ -30,6 +30,7 @@ import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { ToastContainer, toast } from "react-toastify";
 import { callWithRetries } from "@/utils/functions/apiCaller";
+import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 
 interface Props extends StackProps {
   children: ReactNode;
@@ -199,11 +200,44 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   return () => clearTimeout(timer);
   // }, []);
 
+  const [validRTokens, setValidRTokens] = useState([]);
+  useEffect(() => {
+    if (validRTokens.length === 0) {
+      fetchUserDeposits();
+    }
+  }, [validRTokens]);
+
+  const fetchUserDeposits = async () => {
+    try {
+      const reserves = await getUserDeposits(address || "");
+      console.log("got reservers", reserves);
+
+      const rTokens: any = [];
+      if (reserves) {
+        reserves.map((reserve: any) => {
+          if (reserve.rTokenAmountParsed > 0) {
+            rTokens.push({
+              rToken: reserve.rToken,
+              rTokenAmount: reserve.rTokenAmountParsed,
+            });
+          }
+        });
+      }
+      console.log("rtokens", rTokens);
+
+      setValidRTokens(rTokens);
+      console.log("valid rtoken", validRTokens);
+      console.log("market page -user supply", reserves);
+    } catch (err) {
+      console.log("Error fetching protocol reserves", err);
+    }
+  };
+
   return (
     <>
       {render ? (
         <>
-          <Navbar />
+          <Navbar validRTokens={validRTokens} />
           <Stack
             alignItems="center"
             minHeight={"100vh"}
