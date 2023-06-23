@@ -289,7 +289,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
               Supply
             </AnimatedButton>
           </Box> */}
-          <ToastContainer theme="dark" />
+          {/* <ToastContainer theme="dark" /> */}
           <Footer block={83207} />
         </>
       ) : (

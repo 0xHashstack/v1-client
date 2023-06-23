@@ -281,6 +281,12 @@ const YourBorrowModal = ({
       dispatch(setTransactionStatus("failed"));
     }
   };
+  // const [lpamount, setLpamount] = useState([]);
+  // useEffect(() => {
+  //   const getJediEstimatedLpAmount = async () => {
+  //     await getJediEstimatedLpAmountOut();
+  //   };
+  // }, []);
 
   interface assetB {
     USDT: any;
@@ -469,6 +475,7 @@ const YourBorrowModal = ({
   const [currentTransactionStatus, setCurrentTransactionStatus] =
     useState(false);
   const [isToastDisplayed, setToastDisplayed] = useState(false);
+  const [toastId, setToastId] = useState<any>();
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
@@ -477,6 +484,7 @@ const YourBorrowModal = ({
     },
     onPending: () => {
       setCurrentTransactionStatus(true);
+      toast.dismiss(toastId);
       console.log("trans pending");
       if (!isToastDisplayed) {
         toast.success(`You have successfully spend the loan `, {
@@ -486,6 +494,7 @@ const YourBorrowModal = ({
       }
     },
     onRejected(transaction) {
+      toast.dismiss(toastId);
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
@@ -511,6 +520,17 @@ const YourBorrowModal = ({
       }
       const zeroRepay = await writeAsyncSelfLiquidate();
       setDepositTransHash(zeroRepay?.transaction_hash);
+      if (zeroRepay?.transaction_hash) {
+        console.log("toast here");
+        const toastid = toast.info(
+          `Please wait, your transaction is running in background `,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        );
+        setToastId(toastid);
+      }
       console.log(zeroRepay);
       dispatch(setTransactionStatus("success"));
       console.log("zero repay success");
@@ -1462,6 +1482,18 @@ const YourBorrowModal = ({
     "USDT/DAI",
     "USDC/DAI",
   ];
+  // const pools = [
+  //   ["ETH", "USDT"],
+  //   ["USDC", "USDT"],
+  //   ["ETH", "USDC"],
+  //   ["DAI", "ETH"],
+  //   ["BTC", "ETH"],
+  //   ["BTC", "USDT"],
+  //   ["BTC", "USDC"],
+  //   ["BTC", "DAI"],
+  //   ["USDT", "DAI"],
+  //   ["USDC", "AI"],
+  // ];
 
   // useEffect(() => {
   //   console.log("got", currentID, currentMarket);

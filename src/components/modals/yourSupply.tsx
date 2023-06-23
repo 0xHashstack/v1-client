@@ -393,6 +393,7 @@ const YourSupplyModal = ({
   const [depositTransHash, setDepositTransHash] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [actionSelected, setActionSelected] = useState("Supply");
+  const [toastId, setToastId] = useState<any>();
   const [currentTransactionStatus, setCurrentTransactionStatus] =
     useState(false);
   const recieptData = useWaitForTransaction({
@@ -403,6 +404,7 @@ const YourSupplyModal = ({
     },
     onPending: () => {
       setCurrentTransactionStatus(true);
+      toast.dismiss(toastId);
       console.log("trans pending");
       if (!isToastDisplayed) {
         toast.success(
@@ -415,6 +417,7 @@ const YourSupplyModal = ({
       }
     },
     onRejected(transaction) {
+      toast.dismiss(toastId);
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
@@ -440,6 +443,17 @@ const YourSupplyModal = ({
     try {
       const withdraw = await writeAsyncWithdrawDeposit();
       setDepositTransHash(withdraw?.transaction_hash);
+      if (withdraw?.transaction_hash) {
+        console.log("toast here");
+        const toastid = toast.info(
+          `Please wait, your transaction is running in background  ${inputSupplyAmount} ${currentSelectedSupplyCoin} `,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        );
+        setToastId(toastid);
+      }
       if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
       }
       dispatch(setTransactionStatus("success"));
