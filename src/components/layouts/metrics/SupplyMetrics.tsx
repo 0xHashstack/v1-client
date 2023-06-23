@@ -6,13 +6,54 @@ import SupplyAprChart from "../charts/SupplyApr";
 import BorrowAprChart from "../charts/BorrowApr";
 const SupplyMetrics = () => {
   return (
+    // <Box display="flex" gap="30px">
+    //   <Box display="flex" flexDirection="column" gap="8px" width="50%">
+    //     <Box
+    //       display="flex"
+    //       flexDirection="column"
+    //       alignItems="flex-start"
+    //       // width="723px"
+    //       height="72px"
+    //       border="1px solid #2B2F35"
+    //       color="#E6EDF3"
+    //       padding="24px 24px 16px"
+    //       fontSize="20px"
+    //       fontStyle="normal"
+    //       fontWeight="600"
+    //       lineHeight="30px"
+    //       borderRadius="6px"
+    //     >
+    //       Supply APR:
+    //     </Box>
+    //     <SupplyAprChart />
+    //   </Box>
+    //   <Box display="flex" flexDirection="column" gap="8px" width="50%">
+    //     <Box
+    //       display="flex"
+    //       flexDirection="column"
+    //       alignItems="flex-start"
+    //       // width="723px"
+    //       height="72px"
+    //       border="1px solid #2B2F35"
+    //       color="#E6EDF3"
+    //       padding="24px 24px 16px"
+    //       fontSize="20px"
+    //       fontStyle="normal"
+    //       fontWeight="600"
+    //       lineHeight="30px"
+    //       borderRadius="6px"
+    //     >
+    //       Borrow APR:
+    //     </Box>
+    //     <BorrowAprChart />
+    //   </Box>
+    // </Box>
     <Box display="flex" gap="30px">
-      <Box display="flex" flexDirection="column" gap="8px" width="50%">
+      <Box display="flex" flexDirection="column" gap="8px" width="100%">
         <Box
           display="flex"
           flexDirection="column"
           alignItems="flex-start"
-          // width="723px"
           height="72px"
           border="1px solid #2B2F35"
           color="#E6EDF3"
@@ -23,16 +64,15 @@ const SupplyMetrics = () => {
           lineHeight="30px"
           borderRadius="6px"
         >
-          Supply APR:
+          Media Supply by Market:
         </Box>
-        <SupplyAprChart />
+        <AssetUtilizationChart color={"#846ed4"} />
       </Box>
-      <Box display="flex" flexDirection="column" gap="8px" width="50%">
+      <Box display="flex" flexDirection="column" gap="8px" width="100%">
         <Box
           display="flex"
           flexDirection="column"
           alignItems="flex-start"
-          // width="723px"
           height="72px"
           border="1px solid #2B2F35"
           color="#E6EDF3"
@@ -43,9 +83,9 @@ const SupplyMetrics = () => {
           lineHeight="30px"
           borderRadius="6px"
         >
-          Borrow APR:
+          Media Borrow by Market:
         </Box>
-        <BorrowAprChart />
+        <AssetUtilizationChart color={"#4ecdcb"} />
       </Box>
     </Box>
   );
