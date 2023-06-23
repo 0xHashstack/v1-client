@@ -318,7 +318,7 @@ const ProtocolMetrics = () => {
             </Box>
           </Box>
           <Box mb="4rem" width="100%">
-            <SupplyMetrics />
+            <SupplyMetrics currentMarketCoin={currentMarketCoin} />
           </Box>
           <Box>
             <RiskMetrics />
