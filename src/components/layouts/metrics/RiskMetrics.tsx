@@ -5,8 +5,151 @@ import AssetUtilizationRateChart from "../charts/AssetUtilizationRate";
 import SupplyAprChart from "../charts/SupplyApr";
 import BorrowAprChart from "../charts/BorrowApr";
 import RiskPremiumChart from "../charts/RiskPremium";
+import SupplyAPRLiquidityProvider from "../charts/supplyAPRLiquitityProvider";
 
 const RiskMetrics = () => {
+  const series2 = [
+    [
+      {
+        name: "Series 1",
+        data: [
+          0, 90000, 27000, 30000, 33000, 47000, 54000, 83000, 80000, 100000,
+          115000, 110000,
+        ],
+        fill: {
+          colors: ["#01b6dd"], // Specify the fill color for the area under the line
+          // Set the opacity of the fill color (optional)
+          opacity: 1,
+        },
+        dataPoints: {
+          hidden: true, // Hide the data points in the area
+        },
+      },
+    ],
+    [
+      {
+        name: "Series 1",
+        data: [
+          30000, 40000, 35000, 50000, 49000, 60000, 70000, 91000, 12500, 98000,
+          110000, 90000,
+        ],
+        fill: {
+          colors: ["#01b6dd"], // Specify the fill color for the area under the line
+          // Set the opacity of the fill color (optional)
+          opacity: 1,
+        },
+        dataPoints: {
+          hidden: true, // Hide the data points in the area
+        },
+      },
+    ],
+    [
+      {
+        name: "Series 1",
+        data: [
+          54000, 83000, 80000, 100000, 115000, 110000, 0, 90000, 27000, 30000,
+          33000, 47000,
+        ],
+        fill: {
+          colors: ["#01b6dd"], // Specify the fill color for the area under the line
+          // Set the opacity of the fill color (optional)
+          opacity: 1,
+        },
+        dataPoints: {
+          hidden: true, // Hide the data points in the area
+        },
+      },
+    ],
+    [
+      {
+        name: "Series 1",
+        data: [
+          30000, 33000, 47000, 54000, 83000, 0, 90000, 27000, 80000, 100000,
+          115000, 110000,
+        ],
+        fill: {
+          colors: ["#01b6dd"], // Specify the fill color for the area under the line
+          // Set the opacity of the fill color (optional)
+          opacity: 1,
+        },
+        dataPoints: {
+          hidden: true, // Hide the data points in the area
+        },
+      },
+    ],
+  ];
+
+  const series1 = [
+    [
+      {
+        name: "Series 1",
+        data: [
+          30000, 40000, 35000, 50000, 49000, 60000, 70000, 91000, 12500, 98000,
+          110000, 90000,
+        ],
+        fill: {
+          colors: ["#01b6dd"], // Specify the fill color for the area under the line
+          // Set the opacity of the fill color (optional)
+          opacity: 1,
+        },
+        dataPoints: {
+          hidden: true, // Hide the data points in the area
+        },
+      },
+    ],
+    [
+      {
+        name: "Series 1",
+        data: [
+          0, 90000, 27000, 30000, 33000, 47000, 54000, 83000, 80000, 100000,
+          115000, 110000,
+        ],
+        fill: {
+          colors: ["#01b6dd"], // Specify the fill color for the area under the line
+          // Set the opacity of the fill color (optional)
+          opacity: 1,
+        },
+        dataPoints: {
+          hidden: true, // Hide the data points in the area
+        },
+      },
+    ],
+    [
+      {
+        name: "Series 1",
+        data: [
+          54000, 83000, 80000, 100000, 115000, 110000, 0, 90000, 27000, 30000,
+          33000, 47000,
+        ],
+        fill: {
+          colors: ["#01b6dd"], // Specify the fill color for the area under the line
+          // Set the opacity of the fill color (optional)
+          opacity: 1,
+        },
+        dataPoints: {
+          hidden: true, // Hide the data points in the area
+        },
+      },
+    ],
+    [
+      {
+        name: "Series 1",
+        data: [
+          30000, 33000, 47000, 54000, 83000, 0, 90000, 27000, 80000, 100000,
+          115000, 110000,
+        ],
+        fill: {
+          colors: ["#01b6dd"], // Specify the fill color for the area under the line
+          // Set the opacity of the fill color (optional)
+          opacity: 1,
+        },
+        dataPoints: {
+          hidden: true, // Hide the data points in the area
+        },
+      },
+    ],
+  ];
+
   const [supplyAPRChartPeriod, setSupplyAPRChartPeriod] = useState(0);
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
     useState(0);
@@ -93,7 +236,7 @@ const RiskMetrics = () => {
             </Box>
           </Box>
         </Box>
-        <AssetUtilizationChart />
+        <SupplyAPRLiquidityProvider series={series1[supplyAPRChartPeriod]} />
       </Box>
       <Box display="flex" flexDirection="column" gap="8px" width="100%">
         <Box
@@ -192,7 +335,11 @@ const RiskMetrics = () => {
             </Box>
           </Box>
         </Box>
-        <AssetUtilizationChart />
+        <SupplyAPRLiquidityProvider
+          curveColor={"#10955e"}
+          color={"#0fc778"}
+          series={series2[liquidityProviderChartPeriod]}
+        />
       </Box>
     </Box>
   );

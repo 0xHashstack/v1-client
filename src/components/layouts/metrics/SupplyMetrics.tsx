@@ -4,7 +4,73 @@ import AssetUtilizationChart from "../charts/AssetUtilization";
 import AssetUtilizationRateChart from "../charts/AssetUtilizationRate";
 import SupplyAprChart from "../charts/SupplyApr";
 import BorrowAprChart from "../charts/BorrowApr";
-const SupplyMetrics = () => {
+const SupplyMetrics = ({ currentMarketCoin }: any) => {
+  const series1: any = {
+    BTC: [
+      {
+        name: "Series 1",
+        data: [30000, 40000, 60000, 80000, 35000, 50000, 49000],
+      },
+    ],
+    USDT: [
+      {
+        name: "Series 1",
+        data: [50000, 49000, 60000, 80000, 30000, 40000, 35000],
+      },
+    ],
+    USDC: [
+      {
+        name: "Series 1",
+        data: [12300, 40000, 35000, 55000, 49000, 64340, 80000],
+      },
+    ],
+    ETH: [
+      {
+        name: "Series 1",
+        data: [30000, 40000, 15000, 50000, 12300, 60000, 80000],
+      },
+    ],
+    DAI: [
+      {
+        name: "Series 1",
+        data: [30000, 40000, 12300, 50000, 49800, 60000, 80000],
+      },
+    ],
+  };
+
+  const series2: any = {
+    BTC: [
+      {
+        name: "Series 1",
+        data: [30000, 40000, 12300, 50000, 49800, 60000, 80000],
+      },
+    ],
+    USDT: [
+      {
+        name: "Series 1",
+        data: [12300, 40000, 35000, 55000, 49000, 64340, 80000],
+      },
+    ],
+    USDC: [
+      {
+        name: "Series 1",
+        data: [50000, 49000, 60000, 80000, 30000, 40000, 35000],
+      },
+    ],
+    ETH: [
+      {
+        name: "Series 1",
+        data: [30000, 40000, 15000, 50000, 12300, 60000, 80000],
+      },
+    ],
+    DAI: [
+      {
+        name: "Series 1",
+        data: [30000, 40000, 60000, 80000, 35000, 50000, 49000],
+      },
+    ],
+  };
+
   return (
     // <Box display="flex" gap="30px">
     //   <Box display="flex" flexDirection="column" gap="8px" width="50%">
@@ -66,7 +132,10 @@ const SupplyMetrics = () => {
         >
           Media Supply by Market:
         </Box>
-        <AssetUtilizationChart color={"#846ed4"} />
+        <AssetUtilizationChart
+          color={"#846ed4"}
+          series={series1[currentMarketCoin]}
+        />
       </Box>
       <Box display="flex" flexDirection="column" gap="8px" width="100%">
         <Box
@@ -85,7 +154,10 @@ const SupplyMetrics = () => {
         >
           Media Borrow by Market:
         </Box>
-        <AssetUtilizationChart color={"#4ecdcb"} />
+        <AssetUtilizationChart
+          color={"#4ecdcb"}
+          series={series2[currentMarketCoin]}
+        />
       </Box>
     </Box>
   );
