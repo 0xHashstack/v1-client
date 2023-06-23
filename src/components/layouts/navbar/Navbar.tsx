@@ -326,6 +326,7 @@ const Navbar = ({ validRTokens }: any) => {
             coin={Coins}
             nav={true}
             stakeHover={stakeHover}
+            setStakeHover={setStakeHover}
             validRTokens={validRTokens}
           />
         </Box>
