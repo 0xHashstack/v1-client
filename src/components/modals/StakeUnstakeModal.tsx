@@ -892,7 +892,9 @@ const StakeUnstakeModal = ({
                             fontStyle="normal"
                             fontFamily="Inter"
                           >
-                            Wallet Balance: {walletBalance}
+                            rToken Balance:{" "}
+                            {getBalance(currentSelectedStakeCoin)}
+                            {/* {walletBalance} */}
                             <Text color="#6E7781" ml="0.2rem">
                               {` ${currentSelectedStakeCoin}`}
                             </Text>
