@@ -11,6 +11,7 @@ import { weiToEtherNumber } from "../utils/utils";
 
 function parseDeposits(deposits: any): IDeposit[] {
   const parsedDeposits: IDeposit[] = [];
+  // console.log("deposits - ", deposits);
   for (let i = 0; i < deposits?.length; ++i) {
     let depositData = deposits[i];
     let deposit: IDeposit = {
