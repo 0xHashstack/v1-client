@@ -78,6 +78,7 @@ const StakeUnstakeModal = ({
   coin,
   nav,
   stakeHover,
+  setStakeHover,
   validRTokens,
   ...restProps
 }: any) => {
@@ -438,6 +439,7 @@ const StakeUnstakeModal = ({
           alignItems="center"
           gap={"8px"}
           onClick={onOpen}
+          color={router.pathname != "/waitlist" && stakeHover ? "gray" : ""}
         >
           {router.pathname != "/waitlist" && stakeHover ? (
             <Image
@@ -498,6 +500,7 @@ const StakeUnstakeModal = ({
         // onOverlayClick={() => setIsOpenCustom(false)}
         onClose={() => {
           onClose();
+          setStakeHover(false);
           resetStates();
         }}
         isCentered

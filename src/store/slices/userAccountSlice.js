@@ -30,6 +30,7 @@ const initialState = {
 
   toastTransactionStarted: false,
   transactionStarted: false,
+  refreshHooks: false,
 
   // toastTransactionStarted: false,
 
@@ -123,6 +124,9 @@ export const userAccountSlice = createSlice({
     },
     setTransactionStarted(state, action) {
       state.transactionStarted = !state.transactionStarted;
+    },
+    setRefreshHooks(state, action) {
+      state.refreshHooks = action.payload;
     },
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;

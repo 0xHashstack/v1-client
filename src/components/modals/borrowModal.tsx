@@ -582,6 +582,7 @@ const BorrowModal = ({
                                 onClick={() => {
                                   setCurrentCollateralCoin(coin);
                                   setRToken(coin);
+                                  setwalletBalance(amount);
                                   // dispatch(setCoinSelectedSupplyModal(coin))
                                 }}
                               >
@@ -1186,11 +1187,11 @@ const BorrowModal = ({
                                 Available reserves:{" "}
                                 {protocolStats?.[index]?.availableReserves || (
                                   <Skeleton
-                                    width="4rem"
+                                    width="3rem"
                                     height="1rem"
                                     startColor="#2B2F35"
                                     endColor="#101216"
-                                    borderRadius="4px"
+                                    borderRadius="6px"
                                     ml={2}
                                   />
                                 )}

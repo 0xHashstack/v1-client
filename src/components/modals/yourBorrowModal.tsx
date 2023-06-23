@@ -745,16 +745,36 @@ const YourBorrowModal = ({
                   fontStyle="normal"
                 >
                   <Box display="flex" gap="2px">
-                    <Box mt="2px">
+                    <Box m="2px">
                       <SmallEth />
                     </Box>
-                    <Text>1.23</Text>
+                    <Text>
+                      {currentSplit?.[0] || (
+                        <Skeleton
+                          width="2.3rem"
+                          height=".85rem"
+                          startColor="#2B2F35"
+                          endColor="#101216"
+                          borderRadius="6px"
+                        />
+                      )}
+                    </Text>
                   </Box>
                   <Box display="flex" gap="2px">
-                    <Box mt="2px">
+                    <Box m="2px">
                       <SmallUsdt />
                     </Box>
-                    <Text>1.23</Text>
+                    <Text>
+                      {currentSplit?.[1] || (
+                        <Skeleton
+                          width="2.3rem"
+                          height=".85rem"
+                          startColor="#2B2F35"
+                          endColor="#101216"
+                          borderRadius="6px"
+                        />
+                      )}
+                    </Text>
                   </Box>
                 </Box>
               </Box>
@@ -1606,7 +1626,7 @@ const YourBorrowModal = ({
       setCurrentAction("Spend Borrow");
       setCurrentBorrowMarketCoin1("BTC");
       setCurrentBorrowMarketCoin2("BTC");
-      setCurrentBorrowId1("ID - 123456");
+      setCurrentBorrowId1("ID - ");
       setCurrentBorrowId2("ID - 123456");
       setCurrentDapp("Select a dapp");
       setCurrentPool("Select a pool");
@@ -1644,6 +1664,9 @@ const YourBorrowModal = ({
   const [currentSplit, setCurrentSplit] = useState(null);
 
   useEffect(() => {
+    // if (!currentBorrowId1 || currentBorrowId1 == "") {
+    //   return;
+    // }
     console.log(
       "toMarketSplitConsole",
       currentBorrowId1.slice(5),
@@ -1654,23 +1677,23 @@ const YourBorrowModal = ({
     setCurrentLPTokenAmount(null);
     setCurrentSplit(null);
     fetchLiquiditySplit();
-  }, [toMarketA]);
+  }, [toMarketA, currentBorrowId1, toMarketB]);
 
   const fetchLiquiditySplit = async () => {
-    const lp_tokon = await getJediEstimatedLpAmountOut(
-      currentBorrowId1.slice(5),
-      toMarketA,
-      toMarketB
-    );
-    console.log("toMarketSplitLP", lp_tokon);
-    setCurrentLPTokenAmount(lp_tokon);
-    const split = await getJediEstimateLiquiditySplit(
-      currentBorrowId1.slice(5),
-      toMarketA,
-      toMarketB
-    );
-    console.log("toMarketSplit", split);
-    setCurrentSplit(split);
+    // const lp_tokon = await getJediEstimatedLpAmountOut(
+    //   currentBorrowId1.slice(5),
+    //   toMarketA,
+    //   toMarketB
+    // );
+    // console.log("toMarketSplitLP", lp_tokon);
+    // setCurrentLPTokenAmount(lp_tokon);
+    // const split = await getJediEstimateLiquiditySplit(
+    //   currentBorrowId1.slice(5),
+    //   toMarketA,
+    //   toMarketB
+    // );
+    // console.log("toMarketSplit", split);
+    // setCurrentSplit(split);
   };
 
   return (
