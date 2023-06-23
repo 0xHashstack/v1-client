@@ -96,7 +96,9 @@ const SupplyModal = ({
   // const toastHandler = () => {
   //   console.log("toast called");
   // };
-
+  const [currentTransactionStatus, setCurrentTransactionStatus] =
+    useState(false);
+  const [toastId, setToastId] = useState<any>();
   const {
     depositAmount,
     setDepositAmount,
@@ -129,8 +131,7 @@ const SupplyModal = ({
   const [sliderValue, setSliderValue] = useState(0);
   const [buttonId, setButtonId] = useState(0);
   const [stakeCheck, setStakeCheck] = useState(true);
-  const [currentTransactionStatus, setCurrentTransactionStatus] =
-    useState(false);
+
   interface assetB {
     USDT: any;
     USDC: any;
@@ -220,7 +221,7 @@ const SupplyModal = ({
   const [ischecked, setIsChecked] = useState(true);
   const [depositTransHash, setDepositTransHash] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
-  const [toastId, setToastId] = useState<any>();
+  // const [toastId, setToastId] = useState<any>();
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
@@ -378,8 +379,8 @@ const SupplyModal = ({
         // const deposit = await writeAsyncDepositStake();
         console.log("Supply Modal - deposit ", deposit);
         setDepositTransHash(deposit?.transaction_hash);
-        if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
-        }
+        // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
+        // }
         dispatch(setTransactionStatus("success"));
         // console.log("Status transaction", deposit);
         console.log(isSuccessDeposit, "success ?");
