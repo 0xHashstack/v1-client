@@ -1,7 +1,6 @@
 import React from "react";
 
 const SliderTooltip = (props: any) => {
-
   return (
     <svg
       width="30"
@@ -19,6 +18,5 @@ const SliderTooltip = (props: any) => {
     </svg>
   );
 };
-
 
 export default SliderTooltip;

@@ -34,7 +34,7 @@ const SupplyAprChart = () => {
     ],
     options: {
       markers: {
-        colors: ['#22863A'], // Set the marker color(s)
+        colors: ["#22863A"], // Set the marker color(s)
       },
       chart: {
         toolbar: {
