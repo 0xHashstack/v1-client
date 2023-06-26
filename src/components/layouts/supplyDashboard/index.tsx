@@ -28,6 +28,7 @@ import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { useAccount } from "@starknet-react/core";
 import { IDeposit } from "@/Blockchain/interfaces/interfaces";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
+import numberFormatter from "@/utils/functions/numberFormatter";
 
 export interface ICoin {
   name: string;
@@ -124,10 +125,17 @@ const SupplyDashboard = ({
     const getSupply = async () => {
       console.log("all deposits calling started");
       try {
-        if(!address) return;
+        if (!address) return;
         const supply = await getUserDeposits(address);
-        if(!supply) return;
-        setSupplies([supply?.[2], supply?.[3], supply?.[0], supply?.[1], supply?.[4]]);
+        console.log("supply : ", supply);
+        if (!supply) return;
+        setSupplies([
+          supply?.[2],
+          supply?.[3],
+          supply?.[0],
+          supply?.[1],
+          supply?.[4],
+        ]);
       } catch (err) {
         console.log("supplies", err);
       }
@@ -164,17 +172,17 @@ const SupplyDashboard = ({
     });
     setSupplyMarkets(temp);
   }, [supplies]);
-  useEffect(() => {
-    try {
-      const supply = async () => {
-        const userSupply = await getUserDeposits(address || "");
-        // console.log("userDeposits", userSupply);
-      };
-      // supply();
-    } catch (err) {
-      console.log("userDeposits", err);
-    }
-  }, []);
+  // useEffect(() => {
+  //   try {
+  //     const supply = async () => {
+  //       const userSupply = await getUserDeposits(address || "");
+  //       // console.log("userDeposits", userSupply);
+  //     };
+  //     // supply();
+  //   } catch (err) {
+  //     console.log("userDeposits", err);
+  //   }
+  // }, []);
   const [loading, setLoading] = useState(true);
   // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
   useEffect(() => {
@@ -281,226 +289,263 @@ const SupplyDashboard = ({
           //   flexDirection="column"
           //   gap={"1rem"}
         >
-          {supplies
-            .slice(lower_bound, upper_bound + 1)
-            .map((supply: any, idx: number) => (
-              <>
-                <Tr
-                  key={idx}
-                  width={"100%"}
-                  height={"5.1rem"}
-                  // bgColor="blue"
-                  // borderBottom="1px solid #2b2f35"
-                  position="relative"
-                >
-                  <Td
-                    width={"12.5%"}
-                    // maxWidth={"3rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    overflow={"hidden"}
-                    // textAlign={"left"}
-                    pl={10}
-                    // bgColor={"green"}
+          {supplies.slice(lower_bound, upper_bound + 1).map(
+            (supply: any, idx: number) =>
+              supply &&
+              supply?.rTokenAmountParsed && (
+                <>
+                  <Tr
+                    key={idx}
+                    width={"100%"}
+                    height={"5.1rem"}
+                    // bgColor="blue"
+                    // borderBottom="1px solid #2b2f35"
+                    position="relative"
                   >
-                    <Box
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="flex-start"
-                      fontWeight="400"
-                      // textAlign="left"
-                      // bgColor={"blue"}
+                    <Td
+                      width={"12.5%"}
+                      // maxWidth={"3rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      overflow={"hidden"}
+                      // textAlign={"left"}
+                      pl={10}
                     >
-                      <VStack
-                        // gap="3px"
+                      <Box
                         width="100%"
+                        height="100%"
                         display="flex"
-                        justifyContent="center"
-                        alignItems="flex-start"
-                        height="2.5rem"
-                        // bgColor="  red"
+                        alignItems="center"
+                        justifyContent="flex-start"
+                        fontWeight="400"
                       >
-                        <HStack
-                          height="2rem"
-                          width="2rem"
-                          alignItems="center"
-                          // justifyContent="center"
+                        <VStack
+                          // gap="3px"
+                          width="100%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="flex-start"
+                          height="2.5rem"
                         >
-                          <Image
-                            src={`/${supply?.rToken?.slice(1)}.svg`}
-                            alt="Picture of the author"
-                            width="32"
-                            height="32"
-                          />
-                          <Text fontSize="14px" fontWeight="400">
-                            {supply?.rToken}
+                          <HStack
+                            height="2rem"
+                            width="2rem"
+                            alignItems="center"
+                          >
+                            <Image
+                              src={`/${supply?.rToken?.slice(1)}.svg`}
+                              alt="Picture of the author"
+                              width="32"
+                              height="32"
+                            />
+                            <Text fontSize="14px" fontWeight="400">
+                              {supply?.rToken}
+                            </Text>
+                          </HStack>
+                          <Text
+                            fontSize="14px"
+                            fontWeight="500"
+                            color="#F7BB5B"
+                          >
+                            {supply?.rTokenAmountParsed}
                           </Text>
-                        </HStack>
-                        <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                          {supply?.rTokenAmountParsed}
-                        </Text>
-                      </VStack>
-                    </Box>
-                  </Td>
-                  <Td
-                    width={"12.5%"}
-                    maxWidth={"3rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    overflow={"hidden"}
-                    textAlign={"center"}
-                  >
-                    <Text
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
-                      // bgColor={"blue"}
+                        </VStack>
+                      </Box>
+                    </Td>
+                    <Td
+                      width={"12.5%"}
+                      maxWidth={"3rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      overflow={"hidden"}
+                      textAlign={"center"}
                     >
-                      {/* {checkGap(idx1, idx2)} */}
-                      {!protocolStats || !protocolStats[idx] ? (
-                        <Skeleton
-                          width="4rem"
-                          height="1.4rem"
-                          startColor="#101216"
-                          endColor="#2B2F35"
-                          borderRadius="6px"
-                        />
-                      ) : (
-                        protocolStats[idx]?.exchangeRateRtokenToUnderlying
-                      )}
-                    </Text>
-                  </Td>
-                  <Td
-                    width={"12.5%"}
-                    maxWidth={"3rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    overflow={"hidden"}
-                    textAlign={"center"}
-                  >
-                    <Box
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
-                      // bgColor={"blue"}
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                      >
+                        {/* {checkGap(idx1, idx2)} */}
+                        {!protocolStats || !protocolStats[idx] ? (
+                          <Skeleton
+                            width="4rem"
+                            height="1.4rem"
+                            startColor="#101216"
+                            endColor="#2B2F35"
+                            borderRadius="6px"
+                          />
+                        ) : (
+                          protocolStats[idx]?.exchangeRateRtokenToUnderlying
+                        )}
+                      </Text>
+                    </Td>
+                    <Td
+                      width={"12.5%"}
+                      maxWidth={"3rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      overflow={"hidden"}
+                      textAlign={"center"}
                     >
-                      {/* {checkGap(idx1, idx2)} */}
-                      {!protocolStats || !protocolStats[idx] ? (
-                        <Skeleton
-                          width="4rem"
-                          height="1.4rem"
-                          startColor="#101216"
-                          endColor="#2B2F35"
-                          borderRadius="6px"
-                        />
-                      ) : (
-                        protocolStats[idx]?.supplyRate + "%"
-                      )}
-                    </Box>
-                  </Td>
-                  <Td
-                    width={"12.5%"}
-                    maxWidth={"3rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    overflow={"hidden"}
-                    textAlign={"center"}
-                  >
-                    <Text
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
-                      // bgColor={"blue"}
+                      <Box
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                      >
+                        {/* {checkGap(idx1, idx2)} */}
+                        {!protocolStats || !protocolStats[idx] ? (
+                          <Skeleton
+                            width="4rem"
+                            height="1.4rem"
+                            startColor="#101216"
+                            endColor="#2B2F35"
+                            borderRadius="6px"
+                          />
+                        ) : (
+                          protocolStats[idx]?.supplyRate + "%"
+                        )}
+                      </Box>
+                    </Td>
+                    <Td
+                      width={"12.5%"}
+                      maxWidth={"3rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      overflow={"hidden"}
+                      textAlign={"center"}
                     >
-                      {/* {checkGap(idx1, idx2)} */}
-                      {supply?.EffectiveApr || "8.00%"}
-                    </Text>
-                  </Td>
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                      >
+                        {/* {checkGap(idx1, idx2)} */}
+                        {supply?.EffectiveApr || "8.00%"}
+                      </Text>
+                    </Td>
 
-                  <Td
-                    width={"12.5%"}
-                    maxWidth={"3rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    overflow={"hidden"}
-                    textAlign={"center"}
-                  >
-                    <Text
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
-                      // bgColor={"blue"}
+                    <Td
+                      width={"12.5%"}
+                      maxWidth={"3rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      overflow={"hidden"}
+                      textAlign={"center"}
                     >
-                      {/* {checkGap(idx1, idx2)} */}
-                      {supply?.Status || "ACTIVE"}
-                    </Text>
-                  </Td>
-                  <Td
-                    width={"12.5%"}
-                    maxWidth={"5rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    //   overflow={"hidden"}
-                    textAlign={"center"}
-                  >
-                    <Box
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="flex-end"
-                      fontWeight="400"
-                      pr={2}
-                      onClick={() => {
-                        setCurrentSelectedSupplyCoin(supply?.rToken);
-                        setcurrentSelectedWithdrawlCoin(supply?.rToken);
-                      }}
-                      // bgColor={"blue"}
+                      <Box
+                        width="90%"
+                        height="100%"
+                        display="flex"
+                        flexDirection="column"
+                        // alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                        // bgColor={"blue"}
+                        margin="0 auto"
+                        gap={2}
+                      >
+                        {/* {checkGap(idx1, idx2)} */}
+                        <HStack gap={16}>
+                          <HStack>
+                            <Image
+                              src={`/stakeStatus.svg`}
+                              alt="Picture of the author"
+                              width="18"
+                              height="18"
+                            />
+                            <Text>
+                              {numberFormatter(supply?.rTokenStakedParsed)}
+                            </Text>
+                          </HStack>
+                          <HStack>
+                            <Image
+                              src={`/freeStatus.svg`}
+                              alt="Picture of the author"
+                              width="18"
+                              height="18"
+                            />
+                            <Text>
+                              {numberFormatter(supply?.rTokenFreeParsed)}
+                            </Text>
+                          </HStack>
+                        </HStack>
+                        <HStack>
+                          <HStack>
+                            <Image
+                              src={`/lockedStatus.svg`}
+                              alt="Picture of the author"
+                              width="18"
+                              height="18"
+                            />
+                            <Text>
+                              {numberFormatter(supply?.rTokenLockedParsed)}
+                            </Text>
+                          </HStack>
+                        </HStack>
+                        {/* {supply?.Status || "ACTIVE"} */}
+                      </Box>
+                    </Td>
+                    <Td
+                      width={"12.5%"}
+                      maxWidth={"5rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      //   overflow={"hidden"}
+                      textAlign={"center"}
                     >
-                      <YourSupplyModal
-                        currentSelectedSupplyCoin={currentSelectedSupplyCoin}
-                        setCurrentSelectedSupplyCoin={
-                          setCurrentSelectedSupplyCoin
-                        }
-                        currentSelectedWithdrawlCoin={
-                          currentSelectedWithdrawlCoin
-                        }
-                        setcurrentSelectedWithdrawlCoin={
-                          setcurrentSelectedWithdrawlCoin
-                        }
-                        coins={supplyMarkets}
-                        protocolStats={protocolStats}
-                      />
-                    </Box>
-                  </Td>
-                </Tr>
-                <Tr
-                  style={{
-                    position: "absolute",
-                    height: "1px",
-                    borderWidth: "0",
-                    backgroundColor: "#2b2f35",
-                    width: "100%",
-                    // left: "3%",
-                    display: `${idx == 4 ? "none" : "block"}`,
-                  }}
-                />
-              </>
-            ))}
+                      <Box
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="flex-end"
+                        fontWeight="400"
+                        pr={2}
+                        onClick={() => {
+                          setCurrentSelectedSupplyCoin(supply?.rToken);
+                          setcurrentSelectedWithdrawlCoin(supply?.rToken);
+                        }}
+                      >
+                        <YourSupplyModal
+                          currentSelectedSupplyCoin={currentSelectedSupplyCoin}
+                          setCurrentSelectedSupplyCoin={
+                            setCurrentSelectedSupplyCoin
+                          }
+                          currentSelectedWithdrawlCoin={
+                            currentSelectedWithdrawlCoin
+                          }
+                          setcurrentSelectedWithdrawlCoin={
+                            setcurrentSelectedWithdrawlCoin
+                          }
+                          coins={supplyMarkets}
+                          protocolStats={protocolStats}
+                        />
+                      </Box>
+                    </Td>
+                  </Tr>
+                  <Tr
+                    style={{
+                      position: "absolute",
+                      height: "1px",
+                      borderWidth: "0",
+                      backgroundColor: "#2b2f35",
+                      width: "100%",
+                      // left: "3%",
+                      display: `${idx == 4 ? "none" : "block"}`,
+                    }}
+                  />
+                </>
+              )
+          )}
           {(() => {
             const rows = [];
             for (
