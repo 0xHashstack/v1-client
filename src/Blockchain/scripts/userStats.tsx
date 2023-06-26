@@ -145,5 +145,16 @@ export async function effectivAPRLoan(loan: ILoan, marketInfos: IMarketInfo[], o
     let effectiveAPR = (borrowInterest - collateralInterest) / loanAmountUsd;
     return effectiveAPR;
   }
+}
+
+export async function effectiveAprDeposit(deposit: IDeposit, marketInfos: IMarketInfo[]) {
+  const marketInfo = marketInfos.find(marketInfo => marketInfo.tokenAddress === deposit.tokenAddress);
+  if (marketInfo) {
+    let rTokenInterest = deposit.rTokenAmountParsed * marketInfo.supplyRate;
+    let stakingInterest = deposit.rTokenStakedParsed * marketInfo.stakingRate;
+    let rTokenTotal = deposit.rTokenAmountParsed + deposit.rTokenStakedParsed;
+
+    return (rTokenInterest + stakingInterest) / rTokenTotal;
+  }
 
 }
