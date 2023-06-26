@@ -23,6 +23,7 @@ import {
   Stack,
   Radio,
   Skeleton,
+  ModalHeader,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -499,19 +500,38 @@ const TradeModal = ({
       >
         <ModalOverlay bg="rgba(244, 242, 255, 0.5);" mt="3.8rem" />
         <ModalContent mt="8rem" bg={"#010409"} maxW="884px">
-          <ModalCloseButton mt="1rem" mr="1rem" color="white" />
+          <ModalHeader
+            // pt="1rem"
+            // mt="1rem"
+            fontSize="15px"
+            fontWeight="600"
+            fontStyle="normal"
+            lineHeight="20px"
+            color="white"
+            my="auto"
+            pos="relative"
+          >
+            <Text color="black">
+              Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet
+            </Text>
+            <Text pos="absolute" top="8" left="8">
+              Trade
+            </Text>
+          </ModalHeader>
+          <ModalCloseButton color="white" mt="1.1rem" mr="1rem" />
+          {/* <ModalCloseButton mt="1rem" mr="1rem" color="white" /> */}
           {/* <ModalHeader>Borrow</ModalHeader> */}
           <ModalBody color={"#E6EDF3"}>
             <Box
               display={"flex"}
               justifyContent={"space-between"}
               fontSize={"sm"}
-              my={"2"}
+              mb={"2"}
             >
-              <Heading fontSize="md" fontWeight="medium" mt="0.9rem">
+              {/* <Heading fontSize="md" fontWeight="medium" mt="0.9rem">
                 Trade
               </Heading>
-              <ModalCloseButton mt="1rem" mr="1rem" color="white" />
+              <ModalCloseButton mt="1rem" mr="1rem" color="white" /> */}
             </Box>
             <Box
               display="flex"
