@@ -43,7 +43,6 @@ const YourSupply = () => {
   //     try {
   //       const supply = await getUserDeposits(address || "");
   //       setUserDeposits(supply);
-  //       console.log("supplies", supply);
   //     } catch (err) {
   //       console.log("supplies", err);
   //     }

@@ -54,8 +54,13 @@ export interface IDeposit {
   token: NativeToken;
   rToken: RToken;
   rTokenAddress: string;
-  rTokenAmount: number;
-  rTokenAmountParsed: number;
+  
+  rTokenFreeParsed: number;
+  rTokenLockedParsed: number;
+  rTokenStakedParsed: number;
+  
+  rTokenAmountParsed: number;   // sum of rTokenFreeParsed + rTokenLockedParsed
+
   underlyingAssetAmount: number;
   underlyingAssetAmountParsed: number;
 }

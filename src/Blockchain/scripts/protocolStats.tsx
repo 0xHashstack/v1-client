@@ -79,9 +79,11 @@ export async function getProtocolStats() {
     provider
   );
   try {
+    console.log("Get Protocol stats calling -----------");
     const res = await metricsContract.call("get_protocol_stats", [], {
       blockIdentifier: "pending",
     });
+    console.log("Get protocol stats calling finished ---------");
     return parseProtocolStats(res?.market_infos);
   }
   catch(error) {

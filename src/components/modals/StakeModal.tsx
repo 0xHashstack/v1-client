@@ -88,12 +88,19 @@ const StakeModal = ({
   useEffect(() => {
     try {
       const fetchUserDeposits = async () => {
-        const userDeposit = await getUserDeposits(address || "");
-        setUserDeposits(userDeposit);
+        try {
+          if (!address) return;
+          const userDeposit = await getUserDeposits(address);
+          if(!userDeposit) return;
+          setUserDeposits(userDeposit);
+        }
+        catch(error) {
+          console.error("getUserDeposits fails: ", error);
+        }
       };
       fetchUserDeposits();
     } catch (err) {}
-  }, []);
+  }, [address]);
 
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
