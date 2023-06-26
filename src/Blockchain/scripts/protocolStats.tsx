@@ -133,25 +133,25 @@ function parseProtocolStats(market_infos: any): IMarketInfo[] {
 // }
 
 
-// export async function getProtocolStats() {
-//   const provider = getProvider();
-//   const metricsContract = new Contract(
-//     metricsAbi,
-//     metricsContractAddress,
-//     provider
-//   );
-//   try {
-//     console.log("Get Protocol stats calling -----------");
-//     const res = await metricsContract.call("get_protocol_stats", [], {
-//       blockIdentifier: "pending",
-//     });
-//     console.log("Get protocol stats calling finished ---------");
-//     return parseProtocolStats(res?.market_infos);
-//   }
-//   catch(error) {
-//     console.error("getProtocolStats fails: ", error);
-//   }
-// }
+export async function getProtocolStats() {
+  const provider = getProvider();
+  const metricsContract = new Contract(
+    metricsAbi,
+    metricsContractAddress,
+    provider
+  );
+  try {
+    console.log("Get Protocol stats calling -----------");
+    const res = await metricsContract.call("get_protocol_stats", [], {
+      blockIdentifier: "pending",
+    });
+    console.log("Get protocol stats calling finished ---------");
+    return parseProtocolStats(res?.market_infos);
+  }
+  catch(error) {
+    console.error("getProtocolStats fails: ", error);
+  }
+}
 
 // export async function getProtocolStats() {
 //   const marketStats: IMarketInfo[] = [];
