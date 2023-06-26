@@ -16,7 +16,6 @@ export async function getOraclePrices(): Promise<OraclePrice[]> {
   const now = new Date();
   const provider = getProvider();
   const empiricContract = new Contract(EmpiricAbi.abi, contractsEnv.EMPIRIC_PROXY_ADDRESS, provider);
-  const promises: Promise<any>[] = [];
   for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
     const token = contractsEnv.TOKENS[i];
     const result = await empiricContract.call('get_spot', [token.pontis_key, MEDIAN_AGGREGATION_MODE]);
@@ -35,6 +34,5 @@ export async function getOraclePrices(): Promise<OraclePrice[]> {
     // }
     prices.push(oraclePrice);
   }
-  await Promise.all(promises);
   return prices;
 }

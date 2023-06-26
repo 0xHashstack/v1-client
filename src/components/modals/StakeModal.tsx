@@ -83,17 +83,24 @@
 //     // Rest of your code using the 'result' variable
 //   }, [currentId]);
 
-//   const [userDeposits, setUserDeposits] = useState<IDeposit[]>([]);
-//   const { address } = useAccount();
-//   useEffect(() => {
-//     try {
-//       const fetchUserDeposits = async () => {
-//         const userDeposit = await getUserDeposits(address || "");
+// const [userDeposits, setUserDeposits] = useState<IDeposit[]>([]);
+// const { address } = useAccount();
+// useEffect(() => {
+//   try {
+//     const fetchUserDeposits = async () => {
+//       try {
+//         if (!address) return;
+//         const userDeposit = await getUserDeposits(address);
+//         if(!userDeposit) return;
 //         setUserDeposits(userDeposit);
-//       };
-//       fetchUserDeposits();
-//     } catch (err) {}
-//   }, []);
+//       }
+//       catch(error) {
+//         console.error("getUserDeposits fails: ", error);
+//       }
+//     };
+//     fetchUserDeposits();
+//   } catch (err) {}
+// }, [address]);
 
 //   const getCoin = (CoinName: string) => {
 //     switch (CoinName) {

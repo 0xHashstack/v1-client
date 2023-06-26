@@ -111,6 +111,8 @@ const SupplyDashboard = ({
   upper_bound = Math.min(Coins.length - 1, upper_bound);
   // console.log("aryan " + lower_bound + " " + upper_bound);
 
+  const { address } = useAccount();
+
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
     useState("rBTC");
   const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
@@ -122,15 +124,16 @@ const SupplyDashboard = ({
     const getSupply = async () => {
       console.log("all deposits calling started");
       try {
-        const supply = await getUserDeposits(address || "");
-        setSupplies([supply[2], supply[3], supply[0], supply[1], supply[4]]);
-        console.log("supplies", supply);
+        if(!address) return;
+        const supply = await getUserDeposits(address);
+        if(!supply) return;
+        setSupplies([supply?.[2], supply?.[3], supply?.[0], supply?.[1], supply?.[4]]);
       } catch (err) {
         console.log("supplies", err);
       }
     };
     getSupply();
-  }, [supplies]);
+  }, [address]);
   const [protocolStats, setProtocolStats]: any = useState([]);
   useEffect(() => {
     const getMarketData = async () => {
@@ -161,7 +164,6 @@ const SupplyDashboard = ({
     });
     setSupplyMarkets(temp);
   }, [supplies]);
-  const { address } = useAccount();
   useEffect(() => {
     try {
       const supply = async () => {
