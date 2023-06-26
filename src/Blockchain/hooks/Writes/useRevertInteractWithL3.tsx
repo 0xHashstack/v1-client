@@ -3,7 +3,7 @@ import { useContractWrite } from "@starknet-react/core";
 import { useState } from "react";
 
 const useRevertInteractWithL3 = () => {
-  const [revertLoanId, setRevertLoanId] = useState<string>("")
+  const [revertLoanId, setRevertLoanId] = useState<string>("");
 
   const {
     data: dataRevertInteractWithL3,
@@ -17,8 +17,8 @@ const useRevertInteractWithL3 = () => {
       contractAddress: diamondAddress,
       entrypoint: "revert_interaction_with_l3",
       calldata: [revertLoanId],
-    }
-  })
+    },
+  });
 
   return {
     revertLoanId,
@@ -30,7 +30,7 @@ const useRevertInteractWithL3 = () => {
     errorRevertInteractWithL3,
     isIdleRevertInteractWithL3,
     isLoadingRevertInteractWithL3,
-  }
-}
+  };
+};
 
 export default useRevertInteractWithL3;

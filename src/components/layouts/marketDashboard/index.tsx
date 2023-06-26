@@ -48,7 +48,8 @@ const MarketDashboard = () => {
 
   const fetchUserDeposits = async () => {
     try {
-      const reserves = await getUserDeposits(address || "");
+      if(!account) return;
+      const reserves = await getUserDeposits(address as string);
       console.log("got reservers", reserves);
 
       const rTokens: any = [];
@@ -63,7 +64,7 @@ const MarketDashboard = () => {
         });
       }
       // console.log("rtokens", rTokens);
-
+      if(rTokens.length === 0) return;
       setValidRTokens(rTokens);
       // console.log("valid rtoken", validRTokens);
       // console.log("market page -user supply", reserves);
