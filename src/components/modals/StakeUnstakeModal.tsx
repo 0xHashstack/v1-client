@@ -190,7 +190,7 @@ const StakeUnstakeModal = ({
   };
 
   const getBalance = (coin: string) => {
-    const amount = validRTokens.find(({ rToken, rTokenAmount }: any) => {
+    const amount = validRTokens?.find(({ rToken, rTokenAmount }: any) => {
       if (rToken == coin) return rTokenAmount;
     });
     return amount ? amount.rTokenAmount : 0;
