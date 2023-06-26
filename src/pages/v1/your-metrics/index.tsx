@@ -336,7 +336,7 @@ const YourMetrics = () => {
           <Box>
             <YourMetricsSupplyBorrow currentMarketCoin={currentMarketCoin} />
           </Box>
-          <Box
+          {/* <Box
             //   bgColor="green"
             borderRadius="6px"
             border="1px solid #2B2F35"
@@ -381,7 +381,7 @@ const YourMetrics = () => {
             <Box>
               <TotalRevenueChart />
             </Box>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
       {/* )} */}

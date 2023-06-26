@@ -205,7 +205,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     if (validRTokens.length === 0) {
       fetchUserDeposits();
     }
-  }, [validRTokens]);
+  }, [validRTokens, address]);
 
   const fetchUserDeposits = async () => {
     try {
@@ -224,7 +224,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         });
       }
       console.log("rtokens", rTokens);
-      if(rTokens.length === 0) return;
+      if (rTokens.length === 0) return;
       setValidRTokens(rTokens);
       console.log("valid rtoken", validRTokens);
       console.log("market page -user supply", reserves);
