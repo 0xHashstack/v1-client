@@ -18,9 +18,10 @@ import { useAccount, useConnectors } from "@starknet-react/core";
 import TotalRevenueChart from "@/components/layouts/charts/TotalRevenue";
 import Link from "next/link";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
+import YourMetricsSupplyBorrow from "@/components/layouts/charts/yourMetricsSupplyBorrow";
 const YourMetrics = () => {
   //   const [metricsCancel, setMetricsCancel] = useState(false);
-  const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC"); 
+  const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
   const dispatch = useDispatch();
   const metricsDropdowns = useSelector(selectMetricsDropdowns);
   const handleDropdownClick = (dropdownName: any) => {
@@ -332,7 +333,10 @@ const YourMetrics = () => {
             </Box>
             {/* </HStack> */}
           </Box>
-          <Box
+          <Box>
+            <YourMetricsSupplyBorrow currentMarketCoin={currentMarketCoin} />
+          </Box>
+          {/* <Box
             //   bgColor="green"
             borderRadius="6px"
             border="1px solid #2B2F35"
@@ -377,7 +381,7 @@ const YourMetrics = () => {
             <Box>
               <TotalRevenueChart />
             </Box>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
       {/* )} */}

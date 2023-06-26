@@ -37,6 +37,7 @@ const AssetMetrics = () => {
             return value + "%";
           }}
           color={"#0FCA7A"}
+          categories={[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16]}
         />
       </Box>
       <Box display="flex" gap="30px">

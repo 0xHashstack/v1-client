@@ -217,7 +217,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     if (validRTokens.length === 0) {
       fetchUserDeposits();
     }
-  }, [validRTokens]);
+  }, [validRTokens, address]);
 
   const fetchUserDeposits = async () => {
     try {
