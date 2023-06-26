@@ -93,12 +93,12 @@ function parseProtocolReserves(protocolReservesData: any): IProtocolReserves {
     totalReserves: parseAmount(uint256
       .uint256ToBN(protocolReservesData?.total_reserves)
       .toString(),
-      26
+      8
     ),
     availableReserves: parseAmount(uint256
       .uint256ToBN(protocolReservesData?.available_reserves)
       .toString(),
-      26
+      8
     ),
     avgAssetUtilisation: parseAmount(uint256
       .uint256ToBN(protocolReservesData?.avg_asset_utilisation)

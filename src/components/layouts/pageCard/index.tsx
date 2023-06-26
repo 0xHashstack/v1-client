@@ -13,10 +13,12 @@ import {
 } from "@starknet-react/core";
 import { useContract } from "@starknet-react/core";
 import {
+  setProtocolReserves,
   selectToastTransactionStarted,
   setAccount,
   setAssetWalletBalance,
   setUserLoans,
+  selectProtocolReserves,
 } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import Footer from "../footer";
@@ -31,6 +33,10 @@ import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { ToastContainer, toast } from "react-toastify";
 import { callWithRetries } from "@/utils/functions/apiCaller";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
+import {
+  getProtocolReserves,
+  getProtocolStats,
+} from "@/Blockchain/scripts/protocolStats";
 
 interface Props extends StackProps {
   children: ReactNode;
@@ -232,6 +238,36 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       console.log("Error fetching protocol reserves", err);
     }
   };
+  const protocolReserves = useSelector(selectProtocolReserves);
+  useEffect(() => {
+    try {
+      const fetchProtocolStats = async () => {
+        const reserves = await getProtocolReserves();
+        dispatch(
+          setProtocolReserves({
+            totalReserves: 123,
+            availableReserves: 123,
+            avgAssetUtilisation: 1233,
+          })
+        );
+        dispatch(setProtocolReserves(reserves));
+        console.log("protocol reserves called ");
+      };
+      if (
+        protocolReserves &&
+        (protocolReserves.totalReserves == null ||
+          protocolReserves.availableReserves == null ||
+          protocolReserves.avgAssetUtilisation == null)
+      ) {
+        fetchProtocolStats();
+      }
+    } catch (err) {
+      console.log("error fetching protocol reserves ", err);
+    }
+  }, [protocolReserves]);
+  // useEffect(() => {
+  //   console.log("protocol reserves here ", protocolReserves);
+  // }, [protocolReserves]);
 
   return (
     <>
