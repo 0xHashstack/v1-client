@@ -19,6 +19,10 @@ import {
   setAssetWalletBalance,
   setUserLoans,
   selectProtocolReserves,
+  selectYourSupply,
+  selectNetWorth,
+  selectNetAPR,
+  selectYourBorrow,
 } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import Footer from "../footer";
@@ -37,6 +41,8 @@ import {
   getProtocolReserves,
   getProtocolStats,
 } from "@/Blockchain/scripts/protocolStats";
+import YourBorrow from "@/pages/v1/your-borrow";
+import { getTotalBorrow } from "@/Blockchain/scripts/userStats";
 
 interface Props extends StackProps {
   children: ReactNode;
@@ -239,6 +245,10 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     }
   };
   const protocolReserves = useSelector(selectProtocolReserves);
+  const yourSupply = useSelector(selectYourSupply);
+  const yourBorrow = useSelector(selectYourBorrow);
+  const netWorth = useSelector(selectNetWorth);
+  const netAPR = useSelector(selectNetAPR);
   useEffect(() => {
     try {
       const fetchProtocolStats = async () => {
@@ -265,9 +275,22 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       console.log("error fetching protocol reserves ", err);
     }
   }, [protocolReserves]);
+
   // useEffect(() => {
   //   console.log("protocol reserves here ", protocolReserves);
   // }, [protocolReserves]);
+
+  // useEffect(() => {
+  //   try {
+  //     const fetchTotalBorrow = async () => {
+  //       const data = await getTotalBorrow();
+  //       console.log("getTotalBorrow", data);
+  //     };
+  //     fetchTotalBorrow();
+  //   } catch (err) {
+  //     console.log("getTotalBorrow error");
+  //   }
+  // }, [netWorth, yourSupply, yourBorrow, netWorth]);
 
   return (
     <>
