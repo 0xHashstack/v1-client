@@ -500,7 +500,7 @@ const StakeUnstakeModal = ({
         // onOverlayClick={() => setIsOpenCustom(false)}
         onClose={() => {
           onClose();
-          setStakeHover(false);
+          if (setStakeHover) setStakeHover(false);
           resetStates();
         }}
         isCentered
