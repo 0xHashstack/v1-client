@@ -6,7 +6,7 @@ import DashboardRight from "../dashboardRight";
 import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
 // import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
-import { getUserReserves } from "@/Blockchain/scripts/userStats";
+// import { getUserReserves } from "@/Blockchain/scripts/userStats";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { useAccount } from "@starknet-react/core";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
