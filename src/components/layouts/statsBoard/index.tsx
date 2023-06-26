@@ -3,7 +3,7 @@ import { Flex, HStack, VStack } from "@chakra-ui/react";
 import Stats from "@/components/layouts/stats";
 import { useRouter } from "next/router";
 import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
-import { getUserReserves } from "@/Blockchain/scripts/userStats";
+// import { getUserReserves } from "@/Blockchain/scripts/userStats";
 import { IProtocolReserves } from "@/Blockchain/interfaces/interfaces";
 import { useAccount } from "@starknet-react/core";
 const StatsBoard = () => {
