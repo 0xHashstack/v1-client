@@ -46,8 +46,8 @@ const TotalRevenueChart = () => {
           show: false,
         },
       },
-      tooltip:{
-        enabled:true,
+      tooltip: {
+        enabled: true,
       },
       dataLabels: {
         enabled: false,
@@ -200,58 +200,70 @@ const TotalRevenueChart = () => {
   return (
     <Box p="16px" position="relative">
       <Box>
-      <Box ml="1rem" display="flex" mb="1rem">
-        <Box display="flex">
-          <Box p="1">
-            <SmallBlueDot />
+        <Box ml="1rem" display="flex" mb="1rem">
+          <Box display="flex">
+            <Box p="1">
+              <SmallBlueDot />
+            </Box>
+            <Text
+              color="white"
+              fontSize="12px"
+              fontWeight="400"
+              lineHeight="16px"
+              mt="0.1rem"
+            >
+              Revenue
+            </Text>
           </Box>
-          <Text
-            color="white"
-            fontSize="12px"
-            fontWeight="400"
-            lineHeight="16px"
-            mt="0.1rem"
-          >
-            Revenue
-          </Text>
-        </Box>
-        <Box display="flex" ml="1rem">
-          <Box p="1">
-            <SmallGreenDot />
+          <Box display="flex" ml="1rem">
+            <Box p="1">
+              <SmallGreenDot />
+            </Box>
+            <Text
+              color="white"
+              fontSize="12px"
+              fontWeight="400"
+              lineHeight="16px"
+              mt="0.1rem"
+            >
+              Expenses
+            </Text>
           </Box>
-          <Text
-            color="white"
-            fontSize="12px"
-            fontWeight="400"
-            lineHeight="16px"
-            mt="0.1rem"
-          >
-            Expenses
-          </Text>
         </Box>
+        <Box>
+          <ApexCharts
+            options={options}
+            series={splineChartData.series}
+            type="area"
+            height={350}
+          />
+        </Box>
+        <Text
+          textAlign="center"
+          color="#E6EDF3"
+          fontSize="12px"
+          fontWeight="400"
+          fontStyle="normal"
+          lineHeight="15px"
+          mt="1rem"
+        >
+          Time
+        </Text>
       </Box>
-      <Box>
-        <ApexCharts
-          options={options}
-          series={splineChartData.series}
-          type="area"
-          height={350}
-        />
-      </Box>
-      <Text
-        textAlign="center"
-        color="#E6EDF3"
+      <Box
+        position="absolute"
+        width="119px"
+        height="15px"
+        top="205px"
+        left="-35px"
         fontSize="12px"
         fontWeight="400"
         fontStyle="normal"
         lineHeight="15px"
-        mt="1rem"
+        color="#E6EDF3"
+        transform="rotate(-90deg)"
       >
-        Time
-      </Text>
-      </Box>
-      <Box position="absolute" width="119px" height="15px" top="205px" left="-35px" fontSize="12px" fontWeight="400" fontStyle="normal" lineHeight="15px" color="#E6EDF3" transform="rotate(-90deg)">
-      Income & Expenses  
+        Income & Expenses
       </Box>
     </Box>
   );

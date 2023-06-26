@@ -39,7 +39,7 @@ import TableYagiLogoDull from "./tableIcons/yagiLogoDull";
 import TableMySwapDull from "./tableIcons/mySwapDull";
 import TableJediswapLogoDull from "./tableIcons/jediswapLogoDull";
 import Image from "next/image";
-import StakeModal from "@/components/modals/StakeModal";
+// import StakeModal from "@/components/modals/StakeModal";
 import SwapModal from "@/components/modals/SwapModal";
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
