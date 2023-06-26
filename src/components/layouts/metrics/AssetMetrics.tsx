@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box } from "@chakra-ui/react";
 import AssetUtilizationChart from "../charts/AssetUtilization";
 import AssetUtilizationRateChart from "../charts/AssetUtilizationRate";
 
 const AssetMetrics = () => {
+  const [tvl, setTvl] = useState(null);
   return (
     <Box display="flex" flexDir="column" gap="4rem">
       <Box display="flex" flexDirection="column" gap="8px" width="100%">
@@ -21,7 +22,7 @@ const AssetMetrics = () => {
           lineHeight="30px"
           borderRadius="6px"
         >
-          Total Value Locked: $8932.14
+          Total Value Locked: {tvl ? tvl : "$8932.14"}
         </Box>
         <AssetUtilizationChart
           series={[

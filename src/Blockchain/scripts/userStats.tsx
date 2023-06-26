@@ -85,3 +85,9 @@ export async function getL3USDTValue(loanId: number, loanMarketAddress: string) 
   let usdValue = parseAmount(uint256.uint256ToBN(res?.value).toString(), 6);
   return usdValue;
 }
+
+export async function getNetworth(totalSupply: number, totalBorrow: number, totalCurrentAmount: number) {
+  const netWorth = totalSupply + totalCurrentAmount - totalBorrow;
+  return netWorth;
+}
+
