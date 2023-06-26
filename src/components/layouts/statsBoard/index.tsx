@@ -6,35 +6,38 @@ import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
 import { getUserReserves } from "@/Blockchain/scripts/userStats";
 import { IProtocolReserves } from "@/Blockchain/interfaces/interfaces";
 import { useAccount } from "@starknet-react/core";
+import { useSelector } from "react-redux";
+import { selectProtocolReserves } from "@/store/slices/userAccountSlice";
 const StatsBoard = () => {
   const { address } = useAccount();
   const router = useRouter();
   const handleRouteChange = (path: string) => {
     router.push(path);
   };
-  const [protocolReserves, setProtocolReserves] = useState<IProtocolReserves>({
-    totalReserves: null,
-    availableReserves: null,
-    avgAssetUtilisation: null, // weighted avg of all the utilisations of markets
-  });
+  // const [protocolReserves, setProtocolReserves] = useState<IProtocolReserves>({
+  //   totalReserves: null,
+  //   availableReserves: null,
+  //   avgAssetUtilisation: null, // weighted avg of all the utilisations of markets
+  // });
+  const protocolReserves = useSelector(selectProtocolReserves);
   const [userStats, setUserStats] = useState({
     netWorth: 8392.14, // current values of loans - total borrow + total supply
     yourSupply: 5536.83, // usd terms
     yourBorrow: 536.83, // usd terms
     netSupplyAPR: 15.5, // usd terms
   });
-  useEffect(() => {
-    try {
-      const fetchProtocolStats = async () => {
-        const reserves = await getProtocolReserves();
-        console.log("protocol reserves", reserves);
-        setProtocolReserves(reserves);
-      };
-      fetchProtocolStats();
-    } catch (err) {
-      console.log("error fetching protocol reserves ", err);
-    }
-  }, []);
+  // useEffect(() => {
+  //   try {
+  //     const fetchProtocolStats = async () => {
+  //       const reserves = await getProtocolReserves();
+  //       console.log("protocol reserves", reserves);
+  //       setProtocolReserves(reserves);
+  //     };
+  //     fetchProtocolStats();
+  //   } catch (err) {
+  //     console.log("error fetching protocol reserves ", err);
+  //   }
+  // }, []);
   // useEffect(() => {
   //   try {
   //     const fetchUserStats = async () => {

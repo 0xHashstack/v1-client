@@ -32,6 +32,12 @@ const initialState = {
   transactionStarted: false,
   refreshHooks: false,
 
+  protocolReserves: {
+    totalReserves: null,
+    availableReserves: null,
+    avgAssetUtilisation: null,
+  },
+
   // toastTransactionStarted: false,
 
   // walletBalance: {
@@ -128,6 +134,9 @@ export const userAccountSlice = createSlice({
     setRefreshHooks(state, action) {
       state.refreshHooks = action.payload;
     },
+    setProtocolReserves(state, action) {
+      state.protocolReserves = action.payload;
+    },
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;
     // },
@@ -158,6 +167,7 @@ export const {
   setUserLoans,
   setTransactionSuccessArray,
   setTransactionFailureArray,
+  setProtocolReserves,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -208,4 +218,6 @@ export const selectToastTransactionStarted = (state) =>
   state.user_account.toastTransactionStarted;
 export const selectTransactionStarted = (state) =>
   state.user_account.transactionStarted;
+export const selectProtocolReserves = (state) =>
+  state.user_account.protocolReserves;
 export default userAccountSlice.reducer;
