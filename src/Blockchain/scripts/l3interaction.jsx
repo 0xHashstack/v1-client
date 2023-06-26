@@ -7,6 +7,7 @@ import { weiToEtherNumber } from "../utils/utils";
 
 // before interaction
 export async function getJediEstimateLiquiditySplit(loanId, tokenA, tokenB) {
+  console.log("getJediEstimatedLpAmountOut", tokenA, loanId, tokenB);
   let tokenAAddress = tokenAddressMap[tokenA];
   let tokenBAddress = tokenAddressMap[tokenB];
   const provider = getProvider();
@@ -19,10 +20,15 @@ export async function getJediEstimateLiquiditySplit(loanId, tokenA, tokenB) {
     }
   );
   console.log("estimated liquidity split for loanId: ", loanId, " is: ", res);
+  return [
+    uint256.uint256ToBN(res?.amountA).toString(),
+    uint256.uint256ToBN(res?.amountB).toString(),
+  ];
 }
 
 // before interaction
 export async function getJediEstimatedLpAmountOut(loanId, tokenA, tokenB) {
+  console.log("getJediEstimatedLpAmountOut", tokenA, loanId, tokenB);
   let tokenAAddress = tokenAddressMap[tokenA];
   let tokenBAddress = tokenAddressMap[tokenB];
   const provider = getProvider();

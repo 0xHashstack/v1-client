@@ -281,6 +281,12 @@ const YourBorrowModal = ({
       dispatch(setTransactionStatus("failed"));
     }
   };
+  // const [lpamount, setLpamount] = useState([]);
+  // useEffect(() => {
+  //   const getJediEstimatedLpAmount = async () => {
+  //     await getJediEstimatedLpAmountOut();
+  //   };
+  // }, []);
 
   interface assetB {
     USDT: any;
@@ -469,6 +475,7 @@ const YourBorrowModal = ({
   const [currentTransactionStatus, setCurrentTransactionStatus] =
     useState(false);
   const [isToastDisplayed, setToastDisplayed] = useState(false);
+  const [toastId, setToastId] = useState<any>();
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
@@ -477,6 +484,7 @@ const YourBorrowModal = ({
     },
     onPending: () => {
       setCurrentTransactionStatus(true);
+      toast.dismiss(toastId);
       console.log("trans pending");
       if (!isToastDisplayed) {
         toast.success(`You have successfully spend the loan `, {
@@ -486,6 +494,7 @@ const YourBorrowModal = ({
       }
     },
     onRejected(transaction) {
+      toast.dismiss(toastId);
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
@@ -511,6 +520,17 @@ const YourBorrowModal = ({
       }
       const zeroRepay = await writeAsyncSelfLiquidate();
       setDepositTransHash(zeroRepay?.transaction_hash);
+      if (zeroRepay?.transaction_hash) {
+        console.log("toast here");
+        const toastid = toast.info(
+          `Please wait, your transaction is running in background `,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        );
+        setToastId(toastid);
+      }
       console.log(zeroRepay);
       dispatch(setTransactionStatus("success"));
       console.log("zero repay success");
@@ -689,8 +709,8 @@ const YourBorrowModal = ({
                 {/* $ 10.91 */}
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between" mb="0.2rem">
-              {radioValue === "1" && (
+            {radioValue === "1" && (
+              <Box display="flex" justifyContent="space-between" mb="0.2rem">
                 <Box display="flex">
                   <Text
                     color="#6A737D"
@@ -716,29 +736,49 @@ const YourBorrowModal = ({
                     </Box>
                   </Tooltip>
                 </Box>
-              )}
-              <Box
-                display="flex"
-                gap="2"
-                color="#6A737D"
-                fontSize="12px"
-                fontWeight="400"
-                fontStyle="normal"
-              >
-                <Box display="flex" gap="2px">
-                  <Box mt="2px">
-                    <SmallEth />
+                <Box
+                  display="flex"
+                  gap="2"
+                  color="#6A737D"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  <Box display="flex" gap="2px">
+                    <Box m="2px">
+                      <SmallEth />
+                    </Box>
+                    <Text>
+                      {currentSplit?.[0] || (
+                        <Skeleton
+                          width="2.3rem"
+                          height=".85rem"
+                          startColor="#2B2F35"
+                          endColor="#101216"
+                          borderRadius="6px"
+                        />
+                      )}
+                    </Text>
                   </Box>
-                  <Text>1.23</Text>
-                </Box>
-                <Box display="flex" gap="2px">
-                  <Box mt="2px">
-                    <SmallUsdt />
+                  <Box display="flex" gap="2px">
+                    <Box m="2px">
+                      <SmallUsdt />
+                    </Box>
+                    <Text>
+                      {currentSplit?.[1] || (
+                        <Skeleton
+                          width="2.3rem"
+                          height=".85rem"
+                          startColor="#2B2F35"
+                          endColor="#101216"
+                          borderRadius="6px"
+                        />
+                      )}
+                    </Text>
                   </Box>
-                  <Text>1.23</Text>
                 </Box>
               </Box>
-            </Box>
+            )}
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
@@ -1462,6 +1502,18 @@ const YourBorrowModal = ({
     "USDT/DAI",
     "USDC/DAI",
   ];
+  // const pools = [
+  //   ["ETH", "USDT"],
+  //   ["USDC", "USDT"],
+  //   ["ETH", "USDC"],
+  //   ["DAI", "ETH"],
+  //   ["BTC", "ETH"],
+  //   ["BTC", "USDT"],
+  //   ["BTC", "USDC"],
+  //   ["BTC", "DAI"],
+  //   ["USDT", "DAI"],
+  //   ["USDC", "AI"],
+  // ];
 
   // useEffect(() => {
   //   console.log("got", currentID, currentMarket);
@@ -1574,7 +1626,7 @@ const YourBorrowModal = ({
       setCurrentAction("Spend Borrow");
       setCurrentBorrowMarketCoin1("BTC");
       setCurrentBorrowMarketCoin2("BTC");
-      setCurrentBorrowId1("ID - 123456");
+      setCurrentBorrowId1("ID - ");
       setCurrentBorrowId2("ID - 123456");
       setCurrentDapp("Select a dapp");
       setCurrentPool("Select a pool");
@@ -1612,6 +1664,9 @@ const YourBorrowModal = ({
   const [currentSplit, setCurrentSplit] = useState(null);
 
   useEffect(() => {
+    // if (!currentBorrowId1 || currentBorrowId1 == "") {
+    //   return;
+    // }
     console.log(
       "toMarketSplitConsole",
       currentBorrowId1.slice(5),
@@ -1622,23 +1677,23 @@ const YourBorrowModal = ({
     setCurrentLPTokenAmount(null);
     setCurrentSplit(null);
     fetchLiquiditySplit();
-  }, [toMarketA]);
+  }, [toMarketA, currentBorrowId1, toMarketB]);
 
   const fetchLiquiditySplit = async () => {
-    const lp_tokon = await getJediEstimatedLpAmountOut(
-      currentBorrowId1.slice(5),
-      toMarketA,
-      toMarketB
-    );
-    console.log("toMarketSplitLP", lp_tokon);
-    setCurrentLPTokenAmount(lp_tokon);
-    const split = await getJediEstimateLiquiditySplit(
-      currentBorrowId1.slice(5),
-      toMarketA,
-      toMarketB
-    );
-    console.log("toMarketSplit", split);
-    setCurrentSplit(split);
+    // const lp_tokon = await getJediEstimatedLpAmountOut(
+    //   currentBorrowId1.slice(5),
+    //   toMarketA,
+    //   toMarketB
+    // );
+    // console.log("toMarketSplitLP", lp_tokon);
+    // setCurrentLPTokenAmount(lp_tokon);
+    // const split = await getJediEstimateLiquiditySplit(
+    //   currentBorrowId1.slice(5),
+    //   toMarketA,
+    //   toMarketB
+    // );
+    // console.log("toMarketSplit", split);
+    // setCurrentSplit(split);
   };
 
   return (

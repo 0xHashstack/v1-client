@@ -39,6 +39,7 @@ const theme = extendTheme({
   },
 });
 import { UserbackProvider } from "@userback/react";
+import Layout from "@/components/layouts/toasts";
 
 export default function App({ Component, pageProps }: AppProps) {
   const connectors = [
@@ -63,7 +64,9 @@ export default function App({ Component, pageProps }: AppProps) {
         <ChakraProvider theme={theme}>
           <StarknetProvider autoConnect={true} connectors={connectors}>
             <Provider store={store}>
-              <Component {...pageProps} />
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
             </Provider>
           </StarknetProvider>
         </ChakraProvider>

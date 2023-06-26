@@ -1,45 +1,40 @@
 import React from "react";
 import dynamic from "next/dynamic";
-import { Box } from "@chakra-ui/react";
+import { Box, Text } from "@chakra-ui/react";
+import SmallBlueDot from "@/assets/icons/smallBlueDot";
+import SmallGreenDot from "@/assets/icons/smallGreenDot";
 import { ApexOptions } from "apexcharts";
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
-const SupplyAprChart = () => {
+const SupplyAPRLiquidityProvider = ({ color, curveColor, series }: any) => {
   const splineChartData = {
-    series: [
-      {
-        name: "Series 1",
-        data: [
-          30000, 40000, 35000, 50000, 49000, 60000, 70000, 91000, 12500, 98000,
-          110000,
+    series: series
+      ? series
+      : [
+          {
+            name: "Series 1",
+            data: [
+              30000, 40000, 35000, 50000, 49000, 60000, 70000, 91000, 12500,
+              98000, 110000, 90000,
+            ],
+            fill: {
+              colors: ["#01b6dd"], // Specify the fill color for the area under the line
+              // Set the opacity of the fill color (optional)
+              opacity: 1,
+            },
+            dataPoints: {
+              hidden: true, // Hide the data points in the area
+            },
+          },
         ],
-        fill: {
-          colors: ["#005CC5"], // Specify the fill color for the area under the line
-          opacity: 0.5, // Set the opacity of the fill color (optional)
-        },
-        dataPoints: {
-          hidden: true, // Hide the data points in the area
-        },
-      },
-      // {
-      //   name: 'Series 2',
-      //   data: [23, 45, 67, 22, 56, 89, 33, 55, 79],
-      //   fill: {
-      //     colors: ['#00FF00'], // Specify the fill color for the area under the line
-      //     opacity: 0.5, // Set the opacity of the fill color (optional)
-      //   },
-      //   dataPoints: {
-      //       hidden: true, // Hide the data points in the area
-      //     },
-      // },
-    ],
     options: {
-      markers: {
-        colors: ["#22863A"], // Set the marker color(s)
-      },
       chart: {
+        // offsetX: 50,
         toolbar: {
           show: false,
         },
+      },
+      tooltip: {
+        enabled: true,
       },
       dataLabels: {
         enabled: false,
@@ -59,8 +54,9 @@ const SupplyAprChart = () => {
           },
         },
         axisBorder: {
-          color: "grey", // Set the color of the x-axis lines
+          color: "#6E7681", // Set the color of the x-axis lines
         },
+
         categories: [
           "Jan",
           "Feb",
@@ -71,6 +67,7 @@ const SupplyAprChart = () => {
           "Jul",
           "Aug",
           "Sep",
+          "Oct",
           "Nov",
           "Dec",
         ],
@@ -80,14 +77,16 @@ const SupplyAprChart = () => {
           formatter: function (value: any) {
             return value / 1000 + "k"; // Divide by 1000 and append 'k' for thousands
           },
+          min: 0,
           style: {
             colors: "#6E7681", // Set the color of the labels
             fontSize: "12px",
             fontWeight: "400",
           },
         },
-        borderWidth: 0.4,
+        borderColor: "#6E7681",
       },
+
       annotations: {
         xaxis: [
           {
@@ -164,17 +163,21 @@ const SupplyAprChart = () => {
           },
         ],
       },
+
       stroke: {
         curve: "smooth",
-        colors: ["#22863A"],
+        colors: [`${curveColor ? curveColor : "#79B8FF"}`],
         opacity: 1,
       },
       grid: {
         borderColor: "#2B2F35",
       },
+      legend: {
+        show: false, // Hide the series buttons when only one series is present
+      },
+      colors: [`${color ? color : "#01b6dd"}`],
     },
   };
-
   const options: ApexOptions = {
     ...splineChartData.options,
     stroke: {
@@ -188,11 +191,11 @@ const SupplyAprChart = () => {
       <ApexCharts
         options={options}
         series={splineChartData.series}
-        type="line"
+        type="area"
         height={350}
       />
     </Box>
   );
 };
 
-export default SupplyAprChart;
+export default SupplyAPRLiquidityProvider;

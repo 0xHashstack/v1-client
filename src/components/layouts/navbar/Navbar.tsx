@@ -326,6 +326,7 @@ const Navbar = ({ validRTokens }: any) => {
             coin={Coins}
             nav={true}
             stakeHover={stakeHover}
+            setStakeHover={setStakeHover}
             validRTokens={validRTokens}
           />
         </Box>
@@ -424,12 +425,12 @@ const Navbar = ({ validRTokens }: any) => {
             cursor="pointer"
             margin="0"
             height="2rem"
-            // border="0.5px solid #6e6e6e"
-            border={`0.5px solid ${
-              router.pathname != "/waitlist" && transferDepositHover
-                ? "#6e6e6e"
-                : "#FFF"
-            }`}
+            border="0.5px solid #6e6e6e"
+            // border={`0.5px solid ${
+            //   router.pathname != "/waitlist" && transferDepositHover
+            //     ? "#6e6e6e"
+            //     : "#FFF"
+            // }`}
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -453,14 +454,14 @@ const Navbar = ({ validRTokens }: any) => {
               gap="8px"
               margin="6px 12px"
             >
-              {/* <Image
+              <Image
                 src={"/transferDepositDisabled.svg"}
                 alt="Picture of the author"
                 width="20"
                 height="20"
                 style={{ cursor: "pointer" }}
-              /> */}
-              {router.pathname == "/waitlist" || !transferDepositHover ? (
+              />
+              {/* {router.pathname == "/waitlist" || !transferDepositHover ? (
                 <Image
                   src={"/transferDeposit.svg"}
                   alt="Picture of the author"
@@ -476,8 +477,8 @@ const Navbar = ({ validRTokens }: any) => {
                   height="20"
                   style={{ cursor: "pointer" }}
                 />
-              )}
-              <Text fontSize="14px" lineHeight="14px">
+              )} */}
+              <Text fontSize="14px" lineHeight="14px" color="grey">
                 Transfer Deposit
               </Text>
             </Box>

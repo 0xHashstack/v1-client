@@ -78,6 +78,7 @@ const StakeUnstakeModal = ({
   coin,
   nav,
   stakeHover,
+  setStakeHover,
   validRTokens,
   ...restProps
 }: any) => {
@@ -197,6 +198,7 @@ const StakeUnstakeModal = ({
   const [depositTransHash, setDepositTransHash] = useState("");
   const [currentTransactionStatus, setCurrentTransactionStatus] =
     useState(false);
+  const [toastId, setToastId] = useState<any>();
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
@@ -205,6 +207,7 @@ const StakeUnstakeModal = ({
     },
     onPending: () => {
       setCurrentTransactionStatus(true);
+      toast.dismiss(toastId);
       console.log("trans pending");
       if (isToastDisplayed == false) {
         toast.success(
@@ -217,6 +220,7 @@ const StakeUnstakeModal = ({
       }
     },
     onRejected(transaction) {
+      toast.dismiss(toastId);
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
@@ -242,6 +246,17 @@ const StakeUnstakeModal = ({
       // console.log("staking", rToken, rTokenAmount);
       const stake = await writeAsyncStakeRequest();
       setDepositTransHash(stake?.transaction_hash);
+      if (stake?.transaction_hash) {
+        console.log("toast here");
+        const toastid = toast.info(
+          `Please wait, your transaction is running in background ${inputStakeAmount} ${currentSelectedStakeCoin} `,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        );
+        setToastId(toastid);
+      }
       if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
       }
       dispatch(setTransactionStatus("success"));
@@ -424,6 +439,7 @@ const StakeUnstakeModal = ({
           alignItems="center"
           gap={"8px"}
           onClick={onOpen}
+          color={router.pathname != "/waitlist" && stakeHover ? "gray" : ""}
         >
           {router.pathname != "/waitlist" && stakeHover ? (
             <Image
@@ -484,6 +500,7 @@ const StakeUnstakeModal = ({
         // onOverlayClick={() => setIsOpenCustom(false)}
         onClose={() => {
           onClose();
+          if (setStakeHover) setStakeHover(false);
           resetStates();
         }}
         isCentered
@@ -878,7 +895,9 @@ const StakeUnstakeModal = ({
                             fontStyle="normal"
                             fontFamily="Inter"
                           >
-                            Wallet Balance: {walletBalance}
+                            rToken Balance:{" "}
+                            {getBalance(currentSelectedStakeCoin)}
+                            {/* {walletBalance} */}
                             <Text color="#6E7781" ml="0.2rem">
                               {` ${currentSelectedStakeCoin}`}
                             </Text>

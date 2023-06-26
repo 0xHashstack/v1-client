@@ -224,7 +224,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         });
       }
       console.log("rtokens", rTokens);
-
+      if(rTokens.length === 0) return;
       setValidRTokens(rTokens);
       console.log("valid rtoken", validRTokens);
       console.log("market page -user supply", reserves);
@@ -289,7 +289,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
               Supply
             </AnimatedButton>
           </Box> */}
-          <ToastContainer theme="dark" />
+          {/* <ToastContainer theme="dark" /> */}
           <Footer block={83207} />
         </>
       ) : (

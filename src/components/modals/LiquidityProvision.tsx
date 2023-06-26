@@ -230,6 +230,7 @@ const LiquidityProvisionModal = ({
   const [currentTransactionStatus, setCurrentTransactionStatus] =
     useState(false);
   const [isToastDisplayed, setToastDisplayed] = useState(false);
+  const [toastId, setToastId] = useState<any>();
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
@@ -244,9 +245,11 @@ const LiquidityProvisionModal = ({
     },
     onPending: () => {
       setCurrentTransactionStatus(true);
+      toast.dismiss(toastId);
       console.log("trans pending");
     },
     onRejected(transaction) {
+      toast.dismiss(toastId);
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
@@ -268,6 +271,17 @@ const LiquidityProvisionModal = ({
   const handleLiquidity = async () => {
     try {
       const liquidity = await writeAsyncJediSwap_addLiquidity();
+      if (liquidity?.transaction_hash) {
+        console.log("toast here");
+        const toastid = toast.info(
+          `Please wait, your transaction is running in background`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        );
+        setToastId(toastid);
+      }
       console.log(liquidity);
       setDepositTransHash(liquidity?.transaction_hash);
       dispatch(setTransactionStatus("success"));
