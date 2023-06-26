@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import DashboardLeft from "../dashboardLeft";
 import DashboardRight from "../dashboardRight";
 import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
-import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
+// import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 // import { getUserReserves } from "@/Blockchain/scripts/userStats";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
@@ -44,11 +44,11 @@ const MarketDashboard = () => {
     if (validRTokens.length === 0) {
       fetchUserDeposits();
     }
-  }, [validRTokens]);
+  }, [validRTokens, address]);
 
   const fetchUserDeposits = async () => {
     try {
-      if(!account) return;
+      if (!account) return;
       const reserves = await getUserDeposits(address as string);
       console.log("got reservers", reserves);
 
@@ -64,9 +64,9 @@ const MarketDashboard = () => {
         });
       }
       // console.log("rtokens", rTokens);
-      if(rTokens.length === 0) return;
+      if (rTokens.length === 0) return;
       setValidRTokens(rTokens);
-      // console.log("valid rtoken", validRTokens);
+      console.log("valid rtoken", validRTokens);
       // console.log("market page -user supply", reserves);
     } catch (err) {
       // console.log("Error fetching protocol reserves", err);

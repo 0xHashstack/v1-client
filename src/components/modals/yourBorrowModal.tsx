@@ -99,6 +99,11 @@ import {
 import { getAddress } from "ethers/lib/utils";
 import { getTokenFromAddress } from "@/Blockchain/stark-constants";
 import MySwap from "@/assets/icons/dapps/mySwap";
+import BtcToUsdc from "@/assets/icons/pools/btcToUsdc";
+import BtcToDai from "@/assets/icons/pools/btcToDai";
+import UsdtToDai from "@/assets/icons/pools/usdtToDai";
+import UsdcToDai from "@/assets/icons/pools/usdcToDai";
+import Image from "next/image";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -429,12 +434,22 @@ const YourBorrowModal = ({
         break;
       case "BTC/USDT":
         return <BtcToUsdt />;
+      case "BTC/USDC":
+        return <BtcToUsdc />;
+      case "BTC/DAI":
+        return <BtcToDai />;
+      case "USDT/DAI":
+        return <UsdtToDai />;
+      case "USDC/DAI":
+        return <UsdcToDai />;
         break;
       default:
         break;
     }
   };
   const [radioValue, setRadioValue] = useState("1");
+  const [liquiditySplitCoin1, setLiquiditySplitCoin1] = useState("ETH");
+  const [liquiditySplitCoin2, setLiquiditySplitCoin2] = useState("USDT");
 
   // const [currentBorrowMarketCoin1, setCurrentBorrowMarketCoin1] =
   //   useState(currentMarket);
@@ -746,7 +761,13 @@ const YourBorrowModal = ({
                 >
                   <Box display="flex" gap="2px">
                     <Box m="2px">
-                      <SmallEth />
+                      {/* <SmallEth /> */}
+                      <Image
+                        src={`/${liquiditySplitCoin1}.svg`}
+                        alt="liquidity split coin1"
+                        width="12"
+                        height="12"
+                      />
                     </Box>
                     <Text>
                       {currentSplit?.[0] || (
@@ -762,7 +783,13 @@ const YourBorrowModal = ({
                   </Box>
                   <Box display="flex" gap="2px">
                     <Box m="2px">
-                      <SmallUsdt />
+                      {/* <SmallUsdt /> */}
+                      <Image
+                        src={`/${liquiditySplitCoin2}.svg`}
+                        alt="liquidity split coin1"
+                        width="12"
+                        height="12"
+                      />
                     </Box>
                     <Text>
                       {currentSplit?.[1] || (
@@ -2745,6 +2772,12 @@ const YourBorrowModal = ({
                                         setCurrentPool(pool);
                                         setToMarketA(pool.split("/")[0]);
                                         setToMarketB(pool.split("/")[1]);
+                                        setLiquiditySplitCoin1(
+                                          pool.split("/")[0]
+                                        );
+                                        setLiquiditySplitCoin2(
+                                          pool.split("/")[1]
+                                        );
                                       }}
                                     >
                                       {pool === currentPool && (

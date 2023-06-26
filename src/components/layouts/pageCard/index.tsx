@@ -13,10 +13,16 @@ import {
 } from "@starknet-react/core";
 import { useContract } from "@starknet-react/core";
 import {
+  setProtocolReserves,
   selectToastTransactionStarted,
   setAccount,
   setAssetWalletBalance,
   setUserLoans,
+  selectProtocolReserves,
+  selectYourSupply,
+  selectNetWorth,
+  selectNetAPR,
+  selectYourBorrow,
 } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import Footer from "../footer";
@@ -31,6 +37,12 @@ import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { ToastContainer, toast } from "react-toastify";
 import { callWithRetries } from "@/utils/functions/apiCaller";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
+import {
+  getProtocolReserves,
+  getProtocolStats,
+} from "@/Blockchain/scripts/protocolStats";
+import YourBorrow from "@/pages/v1/your-borrow";
+import { getTotalBorrow } from "@/Blockchain/scripts/userStats";
 
 interface Props extends StackProps {
   children: ReactNode;
@@ -205,7 +217,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     if (validRTokens.length === 0) {
       fetchUserDeposits();
     }
-  }, [validRTokens]);
+  }, [validRTokens, address]);
 
   const fetchUserDeposits = async () => {
     try {
@@ -224,7 +236,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         });
       }
       console.log("rtokens", rTokens);
-      if(rTokens.length === 0) return;
+      if (rTokens.length === 0) return;
       setValidRTokens(rTokens);
       console.log("valid rtoken", validRTokens);
       console.log("market page -user supply", reserves);
@@ -232,6 +244,53 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       console.log("Error fetching protocol reserves", err);
     }
   };
+  const protocolReserves = useSelector(selectProtocolReserves);
+  const yourSupply = useSelector(selectYourSupply);
+  const yourBorrow = useSelector(selectYourBorrow);
+  const netWorth = useSelector(selectNetWorth);
+  const netAPR = useSelector(selectNetAPR);
+  useEffect(() => {
+    try {
+      const fetchProtocolStats = async () => {
+        const reserves = await getProtocolReserves();
+        dispatch(
+          setProtocolReserves({
+            totalReserves: 123,
+            availableReserves: 123,
+            avgAssetUtilisation: 1233,
+          })
+        );
+        dispatch(setProtocolReserves(reserves));
+        console.log("protocol reserves called ");
+      };
+      if (
+        protocolReserves &&
+        (protocolReserves.totalReserves == null ||
+          protocolReserves.availableReserves == null ||
+          protocolReserves.avgAssetUtilisation == null)
+      ) {
+        fetchProtocolStats();
+      }
+    } catch (err) {
+      console.log("error fetching protocol reserves ", err);
+    }
+  }, [protocolReserves]);
+
+  // useEffect(() => {
+  //   console.log("protocol reserves here ", protocolReserves);
+  // }, [protocolReserves]);
+
+  // useEffect(() => {
+  //   try {
+  //     const fetchTotalBorrow = async () => {
+  //       const data = await getTotalBorrow();
+  //       console.log("getTotalBorrow", data);
+  //     };
+  //     fetchTotalBorrow();
+  //   } catch (err) {
+  //     console.log("getTotalBorrow error");
+  //   }
+  // }, [netWorth, yourSupply, yourBorrow, netWorth]);
 
   return (
     <>
