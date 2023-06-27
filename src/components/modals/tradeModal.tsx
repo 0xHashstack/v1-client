@@ -82,6 +82,11 @@ import { useWaitForTransaction } from "@starknet-react/core";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
+import BtcToUsdc from "@/assets/icons/pools/btcToUsdc";
+import BtcToDai from "@/assets/icons/pools/btcToDai";
+import UsdtToDai from "@/assets/icons/pools/usdtToDai";
+import UsdcToDai from "@/assets/icons/pools/usdcToDai";
+import MySwap from "@/assets/icons/dapps/mySwap";
 const TradeModal = ({
   buttonText,
   coin,
@@ -195,6 +200,10 @@ const TradeModal = ({
     "DAI/ETH",
     "BTC/ETH",
     "BTC/USDT",
+    "BTC/USDC",
+    "BTC/DAI",
+    "USDT/DAI",
+    "USDC/DAI",
   ];
   const [currentDapp, setCurrentDapp] = useState("Select a dapp");
   const [currentPool, setCurrentPool] = useState("Select a pool");
@@ -236,7 +245,7 @@ const TradeModal = ({
         return <JediswapLogo />;
         break;
       case "mySwap":
-        return <MySwapDisabled />;
+        return <MySwap />;
         break;
       case "ETH/USDT":
         return <EthToUsdt />;
@@ -255,6 +264,14 @@ const TradeModal = ({
         break;
       case "BTC/USDT":
         return <BtcToUsdt />;
+      case "BTC/USDC":
+        return <BtcToUsdc />;
+      case "BTC/DAI":
+        return <BtcToDai />;
+      case "USDT/DAI":
+        return <UsdtToDai />;
+      case "USDC/DAI":
+        return <UsdcToDai />;
         break;
       default:
         break;
@@ -500,6 +517,42 @@ const TradeModal = ({
       });
     }
   };
+
+  // const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState(null);
+  // const [currentSplit, setCurrentSplit] = useState(null);
+
+  // useEffect(() => {
+  //   // if (!currentBorrowId1 || currentBorrowId1 == "") {
+  //   //   return;
+  //   // }
+  //   console.log(
+  //     "toMarketSplitConsole",
+  //     currentBorrowId.slice(5),
+  //     toMarketLiqA,
+  //     toMarketLiqA
+  //     // borrow
+  //   );
+  //   setCurrentLPTokenAmount(null);
+  //   setCurrentSplit(null);
+  //   fetchLiquiditySplit();
+  // }, [toMarketLiqA, currentBorrowId, toMarketLiqA]);
+
+  // const fetchLiquiditySplit = async () => {
+  //   const lp_tokon: any = await getJediEstimatedLpAmountOut(
+  //     currentBorrowId.slice(5),
+  //     toMarketA,
+  //     toMarketB
+  //   );
+  //   console.log("toMarketSplitLP", lp_tokon);
+  //   setCurrentLPTokenAmount(lp_tokon);
+  //   const split: any = await getJediEstimateLiquiditySplit(
+  //     currentBorrowId.slice(5),
+  //     toMarketA,
+  //     toMarketB
+  //   );
+  //   console.log("toMarketSplit", split);
+  //   setCurrentSplit(split);
+  // };
 
   return (
     <Box>
@@ -934,7 +987,9 @@ const TradeModal = ({
                         min={0}
                         keepWithinRange={true}
                         onChange={handleChange}
-                        value={inputCollateralAmount ?inputCollateralAmount:""}
+                        value={
+                          inputCollateralAmount ? inputCollateralAmount : ""
+                        }
                         step={parseFloat(
                           `${inputCollateralAmount <= 99999 ? 0.1 : 0}`
                         )}
@@ -1404,7 +1459,7 @@ const TradeModal = ({
                         min={0}
                         keepWithinRange={true}
                         onChange={handleBorrowChange}
-                        value={inputBorrowAmount ?inputBorrowAmount:""}
+                        value={inputBorrowAmount ? inputBorrowAmount : ""}
                         step={parseFloat(
                           `${inputBorrowAmount <= 99999 ? 0.1 : 0}`
                         )}
@@ -1891,6 +1946,8 @@ const TradeModal = ({
                           py="2"
                           className="dropdown-container"
                           boxShadow="dark-lg"
+                          height="198px"
+                          overflow="scroll"
                         >
                           {pools.map((pool, index) => {
                             return (
