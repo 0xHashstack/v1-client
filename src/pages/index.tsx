@@ -20,6 +20,7 @@ import BrowserWalletIcon from "@/assets/icons/wallets/browserwallet";
 import EthWalletLogo from "@/assets/icons/coins/ethwallet";
 import {
   useAccount,
+  useBlockNumber,
   useConnectors,
   // useBalance,
 } from "@starknet-react/core";

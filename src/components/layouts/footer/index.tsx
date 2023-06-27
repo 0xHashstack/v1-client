@@ -1,5 +1,6 @@
 import { Box, HStack, Text } from "@chakra-ui/react";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 
 const Footer = ({ block }: { block: number }) => {
@@ -21,19 +22,21 @@ const Footer = ({ block }: { block: number }) => {
       borderY="1px solid #2B2F35"
     >
       <HStack height="100%">
-        <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 3.9rem">
-          <Box>
-            <Image
-              src="/stableConnectionIcon.svg"
-              alt="Picture of the author"
-              width={10}
-              height={10}
-            />
-          </Box>
-          <Text color="#04C78A" fontSize="12px">
-            Stable Connection
-          </Text>
-        </HStack>
+        <Link href={"https://status.hashstack.finance/"} target="_blank">
+          <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 3.9rem">
+            <Box>
+              <Image
+                src="/stableConnectionIcon.svg"
+                alt="Picture of the author"
+                width={10}
+                height={10}
+              />
+            </Box>
+            <Text color="#04C78A" fontSize="12px">
+              Stable Connection
+            </Text>
+          </HStack>
+        </Link>
         <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
           <Text color="#BDBFC1" fontSize="12px">
             Latest Synced block:

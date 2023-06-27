@@ -2,7 +2,7 @@ import { Contract, uint256 } from "starknet";
 import { IDeposit, ILoan, IMarketInfo, IUserStats } from "../interfaces/interfaces";
 import metricsAbi from "../abis/metrics_abi.json";
 import borrowTokenAbi from "../abis/dToken_abi.json"
-import { getProvider, metricsContractAddress } from "../stark-constants";
+import { getProvider, getRTokenFromAddress, getTokenFromAddress, metricsContractAddress } from "../stark-constants";
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
 import { OraclePrice, getOraclePrices } from "./getOraclePrices";
 
@@ -47,7 +47,7 @@ export async function getTotalBorrow(loans: ILoan[], oraclePrices: OraclePrice[]
   let totalCurrentAmount = 0;
   for (let loan of loans) {
 
-    if(loan.loanState === "REPAID" || loan.loanState === "LIQUIDATED" || loan.loanState === null) continue;
+    if (loan.loanState === "REPAID" || loan.loanState === "LIQUIDATED" || loan.loanState === null) continue;
 
     const oraclePrice = oraclePrices.find(oraclePrice => oraclePrice.address === loan.underlyingMarketAddress);
     let exchangeRate = marketInfos.find(marketInfo => marketInfo.tokenAddress === loan.underlyingMarketAddress)?.exchangeRateDTokenToUnderlying;
@@ -55,21 +55,21 @@ export async function getTotalBorrow(loans: ILoan[], oraclePrices: OraclePrice[]
       let loanAmoungUnderlying = loan.loanAmountParsed * exchangeRate;
       totalBorrow += loanAmoungUnderlying * oraclePrice.price;
 
-      if(loan.loanState === "ACTIVE") {
+      if (loan.loanState === "ACTIVE") {
         totalCurrentAmount += loan.currentLoanAmountParsed * oraclePrice.price;
       }
-      else if(loan.loanState === "SPENT") {
+      else if (loan.loanState === "SPENT") {
         try {
           let l3UsdtValue = await getL3USDTValue(loan.loanId, loan.loanMarketAddress as string);
           totalCurrentAmount += l3UsdtValue;
         }
-        catch(e) {
+        catch (e) {
           console.log("error getting l3 usdt value: ", e);
         }
       }
     }
   }
-  return {totalBorrow, totalCurrentAmount};
+  return { totalBorrow, totalCurrentAmount };
 }
 
 export async function getL3USDTValue(loanId: number, loanMarketAddress: string) {
@@ -91,7 +91,6 @@ export async function getNetworth(totalSupply: number, totalBorrow: number, tota
   return netWorth;
 }
 
-
 export async function getNetApr(deposits: IDeposit[], loans: ILoan[], oraclePrices: OraclePrice[], marketInfos: IMarketInfo[]) {
   let totalSupply = 0, netSupplyInterest = 0;
   for (let deposit of deposits) {
@@ -108,19 +107,54 @@ export async function getNetApr(deposits: IDeposit[], loans: ILoan[], oraclePric
   let totalBorrow = 0, netBorrowInterest = 0;
   for (let loan of loans) {
 
-    if(loan.loanState === "REPAID" || loan.loanState === "LIQUIDATED" || loan.loanState === null) continue;
+    if (loan.loanState === "REPAID" || loan.loanState === "LIQUIDATED" || loan.loanState === null) continue;
 
     const oraclePrice = oraclePrices.find(oraclePrice => oraclePrice.address === loan.underlyingMarketAddress);
     let market_info = marketInfos.find(marketInfo => marketInfo.tokenAddress === loan.underlyingMarketAddress);
     if (oraclePrice && market_info) {
-      let loanAmoungUnderlying = loan.loanAmountParsed * market_info.exchangeRateDTokenToUnderlying;
-      let loanAmountUsd = loanAmoungUnderlying * oraclePrice.price;
+      let loanAmountUnderlying = loan.loanAmountParsed * market_info.exchangeRateDTokenToUnderlying;
+      let loanAmountUsd = loanAmountUnderlying * oraclePrice.price;
 
       totalBorrow += loanAmountUsd;
       netBorrowInterest += loanAmountUsd * market_info.borrowRate;
     }
   }
-  let netApr = netSupplyInterest/totalSupply - netBorrowInterest/totalBorrow;
+  let netApr = netSupplyInterest / totalSupply - netBorrowInterest / totalBorrow;
 
   return netApr;
+}
+
+export async function effectivAPRLoan(loan: ILoan, marketInfos: IMarketInfo[], oraclePrices: OraclePrice[]) {
+  if (loan.loanState === "REPAID" || loan.loanState === "LIQUIDATED" || loan.loanState === null) return 0;
+  const oraclePriceLoanMarket = oraclePrices.find(oraclePrice => oraclePrice.address === loan.underlyingMarketAddress);
+  const marketInfoLoanMarket = marketInfos.find(marketInfo => marketInfo.tokenAddress === loan.underlyingMarketAddress);
+
+  const collateralMarket = getRTokenFromAddress(loan.collateralMarketAddress as string)?.underlying_asset;
+  const oraclePriceCollateralMarket = oraclePrices.find(oraclePrice => oraclePrice.address === collateralMarket);
+  const marketInfoCollateralMarket = marketInfos.find(marketInfo => marketInfo.tokenAddress === collateralMarket);
+
+  if (oraclePriceLoanMarket && marketInfoLoanMarket && oraclePriceCollateralMarket && marketInfoCollateralMarket) {
+
+    let loanAmountUnderlying = loan.loanAmountParsed * marketInfoLoanMarket.exchangeRateDTokenToUnderlying;
+    let loanAmountUsd = loanAmountUnderlying * oraclePriceLoanMarket.price;
+    let borrowInterest = loanAmountUsd * marketInfoLoanMarket.borrowRate;
+
+    let collateralAmountUsd = loan.collateralAmountParsed * marketInfoCollateralMarket.exchangeRateRtokenToUnderlying * oraclePriceCollateralMarket.price;
+    let collateralInterest = collateralAmountUsd * marketInfoCollateralMarket.supplyRate;
+
+    let effectiveAPR = (borrowInterest - collateralInterest) / loanAmountUsd;
+    return effectiveAPR;
+  }
+}
+
+export async function effectiveAprDeposit(deposit: IDeposit, marketInfos: IMarketInfo[]) {
+  const marketInfo = marketInfos.find(marketInfo => marketInfo.tokenAddress === deposit.tokenAddress);
+  if (marketInfo) {
+    let rTokenInterest = deposit.rTokenAmountParsed * marketInfo.supplyRate;
+    let stakingInterest = deposit.rTokenStakedParsed * marketInfo.stakingRate;
+    let rTokenTotal = deposit.rTokenAmountParsed + deposit.rTokenStakedParsed;
+
+    return (rTokenInterest + stakingInterest) / rTokenTotal;
+  }
+
 }

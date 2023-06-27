@@ -73,6 +73,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { RToken } from "@/Blockchain/interfaces/interfaces";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { BNtoNum } from "@/Blockchain/utils/utils";
 const StakeUnstakeModal = ({
   buttonText,
   coin,
@@ -190,7 +191,7 @@ const StakeUnstakeModal = ({
   };
 
   const getBalance = (coin: string) => {
-    const amount = validRTokens.find(({ rToken, rTokenAmount }: any) => {
+    const amount = validRTokens?.find(({ rToken, rTokenAmount }: any) => {
       if (rToken == coin) return rTokenAmount;
     });
     return amount ? amount.rTokenAmount : 0;
@@ -745,7 +746,7 @@ const StakeUnstakeModal = ({
                                       >
                                         rToken Balance:{" "}
                                         {validRTokens && validRTokens.length > 0
-                                          ? getBalance(coin)
+                                          ?  getBalance(coin)
                                           : "loading..."}
                                       </Box>
                                     </Box>
