@@ -1,9 +1,11 @@
-import { Box, HStack, Text } from "@chakra-ui/react";
+import { Box, HStack, Skeleton, Text } from "@chakra-ui/react";
+import { useAccount } from "@starknet-react/core";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-
+import { ProviderInterface } from "starknet";
 const Footer = ({ block }: { block: number }) => {
+  const { account } = useAccount();
   return (
     <HStack
       zIndex="14"
@@ -60,9 +62,16 @@ const Footer = ({ block }: { block: number }) => {
           </Box>
         </HStack>
         <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
-          <Text color="#BDBFC1" fontSize="12px">
-            Network: Ethereum Goerli
-          </Text>
+          <Box color="#BDBFC1" fontSize="12px" display="flex">
+            Network:
+            {account?.chainId === "0x534e5f474f45524c49" 
+              ? "Starknet Goerli"
+              : account?.chainId == "0x534e5f474f45524c4932"
+              ? "Starknet Goerli 2"
+              : account?.chainId == "0x534e5f4d41494e"
+              ? "Starknet Mainnet"
+              : ""}
+          </Box>
           <Box
             height={"100%"}
             display={"flex"}
