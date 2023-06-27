@@ -44,8 +44,8 @@ import {
   setTransactionStatus,
   selectAssetWalletBalance,
   setToastTransactionStarted,
-  selectTransactionStarted,
-  setTransactionStarted,
+  // selectTransactionStarted,
+  // setTransactionStarted,
   // selectCurrentTransactionStatus,
   // setCurrentTransactionStatus,
 } from "@/store/slices/userAccountSlice";
@@ -98,8 +98,9 @@ const SupplyModal = ({
   // const toastHandler = () => {
   //   console.log("toast called");
   // };
-  const [currentTransactionStatus, setCurrentTransactionStatus] =
-    useState(false);
+  const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
+  const [transactionStarted, setTransactionStarted] = useState(false);
+
   const [toastId, setToastId] = useState<any>();
   const {
     depositAmount,
@@ -158,7 +159,7 @@ const SupplyModal = ({
   };
   // console.log(walletBalances,"wallet balances in supply modal")
 
-  const transactionStarted = useSelector(selectTransactionStarted);
+  // const transactionStarted = useSelector(selectTransactionStarted);
   // const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
 
   // const [transactionStarted, setTransactionStarted] = useState(false);
@@ -349,7 +350,7 @@ const SupplyModal = ({
       console.log("trans received");
     },
     onPending: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       toast.dismiss(toastId);
       console.log("trans pending");
       if (isToastDisplayed == false) {
@@ -363,6 +364,7 @@ const SupplyModal = ({
       }
     },
     onRejected(transaction: any) {
+      setCurrentTransactionStatus("Failed");
       toast.dismiss(toastId);
       if (!failureToastDisplayed) {
         console.log("treans rejected", transaction);
@@ -383,12 +385,12 @@ const SupplyModal = ({
       }
     },
     onAcceptedOnL1: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction: any) {
       toast.dismiss(toastId);
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       if (!isToastDisplayed) {
         toast.success(
           `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
@@ -589,9 +591,12 @@ const SupplyModal = ({
         : 0
     );
 
-    if (transactionStarted) dispatch(setTransactionStarted(""));
+    // if (transactionStarted) dispatch(setTransactionStarted(""));
+    setTransactionStarted(false);
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
+    setCurrentTransactionStatus("");
+    setDepositTransHash("");
   };
 
   useEffect(() => {
@@ -1316,7 +1321,8 @@ const SupplyModal = ({
                 ) : (
                   <Box
                     onClick={() => {
-                      dispatch(setTransactionStarted(""));
+                      // dispatch(setTransactionStarted(""));
+                      setTransactionStarted(true);
                       if (transactionStarted === false) {
                         handleTransaction();
                       }

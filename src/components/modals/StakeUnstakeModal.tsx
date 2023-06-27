@@ -196,8 +196,8 @@ const StakeUnstakeModal = ({
     return amount ? amount.rTokenAmount : 0;
   };
   const [depositTransHash, setDepositTransHash] = useState("");
-  const [currentTransactionStatus, setCurrentTransactionStatus] =
-    useState(false);
+  const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
+
   const [toastId, setToastId] = useState<any>();
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
@@ -206,7 +206,7 @@ const StakeUnstakeModal = ({
       console.log("trans received");
     },
     onPending: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       toast.dismiss(toastId);
       console.log("trans pending");
       if (isToastDisplayed == false) {
@@ -221,14 +221,16 @@ const StakeUnstakeModal = ({
     },
     onRejected(transaction) {
       toast.dismiss(toastId);
+      setCurrentTransactionStatus("failed");
+      dispatch(setTransactionStatus("failed"));
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       console.log("trans onAcceptedOnL2 - ", transaction);
       if (isToastDisplayed == false) {
         toast.success(
@@ -398,7 +400,7 @@ const StakeUnstakeModal = ({
     setUnstakeTransactionStarted(false);
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
-    setCurrentTransactionStatus(false);
+    setCurrentTransactionStatus("");
     setDepositTransHash("");
   };
   // console.log("testing isopen: ", isOpen);

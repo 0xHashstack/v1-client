@@ -161,8 +161,8 @@ const BorrowModal = ({
   }, [coin]);
 
   const [borrowTransHash, setBorrowTransHash] = useState("");
-  const [currentTransactionStatus, setCurrentTransactionStatus] =
-    useState(false);
+  const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
+
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [showToast, setShowToast] = useState("true");
   const [toastId, setToastId] = useState<any>();
@@ -173,7 +173,7 @@ const BorrowModal = ({
       console.log("trans received");
     },
     onPending: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       toast.dismiss(toastId);
       console.log("trans pending");
       if (isToastDisplayed == false) {
@@ -187,6 +187,9 @@ const BorrowModal = ({
       }
     },
     onRejected(transaction: any) {
+      setCurrentTransactionStatus("failed");
+      // dispatch(setTransactionStatus("failed"));
+      // toast.dismiss(toastId);
       console.log("treans rejected");
       dispatch(setTransactionStatus("failed"));
       console.log("handle borrow", transaction?.status);
@@ -204,12 +207,12 @@ const BorrowModal = ({
       });
     },
     onAcceptedOnL1: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
 
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       // if (isToastDisplayed == false) {
       //   toast.success(
       //     `You have successfully borrowed ${inputBorrowAmount} d${currentBorrowCoin} `,
@@ -437,6 +440,9 @@ const BorrowModal = ({
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
+    setCurrentTransactionStatus("");
+    setBorrowTransHash("");
+    // setDepositTransHash("")
   };
   useEffect(() => {
     setRTokenAmount(0);

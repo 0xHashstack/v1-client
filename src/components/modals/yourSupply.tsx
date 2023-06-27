@@ -363,9 +363,9 @@ const YourSupplyModal = ({
     setWithdrawTransactionStarted(false);
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
-    setCurrentTransactionStatus(false);
     setToastDisplayed(false);
     setDepositTransHash("");
+    setCurrentTransactionStatus("");
   };
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
@@ -394,8 +394,7 @@ const YourSupplyModal = ({
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [actionSelected, setActionSelected] = useState("Supply");
   const [toastId, setToastId] = useState<any>();
-  const [currentTransactionStatus, setCurrentTransactionStatus] =
-    useState(false);
+  const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
@@ -403,7 +402,7 @@ const YourSupplyModal = ({
       console.log("trans received");
     },
     onPending: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       toast.dismiss(toastId);
       console.log("trans pending");
       if (!isToastDisplayed) {
@@ -417,15 +416,17 @@ const YourSupplyModal = ({
       }
     },
     onRejected(transaction) {
+      setCurrentTransactionStatus("failed");
+      dispatch(setTransactionStatus("failed"));
       toast.dismiss(toastId);
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       console.log("trans onAcceptedOnL2 - ", transaction);
       if (!isToastDisplayed) {
         toast.success(

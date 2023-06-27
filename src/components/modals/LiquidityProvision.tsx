@@ -227,8 +227,7 @@ const LiquidityProvisionModal = ({
   };
 
   const [depositTransHash, setDepositTransHash] = useState("");
-  const [currentTransactionStatus, setCurrentTransactionStatus] =
-    useState(false);
+  const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [toastId, setToastId] = useState<any>();
   const recieptData = useWaitForTransaction({
@@ -244,20 +243,22 @@ const LiquidityProvisionModal = ({
       }
     },
     onPending: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       toast.dismiss(toastId);
       console.log("trans pending");
     },
     onRejected(transaction) {
+      setCurrentTransactionStatus("failed");
+      dispatch(setTransactionStatus("failed"));
       toast.dismiss(toastId);
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       console.log("trans onAcceptedOnL2 - ", transaction);
       if (!isToastDisplayed) {
         toast.success(`You have successfully supplied `, {
@@ -317,6 +318,8 @@ const LiquidityProvisionModal = ({
     setBorrowAmount(result?.loanAmountParsed);
     setToastDisplayed(false);
     dispatch(setTransactionStatus(""));
+    setCurrentTransactionStatus("");
+    setDepositTransHash("");
   };
 
   useEffect(() => {
