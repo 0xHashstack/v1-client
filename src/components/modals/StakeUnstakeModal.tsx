@@ -311,7 +311,7 @@ const StakeUnstakeModal = ({
 
   const handleChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
-    var percentage = (newValue * 100) / walletBalance;
+    var percentage = (newValue * 100) / getBalance(currentSelectedStakeCoin);
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue(100);
@@ -746,7 +746,7 @@ const StakeUnstakeModal = ({
                                       >
                                         rToken Balance:{" "}
                                         {validRTokens && validRTokens.length > 0
-                                          ?  getBalance(coin)
+                                          ?  getBalance(coin).toFixed(2)
                                           : "loading..."}
                                       </Box>
                                     </Box>
@@ -789,12 +789,12 @@ const StakeUnstakeModal = ({
                           width="100%"
                           color="white"
                           border={`${
-                            rTokenAmount > walletBalance
+                            rTokenAmount >getBalance(currentSelectedStakeCoin).toFixed(2)
                               ? "1px solid #CF222E"
                               : rTokenAmount < 0
                               ? "1px solid #CF222E"
                               : rTokenAmount > 0 &&
-                                rTokenAmount <= walletBalance
+                                rTokenAmount <= getBalance(currentSelectedStakeCoin).toFixed(2)
                               ? "1px solid #1A7F37"
                               : "1px solid #2B2F35 "
                           }`}
@@ -818,7 +818,7 @@ const StakeUnstakeModal = ({
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
                               color={`${
-                                rTokenAmount > walletBalance
+                                rTokenAmount > getBalance(currentSelectedStakeCoin).toFixed(2)
                                   ? "#CF222E"
                                   : rTokenAmount < 0
                                   ? "#CF222E"
@@ -845,8 +845,8 @@ const StakeUnstakeModal = ({
                             color="#0969DA"
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
-                              setRTokenAmount(walletBalance);
-                              setInputStakeAmount(walletBalance);
+                              setRTokenAmount(getBalance(currentSelectedStakeCoin).toFixed(2));
+                              setInputStakeAmount(getBalance(currentSelectedStakeCoin).toFixed(2));
                               setSliderValue(100);
                             }}
                             isDisabled={transactionStarted == true}
@@ -855,7 +855,7 @@ const StakeUnstakeModal = ({
                             MAX
                           </Button>
                         </Box>
-                        {rTokenAmount > walletBalance || rTokenAmount < 0 ? (
+                        {rTokenAmount > getBalance(currentSelectedStakeCoin).toFixed(2) || rTokenAmount < 0 ? (
                           <Text
                             display="flex"
                             justifyContent="space-between"
@@ -871,7 +871,7 @@ const StakeUnstakeModal = ({
                                 <SmallErrorIcon />{" "}
                               </Text>
                               <Text ml="0.3rem">
-                                {rTokenAmount > walletBalance
+                                {rTokenAmount > getBalance(currentSelectedStakeCoin).toFixed(2)
                                   ? "Amount exceeds balance"
                                   : "Invalid Input"}{" "}
                               </Text>
@@ -881,7 +881,7 @@ const StakeUnstakeModal = ({
                               display="flex"
                               justifyContent="flex-end"
                             >
-                              Wallet Balance: {walletBalance}
+                              rToken Balance: {getBalance(currentSelectedStakeCoin).toFixed(2)}
                               <Text color="#6E7781" ml="0.2rem">
                                 {` ${currentSelectedStakeCoin}`}
                               </Text>
@@ -899,7 +899,7 @@ const StakeUnstakeModal = ({
                             fontFamily="Inter"
                           >
                             rToken Balance:{" "}
-                            {getBalance(currentSelectedStakeCoin)}
+                            {getBalance(currentSelectedStakeCoin).toFixed(2)}
                             {/* {walletBalance} */}
                             <Text color="#6E7781" ml="0.2rem">
                               {` ${currentSelectedStakeCoin}`}
@@ -913,7 +913,7 @@ const StakeUnstakeModal = ({
                             value={sliderValue}
                             onChange={(val) => {
                               setSliderValue(val);
-                              var ans = (val / 100) * walletBalance;
+                              var ans = (val / 100) * getBalance(currentSelectedStakeCoin);
                               ans = Math.round(ans * 100) / 100;
                               // dispatch(setInputSupplyAmount(ans))
                               setRTokenAmount(ans);
@@ -1199,7 +1199,7 @@ const StakeUnstakeModal = ({
                           />
                         </Text>
                       </Text> */}
-                      {rTokenAmount > 0 && rTokenAmount <= walletBalance ? (
+                      {rTokenAmount > 0 && rTokenAmount <= getBalance(currentSelectedStakeCoin).toFixed(2) ? (
                         buttonId == 1 ? (
                           <SuccessButton successText="Stake success" />
                         ) : buttonId == 2 ? (
