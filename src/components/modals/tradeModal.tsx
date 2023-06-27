@@ -81,6 +81,7 @@ import useBorrowAndSpend from "@/Blockchain/hooks/Writes/useBorrowAndSpend";
 import { useWaitForTransaction } from "@starknet-react/core";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { toast } from "react-toastify";
+import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 const TradeModal = ({
   buttonText,
   coin,
@@ -311,9 +312,46 @@ const TradeModal = ({
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
     coin ? coin.name : "BTC"
   );
+
+  // const coinAlign = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const [currentBorrowCoin, setCurrentBorrowCoin] = useState(
     coin ? coin.name : "BTC"
   );
+  const [protocolStats, setProtocolStats] = useState<any>([]);
+  const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
+    protocolStats?.find((stat: any) => stat.token == currentBorrowCoin)
+      ?.availableReserves
+  );
+  const fetchProtocolStats = async () => {
+    const stats = await getProtocolStats();
+    if (stats)
+      setProtocolStats([
+        stats?.[0],
+        stats?.[2],
+        stats?.[3],
+        stats?.[1],
+        stats?.[4],
+      ]);
+  };
+  useEffect(() => {
+    try {
+      fetchProtocolStats();
+      console.log("protocolStats", protocolStats);
+    } catch (err: any) {
+      console.log("borrow modal : error fetching protocolStats");
+    }
+  }, []);
+  useEffect(() => {
+    console.log("currentAvailableReserve", currentAvailableReserves);
+  }, [currentAvailableReserves]);
+
+  useEffect(() => {
+    setCurrentAvailableReserves(
+      protocolStats[coins.indexOf(currentBorrowCoin)]?.availableReserves
+    );
+    console.log(coins.indexOf(currentBorrowCoin));
+  }, [protocolStats, currentBorrowCoin]);
+
   const [radioValue, setRadioValue] = useState("1");
 
   useEffect(() => {
@@ -1182,7 +1220,7 @@ const TradeModal = ({
                           <DropdownUp />
                         )}
                       </Box>
-                      {modalDropdowns.tradeModalBorrowMarketDropdown && (
+                      {/* {modalDropdowns.tradeModalBorrowMarketDropdown && (
                         <Box
                           w="full"
                           left="0"
@@ -1235,6 +1273,89 @@ const TradeModal = ({
                             );
                           })}
                         </Box>
+                      )} */}
+                      {modalDropdowns.tradeModalBorrowMarketDropdown && (
+                        <Box
+                          w="full"
+                          left="0"
+                          bg="#03060B"
+                          py="2"
+                          className="dropdown-container"
+                          boxShadow="dark-lg"
+                        >
+                          {coins.map((coin: string, index: number) => {
+                            return (
+                              <Box
+                                key={index}
+                                as="button"
+                                w="full"
+                                display="flex"
+                                alignItems="center"
+                                gap="1"
+                                pr="2"
+                                onClick={() => {
+                                  setCurrentBorrowCoin(coin);
+                                  setCurrentAvailableReserves(
+                                    protocolStats?.[index]?.availableReserves
+                                  );
+                                  // setMarket(coin);
+                                  // setMarket(coin);
+                                }}
+                              >
+                                {coin === currentBorrowCoin && (
+                                  <Box
+                                    w="3px"
+                                    h="28px"
+                                    bg="#0C6AD9"
+                                    borderRightRadius="md"
+                                  ></Box>
+                                )}
+                                <Box
+                                  w="full"
+                                  display="flex"
+                                  py="5px"
+                                  pl={`${
+                                    coin === currentBorrowCoin ? "1" : "5"
+                                  }`}
+                                  pr="6px"
+                                  gap="1"
+                                  bg={`${
+                                    coin === currentBorrowCoin
+                                      ? "#0C6AD9"
+                                      : "inherit"
+                                  }`}
+                                  borderRadius="md"
+                                  justifyContent="space-between"
+                                >
+                                  <Box display="flex">
+                                    <Box p="1">{getCoin(coin)}</Box>
+                                    <Text color="white">{coin}</Text>
+                                  </Box>
+                                  <Box
+                                    fontSize="9px"
+                                    color="white"
+                                    mt="6px"
+                                    fontWeight="thin"
+                                    display="flex"
+                                  >
+                                    Available reserves:{" "}
+                                    {protocolStats?.[index]
+                                      ?.availableReserves || (
+                                      <Skeleton
+                                        width="3rem"
+                                        height="1rem"
+                                        startColor="#2B2F35"
+                                        endColor="#101216"
+                                        borderRadius="6px"
+                                        ml={2}
+                                      />
+                                    )}
+                                  </Box>
+                                </Box>
+                              </Box>
+                            );
+                          })}
+                        </Box>
                       )}
                     </Box>
                   </Box>
@@ -1263,14 +1384,14 @@ const TradeModal = ({
                       width="100%"
                       color="white"
                       border={`${
-                        inputBorrowAmount > walletBalance
+                        inputBorrowAmount > currentAvailableReserves
                           ? "1px solid #CF222E"
                           : inputBorrowAmount < 0
                           ? "1px solid #CF222E"
                           : isNaN(inputBorrowAmount)
                           ? "1px solid #CF222E"
                           : inputBorrowAmount > 0 &&
-                            inputBorrowAmount <= walletBalance
+                            inputBorrowAmount <= currentAvailableReserves
                           ? "1px solid #1A7F37"
                           : "1px solid #2B2F35 "
                       }`}
@@ -1287,13 +1408,16 @@ const TradeModal = ({
                         step={parseFloat(
                           `${inputBorrowAmount <= 99999 ? 0.1 : 0}`
                         )}
-                        isDisabled={transactionStarted == true}
+                        isDisabled={
+                          transactionStarted == true ||
+                          protocolStats.length === 0
+                        }
                         _disabled={{ cursor: "pointer" }}
                       >
                         <NumberInputField
                           placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
                           color={`${
-                            inputBorrowAmount > walletBalance
+                            inputBorrowAmount > currentAvailableReserves
                               ? "#CF222E"
                               : isNaN(inputBorrowAmount)
                               ? "#CF222E"
@@ -1322,20 +1446,25 @@ const TradeModal = ({
                         color="#0969DA"
                         _hover={{ bg: "#101216" }}
                         onClick={() => {
-                          setinputBorrowAmount(walletBalance);
-                          setLoanAmount(walletBalance);
+                          setinputBorrowAmount(currentAvailableReserves);
+                          setLoanAmount(currentAvailableReserves);
                           setsliderValue2(100);
                           dispatch(
-                            setInputTradeModalBorrowAmount(walletBalance)
+                            setInputTradeModalBorrowAmount(
+                              currentAvailableReserves
+                            )
                           );
                         }}
-                        isDisabled={transactionStarted == true}
+                        isDisabled={
+                          transactionStarted == true ||
+                          protocolStats.length === 0
+                        }
                         _disabled={{ cursor: "pointer" }}
                       >
                         MAX
                       </Button>
                     </Box>
-                    {inputBorrowAmount > walletBalance ||
+                    {inputBorrowAmount > currentAvailableReserves ||
                     inputBorrowAmount < 0 ||
                     isNaN(inputBorrowAmount) ? (
                       <Text
@@ -1353,7 +1482,7 @@ const TradeModal = ({
                             <SmallErrorIcon />{" "}
                           </Text>
                           <Text ml="0.3rem">
-                            {inputBorrowAmount > walletBalance
+                            {inputBorrowAmount > currentAvailableReserves
                               ? "Amount exceeds balance"
                               : "Invalid Input"}
                           </Text>
@@ -1363,7 +1492,7 @@ const TradeModal = ({
                           display="flex"
                           justifyContent="flex-end"
                         >
-                          Available Reserves: {walletBalance}
+                          Available Reserves: {currentAvailableReserves}
                           <Text color="#6E7781" ml="0.2rem">
                             {` ${currentBorrowCoin}`}
                           </Text>
@@ -1380,7 +1509,19 @@ const TradeModal = ({
                         fontStyle="normal"
                         fontFamily="Inter"
                       >
-                        Available Reserves: {walletBalance}
+                        Available reserves:{" "}
+                        {protocolStats?.find(
+                          (stat: any) => stat.token == currentBorrowCoin
+                        )?.availableReserves || (
+                          <Skeleton
+                            width="4rem"
+                            height=".85rem"
+                            startColor="#2B2F35"
+                            endColor="#101216"
+                            borderRadius="4px"
+                            m={1}
+                          />
+                        )}
                         <Text color="#6E7781" ml="0.2rem">
                           {` ${currentBorrowCoin}`}
                         </Text>
@@ -1393,13 +1534,16 @@ const TradeModal = ({
                         value={sliderValue2}
                         onChange={(val) => {
                           setsliderValue2(val);
-                          var ans = (val / 100) * walletBalance;
+                          var ans = (val / 100) * currentAvailableReserves;
                           ans = Math.round(ans * 100) / 100;
                           dispatch(setInputTradeModalBorrowAmount(ans));
                           setinputBorrowAmount(ans);
                           setLoanAmount(ans);
                         }}
-                        isDisabled={transactionStarted == true}
+                        isDisabled={
+                          transactionStarted == true ||
+                          protocolStats.length === 0
+                        }
                         _disabled={{ cursor: "pointer" }}
                         focusThumbOnChange={false}
                       >
