@@ -934,7 +934,7 @@ const TradeModal = ({
                         min={0}
                         keepWithinRange={true}
                         onChange={handleChange}
-                        value={inputCollateralAmount}
+                        value={inputCollateralAmount ?inputCollateralAmount:""}
                         step={parseFloat(
                           `${inputCollateralAmount <= 99999 ? 0.1 : 0}`
                         )}
@@ -1404,7 +1404,7 @@ const TradeModal = ({
                         min={0}
                         keepWithinRange={true}
                         onChange={handleBorrowChange}
-                        value={inputBorrowAmount}
+                        value={inputBorrowAmount ?inputBorrowAmount:""}
                         step={parseFloat(
                           `${inputBorrowAmount <= 99999 ? 0.1 : 0}`
                         )}
