@@ -278,7 +278,7 @@ const YourBorrowModal = ({
         currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
       );
       const revert = await writeAsyncRevertInteractWithL3();
-      setCurrentTransactionStatus(revert?.transaction_hash);
+      setDepositTransHash(revert?.transaction_hash);
       console.log(revert);
       dispatch(setTransactionStatus("success"));
     } catch (err) {
@@ -487,8 +487,7 @@ const YourBorrowModal = ({
   // console.log(currentPool.split('/')[0])
   const [depositTransHash, setDepositTransHash] = useState("");
 
-  const [currentTransactionStatus, setCurrentTransactionStatus] =
-    useState(false);
+  const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [toastId, setToastId] = useState<any>();
   const recieptData = useWaitForTransaction({
@@ -498,7 +497,7 @@ const YourBorrowModal = ({
       console.log("trans received");
     },
     onPending: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       toast.dismiss(toastId);
       console.log("trans pending");
       if (!isToastDisplayed) {
@@ -510,14 +509,16 @@ const YourBorrowModal = ({
     },
     onRejected(transaction) {
       toast.dismiss(toastId);
+      setCurrentTransactionStatus("failed");
+      dispatch(setTransactionStatus("failed"));
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       console.log("trans onAcceptedOnL2 - ", transaction);
       if (!isToastDisplayed) {
         toast.success(`You have successfully supplied spend the loan `, {
@@ -1673,7 +1674,7 @@ const YourBorrowModal = ({
     } catch (err) {
       console.log("yourBorrowModal reset states - ", err);
     }
-    setCurrentTransactionStatus(false);
+    setCurrentTransactionStatus("");
     setDepositTransHash("");
   };
 

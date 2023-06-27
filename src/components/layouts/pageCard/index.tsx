@@ -10,6 +10,7 @@ import {
   useConnectors,
   useStarknet,
   useBlock,
+  useBlockNumber,
 } from "@starknet-react/core";
 import { useContract } from "@starknet-react/core";
 import {
@@ -274,7 +275,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     } catch (err) {
       console.log("error fetching protocol reserves ", err);
     }
-  }, [protocolReserves]);
+  }, []);
 
   // useEffect(() => {
   //   console.log("protocol reserves here ", protocolReserves);
@@ -291,6 +292,10 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //     console.log("getTotalBorrow error");
   //   }
   // }, [netWorth, yourSupply, yourBorrow, netWorth]);
+
+  const { data } = useBlockNumber({
+    refetchInterval: 10000,
+  });
 
   return (
     <>
@@ -349,7 +354,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             </AnimatedButton>
           </Box> */}
           {/* <ToastContainer theme="dark" /> */}
-          <Footer block={83207} />
+          <Footer block={data} />
         </>
       ) : (
         <>
