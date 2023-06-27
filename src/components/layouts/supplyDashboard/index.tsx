@@ -92,7 +92,6 @@ export interface ICoin {
 //     Status: "Active",
 //   },
 // ];
-
 const SupplyDashboard = ({
   width,
   currentPagination,
@@ -120,7 +119,16 @@ const SupplyDashboard = ({
     useState("rBTC");
   const [supplyMarkets, setSupplyMarkets] = useState([]);
 
+  const [statusHoverIndex, setStatusHoverIndex] = useState(-1);
+
   const [supplies, setSupplies] = useState<IDeposit[]>([]);
+  const handleStatusHover = (idx: number) => {
+    setStatusHoverIndex(idx);
+  };
+
+  const handleStatusHoverLeave = () => {
+    setStatusHoverIndex(-1);
+  };
   useEffect(() => {
     const getSupply = async () => {
       console.log("all deposits calling started");
@@ -449,19 +457,42 @@ const SupplyDashboard = ({
                         // alignItems="center"
                         justifyContent="center"
                         fontWeight="400"
-                        // bgColor={"blue"}
+                        bgColor={"blue"}
                         margin="0 auto"
                         gap={2}
                       >
                         {/* {checkGap(idx1, idx2)} */}
-                        <HStack gap={16}>
-                          <HStack>
-                            <Image
-                              src={`/stakeStatus.svg`}
-                              alt="Picture of the author"
-                              width="18"
-                              height="18"
-                            />
+                        <HStack>
+                          <HStack
+                            onMouseEnter={() => handleStatusHover(idx)}
+                            onMouseLeave={() => handleStatusHoverLeave()}
+                            _hover={{ cursor: "pointer" }}
+                            display={
+                              supply?.rTokenStakedParsed > 0 ? "block" : "none"
+                            }
+                            bgColor="red"
+                            // ml="16px"
+                          >
+                            {statusHoverIndex != idx ? (
+                              <Image
+                                src={`/stakeStatus.svg`}
+                                alt="Picture of the author"
+                                width="18"
+                                height="18"
+                              />
+                            ) : (
+                              <Text
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                borderRadius="22px"
+                                bgColor="#0C521F"
+                                p="0px 12px"
+                                fontSize="12px"
+                              >
+                                Staked
+                              </Text>
+                            )}
                             <Text>
                               {numberFormatter(supply?.rTokenStakedParsed)}
                             </Text>

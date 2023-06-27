@@ -10,6 +10,7 @@ import {
   useConnectors,
   useStarknet,
   useBlock,
+  useWaitForTransaction,
 } from "@starknet-react/core";
 import { useContract } from "@starknet-react/core";
 import {
@@ -23,6 +24,8 @@ import {
   selectNetWorth,
   selectNetAPR,
   selectYourBorrow,
+  selectActiveTransactions,
+  setActiveTransactions,
 } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import Footer from "../footer";
@@ -291,6 +294,24 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //     console.log("getTotalBorrow error");
   //   }
   // }, [netWorth, yourSupply, yourBorrow, netWorth]);
+  const activeTransactions = useSelector(selectActiveTransactions);
+  useEffect(() => {
+    let transactions = activeTransactions?.map((transaction, idx) => {
+      const transactionData = toastHandler(transaction);
+      if (
+        transactionData?.data?.status == "PENDING" ||
+        transactionData?.data?.status == "ACCEPTED_ON_L2" ||
+        transactionData?.data?.status == "ACCEPTED_ON_L1" ||
+        transactionData?.data?.status == "PENDING" ||
+        transactionData?.data?.status == "REJECTED"
+      ) {
+        toast.dismiss(transaction.toastID);
+      } else {
+        return transaction;
+      }
+    });
+    dispatch(setActiveTransactions(transactions));
+  }, []);
 
   return (
     <>
@@ -369,6 +390,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
               </Text>
             </Box>
           </Stack>
+          <Footer />
         </>
       )}
     </>

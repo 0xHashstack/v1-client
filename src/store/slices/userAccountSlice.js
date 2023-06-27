@@ -41,6 +41,7 @@ const initialState = {
   yourSupply: null,
   yourBorrow: null,
   netAPR: null,
+  activeTransactions: [],
 
   // toastTransactionStarted: false,
 
@@ -153,6 +154,9 @@ export const userAccountSlice = createSlice({
     setNetAPR(state, action) {
       state.netAPR = action.payload;
     },
+    setActiveTransactions(state, action) {
+      state.activeTransactions = action.payload;
+    },
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;
     // },
@@ -188,6 +192,7 @@ export const {
   setYourSupply,
   setNetAPR,
   setNetWorth,
+  setActiveTransactions,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -251,6 +256,9 @@ export const selectNetWorth = (state) => {
 };
 export const selectNetAPR = (state) => {
   state.user_account.netAPR;
+};
+export const selectActiveTransactions = (state) => {
+  state.user_account.activeTransactions;
 };
 // export const select=(state)=>{
 //   state.user_account.
