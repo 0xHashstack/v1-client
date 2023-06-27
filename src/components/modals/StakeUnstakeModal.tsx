@@ -73,6 +73,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { RToken } from "@/Blockchain/interfaces/interfaces";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { BNtoNum } from "@/Blockchain/utils/utils";
 const StakeUnstakeModal = ({
   buttonText,
   coin,
@@ -743,7 +744,7 @@ const StakeUnstakeModal = ({
                                       >
                                         rToken Balance:{" "}
                                         {validRTokens && validRTokens.length > 0
-                                          ? getBalance(coin)
+                                          ?  getBalance(coin)
                                           : "loading..."}
                                       </Box>
                                     </Box>
