@@ -7,7 +7,7 @@ import { useState } from "react";
 
 const useStakeRequest = () => {
   const [rToken, setRToken] = useState<RToken>("rBTC");
-  const [rTokenAmount, setRTokenAmount] = useState(0);
+  const [rTokenAmount, setRTokenAmount] = useState<number>(0);
   const { address: owner } = useAccount();
   // console.log()
 
