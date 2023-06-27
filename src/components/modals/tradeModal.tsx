@@ -43,8 +43,8 @@ import {
   setInputTradeModalBorrowAmount,
   selectAssetWalletBalance,
   setTransactionStatus,
-  setTransactionStarted,
-  selectTransactionStarted,
+  // setTransactionStarted,
+  // selectTransactionStarted,
 } from "@/store/slices/userAccountSlice";
 import {
   selectNavDropdowns,
@@ -140,7 +140,7 @@ const TradeModal = ({
   } = useBorrowAndSpend();
 
   const rTokens: RToken[] = ["rBTC", "rUSDT", "rETH"];
-  const transactionStarted = useSelector(selectTransactionStarted);
+  // const transactionStarted = useSelector(selectTransactionStarted);
 
   const [sliderValue, setSliderValue] = useState(0);
   const [sliderValue2, setsliderValue2] = useState(0);
@@ -149,7 +149,7 @@ const TradeModal = ({
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
-  // const [transactionStarted, setTransactionStarted] = useState(false);
+  const [transactionStarted, setTransactionStarted] = useState(false);
   // const walletBalances=useSelector(selectAssetWalletBalance);
   interface assetB {
     USDT: any;
@@ -352,9 +352,12 @@ const TradeModal = ({
           )
         : 0
     );
-    if (transactionStarted) dispatch(setTransactionStarted(""));
+    // if (transactionStarted) dispatch(setTransactionStarted(""));
+    setTransactionStarted(false);
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
+    setCurrentTransactionStatus("");
+    setDepositTransHash("");
   };
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
@@ -375,8 +378,8 @@ const TradeModal = ({
 
   const [depositTransHash, setDepositTransHash] = useState("");
 
-  const [currentTransactionStatus, setCurrentTransactionStatus] =
-    useState(false);
+  const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
+
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [toastId, setToastId] = useState<any>();
   const recieptData = useWaitForTransaction({
@@ -386,7 +389,7 @@ const TradeModal = ({
       console.log("trans received");
     },
     onPending: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       toast.dismiss(toastId);
       console.log("trans pending");
       if (!isToastDisplayed) {
@@ -397,15 +400,17 @@ const TradeModal = ({
       }
     },
     onRejected(transaction) {
+      setCurrentTransactionStatus("failed");
+      dispatch(setTransactionStatus("failed"));
       toast.dismiss(toastId);
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       console.log("trans onAcceptedOnL2 - ", transaction);
       if (!isToastDisplayed) {
         toast.success(`You have successfully supplied spend the loan `, {
