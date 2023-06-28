@@ -1,11 +1,9 @@
-import { Box, HStack, Skeleton, Text } from "@chakra-ui/react";
-import { useAccount } from "@starknet-react/core";
+import { Box, HStack, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-
+import { ProviderInterface } from "starknet";
 const Footer = ({ block }: { block: number }) => {
-  const { account } = useAccount();
   return (
     <HStack
       zIndex="14"
@@ -63,24 +61,13 @@ const Footer = ({ block }: { block: number }) => {
         </HStack>
         <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
           <Box color="#BDBFC1" fontSize="12px" display="flex">
-            Network:{" "}
-            {account?.baseUrl?.includes("https://alpha4.starknet.io") ||
-            account?.provider?.baseUrl?.includes(
-              "https://alpha4.starknet.io"
-            ) ? (
+            Network:
+            {account?.chainId === "0x534e5f474f45524c49" ? (
               "Starknet Goerli"
-            ) : account?.baseUrl?.includes(
-                "https://alpha-mainnet.starknet.io"
-              ) ||
-              account?.provider?.baseUrl?.includes(
-                "https://alpha-mainnet.starknet.io"
-              ) ? (
-              "Starknet mainnet"
-            ) : account?.baseUrl?.includes("https://alpha4-2.starknet.io") ||
-              account?.provider?.baseUrl?.includes(
-                "https://alpha4-2.starknet.io"
-              ) ? (
+            ) : account?.chainId == "0x534e5f474f45524c4932" ? (
               "Starknet Goerli 2"
+            ) : account?.chainId == "0x534e5f4d41494e" ? (
+              "Starknet Mainnet"
             ) : (
               <Skeleton
                 width="4rem"

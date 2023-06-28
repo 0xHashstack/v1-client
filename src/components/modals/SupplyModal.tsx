@@ -88,6 +88,7 @@ import WarningIcon from "@/assets/icons/coins/warningIcon";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { useFetchToastStatus } from "../layouts/toasts";
+import TransactionFees from "../../../TransactionFees.json";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -1258,7 +1259,7 @@ const SupplyModal = ({
                     font-size="12px"
                     color="#6A737D"
                   >
-                    5.56%
+                    {TransactionFees.supply}%
                   </Text>
                 </Text>
                 <Text

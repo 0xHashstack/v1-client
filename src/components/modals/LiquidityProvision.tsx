@@ -44,6 +44,7 @@ import TableJediswapLogo from "../layouts/table/tableIcons/jediswapLogo";
 import useSwap from "@/Blockchain/hooks/Writes/useSwap";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import { toast } from "react-toastify";
+import TransactionFees from "../../../TransactionFees.json";
 import {
   selectInputSupplyAmount,
   setCoinSelectedSupplyModal,
@@ -63,6 +64,15 @@ import ArrowUp from "@/assets/icons/arrowup";
 import useLiquidity from "@/Blockchain/hooks/Writes/useLiquidity";
 import { useWaitForTransaction } from "@starknet-react/core";
 import CopyToClipboard from "react-copy-to-clipboard";
+import {
+  getJediEstimateLiquiditySplit,
+  getJediEstimatedLpAmountOut,
+} from "@/Blockchain/scripts/l3interaction";
+import BtcToUsdc from "@/assets/icons/pools/btcToUsdc";
+import BtcToDai from "@/assets/icons/pools/btcToDai";
+import UsdtToDai from "@/assets/icons/pools/usdtToDai";
+import UsdcToDai from "@/assets/icons/pools/usdcToDai";
+import Image from "next/image";
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -164,23 +174,31 @@ const LiquidityProvisionModal = ({
       case "Jediswap":
         return <JediswapLogo />;
         break;
-      case "wETH/USDT":
+      case "ETH/USDT":
         return <EthToUsdt />;
         break;
       case "USDC/USDT":
         return <UsdcToUsdt />;
         break;
-      case "wETH/USDC":
+      case "ETH/USDC":
         return <EthToUsdc />;
         break;
       case "DAI/ETH":
         return <DaiToEth />;
         break;
-      case "wBTC/ETH":
+      case "BTC/ETH":
         return <BtcToEth />;
         break;
-      case "wBTC/USDT":
+      case "BTC/USDT":
         return <BtcToUsdt />;
+      case "BTC/USDC":
+        return <BtcToUsdc />;
+      case "BTC/DAI":
+        return <BtcToDai />;
+      case "USDT/DAI":
+        return <UsdtToDai />;
+      case "USDC/DAI":
+        return <UsdcToDai />;
         break;
       default:
         break;
@@ -194,12 +212,16 @@ const LiquidityProvisionModal = ({
   //   "ID - 1234510",
   // ];
   const pools = [
-    "wETH/USDT",
+    "ETH/USDT",
     "USDC/USDT",
-    "wETH/USDC",
+    "ETH/USDC",
     "DAI/ETH",
-    "wBTC/ETH",
-    "wBTC/USDT",
+    "BTC/ETH",
+    "BTC/USDT",
+    "BTC/USDC",
+    "BTC/DAI",
+    "USDT/DAI",
+    "USDC/DAI",
   ];
 
   //This Function handles the modalDropDowns
@@ -373,6 +395,42 @@ const LiquidityProvisionModal = ({
     }
   };
 
+  const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState(null);
+  const [currentSplit, setCurrentSplit] = useState(null);
+
+  useEffect(() => {
+    // if (!currentBorrowId1 || currentBorrowId1 == "") {
+    //   return;
+    // }
+    console.log(
+      "toMarketSplitConsole",
+      currentBorrowId.slice(5),
+      toMarketA,
+      toMarketB
+      // borrow
+    );
+    setCurrentLPTokenAmount(null);
+    setCurrentSplit(null);
+    fetchLiquiditySplit();
+  }, [toMarketA, currentBorrowId, toMarketB]);
+
+  const fetchLiquiditySplit = async () => {
+    const lp_tokon: any = await getJediEstimatedLpAmountOut(
+      currentBorrowId.slice(5),
+      toMarketA,
+      toMarketB
+    );
+    console.log("toMarketSplitLP", lp_tokon);
+    setCurrentLPTokenAmount(lp_tokon);
+    const split: any = await getJediEstimateLiquiditySplit(
+      currentBorrowId.slice(5),
+      toMarketA,
+      toMarketB
+    );
+    console.log("toMarketSplit", split);
+    setCurrentSplit(split);
+  };
+
   return (
     <div>
       <Box display="flex" gap="4rem" mt="1rem">
@@ -527,6 +585,8 @@ const LiquidityProvisionModal = ({
                       py="2"
                       className="dropdown-container"
                       boxShadow="dark-lg"
+                      height="198px"
+                      overflow="scroll"
                     >
                       {pools.map((pool, index) => {
                         return (
@@ -800,7 +860,13 @@ const LiquidityProvisionModal = ({
                   </Box>
                   <Box display="flex" gap="2px">
                     <Box mt="2px">
-                      <SmallJediswapLogo />
+                      {/* <SmallJediswapLogo /> */}
+                      <Image
+                        src={`/${currentSwap}.svg`}
+                        alt="liquidity split coin1"
+                        width="12"
+                        height="12"
+                      />
                     </Box>
                     <Text
                       color="#6A737D"
@@ -846,7 +912,20 @@ const LiquidityProvisionModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    $10.91
+                    {currentLPTokenAmount === null ? (
+                      <Box pt="2px">
+                        <Skeleton
+                          width="2.3rem"
+                          height=".85rem"
+                          startColor="#2B2F35"
+                          endColor="#101216"
+                          borderRadius="6px"
+                        />
+                      </Box>
+                    ) : (
+                      "$" + currentLPTokenAmount
+                    )}
+                    {/* $ 10.91 */}
                   </Text>
                 </Box>
                 <Box display="flex" justifyContent="space-between" mb="0.3rem">
@@ -884,16 +963,52 @@ const LiquidityProvisionModal = ({
                     fontStyle="normal"
                   >
                     <Box display="flex" gap="2px">
-                      <Box mt="2px">
-                        <SmallEth />
+                      <Box m="2px">
+                        {/* <SmallEth /> */}
+                        <Image
+                          src={`/${toMarketA}.svg`}
+                          alt="liquidity split coin1"
+                          width="12"
+                          height="12"
+                        />
                       </Box>
-                      <Text>1.23</Text>
+                      <Text>
+                        {currentSplit ? (
+                          (currentSplit[0] / 1e8).toFixed(2)
+                        ) : (
+                          <Skeleton
+                            width="2.3rem"
+                            height=".85rem"
+                            startColor="#2B2F35"
+                            endColor="#101216"
+                            borderRadius="6px"
+                          />
+                        )}
+                      </Text>
                     </Box>
                     <Box display="flex" gap="2px">
-                      <Box mt="2px">
-                        <SmallUsdt />
+                      <Box m="2px">
+                        {/* <SmallUsdt /> */}
+                        <Image
+                          src={`/${toMarketB}.svg`}
+                          alt="liquidity split coin1"
+                          width="12"
+                          height="12"
+                        />
                       </Box>
-                      <Text>1.23</Text>
+                      <Text>
+                        {currentSplit ? (
+                          (currentSplit[1] / 1e8).toFixed(2)
+                        ) : (
+                          <Skeleton
+                            width="2.3rem"
+                            height=".85rem"
+                            startColor="#2B2F35"
+                            endColor="#101216"
+                            borderRadius="6px"
+                          />
+                        )}
+                      </Text>
                     </Box>
                   </Box>
                 </Box>
@@ -929,7 +1044,7 @@ const LiquidityProvisionModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    0.1%
+                    {TransactionFees.spend}%
                   </Text>
                 </Box>
                 <Box display="flex" justifyContent="space-between" mb="0.3rem">

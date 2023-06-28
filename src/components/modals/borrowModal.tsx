@@ -225,7 +225,16 @@ const BorrowModal = ({
       console.log("trans onAcceptedOnL2 - ", transaction);
     },
   });
+
+  const coinAlign = ["BTC", "USDT", "USDC", "ETH", "DAI"];
+  const [currentBorrowCoin, setCurrentBorrowCoin] = useState(
+    coin ? coin.name : "BTC"
+  );
   const [protocolStats, setProtocolStats] = useState<any>([]);
+  const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
+    protocolStats?.find((stat: any) => stat.token == currentBorrowCoin)
+      ?.availableReserves
+  );
   const fetchProtocolStats = async () => {
     const stats = await getProtocolStats();
     if (stats)
@@ -245,6 +254,17 @@ const BorrowModal = ({
       console.log("borrow modal : error fetching protocolStats");
     }
   }, []);
+  useEffect(() => {
+    console.log("currentAvailableReserve", currentAvailableReserves);
+  }, [currentAvailableReserves]);
+
+  useEffect(() => {
+    setCurrentAvailableReserves(
+      protocolStats[coinAlign.indexOf(currentBorrowCoin)]?.availableReserves
+    );
+    console.log(coinAlign.indexOf(currentBorrowCoin));
+  }, [protocolStats, currentBorrowCoin]);
+
   const handleBorrow = async () => {
     try {
       // console.log("borrowing", amount, market, rToken, rTokenAmount);
@@ -419,9 +439,6 @@ const BorrowModal = ({
   const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
-    coin ? coin.name : "BTC"
-  );
-  const [currentBorrowCoin, setCurrentBorrowCoin] = useState(
     coin ? coin.name : "BTC"
   );
   const activeModal = Object.keys(modalDropdowns).find(
@@ -1152,6 +1169,9 @@ const BorrowModal = ({
                             pr="2"
                             onClick={() => {
                               setCurrentBorrowCoin(coin);
+                              setCurrentAvailableReserves(
+                                protocolStats?.[index]?.availableReserves
+                              );
                               // setMarket(coin);
                               setMarket(coin);
                             }}
@@ -1235,13 +1255,13 @@ const BorrowModal = ({
                   width="100%"
                   color="white"
                   border={`${
-                    amount > walletBalance
+                    amount > currentAvailableReserves
                       ? "1px solid #CF222E"
                       : amount < 0
                       ? "1px solid #CF222E"
                       : isNaN(amount)
                       ? "1px solid #CF222E"
-                      : amount > 0 && amount <= walletBalance
+                      : amount > 0 && amount <= currentAvailableReserves
                       ? "1px solid #1A7F37"
                       : "1px solid #2B2F35 "
                   }`}
@@ -1256,13 +1276,15 @@ const BorrowModal = ({
                     onChange={handleBorrowChange}
                     value={amount ? amount : ""}
                     step={parseFloat(`${amount <= 99999 ? 0.1 : 0}`)}
-                    isDisabled={transactionStarted == true}
+                    isDisabled={
+                      transactionStarted == true || protocolStats.length === 0
+                    }
                     _disabled={{ cursor: "pointer" }}
                   >
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
                       color={`${
-                        amount > walletBalance
+                        amount > currentAvailableReserves
                           ? "#CF222E"
                           : isNaN(amount)
                           ? "#CF222E"
@@ -1291,18 +1313,24 @@ const BorrowModal = ({
                     color="#0969DA"
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
-                      setAmount(walletBalance);
-                      setinputBorrowAmount(walletBalance);
+                      setAmount(currentAvailableReserves);
+                      setinputBorrowAmount(currentAvailableReserves);
                       setsliderValue2(100);
-                      dispatch(setInputBorrowModalBorrowAmount(walletBalance));
+                      dispatch(
+                        setInputBorrowModalBorrowAmount(
+                          currentAvailableReserves
+                        )
+                      );
                     }}
-                    isDisabled={transactionStarted == true}
+                    isDisabled={
+                      transactionStarted == true || protocolStats.length === 0
+                    }
                     _disabled={{ cursor: "pointer" }}
                   >
                     MAX
                   </Button>
                 </Box>
-                {amount > walletBalance || amount < 0 ? (
+                {amount > currentAvailableReserves || amount < 0 ? (
                   <Box
                     display="flex"
                     justifyContent="space-between"
@@ -1318,7 +1346,7 @@ const BorrowModal = ({
                         <SmallErrorIcon />{" "}
                       </Text>
                       <Text ml="0.3rem">
-                        {amount > walletBalance
+                        {amount > currentAvailableReserves
                           ? "Amount exceeds balance"
                           : "Invalid Input"}
                       </Text>
@@ -1383,13 +1411,15 @@ const BorrowModal = ({
                     value={sliderValue2}
                     onChange={(val) => {
                       setsliderValue2(val);
-                      var ans = (val / 100) * walletBalance;
+                      var ans = (val / 100) * currentAvailableReserves;
                       ans = Math.round(ans * 100) / 100;
                       dispatch(setInputBorrowModalBorrowAmount(ans));
                       setAmount(ans);
                       setinputBorrowAmount(ans);
                     }}
-                    isDisabled={transactionStarted == true}
+                    isDisabled={
+                      transactionStarted == true || protocolStats.length === 0
+                    }
                     _disabled={{ cursor: "pointer" }}
                     focusThumbOnChange={false}
                   >
