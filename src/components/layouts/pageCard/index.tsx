@@ -37,6 +37,7 @@ import {
   selectUserLoans,
   setYourBorrow,
   setNetAPR,
+  setTransactionRefresh,
 } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import Footer from "../footer";
@@ -67,6 +68,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 // import { useFetchToastStatus } from "../toasts";
 import { getTotalSupply } from "@/Blockchain/scripts/userStats";
 import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
+import useTransactionRefresh from "@/hooks/useTransactionRefresh";
 interface Props extends StackProps {
   children: ReactNode;
 }
@@ -371,8 +373,10 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
 
   const [transactions, setTransactions] = useState([]);
   const toastHash = [""];
+  const [isMounted, setIsMounted] = useState(false);
   useEffect(() => {
     // console.log("trans activeTransactions useEffect called");
+    console.log("hey I am aryan");
     if (activeTransactions) {
       const data = activeTransactions.map(
         (transaction) => transaction.transaction_hash
@@ -390,14 +394,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     hashes: [...transactions],
     watch: true,
   });
-
-  // const data = useTransaction()
-  console.log("trans toastHash", toastHash);
-  console.log("transaction results - ", results);
+  // // const data = useTransaction()
+  // console.log("trans toastHash", toastHash);
+  // console.log("transaction results - ", results);
   useEffect(() => {
-    console.log("transaction active transactions ", activeTransactions);
-    console.log("transaction transactions ", transactions);
-    console.log("transaction results ", results);
+    // console.log("transaction active transactions ", activeTransactions);
+    // console.log("transaction transactions ", transactions);
+    // console.log("transaction results ", results);
     let transactionData = results?.filter((transaction, idx) => {
       transaction.refetch();
       if (
@@ -421,6 +424,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
               position: toast.POSITION.BOTTOM_RIGHT,
             }
           );
+          dispatch(setTransactionRefresh());
         }
         toastHash.push(transaction_hxh);
         toastHash.push(activeTransactions[idx]?.transaction_hash);

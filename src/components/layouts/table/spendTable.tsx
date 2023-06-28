@@ -75,8 +75,11 @@ const SpendTable = () => {
   useEffect(() => {
     const loan = async () => {
       try {
-        const loans = await getUserLoans(address || "");
-        // console.log(loans,"Loans from your borrow index page")
+        if (!address) {
+          return;
+        }
+        const loans = await getUserLoans(address);
+        console.log(loans,"Loans from your borrow index page")
 
         // loans.filter(
         //   (loan) =>
@@ -99,11 +102,11 @@ const SpendTable = () => {
       }
       // console.log("loans", loans);
     };
-    if (account && isConnected) {
+    if (address && address != "") {
       // callWithRetries(loan, [], 3);
       loan();
     }
-  }, [account, isConnected]);
+  }, [address]);
   // let userLoans: any = useSelector(selectUserLoans);
   // userLoans = userLoans.filter((borrow: any) => borrow.spendType === "UNSPENT");
   // .filter(

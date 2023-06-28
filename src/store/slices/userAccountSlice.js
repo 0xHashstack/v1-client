@@ -42,7 +42,7 @@ const initialState = {
   yourBorrow: null,
   netAPR: null,
   activeTransactions: [],
-  transactionRefresh: false,
+  transactionRefresh: -1,
 
   // walletBalance: {
   //   BTC: 0,
@@ -156,7 +156,9 @@ export const userAccountSlice = createSlice({
     setActiveTransactions(state, action) {
       state.activeTransactions = action.payload;
     },
-    setTrasactionRefresh(state, action) {},
+    setTransactionRefresh(state, action) {
+      state.transactionRefresh = state.transactionRefresh === 0 ? 1 : 0;
+    },
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;
     // },
@@ -193,7 +195,7 @@ export const {
   setNetAPR,
   setNetWorth,
   setActiveTransactions,
-  setTrasactionRefresh,
+  setTransactionRefresh,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
