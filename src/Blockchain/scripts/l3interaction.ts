@@ -26,8 +26,8 @@ export async function getJediEstimateLiquiditySplit(loanId: string, tokenA: stri
   );
   console.log("estimated liquidity split for loanId: ", loanId, " is: ", res);
   return [
-    uint256.uint256ToBN(res?.amountA).toString(),
-    uint256.uint256ToBN(res?.amountB).toString(),
+    parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 18),
+    parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 18),
   ];
 }
 
@@ -55,6 +55,7 @@ export async function getJediEstimatedLpAmountOut(loanId: string, tokenA: string
 }
 
 // after interaction, in borrow screen, after getting getUserLoans
+// liquidity is the currentAmount, pairAddress is the currentMarketAddress
 export async function getJediEstimatedLiqALiqBfromLp(liquidity: string, pairAddress: string) {
   // currentMarketAmount, currentMarketAddress
   const provider = getProvider();
