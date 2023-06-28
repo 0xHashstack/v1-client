@@ -11,26 +11,41 @@ import { weiToEtherNumber } from "../utils/utils";
 
 function parseDeposits(deposits: any): IDeposit[] {
   const parsedDeposits: IDeposit[] = [];
+  // console.log("deposits - ", deposits);
   for (let i = 0; i < deposits?.length; ++i) {
     let depositData = deposits[i];
-    let deposit: IDeposit = {
-      tokenAddress: number.toHex(depositData?.asset_addr),
-      token: getTokenFromAddress(number.toHex(depositData?.asset_addr))
-        ?.name as NativeToken,
 
+    let tokenAddress = number.toHex(depositData?.asset_addr);
+    let token = getTokenFromAddress(tokenAddress)?.name as NativeToken;
+
+    let rTokenFreeParsed = weiToEtherNumber(
+      uint256.uint256ToBN(depositData?.rToken_free).toString(),
+      token
+    );
+
+    let rTokenLockedParsed = weiToEtherNumber(
+      uint256.uint256ToBN(depositData?.rToken_locked).toString(),
+      token
+    );
+
+    let rTokenStakedParsed = weiToEtherNumber(
+      uint256.uint256ToBN(depositData?.rToken_staked).toString(),
+      token
+    );
+
+    let deposit: IDeposit = {
+      tokenAddress,
+      token,
       rTokenAddress:
-        getTokenFromAddress(number.toHex(depositData?.asset_addr))?.rToken ||
+        getTokenFromAddress(tokenAddress)?.rToken ||
         "",
       rToken: getRTokenFromAddress(
         getTokenFromAddress(number.toHex(depositData?.asset_addr))?.rToken || ""
       )?.name as RToken,
-      rTokenAmount: uint256.uint256ToBN(depositData?.rToken_amount),
-      rTokenAmountParsed: weiToEtherNumber(
-        uint256.uint256ToBN(depositData?.rToken_amount).toString(),
-        getTokenFromAddress(number.toHex(depositData?.asset_addr))
-          ?.name as NativeToken
-      ),
-
+      rTokenFreeParsed,
+      rTokenLockedParsed,
+      rTokenStakedParsed,
+      rTokenAmountParsed: rTokenFreeParsed + rTokenLockedParsed,
       underlyingAssetAmount: uint256.uint256ToBN(
         depositData?.underlying_asset_amount
       ),
@@ -42,7 +57,7 @@ function parseDeposits(deposits: any): IDeposit[] {
     };
     parsedDeposits.push(JSON.parse(JSON.stringify(deposit)));
   }
-  // console.log("all deposits", parsedDeposits);
+  console.log("supplies parsed: ", parsedDeposits);
   return parsedDeposits;
 }
 
@@ -53,10 +68,16 @@ export async function getUserDeposits(account: string) {
     metricsContractAddress,
     provider
   );
-  // console.log("supplies", account);
-  const res = await metricsContract.call("get_user_deposits", [account], {
-    blockIdentifier: "pending",
-  });
-  return parseDeposits(res?.deposits);
-  // return parseDeposits(res);
+  if(!account) return;
+  console.log("supplies callling with:", account, "on address: ", metricsContractAddress);
+  try {
+    const res = await metricsContract.call("get_user_deposits", [account], {
+      blockIdentifier: "pending",
+    });
+    console.log("supplies res: ", res);
+    return parseDeposits(res?.deposits);
+  }
+  catch (error) {
+    console.error("supplies fails: ", error);
+  }
 }

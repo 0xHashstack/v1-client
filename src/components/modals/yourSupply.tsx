@@ -26,6 +26,7 @@ import {
   RadioGroup,
   Radio,
   Stack,
+  Skeleton,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -92,6 +93,7 @@ const YourSupplyModal = ({
   currentSelectedWithdrawlCoin,
   setcurrentSelectedWithdrawlCoin,
   coins,
+  protocolStats,
 }: any) => {
   // console.log(coins,"coins in supply modal")
   // console.log(currentSelectedSupplyCoin,"coin in your suppply");
@@ -299,7 +301,7 @@ const YourSupplyModal = ({
     }
   };
   const handleChange = (newValue: any) => {
-    if(newValue > 9_000_000_000) return;
+    if (newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
@@ -361,9 +363,9 @@ const YourSupplyModal = ({
     setWithdrawTransactionStarted(false);
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
-    setCurrentTransactionStatus(false);
     setToastDisplayed(false);
     setDepositTransHash("");
+    setCurrentTransactionStatus("");
   };
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
@@ -376,7 +378,11 @@ const YourSupplyModal = ({
   }, [currentSelectedSupplyCoin]);
 
   useEffect(() => {
-    setAsset(currentSelectedWithdrawlCoin[0] == 'r' ? currentSelectedWithdrawlCoin.slice(1) : currentSelectedWithdrawlCoin);
+    setAsset(
+      currentSelectedWithdrawlCoin[0] == "r"
+        ? currentSelectedWithdrawlCoin.slice(1)
+        : currentSelectedWithdrawlCoin
+    );
   }, [currentSelectedWithdrawlCoin]);
 
   useEffect(() => {
@@ -387,8 +393,8 @@ const YourSupplyModal = ({
   const [depositTransHash, setDepositTransHash] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [actionSelected, setActionSelected] = useState("Supply");
-  const [currentTransactionStatus, setCurrentTransactionStatus] =
-    useState(false);
+  const [toastId, setToastId] = useState<any>();
+  const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
@@ -396,7 +402,8 @@ const YourSupplyModal = ({
       console.log("trans received");
     },
     onPending: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
+      toast.dismiss(toastId);
       console.log("trans pending");
       if (!isToastDisplayed) {
         toast.success(
@@ -409,14 +416,17 @@ const YourSupplyModal = ({
       }
     },
     onRejected(transaction) {
+      setCurrentTransactionStatus("failed");
+      dispatch(setTransactionStatus("failed"));
+      toast.dismiss(toastId);
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       console.log("trans onAcceptedOnL2 - ", transaction);
       if (!isToastDisplayed) {
         toast.success(
@@ -434,6 +444,17 @@ const YourSupplyModal = ({
     try {
       const withdraw = await writeAsyncWithdrawDeposit();
       setDepositTransHash(withdraw?.transaction_hash);
+      if (withdraw?.transaction_hash) {
+        console.log("toast here");
+        const toastid = toast.info(
+          `Please wait, your transaction is running in background  ${inputSupplyAmount} ${currentSelectedSupplyCoin} `,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        );
+        setToastId(toastid);
+      }
       if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
       }
       dispatch(setTransactionStatus("success"));
@@ -492,6 +513,29 @@ const YourSupplyModal = ({
       setSupplyAsset(currentSelectedSupplyCoin);
     }
   }, [currentSelectedSupplyCoin]);
+
+  const getBorrowAPR = (borrowMarket: string) => {
+    switch (borrowMarket) {
+      case "USDT":
+        return protocolStats[0]?.supplyRate;
+        break;
+      case "USDC":
+        return protocolStats[1]?.supplyRate;
+        break;
+      case "BTC":
+        return protocolStats[2]?.supplyRate;
+        break;
+      case "ETH":
+        return protocolStats[3]?.supplyRate;
+        break;
+      case "DAI":
+        return protocolStats[4]?.supplyRate;
+        break;
+
+      default:
+        break;
+    }
+  };
 
   return (
     <Box>
@@ -1160,7 +1204,28 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">7.75%</Text>
+                          <Text color="#6E7681">
+                            {!protocolStats ||
+                            protocolStats.length === 0 ||
+                            !getBorrowAPR(
+                              currentSelectedSupplyCoin.slice(1)
+                            ) ? (
+                              <Box pt="2px">
+                                <Skeleton
+                                  width="2.3rem"
+                                  height=".85rem"
+                                  startColor="#2B2F35"
+                                  endColor="#101216"
+                                  borderRadius="6px"
+                                />
+                              </Box>
+                            ) : (
+                              getBorrowAPR(currentSelectedSupplyCoin.slice(1)) +
+                              "%"
+                            )}
+
+                            {/* 7.75% */}
+                          </Text>
                         </Text>
                       </Card>
                       {inputSupplyAmount > 0 &&
@@ -1320,7 +1385,9 @@ const YourSupplyModal = ({
                                     pr="2"
                                     onClick={() => {
                                       setcurrentSelectedWithdrawlCoin(coin);
-                                      setAsset(coin[0] == 'r' ? coin.slice(1) : coin);
+                                      setAsset(
+                                        coin[0] == "r" ? coin.slice(1) : coin
+                                      );
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >

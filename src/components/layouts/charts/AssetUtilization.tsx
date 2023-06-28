@@ -4,14 +4,21 @@ import { Box } from "@chakra-ui/react";
 
 const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-const AssetUtilizationChart = () => {
+const AssetUtilizationChart = ({
+  series,
+  formatter,
+  color,
+  categories,
+}: any) => {
   const splineChartData = {
-    series: [
-      {
-        name: "Series 1",
-        data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
-      },
-    ],
+    series: series
+      ? series
+      : [
+          {
+            name: "Series 1",
+            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+          },
+        ],
     options: {
       chart: {
         toolbar: {
@@ -35,13 +42,15 @@ const AssetUtilizationChart = () => {
         axisBorder: {
           color: "grey",
         },
-        categories: [1, 2, 3, 4, 5, 6, 7],
+        categories: categories ? categories : [1, 2, 3, 4, 5, 6, 7],
       },
       yaxis: {
         labels: {
-          formatter: function (value: any) {
-            return value / 1000 + "k";
-          },
+          formatter: formatter
+            ? formatter
+            : function (value: any) {
+                return value / 1000 + "k";
+              },
           style: {
             colors: "#6E7681", // Set the color of the labels
             fontSize: "12px",
@@ -59,7 +68,7 @@ const AssetUtilizationChart = () => {
           },
         },
       },
-      colors: ["#0FCA7A"],
+      colors: [`${color ? color : "#0FCA7A"}`],
       grid: {
         borderColor: "#2B2F35",
         padding: {

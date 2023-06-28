@@ -102,23 +102,22 @@ const GetTokensModal = ({
     token,
     setToken,
 
-        dataGetTokens,
-        errorGetTokens,
-        resetGetTokens,
-        writeGetTokens,
-        writeAsyncGetTokens,
-        isErrorGetTokens,
-        isIdleGetTokens,
-        isLoadingGetTokens,
-        isSuccessGetTokens,
-        statusGetTokens,
-    }
-=useGetTokens(currentSelectedCoin);
+    dataGetTokens,
+    errorGetTokens,
+    resetGetTokens,
+    writeGetTokens,
+    writeAsyncGetTokens,
+    isErrorGetTokens,
+    isIdleGetTokens,
+    isLoadingGetTokens,
+    isSuccessGetTokens,
+    statusGetTokens,
+  } = useGetTokens(currentSelectedCoin);
 
-useEffect(()=>{
+  useEffect(() => {
     setCurrentSelectedCoin(token);
-},[token,currentSelectedCoin])
-const dispatch=useDispatch();
+  }, [token, currentSelectedCoin]);
+  const dispatch = useDispatch();
 
   const handleGetToken = async () => {
     try {

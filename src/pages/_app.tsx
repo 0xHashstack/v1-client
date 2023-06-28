@@ -17,13 +17,13 @@ const theme = extendTheme({
       baseStyle: {
         tab: {
           _disabled: {
-            background:"#101216",
-            opacity:"100%",
-            cursor:'pointer',
+            background: "#101216",
+            opacity: "100%",
+            cursor: "pointer",
           },
           "> *:first-of-type": {
-             background:"#101216",
-             opacity:"100%",
+            background: "#101216",
+            opacity: "100%",
           },
         },
       },
@@ -39,6 +39,7 @@ const theme = extendTheme({
   },
 });
 import { UserbackProvider } from "@userback/react";
+import Layout from "@/components/layouts/toasts";
 
 export default function App({ Component, pageProps }: AppProps) {
   const connectors = [
@@ -48,23 +49,28 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-    <Head>
-    <meta httpEquiv="Cache-Control" content="no-cache, must-revalidate" />
+      <Head>
+        <meta httpEquiv="Cache-Control" content="no-cache, must-revalidate" />
         <meta httpEquiv="Pragma" content="no-cache" />
         <meta httpEquiv="Expires" content="0" />
-    <title>HashStack | Under-collateralised loans | Defi</title>
-        <meta name="description" content="Hashstack provides a permissionless zk-native money market protocol enabling secure under-collateralised loans to the crypto retail. Built on Starknet L2 [announcement], Hashstack leverages the capability of zero-knowledge proofs to provide a cost & capital-efficient lending solution." />
+        <title>HashStack | Under-collateralised loans | Defi</title>
+        <meta
+          name="description"
+          content="Hashstack provides a permissionless zk-native money market protocol enabling secure under-collateralised loans to the crypto retail. Built on Starknet L2 [announcement], Hashstack leverages the capability of zero-knowledge proofs to provide a cost & capital-efficient lending solution."
+        />
         <link rel="shortcut icon" href="/favicon-32x32.png" />
-    </Head>
-    <UserbackProvider token="40202|80442|mX2ZdYcMxJbcQjhQu6EJB9M9S">
-      <ChakraProvider theme={theme}>
-        <StarknetProvider autoConnect={true} connectors={connectors}>
-        <Provider store={store}>
-            <Component {...pageProps} />
-        </Provider>
-        </StarknetProvider>
-      </ChakraProvider>
-    </UserbackProvider>
+      </Head>
+      <UserbackProvider token="40819|82170|7psZPgjKcXKcsTMMf4vd5lRh9">
+        <ChakraProvider theme={theme}>
+          <StarknetProvider autoConnect={true} connectors={connectors}>
+            <Provider store={store}>
+              <Layout>
+                <Component {...pageProps} />
+              </Layout>
+            </Provider>
+          </StarknetProvider>
+        </ChakraProvider>
+      </UserbackProvider>
     </>
   );
 }

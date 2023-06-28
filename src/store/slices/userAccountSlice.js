@@ -30,6 +30,17 @@ const initialState = {
 
   toastTransactionStarted: false,
   transactionStarted: false,
+  refreshHooks: false,
+
+  protocolReserves: {
+    totalReserves: null,
+    availableReserves: null,
+    avgAssetUtilisation: null,
+  },
+  netWorth: null,
+  yourSupply: null,
+  yourBorrow: null,
+  netAPR: null,
 
   // toastTransactionStarted: false,
 
@@ -124,6 +135,24 @@ export const userAccountSlice = createSlice({
     setTransactionStarted(state, action) {
       state.transactionStarted = !state.transactionStarted;
     },
+    setRefreshHooks(state, action) {
+      state.refreshHooks = action.payload;
+    },
+    setProtocolReserves(state, action) {
+      state.protocolReserves = action.payload;
+    },
+    setNetWorth(state, action) {
+      state.netWorth = action.payload;
+    },
+    setYourSupply(state, action) {
+      state.yourSupply = action.payload;
+    },
+    setYourBorrow(state, action) {
+      state.yourBorrow = action.payload;
+    },
+    setNetAPR(state, action) {
+      state.netAPR = action.payload;
+    },
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;
     // },
@@ -154,6 +183,11 @@ export const {
   setUserLoans,
   setTransactionSuccessArray,
   setTransactionFailureArray,
+  setProtocolReserves,
+  setYourBorrow,
+  setYourSupply,
+  setNetAPR,
+  setNetWorth,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -204,4 +238,21 @@ export const selectToastTransactionStarted = (state) =>
   state.user_account.toastTransactionStarted;
 export const selectTransactionStarted = (state) =>
   state.user_account.transactionStarted;
+export const selectProtocolReserves = (state) =>
+  state.user_account.protocolReserves;
+export const selectYourSupply = (state) => {
+  state.user_account.yourSupply;
+};
+export const selectYourBorrow = (state) => {
+  state.user_account.yourBorrow;
+};
+export const selectNetWorth = (state) => {
+  state.user_account.netWorth;
+};
+export const selectNetAPR = (state) => {
+  state.user_account.netAPR;
+};
+// export const select=(state)=>{
+//   state.user_account.
+// }
 export default userAccountSlice.reducer;

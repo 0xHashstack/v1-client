@@ -39,13 +39,17 @@ import TableYagiLogoDull from "./tableIcons/yagiLogoDull";
 import TableMySwapDull from "./tableIcons/mySwapDull";
 import TableJediswapLogoDull from "./tableIcons/jediswapLogoDull";
 import Image from "next/image";
-import StakeModal from "@/components/modals/StakeModal";
+// import StakeModal from "@/components/modals/StakeModal";
 import SwapModal from "@/components/modals/SwapModal";
 import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import SmallEth from "@/assets/icons/coins/smallEth";
 import Pagination from "@/components/uiElements/pagination";
 import BorrowModal from "../../modals/borrowModal";
+import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
+import { useAccount } from "@starknet-react/core";
+import { getUserLoans } from "@/Blockchain/scripts/Loans";
+import { ILoan } from "@/Blockchain/interfaces/interfaces";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -65,7 +69,45 @@ const SpendTable = () => {
     "LTV",
     "Health factor",
   ];
-  const userLoans: any = useSelector(selectUserLoans);
+  const { account, address, isConnected } = useAccount();
+  const [userLoans, setUserLoans] = useState<any>(null);
+  useEffect(() => {
+    const loan = async () => {
+      try {
+        const loans = await getUserLoans(address || "");
+        // console.log(loans,"Loans from your borrow index page")
+
+        // loans.filter(
+        //   (loan) =>
+        //     loan.collateralAmountParsed &&
+        //     loan.collateralAmountParsed > 0 &&
+        //     loan.loanAmountParsed &&
+        //     loan.loanAmountParsed > 0
+        // );
+        if (loans) {
+          setUserLoans(
+            loans
+              .filter(
+                (loan) => loan?.loanAmountParsed && loan?.loanAmountParsed > 0
+              )
+              .filter((borrow: any) => borrow.spendType === "UNSPENT")
+          );
+        }
+      } catch (err) {
+        console.log("spendtable : unable to fetch user loans");
+      }
+      // console.log("loans", loans);
+    };
+    if (account && isConnected) {
+      // callWithRetries(loan, [], 3);
+      loan();
+    }
+  }, [account, isConnected]);
+  // let userLoans: any = useSelector(selectUserLoans);
+  // userLoans = userLoans.filter((borrow: any) => borrow.spendType === "UNSPENT");
+  // .filter(
+  //   (borrow: any) => borrow.spendType === "UNSPENT"
+  // );
   // console.log(userLoans, "user loans in spend table");
   const rows: any[] = [
     // ["Borrow ID 12345", "rUSDT", "7%", "BTC", "00.00%"],
@@ -95,26 +137,53 @@ const SpendTable = () => {
   const [selectedIndex, setselectedIndex] = useState(0);
   let lower_bound = 3 * (currentPagination - 1);
   let upper_bound = lower_bound + 2;
-  upper_bound = Math.min(userLoans.length - 1, upper_bound);
+  if (userLoans) {
+    upper_bound = Math.min(userLoans?.length - 1, upper_bound);
+  }
+  // console.log("userLoans ", userLoans);
   useEffect(() => {
-    let temp1: any = [];
-    let temp2: any = [];
-    let temp3: any = [];
-    if (userLoans.length != 0) {
-      for (let i = 0; i < userLoans.length; i++) {
-        temp1.push({
-          id: userLoans[i].loanId,
-          name: userLoans[i].loanMarket,
-        });
-        temp2.push(userLoans[i].loanId);
-        temp3.push(userLoans[i].loanMarket);
+    if (userLoans) {
+      let temp1: any = [];
+      let temp2: any = [];
+      let temp3: any = [];
+      if (userLoans?.length != 0) {
+        for (let i = 0; i < userLoans?.length; i++) {
+          temp1.push({
+            id: userLoans[i]?.loanId,
+            name: userLoans[i]?.loanMarket,
+          });
+          temp2.push(userLoans[i]?.loanId);
+          temp3.push(userLoans[i]?.loanMarket);
+        }
       }
+      setBorrowIDCoinMap(temp1);
+      setBorrowIds(temp2);
+      setCoins(temp3);
+      // console.log("faisal coin mapping", borrowIDCoinMap);
     }
-    setBorrowIDCoinMap(temp1);
-    setBorrowIds(temp2);
-    setCoins(temp3);
-    // console.log("faisal coin mapping", borrowIDCoinMap);
   }, [userLoans]);
+
+  const [borrowAPRs, setBorrowAPRs] = useState<any>([]);
+
+  useEffect(() => {
+    fetchProtocolStats();
+  }, []);
+
+  const fetchProtocolStats = async () => {
+    try {
+      const stats = await getProtocolStats();
+      console.log("fetchprotocolstats", stats); //23014
+      setBorrowAPRs([
+        stats?.[2].borrowRate,
+        stats?.[3].borrowRate,
+        stats?.[0].borrowRate,
+        stats?.[1].borrowRate,
+        stats?.[4].borrowRate,
+      ]);
+    } catch (error) {
+      console.log("error on getting protocol stats");
+    }
+  };
 
   useEffect(() => {
     setCurrentBorrow(-1);
@@ -134,7 +203,12 @@ const SpendTable = () => {
     };
   }, [handleRouteChange, router.events]);
   const [loading, setLoading] = useState(true);
-  const loadingTimeout = useTimeout(() => setLoading(false), 0);
+  // const loadingTimeout = useTimeout(() => setLoading(false), 3000);
+  useEffect(() => {
+    if (userLoans) {
+      setLoading(false);
+    }
+  }, [userLoans]);
   return (
     <>
       {showWarning && (
@@ -155,7 +229,7 @@ const SpendTable = () => {
             Only unspent loans are displayed here. For comprehensive list of
             active loans go to
             <Link
-              href="/your-borrow"
+              href="/v1/your-borrow"
               onClick={() => {
                 dispatch(setCurrentPage("your borrow"));
                 localStorage.setItem("currentPage", "your borrow");
@@ -202,7 +276,7 @@ const SpendTable = () => {
             size="xl"
           />
         </Box>
-      ) : upper_bound >= lower_bound && userLoans.length > 0 ? (
+      ) : upper_bound >= lower_bound && userLoans?.length > 0 ? (
         <TableContainer
           //   bg="#101216"
           border="1px"
@@ -255,7 +329,6 @@ const SpendTable = () => {
             <Tbody bg="inherit" position="relative">
               {userLoans
                 .slice(lower_bound, upper_bound + 1)
-                .filter((borrow: any) => borrow.spendType === "UNSPENT")
                 .map((borrow: any) => {
                   return (
                     <>
@@ -452,7 +525,7 @@ const SpendTable = () => {
         <Pagination
           currentPagination={currentPagination}
           setCurrentPagination={(x: any) => setCurrentPagination(x)}
-          max={userLoans.length}
+          max={userLoans?.length}
           rows={3}
         />
       </Box>
@@ -597,6 +670,7 @@ const SpendTable = () => {
                   BorrowBalance={borrowAmount}
                   currentSwap={currentSwap}
                   setCurrentSwap={setCurrentSwap}
+                  borrowAPRs={borrowAPRs}
                 />
               </Box>
             </TabPanel>
@@ -617,6 +691,7 @@ const SpendTable = () => {
                   BorrowBalance={borrowAmount}
                   currentSwap={currentSwap}
                   setCurrentSwap={setCurrentSwap}
+                  borrowAPRs={borrowAPRs}
                 />
               </Box>
             </TabPanel>
@@ -645,7 +720,7 @@ const SpendTable = () => {
                 </Box>
               </Box>
             </TabPanel> */}
-            
+
             <TabPanel p={0}>
               <Box
                 display={tradeNote ? "flex" : "none"}

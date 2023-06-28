@@ -4,19 +4,27 @@ import { useState, useEffect } from "react";
 import DashboardLeft from "../dashboardLeft";
 import DashboardRight from "../dashboardRight";
 import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
-import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
+// import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
-import { getUserReserves } from "@/Blockchain/scripts/userStats";
+// import { getUserReserves } from "@/Blockchain/scripts/userStats";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { useAccount } from "@starknet-react/core";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 const MarketDashboard = () => {
-  const [oraclePrices, setOraclePrices]: any = useState<(undefined | number)[]>([]);
-  const [totalSupplies, setTotalSupplies]: any = useState<(undefined | number)[]>([]);
-  const [totalBorrows, setTotalBorrows]: any = useState<(undefined | number)[]>([]);
+  const [oraclePrices, setOraclePrices]: any = useState<(undefined | number)[]>(
+    []
+  );
+  const [totalSupplies, setTotalSupplies]: any = useState<
+    (undefined | number)[]
+  >([]);
+  const [totalBorrows, setTotalBorrows]: any = useState<(undefined | number)[]>(
+    []
+  );
   const [supplyAPRs, setSupplyAPRs]: any = useState<(undefined | number)[]>([]);
   const [borrowAPRs, setBorrowAPRs]: any = useState<(undefined | number)[]>([]);
-  const [utilization, setUtilizations]: any = useState<(undefined | number)[]>([]);
+  const [utilization, setUtilizations]: any = useState<(undefined | number)[]>(
+    []
+  );
   const { account, address } = useAccount();
   // console.log(account,"Market Page")
 
@@ -30,22 +38,48 @@ const MarketDashboard = () => {
   // useEffect(()=>{
   //   fetchUserLoans();
   // },[account])
+
+  const [validRTokens, setValidRTokens] = useState([]);
+  useEffect(() => {
+    if (validRTokens.length === 0) {
+      fetchUserDeposits();
+    }
+  }, [validRTokens, address]);
+
   const fetchUserDeposits = async () => {
     try {
-      const reserves = await getUserDeposits(address || "");
-      console.log(reserves, "market page -user supply");
+      if (!account) return;
+      const reserves = await getUserDeposits(address as string);
+      console.log("got reservers", reserves);
+
+      const rTokens: any = [];
+      if (reserves) {
+        reserves.map((reserve: any) => {
+          if (reserve.rTokenAmountParsed > 0) {
+            rTokens.push({
+              rToken: reserve.rToken,
+              rTokenAmount: reserve.rTokenAmountParsed,
+            });
+          }
+        });
+      }
+      // console.log("rtokens", rTokens);
+      if (rTokens.length === 0) return;
+      setValidRTokens(rTokens);
+      console.log("valid rtoken", validRTokens);
+      // console.log("market page -user supply", reserves);
     } catch (err) {
-      console.log("Error fetching protocol reserves", err);
+      // console.log("Error fetching protocol reserves", err);
     }
   };
-  const fetchUserReserves = async () => {
-    try {
-      const reserves = await getUserReserves();
-      console.log(reserves, "market page -user supply");
-    } catch (err) {
-      console.log("Error fetching protocol reserves", err);
-    }
-  };
+  // const fetchUserReserves = async () => {
+  //   try {
+  //     const reserves = await getUserReserves();
+  //     console.log(reserves, "market page -user supply");
+  //   } catch (err) {
+  //     console.log("Error fetching protocol reserves", err);
+  //   }
+  // };
 
   const fetchOraclePrices = async () => {
     try {
@@ -115,6 +149,7 @@ const MarketDashboard = () => {
         oraclePrices={oraclePrices}
         totalSupplies={totalSupplies}
         supplyAPRs={supplyAPRs}
+        validRTokens={validRTokens}
         // columnItems={dashboardItems1}
         // gap={"16.6"}
         // rowItems={rowItems1}
@@ -125,6 +160,8 @@ const MarketDashboard = () => {
         borrowAPRs={borrowAPRs}
         totalBorrows={totalBorrows}
         utilization={utilization}
+        validRTokens={validRTokens}
+
         // gap={"14.2"}
         // columnItems={dashboardItems2}
         // rowItems={rowItems2}

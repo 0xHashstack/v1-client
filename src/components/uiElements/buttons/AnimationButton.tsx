@@ -10,6 +10,7 @@ import {
   setToastTransactionStarted,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
+import ErrorButton from "./ErrorButton";
 interface Props extends ButtonProps {
   children: ReactNode;
   labelSuccessArray: Array<string | ReactNode>;
@@ -29,7 +30,10 @@ const AnimatedButton: React.FC<Props> = ({
 }) => {
   const classes = [];
   if (className) classes.push(className);
-
+  const transactionFailed = [
+    <ErrorButton errorText="Transaction failed" key={"error1"} />,
+    <ErrorButton errorText="Copy error!" key={"error2"} />,
+  ];
   //Below array is previously static data which is now used as labelArray as props
 
   // const strings = [
@@ -49,7 +53,7 @@ const AnimatedButton: React.FC<Props> = ({
   // console.log(transactionStatus,"transaction from button");
 
   useEffect(() => {
-    console.log(transactionStatus)
+    console.log(transactionStatus);
     if (isAnimationStarted && transactionStatus == "success") {
       setProgressBarWidth(
         `${((currentStringIndex + 1) / labelSuccessArray.length) * 100 + 2}%`
@@ -125,11 +129,11 @@ const AnimatedButton: React.FC<Props> = ({
         setCurrentStringIndex((prevIndex) => {
           const nextIndex = prevIndex + 1;
           if (nextIndex === labelSuccessArray?.length - 2) {
-            if (!currentTransactionStatus) return prevIndex;
+            if (currentTransactionStatus === "") return prevIndex;
           }
           if (nextIndex === labelSuccessArray.length) {
             setIsAnimationStarted(false);
-            setCurrentTransactionStatus(false);
+            // setCurrentTransactionStatus(false);
             return prevIndex; // Reset currentStringIndex to -1 after the animation completes
           }
           // return nextIndex % labelArray.length;
@@ -234,8 +238,18 @@ const AnimatedButton: React.FC<Props> = ({
             >
               {currentStringIndex === -1
                 ? children
-                : transactionStatus == "success"
-                ? labelSuccessArray[currentStringIndex]
+                : transactionStatus === "success"
+                ? currentTransactionStatus === ""
+                  ? labelSuccessArray[currentStringIndex]
+                  : currentTransactionStatus === "success"
+                  ? labelSuccessArray[currentStringIndex]
+                  : currentStringIndex === labelSuccessArray.length - 1
+                  ? transactionFailed[
+                      labelSuccessArray.length - currentStringIndex === 1
+                        ? 0
+                        : 1
+                    ]
+                  : labelSuccessArray[currentStringIndex]
                 : labelErrorArray[currentStringIndex]}
               {/* {labelArray[currentStringIndex]} */}
             </motion.div>
@@ -245,12 +259,12 @@ const AnimatedButton: React.FC<Props> = ({
       </Box>
       <Box
         bgColor={
-          transactionStatus == "success"
+          transactionStatus === "success" ||
+          (transactionStatus === "" &&
+            (currentTransactionStatus === "" ||
+              currentTransactionStatus === "success"))
             ? "#2DA44E"
-            : currentStringIndex == labelErrorArray?.length - 2 ||
-              currentStringIndex == labelErrorArray?.length - 1
-            ? "#CF222E"
-            : "#2DA44E"
+            : "#CF222E"
         }
         position="absolute"
         bottom={0}

@@ -59,7 +59,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const interval = setInterval(refresh, 2000);
+    const interval = setInterval(refresh, 1000);
     return () => clearInterval(interval);
   }, [refresh]);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];

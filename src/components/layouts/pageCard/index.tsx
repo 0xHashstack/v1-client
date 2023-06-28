@@ -10,13 +10,20 @@ import {
   useConnectors,
   useStarknet,
   useBlock,
+  useBlockNumber,
 } from "@starknet-react/core";
 import { useContract } from "@starknet-react/core";
 import {
+  setProtocolReserves,
   selectToastTransactionStarted,
   setAccount,
   setAssetWalletBalance,
   setUserLoans,
+  selectProtocolReserves,
+  selectYourSupply,
+  selectNetWorth,
+  selectNetAPR,
+  selectYourBorrow,
 } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import Footer from "../footer";
@@ -30,6 +37,13 @@ import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 import { ToastContainer, toast } from "react-toastify";
 import { callWithRetries } from "@/utils/functions/apiCaller";
+import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
+import {
+  getProtocolReserves,
+  getProtocolStats,
+} from "@/Blockchain/scripts/protocolStats";
+import YourBorrow from "@/pages/v1/your-borrow";
+import { getTotalBorrow } from "@/Blockchain/scripts/userStats";
 
 interface Props extends StackProps {
   children: ReactNode;
@@ -95,7 +109,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       }
     }
   }, []);
-  const [UserLoans, setuserLoans] = useState<ILoan[] | null>([]); 
+  const [UserLoans, setuserLoans] = useState<ILoan[] | null>([]);
   useEffect(() => {
     const loan = async () => {
       try {
@@ -112,18 +126,14 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         if (loans) {
           setuserLoans(
             loans.filter(
-              (loan) =>
-                loan?.loanAmountParsed &&
-                loan?.loanAmountParsed > 0
+              (loan) => loan?.loanAmountParsed && loan?.loanAmountParsed > 0
             )
           );
         }
         dispatch(
           setUserLoans(
             loans.filter(
-              (loan) =>
-                loan.loanAmountParsed &&
-                loan.loanAmountParsed > 0
+              (loan) => loan.loanAmountParsed && loan.loanAmountParsed > 0
             )
           )
         );
@@ -134,7 +144,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     };
     if (account && isConnected) {
       // callWithRetries(loan, [], 3);
-      loan()
+      loan();
     }
   }, [account, isConnected]);
   // const dispatch=useDispatch();
@@ -203,11 +213,95 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   return () => clearTimeout(timer);
   // }, []);
 
+  const [validRTokens, setValidRTokens] = useState([]);
+  useEffect(() => {
+    if (validRTokens.length === 0) {
+      fetchUserDeposits();
+    }
+  }, [validRTokens, address]);
+
+  const fetchUserDeposits = async () => {
+    try {
+      const reserves = await getUserDeposits(address || "");
+      console.log("got reservers", reserves);
+
+      const rTokens: any = [];
+      if (reserves) {
+        reserves.map((reserve: any) => {
+          if (reserve.rTokenAmountParsed > 0) {
+            rTokens.push({
+              rToken: reserve.rToken,
+              rTokenAmount: reserve.rTokenAmountParsed,
+            });
+          }
+        });
+      }
+      console.log("rtokens", rTokens);
+      if (rTokens.length === 0) return;
+      setValidRTokens(rTokens);
+      console.log("valid rtoken", validRTokens);
+      console.log("market page -user supply", reserves);
+    } catch (err) {
+      console.log("Error fetching protocol reserves", err);
+    }
+  };
+  const protocolReserves = useSelector(selectProtocolReserves);
+  const yourSupply = useSelector(selectYourSupply);
+  const yourBorrow = useSelector(selectYourBorrow);
+  const netWorth = useSelector(selectNetWorth);
+  const netAPR = useSelector(selectNetAPR);
+  useEffect(() => {
+    try {
+      const fetchProtocolStats = async () => {
+        const reserves = await getProtocolReserves();
+        dispatch(
+          setProtocolReserves({
+            totalReserves: 123,
+            availableReserves: 123,
+            avgAssetUtilisation: 1233,
+          })
+        );
+        dispatch(setProtocolReserves(reserves));
+        console.log("protocol reserves called ");
+      };
+      if (
+        protocolReserves &&
+        (protocolReserves.totalReserves == null ||
+          protocolReserves.availableReserves == null ||
+          protocolReserves.avgAssetUtilisation == null)
+      ) {
+        fetchProtocolStats();
+      }
+    } catch (err) {
+      console.log("error fetching protocol reserves ", err);
+    }
+  }, []);
+
+  // useEffect(() => {
+  //   console.log("protocol reserves here ", protocolReserves);
+  // }, [protocolReserves]);
+
+  // useEffect(() => {
+  //   try {
+  //     const fetchTotalBorrow = async () => {
+  //       const data = await getTotalBorrow();
+  //       console.log("getTotalBorrow", data);
+  //     };
+  //     fetchTotalBorrow();
+  //   } catch (err) {
+  //     console.log("getTotalBorrow error");
+  //   }
+  // }, [netWorth, yourSupply, yourBorrow, netWorth]);
+
+  const { data } = useBlockNumber({
+    refetchInterval: 10000,
+  });
+
   return (
     <>
       {render ? (
         <>
-          <Navbar />
+          <Navbar validRTokens={validRTokens} />
           <Stack
             alignItems="center"
             minHeight={"100vh"}
@@ -259,8 +353,8 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
               Supply
             </AnimatedButton>
           </Box> */}
-          <ToastContainer theme="dark" />
-          <Footer block={83207} />
+          {/* <ToastContainer theme="dark" /> */}
+          <Footer block={data} />
         </>
       ) : (
         <>

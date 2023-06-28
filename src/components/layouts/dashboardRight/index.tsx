@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Table,
   Thead,
@@ -36,12 +36,14 @@ const DashboardRight = ({
   utilization,
   totalBorrows,
   borrowAPRs,
+  validRTokens,
 }: {
   width: string;
   oraclePrices: any;
   utilization: any;
   totalBorrows: any;
   borrowAPRs: any;
+  validRTokens: any;
   // gap: string;
   // columnItems: Array<Array<string>>;
   // rowItems: any;
@@ -68,6 +70,7 @@ const DashboardRight = ({
   });
 
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
+  const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>();
 
   return (
     <TableContainer
@@ -302,6 +305,9 @@ const DashboardRight = ({
                     alignItems="center"
                     justifyContent="center"
                     fontWeight="400"
+                    onClick={() => {
+                      setCurrentBorrowAPR(idx);
+                    }}
                     // bgColor={"blue"}
                   >
                     <BorrowModal
@@ -316,6 +322,9 @@ const DashboardRight = ({
                       color="#BDBFC1;"
                       backGroundOverLay="rgba(244, 242, 255, 0.5)"
                       coin={coin}
+                      borrowAPRs={borrowAPRs}
+                      currentBorrowAPR={currentBorrowAPR}
+                      validRTokens={validRTokens}
                     />
                   </Box>
                 </Td>
@@ -331,8 +340,19 @@ const DashboardRight = ({
                   p={0}
                   pl={2}
                 >
-                  <Box position="relative" display="inline-block">
-                    <TradeModal coin={coin} />
+                  <Box
+                    position="relative"
+                    display="inline-block"
+                    onClick={() => {
+                      setCurrentBorrowAPR(idx);
+                    }}
+                  >
+                    <TradeModal
+                      coin={coin}
+                      borrowAPRs={borrowAPRs}
+                      currentBorrowAPR={currentBorrowAPR}
+                      validRTokens={validRTokens}
+                    />
                   </Box>
                 </Td>
               </Tr>

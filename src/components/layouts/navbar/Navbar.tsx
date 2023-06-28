@@ -59,7 +59,9 @@ import { languages } from "@/utils/constants/languages";
 import { useRouter } from "next/router";
 import { type } from "os";
 import GetTokensModal from "@/components/modals/getTokens";
-const Navbar = () => {
+import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
+import { Coins } from "../dashboardLeft";
+const Navbar = ({ validRTokens }: any) => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
   const language = useSelector(selectLanguage);
@@ -291,7 +293,7 @@ const Navbar = () => {
           onMouseEnter={() => setStakeHover(true)}
           onMouseLeave={() => setStakeHover(false)}
         >
-          <Box
+          {/* <Box
             display="flex"
             justifyContent="space-between"
             alignItems="center"
@@ -314,8 +316,19 @@ const Navbar = () => {
                 style={{ cursor: "pointer" }}
               />
             )}
-            <Text fontSize="14px">Stake</Text>
-          </Box>
+            <Box fontSize="14px">
+              <Box position="relative" display="inline-block">
+                <StakeUnstakeModal coin={Coins} nav={true} stakeHover={stakeHover} />
+              </Box>
+            </Box>
+          </Box> */}
+          <StakeUnstakeModal
+            coin={Coins}
+            nav={true}
+            stakeHover={stakeHover}
+            setStakeHover={setStakeHover}
+            validRTokens={validRTokens}
+          />
         </Box>
         {/* <Box
           style={{
@@ -343,7 +356,7 @@ const Navbar = () => {
           >
             {" "}
             <Image
-              src={"./moreIcon.svg"}
+              src={".moreIcon.svg"}
               alt="Picture of the author"
               width="20"
               height="20"
@@ -412,12 +425,12 @@ const Navbar = () => {
             cursor="pointer"
             margin="0"
             height="2rem"
-            // border="0.5px solid #6e6e6e"
-            border={`0.5px solid ${
-              router.pathname != "/waitlist" && transferDepositHover
-                ? "#6e6e6e"
-                : "#FFF"
-            }`}
+            border="0.5px solid #6e6e6e"
+            // border={`0.5px solid ${
+            //   router.pathname != "/waitlist" && transferDepositHover
+            //     ? "#6e6e6e"
+            //     : "#FFF"
+            // }`}
             display="flex"
             flexDirection="column"
             alignItems="center"
@@ -441,14 +454,14 @@ const Navbar = () => {
               gap="8px"
               margin="6px 12px"
             >
-              {/* <Image
-                src={"./transferDepositDisabled.svg"}
+              <Image
+                src={"/transferDepositDisabled.svg"}
                 alt="Picture of the author"
                 width="20"
                 height="20"
                 style={{ cursor: "pointer" }}
-              /> */}
-              {router.pathname == "/waitlist" || !transferDepositHover ? (
+              />
+              {/* {router.pathname == "/waitlist" || !transferDepositHover ? (
                 <Image
                   src={"/transferDeposit.svg"}
                   alt="Picture of the author"
@@ -464,8 +477,8 @@ const Navbar = () => {
                   height="20"
                   style={{ cursor: "pointer" }}
                 />
-              )}
-              <Text fontSize="14px" lineHeight="14px">
+              )} */}
+              <Text fontSize="14px" lineHeight="14px" color="grey">
                 Transfer Deposit
               </Text>
             </Box>

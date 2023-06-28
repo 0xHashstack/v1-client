@@ -4,7 +4,7 @@ import AssetUtilizationChart from "../charts/AssetUtilization";
 import AssetUtilizationRateChart from "../charts/AssetUtilizationRate";
 import SupplyAprChart from "../charts/SupplyApr";
 import BorrowAprChart from "../charts/BorrowApr";
-const SupplyMetrics = ({ currentMarketCoin }: any) => {
+const YourMetricsSupplyBorrow = ({ currentMarketCoin }: any) => {
   const series1: any = {
     BTC: [
       {
@@ -130,10 +130,10 @@ const SupplyMetrics = ({ currentMarketCoin }: any) => {
           lineHeight="30px"
           borderRadius="6px"
         >
-          Media Supply by Market:
+          Supply:
         </Box>
         <AssetUtilizationChart
-          color={"#846ed4"}
+          color={"#61a6a5"}
           series={series1[currentMarketCoin]}
         />
       </Box>
@@ -152,10 +152,10 @@ const SupplyMetrics = ({ currentMarketCoin }: any) => {
           lineHeight="30px"
           borderRadius="6px"
         >
-          Media Borrow by Market:
+          Borrow:
         </Box>
         <AssetUtilizationChart
-          color={"#4ecdcb"}
+          color={"#4c60ee"}
           series={series2[currentMarketCoin]}
         />
       </Box>
@@ -163,4 +163,4 @@ const SupplyMetrics = ({ currentMarketCoin }: any) => {
   );
 };
 
-export default SupplyMetrics;
+export default YourMetricsSupplyBorrow;

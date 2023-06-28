@@ -93,7 +93,7 @@ const SupplyEquivalentModal = ({ buttonText, ...restProps }: any) => {
   //This function is used to find the percentage of the slider from the input given by the user
   const handleChange = (newValue: any) => {
     // Calculate the percentage of the new value relative to the wallet balance
-    if(newValue > 9_000_000_000) return;
+    if (newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {

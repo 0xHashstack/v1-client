@@ -17,6 +17,8 @@ import {
 import { useAccount, useConnectors } from "@starknet-react/core";
 import TotalRevenueChart from "@/components/layouts/charts/TotalRevenue";
 import Link from "next/link";
+import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
+import YourMetricsSupplyBorrow from "@/components/layouts/charts/yourMetricsSupplyBorrow";
 const YourMetrics = () => {
   //   const [metricsCancel, setMetricsCancel] = useState(false);
   const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
@@ -40,6 +42,22 @@ const YourMetrics = () => {
         connect(connectors[0]);
       }
     }
+  }, []);
+  const [protocolStats, setProtocolStats] = useState<any>([]);
+  useEffect(() => {
+    try {
+      const fetchProtocolStats = async () => {
+        const stats = await getProtocolStats();
+        setProtocolStats([
+          stats?.[2],
+          stats?.[3],
+          stats?.[0],
+          stats?.[1],
+          stats?.[4],
+        ]);
+      };
+      fetchProtocolStats();
+    } catch (err: any) {}
   }, []);
   return (
     <PageCard pt="8rem">
@@ -315,7 +333,10 @@ const YourMetrics = () => {
             </Box>
             {/* </HStack> */}
           </Box>
-          <Box
+          <Box>
+            <YourMetricsSupplyBorrow currentMarketCoin={currentMarketCoin} />
+          </Box>
+          {/* <Box
             //   bgColor="green"
             borderRadius="6px"
             border="1px solid #2B2F35"
@@ -360,7 +381,7 @@ const YourMetrics = () => {
             <Box>
               <TotalRevenueChart />
             </Box>
-          </Box>
+          </Box> */}
         </Box>
       </Box>
       {/* )} */}

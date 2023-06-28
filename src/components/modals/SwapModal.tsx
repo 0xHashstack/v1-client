@@ -12,6 +12,7 @@ import {
   Tooltip,
   Box,
   Portal,
+  Skeleton,
 } from "@chakra-ui/react";
 
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
@@ -62,6 +63,7 @@ const SwapModal = ({
   BorrowBalance,
   currentSwap,
   setCurrentSwap,
+  borrowAPRs,
 }: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const {
@@ -105,7 +107,28 @@ const SwapModal = ({
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
   useEffect(() => {}, [currentSwap]);
+  const getBorrowAPR = (borrowMarket: string) => {
+    switch (borrowMarket) {
+      case "USDT":
+        return borrowAPRs[0];
+        break;
+      case "USDC":
+        return borrowAPRs[1];
+        break;
+      case "BTC":
+        return borrowAPRs[2];
+        break;
+      case "ETH":
+        return borrowAPRs[3];
+        break;
+      case "DAI":
+        return borrowAPRs[4];
+        break;
 
+      default:
+        break;
+    }
+  };
   const getCoin = (CoinName: string) => {
     switch (CoinName) {
       case "BTC":
@@ -146,8 +169,8 @@ const SwapModal = ({
 
   const [depositTransHash, setDepositTransHash] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
-  const [currentTransactionStatus, setCurrentTransactionStatus] =
-    useState(false);
+  const [toastId, setToastId] = useState<any>();
+  const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const recieptData = useWaitForTransaction({
     hash: depositTransHash,
     watch: true,
@@ -155,7 +178,8 @@ const SwapModal = ({
       console.log("trans received");
     },
     onPending: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
+      toast.dismiss(toastId);
       console.log("trans pending");
       if (!isToastDisplayed) {
         toast.success(`You have successfully supplied `, {
@@ -165,14 +189,17 @@ const SwapModal = ({
       }
     },
     onRejected(transaction) {
+      setCurrentTransactionStatus("failed");
+      dispatch(setTransactionStatus("failed"));
+      toast.dismiss(toastId);
       console.log("treans rejected");
     },
     onAcceptedOnL1: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
       console.log("trans onAcceptedOnL2 - ", transaction);
       if (!isToastDisplayed) {
         toast.success(`You have successfully supplied `, {
@@ -188,6 +215,17 @@ const SwapModal = ({
       const swap = await writeAsyncJediSwap_swap();
       console.log(swap);
       setDepositTransHash(swap?.transaction_hash);
+      if (swap?.transaction_hash) {
+        console.log("toast here");
+        const toastid = toast.info(
+          `Please wait, your transaction is running in background`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        );
+        setToastId(toastid);
+      }
       dispatch(setTransactionStatus("success"));
     } catch (err: any) {
       console.log(err);
@@ -210,7 +248,7 @@ const SwapModal = ({
   //This function is used to find the percentage of the slider from the input given by the user
   const handleChange = (newValue: any) => {
     // Calculate the percentage of the new value relative to the wallet balance
-    if(newValue > 9_000_000_000) return;
+    if (newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
@@ -259,6 +297,8 @@ const SwapModal = ({
     );
     setBorrowAmount(result?.loanAmountParsed);
     dispatch(setTransactionStatus(""));
+    setCurrentTransactionStatus("");
+    setDepositTransHash("");
   };
 
   useEffect(() => {
@@ -882,7 +922,22 @@ const SwapModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                  5.56%
+                  {!borrowAPRs ||
+                  borrowAPRs.length === 0 ||
+                  !getBorrowAPR(currentBorrowMarketCoin) ? (
+                    <Box pt="2px">
+                      <Skeleton
+                        width="2.3rem"
+                        height=".85rem"
+                        startColor="#2B2F35"
+                        endColor="#101216"
+                        borderRadius="6px"
+                      />
+                    </Box>
+                  ) : (
+                    getBorrowAPR(currentBorrowMarketCoin) + "%"
+                  )}
+                  {/* 5.56% */}
                 </Text>
               </Box>
               <Box display="flex" justifyContent="space-between" mb="0.3rem">

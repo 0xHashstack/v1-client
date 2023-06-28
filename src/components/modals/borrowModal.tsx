@@ -18,6 +18,7 @@ import {
   Text,
   Card,
   ModalHeader,
+  Skeleton,
 } from "@chakra-ui/react";
 
 /* Coins logo import  */
@@ -43,7 +44,7 @@ import {
   selectModalDropDowns,
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
-import { memo, useEffect, useState } from "react";
+import { memo, useEffect, useRef, useState } from "react";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
@@ -66,7 +67,15 @@ import {
 } from "@/Blockchain/utils/addressServices";
 import CopyToClipboard from "react-copy-to-clipboard";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
-const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
+import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
+const BorrowModal = ({
+  buttonText,
+  coin,
+  // borrowAPRs,
+  currentBorrowAPR,
+  validRTokens,
+  ...restProps
+}: any) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [sliderValue2, setsliderValue2] = useState<number>(0);
@@ -91,6 +100,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
+
   useEffect(() => {
     setwalletBalance(
       walletBalances[coin?.name]?.statusBalanceOf === "success"
@@ -151,10 +161,11 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
   }, [coin]);
 
   const [borrowTransHash, setBorrowTransHash] = useState("");
-  const [currentTransactionStatus, setCurrentTransactionStatus] =
-    useState(false);
-  const [isToastDisplayed, setToastDisplayed] = useState(false);
+  const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
 
+  const [isToastDisplayed, setToastDisplayed] = useState(false);
+  const [showToast, setShowToast] = useState("true");
+  const [toastId, setToastId] = useState<any>();
   const recieptData = useWaitForTransaction({
     hash: borrowTransHash,
     watch: true,
@@ -162,7 +173,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
       console.log("trans received");
     },
     onPending: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
+      toast.dismiss(toastId);
       console.log("trans pending");
       if (isToastDisplayed == false) {
         toast.success(
@@ -174,39 +186,104 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
         setToastDisplayed(true);
       }
     },
-    onRejected(transaction) {
+    onRejected(transaction: any) {
+      setCurrentTransactionStatus("failed");
+      // dispatch(setTransactionStatus("failed"));
+      // toast.dismiss(toastId);
       console.log("treans rejected");
+      dispatch(setTransactionStatus("failed"));
+      console.log("handle borrow", transaction?.status);
+      const toastContent = (
+        <div>
+          Transaction failed{" "}
+          <CopyToClipboard text={transaction?.status}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      });
     },
     onAcceptedOnL1: () => {
-      setCurrentTransactionStatus(true);
+      setCurrentTransactionStatus("success");
 
       console.log("trans onAcceptedOnL1");
     },
     onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus(true);
-      if (isToastDisplayed == false) {
-        toast.success(
-          `You have successfully borrowed ${inputBorrowAmount} d${currentBorrowCoin} `,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          }
-        );
-        setToastDisplayed(true);
-      }
+      setCurrentTransactionStatus("success");
+      // if (isToastDisplayed == false) {
+      //   toast.success(
+      //     `You have successfully borrowed ${inputBorrowAmount} d${currentBorrowCoin} `,
+      //     {
+      //       position: toast.POSITION.BOTTOM_RIGHT,
+      //     }
+      //   );
+      //   setToastDisplayed(true);
+      // }
       console.log("trans onAcceptedOnL2 - ", transaction);
     },
   });
-
+  const [protocolStats, setProtocolStats] = useState<any>([]);
+  const fetchProtocolStats = async () => {
+    const stats = await getProtocolStats();
+    if (stats)
+      setProtocolStats([
+        stats?.[0],
+        stats?.[2],
+        stats?.[3],
+        stats?.[1],
+        stats?.[4],
+      ]);
+  };
+  useEffect(() => {
+    try {
+      fetchProtocolStats();
+      console.log("protocolStats", protocolStats);
+    } catch (err: any) {
+      console.log("borrow modal : error fetching protocolStats");
+    }
+  }, []);
   const handleBorrow = async () => {
     try {
       // console.log("borrowing", amount, market, rToken, rTokenAmount);
       if (currentCollateralCoin[0] === "r") {
         const borrow = await writeAsyncLoanRequestrToken();
+        if (borrow?.transaction_hash) {
+          // setShowToast("true");
+          // console.log();
+          // if (showToast == "true") {
+          console.log("toast here");
+          const toastid = toast.info(
+            `Please wait, your transaction is running in background ${inputBorrowAmount} d${currentBorrowCoin} `,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          // }
+        }
         setIsLoanRequestHash(borrow?.transaction_hash);
         setBorrowTransHash(borrow?.transaction_hash);
         dispatch(setTransactionStatus("success"));
       } else {
         const borrow = await writeAsyncLoanRequest();
+        if (borrow?.transaction_hash) {
+          // setShowToast("true");
+          if (showToast == "true") {
+            console.log("toast here");
+            const toastid = toast.info(
+              `Please wait, your transaction is running in background ${inputBorrowAmount} d${currentBorrowCoin} `,
+              {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: false,
+              }
+            );
+            setToastId(toastid);
+          }
+        }
         setIsLoanRequestHash(borrow?.transaction_hash);
         dispatch(setTransactionStatus("success"));
         setBorrowTransHash(borrow?.transaction_hash);
@@ -227,6 +304,13 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
         autoClose: false,
       });
     }
+  };
+
+  const getBalance = (coin: string) => {
+    const amount = validRTokens.find(({ rToken, rTokenAmount }: any) => {
+      if (rToken == coin) return rTokenAmount;
+    });
+    return amount ? amount.rTokenAmount : 0;
   };
 
   // const {  market,
@@ -289,8 +373,8 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
   const handleChange = (newValue: any) => {
-    if(newValue > 9_000_000_000) return;
-    newValue = Math.round(newValue*1000_000/1000_000)
+    if (newValue > 9_000_000_000) return;
+    // newValue = Math.round((newValue * 1000_000) / 1000_000);
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
@@ -356,6 +440,9 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
+    setCurrentTransactionStatus("");
+    setBorrowTransHash("");
+    // setDepositTransHash("")
   };
   useEffect(() => {
     setRTokenAmount(0);
@@ -482,51 +569,74 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                       className="dropdown-container"
                       boxShadow="dark-lg"
                     >
-                      {rTokens.map((coin: RToken, index: number) => {
-                        return (
-                          <Box
-                            key={index}
-                            as="button"
-                            w="full"
-                            display="flex"
-                            alignItems="center"
-                            gap="1"
-                            pr="2"
-                            onClick={() => {
-                              setCurrentCollateralCoin(coin);
-                              setRToken(coin);
-                              // setCollateralMarket(coin);
-                            }}
-                          >
-                            {coin === currentCollateralCoin && (
+                      {validRTokens &&
+                        validRTokens.length > 0 &&
+                        validRTokens.map(
+                          (
+                            { rToken: coin, rTokenAmount: amount }: any,
+                            index: number
+                          ) => {
+                            return (
                               <Box
-                                w="3px"
-                                h="28px"
-                                bg="#0C6AD9"
-                                borderRightRadius="md"
-                              ></Box>
-                            )}
-                            <Box
-                              w="full"
-                              display="flex"
-                              py="5px"
-                              px={`${
-                                coin === currentCollateralCoin ? "1" : "5"
-                              }`}
-                              gap="1"
-                              bg={`${
-                                coin === currentCollateralCoin
-                                  ? "#0C6AD9"
-                                  : "inherit"
-                              }`}
-                              borderRadius="md"
-                            >
-                              <Box p="1">{getCoin(coin)}</Box>
-                              <Text>{coin}</Text>
-                            </Box>
-                          </Box>
-                        );
-                      })}
+                                key={index}
+                                as="button"
+                                w="full"
+                                display="flex"
+                                alignItems="center"
+                                gap="1"
+                                pr="2"
+                                onClick={() => {
+                                  setCurrentCollateralCoin(coin);
+                                  setRToken(coin);
+                                  setwalletBalance(amount);
+                                  // dispatch(setCoinSelectedSupplyModal(coin))
+                                }}
+                              >
+                                {coin === currentCollateralCoin && (
+                                  <Box
+                                    w="3px"
+                                    h="28px"
+                                    bg="#0C6AD9"
+                                    borderRightRadius="md"
+                                  ></Box>
+                                )}
+                                <Box
+                                  w="full"
+                                  display="flex"
+                                  py="5px"
+                                  pl={`${
+                                    coin === currentCollateralCoin ? "1" : "5"
+                                  }`}
+                                  pr="6px"
+                                  gap="1"
+                                  justifyContent="space-between"
+                                  bg={`${
+                                    coin === currentCollateralCoin
+                                      ? "#0C6AD9"
+                                      : "inherit"
+                                  }`}
+                                  borderRadius="md"
+                                >
+                                  <Box display="flex">
+                                    <Box p="1">{getCoin(coin)}</Box>
+                                    <Text color="white">{coin}</Text>
+                                  </Box>
+                                  <Box
+                                    fontSize="9px"
+                                    color="white"
+                                    mt="6px"
+                                    fontWeight="thin"
+                                  >
+                                    rToken Balance:{" "}
+                                    {validRTokens && validRTokens.length > 0
+                                      ? amount
+                                      : "loading..."}
+                                  </Box>
+                                </Box>
+                              </Box>
+                            );
+                          }
+                        )}
                       <hr
                         style={{
                           height: "1px",
@@ -761,10 +871,17 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     fontStyle="normal"
                     fontFamily="Inter"
                   >
-                    Wallet Balance:{" "}
+                    {currentCollateralCoin && currentCollateralCoin[0] == "r"
+                      ? "rToken Balance: " + getBalance(currentCollateralCoin)
+                      : "Wallet Balance: " +
+                        (walletBalance.toFixed(5).replace(/\.?0+$/, "").length >
+                        5
+                          ? Math.floor(walletBalance)
+                          : walletBalance)}
+                    {/* Wallet Balance:{" "}
                     {walletBalance.toFixed(5).replace(/\.?0+$/, "").length > 5
                       ? Math.floor(walletBalance)
-                      : walletBalance}
+                      : walletBalance} */}
                     <Text color="#6E7781" ml="0.2rem">
                       {` ${currentCollateralCoin}`}
                     </Text>
@@ -879,37 +996,36 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     <SliderThumb />
                   </Slider>
                 </Box>
-                {currentCollateralCoin != "rBTC" &&
-                  currentCollateralCoin != "rUSDT" && (
+                {currentCollateralCoin && currentCollateralCoin[0] !== "r" && (
+                  <Box
+                    // display="flex"
+                    // justifyContent="left"
+                    w="100%"
+                    pb="4"
+                    height="64px"
+                    display="flex"
+                    alignItems="center"
+                    mt="1rem"
+                  >
                     <Box
-                      // display="flex"
-                      // justifyContent="left"
-                      w="100%"
-                      pb="4"
-                      height="64px"
                       display="flex"
-                      alignItems="center"
-                      mt="1rem"
+                      bg="#0C425C"
+                      color="white"
+                      fontSize="12px"
+                      p="4"
+                      border="1px solid rgba(84, 174, 255, 0.4)"
+                      fontStyle="normal"
+                      fontWeight="400"
+                      lineHeight="18px"
+                      borderRadius="6px"
+                      // textAlign="center"
                     >
-                      <Box
-                        display="flex"
-                        bg="#0C425C"
-                        color="white"
-                        fontSize="12px"
-                        p="4"
-                        border="1px solid rgba(84, 174, 255, 0.4)"
-                        fontStyle="normal"
-                        fontWeight="400"
-                        lineHeight="18px"
-                        borderRadius="6px"
-                        // textAlign="center"
-                      >
-                        <Box pr="3" mt="0.5" cursor="pointer">
-                          <BlueInfoIcon />
-                        </Box>
-                        You have selected native token as collateral which will
-                        be converted to rtokens 1rBTC = XXBTC
-                        {/* <Box
+                      <Box pr="3" mt="0.5" cursor="pointer">
+                        <BlueInfoIcon />
+                      </Box>
+                      You have selected native token as collateral which will be
+                      converted to rtokens 1rBTC = XXBTC
+                      {/* <Box
                                 py="1"
                                 pl="4"
                                 cursor="pointer"
@@ -917,9 +1033,9 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                               >
                                 <TableClose />
                               </Box> */}
-                      </Box>
                     </Box>
-                  )}
+                  </Box>
+                )}
                 {/* {currentCollateralCoin != "rBTC" &&
                   currentCollateralCoin != "rUSDT" && (
                     <Box display="flex" gap="2">
@@ -1072,16 +1188,18 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                                 color="white"
                                 mt="6px"
                                 fontWeight="thin"
+                                display="flex"
                               >
-                                Wallet Balance:{" "}
-                                {Number(
-                                  BNtoNum(
-                                    uint256.uint256ToBN(
-                                      walletBalances[coin]?.dataBalanceOf
-                                        ?.balance
-                                    ),
-                                    tokenDecimalsMap[coin]
-                                  )
+                                Available reserves:{" "}
+                                {protocolStats?.[index]?.availableReserves || (
+                                  <Skeleton
+                                    width="3rem"
+                                    height="1rem"
+                                    startColor="#2B2F35"
+                                    endColor="#101216"
+                                    borderRadius="6px"
+                                    ml={2}
+                                  />
                                 )}
                               </Box>
                             </Box>
@@ -1185,7 +1303,7 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                   </Button>
                 </Box>
                 {amount > walletBalance || amount < 0 ? (
-                  <Text
+                  <Box
                     display="flex"
                     justifyContent="space-between"
                     color="#E6EDF3"
@@ -1205,19 +1323,32 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                           : "Invalid Input"}
                       </Text>
                     </Text>
-                    <Text
+                    <Box
                       color="#E6EDF3"
                       display="flex"
-                      justifyContent="flex-end"
+                      justifyContent="center"
+                      alignItems="center"
                     >
-                      Available reserves: {walletBalance}
+                      Available reserves:{" "}
+                      {protocolStats?.find(
+                        (stat: any) => stat.token == currentBorrowCoin
+                      )?.availableReserves || (
+                        <Skeleton
+                          width="4rem"
+                          height=".85rem"
+                          startColor="#2B2F35"
+                          endColor="#101216"
+                          borderRadius="4px"
+                          m={1}
+                        />
+                      )}
                       <Text color="#6E7781" ml="0.2rem">
                         {` ${currentBorrowCoin}`}
                       </Text>
-                    </Text>
-                  </Text>
+                    </Box>
+                  </Box>
                 ) : (
-                  <Text
+                  <Box
                     color="#E6EDF3"
                     display="flex"
                     justifyContent="flex-end"
@@ -1227,11 +1358,23 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                     fontStyle="normal"
                     fontFamily="Inter"
                   >
-                    Available reserves: {walletBalance}
+                    Available reserves:{" "}
+                    {protocolStats?.find(
+                      (stat: any) => stat.token == currentBorrowCoin
+                    )?.availableReserves || (
+                      <Skeleton
+                        width="4rem"
+                        height=".85rem"
+                        startColor="#2B2F35"
+                        endColor="#101216"
+                        borderRadius="4px"
+                        m={1}
+                      />
+                    )}
                     <Text color="#6E7781" ml="0.2rem">
                       {` ${currentBorrowCoin}`}
                     </Text>
-                  </Text>
+                  </Box>
                 )}
                 <Box pt={5} pb={2} mt="0.9rem">
                   <Slider
@@ -1425,7 +1568,20 @@ const BorrowModal = ({ buttonText, coin, ...restProps }: any) => {
                   font-size="14px"
                   color="#6A737D"
                 >
-                  5.56%
+                  {protocolStats?.find(
+                    (stat: any) => stat.token == currentBorrowCoin
+                  )?.borrowRate || (
+                    <Box pt="1px">
+                      <Skeleton
+                        width="2.3rem"
+                        height=".85rem"
+                        startColor="#2B2F35"
+                        endColor="#101216"
+                        borderRadius="6px"
+                      />
+                    </Box>
+                  )}
+                  {/* 5.56% */}
                 </Text>
               </Text>
               <Text
