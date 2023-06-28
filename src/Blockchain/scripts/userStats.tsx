@@ -121,7 +121,7 @@ export async function getNetApr(deposits: IDeposit[], loans: ILoan[], oraclePric
   }
   let netApr = netSupplyInterest / totalSupply - netBorrowInterest / totalBorrow;
 
-  return netApr;
+  return netApr.toFixed(2);
 }
 
 export async function effectivAPRLoan(loan: ILoan, marketInfos: IMarketInfo[], oraclePrices: OraclePrice[]) {

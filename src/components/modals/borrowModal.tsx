@@ -238,8 +238,8 @@ const BorrowModal = ({
     protocolStats?.find((stat: any) => stat?.token == currentBorrowCoin)
       ?.availableReserves
   );
-  const stats = useSelector(selectProtocolStats);
   const fetchProtocolStats = async () => {
+    const stats = await getProtocolStats();
     if (stats)
       setProtocolStats([
         stats?.[0],
