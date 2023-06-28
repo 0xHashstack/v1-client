@@ -297,7 +297,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           const dataDeposit=await getUserDeposits(address || "");
           const dataOraclePrices=await getOraclePrices();
           const dataMarket=await getProtocolStats();
-          console.log(dataMarket,"data market page")
+          // console.log(dataMarket,"data market page")
           // console.log(dataDeposit,"deposit array");
           const dataBorrow=await getTotalBorrow(userLoans,dataOraclePrices,dataMarket);
           const dataTotalBorrow=dataBorrow?.totalBorrow;
@@ -318,10 +318,10 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
 
 
         }
-        // if(yourSupply==null && YourBorrow==null && netWorth==null &&netAPR==null ){
-        //   fetchUserSupply();
-        // }
-        fetchUserSupply();
+        if(yourSupply==null || yourBorrow==null || netWorth==null ||netAPR==null ){
+          fetchUserSupply();
+        }
+        // fetchUserSupply();
       }catch(err){
         console.log(err)
 
