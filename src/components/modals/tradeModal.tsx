@@ -53,6 +53,8 @@ import {
   selectModalDropDowns,
   resetModalDropdowns,
 } from "@/store/slices/dropdownsSlice";
+import TransactionFees from "../../../TransactionFees.json";
+
 import { useEffect, useState } from "react";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import JediswapLogo from "@/assets/icons/dapps/jediswapLogo";
@@ -2150,7 +2152,7 @@ const TradeModal = ({
                       </Tooltip>
                     </Box>
                     <Text color="#6E7681" fontSize="xs">
-                      0.1%
+                      {TransactionFees.spend}%
                     </Text>
                   </Box>
 

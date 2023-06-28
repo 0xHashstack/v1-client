@@ -28,7 +28,7 @@ import {
   Stack,
   Skeleton,
 } from "@chakra-ui/react";
-
+import TransactionFees from "../../../TransactionFees.json";
 /* Coins logo import  */
 import BTCLogo from "../../assets/icons/coins/btc";
 import USDCLogo from "@/assets/icons/coins/usdc";
@@ -1135,7 +1135,7 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">0.1%</Text>
+                          <Text color="#6E7681">{TransactionFees.stake}%</Text>
                         </Text>
                         <Text
                           color="#8B949E"
@@ -1881,7 +1881,7 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">0.1%</Text>
+                          <Text color="#6E7681">{TransactionFees.withdrawSupply}%</Text>
                         </Text>
                         <Text
                           color="#8B949E"

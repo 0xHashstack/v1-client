@@ -44,6 +44,7 @@ import TableJediswapLogo from "../layouts/table/tableIcons/jediswapLogo";
 import useSwap from "@/Blockchain/hooks/Writes/useSwap";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import { toast } from "react-toastify";
+import TransactionFees from "../../../TransactionFees.json";
 import {
   selectInputSupplyAmount,
   setCoinSelectedSupplyModal,
@@ -929,7 +930,7 @@ const LiquidityProvisionModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    0.1%
+                    {TransactionFees.spend}%
                   </Text>
                 </Box>
                 <Box display="flex" justifyContent="space-between" mb="0.3rem">

@@ -30,7 +30,7 @@ import {
   ModalHeader,
   Skeleton,
 } from "@chakra-ui/react";
-
+import TransactionFees from "../../../TransactionFees.json";
 /* Coins logo import  */
 import BTCLogo from "../../assets/icons/coins/btc";
 import USDCLogo from "@/assets/icons/coins/usdc";
@@ -839,7 +839,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                0.1%
+                {TransactionFees.spend}%
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
@@ -1147,7 +1147,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                0.1%
+                {TransactionFees.repay}%
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between">
@@ -1326,7 +1326,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text color="#8B949E" fontSize="xs">
-                0.1%
+                {TransactionFees.repay}%
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between">
@@ -1448,7 +1448,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                0.1%
+                {TransactionFees.convertToBorrowMarket}%
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
