@@ -240,19 +240,16 @@ export const selectTransactionStarted = (state) =>
   state.user_account.transactionStarted;
 export const selectProtocolReserves = (state) =>
   state.user_account.protocolReserves;
-export const selectYourSupply = (state) => {
+export const selectYourSupply = (state) => 
   state.user_account.yourSupply;
-};
-export const selectYourBorrow = (state) => {
+export const selectYourBorrow = (state) => 
   state.user_account.yourBorrow;
-};
-export const selectNetWorth = (state) => {
+export const selectNetWorth = (state) => 
   state.user_account.netWorth;
-};
-export const selectNetAPR = (state) => {
+export const selectNetAPR = (state) => 
   state.user_account.netAPR;
-};
-// export const select=(state)=>{
+
+// export const select=(state)=>
 //   state.user_account.
-// }
+// 
 export default userAccountSlice.reducer;
