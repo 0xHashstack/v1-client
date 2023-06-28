@@ -54,7 +54,11 @@ export interface IDeposit {
   token: NativeToken;
   rToken: RToken;
   rTokenAddress: string;
-  
+  // 2000 USDT -> 2000 rUSDT
+  // 500rusdt i staked
+  // 1500rusdt i have free(wallet balance)
+  // 500rusdt i have locked(still in my wallet but locked for loans)
+  // 1000 rusdt free + locked = 1500rusdt
   rTokenFreeParsed: number;
   rTokenLockedParsed: number;
   rTokenStakedParsed: number;
@@ -86,7 +90,7 @@ export interface IMarketInfo {
 }
 
 export interface IProtocolReserves {
-  totalReserves: number | null;
+  totalReserves: number | null;  // usdt terms(6 decimals)
   availableReserves: number | null;
   avgAssetUtilisation: number | null; // weighted avg of all the utilisations of markets
 }

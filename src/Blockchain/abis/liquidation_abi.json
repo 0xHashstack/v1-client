@@ -7,53 +7,18 @@
                 "type": "felt"
             },
             {
-                "name": "borrower",
+                "name": "return_market",
                 "offset": 1,
                 "type": "felt"
             },
             {
-                "name": "market",
+                "name": "return_amount",
                 "offset": 2,
-                "type": "felt"
-            },
-            {
-                "name": "amount",
-                "offset": 3,
                 "type": "Uint256"
-            },
-            {
-                "name": "current_market",
-                "offset": 5,
-                "type": "felt"
-            },
-            {
-                "name": "current_amount",
-                "offset": 6,
-                "type": "Uint256"
-            },
-            {
-                "name": "state",
-                "offset": 8,
-                "type": "felt"
-            },
-            {
-                "name": "l3_integration",
-                "offset": 9,
-                "type": "felt"
-            },
-            {
-                "name": "l3_category",
-                "offset": 10,
-                "type": "felt"
-            },
-            {
-                "name": "created_at",
-                "offset": 11,
-                "type": "felt"
             }
         ],
-        "name": "Loan",
-        "size": 12,
+        "name": "SpendLoanResult",
+        "size": 4,
         "type": "struct"
     },
     {
@@ -81,23 +46,40 @@
                 "type": "felt"
             },
             {
-                "name": "collateral_token",
+                "name": "return_market",
                 "offset": 1,
                 "type": "felt"
             },
             {
-                "name": "amount",
+                "name": "return_amount",
                 "offset": 2,
                 "type": "Uint256"
+            }
+        ],
+        "name": "RevertLoanResult",
+        "size": 4,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "tokenA",
+                "offset": 0,
+                "type": "felt"
             },
             {
-                "name": "created_at",
-                "offset": 4,
+                "name": "tokenB",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "pool",
+                "offset": 2,
                 "type": "felt"
             }
         ],
-        "name": "Collateral",
-        "size": 5,
+        "name": "SupportedPool",
+        "size": 3,
         "type": "struct"
     },
     {
@@ -140,120 +122,38 @@
     {
         "data": [
             {
-                "name": "role",
+                "name": "previousOwner",
                 "type": "felt"
             },
+            {
+                "name": "newOwner",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "data": [
             {
                 "name": "account",
                 "type": "felt"
-            },
-            {
-                "name": "sender",
-                "type": "felt"
             }
         ],
         "keys": [],
-        "name": "RoleGranted",
+        "name": "Paused",
         "type": "event"
     },
     {
         "data": [
-            {
-                "name": "role",
-                "type": "felt"
-            },
             {
                 "name": "account",
                 "type": "felt"
-            },
-            {
-                "name": "sender",
-                "type": "felt"
             }
         ],
         "keys": [],
-        "name": "RoleRevoked",
-        "type": "event"
-    },
-    {
-        "data": [
-            {
-                "name": "role",
-                "type": "felt"
-            },
-            {
-                "name": "previousAdminRole",
-                "type": "felt"
-            },
-            {
-                "name": "newAdminRole",
-                "type": "felt"
-            }
-        ],
-        "keys": [],
-        "name": "RoleAdminChanged",
-        "type": "event"
-    },
-    {
-        "data": [
-            {
-                "name": "loan_record",
-                "type": "Loan"
-            },
-            {
-                "name": "collateral",
-                "type": "Collateral"
-            },
-            {
-                "name": "liquidator",
-                "type": "felt"
-            },
-            {
-                "name": "repay_amount",
-                "type": "Uint256"
-            },
-            {
-                "name": "returned_amount",
-                "type": "Uint256"
-            },
-            {
-                "name": "protocol_share",
-                "type": "Uint256"
-            },
-            {
-                "name": "timestamp",
-                "type": "felt"
-            }
-        ],
-        "keys": [],
-        "name": "liquidated",
-        "type": "event"
-    },
-    {
-        "data": [
-            {
-                "name": "loan_id",
-                "type": "felt"
-            },
-            {
-                "name": "liquidator",
-                "type": "felt"
-            },
-            {
-                "name": "is_profit",
-                "type": "felt"
-            },
-            {
-                "name": "amount_diff",
-                "type": "Uint256"
-            },
-            {
-                "name": "timestamp",
-                "type": "felt"
-            }
-        ],
-        "keys": [],
-        "name": "smart_liquidation",
+        "name": "Unpaused",
         "type": "event"
     },
     {
@@ -263,36 +163,74 @@
                 "type": "felt"
             },
             {
-                "name": "repay_amount",
-                "type": "Uint256"
-            }
-        ],
-        "name": "liquidate",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "loan_id",
+                "name": "dest_address",
                 "type": "felt"
             }
         ],
-        "name": "smart_liquidate",
-        "outputs": [],
-        "type": "function"
-    },
-    {
-        "inputs": [
-            {
-                "name": "loan_id",
-                "type": "felt"
-            }
-        ],
-        "name": "is_loan_liquidable",
+        "name": "swap_jedi_swap",
         "outputs": [
             {
-                "name": "is_liquidable",
+                "name": "spend_loan_result",
+                "type": "SpendLoanResult"
+            }
+        ],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "loan_id",
+                "type": "felt"
+            }
+        ],
+        "name": "revert_swap_jedi_swap",
+        "outputs": [
+            {
+                "name": "revert_loan_result",
+                "type": "RevertLoanResult"
+            }
+        ],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "loan_id",
+                "type": "felt"
+            }
+        ],
+        "name": "view_details_jedi_swap",
+        "outputs": [
+            {
+                "name": "l3_id",
+                "type": "felt"
+            },
+            {
+                "name": "owner",
+                "type": "felt"
+            },
+            {
+                "name": "market",
+                "type": "felt"
+            },
+            {
+                "name": "amount",
+                "type": "Uint256"
+            },
+            {
+                "name": "current_market",
+                "type": "felt"
+            },
+            {
+                "name": "current_amount",
+                "type": "Uint256"
+            },
+            {
+                "name": "is_reverted",
+                "type": "felt"
+            },
+            {
+                "name": "created_at",
                 "type": "felt"
             }
         ],
@@ -302,15 +240,15 @@
     {
         "inputs": [
             {
-                "name": "liquidator",
+                "name": "loan_id",
                 "type": "felt"
             }
         ],
-        "name": "is_valid_liquidator",
+        "name": "get_usd_value_jedi_swap",
         "outputs": [
             {
-                "name": "is_liquidator",
-                "type": "felt"
+                "name": "usd_value",
+                "type": "Uint256"
             }
         ],
         "stateMutability": "view",
@@ -318,14 +256,194 @@
     },
     {
         "inputs": [],
-        "name": "pause_liquidation",
-        "outputs": [],
+        "name": "get_supported_pools_jedi_swap",
+        "outputs": [
+            {
+                "name": "pools_len",
+                "type": "felt"
+            },
+            {
+                "name": "pools",
+                "type": "SupportedPool*"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     },
     {
-        "inputs": [],
-        "name": "unpause_liquidation",
-        "outputs": [],
+        "inputs": [
+            {
+                "name": "asset_from",
+                "type": "felt"
+            },
+            {
+                "name": "asset_to",
+                "type": "felt"
+            },
+            {
+                "name": "amount_in",
+                "type": "Uint256"
+            }
+        ],
+        "name": "get_amount_out_jedi_swap",
+        "outputs": [
+            {
+                "name": "amount_to",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "id",
+                "type": "felt"
+            },
+            {
+                "name": "liq_tokenA",
+                "type": "felt"
+            },
+            {
+                "name": "liq_tokenB",
+                "type": "felt"
+            }
+        ],
+        "name": "add_liquidity_jediswap",
+        "outputs": [
+            {
+                "name": "lp_bought",
+                "type": "Uint256"
+            },
+            {
+                "name": "pair_address",
+                "type": "felt"
+            },
+            {
+                "name": "pool_id",
+                "type": "felt"
+            }
+        ],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "loan_id",
+                "type": "felt"
+            },
+            {
+                "name": "from_pair_address",
+                "type": "felt"
+            },
+            {
+                "name": "incoming_lp",
+                "type": "Uint256"
+            }
+        ],
+        "name": "remove_liquidity_jediswap",
+        "outputs": [
+            {
+                "name": "return_amount",
+                "type": "Uint256"
+            }
+        ],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "loan_market",
+                "type": "felt"
+            },
+            {
+                "name": "current_amount",
+                "type": "Uint256"
+            },
+            {
+                "name": "tokenA",
+                "type": "felt"
+            },
+            {
+                "name": "tokenB",
+                "type": "felt"
+            }
+        ],
+        "name": "get_jedi_estimate_liquidity_split",
+        "outputs": [
+            {
+                "name": "amountA",
+                "type": "Uint256"
+            },
+            {
+                "name": "amountB",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "loan_market",
+                "type": "felt"
+            },
+            {
+                "name": "current_amount",
+                "type": "Uint256"
+            },
+            {
+                "name": "tokenA",
+                "type": "felt"
+            },
+            {
+                "name": "tokenB",
+                "type": "felt"
+            }
+        ],
+        "name": "get_jedi_estimated_lp_amount_out",
+        "outputs": [
+            {
+                "name": "lp_amount_out",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "liquidity",
+                "type": "Uint256"
+            },
+            {
+                "name": "pair_address",
+                "type": "felt"
+            }
+        ],
+        "name": "get_jedi_estimated_liqA_liqB_from_lp",
+        "outputs": [
+            {
+                "name": "amountA",
+                "type": "Uint256"
+            },
+            {
+                "name": "token0",
+                "type": "felt"
+            },
+            {
+                "name": "amountB",
+                "type": "Uint256"
+            },
+            {
+                "name": "token1",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
         "type": "function"
     }
 ]
