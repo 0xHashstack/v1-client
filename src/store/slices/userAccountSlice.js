@@ -245,22 +245,14 @@ export const selectTransactionStarted = (state) =>
   state.user_account.transactionStarted;
 export const selectProtocolReserves = (state) =>
   state.user_account.protocolReserves;
-export const selectYourSupply = (state) => {
-  state.user_account.yourSupply;
-};
-export const selectYourBorrow = (state) => {
-  state.user_account.yourBorrow;
-};
-export const selectNetWorth = (state) => {
-  state.user_account.netWorth;
-};
-export const selectNetAPR = (state) => {
-  state.user_account.netAPR;
-};
-export const selectActiveTransactions = (state) => {
+export const selectYourSupply = (state) => state.user_account.yourSupply;
+
+export const selectYourBorrow = (state) => state.user_account.yourBorrow;
+export const selectNetWorth = (state) => state.user_account.netWorth;
+
+export const selectNetAPR = (state) => state.user_account.netAPR;
+export const selectActiveTransactions = (state) =>
   state.user_account.activeTransactions;
-};
-// export const select=(state)=>{
-//   state.user_account.
-// }
+
+// export const select=(state)=> state.user_account.
 export default userAccountSlice.reducer;

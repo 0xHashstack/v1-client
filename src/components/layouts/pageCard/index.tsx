@@ -12,6 +12,10 @@ import {
   useBlock,
   useWaitForTransaction,
   useBlockNumber,
+  UseWaitForTransactionResult,
+  useTransactions,
+  useTransaction,
+  useTransactionManager,
 } from "@starknet-react/core";
 import { useContract } from "@starknet-react/core";
 import {
@@ -27,6 +31,7 @@ import {
   selectYourBorrow,
   selectActiveTransactions,
   setActiveTransactions,
+  setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import Footer from "../footer";
@@ -47,6 +52,10 @@ import {
 } from "@/Blockchain/scripts/protocolStats";
 import YourBorrow from "@/pages/v1/your-borrow";
 import { getTotalBorrow } from "@/Blockchain/scripts/userStats";
+import useToastHandler from "@/hooks/useToastHandler";
+import useFetchToastStatus from "../toasts/transactionStatus";
+import CopyToClipboard from "react-copy-to-clipboard";
+// import { useFetchToastStatus } from "../toasts";
 
 interface Props extends StackProps {
   children: ReactNode;
@@ -218,7 +227,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
 
   const [validRTokens, setValidRTokens] = useState([]);
   useEffect(() => {
-    if (validRTokens.length === 0) {
+    if (validRTokens?.length === 0) {
       fetchUserDeposits();
     }
   }, [validRTokens, address]);
@@ -240,7 +249,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         });
       }
       console.log("rtokens", rTokens);
-      if (rTokens.length === 0) return;
+      if (rTokens?.length === 0) return;
       setValidRTokens(rTokens);
       console.log("valid rtoken", validRTokens);
       console.log("market page -user supply", reserves);
@@ -296,26 +305,246 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   }
   // }, [netWorth, yourSupply, yourBorrow, netWorth]);
   const activeTransactions = useSelector(selectActiveTransactions);
+  // console.log("activeTransactions", activeTransactions);
+
+  const [transactions, setTransactions] = useState([]);
+  const toastHash = [""];
   useEffect(() => {
-    let transactions = activeTransactions?.map((transaction, idx) => {
-      const transactionData = toastHandler(transaction);
+    // console.log("trans activeTransactions useEffect called");
+    if (activeTransactions) {
+      const data = activeTransactions.map(
+        (transaction) => transaction.transaction_hash
+      );
+      setTransactions(data);
+    }
+  }, [activeTransactions]);
+
+  // const results = useTransactions({
+  //   hashes: [...transactions],
+  //   watch: true,
+  // });
+  // const { hashes, addTransaction } = useTransactionManager();
+  const results = useTransactions({
+    hashes: [...transactions],
+    watch: true,
+  });
+
+  // const data = useTransaction()
+  console.log("trans toastHash", toastHash);
+  console.log("transaction results - ", results);
+  useEffect(() => {
+    console.log("transaction active transactions ", activeTransactions);
+    console.log("transaction transactions ", transactions);
+    console.log("transaction results ", results);
+    let transactionData = results?.filter((transaction, idx) => {
+      transaction.refetch();
       if (
-        transactionData?.data?.status == "PENDING" ||
-        transactionData?.data?.status == "ACCEPTED_ON_L2" ||
-        transactionData?.data?.status == "ACCEPTED_ON_L1" ||
-        transactionData?.data?.status == "PENDING" ||
-        transactionData?.data?.status == "REJECTED"
+        transaction?.data?.transaction?.transaction_hash == "" ||
+        activeTransactions.transaction_hash == ""
       ) {
-        toast.dismiss(transaction.toastID);
+        return false;
+      }
+      const transaction_hxh = activeTransactions[idx]?.transaction_hash;
+      if (
+        transaction?.data?.status == "PENDING" ||
+        transaction?.data?.status == "ACCEPTED_ON_L2"
+      ) {
+        if (!toastHash.includes(transaction_hxh)) {
+          dispatch(setTransactionStatus("success"));
+          activeTransactions[idx].setCurrentTransactionStatus("success");
+          toast.success(
+            activeTransactions?.[idx]?.message ||
+              `You have successfully supplied`,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+            }
+          );
+        }
+        toastHash.push(transaction_hxh);
+        toastHash.push(activeTransactions[idx]?.transaction_hash);
+        toastHash.push(transaction?.data?.transaction?.transaction_hash);
+      } else if (transaction?.data?.status == "REJECTED") {
+        console.log("treans rejected", transaction?.data?.error);
+        const toastContent = (
+          <div>
+            Transaction failed{" "}
+            <CopyToClipboard text={"Transaction failed"}>
+              <Text as="u">copy error!</Text>
+            </CopyToClipboard>
+          </div>
+        );
+        // setFailureToastDisplayed(true);
+        if (!toastHash.includes(transaction_hxh)) {
+          dispatch(setTransactionStatus("failed"));
+          activeTransactions[idx].setCurrentTransactionStatus("failed");
+          toast.error(toastContent, {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          });
+        }
+        toastHash.push(transaction_hxh);
+        toastHash.push(activeTransactions?.transaction_hash);
+        toastHash.push(transaction?.data?.transaction?.transaction_hash);
+      }
+      if (
+        transaction?.data?.status == "PENDING" ||
+        transaction?.data?.status == "ACCEPTED_ON_L2" ||
+        transaction?.data?.status == "ACCEPTED_ON_L1" ||
+        transaction?.data?.status == "REJECTED"
+      ) {
+        if (activeTransactions[idx].transaction_hash == "") {
+          return false;
+        }
+        toastHash.push(transaction_hxh);
+        toastHash.push(activeTransactions?.transaction_hash);
+        toastHash.push(transaction?.data?.transaction?.transaction_hash);
+        const newData = [...activeTransactions]; // Create a new array with the same values
+        newData[idx] = {
+          ...newData[idx],
+          transaction_hash: "", // Modify the specific property with the new value
+        };
+        toast.dismiss(activeTransactions?.[idx]?.toastId);
+        dispatch(setActiveTransactions(newData));
+        return false;
       } else {
-        return transaction;
+        return true;
       }
     });
-    dispatch(setActiveTransactions(transactions));
-  }, []);
-  const { data } = useBlockNumber({
-    refetchInterval: 10000,
-  });
+    // if (transactionData?.length != activeTransactions?.length) {
+    //   dispatch(setActiveTransactions(transactionData));
+    // }
+  }, [results]);
+
+  // async function waitForTransaction(hash: string) {
+  //   return new Promise<UseWaitForTransactionResult>((resolve, reject) => {
+  //     const result = useWaitForTransaction({
+  //       hash,
+  //       watch: false,
+  //     });
+
+  //     if (result.isError) {
+  //       reject(result.error);
+  //     } else {
+  //       resolve(result);
+  //     }
+  //   });
+  // }
+  // async function processTransactions() {
+  //   for (const transaction of activeTransactions) {
+  //     console.log("transactionData ", transaction);
+  //     // if (!transaction || !transaction.transaction_hash) {
+  //     //   continue;
+  //     // }
+  //     try {
+  //       // waitForTransaction(transaction?.transaction_hash);
+  //       useWaitForTransaction({
+  //         hash: transaction?.transaction_hash,
+  //         watch: false,
+  //       });
+  //       // Process the transaction data here
+  //       // console.log("transactionData ", transactionData);
+  //     } catch (error) {
+  //       console.error("Error fetching transaction data:", error);
+  //     }
+  //   }
+  // }
+  // processTransactions();
+  // useEffect(() => {
+  //   if (activeTransactions && activeTransactions?.length > 0) {
+  //   }
+  // }, [activeTransactions]);
+  // if (activeTransactions) {
+  //   for (const transaction of activeTransactions) {
+  //     console.log("transactionData ", transaction);
+  //     if (!transaction || !transaction?.transaction_hash) {
+  //       continue;
+  //     }
+  //     const transactionData = await useWaitForTransaction({
+  //       hash: transaction?.transaction_hash,
+  //       watch: false,
+  //       // onReceived: () => {
+  //       //   console.log("trans received");
+  //       // },
+  //       // onPending: () => {
+  //       //   // setCurrentTransactionStatus(true);
+  //       //   toast.dismiss(transaction?.toastId);
+  //       //   console.log("trans pending");
+  //       //   // if (isToastDisplayed == false) {
+  //       //   toast.success(
+  //       //     transaction?.message || `You have successfully supplied`,
+  //       //     {
+  //       //       position: toast.POSITION.BOTTOM_RIGHT,
+  //       //     }
+  //       //   );
+  //       //   //   setToastDisplayed(true);
+  //       //   // }
+  //       // },
+  //       // onRejected(result: any) {
+  //       //   toast.dismiss(transaction?.toastId);
+  //       //   // if (!failureToastDisplayed) {
+  //       //   console.log("treans rejected", result);
+  //       //   // dispatch(setTransactionStatus("failed"));
+  //       //   const toastContent = (
+  //       //     <div>
+  //       //       Transaction failed{" "}
+  //       //       <CopyToClipboard text={"Transaction failed"}>
+  //       //         <Text as="u">copy error!</Text>
+  //       //       </CopyToClipboard>
+  //       //     </div>
+  //       //   );
+  //       //   // setFailureToastDisplayed(true);
+  //       //   toast.error(toastContent, {
+  //       //     position: toast.POSITION.BOTTOM_RIGHT,
+  //       //     autoClose: false,
+  //       //   });
+  //       // },
+  //       // onAcceptedOnL1: (result: any) => {
+  //       //   // setCurrentTransactionStatus(true);
+  //       //   console.log("trans onAcceptedOnL1");
+  //       // },
+  //       // onAcceptedOnL2(result: any) {
+  //       //   toast.dismiss(transaction?.toastId);
+  //       //   // setCurrentTransactionStatus(true);
+  //       //   // if (!isToastDisplayed) {
+  //       //   toast.success(
+  //       //     transaction?.message || `You have successfully supplied`,
+  //       //     {
+  //       //       position: toast.POSITION.BOTTOM_RIGHT,
+  //       //     }
+  //       //   );
+  //       //   // setToastDisplayed(true);
+  //       //   // }
+  //       //   console.log("trans onAcceptedOnL2 - ", result);
+  //       // },
+  //     });
+  //     // console.log("transactionData received ", transactionData);
+  //     // if (
+  //     //   transactionData?.data?.status == "PENDING" ||
+  //     //   transactionData?.data?.status == "ACCEPTED_ON_L2" ||
+  //     //   transactionData?.data?.status == "ACCEPTED_ON_L1" ||
+  //     //   transactionData?.data?.status == "PENDING" ||
+  //     //   transactionData?.data?.status == "REJECTED"
+  //     // ) {
+  //     //   toast.dismiss(transaction?.toastID);
+  //     // } else {
+  //     //   return transaction;
+  //     // }
+  //   }
+  // }
+  // useEffect(() => {
+  //   // console.log("trans activeTransactions useEffect called");
+  //   if (!activeTransactions || !transactions) {
+  //     return;
+  //   }
+  //   if (activeTransactions?.length != transactions?.length) {
+  //     console.log("setActiveTransactions called");
+  //     dispatch(setActiveTransactions(transactions));
+  //   }
+  // }, [transactions]);
+
+  // const { data } = useBlockNumber({
+  //   refetchInterval: 10000,
+  // });
 
   return (
     <>
@@ -374,7 +603,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             </AnimatedButton>
           </Box> */}
           {/* <ToastContainer theme="dark" /> */}
-          <Footer block={data} />
+          {/* <Footer block={data} />  */}
         </>
       ) : (
         <>
