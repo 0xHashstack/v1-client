@@ -7,7 +7,7 @@ import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
 import { IProtocolReserves } from "@/Blockchain/interfaces/interfaces";
 import { useAccount } from "@starknet-react/core";
 import { useSelector } from "react-redux";
-import { selectProtocolReserves } from "@/store/slices/userAccountSlice";
+import { selectNetAPR, selectNetWorth, selectProtocolReserves, selectYourBorrow, selectYourSupply } from "@/store/slices/userAccountSlice";
 const StatsBoard = () => {
   const { address } = useAccount();
   const router = useRouter();
@@ -21,10 +21,10 @@ const StatsBoard = () => {
   // });
   const protocolReserves = useSelector(selectProtocolReserves);
   const [userStats, setUserStats] = useState({
-    netWorth: 8392.14, // current values of loans - total borrow + total supply
-    yourSupply: 5536.83, // usd terms
-    yourBorrow: 536.83, // usd terms
-    netSupplyAPR: 15.5, // usd terms
+    netWorth: useSelector(selectNetWorth), // current values of loans - total borrow + total supply
+    yourSupply: useSelector(selectYourSupply), // usd terms
+    yourBorrow: useSelector(selectYourBorrow), // usd terms
+    netSupplyAPR: useSelector(selectNetAPR)?.toFixed(2), // usd terms
   });
   // useEffect(() => {
   //   try {

@@ -59,7 +59,6 @@ import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 const GetTokensModal = ({
   buttonText,
-  coin,
   backGroundOverLay,
   ...restProps
 }: any) => {
@@ -118,11 +117,22 @@ const GetTokensModal = ({
     setCurrentSelectedCoin(token);
   }, [token, currentSelectedCoin]);
   const dispatch = useDispatch();
+  const [toastId, setToastId] = useState<any>();
 
-  const handleGetToken = async () => {
+  const handleGetToken = async (coin:any) => {
     try {
       console.log(token);
       const getTokens = await writeAsyncGetTokens();
+      if(getTokens?.transaction_hash){
+        const toastid=toast.info(
+          `Please wait, your transaction is running in background ${coin} `,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        )
+        setToastId(toastId);
+      }
       console.log(getTokens);
       // dispatch(setTransactionStatus("success"));
     } catch (err: any) {
@@ -130,7 +140,7 @@ const GetTokensModal = ({
       // dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
-          Failed to mint TestToken :{/* {currentSelectedCoin + " "} */}
+          Failed to mint TestToken :{coin + " "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -205,9 +215,9 @@ const GetTokensModal = ({
                   _hover={{ bgColor: "white", color: "black" }}
                   _active={{ border: "3px solid grey" }}
                   onClick={() => {
-                    setCurrentSelectedCoin("BTC");
+                    setCurrentSelectedCoin("wBTC");
                     setToken("BTC");
-                    handleGetToken();
+                    handleGetToken("wBTC");
                   }}
                 >
                   wBTC
@@ -223,9 +233,9 @@ const GetTokensModal = ({
                   _hover={{ bgColor: "white", color: "black" }}
                   _active={{ border: "3px solid grey" }}
                   onClick={() => {
-                    setCurrentSelectedCoin("ETH");
+                    setCurrentSelectedCoin("wETH");
                     setToken("ETH");
-                    handleGetToken();
+                    handleGetToken("wETH");
                   }}
                 >
                   wETH
@@ -243,7 +253,7 @@ const GetTokensModal = ({
                   onClick={() => {
                     setCurrentSelectedCoin("USDT");
                     setToken("USDT");
-                    handleGetToken();
+                    handleGetToken("USDT");
                   }}
                 >
                   USDT
@@ -262,7 +272,7 @@ const GetTokensModal = ({
                   onClick={() => {
                     setCurrentSelectedCoin("USDC");
                     setToken("USDC");
-                    handleGetToken();
+                    handleGetToken("USDC");
                   }}
                 >
                   USDC
@@ -281,7 +291,7 @@ const GetTokensModal = ({
                   onClick={() => {
                     setCurrentSelectedCoin("DAI");
                     setToken("DAI");
-                    handleGetToken();
+                    handleGetToken("DAI");
                   }}
                 >
                   DAI
