@@ -94,7 +94,6 @@ export interface ICoin {
 //     Status: "Active",
 //   },
 // ];
-
 const SupplyDashboard = ({
   width,
   currentPagination,
@@ -122,7 +121,16 @@ const SupplyDashboard = ({
     useState("rBTC");
   const [supplyMarkets, setSupplyMarkets] = useState([]);
 
+  const [statusHoverIndex, setStatusHoverIndex] = useState("-1");
+
   const [supplies, setSupplies] = useState<IDeposit[]>([]);
+  const handleStatusHover = (idx: string) => {
+    setStatusHoverIndex(idx);
+  };
+
+  const handleStatusHoverLeave = () => {
+    setStatusHoverIndex("-1");
+  };
   const dispatch=useDispatch();
   useEffect(() => {
     const getSupply = async () => {
@@ -462,38 +470,116 @@ const SupplyDashboard = ({
                         gap={2}
                       >
                         {/* {checkGap(idx1, idx2)} */}
-                        <HStack gap={16}>
-                          <HStack>
-                            <Image
-                              src={`/stakeStatus.svg`}
-                              alt="Picture of the author"
-                              width="18"
-                              height="18"
-                            />
+                        <HStack
+                          // bgColor="red"
+                          justifyContent="flex-start"
+                          display={
+                            supply?.rTokenStakedParsed > 0 ||
+                            supply?.rTokenFreeParsed > 0
+                              ? "flex"
+                              : "none"
+                          }
+                        >
+                          <HStack
+                            onMouseEnter={() => handleStatusHover("0" + idx)}
+                            onMouseLeave={() => handleStatusHoverLeave()}
+                            _hover={{ cursor: "pointer" }}
+                            display={
+                              supply?.rTokenStakedParsed > 0 ? "flex" : "none"
+                            }
+                            // bgColor="red"
+                            mr="16px"
+                            pl={2}
+                            cursor="pointer"
+                          >
+                            {statusHoverIndex != "0" + idx ? (
+                              <Image
+                                src={`/stakeStatus.svg`}
+                                alt="Picture of the author"
+                                width="18"
+                                height="18"
+                              />
+                            ) : (
+                              <Text
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                borderRadius="22px"
+                                bgColor="#0C521F"
+                                p="0px 12px"
+                                fontSize="12px"
+                              >
+                                Staked
+                              </Text>
+                            )}
                             <Text>
                               {numberFormatter(supply?.rTokenStakedParsed)}
                             </Text>
                           </HStack>
-                          <HStack>
-                            <Image
-                              src={`/freeStatus.svg`}
-                              alt="Picture of the author"
-                              width="18"
-                              height="18"
-                            />
+                          <HStack
+                            display={
+                              supply?.rTokenFreeParsed > 0 ? "flex" : "none"
+                            }
+                            onMouseEnter={() => handleStatusHover("1" + idx)}
+                            onMouseLeave={() => handleStatusHoverLeave()}
+                            cursor="pointer"
+                          >
+                            {statusHoverIndex != "1" + idx ? (
+                              <Image
+                                src={`/freeStatus.svg`}
+                                alt="Picture of the author"
+                                width="18"
+                                height="18"
+                              />
+                            ) : (
+                              <Text
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                borderRadius="22px"
+                                bgColor="#340c7e"
+                                p="0px 12px"
+                                fontSize="12px"
+                              >
+                                Unstaked
+                              </Text>
+                            )}
                             <Text>
                               {numberFormatter(supply?.rTokenFreeParsed)}
                             </Text>
                           </HStack>
                         </HStack>
-                        <HStack>
-                          <HStack>
-                            <Image
-                              src={`/lockedStatus.svg`}
-                              alt="Picture of the author"
-                              width="18"
-                              height="18"
-                            />
+                        <HStack
+                          display={
+                            supply?.rTokenLockedParsed > 0 ? "flex" : "none"
+                          }
+                        >
+                          <HStack
+                            pl={2}
+                            onMouseEnter={() => handleStatusHover("2" + idx)}
+                            onMouseLeave={() => handleStatusHoverLeave()}
+                            cursor="pointer"
+                          >
+                            {statusHoverIndex != "2" + idx ? (
+                              <Image
+                                src={`/lockedStatus.svg`}
+                                alt="Picture of the author"
+                                width="18"
+                                height="18"
+                              />
+                            ) : (
+                              <Text
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                borderRadius="22px"
+                                bgColor="#404953"
+                                p="0px 12px"
+                                fontSize="12px"
+                              >
+                                Locked
+                              </Text>
+                            )}
                             <Text>
                               {numberFormatter(supply?.rTokenLockedParsed)}
                             </Text>

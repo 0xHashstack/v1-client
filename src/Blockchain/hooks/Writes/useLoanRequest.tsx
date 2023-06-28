@@ -29,10 +29,10 @@ const useLoanRequest = () => {
   const [collateralAmount, setCollateralAmount] = useState<number>(0);
 
   const [transLoanRequestHash, setIsLoanRequestHash] = useState("");
-  const loanRequestTransactionReceipt = useWaitForTransaction({
-    hash: transLoanRequestHash,
-    watch: true,
-  });
+  // const loanRequestTransactionReceipt = useWaitForTransaction({
+  //   hash: transLoanRequestHash,
+  //   watch: true,
+  // });
   //   console.log(
   //     "useLoanRequest - ",
   //     market,

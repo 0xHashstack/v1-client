@@ -38,6 +38,8 @@ import {
   setToastTransactionStarted,
   setTransactionStatus,
   selectAssetWalletBalance,
+  selectActiveTransactions,
+  setActiveTransactions,
   selectProtocolStats,
 } from "@/store/slices/userAccountSlice";
 import {
@@ -167,66 +169,66 @@ const BorrowModal = ({
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [showToast, setShowToast] = useState("true");
   const [toastId, setToastId] = useState<any>();
-  const recieptData = useWaitForTransaction({
-    hash: borrowTransHash,
-    watch: true,
-    onReceived: () => {
-      console.log("trans received");
-    },
-    onPending: () => {
-      setCurrentTransactionStatus("success");
-      toast.dismiss(toastId);
-      console.log("trans pending");
-      if (isToastDisplayed == false) {
-        toast.success(
-          `You have successfully borrowed ${inputBorrowAmount} d${currentBorrowCoin}`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          }
-        );
-        setToastDisplayed(true);
-      }
-    },
-    onRejected(transaction: any) {
-      setCurrentTransactionStatus("failed");
-      // dispatch(setTransactionStatus("failed"));
-      // toast.dismiss(toastId);
-      console.log("treans rejected");
-      dispatch(setTransactionStatus("failed"));
-      console.log("handle borrow", transaction?.status);
-      const toastContent = (
-        <div>
-          Transaction failed{" "}
-          <CopyToClipboard text={transaction?.status}>
-            <Text as="u">copy error!</Text>
-          </CopyToClipboard>
-        </div>
-      );
-      toast.error(toastContent, {
-        position: toast.POSITION.BOTTOM_RIGHT,
-        autoClose: false,
-      });
-    },
-    onAcceptedOnL1: () => {
-      setCurrentTransactionStatus("success");
+  // const recieptData = useWaitForTransaction({
+  //   hash: borrowTransHash,
+  //   watch: true,
+  //   onReceived: () => {
+  //     console.log("trans received");
+  //   },
+  //   onPending: () => {
+  //     setCurrentTransactionStatus("success");
+  //     toast.dismiss(toastId);
+  //     console.log("trans pending");
+  //     if (isToastDisplayed == false) {
+  //       toast.success(
+  //         `You have successfully borrowed ${inputBorrowAmount} d${currentBorrowCoin}`,
+  //         {
+  //           position: toast.POSITION.BOTTOM_RIGHT,
+  //         }
+  //       );
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  //   onRejected(transaction: any) {
+  //     setCurrentTransactionStatus("failed");
+  //     // dispatch(setTransactionStatus("failed"));
+  //     // toast.dismiss(toastId);
+  //     console.log("treans rejected");
+  //     dispatch(setTransactionStatus("failed"));
+  //     console.log("handle borrow", transaction?.status);
+  //     const toastContent = (
+  //       <div>
+  //         Transaction failed{" "}
+  //         <CopyToClipboard text={transaction?.status}>
+  //           <Text as="u">copy error!</Text>
+  //         </CopyToClipboard>
+  //       </div>
+  //     );
+  //     toast.error(toastContent, {
+  //       position: toast.POSITION.BOTTOM_RIGHT,
+  //       autoClose: false,
+  //     });
+  //   },
+  //   onAcceptedOnL1: () => {
+  //     setCurrentTransactionStatus("success");
 
-      console.log("trans onAcceptedOnL1");
-    },
-    onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus("success");
-      // if (isToastDisplayed == false) {
-      //   toast.success(
-      //     `You have successfully borrowed ${inputBorrowAmount} d${currentBorrowCoin} `,
-      //     {
-      //       position: toast.POSITION.BOTTOM_RIGHT,
-      //     }
-      //   );
-      //   setToastDisplayed(true);
-      // }
-      console.log("trans onAcceptedOnL2 - ", transaction);
-    },
-  });
-
+  //     console.log("trans onAcceptedOnL1");
+  //   },
+  //   onAcceptedOnL2(transaction) {
+  //     setCurrentTransactionStatus("success");
+  //     // if (isToastDisplayed == false) {
+  //     //   toast.success(
+  //     //     `You have successfully borrowed ${inputBorrowAmount} d${currentBorrowCoin} `,
+  //     //     {
+  //     //       position: toast.POSITION.BOTTOM_RIGHT,
+  //     //     }
+  //     //   );
+  //     //   setToastDisplayed(true);
+  //     // }
+  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //   },
+  // });
+  let activeTransactions = useSelector(selectActiveTransactions);
   const coinAlign = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const [currentBorrowCoin, setCurrentBorrowCoin] = useState(
     coin ? coin.name : "BTC"
@@ -277,13 +279,32 @@ const BorrowModal = ({
           // if (showToast == "true") {
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait, your transaction is running in background ${inputBorrowAmount} d${currentBorrowCoin} `,
+            `Please wait your transaction is running in background : ${inputBorrowAmount} d${currentBorrowCoin} `,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
             }
           );
           setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const trans_data = {
+            transaction_hash: borrow?.transaction_hash.toString(),
+            message: `You have successfully borrowed : ${inputBorrowAmount} d${currentBorrowCoin}`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+
+          dispatch(setActiveTransactions(activeTransactions));
           // }
         }
         setIsLoanRequestHash(borrow?.transaction_hash);
@@ -296,13 +317,32 @@ const BorrowModal = ({
           if (showToast == "true") {
             console.log("toast here");
             const toastid = toast.info(
-              `Please wait, your transaction is running in background ${inputBorrowAmount} d${currentBorrowCoin} `,
+              `Please wait your transaction is running in background : ${inputBorrowAmount} d${currentBorrowCoin} `,
               {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: false,
               }
             );
             setToastId(toastid);
+            if (!activeTransactions) {
+              activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+            } else if (
+              Object.isFrozen(activeTransactions) ||
+              Object.isSealed(activeTransactions)
+            ) {
+              // Check if activeTransactions is frozen or sealed
+              activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+            }
+            const trans_data = {
+              transaction_hash: borrow?.transaction_hash.toString(),
+              message: `You have successfully borrowed : ${inputBorrowAmount} d${currentBorrowCoin}`,
+              toastId: toastid,
+              setCurrentTransactionStatus: setCurrentTransactionStatus,
+            };
+            // addTransaction({ hash: deposit?.transaction_hash });
+            activeTransactions?.push(trans_data);
+
+            dispatch(setActiveTransactions(activeTransactions));
           }
         }
         setIsLoanRequestHash(borrow?.transaction_hash);

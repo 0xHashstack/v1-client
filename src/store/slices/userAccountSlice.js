@@ -44,8 +44,8 @@ const initialState = {
   yourSupply: null,
   yourBorrow: null,
   netAPR: null,
-
-  // toastTransactionStarted: false,
+  activeTransactions: [],
+  transactionRefresh: false,
 
   // walletBalance: {
   //   BTC: 0,
@@ -165,6 +165,10 @@ export const userAccountSlice = createSlice({
     setNetAPR(state, action) {
       state.netAPR = action.payload;
     },
+    setActiveTransactions(state, action) {
+      state.activeTransactions = action.payload;
+    },
+    setTrasactionRefresh(state, action) {},
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;
     // },
@@ -203,6 +207,8 @@ export const {
   setUserDeposits,
   setProtocolStats,
   setOraclePrices,
+  setActiveTransactions,
+  setTrasactionRefresh,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -261,16 +267,16 @@ export const selectTransactionStarted = (state) =>
   state.user_account.transactionStarted;
 export const selectProtocolReserves = (state) =>
   state.user_account.protocolReserves;
-export const selectYourSupply = (state) => 
-  state.user_account.yourSupply;
-export const selectYourBorrow = (state) => 
-  state.user_account.yourBorrow;
-export const selectNetWorth = (state) => 
-  state.user_account.netWorth;
-export const selectNetAPR = (state) => 
-  state.user_account.netAPR;
+export const selectYourSupply = (state) => state.user_account.yourSupply;
 
-// export const select=(state)=>
-//   state.user_account.
-// 
+export const selectYourBorrow = (state) => state.user_account.yourBorrow;
+export const selectNetWorth = (state) => state.user_account.netWorth;
+
+export const selectNetAPR = (state) => state.user_account.netAPR;
+export const selectActiveTransactions = (state) =>
+  state.user_account.activeTransactions;
+
+export const selectTransactionRefresh = (state) =>
+  state.user_account.transactionRefresh;
+// export const select=(state)=> state.user_account.
 export default userAccountSlice.reducer;
