@@ -124,6 +124,7 @@ const SupplyDashboard = ({
   const [statusHoverIndex, setStatusHoverIndex] = useState("-1");
 
   const [supplies, setSupplies] = useState<IDeposit[]>([]);
+  const dispatch=useDispatch();
   const handleStatusHover = (idx: string) => {
     setStatusHoverIndex(idx);
   };
@@ -131,13 +132,13 @@ const SupplyDashboard = ({
   const handleStatusHoverLeave = () => {
     setStatusHoverIndex("-1");
   };
-  const dispatch=useDispatch();
   useEffect(() => {
     const getSupply = async () => {
       console.log("all deposits calling started");
       try {
         if (!address) return;
         const supply = await getUserDeposits(address);
+
         
         console.log("supply : ", supply);
         if (!supply) return;
@@ -148,6 +149,7 @@ const SupplyDashboard = ({
           supply?.[1],
           supply?.[4],
         ]);
+        dispatch(setUserDeposits(supply))
       } catch (err) {
         console.log("supplies", err);
       }

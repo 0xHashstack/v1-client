@@ -85,6 +85,7 @@ export async function getProtocolStats() {
       const market_info = parseProtocolStat(res?.market_info);
       marketStats.push(market_info);
     }
+    // console.log(marketStats,"market Stats in protocol stats")
     return marketStats;
   }
   catch (e) {

@@ -37,6 +37,8 @@ import {
   selectOralcePrices,
   selectOraclePrices,
   setProtocolStats,
+  setUserDeposits,
+  setOraclePrices,
 } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import Footer from "../footer";
@@ -265,13 +267,34 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
  
 
   const dataDeposit=useSelector(selectUserDeposits);
-  const protocolStats=useSelector(selectProtocolStats)
+  const protocolStats=useSelector(selectProtocolStats);
+  const dataOraclePrices=useSelector(selectOraclePrices)
   //  const dataMarket=useSelector(selectProtocolStats);
   const yourSupply = useSelector(selectYourSupply);
   const userLoans=useSelector(selectUserLoans);
   const yourBorrow = useSelector(selectYourBorrow);
   const netWorth = useSelector(selectNetWorth);
   const netAPR = useSelector(selectNetAPR);
+
+  useEffect(()=>{
+    const fetchOraclePrices=async()=>{
+      try{
+        const data=await getOraclePrices();
+        console.log(data,"data oracle prices")
+        if(data){
+          dispatch(setOraclePrices(data));
+        }
+      }catch(err){
+        console.log(err);
+      }
+      
+
+    }
+    if(dataOraclePrices?.length==0){
+      fetchOraclePrices();
+    }
+  },[])
+
   useEffect(() => {
     try {
       const fetchProtocolStats = async () => {
@@ -306,31 +329,32 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   useEffect(()=>{
     const fetchProtocolStats=async()=>{
       try{
-        if(!address){
-          return;
-        }
         const dataStats=await getProtocolStats();
-        if(!dataStats){
-          return;
-        }
-        if(dataStats){
+        console.log(dataStats,"data stats in pagecard")
+        // console.log(dataStats,"data market in pagecard")
+        if(dataStats?.length>0){
           dispatch(setProtocolStats(dataStats));
         }
       }catch(err){
         console.log(err)
       }
-
     }
-    if(protocolStats.length==0){
+    if(protocolStats?.length==0){
       fetchProtocolStats();
     }
   },[address])
 
   useEffect(()=>{
     const fetchUserDeposits=async()=>{
-      const data=await getUserDeposits();
-      if(data){
-        dispatch(selectUserDeposits(data));
+      if(!address){
+        return;
+      }
+      const data=await getUserDeposits(address);
+      console.log(data,"data deposit in useEffect")
+      // console.log(data,"data deposit useffect")
+      // console.log(data.length,"data length")
+      if(data?.length>0){
+        dispatch(setUserDeposits(data));
       }
     }
     if(dataDeposit.length==0){
@@ -338,10 +362,20 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     }
   },[address])
 
-  // useEffect(()=>{
-
-
-  // },[address])
+  useEffect(()=>{
+    const fetchUserLoans=async()=>{
+      if(!address){
+        return;
+      }
+      const userLoans=await getUserLoans(address);
+      if(userLoans?.length>0){
+        dispatch(setUserLoans(userLoans));
+      }
+    }
+    if(userLoans?.length==0){
+      fetchUserLoans();
+    }
+  },[address])
 
     useEffect(()=>{
       try{
@@ -349,30 +383,30 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           // console.log(getUserDeposits(address),"deposits in pagecard")
      
           // const dataMarket=await getProtocolStats();
-          const dataOraclePrices=await getOraclePrices();
+          // const dataOraclePrices=await getOraclePrices();
           // console.log(dataMarket,"data market page")
           console.log(dataDeposit,"deposit array");
-          console.log(dataOraclePrices,"data oracle page")
-          const dataBorrow=await getTotalBorrow(userLoans,dataOraclePrices,protocolStats);
-          const dataTotalBorrow=dataBorrow?.totalBorrow;
-
-          dispatch(setYourBorrow(dataTotalBorrow));
-          console.log(dataDeposit,"data deposit pagecard");
-          if(dataDeposit){
-            const data= getTotalSupply(dataDeposit,dataOraclePrices);
-            console.log(data,"total supply pagecard")
-            // console.log(data,"pagecard user supply");
-            // console.log(dataBorrow?.totalBorrow,"data borrow page")
-            // console.log(dataNetApr,"data net apr in pagecard");
-            const dataNetWorth=await getNetworth(data,dataTotalBorrow,dataBorrow?.totalCurrentAmount);
-            dispatch(setNetWorth(dataNetWorth));
-            const dataNetApr=await getNetApr(dataDeposit,userLoans,dataOraclePrices,protocolStats);
-            dispatch(setYourSupply(data));
-            dispatch(setNetAPR(dataNetApr))
-          
+          console.log(dataOraclePrices,"data oracle page");
+          console.log(protocolStats,"data protocl");
+          // console.log(protocolStats,"data protocol stats")
+          if(dataDeposit.length!=0 && protocolStats.length!=0 &&userLoans.length!=0){
+            const dataBorrow=await getTotalBorrow(userLoans,dataOraclePrices,protocolStats);
+            const dataTotalBorrow=dataBorrow?.totalBorrow;
+            dispatch(setYourBorrow(dataTotalBorrow));
+              console.log(dataDeposit,"data deposit pagecard");
+                        const data= getTotalSupply(dataDeposit,dataOraclePrices);
+                        console.log(data,"total supply pagecard")
+                        // console.log(data,"pagecard user supply");
+                        // console.log(dataBorrow?.totalBorrow,"data borrow page")
+                        // console.log(dataNetApr,"data net apr in pagecard");
+                        const dataNetWorth=await getNetworth(data,dataTotalBorrow,dataBorrow?.totalCurrentAmount);
+                        dispatch(setNetWorth(dataNetWorth));
+                        const dataNetApr=await getNetApr(dataDeposit,userLoans,dataOraclePrices,protocolStats);
+                        if(data){
+                          dispatch(setYourSupply(data));
+                        }
+                        dispatch(setNetAPR(dataNetApr))
           }
-
-
         }
         // if(yourSupply==null || yourBorrow==null || netWorth==null ||netAPR==null ){
         //   fetchUserSupply();
@@ -382,7 +416,11 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         console.log(err)
 
       }
-    },[])
+    },[dataDeposit,protocolStats,dataOraclePrices])
+
+    // useEffect(()=>{
+    //   console.log(netAPR,"net apr in pagecard");
+    // },[netAPR])
   // useEffect(() => {
   //   try {
   //     const fetchTotalBorrow = async () => {
