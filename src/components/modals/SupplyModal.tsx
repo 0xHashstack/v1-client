@@ -422,7 +422,7 @@ const SupplyModal = ({
           console.log("trans transaction hash created");
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait, your transaction is running in background ${inputAmount} ${currentSelectedCoin} `,
+            `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -462,7 +462,7 @@ const SupplyModal = ({
           );
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait, your transaction is running in background ${inputAmount} ${currentSelectedCoin} `,
+            `Please wait your transaction is running in background : supplying - ${inputAmount} ${currentSelectedCoin} `,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,

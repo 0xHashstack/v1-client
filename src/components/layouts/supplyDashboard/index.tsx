@@ -476,9 +476,9 @@ const SupplyDashboard = ({
                             onMouseEnter={() => handleStatusHover("0" + idx)}
                             onMouseLeave={() => handleStatusHoverLeave()}
                             _hover={{ cursor: "pointer" }}
-                            // display={
-                            //   supply?.rTokenStakedParsed > 0 ? "flex" : "none"
-                            // }
+                            display={
+                              supply?.rTokenStakedParsed > 0 ? "flex" : "none"
+                            }
                             // bgColor="red"
                             mr="16px"
                             pl={2}

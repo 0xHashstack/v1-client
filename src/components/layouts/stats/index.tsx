@@ -43,7 +43,7 @@ const Stats = ({
               {header[idx]}
             </Text>
             <Box color="#E6EDF3" fontSize="20px">
-              {value === null ? (
+              {!value ? (
                 <Skeleton
                   width="6rem"
                   height="1.9rem"
