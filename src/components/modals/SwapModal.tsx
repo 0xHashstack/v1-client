@@ -55,6 +55,7 @@ import SuccessButton from "../uiElements/buttons/SuccessButton";
 import { useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
+import Image from "next/image";
 const SwapModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -720,7 +721,13 @@ const SwapModal = ({
                 </Box>
                 <Box display="flex" gap="2px">
                   <Box mt="2px">
-                    <SmallJediswapLogo />
+                    {/* <SmallJediswapLogo /> */}
+                    <Image
+                      src={`/${currentSwap}.svg`}
+                      alt="liquidity split coin1"
+                      width="12"
+                      height="12"
+                    />
                   </Box>
                   <Text
                     color="#6A737D"

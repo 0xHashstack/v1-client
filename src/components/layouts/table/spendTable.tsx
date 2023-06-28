@@ -50,6 +50,7 @@ import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import { useAccount } from "@starknet-react/core";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
+import AlertTrade from "@/assets/icons/alertTrade";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -621,6 +622,7 @@ const SpendTable = () => {
               _disabled={{
                 background: "#101216",
               }}
+              onClick={() => setTradeNote(true)}
               isDisabled={selectedDapp == ""}
             >
               stake
@@ -742,20 +744,20 @@ const SpendTable = () => {
                   display="flex"
                   justifyContent="flex-start"
                   alignItems="flex-start"
-                  pt="1px"
+                  pt="2px"
+                  pr="4px"
                 >
-                  <Image
-                    src="/alertTrade.svg"
-                    alt="Picture of the author"
-                    width="46"
-                    height="46"
-                  />
+                  <AlertTrade />
                 </Box>
                 <Box p="6px 2px" display="flex">
-                  We are evaluating few promising DEXes to integrate. Please
-                  check back at a late time.
+                  <Text fontSize="sm">
+                    We are evaluating few promising DEXes to integrate. Please
+                    check back at a late time.
+                  </Text>
                   <Box
-                    p="2px 0px"
+                    pt="3px"
+                    pl="4px"
+                    pr="3px"
                     cursor="pointer"
                     // bgColor="pink"
                     onClick={() => setTradeNote(false)}
@@ -767,7 +769,7 @@ const SpendTable = () => {
             </TabPanel>
 
             <TabPanel p={0}>
-              <Box
+              {/* <Box
                 display={tradeNote ? "flex" : "none"}
                 bg="#DDF4FF"
                 fontSize="14px"
@@ -801,6 +803,48 @@ const SpendTable = () => {
                   check back at a late time.
                   <Box
                     p="2px 0px"
+                    cursor="pointer"
+                    // bgColor="pink"
+                    onClick={() => setTradeNote(false)}
+                  >
+                    <TableClose />
+                  </Box>
+                </Box>
+              </Box> */}
+              <Box
+                display={tradeNote ? "flex" : "none"}
+                bg="#DDF4FF"
+                fontSize="14px"
+                p="8px"
+                fontStyle="normal"
+                fontWeight="400"
+                borderRadius="6px"
+                justifyContent="center"
+                alignItems="flex-start"
+                bgColor="#fff8c5"
+                // textAlign="center"
+                // bgColor="red"
+              >
+                <Box
+                  cursor="pointer"
+                  // bgColor="blue"
+                  display="flex"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  pt="2px"
+                  pr="4px"
+                >
+                  <AlertTrade />
+                </Box>
+                <Box p="6px 2px" display="flex">
+                  <Text fontSize="sm">
+                    We are evaluating few promising DEXes to integrate. Please
+                    check back at a late time.
+                  </Text>
+                  <Box
+                    pt="3px"
+                    pl="4px"
+                    pr="3px"
                     cursor="pointer"
                     // bgColor="pink"
                     onClick={() => setTradeNote(false)}
