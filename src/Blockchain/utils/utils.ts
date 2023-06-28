@@ -122,23 +122,22 @@ export const borrowInterestAccrued = (asset: any) => {
   //   return new BigNumber(0).toFixed(6);
 };
 
-
 export const etherToWeiBN = (amount: number, tokenName: Token) => {
-  if(!amount) {
+  if (!amount) {
     return 0;
   }
   const decimals = tokenDecimalsMap[tokenName];
-  if(!decimals) {
+  if (!decimals) {
     return 0;
   }
-  console.log("amount", amount);
+  // console.log("amount", amount);
   // try {
-    const factor = 1000_000; 
-    const amountBN = number
-      .toBN(amount*factor) 
-      .mul(number.toBN(10).pow(number.toBN(decimals)))
-      .div(number.toBN(factor));
-    return amountBN;
+  const factor = 1000_000;
+  const amountBN = number
+    .toBN(amount * factor)
+    .mul(number.toBN(10).pow(number.toBN(decimals)))
+    .div(number.toBN(factor));
+  return amountBN;
   // }
   // catch(e) {
   //   console.warn("etherToWeiBN fails with error: ", e);
@@ -148,9 +147,9 @@ export const etherToWeiBN = (amount: number, tokenName: Token) => {
 
 export const weiToEtherNumber = (amount: string, tokenName: Token) => {
   const decimals = tokenDecimalsMap[tokenName];
-  if(!decimals) {
+  if (!decimals) {
     return 0;
-  }// @todo should avoid using 18 default
+  } // @todo should avoid using 18 default
   const factor = 1000_000;
   const amountBN = number
     .toBN(amount)
@@ -160,9 +159,9 @@ export const weiToEtherNumber = (amount: string, tokenName: Token) => {
 };
 
 export const parseAmount = (amount: string, decimals = 18) => {
-  if(!decimals) {
+  if (!decimals) {
     return 0;
-  }// @todo should avoid using 18 default
+  } // @todo should avoid using 18 default
   const factor = 1000_000;
   const amountBN = number
     .toBN(amount)

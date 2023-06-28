@@ -43,6 +43,9 @@ import {
   setInputTradeModalBorrowAmount,
   selectAssetWalletBalance,
   setTransactionStatus,
+  selectActiveTransactions,
+  setActiveTransactions,
+  selectProtocolStats,
   // setTransactionStarted,
   // selectTransactionStarted,
 } from "@/store/slices/userAccountSlice";
@@ -158,6 +161,9 @@ const TradeModal = ({
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
   const modalDropdowns = useSelector(selectModalDropDowns);
   const [transactionStarted, setTransactionStarted] = useState(false);
+
+  let activeTransactions = useSelector(selectActiveTransactions);
+
   // const walletBalances=useSelector(selectAssetWalletBalance);
   interface assetB {
     USDT: any;
@@ -338,11 +344,11 @@ const TradeModal = ({
   );
   const [protocolStats, setProtocolStats] = useState<any>([]);
   const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
-    protocolStats?.find((stat: any) => stat.token == currentBorrowCoin)
+    protocolStats?.find((stat: any) => stat?.token == currentBorrowCoin)
       ?.availableReserves
   );
+  const stats = useSelector(selectProtocolStats);
   const fetchProtocolStats = async () => {
-    const stats = await getProtocolStats();
     if (stats)
       setProtocolStats([
         stats?.[0],
@@ -439,44 +445,44 @@ const TradeModal = ({
 
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [toastId, setToastId] = useState<any>();
-  const recieptData = useWaitForTransaction({
-    hash: depositTransHash,
-    watch: true,
-    onReceived: () => {
-      console.log("trans received");
-    },
-    onPending: () => {
-      setCurrentTransactionStatus("success");
-      toast.dismiss(toastId);
-      console.log("trans pending");
-      if (!isToastDisplayed) {
-        toast.success(`You have successfully spend the loan `, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
-        setToastDisplayed(true);
-      }
-    },
-    onRejected(transaction) {
-      setCurrentTransactionStatus("failed");
-      dispatch(setTransactionStatus("failed"));
-      toast.dismiss(toastId);
-      console.log("treans rejected");
-    },
-    onAcceptedOnL1: () => {
-      setCurrentTransactionStatus("success");
-      console.log("trans onAcceptedOnL1");
-    },
-    onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus("success");
-      console.log("trans onAcceptedOnL2 - ", transaction);
-      if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied spend the loan `, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
-        setToastDisplayed(true);
-      }
-    },
-  });
+  // const recieptData = useWaitForTransaction({
+  //   hash: depositTransHash,
+  //   watch: true,
+  //   onReceived: () => {
+  //     console.log("trans received");
+  //   },
+  //   onPending: () => {
+  //     setCurrentTransactionStatus("success");
+  //     toast.dismiss(toastId);
+  //     console.log("trans pending");
+  //     if (!isToastDisplayed) {
+  //       toast.success(`You have successfully spend the loan `, {
+  //         position: toast.POSITION.BOTTOM_RIGHT,
+  //       });
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  //   onRejected(transaction) {
+  //     setCurrentTransactionStatus("failed");
+  //     dispatch(setTransactionStatus("failed"));
+  //     toast.dismiss(toastId);
+  //     console.log("treans rejected");
+  //   },
+  //   onAcceptedOnL1: () => {
+  //     setCurrentTransactionStatus("success");
+  //     console.log("trans onAcceptedOnL1");
+  //   },
+  //   onAcceptedOnL2(transaction) {
+  //     setCurrentTransactionStatus("success");
+  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //     if (!isToastDisplayed) {
+  //       toast.success(`You have successfully supplied spend the loan `, {
+  //         position: toast.POSITION.BOTTOM_RIGHT,
+  //       });
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  // });
 
   const handleBorrowAndSpend = async () => {
     try {
@@ -486,19 +492,68 @@ const TradeModal = ({
         if (borrowAndSpend?.transaction_hash) {
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait, your transaction is running in background`,
+            `Please wait your transaction is running in background`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
             }
           );
           setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const trans_data = {
+            transaction_hash: borrowAndSpend?.transaction_hash.toString(),
+            message: `You have successfully traded`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+
+          dispatch(setActiveTransactions(activeTransactions));
         }
         console.log("borrowAndSpend Success");
         dispatch(setTransactionStatus("success"));
       } else if (rToken) {
         const borrowAndSpendR = await writeAsyncBorrowAndSpendRToken();
         setDepositTransHash(borrowAndSpendR?.transaction_hash);
+        if (borrowAndSpendR?.transaction_hash) {
+          console.log("toast here");
+          const toastid = toast.info(
+            `Please wait your transaction is running in background`,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const trans_data = {
+            transaction_hash: borrowAndSpendR?.transaction_hash.toString(),
+            message: `You have successfully traded`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+
+          dispatch(setActiveTransactions(activeTransactions));
+        }
         console.log("borrowAndSpend R Success");
         dispatch(setTransactionStatus("success"));
       }
@@ -1568,7 +1623,7 @@ const TradeModal = ({
                       >
                         Available reserves:{" "}
                         {protocolStats?.find(
-                          (stat: any) => stat.token == currentBorrowCoin
+                          (stat: any) => stat?.token == currentBorrowCoin
                         )?.availableReserves || (
                           <Skeleton
                             width="4rem"

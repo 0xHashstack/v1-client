@@ -1,13 +1,13 @@
+import { setTransactionStatus } from "@/store/slices/userAccountSlice";
 import { Text } from "@chakra-ui/react";
-import {
-  UseWaitForTransactionArgs,
-  useWaitForTransaction,
-} from "@starknet-react/core";
+import { useWaitForTransaction } from "@starknet-react/core";
 // import React from "react";
 import CopyToClipboard from "react-copy-to-clipboard";
+import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
-export const useFetchToastStatus = (transaction: any) => {
-  // useState
+
+export const useToastHandler = (transaction: any) => {
+  // const dispatch = useDispatch();
   const data = useWaitForTransaction({
     hash: transaction?.transaction_hash,
     watch: true,
@@ -25,10 +25,10 @@ export const useFetchToastStatus = (transaction: any) => {
       //   setToastDisplayed(true);
       // }
     },
-    onRejected: (result: any) => {
+    onRejected(transaction: any) {
       toast.dismiss(transaction?.toastId);
       // if (!failureToastDisplayed) {
-      console.log("treans rejected", result);
+      console.log("treans rejected", transaction);
       // dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
@@ -48,7 +48,7 @@ export const useFetchToastStatus = (transaction: any) => {
       // setCurrentTransactionStatus(true);
       console.log("trans onAcceptedOnL1");
     },
-    onAcceptedOnL2: (result: any) => {
+    onAcceptedOnL2(result: any) {
       toast.dismiss(transaction?.toastId);
       // setCurrentTransactionStatus(true);
       // if (!isToastDisplayed) {
@@ -63,4 +63,4 @@ export const useFetchToastStatus = (transaction: any) => {
   return data;
 };
 
-export default useFetchToastStatus;
+export default useToastHandler;
