@@ -24,7 +24,7 @@ const StatsBoard = () => {
     netWorth: useSelector(selectNetWorth), // current values of loans - total borrow + total supply
     yourSupply: useSelector(selectYourSupply), // usd terms
     yourBorrow: useSelector(selectYourBorrow), // usd terms
-    netSupplyAPR: useSelector(selectNetAPR)?.toFixed(2), // usd terms
+    netSupplyAPR: useSelector(selectNetAPR), // usd terms
   });
   // useEffect(() => {
   //   try {
