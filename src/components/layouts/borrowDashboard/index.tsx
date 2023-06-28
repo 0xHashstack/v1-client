@@ -160,7 +160,7 @@ const BorrowDashboard = ({
   const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
     useState("BTC");
   const [collateralBalance, setCollateralBalance] = useState("123 eth");
-
+  const [currentSpendStatus, setCurrentSpendStatus] = useState("");
   useEffect(() => {
     let temp1: any = [];
     let temp2: any = [];
@@ -687,6 +687,7 @@ const BorrowDashboard = ({
                               " " +
                               borrow.collateralMarket
                           );
+                          setCurrentSpendStatus(borrow.spendType);
                         }}
                         // bgColor={"blue"}
                       >
@@ -722,6 +723,7 @@ const BorrowDashboard = ({
                           color="#BDBFC1;"
                           borrowAPRs={borrowAPRs}
                           borrow={borrow}
+                          spendType={currentSpendStatus}
                         />
                       </Box>
                     </Td>

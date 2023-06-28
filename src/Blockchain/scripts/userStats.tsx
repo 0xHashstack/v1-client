@@ -72,6 +72,12 @@ export async function getTotalBorrow(loans: ILoan[], oraclePrices: OraclePrice[]
   return { totalBorrow, totalCurrentAmount };
 }
 
+
+
+// All borrow token are separate contracts
+// all supply vaults(rTokens) are sepaarate contracts
+// staking is a separate contract
+
 export async function getL3USDTValue(loanId: number, loanMarketAddress: string) {
 
   console.log("calling getL3USDTValue with: ", loanId, loanMarketAddress)
