@@ -14,7 +14,7 @@ import {
   Portal,
   Skeleton,
 } from "@chakra-ui/react";
-
+import TransactionFees from "../../../TransactionFees.json";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
 import InfoIcon from "@/assets/icons/infoIcon";
@@ -859,7 +859,7 @@ const SwapModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                  0.1%
+                  {TransactionFees.spend}%
                 </Text>
               </Box>
               <Box display="flex" justifyContent="space-between" mb="0.3rem">

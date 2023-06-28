@@ -74,6 +74,8 @@ import { RToken } from "@/Blockchain/interfaces/interfaces";
 import { useRouter } from "next/router";
 import Image from "next/image";
 import { BNtoNum } from "@/Blockchain/utils/utils";
+import TransactionFees from "../../../TransactionFees.json";
+
 const StakeUnstakeModal = ({
   buttonText,
   coin,
@@ -1165,7 +1167,7 @@ const StakeUnstakeModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">0.3%</Text>
+                          <Text color="#6E7681">{TransactionFees.stake}%</Text>
                         </Text>
                       </Card>
 
@@ -1856,7 +1858,7 @@ const StakeUnstakeModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">0.3%</Text>
+                          <Text color="#6E7681">{TransactionFees.unstake}%</Text>
                         </Text>
                       </Card>
                       {rTokenToWithdraw > 0 &&
