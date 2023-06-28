@@ -22,6 +22,7 @@ import {
   NumberInputField,
   Portal,
 } from "@chakra-ui/react";
+import TransactionFees from "../../../TransactionFees.json";
 import TickIcon from "@/assets/icons/tickIcon";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
@@ -640,7 +641,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     font-size="12px"
                     color="#6A737D"
                   >
-                    5.56%
+                    {TransactionFees.convertToBorrowMarket}%
                   </Text>
                 </Text>
                 <Text

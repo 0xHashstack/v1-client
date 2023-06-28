@@ -44,6 +44,8 @@ import {
   setTransactionStatus,
   selectAssetWalletBalance,
   setToastTransactionStarted,
+  selectActiveTransactions,
+  setActiveTransactions,
   // selectTransactionStarted,
   // setTransactionStarted,
   // selectCurrentTransactionStatus,
@@ -61,6 +63,7 @@ import ErrorButton from "../uiElements/buttons/ErrorButton";
 import {
   useAccount,
   useBalance,
+  useTransactionManager,
   useWaitForTransaction,
 } from "@starknet-react/core";
 import useDeposit from "@/Blockchain/hooks/Writes/useDeposit";
@@ -84,7 +87,8 @@ import { NativeToken, Token } from "@/Blockchain/interfaces/interfaces";
 import WarningIcon from "@/assets/icons/coins/warningIcon";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
-import { useFetchToastStatus } from "../layouts/toasts";
+// import { useFetchToastStatus } from "../layouts/toasts";
+import TransactionFees from "../../../TransactionFees.json";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -224,6 +228,12 @@ const SupplyModal = ({
   const [ischecked, setIsChecked] = useState(true);
   const [depositTransHash, setDepositTransHash] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
+
+  let activeTransactions = useSelector(selectActiveTransactions);
+  // useEffect(() => {
+  //   if (activeTransactions)
+  //     console.log("activeTransactions ", activeTransactions);
+  // }, [activeTransactions]);
   // const [toastId, setToastId] = useState<any>();
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
@@ -343,66 +353,67 @@ const SupplyModal = ({
   // });
 
   const [failureToastDisplayed, setFailureToastDisplayed] = useState(false);
-  const recieptData = useFetchToastStatus({
-    hash: depositTransHash,
-    watch: true,
-    onReceived: () => {
-      console.log("trans received");
-    },
-    onPending: () => {
-      setCurrentTransactionStatus("success");
-      toast.dismiss(toastId);
-      console.log("trans pending");
-      if (isToastDisplayed == false) {
-        toast.success(
-          `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          }
-        );
-        setToastDisplayed(true);
-      }
-    },
-    onRejected(transaction: any) {
-      setCurrentTransactionStatus("Failed");
-      toast.dismiss(toastId);
-      if (!failureToastDisplayed) {
-        console.log("treans rejected", transaction);
-        dispatch(setTransactionStatus("failed"));
-        const toastContent = (
-          <div>
-            Transaction failed{" "}
-            <CopyToClipboard text={"Transaction failed"}>
-              <Text as="u">copy error!</Text>
-            </CopyToClipboard>
-          </div>
-        );
-        setFailureToastDisplayed(true);
-        toast.error(toastContent, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-          autoClose: false,
-        });
-      }
-    },
-    onAcceptedOnL1: () => {
-      setCurrentTransactionStatus("success");
-      console.log("trans onAcceptedOnL1");
-    },
-    onAcceptedOnL2(transaction: any) {
-      toast.dismiss(toastId);
-      setCurrentTransactionStatus("success");
-      if (!isToastDisplayed) {
-        toast.success(
-          `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          }
-        );
-        setToastDisplayed(true);
-      }
-      console.log("trans onAcceptedOnL2 - ", transaction);
-    },
-  });
+  // const recieptData = useFetchToastStatus({
+  //   hash: depositTransHash,
+  //   watch: true,
+  //   onReceived: () => {
+  //     console.log("trans received");
+  //   },
+  //   onPending: () => {
+  //     setCurrentTransactionStatus("success");
+  //     toast.dismiss(toastId);
+  //     console.log("trans pending");
+  //     if (isToastDisplayed == false) {
+  //       toast.success(
+  //         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+  //         {
+  //           position: toast.POSITION.BOTTOM_RIGHT,
+  //         }
+  //       );
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  //   onRejected(transaction: any) {
+  //     setCurrentTransactionStatus("Failed");
+  //     toast.dismiss(toastId);
+  //     if (!failureToastDisplayed) {
+  //       console.log("treans rejected", transaction);
+  //       dispatch(setTransactionStatus("failed"));
+  //       const toastContent = (
+  //         <div>
+  //           Transaction failed{" "}
+  //           <CopyToClipboard text={"Transaction failed"}>
+  //             <Text as="u">copy error!</Text>
+  //           </CopyToClipboard>
+  //         </div>
+  //       );
+  //       setFailureToastDisplayed(true);
+  //       toast.error(toastContent, {
+  //         position: toast.POSITION.BOTTOM_RIGHT,
+  //         autoClose: false,
+  //       });
+  //     }
+  //   },
+  //   onAcceptedOnL1: () => {
+  //     setCurrentTransactionStatus("success");
+  //     console.log("trans onAcceptedOnL1");
+  //   },
+  //   onAcceptedOnL2(transaction: any) {
+  //     toast.dismiss(toastId);
+  //     setCurrentTransactionStatus("success");
+  //     if (!isToastDisplayed) {
+  //       toast.success(
+  //         `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+  //         {
+  //           position: toast.POSITION.BOTTOM_RIGHT,
+  //         }
+  //       );
+  //       setToastDisplayed(true);
+  //     }
+  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //   },
+  // });
+  // const { hashes, addTransaction } = useTransactionManager();
   const handleTransaction = async () => {
     try {
       if (ischecked) {
@@ -411,13 +422,32 @@ const SupplyModal = ({
           console.log("trans transaction hash created");
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait, your transaction is running in background ${inputAmount} ${currentSelectedCoin} `,
+            `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
             }
           );
           setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const trans_data = {
+            transaction_hash: depositStake?.transaction_hash.toString(),
+            message: `You have successfully staked ${inputAmount} ${currentSelectedCoin}`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+
+          dispatch(setActiveTransactions(activeTransactions));
         }
         setDepositTransHash(depositStake?.transaction_hash);
         dispatch(setTransactionStatus("success"));
@@ -432,13 +462,32 @@ const SupplyModal = ({
           );
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait, your transaction is running in background ${inputAmount} ${currentSelectedCoin} `,
+            `Please wait your transaction is running in background : supplying - ${inputAmount} ${currentSelectedCoin} `,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
             }
           );
           setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const trans_data = {
+            transaction_hash: deposit?.transaction_hash.toString(),
+            message: `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+
+          dispatch(setActiveTransactions(activeTransactions));
         }
         // const deposit = await writeAsyncDepositStake();
         console.log("Supply Modal - deposit ", deposit);
@@ -1210,7 +1259,7 @@ const SupplyModal = ({
                     font-size="12px"
                     color="#6A737D"
                   >
-                    5.56%
+                    {TransactionFees.supply}%
                   </Text>
                 </Text>
                 <Text
