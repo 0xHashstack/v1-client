@@ -53,6 +53,8 @@ import {
   selectSelectedDapp,
   selectUserLoans,
   setTransactionStatus,
+  selectActiveTransactions,
+  setActiveTransactions,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -133,6 +135,9 @@ const LiquidityProvisionModal = ({
   const inputAmount1 = useSelector(selectInputSupplyAmount);
   const userLoans = useSelector(selectUserLoans);
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
+
+  let activeTransactions = useSelector(selectActiveTransactions);
+
   // console.log(userLoans)
   // console.log(currentId.slice(currentId.indexOf("-") + 1).trim())
   useEffect(() => {
@@ -252,44 +257,44 @@ const LiquidityProvisionModal = ({
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [toastId, setToastId] = useState<any>();
-  const recieptData = useWaitForTransaction({
-    hash: depositTransHash,
-    watch: true,
-    onReceived: () => {
-      console.log("trans received");
-      if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied `, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
-        setToastDisplayed(true);
-      }
-    },
-    onPending: () => {
-      setCurrentTransactionStatus("success");
-      toast.dismiss(toastId);
-      console.log("trans pending");
-    },
-    onRejected(transaction) {
-      setCurrentTransactionStatus("failed");
-      dispatch(setTransactionStatus("failed"));
-      toast.dismiss(toastId);
-      console.log("treans rejected");
-    },
-    onAcceptedOnL1: () => {
-      setCurrentTransactionStatus("success");
-      console.log("trans onAcceptedOnL1");
-    },
-    onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus("success");
-      console.log("trans onAcceptedOnL2 - ", transaction);
-      if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied `, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
-        setToastDisplayed(true);
-      }
-    },
-  });
+  // const recieptData = useWaitForTransaction({
+  //   hash: depositTransHash,
+  //   watch: true,
+  //   onReceived: () => {
+  //     console.log("trans received");
+  //     if (!isToastDisplayed) {
+  //       toast.success(`You have successfully supplied `, {
+  //         position: toast.POSITION.BOTTOM_RIGHT,
+  //       });
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  //   onPending: () => {
+  //     setCurrentTransactionStatus("success");
+  //     toast.dismiss(toastId);
+  //     console.log("trans pending");
+  //   },
+  //   onRejected(transaction) {
+  //     setCurrentTransactionStatus("failed");
+  //     dispatch(setTransactionStatus("failed"));
+  //     toast.dismiss(toastId);
+  //     console.log("treans rejected");
+  //   },
+  //   onAcceptedOnL1: () => {
+  //     setCurrentTransactionStatus("success");
+  //     console.log("trans onAcceptedOnL1");
+  //   },
+  //   onAcceptedOnL2(transaction) {
+  //     setCurrentTransactionStatus("success");
+  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //     if (!isToastDisplayed) {
+  //       toast.success(`You have successfully supplied `, {
+  //         position: toast.POSITION.BOTTOM_RIGHT,
+  //       });
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  // });
 
   const handleLiquidity = async () => {
     try {
@@ -297,13 +302,32 @@ const LiquidityProvisionModal = ({
       if (liquidity?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait, your transaction is running in background`,
+          `Please wait your transaction is running in background`,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
           }
         );
         setToastId(toastid);
+        if (!activeTransactions) {
+          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+        } else if (
+          Object.isFrozen(activeTransactions) ||
+          Object.isSealed(activeTransactions)
+        ) {
+          // Check if activeTransactions is frozen or sealed
+          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+        }
+        const trans_data = {
+          transaction_hash: liquidity?.transaction_hash.toString(),
+          message: `You have successfully Liquidated for Loan ID : ${liquidityLoanId}`,
+          toastId: toastid,
+          setCurrentTransactionStatus: setCurrentTransactionStatus,
+        };
+        // addTransaction({ hash: deposit?.transaction_hash });
+        activeTransactions?.push(trans_data);
+
+        dispatch(setActiveTransactions(activeTransactions));
       }
       console.log(liquidity);
       setDepositTransHash(liquidity?.transaction_hash);
