@@ -20,12 +20,19 @@ const StatsBoard = () => {
   //   avgAssetUtilisation: null, // weighted avg of all the utilisations of markets
   // });
   const protocolReserves = useSelector(selectProtocolReserves);
-  const [userStats, setUserStats] = useState({
-    netWorth: useSelector(selectNetWorth), // current values of loans - total borrow + total supply
-    yourSupply: useSelector(selectYourSupply), // usd terms
-    yourBorrow: useSelector(selectYourBorrow), // usd terms
-    netSupplyAPR: useSelector(selectNetAPR)?.toFixed(2), // usd terms
-  });
+  const netWorth=useSelector(selectNetWorth);
+  const yourSupply=useSelector(selectYourSupply);
+  const yourBorrow= useSelector(selectYourBorrow);
+  const netAPR= useSelector(selectNetAPR);
+  // const [userStats, setUserStats] = useState({
+  //   netWorth: netWorth,// current values of loans - total borrow + total supply
+  //   yourSupply: yourSupply, // usd terms
+  //   yourBorrow: yourBorrow, // usd terms
+  //   netSupplyAPR: netSupplyAPR, // usd terms
+  // });
+
+  
+
   // useEffect(() => {
   //   try {
   //     const fetchProtocolStats = async () => {
@@ -84,7 +91,9 @@ const StatsBoard = () => {
       >
         <Stats
           header={["Your networth", "Your Supply", "Your borrow", "Net APR"]}
-          statsData={userStats}
+          statsData={[
+            netWorth,yourSupply,yourBorrow,netAPR
+          ]}
           onclick={() => {
             handleRouteChange("/v1/your-metrics");
           }}

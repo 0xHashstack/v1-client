@@ -45,6 +45,7 @@ import {
   setTransactionStatus,
   selectActiveTransactions,
   setActiveTransactions,
+  selectProtocolStats,
   // setTransactionStarted,
   // selectTransactionStarted,
 } from "@/store/slices/userAccountSlice";
@@ -343,11 +344,11 @@ const TradeModal = ({
   );
   const [protocolStats, setProtocolStats] = useState<any>([]);
   const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
-    protocolStats?.find((stat: any) => stat.token == currentBorrowCoin)
+    protocolStats?.find((stat: any) => stat?.token == currentBorrowCoin)
       ?.availableReserves
   );
+  const stats = useSelector(selectProtocolStats);
   const fetchProtocolStats = async () => {
-    const stats = await getProtocolStats();
     if (stats)
       setProtocolStats([
         stats?.[0],
@@ -1622,7 +1623,7 @@ const TradeModal = ({
                       >
                         Available reserves:{" "}
                         {protocolStats?.find(
-                          (stat: any) => stat.token == currentBorrowCoin
+                          (stat: any) => stat?.token == currentBorrowCoin
                         )?.availableReserves || (
                           <Skeleton
                             width="4rem"

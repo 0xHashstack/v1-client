@@ -1,9 +1,11 @@
-import { Box, HStack, Text } from "@chakra-ui/react";
+import { Box, HStack, Skeleton, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { ProviderInterface } from "starknet";
+import { useAccount } from "@starknet-react/core";
 const Footer = ({ block }: { block: number }) => {
+  const { account } = useAccount();
   return (
     <HStack
       zIndex="14"

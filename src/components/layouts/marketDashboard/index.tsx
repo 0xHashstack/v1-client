@@ -10,6 +10,7 @@ import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { useAccount } from "@starknet-react/core";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
+import { useDispatch } from "react-redux";
 const MarketDashboard = () => {
   const [oraclePrices, setOraclePrices]: any = useState<(undefined | number)[]>(
     []
@@ -80,10 +81,15 @@ const MarketDashboard = () => {
   //     console.log("Error fetching protocol reserves", err);
   //   }
   // };
+  const dispatch=useDispatch();
 
   const fetchOraclePrices = async () => {
     try {
       const prices = await getOraclePrices();
+      if(prices){
+        dispatch(setOraclePrices(prices));
+      }
+      
       console.log("oracleprices", prices);
       setOraclePrices(prices);
     } catch (error) {

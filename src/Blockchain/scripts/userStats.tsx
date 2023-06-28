@@ -72,6 +72,12 @@ export async function getTotalBorrow(loans: ILoan[], oraclePrices: OraclePrice[]
   return { totalBorrow, totalCurrentAmount };
 }
 
+
+
+// All borrow token are separate contracts
+// all supply vaults(rTokens) are sepaarate contracts
+// staking is a separate contract
+
 export async function getL3USDTValue(loanId: number, loanMarketAddress: string) {
 
   console.log("calling getL3USDTValue with: ", loanId, loanMarketAddress)
@@ -121,7 +127,7 @@ export async function getNetApr(deposits: IDeposit[], loans: ILoan[], oraclePric
   }
   let netApr = netSupplyInterest / totalSupply - netBorrowInterest / totalBorrow;
 
-  return netApr;
+  return netApr.toFixed(2);
 }
 
 export async function effectivAPRLoan(loan: ILoan, marketInfos: IMarketInfo[], oraclePrices: OraclePrice[]) {

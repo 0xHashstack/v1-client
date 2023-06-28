@@ -40,6 +40,7 @@ import {
   selectAssetWalletBalance,
   selectActiveTransactions,
   setActiveTransactions,
+  selectProtocolStats,
 } from "@/store/slices/userAccountSlice";
 import {
   setModalDropdown,
@@ -234,7 +235,7 @@ const BorrowModal = ({
   );
   const [protocolStats, setProtocolStats] = useState<any>([]);
   const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
-    protocolStats?.find((stat: any) => stat.token == currentBorrowCoin)
+    protocolStats?.find((stat: any) => stat?.token == currentBorrowCoin)
       ?.availableReserves
   );
   const fetchProtocolStats = async () => {
@@ -1428,7 +1429,7 @@ const BorrowModal = ({
                   >
                     Available reserves:{" "}
                     {protocolStats?.find(
-                      (stat: any) => stat.token == currentBorrowCoin
+                      (stat: any) => stat?.token == currentBorrowCoin
                     )?.availableReserves || (
                       <Skeleton
                         width="4rem"
@@ -1639,7 +1640,7 @@ const BorrowModal = ({
                   color="#6A737D"
                 >
                   {protocolStats?.find(
-                    (stat: any) => stat.token == currentBorrowCoin
+                    (stat: any) => stat?.token == currentBorrowCoin
                   )?.borrowRate || (
                     <Box pt="1px">
                       <Skeleton

@@ -68,15 +68,15 @@ function parseLoansData(
             : number.toBN(loanData?.l3_integration, 0).toString() === "30814223327519089"
               ? "YAGI"
               : "NONE",
-      spendType: 
+      spendType:
         number.toBN(loanData?.l3_category).toString() === "0"
-        ? "UNSPENT"
-        : number.toBN(loanData?.l3_category).toString() === "1"
-          ? "SWAP"
-          : number.toBN(loanData?.l3_category).toString() === "2"
-            ? "LIQUIDITY"
-            : null,
-        
+          ? "UNSPENT"
+          : number.toBN(loanData?.l3_category).toString() === "1"
+            ? "SWAP"
+            : number.toBN(loanData?.l3_category).toString() === "2"
+              ? "LIQUIDITY"
+              : null,
+
       state: number.toBN(loanData?.state).toString(),
       l3_integration: number.toBN(loanData?.l3_integration).toString(),
       l3_category: number.toBN(loanData?.l3_category).toString(),
@@ -89,14 +89,19 @@ function parseLoansData(
 
 export async function getUserLoans(account: string) {
   const provider = getProvider();
-  console.log("loans params", diamondAddress, account)
-  const routerContract = new Contract(routerAbi, diamondAddress, provider);
-  const res = await routerContract.call("get_user_loans", [account], {
-    blockIdentifier: "pending",
-  });
-  console.log(res, "loans called")
-  return parseLoansData(
-    res?.loans,
-    res?.collaterals,
-  );
+  try {
+    console.log("loans params", diamondAddress, account)
+    const routerContract = new Contract(routerAbi, diamondAddress, provider);
+    const res = await routerContract.call("get_user_loans", [account], {
+      blockIdentifier: "pending",
+    });
+    console.log(res, "loans called")
+    return parseLoansData(
+      res?.loans,
+      res?.collaterals,
+    );
+  }
+  catch (error) {
+    console.log(error);
+  }
 }

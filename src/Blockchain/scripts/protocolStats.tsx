@@ -73,18 +73,25 @@ export async function getProtocolStats() {
     metricsContractAddress,
     provider
   );
-  for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
-    const token = contractsEnv.TOKENS[i];
-
-    console.log('get_protocol_stat for token: ', token.name);
-    const res = await metricsContract.call("get_protocol_stat", [token.address], {
-      blockIdentifier: "pending",
-    });
-    console.log("get_protocol_stat finished for token: ", token.name, res?.market_info);
-    const market_info = parseProtocolStat(res?.market_info);
-    marketStats.push(market_info);
+  try {
+    for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
+      const token = contractsEnv.TOKENS[i];
+  
+      console.log('get_protocol_stat for token: ', token.name);
+      const res = await metricsContract.call("get_protocol_stat", [token.address], {
+        blockIdentifier: "pending",
+      });
+      console.log("get_protocol_stat finished for token: ", token.name, res?.market_info);
+      const market_info = parseProtocolStat(res?.market_info);
+      marketStats.push(market_info);
+    }
+    // console.log(marketStats,"market Stats in protocol stats")
+    return marketStats;
   }
-  return marketStats;
+  catch (e) {
+    console.log('get_protocol_stat failed for token: ', e);
+    return marketStats;
+  }
 }
 
 
@@ -111,15 +118,21 @@ function parseProtocolReserves(protocolReservesData: any): IProtocolReserves {
 
 export async function getProtocolReserves() {
   const provider = getProvider();
-  const metricsContract = new Contract(
-    metricsAbi,
-    metricsContractAddress,
-    provider
-  );
-  const res = await metricsContract.call("get_protocol_reserves", [], {
-    blockIdentifier: "pending",
-  });
-  return parseProtocolReserves(res?.protocol_reserves);
+  try {
+    const metricsContract = new Contract(
+      metricsAbi,
+      metricsContractAddress,
+      provider
+    );
+    const res = await metricsContract.call("get_protocol_reserves", [], {
+      blockIdentifier: "pending",
+    });
+    return parseProtocolReserves(res?.protocol_reserves);
+  }
+  catch(e) {
+    console.log('get_protocol_reserves failed: ', e);
+    return parseProtocolReserves({});
+  }
 }
 
 

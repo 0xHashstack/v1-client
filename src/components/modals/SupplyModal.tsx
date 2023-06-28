@@ -89,6 +89,7 @@ import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 // import { useFetchToastStatus } from "../layouts/toasts";
 import TransactionFees from "../../../TransactionFees.json";
+import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -175,6 +176,10 @@ const SupplyModal = ({
   //     ),tokenDecimalsMap["ETH"]
   //   )
   // ))
+
+  // useEffect(() => { 
+  //   getExistingLoanHealth("74");
+  // }, [])
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
