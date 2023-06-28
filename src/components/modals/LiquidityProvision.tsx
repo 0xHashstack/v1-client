@@ -414,17 +414,30 @@ const LiquidityProvisionModal = ({
   }, [toMarketA, currentBorrowId, toMarketB]);
 
   const fetchLiquiditySplit = async () => {
+    // if (
+    //   !toMarketA &&
+    //   !toMarketB &&
+    //   !currentBorrowId &&
+    //   !currentBorrowId.slice(5)
+    // )
+    //   return;
     const lp_tokon: any = await getJediEstimatedLpAmountOut(
-      currentBorrowId.slice(5),
-      toMarketA,
-      toMarketB
+      // currentBorrowId1.slice(5),
+      // toMarketA,
+      // toMarketB
+      "99",
+      "ETH",
+      "USDT"
     );
     console.log("toMarketSplitLP", lp_tokon);
     setCurrentLPTokenAmount(lp_tokon);
     const split: any = await getJediEstimateLiquiditySplit(
-      currentBorrowId.slice(5),
-      toMarketA,
-      toMarketB
+      // currentBorrowId1.slice(5),
+      // toMarketA,
+      // toMarketB
+      "99",
+      "ETH",
+      "USDT"
     );
     console.log("toMarketSplit", split);
     setCurrentSplit(split);

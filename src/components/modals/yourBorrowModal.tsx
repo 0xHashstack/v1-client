@@ -125,6 +125,7 @@ const YourBorrowModal = ({
   loan,
   borrowAPRs,
   borrow,
+  spendType,
   ...restProps
 }: any) => {
   // console.log(currentBorrowId1);
@@ -1688,6 +1689,10 @@ const YourBorrowModal = ({
     console.log(toMarket);
   }, [currentPoolCoin]);
 
+  useEffect(() => {
+    console.log("spendType", spendType);
+  }, [spendType]);
+
   const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState(null);
   const [currentSplit, setCurrentSplit] = useState(null);
 
@@ -1708,17 +1713,31 @@ const YourBorrowModal = ({
   }, [toMarketA, currentBorrowId1, toMarketB]);
 
   const fetchLiquiditySplit = async () => {
+    // if (
+    //   spendType !== "UNSPENT" ||
+    //   !toMarketA ||
+    //   !toMarketB ||
+    //   !currentBorrowId1 ||
+    //   !currentBorrowId2
+    // )
+    //   return;
     const lp_tokon = await getJediEstimatedLpAmountOut(
-      currentBorrowId1.slice(5),
-      toMarketA,
-      toMarketB
+      // currentBorrowId1.slice(5),
+      // toMarketA,
+      // toMarketB
+      99,
+      "ETH",
+      "USDT"
     );
     console.log("toMarketSplitLP", lp_tokon);
     setCurrentLPTokenAmount(lp_tokon);
     const split = await getJediEstimateLiquiditySplit(
-      currentBorrowId1.slice(5),
-      toMarketA,
-      toMarketB
+      // currentBorrowId1.slice(5),
+      // toMarketA,
+      // toMarketB
+      99,
+      "ETH",
+      "USDT"
     );
     console.log("toMarketSplit", split);
     setCurrentSplit(split);

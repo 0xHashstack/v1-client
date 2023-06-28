@@ -25,6 +25,21 @@ const SupplyAPRLiquidityProvider = ({ color, curveColor, series }: any) => {
               hidden: true, // Hide the data points in the area
             },
           },
+          {
+            name: "Series 2",
+            data: [
+              0, 90000, 27000, 30000, 33000, 47000, 54000, 83000, 80000, 100000,
+              115000, 110000,
+            ],
+            fill: {
+              colors: ["#01b6dd"], // Specify the fill color for the area under the line
+              // Set the opacity of the fill color (optional)
+              opacity: 1,
+            },
+            dataPoints: {
+              hidden: true, // Hide the data points in the area
+            },
+          },
         ],
     options: {
       chart: {
