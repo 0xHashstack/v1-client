@@ -289,33 +289,58 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   // useEffect(() => {
   //   console.log("protocol reserves here ", protocolReserves);
   // }, [protocolReserves]);
-
+    const [dataDeposit, setDataDeposit] = useState<any>()
+    const [dataOraclePrices, setDataOraclePrices] = useState<any>()
+    const [dataMarket, setDataMarket] = useState<any>()
+    useEffect(()=>{
+      const fetchUserDeposits=async()=>{
+        const data=await getUserDeposits(address || "");
+        setDataDeposit(data);
+      }
+      fetchUserDeposits();
+    },[])
+    useEffect(()=>{
+      const fetchOraclePrices=async()=>{
+        const data=await getOraclePrices();
+        setDataOraclePrices(data);
+      }
+      fetchOraclePrices();
+    },[])
+    useEffect(()=>{
+      const fetchMarketData=async()=>{
+        const data=await getProtocolStats();
+        setDataMarket(data);
+      }
+      fetchMarketData();
+    },[])
     useEffect(()=>{
       try{
         const fetchUserSupply=async()=>{
-          // console.log(getUserDeposits(address),"deposits in pagecard")
-          const dataDeposit=await getUserDeposits(address || "");
-          const dataOraclePrices=await getOraclePrices();
-          const dataMarket=await getProtocolStats();
+          // console.log(dataDeposit,"data deposit")
+          // await Promise.all([dataDeposit,dataOraclePrices,dataMarket])
           // console.log(dataMarket,"data market page")
           // console.log(dataDeposit,"deposit array");
-          const dataBorrow=await getTotalBorrow(userLoans,dataOraclePrices,dataMarket);
-          const dataTotalBorrow=dataBorrow?.totalBorrow;
-          const dataNetWorth=await getNetworth(data,dataTotalBorrow,dataBorrow?.totalCurrentAmount);
-          dispatch(setNetWorth(dataNetWorth));
-          dispatch(setYourBorrow(dataTotalBorrow));
-          if(dataDeposit){
-            const data= getTotalSupply(dataDeposit,dataOraclePrices);
-            // console.log(data,"pagecard user supply");
-            // console.log(dataBorrow?.totalBorrow,"data borrow page")
-            // console.log(dataNetApr,"data net apr in pagecard");
-           
-            const dataNetApr=await getNetApr(dataDeposit,userLoans,dataOraclePrices,dataMarket);
-            dispatch(setYourSupply(data));
-            dispatch(setNetAPR(dataNetApr))
           
-          }
+          
+          console.log(dataDeposit,"data deposit");
+          console.log(dataOraclePrices,"data oracle prices");
+          console.log(dataMarket,"data market")
+          if(dataDeposit && dataOraclePrices &&dataMarket){
 
+            const dataBorrow=await getTotalBorrow(userLoans,dataOraclePrices,dataMarket);
+            const dataTotalBorrow=dataBorrow?.totalBorrow;
+            const dataNetWorth=await getNetworth(data,dataTotalBorrow,dataBorrow?.totalCurrentAmount);
+            dispatch(setNetWorth(dataNetWorth));
+                        const data= getTotalSupply(dataDeposit,dataOraclePrices);
+                        // console.log(data,"pagecard user supply");
+                        // console.log(dataBorrow?.totalBorrow,"data borrow page")
+                        // console.log(dataNetApr,"data net apr in pagecard");
+                       
+                        const dataNetApr=await getNetApr(dataDeposit,userLoans,dataOraclePrices,dataMarket);
+                        dispatch(setYourSupply(data));
+                        dispatch(setNetAPR(dataNetApr))
+            dispatch(setYourBorrow(dataTotalBorrow));
+          }
 
         }
         if(yourSupply==null || yourBorrow==null || netWorth==null ||netAPR==null ){
