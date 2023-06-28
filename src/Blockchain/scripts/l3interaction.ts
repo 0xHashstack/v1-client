@@ -26,8 +26,8 @@ export async function getJediEstimateLiquiditySplit(loanId: string, tokenA: stri
   );
   console.log("estimated liquidity split for loanId: ", loanId, " is: ", res);
   return [
-    parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 18),
-    parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 18),
+    parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8),
+    parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8),
   ];
 }
 
