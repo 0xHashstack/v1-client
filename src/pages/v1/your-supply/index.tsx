@@ -12,9 +12,12 @@ import { Coins } from "@/utils/constants/coin";
 import YourSupplyModal from "@/components/modals/yourSupply";
 import { useDispatch } from "react-redux/es/hooks/useDispatch";
 import { useAccount, useConnectors } from "@starknet-react/core";
-import { setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
+import { selectNetAPR, selectYourSupply, setSpendBorrowSelectedDapp } from "@/store/slices/userAccountSlice";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { IDeposit } from "@/Blockchain/interfaces/interfaces";
+import { useSelector } from "react-redux";
+import { Skeleton } from "@chakra-ui/react";
+import numberFormatter from "@/utils/functions/numberFormatter";
 const YourSupply = () => {
   const [currentPagination, setCurrentPagination] = useState<number>(1);
   const columnItems = [
@@ -49,6 +52,8 @@ const YourSupply = () => {
   //   };
   //   getSupply();
   // }, []);
+  const totalSupply=useSelector(selectYourSupply);
+  const netAPR=useSelector(selectNetAPR);
   return (
     <PageCard pt="6.5rem">
       <HStack
@@ -75,17 +80,31 @@ const YourSupply = () => {
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Total Supply
             </Text>
-            <Text color="#e6edf3" fontSize="20px">
-              $8,932.14
-            </Text>
+            {!totalSupply ?                <Skeleton
+                  width="6rem"
+                  height="1.9rem"
+                  startColor="#101216"
+                  endColor="#2B2F35"
+                  borderRadius="6px"
+                />:            <Text color="#e6edf3" fontSize="20px">
+              ${numberFormatter(totalSupply)}
+            </Text>}
+
           </VStack>
           <VStack gap={"3px"}>
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Net APR
             </Text>
-            <Text color="#e6edf3" fontSize="20px">
-              15.5%
-            </Text>
+            {!netAPR ?                <Skeleton
+                  width="6rem"
+                  height="1.9rem"
+                  startColor="#101216"
+                  endColor="#2B2F35"
+                  borderRadius="6px"
+                />:            <Text color="#e6edf3" fontSize="20px">
+                {netAPR}%
+              </Text>} 
+
           </VStack>
         </HStack>
       </HStack>
