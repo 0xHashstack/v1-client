@@ -29,8 +29,12 @@ import { useAccount } from "@starknet-react/core";
 import { IDeposit } from "@/Blockchain/interfaces/interfaces";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import numberFormatter from "@/utils/functions/numberFormatter";
-import { useDispatch } from "react-redux";
-import { selectProtocolStats, selectUserDeposits, setUserDeposits } from "@/store/slices/userAccountSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectProtocolStats,
+  selectUserDeposits,
+  setUserDeposits,
+} from "@/store/slices/userAccountSlice";
 
 export interface ICoin {
   name: string;
@@ -124,7 +128,9 @@ const SupplyDashboard = ({
   const [statusHoverIndex, setStatusHoverIndex] = useState("-1");
 
   const [supplies, setSupplies] = useState<IDeposit[]>([]);
-  const dispatch=useDispatch();
+  let userDeposits = useSelector(selectUserDeposits);
+  let reduxProtocolStats = useSelector(selectProtocolStats);
+  const dispatch = useDispatch();
   const handleStatusHover = (idx: string) => {
     setStatusHoverIndex(idx);
   };
@@ -136,10 +142,10 @@ const SupplyDashboard = ({
     const getSupply = async () => {
       console.log("all deposits calling started");
       try {
-        if (!address) return;
-        const supply = await getUserDeposits(address);
+        const supply = userDeposits;
+        console.log("users deposits - ", userDeposits);
+        // const supply = await getUserDeposits(address);
 
-        
         console.log("supply : ", supply);
         if (!supply) return;
         setSupplies([
@@ -149,20 +155,21 @@ const SupplyDashboard = ({
           supply?.[1],
           supply?.[4],
         ]);
-        dispatch(setUserDeposits(supply))
+        // dispatch(setUserDeposits(supply));
       } catch (err) {
         console.log("supplies", err);
       }
     };
     getSupply();
-  }, [address]);
+  }, [userDeposits]);
   const [protocolStats, setProtocolStats]: any = useState([]);
   useEffect(() => {
     const getMarketData = async () => {
       try {
-        const stats = await getProtocolStats();
-        if(stats){
-          console.log("se3nding",stats)
+        const stats = reduxProtocolStats;
+        // const stats = await getProtocolStats();
+        if (stats) {
+          console.log("se3nding", stats);
           dispatch(setProtocolStats(stats));
         }
         console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
@@ -179,7 +186,7 @@ const SupplyDashboard = ({
       }
     };
     getMarketData();
-  }, [address]);
+  }, [reduxProtocolStats]);
 
   useEffect(() => {
     let temp: any = [];

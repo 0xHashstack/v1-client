@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import {
   Modal,
   ModalOverlay,
@@ -1006,7 +1004,7 @@ const YourBorrowModal = ({
                       />
                     </Box>
                     <Text>
-                      {currentSplit?.[0] || (
+                      {currentSplit?.[0].toString() || (
                         <Skeleton
                           width="2.3rem"
                           height=".85rem"
@@ -1028,7 +1026,7 @@ const YourBorrowModal = ({
                       />
                     </Box>
                     <Text>
-                      {currentSplit?.[1] || (
+                      {currentSplit?.[1].toString() || (
                         <Skeleton
                           width="2.3rem"
                           height=".85rem"
@@ -1927,8 +1925,12 @@ const YourBorrowModal = ({
     console.log("spendType", spendType);
   }, [spendType]);
 
-  const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState(null);
-  const [currentSplit, setCurrentSplit] = useState(null);
+  const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState<
+    Number | undefined | null
+  >();
+  const [currentSplit, setCurrentSplit] = useState<
+    Number[] | undefined | null
+  >();
 
   useEffect(() => {
     // if (!currentBorrowId1 || currentBorrowId1 == "") {
@@ -1941,6 +1943,8 @@ const YourBorrowModal = ({
       toMarketB
       // borrow
     );
+    // setCurrentLPTokenAmount(null);
+    // setCurrentSplit(null);
     setCurrentLPTokenAmount(null);
     setCurrentSplit(null);
     fetchLiquiditySplit();
@@ -1959,7 +1963,7 @@ const YourBorrowModal = ({
       // currentBorrowId1.slice(5),
       // toMarketA,
       // toMarketB
-      99,
+      "99",
       "ETH",
       "USDT"
     );
@@ -1969,7 +1973,7 @@ const YourBorrowModal = ({
       // currentBorrowId1.slice(5),
       // toMarketA,
       // toMarketB
-      99,
+      "99",
       "ETH",
       "USDT"
     );
@@ -3135,7 +3139,7 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            if (radioValue == 2) {
+                            if (radioValue == "2") {
                               hanldeTrade();
                             } else {
                               hanldeLiquidation();

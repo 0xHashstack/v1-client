@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import Navbar from "@/components/layouts/navbar/Navbar";
 import { Box, Stack, StackProps, Text, useMediaQuery } from "@chakra-ui/react";
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
@@ -35,18 +33,17 @@ import {
   setTransactionRefresh,
   selectUserDeposits,
   selectProtocolStats,
-  selectOralcePrices,
   selectOraclePrices,
   setProtocolStats,
   setUserDeposits,
   setOraclePrices,
+  selectActiveTransactions,
 } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import Footer from "../footer";
 import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 import SuccessButton from "@/components/uiElements/buttons/SuccessButton";
 import ErrorButton from "@/components/uiElements/buttons/ErrorButton";
-import TransactionToast from "./transactionToast";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
@@ -67,6 +64,7 @@ import {
 import { getTotalSupply } from "@/Blockchain/scripts/userStats";
 import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
 import useTransactionRefresh from "@/hooks/useTransactionRefresh";
+import useTransactionHandler from "@/hooks/useTransactionHandler";
 interface Props extends StackProps {
   children: ReactNode;
 }
@@ -83,6 +81,8 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const router = useRouter();
 
   const toastTransactionStarted = useSelector(selectToastTransactionStarted);
+  let activeTransactions = useSelector(selectActiveTransactions);
+  useTransactionHandler();
   // const handleRouteChange = () => {
   //   if (!_account) {
   //     const walletConnected = localStorage.getItem("lastUsedConnector");
@@ -135,7 +135,10 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   useEffect(() => {
     const loan = async () => {
       try {
-        const loans = await getUserLoans(address || "");
+        if (!address) {
+          return;
+        }
+        const loans = await getUserLoans(address);
         // console.log(loans,"Loans from your borrow index page")
 
         // loans.filter(
@@ -147,14 +150,14 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         // );
         if (loans) {
           setuserLoans(
-            loans.filter(
+            loans?.filter(
               (loan) => loan?.loanAmountParsed && loan?.loanAmountParsed > 0
             )
           );
         }
         dispatch(
           setUserLoans(
-            loans.filter(
+            loans?.filter(
               (loan) => loan.loanAmountParsed && loan.loanAmountParsed > 0
             )
           )
@@ -164,11 +167,11 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       }
       // console.log("loans", loans);
     };
-    if (account && isConnected) {
+    if (address && address != "") {
       // callWithRetries(loan, [], 3);
       loan();
     }
-  }, [account, isConnected]);
+  }, [address]);
   // const dispatch=useDispatch();
   interface assetB {
     USDT: any;
@@ -184,20 +187,6 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
-  // useEffect(() => {
-  //   // console.log(assetBalance);
-  //   try {
-  //     dispatch(setAssetWalletBalance(assetBalance));
-  //   } catch (error) {
-  //     console.log("serializing warning");
-  //   }
-  // }, [assetBalance]);
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     connect(connectors[0]);
-  //   }, 1000);
-  //   return () => clearTimeout(timer);
-  // }, []);
 
   useEffect(() => {
     const walletConnected = localStorage.getItem("lastUsedConnector");
@@ -218,8 +207,9 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     function isCorrectNetwork() {
       console.log("starknetAccount", account);
       return (
-        account?.baseUrl?.includes("https://alpha4.starknet.io") ||
-        account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+        // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+        // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+        account?.chainId == "0x534e5f474f45524c49"
       );
     }
     if (account && !isCorrectNetwork()) {
@@ -228,12 +218,6 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       setRender(true);
     }
   }, [account]);
-  // useEffect(() => {
-  //   const timer = setTimeout(() => {
-  //     connect(connectors[0]);
-  //   }, 1000);
-  //   return () => clearTimeout(timer);
-  // }, []);
 
   const [validRTokens, setValidRTokens] = useState([]);
 
@@ -325,10 +309,6 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     }
   }, []);
 
-  // useEffect(() => {
-  //   console.log("protocol reserves here ", protocolReserves);
-  // }, [protocolReserves]);
-
   useEffect(() => {
     const fetchProtocolStats = async () => {
       try {
@@ -356,7 +336,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       console.log(data, "data deposit in useEffect");
       // console.log(data,"data deposit useffect")
       // console.log(data.length,"data length")
-      if (data?.length > 0) {
+      if (data && data?.length > 0) {
         dispatch(setUserDeposits(data));
       }
     };
@@ -371,7 +351,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         return;
       }
       const userLoans = await getUserLoans(address);
-      if (userLoans?.length > 0) {
+      if (userLoans && userLoans?.length > 0) {
         dispatch(setUserLoans(userLoans));
       }
     };
@@ -452,115 +432,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   }
   // }, [netWorth, yourSupply, yourBorrow, netWorth]);
 
-  const [transactions, setTransactions] = useState([]);
-  const toastHash = [""];
   const [isMounted, setIsMounted] = useState(false);
-  useEffect(() => {
-    // console.log("trans activeTransactions useEffect called");
-    console.log("hey I am aryan");
-    if (activeTransactions) {
-      const data = activeTransactions.map(
-        (transaction) => transaction.transaction_hash
-      );
-      setTransactions(data);
-    }
-  }, [activeTransactions]);
-
-  // const results = useTransactions({
-  //   hashes: [...transactions],
-  //   watch: true,
-  // });
-  // const { hashes, addTransaction } = useTransactionManager();
-  const results = useTransactions({
-    hashes: [...transactions],
-    watch: true,
-  });
-  // // const data = useTransaction()
-  // console.log("trans toastHash", toastHash);
-  // console.log("transaction results - ", results);
-  useEffect(() => {
-    // console.log("transaction active transactions ", activeTransactions);
-    // console.log("transaction transactions ", transactions);
-    // console.log("transaction results ", results);
-    let transactionData = results?.filter((transaction, idx) => {
-      transaction.refetch();
-      if (
-        transaction?.data?.transaction?.transaction_hash == "" ||
-        activeTransactions.transaction_hash == ""
-      ) {
-        return false;
-      }
-      const transaction_hxh = activeTransactions[idx]?.transaction_hash;
-      if (
-        transaction?.data?.status == "PENDING" ||
-        transaction?.data?.status == "ACCEPTED_ON_L2"
-      ) {
-        if (!toastHash.includes(transaction_hxh)) {
-          dispatch(setTransactionStatus("success"));
-          activeTransactions[idx].setCurrentTransactionStatus("success");
-          toast.success(
-            activeTransactions?.[idx]?.message ||
-              `You have successfully supplied`,
-            {
-              position: toast.POSITION.BOTTOM_RIGHT,
-            }
-          );
-          dispatch(setTransactionRefresh());
-        }
-        toastHash.push(transaction_hxh);
-        toastHash.push(activeTransactions[idx]?.transaction_hash);
-        toastHash.push(transaction?.data?.transaction?.transaction_hash);
-      } else if (transaction?.data?.status == "REJECTED") {
-        console.log("treans rejected", transaction?.data?.error);
-        const toastContent = (
-          <div>
-            Transaction failed{" "}
-            <CopyToClipboard text={"Transaction failed"}>
-              <Text as="u">copy error!</Text>
-            </CopyToClipboard>
-          </div>
-        );
-        // setFailureToastDisplayed(true);
-        if (!toastHash.includes(transaction_hxh)) {
-          dispatch(setTransactionStatus("failed"));
-          activeTransactions[idx].setCurrentTransactionStatus("failed");
-          toast.error(toastContent, {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: false,
-          });
-        }
-        toastHash.push(transaction_hxh);
-        toastHash.push(activeTransactions?.transaction_hash);
-        toastHash.push(transaction?.data?.transaction?.transaction_hash);
-      }
-      if (
-        transaction?.data?.status == "PENDING" ||
-        transaction?.data?.status == "ACCEPTED_ON_L2" ||
-        transaction?.data?.status == "ACCEPTED_ON_L1" ||
-        transaction?.data?.status == "REJECTED"
-      ) {
-        if (activeTransactions[idx].transaction_hash == "") {
-          return false;
-        }
-        toastHash.push(transaction_hxh);
-        toastHash.push(activeTransactions?.transaction_hash);
-        toastHash.push(transaction?.data?.transaction?.transaction_hash);
-        const newData = [...activeTransactions]; // Create a new array with the same values
-        newData[idx] = {
-          ...newData[idx],
-          transaction_hash: "", // Modify the specific property with the new value
-        };
-        toast.dismiss(activeTransactions?.[idx]?.toastId);
-        dispatch(setActiveTransactions(newData));
-        return false;
-      } else {
-        return true;
-      }
-    });
-    // if (transactionData?.length != activeTransactions?.length) {
-    //   dispatch(setActiveTransactions(transactionData));
-    // }
-  }, [results]);
 
   // async function waitForTransaction(hash: string) {
   //   return new Promise<UseWaitForTransactionResult>((resolve, reject) => {
@@ -689,9 +561,9 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //   }
   // }, [transactions]);
 
-  // const { data } = useBlockNumber({
-  //   refetchInterval: 10000,
-  // });
+  const { data } = useBlockNumber({
+    refetchInterval: 10000,
+  });
 
   return (
     <>
@@ -750,7 +622,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
             </AnimatedButton>
           </Box> */}
           {/* <ToastContainer theme="dark" /> */}
-          <Footer block={data} />
+          <Footer block={data || 0} />
         </>
       ) : (
         <>

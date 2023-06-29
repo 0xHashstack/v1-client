@@ -10,7 +10,9 @@ import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { useAccount } from "@starknet-react/core";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { selectUserDeposits } from "@/store/slices/userAccountSlice";
+import { resolve } from "path";
 const MarketDashboard = () => {
   const [oraclePrices, setOraclePrices]: any = useState<(undefined | number)[]>(
     []
@@ -27,6 +29,7 @@ const MarketDashboard = () => {
     []
   );
   const { account, address } = useAccount();
+  const userDeposits = useSelector(selectUserDeposits);
   // console.log(account,"Market Page")
 
   useEffect(() => {
@@ -45,12 +48,13 @@ const MarketDashboard = () => {
     if (validRTokens.length === 0) {
       fetchUserDeposits();
     }
-  }, [validRTokens, address]);
+  }, [userDeposits, validRTokens, address]);
 
   const fetchUserDeposits = async () => {
     try {
-      if (!account) return;
-      const reserves = await getUserDeposits(address as string);
+      if (!account || userDeposits?.length <= 0) return;
+      // const reserves = await getUserDeposits(address as string);
+      const reserves = userDeposits;
       console.log("got reservers", reserves);
 
       const rTokens: any = [];
@@ -81,15 +85,15 @@ const MarketDashboard = () => {
   //     console.log("Error fetching protocol reserves", err);
   //   }
   // };
-  const dispatch=useDispatch();
+  const dispatch = useDispatch();
 
   const fetchOraclePrices = async () => {
     try {
       const prices = await getOraclePrices();
-      if(prices){
+      if (prices) {
         dispatch(setOraclePrices(prices));
       }
-      
+
       console.log("oracleprices", prices);
       setOraclePrices(prices);
     } catch (error) {
