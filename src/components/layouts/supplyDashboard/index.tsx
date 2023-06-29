@@ -36,6 +36,8 @@ import {
   setUserDeposits,
 } from "@/store/slices/userAccountSlice";
 import { effectiveAprDeposit } from "@/Blockchain/scripts/userStats";
+import { token } from "@project-serum/anchor/dist/cjs/utils";
+import { isTemplateExpression } from "typescript";
 
 export interface ICoin {
   name: string;
@@ -139,12 +141,29 @@ const SupplyDashboard = ({
   const handleStatusHoverLeave = () => {
     setStatusHoverIndex("-1");
   };
+  const [avgs, setAvgs] = useState<any>([])
+  const avgsData:any=[];
   useEffect(() => {
     const getSupply = async () => {
       console.log("all deposits calling started");
       try {
         const supply = userDeposits;
         console.log("users deposits - ", userDeposits);
+
+        if(avgs.length==0){
+          for(var i=0;i<supply?.length;i++){
+            const avg=await effectiveAprDeposit(supply[i],reduxProtocolStats);
+            const data={
+              token:supply[i].token,
+              avg:avg
+            }
+            // avgs.push(data)
+            avgsData.push(data);
+            // avgs.push()
+          }
+          setAvgs(avgsData);
+        }
+        console.log(avgs,"avgs in suppply")
         // const supply = await getUserDeposits(address);
 
         console.log("supply : ", supply);
@@ -163,8 +182,11 @@ const SupplyDashboard = ({
     };
     getSupply();
   }, [userDeposits]);
+
   const [protocolStats, setProtocolStats]: any = useState([]);
   const [effectiveSupplyApr, setEffectiveSupplyApr] = useState<any>()
+
+  
   useEffect(() => {
     const getMarketData = async () => {
       try {
@@ -218,6 +240,7 @@ const SupplyDashboard = ({
       setLoading(false);
     }
   }, [supplies]);
+  
   return loading ? (
     <>
       <Box
@@ -448,7 +471,7 @@ const SupplyDashboard = ({
                       overflow={"hidden"}
                       textAlign={"center"}
                     >
-                      <Text
+                    <Text
                         width="100%"
                         height="100%"
                         display="flex"
@@ -457,8 +480,14 @@ const SupplyDashboard = ({
                         fontWeight="400"
                       >
                         {/* {checkGap(idx1, idx2)} */}
-                        {supply?.EffectiveApr || "8.00%"}
+                        {/* {(!avgs?.token==supply?.token) ? avgs.avg :  "2.00%"} */}
+                        {/* {avgs[2]} */}
+                    
+                        {avgs?.find(item=>item.token == supply?.token)?.avg || "2%"} %
+                        {/* {supply?.token} */}
+
                       </Text>
+
                     </Td>
 
                     <Td
