@@ -127,7 +127,8 @@ export async function getProtocolReserves() {
     const res = await metricsContract.call("get_protocol_reserves", [], {
       blockIdentifier: "pending",
     });
-    return parseProtocolReserves(res?.protocol_reserves);
+    const protocolReserves = parseProtocolReserves(res?.protocol_reserves);
+    return protocolReserves;
   }
   catch(e) {
     console.log('get_protocol_reserves failed: ', e);
