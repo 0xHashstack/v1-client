@@ -11,7 +11,7 @@ import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { useAccount } from "@starknet-react/core";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { useDispatch, useSelector } from "react-redux";
-import { selectUserDeposits } from "@/store/slices/userAccountSlice";
+import { selectUserDeposits, setAvgBorrowAPR, setAvgSupplyAPR } from "@/store/slices/userAccountSlice";
 import { resolve } from "path";
 const MarketDashboard = () => {
   const [oraclePrices, setOraclePrices]: any = useState<(undefined | number)[]>(
@@ -127,6 +127,9 @@ const MarketDashboard = () => {
         stats?.[1].borrowRate,
         stats?.[4].borrowRate,
       ]);
+      const avg=(stats?.[4].borrowRate+stats?.[3].borrowRate+stats?.[2].borrowRate+stats?.[1].borrowRate+stats?.[0].borrowRate)/5;
+      // console.log(avg,"avg borrow")
+      dispatch(setAvgBorrowAPR(avg))
       setSupplyAPRs([
         stats?.[2].supplyRate,
         stats?.[3].supplyRate,
@@ -134,6 +137,8 @@ const MarketDashboard = () => {
         stats?.[1].supplyRate,
         stats?.[4].supplyRate,
       ]);
+      const avgSupply=( stats?.[4].supplyRate+ stats?.[3].supplyRate+ stats?.[2].supplyRate+ stats?.[1].supplyRate+ stats?.[0].supplyRate)/5;
+      dispatch(setAvgSupplyAPR(avgSupply));
       setUtilizations([
         stats?.[2].utilisationPerMarket,
         stats?.[3].utilisationPerMarket,

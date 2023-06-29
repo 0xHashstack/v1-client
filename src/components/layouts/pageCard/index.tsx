@@ -38,6 +38,8 @@ import {
   setUserDeposits,
   setOraclePrices,
   selectActiveTransactions,
+  setAvgSupplyAPR,
+  setAvgBorrowAPR,
 } from "@/store/slices/userAccountSlice";
 import { useRouter } from "next/router";
 import Footer from "../footer";
@@ -57,6 +59,8 @@ import {
 } from "@/Blockchain/scripts/protocolStats";
 import YourBorrow from "@/pages/v1/your-borrow";
 import {
+  effectivAPRLoan,
+  effectiveAprDeposit,
   getNetApr,
   getNetworth,
   getTotalBorrow,
@@ -368,15 +372,21 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         // const dataMarket=await getProtocolStats();
         // const dataOraclePrices=await getOraclePrices();
         // console.log(dataMarket,"data market page")
-        console.log(dataDeposit, "deposit array");
-        console.log(dataOraclePrices, "data oracle page");
-        console.log(protocolStats, "data protocl");
+        // console.log(dataDeposit, "deposit array");
+        // console.log(dataOraclePrices, "data oracle page");
+        // console.log(protocolStats, "data protocl");
         // console.log(protocolStats,"data protocol stats")
         if (
           dataDeposit.length != 0 &&
           protocolStats.length != 0 &&
           userLoans.length != 0
         ) {
+          const avgSupplyApr=await effectiveAprDeposit(dataDeposit[0],protocolStats);
+          console.log(avgSupplyApr,"data avg supply apr pagecard");
+          const avgBorrowApr=await effectivAPRLoan(userLoans[0],protocolStats,dataOraclePrices);
+          console.log(avgBorrowApr,"data avg borrow apr pagecard")
+          // dispatch(setAvgBorrowAPR(avgBorrowApr));
+          // dispatch(setAvgSupplyAPR(avgSupplyApr));
           const dataBorrow = await getTotalBorrow(
             userLoans,
             dataOraclePrices,
