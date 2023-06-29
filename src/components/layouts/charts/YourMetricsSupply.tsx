@@ -67,7 +67,7 @@ const YourMetricsSupply = ({
       opacity: 1,
     },
     legend: {
-      position: 'top',
+      position: 'top' as const,
     },
     dataLabels: {
         enabled: false,

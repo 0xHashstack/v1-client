@@ -35,6 +35,7 @@ import {
   selectUserDeposits,
   setUserDeposits,
 } from "@/store/slices/userAccountSlice";
+import { effectiveAprDeposit } from "@/Blockchain/scripts/userStats";
 
 export interface ICoin {
   name: string;
@@ -163,10 +164,12 @@ const SupplyDashboard = ({
     getSupply();
   }, [userDeposits]);
   const [protocolStats, setProtocolStats]: any = useState([]);
+  const [effectiveSupplyApr, setEffectiveSupplyApr] = useState<any>()
   useEffect(() => {
     const getMarketData = async () => {
       try {
         const stats = reduxProtocolStats;
+
         // const stats = await getProtocolStats();
         if (stats) {
           console.log("se3nding", stats);

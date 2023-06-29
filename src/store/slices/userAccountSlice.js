@@ -46,6 +46,8 @@ const initialState = {
   netAPR: null,
   activeTransactions: [],
   transactionRefresh: -1,
+  avgSupplyAPR:null,
+  avgBorrowAPR:null,
 
   // walletBalance: {
   //   BTC: 0,
@@ -93,6 +95,12 @@ export const userAccountSlice = createSlice({
     // setCurrentTransactionStatus(state, action) {
     //   state.currentTransactionStatus = action.payload;
     // },
+    setAvgSupplyAPR(state,action){
+      state.avgSupplyAPR=action.payload;
+    },
+    setAvgBorrowAPR(state,action){
+      state.avgBorrowAPR=action.payload;
+    },
     setLanguage(state, action) {
       state.language = action.payload;
     },
@@ -211,6 +219,8 @@ export const {
   setOraclePrices,
   setActiveTransactions,
   setTransactionRefresh,
+  setAvgBorrowAPR,
+  setAvgSupplyAPR
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -256,6 +266,10 @@ export const selectBorrowCoinSelectedBorrowModal = (state) =>
 export const selectWalletBalance = (state) => state.user_account.walletBalance;
 export const selectAccountAddress = (state) =>
   state.user_account.accountAddress;
+export const selectAvgSupplyAPR=(state)=>
+  state.user_account.avgSupplyAPR;
+export const selectAvgBorrowAPR=(state)=>
+  state.user_account.avgBorrowAPR;
 export const selectLanguage = (state) => state.user_account.language;
 export const selectCurrentPage = (state) => state.user_account.currentPage;
 export const selectReserves = (state) => state.user_account.reserves;

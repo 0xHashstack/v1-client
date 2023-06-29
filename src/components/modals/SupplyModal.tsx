@@ -1303,7 +1303,7 @@ const SupplyModal = ({
                     font-size="12px"
                     color="#6A737D"
                   >
-                    $ 0.50
+                    $ 0.90
                   </Text>
                 </Text>
                 <Text

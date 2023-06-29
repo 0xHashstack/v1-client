@@ -1597,7 +1597,7 @@ const BorrowModal = ({
                   font-size="14px"
                   color="#6A737D"
                 >
-                  $ 10.91
+                  $ 0.91
                 </Text>
               </Text>
               <Text
