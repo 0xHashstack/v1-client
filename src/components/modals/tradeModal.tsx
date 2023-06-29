@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import {
   Modal,
   ModalOverlay,
@@ -92,6 +90,7 @@ import BtcToDai from "@/assets/icons/pools/btcToDai";
 import UsdtToDai from "@/assets/icons/pools/usdtToDai";
 import UsdcToDai from "@/assets/icons/pools/usdcToDai";
 import MySwap from "@/assets/icons/dapps/mySwap";
+import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 const TradeModal = ({
   buttonText,
   coin,
@@ -409,9 +408,9 @@ const TradeModal = ({
       walletBalances[coin]?.statusBalanceOf === "success"
         ? Number(
             BNtoNum(
-              uint256.uint256ToBN(walletBalances[coin]?.dataBalanceOf?.balance)
-            ),
-            tokenDecimalsMap[coin.name]
+              uint256.uint256ToBN(walletBalances[coin]?.dataBalanceOf?.balance),
+              tokenDecimalsMap[coin?.name]
+            )
           )
         : 0
     );
@@ -928,7 +927,7 @@ const TradeModal = ({
                                 onClick={() => {
                                   setCurrentCollateralCoin(coin);
                                   setCollateralMarket(coin);
-                                  setRToken("");
+                                  setRToken("rBTC");
                                   setwalletBalance(
                                     walletBalances[coin]?.statusBalanceOf ===
                                       "success"
@@ -2018,7 +2017,10 @@ const TradeModal = ({
                                 pr="2"
                                 onClick={() => {
                                   setCurrentPool(pool);
+                                  //set type for pools as native token[]
+                                  //@ts-ignore
                                   setToMarketLiqA(pool.split("/")[0]);
+                                  //@ts-ignore
                                   setToMarketLiqB(pool.split("/")[1]);
                                 }}
                               >
@@ -2058,7 +2060,7 @@ const TradeModal = ({
                           className="dropdown-container"
                           boxShadow="dark-lg"
                         >
-                          {coins.map((coin: string, index: number) => {
+                          {coins.map((coin: NativeToken, index: number) => {
                             return (
                               <Box
                                 key={index}

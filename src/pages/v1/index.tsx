@@ -27,9 +27,11 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectWalletBalance,
   setAccount,
+  setTransactionRefresh,
 } from "@/store/slices/userAccountSlice";
 import Banner from "@/components/uiElements/loaders/Banner";
 import Banner2 from "@/components/uiElements/loaders/Banner2";
+import useTransactionRefresh from "@/hooks/useTransactionRefresh";
 // import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -59,7 +61,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const interval = setInterval(refresh, 1000);
+    const interval = setInterval(refresh, 200);
     return () => clearInterval(interval);
   }, [refresh]);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
@@ -136,7 +138,7 @@ export default function Home() {
     }
     // console.log("account home", address, status);
   }, [status, isConnected]);
-
+  useTransactionRefresh();
   return (
     <Box
       display="flex"
@@ -208,6 +210,7 @@ export default function Home() {
               // onClick={() => router.push("/market")}
               onClick={() => {
                 connect(connectors[0]);
+                dispatch(setTransactionRefresh(""));
                 localStorage.setItem("lastUsedConnector", "braavos");
               }}
             >
@@ -264,6 +267,7 @@ export default function Home() {
               cursor="pointer"
               onClick={() => {
                 connect(connectors[1]);
+                dispatch(setTransactionRefresh(""));
                 localStorage.setItem("lastUsedConnector", "argentX");
               }}
             >

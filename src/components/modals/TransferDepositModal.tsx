@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import React, { useState } from "react";
 import {
   Button,
@@ -65,6 +63,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
   const inputAmount1 = useSelector(selectInputSupplyAmount);
+  const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const router = useRouter();
 
   const getCoin = (CoinName: string) => {
@@ -745,9 +744,9 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     mt="1.5rem"
                     mb="1.5rem"
                     border="1px solid #8B949E"
-                    labelArray={[
+                    labelSuccessArray={[
                       "Deposit Amount approved",
-                      "Successfully transferred to Hashstack’s supply vault.",
+                      "Successfully transferred to Hashstacks supply vault.",
                       "Determining the rToken amount to mint.",
                       "rTokens have been minted successfully.",
                       "Transaction complete.",
@@ -758,6 +757,15 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                         successText={"Success"}
                       />,
                     ]}
+                    labelErrorArray={[
+                      <ErrorButton
+                        errorText="Transaction failed"
+                        key={"error1"}
+                      />,
+                      <ErrorButton errorText="Copy error!" key={"error2"} />,
+                    ]}
+                    currentTransactionStatus={currentTransactionStatus}
+                    setCurrentTransactionStatus={setCurrentTransactionStatus}
                     onClick={() => {
                       router.push("/market");
                     }}
