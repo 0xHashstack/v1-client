@@ -38,6 +38,7 @@ import SuccessToast from "@/components/uiElements/toasts/SuccessToast";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Market() {
@@ -75,6 +76,7 @@ export default function Market() {
   //   }
   //   // setRender(true);
   // }, [account]);
+
   return (
     <PageCard>
       <StatsBoard />
