@@ -113,9 +113,6 @@ const SupplyDashboard = ({
   // gap: string;
   // rowItems: any;
 }) => {
-  let lower_bound = 6 * (currentPagination - 1);
-  let upper_bound = lower_bound + 5;
-  upper_bound = Math.min(Coins.length - 1, upper_bound);
   // console.log("aryan " + lower_bound + " " + upper_bound);
 
   const { address } = useAccount();
@@ -141,11 +138,12 @@ const SupplyDashboard = ({
   };
   useEffect(() => {
     const getSupply = async () => {
+      if (!address) {
+        return;
+      }
       console.log("all deposits calling started");
       try {
-        const supply = userDeposits;
-        console.log("users deposits - ", userDeposits);
-        // const supply = await getUserDeposits(address);
+        const supply = await getUserDeposits(address);
 
         console.log("supply : ", supply);
         if (!supply) return;
@@ -162,9 +160,9 @@ const SupplyDashboard = ({
       }
     };
     getSupply();
-  }, [userDeposits]);
+  }, [address]);
   const [protocolStats, setProtocolStats]: any = useState([]);
-  const [effectiveSupplyApr, setEffectiveSupplyApr] = useState<any>()
+  const [effectiveSupplyApr, setEffectiveSupplyApr] = useState<any>();
   useEffect(() => {
     const getMarketData = async () => {
       try {
@@ -200,6 +198,9 @@ const SupplyDashboard = ({
     });
     setSupplyMarkets(temp);
   }, [supplies]);
+  let lower_bound = 6 * (currentPagination - 1);
+  let upper_bound = lower_bound + 5;
+  upper_bound = Math.min(supplies.length - 1, upper_bound);
   // useEffect(() => {
   //   try {
   //     const supply = async () => {
