@@ -52,8 +52,8 @@ const YourSupply = () => {
   //   };
   //   getSupply();
   // }, []);
-  const totalSupply=useSelector(selectYourSupply);
-  const netAPR=useSelector(selectNetAPR);
+  const totalSupply = useSelector(selectYourSupply);
+  const netAPR = useSelector(selectNetAPR);
   return (
     <PageCard pt="6.5rem">
       <HStack
@@ -80,13 +80,13 @@ const YourSupply = () => {
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Total Supply
             </Text>
-            {!totalSupply ?                <Skeleton
-                  width="6rem"
-                  height="1.9rem"
-                  startColor="#101216"
-                  endColor="#2B2F35"
-                  borderRadius="6px"
-                />:            <Text color="#e6edf3" fontSize="20px">
+            {!totalSupply ? <Skeleton
+              width="6rem"
+              height="1.9rem"
+              startColor="#101216"
+              endColor="#2B2F35"
+              borderRadius="6px"
+            /> : <Text color="#e6edf3" fontSize="20px">
               ${numberFormatter(totalSupply)}
             </Text>}
 
@@ -95,15 +95,15 @@ const YourSupply = () => {
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Net APR
             </Text>
-            {!netAPR ?                <Skeleton
-                  width="6rem"
-                  height="1.9rem"
-                  startColor="#101216"
-                  endColor="#2B2F35"
-                  borderRadius="6px"
-                />:            <Text color="#e6edf3" fontSize="20px">
-                {netAPR}%
-              </Text>} 
+            {!netAPR ? <Skeleton
+              width="6rem"
+              height="1.9rem"
+              startColor="#101216"
+              endColor="#2B2F35"
+              borderRadius="6px"
+            /> : <Text color="#e6edf3" fontSize="20px">
+              {netAPR}%
+            </Text>}
 
           </VStack>
         </HStack>
