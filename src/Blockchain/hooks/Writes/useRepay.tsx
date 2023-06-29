@@ -25,15 +25,15 @@ const useRepay = (loanParam: any) => {
   const [transRepayHash, setTransRepayHash] = useState("");
   const [transSelfLiquidateHash, setIsSelfLiquidateHash] = useState("");
 
-  const repayTransactionReceipt = useWaitForTransaction({
-    hash: transRepayHash,
-    watch: true,
-  });
+  // const repayTransactionReceipt = useWaitForTransaction({
+  //   hash: transRepayHash,
+  //   watch: true,
+  // });
 
-  const selfLiquidateTransactionReceipt = useWaitForTransaction({
-    hash: transSelfLiquidateHash,
-    watch: true,
-  });
+  // const selfLiquidateTransactionReceipt = useWaitForTransaction({
+  //   hash: transSelfLiquidateHash,
+  //   watch: true,
+  // });
 
   // useEffect(() => {
   //   TxToastManager.handleTxToast(
@@ -146,7 +146,7 @@ const useRepay = (loanParam: any) => {
     writeAsyncRepay,
     transRepayHash,
     setTransRepayHash,
-    repayTransactionReceipt,
+    // repayTransactionReceipt,
     isLoadingRepay,
     errorRepay,
     handleRepayBorrow,
@@ -155,7 +155,7 @@ const useRepay = (loanParam: any) => {
     writeAsyncSelfLiquidate,
     isLoadingSelfLiquidate,
     errorSelfLiquidate,
-    selfLiquidateTransactionReceipt,
+    // selfLiquidateTransactionReceipt,
     setIsSelfLiquidateHash,
   };
 };

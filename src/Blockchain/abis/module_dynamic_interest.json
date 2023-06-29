@@ -20138,7 +20138,7 @@
                 "type": "const",
                 "value": 152266741855903168759433320085533969852736091626748878906396431309327355541
             },
-            "core.interfaces.IBorrow.IBorrow.GET_HEALTH_FACTOR_SELECTOR": {
+            "core.interfaces.IBorrow.IBorrow.GET_r_FACTOR_SELECTOR": {
                 "type": "const",
                 "value": 1373994174590786188413097545531043296466893775834924061427361650114546003881
             },

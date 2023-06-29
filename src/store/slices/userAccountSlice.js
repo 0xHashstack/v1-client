@@ -31,6 +31,9 @@ const initialState = {
   toastTransactionStarted: false,
   transactionStarted: false,
   refreshHooks: false,
+  userDeposits:[],
+  protocolStats:[],
+  oraclePrices:[],
 
   protocolReserves: {
     totalReserves: null,
@@ -41,8 +44,10 @@ const initialState = {
   yourSupply: null,
   yourBorrow: null,
   netAPR: null,
-
-  // toastTransactionStarted: false,
+  activeTransactions: [],
+  transactionRefresh: -1,
+  avgSupplyAPR:null,
+  avgBorrowAPR:null,
 
   // walletBalance: {
   //   BTC: 0,
@@ -78,9 +83,24 @@ export const userAccountSlice = createSlice({
     setTransactionStatus(state, action) {
       state.transactionStatus = action.payload;
     },
+    setUserDeposits(state,action){
+      state.userDeposits=action.payload;
+    },
+    setProtocolStats(state,action){
+      state.protocolStats=action.payload;
+    },
+    setOraclePrices(state,action){
+      state.oraclePrices=action.payload;
+    },
     // setCurrentTransactionStatus(state, action) {
     //   state.currentTransactionStatus = action.payload;
     // },
+    setAvgSupplyAPR(state,action){
+      state.avgSupplyAPR=action.payload;
+    },
+    setAvgBorrowAPR(state,action){
+      state.avgBorrowAPR=action.payload;
+    },
     setLanguage(state, action) {
       state.language = action.payload;
     },
@@ -153,6 +173,12 @@ export const userAccountSlice = createSlice({
     setNetAPR(state, action) {
       state.netAPR = action.payload;
     },
+    setActiveTransactions(state, action) {
+      state.activeTransactions = action.payload;
+    },
+    setTransactionRefresh(state, action) {
+      state.transactionRefresh = state.transactionRefresh === 0 ? 1 : 0;
+    },
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;
     // },
@@ -188,6 +214,13 @@ export const {
   setYourSupply,
   setNetAPR,
   setNetWorth,
+  setUserDeposits,
+  setProtocolStats,
+  setOraclePrices,
+  setActiveTransactions,
+  setTransactionRefresh,
+  setAvgBorrowAPR,
+  setAvgSupplyAPR
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -210,6 +243,12 @@ export const selectSelectedDapp = (state) =>
   state.user_account.spendBorrowselectedDapp;
 export const selectTransactionStatus = (state) =>
   state.user_account.transactionStatus;
+export const selectUserDeposits=(state)=>
+  state.user_account.userDeposits;
+export const selectProtocolStats=(state)=>
+  state.user_account.protocolStats;
+export const selectOraclePrices=(state)=>
+  state.user_account.oraclePrices;
 // export const selectCurrentTransactionStatus = (state) =>
 //   state.user_account.currentTransactionStatus;
 export const selectAssetWalletBalance = (state) =>
@@ -227,6 +266,10 @@ export const selectBorrowCoinSelectedBorrowModal = (state) =>
 export const selectWalletBalance = (state) => state.user_account.walletBalance;
 export const selectAccountAddress = (state) =>
   state.user_account.accountAddress;
+export const selectAvgSupplyAPR=(state)=>
+  state.user_account.avgSupplyAPR;
+export const selectAvgBorrowAPR=(state)=>
+  state.user_account.avgBorrowAPR;
 export const selectLanguage = (state) => state.user_account.language;
 export const selectCurrentPage = (state) => state.user_account.currentPage;
 export const selectReserves = (state) => state.user_account.reserves;
@@ -240,19 +283,16 @@ export const selectTransactionStarted = (state) =>
   state.user_account.transactionStarted;
 export const selectProtocolReserves = (state) =>
   state.user_account.protocolReserves;
-export const selectYourSupply = (state) => {
-  state.user_account.yourSupply;
-};
-export const selectYourBorrow = (state) => {
-  state.user_account.yourBorrow;
-};
-export const selectNetWorth = (state) => {
-  state.user_account.netWorth;
-};
-export const selectNetAPR = (state) => {
-  state.user_account.netAPR;
-};
-// export const select=(state)=>{
-//   state.user_account.
-// }
+export const selectYourSupply = (state) => state.user_account.yourSupply;
+
+export const selectYourBorrow = (state) => state.user_account.yourBorrow;
+export const selectNetWorth = (state) => state.user_account.netWorth;
+
+export const selectNetAPR = (state) => state.user_account.netAPR;
+export const selectActiveTransactions = (state) =>
+  state.user_account.activeTransactions;
+
+export const selectTransactionRefresh = (state) =>
+  state.user_account.transactionRefresh;
+// export const select=(state)=> state.user_account.
 export default userAccountSlice.reducer;

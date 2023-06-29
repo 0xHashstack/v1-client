@@ -28,7 +28,7 @@ import {
   Stack,
   Skeleton,
 } from "@chakra-ui/react";
-
+import TransactionFees from "../../../TransactionFees.json";
 /* Coins logo import  */
 import BTCLogo from "../../assets/icons/coins/btc";
 import USDCLogo from "@/assets/icons/coins/usdc";
@@ -70,6 +70,8 @@ import {
   selectWalletBalance,
   setTransactionStatus,
   selectAssetWalletBalance,
+  selectActiveTransactions,
+  setActiveTransactions,
 } from "@/store/slices/userAccountSlice";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
@@ -106,6 +108,9 @@ const YourSupplyModal = ({
   // const [inputWithdrawlAmount, setinputWithdrawlAmount] = useState(0);
   const [sliderValue2, setSliderValue2] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
+
+  let activeTransactions = useSelector(selectActiveTransactions);
+
   // const [coins, setCoins] = useState([])
   // const walletBalances = useSelector(selectAssetWalletBalance);
   interface assetB {
@@ -395,50 +400,50 @@ const YourSupplyModal = ({
   const [actionSelected, setActionSelected] = useState("Supply");
   const [toastId, setToastId] = useState<any>();
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
-  const recieptData = useWaitForTransaction({
-    hash: depositTransHash,
-    watch: true,
-    onReceived: () => {
-      console.log("trans received");
-    },
-    onPending: () => {
-      setCurrentTransactionStatus("success");
-      toast.dismiss(toastId);
-      console.log("trans pending");
-      if (!isToastDisplayed) {
-        toast.success(
-          `You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          }
-        );
-        setToastDisplayed(true);
-      }
-    },
-    onRejected(transaction) {
-      setCurrentTransactionStatus("failed");
-      dispatch(setTransactionStatus("failed"));
-      toast.dismiss(toastId);
-      console.log("treans rejected");
-    },
-    onAcceptedOnL1: () => {
-      setCurrentTransactionStatus("success");
-      console.log("trans onAcceptedOnL1");
-    },
-    onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus("success");
-      console.log("trans onAcceptedOnL2 - ", transaction);
-      if (!isToastDisplayed) {
-        toast.success(
-          `You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          }
-        );
-        setToastDisplayed(true);
-      }
-    },
-  });
+  // const recieptData = useWaitForTransaction({
+  //   hash: depositTransHash,
+  //   watch: true,
+  //   onReceived: () => {
+  //     console.log("trans received");
+  //   },
+  //   onPending: () => {
+  //     setCurrentTransactionStatus("success");
+  //     toast.dismiss(toastId);
+  //     console.log("trans pending");
+  //     if (!isToastDisplayed) {
+  //       toast.success(
+  //         `You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`,
+  //         {
+  //           position: toast.POSITION.BOTTOM_RIGHT,
+  //         }
+  //       );
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  //   onRejected(transaction) {
+  //     setCurrentTransactionStatus("failed");
+  //     dispatch(setTransactionStatus("failed"));
+  //     toast.dismiss(toastId);
+  //     console.log("treans rejected");
+  //   },
+  //   onAcceptedOnL1: () => {
+  //     setCurrentTransactionStatus("success");
+  //     console.log("trans onAcceptedOnL1");
+  //   },
+  //   onAcceptedOnL2(transaction) {
+  //     setCurrentTransactionStatus("success");
+  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //     if (!isToastDisplayed) {
+  //       toast.success(
+  //         `You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`,
+  //         {
+  //           position: toast.POSITION.BOTTOM_RIGHT,
+  //         }
+  //       );
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  // });
 
   const handleWithdrawSupply = async () => {
     try {
@@ -447,16 +452,35 @@ const YourSupplyModal = ({
       if (withdraw?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait, your transaction is running in background  ${inputSupplyAmount} ${currentSelectedSupplyCoin} `,
+          `Please wait your withdraw transaction is running in background : ${inputWithdrawlAmount}r${asset}`,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
           }
         );
         setToastId(toastid);
+        if (!activeTransactions) {
+          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+        } else if (
+          Object.isFrozen(activeTransactions) ||
+          Object.isSealed(activeTransactions)
+        ) {
+          // Check if activeTransactions is frozen or sealed
+          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+        }
+        const trans_data = {
+          transaction_hash: withdraw?.transaction_hash.toString(),
+          message: `You have successfully withdrawn :  : ${inputWithdrawlAmount}r${asset}`,
+          toastId: toastid,
+          setCurrentTransactionStatus: setCurrentTransactionStatus,
+        };
+        // addTransaction({ hash: deposit?.transaction_hash });
+        activeTransactions?.push(trans_data);
+
+        dispatch(setActiveTransactions(activeTransactions));
       }
-      if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
-      }
+      // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
+      // }
       dispatch(setTransactionStatus("success"));
       console.log(withdraw);
     } catch (err: any) {
@@ -483,11 +507,73 @@ const YourSupplyModal = ({
         const addSupplyAndStake = await writeAsyncDepositStake();
         console.log(addSupplyAndStake);
         setDepositTransHash(addSupplyAndStake?.transaction_hash);
+        if (addSupplyAndStake?.transaction_hash) {
+          console.log("trans transaction hash created");
+          console.log("toast here");
+          const toastid = toast.info(
+            `Please wait your transaction is running in background for supply and stake : ${depositAmount} ${supplyAsset} `,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const trans_data = {
+            transaction_hash: addSupplyAndStake?.transaction_hash.toString(),
+            message: `You have successfully supplied and staked ${depositAmount} ${supplyAsset}`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+
+          dispatch(setActiveTransactions(activeTransactions));
+        }
         dispatch(setTransactionStatus("success"));
         console.log("addSupply", addSupplyAndStake);
       } else {
         const addSupply = await writeAsyncDeposit();
-        setDepositTransHash(addSupply?.transaction_hash);
+        // setDepositTransHash(addSupply?.transaction_hash);
+        if (addSupply?.transaction_hash) {
+          console.log("trans transaction hash created");
+          console.log("toast here");
+          const toastid = toast.info(
+            `Please wait your transaction is running in background for adding supply : ${depositAmount} ${supplyAsset} `,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const trans_data = {
+            transaction_hash: addSupply?.transaction_hash.toString(),
+            message: `You have successfully added supply : ${depositAmount} ${supplyAsset}`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+
+          dispatch(setActiveTransactions(activeTransactions));
+        }
         dispatch(setTransactionStatus("success"));
         console.log("addSupply", addSupply);
       }
@@ -1135,7 +1221,7 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">0.1%</Text>
+                          <Text color="#6E7681">{TransactionFees.stake}%</Text>
                         </Text>
                         <Text
                           color="#8B949E"
@@ -1881,7 +1967,9 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">0.1%</Text>
+                          <Text color="#6E7681">
+                            {TransactionFees.withdrawSupply}%
+                          </Text>
                         </Text>
                         <Text
                           color="#8B949E"

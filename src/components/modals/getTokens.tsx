@@ -53,13 +53,16 @@ import CancelIcon from "@/assets/icons/cancelIcon";
 import CancelSuccessToast from "@/assets/icons/cancelSuccessToast";
 import Link from "next/link";
 import { NativeToken } from "@/Blockchain/interfaces/interfaces";
-import { useDispatch } from "react-redux";
-import { setTransactionStatus } from "@/store/slices/userAccountSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectActiveTransactions,
+  setActiveTransactions,
+  setTransactionStatus,
+} from "@/store/slices/userAccountSlice";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 const GetTokensModal = ({
   buttonText,
-  coin,
   backGroundOverLay,
   ...restProps
 }: any) => {
@@ -98,6 +101,9 @@ const GetTokensModal = ({
 
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   const [currentSelectedCoin, setCurrentSelectedCoin] = useState<any>("");
+
+  let activeTransactions = useSelector(selectActiveTransactions);
+
   const {
     token,
     setToken,
@@ -118,11 +124,41 @@ const GetTokensModal = ({
     setCurrentSelectedCoin(token);
   }, [token, currentSelectedCoin]);
   const dispatch = useDispatch();
+  const [toastId, setToastId] = useState<any>();
 
-  const handleGetToken = async () => {
+  const handleGetToken = async (coin: any) => {
     try {
       console.log(token);
       const getTokens = await writeAsyncGetTokens();
+      if (getTokens?.transaction_hash) {
+        const toastid = toast.info(
+          `Please wait, your transaction is running in background ${coin} `,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        );
+        setToastId(toastId);
+        if (!activeTransactions) {
+          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+        } else if (
+          Object.isFrozen(activeTransactions) ||
+          Object.isSealed(activeTransactions)
+        ) {
+          // Check if activeTransactions is frozen or sealed
+          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+        }
+        const trans_data = {
+          transaction_hash: getTokens?.transaction_hash.toString(),
+          message: `You have successfully minted TestToken : ${coin}`,
+          toastId: toastid,
+          setCurrentTransactionStatus: () => {},
+        };
+        // addTransaction({ hash: deposit?.transaction_hash });
+        activeTransactions?.push(trans_data);
+
+        dispatch(setActiveTransactions(activeTransactions));
+      }
       console.log(getTokens);
       // dispatch(setTransactionStatus("success"));
     } catch (err: any) {
@@ -130,7 +166,7 @@ const GetTokensModal = ({
       // dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
-          Failed to mint TestToken :{/* {currentSelectedCoin + " "} */}
+          Failed to mint TestToken :{coin + " "}
           <CopyToClipboard text={err}>
             <Text as="u">copy error!</Text>
           </CopyToClipboard>
@@ -205,9 +241,9 @@ const GetTokensModal = ({
                   _hover={{ bgColor: "white", color: "black" }}
                   _active={{ border: "3px solid grey" }}
                   onClick={() => {
-                    setCurrentSelectedCoin("BTC");
+                    setCurrentSelectedCoin("wBTC");
                     setToken("BTC");
-                    handleGetToken();
+                    handleGetToken("wBTC");
                   }}
                 >
                   wBTC
@@ -223,9 +259,9 @@ const GetTokensModal = ({
                   _hover={{ bgColor: "white", color: "black" }}
                   _active={{ border: "3px solid grey" }}
                   onClick={() => {
-                    setCurrentSelectedCoin("ETH");
+                    setCurrentSelectedCoin("wETH");
                     setToken("ETH");
-                    handleGetToken();
+                    handleGetToken("wETH");
                   }}
                 >
                   wETH
@@ -243,7 +279,7 @@ const GetTokensModal = ({
                   onClick={() => {
                     setCurrentSelectedCoin("USDT");
                     setToken("USDT");
-                    handleGetToken();
+                    handleGetToken("USDT");
                   }}
                 >
                   USDT
@@ -262,7 +298,7 @@ const GetTokensModal = ({
                   onClick={() => {
                     setCurrentSelectedCoin("USDC");
                     setToken("USDC");
-                    handleGetToken();
+                    handleGetToken("USDC");
                   }}
                 >
                   USDC
@@ -281,7 +317,7 @@ const GetTokensModal = ({
                   onClick={() => {
                     setCurrentSelectedCoin("DAI");
                     setToken("DAI");
-                    handleGetToken();
+                    handleGetToken("DAI");
                   }}
                 >
                   DAI

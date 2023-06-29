@@ -14,7 +14,7 @@ import {
   Portal,
   Skeleton,
 } from "@chakra-ui/react";
-
+import TransactionFees from "../../../TransactionFees.json";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
 import InfoIcon from "@/assets/icons/infoIcon";
@@ -40,6 +40,8 @@ import {
   selectSelectedDapp,
   selectUserLoans,
   setTransactionStatus,
+  selectActiveTransactions,
+  setActiveTransactions,
 } from "@/store/slices/userAccountSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -55,6 +57,7 @@ import SuccessButton from "../uiElements/buttons/SuccessButton";
 import { useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
+import Image from "next/image";
 const SwapModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -104,6 +107,9 @@ const SwapModal = ({
   const walletBalance = useSelector(selectWalletBalance);
   const inputAmount1 = useSelector(selectInputSupplyAmount);
   const selectedDapp = useSelector(selectSelectedDapp);
+
+  let activeTransactions = useSelector(selectActiveTransactions);
+
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
   useEffect(() => {}, [currentSwap]);
@@ -171,44 +177,44 @@ const SwapModal = ({
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [toastId, setToastId] = useState<any>();
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
-  const recieptData = useWaitForTransaction({
-    hash: depositTransHash,
-    watch: true,
-    onReceived: () => {
-      console.log("trans received");
-    },
-    onPending: () => {
-      setCurrentTransactionStatus("success");
-      toast.dismiss(toastId);
-      console.log("trans pending");
-      if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied `, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
-        setToastDisplayed(true);
-      }
-    },
-    onRejected(transaction) {
-      setCurrentTransactionStatus("failed");
-      dispatch(setTransactionStatus("failed"));
-      toast.dismiss(toastId);
-      console.log("treans rejected");
-    },
-    onAcceptedOnL1: () => {
-      setCurrentTransactionStatus("success");
-      console.log("trans onAcceptedOnL1");
-    },
-    onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus("success");
-      console.log("trans onAcceptedOnL2 - ", transaction);
-      if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied `, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
-        setToastDisplayed(true);
-      }
-    },
-  });
+  // const recieptData = useWaitForTransaction({
+  //   hash: depositTransHash,
+  //   watch: true,
+  //   onReceived: () => {
+  //     console.log("trans received");
+  //   },
+  //   onPending: () => {
+  //     setCurrentTransactionStatus("success");
+  //     toast.dismiss(toastId);
+  //     console.log("trans pending");
+  //     if (!isToastDisplayed) {
+  //       toast.success(`You have successfully supplied `, {
+  //         position: toast.POSITION.BOTTOM_RIGHT,
+  //       });
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  //   onRejected(transaction) {
+  //     setCurrentTransactionStatus("failed");
+  //     dispatch(setTransactionStatus("failed"));
+  //     toast.dismiss(toastId);
+  //     console.log("treans rejected");
+  //   },
+  //   onAcceptedOnL1: () => {
+  //     setCurrentTransactionStatus("success");
+  //     console.log("trans onAcceptedOnL1");
+  //   },
+  //   onAcceptedOnL2(transaction) {
+  //     setCurrentTransactionStatus("success");
+  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //     if (!isToastDisplayed) {
+  //       toast.success(`You have successfully supplied `, {
+  //         position: toast.POSITION.BOTTOM_RIGHT,
+  //       });
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  // });
 
   const handleSwap = async () => {
     try {
@@ -225,6 +231,25 @@ const SwapModal = ({
           }
         );
         setToastId(toastid);
+        if (!activeTransactions) {
+          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+        } else if (
+          Object.isFrozen(activeTransactions) ||
+          Object.isSealed(activeTransactions)
+        ) {
+          // Check if activeTransactions is frozen or sealed
+          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+        }
+        const trans_data = {
+          transaction_hash: swap?.transaction_hash.toString(),
+          message: `You have successfully swaped for Loan ID : ${swapLoanId}`,
+          toastId: toastid,
+          setCurrentTransactionStatus: setCurrentTransactionStatus,
+        };
+        // addTransaction({ hash: deposit?.transaction_hash });
+        activeTransactions?.push(trans_data);
+
+        dispatch(setActiveTransactions(activeTransactions));
       }
       dispatch(setTransactionStatus("success"));
     } catch (err: any) {
@@ -720,7 +745,13 @@ const SwapModal = ({
                 </Box>
                 <Box display="flex" gap="2px">
                   <Box mt="2px">
-                    <SmallJediswapLogo />
+                    {/* <SmallJediswapLogo /> */}
+                    <Image
+                      src={`/${currentSwap}.svg`}
+                      alt="liquidity split coin1"
+                      width="12"
+                      height="12"
+                    />
                   </Box>
                   <Text
                     color="#6A737D"
@@ -852,7 +883,7 @@ const SwapModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                  0.1%
+                  {TransactionFees.spend}%
                 </Text>
               </Box>
               <Box display="flex" justifyContent="space-between" mb="0.3rem">

@@ -29,6 +29,13 @@ import { useAccount } from "@starknet-react/core";
 import { IDeposit } from "@/Blockchain/interfaces/interfaces";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectProtocolStats,
+  selectUserDeposits,
+  setUserDeposits,
+} from "@/store/slices/userAccountSlice";
+import { effectiveAprDeposit } from "@/Blockchain/scripts/userStats";
 
 export interface ICoin {
   name: string;
@@ -92,7 +99,6 @@ export interface ICoin {
 //     Status: "Active",
 //   },
 // ];
-
 const SupplyDashboard = ({
   width,
   currentPagination,
@@ -107,9 +113,6 @@ const SupplyDashboard = ({
   // gap: string;
   // rowItems: any;
 }) => {
-  let lower_bound = 6 * (currentPagination - 1);
-  let upper_bound = lower_bound + 5;
-  upper_bound = Math.min(Coins.length - 1, upper_bound);
   // console.log("aryan " + lower_bound + " " + upper_bound);
 
   const { address } = useAccount();
@@ -120,13 +123,28 @@ const SupplyDashboard = ({
     useState("rBTC");
   const [supplyMarkets, setSupplyMarkets] = useState([]);
 
+  const [statusHoverIndex, setStatusHoverIndex] = useState("-1");
+
   const [supplies, setSupplies] = useState<IDeposit[]>([]);
+  let userDeposits = useSelector(selectUserDeposits);
+  let reduxProtocolStats = useSelector(selectProtocolStats);
+  const dispatch = useDispatch();
+  const handleStatusHover = (idx: string) => {
+    setStatusHoverIndex(idx);
+  };
+
+  const handleStatusHoverLeave = () => {
+    setStatusHoverIndex("-1");
+  };
   useEffect(() => {
     const getSupply = async () => {
+      if (!address) {
+        return;
+      }
       console.log("all deposits calling started");
       try {
-        if (!address) return;
         const supply = await getUserDeposits(address);
+
         console.log("supply : ", supply);
         if (!supply) return;
         setSupplies([
@@ -136,6 +154,7 @@ const SupplyDashboard = ({
           supply?.[1],
           supply?.[4],
         ]);
+        // dispatch(setUserDeposits(supply));
       } catch (err) {
         console.log("supplies", err);
       }
@@ -143,11 +162,18 @@ const SupplyDashboard = ({
     getSupply();
   }, [address]);
   const [protocolStats, setProtocolStats]: any = useState([]);
+  const [effectiveSupplyApr, setEffectiveSupplyApr] = useState<any>();
   useEffect(() => {
     const getMarketData = async () => {
       try {
-        const stats = await getProtocolStats();
-        // console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
+        const stats = reduxProtocolStats;
+
+        // const stats = await getProtocolStats();
+        if (stats) {
+          console.log("se3nding", stats);
+          dispatch(setProtocolStats(stats));
+        }
+        console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
         // const temp: any = ;
         setProtocolStats([
           stats?.[2],
@@ -161,7 +187,7 @@ const SupplyDashboard = ({
       }
     };
     getMarketData();
-  }, []);
+  }, [reduxProtocolStats]);
 
   useEffect(() => {
     let temp: any = [];
@@ -172,6 +198,9 @@ const SupplyDashboard = ({
     });
     setSupplyMarkets(temp);
   }, [supplies]);
+  let lower_bound = 6 * (currentPagination - 1);
+  let upper_bound = lower_bound + 5;
+  upper_bound = Math.min(supplies.length - 1, upper_bound);
   // useEffect(() => {
   //   try {
   //     const supply = async () => {
@@ -454,38 +483,116 @@ const SupplyDashboard = ({
                         gap={2}
                       >
                         {/* {checkGap(idx1, idx2)} */}
-                        <HStack gap={16}>
-                          <HStack>
-                            <Image
-                              src={`/stakeStatus.svg`}
-                              alt="Picture of the author"
-                              width="18"
-                              height="18"
-                            />
+                        <HStack
+                          // bgColor="red"
+                          justifyContent="flex-start"
+                          display={
+                            supply?.rTokenStakedParsed > 0 ||
+                            supply?.rTokenFreeParsed > 0
+                              ? "flex"
+                              : "none"
+                          }
+                        >
+                          <HStack
+                            onMouseEnter={() => handleStatusHover("0" + idx)}
+                            onMouseLeave={() => handleStatusHoverLeave()}
+                            _hover={{ cursor: "pointer" }}
+                            display={
+                              supply?.rTokenStakedParsed > 0 ? "flex" : "none"
+                            }
+                            // bgColor="red"
+                            mr="16px"
+                            pl={2}
+                            cursor="pointer"
+                          >
+                            {statusHoverIndex != "0" + idx ? (
+                              <Image
+                                src={`/stakeStatus.svg`}
+                                alt="Picture of the author"
+                                width="18"
+                                height="18"
+                              />
+                            ) : (
+                              <Text
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                borderRadius="22px"
+                                bgColor="#0C521F"
+                                p="0px 12px"
+                                fontSize="12px"
+                              >
+                                Staked
+                              </Text>
+                            )}
                             <Text>
                               {numberFormatter(supply?.rTokenStakedParsed)}
                             </Text>
                           </HStack>
-                          <HStack>
-                            <Image
-                              src={`/freeStatus.svg`}
-                              alt="Picture of the author"
-                              width="18"
-                              height="18"
-                            />
+                          <HStack
+                            display={
+                              supply?.rTokenFreeParsed > 0 ? "flex" : "none"
+                            }
+                            onMouseEnter={() => handleStatusHover("1" + idx)}
+                            onMouseLeave={() => handleStatusHoverLeave()}
+                            cursor="pointer"
+                          >
+                            {statusHoverIndex != "1" + idx ? (
+                              <Image
+                                src={`/freeStatus.svg`}
+                                alt="Picture of the author"
+                                width="18"
+                                height="18"
+                              />
+                            ) : (
+                              <Text
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                borderRadius="22px"
+                                bgColor="#340c7e"
+                                p="0px 12px"
+                                fontSize="12px"
+                              >
+                                Unstaked
+                              </Text>
+                            )}
                             <Text>
                               {numberFormatter(supply?.rTokenFreeParsed)}
                             </Text>
                           </HStack>
                         </HStack>
-                        <HStack>
-                          <HStack>
-                            <Image
-                              src={`/lockedStatus.svg`}
-                              alt="Picture of the author"
-                              width="18"
-                              height="18"
-                            />
+                        <HStack
+                          display={
+                            supply?.rTokenLockedParsed > 0 ? "flex" : "none"
+                          }
+                        >
+                          <HStack
+                            pl={2}
+                            onMouseEnter={() => handleStatusHover("2" + idx)}
+                            onMouseLeave={() => handleStatusHoverLeave()}
+                            cursor="pointer"
+                          >
+                            {statusHoverIndex != "2" + idx ? (
+                              <Image
+                                src={`/lockedStatus.svg`}
+                                alt="Picture of the author"
+                                width="18"
+                                height="18"
+                              />
+                            ) : (
+                              <Text
+                                display="flex"
+                                justifyContent="center"
+                                alignItems="center"
+                                borderRadius="22px"
+                                bgColor="#404953"
+                                p="0px 12px"
+                                fontSize="12px"
+                              >
+                                Locked
+                              </Text>
+                            )}
                             <Text>
                               {numberFormatter(supply?.rTokenLockedParsed)}
                             </Text>

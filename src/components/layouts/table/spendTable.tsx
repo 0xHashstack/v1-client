@@ -50,6 +50,7 @@ import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import { useAccount } from "@starknet-react/core";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
+import AlertTrade from "@/assets/icons/alertTrade";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -71,52 +72,55 @@ const SpendTable = () => {
   ];
   const { account, address, isConnected } = useAccount();
   const [userLoans, setUserLoans] = useState<any>(null);
+  let userLoansRedux = useSelector(selectUserLoans);
   useEffect(() => {
-    const loan = async () => {
-      try {
-        const loans = await getUserLoans(address || "");
-        // console.log(loans,"Loans from your borrow index page")
+    setUserLoans(
+      userLoansRedux.filter((borrow: ILoan) => borrow.spendType === "UNSPENT")
+    );
+  }, [userLoansRedux]);
+  // useEffect(() => {
+  //   const loan = async () => {
+  //     try {
+  //       if (!address) {
+  //         return;
+  //       }
+  //       const loans = userLoansRedux;
+  //       // const loans = await getUserLoans(address);
+  //       console.log(loans, "Loans from your borrow index page");
 
-        // loans.filter(
-        //   (loan) =>
-        //     loan.collateralAmountParsed &&
-        //     loan.collateralAmountParsed > 0 &&
-        //     loan.loanAmountParsed &&
-        //     loan.loanAmountParsed > 0
-        // );
-        if (loans) {
-          setUserLoans(
-            loans
-              .filter(
-                (loan) => loan?.loanAmountParsed && loan?.loanAmountParsed > 0
-              )
-              .filter((borrow: any) => borrow.spendType === "UNSPENT")
-          );
-        }
-      } catch (err) {
-        console.log("spendtable : unable to fetch user loans");
-      }
-      // console.log("loans", loans);
-    };
-    if (account && isConnected) {
-      // callWithRetries(loan, [], 3);
-      loan();
-    }
-  }, [account, isConnected]);
+  //       // loans.filter(
+  //       //   (loan) =>
+  //       //     loan.collateralAmountParsed &&
+  //       //     loan.collateralAmountParsed > 0 &&
+  //       //     loan.loanAmountParsed &&
+  //       //     loan.loanAmountParsed > 0
+  //       // );
+  //       if (loans) {
+  //         setUserLoans(
+  //           loans
+  //             .filter(
+  //               (loan: ILoan) =>
+  //                 loan?.loanAmountParsed && loan?.loanAmountParsed > 0
+  //             )
+  //             .filter((borrow: ILoan) => borrow.spendType === "UNSPENT")
+  //         );
+  //       }
+  //     } catch (err) {
+  //       console.log("spendtable : unable to fetch user loans");
+  //     }
+  //     // console.log("loans", loans);
+  //   };
+  //   // if (address && address != "") {
+  //   // callWithRetries(loan, [], 3);
+  //   loan();
+  // }, [userLoansRedux]);
   // let userLoans: any = useSelector(selectUserLoans);
   // userLoans = userLoans.filter((borrow: any) => borrow.spendType === "UNSPENT");
   // .filter(
   //   (borrow: any) => borrow.spendType === "UNSPENT"
   // );
   // console.log(userLoans, "user loans in spend table");
-  const rows: any[] = [
-    // ["Borrow ID 12345", "rUSDT", "7%", "BTC", "00.00%"],
-    // ["Borrow ID 12346", "rBTC", "7%", "BTC", "00.00%"],
-    // ["Borrow ID 12347", "rETH", "7%", "BTC", "00.00%"],
-    // ["Borrow ID 12348", "rUSDT", "7%", "BTC", "00.00%"],
-    // ["Borrow ID 12349", "rBTC", "7%", "BTC", "00.00%"],
-    // ["Borrow ID 12350", "rETH", "10,324.556", "BTC", "00.00%"],
-  ];
+  const rows: any[] = [];
 
   const dispatch = useDispatch();
 
@@ -621,6 +625,7 @@ const SpendTable = () => {
               _disabled={{
                 background: "#101216",
               }}
+              onClick={() => setTradeNote(true)}
               isDisabled={selectedDapp == ""}
             >
               stake
@@ -742,20 +747,20 @@ const SpendTable = () => {
                   display="flex"
                   justifyContent="flex-start"
                   alignItems="flex-start"
-                  pt="1px"
+                  pt="2px"
+                  pr="4px"
                 >
-                  <Image
-                    src="/alertTrade.svg"
-                    alt="Picture of the author"
-                    width="46"
-                    height="46"
-                  />
+                  <AlertTrade />
                 </Box>
                 <Box p="6px 2px" display="flex">
-                  We are evaluating few promising DEXes to integrate. Please
-                  check back at a late time.
+                  <Text fontSize="sm">
+                    We are evaluating few promising DEXes to integrate. Please
+                    check back at a late time.
+                  </Text>
                   <Box
-                    p="2px 0px"
+                    pt="3px"
+                    pl="4px"
+                    pr="3px"
                     cursor="pointer"
                     // bgColor="pink"
                     onClick={() => setTradeNote(false)}
@@ -767,7 +772,7 @@ const SpendTable = () => {
             </TabPanel>
 
             <TabPanel p={0}>
-              <Box
+              {/* <Box
                 display={tradeNote ? "flex" : "none"}
                 bg="#DDF4FF"
                 fontSize="14px"
@@ -801,6 +806,48 @@ const SpendTable = () => {
                   check back at a late time.
                   <Box
                     p="2px 0px"
+                    cursor="pointer"
+                    // bgColor="pink"
+                    onClick={() => setTradeNote(false)}
+                  >
+                    <TableClose />
+                  </Box>
+                </Box>
+              </Box> */}
+              <Box
+                display={tradeNote ? "flex" : "none"}
+                bg="#DDF4FF"
+                fontSize="14px"
+                p="8px"
+                fontStyle="normal"
+                fontWeight="400"
+                borderRadius="6px"
+                justifyContent="center"
+                alignItems="flex-start"
+                bgColor="#fff8c5"
+                // textAlign="center"
+                // bgColor="red"
+              >
+                <Box
+                  cursor="pointer"
+                  // bgColor="blue"
+                  display="flex"
+                  justifyContent="flex-start"
+                  alignItems="flex-start"
+                  pt="2px"
+                  pr="4px"
+                >
+                  <AlertTrade />
+                </Box>
+                <Box p="6px 2px" display="flex">
+                  <Text fontSize="sm">
+                    We are evaluating few promising DEXes to integrate. Please
+                    check back at a late time.
+                  </Text>
+                  <Box
+                    pt="3px"
+                    pl="4px"
+                    pr="3px"
                     cursor="pointer"
                     // bgColor="pink"
                     onClick={() => setTradeNote(false)}

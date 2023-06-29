@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import {
   Modal,
   ModalOverlay,
@@ -30,7 +28,7 @@ import {
   ModalHeader,
   Skeleton,
 } from "@chakra-ui/react";
-
+import TransactionFees from "../../../TransactionFees.json";
 /* Coins logo import  */
 import BTCLogo from "../../assets/icons/coins/btc";
 import USDCLogo from "@/assets/icons/coins/usdc";
@@ -62,8 +60,10 @@ import BtcToEth from "@/assets/icons/pools/btcToEth";
 import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
 
 import {
+  selectActiveTransactions,
   selectUserLoans,
   selectWalletBalance,
+  setActiveTransactions,
   // setCurrentTransactionStatus,
   setInputYourBorrowModalRepayAmount,
   setTransactionStatus,
@@ -125,6 +125,7 @@ const YourBorrowModal = ({
   loan,
   borrowAPRs,
   borrow,
+  spendType,
   ...restProps
 }: any) => {
   // console.log(currentBorrowId1);
@@ -146,6 +147,7 @@ const YourBorrowModal = ({
     useState(false);
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
   const userLoans = useSelector(selectUserLoans);
+  let activeTransactions = useSelector(selectActiveTransactions);
   useEffect(() => {
     const result = userLoans.find(
       (item: any) =>
@@ -199,7 +201,7 @@ const YourBorrowModal = ({
     writeAsyncRepay,
     transRepayHash,
     setTransRepayHash,
-    repayTransactionReceipt,
+    // repayTransactionReceipt,
     isLoadingRepay,
     errorRepay,
     handleRepayBorrow,
@@ -208,7 +210,7 @@ const YourBorrowModal = ({
     writeAsyncSelfLiquidate,
     isLoadingSelfLiquidate,
     errorSelfLiquidate,
-    selfLiquidateTransactionReceipt,
+    // selfLiquidateTransactionReceipt,
     setIsSelfLiquidateHash,
   } = useRepay(loan);
 
@@ -279,6 +281,36 @@ const YourBorrowModal = ({
       );
       const revert = await writeAsyncRevertInteractWithL3();
       setDepositTransHash(revert?.transaction_hash);
+      if (revert?.transaction_hash) {
+        console.log("toast here");
+        const toastid = toast.info(
+          `Please wait your transaction is running in background`,
+          {
+            position: toast.POSITION.BOTTOM_RIGHT,
+            autoClose: false,
+          }
+        );
+        setToastId(toastid);
+        if (!activeTransactions) {
+          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+        } else if (
+          Object.isFrozen(activeTransactions) ||
+          Object.isSealed(activeTransactions)
+        ) {
+          // Check if activeTransactions is frozen or sealed
+          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+        }
+        const trans_data = {
+          transaction_hash: revert?.transaction_hash.toString(),
+          message: `You have successfully revert spent for Loan ID : ${revertLoanId}`,
+          toastId: toastid,
+          setCurrentTransactionStatus: setCurrentTransactionStatus,
+        };
+        // addTransaction({ hash: deposit?.transaction_hash });
+        activeTransactions?.push(trans_data);
+
+        dispatch(setActiveTransactions(activeTransactions));
+      }
       console.log(revert);
       dispatch(setTransactionStatus("success"));
     } catch (err) {
@@ -490,44 +522,44 @@ const YourBorrowModal = ({
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [toastId, setToastId] = useState<any>();
-  const recieptData = useWaitForTransaction({
-    hash: depositTransHash,
-    watch: true,
-    onReceived: () => {
-      console.log("trans received");
-    },
-    onPending: () => {
-      setCurrentTransactionStatus("success");
-      toast.dismiss(toastId);
-      console.log("trans pending");
-      if (!isToastDisplayed) {
-        toast.success(`You have successfully spend the loan `, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
-        setToastDisplayed(true);
-      }
-    },
-    onRejected(transaction) {
-      toast.dismiss(toastId);
-      setCurrentTransactionStatus("failed");
-      dispatch(setTransactionStatus("failed"));
-      console.log("treans rejected");
-    },
-    onAcceptedOnL1: () => {
-      setCurrentTransactionStatus("success");
-      console.log("trans onAcceptedOnL1");
-    },
-    onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus("success");
-      console.log("trans onAcceptedOnL2 - ", transaction);
-      if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied spend the loan `, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
-        setToastDisplayed(true);
-      }
-    },
-  });
+  // const recieptData = useWaitForTransaction({
+  //   hash: depositTransHash,
+  //   watch: true,
+  //   onReceived: () => {
+  //     console.log("trans received");
+  //   },
+  //   onPending: () => {
+  //     setCurrentTransactionStatus("success");
+  //     toast.dismiss(toastId);
+  //     console.log("trans pending");
+  //     if (!isToastDisplayed) {
+  //       toast.success(`You have successfully spend the loan `, {
+  //         position: toast.POSITION.BOTTOM_RIGHT,
+  //       });
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  //   onRejected(transaction) {
+  //     toast.dismiss(toastId);
+  //     setCurrentTransactionStatus("failed");
+  //     dispatch(setTransactionStatus("failed"));
+  //     console.log("treans rejected");
+  //   },
+  //   onAcceptedOnL1: () => {
+  //     setCurrentTransactionStatus("success");
+  //     console.log("trans onAcceptedOnL1");
+  //   },
+  //   onAcceptedOnL2(transaction) {
+  //     setCurrentTransactionStatus("success");
+  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //     if (!isToastDisplayed) {
+  //       toast.success(`You have successfully supplied spend the loan `, {
+  //         position: toast.POSITION.BOTTOM_RIGHT,
+  //       });
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  // });
 
   const handleZeroRepay = async () => {
     try {
@@ -539,13 +571,32 @@ const YourBorrowModal = ({
       if (zeroRepay?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait, your transaction is running in background `,
+          `Please wait your transaction is running in background `,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
           }
         );
         setToastId(toastid);
+        if (!activeTransactions) {
+          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+        } else if (
+          Object.isFrozen(activeTransactions) ||
+          Object.isSealed(activeTransactions)
+        ) {
+          // Check if activeTransactions is frozen or sealed
+          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+        }
+        const trans_data = {
+          transaction_hash: zeroRepay?.transaction_hash.toString(),
+          message: `You have successfully repaid`,
+          toastId: toastid,
+          setCurrentTransactionStatus: setCurrentTransactionStatus,
+        };
+        // addTransaction({ hash: deposit?.transaction_hash });
+        activeTransactions?.push(trans_data);
+
+        dispatch(setActiveTransactions(activeTransactions));
       }
       console.log(zeroRepay);
       dispatch(setTransactionStatus("success"));
@@ -574,13 +625,71 @@ const YourBorrowModal = ({
       if (currentDapp == "Jediswap") {
         const trade = await writeAsyncJediSwap_swap();
         setDepositTransHash(trade?.transaction_hash);
+        if (trade?.transaction_hash) {
+          console.log("toast here");
+          const toastid = toast.info(
+            `Please wait your transaction is running in background`,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const trans_data = {
+            transaction_hash: trade?.transaction_hash.toString(),
+            message: `You have successfully traded for loan ID : ${swapLoanId}`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
 
+          dispatch(setActiveTransactions(activeTransactions));
+        }
         console.log(trade);
         dispatch(setTransactionStatus("success"));
       } else if (currentDapp == "mySwap") {
         const tradeMySwap = await writeAsyncmySwap_swap();
         setDepositTransHash(tradeMySwap?.transaction_hash);
+        if (tradeMySwap?.transaction_hash) {
+          console.log("toast here");
+          const toastid = toast.info(
+            `Please wait your transaction is running in background`,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const trans_data = {
+            transaction_hash: tradeMySwap?.transaction_hash.toString(),
+            message: `You have successfully traded for loan ID : ${swapLoanId}`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
 
+          dispatch(setActiveTransactions(activeTransactions));
+        }
         console.log(tradeMySwap);
         dispatch(setTransactionStatus("success"));
       }
@@ -594,12 +703,72 @@ const YourBorrowModal = ({
       if (currentDapp == "Jediswap") {
         const liquidity = await writeAsyncJediSwap_addLiquidity();
         setDepositTransHash(liquidity?.transaction_hash);
+        if (liquidity?.transaction_hash) {
+          console.log("toast here");
+          const toastid = toast.info(
+            `Please wait your transaction is running in background`,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const trans_data = {
+            transaction_hash: liquidity?.transaction_hash.toString(),
+            message: `You have successfully added Liquidity for loan ID : ${liquidityLoanId}`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+
+          dispatch(setActiveTransactions(activeTransactions));
+        }
         console.log(liquidity);
         dispatch(setTransactionStatus("success"));
       } else if (currentDapp == "mySwap") {
         const mySwapLiquidity = await writeAsyncmySwap_addLiquidity();
         console.log(mySwapLiquidity);
         setDepositTransHash(mySwapLiquidity?.transaction_hash);
+        if (mySwapLiquidity?.transaction_hash) {
+          console.log("toast here");
+          const toastid = toast.info(
+            `Please wait your transaction is running in background`,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const trans_data = {
+            transaction_hash: mySwapLiquidity?.transaction_hash.toString(),
+            message: `You have successfully added Liquidity for loan ID : ${liquidityLoanId}`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+
+          dispatch(setActiveTransactions(activeTransactions));
+        }
         dispatch(setTransactionStatus("success"));
       }
     } catch (err: any) {
@@ -626,8 +795,38 @@ const YourBorrowModal = ({
         const addCollateral = await writeAsyncAddCollateralRToken();
         if (addCollateral?.transaction_hash) {
           console.log("addCollateral", addCollateral.transaction_hash);
+          setDepositTransHash(addCollateral?.transaction_hash);
+          if (addCollateral?.transaction_hash) {
+            console.log("toast here");
+            const toastid = toast.info(
+              `Please wait your transaction is running in background`,
+              {
+                position: toast.POSITION.BOTTOM_RIGHT,
+                autoClose: false,
+              }
+            );
+            setToastId(toastid);
+            if (!activeTransactions) {
+              activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+            } else if (
+              Object.isFrozen(activeTransactions) ||
+              Object.isSealed(activeTransactions)
+            ) {
+              // Check if activeTransactions is frozen or sealed
+              activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+            }
+            const trans_data = {
+              transaction_hash: addCollateral?.transaction_hash.toString(),
+              message: `You have successfully added collateral in Loan ID ${loanId} : ${rTokenAmount} r${rToken} `,
+              toastId: toastid,
+              setCurrentTransactionStatus: setCurrentTransactionStatus,
+            };
+            // addTransaction({ hash: deposit?.transaction_hash });
+            activeTransactions?.push(trans_data);
+
+            dispatch(setActiveTransactions(activeTransactions));
+          }
         }
-        setDepositTransHash(addCollateral?.transaction_hash);
 
         console.log("add collateral - ", addCollateral);
         dispatch(setTransactionStatus("success"));
@@ -635,8 +834,42 @@ const YourBorrowModal = ({
         const addCollateral = await writeAsyncAddCollateral();
         if (addCollateral?.transaction_hash) {
           console.log("addCollateral", addCollateral.transaction_hash);
+          setDepositTransHash(addCollateral?.transaction_hash);
+          if (addCollateral?.transaction_hash) {
+            console.log("addCollateral", addCollateral.transaction_hash);
+            setDepositTransHash(addCollateral?.transaction_hash);
+            if (addCollateral?.transaction_hash) {
+              console.log("toast here");
+              const toastid = toast.info(
+                `Please wait your transaction is running in background`,
+                {
+                  position: toast.POSITION.BOTTOM_RIGHT,
+                  autoClose: false,
+                }
+              );
+              setToastId(toastid);
+              if (!activeTransactions) {
+                activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+              } else if (
+                Object.isFrozen(activeTransactions) ||
+                Object.isSealed(activeTransactions)
+              ) {
+                // Check if activeTransactions is frozen or sealed
+                activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+              }
+              const trans_data = {
+                transaction_hash: addCollateral?.transaction_hash.toString(),
+                message: `You have successfully added collateral in Loan ID ${loanId} : ${collateralAmount} r${collateralAsset} `,
+                toastId: toastid,
+                setCurrentTransactionStatus: setCurrentTransactionStatus,
+              };
+              // addTransaction({ hash: deposit?.transaction_hash });
+              activeTransactions?.push(trans_data);
+
+              dispatch(setActiveTransactions(activeTransactions));
+            }
+          }
         }
-        setDepositTransHash(addCollateral?.transaction_hash);
 
         console.log("add collateral - ", addCollateral);
         dispatch(setTransactionStatus("success"));
@@ -771,7 +1004,7 @@ const YourBorrowModal = ({
                       />
                     </Box>
                     <Text>
-                      {currentSplit?.[0] || (
+                      {currentSplit?.[0].toString() || (
                         <Skeleton
                           width="2.3rem"
                           height=".85rem"
@@ -793,7 +1026,7 @@ const YourBorrowModal = ({
                       />
                     </Box>
                     <Text>
-                      {currentSplit?.[1] || (
+                      {currentSplit?.[1].toString() || (
                         <Skeleton
                           width="2.3rem"
                           height=".85rem"
@@ -839,7 +1072,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                0.1%
+                {TransactionFees.spend}%
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
@@ -1147,7 +1380,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                0.1%
+                {TransactionFees.repay}%
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between">
@@ -1326,7 +1559,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text color="#8B949E" fontSize="xs">
-                0.1%
+                {TransactionFees.repay}%
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between">
@@ -1448,7 +1681,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                0.1%
+                {TransactionFees.convertToBorrowMarket}%
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
@@ -1688,8 +1921,16 @@ const YourBorrowModal = ({
     console.log(toMarket);
   }, [currentPoolCoin]);
 
-  const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState(null);
-  const [currentSplit, setCurrentSplit] = useState(null);
+  useEffect(() => {
+    console.log("spendType", spendType);
+  }, [spendType]);
+
+  const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState<
+    Number | undefined | null
+  >();
+  const [currentSplit, setCurrentSplit] = useState<
+    Number[] | undefined | null
+  >();
 
   useEffect(() => {
     // if (!currentBorrowId1 || currentBorrowId1 == "") {
@@ -1702,26 +1943,42 @@ const YourBorrowModal = ({
       toMarketB
       // borrow
     );
+    // setCurrentLPTokenAmount(null);
+    // setCurrentSplit(null);
     setCurrentLPTokenAmount(null);
     setCurrentSplit(null);
     fetchLiquiditySplit();
   }, [toMarketA, currentBorrowId1, toMarketB]);
 
   const fetchLiquiditySplit = async () => {
-    // const lp_tokon = await getJediEstimatedLpAmountOut(
-    //   currentBorrowId1.slice(5),
-    //   toMarketA,
-    //   toMarketB
-    // );
-    // console.log("toMarketSplitLP", lp_tokon);
-    // setCurrentLPTokenAmount(lp_tokon);
-    // const split = await getJediEstimateLiquiditySplit(
-    //   currentBorrowId1.slice(5),
-    //   toMarketA,
-    //   toMarketB
-    // );
-    // console.log("toMarketSplit", split);
-    // setCurrentSplit(split);
+    // if (
+    //   spendType !== "UNSPENT" ||
+    //   !toMarketA ||
+    //   !toMarketB ||
+    //   !currentBorrowId1 ||
+    //   !currentBorrowId2
+    // )
+    //   return;
+    const lp_tokon = await getJediEstimatedLpAmountOut(
+      // currentBorrowId1.slice(5),
+      // toMarketA,
+      // toMarketB
+      "99",
+      "ETH",
+      "USDT"
+    );
+    console.log("toMarketSplitLP", lp_tokon);
+    setCurrentLPTokenAmount(lp_tokon);
+    const split = await getJediEstimateLiquiditySplit(
+      // currentBorrowId1.slice(5),
+      // toMarketA,
+      // toMarketB
+      "99",
+      "ETH",
+      "USDT"
+    );
+    console.log("toMarketSplit", split);
+    setCurrentSplit(split);
   };
 
   return (
@@ -2882,7 +3139,7 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            if (radioValue == 2) {
+                            if (radioValue == "2") {
                               hanldeTrade();
                             } else {
                               hanldeLiquidation();

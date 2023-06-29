@@ -9,6 +9,7 @@ const AssetUtilizationChart = ({
   formatter,
   color,
   categories,
+  chartype
 }: any) => {
   const splineChartData = {
     series: series
@@ -26,7 +27,15 @@ const AssetUtilizationChart = ({
         },
       },
       dataLabels: {
-        enabled: false,
+        position: 'top',
+        enabled: true,
+        style:{
+          colors:["#000000"]
+        },
+        formatter: function(val:any) {
+          return val / 1000 + "k";; // Display the data value as the label
+        },
+        
       },
       xaxis: {
         labels: {
