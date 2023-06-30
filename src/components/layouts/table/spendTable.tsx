@@ -30,6 +30,8 @@ import TableInfoIcon from "./tableIcons/infoIcon";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  selectOraclePrices,
+  selectProtocolStats,
   selectUserLoans,
   setCurrentPage,
 } from "@/store/slices/userAccountSlice";
@@ -51,6 +53,8 @@ import { useAccount } from "@starknet-react/core";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import AlertTrade from "@/assets/icons/alertTrade";
+import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
+import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -150,8 +154,14 @@ const SpendTable = () => {
       let temp1: any = [];
       let temp2: any = [];
       let temp3: any = [];
+      let healths:any=[];
       if (userLoans?.length != 0) {
         for (let i = 0; i < userLoans?.length; i++) {
+          // const factor=await getExistingLoanHealth(userLoans[i]?.loanId)
+          // healths.push({
+          //   id:userLoans[i]?.loanId,
+          //   apr:factor
+          // });
           temp1.push({
             id: userLoans[i]?.loanId,
             name: userLoans[i]?.loanMarket,
@@ -168,6 +178,38 @@ const SpendTable = () => {
   }, [userLoans]);
 
   const [borrowAPRs, setBorrowAPRs] = useState<any>([]);
+  
+  const [avgs, setAvgs] = useState<any>([])
+  const avgsData:any=[];
+  const oraclePrices=useSelector(selectOraclePrices);
+  const reduxProtocolStats=useSelector(selectProtocolStats)
+  useEffect(()=>{
+    const fetchAprs=async()=>{
+      if(avgs.length==0){
+        for(var i=0;i<userLoans?.length;i++){
+          const avg=await effectivAPRLoan(userLoans[i],reduxProtocolStats,oraclePrices);
+          const healthFactor=await getExistingLoanHealth(userLoans[i]?.loanId);
+          const data={
+            loanId:userLoans[i]?.loanId,
+            avg:avg,
+            loanHealth:healthFactor,
+          }
+          // avgs.push(data)
+          avgsData.push(data);
+          // avgs.push()
+        }
+        //cc
+        setAvgs(avgsData);
+      }
+    }
+    fetchAprs();
+    console.log("running")
+  },[oraclePrices,reduxProtocolStats,userLoans,avgs])
+  // console.log(avgs,"avgs in borrow")
+
+  // useEffect(()=>{
+
+  // },[])
 
   useEffect(() => {
     fetchProtocolStats();
@@ -424,7 +466,7 @@ const SpendTable = () => {
                           fontStyle="normal"
                           lineHeight="22px"
                         >
-                          7%
+                          {avgs?.find(item=>item.loanId==borrow?.loanId)?.avg }%
                         </Td>
                         <Td textAlign="center">
                           <Box
@@ -463,7 +505,7 @@ const SpendTable = () => {
                               color="#E6EDF3"
                               textAlign="right"
                             >
-                              00.00%
+                              {avgs?.find(item=>item.loanId==borrow?.loanId)?.loanHealth}%
                             </Text>
                           </Box>
                         </Td>

@@ -13,6 +13,7 @@ import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { useDispatch, useSelector } from "react-redux";
 import {
   selectOraclePrices,
+  selectProtocolStats,
   selectUserDeposits,
   setAvgBorrowAPR,
   setAvgSupplyAPR,
@@ -106,10 +107,10 @@ const MarketDashboard = () => {
   //     console.error("Error fetching Oracle prices:", error);
   //   }
   // };
-
+  
+  const stats = useSelector(selectProtocolStats);
   const fetchProtocolStats = async () => {
     try {
-      const stats = await getProtocolStats();
       console.log("fetchprotocolstats", stats); //23014
       // const temp: any = ;
       setTotalSupplies([
