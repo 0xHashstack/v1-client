@@ -3,9 +3,12 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { ProviderInterface } from "starknet";
-import { useAccount } from "@starknet-react/core";
-const Footer = ({ block }: { block: number }) => {
+import { useAccount, useBlockNumber } from "@starknet-react/core";
+const Footer = () => {
   const { account } = useAccount();
+  const { data: block } = useBlockNumber({
+    refetchInterval: 10000,
+  });
   return (
     <HStack
       zIndex="14"

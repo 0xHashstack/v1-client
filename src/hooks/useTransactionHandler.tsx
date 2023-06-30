@@ -68,7 +68,7 @@ const useTransactionHandler = () => {
             activeTransactions[idx].setCurrentTransactionStatus("success");
             toast.success(
               activeTransactions?.[idx]?.message ||
-                `You have successfully supplied`,
+                `Your transaction is complete`,
               {
                 position: toast.POSITION.BOTTOM_RIGHT,
               }

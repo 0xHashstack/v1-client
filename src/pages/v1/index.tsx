@@ -49,9 +49,9 @@ export default function Home() {
   const [isWhiteListed, setIsWhiteListed] = useState(false);
   const [isWaitListed, setIsWaitListed] = useState(true);
   const router = useRouter();
-  const waitlistHref = "/waitlist";
+  const waitlistHref = "/v1/waitlist";
   const marketHref2 = "/v1/market";
-  const whitelistHref = "/whitelist";
+  const whitelistHref = "/v1/whitelist";
   const dispatch = useDispatch();
   const walletBalance = useSelector(selectWalletBalance);
 
@@ -61,7 +61,7 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const interval = setInterval(refresh, 200);
+    const interval = setInterval(refresh, 1000);
     return () => clearInterval(interval);
   }, [refresh]);
   const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];

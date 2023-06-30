@@ -72,55 +72,55 @@ const SpendTable = () => {
   ];
   const { account, address, isConnected } = useAccount();
   const [userLoans, setUserLoans] = useState<any>(null);
+  let userLoansRedux = useSelector(selectUserLoans);
   useEffect(() => {
-    const loan = async () => {
-      try {
-        if (!address) {
-          return;
-        }
-        const loans = await getUserLoans(address);
-        console.log(loans,"Loans from your borrow index page")
+    setUserLoans(
+      userLoansRedux.filter((borrow: ILoan) => borrow.spendType === "UNSPENT")
+    );
+  }, [userLoansRedux]);
+  // useEffect(() => {
+  //   const loan = async () => {
+  //     try {
+  //       if (!address) {
+  //         return;
+  //       }
+  //       const loans = userLoansRedux;
+  //       // const loans = await getUserLoans(address);
+  //       console.log(loans, "Loans from your borrow index page");
 
-        // loans.filter(
-        //   (loan) =>
-        //     loan.collateralAmountParsed &&
-        //     loan.collateralAmountParsed > 0 &&
-        //     loan.loanAmountParsed &&
-        //     loan.loanAmountParsed > 0
-        // );
-        if (loans) {
-          setUserLoans(
-            loans
-              .filter(
-                (loan) => loan?.loanAmountParsed && loan?.loanAmountParsed > 0
-              )
-              .filter((borrow: any) => borrow.spendType === "UNSPENT")
-          );
-        }
-      } catch (err) {
-        console.log("spendtable : unable to fetch user loans");
-      }
-      // console.log("loans", loans);
-    };
-    if (address && address != "") {
-      // callWithRetries(loan, [], 3);
-      loan();
-    }
-  }, [address]);
+  //       // loans.filter(
+  //       //   (loan) =>
+  //       //     loan.collateralAmountParsed &&
+  //       //     loan.collateralAmountParsed > 0 &&
+  //       //     loan.loanAmountParsed &&
+  //       //     loan.loanAmountParsed > 0
+  //       // );
+  //       if (loans) {
+  //         setUserLoans(
+  //           loans
+  //             .filter(
+  //               (loan: ILoan) =>
+  //                 loan?.loanAmountParsed && loan?.loanAmountParsed > 0
+  //             )
+  //             .filter((borrow: ILoan) => borrow.spendType === "UNSPENT")
+  //         );
+  //       }
+  //     } catch (err) {
+  //       console.log("spendtable : unable to fetch user loans");
+  //     }
+  //     // console.log("loans", loans);
+  //   };
+  //   // if (address && address != "") {
+  //   // callWithRetries(loan, [], 3);
+  //   loan();
+  // }, [userLoansRedux]);
   // let userLoans: any = useSelector(selectUserLoans);
   // userLoans = userLoans.filter((borrow: any) => borrow.spendType === "UNSPENT");
   // .filter(
   //   (borrow: any) => borrow.spendType === "UNSPENT"
   // );
   // console.log(userLoans, "user loans in spend table");
-  const rows: any[] = [
-    // ["Borrow ID 12345", "rUSDT", "7%", "BTC", "00.00%"],
-    // ["Borrow ID 12346", "rBTC", "7%", "BTC", "00.00%"],
-    // ["Borrow ID 12347", "rETH", "7%", "BTC", "00.00%"],
-    // ["Borrow ID 12348", "rUSDT", "7%", "BTC", "00.00%"],
-    // ["Borrow ID 12349", "rBTC", "7%", "BTC", "00.00%"],
-    // ["Borrow ID 12350", "rETH", "10,324.556", "BTC", "00.00%"],
-  ];
+  const rows: any[] = [];
 
   const dispatch = useDispatch();
 

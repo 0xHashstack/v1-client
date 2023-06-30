@@ -156,9 +156,7 @@ const YourMetricsSupplyBorrow = ({ currentMarketCoin }: any) => {
         >
           Borrow:
         </Box>
-        <YourMetricsBorrow
-          color={"#4c60ee"}
-        />
+        <YourMetricsBorrow color={"#4c60ee"} />
       </Box>
     </Box>
   );
