@@ -32,10 +32,10 @@ import {
 import Banner from "@/components/uiElements/loaders/Banner";
 import Banner2 from "@/components/uiElements/loaders/Banner2";
 import useTransactionRefresh from "@/hooks/useTransactionRefresh";
+import mixpanel from "mixpanel-browser";
 // import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 
 const inter = Inter({ subsets: ["latin"] });
-
 export default function Home() {
   const { account, address, status, isConnected } = useAccount();
   // const { data, isLoading, error, refetch } = useBalance({
@@ -45,6 +45,7 @@ export default function Home() {
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
   const [render, setRender] = useState(true);
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY, { debug: true, track_pageview: true, persistence: 'localStorage' });
   const [lastusedConnector, setLastusedConnector] = useState("");
   const [isWhiteListed, setIsWhiteListed] = useState(false);
   const [isWaitListed, setIsWaitListed] = useState(true);
@@ -54,7 +55,7 @@ export default function Home() {
   const whitelistHref = "/v1/whitelist";
   const dispatch = useDispatch();
   const walletBalance = useSelector(selectWalletBalance);
-
+  // mixpanel.identify("13793");
   const refreshCallWrapper = () => {
     console.log("refresh called");
     refresh();
@@ -121,7 +122,16 @@ export default function Home() {
       // alert(account?.address);
       // localStorage.setItem("account", JSON.stringify(account));
       // dispatch(setAccount(JSON.stringify(account)));
-
+      // if(address){
+      //   // mixpanel.identify(address)
+      //   mixpanel.identify("13793");
+      //   mixpanel.track('Signed Up')
+      // }
+      mixpanel.identify(address)
+      mixpanel.track('Connect Wallet', {
+        'Wallet address': address,
+        'Wallet Connected':walletConnected
+      })
       if (!isWaitListed) {
         router.replace(waitlistHref);
       } else {

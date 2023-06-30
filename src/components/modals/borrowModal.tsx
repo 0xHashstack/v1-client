@@ -71,6 +71,7 @@ import {
 import CopyToClipboard from "react-copy-to-clipboard";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
+import mixpanel from "mixpanel-browser";
 const BorrowModal = ({
   buttonText,
   coin,
@@ -103,6 +104,7 @@ const BorrowModal = ({
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY, { debug: true, track_pageview: true, persistence: 'localStorage' });
 
   useEffect(() => {
     setwalletBalance(
@@ -301,6 +303,11 @@ const BorrowModal = ({
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
+          mixpanel.track('Borrow Market Status',{
+            "Status":"Success",
+            "Borrow Amount":inputBorrowAmount,
+            "Borrow Token":currentBorrowCoin
+          })
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
 
@@ -345,6 +352,13 @@ const BorrowModal = ({
             dispatch(setActiveTransactions(activeTransactions));
           }
         }
+        mixpanel.track('Borrow Market Status',{
+          "Status":"Success",
+          "Collateral Amount":inputCollateralAmount,
+          "Collateral Market":currentCollateralCoin,
+          "Borrow Amount":inputBorrowAmount,
+          "Borrow Token":currentBorrowCoin
+        })
         setIsLoanRequestHash(borrow?.transaction_hash);
         dispatch(setTransactionStatus("success"));
         setBorrowTransHash(borrow?.transaction_hash);
@@ -352,6 +366,9 @@ const BorrowModal = ({
     } catch (err: any) {
       dispatch(setTransactionStatus("failed"));
       console.log("handle borrow", err);
+      mixpanel.track('Borrow Market Status',{
+        "Status":"Failure"
+      })
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -1753,6 +1770,9 @@ const BorrowModal = ({
                   onClick={() => {
                     setTransactionStarted(true);
                     if (transactionStarted == false) {
+                      mixpanel.track('Borrow Market Button Clicked',{
+                        'Borrow Clicked':true
+                    })
                       handleBorrow();
                     }
                   }}
