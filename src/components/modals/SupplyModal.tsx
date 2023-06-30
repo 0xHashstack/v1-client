@@ -1043,7 +1043,7 @@ const SupplyModal = ({
                     >
                       Wallet Balance:{" "}
                       {walletBalance.toFixed(5).replace(/\.?0+$/, "").length > 5
-                        ? Math.floor(walletBalance)
+                        ? walletBalance.toFixed(2)
                         : walletBalance}
                       <Text color="#6E7781" ml="0.2rem">
                         {` ${currentSelectedCoin}`}
@@ -1063,7 +1063,7 @@ const SupplyModal = ({
                   >
                     Wallet Balance:{" "}
                     {walletBalance.toFixed(5).replace(/\.?0+$/, "").length > 5
-                      ? Math.floor(walletBalance)
+                      ? walletBalance.toFixed(2)
                       : walletBalance}
                     <Text color="#6E7781" ml="0.2rem">
                       {` ${currentSelectedCoin}`}
@@ -1089,11 +1089,17 @@ const SupplyModal = ({
                       setSliderValue(val);
                       var ans = (val / 100) * walletBalance;
                       // console.log(ans);
-                      ans = Math.round(ans * 100) / 100;
-                      // console.log(ans)
-                      // dispatch(setInputSupplyAmount(ans));
-                      setDepositAmount(ans);
-                      setinputAmount(ans);
+                      if(val==100){
+                        setDepositAmount(walletBalance)
+                        setinputAmount(walletBalance)
+                      }else{
+                        ans = Math.round(ans * 100) / 100;
+                        
+                        // console.log(ans)
+                        // dispatch(setInputSupplyAmount(ans));
+                        setDepositAmount(ans);
+                        setinputAmount(ans);
+                      }
                     }}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}
