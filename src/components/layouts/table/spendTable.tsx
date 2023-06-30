@@ -187,7 +187,7 @@ const SpendTable = () => {
     const fetchAprs=async()=>{
       if(avgs.length==0){
         for(var i=0;i<userLoans?.length;i++){
-          const avg=effectivAPRLoan(userLoans[i],reduxProtocolStats,oraclePrices);
+          const avg=await effectivAPRLoan(userLoans[i],reduxProtocolStats,oraclePrices);
           const healthFactor=await getExistingLoanHealth(userLoans[i]?.loanId);
           const data={
             loanId:userLoans[i]?.loanId,
@@ -466,7 +466,7 @@ const SpendTable = () => {
                           fontStyle="normal"
                           lineHeight="22px"
                         >
-                          {avgs?.find(item=>item.loanId==borrow?.loanId)?.avg?.toFixed(2) }%
+                          {avgs?.find(item=>item.loanId==borrow?.loanId)?.avg }%
                         </Td>
                         <Td textAlign="center">
                           <Box

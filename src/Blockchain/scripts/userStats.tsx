@@ -149,7 +149,7 @@ export async function effectivAPRLoan(loan: ILoan, marketInfos: IMarketInfo[], o
     let collateralInterest = collateralAmountUsd * marketInfoCollateralMarket.supplyRate;
 
     let effectiveAPR = (borrowInterest - collateralInterest) / loanAmountUsd;
-    return effectiveAPR;
+    return effectiveAPR.toFixed(2);
   }
 }
 
