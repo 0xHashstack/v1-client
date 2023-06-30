@@ -174,6 +174,7 @@ const SupplyDashboard = ({
                   }
                   setAvgs(avgsData);
                 }
+                console.log(avgs,"avgs in supply")
 
         // dispatch(setUserDeposits(supply));
       } catch (err) {
@@ -217,9 +218,9 @@ const SupplyDashboard = ({
         // const stats = await getProtocolStats();
         if (stats) {
           console.log("se3nding", stats);
-          dispatch(setProtocolStats(stats));
+          // dispatch(setProtocolStats(stats));
         }
-        console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
+        // console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
         // const temp: any = ;
         setProtocolStats([
           stats?.[2],
@@ -228,12 +229,14 @@ const SupplyDashboard = ({
           stats?.[1],
           stats?.[4],
         ]);
+       
       } catch (error) {
         console.log("error on getting protocol stats");
       }
     };
     getMarketData();
   }, [reduxProtocolStats]);
+  // console.log(protocolStats,"data protocol stats in supply")
 
   useEffect(() => {
     let temp: any = [];
@@ -508,7 +511,7 @@ const SupplyDashboard = ({
                         {/* {(!avgs?.token==supply?.token) ? avgs.avg :  "2.00%"} */}
                         {/* {avgs[2]} */}
                     
-                        {avgs?.find(item=>item.token == supply?.token)?.avg || "2%"} %
+                        {avgs?.find(item=>item.token == supply?.token)?.avg } %
                         {/* {supply?.token} */}
 
                       </Text>

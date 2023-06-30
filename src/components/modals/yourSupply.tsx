@@ -1153,41 +1153,7 @@ const YourSupplyModal = ({
                         border="1px solid #2B2F35"
                         mb="0.5rem"
                       >
-                        <Text
-                          color="#8B949E"
-                          display="flex"
-                          justifyContent="space-between"
-                          fontSize="12px"
-                          mb="0.4rem"
-                        >
-                          <Text display="flex" alignItems="center">
-                            <Text
-                              mr="0.2rem"
-                              font-style="normal"
-                              font-weight="400"
-                              font-size="12px"
-                              color="#6A737D"
-                            >
-                              Wallet balance:
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="right"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box>
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Text>
-                          <Text color="#6E7681">$ 10.91</Text>
-                        </Text>
+
                         <Text
                           display="flex"
                           justifyContent="space-between"
@@ -1256,7 +1222,7 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">$ 10.91</Text>
+                          <Text color="#6E7681">$ 0.91</Text>
                         </Text>
                         <Text
                           color="#8B949E"
@@ -2003,7 +1969,7 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">$ 10.91</Text>
+                          <Text color="#6E7681">$ 0.91</Text>
                         </Text>
                       </Card>
                       {inputWithdrawlAmount > 0 &&

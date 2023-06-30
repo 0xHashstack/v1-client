@@ -22,6 +22,8 @@ import { Coins } from "../dashboardLeft";
 import BorrowModal from "@/components/modals/borrowModal";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
+import { useSelector } from "react-redux";
+import { selectProtocolStats } from "@/store/slices/userAccountSlice";
 
 export interface ICoin {
   name: string;
@@ -190,9 +192,9 @@ const BorrowDashboard = ({
     fetchProtocolStats();
   }, []);
 
+  const stats = useSelector(selectProtocolStats);
   const fetchProtocolStats = async () => {
     try {
-      const stats = await getProtocolStats();
       console.log("fetchprotocolstats", stats); //23014
       setBorrowAPRs([
         stats?.[2].borrowRate,
