@@ -176,12 +176,11 @@ const SupplyModal = ({
   //   )
   // ))
 
-
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
   // const walletBalances = useSelector(selectAssetWalletBalance);
   const [walletBalance, setwalletBalance] = useState(
-    walletBalances[coin.name]?.statusBalanceOf === "success"
+    walletBalances[coin?.name]?.statusBalanceOf === "success"
       ? Number(
           BNtoNum(
             uint256.uint256ToBN(
@@ -194,7 +193,7 @@ const SupplyModal = ({
   );
   useEffect(() => {
     setwalletBalance(
-      walletBalances[coin.name]?.statusBalanceOf === "success"
+      walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? Number(
             BNtoNum(
               uint256.uint256ToBN(
@@ -206,7 +205,7 @@ const SupplyModal = ({
         : 0
     );
     // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
-  }, [walletBalances[coin.name]?.statusBalanceOf, coin]);
+  }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
   // useEffect(()=>{
 
   // },[currentSelectedCoin])

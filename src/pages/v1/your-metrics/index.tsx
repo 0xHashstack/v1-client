@@ -19,8 +19,16 @@ import TotalRevenueChart from "@/components/layouts/charts/TotalRevenue";
 import Link from "next/link";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import YourMetricsSupplyBorrow from "@/components/layouts/charts/yourMetricsSupplyBorrow";
-import { selectAvgBorrowAPR, selectAvgSupplyAPR, selectNetAPR, selectProtocolReserves, selectYourBorrow, selectYourSupply } from "@/store/slices/userAccountSlice";
+import {
+  selectAvgBorrowAPR,
+  selectAvgSupplyAPR,
+  selectNetAPR,
+  selectProtocolReserves,
+  selectYourBorrow,
+  selectYourSupply,
+} from "@/store/slices/userAccountSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import useDataLoader from "@/hooks/useDataLoader";
 const YourMetrics = () => {
   //   const [metricsCancel, setMetricsCancel] = useState(false);
   const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
@@ -28,6 +36,7 @@ const YourMetrics = () => {
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
   const { account: _account } = useAccount();
+  useDataLoader();
   useEffect(() => {
     if (!_account) {
       const walletConnected = localStorage.getItem("lastUsedConnector");
@@ -43,7 +52,7 @@ const YourMetrics = () => {
   const [protocolStats, setProtocolStats] = useState<any>([]);
   const totalSupply = useSelector(selectYourSupply);
   const netAPR = useSelector(selectNetAPR);
-  const totalBorrow = useSelector(selectYourBorrow)
+  const totalBorrow = useSelector(selectYourBorrow);
   const avgBorrowApr = useSelector(selectAvgBorrowAPR);
   const avgSupplyApr = useSelector(selectAvgSupplyAPR);
   useEffect(() => {
@@ -59,7 +68,7 @@ const YourMetrics = () => {
         ]);
       };
       fetchProtocolStats();
-    } catch (err: any) { }
+    } catch (err: any) {}
   }, []);
   return (
     <PageCard pt="8rem">
@@ -101,21 +110,24 @@ const YourMetrics = () => {
                 alignItems="flex-start"
                 gap={"3px"}
                 p="13px 25px"
-              // bgColor="pink"
+                // bgColor="pink"
               >
                 <Text color="#6e7681" fontSize="14px" alignItems="center">
                   Total Supply
                 </Text>
-                {!totalSupply ? <Skeleton
-                  width="6rem"
-                  height="1.9rem"
-                  startColor="#101216"
-                  endColor="#2B2F35"
-                  borderRadius="6px"
-                /> : <Text color="#e6edf3" fontSize="20px">
-                  ${numberFormatter(totalSupply)}
-                </Text>}
-
+                {!totalSupply ? (
+                  <Skeleton
+                    width="6rem"
+                    height="1.9rem"
+                    startColor="#101216"
+                    endColor="#2B2F35"
+                    borderRadius="6px"
+                  />
+                ) : (
+                  <Text color="#e6edf3" fontSize="20px">
+                    ${numberFormatter(totalSupply)}
+                  </Text>
+                )}
               </VStack>
               <VStack
                 display="flex"
@@ -123,21 +135,24 @@ const YourMetrics = () => {
                 alignItems="flex-start"
                 gap={"3px"}
                 p="13px 25px"
-              // bgColor="pink"
+                // bgColor="pink"
               >
                 <Text color="#6e7681" fontSize="14px" alignItems="center">
                   Average Supply APR
                 </Text>
-                {!avgSupplyApr ? <Skeleton
-                  width="6rem"
-                  height="1.9rem"
-                  startColor="#101216"
-                  endColor="#2B2F35"
-                  borderRadius="6px"
-                /> : <Text color="#e6edf3" fontSize="20px">
-                  {avgSupplyApr?.toFixed(2)}%
-                </Text>}
-
+                {!avgSupplyApr ? (
+                  <Skeleton
+                    width="6rem"
+                    height="1.9rem"
+                    startColor="#101216"
+                    endColor="#2B2F35"
+                    borderRadius="6px"
+                  />
+                ) : (
+                  <Text color="#e6edf3" fontSize="20px">
+                    {avgSupplyApr?.toFixed(2)}%
+                  </Text>
+                )}
               </VStack>
             </Box>
             <Box display="flex" flexDirection="column" gap="22px">
@@ -158,55 +173,65 @@ const YourMetrics = () => {
                   <Text color="#6e7681" fontSize="14px" alignItems="center">
                     Your borrow
                   </Text>
-                  {!totalBorrow ? <Skeleton
-                    width="6rem"
-                    height="1.9rem"
-                    startColor="#101216"
-                    endColor="#2B2F35"
-                    borderRadius="6px"
-                  /> : <Text color="#e6edf3" fontSize="20px">
-                    ${numberFormatter(totalBorrow)}
-                  </Text>}
-
+                  {!totalBorrow ? (
+                    <Skeleton
+                      width="6rem"
+                      height="1.9rem"
+                      startColor="#101216"
+                      endColor="#2B2F35"
+                      borderRadius="6px"
+                    />
+                  ) : (
+                    <Text color="#e6edf3" fontSize="20px">
+                      ${numberFormatter(totalBorrow)}
+                    </Text>
+                  )}
                 </VStack>
                 <VStack
                   gap={"3px"}
                   justifyContent="flex-start"
                   alignItems="flex-start"
-                // p="13px 25px"
+                  // p="13px 25px"
                 >
                   <Text color="#6e7681" fontSize="14px" alignItems="center">
                     Average borrow apr
                   </Text>
-                  {!avgBorrowApr ? <Skeleton
-                    width="6rem"
-                    height="1.9rem"
-                    startColor="#101216"
-                    endColor="#2B2F35"
-                    borderRadius="6px"
-                  /> : <Text color="#e6edf3" fontSize="20px">
-                    {avgBorrowApr?.toFixed(2)}%
-                  </Text>}
+                  {!avgBorrowApr ? (
+                    <Skeleton
+                      width="6rem"
+                      height="1.9rem"
+                      startColor="#101216"
+                      endColor="#2B2F35"
+                      borderRadius="6px"
+                    />
+                  ) : (
+                    <Text color="#e6edf3" fontSize="20px">
+                      {avgBorrowApr?.toFixed(2)}%
+                    </Text>
+                  )}
                 </VStack>
                 <VStack
                   gap={"3px"}
                   justifyContent="flex-start"
                   alignItems="flex-start"
-                // p="13px 25px"
+                  // p="13px 25px"
                 >
                   <Text color="#6e7681" fontSize="14px" alignItems="center">
                     Effective apr
                   </Text>
-                  {!netAPR ? <Skeleton
-                    width="6rem"
-                    height="1.9rem"
-                    startColor="#101216"
-                    endColor="#2B2F35"
-                    borderRadius="6px"
-                  /> : <Text color="#e6edf3" fontSize="20px">
-                    {netAPR}%
-                  </Text>}
-
+                  {!netAPR ? (
+                    <Skeleton
+                      width="6rem"
+                      height="1.9rem"
+                      startColor="#101216"
+                      endColor="#2B2F35"
+                      borderRadius="6px"
+                    />
+                  ) : (
+                    <Text color="#e6edf3" fontSize="20px">
+                      {netAPR}%
+                    </Text>
+                  )}
                 </VStack>
               </HStack>
             </Box>

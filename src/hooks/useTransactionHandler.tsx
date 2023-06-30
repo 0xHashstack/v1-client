@@ -65,6 +65,7 @@ const useTransactionHandler = () => {
         ) {
           if (!toastHash.includes(transaction_hxh)) {
             dispatch(setTransactionStatus("success"));
+            dispatch(setTransactionRefresh(""));
             activeTransactions[idx].setCurrentTransactionStatus("success");
             toast.success(
               activeTransactions?.[idx]?.message ||

@@ -1,3 +1,4 @@
+import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
@@ -17,21 +18,35 @@ import {
   selectNetAPR,
   selectNetWorth,
   selectOraclePrices,
+  selectOraclePricesCount,
   selectProtocolReserves,
   selectProtocolStats,
+  selectProtocolStatsCount,
+  selectTransactionRefresh,
   selectUserDeposits,
+  selectUserDepositsCount,
+  selectUserInfoCount,
   selectUserLoans,
+  selectUserLoansCount,
   selectYourBorrow,
   selectYourSupply,
+  selectprotocolReservesCount,
   setAvgBorrowAPR,
   setAvgSupplyAPR,
   setNetAPR,
   setNetWorth,
   setOraclePrices,
+  setOraclePricesCount,
   setProtocolReserves,
+  setProtocolReservesCount,
   setProtocolStats,
+  setProtocolStatsCount,
   setUserDeposits,
+  setUserDepositsCount,
+  setUserInfoCount,
   setUserLoans,
+  setUserLoansCount,
+  setUserUnspentLoans,
   setYourBorrow,
   setYourSupply,
 } from "@/store/slices/userAccountSlice";
@@ -52,93 +67,101 @@ const useDataLoader = () => {
   const netWorth = useSelector(selectNetWorth);
   const netAPR = useSelector(selectNetAPR);
   const [isMounted, setIsMounted] = useState(false);
-
+  const protocolStatsCount = useSelector(selectProtocolStatsCount);
+  const protocolReservesCount = useSelector(selectprotocolReservesCount);
+  const userDepositsCount = useSelector(selectUserDepositsCount);
+  const userLoansCount = useSelector(selectUserLoansCount);
+  const oraclePricesCount = useSelector(selectOraclePricesCount);
+  const userInfoCount = useSelector(selectUserInfoCount);
+  const transactionRefresh = useSelector(selectTransactionRefresh);
   const dispatch = useDispatch();
-  useEffect(() => {
-    console.log("switched to market");
-  }, []);
+  // useEffect(() => {
+  //   console.log("switched to market");
+  // }, []);
   useEffect(() => {
     const fetchOraclePrices = async () => {
+      console.log("oracle prices - transactionRefresh called");
       try {
-        const data = await getOraclePrices();
-        console.log(data, "data oracle prices");
+        let data = await getOraclePrices();
         if (data) {
           dispatch(setOraclePrices(data));
         }
+        dispatch(setOraclePricesCount(""));
+        console.log("oracle prices - transactionRefresh done ", data);
       } catch (err) {
         console.log(err);
       }
     };
-    if (dataOraclePrices?.length == 0) {
+    if (oraclePricesCount < transactionRefresh) {
       fetchOraclePrices();
     }
-  }, []);
+  }, [transactionRefresh]);
 
   useEffect(() => {
     try {
-      const fetchProtocolStats = async () => {
+      const fetchProtocolReserves = async () => {
+        console.log("protocol reserves called - transactionRefresh");
         const reserves = await getProtocolReserves();
-        dispatch(
-          setProtocolReserves({
-            totalReserves: 123,
-            availableReserves: 123,
-            avgAssetUtilisation: 1233,
-          })
-        );
+        // dispatch(
+        //   setProtocolReserves({
+        //     totalReserves: 123,
+        //     availableReserves: 123,
+        //     avgAssetUtilisation: 1233,
+        //   })
+        // );
         dispatch(setProtocolReserves(reserves));
-        console.log("protocol reserves called ");
+        dispatch(setProtocolReservesCount(""));
+        console.log("protocol reserves - transactionRefresh done", reserves);
       };
-      if (
-        protocolReserves &&
-        (protocolReserves.totalReserves == null ||
-          protocolReserves.availableReserves == null ||
-          protocolReserves.avgAssetUtilisation == null)
-      ) {
-        fetchProtocolStats();
+      if (protocolReservesCount < transactionRefresh) {
+        fetchProtocolReserves();
       }
     } catch (err) {
       console.log("error fetching protocol reserves ", err);
     }
-  }, []);
+  }, [transactionRefresh]);
 
   useEffect(() => {
     const fetchProtocolStats = async () => {
+      console.log("protocol stats called - transactionRefresh");
       try {
         const dataStats = await getProtocolStats();
-        console.log(dataStats, "data stats in pagecard");
         // console.log(dataStats,"data market in pagecard")
-        if (dataStats?.length > 0) {
-          dispatch(setProtocolStats(dataStats));
-        }
+        dispatch(setProtocolStats(dataStats));
+        dispatch(setProtocolStatsCount(""));
+        console.log("protocol stats - transactionRefresh done", dataStats);
       } catch (err) {
         console.log(err);
       }
     };
-    if (protocolStats?.length == 0) {
+    if (protocolStatsCount < transactionRefresh) {
       fetchProtocolStats();
     }
-  }, []);
+  }, [transactionRefresh]);
 
   useEffect(() => {
     const fetchUserDeposits = async () => {
       if (!address) {
         return;
       }
+      console.log("user deposits called - transactionRefresh");
       const data = await getUserDeposits(address);
-      console.log(data, "data deposit in useEffect");
+      console.log("user deposits - transactionRefresh done", data);
       // console.log(data,"data deposit useffect")
       // console.log(data.length,"data length")
-      if (data && data?.length > 0) {
+      if (data) {
         dispatch(setUserDeposits(data));
       }
+      dispatch(setUserDepositsCount(""));
     };
-    if (dataDeposit.length == 0) {
+    if (userDepositsCount < transactionRefresh) {
       fetchUserDeposits();
     }
-  }, [address]);
+  }, [address, transactionRefresh]);
 
   useEffect(() => {
     const fetchUserLoans = async () => {
+      console.log("user loans called - transactionRefresh");
       if (!address) {
         return;
       }
@@ -151,12 +174,23 @@ const useDataLoader = () => {
             )
           )
         );
+        dispatch(
+          setUserUnspentLoans(
+            userLoans
+              ?.filter(
+                (loan) => loan.loanAmountParsed && loan.loanAmountParsed > 0
+              )
+              .filter((borrow: ILoan) => borrow.spendType === "UNSPENT")
+          )
+        );
       }
+      dispatch(setUserLoansCount(""));
+      console.log("user loans called - transactionRefresh done ", userLoans);
     };
-    if (userLoans?.length == 0) {
+    if (userLoansCount < transactionRefresh) {
       fetchUserLoans();
     }
-  }, [address]);
+  }, [address, transactionRefresh]);
 
   useEffect(() => {
     try {
@@ -166,15 +200,18 @@ const useDataLoader = () => {
         // const dataMarket=await getProtocolStats();
         // const dataOraclePrices=await getOraclePrices();
         // console.log(dataMarket,"data market page")
-        console.log(dataDeposit, "deposit array");
-        console.log(dataOraclePrices, "data oracle page");
-        console.log(userLoans, "data userLoans");
-        console.log(protocolStats, "data protocol stats");
+        console.log("user info called - transactionRefresh");
+        console.log(dataDeposit, "dataDeposit is here");
+        console.log(dataOraclePrices, "dataOraclePrices is here");
+        console.log(userLoans, "userLoans is here");
+        console.log(protocolStats, "protocolStats is here");
         if (
-          dataDeposit.length != 0 &&
-          protocolStats.length != 0 &&
-          userLoans.length != 0
+          dataDeposit &&
+          protocolStats &&
+          userLoans &&
+          userInfoCount < transactionRefresh
         ) {
+          console.log("user info called inside - transactionRefresh");
           const dataNetApr = await getNetApr(
             dataDeposit,
             userLoans,
@@ -193,8 +230,9 @@ const useDataLoader = () => {
             dataOraclePrices
           );
           console.log(avgBorrowApr, "data avg borrow apr pagecard");
-          dispatch(setAvgBorrowAPR(avgBorrowApr));
-          dispatch(setAvgSupplyAPR(avgSupplyApr));
+
+          // dispatch(setAvgBorrowAPR(avgBorrowApr));
+          // dispatch(setAvgSupplyAPR(avgSupplyApr));
 
           const dataBorrow = await getTotalBorrow(
             userLoans,
@@ -215,13 +253,44 @@ const useDataLoader = () => {
             dataBorrow?.totalCurrentAmount
           );
           dispatch(setNetWorth(dataNetWorth));
+          dispatch(setUserInfoCount(""));
         }
       };
-      fetchUserSupply();
+
+      console.log(userInfoCount, transactionRefresh, "userInfoCount is here");
+      if (userInfoCount < transactionRefresh) {
+        fetchUserSupply();
+      }
     } catch (err) {
       console.log(err);
     }
-  }, [dataDeposit, protocolStats, dataOraclePrices, userLoans]);
+  }, [
+    dataDeposit,
+    protocolStats,
+    dataOraclePrices,
+    userLoans,
+    transactionRefresh,
+  ]);
+  useEffect(() => {
+    console.log(
+      "transaction refresh counts - ",
+      transactionRefresh,
+      protocolStatsCount,
+      protocolReservesCount,
+      userDepositsCount,
+      userLoansCount,
+      oraclePricesCount,
+      userInfoCount
+    );
+  }, [
+    transactionRefresh,
+    protocolStatsCount,
+    protocolReservesCount,
+    userDepositsCount,
+    userLoansCount,
+    oraclePricesCount,
+    userInfoCount,
+  ]);
 };
 
 export default useDataLoader;

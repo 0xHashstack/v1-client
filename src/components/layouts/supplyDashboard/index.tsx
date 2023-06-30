@@ -136,13 +136,10 @@ const SupplyDashboard = ({
   const handleStatusHoverLeave = () => {
     setStatusHoverIndex("-1");
   };
-  const [avgs, setAvgs] = useState<any>([])
-  const avgsData:any=[];
+  const [avgs, setAvgs] = useState<any>([]);
+  const avgsData: any = [];
   useEffect(() => {
     const getSupply = async () => {
-      if (!address) {
-        return;
-      }
       console.log("all deposits calling started");
       try {
         const supply = userDeposits;
@@ -159,20 +156,23 @@ const SupplyDashboard = ({
           supply?.[1],
           supply?.[4],
         ]);
-        if(avgs.length==0){
-                  for(var i=0;i<supply?.length;i++){
-                    const avg=await effectiveAprDeposit(supply[i],reduxProtocolStats);
-                    const data={
-                      token:supply[i].token,
-                      avg:avg?.toFixed(2)
-                    }
-                    // avgs.push(data)
-                    avgsData.push(data);
-                    // avgs.push()
-                  }
-                  setAvgs(avgsData);
-                }
-                console.log(avgs,"avgs in supply")
+        if (avgs.length == 0) {
+          for (var i = 0; i < supply?.length; i++) {
+            const avg = await effectiveAprDeposit(
+              supply[i],
+              reduxProtocolStats
+            );
+            const data = {
+              token: supply[i].token,
+              avg: avg?.toFixed(2),
+            };
+            // avgs.push(data)
+            avgsData.push(data);
+            // avgs.push()
+          }
+          setAvgs(avgsData);
+        }
+        console.log(avgs, "avgs in supply");
 
         // dispatch(setUserDeposits(supply));
       } catch (err) {
@@ -180,7 +180,7 @@ const SupplyDashboard = ({
       }
     };
     getSupply();
-  }, [address]);
+  }, [userDeposits]);
   // useEffect(()=>{
   //   const fetchEffectiveApr=async()=>{
   //     try{
@@ -207,7 +207,7 @@ const SupplyDashboard = ({
   //   }
   // },[userDeposits])
   const [protocolStats, setProtocolStats]: any = useState([]);
-  const [effectiveSupplyApr, setEffectiveSupplyApr] = useState<any>()
+  const [effectiveSupplyApr, setEffectiveSupplyApr] = useState<any>();
   useEffect(() => {
     const getMarketData = async () => {
       try {
@@ -227,7 +227,6 @@ const SupplyDashboard = ({
           stats?.[1],
           stats?.[4],
         ]);
-       
       } catch (error) {
         console.log("error on getting protocol stats");
       }
@@ -247,7 +246,7 @@ const SupplyDashboard = ({
   }, [supplies]);
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
-  upper_bound = Math.min(supplies.length - 1, upper_bound);
+  upper_bound = Math.min(userDeposits?.length - 1, upper_bound);
   // useEffect(() => {
   //   try {
   //     const supply = async () => {
@@ -262,11 +261,12 @@ const SupplyDashboard = ({
   const [loading, setLoading] = useState(true);
   // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
   useEffect(() => {
-    if (supplies?.length > 0) {
+    if (userDeposits) {
+      console.log(supplies, "loading - ", userDeposits);
       setLoading(false);
     }
   }, [supplies]);
-  
+
   return loading ? (
     <>
       <Box
@@ -366,7 +366,7 @@ const SupplyDashboard = ({
           //   flexDirection="column"
           //   gap={"1rem"}
         >
-          {supplies.slice(lower_bound, upper_bound + 1).map(
+          {supplies?.slice(lower_bound, upper_bound + 1).map(
             (supply: any, idx: number) =>
               supply &&
               supply?.rTokenAmountParsed && (
@@ -497,7 +497,7 @@ const SupplyDashboard = ({
                       overflow={"hidden"}
                       textAlign={"center"}
                     >
-                    <Text
+                      <Text
                         width="100%"
                         height="100%"
                         display="flex"
@@ -508,12 +508,12 @@ const SupplyDashboard = ({
                         {/* {checkGap(idx1, idx2)} */}
                         {/* {(!avgs?.token==supply?.token) ? avgs.avg :  "2.00%"} */}
                         {/* {avgs[2]} */}
-                    
-                        {avgs?.find(item=>item.token == supply?.token)?.avg } %
-                        {/* {supply?.token} */}
-
+                        {
+                          avgs?.find((item: any) => item.token == supply?.token)
+                            ?.avg
+                        }{" "}
+                        %{/* {supply?.token} */}
                       </Text>
-
                     </Td>
 
                     <Td
@@ -543,7 +543,7 @@ const SupplyDashboard = ({
                           display={
                             supply?.rTokenStakedParsed > 0 ||
                             supply?.rTokenFreeParsed > 0
-                              ? "flex"
+                              ? "flex"  
                               : "none"
                           }
                           mx={

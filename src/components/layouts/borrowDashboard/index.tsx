@@ -184,7 +184,12 @@ const BorrowDashboard = ({
     setBorrowIds(temp2);
   }, [Borrows]);
   const [loading, setLoading] = useState(true);
-  const loadingTimeout = useTimeout(() => setLoading(false), 1800);
+  // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
+  useEffect(() => {
+    if (Borrows) {
+      setLoading(false);
+    }
+  }, [Borrows]);
 
   const [borrowAPRs, setBorrowAPRs] = useState<(number | undefined)[]>([]);
 

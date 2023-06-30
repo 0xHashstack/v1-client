@@ -23,7 +23,8 @@ const initialState = {
   oracleAndFairPrices: undefined,
   offchainCurrentBlock: undefined,
   assetWalletBalance: "",
-  userLoans: [],
+  userLoans: null,
+  userUnspentLoans: null,
   transactionSuccessArray: [],
   transactionFailureArray: [],
   transactionStartedAndStartToast: false,
@@ -31,9 +32,9 @@ const initialState = {
   toastTransactionStarted: false,
   transactionStarted: false,
   refreshHooks: false,
-  userDeposits: [],
-  protocolStats: [],
-  oraclePrices: [],
+  userDeposits: null,
+  protocolStats: null,
+  oraclePrices: null,
 
   protocolReserves: {
     totalReserves: null,
@@ -45,15 +46,15 @@ const initialState = {
   yourBorrow: null,
   netAPR: null,
   activeTransactions: [],
-  transactionRefresh: -1,
+  transactionRefresh: 0,
   avgSupplyAPR: null,
   avgBorrowAPR: null,
-  dataFetchCount: {
-    protocolStats: 0,
-    protocolReserves: 0,
-    userDeposits: 0,
-    userLoans: 0,
-  },
+  protocolStatsCount: -1,
+  protocolReservesCount: -1,
+  userDepositsCount: -1,
+  userLoansCount: -1,
+  oraclePricesCount: -1,
+  userInfoCount: -1,
 
   // walletBalance: {
   //   BTC: 0,
@@ -82,6 +83,9 @@ export const userAccountSlice = createSlice({
     },
     setUserLoans(state, action) {
       state.userLoans = action.payload;
+    },
+    setUserUnspentLoans(state, action) {
+      state.userUnspentLoans = action.payload;
     },
     setAccountAddress(state, action) {
       state.accountAddress = action.payload;
@@ -165,7 +169,7 @@ export const userAccountSlice = createSlice({
       state.refreshHooks = action.payload;
     },
     setProtocolReserves(state, action) {
-      state.protocolReserves = action.payload;
+      return { ...state, protocolReserves: action.payload };
     },
     setNetWorth(state, action) {
       state.netWorth = action.payload;
@@ -183,8 +187,43 @@ export const userAccountSlice = createSlice({
       state.activeTransactions = action.payload;
     },
     setTransactionRefresh(state, action) {
-      state.transactionRefresh = state.transactionRefresh === 0 ? 1 : 0;
+      const count = state.transactionRefresh;
+      state.transactionRefresh = count + 1;
     },
+    setProtocolReservesCount(state, action) {
+      state.protocolReservesCount = state.transactionRefresh;
+      // const count = state.protocolReservesCount + 1;
+      // return {
+      //   ...state,
+      //   protocolReservesCount: count,
+      // };
+    },
+    setProtocolStatsCount(state, action) {
+      state.protocolStatsCount = state.transactionRefresh;
+      // const count = state.protocolStatsCount + 1;
+      // return { ...state, protocolStatsCount: count };
+    },
+    setOraclePricesCount(state, action) {
+      state.oraclePricesCount = state.transactionRefresh;
+      // const count = state.oraclePricesCount + 1;
+      // return { ...state, oraclePricesCount: count };
+    },
+    setUserInfoCount(state, action) {
+      state.userInfoCount = state.transactionRefresh;
+      // const count = state.userInfoCount + 1;
+      // return { ...state, userInfoCount: count };
+    },
+    setUserDepositsCount(state, action) {
+      state.userDepositsCount = state.transactionRefresh;
+      // const count = state.userDepositsCount + 1;
+      // return { ...state, userDepositsCount: count };
+    },
+    setUserLoansCount(state, action) {
+      state.userLoansCount = state.transactionRefresh;
+      // const count = state.userLoansCount + 1;
+      // return { ...state, userLoansCount: count };
+    },
+
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;
     // },
@@ -227,6 +266,13 @@ export const {
   setTransactionRefresh,
   setAvgBorrowAPR,
   setAvgSupplyAPR,
+  setUserInfoCount,
+  setUserLoansCount,
+  setOraclePricesCount,
+  setUserDepositsCount,
+  setProtocolStatsCount,
+  setProtocolReservesCount,
+  setUserUnspentLoans,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -295,5 +341,18 @@ export const selectActiveTransactions = (state) =>
 
 export const selectTransactionRefresh = (state) =>
   state.user_account.transactionRefresh;
+export const selectUserDepositsCount = (state) =>
+  state.user_account.userDepositsCount;
+export const selectprotocolReservesCount = (state) =>
+  state.user_account.protocolReservesCount;
+export const selectProtocolStatsCount = (state) =>
+  state.user_account.protocolStatsCount;
+export const selectUserLoansCount = (state) =>
+  state.user_account.userLoansCount;
+export const selectOraclePricesCount = (state) =>
+  state.user_account.oraclePricesCount;
+export const selectUserInfoCount = (state) => state.user_account.userInfoCount;
+export const selectUserUnspentLoans = (state) =>
+  state.user_account.userUnspentLoans;
 // export const select=(state)=> state.user_account.
 export default userAccountSlice.reducer;

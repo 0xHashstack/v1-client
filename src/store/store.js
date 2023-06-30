@@ -9,4 +9,8 @@ export const store = configureStore({
     [dropdownSlice.name]: dropdownSlice.reducer,
   },
   devTools: true,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });

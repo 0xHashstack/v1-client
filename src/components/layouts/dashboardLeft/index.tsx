@@ -64,7 +64,7 @@ const DashboardLeft = ({
 }) => {
   // console.log(oraclePrices)
   const coinPrices = Coins.map((coin) => {
-    const matchingCoin = oraclePrices.find(
+    const matchingCoin = oraclePrices?.find(
       (c: { name: string }) =>
         c?.name?.toLowerCase() === coin.name.toLowerCase()
     );
