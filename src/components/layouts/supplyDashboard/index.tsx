@@ -150,23 +150,9 @@ const SupplyDashboard = ({
         const supply = userDeposits;
         console.log("users deposits - ", userDeposits);
 
-        if(avgs.length==0){
-          for(var i=0;i<supply?.length;i++){
-            const avg=await effectiveAprDeposit(supply[i],reduxProtocolStats);
-            const data={
-              token:supply[i].token,
-              avg:avg
-            }
-            // avgs.push(data)
-            avgsData.push(data);
-            // avgs.push()
-          }
-          setAvgs(avgsData);
-        }
-        console.log(avgs,"avgs in suppply")
         // const supply = await getUserDeposits(address);
 
-        console.log("supply : ", supply);
+        console.log("supply in supply dash: ", supply);
         if (!supply) return;
         setSupplies([
           supply?.[2],
@@ -175,18 +161,54 @@ const SupplyDashboard = ({
           supply?.[1],
           supply?.[4],
         ]);
+        if(avgs.length==0){
+                  for(var i=0;i<supply?.length;i++){
+                    const avg=await effectiveAprDeposit(supply[i],reduxProtocolStats);
+                    const data={
+                      token:supply[i].token,
+                      avg:avg
+                    }
+                    // avgs.push(data)
+                    avgsData.push(data);
+                    // avgs.push()
+                  }
+                  setAvgs(avgsData);
+                }
+
         // dispatch(setUserDeposits(supply));
       } catch (err) {
         console.log("supplies", err);
       }
     };
     getSupply();
-  }, [userDeposits]);
+  }, [address]);
+  // useEffect(()=>{
+  //   const fetchEffectiveApr=async()=>{
+  //     try{
+  //       const supply=userDeposits;
+  //       if(avgs.length==0){
+  //         for(var i=0;i<supply?.length;i++){
+  //           const avg=await effectiveAprDeposit(supply[i],reduxProtocolStats);
+  //           const data={
+  //             token:supply[i].token,
+  //             avg:avg
+  //           }
+  //           // avgs.push(data)
+  //           avgsData.push(data);
+  //           // avgs.push()
+  //         }
+  //         setAvgs(avgsData);
+  //       }
+  //     }catch(err){
+  //       console.log(err);
+  //     }
 
+  //     fetchEffectiveApr();
+  //     console.log(avgs,"avgs in suppply")
+  //   }
+  // },[userDeposits])
   const [protocolStats, setProtocolStats]: any = useState([]);
   const [effectiveSupplyApr, setEffectiveSupplyApr] = useState<any>()
-
-  
   useEffect(() => {
     const getMarketData = async () => {
       try {
