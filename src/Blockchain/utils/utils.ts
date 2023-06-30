@@ -159,9 +159,6 @@ export const weiToEtherNumber = (amount: string, tokenName: Token) => {
 };
 
 export const parseAmount = (amount: string, decimals = 18) => {
-  if (!decimals) {
-    return 0;
-  } // @todo should avoid using 18 default
   const factor = 1000_000;
   const amountBN = number
     .toBN(amount)
