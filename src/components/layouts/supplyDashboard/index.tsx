@@ -166,7 +166,7 @@ const SupplyDashboard = ({
                     const avg=await effectiveAprDeposit(supply[i],reduxProtocolStats);
                     const data={
                       token:supply[i].token,
-                      avg:avg
+                      avg:avg?.toFixed(2)
                     }
                     // avgs.push(data)
                     avgsData.push(data);

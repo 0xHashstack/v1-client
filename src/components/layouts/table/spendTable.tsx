@@ -187,21 +187,29 @@ const SpendTable = () => {
     const fetchAprs=async()=>{
       if(avgs.length==0){
         for(var i=0;i<userLoans?.length;i++){
-          const avg=await effectivAPRLoan(userLoans[i],reduxProtocolStats,oraclePrices);
+          const avg=effectivAPRLoan(userLoans[i],reduxProtocolStats,oraclePrices);
+          const healthFactor=await getExistingLoanHealth(userLoans[i]?.loanId);
           const data={
             loanId:userLoans[i]?.loanId,
-            avg:avg
+            avg:avg,
+            loanHealth:healthFactor,
           }
           // avgs.push(data)
           avgsData.push(data);
           // avgs.push()
         }
+        //cc
         setAvgs(avgsData);
       }
     }
     fetchAprs();
-  },[oraclePrices,reduxProtocolStats,userLoans])
+    console.log("running")
+  },[oraclePrices,reduxProtocolStats,userLoans,avgs])
   // console.log(avgs,"avgs in borrow")
+
+  // useEffect(()=>{
+
+  // },[])
 
   useEffect(() => {
     fetchProtocolStats();
@@ -458,7 +466,7 @@ const SpendTable = () => {
                           fontStyle="normal"
                           lineHeight="22px"
                         >
-                          {avgs?.find(item=>item.loanId==borrow?.loanId)?.avg?.toFixed(2) }
+                          {avgs?.find(item=>item.loanId==borrow?.loanId)?.avg?.toFixed(2) }%
                         </Td>
                         <Td textAlign="center">
                           <Box
@@ -497,7 +505,7 @@ const SpendTable = () => {
                               color="#E6EDF3"
                               textAlign="right"
                             >
-                              00.00%
+                              {avgs?.find(item=>item.loanId==borrow?.loanId)?.loanHealth}%
                             </Text>
                           </Box>
                         </Td>
