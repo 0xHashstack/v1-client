@@ -31,9 +31,9 @@ const initialState = {
   toastTransactionStarted: false,
   transactionStarted: false,
   refreshHooks: false,
-  userDeposits:[],
-  protocolStats:[],
-  oraclePrices:[],
+  userDeposits: [],
+  protocolStats: [],
+  oraclePrices: [],
 
   protocolReserves: {
     totalReserves: null,
@@ -46,8 +46,14 @@ const initialState = {
   netAPR: null,
   activeTransactions: [],
   transactionRefresh: -1,
-  avgSupplyAPR:null,
-  avgBorrowAPR:null,
+  avgSupplyAPR: null,
+  avgBorrowAPR: null,
+  dataFetchCount: {
+    protocolStats: 0,
+    protocolReserves: 0,
+    userDeposits: 0,
+    userLoans: 0,
+  },
 
   // walletBalance: {
   //   BTC: 0,
@@ -83,23 +89,23 @@ export const userAccountSlice = createSlice({
     setTransactionStatus(state, action) {
       state.transactionStatus = action.payload;
     },
-    setUserDeposits(state,action){
-      state.userDeposits=action.payload;
+    setUserDeposits(state, action) {
+      state.userDeposits = action.payload;
     },
-    setProtocolStats(state,action){
-      state.protocolStats=action.payload;
+    setProtocolStats(state, action) {
+      state.protocolStats = action.payload;
     },
-    setOraclePrices(state,action){
-      state.oraclePrices=action.payload;
+    setOraclePrices(state, action) {
+      state.oraclePrices = action.payload;
     },
     // setCurrentTransactionStatus(state, action) {
     //   state.currentTransactionStatus = action.payload;
     // },
-    setAvgSupplyAPR(state,action){
-      state.avgSupplyAPR=action.payload;
+    setAvgSupplyAPR(state, action) {
+      state.avgSupplyAPR = action.payload;
     },
-    setAvgBorrowAPR(state,action){
-      state.avgBorrowAPR=action.payload;
+    setAvgBorrowAPR(state, action) {
+      state.avgBorrowAPR = action.payload;
     },
     setLanguage(state, action) {
       state.language = action.payload;
@@ -220,7 +226,7 @@ export const {
   setActiveTransactions,
   setTransactionRefresh,
   setAvgBorrowAPR,
-  setAvgSupplyAPR
+  setAvgSupplyAPR,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -243,12 +249,9 @@ export const selectSelectedDapp = (state) =>
   state.user_account.spendBorrowselectedDapp;
 export const selectTransactionStatus = (state) =>
   state.user_account.transactionStatus;
-export const selectUserDeposits=(state)=>
-  state.user_account.userDeposits;
-export const selectProtocolStats=(state)=>
-  state.user_account.protocolStats;
-export const selectOraclePrices=(state)=>
-  state.user_account.oraclePrices;
+export const selectUserDeposits = (state) => state.user_account.userDeposits;
+export const selectProtocolStats = (state) => state.user_account.protocolStats;
+export const selectOraclePrices = (state) => state.user_account.oraclePrices;
 // export const selectCurrentTransactionStatus = (state) =>
 //   state.user_account.currentTransactionStatus;
 export const selectAssetWalletBalance = (state) =>
@@ -266,10 +269,8 @@ export const selectBorrowCoinSelectedBorrowModal = (state) =>
 export const selectWalletBalance = (state) => state.user_account.walletBalance;
 export const selectAccountAddress = (state) =>
   state.user_account.accountAddress;
-export const selectAvgSupplyAPR=(state)=>
-  state.user_account.avgSupplyAPR;
-export const selectAvgBorrowAPR=(state)=>
-  state.user_account.avgBorrowAPR;
+export const selectAvgSupplyAPR = (state) => state.user_account.avgSupplyAPR;
+export const selectAvgBorrowAPR = (state) => state.user_account.avgBorrowAPR;
 export const selectLanguage = (state) => state.user_account.language;
 export const selectCurrentPage = (state) => state.user_account.currentPage;
 export const selectReserves = (state) => state.user_account.reserves;

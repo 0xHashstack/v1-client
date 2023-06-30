@@ -113,8 +113,6 @@ const SupplyDashboard = ({
   // gap: string;
   // rowItems: any;
 }) => {
-  // console.log("aryan " + lower_bound + " " + upper_bound);
-
   const { address } = useAccount();
 
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
@@ -492,6 +490,12 @@ const SupplyDashboard = ({
                               ? "flex"
                               : "none"
                           }
+                          mx={
+                            supply?.rTokenStakedParsed <= 0 ||
+                            supply?.rTokenFreeParsed <= 0
+                              ? "30%"
+                              : "0"
+                          }
                         >
                           <HStack
                             onMouseEnter={() => handleStatusHover("0" + idx)}
@@ -565,6 +569,12 @@ const SupplyDashboard = ({
                         <HStack
                           display={
                             supply?.rTokenLockedParsed > 0 ? "flex" : "none"
+                          }
+                          mx={
+                            supply?.rTokenStakedParsed <= 0 ||
+                            supply?.rTokenFreeParsed <= 0
+                              ? "30%"
+                              : "0"
                           }
                         >
                           <HStack

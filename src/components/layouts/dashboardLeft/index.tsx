@@ -165,7 +165,7 @@ const DashboardLeft = ({
   //     assetBalance = JSON.parse(assetBalance);
   //   }
   // }, [assetBalance]);
-  // console.log("aryan", assetBalance);
+
   // useEffect(() => {
   //   for (let i of Coins) {
   //   }

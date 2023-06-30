@@ -23,6 +23,8 @@ import {
   selectUserLoans,
   selectYourBorrow,
   selectYourSupply,
+  setAvgBorrowAPR,
+  setAvgSupplyAPR,
   setNetAPR,
   setNetWorth,
   setOraclePrices,
@@ -34,7 +36,7 @@ import {
   setYourSupply,
 } from "@/store/slices/userAccountSlice";
 import { useAccount } from "@starknet-react/core";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 const useDataLoader = () => {
@@ -49,7 +51,12 @@ const useDataLoader = () => {
   const yourBorrow = useSelector(selectYourBorrow);
   const netWorth = useSelector(selectNetWorth);
   const netAPR = useSelector(selectNetAPR);
+  const [isMounted, setIsMounted] = useState(false);
+
   const dispatch = useDispatch();
+  useEffect(() => {
+    console.log("switched to market");
+  }, []);
   useEffect(() => {
     const fetchOraclePrices = async () => {
       try {
@@ -150,6 +157,7 @@ const useDataLoader = () => {
       fetchUserLoans();
     }
   }, [address]);
+
   useEffect(() => {
     try {
       const fetchUserSupply = async () => {
@@ -160,13 +168,20 @@ const useDataLoader = () => {
         // console.log(dataMarket,"data market page")
         console.log(dataDeposit, "deposit array");
         console.log(dataOraclePrices, "data oracle page");
-        console.log(protocolStats, "data protocl");
+        console.log(userLoans, "data userLoans");
         console.log(protocolStats, "data protocol stats");
         if (
           dataDeposit.length != 0 &&
           protocolStats.length != 0 &&
           userLoans.length != 0
         ) {
+          const dataNetApr = await getNetApr(
+            dataDeposit,
+            userLoans,
+            dataOraclePrices,
+            protocolStats
+          );
+          dispatch(setNetAPR(dataNetApr));
           const avgSupplyApr = await effectiveAprDeposit(
             dataDeposit[0],
             protocolStats
@@ -178,8 +193,9 @@ const useDataLoader = () => {
             dataOraclePrices
           );
           console.log(avgBorrowApr, "data avg borrow apr pagecard");
-          // dispatch(setAvgBorrowAPR(avgBorrowApr));
-          // dispatch(setAvgSupplyAPR(avgSupplyApr));
+          dispatch(setAvgBorrowAPR(avgBorrowApr));
+          dispatch(setAvgSupplyAPR(avgSupplyApr));
+
           const dataBorrow = await getTotalBorrow(
             userLoans,
             dataOraclePrices,
@@ -189,36 +205,23 @@ const useDataLoader = () => {
           dispatch(setYourBorrow(dataTotalBorrow));
           console.log(dataDeposit, "data deposit pagecard");
           const data = getTotalSupply(dataDeposit, dataOraclePrices);
+          if (data) {
+            dispatch(setYourSupply(data));
+          }
           console.log(data, "total supply pagecard");
-          // console.log(data,"pagecard user supply");
-          // console.log(dataBorrow?.totalBorrow,"data borrow page")
-          // console.log(dataNetApr,"data net apr in pagecard");
           const dataNetWorth = await getNetworth(
             data,
             dataTotalBorrow,
             dataBorrow?.totalCurrentAmount
           );
           dispatch(setNetWorth(dataNetWorth));
-          const dataNetApr = await getNetApr(
-            dataDeposit,
-            userLoans,
-            dataOraclePrices,
-            protocolStats
-          );
-          if (data) {
-            dispatch(setYourSupply(data));
-          }
-          dispatch(setNetAPR(dataNetApr));
         }
       };
-      // if(yourSupply==null || yourBorrow==null || netWorth==null ||netAPR==null ){
-      //   fetchUserSupply();
-      // }
       fetchUserSupply();
     } catch (err) {
       console.log(err);
     }
-  }, [dataDeposit, protocolStats, dataOraclePrices]);
+  }, [dataDeposit, protocolStats, dataOraclePrices, userLoans]);
 };
 
 export default useDataLoader;
