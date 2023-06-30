@@ -161,6 +161,9 @@ const GetTokensModal = ({
           setCurrentTransactionStatus: () => {},
         };
         // addTransaction({ hash: deposit?.transaction_hash });
+        mixpanel.track("Get Tokens Status",{
+          "Status":"Success"
+        })
         activeTransactions?.push(trans_data);
 
         dispatch(setActiveTransactions(activeTransactions));
@@ -170,6 +173,9 @@ const GetTokensModal = ({
     } catch (err: any) {
       console.log(err);
       // dispatch(setTransactionStatus("failed"));
+      mixpanel.track('Get Tokens Status',{
+        "Status":"Failure"
+      })
       const toastContent = (
         <div>
           Failed to mint TestToken :{coin + " "}
