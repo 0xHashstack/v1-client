@@ -127,7 +127,7 @@ const GetTokensModal = ({
   const dispatch = useDispatch();
   const {address}=useAccount();
   const [toastId, setToastId] = useState<any>();
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY, { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
 
   const handleGetToken = async (coin: any) => {
     try {

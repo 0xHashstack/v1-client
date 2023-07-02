@@ -24,7 +24,7 @@ import Banner2 from "@/components/uiElements/loaders/Banner2";
 // import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 import mixpanel  from 'mixpanel-browser'
 const inter = Inter({ subsets: ["latin"] });
-mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY, { debug: true, track_pageview: true, persistence: 'localStorage' });
+mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
 export default function Home() {
   const router = useRouter();
   useEffect(() => {

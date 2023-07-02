@@ -466,7 +466,7 @@ const SpendTable = () => {
                           fontStyle="normal"
                           lineHeight="22px"
                         >
-                          {avgs?.find(item=>item.loanId==borrow?.loanId)?.avg }%
+                          {avgs?.find((item:any)=>item.loanId==borrow?.loanId)?.avg }%
                         </Td>
                         <Td textAlign="center">
                           <Box
@@ -505,7 +505,7 @@ const SpendTable = () => {
                               color="#E6EDF3"
                               textAlign="right"
                             >
-                              {avgs?.find(item=>item.loanId==borrow?.loanId)?.loanHealth}%
+                              {avgs?.find((item:any)=>item.loanId==borrow?.loanId)?.loanHealth}%
                             </Text>
                           </Box>
                         </Td>
