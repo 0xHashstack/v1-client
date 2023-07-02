@@ -45,6 +45,7 @@ import {
 } from "@chakra-ui/react";
 import {
   selectAccount,
+  selectAccountAddress,
   selectLanguage,
   setLanguage,
 } from "@/store/slices/userAccountSlice";
@@ -103,6 +104,16 @@ const Navbar = ({ validRTokens }: any) => {
 
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
+
+  const { address } = useAccount();
+  const accountAddress = useSelector(selectAccountAddress);
+  // useEffect(() => {
+  //   if(address && address!=accountAddress)
+  //   {
+
+  //   }
+  // }, [address]);
+
   useOutsideClick({
     ref: ref1,
     handler: (e) => {
@@ -662,7 +673,15 @@ const Navbar = ({ validRTokens }: any) => {
                     border="1px solid #2B2F35"
                     onClick={() => {
                       // alert("hey");
-                      connect(connectors[1]);
+                      const walletConnected =
+                        localStorage.getItem("lastUsedConnector");
+                      if (connector?.options?.id == "braavos") {
+                        disconnect();
+                        connect(connectors[1]);
+                      } else {
+                        disconnect();
+                        connect(connectors[0]);
+                      }
                       // console.log("navbar", account);
                       // localStorage.setItem("account", JSON.stringify(account));
                     }}

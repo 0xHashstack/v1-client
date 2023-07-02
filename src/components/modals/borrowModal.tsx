@@ -234,12 +234,14 @@ const BorrowModal = ({
     coin ? coin.name : "BTC"
   );
   const [protocolStats, setProtocolStats] = useState<any>([]);
+  const protocolStatsRedux = useSelector(selectProtocolStats);
   const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
     protocolStats?.find((stat: any) => stat?.token == currentBorrowCoin)
       ?.availableReserves
   );
   const fetchProtocolStats = async () => {
-    const stats = await getProtocolStats();
+    // const stats = await getProtocolStats();
+    const stats = protocolStatsRedux;
     if (stats)
       setProtocolStats([
         stats?.[0],
@@ -256,7 +258,7 @@ const BorrowModal = ({
     } catch (err: any) {
       console.log("borrow modal : error fetching protocolStats");
     }
-  }, []);
+  }, [protocolStatsRedux]);
   useEffect(() => {
     console.log("currentAvailableReserve", currentAvailableReserves);
   }, [currentAvailableReserves]);
@@ -279,7 +281,8 @@ const BorrowModal = ({
           // if (showToast == "true") {
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background : ${inputBorrowAmount} d${currentBorrowCoin} `,
+            // `Please wait your transaction is running in background : ${inputBorrowAmount} d${currentBorrowCoin} `,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -297,7 +300,7 @@ const BorrowModal = ({
           }
           const trans_data = {
             transaction_hash: borrow?.transaction_hash.toString(),
-            message: `You have successfully borrowed : ${inputBorrowAmount} d${currentBorrowCoin}`,
+            message: `Successfully borrowed : ${inputBorrowAmount} d${currentBorrowCoin}`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -317,7 +320,8 @@ const BorrowModal = ({
           if (showToast == "true") {
             console.log("toast here");
             const toastid = toast.info(
-              `Please wait your transaction is running in background : ${inputBorrowAmount} d${currentBorrowCoin} `,
+              // `Please wait your transaction is running in background : ${inputBorrowAmount} d${currentBorrowCoin} `,
+              `Transaction pending`,
               {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: false,
@@ -335,7 +339,7 @@ const BorrowModal = ({
             }
             const trans_data = {
               transaction_hash: borrow?.transaction_hash.toString(),
-              message: `You have successfully borrowed : ${inputBorrowAmount} d${currentBorrowCoin}`,
+              message: `Successfully borrowed : ${inputBorrowAmount} d${currentBorrowCoin}`,
               toastId: toastid,
               setCurrentTransactionStatus: setCurrentTransactionStatus,
             };

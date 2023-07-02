@@ -225,12 +225,12 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   }, [account]);
 
   const [validRTokens, setValidRTokens] = useState([]);
-
+  const userDepositsRedux = useSelector(selectUserDeposits);
   useEffect(() => {
     if (validRTokens.length === 0) {
       fetchUserDeposits();
     }
-  }, [validRTokens, address]);
+  }, [validRTokens, userDepositsRedux]);
   // const [dataDeposit, setDataDeposit] = useState<any>()
 
   const fetchUserDeposits = async () => {
@@ -238,7 +238,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       if (!address) {
         return;
       }
-      const reserves = await getUserDeposits(address);
+      const reserves = userDepositsRedux;
       // setDataDeposit(reserves);
       console.log("got reservers", reserves);
       const rTokens: any = [];

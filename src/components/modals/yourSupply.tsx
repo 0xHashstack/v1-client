@@ -452,7 +452,8 @@ const YourSupplyModal = ({
       if (withdraw?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait your withdraw transaction is running in background : ${inputWithdrawlAmount}r${asset}`,
+          // `Please wait your withdraw transaction is running in background : ${inputWithdrawlAmount}r${asset}`,
+          `Transaction pending`,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -470,7 +471,7 @@ const YourSupplyModal = ({
         }
         const trans_data = {
           transaction_hash: withdraw?.transaction_hash.toString(),
-          message: `You have successfully withdrawn :  : ${inputWithdrawlAmount}r${asset}`,
+          message: `Successfully withdrawn :  : ${inputWithdrawlAmount}r${asset}`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
         };
@@ -511,7 +512,8 @@ const YourSupplyModal = ({
           console.log("trans transaction hash created");
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background for supply and stake : ${depositAmount} ${supplyAsset} `,
+            // `Please wait your transaction is running in background for supply and stake : ${depositAmount} ${supplyAsset} `,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -529,7 +531,7 @@ const YourSupplyModal = ({
           }
           const trans_data = {
             transaction_hash: addSupplyAndStake?.transaction_hash.toString(),
-            message: `You have successfully supplied and staked ${depositAmount} ${supplyAsset}`,
+            message: `Successfully supplied and staked ${depositAmount} ${supplyAsset}`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -547,7 +549,8 @@ const YourSupplyModal = ({
           console.log("trans transaction hash created");
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background for adding supply : ${depositAmount} ${supplyAsset} `,
+            // `Please wait your transaction is running in background for adding supply : ${depositAmount} ${supplyAsset} `,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -565,7 +568,7 @@ const YourSupplyModal = ({
           }
           const trans_data = {
             transaction_hash: addSupply?.transaction_hash.toString(),
-            message: `You have successfully added supply : ${depositAmount} ${supplyAsset}`,
+            message: `Successfully added supply : ${depositAmount} ${supplyAsset}`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -1153,7 +1156,6 @@ const YourSupplyModal = ({
                         border="1px solid #2B2F35"
                         mb="0.5rem"
                       >
-
                         <Text
                           display="flex"
                           justifyContent="space-between"

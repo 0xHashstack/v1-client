@@ -55,6 +55,8 @@ const initialState = {
   userLoansCount: -1,
   oraclePricesCount: -1,
   userInfoCount: -1,
+  block: null,
+  currentNetwork: null,
 
   // walletBalance: {
   //   BTC: 0,
@@ -223,6 +225,12 @@ export const userAccountSlice = createSlice({
       // const count = state.userLoansCount + 1;
       // return { ...state, userLoansCount: count };
     },
+    setBlock(state, action) {
+      state.block = action.payload;
+    },
+    setCurrentNetwork(state, action) {
+      state.currentNetwork = action.payload;
+    },
 
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;
@@ -273,6 +281,8 @@ export const {
   setProtocolStatsCount,
   setProtocolReservesCount,
   setUserUnspentLoans,
+  setBlock,
+  setCurrentNetwork,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -354,5 +364,8 @@ export const selectOraclePricesCount = (state) =>
 export const selectUserInfoCount = (state) => state.user_account.userInfoCount;
 export const selectUserUnspentLoans = (state) =>
   state.user_account.userUnspentLoans;
+export const selectBlock = (state) => state.user_account.block;
+export const selectCurrentNetwork = (state) =>
+  state.user_account.currentNetwork;
 // export const select=(state)=> state.user_account.
 export default userAccountSlice.reducer;

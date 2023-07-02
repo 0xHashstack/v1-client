@@ -7,7 +7,7 @@ const numberFormatter = (input: any) => {
 
   var suffixes = [
     "",
-    "k",
+    "K",
     "M",
     "B",
     "T",

@@ -132,7 +132,7 @@ export async function getNetApr(deposits: IDeposit[], loans: ILoan[], oraclePric
 
 export async function effectivAPRLoan(loan: ILoan, marketInfos: IMarketInfo[], oraclePrices: OraclePrice[]) {
   if (loan.loanState === "REPAID" || loan.loanState === "LIQUIDATED" || loan.loanState === null) return 0;
-  const oraclePriceLoanMarket = oraclePrices.find(oraclePrice => oraclePrice.address === loan.underlyingMarketAddress);
+  const oraclePriceLoanMarket = oraclePrices?.find(oraclePrice => oraclePrice.address === loan.underlyingMarketAddress);
   const marketInfoLoanMarket = marketInfos.find(marketInfo => marketInfo.tokenAddress === loan.underlyingMarketAddress);
 
   const collateralMarket = getRTokenFromAddress(loan.collateralMarketAddress as string)?.underlying_asset;

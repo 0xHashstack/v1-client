@@ -424,7 +424,7 @@ const SupplyDashboard = ({
                             fontWeight="500"
                             color="#F7BB5B"
                           >
-                            {supply?.rTokenAmountParsed}
+                            {numberFormatter(supply?.rTokenAmountParsed)}
                           </Text>
                         </VStack>
                       </Box>
@@ -543,15 +543,15 @@ const SupplyDashboard = ({
                           display={
                             supply?.rTokenStakedParsed > 0 ||
                             supply?.rTokenFreeParsed > 0
-                              ? "flex"  
+                              ? "flex"
                               : "none"
                           }
-                          mx={
-                            supply?.rTokenStakedParsed <= 0 ||
-                            supply?.rTokenFreeParsed <= 0
-                              ? "30%"
-                              : "0"
-                          }
+                          // mx={
+                          //   supply?.rTokenStakedParsed <= 0 ||
+                          //   supply?.rTokenFreeParsed <= 0
+                          //     ? "30%"
+                          //     : "0"
+                          // }
                         >
                           <HStack
                             onMouseEnter={() => handleStatusHover("0" + idx)}
@@ -626,12 +626,12 @@ const SupplyDashboard = ({
                           display={
                             supply?.rTokenLockedParsed > 0 ? "flex" : "none"
                           }
-                          mx={
-                            supply?.rTokenStakedParsed <= 0 ||
-                            supply?.rTokenFreeParsed <= 0
-                              ? "30%"
-                              : "0"
-                          }
+                          // mx={
+                          //   supply?.rTokenStakedParsed <= 0 ||
+                          //   supply?.rTokenFreeParsed <= 0
+                          //     ? "30%"
+                          //     : "0"
+                          // }
                         >
                           <HStack
                             pl={2}

@@ -24,6 +24,7 @@ import {
   selectAvgSupplyAPR,
   selectNetAPR,
   selectProtocolReserves,
+  selectProtocolStats,
   selectYourBorrow,
   selectYourSupply,
 } from "@/store/slices/userAccountSlice";
@@ -47,7 +48,7 @@ const YourMetrics = () => {
         disconnect();
         connect(connectors[0]);
       }
-    }
+  }
   }, []);
   const [protocolStats, setProtocolStats] = useState<any>([]);
   const totalSupply = useSelector(selectYourSupply);
@@ -55,10 +56,11 @@ const YourMetrics = () => {
   const totalBorrow = useSelector(selectYourBorrow);
   const avgBorrowApr = useSelector(selectAvgBorrowAPR);
   const avgSupplyApr = useSelector(selectAvgSupplyAPR);
+  const protocolStatsRedux = useSelector(selectProtocolStats);
   useEffect(() => {
     try {
       const fetchProtocolStats = async () => {
-        const stats = await getProtocolStats();
+        const stats = protocolStatsRedux;
         setProtocolStats([
           stats?.[2],
           stats?.[3],
@@ -69,7 +71,7 @@ const YourMetrics = () => {
       };
       fetchProtocolStats();
     } catch (err: any) {}
-  }, []);
+  }, [protocolStatsRedux]);
   return (
     <PageCard pt="8rem">
       {/* {!metricsCancel && ( */}

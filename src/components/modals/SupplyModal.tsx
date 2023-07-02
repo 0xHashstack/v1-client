@@ -422,7 +422,8 @@ const SupplyModal = ({
           console.log("trans transaction hash created");
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
+            // `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -440,7 +441,8 @@ const SupplyModal = ({
           }
           const trans_data = {
             transaction_hash: depositStake?.transaction_hash.toString(),
-            message: `You have successfully staked ${inputAmount} ${currentSelectedCoin}`,
+            message: `Successfully staked ${inputAmount} ${currentSelectedCoin}`,
+            // message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -462,7 +464,8 @@ const SupplyModal = ({
           );
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background : supplying - ${inputAmount} ${currentSelectedCoin} `,
+            // `Please wait your transaction is running in background : supplying - ${inputAmount} ${currentSelectedCoin} `,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -480,7 +483,8 @@ const SupplyModal = ({
           }
           const trans_data = {
             transaction_hash: deposit?.transaction_hash.toString(),
-            message: `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+            message: `Successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+            // message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };

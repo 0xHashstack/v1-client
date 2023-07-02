@@ -210,9 +210,9 @@ const SpendTable = () => {
         setAvgs(avgsData);
       }
     };
-    fetchAprs();
+    if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
     console.log("running");
-  }, [oraclePrices, reduxProtocolStats, userLoans, avgs]);
+  }, [oraclePrices, reduxProtocolStats, userLoans]);
   // console.log(avgs,"avgs in borrow")
 
   // useEffect(()=>{
@@ -221,18 +221,18 @@ const SpendTable = () => {
 
   useEffect(() => {
     fetchProtocolStats();
-  }, []);
+  }, [reduxProtocolStats]);
 
   const fetchProtocolStats = async () => {
     try {
-      const stats = await getProtocolStats();
+      const stats = reduxProtocolStats;
       console.log("fetchprotocolstats", stats); //23014
       setBorrowAPRs([
-        stats?.[2].borrowRate,
-        stats?.[3].borrowRate,
-        stats?.[0].borrowRate,
-        stats?.[1].borrowRate,
-        stats?.[4].borrowRate,
+        stats?.[2]?.borrowRate,
+        stats?.[3]?.borrowRate,
+        stats?.[0]?.borrowRate,
+        stats?.[1]?.borrowRate,
+        stats?.[4]?.borrowRate,
       ]);
     } catch (error) {
       console.log("error on getting protocol stats");
@@ -474,11 +474,13 @@ const SpendTable = () => {
                           fontStyle="normal"
                           lineHeight="22px"
                         >
-                          {
-                            avgs?.find(
-                              (item: any) => item.loanId == borrow?.loanId
-                            )?.avg
-                          }
+                          {avgs?.find(
+                            (item: any) => item.loanId == borrow?.loanId
+                          )?.avg
+                            ? avgs?.find(
+                                (item: any) => item.loanId == borrow?.loanId
+                              )?.avg
+                            : "3.2"}
                           %
                         </Td>
                         <Td textAlign="center">
@@ -518,11 +520,13 @@ const SpendTable = () => {
                               color="#E6EDF3"
                               textAlign="right"
                             >
-                              {
-                                avgs?.find(
-                                  (item: any) => item.loanId == borrow?.loanId
-                                )?.loanHealth
-                              }
+                              {avgs?.find(
+                                (item: any) => item.loanId == borrow?.loanId
+                              )?.loanHealth
+                                ? avgs?.find(
+                                    (item: any) => item.loanId == borrow?.loanId
+                                  )?.loanHealth
+                                : "2.5"}
                               %
                             </Text>
                           </Box>
