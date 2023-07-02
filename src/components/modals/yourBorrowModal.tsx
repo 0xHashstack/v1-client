@@ -1172,7 +1172,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                5.56%
+                $ 0.91
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
@@ -1291,7 +1291,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                1 BTC
+                {currentBorrowMarketCoin1}
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between">
@@ -1431,7 +1431,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                5.56%
+                $ 0.91
               </Text>
             </Box>
           </Box>
@@ -1500,7 +1500,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text color="#8B949E" fontSize="xs">
-                1 BTC
+                {borrowAmount} {currentBorrowMarketCoin1}
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between">
@@ -1600,7 +1600,7 @@ const YourBorrowModal = ({
                 </Tooltip>
               </Box>
               <Text color="#8B949E" fontSize="xs">
-                5.56%
+                $ 0.91
               </Text>
             </Box>
           </Box>
@@ -1732,7 +1732,7 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                5.56%
+                $ 0.91
               </Text>
             </Box>
           </Box>
@@ -4156,7 +4156,7 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">1 BTC</Text>
+                        <Text color="#6E7681">{borrowAmount} {currentBorrowMarketCoin2}</Text>
                       </Text>
                       <Text
                         display="flex"
@@ -4332,7 +4332,7 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">5.56%</Text>
+                        <Text color="#6E7681">$ 0.91</Text>
                       </Text>
                       <Text
                         display="flex"
