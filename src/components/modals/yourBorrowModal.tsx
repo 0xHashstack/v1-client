@@ -128,6 +128,7 @@ const YourBorrowModal = ({
   borrowAPRs,
   borrow,
   spendType,
+  setSpendType,
   ...restProps
 }: any) => {
   // console.log(currentBorrowId1);
@@ -495,6 +496,7 @@ const YourBorrowModal = ({
   // const [currentBorrowId2, setCurrentBorrowId2] = useState(`ID - ${currentID}`);
   const [currentDapp, setCurrentDapp] = useState("Select a dapp");
   const [currentPool, setCurrentPool] = useState("Select a pool");
+
   const getBorrowAPR = (borrowMarket: string) => {
     switch (borrowMarket) {
       case "USDT":
@@ -912,55 +914,7 @@ const YourBorrowModal = ({
             mt="1.5rem"
             mb="1.5rem"
           >
-            <Box display="flex" justifyContent="space-between" mb="0.2rem">
-              <Box display="flex">
-                <Text
-                  color="#6A737D"
-                  fontSize="12px"
-                  fontWeight="400"
-                  fontStyle="normal"
-                >
-                  est LP tokens recieved:{" "}
-                </Text>
-                <Tooltip
-                  hasArrow
-                  placement="right-start"
-                  boxShadow="dark-lg"
-                  label="all the assets to the market"
-                  bg="#24292F"
-                  fontSize={"smaller"}
-                  fontWeight={"thin"}
-                  borderRadius={"lg"}
-                  padding={"2"}
-                >
-                  <Box ml="0.1rem" mt="0.3rem">
-                    <InfoIcon />
-                  </Box>
-                </Tooltip>
-              </Box>
-              <Text
-                color="#6A737D"
-                fontSize="12px"
-                fontWeight="400"
-                fontStyle="normal"
-              >
-                {currentLPTokenAmount === null ? (
-                  <Box pt="2px">
-                    <Skeleton
-                      width="2.3rem"
-                      height=".85rem"
-                      startColor="#2B2F35"
-                      endColor="#101216"
-                      borderRadius="6px"
-                    />
-                  </Box>
-                ) : (
-                  "$" + currentLPTokenAmount
-                )}
-                {/* $ 10.91 */}
-              </Text>
-            </Box>
-            {radioValue === "1" && (
+            {currentPool !== "Select a pool" && spendType === "UNSPENT" && (
               <Box display="flex" justifyContent="space-between" mb="0.2rem">
                 <Box display="flex">
                   <Text
@@ -969,7 +923,7 @@ const YourBorrowModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    Liquidity split:{" "}
+                    est LP tokens recieved:{" "}
                   </Text>
                   <Tooltip
                     hasArrow
@@ -987,61 +941,113 @@ const YourBorrowModal = ({
                     </Box>
                   </Tooltip>
                 </Box>
-                <Box
-                  display="flex"
-                  gap="2"
+                <Text
                   color="#6A737D"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                  <Box display="flex" gap="2px">
-                    <Box m="2px">
-                      {/* <SmallEth /> */}
-                      <Image
-                        src={`/${liquiditySplitCoin1}.svg`}
-                        alt="liquidity split coin1"
-                        width="12"
-                        height="12"
+                  {currentLPTokenAmount === null ? (
+                    <Box pt="2px">
+                      <Skeleton
+                        width="2.3rem"
+                        height=".85rem"
+                        startColor="#2B2F35"
+                        endColor="#101216"
+                        borderRadius="6px"
                       />
                     </Box>
-                    <Text>
-                      {currentSplit?.[0] || (
-                        <Skeleton
-                          width="2.3rem"
-                          height=".85rem"
-                          startColor="#2B2F35"
-                          endColor="#101216"
-                          borderRadius="6px"
-                        />
-                      )}
-                    </Text>
-                  </Box>
-                  <Box display="flex" gap="2px">
-                    <Box m="2px">
-                      {/* <SmallUsdt /> */}
-                      <Image
-                        src={`/${liquiditySplitCoin2}.svg`}
-                        alt="liquidity split coin1"
-                        width="12"
-                        height="12"
-                      />
-                    </Box>
-                    <Text>
-                      {currentSplit?.[1] || (
-                        <Skeleton
-                          width="2.3rem"
-                          height=".85rem"
-                          startColor="#2B2F35"
-                          endColor="#101216"
-                          borderRadius="6px"
-                        />
-                      )}
-                    </Text>
-                  </Box>
-                </Box>
+                  ) : (
+                    "$" + currentLPTokenAmount
+                  )}
+                  {/* $ 10.91 */}
+                </Text>
               </Box>
             )}
+            {radioValue === "1" &&
+              currentPool !== "Select a pool" &&
+              spendType === "UNSPENT" && (
+                <Box display="flex" justifyContent="space-between" mb="0.2rem">
+                  <Box display="flex">
+                    <Text
+                      color="#6A737D"
+                      fontSize="12px"
+                      fontWeight="400"
+                      fontStyle="normal"
+                    >
+                      Liquidity split:{" "}
+                    </Text>
+                    <Tooltip
+                      hasArrow
+                      placement="right-start"
+                      boxShadow="dark-lg"
+                      label="all the assets to the market"
+                      bg="#24292F"
+                      fontSize={"smaller"}
+                      fontWeight={"thin"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                    >
+                      <Box ml="0.1rem" mt="0.3rem">
+                        <InfoIcon />
+                      </Box>
+                    </Tooltip>
+                  </Box>
+                  <Box
+                    display="flex"
+                    gap="2"
+                    color="#6A737D"
+                    fontSize="12px"
+                    fontWeight="400"
+                    fontStyle="normal"
+                  >
+                    <Box display="flex" gap="2px">
+                      <Box m="2px">
+                        {/* <SmallEth /> */}
+                        <Image
+                          src={`/${liquiditySplitCoin1}.svg`}
+                          alt="liquidity split coin1"
+                          width="12"
+                          height="12"
+                        />
+                      </Box>
+                      <Text>
+                        {currentSplit?.[0] || (
+                          <Skeleton
+                            width="2.3rem"
+                            height=".85rem"
+                            startColor="#2B2F35"
+                            endColor="#101216"
+                            borderRadius="6px"
+                          />
+                        )}
+                      </Text>
+                    </Box>
+                    <Box display="flex" gap="2px">
+                      <Box m="2px">
+                        {/* <SmallUsdt /> */}
+                        <Image
+                          src={`/${liquiditySplitCoin2}.svg`}
+                          alt="liquidity split coin1"
+                          width="12"
+                          height="12"
+                        />
+                      </Box>
+                      <Text>
+                        {currentSplit?.[1] || (
+                          <Skeleton
+                            width="2.3rem"
+                            height=".85rem"
+                            startColor="#2B2F35"
+                            endColor="#101216"
+                            borderRadius="6px"
+                          />
+                        )}
+                      </Text>
+                    </Box>
+                  </Box>
+                </Box>
+              )}
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
@@ -1838,6 +1844,7 @@ const YourBorrowModal = ({
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
       if (borrowIDCoinMap[i].id === id) {
         setCurrentBorrowMarketCoin1(borrowIDCoinMap[i].name);
+        setSpendType(borrowIDCoinMap[i].spendType);
         return;
       }
     }
@@ -1947,31 +1954,32 @@ const YourBorrowModal = ({
   }, [toMarketA, currentBorrowId1, toMarketB]);
 
   const fetchLiquiditySplit = async () => {
-    // if (
-    //   spendType !== "UNSPENT" ||
-    //   !toMarketA ||
-    //   !toMarketB ||
-    //   !currentBorrowId1 ||
-    //   !currentBorrowId2
-    // )
-    //   return;
+    if (
+      spendType !== "UNSPENT" ||
+      !toMarketA ||
+      !toMarketB ||
+      !currentBorrowId1 ||
+      !currentBorrowId2 ||
+      currentPool === "Select a pool"
+    )
+      return;
     const lp_tokon = await getJediEstimatedLpAmountOut(
-      // currentBorrowId1.slice(5),
-      // toMarketA,
-      // toMarketB
-      99,
-      "ETH",
-      "USDT"
+      currentBorrowId1.slice(5),
+      toMarketA,
+      toMarketB
+      // 99,
+      // "ETH",
+      // "USDT"
     );
     console.log("toMarketSplitLP", lp_tokon);
     setCurrentLPTokenAmount(lp_tokon);
     const split = await getJediEstimateLiquiditySplit(
-      // currentBorrowId1.slice(5),
-      // toMarketA,
-      // toMarketB
-      99,
-      "ETH",
-      "USDT"
+      currentBorrowId1.slice(5),
+      toMarketA,
+      toMarketB
+      // 99,
+      // "ETH",
+      // "USDT"
     );
     console.log("toMarketSplit", split);
     setCurrentSplit(split);

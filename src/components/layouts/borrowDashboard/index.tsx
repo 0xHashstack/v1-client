@@ -174,6 +174,7 @@ const BorrowDashboard = ({
             Borrows[i].collateralAmountParsed +
             " " +
             Borrows[i].collateralMarket,
+          spendType: Borrows[i].spendType,
         });
         temp2.push(Borrows[i].loanId);
       }
@@ -724,6 +725,7 @@ const BorrowDashboard = ({
                           borrowAPRs={borrowAPRs}
                           borrow={borrow}
                           spendType={currentSpendStatus}
+                          setSpendType={setCurrentSpendStatus}
                         />
                       </Box>
                     </Td>
