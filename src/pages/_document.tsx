@@ -4,6 +4,7 @@ export default function MyDocument() {
   return (
     <Html lang="en">
       <Head>
+        
         <script
           dangerouslySetInnerHTML={{
             __html: `(function(w,d,s,l,i){w[l] = w[l] || [];w[l].push({'gtm.start':
@@ -18,6 +19,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
         <meta httpEquiv="Expires" content="0" />
         <link rel="shortcut icon" href="/static/favicon-32x32.png" />
         {/* Rest of your <Head> content */}
+        
       </Head>
       <body>
         <noscript>

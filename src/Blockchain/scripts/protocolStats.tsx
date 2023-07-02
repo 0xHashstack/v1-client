@@ -96,24 +96,30 @@ export async function getProtocolStats() {
 
 
 function parseProtocolReserves(protocolReservesData: any): IProtocolReserves {
-  let protocolReserves: IProtocolReserves = {
-    totalReserves: parseAmount(uint256
-      .uint256ToBN(protocolReservesData?.total_reserves)
-      .toString(),
-      8
-    ),
-    availableReserves: parseAmount(uint256
-      .uint256ToBN(protocolReservesData?.available_reserves)
-      .toString(),
-      8
-    ),
-    avgAssetUtilisation: parseAmount(uint256
-      .uint256ToBN(protocolReservesData?.avg_asset_utilisation)
-      .toString(),
-      2
-    )
-  };
-  return protocolReserves;
+  try {
+    let protocolReserves: IProtocolReserves = {
+      totalReserves: parseAmount(uint256
+        .uint256ToBN(protocolReservesData?.total_reserves)
+        .toString(),
+        8
+      ),
+      availableReserves: parseAmount(uint256
+        .uint256ToBN(protocolReservesData?.available_reserves)
+        .toString(),
+        8
+      ),
+      avgAssetUtilisation: parseAmount(uint256
+        .uint256ToBN(protocolReservesData?.avg_asset_utilisation)
+        .toString(),
+        2
+      )
+    };
+    return protocolReserves;
+  }
+  catch(error) {
+    console.warn("getProtocol reserves: ", error);
+    throw("get protocol stat error");
+  }
 }
 
 export async function getProtocolReserves() {

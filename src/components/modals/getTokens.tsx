@@ -61,6 +61,7 @@ import {
 } from "@/store/slices/userAccountSlice";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
+import mixpanel from "mixpanel-browser";
 const GetTokensModal = ({
   buttonText,
   backGroundOverLay,
@@ -124,12 +125,17 @@ const GetTokensModal = ({
     setCurrentSelectedCoin(token);
   }, [token, currentSelectedCoin]);
   const dispatch = useDispatch();
+  const {address}=useAccount();
   const [toastId, setToastId] = useState<any>();
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY, { debug: true, track_pageview: true, persistence: 'localStorage' });
 
   const handleGetToken = async (coin: any) => {
     try {
       console.log(token);
       const getTokens = await writeAsyncGetTokens();
+      mixpanel.track('Get Tokens',{
+        'Token Selected':coin
+      })
       if (getTokens?.transaction_hash) {
         const toastid = toast.info(
           `Please wait, your transaction is running in background ${coin} `,
@@ -155,6 +161,9 @@ const GetTokensModal = ({
           setCurrentTransactionStatus: () => {},
         };
         // addTransaction({ hash: deposit?.transaction_hash });
+        mixpanel.track("Get Tokens Status",{
+          "Status":"Success"
+        })
         activeTransactions?.push(trans_data);
 
         dispatch(setActiveTransactions(activeTransactions));
@@ -164,6 +173,9 @@ const GetTokensModal = ({
     } catch (err: any) {
       console.log(err);
       // dispatch(setTransactionStatus("failed"));
+      mixpanel.track('Get Tokens Status',{
+        "Status":"Failure"
+      })
       const toastContent = (
         <div>
           Failed to mint TestToken :{coin + " "}
