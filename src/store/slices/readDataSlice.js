@@ -2,7 +2,6 @@ import { createSlice } from "@reduxjs/toolkit";
 import { HYDRATE } from "next-redux-wrapper";
 
 const initialState = {
-  refreshHooks: false,
   userDeposits: null,
   protocolStats: null,
   oraclePrices: null,
@@ -46,9 +45,6 @@ export const readDataSlice = createSlice({
     },
     setOraclePrices(state, action) {
       state.oraclePrices = action.payload;
-    },
-    setRefreshHooks(state, action) {
-      state.refreshHooks = action.payload;
     },
     setProtocolReserves(state, action) {
       return { ...state, protocolReserves: action.payload };
@@ -114,7 +110,6 @@ export const {
   setProtocolStats,
   setOraclePrices,
   setReserves,
-  setRefreshHooks,
   setProtocolReserves,
   setNetWorth,
   setYourSupply,

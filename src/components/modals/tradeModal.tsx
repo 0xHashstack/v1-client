@@ -43,11 +43,10 @@ import {
   setTransactionStatus,
   selectActiveTransactions,
   setActiveTransactions,
-  selectProtocolStats,
-  selectOraclePrices,
   // setTransactionStarted,
   // selectTransactionStarted,
 } from "@/store/slices/userAccountSlice";
+import { selectProtocolStats,selectOraclePrices } from "@/store/slices/readDataSlice";
 import {
   selectNavDropdowns,
   setNavDropdown,
@@ -80,7 +79,6 @@ import {
   tokenAddressMap,
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
-import Image from "next/image";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import useBorrowAndSpend from "@/Blockchain/hooks/Writes/useBorrowAndSpend";
 import { useWaitForTransaction } from "@starknet-react/core";

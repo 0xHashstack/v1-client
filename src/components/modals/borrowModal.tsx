@@ -40,9 +40,9 @@ import {
   selectAssetWalletBalance,
   selectActiveTransactions,
   setActiveTransactions,
-  selectProtocolStats,
-  selectOraclePrices,
 } from "@/store/slices/userAccountSlice";
+
+import { selectProtocolStats,selectOraclePrices } from "@/store/slices/readDataSlice";
 import {
   setModalDropdown,
   selectModalDropDowns,

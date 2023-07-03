@@ -5,12 +5,8 @@ import React, { useEffect } from "react";
 import { ProviderInterface } from "starknet";
 import { useAccount, useBlockNumber } from "@starknet-react/core";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectBlock,
-  selectCurrentNetwork,
-  setBlock,
-  setCurrentNetwork,
-} from "@/store/slices/userAccountSlice";
+
+import { setBlock,selectBlock,setCurrentNetwork,selectCurrentNetwork } from "@/store/slices/readDataSlice";
 const Footer = () => {
   const { account } = useAccount();
   const { data: block } = useBlockNumber({

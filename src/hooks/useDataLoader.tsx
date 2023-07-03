@@ -15,40 +15,27 @@ import {
   getTotalSupply,
 } from "@/Blockchain/scripts/userStats";
 import {
-  selectNetAPR,
-  selectNetWorth,
-  selectOraclePrices,
   selectOraclePricesCount,
-  selectProtocolReserves,
-  selectProtocolStats,
   selectProtocolStatsCount,
-  selectTransactionRefresh,
-  selectUserDeposits,
   selectUserDepositsCount,
   selectUserInfoCount,
-  selectUserLoans,
   selectUserLoansCount,
-  selectYourBorrow,
-  selectYourSupply,
   selectprotocolReservesCount,
   setAvgBorrowAPR,
   setAvgSupplyAPR,
-  setNetAPR,
-  setNetWorth,
-  setOraclePrices,
   setOraclePricesCount,
-  setProtocolReserves,
   setProtocolReservesCount,
-  setProtocolStats,
   setProtocolStatsCount,
-  setUserDeposits,
   setUserDepositsCount,
   setUserInfoCount,
   setUserLoansCount,
   setUserUnspentLoans,
-  setYourBorrow,
-  setYourSupply,
 } from "@/store/slices/userAccountSlice";
+import { setOraclePrices,selectOraclePrices,selectTransactionRefresh, selectProtocolReserves,setProtocolReserves } from "@/store/slices/readDataSlice";
+import { setProtocolStats,selectProtocolStats,setNetWorth,setNetAPR,selectNetAPR, selectNetWorth,setYourBorrow,selectYourBorrow ,setYourSupply,selectYourSupply} from "@/store/slices/readDataSlice";
+
+import { setUserDeposits,selectUserDeposits } from "@/store/slices/readDataSlice";
+import { setUserLoans,selectUserLoans } from "@/store/slices/readDataSlice";
 import { useAccount } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
