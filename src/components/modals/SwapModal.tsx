@@ -823,7 +823,7 @@ const SwapModal = ({
                   0.1%
                 </Text>
               </Box>
-              <Box display="flex" justifyContent="space-between" mb="0.3rem">
+              {/* <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text
                     color="#6A737D"
@@ -870,7 +870,7 @@ const SwapModal = ({
                     <Text>1.23</Text>
                   </Box>
                 </Box>
-              </Box>
+              </Box> */}
               <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text

@@ -2272,13 +2272,25 @@ const TradeModal = ({
                       >
                         <Box display="flex" gap="2px">
                           <Box mt="2px">
-                            <SmallEth />
+                            {/* <SmallEth /> */}
+                            <Image
+                              src={`/${toMarketLiqA}.svg`}
+                              alt="liquidity split coin1"
+                              width="12"
+                              height="12"
+                            />
                           </Box>
                           <Text>1.23</Text>
                         </Box>
                         <Box display="flex" gap="2px">
                           <Box mt="2px">
-                            <SmallUsdt />
+                            {/* <SmallUsdt /> */}
+                            <Image
+                              src={`/${toMarketLiqB}.svg`}
+                              alt="liquidity split coin1"
+                              width="12"
+                              height="12"
+                            />
                           </Box>
                           <Text>1.23</Text>
                         </Box>
