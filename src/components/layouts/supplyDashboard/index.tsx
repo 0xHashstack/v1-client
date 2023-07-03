@@ -29,8 +29,15 @@ import { useAccount } from "@starknet-react/core";
 import { IDeposit } from "@/Blockchain/interfaces/interfaces";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import numberFormatter from "@/utils/functions/numberFormatter";
-import { useDispatch } from "react-redux";
-import { selectProtocolStats, selectUserDeposits, setUserDeposits } from "@/store/slices/userAccountSlice";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  selectProtocolStats,
+  selectUserDeposits,
+  setUserDeposits,
+} from "@/store/slices/userAccountSlice";
+import { effectiveAprDeposit } from "@/Blockchain/scripts/userStats";
+import { token } from "@project-serum/anchor/dist/cjs/utils";
+import { isTemplateExpression } from "typescript";
 
 export interface ICoin {
   name: string;
@@ -108,9 +115,6 @@ const SupplyDashboard = ({
   // gap: string;
   // rowItems: any;
 }) => {
-  let lower_bound = 6 * (currentPagination - 1);
-  let upper_bound = lower_bound + 5;
-  upper_bound = Math.min(Coins.length - 1, upper_bound);
   // console.log("aryan " + lower_bound + " " + upper_bound);
 
   const { address } = useAccount();
@@ -124,7 +128,9 @@ const SupplyDashboard = ({
   const [statusHoverIndex, setStatusHoverIndex] = useState("-1");
 
   const [supplies, setSupplies] = useState<IDeposit[]>([]);
-  const dispatch=useDispatch();
+  let userDeposits = useSelector(selectUserDeposits);
+  let reduxProtocolStats = useSelector(selectProtocolStats);
+  const dispatch = useDispatch();
   const handleStatusHover = (idx: string) => {
     setStatusHoverIndex(idx);
   };
@@ -132,15 +138,21 @@ const SupplyDashboard = ({
   const handleStatusHoverLeave = () => {
     setStatusHoverIndex("-1");
   };
+  const [avgs, setAvgs] = useState<any>([])
+  const avgsData:any=[];
   useEffect(() => {
     const getSupply = async () => {
+      if (!address) {
+        return;
+      }
       console.log("all deposits calling started");
       try {
-        if (!address) return;
-        const supply = await getUserDeposits(address);
+        const supply = userDeposits;
+        console.log("users deposits - ", userDeposits);
 
-        
-        console.log("supply : ", supply);
+        // const supply = await getUserDeposits(address);
+
+        console.log("supply in supply dash: ", supply);
         if (!supply) return;
         setSupplies([
           supply?.[2],
@@ -149,23 +161,66 @@ const SupplyDashboard = ({
           supply?.[1],
           supply?.[4],
         ]);
-        dispatch(setUserDeposits(supply))
+        if(avgs.length==0){
+                  for(var i=0;i<supply?.length;i++){
+                    const avg=await effectiveAprDeposit(supply[i],reduxProtocolStats);
+                    const data={
+                      token:supply[i].token,
+                      avg:avg?.toFixed(2)
+                    }
+                    // avgs.push(data)
+                    avgsData.push(data);
+                    // avgs.push()
+                  }
+                  setAvgs(avgsData);
+                }
+                console.log(avgs,"avgs in supply")
+
+        // dispatch(setUserDeposits(supply));
       } catch (err) {
         console.log("supplies", err);
       }
     };
     getSupply();
   }, [address]);
+  // useEffect(()=>{
+  //   const fetchEffectiveApr=async()=>{
+  //     try{
+  //       const supply=userDeposits;
+  //       if(avgs.length==0){
+  //         for(var i=0;i<supply?.length;i++){
+  //           const avg=await effectiveAprDeposit(supply[i],reduxProtocolStats);
+  //           const data={
+  //             token:supply[i].token,
+  //             avg:avg
+  //           }
+  //           // avgs.push(data)
+  //           avgsData.push(data);
+  //           // avgs.push()
+  //         }
+  //         setAvgs(avgsData);
+  //       }
+  //     }catch(err){
+  //       console.log(err);
+  //     }
+
+  //     fetchEffectiveApr();
+  //     console.log(avgs,"avgs in suppply")
+  //   }
+  // },[userDeposits])
   const [protocolStats, setProtocolStats]: any = useState([]);
+  const [effectiveSupplyApr, setEffectiveSupplyApr] = useState<any>()
   useEffect(() => {
     const getMarketData = async () => {
       try {
-        const stats = await getProtocolStats();
-        if(stats){
-          console.log("se3nding",stats)
-          dispatch(setProtocolStats(stats));
+        const stats = reduxProtocolStats;
+
+        // const stats = await getProtocolStats();
+        if (stats) {
+          console.log("se3nding", stats);
+          // dispatch(setProtocolStats(stats));
         }
-        console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
+        // console.log("SupplyDashboard fetchprotocolstats ", stats); //23014
         // const temp: any = ;
         setProtocolStats([
           stats?.[2],
@@ -174,12 +229,14 @@ const SupplyDashboard = ({
           stats?.[1],
           stats?.[4],
         ]);
+       
       } catch (error) {
         console.log("error on getting protocol stats");
       }
     };
     getMarketData();
-  }, [address]);
+  }, [reduxProtocolStats]);
+  // console.log(protocolStats,"data protocol stats in supply")
 
   useEffect(() => {
     let temp: any = [];
@@ -190,6 +247,9 @@ const SupplyDashboard = ({
     });
     setSupplyMarkets(temp);
   }, [supplies]);
+  let lower_bound = 6 * (currentPagination - 1);
+  let upper_bound = lower_bound + 5;
+  upper_bound = Math.min(supplies.length - 1, upper_bound);
   // useEffect(() => {
   //   try {
   //     const supply = async () => {
@@ -208,6 +268,7 @@ const SupplyDashboard = ({
       setLoading(false);
     }
   }, [supplies]);
+  
   return loading ? (
     <>
       <Box
@@ -438,7 +499,7 @@ const SupplyDashboard = ({
                       overflow={"hidden"}
                       textAlign={"center"}
                     >
-                      <Text
+                    <Text
                         width="100%"
                         height="100%"
                         display="flex"
@@ -447,8 +508,14 @@ const SupplyDashboard = ({
                         fontWeight="400"
                       >
                         {/* {checkGap(idx1, idx2)} */}
-                        {supply?.EffectiveApr || "8.00%"}
+                        {/* {(!avgs?.token==supply?.token) ? avgs.avg :  "2.00%"} */}
+                        {/* {avgs[2]} */}
+                    
+                        {avgs?.find(item=>item.token == supply?.token)?.avg } %
+                        {/* {supply?.token} */}
+
                       </Text>
+
                     </Td>
 
                     <Td

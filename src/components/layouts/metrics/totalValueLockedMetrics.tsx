@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { Box, Button } from "@chakra-ui/react";
+import { Box, Button, Skeleton } from "@chakra-ui/react";
 import AssetUtilizationChart from "../charts/AssetUtilization";
 import AssetUtilizationRateChart from "../charts/AssetUtilizationRate";
 import SupplyAprChart from "../charts/SupplyApr";
 import BorrowAprChart from "../charts/BorrowApr";
 import RiskPremiumChart from "../charts/RiskPremium";
 import SupplyAPRLiquidityProvider from "../charts/supplyAPRLiquitityProvider";
+import { useSelector } from "react-redux";
+import { selectProtocolReserves } from "@/store/slices/userAccountSlice";
+import numberFormatter from "@/utils/functions/numberFormatter";
 
 const TotalValueLockedMetrics = () => {
   //   const series2 = [
@@ -153,6 +156,7 @@ const TotalValueLockedMetrics = () => {
   //   const [supplyAPRChartPeriod, setSupplyAPRChartPeriod] = useState(0);
   //   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
   //     useState(0);
+  const protocolReserves = useSelector(selectProtocolReserves);
   return (
     <Box display="flex" gap="30px">
       <Box display="flex" flexDirection="column" gap="8px" width="100%">
@@ -178,7 +182,14 @@ const TotalValueLockedMetrics = () => {
             justifyContent="space-between"
             my="auto"
           >
-            <Box mt="auto">Total Value Locked: $8932.14</Box>
+            {!protocolReserves ?<Skeleton
+              width="6rem"
+              height="1.9rem"
+              startColor="#101216"
+              endColor="#2B2F35"
+              borderRadius="6px"
+            />:<Box mt="auto">Total Value Locked: ${numberFormatter(protocolReserves?.totalReserves)}</Box>}
+            
             {/* <Box display="flex" gap="2">
               <Button
                 color="#2B2F35"

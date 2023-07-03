@@ -1,10 +1,16 @@
 import { Contract } from "starknet";
 import { diamondAddress, getProvider, getRTokenFromAddress } from "../stark-constants";
 import routerAbi from "@/Blockchain/abis/router_abi.json";
-import { BNtoNum } from "../utils/utils";
+import { BNtoNum, parseAmount } from "../utils/utils";
 import { IMarketInfo, NativeToken, RToken } from "../interfaces/interfaces";
 import { OraclePrice } from "./getOraclePrices";
 import { tokenAddressMap } from "../utils/addressServices";
+
+// Health Factor = (Total Collateral Value in USD + Total Current Loan value in USD) / Total Borrow Value in USD
+// In case of taking of a new loan, 
+// the current loan value == borrowed value of the new loan
+// so the formula becomes:
+// Health Factor = (Total Collateral Value in USD + Total Borrow Value in USD ) / Total Borrow Value in USD
 
 export async function getExistingLoanHealth(loanId: string) {
   const provider = getProvider();
@@ -13,11 +19,11 @@ export async function getExistingLoanHealth(loanId: string) {
     const res = await routerContract.call("get_health_factor", [loanId], {
       blockIdentifier: "pending",
     });
-    console.log("health factor: ", res, res?.factor)
+    console.log("health factor for loanId", loanId, "is", parseAmount(res?.factor, 5));
     return BNtoNum(res?.factor, 6);
   }
   catch (error) {
-    console.log(error);
+    console.log("health factor error: ", error);
   }
 }
 
@@ -39,7 +45,7 @@ export async function getLoanHealth_NativeCollateral(
     const loanAmountUsd = loanAmount * oraclePriceLoanMarket?.price;
     const collateralAmountUsd = collateralAmount * oraclePriceCollateralMarket?.price;
 
-    return loanAmountUsd/collateralAmountUsd;
+    return (loanAmountUsd + collateralAmountUsd)/loanAmountUsd;
   }
 }
 
@@ -66,6 +72,6 @@ export async function getLoanHealth_RTokenCollateral(
     const loanAmountUsd = loanAmount * oraclePriceLoanMarket?.price;
     const collateralAmountUsd = collateralAmount * oraclePriceCollateralMarket?.price;
 
-    return loanAmountUsd/collateralAmountUsd;
+    return (loanAmountUsd + collateralAmountUsd)/loanAmountUsd;
   }
 }

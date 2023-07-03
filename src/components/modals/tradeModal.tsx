@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import {
   Modal,
   ModalOverlay,
@@ -92,6 +90,7 @@ import BtcToDai from "@/assets/icons/pools/btcToDai";
 import UsdtToDai from "@/assets/icons/pools/usdtToDai";
 import UsdcToDai from "@/assets/icons/pools/usdcToDai";
 import MySwap from "@/assets/icons/dapps/mySwap";
+import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 const TradeModal = ({
   buttonText,
   coin,
@@ -179,8 +178,24 @@ const TradeModal = ({
     BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+    rUSDT:useBalanceOf(tokenAddressMap["rUSDT"] ||""),
+    rUSDC:useBalanceOf(tokenAddressMap["rUSDC"] ||""),
+    rBTC:useBalanceOf(tokenAddressMap["rBTC"] ||""),
+    rETH:useBalanceOf(tokenAddressMap["rETH"] ||""),
+    rDAI:useBalanceOf(tokenAddressMap["rDAI"] ||""),
   };
-  const [walletBalance, setwalletBalance] = useState(0);
+  const [walletBalance, setwalletBalance] = useState<any>(
+    walletBalances[coin.name]?.statusBalanceOf === "success"
+        ? Number(
+            BNtoNum(
+              uint256.uint256ToBN(
+                walletBalances[coin.name]?.dataBalanceOf?.balance
+              ),
+              tokenDecimalsMap[coin.name]
+            )
+          )
+        : 0
+  );
   useEffect(() => {
     setwalletBalance(
       walletBalances[coin.name]?.statusBalanceOf === "success"
@@ -409,9 +424,9 @@ const TradeModal = ({
       walletBalances[coin]?.statusBalanceOf === "success"
         ? Number(
             BNtoNum(
-              uint256.uint256ToBN(walletBalances[coin]?.dataBalanceOf?.balance)
-            ),
-            tokenDecimalsMap[coin.name]
+              uint256.uint256ToBN(walletBalances[coin]?.dataBalanceOf?.balance),
+              tokenDecimalsMap[coin?.name]
+            )
           )
         : 0
     );
@@ -853,7 +868,22 @@ const TradeModal = ({
                                     pr="2"
                                     onClick={() => {
                                       setCurrentCollateralCoin(coin);
+                                      setCollateralMarket(coin);
                                       setRToken(coin);
+                                      setwalletBalance(
+                                        walletBalances[coin]?.statusBalanceOf ===
+                                          "success"
+                                          ? Number(
+                                              BNtoNum(
+                                                uint256.uint256ToBN(
+                                                  walletBalances[coin]
+                                                    ?.dataBalanceOf?.balance
+                                                ),
+                                                tokenDecimalsMap[coin]
+                                              )
+                                            )
+                                          : 0
+                                      );
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
@@ -896,7 +926,7 @@ const TradeModal = ({
                                       >
                                         rToken Balance:{" "}
                                         {validRTokens && validRTokens.length > 0
-                                          ? amount
+                                          ? amount.toFixed(2)
                                           : "loading..."}
                                       </Box>
                                     </Box>
@@ -928,7 +958,7 @@ const TradeModal = ({
                                 onClick={() => {
                                   setCurrentCollateralCoin(coin);
                                   setCollateralMarket(coin);
-                                  setRToken("");
+                                  setRToken("rBTC");
                                   setwalletBalance(
                                     walletBalances[coin]?.statusBalanceOf ===
                                       "success"
@@ -939,8 +969,8 @@ const TradeModal = ({
                                                 ?.dataBalanceOf?.balance
                                             ),
                                             tokenDecimalsMap[coin]
-                                          )
-                                        )
+                                          )).toFixed(2)
+                                        
                                       : 0
                                   );
                                 }}
@@ -989,7 +1019,7 @@ const TradeModal = ({
                                         ),
                                         tokenDecimalsMap[coin]
                                       )
-                                    )}
+                                    ).toFixed(2)}
                                   </Box>
                                 </Box>
                               </Box>
@@ -1128,10 +1158,7 @@ const TradeModal = ({
                           justifyContent="flex-end"
                         >
                           Wallet Balance:{" "}
-                          {walletBalance.toFixed(5).replace(/\.?0+$/, "")
-                            .length > 5
-                            ? Math.floor(walletBalance)
-                            : walletBalance}
+                          { walletBalance}
                           <Text color="#6E7781" ml="0.2rem">
                             {` ${currentCollateralCoin}`}
                           </Text>
@@ -1149,10 +1176,7 @@ const TradeModal = ({
                         fontFamily="Inter"
                       >
                         Wallet Balance:{" "}
-                        {walletBalance.toFixed(5).replace(/\.?0+$/, "").length >
-                        5
-                          ? Math.floor(walletBalance)
-                          : walletBalance}
+                        {walletBalance}
                         <Text color="#6E7781" ml="0.2rem">
                           {` ${currentCollateralCoin}`}
                         </Text>
@@ -1604,7 +1628,7 @@ const TradeModal = ({
                           display="flex"
                           justifyContent="flex-end"
                         >
-                          Available Reserves: {currentAvailableReserves}
+                          Available Reserves: {currentAvailableReserves.toFixed(2)}
                           <Text color="#6E7781" ml="0.2rem">
                             {` ${currentBorrowCoin}`}
                           </Text>
@@ -2018,7 +2042,10 @@ const TradeModal = ({
                                 pr="2"
                                 onClick={() => {
                                   setCurrentPool(pool);
+                                  //set type for pools as native token[]
+                                  //@ts-ignore
                                   setToMarketLiqA(pool.split("/")[0]);
+                                  //@ts-ignore
                                   setToMarketLiqB(pool.split("/")[1]);
                                 }}
                               >
@@ -2058,7 +2085,7 @@ const TradeModal = ({
                           className="dropdown-container"
                           boxShadow="dark-lg"
                         >
-                          {coins.map((coin: string, index: number) => {
+                          {coins.map((coin: NativeToken, index: number) => {
                             return (
                               <Box
                                 key={index}
@@ -2290,7 +2317,7 @@ const TradeModal = ({
                       </Tooltip>
                     </Box>
                     <Text color="#6E7681" fontSize="xs">
-                      5.56%
+                      $0.91
                     </Text>
                   </Box>
                   <Box display="flex" justifyContent="space-between" mb="1">

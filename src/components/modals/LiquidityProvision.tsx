@@ -1125,7 +1125,7 @@ const LiquidityProvisionModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    5.56%
+                    $ 0.91
                   </Text>
                 </Box>
                 <Box display="flex" justifyContent="space-between" mb="0.3rem">

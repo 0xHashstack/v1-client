@@ -89,7 +89,7 @@ import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 // import { useFetchToastStatus } from "../layouts/toasts";
 import TransactionFees from "../../../TransactionFees.json";
-import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
+import mixpanel from "mixpanel-browser";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -177,12 +177,10 @@ const SupplyModal = ({
   //   )
   // ))
 
-  // useEffect(() => { 
-  //   getExistingLoanHealth("74");
-  // }, [])
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY, { debug: true, track_pageview: true, persistence: 'localStorage' });
   // const walletBalances = useSelector(selectAssetWalletBalance);
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin.name]?.statusBalanceOf === "success"
@@ -454,6 +452,11 @@ const SupplyModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
+        mixpanel.track('Supply Market Status',{
+          "Status":"Success",
+          "Token":currentSelectedCoin,
+          "TokenAmount":inputAmount
+        })
         setDepositTransHash(depositStake?.transaction_hash);
         dispatch(setTransactionStatus("success"));
         // console.log("Status transaction", deposit);
@@ -496,6 +499,11 @@ const SupplyModal = ({
         }
         // const deposit = await writeAsyncDepositStake();
         console.log("Supply Modal - deposit ", deposit);
+        mixpanel.track('Supply Market Status',{
+          "Status":"Success",
+          "Token":currentSelectedCoin,
+          "TokenAmount":inputAmount
+        })
         setDepositTransHash(deposit?.transaction_hash);
         // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
         // }
@@ -505,7 +513,9 @@ const SupplyModal = ({
       }
     } catch (err: any) {
       // setTransactionFailed(true);
-
+      mixpanel.track('Supply Market Status',{
+        'Status':"Failure"
+    })
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
@@ -1047,7 +1057,7 @@ const SupplyModal = ({
                     >
                       Wallet Balance:{" "}
                       {walletBalance.toFixed(5).replace(/\.?0+$/, "").length > 5
-                        ? Math.floor(walletBalance)
+                        ? walletBalance.toFixed(2)
                         : walletBalance}
                       <Text color="#6E7781" ml="0.2rem">
                         {` ${currentSelectedCoin}`}
@@ -1067,7 +1077,7 @@ const SupplyModal = ({
                   >
                     Wallet Balance:{" "}
                     {walletBalance.toFixed(5).replace(/\.?0+$/, "").length > 5
-                      ? Math.floor(walletBalance)
+                      ? walletBalance.toFixed(2)
                       : walletBalance}
                     <Text color="#6E7781" ml="0.2rem">
                       {` ${currentSelectedCoin}`}
@@ -1093,11 +1103,17 @@ const SupplyModal = ({
                       setSliderValue(val);
                       var ans = (val / 100) * walletBalance;
                       // console.log(ans);
-                      ans = Math.round(ans * 100) / 100;
-                      // console.log(ans)
-                      // dispatch(setInputSupplyAmount(ans));
-                      setDepositAmount(ans);
-                      setinputAmount(ans);
+                      if(val==100){
+                        setDepositAmount(walletBalance)
+                        setinputAmount(walletBalance)
+                      }else{
+                        ans = Math.round(ans * 100) / 100;
+                        
+                        // console.log(ans)
+                        // dispatch(setInputSupplyAmount(ans));
+                        setDepositAmount(ans);
+                        setinputAmount(ans);
+                      }
                     }}
                     isDisabled={transactionStarted == true}
                     _disabled={{ cursor: "pointer" }}
@@ -1307,7 +1323,7 @@ const SupplyModal = ({
                     font-size="12px"
                     color="#6A737D"
                   >
-                    $ 0.50
+                    $ 0.90
                   </Text>
                 </Text>
                 <Text
@@ -1379,6 +1395,9 @@ const SupplyModal = ({
                       setTransactionStarted(true);
                       if (transactionStarted === false) {
                         handleTransaction();
+                        mixpanel.track('Supply Market Clicked Button',{
+                          'Supply Clicked':true
+                        })
                       }
                       // handleTransaction();
                       // dataDeposit();

@@ -6,6 +6,7 @@ import SupplyAprChart from "../charts/SupplyApr";
 import BorrowAprChart from "../charts/BorrowApr";
 // import { Button } from "reactstrap";
 import SupplyAPRLiquidityProvider from "../charts/supplyAPRLiquitityProvider";
+import YourMetricsSupply from "../charts/YourMetricsSupply";
 const SupplyMetrics = ({ currentMarketCoin }: any) => {
   const series1: any = [
     [
@@ -151,6 +152,7 @@ const SupplyMetrics = ({ currentMarketCoin }: any) => {
           <AssetUtilizationChart
             color={"#846ED4"}
             series={series1[supplyAPRChartPeriod]}
+            chartType="bar"
           />
         </Box>
         <Box display="flex" flexDirection="column" gap="8px" width="100%">
@@ -170,7 +172,7 @@ const SupplyMetrics = ({ currentMarketCoin }: any) => {
           >
             Supply APR:{" "}
           </Box>
-          <AssetUtilizationChart color={"#2BA26F"} />
+          <SupplyAprChart color={"#2BA26F"} />
         </Box>
       </Box>
       <Box display="flex" gap="30px">
@@ -296,6 +298,30 @@ const SupplyMetrics = ({ currentMarketCoin }: any) => {
           <AssetUtilizationChart
             color={"#2BA26F"}
             series={series2[liquidityProviderChartPeriod]}
+          />
+        </Box>
+      </Box>
+        <Box display="flex" gap="30px">
+        <Box display="flex" flexDirection="column" gap="8px" width="50%">
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="flex-start"
+            height="72px"
+            border="1px solid #2B2F35"
+            color="#E6EDF3"
+            padding="24px 24px 16px"
+            fontSize="20px"
+            fontStyle="normal"
+            fontWeight="600"
+            lineHeight="30px"
+            borderRadius="6px"
+          >
+            Median Supply By Market:{" "}
+          </Box>
+          <YourMetricsSupply
+            color={"#846ED4"}
+            // series={series2[liquidityProviderChartPeriod]}
           />
         </Box>
       </Box>

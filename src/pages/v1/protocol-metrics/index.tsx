@@ -25,6 +25,7 @@ import MarketMetrics from "@/components/layouts/metrics/borrowMetrics";
 import BorrowMetrics from "@/components/layouts/metrics/borrowMetrics";
 import MarketInformation from "@/components/layouts/metrics/marketInformation";
 import TotalCommunityActivity from "@/components/layouts/metrics/totalCommunityActivity";
+import { selectProtocolReserves } from "@/store/slices/userAccountSlice";
 const ProtocolMetrics = () => {
   //   const [metricsCancel, setMetricsCancel] = useState(false);
   const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
@@ -57,6 +58,7 @@ const ProtocolMetrics = () => {
     if (currentMetric === "Total Community Activity")
       return <TotalCommunityActivity />;
   };
+  const protocolReserves = useSelector(selectProtocolReserves);
   return (
     <PageCard pt="8rem">
       <Box
