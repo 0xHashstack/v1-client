@@ -61,6 +61,7 @@ import { type } from "os";
 import GetTokensModal from "@/components/modals/getTokens";
 import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import { Coins } from "../dashboardLeft";
+import mixpanel from "mixpanel-browser";
 const Navbar = ({ validRTokens }: any) => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
@@ -100,7 +101,7 @@ const Navbar = ({ validRTokens }: any) => {
 
   const router = useRouter();
   const { pathname } = router;
-
+  mixpanel.init("eb921da4a666a145e3b36930d7d984c2" || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
   useOutsideClick({
@@ -292,6 +293,11 @@ const Navbar = ({ validRTokens }: any) => {
           }}
           onMouseEnter={() => setStakeHover(true)}
           onMouseLeave={() => setStakeHover(false)}
+          onClick={()=>{
+            mixpanel.track('Stake Button Clicked Navbar',{
+              "Clicked":true,
+            })
+          }}
         >
           {/* <Box
             display="flex"

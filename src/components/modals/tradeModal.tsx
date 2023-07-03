@@ -91,6 +91,7 @@ import UsdtToDai from "@/assets/icons/pools/usdtToDai";
 import UsdcToDai from "@/assets/icons/pools/usdcToDai";
 import MySwap from "@/assets/icons/dapps/mySwap";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
+import mixpanel from "mixpanel-browser";
 const TradeModal = ({
   buttonText,
   coin,
@@ -348,7 +349,7 @@ const TradeModal = ({
     }
   };
   const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-
+  mixpanel.init("eb921da4a666a145e3b36930d7d984c2" || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
     coin ? coin.name : "BTC"
   );
@@ -531,6 +532,15 @@ const TradeModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
+          mixpanel.track('Trade Modal Market Status',{
+            "Status":"Failure",
+            "BorrowToken":currentBorrowCoin,
+            "BorrowAmount":inputBorrowAmount,
+            "CollateralToken":currentCollateralCoin,
+            "CollateralAmount":inputCollateralAmount,
+            "Pool Selected":currentPool,
+            "Dapp Selected":currentDapp
+          })
 
           dispatch(setActiveTransactions(activeTransactions));
         }
@@ -566,6 +576,15 @@ const TradeModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
+          mixpanel.track('Trade Modal Market Status',{
+            "Status":"Failure",
+            "BorrowToken":currentBorrowCoin,
+            "BorrowAmount":inputBorrowAmount,
+            "CollateralToken":currentCollateralCoin,
+            "CollateralAmount":inputCollateralAmount,
+            "Pool Selected":currentPool,
+            "Dapp Selected":currentDapp
+          })
 
           dispatch(setActiveTransactions(activeTransactions));
         }
@@ -583,6 +602,9 @@ const TradeModal = ({
           </CopyToClipboard>
         </div>
       );
+      mixpanel.track('Trade Modal Market Status',{
+        "Status":"Failure",
+      })
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
@@ -2418,34 +2440,37 @@ const TradeModal = ({
                   currentPoolCoin != "Select a pool") ? (
                   <Box
                     onClick={() => {
-                      // setTransactionStarted(true);
-                      console.log(
-                        "trade clicked",
-                        "rToken",
-                        rToken,
-                        "rTokenAmount",
-                        rTokenAmount,
-                        "collateralMarket",
-                        collateralMarket,
-                        "collateralAmount",
-                        collateralAmount,
-                        "loanMarket",
-                        loanMarket,
-                        "loanAmount",
-                        loanAmount,
-                        "method",
-                        method,
-                        "l3App",
-                        l3App,
-                        "toMarketSwap",
-                        toMarketSwap,
-                        "toMarketLiqA",
-                        toMarketLiqA,
-                        "toMarketLiqB",
-                        toMarketLiqB
-                      );
+                      setTransactionStarted(true);
+                      // console.log(
+                      //   "trade clicked",
+                      //   "rToken",
+                      //   rToken,
+                      //   "rTokenAmount",
+                      //   rTokenAmount,
+                      //   "collateralMarket",
+                      //   collateralMarket,
+                      //   "collateralAmount",
+                      //   collateralAmount,
+                      //   "loanMarket",
+                      //   loanMarket,
+                      //   "loanAmount",
+                      //   loanAmount,
+                      //   "method",
+                      //   method,
+                      //   "l3App",
+                      //   l3App,
+                      //   "toMarketSwap",
+                      //   toMarketSwap,
+                      //   "toMarketLiqA",
+                      //   toMarketLiqA,
+                      //   "toMarketLiqB",
+                      //   toMarketLiqB
+                      // );
 
                       if (transactionStarted == false) {
+                        mixpanel.track('Trade Button Clicked Market page',{
+                          'Clicked':true
+                        })
                         handleBorrowAndSpend();
                       }
                     }}

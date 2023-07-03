@@ -77,6 +77,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import TransactionFees from "../../../TransactionFees.json";
+import mixpanel from "mixpanel-browser";
 
 const StakeUnstakeModal = ({
   buttonText,
@@ -205,6 +206,7 @@ const StakeUnstakeModal = ({
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
 
   const [toastId, setToastId] = useState<any>();
+  mixpanel.init("eb921da4a666a145e3b36930d7d984c2"|| "", { debug: true, track_pageview: true, persistence: 'localStorage' });
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
@@ -252,6 +254,9 @@ const StakeUnstakeModal = ({
   const handleStakeTransaction = async () => {
     try {
       // console.log("staking", rToken, rTokenAmount);
+      mixpanel.track('Action Selected',{
+        "Actions":"Stake"
+      })
       const stake = await writeAsyncStakeRequest();
       setDepositTransHash(stake?.transaction_hash);
       if (stake?.transaction_hash) {
@@ -281,6 +286,11 @@ const StakeUnstakeModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
+        mixpanel.track('Stake Modal Market Page Status',{
+          "Status":"Success",
+          "Token":currentSelectedStakeCoin,
+          "TokenAmount":inputStakeAmount
+        })
 
         dispatch(setActiveTransactions(activeTransactions));
       }
@@ -302,6 +312,9 @@ const StakeUnstakeModal = ({
           </CopyToClipboard>
         </div>
       );
+      mixpanel.track('Stake Modal Market Page Status',{
+        "Status":"Failure",
+      })
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
@@ -316,7 +329,7 @@ const StakeUnstakeModal = ({
       if (unstake?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait your transaction is running in background : ${inputStakeAmount} ${currentSelectedStakeCoin} `,
+          `Please wait your transaction is running in background : ${inputUnstakeAmount} ${currentSelectedUnstakeCoin} `,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -340,6 +353,11 @@ const StakeUnstakeModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
+        mixpanel.track('Unstake Modal Market Page Status',{
+          "Status":"Success",
+          "Token":currentSelectedUnstakeCoin,
+          "TokenAmount":inputUnstakeAmount
+        })
 
         dispatch(setActiveTransactions(activeTransactions));
       }
@@ -356,6 +374,9 @@ const StakeUnstakeModal = ({
           </CopyToClipboard>
         </div>
       );
+      mixpanel.track('Unstake Modal Market Page Status',{
+        "Status":"Failure",
+      })
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
@@ -1281,6 +1302,9 @@ const StakeUnstakeModal = ({
                           <Box
                             onClick={() => {
                               if (transactionStarted == false) {
+                                mixpanel.track('Stake Button Clicked Market page',{
+                                  'Stake Clicked':true
+                                })
                                 handleStakeTransaction();
                               }
                               setTransactionStarted(true);
@@ -1965,6 +1989,9 @@ const StakeUnstakeModal = ({
                         <Box
                           onClick={() => {
                             if (unstakeTransactionStarted == false) {
+                              mixpanel.track('Unstake Button Clicked Market page',{
+                                'Unstake Clicked':true
+                              })
                               hanldeUnstakeTransaction();
                             }
                             setUnstakeTransactionStarted(true);
