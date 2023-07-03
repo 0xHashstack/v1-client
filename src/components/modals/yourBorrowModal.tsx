@@ -1960,13 +1960,13 @@ const YourBorrowModal = ({
     // if (!currentBorrowId1 || currentBorrowId1 == "") {
     //   return;
     // }
-    console.log(
-      "toMarketSplitConsole",
-      currentBorrowId1.slice(5),
-      toMarketA,
-      toMarketB
-      // borrow
-    );
+    // console.log(
+    //   "toMarketSplitConsole",
+    //   currentBorrowId1.slice(5),
+    //   toMarketA,
+    //   toMarketB
+    //   // borrow
+    // );
     // setCurrentLPTokenAmount(null);
     // setCurrentSplit(null);
     setCurrentLPTokenAmount(null);
@@ -1984,23 +1984,25 @@ const YourBorrowModal = ({
       currentPool === "Select a pool"
     )
       return;
-    const lp_tokon = await getJediEstimatedLpAmountOut(
-      currentBorrowId1.slice(5),
-      toMarketA,
-      toMarketB
-      // 99,
-      // "ETH",
-      // "USDT"
-    );
-    console.log("toMarketSplitLP", lp_tokon);
-    setCurrentLPTokenAmount(lp_tokon);
+    // const lp_tokon = await getJediEstimatedLpAmountOut(
+    //   // currentBorrowId1.slice(5),
+    //   // toMarketA,
+    //   // toMarketB
+    //   "USDT",
+    //   "99",
+    //   "ETH",
+    //   "USDT"
+    // );
+    // console.log("toMarketSplitLP", lp_tokon);
+    // setCurrentLPTokenAmount(lp_tokon);
     const split = await getJediEstimateLiquiditySplit(
-      currentBorrowId1.slice(5),
-      toMarketA,
-      toMarketB
-      // 99,
-      // "ETH",
-      // "USDT"
+      // currentBorrowId1.slice(5),
+      // toMarketA,
+      // toMarketB
+      "USDT",
+      "99",
+      "ETH",
+      "USDT"
     );
     console.log("toMarketSplit", split);
     setCurrentSplit(split);
