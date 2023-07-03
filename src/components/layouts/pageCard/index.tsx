@@ -19,7 +19,6 @@ import {
   selectToastTransactionStarted,
   setAccount,
   setAssetWalletBalance,
-  setUserLoans,
   selectProtocolReserves,
   selectYourSupply,
   selectNetWorth,
