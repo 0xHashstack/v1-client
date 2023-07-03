@@ -13,10 +13,9 @@ import YourSupplyModal from "@/components/modals/yourSupply";
 import { useDispatch } from "react-redux/es/hooks/useDispatch";
 import { useAccount, useConnectors } from "@starknet-react/core";
 import {
-  selectNetAPR,
-  selectYourSupply,
   setSpendBorrowSelectedDapp,
 } from "@/store/slices/userAccountSlice";
+import { selectYourSupply,selectNetAPR } from "@/store/slices/readDataSlice";
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import { IDeposit } from "@/Blockchain/interfaces/interfaces";
 import { useSelector } from "react-redux";

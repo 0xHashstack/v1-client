@@ -43,11 +43,13 @@ import {
   setTransactionStatus,
   selectActiveTransactions,
   setActiveTransactions,
-  selectProtocolStats,
-  selectOraclePrices,
   // setTransactionStarted,
   // selectTransactionStarted,
 } from "@/store/slices/userAccountSlice";
+import {
+  selectProtocolStats,
+  selectOraclePrices,
+} from "@/store/slices/readDataSlice";
 import {
   selectNavDropdowns,
   setNavDropdown,
@@ -93,6 +95,10 @@ import UsdcToDai from "@/assets/icons/pools/usdcToDai";
 import MySwap from "@/assets/icons/dapps/mySwap";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 import mixpanel from "mixpanel-browser";
+import {
+  getLoanHealth_NativeCollateral,
+  getLoanHealth_RTokenCollateral,
+} from "@/Blockchain/scripts/LoanHealth";
 import {
   getLoanHealth_NativeCollateral,
   getLoanHealth_RTokenCollateral,
@@ -774,9 +780,9 @@ const TradeModal = ({
             my="auto"
             pos="relative"
           >
-            <Text color="black">
+            {/* <Text color="black">
               Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet
-            </Text>
+            </Text> */}
             <Text pos="absolute" top="8" left="8">
               Trade
             </Text>

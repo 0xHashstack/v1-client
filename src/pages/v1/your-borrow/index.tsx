@@ -13,13 +13,8 @@ import PageCard from "@/components/layouts/pageCard";
 import { Coins } from "@/utils/constants/coin";
 import { useDispatch, useSelector } from "react-redux";
 import { useAccount, useConnectors } from "@starknet-react/core";
-import {
-  selectNetAPR,
-  selectUserLoans,
-  selectYourBorrow,
-  setSpendBorrowSelectedDapp,
-  setUserLoans,
-} from "@/store/slices/userAccountSlice";
+import { selectYourBorrow,selectNetAPR } from "@/store/slices/readDataSlice";
+import { setUserLoans,selectUserLoans } from "@/store/slices/readDataSlice";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import { Skeleton } from "@chakra-ui/react";
@@ -44,14 +39,7 @@ const YourBorrow = () => {
   const { account, address } = useAccount();
   useDataLoader();
   const UserLoans = useSelector(selectUserLoans);
-  // useEffect(()=>{
-  //   const walletConnected = localStorage.getItem('lastUsedConnector');
-  //   if(walletConnected=="braavos"){
-  //     connect(connectors[0]);
-  //   }else if(walletConnected=="argentx"){
-  //     connect(connectors[1]);
-  //   }
-  // },[])
+
   // useEffect(() => {
   //   const loan = async () => {
   //     try {

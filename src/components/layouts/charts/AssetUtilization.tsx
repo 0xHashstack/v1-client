@@ -9,7 +9,6 @@ const AssetUtilizationChart = ({
   formatter,
   color,
   categories,
-  chartype
 }: any) => {
   const splineChartData = {
     series: series
@@ -25,18 +24,19 @@ const AssetUtilizationChart = ({
         toolbar: {
           show: false,
         },
+         type: 'bar',
       },
       dataLabels: {
-        position: 'top',
+        position: 'bottom',
         enabled: true,
-        style:{
-          colors:["#000000"]
+        style: {
+          colors: ["#000000"],
         },
         formatter: function(val:any) {
-          return val / 1000 + "k";; // Display the data value as the label
+          return val / 1000 + "k"; // Display the data value as the label
         },
-        
       },
+      
       xaxis: {
         labels: {
           style: {
@@ -100,7 +100,7 @@ const AssetUtilizationChart = ({
   return (
     <Box border="1px solid #2B2F35" borderRadius="6px" padding="16px 24px 40px">
       <ApexCharts
-        options={splineChartData.options}
+        options={splineChartData.options || ""}
         series={splineChartData.series}
         type="bar"
         height={350}

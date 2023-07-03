@@ -7,7 +7,7 @@ import BorrowAprChart from "../charts/BorrowApr";
 import RiskPremiumChart from "../charts/RiskPremium";
 import SupplyAPRLiquidityProvider from "../charts/supplyAPRLiquitityProvider";
 import { useSelector } from "react-redux";
-import { selectProtocolReserves } from "@/store/slices/userAccountSlice";
+import { selectProtocolReserves } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 
 const TotalValueLockedMetrics = () => {

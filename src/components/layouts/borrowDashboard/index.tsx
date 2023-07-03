@@ -23,7 +23,7 @@ import BorrowModal from "@/components/modals/borrowModal";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import { useSelector } from "react-redux";
-import { selectProtocolStats } from "@/store/slices/userAccountSlice";
+import { selectProtocolStats } from "@/store/slices/readDataSlice";
 
 export interface ICoin {
   name: string;

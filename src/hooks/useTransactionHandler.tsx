@@ -1,9 +1,9 @@
 import {
   selectActiveTransactions,
   setActiveTransactions,
-  setTransactionRefresh,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
+import { setTransactionRefresh } from "@/store/slices/readDataSlice";
 import { Text } from "@chakra-ui/react";
 import { UseTransactionResult, useTransactions } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";

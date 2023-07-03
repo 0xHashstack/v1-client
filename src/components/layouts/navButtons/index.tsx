@@ -85,6 +85,7 @@ const NavButtons = ({
                     style={{
                       cursor: "pointer",
                     }}
+                    // _hover={{ bg: "transparent", color: "#E6EDF3" }}
                   />
                 </Box>
               )}

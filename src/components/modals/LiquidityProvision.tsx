@@ -51,11 +51,11 @@ import {
   selectWalletBalance,
   setInputSupplyAmount,
   selectSelectedDapp,
-  selectUserLoans,
   setTransactionStatus,
   selectActiveTransactions,
   setActiveTransactions,
 } from "@/store/slices/userAccountSlice";
+import { selectUserLoans } from "@/store/slices/readDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,

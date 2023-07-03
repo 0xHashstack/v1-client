@@ -25,7 +25,7 @@ import MarketMetrics from "@/components/layouts/metrics/borrowMetrics";
 import BorrowMetrics from "@/components/layouts/metrics/borrowMetrics";
 import MarketInformation from "@/components/layouts/metrics/marketInformation";
 import TotalCommunityActivity from "@/components/layouts/metrics/totalCommunityActivity";
-import { selectProtocolReserves } from "@/store/slices/userAccountSlice";
+import { selectProtocolReserves } from "@/store/slices/readDataSlice";
 import useDataLoader from "@/hooks/useDataLoader";
 const ProtocolMetrics = () => {
   //   const [metricsCancel, setMetricsCancel] = useState(false);

@@ -61,14 +61,13 @@ import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
 
 import {
   selectActiveTransactions,
-  selectUserLoans,
   selectWalletBalance,
   setActiveTransactions,
   // setCurrentTransactionStatus,
   setInputYourBorrowModalRepayAmount,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
-
+import { selectUserLoans } from "@/store/slices/readDataSlice";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
@@ -1095,9 +1094,7 @@ const YourBorrowModal = ({
                         />
                       </Box>
                       <Text>
-                        {currentSplit ? (
-                          currentSplit[0]
-                        ) : (
+                        {/* {currentSplit?.[0] || (
                           <Skeleton
                             width="2.3rem"
                             height=".85rem"
@@ -1105,7 +1102,8 @@ const YourBorrowModal = ({
                             endColor="#101216"
                             borderRadius="6px"
                           />
-                        )}
+                          
+                        )} */}
                       </Text>
                     </Box>
                     <Box display="flex" gap="2px">
@@ -1119,9 +1117,7 @@ const YourBorrowModal = ({
                         />
                       </Box>
                       <Text>
-                        {currentSplit ? (
-                          currentSplit[1]
-                        ) : (
+                        {/* {currentSplit?.[1] || (
                           <Skeleton
                             width="2.3rem"
                             height=".85rem"
@@ -1129,7 +1125,7 @@ const YourBorrowModal = ({
                             endColor="#101216"
                             borderRadius="6px"
                           />
-                        )}
+                        )} */}
                       </Text>
                     </Box>
                   </Box>
@@ -1932,6 +1928,7 @@ const YourBorrowModal = ({
       if (borrowIDCoinMap[i].id === id) {
         setCurrentBorrowMarketCoin1(borrowIDCoinMap[i].name);
         setSpendType(borrowIDCoinMap[i].spendType);
+        setSpendType(borrowIDCoinMap[i].spendType);
         return;
       }
     }
@@ -2032,13 +2029,13 @@ const YourBorrowModal = ({
     // if (!currentBorrowId1 || currentBorrowId1 == "") {
     //   return;
     // }
-    console.log(
-      "toMarketSplitConsole",
-      currentBorrowId1.slice(5),
-      toMarketA,
-      toMarketB
-      // borrow
-    );
+    // console.log(
+    //   "toMarketSplitConsole",
+    //   currentBorrowId1.slice(5),
+    //   toMarketA,
+    //   toMarketB
+    //   // borrow
+    // );
     // setCurrentLPTokenAmount(null);
     // setCurrentSplit(null);
     setCurrentLPTokenAmount(null);
@@ -2056,20 +2053,22 @@ const YourBorrowModal = ({
       currentPool === "Select a pool"
     )
       return;
-    const lp_tokon = await getJediEstimatedLpAmountOut(
-      currentBorrowId1.slice(5),
-      toMarketA,
-      toMarketB
-      // 99,
-      // "ETH",
-      // "USDT"
-    );
-    console.log("toMarketSplitLP", lp_tokon);
-    setCurrentLPTokenAmount(lp_tokon);
+    // const lp_tokon = await getJediEstimatedLpAmountOut(
+    //   // currentBorrowId1.slice(5),
+    //   // toMarketA,
+    //   // toMarketB
+    //   "USDT",
+    //   "99",
+    //   "ETH",
+    //   "USDT"
+    // );
+    // console.log("toMarketSplitLP", lp_tokon);
+    // setCurrentLPTokenAmount(lp_tokon);
     const split = await getJediEstimateLiquiditySplit(
       currentBorrowId1.slice(5),
       toMarketA,
       toMarketB
+      // "USDT",
       // 99,
       // "ETH",
       // "USDT"
@@ -4313,6 +4312,9 @@ const YourBorrowModal = ({
                               <InfoIcon />
                             </Box>
                           </Tooltip>
+                        </Text>
+                        <Text color="#6E7681">
+                          {borrowAmount} {currentBorrowMarketCoin2}
                         </Text>
                         <Text color="#6E7681">
                           {borrowAmount} {currentBorrowMarketCoin2}

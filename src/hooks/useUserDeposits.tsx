@@ -1,8 +1,8 @@
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
 import {
   selectUserDeposits,
-  setUserDeposits,
 } from "@/store/slices/userAccountSlice";
+import { setUserDeposits } from "@/store/slices/readDataSlice";
 import { useAccount } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
