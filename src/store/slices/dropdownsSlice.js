@@ -39,10 +39,10 @@ const initialState = {
     liquidityProvisionPoolDropDown: false,
     liquidityProvisionBorrowIDDropDown: false,
     liquidityProvisionBorrowMarketDropDown: false,
-    supplyEquivalentMarketDropDown:false,
-    transferDepositProtocolDropdown:false,
-    transferDepostMarketDropdown:false,
-    yourBorrowTokenDropdown:false,
+    supplyEquivalentMarketDropDown: false,
+    transferDepositProtocolDropdown: false,
+    transferDepostMarketDropdown: false,
+    yourBorrowTokenDropdown: false,
   },
   metricsDropdowns: {
     yourMetricsMarketDropdown: false,
@@ -64,7 +64,7 @@ export const dropdownSlice = createSlice({
         }
       });
       state.currentDropdown = dropdownName;
-      // console.log("aryan1", dropdownName);
+
       state.navDropdowns = dropdowns;
     },
     setModalDropdown(state, action) {
@@ -78,7 +78,7 @@ export const dropdownSlice = createSlice({
         }
       });
       state.currentDropdown = dropdownName;
-      // console.log("aryan1", dropdownName);
+
       state.modalDropdowns = dropdowns;
     },
     setMetricsDropdown(state, action) {
@@ -103,10 +103,10 @@ export const dropdownSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(resetModalDropdowns, (state) => {
-        state.navDropdowns=initialState.navDropdowns;
+        state.navDropdowns = initialState.navDropdowns;
         state.modalDropdowns = initialState.modalDropdowns;
         state.currentModalDropdown = initialState.currentModalDropdown;
-        state.currentDropdown=initialState.currentDropdown;
+        state.currentDropdown = initialState.currentDropdown;
       })
       .addCase(HYDRATE, (state, action) => {
         return {
@@ -117,13 +117,14 @@ export const dropdownSlice = createSlice({
   },
 });
 
-export const { setNavDropdown,resetModalDropdowns } = dropdownSlice.actions;
+export const { setNavDropdown, resetModalDropdowns } = dropdownSlice.actions;
 export const { setModalDropdown } = dropdownSlice.actions;
 export const { setMetricsDropdown } = dropdownSlice.actions;
 export const selectNavDropdowns = (state) => state.dropdowns.navDropdowns;
 export const selectCurrentDropdown = (state) => state.dropdowns.currentDropdown;
 export const selectModalDropDowns = (state) => state.dropdowns.modalDropdowns;
-export const selectCurrentModalDropdown = (state) => state.dropdowns.currentModalDropdown;
+export const selectCurrentModalDropdown = (state) =>
+  state.dropdowns.currentModalDropdown;
 export const selectMetricsDropdowns = (state) =>
   state.dropdowns.metricsDropdowns;
 export default dropdownSlice.reducer;

@@ -262,7 +262,8 @@ const StakeUnstakeModal = ({
       if (stake?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait your transaction is running in background :  ${inputStakeAmount} ${currentSelectedStakeCoin} `,
+          // `Please wait your transaction is running in background :  ${inputStakeAmount} ${currentSelectedStakeCoin} `,
+          `Transaction pending`,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -280,7 +281,8 @@ const StakeUnstakeModal = ({
         }
         const trans_data = {
           transaction_hash: stake?.transaction_hash.toString(),
-          message: `You have successfully staked : ${inputStakeAmount} ${currentSelectedStakeCoin}`,
+          message: `Successfully staked : ${inputStakeAmount} ${currentSelectedStakeCoin}`,
+          // message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
         };
@@ -329,7 +331,8 @@ const StakeUnstakeModal = ({
       if (unstake?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait your transaction is running in background : ${inputUnstakeAmount} ${currentSelectedUnstakeCoin} `,
+          // `Please wait your transaction is running in background : ${inputStakeAmount} ${currentSelectedStakeCoin} `,
+          `Transaction pending`,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -347,7 +350,8 @@ const StakeUnstakeModal = ({
         }
         const trans_data = {
           transaction_hash: unstake?.transaction_hash.toString(),
-          message: `You have successfully unstaked : ${inputUnstakeAmount} ${currentSelectedUnstakeCoin}`,
+          message: `Successfully unstaked : ${inputUnstakeAmount} ${currentSelectedUnstakeCoin}`,
+          // message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
         };

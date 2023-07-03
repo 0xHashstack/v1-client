@@ -177,13 +177,12 @@ const SupplyModal = ({
   //   )
   // ))
 
-
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
   mixpanel.init("eb921da4a666a145e3b36930d7d984c2" || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
   // const walletBalances = useSelector(selectAssetWalletBalance);
   const [walletBalance, setwalletBalance] = useState(
-    walletBalances[coin.name]?.statusBalanceOf === "success"
+    walletBalances[coin?.name]?.statusBalanceOf === "success"
       ? Number(
           BNtoNum(
             uint256.uint256ToBN(
@@ -196,7 +195,7 @@ const SupplyModal = ({
   );
   useEffect(() => {
     setwalletBalance(
-      walletBalances[coin.name]?.statusBalanceOf === "success"
+      walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? Number(
             BNtoNum(
               uint256.uint256ToBN(
@@ -208,7 +207,7 @@ const SupplyModal = ({
         : 0
     );
     // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
-  }, [walletBalances[coin.name]?.statusBalanceOf, coin]);
+  }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
   // useEffect(()=>{
 
   // },[currentSelectedCoin])
@@ -428,7 +427,8 @@ const SupplyModal = ({
           console.log("trans transaction hash created");
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
+            // `Please wait your transaction is running in background : supply and staking - ${inputAmount} ${currentSelectedCoin} `,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -446,7 +446,8 @@ const SupplyModal = ({
           }
           const trans_data = {
             transaction_hash: depositStake?.transaction_hash.toString(),
-            message: `You have successfully staked ${inputAmount} ${currentSelectedCoin}`,
+            message: `Successfully staked ${inputAmount} ${currentSelectedCoin}`,
+            // message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -476,7 +477,8 @@ const SupplyModal = ({
           );
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background : supplying - ${inputAmount} ${currentSelectedCoin} `,
+            // `Please wait your transaction is running in background : supplying - ${inputAmount} ${currentSelectedCoin} `,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -494,7 +496,8 @@ const SupplyModal = ({
           }
           const trans_data = {
             transaction_hash: deposit?.transaction_hash.toString(),
-            message: `You have successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+            message: `Successfully supplied ${inputAmount} ${currentSelectedCoin}`,
+            // message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };

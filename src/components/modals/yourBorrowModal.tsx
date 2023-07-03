@@ -285,7 +285,8 @@ const YourBorrowModal = ({
       if (revert?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait your transaction is running in background`,
+          // `Please wait your transaction is running in background`,
+          `Transaction pending`,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -303,7 +304,8 @@ const YourBorrowModal = ({
         }
         const trans_data = {
           transaction_hash: revert?.transaction_hash.toString(),
-          message: `You have successfully revert spent for Loan ID : ${revertLoanId}`,
+          // message: `You have successfully revert spent for Loan ID : ${revertLoanId}`,
+          message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
         };
@@ -580,7 +582,8 @@ const YourBorrowModal = ({
       if (zeroRepay?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait your transaction is running in background `,
+          // `Please wait your transaction is running in background `,
+          `Transaction pending`,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -598,7 +601,8 @@ const YourBorrowModal = ({
         }
         const trans_data = {
           transaction_hash: zeroRepay?.transaction_hash.toString(),
-          message: `You have successfully repaid`,
+          // message: `You have successfully repaid`,
+          message: `Repay Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
         };
@@ -645,7 +649,8 @@ const YourBorrowModal = ({
         if (trade?.transaction_hash) {
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background`,
+            // `Please wait your transaction is running in background`,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -663,7 +668,8 @@ const YourBorrowModal = ({
           }
           const trans_data = {
             transaction_hash: trade?.transaction_hash.toString(),
-            message: `You have successfully traded for loan ID : ${swapLoanId}`,
+            // message: `You have successfully traded for loan ID : ${swapLoanId}`,
+            message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -687,7 +693,8 @@ const YourBorrowModal = ({
         if (tradeMySwap?.transaction_hash) {
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background`,
+            // `Please wait your transaction is running in background`,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -705,7 +712,8 @@ const YourBorrowModal = ({
           }
           const trans_data = {
             transaction_hash: tradeMySwap?.transaction_hash.toString(),
-            message: `You have successfully traded for loan ID : ${swapLoanId}`,
+            // message: `You have successfully traded for loan ID : ${swapLoanId}`,
+            message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -753,7 +761,8 @@ const YourBorrowModal = ({
         if (liquidity?.transaction_hash) {
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background`,
+            // `Please wait your transaction is running in background`,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -771,7 +780,8 @@ const YourBorrowModal = ({
           }
           const trans_data = {
             transaction_hash: liquidity?.transaction_hash.toString(),
-            message: `You have successfully added Liquidity for loan ID : ${liquidityLoanId}`,
+            // message: `You have successfully added Liquidity for loan ID : ${liquidityLoanId}`,
+            message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -797,7 +807,8 @@ const YourBorrowModal = ({
         if (mySwapLiquidity?.transaction_hash) {
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background`,
+            // `Please wait your transaction is running in background`,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -815,7 +826,8 @@ const YourBorrowModal = ({
           }
           const trans_data = {
             transaction_hash: mySwapLiquidity?.transaction_hash.toString(),
-            message: `You have successfully added Liquidity for loan ID : ${liquidityLoanId}`,
+            // message: `You have successfully added Liquidity for loan ID : ${liquidityLoanId}`,
+            message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -865,7 +877,8 @@ const YourBorrowModal = ({
           if (addCollateral?.transaction_hash) {
             console.log("toast here");
             const toastid = toast.info(
-              `Please wait your transaction is running in background`,
+              // `Please wait your transaction is running in background`,
+              `Transaction pending`,
               {
                 position: toast.POSITION.BOTTOM_RIGHT,
                 autoClose: false,
@@ -883,7 +896,8 @@ const YourBorrowModal = ({
             }
             const trans_data = {
               transaction_hash: addCollateral?.transaction_hash.toString(),
-              message: `You have successfully added collateral in Loan ID ${loanId} : ${rTokenAmount} r${rToken} `,
+              // message: `You have successfully added collateral in Loan ID ${loanId} : ${rTokenAmount} r${rToken} `,
+              message: `Transaction successful`,
               toastId: toastid,
               setCurrentTransactionStatus: setCurrentTransactionStatus,
             };
@@ -913,7 +927,8 @@ const YourBorrowModal = ({
             if (addCollateral?.transaction_hash) {
               console.log("toast here");
               const toastid = toast.info(
-                `Please wait your transaction is running in background`,
+                // `Please wait your transaction is running in background`,
+                `Transaction pending`,
                 {
                   position: toast.POSITION.BOTTOM_RIGHT,
                   autoClose: false,
@@ -931,7 +946,8 @@ const YourBorrowModal = ({
               }
               const trans_data = {
                 transaction_hash: addCollateral?.transaction_hash.toString(),
-                message: `You have successfully added collateral in Loan ID ${loanId} : ${collateralAmount} r${collateralAsset} `,
+                // message: `Successfully added collateral in Loan ID ${loanId} : ${collateralAmount} r${collateralAsset} `,
+                message: `Transaction successful`,
                 toastId: toastid,
                 setCurrentTransactionStatus: setCurrentTransactionStatus,
               };

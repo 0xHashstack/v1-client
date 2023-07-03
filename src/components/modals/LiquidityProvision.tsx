@@ -142,9 +142,9 @@ const LiquidityProvisionModal = ({
   // console.log(userLoans)
   // console.log(currentId.slice(currentId.indexOf("-") + 1).trim())
   useEffect(() => {
-    const result = userLoans.find(
+    const result = userLoans?.find(
       (item: any) =>
-        item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
+        item?.loanId == currentId?.slice(currentId?.indexOf("-") + 1)?.trim()
     );
     setBorrowAmount(result?.loanAmountParsed);
     // console.log(borrowAmount)
@@ -152,12 +152,12 @@ const LiquidityProvisionModal = ({
   }, [currentId]);
   useEffect(() => {
     setLiquidityLoanId(
-      currentBorrowId.slice(currentBorrowId.indexOf("-") + 1).trim()
+      currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
     );
   }, [currentBorrowId]);
   useEffect(() => {
-    setToMarketA(currentPool.split("/")[0]);
-    setToMarketB(currentPool.split("/")[1]);
+    setToMarketA(currentPool?.split("/")[0]);
+    setToMarketB(currentPool?.split("/")[1]);
   }, [currentPool]);
 
   const getCoin = (CoinName: string) => {
@@ -304,7 +304,8 @@ const LiquidityProvisionModal = ({
       if (liquidity?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait your transaction is running in background`,
+          // `Please wait your transaction is running in background`,
+          `Transaction pending`,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -322,7 +323,8 @@ const LiquidityProvisionModal = ({
         }
         const trans_data = {
           transaction_hash: liquidity?.transaction_hash.toString(),
-          message: `You have successfully Liquidated for Loan ID : ${liquidityLoanId}`,
+          // message: `You have successfully Liquidated for Loan ID : ${liquidityLoanId}`,
+          message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
         };

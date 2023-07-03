@@ -225,7 +225,8 @@ const SwapModal = ({
       if (swap?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait, your transaction is running in background`,
+          // `Please wait, your transaction is running in background`,
+          `Transaction pending`,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -243,7 +244,8 @@ const SwapModal = ({
         }
         const trans_data = {
           transaction_hash: swap?.transaction_hash.toString(),
-          message: `You have successfully swaped for Loan ID : ${swapLoanId}`,
+          // message: `You have successfully swaped for Loan ID : ${swapLoanId}`,
+          message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
         };
@@ -298,9 +300,9 @@ const SwapModal = ({
     }
   };
   useEffect(() => {
-    const result = userLoans.find(
+    const result = userLoans?.find(
       (item: any) =>
-        item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
+        item?.loanId == currentId?.slice(currentId.indexOf("-") + 1)?.trim()
     );
     setBorrowAmount(result?.loanAmountParsed);
     // console.log(borrowAmount)
@@ -308,7 +310,7 @@ const SwapModal = ({
   }, [currentId]);
   useEffect(() => {
     setSwapLoanId(
-      currentBorrowId.slice(currentBorrowId.indexOf("-") + 1).trim()
+      currentBorrowId?.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
     );
   }, [currentBorrowId]);
   // console.log(onOpen)
@@ -326,9 +328,9 @@ const SwapModal = ({
     setToastDisplayed(false);
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
-    const result = userLoans.find(
+    const result = userLoans?.find(
       (item: { loanId: any }): any =>
-        item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
+        item?.loanId == currentId?.slice(currentId?.indexOf("-") + 1).trim()
     );
     setBorrowAmount(result?.loanAmountParsed);
     dispatch(setTransactionStatus(""));
@@ -343,9 +345,9 @@ const SwapModal = ({
 
   const handleBorrowMarketCoinChange = (id: string) => {
     // console.log("got id", id);
-    for (let i = 0; i < borrowIDCoinMap.length; i++) {
-      if (borrowIDCoinMap[i].id === id) {
-        setCurrentBorrowMarketCoin(borrowIDCoinMap[i].name.slice(1));
+    for (let i = 0; i < borrowIDCoinMap?.length; i++) {
+      if (borrowIDCoinMap?.[i]?.id === id) {
+        setCurrentBorrowMarketCoin(borrowIDCoinMap?.[i]?.name?.slice(1));
         return;
       }
     }
@@ -354,8 +356,8 @@ const SwapModal = ({
   const handleBorrowMarketIDChange = (coin: string) => {
     // console.log("got coin", coin);
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
-      if (borrowIDCoinMap[i].name === coin) {
-        setCurrentBorrowId(borrowIDCoinMap[i].id);
+      if (borrowIDCoinMap?.[i]?.name === coin) {
+        setCurrentBorrowId(borrowIDCoinMap?.[i]?.id);
         return;
       }
     }

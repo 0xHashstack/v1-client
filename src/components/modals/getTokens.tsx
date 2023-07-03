@@ -138,7 +138,8 @@ const GetTokensModal = ({
       })
       if (getTokens?.transaction_hash) {
         const toastid = toast.info(
-          `Please wait, your transaction is running in background ${coin} `,
+          // `Please wait, your transaction is running in background ${coin} `,
+          `Transaction pending`,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -156,7 +157,8 @@ const GetTokensModal = ({
         }
         const trans_data = {
           transaction_hash: getTokens?.transaction_hash.toString(),
-          message: `You have successfully minted TestToken : ${coin}`,
+          message: `Successfully minted TestToken : ${coin}`,
+          // message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: () => {},
         };
