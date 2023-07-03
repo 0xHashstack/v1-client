@@ -83,9 +83,6 @@ export const userAccountSlice = createSlice({
     setTransactionFailureArray(state, action) {
       state.transactionFailureArray = action.payload;
     },
-    setUserLoans(state, action) {
-      state.userLoans = action.payload;
-    },
     setUserUnspentLoans(state, action) {
       state.userUnspentLoans = action.payload;
     },
@@ -259,7 +256,6 @@ export const {
   setAssetWalletBalance,
   setToastTransactionStarted,
   setTransactionStarted,
-  setUserLoans,
   setTransactionSuccessArray,
   setTransactionFailureArray,
   setProtocolReserves,
@@ -312,7 +308,6 @@ export const selectOraclePrices = (state) => state.user_account.oraclePrices;
 //   state.user_account.currentTransactionStatus;
 export const selectAssetWalletBalance = (state) =>
   state.user_account.assetWalletBalance;
-export const selectUserLoans = (state) => state.user_account.userLoans;
 
 export const selectInputSupplyAmount = (state) =>
   state.user_account.inputSupplyAmount;

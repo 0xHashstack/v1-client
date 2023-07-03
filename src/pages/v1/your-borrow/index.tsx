@@ -44,14 +44,7 @@ const YourBorrow = () => {
   const { account, address } = useAccount();
   useDataLoader();
   const UserLoans = useSelector(selectUserLoans);
-  // useEffect(()=>{
-  //   const walletConnected = localStorage.getItem('lastUsedConnector');
-  //   if(walletConnected=="braavos"){
-  //     connect(connectors[0]);
-  //   }else if(walletConnected=="argentx"){
-  //     connect(connectors[1]);
-  //   }
-  // },[])
+
   // useEffect(() => {
   //   const loan = async () => {
   //     try {

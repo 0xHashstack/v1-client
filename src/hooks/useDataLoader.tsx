@@ -44,7 +44,6 @@ import {
   setUserDeposits,
   setUserDepositsCount,
   setUserInfoCount,
-  setUserLoans,
   setUserLoansCount,
   setUserUnspentLoans,
   setYourBorrow,
@@ -53,7 +52,6 @@ import {
 import { useAccount } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 const useDataLoader = () => {
   const { address } = useAccount();
   const protocolReserves = useSelector(selectProtocolReserves);

@@ -25,14 +25,6 @@ const SpendBorrow = () => {
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
   useDataLoader();
-  // useEffect(() => {
-  //   const walletConnected = localStorage.getItem("lastUsedConnector");
-  //   if (walletConnected == "braavos") {
-  //     connect(connectors[0]);
-  //   } else if (walletConnected == "argentx") {
-  //     connect(connectors[1]);
-  //   }
-  // }, []);
   const totalBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectNetAPR);
   return (
