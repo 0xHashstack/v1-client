@@ -6,11 +6,6 @@ import {
   getTokenFromAddress,
   l3DiamondAddress,
 } from "../stark-constants";
-import {
-  getProvider,
-  getTokenFromAddress,
-  l3DiamondAddress,
-} from "../stark-constants";
 import { tokenAddressMap } from "../utils/addressServices";
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
 import { NativeToken } from "../interfaces/interfaces";
@@ -24,14 +19,8 @@ type LiquiditySplit = {
   tokenBAddress: string;
   tokenB: NativeToken;
 };
-};
 
 // before interaction
-export async function getJediEstimateLiquiditySplit(
-  loanId: string,
-  tokenA: string,
-  tokenB: string
-) {
 export async function getJediEstimateLiquiditySplit(
   loanId: string,
   tokenA: string,
@@ -60,33 +49,16 @@ export async function getJediEstimateLiquiditySplit(
       " and tokenB: ",
       getTokenFromAddress(tokenB)
     );
-    console.log(
-      "estimated liquidity split for loanId: ",
-      loanId,
-      " is: ",
-      res,
-      " for tokenA: ",
-      getTokenFromAddress(tokenA),
-      " and tokenB: ",
-      getTokenFromAddress(tokenB)
-    );
     return [
       parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8),
       parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8),
-      parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8),
     ];
-  } catch (error) {
   } catch (error) {
     console.log("error in getJediEstimateLiquiditySplit: ", error);
   }
 }
 
 // before interaction
-export async function getJediEstimatedLpAmountOut(
-  loanId: string,
-  tokenA: string,
-  tokenB: string
-) {
 export async function getJediEstimatedLpAmountOut(
   loanId: string,
   tokenA: string,
@@ -113,17 +85,12 @@ export async function getJediEstimatedLpAmountOut(
     );
     return parseAmount(uint256.uint256ToBN(res?.lp_amount_out), 18);
   } catch (error) {
-  } catch (error) {
     console.log("error in getJediEstimatedLpAmountOut: ", error);
   }
 }
 
 // after interaction, in borrow screen, after getting getUserLoans
 // liquidity is the currentAmount, pairAddress is the currentMarketAddress
-export async function getJediEstimatedLiqALiqBfromLp(
-  liquidity: string,
-  pairAddress: string
-) {
 export async function getJediEstimatedLiqALiqBfromLp(
   liquidity: string,
   pairAddress: string
@@ -149,8 +116,6 @@ export async function getJediEstimatedLiqALiqBfromLp(
       tokenB: getTokenFromAddress(res?.token1)?.name as NativeToken,
     };
   } catch (error) {
-    };
-  } catch (error) {
     console.log("error in getJediEstimatedLiqALiqBfromLp: ", error);
   }
 }
@@ -164,7 +129,6 @@ export async function getSupportedPoolsJediSwap() {
     });
     console.log("supported pools for Jediswap: ", res);
   } catch (error) {
-  } catch (error) {
     console.log("error in getSupportedPoolsJediSwap: ", error);
   }
 }
@@ -177,7 +141,6 @@ export async function getSupportedPoolsMyswap() {
       blockIdentifier: "pending",
     });
     console.log("supported pools for Myswap is: ", res);
-  } catch (error) {
   } catch (error) {
     console.log("error in getSupportedPoolsMyswap: ", error);
   }
@@ -213,12 +176,11 @@ export async function getSupportedPoolsMyswap() {
 //   tokenB: string
 // ) {
 //   console.log(
-//     "getJediEstimateLiquiditySplit",
+//     "getJediEstimatedLpAmountOut",
 //     loan_market,
 //     current_amount,
 //     tokenA,
-//     tokenB,
-//     etherToWeiBN(99, "USDT").toString()
+//     tokenB
 //   );
 //   let tokenAAddress = tokenAddressMap[tokenA];
 //   let tokenBAddress = tokenAddressMap[tokenB];
@@ -228,7 +190,15 @@ export async function getSupportedPoolsMyswap() {
 //     const res = await l3Contract.call(
 //       "get_jedi_estimate_liquidity_split",
 //       // [loan_market, current_amount, tokenAAddress, tokenBAddress],
-//       ["37", tokenAddressMap["ETH"], tokenAddressMap["USDT"]],
+//       [
+//         tokenAddressMap["ETH"],
+//         [
+//           etherToWeiBN(99, "USDT").toString(),
+//           etherToWeiBN(99, "USDT").toString(),
+//         ],
+//         tokenAddressMap["ETH"],
+//         tokenAddressMap["USDT"],
+//       ],
 //       {
 //         blockIdentifier: "pending",
 //       }
@@ -257,7 +227,7 @@ export async function getSupportedPoolsMyswap() {
 // // before interaction
 // export async function getJediEstimatedLpAmountOut(
 //   loan_market: string,
-//   current_amount: number,
+//   current_amount: string,
 //   tokenA: string,
 //   tokenB: string
 // ) {
@@ -265,7 +235,7 @@ export async function getSupportedPoolsMyswap() {
 //     "getJediEstimatedLpAmountOut",
 //     loan_market,
 //     current_amount,
-//     tokenA,  
+//     tokenA,
 //     tokenB
 //   );
 //   let tokenAAddress = tokenAddressMap[tokenA];

@@ -127,7 +127,6 @@ const YourBorrowModal = ({
   borrow,
   spendType,
   setSpendType,
-  setSpendType,
   ...restProps
 }: any) => {
   // console.log(currentBorrowId1);
@@ -495,7 +494,6 @@ const YourBorrowModal = ({
   // const [currentBorrowId2, setCurrentBorrowId2] = useState(`ID - ${currentID}`);
   const [currentDapp, setCurrentDapp] = useState("Select a dapp");
   const [currentPool, setCurrentPool] = useState("Select a pool");
-
 
   const getBorrowAPR = (borrowMarket: string) => {
     switch (borrowMarket) {
