@@ -683,9 +683,9 @@ const TradeModal = ({
             my="auto"
             pos="relative"
           >
-            <Text color="black">
+            {/* <Text color="black">
               Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet
-            </Text>
+            </Text> */}
             <Text pos="absolute" top="8" left="8">
               Trade
             </Text>
