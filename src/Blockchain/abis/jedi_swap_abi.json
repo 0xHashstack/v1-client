@@ -354,12 +354,8 @@
   {
     "inputs": [
       {
-        "name": "loan_market",
+        "name": "loan_id",
         "type": "felt"
-      },
-      {
-        "name": "current_amount",
-        "type": "Uint256"
       },
       {
         "name": "tokenA",
@@ -387,12 +383,8 @@
   {
     "inputs": [
       {
-        "name": "loan_market",
+        "name": "loan_id",
         "type": "felt"
-      },
-      {
-        "name": "current_amount",
-        "type": "Uint256"
       },
       {
         "name": "tokenA",
@@ -431,16 +423,8 @@
         "type": "Uint256"
       },
       {
-        "name": "token0",
-        "type": "felt"
-      },
-      {
         "name": "amountB",
         "type": "Uint256"
-      },
-      {
-        "name": "token1",
-        "type": "felt"
       }
     ],
     "stateMutability": "view",
