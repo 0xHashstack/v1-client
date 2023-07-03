@@ -30,12 +30,10 @@ import TableInfoIcon from "./tableIcons/infoIcon";
 import Link from "next/link";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectOraclePrices,
-  selectProtocolStats,
-  selectUserLoans,
   selectUserUnspentLoans,
   setCurrentPage,
 } from "@/store/slices/userAccountSlice";
+import { selectUserLoans,selectProtocolStats,selectOraclePrices } from "@/store/slices/readDataSlice";
 import HazardIcon from "@/assets/icons/hazardIcon";
 import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
 import TableYagiLogoDull from "./tableIcons/yagiLogoDull";
