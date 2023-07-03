@@ -98,7 +98,6 @@ import {
   getLoanHealth_NativeCollateral,
   getLoanHealth_RTokenCollateral,
 } from "@/Blockchain/scripts/LoanHealth";
-import Image from "next/image";
 const TradeModal = ({
   buttonText,
   coin,

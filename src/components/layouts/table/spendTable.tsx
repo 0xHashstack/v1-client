@@ -188,7 +188,7 @@ const SpendTable = () => {
   useEffect(() => {
     const fetchAprs = async () => {
       if (avgs.length == 0) {
-        for (var i = 0; i < userLoans?.length; i++) {
+      for (var i = 0; i < userLoans?.length; i++) {
           const avg = await effectivAPRLoan(
             userLoans[i],
             reduxProtocolStats,
