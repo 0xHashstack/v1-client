@@ -31,8 +31,8 @@ const initialState = {
   currentNetwork: null,
 };
 
-export const userAccountSlice = createSlice({
-  name: "user_account",
+export const readDataSlice = createSlice({
+  name: "read_data",
   initialState,
   reducers: {
     setUserLoans(state, action) {
@@ -101,7 +101,7 @@ export const userAccountSlice = createSlice({
       [HYDRATE]: (state, action) => {
         return {
           ...state,
-          ...action.payload.user_account,
+          ...action.payload.read_data,
         };
       },
     },
@@ -130,36 +130,34 @@ export const {
   setUserLoansCount,
   setBlock,
   setCurrentNetwork,
-} = userAccountSlice.actions;
+} = readDataSlice.actions;
 
-export const selectUserDeposits = (state) => state.user_account.userDeposits;
-export const selectProtocolStats = (state) => state.user_account.protocolStats;
-export const selectOraclePrices = (state) => state.user_account.oraclePrices;
-export const selectUserLoans = (state) => state.user_account.userLoans;
+export const selectUserDeposits = (state) => state.read_data.userDeposits;
+export const selectProtocolStats = (state) => state.read_data.protocolStats;
+export const selectOraclePrices = (state) => state.read_data.oraclePrices;
+export const selectUserLoans = (state) => state.read_data.userLoans;
 
 export const selectProtocolReserves = (state) =>
-  state.user_account.protocolReserves;
-export const selectYourSupply = (state) => state.user_account.yourSupply;
-export const selectYourBorrow = (state) => state.user_account.yourBorrow;
-export const selectNetWorth = (state) => state.user_account.netWorth;
-export const selectNetAPR = (state) => state.user_account.netAPR;
+  state.read_data.protocolReserves;
+export const selectYourSupply = (state) => state.read_data.yourSupply;
+export const selectYourBorrow = (state) => state.read_data.yourBorrow;
+export const selectNetWorth = (state) => state.read_data.netWorth;
+export const selectNetAPR = (state) => state.read_data.netAPR;
 export const selectActiveTransactions = (state) =>
-  state.user_account.activeTransactions;
+  state.read_data.activeTransactions;
 export const selectTransactionRefresh = (state) =>
-  state.user_account.transactionRefresh;
+  state.read_data.transactionRefresh;
 export const selectUserDepositsCount = (state) =>
-  state.user_account.userDepositsCount;
+  state.read_data.userDepositsCount;
 export const selectProtocolReservesCount = (state) =>
-  state.user_account.protocolReservesCount;
+  state.read_data.protocolReservesCount;
 export const selectProtocolStatsCount = (state) =>
-  state.user_account.protocolStatsCount;
-export const selectUserLoansCount = (state) =>
-  state.user_account.userLoansCount;
+  state.read_data.protocolStatsCount;
+export const selectUserLoansCount = (state) => state.read_data.userLoansCount;
 export const selectOraclePricesCount = (state) =>
-  state.user_account.oraclePricesCount;
-export const selectUserInfoCount = (state) => state.user_account.userInfoCount;
-export const selectBlock = (state) => state.user_account.block;
-export const selectCurrentNetwork = (state) =>
-  state.user_account.currentNetwork;
+  state.read_data.oraclePricesCount;
+export const selectUserInfoCount = (state) => state.read_data.userInfoCount;
+export const selectBlock = (state) => state.read_data.block;
+export const selectCurrentNetwork = (state) => state.read_data.currentNetwork;
 
-export default userAccountSlice.reducer;
+export default readDataSlice.reducer;
