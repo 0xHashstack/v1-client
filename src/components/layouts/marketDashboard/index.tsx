@@ -39,13 +39,6 @@ const MarketDashboard = () => {
   const oraclePrices = useSelector(selectOraclePrices);
   // console.log(account,"Market Page")
 
-  useEffect(() => {
-    // fetchOraclePrices();
-    fetchProtocolStats();
-    // fetchProtocolReserves();
-    // fetchUserReserves();
-    // fetchUserLoans();
-  }, []);
   // useEffect(()=>{
   //   fetchUserLoans();
   // },[account])
@@ -107,8 +100,15 @@ const MarketDashboard = () => {
   //     console.error("Error fetching Oracle prices:", error);
   //   }
   // };
-  
+
   const stats = useSelector(selectProtocolStats);
+  useEffect(() => {
+    // fetchOraclePrices();
+    fetchProtocolStats();
+    // fetchProtocolReserves();
+    // fetchUserReserves();
+    // fetchUserLoans();
+  }, [stats]);
   const fetchProtocolStats = async () => {
     try {
       console.log("fetchprotocolstats", stats); //23014

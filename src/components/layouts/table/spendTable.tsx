@@ -33,6 +33,7 @@ import {
   selectOraclePrices,
   selectProtocolStats,
   selectUserLoans,
+  selectUserUnspentLoans,
   setCurrentPage,
 } from "@/store/slices/userAccountSlice";
 import HazardIcon from "@/assets/icons/hazardIcon";
@@ -75,13 +76,14 @@ const SpendTable = () => {
     "Health factor",
   ];
   const { account, address, isConnected } = useAccount();
-  const [userLoans, setUserLoans] = useState<any>(null);
-  let userLoansRedux = useSelector(selectUserLoans);
-  useEffect(() => {
-    setUserLoans(
-      userLoansRedux.filter((borrow: ILoan) => borrow.spendType === "UNSPENT")
-    );
-  }, [userLoansRedux]);
+  const userLoans = useSelector(selectUserUnspentLoans);
+  // const [userLoans, setUserLoans] = useState<any>(null);
+  // let userLoansRedux = useSelector(selectUserLoans);
+  // useEffect(() => {
+  //   setUserLoans(
+  //     userLoansRedux.filter((borrow: ILoan) => borrow.spendType === "UNSPENT")
+  //   );
+  // }, [userLoansRedux]);
   // useEffect(() => {
   //   const loan = async () => {
   //     try {
@@ -154,7 +156,7 @@ const SpendTable = () => {
       let temp1: any = [];
       let temp2: any = [];
       let temp3: any = [];
-      let healths:any=[];
+      let healths: any = [];
       if (userLoans?.length != 0) {
         for (let i = 0; i < userLoans?.length; i++) {
           // const factor=await getExistingLoanHealth(userLoans[i]?.loanId)
@@ -178,22 +180,28 @@ const SpendTable = () => {
   }, [userLoans]);
 
   const [borrowAPRs, setBorrowAPRs] = useState<any>([]);
-  
-  const [avgs, setAvgs] = useState<any>([])
-  const avgsData:any=[];
-  const oraclePrices=useSelector(selectOraclePrices);
-  const reduxProtocolStats=useSelector(selectProtocolStats)
-  useEffect(()=>{
-    const fetchAprs=async()=>{
-      if(avgs.length==0){
-        for(var i=0;i<userLoans?.length;i++){
-          const avg=await effectivAPRLoan(userLoans[i],reduxProtocolStats,oraclePrices);
-          const healthFactor=await getExistingLoanHealth(userLoans[i]?.loanId);
-          const data={
-            loanId:userLoans[i]?.loanId,
-            avg:avg,
-            loanHealth:healthFactor,
-          }
+
+  const [avgs, setAvgs] = useState<any>([]);
+  const avgsData: any = [];
+  const oraclePrices = useSelector(selectOraclePrices);
+  const reduxProtocolStats = useSelector(selectProtocolStats);
+  useEffect(() => {
+    const fetchAprs = async () => {
+      if (avgs.length == 0) {
+        for (var i = 0; i < userLoans?.length; i++) {
+          const avg = await effectivAPRLoan(
+            userLoans[i],
+            reduxProtocolStats,
+            oraclePrices
+          );
+          const healthFactor = await getExistingLoanHealth(
+            userLoans[i]?.loanId
+          );
+          const data = {
+            loanId: userLoans[i]?.loanId,
+            avg: avg,
+            loanHealth: healthFactor,
+          };
           // avgs.push(data)
           avgsData.push(data);
           // avgs.push()
@@ -201,10 +209,10 @@ const SpendTable = () => {
         //cc
         setAvgs(avgsData);
       }
-    }
-    fetchAprs();
-    console.log("running")
-  },[oraclePrices,reduxProtocolStats,userLoans,avgs])
+    };
+    if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
+    console.log("running");
+  }, [oraclePrices, reduxProtocolStats, userLoans]);
   // console.log(avgs,"avgs in borrow")
 
   // useEffect(()=>{
@@ -213,18 +221,18 @@ const SpendTable = () => {
 
   useEffect(() => {
     fetchProtocolStats();
-  }, []);
+  }, [reduxProtocolStats]);
 
   const fetchProtocolStats = async () => {
     try {
-      const stats = await getProtocolStats();
+      const stats = reduxProtocolStats;
       console.log("fetchprotocolstats", stats); //23014
       setBorrowAPRs([
-        stats?.[2].borrowRate,
-        stats?.[3].borrowRate,
-        stats?.[0].borrowRate,
-        stats?.[1].borrowRate,
-        stats?.[4].borrowRate,
+        stats?.[2]?.borrowRate,
+        stats?.[3]?.borrowRate,
+        stats?.[0]?.borrowRate,
+        stats?.[1]?.borrowRate,
+        stats?.[4]?.borrowRate,
       ]);
     } catch (error) {
       console.log("error on getting protocol stats");
@@ -466,7 +474,14 @@ const SpendTable = () => {
                           fontStyle="normal"
                           lineHeight="22px"
                         >
-                          {avgs?.find((item:any)=>item.loanId==borrow?.loanId)?.avg }%
+                          {avgs?.find(
+                            (item: any) => item.loanId == borrow?.loanId
+                          )?.avg
+                            ? avgs?.find(
+                                (item: any) => item.loanId == borrow?.loanId
+                              )?.avg
+                            : "3.2"}
+                          %
                         </Td>
                         <Td textAlign="center">
                           <Box
@@ -505,7 +520,14 @@ const SpendTable = () => {
                               color="#E6EDF3"
                               textAlign="right"
                             >
-                              {avgs?.find((item:any)=>item.loanId==borrow?.loanId)?.loanHealth}%
+                              {avgs?.find(
+                                (item: any) => item.loanId == borrow?.loanId
+                              )?.loanHealth
+                                ? avgs?.find(
+                                    (item: any) => item.loanId == borrow?.loanId
+                                  )?.loanHealth
+                                : "2.5"}
+                              %
                             </Text>
                           </Box>
                         </Td>

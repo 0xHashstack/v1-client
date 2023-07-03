@@ -178,23 +178,23 @@ const TradeModal = ({
     BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
-    rUSDT:useBalanceOf(tokenAddressMap["rUSDT"] ||""),
-    rUSDC:useBalanceOf(tokenAddressMap["rUSDC"] ||""),
-    rBTC:useBalanceOf(tokenAddressMap["rBTC"] ||""),
-    rETH:useBalanceOf(tokenAddressMap["rETH"] ||""),
-    rDAI:useBalanceOf(tokenAddressMap["rDAI"] ||""),
+    rUSDT: useBalanceOf(tokenAddressMap["rUSDT"] || ""),
+    rUSDC: useBalanceOf(tokenAddressMap["rUSDC"] || ""),
+    rBTC: useBalanceOf(tokenAddressMap["rBTC"] || ""),
+    rETH: useBalanceOf(tokenAddressMap["rETH"] || ""),
+    rDAI: useBalanceOf(tokenAddressMap["rDAI"] || ""),
   };
   const [walletBalance, setwalletBalance] = useState<any>(
     walletBalances[coin.name]?.statusBalanceOf === "success"
-        ? Number(
-            BNtoNum(
-              uint256.uint256ToBN(
-                walletBalances[coin.name]?.dataBalanceOf?.balance
-              ),
-              tokenDecimalsMap[coin.name]
-            )
+      ? Number(
+          BNtoNum(
+            uint256.uint256ToBN(
+              walletBalances[coin.name]?.dataBalanceOf?.balance
+            ),
+            tokenDecimalsMap[coin.name]
           )
-        : 0
+        )
+      : 0
   );
   useEffect(() => {
     setwalletBalance(
@@ -507,7 +507,8 @@ const TradeModal = ({
         if (borrowAndSpend?.transaction_hash) {
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background`,
+            // `Please wait your transaction is running in background`,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -525,7 +526,8 @@ const TradeModal = ({
           }
           const trans_data = {
             transaction_hash: borrowAndSpend?.transaction_hash.toString(),
-            message: `You have successfully traded`,
+            // message: `You have successfully traded`,
+            message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -542,7 +544,8 @@ const TradeModal = ({
         if (borrowAndSpendR?.transaction_hash) {
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background`,
+            // `Please wait your transaction is running in background`,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -560,7 +563,8 @@ const TradeModal = ({
           }
           const trans_data = {
             transaction_hash: borrowAndSpendR?.transaction_hash.toString(),
-            message: `You have successfully traded`,
+            // message: `You have successfully traded`,
+            message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
@@ -871,8 +875,8 @@ const TradeModal = ({
                                       setCollateralMarket(coin);
                                       setRToken(coin);
                                       setwalletBalance(
-                                        walletBalances[coin]?.statusBalanceOf ===
-                                          "success"
+                                        walletBalances[coin]
+                                          ?.statusBalanceOf === "success"
                                           ? Number(
                                               BNtoNum(
                                                 uint256.uint256ToBN(
@@ -969,8 +973,8 @@ const TradeModal = ({
                                                 ?.dataBalanceOf?.balance
                                             ),
                                             tokenDecimalsMap[coin]
-                                          )).toFixed(2)
-                                        
+                                          )
+                                        ).toFixed(2)
                                       : 0
                                   );
                                 }}
@@ -1157,8 +1161,7 @@ const TradeModal = ({
                           display="flex"
                           justifyContent="flex-end"
                         >
-                          Wallet Balance:{" "}
-                          { walletBalance}
+                          Wallet Balance: {walletBalance}
                           <Text color="#6E7781" ml="0.2rem">
                             {` ${currentCollateralCoin}`}
                           </Text>
@@ -1175,8 +1178,7 @@ const TradeModal = ({
                         fontStyle="normal"
                         fontFamily="Inter"
                       >
-                        Wallet Balance:{" "}
-                        {walletBalance}
+                        Wallet Balance: {walletBalance}
                         <Text color="#6E7781" ml="0.2rem">
                           {` ${currentCollateralCoin}`}
                         </Text>
@@ -1628,7 +1630,8 @@ const TradeModal = ({
                           display="flex"
                           justifyContent="flex-end"
                         >
-                          Available Reserves: {currentAvailableReserves.toFixed(2)}
+                          Available Reserves:{" "}
+                          {currentAvailableReserves.toFixed(2)}
                           <Text color="#6E7781" ml="0.2rem">
                             {` ${currentBorrowCoin}`}
                           </Text>
