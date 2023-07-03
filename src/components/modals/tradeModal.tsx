@@ -44,6 +44,7 @@ import {
   selectActiveTransactions,
   setActiveTransactions,
   selectProtocolStats,
+  selectOraclePrices,
   // setTransactionStarted,
   // selectTransactionStarted,
 } from "@/store/slices/userAccountSlice";
@@ -92,6 +93,7 @@ import UsdcToDai from "@/assets/icons/pools/usdcToDai";
 import MySwap from "@/assets/icons/dapps/mySwap";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 import mixpanel from "mixpanel-browser";
+import { getLoanHealth_NativeCollateral, getLoanHealth_RTokenCollateral } from "@/Blockchain/scripts/LoanHealth";
 const TradeModal = ({
   buttonText,
   coin,
@@ -403,6 +405,7 @@ const TradeModal = ({
     }
     console.log("radio value", radioValue, method);
   }, [radioValue]);
+  const [tokenTypeSelected, setTokenTypeSelected] = useState("Native")
 
   const resetStates = () => {
     setSliderValue(0);
@@ -419,6 +422,8 @@ const TradeModal = ({
     setCurrentBorrowCoin(coin.name);
     setCurrentPoolCoin("Select a pool");
     setRadioValue("1");
+    setHealthFactor(undefined);
+    setTokenTypeSelected("Native")
     // setTransactionStarted(false);
     dispatch(resetModalDropdowns());
     setwalletBalance(
@@ -446,6 +451,7 @@ const TradeModal = ({
     setinputBorrowAmount(0);
     setLoanAmount(0);
     setsliderValue2(0);
+    // setHealthFactor(undefined)
   }, [currentBorrowCoin]);
 
   useEffect(() => {
@@ -453,7 +459,9 @@ const TradeModal = ({
     setCollateralAmount(0);
     setRTokenAmount(0);
     setSliderValue(0);
+    // setHealthFactor(undefined)
   }, [currentCollateralCoin]);
+  
 
   const [depositTransHash, setDepositTransHash] = useState("");
 
@@ -499,6 +507,33 @@ const TradeModal = ({
   //     }
   //   },
   // });
+  const oraclePrices=useSelector(selectOraclePrices)
+  const marketInfo=useSelector(selectProtocolStats)
+  const [healthFactor, setHealthFactor] = useState<number>()
+  useEffect(()=>{
+    try{
+      const fetchHealthFactor=async()=>{
+        if(tokenTypeSelected=="Native"){
+          if(inputBorrowAmount>0 &&inputCollateralAmount>0 &&currentBorrowCoin &&currentCollateralCoin){
+            const data=await getLoanHealth_NativeCollateral(inputBorrowAmount,currentBorrowCoin,inputCollateralAmount,currentCollateralCoin,oraclePrices);
+            setHealthFactor(data);
+          }
+        }else if(tokenTypeSelected=="rToken"){
+          if(inputBorrowAmount>0 && rTokenAmount>0 && currentBorrowCoin &&currentCollateralCoin){
+            // console.log("trade",inputBorrowAmount,rTokenAmount,currentBorrowCoin,currentCollateralCoin,marketInfo)
+            const data=await getLoanHealth_RTokenCollateral(inputBorrowAmount,currentBorrowCoin,rTokenAmount,currentCollateralCoin,oraclePrices,marketInfo);
+            // console.log(data,"data in trade")
+            setHealthFactor(data);
+          }
+        }
+      }
+      fetchHealthFactor();
+    }catch(err){
+      console.log(err);
+    }
+    
+
+  },[inputBorrowAmount,inputCollateralAmount,currentBorrowCoin,currentCollateralCoin,rTokenAmount])
 
   const handleBorrowAndSpend = async () => {
     try {
@@ -895,6 +930,7 @@ const TradeModal = ({
                                     onClick={() => {
                                       setCurrentCollateralCoin(coin);
                                       setCollateralMarket(coin);
+                                      setTokenTypeSelected("rToken");
                                       setRToken(coin);
                                       setwalletBalance(
                                         walletBalances[coin]
@@ -985,6 +1021,7 @@ const TradeModal = ({
                                   setCurrentCollateralCoin(coin);
                                   setCollateralMarket(coin);
                                   setRToken("rBTC");
+                                  setTokenTypeSelected("Native")
                                   setwalletBalance(
                                     walletBalances[coin]?.statusBalanceOf ===
                                       "success"
@@ -2410,7 +2447,7 @@ const TradeModal = ({
                       5.56%
                     </Text>
                   </Box>
-                  <Box display="flex" justifyContent="space-between">
+                  {healthFactor ?                  <Box display="flex" justifyContent="space-between">
                     <Box display="flex">
                       <Text color="#6E7681" fontSize="xs">
                         Health factor:{" "}
@@ -2432,11 +2469,14 @@ const TradeModal = ({
                       </Tooltip>
                     </Box>
                     <Text color="#6E7681" fontSize="xs">
-                      1.10
+                      {healthFactor?.toFixed(2)}
                     </Text>
-                  </Box>
+                  </Box>:""}
+
                 </Box>
-                {inputCollateralAmount > 0 &&
+                {(tokenTypeSelected=="rToken" ? rTokenAmount>0:true) &&
+                (tokenTypeSelected=="Native" ? collateralAmount>0:true)
+                &&
                 inputBorrowAmount > 0 &&
                 currentDapp != "Select a dapp" &&
                 (currentPool != "Select a pool" ||
