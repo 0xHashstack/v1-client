@@ -230,7 +230,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     if (validRTokens.length === 0) {
       fetchUserDeposits();
     }
-  }, [validRTokens, userDepositsRedux]);
+  }, [validRTokens, userDepositsRedux, address]);
   // const [dataDeposit, setDataDeposit] = useState<any>()
 
   const fetchUserDeposits = async () => {
@@ -240,7 +240,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       }
       const reserves = userDepositsRedux;
       // setDataDeposit(reserves);
-      console.log("got reservers", reserves);
+      console.log("got reservers page card", reserves);
       const rTokens: any = [];
       if (reserves) {
         reserves.map((reserve: any) => {

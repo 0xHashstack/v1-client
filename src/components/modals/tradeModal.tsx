@@ -91,6 +91,7 @@ import UsdtToDai from "@/assets/icons/pools/usdtToDai";
 import UsdcToDai from "@/assets/icons/pools/usdcToDai";
 import MySwap from "@/assets/icons/dapps/mySwap";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
+import Image from "next/image";
 const TradeModal = ({
   buttonText,
   coin,
@@ -2213,13 +2214,25 @@ const TradeModal = ({
                       >
                         <Box display="flex" gap="2px">
                           <Box mt="2px">
-                            <SmallEth />
+                            {/* <SmallEth /> */}
+                            <Image
+                              src={`/${toMarketLiqA}.svg`}
+                              alt="liquidity split coin1"
+                              width="12"
+                              height="12"
+                            />
                           </Box>
                           <Text>1.23</Text>
                         </Box>
                         <Box display="flex" gap="2px">
                           <Box mt="2px">
-                            <SmallUsdt />
+                            {/* <SmallUsdt /> */}
+                            <Image
+                              src={`/${toMarketLiqB}.svg`}
+                              alt="liquidity split coin1"
+                              width="12"
+                              height="12"
+                            />
                           </Box>
                           <Text>1.23</Text>
                         </Box>
