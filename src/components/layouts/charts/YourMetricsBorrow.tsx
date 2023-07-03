@@ -64,6 +64,7 @@ const YourMetricsBorrow = ({ series, formatter, color, categories }: any) => {
     },
     legend: {
       position: "top" as const,
+      horizontalAlign: "left",
     },
     dataLabels: {
       enabled: false,

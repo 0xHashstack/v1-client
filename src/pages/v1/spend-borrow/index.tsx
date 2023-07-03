@@ -14,10 +14,7 @@ import { useConnectors } from "@starknet-react/core";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@chakra-ui/react";
-import {
-  selectNetAPR,
-  selectYourBorrow,
-} from "@/store/slices/userAccountSlice";
+import { selectYourBorrow,selectNetAPR } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
 // import WalletConnectModal from "@/components/modals/WalletConnectModal";
@@ -25,14 +22,6 @@ const SpendBorrow = () => {
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
   useDataLoader();
-  // useEffect(() => {
-  //   const walletConnected = localStorage.getItem("lastUsedConnector");
-  //   if (walletConnected == "braavos") {
-  //     connect(connectors[0]);
-  //   } else if (walletConnected == "argentx") {
-  //     connect(connectors[1]);
-  //   }
-  // }, []);
   const totalBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectNetAPR);
   return (

@@ -6,69 +6,22 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   useAccount,
   useConnectors,
-  useStarknet,
-  useBlock,
-  useBlockNumber,
-  useTransactions,
-  useTransaction,
-  useTransactionManager,
 } from "@starknet-react/core";
-import { useContract } from "@starknet-react/core";
 import {
-  setProtocolReserves,
   selectToastTransactionStarted,
-  setAccount,
-  setAssetWalletBalance,
-  setUserLoans,
-  selectProtocolReserves,
-  selectYourSupply,
-  selectNetWorth,
   selectNetAPR,
-  selectYourBorrow,
-  setNetWorth,
-  setYourSupply,
-  selectUserLoans,
-  setYourBorrow,
-  setNetAPR,
-  setTransactionRefresh,
-  selectUserDeposits,
-  selectProtocolStats,
-  selectOraclePrices,
-  setProtocolStats,
-  setUserDeposits,
-  setOraclePrices,
   selectActiveTransactions,
-  setAvgSupplyAPR,
-  setAvgBorrowAPR,
 } from "@/store/slices/userAccountSlice";
+import { selectUserDeposits,selectProtocolStats,selectOraclePrices,selectProtocolReserves,selectNetWorth } from "@/store/slices/readDataSlice";
+import { selectUserLoans,selectYourSupply } from "@/store/slices/readDataSlice";
 import { useRouter } from "next/router";
 import Footer from "../footer";
-import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
-import SuccessButton from "@/components/uiElements/buttons/SuccessButton";
-import ErrorButton from "@/components/uiElements/buttons/ErrorButton";
+
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
-import { getUserLoans } from "@/Blockchain/scripts/Loans";
+
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
-import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
-import { ToastContainer, toast } from "react-toastify";
-import { callWithRetries } from "@/utils/functions/apiCaller";
-import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
-import {
-  getProtocolReserves,
-  getProtocolStats,
-} from "@/Blockchain/scripts/protocolStats";
-import YourBorrow from "@/pages/v1/your-borrow";
-import {
-  effectivAPRLoan,
-  effectiveAprDeposit,
-  getNetApr,
-  getNetworth,
-  getTotalBorrow,
-} from "@/Blockchain/scripts/userStats";
-import { getTotalSupply } from "@/Blockchain/scripts/userStats";
-import { getOraclePrices } from "@/Blockchain/scripts/getOraclePrices";
-import useTransactionRefresh from "@/hooks/useTransactionRefresh";
 import useTransactionHandler from "@/hooks/useTransactionHandler";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 interface Props extends StackProps {
   children: ReactNode;
 }
@@ -261,17 +214,17 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       console.log("Error fetching protocol reserves", err);
     }
   };
-  const protocolReserves = useSelector(selectProtocolReserves);
+  // const protocolReserves = useSelector(selectProtocolReserves);
 
-  const dataDeposit = useSelector(selectUserDeposits);
-  const protocolStats = useSelector(selectProtocolStats);
-  const dataOraclePrices = useSelector(selectOraclePrices);
-  //  const dataMarket=useSelector(selectProtocolStats);
-  const yourSupply = useSelector(selectYourSupply);
-  const userLoans = useSelector(selectUserLoans);
-  const yourBorrow = useSelector(selectYourBorrow);
-  const netWorth = useSelector(selectNetWorth);
-  const netAPR = useSelector(selectNetAPR);
+  // const dataDeposit = useSelector(selectUserDeposits);
+  // const protocolStats = useSelector(selectProtocolStats);
+  // const dataOraclePrices = useSelector(selectOraclePrices);
+  // //  const dataMarket=useSelector(selectProtocolStats);
+  // const yourSupply = useSelector(selectYourSupply);
+  // const userLoans = useSelector(selectUserLoans);
+  // const yourBorrow = useSelector(selectYourBorrow);
+  // const netWorth = useSelector(selectNetWorth);
+  // const netAPR = useSelector(selectNetAPR);
 
   // useEffect(()=>{
   //   console.log(netAPR,"net apr in pagecard");

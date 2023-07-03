@@ -22,12 +22,8 @@ import YourMetricsSupplyBorrow from "@/components/layouts/charts/yourMetricsSupp
 import {
   selectAvgBorrowAPR,
   selectAvgSupplyAPR,
-  selectNetAPR,
-  selectProtocolReserves,
-  selectProtocolStats,
-  selectYourBorrow,
-  selectYourSupply,
 } from "@/store/slices/userAccountSlice";
+import { selectProtocolReserves,selectProtocolStats,selectNetAPR, selectYourSupply,selectYourBorrow } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
 const YourMetrics = () => {

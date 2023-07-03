@@ -7,7 +7,7 @@ import { getProtocolReserves } from "@/Blockchain/scripts/protocolStats";
 import { IProtocolReserves } from "@/Blockchain/interfaces/interfaces";
 import { useAccount } from "@starknet-react/core";
 import { useSelector } from "react-redux";
-import { selectNetAPR, selectNetWorth, selectProtocolReserves, selectYourBorrow, selectYourSupply } from "@/store/slices/userAccountSlice";
+import { selectProtocolReserves,selectNetAPR, selectNetWorth,selectYourSupply,selectYourBorrow } from "@/store/slices/readDataSlice";
 const StatsBoard = () => {
   const { address } = useAccount();
   const router = useRouter();

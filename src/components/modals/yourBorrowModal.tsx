@@ -61,14 +61,13 @@ import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
 
 import {
   selectActiveTransactions,
-  selectUserLoans,
   selectWalletBalance,
   setActiveTransactions,
   // setCurrentTransactionStatus,
   setInputYourBorrowModalRepayAmount,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
-
+import { selectUserLoans } from "@/store/slices/readDataSlice";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";

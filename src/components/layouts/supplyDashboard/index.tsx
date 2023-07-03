@@ -30,11 +30,8 @@ import { IDeposit } from "@/Blockchain/interfaces/interfaces";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  selectProtocolStats,
-  selectUserDeposits,
-  setUserDeposits,
-} from "@/store/slices/userAccountSlice";
+import { selectProtocolStats } from "@/store/slices/readDataSlice";
+import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import { effectiveAprDeposit } from "@/Blockchain/scripts/userStats";
 import { token } from "@project-serum/anchor/dist/cjs/utils";
 import { isTemplateExpression } from "typescript";

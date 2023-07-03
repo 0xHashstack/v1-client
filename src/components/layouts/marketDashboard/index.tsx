@@ -12,12 +12,11 @@ import { useAccount } from "@starknet-react/core";
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  selectOraclePrices,
-  selectProtocolStats,
-  selectUserDeposits,
   setAvgBorrowAPR,
   setAvgSupplyAPR,
 } from "@/store/slices/userAccountSlice";
+import { selectProtocolStats,selectOraclePrices } from "@/store/slices/readDataSlice";
+import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import { resolve } from "path";
 const MarketDashboard = () => {
   // const [oraclePrices, setOraclePrices]: any = useState<(undefined | number)[]>(
