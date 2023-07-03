@@ -41,6 +41,7 @@ import {
   selectActiveTransactions,
   setActiveTransactions,
   selectProtocolStats,
+  selectOraclePrices,
 } from "@/store/slices/userAccountSlice";
 import {
   setModalDropdown,
@@ -72,6 +73,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import mixpanel from "mixpanel-browser";
+import { getLoanHealth_NativeCollateral, getLoanHealth_RTokenCollateral } from "@/Blockchain/scripts/LoanHealth";
 const BorrowModal = ({
   buttonText,
   coin,
@@ -265,6 +267,30 @@ const BorrowModal = ({
   useEffect(() => {
     console.log("currentAvailableReserve", currentAvailableReserves);
   }, [currentAvailableReserves]);
+  const oraclePrices=useSelector(selectOraclePrices)
+  const marketInfo=useSelector(selectProtocolStats)
+  const [healthFactor, setHealthFactor] = useState<number>()
+  useEffect(()=>{
+    try{
+      const fetchHealthFactor=async()=>{
+        if(tokenTypeSelected=="Native"){
+          if(amount>0 && market &&collateralAmount>0 &&collateralMarket){
+            const data=await getLoanHealth_NativeCollateral(amount,market,collateralAmount,collateralMarket,oraclePrices);
+            setHealthFactor(data);
+          }
+        }
+        else if(tokenTypeSelected=="rToken"){
+          if(amount>0 && market && rTokenAmount>0 &&rToken){
+            const data=await getLoanHealth_RTokenCollateral(amount,market,rTokenAmount,rToken,oraclePrices,marketInfo);
+            setHealthFactor(data);
+          }
+        }
+      }
+      fetchHealthFactor();
+    }catch(err){
+      console.log(err);
+    }
+  },[amount,collateralAmount,collateralMarket,market,rToken,rTokenAmount])
 
   useEffect(() => {
     setCurrentAvailableReserves(
@@ -519,6 +545,7 @@ const BorrowModal = ({
     setsliderValue2(0);
     setToastDisplayed(false);
     setTransactionStarted(false);
+    setHealthFactor(undefined)
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
     setCurrentTransactionStatus("");
@@ -1726,7 +1753,7 @@ const BorrowModal = ({
                   5.56%
                 </Text>
               </Text>
-              <Text
+              {healthFactor ?              <Text
                 color="#8B949E"
                 display="flex"
                 justifyContent="space-between"
@@ -1764,9 +1791,10 @@ const BorrowModal = ({
                   font-size="12px"
                   color="#6A737D"
                 >
-                  5.56%
+                  {healthFactor?.toFixed(2)}
                 </Text>
-              </Text>
+              </Text>:""}
+
             </Card>
 
             {(tokenTypeSelected=="rToken"? rTokenAmount>0 :true)&&
