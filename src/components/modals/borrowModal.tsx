@@ -267,9 +267,9 @@ const BorrowModal = ({
 
   useEffect(() => {
     setCurrentAvailableReserves(
-      protocolStats[coinAlign.indexOf(currentBorrowCoin)]?.availableReserves
+      protocolStats[coinAlign?.indexOf(currentBorrowCoin)]?.availableReserves
     );
-    console.log(coinAlign.indexOf(currentBorrowCoin));
+    console.log(coinAlign?.indexOf(currentBorrowCoin));
   }, [protocolStats, currentBorrowCoin]);
 
   const handleBorrow = async () => {

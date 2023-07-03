@@ -193,11 +193,12 @@ const BorrowDashboard = ({
 
   const [borrowAPRs, setBorrowAPRs] = useState<(number | undefined)[]>([]);
 
+  const stats = useSelector(selectProtocolStats);
+
   useEffect(() => {
     fetchProtocolStats();
-  }, []);
+  }, [stats]);
 
-  const stats = useSelector(selectProtocolStats);
   const fetchProtocolStats = async () => {
     try {
       console.log("fetchprotocolstats", stats); //23014

@@ -694,7 +694,7 @@ const Navbar = ({ validRTokens }: any) => {
                   <div>Network</div>
                   <div></div>
                 </div> */}
-                <hr
+                {/* <hr
                   style={{
                     height: "1px",
                     borderWidth: "0",
@@ -703,8 +703,8 @@ const Navbar = ({ validRTokens }: any) => {
                     marginRight: "5px",
                     // marginLeft: "10px",
                   }}
-                />
-                <Box marginRight="14px">
+                /> */}
+                {/* <Box marginRight="14px">
                   <Text float="right">Network</Text>
                   <Box
                     color="white"
@@ -725,16 +725,7 @@ const Navbar = ({ validRTokens }: any) => {
                       width="6"
                     />
                     Ethereum Goerli
-                    {/* <img
-                    src={`${dropDownArrow}`}
-                    alt="Picture of the author"
-                    width="14px"
-                    height="14px"
-                    style={{
-                      marginTop: "3px",
-                      cursor: "pointer",
-                    }}
-                  /> */}
+
                     <Image
                       src={"/connectWalletArrowDown.svg"}
                       alt="arrow"
@@ -745,7 +736,7 @@ const Navbar = ({ validRTokens }: any) => {
                       }}
                     />
                   </Box>
-                </Box>
+                </Box> */}
               </Box>
             )}
           </Box>
