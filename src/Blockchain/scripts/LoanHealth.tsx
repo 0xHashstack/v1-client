@@ -59,13 +59,15 @@ export async function getLoanHealth_RTokenCollateral(
 ) {
   let loanMarketAddress = tokenAddressMap[loanMarket];
 
-  const collateralMarket: NativeToken = getRTokenFromAddress(tokenAddressMap[rToken])?.underlying_asset as NativeToken;
-  let collateralMarketAddress = tokenAddressMap[collateralMarket];
+  const collateralMarketAddress: RToken = getRTokenFromAddress(tokenAddressMap[rToken])?.underlying_asset as RToken;
+  // console.log(collateralMarket,"market in loan")
+  // let collateralMarketAddress = tokenAddressMap[collateralMarket];
 
   const oraclePriceLoanMarket = oraclePrices.find(oraclePrice => oraclePrice.address === loanMarketAddress);
   const oraclePriceCollateralMarket = oraclePrices.find(oraclePrice => oraclePrice.address === collateralMarketAddress);
   const marketInfoCollateralMarket = marketInfos.find(marketInfo => marketInfo.tokenAddress === collateralMarketAddress);
   
+  // console.log(oraclePriceCollateralMarket,"data loan health")
   
   if(oraclePriceCollateralMarket && oraclePriceLoanMarket && marketInfoCollateralMarket) {
     let collateralAmount = rTokenAmount * marketInfoCollateralMarket?.exchangeRateRtokenToUnderlying;

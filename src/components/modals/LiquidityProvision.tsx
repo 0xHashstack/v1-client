@@ -75,6 +75,7 @@ import BtcToDai from "@/assets/icons/pools/btcToDai";
 import UsdtToDai from "@/assets/icons/pools/usdtToDai";
 import UsdcToDai from "@/assets/icons/pools/usdcToDai";
 import Image from "next/image";
+import mixpanel from "mixpanel-browser";
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -228,6 +229,7 @@ const LiquidityProvisionModal = ({
     "USDT/DAI",
     "USDC/DAI",
   ];
+  mixpanel.init("eb921da4a666a145e3b36930d7d984c2" || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
 
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {
@@ -328,6 +330,12 @@ const LiquidityProvisionModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
+        mixpanel.track('Liquidity Spend Borrow Status',{
+          "Status":"Success",
+          "PoolSelected":currentPool,
+          "BorrowId":currentBorrowId,
+          "BorrowedMarket":currentBorrowMarketCoin
+        })
 
         dispatch(setActiveTransactions(activeTransactions));
       }
@@ -345,6 +353,9 @@ const LiquidityProvisionModal = ({
           </CopyToClipboard>
         </div>
       );
+      mixpanel.track('Liquidity Spend Borrow Status',{
+        "Status":"Failure",
+      })
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
@@ -479,6 +490,10 @@ const LiquidityProvisionModal = ({
             if (selectedDapp == "") {
               // console.log("hi");
             } else {
+              mixpanel.track('Liquidity Modal Selected',{
+                'Clicked':true,
+                'Dapp Selected':currentSwap
+              })
               onOpen();
             }
           }}
@@ -494,6 +509,10 @@ const LiquidityProvisionModal = ({
               // console.log("hi");
             } else {
               onOpen();
+              mixpanel.track('Liquidity Modal Selected',{
+                'Clicked':true,
+                'Dapp Selected':currentSwap
+              })
             }
           }}
         >
@@ -508,6 +527,10 @@ const LiquidityProvisionModal = ({
               // console.log("hi");
             } else {
               onOpen();
+              mixpanel.track('Liquidity Modal Selected',{
+                'Clicked':true,
+                'Dapp Selected':currentSwap
+              })
             }
           }}
         >
@@ -1256,6 +1279,9 @@ const LiquidityProvisionModal = ({
                   onClick={() => {
                     setTransactionStarted(true);
                     if (transactionStarted == false) {
+                      mixpanel.track('Liquidity Button Clicked Spend Borrow',{
+                        'Clicked':true
+                      })
                       handleLiquidity();
                     }
                   }}

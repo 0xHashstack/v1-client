@@ -14,12 +14,14 @@ import {
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
 import { ILoan, Token } from "@/Blockchain/interfaces/interfaces";
+import mixpanel from "mixpanel-browser";
 
 const useRepay = (loanParam: any) => {
   const [repayAmount, setRepayAmount] = useState<number>(0);
   const [loan, setLoan] = useState<ILoan>(loanParam);
   const [allowanceVal, setAllowance] = useState(0);
   // console.log(repayAmount, "loan here", loanParam);
+  mixpanel.init("eb921da4a666a145e3b36930d7d984c2" || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
 
   const [transApprove, setTransApprove] = useState("");
   const [transRepayHash, setTransRepayHash] = useState("");
@@ -121,6 +123,11 @@ const useRepay = (loanParam: any) => {
     try {
       const val = await writeAsyncRepay();
       setTransRepayHash(val?.transaction_hash);
+      mixpanel.track('Repay Borrow Status',{
+        "Status":"Success",
+        "Loan ID":loan?.loanId,
+        "Repay Amount":repayAmount
+      })
       const toastParamValue = {
         success: true,
         heading: "Success",
@@ -128,7 +135,10 @@ const useRepay = (loanParam: any) => {
         textToCopy: val.transaction_hash,
       };
     } catch (err) {
-      // console.log(err, "err repay");
+      console.log(err, "err repay");
+      mixpanel.track('Repay Borrow Status',{
+        "Status":"Failure"
+      })
       const toastParamValue = {
         success: false,
         heading: "Repay Transaction Failed",

@@ -419,6 +419,9 @@ const SupplyModal = ({
   const handleTransaction = async () => {
     try {
       if (ischecked) {
+        mixpanel.track('Action Selected',{
+          "Action":"Deposit and Stake"
+        })
         const depositStake = await writeAsyncDepositStake();
         if (depositStake?.transaction_hash) {
           console.log("trans transaction hash created");
@@ -454,7 +457,7 @@ const SupplyModal = ({
           dispatch(setActiveTransactions(activeTransactions));
         }
         mixpanel.track('Supply Market Status',{
-          "Status":"Success",
+          "Status":"Success Deposit and Stake",
           "Token":currentSelectedCoin,
           "TokenAmount":inputAmount
         })
@@ -463,6 +466,9 @@ const SupplyModal = ({
         // console.log("Status transaction", deposit);
         console.log(isSuccessDeposit, "success ?");
       } else {
+        mixpanel.track('Action Selected',{
+          "Action":"Deposit"
+        })
         const deposit = await writeAsyncDeposit();
         if (deposit?.transaction_hash) {
           console.log(

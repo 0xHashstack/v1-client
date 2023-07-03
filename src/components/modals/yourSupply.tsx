@@ -89,6 +89,7 @@ import {
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
 import CopyToClipboard from "react-copy-to-clipboard";
+import mixpanel from "mixpanel-browser";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
@@ -305,6 +306,7 @@ const YourSupplyModal = ({
         break;
     }
   };
+  mixpanel.init("eb921da4a666a145e3b36930d7d984c2" || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
   const handleChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / walletBalance;
@@ -477,6 +479,11 @@ const YourSupplyModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
+        mixpanel.track('Withdraw Supply Status',{
+          "Status":"Success",
+          "Token Selected":asset,
+          "Token Amount":inputWithdrawlAmount
+        })
 
         dispatch(setActiveTransactions(activeTransactions));
       }
@@ -487,6 +494,9 @@ const YourSupplyModal = ({
     } catch (err: any) {
       console.log("withraw", err);
       dispatch(setTransactionStatus("failed"));
+      mixpanel.track('Withdraw Supply Status',{
+        "Status":"Failure"
+      })
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -505,6 +515,9 @@ const YourSupplyModal = ({
   const handleAddSupply = async () => {
     try {
       if (ischecked) {
+        mixpanel.track('Add Supply and Stake selected',{
+          "Clicked":true
+        })
         const addSupplyAndStake = await writeAsyncDepositStake();
         console.log(addSupplyAndStake);
         setDepositTransHash(addSupplyAndStake?.transaction_hash);
@@ -537,6 +550,11 @@ const YourSupplyModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
+          mixpanel.track('Add Supply and Stake Your Supply Status',{
+            "Status":"Success",
+            "Token Selected":supplyAsset,
+            "Token Amount":depositAmount
+          })
 
           dispatch(setActiveTransactions(activeTransactions));
         }
@@ -574,6 +592,11 @@ const YourSupplyModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
+          mixpanel.track('Add Supply Your Supply Status',{
+            "Status":"Success",
+            "Token Selected":supplyAsset,
+            "Token Amount":depositAmount
+          })
 
           dispatch(setActiveTransactions(activeTransactions));
         }
@@ -583,6 +606,9 @@ const YourSupplyModal = ({
     } catch (err) {
       console.log("Unable to add supply ", err);
       dispatch(setTransactionStatus("failed"));
+      mixpanel.track('Add Supply Your Supply Status',{
+        "Status":"Failure"
+      })
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -1287,6 +1313,9 @@ const YourSupplyModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
+                            mixpanel.track('Add Supply Button Clicked Your Supply',{
+                              "Clicked":true,
+                            })
                             handleAddSupply();
                           }}
                         >
@@ -1980,6 +2009,9 @@ const YourSupplyModal = ({
                           onClick={() => {
                             setWithdrawTransactionStarted(true);
                             if (withdrawTransactionStarted == false) {
+                              mixpanel.track('Withdraw Button Clicked your supply',{
+                                "Clicked":true,
+                              })
                               handleWithdrawSupply();
                             }
                           }}
