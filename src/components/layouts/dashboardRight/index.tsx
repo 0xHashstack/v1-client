@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Table,
   Thead,
@@ -58,7 +58,7 @@ const DashboardRight = ({
     "",
   ];
   const coinPrices = Coins.map((coin) => {
-    const matchingCoin = oraclePrices.find(
+    const matchingCoin = oraclePrices?.find(
       (c: { name: string }) =>
         c?.name?.toLowerCase() === coin.name.toLowerCase()
     );
@@ -71,6 +71,11 @@ const DashboardRight = ({
 
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>();
+  const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
+
+  useEffect(() => {
+    console.log("currentBorrowMarketCoin", currentBorrowMarketCoin);
+  }, [currentBorrowMarketCoin]);
 
   return (
     <TableContainer
@@ -307,6 +312,7 @@ const DashboardRight = ({
                     fontWeight="400"
                     onClick={() => {
                       setCurrentBorrowAPR(idx);
+                      setCurrentBorrowMarketCoin(coin.name);
                     }}
                     // bgColor={"blue"}
                   >
@@ -325,6 +331,7 @@ const DashboardRight = ({
                       borrowAPRs={borrowAPRs}
                       currentBorrowAPR={currentBorrowAPR}
                       validRTokens={validRTokens}
+                      currentBorrowMarketCoin={currentBorrowMarketCoin}
                     />
                   </Box>
                 </Td>
@@ -352,6 +359,7 @@ const DashboardRight = ({
                       borrowAPRs={borrowAPRs}
                       currentBorrowAPR={currentBorrowAPR}
                       validRTokens={validRTokens}
+                      currentBorrowMarketCoin={currentBorrowMarketCoin}
                     />
                   </Box>
                 </Td>

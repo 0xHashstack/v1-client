@@ -19,6 +19,14 @@ import SupplyMetrics from "@/components/layouts/metrics/SupplyMetrics";
 import RiskMetrics from "@/components/layouts/metrics/RiskMetrics";
 import Link from "next/link";
 import { useAccount, useConnectors } from "@starknet-react/core";
+import TotalValueLockedMetrics from "@/components/layouts/metrics/totalValueLockedMetrics";
+import MetricsTabs from "@/components/layouts/metrics/metricsTabs";
+import MarketMetrics from "@/components/layouts/metrics/borrowMetrics";
+import BorrowMetrics from "@/components/layouts/metrics/borrowMetrics";
+import MarketInformation from "@/components/layouts/metrics/marketInformation";
+import TotalCommunityActivity from "@/components/layouts/metrics/totalCommunityActivity";
+import { selectProtocolReserves } from "@/store/slices/readDataSlice";
+import useDataLoader from "@/hooks/useDataLoader";
 const ProtocolMetrics = () => {
   //   const [metricsCancel, setMetricsCancel] = useState(false);
   const [currentMarketCoin, setCurrentMarketCoin] = useState("BTC");
@@ -31,6 +39,7 @@ const ProtocolMetrics = () => {
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
   const { account: _account } = useAccount();
+  useDataLoader();
   useEffect(() => {
     if (!_account) {
       const walletConnected = localStorage.getItem("lastUsedConnector");
@@ -43,9 +52,17 @@ const ProtocolMetrics = () => {
       }
     }
   }, []);
+  const [currentMetric, setCurrentMetric] = useState("Supply");
+  const getMetric = () => {
+    if (currentMetric === "Supply") return <SupplyMetrics />;
+    if (currentMetric === "Borrow") return <BorrowMetrics />;
+    if (currentMetric === "Market Information") return <MarketInformation />;
+    if (currentMetric === "Total Community Activity")
+      return <TotalCommunityActivity />;
+  };
+  const protocolReserves = useSelector(selectProtocolReserves);
   return (
     <PageCard pt="8rem">
-      {/* {!metricsCancel && ( */}
       <Box
         width="95%"
         p="2rem 4rem"
@@ -54,10 +71,7 @@ const ProtocolMetrics = () => {
         borderRadius="5px"
         border="1px solid #2b2f35"
       >
-        <Box
-          // bgColor="blue"
-          width="100%"
-        >
+        <Box width="100%">
           <HStack justifyContent="space-between" mb="4rem">
             <Text color="#E6EDF3" fontSize="28px">
               Protocol metrics
@@ -68,133 +82,26 @@ const ProtocolMetrics = () => {
               </Box>
             </Link>
           </HStack>
-
-          {/* <Box
-            // bgColor="cyan"
-            width="100%"
-            display="flex"
-            justifyContent="space-between"
-            mb="2rem"
-          >
-            <HStack width="51.5%">
-              <VStack
-                display="flex"
-                justifyContent="center"
-                alignItems="flex-start"
-                gap={"3px"}
-                p="13px 25px"
-                //   bgColor="pink"
-              >
-                <Text color="#6e7681" fontSize="14px" alignItems="center">
-                  Supplied liquidity
-                </Text>
-                <Text color="#e6edf3" fontSize="20px">
-                  $8,932.14
-                </Text>
-              </VStack>
-              <VStack
-                display="flex"
-                justifyContent="center"
-                alignItems="flex-start"
-                gap={"3px"}
-                p="13px 25px"
-                // bgColor="pink"
-              >
-                <Text color="#6e7681" fontSize="14px" alignItems="center">
-                  Borrowed liquidity:
-                </Text>
-                <Text color="#e6edf3" fontSize="20px">
-                  $ 1,000,395
-                </Text>
-              </VStack>
-            </HStack>
-            <HStack width="50%">
-              <VStack
-                display="flex"
-                justifyContent="center"
-                alignItems="flex-start"
-                gap={"3px"}
-                p="13px 25px"
-                //   bgColor="pink"
-              >
-                <Text color="#6e7681" fontSize="14px" alignItems="center">
-                  Supplied liquidity
-                </Text>
-                <Text color="#e6edf3" fontSize="20px">
-                  $8,932.14
-                </Text>
-              </VStack>
-              <VStack
-                display="flex"
-                justifyContent="center"
-                alignItems="flex-start"
-                gap={"3px"}
-                p="13px 25px"
-                // bgColor="pink"
-              >
-                <Text color="#6e7681" fontSize="14px" alignItems="center">
-                  Borrowed liquidity:
-                </Text>
-                <Text color="#e6edf3" fontSize="20px">
-                  $ 1,000,395
-                </Text>
-              </VStack>
-            </HStack>
-          </Box> */}
           <Box mb="4rem">
-            <AssetMetrics />
+            <TotalValueLockedMetrics />
           </Box>
-          {/* <Box
-            // bgColor="cyan"
-            width="100%"
-            display="flex"
-            justifyContent="space-between"
-            mb="2rem"
-          >
-            <HStack width="51.5%">
-              <VStack
-                display="flex"
-                justifyContent="center"
-                alignItems="flex-start"
-                gap={"3px"}
-                p="13px 25px"
-                //   bgColor="pink"
-              >
-                <Text color="#6e7681" fontSize="14px" alignItems="center">
-                  Average supply APR:
-                </Text>
-                <Text color="#e6edf3" fontSize="20px">
-                  3.6%
-                </Text>
-              </VStack>
-            </HStack>
-            <HStack width="50%">
-              <VStack
-                display="flex"
-                justifyContent="center"
-                alignItems="flex-start"
-                gap={"3px"}
-                p="13px 25px"
-                // bgColor="pink"
-              >
-                <Text color="#6e7681" fontSize="14px" alignItems="center">
-                  Average borrow APR:
-                </Text>
-                <Text color="#e6edf3" fontSize="20px">
-                  3.6%
-                </Text>
-              </VStack>
-            </HStack>
-          </Box> */}
+          <MetricsTabs
+            currentMetric={currentMetric}
+            setCurrentMetric={setCurrentMetric}
+          />
+          <Box mb="4rem" width="100%">
+            {getMetric()}
+          </Box>
+        </Box>
+      </Box>
+    </PageCard>
+  );
+};
 
-          <Box
-            display="flex"
-            flexDirection="column"
-            mb="2rem"
-            gap="8px"
-            // bgColor="green"
-          >
-            <HStack
+export default ProtocolMetrics;
+
+{
+  /* <HStack
             // bgColor="blue"
             >
               <Text fontSize="12px" color="#6E7681">
@@ -315,19 +222,68 @@ const ProtocolMetrics = () => {
                   })}
                 </Box>
               )}
-            </Box>
-          </Box>
-          <Box mb="4rem" width="100%">
-            <SupplyMetrics currentMarketCoin={currentMarketCoin} />
-          </Box>
-          <Box>
-            <RiskMetrics />
-          </Box>
-        </Box>
-      </Box>
-      {/* )} */}
-    </PageCard>
-  );
-};
+            </Box> */
+}
 
-export default ProtocolMetrics;
+{
+  /* <Box
+            // bgColor="cyan"
+            width="100%"
+            display="flex"
+            justifyContent="space-between"
+            mb="2rem"
+          >
+            <HStack width="51.5%">
+              <VStack
+                display="flex"
+                justifyContent="center"
+                alignItems="flex-start"
+                gap={"3px"}
+                p="13px 25px"
+                //   bgColor="pink"
+              >
+                <Text color="#6e7681" fontSize="14px" alignItems="center">
+                  Average supply APR:
+                </Text>
+                <Text color="#e6edf3" fontSize="20px">
+                  3.6%
+                </Text>
+              </VStack>
+            </HStack>
+            <HStack width="50%">
+              <VStack
+                display="flex"
+                justifyContent="center"
+                alignItems="flex-start"
+                gap={"3px"}
+                p="13px 25px"
+                // bgColor="pink"
+              >
+                <Text color="#6e7681" fontSize="14px" alignItems="center">
+                  Average borrow APR:
+                </Text>
+                <Text color="#e6edf3" fontSize="20px">
+                  3.6%
+                </Text>
+              </VStack>
+            </HStack>
+          </Box> */
+}
+
+{
+  /* <Box
+            display="flex"
+            flexDirection="column"
+            mb="2rem"
+            gap="8px"
+            // bgColor="green"
+          >
+
+          </Box> */
+}
+
+{
+  /* <Box>
+            <RiskMetrics />
+          </Box> */
+}

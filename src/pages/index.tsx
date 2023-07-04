@@ -2,22 +2,12 @@ import { Inter } from "next/font/google";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Image from "next/image";
+
 import { Button, Card, Text, Box, Portal } from "@chakra-ui/react";
 import Navbar from "@/components/layouts/navbar/Navbar";
 import PageCard from "@/components/layouts/pageCard";
 // import WalletConnectModal from "@/components/modals/WalletConnectModal";
-import ArgentXLogo from "../assets/images/ArgentXlogo.svg";
-import BTCLogo from "@/assets/icons/coins/btc";
-import USDCLogo from "@/assets/icons/coins/usdc";
-import BravosIcon from "@/assets/icons/wallets/bravos";
-import USDTLogo from "@/assets/icons/coins/usdt";
-import ETHLogo from "@/assets/icons/coins/eth";
-import DAILogo from "@/assets/icons/coins/dai";
-import DropdownUp from "@/assets/icons/dropdownUpIcon";
-import StarknetLogo from "@/assets/icons/coins/starknet";
-import BrowserWalletIcon from "@/assets/icons/wallets/browserwallet";
-import EthWalletLogo from "@/assets/icons/coins/ethwallet";
+
 import {
   useAccount,
   useBlockNumber,
@@ -32,9 +22,9 @@ import {
 import Banner from "@/components/uiElements/loaders/Banner";
 import Banner2 from "@/components/uiElements/loaders/Banner2";
 // import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
-
+import mixpanel  from 'mixpanel-browser'
 const inter = Inter({ subsets: ["latin"] });
-
+mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY|| "", { debug: true, track_pageview: true, persistence: 'localStorage' });
 export default function Home() {
   const router = useRouter();
   useEffect(() => {

@@ -28,7 +28,7 @@ import {
   Stack,
   Skeleton,
 } from "@chakra-ui/react";
-
+import TransactionFees from "../../../TransactionFees.json";
 /* Coins logo import  */
 import BTCLogo from "../../assets/icons/coins/btc";
 import USDCLogo from "@/assets/icons/coins/usdc";
@@ -70,6 +70,8 @@ import {
   selectWalletBalance,
   setTransactionStatus,
   selectAssetWalletBalance,
+  selectActiveTransactions,
+  setActiveTransactions,
 } from "@/store/slices/userAccountSlice";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
@@ -87,6 +89,7 @@ import {
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
 import CopyToClipboard from "react-copy-to-clipboard";
+import mixpanel from "mixpanel-browser";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
@@ -106,6 +109,9 @@ const YourSupplyModal = ({
   // const [inputWithdrawlAmount, setinputWithdrawlAmount] = useState(0);
   const [sliderValue2, setSliderValue2] = useState(0);
   const [transactionStarted, setTransactionStarted] = useState(false);
+
+  let activeTransactions = useSelector(selectActiveTransactions);
+
   // const [coins, setCoins] = useState([])
   // const walletBalances = useSelector(selectAssetWalletBalance);
   interface assetB {
@@ -300,6 +306,7 @@ const YourSupplyModal = ({
         break;
     }
   };
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
   const handleChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / walletBalance;
@@ -395,50 +402,50 @@ const YourSupplyModal = ({
   const [actionSelected, setActionSelected] = useState("Supply");
   const [toastId, setToastId] = useState<any>();
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
-  const recieptData = useWaitForTransaction({
-    hash: depositTransHash,
-    watch: true,
-    onReceived: () => {
-      console.log("trans received");
-    },
-    onPending: () => {
-      setCurrentTransactionStatus("success");
-      toast.dismiss(toastId);
-      console.log("trans pending");
-      if (!isToastDisplayed) {
-        toast.success(
-          `You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          }
-        );
-        setToastDisplayed(true);
-      }
-    },
-    onRejected(transaction) {
-      setCurrentTransactionStatus("failed");
-      dispatch(setTransactionStatus("failed"));
-      toast.dismiss(toastId);
-      console.log("treans rejected");
-    },
-    onAcceptedOnL1: () => {
-      setCurrentTransactionStatus("success");
-      console.log("trans onAcceptedOnL1");
-    },
-    onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus("success");
-      console.log("trans onAcceptedOnL2 - ", transaction);
-      if (!isToastDisplayed) {
-        toast.success(
-          `You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-          }
-        );
-        setToastDisplayed(true);
-      }
-    },
-  });
+  // const recieptData = useWaitForTransaction({
+  //   hash: depositTransHash,
+  //   watch: true,
+  //   onReceived: () => {
+  //     console.log("trans received");
+  //   },
+  //   onPending: () => {
+  //     setCurrentTransactionStatus("success");
+  //     toast.dismiss(toastId);
+  //     console.log("trans pending");
+  //     if (!isToastDisplayed) {
+  //       toast.success(
+  //         `You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`,
+  //         {
+  //           position: toast.POSITION.BOTTOM_RIGHT,
+  //         }
+  //       );
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  //   onRejected(transaction) {
+  //     setCurrentTransactionStatus("failed");
+  //     dispatch(setTransactionStatus("failed"));
+  //     toast.dismiss(toastId);
+  //     console.log("treans rejected");
+  //   },
+  //   onAcceptedOnL1: () => {
+  //     setCurrentTransactionStatus("success");
+  //     console.log("trans onAcceptedOnL1");
+  //   },
+  //   onAcceptedOnL2(transaction) {
+  //     setCurrentTransactionStatus("success");
+  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //     if (!isToastDisplayed) {
+  //       toast.success(
+  //         `You have successfully supplied ${inputSupplyAmount} ${currentSelectedSupplyCoin}`,
+  //         {
+  //           position: toast.POSITION.BOTTOM_RIGHT,
+  //         }
+  //       );
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  // });
 
   const handleWithdrawSupply = async () => {
     try {
@@ -447,21 +454,49 @@ const YourSupplyModal = ({
       if (withdraw?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait, your transaction is running in background  ${inputSupplyAmount} ${currentSelectedSupplyCoin} `,
+          // `Please wait your withdraw transaction is running in background : ${inputWithdrawlAmount}r${asset}`,
+          `Transaction pending`,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
           }
         );
         setToastId(toastid);
+        if (!activeTransactions) {
+          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+        } else if (
+          Object.isFrozen(activeTransactions) ||
+          Object.isSealed(activeTransactions)
+        ) {
+          // Check if activeTransactions is frozen or sealed
+          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+        }
+        const trans_data = {
+          transaction_hash: withdraw?.transaction_hash.toString(),
+          message: `Successfully withdrawn :  : ${inputWithdrawlAmount}r${asset}`,
+          toastId: toastid,
+          setCurrentTransactionStatus: setCurrentTransactionStatus,
+        };
+        // addTransaction({ hash: deposit?.transaction_hash });
+        activeTransactions?.push(trans_data);
+        mixpanel.track('Withdraw Supply Status',{
+          "Status":"Success",
+          "Token Selected":asset,
+          "Token Amount":inputWithdrawlAmount
+        })
+
+        dispatch(setActiveTransactions(activeTransactions));
       }
-      if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
-      }
+      // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
+      // }
       dispatch(setTransactionStatus("success"));
       console.log(withdraw);
     } catch (err: any) {
       console.log("withraw", err);
       dispatch(setTransactionStatus("failed"));
+      mixpanel.track('Withdraw Supply Status',{
+        "Status":"Failure"
+      })
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -480,20 +515,100 @@ const YourSupplyModal = ({
   const handleAddSupply = async () => {
     try {
       if (ischecked) {
+        mixpanel.track('Add Supply and Stake selected',{
+          "Clicked":true
+        })
         const addSupplyAndStake = await writeAsyncDepositStake();
         console.log(addSupplyAndStake);
         setDepositTransHash(addSupplyAndStake?.transaction_hash);
+        if (addSupplyAndStake?.transaction_hash) {
+          console.log("trans transaction hash created");
+          console.log("toast here");
+          const toastid = toast.info(
+            // `Please wait your transaction is running in background for supply and stake : ${depositAmount} ${supplyAsset} `,
+            `Transaction pending`,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const trans_data = {
+            transaction_hash: addSupplyAndStake?.transaction_hash.toString(),
+            message: `Successfully supplied and staked ${depositAmount} ${supplyAsset}`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+          mixpanel.track('Add Supply and Stake Your Supply Status',{
+            "Status":"Success",
+            "Token Selected":supplyAsset,
+            "Token Amount":depositAmount
+          })
+
+          dispatch(setActiveTransactions(activeTransactions));
+        }
         dispatch(setTransactionStatus("success"));
         console.log("addSupply", addSupplyAndStake);
       } else {
         const addSupply = await writeAsyncDeposit();
-        setDepositTransHash(addSupply?.transaction_hash);
+        // setDepositTransHash(addSupply?.transaction_hash);
+        if (addSupply?.transaction_hash) {
+          console.log("trans transaction hash created");
+          console.log("toast here");
+          const toastid = toast.info(
+            // `Please wait your transaction is running in background for adding supply : ${depositAmount} ${supplyAsset} `,
+            `Transaction pending`,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const trans_data = {
+            transaction_hash: addSupply?.transaction_hash.toString(),
+            message: `Successfully added supply : ${depositAmount} ${supplyAsset}`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+          mixpanel.track('Add Supply Your Supply Status',{
+            "Status":"Success",
+            "Token Selected":supplyAsset,
+            "Token Amount":depositAmount
+          })
+
+          dispatch(setActiveTransactions(activeTransactions));
+        }
         dispatch(setTransactionStatus("success"));
         console.log("addSupply", addSupply);
       }
     } catch (err) {
       console.log("Unable to add supply ", err);
       dispatch(setTransactionStatus("failed"));
+      mixpanel.track('Add Supply Your Supply Status',{
+        "Status":"Failure"
+      })
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -1068,41 +1183,6 @@ const YourSupplyModal = ({
                         mb="0.5rem"
                       >
                         <Text
-                          color="#8B949E"
-                          display="flex"
-                          justifyContent="space-between"
-                          fontSize="12px"
-                          mb="0.4rem"
-                        >
-                          <Text display="flex" alignItems="center">
-                            <Text
-                              mr="0.2rem"
-                              font-style="normal"
-                              font-weight="400"
-                              font-size="12px"
-                              color="#6A737D"
-                            >
-                              Wallet balance:
-                            </Text>
-                            <Tooltip
-                              hasArrow
-                              placement="right"
-                              boxShadow="dark-lg"
-                              label="all the assets to the market"
-                              bg="#24292F"
-                              fontSize={"smaller"}
-                              fontWeight={"thin"}
-                              borderRadius={"lg"}
-                              padding={"2"}
-                            >
-                              <Box>
-                                <InfoIcon />
-                              </Box>
-                            </Tooltip>
-                          </Text>
-                          <Text color="#6E7681">$ 10.91</Text>
-                        </Text>
-                        <Text
                           display="flex"
                           justifyContent="space-between"
                           fontSize="12px"
@@ -1135,7 +1215,7 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">0.1%</Text>
+                          <Text color="#6E7681">{TransactionFees.stake}%</Text>
                         </Text>
                         <Text
                           color="#8B949E"
@@ -1170,7 +1250,7 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">$ 10.91</Text>
+                          <Text color="#6E7681">$ 0.91</Text>
                         </Text>
                         <Text
                           color="#8B949E"
@@ -1233,6 +1313,9 @@ const YourSupplyModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
+                            mixpanel.track('Add Supply Button Clicked Your Supply',{
+                              "Clicked":true,
+                            })
                             handleAddSupply();
                           }}
                         >
@@ -1881,7 +1964,9 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">0.1%</Text>
+                          <Text color="#6E7681">
+                            {TransactionFees.withdrawSupply}%
+                          </Text>
                         </Text>
                         <Text
                           color="#8B949E"
@@ -1915,7 +2000,7 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">$ 10.91</Text>
+                          <Text color="#6E7681">$ 0.91</Text>
                         </Text>
                       </Card>
                       {inputWithdrawlAmount > 0 &&
@@ -1924,6 +2009,9 @@ const YourSupplyModal = ({
                           onClick={() => {
                             setWithdrawTransactionStarted(true);
                             if (withdrawTransactionStarted == false) {
+                              mixpanel.track('Withdraw Button Clicked your supply',{
+                                "Clicked":true,
+                              })
                               handleWithdrawSupply();
                             }
                           }}

@@ -1,5 +1,3 @@
-// @ts-nocheck
-
 import React, { useState } from "react";
 import {
   Button,
@@ -22,6 +20,7 @@ import {
   NumberInputField,
   Portal,
 } from "@chakra-ui/react";
+import TransactionFees from "../../../TransactionFees.json";
 import TickIcon from "@/assets/icons/tickIcon";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import { useDisclosure } from "@chakra-ui/react";
@@ -64,6 +63,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
   const modalDropdowns = useSelector(selectModalDropDowns);
   const walletBalance = useSelector(selectWalletBalance);
   const inputAmount1 = useSelector(selectInputSupplyAmount);
+  const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const router = useRouter();
 
   const getCoin = (CoinName: string) => {
@@ -640,7 +640,7 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     font-size="12px"
                     color="#6A737D"
                   >
-                    5.56%
+                    {TransactionFees.convertToBorrowMarket}%
                   </Text>
                 </Text>
                 <Text
@@ -744,9 +744,9 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                     mt="1.5rem"
                     mb="1.5rem"
                     border="1px solid #8B949E"
-                    labelArray={[
+                    labelSuccessArray={[
                       "Deposit Amount approved",
-                      "Successfully transferred to Hashstack’s supply vault.",
+                      "Successfully transferred to Hashstacks supply vault.",
                       "Determining the rToken amount to mint.",
                       "rTokens have been minted successfully.",
                       "Transaction complete.",
@@ -757,6 +757,15 @@ const TransferDepositModal = ({ buttonText, ...restProps }: any) => {
                         successText={"Success"}
                       />,
                     ]}
+                    labelErrorArray={[
+                      <ErrorButton
+                        errorText="Transaction failed"
+                        key={"error1"}
+                      />,
+                      <ErrorButton errorText="Copy error!" key={"error2"} />,
+                    ]}
+                    currentTransactionStatus={currentTransactionStatus}
+                    setCurrentTransactionStatus={setCurrentTransactionStatus}
                     onClick={() => {
                       router.push("/market");
                     }}

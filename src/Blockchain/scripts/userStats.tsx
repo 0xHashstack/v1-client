@@ -72,6 +72,12 @@ export async function getTotalBorrow(loans: ILoan[], oraclePrices: OraclePrice[]
   return { totalBorrow, totalCurrentAmount };
 }
 
+
+
+// All borrow token are separate contracts
+// all supply vaults(rTokens) are sepaarate contracts
+// staking is a separate contract
+
 export async function getL3USDTValue(loanId: number, loanMarketAddress: string) {
 
   console.log("calling getL3USDTValue with: ", loanId, loanMarketAddress)
@@ -121,12 +127,12 @@ export async function getNetApr(deposits: IDeposit[], loans: ILoan[], oraclePric
   }
   let netApr = netSupplyInterest / totalSupply - netBorrowInterest / totalBorrow;
 
-  return netApr;
+  return netApr.toFixed(2);
 }
 
 export async function effectivAPRLoan(loan: ILoan, marketInfos: IMarketInfo[], oraclePrices: OraclePrice[]) {
   if (loan.loanState === "REPAID" || loan.loanState === "LIQUIDATED" || loan.loanState === null) return 0;
-  const oraclePriceLoanMarket = oraclePrices.find(oraclePrice => oraclePrice.address === loan.underlyingMarketAddress);
+  const oraclePriceLoanMarket = oraclePrices?.find(oraclePrice => oraclePrice.address === loan.underlyingMarketAddress);
   const marketInfoLoanMarket = marketInfos.find(marketInfo => marketInfo.tokenAddress === loan.underlyingMarketAddress);
 
   const collateralMarket = getRTokenFromAddress(loan.collateralMarketAddress as string)?.underlying_asset;
@@ -143,7 +149,7 @@ export async function effectivAPRLoan(loan: ILoan, marketInfos: IMarketInfo[], o
     let collateralInterest = collateralAmountUsd * marketInfoCollateralMarket.supplyRate;
 
     let effectiveAPR = (borrowInterest - collateralInterest) / loanAmountUsd;
-    return effectiveAPR;
+    return effectiveAPR.toFixed(2);
   }
 }
 

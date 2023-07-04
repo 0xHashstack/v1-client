@@ -44,15 +44,18 @@ import TableJediswapLogo from "../layouts/table/tableIcons/jediswapLogo";
 import useSwap from "@/Blockchain/hooks/Writes/useSwap";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
 import { toast } from "react-toastify";
+import TransactionFees from "../../../TransactionFees.json";
 import {
   selectInputSupplyAmount,
   setCoinSelectedSupplyModal,
   selectWalletBalance,
   setInputSupplyAmount,
   selectSelectedDapp,
-  selectUserLoans,
   setTransactionStatus,
+  selectActiveTransactions,
+  setActiveTransactions,
 } from "@/store/slices/userAccountSlice";
+import { selectUserLoans } from "@/store/slices/readDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
@@ -63,6 +66,16 @@ import ArrowUp from "@/assets/icons/arrowup";
 import useLiquidity from "@/Blockchain/hooks/Writes/useLiquidity";
 import { useWaitForTransaction } from "@starknet-react/core";
 import CopyToClipboard from "react-copy-to-clipboard";
+import {
+  getJediEstimateLiquiditySplit,
+  getJediEstimatedLpAmountOut,
+} from "@/Blockchain/scripts/l3interaction";
+import BtcToUsdc from "@/assets/icons/pools/btcToUsdc";
+import BtcToDai from "@/assets/icons/pools/btcToDai";
+import UsdtToDai from "@/assets/icons/pools/usdtToDai";
+import UsdcToDai from "@/assets/icons/pools/usdcToDai";
+import Image from "next/image";
+import mixpanel from "mixpanel-browser";
 const LiquidityProvisionModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -123,12 +136,15 @@ const LiquidityProvisionModal = ({
   const inputAmount1 = useSelector(selectInputSupplyAmount);
   const userLoans = useSelector(selectUserLoans);
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
+
+  let activeTransactions = useSelector(selectActiveTransactions);
+
   // console.log(userLoans)
   // console.log(currentId.slice(currentId.indexOf("-") + 1).trim())
   useEffect(() => {
-    const result = userLoans.find(
+    const result = userLoans?.find(
       (item: any) =>
-        item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
+        item?.loanId == currentId?.slice(currentId?.indexOf("-") + 1)?.trim()
     );
     setBorrowAmount(result?.loanAmountParsed);
     // console.log(borrowAmount)
@@ -136,12 +152,12 @@ const LiquidityProvisionModal = ({
   }, [currentId]);
   useEffect(() => {
     setLiquidityLoanId(
-      currentBorrowId.slice(currentBorrowId.indexOf("-") + 1).trim()
+      currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
     );
   }, [currentBorrowId]);
   useEffect(() => {
-    setToMarketA(currentPool.split("/")[0]);
-    setToMarketB(currentPool.split("/")[1]);
+    setToMarketA(currentPool?.split("/")[0]);
+    setToMarketB(currentPool?.split("/")[1]);
   }, [currentPool]);
 
   const getCoin = (CoinName: string) => {
@@ -164,23 +180,31 @@ const LiquidityProvisionModal = ({
       case "Jediswap":
         return <JediswapLogo />;
         break;
-      case "wETH/USDT":
+      case "ETH/USDT":
         return <EthToUsdt />;
         break;
       case "USDC/USDT":
         return <UsdcToUsdt />;
         break;
-      case "wETH/USDC":
+      case "ETH/USDC":
         return <EthToUsdc />;
         break;
       case "DAI/ETH":
         return <DaiToEth />;
         break;
-      case "wBTC/ETH":
+      case "BTC/ETH":
         return <BtcToEth />;
         break;
-      case "wBTC/USDT":
+      case "BTC/USDT":
         return <BtcToUsdt />;
+      case "BTC/USDC":
+        return <BtcToUsdc />;
+      case "BTC/DAI":
+        return <BtcToDai />;
+      case "USDT/DAI":
+        return <UsdtToDai />;
+      case "USDC/DAI":
+        return <UsdcToDai />;
         break;
       default:
         break;
@@ -194,13 +218,18 @@ const LiquidityProvisionModal = ({
   //   "ID - 1234510",
   // ];
   const pools = [
-    "wETH/USDT",
+    "ETH/USDT",
     "USDC/USDT",
-    "wETH/USDC",
+    "ETH/USDC",
     "DAI/ETH",
-    "wBTC/ETH",
-    "wBTC/USDT",
+    "BTC/ETH",
+    "BTC/USDT",
+    "BTC/USDC",
+    "BTC/DAI",
+    "USDT/DAI",
+    "USDC/DAI",
   ];
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
 
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {
@@ -230,44 +259,44 @@ const LiquidityProvisionModal = ({
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
   const [isToastDisplayed, setToastDisplayed] = useState(false);
   const [toastId, setToastId] = useState<any>();
-  const recieptData = useWaitForTransaction({
-    hash: depositTransHash,
-    watch: true,
-    onReceived: () => {
-      console.log("trans received");
-      if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied `, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
-        setToastDisplayed(true);
-      }
-    },
-    onPending: () => {
-      setCurrentTransactionStatus("success");
-      toast.dismiss(toastId);
-      console.log("trans pending");
-    },
-    onRejected(transaction) {
-      setCurrentTransactionStatus("failed");
-      dispatch(setTransactionStatus("failed"));
-      toast.dismiss(toastId);
-      console.log("treans rejected");
-    },
-    onAcceptedOnL1: () => {
-      setCurrentTransactionStatus("success");
-      console.log("trans onAcceptedOnL1");
-    },
-    onAcceptedOnL2(transaction) {
-      setCurrentTransactionStatus("success");
-      console.log("trans onAcceptedOnL2 - ", transaction);
-      if (!isToastDisplayed) {
-        toast.success(`You have successfully supplied `, {
-          position: toast.POSITION.BOTTOM_RIGHT,
-        });
-        setToastDisplayed(true);
-      }
-    },
-  });
+  // const recieptData = useWaitForTransaction({
+  //   hash: depositTransHash,
+  //   watch: true,
+  //   onReceived: () => {
+  //     console.log("trans received");
+  //     if (!isToastDisplayed) {
+  //       toast.success(`You have successfully supplied `, {
+  //         position: toast.POSITION.BOTTOM_RIGHT,
+  //       });
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  //   onPending: () => {
+  //     setCurrentTransactionStatus("success");
+  //     toast.dismiss(toastId);
+  //     console.log("trans pending");
+  //   },
+  //   onRejected(transaction) {
+  //     setCurrentTransactionStatus("failed");
+  //     dispatch(setTransactionStatus("failed"));
+  //     toast.dismiss(toastId);
+  //     console.log("treans rejected");
+  //   },
+  //   onAcceptedOnL1: () => {
+  //     setCurrentTransactionStatus("success");
+  //     console.log("trans onAcceptedOnL1");
+  //   },
+  //   onAcceptedOnL2(transaction) {
+  //     setCurrentTransactionStatus("success");
+  //     console.log("trans onAcceptedOnL2 - ", transaction);
+  //     if (!isToastDisplayed) {
+  //       toast.success(`You have successfully supplied `, {
+  //         position: toast.POSITION.BOTTOM_RIGHT,
+  //       });
+  //       setToastDisplayed(true);
+  //     }
+  //   },
+  // });
 
   const handleLiquidity = async () => {
     try {
@@ -275,13 +304,40 @@ const LiquidityProvisionModal = ({
       if (liquidity?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait, your transaction is running in background`,
+          // `Please wait your transaction is running in background`,
+          `Transaction pending`,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
           }
         );
         setToastId(toastid);
+        if (!activeTransactions) {
+          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+        } else if (
+          Object.isFrozen(activeTransactions) ||
+          Object.isSealed(activeTransactions)
+        ) {
+          // Check if activeTransactions is frozen or sealed
+          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+        }
+        const trans_data = {
+          transaction_hash: liquidity?.transaction_hash.toString(),
+          // message: `You have successfully Liquidated for Loan ID : ${liquidityLoanId}`,
+          message: `Transaction successful`,
+          toastId: toastid,
+          setCurrentTransactionStatus: setCurrentTransactionStatus,
+        };
+        // addTransaction({ hash: deposit?.transaction_hash });
+        activeTransactions?.push(trans_data);
+        mixpanel.track('Liquidity Spend Borrow Status',{
+          "Status":"Success",
+          "PoolSelected":currentPool,
+          "BorrowId":currentBorrowId,
+          "BorrowedMarket":currentBorrowMarketCoin
+        })
+
+        dispatch(setActiveTransactions(activeTransactions));
       }
       console.log(liquidity);
       setDepositTransHash(liquidity?.transaction_hash);
@@ -297,6 +353,9 @@ const LiquidityProvisionModal = ({
           </CopyToClipboard>
         </div>
       );
+      mixpanel.track('Liquidity Spend Borrow Status',{
+        "Status":"Failure",
+      })
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
@@ -373,6 +432,55 @@ const LiquidityProvisionModal = ({
     }
   };
 
+  const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState(null);
+  const [currentSplit, setCurrentSplit] = useState(null);
+
+  useEffect(() => {
+    // if (!currentBorrowId1 || currentBorrowId1 == "") {
+    //   return;
+    // }
+    console.log(
+      "toMarketSplitConsole",
+      currentBorrowId.slice(5),
+      toMarketA,
+      toMarketB
+      // borrow
+    );
+    setCurrentLPTokenAmount(null);
+    setCurrentSplit(null);
+    fetchLiquiditySplit();
+  }, [toMarketA, currentBorrowId, toMarketB]);
+
+  const fetchLiquiditySplit = async () => {
+    if (
+      !toMarketA &&
+      !toMarketB &&
+      !currentBorrowId &&
+      !currentBorrowId.slice(5)
+    )
+      return;
+    const lp_tokon: any = await getJediEstimatedLpAmountOut(
+      currentBorrowId.slice(5),
+      toMarketA,
+      toMarketB
+      // "99",
+      // "ETH",
+      // "USDT"
+    );
+    console.log("toMarketSplitLP", lp_tokon);
+    setCurrentLPTokenAmount(lp_tokon);
+    const split: any = await getJediEstimateLiquiditySplit(
+      currentBorrowId.slice(5),
+      toMarketA,
+      toMarketB
+      // "99",
+      // "ETH",
+      // "USDT"
+    );
+    console.log("toMarketSplit", split);
+    setCurrentSplit(split);
+  };
+
   return (
     <div>
       <Box display="flex" gap="4rem" mt="1rem">
@@ -382,6 +490,10 @@ const LiquidityProvisionModal = ({
             if (selectedDapp == "") {
               // console.log("hi");
             } else {
+              mixpanel.track('Liquidity Modal Selected',{
+                'Clicked':true,
+                'Dapp Selected':currentSwap
+              })
               onOpen();
             }
           }}
@@ -397,6 +509,10 @@ const LiquidityProvisionModal = ({
               // console.log("hi");
             } else {
               onOpen();
+              mixpanel.track('Liquidity Modal Selected',{
+                'Clicked':true,
+                'Dapp Selected':currentSwap
+              })
             }
           }}
         >
@@ -411,6 +527,10 @@ const LiquidityProvisionModal = ({
               // console.log("hi");
             } else {
               onOpen();
+              mixpanel.track('Liquidity Modal Selected',{
+                'Clicked':true,
+                'Dapp Selected':currentSwap
+              })
             }
           }}
         >
@@ -527,6 +647,8 @@ const LiquidityProvisionModal = ({
                       py="2"
                       className="dropdown-container"
                       boxShadow="dark-lg"
+                      height="198px"
+                      overflow="scroll"
                     >
                       {pools.map((pool, index) => {
                         return (
@@ -800,7 +922,13 @@ const LiquidityProvisionModal = ({
                   </Box>
                   <Box display="flex" gap="2px">
                     <Box mt="2px">
-                      <SmallJediswapLogo />
+                      {/* <SmallJediswapLogo /> */}
+                      <Image
+                        src={`/${currentSwap}.svg`}
+                        alt="liquidity split coin1"
+                        width="12"
+                        height="12"
+                      />
                     </Box>
                     <Text
                       color="#6A737D"
@@ -812,91 +940,149 @@ const LiquidityProvisionModal = ({
                     </Text>
                   </Box>
                 </Box>
-                <Box display="flex" justifyContent="space-between" mb="0.3rem">
-                  <Box display="flex">
-                    <Box display="flex" gap="2px">
-                      <Text
-                        color="#6A737D"
-                        fontSize="12px"
-                        fontWeight="400"
-                        fontStyle="normal"
-                      >
-                        est LP tokens received:
-                      </Text>
-                    </Box>
-                    <Tooltip
-                      hasArrow
-                      placement="right"
-                      boxShadow="dark-lg"
-                      label="all the assets to the market"
-                      bg="#24292F"
-                      fontSize={"smaller"}
-                      fontWeight={"thin"}
-                      borderRadius={"lg"}
-                      padding={"2"}
-                    >
-                      <Box ml="0.2rem" mt="0.2rem">
-                        <InfoIcon />
-                      </Box>
-                    </Tooltip>
-                  </Box>
-                  <Text
-                    color="#6A737D"
-                    fontSize="12px"
-                    fontWeight="400"
-                    fontStyle="normal"
+                {currentPool != "Select a pool" && (
+                  <Box
+                    display="flex"
+                    justifyContent="space-between"
+                    mb="0.3rem"
                   >
-                    $10.91
-                  </Text>
-                </Box>
-                <Box display="flex" justifyContent="space-between" mb="0.3rem">
-                  <Box display="flex">
+                    <Box display="flex">
+                      <Box display="flex" gap="2px">
+                        <Text
+                          color="#6A737D"
+                          fontSize="12px"
+                          fontWeight="400"
+                          fontStyle="normal"
+                        >
+                          est LP tokens received:
+                        </Text>
+                      </Box>
+                      <Tooltip
+                        hasArrow
+                        placement="right"
+                        boxShadow="dark-lg"
+                        label="all the assets to the market"
+                        bg="#24292F"
+                        fontSize={"smaller"}
+                        fontWeight={"thin"}
+                        borderRadius={"lg"}
+                        padding={"2"}
+                      >
+                        <Box ml="0.2rem" mt="0.2rem">
+                          <InfoIcon />
+                        </Box>
+                      </Tooltip>
+                    </Box>
                     <Text
                       color="#6A737D"
                       fontSize="12px"
                       fontWeight="400"
                       fontStyle="normal"
                     >
-                      Liquidity split:{" "}
+                      {currentLPTokenAmount == undefined ||
+                      currentLPTokenAmount === null ? (
+                        <Box pt="2px">
+                          <Skeleton
+                            width="2.3rem"
+                            height=".85rem"
+                            startColor="#2B2F35"
+                            endColor="#101216"
+                            borderRadius="6px"
+                          />
+                        </Box>
+                      ) : (
+                        "$" + currentLPTokenAmount
+                      )}
+                      {/* $ 10.91 */}
                     </Text>
-                    <Tooltip
-                      hasArrow
-                      placement="right"
-                      boxShadow="dark-lg"
-                      label="all the assets to the market"
-                      bg="#24292F"
-                      fontSize={"smaller"}
-                      fontWeight={"thin"}
-                      borderRadius={"lg"}
-                      padding={"2"}
-                    >
-                      <Box ml="0.2rem" mt="0.2rem">
-                        <InfoIcon />
-                      </Box>
-                    </Tooltip>
                   </Box>
+                )}
+                {currentPool != "Select a pool" && (
                   <Box
                     display="flex"
-                    gap="2"
-                    color="#6A737D"
-                    fontSize="12px"
-                    fontWeight="400"
-                    fontStyle="normal"
+                    justifyContent="space-between"
+                    mb="0.3rem"
                   >
-                    <Box display="flex" gap="2px">
-                      <Box mt="2px">
-                        <SmallEth />
-                      </Box>
-                      <Text>1.23</Text>
+                    <Box display="flex">
+                      <Text
+                        color="#6A737D"
+                        fontSize="12px"
+                        fontWeight="400"
+                        fontStyle="normal"
+                      >
+                        Liquidity split:{" "}
+                      </Text>
+                      <Tooltip
+                        hasArrow
+                        placement="right"
+                        boxShadow="dark-lg"
+                        label="all the assets to the market"
+                        bg="#24292F"
+                        fontSize={"smaller"}
+                        fontWeight={"thin"}
+                        borderRadius={"lg"}
+                        padding={"2"}
+                      >
+                        <Box ml="0.2rem" mt="0.2rem">
+                          <InfoIcon />
+                        </Box>
+                      </Tooltip>
                     </Box>
-                    <Box display="flex" gap="2px">
-                      <Box mt="2px">
-                        <SmallUsdt />
+                    <Box
+                      display="flex"
+                      gap="2"
+                      color="#6A737D"
+                      fontSize="12px"
+                      fontWeight="400"
+                      fontStyle="normal"
+                    >
+                      <Box display="flex" gap="2px">
+                        <Box m="2px">
+                          {/* <SmallEth /> */}
+                          <Image
+                            src={`/${toMarketA}.svg`}
+                            alt="liquidity split coin1"
+                            width="12"
+                            height="12"
+                          />
+                        </Box>
+                        <Text>
+                          {currentSplit?.[0] || (
+                            <Skeleton
+                              width="2.3rem"
+                              height=".85rem"
+                              startColor="#2B2F35"
+                              endColor="#101216"
+                              borderRadius="6px"
+                            />
+                          )}
+                        </Text>
                       </Box>
-                      <Text>1.23</Text>
+                      <Box display="flex" gap="2px">
+                        <Box m="2px">
+                          {/* <SmallUsdt /> */}
+                          <Image
+                            src={`/${toMarketB}.svg`}
+                            alt="liquidity split coin1"
+                            width="12"
+                            height="12"
+                          />
+                        </Box>
+                        <Text>
+                          {currentSplit?.[1] || (
+                            <Skeleton
+                              width="2.3rem"
+                              height=".85rem"
+                              startColor="#2B2F35"
+                              endColor="#101216"
+                              borderRadius="6px"
+                            />
+                          )}
+                        </Text>
+                      </Box>
                     </Box>
                   </Box>
-                </Box>
+                )}
                 <Box display="flex" justifyContent="space-between" mb="0.3rem">
                   <Box display="flex">
                     <Text
@@ -929,7 +1115,7 @@ const LiquidityProvisionModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    0.1%
+                    {TransactionFees.spend}%
                   </Text>
                 </Box>
                 <Box display="flex" justifyContent="space-between" mb="0.3rem">
@@ -964,7 +1150,7 @@ const LiquidityProvisionModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    5.56%
+                    $ 0.91
                   </Text>
                 </Box>
                 <Box display="flex" justifyContent="space-between" mb="0.3rem">
@@ -1093,6 +1279,9 @@ const LiquidityProvisionModal = ({
                   onClick={() => {
                     setTransactionStarted(true);
                     if (transactionStarted == false) {
+                      mixpanel.track('Liquidity Button Clicked Spend Borrow',{
+                        'Clicked':true
+                      })
                       handleLiquidity();
                     }
                   }}

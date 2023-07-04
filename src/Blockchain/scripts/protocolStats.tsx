@@ -73,53 +73,73 @@ export async function getProtocolStats() {
     metricsContractAddress,
     provider
   );
-  for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
-    const token = contractsEnv.TOKENS[i];
-
-    console.log('get_protocol_stat for token: ', token.name);
-    const res = await metricsContract.call("get_protocol_stat", [token.address], {
-      blockIdentifier: "pending",
-    });
-    console.log("get_protocol_stat finished for token: ", token.name, res?.market_info);
-    const market_info = parseProtocolStat(res?.market_info);
-    marketStats.push(market_info);
+  try {
+    for (let i = 0; i < contractsEnv.TOKENS.length; ++i) {
+      const token = contractsEnv.TOKENS[i];
+  
+      console.log('get_protocol_stat for token: ', token.name);
+      const res = await metricsContract.call("get_protocol_stat", [token.address], {
+        blockIdentifier: "pending",
+      });
+      console.log("get_protocol_stat finished for token: ", token.name, res?.market_info);
+      const market_info = parseProtocolStat(res?.market_info);
+      marketStats.push(market_info);
+    }
+    // console.log(marketStats,"market Stats in protocol stats")
+    return marketStats;
   }
-  return marketStats;
+  catch (e) {
+    console.log('get_protocol_stat failed for token: ', e);
+    return marketStats;
+  }
 }
 
 
 function parseProtocolReserves(protocolReservesData: any): IProtocolReserves {
-  let protocolReserves: IProtocolReserves = {
-    totalReserves: parseAmount(uint256
-      .uint256ToBN(protocolReservesData?.total_reserves)
-      .toString(),
-      8
-    ),
-    availableReserves: parseAmount(uint256
-      .uint256ToBN(protocolReservesData?.available_reserves)
-      .toString(),
-      8
-    ),
-    avgAssetUtilisation: parseAmount(uint256
-      .uint256ToBN(protocolReservesData?.avg_asset_utilisation)
-      .toString(),
-      2
-    )
-  };
-  return protocolReserves;
+  try {
+    let protocolReserves: IProtocolReserves = {
+      totalReserves: parseAmount(uint256
+        .uint256ToBN(protocolReservesData?.total_reserves)
+        .toString(),
+        8
+      ),
+      availableReserves: parseAmount(uint256
+        .uint256ToBN(protocolReservesData?.available_reserves)
+        .toString(),
+        8
+      ),
+      avgAssetUtilisation: parseAmount(uint256
+        .uint256ToBN(protocolReservesData?.avg_asset_utilisation)
+        .toString(),
+        2
+      )
+    };
+    return protocolReserves;
+  }
+  catch(error) {
+    console.warn("getProtocol reserves: ", error);
+    throw("get protocol stat error");
+  }
 }
 
 export async function getProtocolReserves() {
   const provider = getProvider();
-  const metricsContract = new Contract(
-    metricsAbi,
-    metricsContractAddress,
-    provider
-  );
-  const res = await metricsContract.call("get_protocol_reserves", [], {
-    blockIdentifier: "pending",
-  });
-  return parseProtocolReserves(res?.protocol_reserves);
+  try {
+    const metricsContract = new Contract(
+      metricsAbi,
+      metricsContractAddress,
+      provider
+    );
+    const res = await metricsContract.call("get_protocol_reserves", [], {
+      blockIdentifier: "pending",
+    });
+    const protocolReserves = parseProtocolReserves(res?.protocol_reserves);
+    return protocolReserves;
+  }
+  catch(e) {
+    console.log('get_protocol_reserves failed: ', e);
+    return parseProtocolReserves({});
+  }
 }
 
 

@@ -22,6 +22,10 @@ import { Coins } from "../dashboardLeft";
 import BorrowModal from "@/components/modals/borrowModal";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
+import { useSelector } from "react-redux";
+import { selectOraclePrices, selectProtocolStats, selectUserLoans } from "@/store/slices/readDataSlice";
+import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
+import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 
 export interface ICoin {
   name: string;
@@ -160,7 +164,9 @@ const BorrowDashboard = ({
   const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
     useState("BTC");
   const [collateralBalance, setCollateralBalance] = useState("123 eth");
-
+  const [currentSpendStatus, setCurrentSpendStatus] = useState("");
+  const [avgs, setAvgs] = useState<any>([]);
+  const avgsData: any = [];
   useEffect(() => {
     let temp1: any = [];
     let temp2: any = [];
@@ -174,6 +180,7 @@ const BorrowDashboard = ({
             Borrows[i].collateralAmountParsed +
             " " +
             Borrows[i].collateralMarket,
+          spendType: Borrows[i].spendType,
         });
         temp2.push(Borrows[i].loanId);
       }
@@ -182,17 +189,55 @@ const BorrowDashboard = ({
     setBorrowIds(temp2);
   }, [Borrows]);
   const [loading, setLoading] = useState(true);
-  const loadingTimeout = useTimeout(() => setLoading(false), 1800);
+  // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
+  const userLoans=useSelector(selectUserLoans);
+  const reduxProtocolStats=useSelector(selectProtocolStats);
+  const oraclePrices=useSelector(selectOraclePrices)
+
+  useEffect(() => {
+    const fetchAprs = async () => {
+      if (avgs?.length == 0) {
+        for (var i = 0; i < userLoans?.length; i++) {
+          const avg = await effectivAPRLoan(
+            userLoans[i],
+            reduxProtocolStats,
+            oraclePrices
+          );
+          const healthFactor = await getExistingLoanHealth(
+            userLoans[i]?.loanId
+          );
+          const data = {
+            loanId: userLoans[i]?.loanId,
+            avg: avg,
+            loanHealth: healthFactor,
+          };
+          // avgs.push(data)
+          avgsData.push(data);
+          // avgs.push()
+        }
+        //cc
+        setAvgs(avgsData);
+      }
+    };
+    if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
+    console.log("running");
+  }, [oraclePrices, reduxProtocolStats, userLoans]);
+  useEffect(() => {
+    if (Borrows) {
+      setLoading(false);
+    }
+  }, [Borrows]);
 
   const [borrowAPRs, setBorrowAPRs] = useState<(number | undefined)[]>([]);
 
+  const stats = useSelector(selectProtocolStats);
+
   useEffect(() => {
     fetchProtocolStats();
-  }, []);
+  }, [stats]);
 
   const fetchProtocolStats = async () => {
     try {
-      const stats = await getProtocolStats();
       console.log("fetchprotocolstats", stats); //23014
       setBorrowAPRs([
         stats?.[2].borrowRate,
@@ -483,7 +528,14 @@ const BorrowDashboard = ({
                         // bgColor={"blue"}
                       >
                         {/* {checkGap(idx1, idx2)} */}
-                        7.00%
+                        {avgs?.find(
+                            (item: any) => item.loanId == borrow?.loanId
+                          )?.avg
+                            ? avgs?.find(
+                                (item: any) => item.loanId == borrow?.loanId
+                              )?.avg
+                            : "3.2"}
+                          %
                       </Text>
                     </Td>
                     <Td
@@ -687,6 +739,7 @@ const BorrowDashboard = ({
                               " " +
                               borrow.collateralMarket
                           );
+                          setCurrentSpendStatus(borrow.spendType);
                         }}
                         // bgColor={"blue"}
                       >
@@ -722,6 +775,8 @@ const BorrowDashboard = ({
                           color="#BDBFC1;"
                           borrowAPRs={borrowAPRs}
                           borrow={borrow}
+                          spendType={currentSpendStatus}
+                          setSpendType={setCurrentSpendStatus}
                         />
                       </Box>
                     </Td>

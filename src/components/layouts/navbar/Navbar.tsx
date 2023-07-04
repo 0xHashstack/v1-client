@@ -45,6 +45,7 @@ import {
 } from "@chakra-ui/react";
 import {
   selectAccount,
+  selectAccountAddress,
   selectLanguage,
   setLanguage,
 } from "@/store/slices/userAccountSlice";
@@ -61,6 +62,7 @@ import { type } from "os";
 import GetTokensModal from "@/components/modals/getTokens";
 import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import { Coins } from "../dashboardLeft";
+import mixpanel from "mixpanel-browser";
 const Navbar = ({ validRTokens }: any) => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
@@ -100,9 +102,19 @@ const Navbar = ({ validRTokens }: any) => {
 
   const router = useRouter();
   const { pathname } = router;
-
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
+
+  const { address } = useAccount();
+  const accountAddress = useSelector(selectAccountAddress);
+  // useEffect(() => {
+  //   if(address && address!=accountAddress)
+  //   {
+
+  //   }
+  // }, [address]);
+
   useOutsideClick({
     ref: ref1,
     handler: (e) => {
@@ -292,6 +304,11 @@ const Navbar = ({ validRTokens }: any) => {
           }}
           onMouseEnter={() => setStakeHover(true)}
           onMouseLeave={() => setStakeHover(false)}
+          onClick={()=>{
+            mixpanel.track('Stake Button Clicked Navbar',{
+              "Clicked":true,
+            })
+          }}
         >
           {/* <Box
             display="flex"
@@ -662,7 +679,15 @@ const Navbar = ({ validRTokens }: any) => {
                     border="1px solid #2B2F35"
                     onClick={() => {
                       // alert("hey");
-                      connect(connectors[1]);
+                      const walletConnected =
+                        localStorage.getItem("lastUsedConnector");
+                      if (connector?.options?.id == "braavos") {
+                        disconnect();
+                        connect(connectors[1]);
+                      } else {
+                        disconnect();
+                        connect(connectors[0]);
+                      }
                       // console.log("navbar", account);
                       // localStorage.setItem("account", JSON.stringify(account));
                     }}
@@ -675,7 +700,7 @@ const Navbar = ({ validRTokens }: any) => {
                   <div>Network</div>
                   <div></div>
                 </div> */}
-                <hr
+                {/* <hr
                   style={{
                     height: "1px",
                     borderWidth: "0",
@@ -684,8 +709,8 @@ const Navbar = ({ validRTokens }: any) => {
                     marginRight: "5px",
                     // marginLeft: "10px",
                   }}
-                />
-                <Box marginRight="14px">
+                /> */}
+                {/* <Box marginRight="14px">
                   <Text float="right">Network</Text>
                   <Box
                     color="white"
@@ -706,16 +731,7 @@ const Navbar = ({ validRTokens }: any) => {
                       width="6"
                     />
                     Ethereum Goerli
-                    {/* <img
-                    src={`${dropDownArrow}`}
-                    alt="Picture of the author"
-                    width="14px"
-                    height="14px"
-                    style={{
-                      marginTop: "3px",
-                      cursor: "pointer",
-                    }}
-                  /> */}
+
                     <Image
                       src={"/connectWalletArrowDown.svg"}
                       alt="arrow"
@@ -726,7 +742,7 @@ const Navbar = ({ validRTokens }: any) => {
                       }}
                     />
                   </Box>
-                </Box>
+                </Box> */}
               </Box>
             )}
           </Box>
