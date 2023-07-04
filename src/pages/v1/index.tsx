@@ -27,8 +27,8 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectWalletBalance,
   setAccount,
-  setTransactionRefresh,
 } from "@/store/slices/userAccountSlice";
+import { setTransactionRefresh } from "@/store/slices/readDataSlice";
 import Banner from "@/components/uiElements/loaders/Banner";
 import Banner2 from "@/components/uiElements/loaders/Banner2";
 import useTransactionRefresh from "@/hooks/useTransactionRefresh";
