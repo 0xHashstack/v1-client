@@ -105,6 +105,7 @@ import UsdtToDai from "@/assets/icons/pools/usdtToDai";
 import UsdcToDai from "@/assets/icons/pools/usdcToDai";
 import Image from "next/image";
 import mixpanel from "mixpanel-browser";
+import WarningIcon from "@/assets/icons/coins/warningIcon";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -342,11 +343,11 @@ const YourBorrowModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
-        mixpanel.track('Convert to Borrow Market Status',{
-          "Status":"Success",
-          "Loan ID":revertLoanId,
-          "Borrow Market":currentBorrowMarketCoin1
-        })
+        mixpanel.track("Convert to Borrow Market Status", {
+          Status: "Success",
+          "Loan ID": revertLoanId,
+          "Borrow Market": currentBorrowMarketCoin1,
+        });
 
         dispatch(setActiveTransactions(activeTransactions));
       }
@@ -355,9 +356,9 @@ const YourBorrowModal = ({
     } catch (err) {
       console.log(err);
       dispatch(setTransactionStatus("failed"));
-      mixpanel.track('Convert to Borrow Market Status',{
-        "Status":"Failure"
-      })
+      mixpanel.track("Convert to Borrow Market Status", {
+        Status: "Failure",
+      });
     }
   };
   // const [lpamount, setLpamount] = useState([]);
@@ -638,11 +639,11 @@ const YourBorrowModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
-        mixpanel.track('Zero Repay Status',{
-          "Status":"Success",
-          "Loan ID":loan?.loanId,
-          "Borrow Market":currentBorrowMarketCoin1
-        })
+        mixpanel.track("Zero Repay Status", {
+          Status: "Success",
+          "Loan ID": loan?.loanId,
+          "Borrow Market": currentBorrowMarketCoin1,
+        });
 
         dispatch(setActiveTransactions(activeTransactions));
       }
@@ -652,9 +653,9 @@ const YourBorrowModal = ({
     } catch (err: any) {
       console.log("zero repay failed - ", err);
       dispatch(setTransactionStatus("failed"));
-      mixpanel.track('Zero Repay Status',{
-        "Status":"Failure"
-      })
+      mixpanel.track("Zero Repay Status", {
+        Status: "Failure",
+      });
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -703,14 +704,14 @@ const YourBorrowModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track('Spend Borrow Status Your Borrow',{
-            "Status":"Success",
-            "Action":"Trade",
-            "Loan Id":swapLoanId,
-            "Pool Selected":currentPool,
-            "Dapp Selected":currentDapp,
-            "Borrow Market":currentBorrowMarketCoin1
-          })
+          mixpanel.track("Spend Borrow Status Your Borrow", {
+            Status: "Success",
+            Action: "Trade",
+            "Loan Id": swapLoanId,
+            "Pool Selected": currentPool,
+            "Dapp Selected": currentDapp,
+            "Borrow Market": currentBorrowMarketCoin1,
+          });
           dispatch(setActiveTransactions(activeTransactions));
         }
         console.log(trade);
@@ -745,21 +746,21 @@ const YourBorrowModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track('Spend Borrow Status Your Borrow',{
-            "Status":"Success",
-            "Action":"Trade",
-            "Loan Id":swapLoanId,
-            "Pool Selected":currentPool,
-            "Dapp Selected":currentDapp,
-            "Borrow Market":currentBorrowMarketCoin1
-          })
+          mixpanel.track("Spend Borrow Status Your Borrow", {
+            Status: "Success",
+            Action: "Trade",
+            "Loan Id": swapLoanId,
+            "Pool Selected": currentPool,
+            "Dapp Selected": currentDapp,
+            "Borrow Market": currentBorrowMarketCoin1,
+          });
 
           dispatch(setActiveTransactions(activeTransactions));
         }
         console.log(tradeMySwap);
         dispatch(setTransactionStatus("success"));
       }
-    } catch (err:any) {
+    } catch (err: any) {
       console.log(err);
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
@@ -770,9 +771,9 @@ const YourBorrowModal = ({
           </CopyToClipboard>
         </div>
       );
-      mixpanel.track('Spend Borrow Status Your Borrow',{
-        "Status":"Failure"
-      })
+      mixpanel.track("Spend Borrow Status Your Borrow", {
+        Status: "Failure",
+      });
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
@@ -811,14 +812,14 @@ const YourBorrowModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track('Spend Borrow Status Your Borrow',{
-            "Status":"Success",
-            "Loan ID":liquidityLoanId,
-            "Action":"Liquidity",
-            "Pool Selected":currentPool,
-            "Dapp Selected":currentDapp,
-            "Borrow Market":currentBorrowMarketCoin1
-          })
+          mixpanel.track("Spend Borrow Status Your Borrow", {
+            Status: "Success",
+            "Loan ID": liquidityLoanId,
+            Action: "Liquidity",
+            "Pool Selected": currentPool,
+            "Dapp Selected": currentDapp,
+            "Borrow Market": currentBorrowMarketCoin1,
+          });
 
           dispatch(setActiveTransactions(activeTransactions));
         }
@@ -855,14 +856,13 @@ const YourBorrowModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track('Spend Borrow Status Your Borrow',{
-            "Status":"Success",
-            "Loan ID":liquidityLoanId,
-            "Action":"Liquidity",
-            "Pool Selected":currentPool,
-            "Dapp Selected":currentDapp
-
-          })
+          mixpanel.track("Spend Borrow Status Your Borrow", {
+            Status: "Success",
+            "Loan ID": liquidityLoanId,
+            Action: "Liquidity",
+            "Pool Selected": currentPool,
+            "Dapp Selected": currentDapp,
+          });
 
           dispatch(setActiveTransactions(activeTransactions));
         }
@@ -879,9 +879,9 @@ const YourBorrowModal = ({
           </CopyToClipboard>
         </div>
       );
-      mixpanel.track('Spend Borrow Status Your Borrow',{
-        "Status":"Failure"
-      })
+      mixpanel.track("Spend Borrow Status Your Borrow", {
+        Status: "Failure",
+      });
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
@@ -923,12 +923,12 @@ const YourBorrowModal = ({
             };
             // addTransaction({ hash: deposit?.transaction_hash });
             activeTransactions?.push(trans_data);
-            mixpanel.track('Add Collateral Your Borrow Status',{
-              "Status":"Success",
-              "Loan id":currentBorrowId2,
-              "Borrow Market":currentBorrowMarketCoin2,
-              "Collateral Amount":rTokenAmount
-            })
+            mixpanel.track("Add Collateral Your Borrow Status", {
+              Status: "Success",
+              "Loan id": currentBorrowId2,
+              "Borrow Market": currentBorrowMarketCoin2,
+              "Collateral Amount": rTokenAmount,
+            });
 
             dispatch(setActiveTransactions(activeTransactions));
           }
@@ -971,12 +971,12 @@ const YourBorrowModal = ({
               };
               // addTransaction({ hash: deposit?.transaction_hash });
               activeTransactions?.push(trans_data);
-              mixpanel.track('Add Collateral Your Borrow Status',{
-                "Status":"Success",
-                "Loan id":currentBorrowId2,
-                "Borrow Market":currentBorrowMarketCoin2,
-                "Collateral Amount":collateralAmount
-              })
+              mixpanel.track("Add Collateral Your Borrow Status", {
+                Status: "Success",
+                "Loan id": currentBorrowId2,
+                "Borrow Market": currentBorrowMarketCoin2,
+                "Collateral Amount": collateralAmount,
+              });
 
               dispatch(setActiveTransactions(activeTransactions));
             }
@@ -989,9 +989,9 @@ const YourBorrowModal = ({
     } catch (err: any) {
       console.log("add collateral error");
       dispatch(setTransactionStatus("failed"));
-      mixpanel.track('Add Collateral Your Borrow Status',{
-        "Status":"Failure"
-      })
+      mixpanel.track("Add Collateral Your Borrow Status", {
+        Status: "Failure",
+      });
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -2226,6 +2226,41 @@ const YourBorrowModal = ({
                       borderRadius="md"
                       gap="3"
                     >
+                      {currentAction === "Spend Borrow" &&
+                        spendType !== "UNSPENT" && (
+                          <Box
+                            // display="flex"
+                            // justifyContent="left"
+                            w="100%"
+                            pb="4"
+                          >
+                            <Box
+                              display="flex"
+                              bg="#FFF8C5"
+                              color="black"
+                              fontSize="xs"
+                              p="4"
+                              fontStyle="normal"
+                              fontWeight="500"
+                              borderRadius="6px"
+                              // textAlign="center"
+                            >
+                              <Box pr="3" my="auto" cursor="pointer">
+                                <WarningIcon />
+                              </Box>
+                              Selected loan is already spent. first convert to
+                              borrow market to spend or select the unspent loans
+                              {/* <Box
+                                py="1"
+                                pl="4"
+                                cursor="pointer"
+                                // onClick={handleClick}
+                              >
+                                <TableClose />
+                              </Box> */}
+                            </Box>
+                          </Box>
+                        )}
                       <Box display="flex" flexDirection="column" gap="1">
                         <Box display="flex">
                           <Text fontSize="xs" color="#8B949E">
@@ -2907,6 +2942,11 @@ const YourBorrowModal = ({
                           <RadioGroup
                             onChange={setRadioValue}
                             value={radioValue}
+                            cursor="pointer"
+                            isDisabled={
+                              currentAction === "Spend Borrow" &&
+                              spendType !== "UNSPENT"
+                            }
                           >
                             <Stack spacing={4} direction="row">
                               <Radio
@@ -2915,6 +2955,11 @@ const YourBorrowModal = ({
                                 border="none"
                                 colorScheme="customBlue"
                                 _focus={{ boxShadow: "none", outline: "0" }}
+                                isDisabled={
+                                  currentAction === "Spend Borrow" &&
+                                  spendType !== "UNSPENT"
+                                }
+                                cursor="pointer"
                               >
                                 Liquidity provisioning
                               </Radio>
@@ -2925,6 +2970,11 @@ const YourBorrowModal = ({
                                 border="none"
                                 colorScheme="customBlue"
                                 _focus={{ boxShadow: "none", outline: "0" }}
+                                isDisabled={
+                                  currentAction === "Spend Borrow" &&
+                                  spendType !== "UNSPENT"
+                                }
+                                cursor="pointer"
                               >
                                 Trade
                               </Radio>
@@ -2977,7 +3027,11 @@ const YourBorrowModal = ({
                             borderRadius="md"
                             className="navbar"
                             onClick={() => {
-                              if (transactionStarted) {
+                              if (
+                                transactionStarted ||
+                                (currentAction === "Spend Borrow" &&
+                                  spendType !== "UNSPENT")
+                              ) {
                                 return;
                               } else {
                                 handleDropdownClick("yourBorrowDappDropdown");
@@ -3105,7 +3159,11 @@ const YourBorrowModal = ({
                             borderRadius="md"
                             className="navbar"
                             onClick={() => {
-                              if (transactionStarted) {
+                              if (
+                                transactionStarted ||
+                                (currentAction === "Spend Borrow" &&
+                                  spendType !== "UNSPENT")
+                              ) {
                                 return;
                               } else {
                                 handleDropdownClick("yourBorrowPoolDropdown");
@@ -3274,13 +3332,17 @@ const YourBorrowModal = ({
                     {currentAction == "Spend Borrow" ? (
                       currentDapp != "Select a dapp" &&
                       (currentPool != "Select a pool" ||
-                        currentPoolCoin != "Select a pool") ? (
+                        currentPoolCoin != "Select a pool") &&
+                      spendType === "UNSPENT" ? (
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            mixpanel.track('Spend Borrow Button Clicked Your Borrow',{
-                              "Clicked":true,
-                            })
+                            mixpanel.track(
+                              "Spend Borrow Button Clicked Your Borrow",
+                              {
+                                Clicked: true,
+                              }
+                            );
                             if (radioValue == "2") {
                               hanldeTrade();
                             } else {
@@ -3348,9 +3410,9 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            mixpanel.track('Repay Borrow Button Clicked',{
-                              "Clicked":true,
-                            })
+                            mixpanel.track("Repay Borrow Button Clicked", {
+                              Clicked: true,
+                            });
                             if (transactionStarted == false) {
                               handleRepayBorrow();
                             }
@@ -3417,9 +3479,12 @@ const YourBorrowModal = ({
                       <Box
                         onClick={() => {
                           setTransactionStarted(true);
-                          mixpanel.track('Convert Borrow Market Button Clicked',{
-                            "Clicked":true,
-                          })
+                          mixpanel.track(
+                            "Convert Borrow Market Button Clicked",
+                            {
+                              Clicked: true,
+                            }
+                          );
                           if (transactionStarted == false) {
                             handleRevertTransaction();
                           }
@@ -3476,9 +3541,9 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            mixpanel.track('Zero Repay Button Clicked',{
-                              "Clicked":true,
-                            })
+                            mixpanel.track("Zero Repay Button Clicked", {
+                              Clicked: true,
+                            });
                             if (transactionStarted == false) {
                               handleZeroRepay();
                             }
@@ -4549,9 +4614,12 @@ const YourBorrowModal = ({
                       <Box
                         onClick={() => {
                           setCollateralTransactionStarted(true);
-                          mixpanel.track('Add Collateral Button Clicked Your Borrow',{
-                            "Clicked":true,
-                          })
+                          mixpanel.track(
+                            "Add Collateral Button Clicked Your Borrow",
+                            {
+                              Clicked: true,
+                            }
+                          );
                           if (collateralTransactionStarted == false) {
                             handleAddCollateral();
                           }

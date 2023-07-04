@@ -24,6 +24,7 @@ import {
   TabPanels,
   Checkbox,
   useToast,
+  Skeleton,
 } from "@chakra-ui/react";
 
 import hoverStake from "../../assets/images/hoverStakeIcon.svg";
@@ -58,6 +59,7 @@ import useStakeRequest from "@/Blockchain/hooks/Writes/useStakerequest";
 import useWithdrawStake from "@/Blockchain/hooks/Writes/useWithdrawStake";
 import {
   selectActiveTransactions,
+  selectProtocolStats,
   selectWalletBalance,
   setActiveTransactions,
   setTransactionStatus,
@@ -254,9 +256,9 @@ const StakeUnstakeModal = ({
   const handleStakeTransaction = async () => {
     try {
       // console.log("staking", rToken, rTokenAmount);
-      mixpanel.track('Action Selected',{
-        "Actions":"Stake"
-      })
+      mixpanel.track("Action Selected", {
+        Actions: "Stake",
+      });
       const stake = await writeAsyncStakeRequest();
       setDepositTransHash(stake?.transaction_hash);
       if (stake?.transaction_hash) {
@@ -288,11 +290,11 @@ const StakeUnstakeModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
-        mixpanel.track('Stake Modal Market Page Status',{
-          "Status":"Success",
-          "Token":currentSelectedStakeCoin,
-          "TokenAmount":inputStakeAmount
-        })
+        mixpanel.track("Stake Modal Market Page Status", {
+          Status: "Success",
+          Token: currentSelectedStakeCoin,
+          TokenAmount: inputStakeAmount,
+        });
 
         dispatch(setActiveTransactions(activeTransactions));
       }
@@ -314,9 +316,9 @@ const StakeUnstakeModal = ({
           </CopyToClipboard>
         </div>
       );
-      mixpanel.track('Stake Modal Market Page Status',{
-        "Status":"Failure",
-      })
+      mixpanel.track("Stake Modal Market Page Status", {
+        Status: "Failure",
+      });
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
@@ -357,11 +359,11 @@ const StakeUnstakeModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
-        mixpanel.track('Unstake Modal Market Page Status',{
-          "Status":"Success",
-          "Token":currentSelectedUnstakeCoin,
-          "TokenAmount":inputUnstakeAmount
-        })
+        mixpanel.track("Unstake Modal Market Page Status", {
+          Status: "Success",
+          Token: currentSelectedUnstakeCoin,
+          TokenAmount: inputUnstakeAmount,
+        });
 
         dispatch(setActiveTransactions(activeTransactions));
       }
@@ -378,9 +380,9 @@ const StakeUnstakeModal = ({
           </CopyToClipboard>
         </div>
       );
-      mixpanel.track('Unstake Modal Market Page Status',{
-        "Status":"Failure",
-      })
+      mixpanel.track("Unstake Modal Market Page Status", {
+        Status: "Failure",
+      });
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
@@ -513,6 +515,10 @@ const StakeUnstakeModal = ({
 
   const router = useRouter();
   const { pathname } = router;
+
+  useEffect(() => {
+    console.log("protocolStats", protocolStats);
+  }, [protocolStats]);
 
   return (
     <Box>
@@ -1191,7 +1197,23 @@ const StakeUnstakeModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">5.56%</Text>
+                          <Text color="#6E7681">
+                            {/* {protocolStats?.find(
+                              (stat: any) =>
+                                stat.token == currentSelectedStakeCoin
+                            )?.staking_rate || "23"} */}
+                            {protocolStats?.[0]?.stakingRate ? (
+                              protocolStats?.[0]?.stakingRate
+                            ) : (
+                              <Skeleton
+                                width="6rem"
+                                height="1.4rem"
+                                startColor="#101216"
+                                endColor="#2B2F35"
+                                borderRadius="6px"
+                              />
+                            )}
+                          </Text>
                         </Text>
                         <Text
                           color="#8B949E"
@@ -1306,9 +1328,12 @@ const StakeUnstakeModal = ({
                           <Box
                             onClick={() => {
                               if (transactionStarted == false) {
-                                mixpanel.track('Stake Button Clicked Market page',{
-                                  'Stake Clicked':true
-                                })
+                                mixpanel.track(
+                                  "Stake Button Clicked Market page",
+                                  {
+                                    "Stake Clicked": true,
+                                  }
+                                );
                                 handleStakeTransaction();
                               }
                               setTransactionStarted(true);
@@ -1993,9 +2018,12 @@ const StakeUnstakeModal = ({
                         <Box
                           onClick={() => {
                             if (unstakeTransactionStarted == false) {
-                              mixpanel.track('Unstake Button Clicked Market page',{
-                                'Unstake Clicked':true
-                              })
+                              mixpanel.track(
+                                "Unstake Button Clicked Market page",
+                                {
+                                  "Unstake Clicked": true,
+                                }
+                              );
                               hanldeUnstakeTransaction();
                             }
                             setUnstakeTransactionStarted(true);

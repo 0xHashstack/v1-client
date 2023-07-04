@@ -46,7 +46,10 @@ import {
   // setTransactionStarted,
   // selectTransactionStarted,
 } from "@/store/slices/userAccountSlice";
-import { selectProtocolStats,selectOraclePrices } from "@/store/slices/readDataSlice";
+import {
+  selectProtocolStats,
+  selectOraclePrices,
+} from "@/store/slices/readDataSlice";
 import {
   selectNavDropdowns,
   setNavDropdown,
@@ -2237,7 +2240,7 @@ const TradeModal = ({
                   bg="#101216"
                   my="4"
                 >
-                  {radioValue == "1" && (
+                  {radioValue == "1" && currentPool !== "Select a pool" && (
                     <Box display="flex" justifyContent="space-between" mb="1">
                       <Box display="flex">
                         <Text color="#6E7681" fontSize="xs">
@@ -2264,7 +2267,7 @@ const TradeModal = ({
                       </Text>
                     </Box>
                   )}
-                  {radioValue == "1" && (
+                  {radioValue == "1" && currentPool !== "Select a pool" && (
                     <Box
                       display="flex"
                       justifyContent="space-between"
