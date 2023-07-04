@@ -1,9 +1,9 @@
 import {
   selectActiveTransactions,
   setActiveTransactions,
-  setTransactionRefresh,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
+import { setTransactionRefresh } from "@/store/slices/readDataSlice";
 import { Text } from "@chakra-ui/react";
 import { UseTransactionResult, useTransactions } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
@@ -39,9 +39,9 @@ const useTransactionHandler = () => {
   // console.log("trans toastHash", toastHash);
   // console.log("transaction results - ", results);
   useEffect(() => {
-    console.log("transaction active transactions ", activeTransactions);
-    console.log("transaction transactions ", transactions);
-    console.log("transaction results ", results);
+    // console.log("transaction active transactions ", activeTransactions);
+    // console.log("transaction transactions ", transactions);
+    // console.log("transaction results ", results);
     let transactionData = results?.filter(
       (transaction: UseTransactionResult, idx) => {
         transaction.refetch();
@@ -65,6 +65,7 @@ const useTransactionHandler = () => {
         ) {
           if (!toastHash.includes(transaction_hxh)) {
             dispatch(setTransactionStatus("success"));
+            dispatch(setTransactionRefresh(""));
             activeTransactions[idx].setCurrentTransactionStatus("success");
             toast.success(
               activeTransactions?.[idx]?.message ||

@@ -43,10 +43,13 @@ import {
   setTransactionStatus,
   selectActiveTransactions,
   setActiveTransactions,
-  selectProtocolStats,
   // setTransactionStarted,
   // selectTransactionStarted,
 } from "@/store/slices/userAccountSlice";
+import {
+  selectProtocolStats,
+  selectOraclePrices,
+} from "@/store/slices/readDataSlice";
 import {
   selectNavDropdowns,
   setNavDropdown,
@@ -91,6 +94,12 @@ import UsdtToDai from "@/assets/icons/pools/usdtToDai";
 import UsdcToDai from "@/assets/icons/pools/usdcToDai";
 import MySwap from "@/assets/icons/dapps/mySwap";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
+import mixpanel from "mixpanel-browser";
+import {
+  getLoanHealth_NativeCollateral,
+  getLoanHealth_RTokenCollateral,
+} from "@/Blockchain/scripts/LoanHealth";
+import Image from "next/image";
 const TradeModal = ({
   buttonText,
   coin,
@@ -178,23 +187,23 @@ const TradeModal = ({
     BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
-    rUSDT:useBalanceOf(tokenAddressMap["rUSDT"] ||""),
-    rUSDC:useBalanceOf(tokenAddressMap["rUSDC"] ||""),
-    rBTC:useBalanceOf(tokenAddressMap["rBTC"] ||""),
-    rETH:useBalanceOf(tokenAddressMap["rETH"] ||""),
-    rDAI:useBalanceOf(tokenAddressMap["rDAI"] ||""),
+    rUSDT: useBalanceOf(tokenAddressMap["rUSDT"] || ""),
+    rUSDC: useBalanceOf(tokenAddressMap["rUSDC"] || ""),
+    rBTC: useBalanceOf(tokenAddressMap["rBTC"] || ""),
+    rETH: useBalanceOf(tokenAddressMap["rETH"] || ""),
+    rDAI: useBalanceOf(tokenAddressMap["rDAI"] || ""),
   };
   const [walletBalance, setwalletBalance] = useState<any>(
     walletBalances[coin.name]?.statusBalanceOf === "success"
-        ? Number(
-            BNtoNum(
-              uint256.uint256ToBN(
-                walletBalances[coin.name]?.dataBalanceOf?.balance
-              ),
-              tokenDecimalsMap[coin.name]
-            )
+      ? Number(
+          BNtoNum(
+            uint256.uint256ToBN(
+              walletBalances[coin.name]?.dataBalanceOf?.balance
+            ),
+            tokenDecimalsMap[coin.name]
           )
-        : 0
+        )
+      : 0
   );
   useEffect(() => {
     setwalletBalance(
@@ -348,7 +357,11 @@ const TradeModal = ({
     }
   };
   const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI"];
-
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
+    debug: true,
+    track_pageview: true,
+    persistence: "localStorage",
+  });
   const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
     coin ? coin.name : "BTC"
   );
@@ -402,6 +415,7 @@ const TradeModal = ({
     }
     console.log("radio value", radioValue, method);
   }, [radioValue]);
+  const [tokenTypeSelected, setTokenTypeSelected] = useState("Native");
 
   const resetStates = () => {
     setSliderValue(0);
@@ -418,6 +432,8 @@ const TradeModal = ({
     setCurrentBorrowCoin(coin.name);
     setCurrentPoolCoin("Select a pool");
     setRadioValue("1");
+    setHealthFactor(undefined);
+    setTokenTypeSelected("Native");
     // setTransactionStarted(false);
     dispatch(resetModalDropdowns());
     setwalletBalance(
@@ -445,6 +461,7 @@ const TradeModal = ({
     setinputBorrowAmount(0);
     setLoanAmount(0);
     setsliderValue2(0);
+    // setHealthFactor(undefined)
   }, [currentBorrowCoin]);
 
   useEffect(() => {
@@ -452,6 +469,7 @@ const TradeModal = ({
     setCollateralAmount(0);
     setRTokenAmount(0);
     setSliderValue(0);
+    // setHealthFactor(undefined)
   }, [currentCollateralCoin]);
 
   const [depositTransHash, setDepositTransHash] = useState("");
@@ -498,6 +516,60 @@ const TradeModal = ({
   //     }
   //   },
   // });
+  const oraclePrices = useSelector(selectOraclePrices);
+  const marketInfo = useSelector(selectProtocolStats);
+  const [healthFactor, setHealthFactor] = useState<number>();
+  useEffect(() => {
+    try {
+      const fetchHealthFactor = async () => {
+        if (tokenTypeSelected == "Native") {
+          if (
+            inputBorrowAmount > 0 &&
+            inputCollateralAmount > 0 &&
+            currentBorrowCoin &&
+            currentCollateralCoin
+          ) {
+            const data = await getLoanHealth_NativeCollateral(
+              inputBorrowAmount,
+              currentBorrowCoin,
+              inputCollateralAmount,
+              currentCollateralCoin,
+              oraclePrices
+            );
+            setHealthFactor(data);
+          }
+        } else if (tokenTypeSelected == "rToken") {
+          if (
+            inputBorrowAmount > 0 &&
+            rTokenAmount > 0 &&
+            currentBorrowCoin &&
+            currentCollateralCoin
+          ) {
+            // console.log("trade",inputBorrowAmount,rTokenAmount,currentBorrowCoin,currentCollateralCoin,marketInfo)
+            const data = await getLoanHealth_RTokenCollateral(
+              inputBorrowAmount,
+              currentBorrowCoin,
+              rTokenAmount,
+              currentCollateralCoin,
+              oraclePrices,
+              marketInfo
+            );
+            // console.log(data,"data in trade")
+            setHealthFactor(data);
+          }
+        }
+      };
+      fetchHealthFactor();
+    } catch (err) {
+      console.log(err);
+    }
+  }, [
+    inputBorrowAmount,
+    inputCollateralAmount,
+    currentBorrowCoin,
+    currentCollateralCoin,
+    rTokenAmount,
+  ]);
 
   const handleBorrowAndSpend = async () => {
     try {
@@ -507,7 +579,8 @@ const TradeModal = ({
         if (borrowAndSpend?.transaction_hash) {
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background`,
+            // `Please wait your transaction is running in background`,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -525,12 +598,22 @@ const TradeModal = ({
           }
           const trans_data = {
             transaction_hash: borrowAndSpend?.transaction_hash.toString(),
-            message: `You have successfully traded`,
+            // message: `You have successfully traded`,
+            message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
+          mixpanel.track("Trade Modal Market Status", {
+            Status: "Failure",
+            BorrowToken: currentBorrowCoin,
+            BorrowAmount: inputBorrowAmount,
+            CollateralToken: currentCollateralCoin,
+            CollateralAmount: inputCollateralAmount,
+            "Pool Selected": currentPool,
+            "Dapp Selected": currentDapp,
+          });
 
           dispatch(setActiveTransactions(activeTransactions));
         }
@@ -542,7 +625,8 @@ const TradeModal = ({
         if (borrowAndSpendR?.transaction_hash) {
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background`,
+            // `Please wait your transaction is running in background`,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -560,12 +644,22 @@ const TradeModal = ({
           }
           const trans_data = {
             transaction_hash: borrowAndSpendR?.transaction_hash.toString(),
-            message: `You have successfully traded`,
+            // message: `You have successfully traded`,
+            message: `Transaction successful`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
+          mixpanel.track("Trade Modal Market Status", {
+            Status: "Failure",
+            BorrowToken: currentBorrowCoin,
+            BorrowAmount: inputBorrowAmount,
+            CollateralToken: currentCollateralCoin,
+            CollateralAmount: inputCollateralAmount,
+            "Pool Selected": currentPool,
+            "Dapp Selected": currentDapp,
+          });
 
           dispatch(setActiveTransactions(activeTransactions));
         }
@@ -583,6 +677,9 @@ const TradeModal = ({
           </CopyToClipboard>
         </div>
       );
+      mixpanel.track("Trade Modal Market Status", {
+        Status: "Failure",
+      });
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
@@ -679,9 +776,9 @@ const TradeModal = ({
             my="auto"
             pos="relative"
           >
-            <Text color="black">
+            {/* <Text color="black">
               Lorem ipsum dolor sit amet Lorem ipsum dolor sit amet
-            </Text>
+            </Text> */}
             <Text pos="absolute" top="8" left="8">
               Trade
             </Text>
@@ -869,10 +966,11 @@ const TradeModal = ({
                                     onClick={() => {
                                       setCurrentCollateralCoin(coin);
                                       setCollateralMarket(coin);
+                                      setTokenTypeSelected("rToken");
                                       setRToken(coin);
                                       setwalletBalance(
-                                        walletBalances[coin]?.statusBalanceOf ===
-                                          "success"
+                                        walletBalances[coin]
+                                          ?.statusBalanceOf === "success"
                                           ? Number(
                                               BNtoNum(
                                                 uint256.uint256ToBN(
@@ -959,6 +1057,7 @@ const TradeModal = ({
                                   setCurrentCollateralCoin(coin);
                                   setCollateralMarket(coin);
                                   setRToken("rBTC");
+                                  setTokenTypeSelected("Native");
                                   setwalletBalance(
                                     walletBalances[coin]?.statusBalanceOf ===
                                       "success"
@@ -969,8 +1068,8 @@ const TradeModal = ({
                                                 ?.dataBalanceOf?.balance
                                             ),
                                             tokenDecimalsMap[coin]
-                                          )).toFixed(2)
-                                        
+                                          )
+                                        ).toFixed(2)
                                       : 0
                                   );
                                 }}
@@ -1157,8 +1256,7 @@ const TradeModal = ({
                           display="flex"
                           justifyContent="flex-end"
                         >
-                          Wallet Balance:{" "}
-                          { walletBalance}
+                          Wallet Balance: {walletBalance}
                           <Text color="#6E7781" ml="0.2rem">
                             {` ${currentCollateralCoin}`}
                           </Text>
@@ -1175,8 +1273,7 @@ const TradeModal = ({
                         fontStyle="normal"
                         fontFamily="Inter"
                       >
-                        Wallet Balance:{" "}
-                        {walletBalance}
+                        Wallet Balance: {walletBalance}
                         <Text color="#6E7781" ml="0.2rem">
                           {` ${currentCollateralCoin}`}
                         </Text>
@@ -1628,7 +1725,8 @@ const TradeModal = ({
                           display="flex"
                           justifyContent="flex-end"
                         >
-                          Available Reserves: {currentAvailableReserves.toFixed(2)}
+                          Available Reserves:{" "}
+                          {currentAvailableReserves.toFixed(2)}
                           <Text color="#6E7781" ml="0.2rem">
                             {` ${currentBorrowCoin}`}
                           </Text>
@@ -2142,7 +2240,7 @@ const TradeModal = ({
                   bg="#101216"
                   my="4"
                 >
-                  {radioValue == "1" && (
+                  {radioValue == "1" && currentPool !== "Select a pool" && (
                     <Box display="flex" justifyContent="space-between" mb="1">
                       <Box display="flex">
                         <Text color="#6E7681" fontSize="xs">
@@ -2169,7 +2267,7 @@ const TradeModal = ({
                       </Text>
                     </Box>
                   )}
-                  {radioValue == "1" && (
+                  {radioValue == "1" && currentPool !== "Select a pool" && (
                     <Box
                       display="flex"
                       justifyContent="space-between"
@@ -2210,13 +2308,25 @@ const TradeModal = ({
                       >
                         <Box display="flex" gap="2px">
                           <Box mt="2px">
-                            <SmallEth />
+                            {/* <SmallEth /> */}
+                            <Image
+                              src={`/${toMarketLiqA}.svg`}
+                              alt="liquidity split coin1"
+                              width="12"
+                              height="12"
+                            />
                           </Box>
                           <Text>1.23</Text>
                         </Box>
                         <Box display="flex" gap="2px">
                           <Box mt="2px">
-                            <SmallUsdt />
+                            {/* <SmallUsdt /> */}
+                            <Image
+                              src={`/${toMarketLiqB}.svg`}
+                              alt="liquidity split coin1"
+                              width="12"
+                              height="12"
+                            />
                           </Box>
                           <Text>1.23</Text>
                         </Box>
@@ -2385,67 +2495,75 @@ const TradeModal = ({
                       5.56%
                     </Text>
                   </Box>
-                  <Box display="flex" justifyContent="space-between">
-                    <Box display="flex">
+                  {healthFactor ? (
+                    <Box display="flex" justifyContent="space-between">
+                      <Box display="flex">
+                        <Text color="#6E7681" fontSize="xs">
+                          Health factor:{" "}
+                        </Text>
+                        <Tooltip
+                          hasArrow
+                          placement="right"
+                          boxShadow="dark-lg"
+                          label="all the assets to the market"
+                          bg="#24292F"
+                          fontSize={"smaller"}
+                          fontWeight={"thin"}
+                          borderRadius={"lg"}
+                          padding={"2"}
+                        >
+                          <Box padding="0.25rem">
+                            <InfoIcon />
+                          </Box>
+                        </Tooltip>
+                      </Box>
                       <Text color="#6E7681" fontSize="xs">
-                        Health factor:{" "}
+                        {healthFactor?.toFixed(2)}
                       </Text>
-                      <Tooltip
-                        hasArrow
-                        placement="right"
-                        boxShadow="dark-lg"
-                        label="all the assets to the market"
-                        bg="#24292F"
-                        fontSize={"smaller"}
-                        fontWeight={"thin"}
-                        borderRadius={"lg"}
-                        padding={"2"}
-                      >
-                        <Box padding="0.25rem">
-                          <InfoIcon />
-                        </Box>
-                      </Tooltip>
                     </Box>
-                    <Text color="#6E7681" fontSize="xs">
-                      1.10
-                    </Text>
-                  </Box>
+                  ) : (
+                    ""
+                  )}
                 </Box>
-                {inputCollateralAmount > 0 &&
+                {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
+                (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
                 inputBorrowAmount > 0 &&
                 currentDapp != "Select a dapp" &&
                 (currentPool != "Select a pool" ||
                   currentPoolCoin != "Select a pool") ? (
                   <Box
                     onClick={() => {
-                      // setTransactionStarted(true);
-                      console.log(
-                        "trade clicked",
-                        "rToken",
-                        rToken,
-                        "rTokenAmount",
-                        rTokenAmount,
-                        "collateralMarket",
-                        collateralMarket,
-                        "collateralAmount",
-                        collateralAmount,
-                        "loanMarket",
-                        loanMarket,
-                        "loanAmount",
-                        loanAmount,
-                        "method",
-                        method,
-                        "l3App",
-                        l3App,
-                        "toMarketSwap",
-                        toMarketSwap,
-                        "toMarketLiqA",
-                        toMarketLiqA,
-                        "toMarketLiqB",
-                        toMarketLiqB
-                      );
+                      setTransactionStarted(true);
+                      // console.log(
+                      //   "trade clicked",
+                      //   "rToken",
+                      //   rToken,
+                      //   "rTokenAmount",
+                      //   rTokenAmount,
+                      //   "collateralMarket",
+                      //   collateralMarket,
+                      //   "collateralAmount",
+                      //   collateralAmount,
+                      //   "loanMarket",
+                      //   loanMarket,
+                      //   "loanAmount",
+                      //   loanAmount,
+                      //   "method",
+                      //   method,
+                      //   "l3App",
+                      //   l3App,
+                      //   "toMarketSwap",
+                      //   toMarketSwap,
+                      //   "toMarketLiqA",
+                      //   toMarketLiqA,
+                      //   "toMarketLiqB",
+                      //   toMarketLiqB
+                      // );
 
                       if (transactionStarted == false) {
+                        mixpanel.track("Trade Button Clicked Market page", {
+                          Clicked: true,
+                        });
                         handleBorrowAndSpend();
                       }
                     }}

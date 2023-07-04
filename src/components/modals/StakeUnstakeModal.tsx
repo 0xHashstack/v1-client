@@ -24,6 +24,7 @@ import {
   TabPanels,
   Checkbox,
   useToast,
+  Skeleton,
 } from "@chakra-ui/react";
 
 import hoverStake from "../../assets/images/hoverStakeIcon.svg";
@@ -62,6 +63,7 @@ import {
   setActiveTransactions,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
+import { selectProtocolStats } from "@/store/slices/readDataSlice";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
@@ -77,6 +79,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import TransactionFees from "../../../TransactionFees.json";
+import mixpanel from "mixpanel-browser";
 
 const StakeUnstakeModal = ({
   buttonText,
@@ -99,6 +102,7 @@ const StakeUnstakeModal = ({
   const [unstakeTransactionStarted, setUnstakeTransactionStarted] =
     useState(false);
   let activeTransactions = useSelector(selectActiveTransactions);
+  const protocolStats=useSelector(selectProtocolStats)
 
   const {
     rToken,
@@ -205,6 +209,7 @@ const StakeUnstakeModal = ({
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
 
   const [toastId, setToastId] = useState<any>();
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY|| "", { debug: true, track_pageview: true, persistence: 'localStorage' });
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
@@ -252,12 +257,16 @@ const StakeUnstakeModal = ({
   const handleStakeTransaction = async () => {
     try {
       // console.log("staking", rToken, rTokenAmount);
+      mixpanel.track("Action Selected", {
+        Actions: "Stake",
+      });
       const stake = await writeAsyncStakeRequest();
       setDepositTransHash(stake?.transaction_hash);
       if (stake?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait your transaction is running in background :  ${inputStakeAmount} ${currentSelectedStakeCoin} `,
+          // `Please wait your transaction is running in background :  ${inputStakeAmount} ${currentSelectedStakeCoin} `,
+          `Transaction pending`,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -275,12 +284,18 @@ const StakeUnstakeModal = ({
         }
         const trans_data = {
           transaction_hash: stake?.transaction_hash.toString(),
-          message: `You have successfully staked : ${inputStakeAmount} ${currentSelectedStakeCoin}`,
+          message: `Successfully staked : ${inputStakeAmount} ${currentSelectedStakeCoin}`,
+          // message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
+        mixpanel.track("Stake Modal Market Page Status", {
+          Status: "Success",
+          Token: currentSelectedStakeCoin,
+          TokenAmount: inputStakeAmount,
+        });
 
         dispatch(setActiveTransactions(activeTransactions));
       }
@@ -302,6 +317,9 @@ const StakeUnstakeModal = ({
           </CopyToClipboard>
         </div>
       );
+      mixpanel.track("Stake Modal Market Page Status", {
+        Status: "Failure",
+      });
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
@@ -316,7 +334,8 @@ const StakeUnstakeModal = ({
       if (unstake?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait your transaction is running in background : ${inputStakeAmount} ${currentSelectedStakeCoin} `,
+          // `Please wait your transaction is running in background : ${inputStakeAmount} ${currentSelectedStakeCoin} `,
+          `Transaction pending`,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -334,12 +353,18 @@ const StakeUnstakeModal = ({
         }
         const trans_data = {
           transaction_hash: unstake?.transaction_hash.toString(),
-          message: `You have successfully unstaked : ${inputUnstakeAmount} ${currentSelectedUnstakeCoin}`,
+          message: `Successfully unstaked : ${inputUnstakeAmount} ${currentSelectedUnstakeCoin}`,
+          // message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
+        mixpanel.track("Unstake Modal Market Page Status", {
+          Status: "Success",
+          Token: currentSelectedUnstakeCoin,
+          TokenAmount: inputUnstakeAmount,
+        });
 
         dispatch(setActiveTransactions(activeTransactions));
       }
@@ -356,6 +381,9 @@ const StakeUnstakeModal = ({
           </CopyToClipboard>
         </div>
       );
+      mixpanel.track("Unstake Modal Market Page Status", {
+        Status: "Failure",
+      });
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
@@ -488,6 +516,10 @@ const StakeUnstakeModal = ({
 
   const router = useRouter();
   const { pathname } = router;
+
+  // useEffect(() => {
+  //   console.log("protocolStats", protocolStats);
+  // }, [protocolStats]);
 
   return (
     <Box>
@@ -1166,7 +1198,23 @@ const StakeUnstakeModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">5.56%</Text>
+                          <Text color="#6E7681">
+                            {/* {protocolStats?.find(
+                              (stat: any) =>
+                                stat.token == currentSelectedStakeCoin
+                            )?.staking_rate || "23"} */}
+                            {protocolStats?.[0]?.stakingRate ? (
+                              protocolStats?.[0]?.stakingRate
+                            ) : (
+                              <Skeleton
+                                width="6rem"
+                                height="1.4rem"
+                                startColor="#101216"
+                                endColor="#2B2F35"
+                                borderRadius="6px"
+                              />
+                            )}
+                          </Text>
                         </Text>
                         <Text
                           color="#8B949E"
@@ -1281,6 +1329,12 @@ const StakeUnstakeModal = ({
                           <Box
                             onClick={() => {
                               if (transactionStarted == false) {
+                                mixpanel.track(
+                                  "Stake Button Clicked Market page",
+                                  {
+                                    "Stake Clicked": true,
+                                  }
+                                );
                                 handleStakeTransaction();
                               }
                               setTransactionStarted(true);
@@ -1965,6 +2019,12 @@ const StakeUnstakeModal = ({
                         <Box
                           onClick={() => {
                             if (unstakeTransactionStarted == false) {
+                              mixpanel.track(
+                                "Unstake Button Clicked Market page",
+                                {
+                                  "Unstake Clicked": true,
+                                }
+                              );
                               hanldeUnstakeTransaction();
                             }
                             setUnstakeTransactionStarted(true);

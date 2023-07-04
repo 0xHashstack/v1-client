@@ -89,6 +89,7 @@ import {
   tokenDecimalsMap,
 } from "@/Blockchain/utils/addressServices";
 import CopyToClipboard from "react-copy-to-clipboard";
+import mixpanel from "mixpanel-browser";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
@@ -305,6 +306,7 @@ const YourSupplyModal = ({
         break;
     }
   };
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
   const handleChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / walletBalance;
@@ -452,7 +454,8 @@ const YourSupplyModal = ({
       if (withdraw?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait your withdraw transaction is running in background : ${inputWithdrawlAmount}r${asset}`,
+          // `Please wait your withdraw transaction is running in background : ${inputWithdrawlAmount}r${asset}`,
+          `Transaction pending`,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -470,12 +473,17 @@ const YourSupplyModal = ({
         }
         const trans_data = {
           transaction_hash: withdraw?.transaction_hash.toString(),
-          message: `You have successfully withdrawn :  : ${inputWithdrawlAmount}r${asset}`,
+          message: `Successfully withdrawn :  : ${inputWithdrawlAmount}r${asset}`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
+        mixpanel.track('Withdraw Supply Status',{
+          "Status":"Success",
+          "Token Selected":asset,
+          "Token Amount":inputWithdrawlAmount
+        })
 
         dispatch(setActiveTransactions(activeTransactions));
       }
@@ -486,6 +494,9 @@ const YourSupplyModal = ({
     } catch (err: any) {
       console.log("withraw", err);
       dispatch(setTransactionStatus("failed"));
+      mixpanel.track('Withdraw Supply Status',{
+        "Status":"Failure"
+      })
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -504,6 +515,9 @@ const YourSupplyModal = ({
   const handleAddSupply = async () => {
     try {
       if (ischecked) {
+        mixpanel.track('Add Supply and Stake selected',{
+          "Clicked":true
+        })
         const addSupplyAndStake = await writeAsyncDepositStake();
         console.log(addSupplyAndStake);
         setDepositTransHash(addSupplyAndStake?.transaction_hash);
@@ -511,7 +525,8 @@ const YourSupplyModal = ({
           console.log("trans transaction hash created");
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background for supply and stake : ${depositAmount} ${supplyAsset} `,
+            // `Please wait your transaction is running in background for supply and stake : ${depositAmount} ${supplyAsset} `,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -529,12 +544,17 @@ const YourSupplyModal = ({
           }
           const trans_data = {
             transaction_hash: addSupplyAndStake?.transaction_hash.toString(),
-            message: `You have successfully supplied and staked ${depositAmount} ${supplyAsset}`,
+            message: `Successfully supplied and staked ${depositAmount} ${supplyAsset}`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
+          mixpanel.track('Add Supply and Stake Your Supply Status',{
+            "Status":"Success",
+            "Token Selected":supplyAsset,
+            "Token Amount":depositAmount
+          })
 
           dispatch(setActiveTransactions(activeTransactions));
         }
@@ -547,7 +567,8 @@ const YourSupplyModal = ({
           console.log("trans transaction hash created");
           console.log("toast here");
           const toastid = toast.info(
-            `Please wait your transaction is running in background for adding supply : ${depositAmount} ${supplyAsset} `,
+            // `Please wait your transaction is running in background for adding supply : ${depositAmount} ${supplyAsset} `,
+            `Transaction pending`,
             {
               position: toast.POSITION.BOTTOM_RIGHT,
               autoClose: false,
@@ -565,12 +586,17 @@ const YourSupplyModal = ({
           }
           const trans_data = {
             transaction_hash: addSupply?.transaction_hash.toString(),
-            message: `You have successfully added supply : ${depositAmount} ${supplyAsset}`,
+            message: `Successfully added supply : ${depositAmount} ${supplyAsset}`,
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
+          mixpanel.track('Add Supply Your Supply Status',{
+            "Status":"Success",
+            "Token Selected":supplyAsset,
+            "Token Amount":depositAmount
+          })
 
           dispatch(setActiveTransactions(activeTransactions));
         }
@@ -580,6 +606,9 @@ const YourSupplyModal = ({
     } catch (err) {
       console.log("Unable to add supply ", err);
       dispatch(setTransactionStatus("failed"));
+      mixpanel.track('Add Supply Your Supply Status',{
+        "Status":"Failure"
+      })
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -1153,7 +1182,6 @@ const YourSupplyModal = ({
                         border="1px solid #2B2F35"
                         mb="0.5rem"
                       >
-
                         <Text
                           display="flex"
                           justifyContent="space-between"
@@ -1285,6 +1313,9 @@ const YourSupplyModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
+                            mixpanel.track('Add Supply Button Clicked Your Supply',{
+                              "Clicked":true,
+                            })
                             handleAddSupply();
                           }}
                         >
@@ -1978,6 +2009,9 @@ const YourSupplyModal = ({
                           onClick={() => {
                             setWithdrawTransactionStarted(true);
                             if (withdrawTransactionStarted == false) {
+                              mixpanel.track('Withdraw Button Clicked your supply',{
+                                "Clicked":true,
+                              })
                               handleWithdrawSupply();
                             }
                           }}

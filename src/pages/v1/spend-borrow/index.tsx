@@ -14,22 +14,16 @@ import { useConnectors } from "@starknet-react/core";
 import { ToastContainer } from "react-toastify";
 import { useSelector } from "react-redux";
 import { Skeleton } from "@chakra-ui/react";
-import { selectNetAPR, selectYourBorrow } from "@/store/slices/userAccountSlice";
+import { selectYourBorrow,selectNetAPR } from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import useDataLoader from "@/hooks/useDataLoader";
 // import WalletConnectModal from "@/components/modals/WalletConnectModal";
 const SpendBorrow = () => {
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
-  // useEffect(() => {
-  //   const walletConnected = localStorage.getItem("lastUsedConnector");
-  //   if (walletConnected == "braavos") {
-  //     connect(connectors[0]);
-  //   } else if (walletConnected == "argentx") {
-  //     connect(connectors[1]);
-  //   }
-  // }, []);
-  const totalBorrow = useSelector(selectYourBorrow)
-  const netAPR = useSelector(selectNetAPR)
+  useDataLoader();
+  const totalBorrow = useSelector(selectYourBorrow);
+  const netAPR = useSelector(selectNetAPR);
   return (
     <PageCard pt="6.5rem">
       <HStack
@@ -48,7 +42,7 @@ const SpendBorrow = () => {
           display="flex"
           justifyContent="space-between"
           alignItems="flex-end"
-        // bgColor="blue"
+          // bgColor="blue"
         >
           <VStack
             display="flex"
@@ -59,15 +53,19 @@ const SpendBorrow = () => {
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Total Borrow asset
             </Text>
-            {!totalBorrow ? <Skeleton
-              width="6rem"
-              height="1.9rem"
-              startColor="#101216"
-              endColor="#2B2F35"
-              borderRadius="6px"
-            /> : <Text color="#e6edf3" fontSize="20px">
-              ${numberFormatter(totalBorrow)}
-            </Text>}
+            {!totalBorrow ? (
+              <Skeleton
+                width="6rem"
+                height="1.9rem"
+                startColor="#101216"
+                endColor="#2B2F35"
+                borderRadius="6px"
+              />
+            ) : (
+              <Text color="#e6edf3" fontSize="20px">
+                ${numberFormatter(totalBorrow)}
+              </Text>
+            )}
             {/* <Text color="#e6edf3" fontSize="20px">
               ${numberFormatter(totalBorrow)}
             </Text> */}
@@ -76,17 +74,19 @@ const SpendBorrow = () => {
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Net APR
             </Text>
-            {!netAPR ?
+            {!netAPR ? (
               <Skeleton
                 width="6rem"
                 height="1.9rem"
                 startColor="#101216"
                 endColor="#2B2F35"
                 borderRadius="6px"
-              /> : <Text color="#e6edf3" fontSize="20px">
+              />
+            ) : (
+              <Text color="#e6edf3" fontSize="20px">
                 {netAPR}%
-              </Text>}
-
+              </Text>
+            )}
           </VStack>
         </HStack>
       </HStack>

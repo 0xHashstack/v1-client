@@ -19,6 +19,7 @@ export const useToastHandler = (transaction: any) => {
       toast.dismiss(transaction?.toastId);
       console.log("trans pending");
       // if (isToastDisplayed == false) {
+      // toast.success(transaction?.message || `You have successfully supplied`, {
       toast.success(transaction?.message || `You have successfully supplied`, {
         position: toast.POSITION.BOTTOM_RIGHT,
       });

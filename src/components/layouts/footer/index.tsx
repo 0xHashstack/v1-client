@@ -1,14 +1,30 @@
 import { Box, HStack, Skeleton, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { ProviderInterface } from "starknet";
 import { useAccount, useBlockNumber } from "@starknet-react/core";
+import { useDispatch, useSelector } from "react-redux";
+
+import { setBlock,selectBlock,setCurrentNetwork,selectCurrentNetwork } from "@/store/slices/readDataSlice";
 const Footer = () => {
   const { account } = useAccount();
   const { data: block } = useBlockNumber({
     refetchInterval: 10000,
   });
+  const currentBlock = useSelector(selectBlock);
+  const currentChainId = useSelector(selectCurrentNetwork);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!currentBlock || currentBlock < (block ? block : -1)) {
+      dispatch(setBlock(block));
+    }
+  }, [block]);
+  useEffect(() => {
+    if (account && account?.chainId && account?.chainId != currentChainId) {
+      dispatch(setCurrentNetwork(account?.chainId));
+    }
+  }, [account?.chainId]);
   return (
     <HStack
       zIndex="14"
@@ -53,9 +69,18 @@ const Footer = () => {
             alignItems={"center"}
             gap={1}
           >
-            <Text color="#2EA043" fontSize="12px">
-              {block}
-            </Text>
+            <Box color="#2EA043" fontSize="12px">
+              {currentBlock || (
+                <Skeleton
+                  width="3rem"
+                  height="0.8rem"
+                  startColor="#101216"
+                  endColor="#2B2F35"
+                  borderRadius="6px"
+                  // mt="4px"
+                />
+              )}
+            </Box>
             <Image
               src="/latestSyncedBlockGreenDot.svg"
               alt="Picture of the author"
@@ -67,12 +92,12 @@ const Footer = () => {
         <HStack borderRight="1px solid #2B2F35" h="100%" p="8px 2rem">
           <Box color="#BDBFC1" fontSize="12px" display="flex">
             Network:
-            {account?.chainId === "0x534e5f474f45524c49" ? (
-              "Starknet Goerli"
-            ) : account?.chainId == "0x534e5f474f45524c4932" ? (
-              "Starknet Goerli 2"
-            ) : account?.chainId == "0x534e5f4d41494e" ? (
-              "Starknet Mainnet"
+            {currentChainId === "0x534e5f474f45524c49" ? (
+              " Starknet Goerli"
+            ) : currentChainId == "0x534e5f474f45524c4932" ? (
+              " Starknet Goerli 2"
+            ) : currentChainId == "0x534e5f4d41494e" ? (
+              " Starknet Mainnet"
             ) : (
               <Skeleton
                 width="4rem"

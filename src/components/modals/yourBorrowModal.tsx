@@ -61,14 +61,13 @@ import BtcToUsdt from "@/assets/icons/pools/btcToUsdt";
 
 import {
   selectActiveTransactions,
-  selectUserLoans,
   selectWalletBalance,
   setActiveTransactions,
   // setCurrentTransactionStatus,
   setInputYourBorrowModalRepayAmount,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
-
+import { selectOraclePrices, selectProtocolStats, selectUserLoans } from "@/store/slices/readDataSlice";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
@@ -90,7 +89,8 @@ import { useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import useRevertInteractWithL3 from "@/Blockchain/hooks/Writes/useRevertInteractWithL3";
-
+import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
+import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import {
   getJediEstimateLiquiditySplit,
   getJediEstimatedLiqALiqBfromLp,
@@ -104,6 +104,8 @@ import BtcToDai from "@/assets/icons/pools/btcToDai";
 import UsdtToDai from "@/assets/icons/pools/usdtToDai";
 import UsdcToDai from "@/assets/icons/pools/usdcToDai";
 import Image from "next/image";
+import mixpanel from "mixpanel-browser";
+import WarningIcon from "@/assets/icons/coins/warningIcon";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -126,6 +128,7 @@ const YourBorrowModal = ({
   borrowAPRs,
   borrow,
   spendType,
+  setSpendType,
   ...restProps
 }: any) => {
   // console.log(currentBorrowId1);
@@ -147,6 +150,8 @@ const YourBorrowModal = ({
     useState(false);
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
   const userLoans = useSelector(selectUserLoans);
+  const reduxProtocolStats=useSelector(selectProtocolStats);
+  const oraclePrices=useSelector(selectOraclePrices);
   let activeTransactions = useSelector(selectActiveTransactions);
   useEffect(() => {
     const result = userLoans.find(
@@ -158,6 +163,36 @@ const YourBorrowModal = ({
     // console.log(borrowAmount)
     // Rest of your code using the 'result' variable
   }, [currentBorrowId1]);
+  const [avgs, setAvgs] = useState<any>([]);
+  const avgsData: any = [];
+  useEffect(() => {
+    const fetchAprs = async () => {
+      if (avgs?.length == 0) {
+        for (var i = 0; i < userLoans?.length; i++) {
+          const avg = await effectivAPRLoan(
+            userLoans[i],
+            reduxProtocolStats,
+            oraclePrices
+          );
+          const healthFactor = await getExistingLoanHealth(
+            userLoans[i]?.loanId
+          );
+          const data = {
+            loanId: userLoans[i]?.loanId,
+            avg: avg,
+            loanHealth: healthFactor,
+          };
+          // avgs.push(data)
+          avgsData.push(data);
+          // avgs.push()
+        }
+        //cc
+        setAvgs(avgsData);
+      }
+    };
+    if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
+    console.log("running");
+  }, [oraclePrices, reduxProtocolStats, userLoans]);
   const {
     loanId,
     setLoanId,
@@ -308,6 +343,11 @@ const YourBorrowModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
+        mixpanel.track("Convert to Borrow Market Status", {
+          Status: "Success",
+          "Loan ID": revertLoanId,
+          "Borrow Market": currentBorrowMarketCoin1,
+        });
 
         dispatch(setActiveTransactions(activeTransactions));
       }
@@ -316,6 +356,9 @@ const YourBorrowModal = ({
     } catch (err) {
       console.log(err);
       dispatch(setTransactionStatus("failed"));
+      mixpanel.track("Convert to Borrow Market Status", {
+        Status: "Failure",
+      });
     }
   };
   // const [lpamount, setLpamount] = useState([]);
@@ -493,6 +536,7 @@ const YourBorrowModal = ({
   // const [currentBorrowId2, setCurrentBorrowId2] = useState(`ID - ${currentID}`);
   const [currentDapp, setCurrentDapp] = useState("Select a dapp");
   const [currentPool, setCurrentPool] = useState("Select a pool");
+
   const getBorrowAPR = (borrowMarket: string) => {
     switch (borrowMarket) {
       case "USDT":
@@ -560,7 +604,7 @@ const YourBorrowModal = ({
   //     }
   //   },
   // });
-
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
   const handleZeroRepay = async () => {
     try {
       if (!loan?.loanId) {
@@ -595,6 +639,11 @@ const YourBorrowModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
+        mixpanel.track("Zero Repay Status", {
+          Status: "Success",
+          "Loan ID": loan?.loanId,
+          "Borrow Market": currentBorrowMarketCoin1,
+        });
 
         dispatch(setActiveTransactions(activeTransactions));
       }
@@ -604,6 +653,9 @@ const YourBorrowModal = ({
     } catch (err: any) {
       console.log("zero repay failed - ", err);
       dispatch(setTransactionStatus("failed"));
+      mixpanel.track("Zero Repay Status", {
+        Status: "Failure",
+      });
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -652,7 +704,14 @@ const YourBorrowModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-
+          mixpanel.track("Spend Borrow Status Your Borrow", {
+            Status: "Success",
+            Action: "Trade",
+            "Loan Id": swapLoanId,
+            "Pool Selected": currentPool,
+            "Dapp Selected": currentDapp,
+            "Borrow Market": currentBorrowMarketCoin1,
+          });
           dispatch(setActiveTransactions(activeTransactions));
         }
         console.log(trade);
@@ -687,15 +746,38 @@ const YourBorrowModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
+          mixpanel.track("Spend Borrow Status Your Borrow", {
+            Status: "Success",
+            Action: "Trade",
+            "Loan Id": swapLoanId,
+            "Pool Selected": currentPool,
+            "Dapp Selected": currentDapp,
+            "Borrow Market": currentBorrowMarketCoin1,
+          });
 
           dispatch(setActiveTransactions(activeTransactions));
         }
         console.log(tradeMySwap);
         dispatch(setTransactionStatus("success"));
       }
-    } catch (err) {
+    } catch (err: any) {
       console.log(err);
       dispatch(setTransactionStatus("failed"));
+      const toastContent = (
+        <div>
+          Transaction failed{" "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      mixpanel.track("Spend Borrow Status Your Borrow", {
+        Status: "Failure",
+      });
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      });
     }
   };
   const hanldeLiquidation = async () => {
@@ -730,6 +812,14 @@ const YourBorrowModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
+          mixpanel.track("Spend Borrow Status Your Borrow", {
+            Status: "Success",
+            "Loan ID": liquidityLoanId,
+            Action: "Liquidity",
+            "Pool Selected": currentPool,
+            "Dapp Selected": currentDapp,
+            "Borrow Market": currentBorrowMarketCoin1,
+          });
 
           dispatch(setActiveTransactions(activeTransactions));
         }
@@ -766,6 +856,13 @@ const YourBorrowModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
+          mixpanel.track("Spend Borrow Status Your Borrow", {
+            Status: "Success",
+            "Loan ID": liquidityLoanId,
+            Action: "Liquidity",
+            "Pool Selected": currentPool,
+            "Dapp Selected": currentDapp,
+          });
 
           dispatch(setActiveTransactions(activeTransactions));
         }
@@ -782,6 +879,9 @@ const YourBorrowModal = ({
           </CopyToClipboard>
         </div>
       );
+      mixpanel.track("Spend Borrow Status Your Borrow", {
+        Status: "Failure",
+      });
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
@@ -823,6 +923,12 @@ const YourBorrowModal = ({
             };
             // addTransaction({ hash: deposit?.transaction_hash });
             activeTransactions?.push(trans_data);
+            mixpanel.track("Add Collateral Your Borrow Status", {
+              Status: "Success",
+              "Loan id": currentBorrowId2,
+              "Borrow Market": currentBorrowMarketCoin2,
+              "Collateral Amount": rTokenAmount,
+            });
 
             dispatch(setActiveTransactions(activeTransactions));
           }
@@ -865,6 +971,12 @@ const YourBorrowModal = ({
               };
               // addTransaction({ hash: deposit?.transaction_hash });
               activeTransactions?.push(trans_data);
+              mixpanel.track("Add Collateral Your Borrow Status", {
+                Status: "Success",
+                "Loan id": currentBorrowId2,
+                "Borrow Market": currentBorrowMarketCoin2,
+                "Collateral Amount": collateralAmount,
+              });
 
               dispatch(setActiveTransactions(activeTransactions));
             }
@@ -877,6 +989,9 @@ const YourBorrowModal = ({
     } catch (err: any) {
       console.log("add collateral error");
       dispatch(setTransactionStatus("failed"));
+      mixpanel.track("Add Collateral Your Borrow Status", {
+        Status: "Failure",
+      });
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -910,55 +1025,7 @@ const YourBorrowModal = ({
             mt="1.5rem"
             mb="1.5rem"
           >
-            <Box display="flex" justifyContent="space-between" mb="0.2rem">
-              <Box display="flex">
-                <Text
-                  color="#6A737D"
-                  fontSize="12px"
-                  fontWeight="400"
-                  fontStyle="normal"
-                >
-                  est LP tokens recieved:{" "}
-                </Text>
-                <Tooltip
-                  hasArrow
-                  placement="right-start"
-                  boxShadow="dark-lg"
-                  label="all the assets to the market"
-                  bg="#24292F"
-                  fontSize={"smaller"}
-                  fontWeight={"thin"}
-                  borderRadius={"lg"}
-                  padding={"2"}
-                >
-                  <Box ml="0.1rem" mt="0.3rem">
-                    <InfoIcon />
-                  </Box>
-                </Tooltip>
-              </Box>
-              <Text
-                color="#6A737D"
-                fontSize="12px"
-                fontWeight="400"
-                fontStyle="normal"
-              >
-                {currentLPTokenAmount === null ? (
-                  <Box pt="2px">
-                    <Skeleton
-                      width="2.3rem"
-                      height=".85rem"
-                      startColor="#2B2F35"
-                      endColor="#101216"
-                      borderRadius="6px"
-                    />
-                  </Box>
-                ) : (
-                  "$" + currentLPTokenAmount
-                )}
-                {/* $ 10.91 */}
-              </Text>
-            </Box>
-            {radioValue === "1" && (
+            {currentPool !== "Select a pool" && spendType === "UNSPENT" && (
               <Box display="flex" justifyContent="space-between" mb="0.2rem">
                 <Box display="flex">
                   <Text
@@ -967,7 +1034,7 @@ const YourBorrowModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    Liquidity split:{" "}
+                    est LP tokens recieved:{" "}
                   </Text>
                   <Tooltip
                     hasArrow
@@ -985,61 +1052,114 @@ const YourBorrowModal = ({
                     </Box>
                   </Tooltip>
                 </Box>
-                <Box
-                  display="flex"
-                  gap="2"
+                <Text
                   color="#6A737D"
                   fontSize="12px"
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                  <Box display="flex" gap="2px">
-                    <Box m="2px">
-                      {/* <SmallEth /> */}
-                      <Image
-                        src={`/${liquiditySplitCoin1}.svg`}
-                        alt="liquidity split coin1"
-                        width="12"
-                        height="12"
+                  {currentLPTokenAmount === null ? (
+                    <Box pt="2px">
+                      <Skeleton
+                        width="2.3rem"
+                        height=".85rem"
+                        startColor="#2B2F35"
+                        endColor="#101216"
+                        borderRadius="6px"
                       />
                     </Box>
-                    <Text>
-                      {currentSplit?.[0].toString() || (
-                        <Skeleton
-                          width="2.3rem"
-                          height=".85rem"
-                          startColor="#2B2F35"
-                          endColor="#101216"
-                          borderRadius="6px"
-                        />
-                      )}
-                    </Text>
-                  </Box>
-                  <Box display="flex" gap="2px">
-                    <Box m="2px">
-                      {/* <SmallUsdt /> */}
-                      <Image
-                        src={`/${liquiditySplitCoin2}.svg`}
-                        alt="liquidity split coin1"
-                        width="12"
-                        height="12"
-                      />
-                    </Box>
-                    <Text>
-                      {currentSplit?.[1].toString() || (
-                        <Skeleton
-                          width="2.3rem"
-                          height=".85rem"
-                          startColor="#2B2F35"
-                          endColor="#101216"
-                          borderRadius="6px"
-                        />
-                      )}
-                    </Text>
-                  </Box>
-                </Box>
+                  ) : (
+                    "$" + currentLPTokenAmount
+                  )}
+                  {/* $ 10.91 */}
+                </Text>
               </Box>
             )}
+            {radioValue === "1" &&
+              currentPool !== "Select a pool" &&
+              spendType === "UNSPENT" && (
+                <Box display="flex" justifyContent="space-between" mb="0.2rem">
+                  <Box display="flex">
+                    <Text
+                      color="#6A737D"
+                      fontSize="12px"
+                      fontWeight="400"
+                      fontStyle="normal"
+                    >
+                      Liquidity split:{" "}
+                    </Text>
+                    <Tooltip
+                      hasArrow
+                      placement="right-start"
+                      boxShadow="dark-lg"
+                      label="all the assets to the market"
+                      bg="#24292F"
+                      fontSize={"smaller"}
+                      fontWeight={"thin"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                    >
+                      <Box ml="0.1rem" mt="0.3rem">
+                        <InfoIcon />
+                      </Box>
+                    </Tooltip>
+                  </Box>
+                  <Box
+                    display="flex"
+                    gap="2"
+                    color="#6A737D"
+                    fontSize="12px"
+                    fontWeight="400"
+                    fontStyle="normal"
+                  >
+                    <Box display="flex" gap="2px">
+                      <Box m="2px">
+                        {/* <SmallEth /> */}
+                        <Image
+                          src={`/${liquiditySplitCoin1}.svg`}
+                          alt="liquidity split coin1"
+                          width="12"
+                          height="12"
+                        />
+                      </Box>
+                      <Text>
+                        {/* {currentSplit?.[0] || (
+                          <Skeleton
+                            width="2.3rem"
+                            height=".85rem"
+                            startColor="#2B2F35"
+                            endColor="#101216"
+                            borderRadius="6px"
+                          />
+                          
+                        )} */}
+                      </Text>
+                    </Box>
+                    <Box display="flex" gap="2px">
+                      <Box m="2px">
+                        {/* <SmallUsdt /> */}
+                        <Image
+                          src={`/${liquiditySplitCoin2}.svg`}
+                          alt="liquidity split coin1"
+                          width="12"
+                          height="12"
+                        />
+                      </Box>
+                      <Text>
+                        {/* {currentSplit?.[1] || (
+                          <Skeleton
+                            width="2.3rem"
+                            height=".85rem"
+                            startColor="#2B2F35"
+                            endColor="#101216"
+                            borderRadius="6px"
+                          />
+                        )} */}
+                      </Text>
+                    </Box>
+                  </Box>
+                </Box>
+              )}
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
@@ -1191,7 +1311,14 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                5.56%
+                          {avgs?.find(
+                            (item: any) => item.loanId == currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+                          )?.avg
+                            ? avgs?.find(
+                                (item: any) => item.loanId == currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+                              )?.avg
+                            : "3.2"}
+                          %
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between">
@@ -1226,7 +1353,14 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                1.10
+                              {avgs?.find(
+                                (item: any) => item.loanId == currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+                              )?.loanHealth
+                                ? avgs?.find(
+                                    (item: any) => item.loanId == currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+                                  )?.loanHealth
+                                : "2.5"}
+                              %
               </Text>
             </Box>
           </Box>
@@ -1836,6 +1970,8 @@ const YourBorrowModal = ({
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
       if (borrowIDCoinMap[i].id === id) {
         setCurrentBorrowMarketCoin1(borrowIDCoinMap[i].name);
+        setSpendType(borrowIDCoinMap[i].spendType);
+        setSpendType(borrowIDCoinMap[i].spendType);
         return;
       }
     }
@@ -1936,13 +2072,13 @@ const YourBorrowModal = ({
     // if (!currentBorrowId1 || currentBorrowId1 == "") {
     //   return;
     // }
-    console.log(
-      "toMarketSplitConsole",
-      currentBorrowId1.slice(5),
-      toMarketA,
-      toMarketB
-      // borrow
-    );
+    // console.log(
+    //   "toMarketSplitConsole",
+    //   currentBorrowId1.slice(5),
+    //   toMarketA,
+    //   toMarketB
+    //   // borrow
+    // );
     // setCurrentLPTokenAmount(null);
     // setCurrentSplit(null);
     setCurrentLPTokenAmount(null);
@@ -1951,31 +2087,34 @@ const YourBorrowModal = ({
   }, [toMarketA, currentBorrowId1, toMarketB]);
 
   const fetchLiquiditySplit = async () => {
-    // if (
-    //   spendType !== "UNSPENT" ||
-    //   !toMarketA ||
-    //   !toMarketB ||
-    //   !currentBorrowId1 ||
-    //   !currentBorrowId2
-    // )
-    //   return;
-    const lp_tokon = await getJediEstimatedLpAmountOut(
-      // currentBorrowId1.slice(5),
-      // toMarketA,
-      // toMarketB
-      "99",
-      "ETH",
-      "USDT"
-    );
-    console.log("toMarketSplitLP", lp_tokon);
-    setCurrentLPTokenAmount(lp_tokon);
+    if (
+      spendType !== "UNSPENT" ||
+      !toMarketA ||
+      !toMarketB ||
+      !currentBorrowId1 ||
+      !currentBorrowId2 ||
+      currentPool === "Select a pool"
+    )
+      return;
+    // const lp_tokon = await getJediEstimatedLpAmountOut(
+    //   // currentBorrowId1.slice(5),
+    //   // toMarketA,
+    //   // toMarketB
+    //   "USDT",
+    //   "99",
+    //   "ETH",
+    //   "USDT"
+    // );
+    // console.log("toMarketSplitLP", lp_tokon);
+    // setCurrentLPTokenAmount(lp_tokon);
     const split = await getJediEstimateLiquiditySplit(
-      // currentBorrowId1.slice(5),
-      // toMarketA,
-      // toMarketB
-      "99",
-      "ETH",
-      "USDT"
+      currentBorrowId1.slice(5),
+      toMarketA,
+      toMarketB
+      // "USDT",
+      // 99,
+      // "ETH",
+      // "USDT"
     );
     console.log("toMarketSplit", split);
     setCurrentSplit(split);
@@ -2087,6 +2226,41 @@ const YourBorrowModal = ({
                       borderRadius="md"
                       gap="3"
                     >
+                      {currentAction === "Spend Borrow" &&
+                        spendType !== "UNSPENT" && (
+                          <Box
+                            // display="flex"
+                            // justifyContent="left"
+                            w="100%"
+                            pb="4"
+                          >
+                            <Box
+                              display="flex"
+                              bg="#FFF8C5"
+                              color="black"
+                              fontSize="xs"
+                              p="4"
+                              fontStyle="normal"
+                              fontWeight="500"
+                              borderRadius="6px"
+                              // textAlign="center"
+                            >
+                              <Box pr="3" my="auto" cursor="pointer">
+                                <WarningIcon />
+                              </Box>
+                              Selected loan is already spent. first convert to
+                              borrow market to spend or select the unspent loans
+                              {/* <Box
+                                py="1"
+                                pl="4"
+                                cursor="pointer"
+                                // onClick={handleClick}
+                              >
+                                <TableClose />
+                              </Box> */}
+                            </Box>
+                          </Box>
+                        )}
                       <Box display="flex" flexDirection="column" gap="1">
                         <Box display="flex">
                           <Text fontSize="xs" color="#8B949E">
@@ -2768,6 +2942,11 @@ const YourBorrowModal = ({
                           <RadioGroup
                             onChange={setRadioValue}
                             value={radioValue}
+                            cursor="pointer"
+                            isDisabled={
+                              currentAction === "Spend Borrow" &&
+                              spendType !== "UNSPENT"
+                            }
                           >
                             <Stack spacing={4} direction="row">
                               <Radio
@@ -2776,6 +2955,11 @@ const YourBorrowModal = ({
                                 border="none"
                                 colorScheme="customBlue"
                                 _focus={{ boxShadow: "none", outline: "0" }}
+                                isDisabled={
+                                  currentAction === "Spend Borrow" &&
+                                  spendType !== "UNSPENT"
+                                }
+                                cursor="pointer"
                               >
                                 Liquidity provisioning
                               </Radio>
@@ -2786,6 +2970,11 @@ const YourBorrowModal = ({
                                 border="none"
                                 colorScheme="customBlue"
                                 _focus={{ boxShadow: "none", outline: "0" }}
+                                isDisabled={
+                                  currentAction === "Spend Borrow" &&
+                                  spendType !== "UNSPENT"
+                                }
+                                cursor="pointer"
                               >
                                 Trade
                               </Radio>
@@ -2838,7 +3027,11 @@ const YourBorrowModal = ({
                             borderRadius="md"
                             className="navbar"
                             onClick={() => {
-                              if (transactionStarted) {
+                              if (
+                                transactionStarted ||
+                                (currentAction === "Spend Borrow" &&
+                                  spendType !== "UNSPENT")
+                              ) {
                                 return;
                               } else {
                                 handleDropdownClick("yourBorrowDappDropdown");
@@ -2966,7 +3159,11 @@ const YourBorrowModal = ({
                             borderRadius="md"
                             className="navbar"
                             onClick={() => {
-                              if (transactionStarted) {
+                              if (
+                                transactionStarted ||
+                                (currentAction === "Spend Borrow" &&
+                                  spendType !== "UNSPENT")
+                              ) {
                                 return;
                               } else {
                                 handleDropdownClick("yourBorrowPoolDropdown");
@@ -3135,10 +3332,17 @@ const YourBorrowModal = ({
                     {currentAction == "Spend Borrow" ? (
                       currentDapp != "Select a dapp" &&
                       (currentPool != "Select a pool" ||
-                        currentPoolCoin != "Select a pool") ? (
+                        currentPoolCoin != "Select a pool") &&
+                      spendType === "UNSPENT" ? (
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
+                            mixpanel.track(
+                              "Spend Borrow Button Clicked Your Borrow",
+                              {
+                                Clicked: true,
+                              }
+                            );
                             if (radioValue == "2") {
                               hanldeTrade();
                             } else {
@@ -3206,6 +3410,9 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
+                            mixpanel.track("Repay Borrow Button Clicked", {
+                              Clicked: true,
+                            });
                             if (transactionStarted == false) {
                               handleRepayBorrow();
                             }
@@ -3272,6 +3479,12 @@ const YourBorrowModal = ({
                       <Box
                         onClick={() => {
                           setTransactionStarted(true);
+                          mixpanel.track(
+                            "Convert Borrow Market Button Clicked",
+                            {
+                              Clicked: true,
+                            }
+                          );
                           if (transactionStarted == false) {
                             handleRevertTransaction();
                           }
@@ -3328,6 +3541,9 @@ const YourBorrowModal = ({
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
+                            mixpanel.track("Zero Repay Button Clicked", {
+                              Clicked: true,
+                            });
                             if (transactionStarted == false) {
                               handleZeroRepay();
                             }
@@ -4140,7 +4356,12 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">{borrowAmount} {currentBorrowMarketCoin2}</Text>
+                        <Text color="#6E7681">
+                          {borrowAmount} {currentBorrowMarketCoin2}
+                        </Text>
+                        <Text color="#6E7681">
+                          {borrowAmount} {currentBorrowMarketCoin2}
+                        </Text>
                       </Text>
                       <Text
                         display="flex"
@@ -4393,6 +4614,12 @@ const YourBorrowModal = ({
                       <Box
                         onClick={() => {
                           setCollateralTransactionStarted(true);
+                          mixpanel.track(
+                            "Add Collateral Button Clicked Your Borrow",
+                            {
+                              Clicked: true,
+                            }
+                          );
                           if (collateralTransactionStarted == false) {
                             handleAddCollateral();
                           }

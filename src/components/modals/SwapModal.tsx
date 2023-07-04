@@ -38,11 +38,11 @@ import {
   selectWalletBalance,
   setInputSupplyAmount,
   selectSelectedDapp,
-  selectUserLoans,
   setTransactionStatus,
   selectActiveTransactions,
   setActiveTransactions,
 } from "@/store/slices/userAccountSlice";
+import { selectUserLoans } from "@/store/slices/readDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
@@ -58,6 +58,7 @@ import { useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import Image from "next/image";
+import mixpanel from "mixpanel-browser";
 const SwapModal = ({
   borrowIDCoinMap,
   borrowIds,
@@ -215,7 +216,7 @@ const SwapModal = ({
   //     }
   //   },
   // });
-
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
   const handleSwap = async () => {
     try {
       const swap = await writeAsyncJediSwap_swap();
@@ -224,7 +225,8 @@ const SwapModal = ({
       if (swap?.transaction_hash) {
         console.log("toast here");
         const toastid = toast.info(
-          `Please wait, your transaction is running in background`,
+          // `Please wait, your transaction is running in background`,
+          `Transaction pending`,
           {
             position: toast.POSITION.BOTTOM_RIGHT,
             autoClose: false,
@@ -242,12 +244,19 @@ const SwapModal = ({
         }
         const trans_data = {
           transaction_hash: swap?.transaction_hash.toString(),
-          message: `You have successfully swaped for Loan ID : ${swapLoanId}`,
+          // message: `You have successfully swaped for Loan ID : ${swapLoanId}`,
+          message: `Transaction successful`,
           toastId: toastid,
           setCurrentTransactionStatus: setCurrentTransactionStatus,
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
+        mixpanel.track('Swap Spend Borrow Status',{
+          "Status":"Success",
+          "Market Selected":currentSelectedCoin,
+          "Borrow ID":currentBorrowId,
+          "Borrow Market":currentBorrowMarketCoin
+        })
 
         dispatch(setActiveTransactions(activeTransactions));
       }
@@ -263,6 +272,9 @@ const SwapModal = ({
           </CopyToClipboard>
         </div>
       );
+      mixpanel.track('Swap Spend Borrow Status',{
+        "Status":"Failure"
+      })
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
@@ -288,9 +300,9 @@ const SwapModal = ({
     }
   };
   useEffect(() => {
-    const result = userLoans.find(
+    const result = userLoans?.find(
       (item: any) =>
-        item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
+        item?.loanId == currentId?.slice(currentId.indexOf("-") + 1)?.trim()
     );
     setBorrowAmount(result?.loanAmountParsed);
     // console.log(borrowAmount)
@@ -298,7 +310,7 @@ const SwapModal = ({
   }, [currentId]);
   useEffect(() => {
     setSwapLoanId(
-      currentBorrowId.slice(currentBorrowId.indexOf("-") + 1).trim()
+      currentBorrowId?.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
     );
   }, [currentBorrowId]);
   // console.log(onOpen)
@@ -316,9 +328,9 @@ const SwapModal = ({
     setToastDisplayed(false);
     setTransactionStarted(false);
     dispatch(resetModalDropdowns());
-    const result = userLoans.find(
+    const result = userLoans?.find(
       (item: { loanId: any }): any =>
-        item?.loanId == currentId.slice(currentId.indexOf("-") + 1).trim()
+        item?.loanId == currentId?.slice(currentId?.indexOf("-") + 1).trim()
     );
     setBorrowAmount(result?.loanAmountParsed);
     dispatch(setTransactionStatus(""));
@@ -333,9 +345,9 @@ const SwapModal = ({
 
   const handleBorrowMarketCoinChange = (id: string) => {
     // console.log("got id", id);
-    for (let i = 0; i < borrowIDCoinMap.length; i++) {
-      if (borrowIDCoinMap[i].id === id) {
-        setCurrentBorrowMarketCoin(borrowIDCoinMap[i].name.slice(1));
+    for (let i = 0; i < borrowIDCoinMap?.length; i++) {
+      if (borrowIDCoinMap?.[i]?.id === id) {
+        setCurrentBorrowMarketCoin(borrowIDCoinMap?.[i]?.name?.slice(1));
         return;
       }
     }
@@ -344,8 +356,8 @@ const SwapModal = ({
   const handleBorrowMarketIDChange = (coin: string) => {
     // console.log("got coin", coin);
     for (let i = 0; i < borrowIDCoinMap.length; i++) {
-      if (borrowIDCoinMap[i].name === coin) {
-        setCurrentBorrowId(borrowIDCoinMap[i].id);
+      if (borrowIDCoinMap?.[i]?.name === coin) {
+        setCurrentBorrowId(borrowIDCoinMap?.[i]?.id);
         return;
       }
     }
@@ -359,6 +371,10 @@ const SwapModal = ({
           onClick={() => {
             if (selectedDapp == "") {
             } else {
+              mixpanel.track('Swap Modal Selected',{
+                "Clicked":true,
+                'Dapp Selected':currentSwap
+              })
               onOpen();
             }
           }}
@@ -372,6 +388,10 @@ const SwapModal = ({
           onClick={() => {
             if (selectedDapp == "") {
             } else {
+              mixpanel.track('Swap Modal Selected',{
+                "Clicked":true,
+                'Dapp Selected':currentSwap
+              })
               onOpen();
             }
           }}
@@ -803,7 +823,7 @@ const SwapModal = ({
                   0.1%
                 </Text>
               </Box>
-              <Box display="flex" justifyContent="space-between" mb="0.3rem">
+              {/* <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text
                     color="#6A737D"
@@ -850,7 +870,7 @@ const SwapModal = ({
                     <Text>1.23</Text>
                   </Box>
                 </Box>
-              </Box>
+              </Box> */}
               <Box display="flex" justifyContent="space-between" mb="0.3rem">
                 <Box display="flex">
                   <Text
@@ -1047,6 +1067,9 @@ const SwapModal = ({
                 onClick={() => {
                   setTransactionStarted(true);
                   if (transactionStarted == false) {
+                    mixpanel.track('Swap Modal Button Clicked Spend Borrow',{
+                      "Clicked":true
+                    })
                     handleSwap();
                   }
                 }}
