@@ -206,7 +206,7 @@ const StakeUnstakeModal = ({
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
 
   const [toastId, setToastId] = useState<any>();
-  mixpanel.init("eb921da4a666a145e3b36930d7d984c2"|| "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY|| "", { debug: true, track_pageview: true, persistence: 'localStorage' });
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,

@@ -570,7 +570,7 @@ const YourBorrowModal = ({
   //     }
   //   },
   // });
-  mixpanel.init("eb921da4a666a145e3b36930d7d984c2" || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
   const handleZeroRepay = async () => {
     try {
       if (!loan?.loanId) {
