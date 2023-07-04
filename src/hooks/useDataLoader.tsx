@@ -144,6 +144,8 @@ const useDataLoader = () => {
     }
   }, [address, transactionRefresh]);
 
+  const Data:any=[];
+
   useEffect(() => {
     const fetchUserLoans = async () => {
       console.log("user loans called - transactionRefresh");
@@ -159,6 +161,11 @@ const useDataLoader = () => {
             )
           )
         );
+        if(dataOraclePrices && protocolStats){
+          for(var i=0;i<userLoans?.length;i++){
+
+          }
+        }
         dispatch(
           setUserUnspentLoans(
             userLoans
