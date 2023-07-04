@@ -1,5 +1,5 @@
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
-import { setProtocolStats } from "@/store/slices/userAccountSlice";
+import { setProtocolStats } from "@/store/slices/readDataSlice";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 

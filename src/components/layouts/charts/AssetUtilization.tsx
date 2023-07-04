@@ -24,7 +24,6 @@ const AssetUtilizationChart = ({
         toolbar: {
           show: false,
         },
-         type: 'bar',
       },
       dataLabels: {
         position: 'bottom',
@@ -98,14 +97,15 @@ const AssetUtilizationChart = ({
   };
 
   return (
-    <Box border="1px solid #2B2F35" borderRadius="6px" padding="16px 24px 40px">
-      <ApexCharts
-        options={splineChartData.options || ""}
-        series={splineChartData.series}
-        type="bar"
-        height={350}
-      />
-    </Box>
+<Box border="1px solid #2B2F35" borderRadius="6px" padding="16px 24px 40px">
+  <ApexCharts
+    options={splineChartData.options}
+    series={splineChartData.series}
+    type="bar"
+    height={350}
+  />
+</Box>
+
   );
 };
 

@@ -9,7 +9,6 @@ import {
 } from "@starknet-react/core";
 import {
   selectToastTransactionStarted,
-  selectNetAPR,
   selectActiveTransactions,
 } from "@/store/slices/userAccountSlice";
 import { selectUserDeposits,selectProtocolStats,selectOraclePrices,selectProtocolReserves,selectNetWorth } from "@/store/slices/readDataSlice";
