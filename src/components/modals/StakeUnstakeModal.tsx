@@ -59,11 +59,11 @@ import useStakeRequest from "@/Blockchain/hooks/Writes/useStakerequest";
 import useWithdrawStake from "@/Blockchain/hooks/Writes/useWithdrawStake";
 import {
   selectActiveTransactions,
-  selectProtocolStats,
   selectWalletBalance,
   setActiveTransactions,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
+import { selectProtocolStats } from "@/store/slices/readDataSlice";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";
@@ -102,6 +102,7 @@ const StakeUnstakeModal = ({
   const [unstakeTransactionStarted, setUnstakeTransactionStarted] =
     useState(false);
   let activeTransactions = useSelector(selectActiveTransactions);
+  const protocolStats=useSelector(selectProtocolStats)
 
   const {
     rToken,
@@ -516,9 +517,9 @@ const StakeUnstakeModal = ({
   const router = useRouter();
   const { pathname } = router;
 
-  useEffect(() => {
-    console.log("protocolStats", protocolStats);
-  }, [protocolStats]);
+  // useEffect(() => {
+  //   console.log("protocolStats", protocolStats);
+  // }, [protocolStats]);
 
   return (
     <Box>
