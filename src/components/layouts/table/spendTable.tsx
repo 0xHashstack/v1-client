@@ -33,7 +33,7 @@ import {
   selectUserUnspentLoans,
   setCurrentPage,
 } from "@/store/slices/userAccountSlice";
-import { selectUserLoans,selectProtocolStats,selectOraclePrices } from "@/store/slices/readDataSlice";
+import { selectUserLoans,selectProtocolStats,selectOraclePrices, selectAprAndHealthFactor } from "@/store/slices/readDataSlice";
 import HazardIcon from "@/assets/icons/hazardIcon";
 import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
 import TableYagiLogoDull from "./tableIcons/yagiLogoDull";
@@ -183,9 +183,12 @@ const SpendTable = () => {
   const avgsData: any = [];
   const oraclePrices = useSelector(selectOraclePrices);
   const reduxProtocolStats = useSelector(selectProtocolStats);
+  // const avgs=useSelector(selectAprAndHealthFactor)
+  console.log(avgs,"avgs in spend table")
+console.log("HI")
   useEffect(() => {
     const fetchAprs = async () => {
-      if (avgs.length == 0) {
+      if (avgs?.length == 0) {
         for (var i = 0; i < userLoans?.length; i++) {
           const avg = await effectivAPRLoan(
             userLoans[i],

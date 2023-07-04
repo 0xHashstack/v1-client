@@ -31,7 +31,7 @@ import {
   setUserLoansCount,
   setUserUnspentLoans,
 } from "@/store/slices/userAccountSlice";
-import { setOraclePrices,selectOraclePrices,selectTransactionRefresh, selectProtocolReserves,setProtocolReserves } from "@/store/slices/readDataSlice";
+import { setOraclePrices,selectOraclePrices,selectTransactionRefresh, selectProtocolReserves,setProtocolReserves, setAprAndHealthFactor } from "@/store/slices/readDataSlice";
 import { setProtocolStats,selectProtocolStats,setNetWorth,setNetAPR,selectNetAPR, selectNetWorth,setYourBorrow,selectYourBorrow ,setYourSupply,selectYourSupply} from "@/store/slices/readDataSlice";
 
 import { setUserDeposits,selectUserDeposits } from "@/store/slices/readDataSlice";
@@ -39,6 +39,7 @@ import { setUserLoans,selectUserLoans } from "@/store/slices/readDataSlice";
 import { useAccount } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 const useDataLoader = () => {
   const { address } = useAccount();
   const protocolReserves = useSelector(selectProtocolReserves);
@@ -59,7 +60,9 @@ const useDataLoader = () => {
   const oraclePricesCount = useSelector(selectOraclePricesCount);
   const userInfoCount = useSelector(selectUserInfoCount);
   const transactionRefresh = useSelector(selectTransactionRefresh);
+  const [aprsAndHealth, setAprsAndHealth] = useState<any>([])
   const dispatch = useDispatch();
+  const Data:any=[];
   // useEffect(() => {
   //   console.log("switched to market");
   // }, []);
@@ -144,7 +147,8 @@ const useDataLoader = () => {
     }
   }, [address, transactionRefresh]);
 
-  const Data:any=[];
+  
+
 
   useEffect(() => {
     const fetchUserLoans = async () => {
@@ -161,11 +165,6 @@ const useDataLoader = () => {
             )
           )
         );
-        if(dataOraclePrices && protocolStats){
-          for(var i=0;i<userLoans?.length;i++){
-
-          }
-        }
         dispatch(
           setUserUnspentLoans(
             userLoans

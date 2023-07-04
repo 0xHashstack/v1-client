@@ -67,7 +67,7 @@ import {
   setInputYourBorrowModalRepayAmount,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
-import { selectUserLoans } from "@/store/slices/readDataSlice";
+import { selectOraclePrices, selectProtocolStats, selectUserLoans } from "@/store/slices/readDataSlice";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
@@ -89,7 +89,8 @@ import { useWaitForTransaction } from "@starknet-react/core";
 import { toast } from "react-toastify";
 import CopyToClipboard from "react-copy-to-clipboard";
 import useRevertInteractWithL3 from "@/Blockchain/hooks/Writes/useRevertInteractWithL3";
-
+import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
+import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import {
   getJediEstimateLiquiditySplit,
   getJediEstimatedLiqALiqBfromLp,
@@ -148,6 +149,8 @@ const YourBorrowModal = ({
     useState(false);
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
   const userLoans = useSelector(selectUserLoans);
+  const reduxProtocolStats=useSelector(selectProtocolStats);
+  const oraclePrices=useSelector(selectOraclePrices);
   let activeTransactions = useSelector(selectActiveTransactions);
   useEffect(() => {
     const result = userLoans.find(
@@ -159,6 +162,36 @@ const YourBorrowModal = ({
     // console.log(borrowAmount)
     // Rest of your code using the 'result' variable
   }, [currentBorrowId1]);
+  const [avgs, setAvgs] = useState<any>([]);
+  const avgsData: any = [];
+  useEffect(() => {
+    const fetchAprs = async () => {
+      if (avgs?.length == 0) {
+        for (var i = 0; i < userLoans?.length; i++) {
+          const avg = await effectivAPRLoan(
+            userLoans[i],
+            reduxProtocolStats,
+            oraclePrices
+          );
+          const healthFactor = await getExistingLoanHealth(
+            userLoans[i]?.loanId
+          );
+          const data = {
+            loanId: userLoans[i]?.loanId,
+            avg: avg,
+            loanHealth: healthFactor,
+          };
+          // avgs.push(data)
+          avgsData.push(data);
+          // avgs.push()
+        }
+        //cc
+        setAvgs(avgsData);
+      }
+    };
+    if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
+    console.log("running");
+  }, [oraclePrices, reduxProtocolStats, userLoans]);
   const {
     loanId,
     setLoanId,
@@ -1278,7 +1311,14 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                5.56%
+                          {avgs?.find(
+                            (item: any) => item.loanId == currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+                          )?.avg
+                            ? avgs?.find(
+                                (item: any) => item.loanId == currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+                              )?.avg
+                            : "3.2"}
+                          %
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between">
@@ -1313,7 +1353,14 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                1.10
+                              {avgs?.find(
+                                (item: any) => item.loanId == currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+                              )?.loanHealth
+                                ? avgs?.find(
+                                    (item: any) => item.loanId == currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
+                                  )?.loanHealth
+                                : "2.5"}
+                              %
               </Text>
             </Box>
           </Box>
