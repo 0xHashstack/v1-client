@@ -112,6 +112,7 @@ import Image from "next/image";
 import mixpanel from "mixpanel-browser";
 import WarningIcon from "@/assets/icons/coins/warningIcon";
 import { getrTokensMinted } from "@/Blockchain/scripts/Rewards";
+import { NativeToken } from "@/Blockchain/interfaces/interfaces";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -388,7 +389,45 @@ const YourBorrowModal = ({
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
-  const [walletBalance, setwalletBalance] = useState(
+
+  const [walletBalance1, setwalletBalance1] = useState(
+    walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
+      ?.statusBalanceOf === "success"
+      ? Number(
+          BNtoNum(
+            uint256.uint256ToBN(
+              walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
+                ?.dataBalanceOf?.balance
+            ),
+            tokenDecimalsMap[currentBorrowMarketCoin1.slice(1) as NativeToken]
+          )
+        )
+      : 0
+  );
+  useEffect(() => {
+    setwalletBalance1(
+      walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
+        ?.statusBalanceOf === "success"
+        ? Number(
+            BNtoNum(
+              uint256.uint256ToBN(
+                walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
+                  ?.dataBalanceOf?.balance
+              ),
+              tokenDecimalsMap[currentBorrowMarketCoin1.slice(1) as NativeToken]
+            )
+          )
+        : 0
+    );
+    // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
+  }, [
+    walletBalances[currentBorrowMarketCoin1.slice(1) as NativeToken]
+      ?.statusBalanceOf,
+    currentBorrowMarketCoin1,
+    currentBorrowId1,
+  ]);
+
+  const [walletBalance2, setwalletBalance2] = useState(
     walletBalances[collateralAsset]?.statusBalanceOf === "success"
       ? Number(
           BNtoNum(
@@ -401,7 +440,7 @@ const YourBorrowModal = ({
       : 0
   );
   useEffect(() => {
-    setwalletBalance(
+    setwalletBalance2(
       walletBalances[collateralAsset]?.statusBalanceOf === "success"
         ? Number(
             BNtoNum(
@@ -1071,7 +1110,8 @@ const YourBorrowModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                  {currentLPTokenAmount === null ? (
+                  {currentLPTokenAmount == undefined ||
+                  currentLPTokenAmount === null ? (
                     <Box pt="2px">
                       <Skeleton
                         width="2.3rem"
@@ -2141,7 +2181,7 @@ const YourBorrowModal = ({
 
   const handleChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
-    var percentage = (newValue * 100) / walletBalance;
+    var percentage = (newValue * 100) / walletBalance1;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue(100);
@@ -2160,7 +2200,7 @@ const YourBorrowModal = ({
   };
 
   const handleCollateralChange = (newValue: any) => {
-    var percentage = (newValue * 100) / walletBalance;
+    var percentage = (newValue * 100) / walletBalance2;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
       setSliderValue2(100);
@@ -2314,17 +2354,17 @@ const YourBorrowModal = ({
       currentPool === "Select a pool"
     )
       return;
-    // const lp_tokon = await getJediEstimatedLpAmountOut(
-    //   // currentBorrowId1.slice(5),
-    //   // toMarketA,
-    //   // toMarketB
-    //   "USDT",
-    //   "99",
-    //   "ETH",
-    //   "USDT"
-    // );
-    // console.log("toMarketSplitLP", lp_tokon);
-    // setCurrentLPTokenAmount(lp_tokon);
+    const lp_tokon = await getJediEstimatedLpAmountOut(
+      currentBorrowId1.slice(5),
+      toMarketA,
+      toMarketB
+      // "USDT",
+      // "99",
+      // "ETH",
+      // "USDT"
+    );
+    console.log("toMarketSplitLP", lp_tokon);
+    setCurrentLPTokenAmount(lp_tokon);
     const split = await getJediEstimateLiquiditySplit(
       currentBorrowId1.slice(5),
       toMarketA,
@@ -2914,14 +2954,14 @@ const YourBorrowModal = ({
                               display="flex"
                               justifyContent="space-between"
                               border={`${
-                                repayAmount > walletBalance
+                                repayAmount > walletBalance1
                                   ? "1px solid #CF222E"
                                   : repayAmount < 0
                                   ? "1px solid #CF222E"
                                   : isNaN(repayAmount)
                                   ? "1px solid #CF222E"
                                   : repayAmount > 0 &&
-                                    repayAmount <= walletBalance
+                                    repayAmount <= walletBalance1
                                   ? "1px solid #1A7F37"
                                   : "1px solid #2B2F35 "
                               }`}
@@ -2944,7 +2984,7 @@ const YourBorrowModal = ({
                                 <NumberInputField
                                   placeholder={`Minimum 0.01536 ${currentBorrowMarketCoin1}`}
                                   color={`${
-                                    repayAmount > walletBalance
+                                    repayAmount > walletBalance1
                                       ? "#CF222E"
                                       : isNaN(repayAmount)
                                       ? "#CF222E"
@@ -2975,11 +3015,11 @@ const YourBorrowModal = ({
                                 _hover={{ bg: "#101216" }}
                                 onClick={() => {
                                   if (currentAction === "Zero Repay") return;
-                                  setRepayAmount(walletBalance);
+                                  setRepayAmount(walletBalance1);
                                   setSliderValue(100);
                                   dispatch(
                                     setInputYourBorrowModalRepayAmount(
-                                      walletBalance
+                                      walletBalance1
                                     )
                                   );
                                 }}
@@ -2989,7 +3029,7 @@ const YourBorrowModal = ({
                                 MAX
                               </Button>
                             </Box>
-                            {repayAmount > walletBalance ||
+                            {repayAmount > walletBalance1 ||
                             repayAmount < 0 ||
                             isNaN(repayAmount) ? (
                               <Text
@@ -3007,7 +3047,7 @@ const YourBorrowModal = ({
                                     <SmallErrorIcon />{" "}
                                   </Text>
                                   <Text ml="0.3rem">
-                                    {repayAmount > walletBalance
+                                    {repayAmount > walletBalance1
                                       ? "Amount exceeds balance"
                                       : "Invalid Input"}
                                   </Text>
@@ -3017,7 +3057,7 @@ const YourBorrowModal = ({
                                   display="flex"
                                   justifyContent="flex-end"
                                 >
-                                  Wallet Balance: {walletBalance}
+                                  Wallet Balance: {walletBalance1}
                                   <Text color="#6E7781" ml="0.2rem">
                                     {` ${currentSelectedCoin}`}
                                   </Text>
@@ -3034,7 +3074,7 @@ const YourBorrowModal = ({
                                 fontStyle="normal"
                                 fontFamily="Inter"
                               >
-                                Wallet Balance: {walletBalance}
+                                Wallet Balance: {walletBalance1}
                                 <Text color="#6E7781" ml="0.2rem">
                                   {` ${currentSelectedCoin}`}
                                 </Text>
@@ -3049,7 +3089,7 @@ const YourBorrowModal = ({
                               onChange={(val) => {
                                 if (currentAction === "Zero Repay") return;
                                 setSliderValue(val);
-                                var ans = (val / 100) * walletBalance;
+                                var ans = (val / 100) * walletBalance1;
                                 ans = Math.round(ans * 100) / 100;
                                 dispatch(
                                   setInputYourBorrowModalRepayAmount(ans)
@@ -3657,7 +3697,7 @@ const YourBorrowModal = ({
                     )}
 
                     {currentAction == "Repay Borrow" ? (
-                      repayAmount > 0 && repayAmount <= walletBalance ? (
+                      repayAmount > 0 && repayAmount <= walletBalance1 ? (
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
@@ -4329,12 +4369,12 @@ const YourBorrowModal = ({
                         width="100%"
                         color="white"
                         border={`${
-                          inputCollateralAmount > walletBalance
+                          inputCollateralAmount > walletBalance2
                             ? "1px solid #CF222E"
                             : inputCollateralAmount < 0
                             ? "1px solid #CF222E"
                             : inputCollateralAmount > 0 &&
-                              inputAmount <= walletBalance
+                              inputAmount <= walletBalance2
                             ? "1px solid #1A7F37"
                             : "1px solid #2B2F35 "
                         }`}
@@ -4347,7 +4387,7 @@ const YourBorrowModal = ({
                           border="0px"
                           min={0}
                           color={`${
-                            inputCollateralAmount > walletBalance
+                            inputCollateralAmount > walletBalance2
                               ? "#CF222E"
                               : inputCollateralAmount < 0
                               ? "#CF222E"
@@ -4388,9 +4428,9 @@ const YourBorrowModal = ({
                           color="#0969DA"
                           _hover={{ bg: "#101216" }}
                           onClick={() => {
-                            setinputCollateralAmount(walletBalance);
-                            setCollateralAmount(walletBalance);
-                            setRTokenAmount(walletBalance);
+                            setinputCollateralAmount(walletBalance2);
+                            setCollateralAmount(walletBalance2);
+                            setRTokenAmount(walletBalance2);
                             setSliderValue2(100);
                           }}
                           isDisabled={collateralTransactionStarted == true}
@@ -4399,7 +4439,7 @@ const YourBorrowModal = ({
                           MAX
                         </Button>
                       </Box>
-                      {inputCollateralAmount > walletBalance ||
+                      {inputCollateralAmount > walletBalance2 ||
                       inputCollateralAmount < 0 ? (
                         <Text
                           display="flex"
@@ -4415,7 +4455,7 @@ const YourBorrowModal = ({
                               <SmallErrorIcon />{" "}
                             </Text>
                             <Text ml="0.3rem">
-                              {inputCollateralAmount > walletBalance
+                              {inputCollateralAmount > walletBalance2
                                 ? "Amount exceeds balance"
                                 : "Invalid Input"}{" "}
                             </Text>
@@ -4425,7 +4465,7 @@ const YourBorrowModal = ({
                             display="flex"
                             justifyContent="flex-end"
                           >
-                            Wallet Balance: {walletBalance}
+                            Wallet Balance: {walletBalance2}
                             <Text color="#6E7781" ml="0.2rem">
                               {` ${collateralAsset}`}
                             </Text>
@@ -4441,7 +4481,7 @@ const YourBorrowModal = ({
                           fontStyle="normal"
                           fontFamily="Inter"
                         >
-                          Wallet Balance: {walletBalance}
+                          Wallet Balance: {walletBalance2}
                           <Text color="#6E7781" ml="0.2rem">
                             {` ${collateralAsset}`}
                           </Text>
@@ -4454,7 +4494,7 @@ const YourBorrowModal = ({
                           value={sliderValue2}
                           onChange={(val) => {
                             setSliderValue2(val);
-                            var ans = (val / 100) * walletBalance;
+                            var ans = (val / 100) * walletBalance2;
                             ans = Math.round(ans * 100) / 100;
                             // dispatch(setInputSupplyAmount(ans))
                             setinputCollateralAmount(ans);
@@ -4896,7 +4936,7 @@ const YourBorrowModal = ({
                       </Text>
                     </Card>
                     {inputCollateralAmount > 0 &&
-                    inputCollateralAmount <= walletBalance ? (
+                    inputCollateralAmount <= walletBalance2 ? (
                       <Box
                         onClick={() => {
                           setCollateralTransactionStarted(true);
