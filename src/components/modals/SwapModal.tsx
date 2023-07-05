@@ -42,7 +42,7 @@ import {
   selectActiveTransactions,
   setActiveTransactions,
 } from "@/store/slices/userAccountSlice";
-import { selectUserLoans } from "@/store/slices/readDataSlice";
+import { selectAprAndHealthFactor, selectUserLoans } from "@/store/slices/readDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
@@ -221,6 +221,7 @@ const SwapModal = ({
     track_pageview: true,
     persistence: "localStorage",
   });
+  const avgs=useSelector(selectAprAndHealthFactor)
   const handleSwap = async () => {
     try {
       const swap = await writeAsyncJediSwap_swap();
@@ -1035,7 +1036,14 @@ const SwapModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                  5.56%
+                                            {avgs?.find(
+                            (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
+                          )?.avg
+                            ? avgs?.find(
+                                (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
+                              )?.avg
+                            : "3.2"}
+                          %
                 </Text>
               </Box>
               <Box display="flex" justifyContent="space-between">
@@ -1070,7 +1078,14 @@ const SwapModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                  1.10
+                                                                {avgs?.find(
+                            (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
+                          )?.avg
+                            ? avgs?.find(
+                                (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
+                              )?.loanHealth
+                            : "2.5"}
+                          %
                 </Text>
               </Box>
             </Box>

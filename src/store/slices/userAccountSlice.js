@@ -48,6 +48,7 @@ const initialState = {
   userLoansCount: -1,
   oraclePricesCount: -1,
   userInfoCount: -1,
+  aprAndHealthFactorCount:-1,
 
   // walletBalance: {
   //   BTC: 0,
@@ -185,6 +186,9 @@ export const userAccountSlice = createSlice({
       // const count = state.userLoansCount + 1;
       // return { ...state, userLoansCount: count };
     },
+    setAprsAndHealthCount(state,action){
+      state.aprAndHealthFactorCount=state.transactionRefresh;
+    },
 
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;
@@ -224,6 +228,7 @@ export const {
   setUserDepositsCount,
   setProtocolStatsCount,
   setProtocolReservesCount,
+  setAprsAndHealthCount,
   setUserUnspentLoans,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
@@ -289,6 +294,7 @@ export const selectUserLoansCount = (state) =>
 export const selectOraclePricesCount = (state) =>
   state.user_account.oraclePricesCount;
 export const selectUserInfoCount = (state) => state.user_account.userInfoCount;
+export const selectAprsAndHealthCount=(state)=>state.user_account.aprAndHealthFactorCount;
 export const selectUserUnspentLoans = (state) =>
   state.user_account.userUnspentLoans;
 // export const select=(state)=> state.user_account.

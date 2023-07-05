@@ -241,6 +241,7 @@ const SupplyDashboard = ({
   }, [supplies]);
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
+  console.log(userDeposits?.length,"length supply");
   upper_bound = Math.min(userDeposits?.length - 1, upper_bound);
   // useEffect(() => {
   //   try {

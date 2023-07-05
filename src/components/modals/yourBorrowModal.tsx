@@ -68,6 +68,7 @@ import {
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 import {
+  selectAprAndHealthFactor,
   selectOraclePrices,
   selectProtocolStats,
   selectUserLoans,
@@ -110,6 +111,7 @@ import UsdcToDai from "@/assets/icons/pools/usdcToDai";
 import Image from "next/image";
 import mixpanel from "mixpanel-browser";
 import WarningIcon from "@/assets/icons/coins/warningIcon";
+import { getrTokensMinted } from "@/Blockchain/scripts/Rewards";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -167,36 +169,36 @@ const YourBorrowModal = ({
     // console.log(borrowAmount)
     // Rest of your code using the 'result' variable
   }, [currentBorrowId1]);
-  const [avgs, setAvgs] = useState<any>([]);
+  const avgs = useSelector(selectAprAndHealthFactor);
   const avgsData: any = [];
-  useEffect(() => {
-    const fetchAprs = async () => {
-      if (avgs?.length == 0) {
-        for (var i = 0; i < userLoans?.length; i++) {
-          const avg = await effectivAPRLoan(
-            userLoans[i],
-            reduxProtocolStats,
-            oraclePrices
-          );
-          const healthFactor = await getExistingLoanHealth(
-            userLoans[i]?.loanId
-          );
-          const data = {
-            loanId: userLoans[i]?.loanId,
-            avg: avg,
-            loanHealth: healthFactor,
-          };
-          // avgs.push(data)
-          avgsData.push(data);
-          // avgs.push()
-        }
-        //cc
-        setAvgs(avgsData);
-      }
-    };
-    if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
-    console.log("running");
-  }, [oraclePrices, reduxProtocolStats, userLoans]);
+  // useEffect(() => {
+  //   const fetchAprs = async () => {
+  //     if (avgs?.length == 0) {
+  //       for (var i = 0; i < userLoans?.length; i++) {
+  //         const avg = await effectivAPRLoan(
+  //           userLoans[i],
+  //           reduxProtocolStats,
+  //           oraclePrices
+  //         );
+  //         const healthFactor = await getExistingLoanHealth(
+  //           userLoans[i]?.loanId
+  //         );
+  //         const data = {
+  //           loanId: userLoans[i]?.loanId,
+  //           avg: avg,
+  //           loanHealth: healthFactor,
+  //         };
+  //         // avgs.push(data)
+  //         avgsData.push(data);
+  //         // avgs.push()
+  //       }
+  //       //cc
+  //       setAvgs(avgsData);
+  //     }
+  //   };
+  //   if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
+  //   console.log("running");
+  // }, [oraclePrices, reduxProtocolStats, userLoans]);
   const {
     loanId,
     setLoanId,
@@ -565,6 +567,9 @@ const YourBorrowModal = ({
   };
   // console.log(currentDapp)
   // console.log(currentPool.split('/')[0])
+  const [estrTokensMinted, setEstrTokensMinted] = useState<any>();
+  const spaceIndex = collateralBalance.indexOf(" ");
+
   const [depositTransHash, setDepositTransHash] = useState("");
 
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
@@ -1131,7 +1136,7 @@ const YourBorrowModal = ({
                         />
                       </Box>
                       <Text>
-                        {currentSplit?.[0] || (
+                        {currentSplit?.[0]?.toString() || (
                           <Skeleton
                             width="2.3rem"
                             height=".85rem"
@@ -1153,7 +1158,7 @@ const YourBorrowModal = ({
                         />
                       </Box>
                       <Text>
-                        {currentSplit?.[1] || (
+                        {currentSplit?.[1].toString() || (
                           <Skeleton
                             width="2.3rem"
                             height=".85rem"
@@ -1435,7 +1440,7 @@ const YourBorrowModal = ({
                 {currentBorrowMarketCoin1}
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
                   color="#8B949E"
@@ -1469,7 +1474,7 @@ const YourBorrowModal = ({
               >
                 1.23
               </Text>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
@@ -1644,7 +1649,7 @@ const YourBorrowModal = ({
                 {borrowAmount} {currentBorrowMarketCoin1}
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text color="#8B949E" fontSize="xs">
                   rTokens unlocked:{" "}
@@ -1668,7 +1673,7 @@ const YourBorrowModal = ({
               <Text color="#8B949E" fontSize="xs">
                 1.23
               </Text>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text color="#8B949E" fontSize="xs">
@@ -2247,6 +2252,7 @@ const YourBorrowModal = ({
       setSliderValue2(0);
       setRepayAmount(0);
       setTabValue(1);
+      setEstrTokensMinted(undefined);
       setCollateralTransactionStarted(false);
       setTransactionStarted(false);
       dispatch(resetModalDropdowns());
@@ -2331,6 +2337,17 @@ const YourBorrowModal = ({
     console.log("toMarketSplit", split);
     setCurrentSplit(split);
   };
+  useEffect(() => {
+    const fetchEstrTokens = async () => {
+      const data = await getrTokensMinted(
+        collateralBalance.substring(spaceIndex + 1),
+        inputCollateralAmount
+      );
+      console.log(data, "data in your borrow");
+      setEstrTokensMinted(data);
+    };
+    fetchEstrTokens();
+  }, [collateralBalance, inputCollateralAmount]);
 
   return (
     <Box>
@@ -3689,6 +3706,8 @@ const YourBorrowModal = ({
                             setCurrentTransactionStatus={
                               setCurrentTransactionStatus
                             }
+                            _disabled={{ bgColor: "white", color: "black" }}
+                            isDisabled={transactionStarted == true}
                           >
                             Repay borrow
                           </AnimatedButton>
@@ -4593,9 +4612,6 @@ const YourBorrowModal = ({
                         <Text color="#6E7681">
                           {borrowAmount} {currentBorrowMarketCoin2}
                         </Text>
-                        <Text color="#6E7681">
-                          {borrowAmount} {currentBorrowMarketCoin2}
-                        </Text>
                       </Text>
                       <Text
                         display="flex"
@@ -4649,7 +4665,7 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">$ 10.91</Text>
+                        <Text color="#6E7681">$ {estrTokensMinted}</Text>
                       </Text>
                       <Text
                         color="#8B949E"
@@ -4806,7 +4822,25 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">5.56%</Text>
+                        <Text color="#6E7681">
+                          {" "}
+                          {avgs?.find(
+                            (item: any) =>
+                              item.loanId ==
+                              currentBorrowId2
+                                .slice(currentBorrowId2.indexOf("-") + 1)
+                                .trim()
+                          )?.avg
+                            ? avgs?.find(
+                                (item: any) =>
+                                  item.loanId ==
+                                  currentBorrowId2
+                                    .slice(currentBorrowId2.indexOf("-") + 1)
+                                    .trim()
+                              )?.avg
+                            : "3.2"}
+                          %
+                        </Text>
                       </Text>
                       <Text
                         display="flex"
@@ -4840,7 +4874,25 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">1.10</Text>
+                        <Text color="#6E7681">
+                          {" "}
+                          {avgs?.find(
+                            (item: any) =>
+                              item.loanId ==
+                              currentBorrowId2
+                                .slice(currentBorrowId2.indexOf("-") + 1)
+                                .trim()
+                          )?.loanHealth
+                            ? avgs?.find(
+                                (item: any) =>
+                                  item.loanId ==
+                                  currentBorrowId2
+                                    .slice(currentBorrowId2.indexOf("-") + 1)
+                                    .trim()
+                              )?.loanHealth
+                            : "2.5"}
+                          %
+                        </Text>
                       </Text>
                     </Card>
                     {inputCollateralAmount > 0 &&
