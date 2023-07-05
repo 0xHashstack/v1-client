@@ -65,6 +65,7 @@ import {
   setActiveTransactions,
   // setCurrentTransactionStatus,
   setInputYourBorrowModalRepayAmount,
+  setTransactionStartedAndModalClosed,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 import { selectAprAndHealthFactor, selectOraclePrices, selectProtocolStats, selectUserLoans } from "@/store/slices/readDataSlice";
@@ -2146,6 +2147,9 @@ const YourBorrowModal = ({
         isOpen={isOpen}
         onClose={() => {
           resetStates();
+          if(transactionStarted || collateralTransactionStarted){
+            dispatch(setTransactionStartedAndModalClosed(true))
+          }
           onClose();
         }}
         isCentered
@@ -3364,6 +3368,7 @@ const YourBorrowModal = ({
                                 Clicked: true,
                               }
                             );
+                            dispatch(setTransactionStartedAndModalClosed(false))
                             if (radioValue == "2") {
                               hanldeTrade();
                             } else {
@@ -3434,6 +3439,7 @@ const YourBorrowModal = ({
                             mixpanel.track("Repay Borrow Button Clicked", {
                               Clicked: true,
                             });
+                            dispatch(setTransactionStartedAndModalClosed(false))
                             if (transactionStarted == false) {
                               handleRepayBorrow();
                             }
@@ -3508,6 +3514,7 @@ const YourBorrowModal = ({
                               Clicked: true,
                             }
                           );
+                          dispatch(setTransactionStartedAndModalClosed(false))
                           if (transactionStarted == false) {
                             handleRevertTransaction();
                           }
@@ -3567,6 +3574,7 @@ const YourBorrowModal = ({
                             mixpanel.track("Zero Repay Button Clicked", {
                               Clicked: true,
                             });
+                            dispatch(setTransactionStartedAndModalClosed(false))
                             if (transactionStarted == false) {
                               handleZeroRepay();
                             }
@@ -4655,6 +4663,7 @@ const YourBorrowModal = ({
                               Clicked: true,
                             }
                           );
+                          dispatch(setTransactionStartedAndModalClosed(false))
                           if (collateralTransactionStarted == false) {
                             handleAddCollateral();
                           }

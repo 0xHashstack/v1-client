@@ -72,6 +72,7 @@ import {
   selectAssetWalletBalance,
   selectActiveTransactions,
   setActiveTransactions,
+  setTransactionStartedAndModalClosed,
 } from "@/store/slices/userAccountSlice";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
@@ -692,6 +693,9 @@ const YourSupplyModal = ({
         isOpen={isOpen}
         onClose={() => {
           onClose();
+          if(transactionStarted || withdrawTransactionStarted){
+            dispatch(setTransactionStartedAndModalClosed(true))
+          }
           resetStates();
         }}
         isCentered
@@ -1331,6 +1335,7 @@ const YourSupplyModal = ({
                             mixpanel.track('Add Supply Button Clicked Your Supply', {
                               "Clicked": true,
                             })
+                            dispatch(setTransactionStartedAndModalClosed(false))
                             handleAddSupply();
                           }}
                         >
@@ -2031,6 +2036,7 @@ const YourSupplyModal = ({
                               mixpanel.track('Withdraw Button Clicked your supply', {
                                 "Clicked": true,
                               })
+                              dispatch(setTransactionStartedAndModalClosed(false))
                               handleWithdrawSupply();
                             }
                           }}

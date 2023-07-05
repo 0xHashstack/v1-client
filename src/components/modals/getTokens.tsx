@@ -57,6 +57,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectActiveTransactions,
   setActiveTransactions,
+  setTransactionStartedAndModalClosed,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 import { toast } from "react-toastify";
@@ -178,6 +179,7 @@ const GetTokensModal = ({
       mixpanel.track('Get Tokens Status',{
         "Status":"Failure"
       })
+      dispatch(setTransactionStartedAndModalClosed(true));
       const toastContent = (
         <div>
           Failed to mint TestToken :{coin + " "}

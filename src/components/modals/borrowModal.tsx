@@ -40,6 +40,7 @@ import {
   selectAssetWalletBalance,
   selectActiveTransactions,
   setActiveTransactions,
+  setTransactionStartedAndModalClosed,
 } from "@/store/slices/userAccountSlice";
 
 import { selectProtocolStats,selectOraclePrices } from "@/store/slices/readDataSlice";
@@ -583,6 +584,7 @@ const BorrowModal = ({
           onClose();
           resetStates();
           if (transactionStarted) {
+            dispatch(setTransactionStartedAndModalClosed(true))
             dispatch(setToastTransactionStarted(""));
           }
         }}
@@ -1812,6 +1814,7 @@ const BorrowModal = ({
                   onClick={() => {
                     setTransactionStarted(true);
                     if (transactionStarted == false) {
+                      dispatch(setTransactionStartedAndModalClosed(false))
                       mixpanel.track('Borrow Market Button Clicked',{
                         'Borrow Clicked':true
                     })

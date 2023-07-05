@@ -4,6 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import SuccessButton from "./SuccessButton";
 import {
   selectCollateralCoinSelectedBorrowModal,
+  selectTransactionStartedAndModalClosed,
   selectTransactionStatus,
   // setCurrentTransactionStatus,
   // selectCurrentTransactionStatus,
@@ -49,12 +50,13 @@ const AnimatedButton: React.FC<Props> = ({
   const [progressBarWidth, setProgressBarWidth] = useState("0%");
   const [isAnimationStarted, setIsAnimationStarted] = useState(false);
   const transactionStatus = useSelector(selectTransactionStatus);
+  const modalClosed=useSelector(selectTransactionStartedAndModalClosed)
   // const currentTransactionStatus = useSelector(selectCurrentTransactionStatus);
   // console.log(transactionStatus,"transaction from button");
 
   useEffect(() => {
     console.log(transactionStatus);
-    if (isAnimationStarted && transactionStatus == "success") {
+    if (isAnimationStarted && transactionStatus == "success" && !modalClosed) {
       setProgressBarWidth(
         `${((currentStringIndex + 1) / labelSuccessArray.length) * 100 + 2}%`
       );
@@ -86,7 +88,7 @@ const AnimatedButton: React.FC<Props> = ({
   }, [currentStringIndex]);
 
   useEffect(() => {
-    if (isAnimationStarted && transactionStatus == "success") {
+    if (isAnimationStarted && transactionStatus == "success" && !modalClosed) {
       // setProgressBarWidth(
       //   `${((currentStringIndex + 1) / labelArray.length) * 100 + 4}%`
       // );
@@ -117,14 +119,14 @@ const AnimatedButton: React.FC<Props> = ({
   //   }
   // };
   useEffect(() => {
-    if (transactionStatus == "success" || transactionStatus == "failed") {
+    if (transactionStatus == "success" || transactionStatus == "failed" && !modalClosed) {
       setIsAnimationStarted(true);
     }
   }, [transactionStatus]);
 
   useEffect(() => {
     let interval: any;
-    if (isAnimationStarted && transactionStatus == "success") {
+    if (isAnimationStarted && transactionStatus == "success" && !modalClosed) {
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
           const nextIndex = prevIndex + 1;
@@ -140,7 +142,7 @@ const AnimatedButton: React.FC<Props> = ({
           return nextIndex % labelSuccessArray.length;
         });
       }, 2000);
-    } else if (isAnimationStarted && transactionStatus == "failed") {
+    } else if (isAnimationStarted && transactionStatus == "failed" && !modalClosed) {
       interval = setInterval(() => {
         setCurrentStringIndex((prevIndex) => {
           const nextIndex = prevIndex + 1;
