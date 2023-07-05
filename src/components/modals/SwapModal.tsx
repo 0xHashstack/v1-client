@@ -41,6 +41,7 @@ import {
   setTransactionStatus,
   selectActiveTransactions,
   setActiveTransactions,
+  setTransactionStartedAndModalClosed,
 } from "@/store/slices/userAccountSlice";
 import { selectAprAndHealthFactor, selectUserLoans } from "@/store/slices/readDataSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -416,6 +417,9 @@ const SwapModal = ({
         isOpen={isOpen}
         onClose={() => {
           onClose();
+          if(transactionStarted){
+            dispatch(setTransactionStartedAndModalClosed(true))
+          }
           resetStates();
         }}
         isCentered
@@ -1097,6 +1101,7 @@ const SwapModal = ({
                     mixpanel.track("Swap Modal Button Clicked Spend Borrow", {
                       Clicked: true,
                     });
+                    dispatch(setTransactionStartedAndModalClosed(false));
                     handleSwap();
                   }
                 }}

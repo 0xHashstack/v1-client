@@ -43,6 +43,7 @@ import {
   setTransactionStatus,
   selectActiveTransactions,
   setActiveTransactions,
+  setTransactionStartedAndModalClosed,
   // setTransactionStarted,
   // selectTransactionStarted,
 } from "@/store/slices/userAccountSlice";
@@ -758,6 +759,9 @@ const TradeModal = ({
         isOpen={isOpen}
         onClose={() => {
           onClose();
+          if(transactionStarted){
+            dispatch(setTransactionStartedAndModalClosed(true))
+          }
           resetStates();
         }}
         isCentered
@@ -2564,6 +2568,7 @@ const TradeModal = ({
                         mixpanel.track("Trade Button Clicked Market page", {
                           Clicked: true,
                         });
+                        dispatch(setTransactionStartedAndModalClosed(false));
                         handleBorrowAndSpend();
                       }
                     }}
