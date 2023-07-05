@@ -1745,7 +1745,7 @@ const BorrowModal = ({
                   font-size="14px"
                   color="#6A737D"
                 >
-                  {!borrowAPRs[currentBorrowAPR] ? (
+                  {!borrowAPRs || !borrowAPRs[currentBorrowAPR] ? (
                     <Box pt="2px">
                       <Skeleton
                         width="2.3rem"

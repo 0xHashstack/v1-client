@@ -45,6 +45,7 @@ const DashboardRight = ({
   totalBorrows: any;
   borrowAPRs: any;
   validRTokens: any;
+  supplyAPRs: any;
   // gap: string;
   // columnItems: Array<Array<string>>;
   // rowItems: any;
