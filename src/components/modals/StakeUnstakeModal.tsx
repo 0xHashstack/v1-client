@@ -102,7 +102,7 @@ const StakeUnstakeModal = ({
   const [unstakeTransactionStarted, setUnstakeTransactionStarted] =
     useState(false);
   let activeTransactions = useSelector(selectActiveTransactions);
-  const protocolStats=useSelector(selectProtocolStats)
+  const protocolStats = useSelector(selectProtocolStats);
 
   const {
     rToken,
@@ -209,7 +209,11 @@ const StakeUnstakeModal = ({
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
 
   const [toastId, setToastId] = useState<any>();
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY|| "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
+    debug: true,
+    track_pageview: true,
+    persistence: "localStorage",
+  });
   // const recieptData = useWaitForTransaction({
   //   hash: depositTransHash,
   //   watch: true,
