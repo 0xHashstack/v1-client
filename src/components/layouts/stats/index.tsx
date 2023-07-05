@@ -42,8 +42,8 @@ const Stats = ({
             <Text color="#6e7681" fontSize={14}>
               {header[idx]}
             </Text>
-            <Box color="#E6EDF3" fontSize="20px">
-              {!value ? (
+            <Box color="#E6EDF3" fontSize="20px" >
+              {!value && (value!=null) ? (
                 <Skeleton
                   width="6rem"
                   height="1.9rem"
@@ -53,9 +53,11 @@ const Stats = ({
                 />
               ) : header[idx] == "Net APR" ||
                 header[idx] == "Avg. asset utillization" ? (
-                value + "%"
+                  <Text color="#e6edf3" fontSize="20px">
+                    {value !== null ? `${value} %` : "-"}
+                  </Text>
               ) : (
-                "$" + numberFormatter(value)
+                (value !== null ? numberFormatter(value) : "-")
               )}
             </Box>
           </VStack>

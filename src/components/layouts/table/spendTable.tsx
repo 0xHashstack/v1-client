@@ -179,41 +179,40 @@ const SpendTable = () => {
 
   const [borrowAPRs, setBorrowAPRs] = useState<any>([]);
 
-  const [avgs, setAvgs] = useState<any>([]);
-  const avgsData: any = [];
+  // const [avgs, setAvgs] = useState<any>([]);
+  // const avgsData: any = [];
   const oraclePrices = useSelector(selectOraclePrices);
   const reduxProtocolStats = useSelector(selectProtocolStats);
-  // const avgs=useSelector(selectAprAndHealthFactor)
-  console.log(avgs,"avgs in spend table")
-console.log("HI")
-  useEffect(() => {
-    const fetchAprs = async () => {
-      if (avgs?.length == 0) {
-        for (var i = 0; i < userLoans?.length; i++) {
-          const avg = await effectivAPRLoan(
-            userLoans[i],
-            reduxProtocolStats,
-            oraclePrices
-          );
-          const healthFactor = await getExistingLoanHealth(
-            userLoans[i]?.loanId
-          );
-          const data = {
-            loanId: userLoans[i]?.loanId,
-            avg: avg,
-            loanHealth: healthFactor,
-          };
-          // avgs.push(data)
-          avgsData.push(data);
-          // avgs.push()
-        }
-        //cc
-        setAvgs(avgsData);
-      }
-    };
-    if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
-    console.log("running");
-  }, [oraclePrices, reduxProtocolStats, userLoans]);
+  const avgs=useSelector(selectAprAndHealthFactor)
+
+  // useEffect(() => {
+  //   const fetchAprs = async () => {
+  //     if (avgs?.length == 0) {
+  //       for (var i = 0; i < userLoans?.length; i++) {
+  //         const avg = await effectivAPRLoan(
+  //           userLoans[i],
+  //           reduxProtocolStats,
+  //           oraclePrices
+  //         );
+  //         const healthFactor = await getExistingLoanHealth(
+  //           userLoans[i]?.loanId
+  //         );
+  //         const data = {
+  //           loanId: userLoans[i]?.loanId,
+  //           avg: avg,
+  //           loanHealth: healthFactor,
+  //         };
+  //         // avgs.push(data)
+  //         avgsData.push(data);
+  //         // avgs.push()
+  //       }
+  //       //cc
+  //       setAvgs(avgsData);
+  //     }
+  //   };
+  //   if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
+  //   console.log("running");
+  // }, [oraclePrices, reduxProtocolStats, userLoans]);
   // console.log(avgs,"avgs in borrow")
 
   // useEffect(()=>{
@@ -306,7 +305,7 @@ console.log("HI")
           </Box>
         </Box>
       )}
-      {loading ? (
+      {loading &&userLoans?.length>0 ? (
         <Box
           border="1px"
           borderColor="#2B2F35"

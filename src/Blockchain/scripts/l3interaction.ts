@@ -1,5 +1,6 @@
 import { Contract, number, uint256 } from "starknet";
 import jediSwapAbi from "../abis/jedi_swap_abi.json";
+import pricerAbi from "../abis/pricer_abi.json";
 import mySwapAbi from "../abis/my_swap_abi.json";
 import {
   getProvider,
@@ -19,6 +20,28 @@ type LiquiditySplit = {
   tokenBAddress: string;
   tokenB: NativeToken;
 };
+
+export async function getUSDValue(market: string, amount: number) {
+  console.log("get_asset_usd_value", market, amount);
+  const provider = getProvider();
+  try {
+    const l3Contract = new Contract(pricerAbi, l3DiamondAddress, provider);
+    const res = await l3Contract.call(
+      "get_asset_usd_value",
+      [tokenAddressMap["USDC"], [10000000, 10000000]],
+      {
+        blockIdentifier: "pending",
+      }
+    );
+    console.log("estimated usd value: ", res);
+    // return [
+    //   parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8),
+    //   parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8),
+    // ];
+  } catch (error) {
+    console.log("error in getting usd value: ", error);
+  }
+}
 
 // before interaction
 export async function getJediEstimateLiquiditySplit(

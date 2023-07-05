@@ -15,7 +15,10 @@ import {
   setAvgBorrowAPR,
   setAvgSupplyAPR,
 } from "@/store/slices/userAccountSlice";
-import { selectProtocolStats,selectOraclePrices } from "@/store/slices/readDataSlice";
+import {
+  selectProtocolStats,
+  selectOraclePrices,
+} from "@/store/slices/readDataSlice";
 import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import { resolve } from "path";
 const MarketDashboard = () => {
@@ -193,6 +196,7 @@ const MarketDashboard = () => {
         borrowAPRs={borrowAPRs}
         totalBorrows={totalBorrows}
         utilization={utilization}
+        supplyAPRs={supplyAPRs}
         validRTokens={validRTokens}
 
         // gap={"14.2"}

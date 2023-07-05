@@ -23,7 +23,7 @@ import BorrowModal from "@/components/modals/borrowModal";
 import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import { useSelector } from "react-redux";
-import { selectOraclePrices, selectProtocolStats, selectUserLoans } from "@/store/slices/readDataSlice";
+import { selectAprAndHealthFactor, selectOraclePrices, selectProtocolStats, selectUserLoans } from "@/store/slices/readDataSlice";
 import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 
@@ -165,7 +165,7 @@ const BorrowDashboard = ({
     useState("BTC");
   const [collateralBalance, setCollateralBalance] = useState("123 eth");
   const [currentSpendStatus, setCurrentSpendStatus] = useState("");
-  const [avgs, setAvgs] = useState<any>([]);
+  const avgs=useSelector(selectAprAndHealthFactor)
   const avgsData: any = [];
   useEffect(() => {
     let temp1: any = [];
@@ -194,34 +194,34 @@ const BorrowDashboard = ({
   const reduxProtocolStats=useSelector(selectProtocolStats);
   const oraclePrices=useSelector(selectOraclePrices)
 
-  useEffect(() => {
-    const fetchAprs = async () => {
-      if (avgs?.length == 0) {
-        for (var i = 0; i < userLoans?.length; i++) {
-          const avg = await effectivAPRLoan(
-            userLoans[i],
-            reduxProtocolStats,
-            oraclePrices
-          );
-          const healthFactor = await getExistingLoanHealth(
-            userLoans[i]?.loanId
-          );
-          const data = {
-            loanId: userLoans[i]?.loanId,
-            avg: avg,
-            loanHealth: healthFactor,
-          };
-          // avgs.push(data)
-          avgsData.push(data);
-          // avgs.push()
-        }
-        //cc
-        setAvgs(avgsData);
-      }
-    };
-    if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
-    console.log("running");
-  }, [oraclePrices, reduxProtocolStats, userLoans]);
+  // useEffect(() => {
+  //   const fetchAprs = async () => {
+  //     if (avgs?.length == 0) {
+  //       for (var i = 0; i < userLoans?.length; i++) {
+  //         const avg = await effectivAPRLoan(
+  //           userLoans[i],
+  //           reduxProtocolStats,
+  //           oraclePrices
+  //         );
+  //         const healthFactor = await getExistingLoanHealth(
+  //           userLoans[i]?.loanId
+  //         );
+  //         const data = {
+  //           loanId: userLoans[i]?.loanId,
+  //           avg: avg,
+  //           loanHealth: healthFactor,
+  //         };
+  //         // avgs.push(data)
+  //         avgsData.push(data);
+  //         // avgs.push()
+  //       }
+  //       //cc
+  //       setAvgs(avgsData);
+  //     }
+  //   };
+  //   if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
+  //   console.log("running");
+  // }, [oraclePrices, reduxProtocolStats, userLoans]);
   useEffect(() => {
     if (Borrows) {
       setLoading(false);
@@ -275,7 +275,7 @@ const BorrowDashboard = ({
   };
 
   // console.log("Borrows", loading, Borrows);
-  return loading ? (
+  return (loading &&userLoans?.length>0) ? (
     <>
       <Box
         display="flex"
@@ -467,13 +467,19 @@ const BorrowDashboard = ({
                               {borrow.loanMarket}
                             </Text>
                           </HStack>
+                          <HStack>
                           <Text
                             fontSize="14px"
                             fontWeight="500"
                             color="#F7BB5B"
+                            width="4.6rem"
                           >
-                            {borrow.loanAmountParsed}
+                            <Text textAlign="left">
+                              {borrow.loanAmountParsed}
+                              {/* 0.04534 */}
+                            </Text>
                           </Text>
+                          </HStack>
                         </VStack>
                       </Box>
                     </Td>
@@ -571,8 +577,16 @@ const BorrowDashboard = ({
                             {borrow.collateralMarket}
                           </Text>
                         </HStack>
-                        <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                          {borrow.collateralAmountParsed}
+                        <Text
+                          fontSize="14px"
+                          fontWeight="500"
+                          color="#F7BB5B"
+                          width="4.6rem"
+                        >
+                          <Text textAlign="left">
+                            {borrow.collateralAmountParsed}
+                            {/* 10,000 */}
+                          </Text>
                         </Text>
                       </VStack>
                     </Td>

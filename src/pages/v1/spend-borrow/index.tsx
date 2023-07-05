@@ -24,6 +24,7 @@ const SpendBorrow = () => {
   useDataLoader();
   const totalBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectNetAPR);
+  console.log(netAPR,"netapr in spend borrow")
   return (
     <PageCard pt="6.5rem">
       <HStack
@@ -53,7 +54,7 @@ const SpendBorrow = () => {
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Total Borrow asset
             </Text>
-            {!totalBorrow ? (
+            {!totalBorrow &&(totalBorrow!=null) ? (
               <Skeleton
                 width="6rem"
                 height="1.9rem"
@@ -63,7 +64,7 @@ const SpendBorrow = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                ${numberFormatter(totalBorrow)}
+                {totalBorrow? `$ ${numberFormatter(totalBorrow)}`:"-"}
               </Text>
             )}
             {/* <Text color="#e6edf3" fontSize="20px">
@@ -74,7 +75,7 @@ const SpendBorrow = () => {
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Net APR
             </Text>
-            {!netAPR ? (
+            {!netAPR &&(netAPR!=null) ? (
               <Skeleton
                 width="6rem"
                 height="1.9rem"
@@ -84,7 +85,7 @@ const SpendBorrow = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {netAPR}%
+                {netAPR ? `${netAPR} %` :"-"}
               </Text>
             )}
           </VStack>
