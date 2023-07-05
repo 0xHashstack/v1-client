@@ -146,13 +146,11 @@ const SupplyDashboard = ({
 
         console.log("supply in supply dash: ", supply);
         if (!supply) return;
-        setSupplies([
-          supply?.[2],
-          supply?.[3],
-          supply?.[0],
-          supply?.[1],
-          supply?.[4],
-        ]);
+        let temp: any = [];
+        supply.map((currSupply: any) => {
+          if (currSupply.rTokenAmountParsed !== 0) temp.push(currSupply);
+        });
+        setSupplies(temp);
         if (avgs.length == 0) {
           for (var i = 0; i < supply?.length; i++) {
             const avg = await effectiveAprDeposit(
@@ -364,359 +362,349 @@ const SupplyDashboard = ({
           //   flexDirection="column"
           //   gap={"1rem"}
         >
-          {supplies?.slice(lower_bound, upper_bound + 1).map(
-            (supply: any, idx: number) =>
-              supply &&
-              supply?.rTokenAmountParsed && (
-                <>
-                  <Tr
-                    key={idx}
-                    width={"100%"}
-                    height={"5.1rem"}
-                    // bgColor="blue"
-                    // borderBottom="1px solid #2b2f35"
-                    position="relative"
+          {supplies
+            ?.slice(lower_bound, upper_bound + 1)
+            .map((supply: any, idx: number) => (
+              <>
+                <Tr
+                  key={idx}
+                  width={"100%"}
+                  height={"5.1rem"}
+                  // bgColor="blue"
+                  // borderBottom="1px solid #2b2f35"
+                  position="relative"
+                >
+                  <Td
+                    width={"12.5%"}
+                    // maxWidth={"3rem"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    overflow={"hidden"}
+                    // textAlign={"left"}
+                    pl={10}
                   >
-                    <Td
-                      width={"12.5%"}
-                      // maxWidth={"3rem"}
-                      fontSize={"14px"}
-                      fontWeight={400}
-                      overflow={"hidden"}
-                      // textAlign={"left"}
-                      pl={10}
+                    <Box
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="flex-start"
+                      fontWeight="400"
                     >
-                      <Box
+                      <VStack
+                        // gap="3px"
                         width="100%"
-                        height="100%"
                         display="flex"
-                        alignItems="center"
-                        justifyContent="flex-start"
-                        fontWeight="400"
+                        justifyContent="center"
+                        alignItems="flex-start"
+                        height="2.5rem"
                       >
-                        <VStack
-                          // gap="3px"
-                          width="100%"
-                          display="flex"
-                          justifyContent="center"
-                          alignItems="flex-start"
-                          height="2.5rem"
-                        >
-                          <HStack
-                            height="2rem"
-                            width="2rem"
-                            alignItems="center"
-                          >
-                            <Image
-                              src={`/${supply?.rToken?.slice(1)}.svg`}
-                              alt="Picture of the author"
-                              width="32"
-                              height="32"
-                            />
-                            <Text fontSize="14px" fontWeight="400">
-                              {supply?.rToken}
-                            </Text>
-                          </HStack>
-                          <Text
-                            fontSize="14px"
-                            fontWeight="500"
-                            color="#F7BB5B"
-                          >
-                            {numberFormatter(supply?.rTokenAmountParsed)}
+                        <HStack height="2rem" width="2rem" alignItems="center">
+                          <Image
+                            src={`/${supply?.rToken?.slice(1)}.svg`}
+                            alt="Picture of the author"
+                            width="32"
+                            height="32"
+                          />
+                          <Text fontSize="14px" fontWeight="400">
+                            {supply?.rToken}
                           </Text>
-                        </VStack>
-                      </Box>
-                    </Td>
-                    <Td
-                      width={"12.5%"}
-                      maxWidth={"3rem"}
-                      fontSize={"14px"}
-                      fontWeight={400}
-                      overflow={"hidden"}
-                      textAlign={"center"}
-                    >
-                      <Text
-                        width="100%"
-                        height="100%"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        fontWeight="400"
-                      >
-                        {/* {checkGap(idx1, idx2)} */}
-                        {!protocolStats || !protocolStats[idx] ? (
-                          <Skeleton
-                            width="4rem"
-                            height="1.4rem"
-                            startColor="#101216"
-                            endColor="#2B2F35"
-                            borderRadius="6px"
-                          />
-                        ) : (
-                          protocolStats[idx]?.exchangeRateRtokenToUnderlying
-                        )}
-                      </Text>
-                    </Td>
-                    <Td
-                      width={"12.5%"}
-                      maxWidth={"3rem"}
-                      fontSize={"14px"}
-                      fontWeight={400}
-                      overflow={"hidden"}
-                      textAlign={"center"}
-                    >
-                      <Box
-                        width="100%"
-                        height="100%"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        fontWeight="400"
-                      >
-                        {/* {checkGap(idx1, idx2)} */}
-                        {!protocolStats || !protocolStats[idx] ? (
-                          <Skeleton
-                            width="4rem"
-                            height="1.4rem"
-                            startColor="#101216"
-                            endColor="#2B2F35"
-                            borderRadius="6px"
-                          />
-                        ) : (
-                          protocolStats[idx]?.supplyRate + "%"
-                        )}
-                      </Box>
-                    </Td>
-                    <Td
-                      width={"12.5%"}
-                      maxWidth={"3rem"}
-                      fontSize={"14px"}
-                      fontWeight={400}
-                      overflow={"hidden"}
-                      textAlign={"center"}
-                    >
-                      <Text
-                        width="100%"
-                        height="100%"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                        fontWeight="400"
-                      >
-                        {/* {checkGap(idx1, idx2)} */}
-                        {/* {(!avgs?.token==supply?.token) ? avgs.avg :  "2.00%"} */}
-                        {/* {avgs[2]} */}
-                        {
-                          avgs?.find((item: any) => item.token == supply?.token)
-                            ?.avg
-                        }{" "}
-                        %{/* {supply?.token} */}
-                      </Text>
-                    </Td>
-
-                    <Td
-                      width={"12.5%"}
-                      maxWidth={"3rem"}
-                      fontSize={"14px"}
-                      fontWeight={400}
-                      overflow={"hidden"}
-                      textAlign={"center"}
-                    >
-                      <Box
-                        width="90%"
-                        height="100%"
-                        display="flex"
-                        flexDirection="column"
-                        // alignItems="center"
-                        justifyContent="center"
-                        fontWeight="400"
-                        // bgColor={"blue"}
-                        margin="0 auto"
-                        gap={2}
-                      >
-                        {/* {checkGap(idx1, idx2)} */}
-                        <HStack
-                          // bgColor="red"
-                          justifyContent="flex-start"
-                          display={
-                            supply?.rTokenStakedParsed > 0 ||
-                            supply?.rTokenFreeParsed > 0
-                              ? "flex"
-                              : "none"
-                          }
-                          // mx={
-                          //   supply?.rTokenStakedParsed <= 0 ||
-                          //   supply?.rTokenFreeParsed <= 0
-                          //     ? "30%"
-                          //     : "0"
-                          // }
-                        >
-                          <HStack
-                            onMouseEnter={() => handleStatusHover("0" + idx)}
-                            onMouseLeave={() => handleStatusHoverLeave()}
-                            _hover={{ cursor: "pointer" }}
-                            display={
-                              supply?.rTokenStakedParsed > 0 ? "flex" : "none"
-                            }
-                            // bgColor="red"
-                            mr="16px"
-                            pl={2}
-                            cursor="pointer"
-                          >
-                            {statusHoverIndex != "0" + idx ? (
-                              <Image
-                                src={`/stakeStatus.svg`}
-                                alt="Picture of the author"
-                                width="18"
-                                height="18"
-                              />
-                            ) : (
-                              <Text
-                                display="flex"
-                                justifyContent="center"
-                                alignItems="center"
-                                borderRadius="22px"
-                                bgColor="#0C521F"
-                                p="0px 12px"
-                                fontSize="12px"
-                              >
-                                Staked
-                              </Text>
-                            )}
-                            <Text>
-                              {numberFormatter(supply?.rTokenStakedParsed)}
-                            </Text>
-                          </HStack>
-                          <HStack
-                            display={
-                              supply?.rTokenFreeParsed > 0 ? "flex" : "none"
-                            }
-                            onMouseEnter={() => handleStatusHover("1" + idx)}
-                            onMouseLeave={() => handleStatusHoverLeave()}
-                            cursor="pointer"
-                          >
-                            {statusHoverIndex != "1" + idx ? (
-                              <Image
-                                src={`/freeStatus.svg`}
-                                alt="Picture of the author"
-                                width="18"
-                                height="18"
-                              />
-                            ) : (
-                              <Text
-                                display="flex"
-                                justifyContent="center"
-                                alignItems="center"
-                                borderRadius="22px"
-                                bgColor="#340c7e"
-                                p="0px 12px"
-                                fontSize="12px"
-                              >
-                                Unstaked
-                              </Text>
-                            )}
-                            <Text>
-                              {numberFormatter(supply?.rTokenFreeParsed)}
-                            </Text>
-                          </HStack>
                         </HStack>
-                        <HStack
-                          display={
-                            supply?.rTokenLockedParsed > 0 ? "flex" : "none"
-                          }
-                          // mx={
-                          //   supply?.rTokenStakedParsed <= 0 ||
-                          //   supply?.rTokenFreeParsed <= 0
-                          //     ? "30%"
-                          //     : "0"
-                          // }
-                        >
-                          <HStack
-                            pl={2}
-                            onMouseEnter={() => handleStatusHover("2" + idx)}
-                            onMouseLeave={() => handleStatusHoverLeave()}
-                            cursor="pointer"
-                          >
-                            {statusHoverIndex != "2" + idx ? (
-                              <Image
-                                src={`/lockedStatus.svg`}
-                                alt="Picture of the author"
-                                width="18"
-                                height="18"
-                              />
-                            ) : (
-                              <Text
-                                display="flex"
-                                justifyContent="center"
-                                alignItems="center"
-                                borderRadius="22px"
-                                bgColor="#404953"
-                                p="0px 12px"
-                                fontSize="12px"
-                              >
-                                Locked
-                              </Text>
-                            )}
-                            <Text>
-                              {numberFormatter(supply?.rTokenLockedParsed)}
-                            </Text>
-                          </HStack>
-                        </HStack>
-                        {/* {supply?.Status || "ACTIVE"} */}
-                      </Box>
-                    </Td>
-                    <Td
-                      width={"12.5%"}
-                      maxWidth={"5rem"}
-                      fontSize={"14px"}
-                      fontWeight={400}
-                      //   overflow={"hidden"}
-                      textAlign={"center"}
+                        <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
+                          {numberFormatter(supply?.rTokenAmountParsed)}
+                        </Text>
+                      </VStack>
+                    </Box>
+                  </Td>
+                  <Td
+                    width={"12.5%"}
+                    maxWidth={"3rem"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    overflow={"hidden"}
+                    textAlign={"center"}
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
                     >
-                      <Box
-                        width="100%"
-                        height="100%"
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="flex-end"
-                        fontWeight="400"
-                        pr={2}
-                        onClick={() => {
-                          setCurrentSelectedSupplyCoin(supply?.rToken);
-                          setcurrentSelectedWithdrawlCoin(supply?.rToken);
-                        }}
-                      >
-                        <YourSupplyModal
-                          currentSelectedSupplyCoin={currentSelectedSupplyCoin}
-                          setCurrentSelectedSupplyCoin={
-                            setCurrentSelectedSupplyCoin
-                          }
-                          currentSelectedWithdrawlCoin={
-                            currentSelectedWithdrawlCoin
-                          }
-                          setcurrentSelectedWithdrawlCoin={
-                            setcurrentSelectedWithdrawlCoin
-                          }
-                          coins={supplyMarkets}
-                          protocolStats={protocolStats}
+                      {/* {checkGap(idx1, idx2)} */}
+                      {!protocolStats || !protocolStats[idx] ? (
+                        <Skeleton
+                          width="4rem"
+                          height="1.4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
                         />
-                      </Box>
-                    </Td>
-                  </Tr>
-                  <Tr
-                    style={{
-                      position: "absolute",
-                      height: "1px",
-                      borderWidth: "0",
-                      backgroundColor: "#2b2f35",
-                      width: "100%",
-                      // left: "3%",
-                      display: `${idx == 4 ? "none" : "block"}`,
-                    }}
-                  />
-                </>
-              )
-          )}
+                      ) : (
+                        protocolStats[idx]?.exchangeRateRtokenToUnderlying
+                      )}
+                    </Text>
+                  </Td>
+                  <Td
+                    width={"12.5%"}
+                    maxWidth={"3rem"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    overflow={"hidden"}
+                    textAlign={"center"}
+                  >
+                    <Box
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                    >
+                      {/* {checkGap(idx1, idx2)} */}
+                      {!protocolStats || !protocolStats[idx] ? (
+                        <Skeleton
+                          width="4rem"
+                          height="1.4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      ) : (
+                        protocolStats[idx]?.supplyRate + "%"
+                      )}
+                    </Box>
+                  </Td>
+                  <Td
+                    width={"12.5%"}
+                    maxWidth={"3rem"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    overflow={"hidden"}
+                    textAlign={"center"}
+                  >
+                    <Text
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                    >
+                      {/* {checkGap(idx1, idx2)} */}
+                      {/* {(!avgs?.token==supply?.token) ? avgs.avg :  "2.00%"} */}
+                      {/* {avgs[2]} */}
+                      {
+                        avgs?.find((item: any) => item.token == supply?.token)
+                          ?.avg
+                      }{" "}
+                      %{/* {supply?.token} */}
+                    </Text>
+                  </Td>
+
+                  <Td
+                    width={"12.5%"}
+                    maxWidth={"3rem"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    overflow={"hidden"}
+                    textAlign={"center"}
+                  >
+                    <Box
+                      width="90%"
+                      height="100%"
+                      display="flex"
+                      flexDirection="column"
+                      // alignItems="center"
+                      justifyContent="center"
+                      fontWeight="400"
+                      // bgColor={"blue"}
+                      margin="0 auto"
+                      gap={2}
+                    >
+                      {/* {checkGap(idx1, idx2)} */}
+                      <HStack
+                        // bgColor="red"
+                        justifyContent="flex-start"
+                        display={
+                          supply?.rTokenStakedParsed > 0 ||
+                          supply?.rTokenFreeParsed > 0
+                            ? "flex"
+                            : "none"
+                        }
+                        // mx={
+                        //   supply?.rTokenStakedParsed <= 0 ||
+                        //   supply?.rTokenFreeParsed <= 0
+                        //     ? "30%"
+                        //     : "0"
+                        // }
+                      >
+                        <HStack
+                          onMouseEnter={() => handleStatusHover("0" + idx)}
+                          onMouseLeave={() => handleStatusHoverLeave()}
+                          _hover={{ cursor: "pointer" }}
+                          display={
+                            supply?.rTokenStakedParsed > 0 ? "flex" : "none"
+                          }
+                          // bgColor="red"
+                          mr="16px"
+                          pl={2}
+                          cursor="pointer"
+                        >
+                          {statusHoverIndex != "0" + idx ? (
+                            <Image
+                              src={`/stakeStatus.svg`}
+                              alt="Picture of the author"
+                              width="18"
+                              height="18"
+                            />
+                          ) : (
+                            <Text
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              borderRadius="22px"
+                              bgColor="#0C521F"
+                              p="0px 12px"
+                              fontSize="12px"
+                            >
+                              Staked
+                            </Text>
+                          )}
+                          <Text>
+                            {numberFormatter(supply?.rTokenStakedParsed)}
+                          </Text>
+                        </HStack>
+                        <HStack
+                          display={
+                            supply?.rTokenFreeParsed > 0 ? "flex" : "none"
+                          }
+                          onMouseEnter={() => handleStatusHover("1" + idx)}
+                          onMouseLeave={() => handleStatusHoverLeave()}
+                          cursor="pointer"
+                        >
+                          {statusHoverIndex != "1" + idx ? (
+                            <Image
+                              src={`/freeStatus.svg`}
+                              alt="Picture of the author"
+                              width="18"
+                              height="18"
+                            />
+                          ) : (
+                            <Text
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              borderRadius="22px"
+                              bgColor="#340c7e"
+                              p="0px 12px"
+                              fontSize="12px"
+                            >
+                              Unstaked
+                            </Text>
+                          )}
+                          <Text>
+                            {numberFormatter(supply?.rTokenFreeParsed)}
+                          </Text>
+                        </HStack>
+                      </HStack>
+                      <HStack
+                        display={
+                          supply?.rTokenLockedParsed > 0 ? "flex" : "none"
+                        }
+                        // mx={
+                        //   supply?.rTokenStakedParsed <= 0 ||
+                        //   supply?.rTokenFreeParsed <= 0
+                        //     ? "30%"
+                        //     : "0"
+                        // }
+                      >
+                        <HStack
+                          pl={2}
+                          onMouseEnter={() => handleStatusHover("2" + idx)}
+                          onMouseLeave={() => handleStatusHoverLeave()}
+                          cursor="pointer"
+                        >
+                          {statusHoverIndex != "2" + idx ? (
+                            <Image
+                              src={`/lockedStatus.svg`}
+                              alt="Picture of the author"
+                              width="18"
+                              height="18"
+                            />
+                          ) : (
+                            <Text
+                              display="flex"
+                              justifyContent="center"
+                              alignItems="center"
+                              borderRadius="22px"
+                              bgColor="#404953"
+                              p="0px 12px"
+                              fontSize="12px"
+                            >
+                              Locked
+                            </Text>
+                          )}
+                          <Text>
+                            {numberFormatter(supply?.rTokenLockedParsed)}
+                          </Text>
+                        </HStack>
+                      </HStack>
+                      {/* {supply?.Status || "ACTIVE"} */}
+                    </Box>
+                  </Td>
+                  <Td
+                    width={"12.5%"}
+                    maxWidth={"5rem"}
+                    fontSize={"14px"}
+                    fontWeight={400}
+                    //   overflow={"hidden"}
+                    textAlign={"center"}
+                  >
+                    <Box
+                      width="100%"
+                      height="100%"
+                      display="flex"
+                      alignItems="center"
+                      justifyContent="flex-end"
+                      fontWeight="400"
+                      pr={2}
+                      onClick={() => {
+                        setCurrentSelectedSupplyCoin(supply?.rToken);
+                        setcurrentSelectedWithdrawlCoin(supply?.rToken);
+                      }}
+                    >
+                      <YourSupplyModal
+                        currentSelectedSupplyCoin={currentSelectedSupplyCoin}
+                        setCurrentSelectedSupplyCoin={
+                          setCurrentSelectedSupplyCoin
+                        }
+                        currentSelectedWithdrawlCoin={
+                          currentSelectedWithdrawlCoin
+                        }
+                        setcurrentSelectedWithdrawlCoin={
+                          setcurrentSelectedWithdrawlCoin
+                        }
+                        coins={supplyMarkets}
+                        protocolStats={protocolStats}
+                      />
+                    </Box>
+                  </Td>
+                </Tr>
+                <Tr
+                  style={{
+                    position: "absolute",
+                    height: "1px",
+                    borderWidth: "0",
+                    backgroundColor: "#2b2f35",
+                    width: "100%",
+                    // left: "3%",
+                    display: `${idx == 4 ? "none" : "block"}`,
+                  }}
+                />
+              </>
+            ))}
           {(() => {
             const rows = [];
             for (

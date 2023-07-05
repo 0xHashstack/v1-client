@@ -68,7 +68,12 @@ import {
   setTransactionStartedAndModalClosed,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
-import { selectAprAndHealthFactor, selectOraclePrices, selectProtocolStats, selectUserLoans } from "@/store/slices/readDataSlice";
+import {
+  selectAprAndHealthFactor,
+  selectOraclePrices,
+  selectProtocolStats,
+  selectUserLoans,
+} from "@/store/slices/readDataSlice";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
@@ -152,8 +157,8 @@ const YourBorrowModal = ({
     useState(false);
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
   const userLoans = useSelector(selectUserLoans);
-  const reduxProtocolStats=useSelector(selectProtocolStats);
-  const oraclePrices=useSelector(selectOraclePrices);
+  const reduxProtocolStats = useSelector(selectProtocolStats);
+  const oraclePrices = useSelector(selectOraclePrices);
   let activeTransactions = useSelector(selectActiveTransactions);
   useEffect(() => {
     const result = userLoans.find(
@@ -165,7 +170,7 @@ const YourBorrowModal = ({
     // console.log(borrowAmount)
     // Rest of your code using the 'result' variable
   }, [currentBorrowId1]);
-  const avgs=useSelector(selectAprAndHealthFactor)
+  const avgs = useSelector(selectAprAndHealthFactor);
   const avgsData: any = [];
   // useEffect(() => {
   //   const fetchAprs = async () => {
@@ -533,7 +538,7 @@ const YourBorrowModal = ({
   // const [currentBorrowMarketCoin2, setCurrentBorrowMarketCoin2] =
   //   useState(currentMarket);
   const [currentPoolCoin, setCurrentPoolCoin] = useState("Select a pool");
-  const [currentAction, setCurrentAction] = useState("Spend Borrow");
+  const [currentAction, setCurrentAction] = useState("Select action");
   // const [currentBorrowId1, setCurrentBorrowId1] = useState(`ID - ${currentID}`);
   // const [currentBorrowId2, setCurrentBorrowId2] = useState(`ID - ${currentID}`);
   const [currentDapp, setCurrentDapp] = useState("Select a dapp");
@@ -563,12 +568,8 @@ const YourBorrowModal = ({
   };
   // console.log(currentDapp)
   // console.log(currentPool.split('/')[0])
-  const [estrTokensMinted, setEstrTokensMinted] = useState<any>()
-  const spaceIndex = collateralBalance.indexOf(' ');
-
-
-
-
+  const [estrTokensMinted, setEstrTokensMinted] = useState<any>();
+  const spaceIndex = collateralBalance.indexOf(" ");
 
   const [depositTransHash, setDepositTransHash] = useState("");
 
@@ -613,7 +614,11 @@ const YourBorrowModal = ({
   //     }
   //   },
   // });
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
+    debug: true,
+    track_pageview: true,
+    persistence: "localStorage",
+  });
   const handleZeroRepay = async () => {
     try {
       if (!loan?.loanId) {
@@ -1319,14 +1324,22 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                          {avgs?.find(
-                            (item: any) => item.loanId == currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
-                          )?.avg
-                            ? avgs?.find(
-                                (item: any) => item.loanId == currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
-                              )?.avg
-                            : "3.2"}
-                          %
+                {avgs?.find(
+                  (item: any) =>
+                    item.loanId ==
+                    currentBorrowId1
+                      .slice(currentBorrowId1.indexOf("-") + 1)
+                      .trim()
+                )?.avg
+                  ? avgs?.find(
+                      (item: any) =>
+                        item.loanId ==
+                        currentBorrowId1
+                          .slice(currentBorrowId1.indexOf("-") + 1)
+                          .trim()
+                    )?.avg
+                  : "3.2"}
+                %
               </Text>
             </Box>
             <Box display="flex" justifyContent="space-between">
@@ -1361,14 +1374,22 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                              {avgs?.find(
-                                (item: any) => item.loanId == currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
-                              )?.loanHealth
-                                ? avgs?.find(
-                                    (item: any) => item.loanId == currentBorrowId1.slice(currentBorrowId1.indexOf("-") + 1).trim()
-                                  )?.loanHealth
-                                : "2.5"}
-                              %
+                {avgs?.find(
+                  (item: any) =>
+                    item.loanId ==
+                    currentBorrowId1
+                      .slice(currentBorrowId1.indexOf("-") + 1)
+                      .trim()
+                )?.loanHealth
+                  ? avgs?.find(
+                      (item: any) =>
+                        item.loanId ==
+                        currentBorrowId1
+                          .slice(currentBorrowId1.indexOf("-") + 1)
+                          .trim()
+                    )?.loanHealth
+                  : "2.5"}
+                %
               </Text>
             </Box>
           </Box>
@@ -1865,6 +1886,195 @@ const YourBorrowModal = ({
         );
         break;
 
+      case "Select action":
+        return (
+          <Box
+            p="1rem"
+            borderRadius="md"
+            border="1px"
+            borderColor="#2B2F35"
+            bg="#101216"
+            my="6"
+          >
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text
+                  color="#8B949E"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  Borrowed market:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="right-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box p="1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text
+                color="#8B949E"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+                {currentBorrowMarketCoin1}
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text
+                  color="#8B949E"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  rTokens unlocked:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="right-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box p="1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text
+                color="#8B949E"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+                1.23
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text
+                  color="#8B949E"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  Est collateral value:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="right-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box p="1">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text
+                color="#8B949E"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+                5.56%
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text
+                  color="#8B949E"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  Fees:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="right-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box padding="0.25rem">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text
+                color="#8B949E"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+                {TransactionFees.repay}%
+              </Text>
+            </Box>
+            <Box display="flex" justifyContent="space-between">
+              <Box display="flex">
+                <Text
+                  color="#8B949E"
+                  fontSize="12px"
+                  fontWeight="400"
+                  fontStyle="normal"
+                >
+                  Gas estimate:{" "}
+                </Text>
+                <Tooltip
+                  hasArrow
+                  placement="right-start"
+                  boxShadow="dark-lg"
+                  label="all the assets to the market"
+                  bg="#24292F"
+                  fontSize={"smaller"}
+                  fontWeight={"thin"}
+                  borderRadius={"lg"}
+                  padding={"2"}
+                >
+                  <Box padding="0.25rem">
+                    <InfoIcon />
+                  </Box>
+                </Tooltip>
+              </Box>
+              <Text
+                color="#8B949E"
+                fontSize="12px"
+                fontWeight="400"
+                fontStyle="normal"
+              >
+                $ 0.91
+              </Text>
+            </Box>
+          </Box>
+        );
+        break;
+
       default:
         break;
     }
@@ -2028,7 +2238,7 @@ const YourBorrowModal = ({
   const resetStates = () => {
     try {
       setRadioValue("1");
-      setCurrentAction("Spend Borrow");
+      setCurrentAction("Select action");
       setCurrentBorrowMarketCoin1("BTC");
       setCurrentBorrowMarketCoin2("BTC");
       setCurrentBorrowId1("ID - ");
@@ -2128,14 +2338,17 @@ const YourBorrowModal = ({
     console.log("toMarketSplit", split);
     setCurrentSplit(split);
   };
-  useEffect(()=>{
-    const fetchEstrTokens=async()=>{
-      const data=await getrTokensMinted(collateralBalance.substring(spaceIndex + 1),inputCollateralAmount);
-      console.log(data,"data in your borrow");
+  useEffect(() => {
+    const fetchEstrTokens = async () => {
+      const data = await getrTokensMinted(
+        collateralBalance.substring(spaceIndex + 1),
+        inputCollateralAmount
+      );
+      console.log(data, "data in your borrow");
       setEstrTokensMinted(data);
-    }
+    };
     fetchEstrTokens();
-  },[collateralBalance,inputCollateralAmount])
+  }, [collateralBalance, inputCollateralAmount]);
 
   return (
     <Box>
@@ -2344,8 +2557,10 @@ const YourBorrowModal = ({
                             >
                               {actions.map((action, index) => {
                                 if (
-                                  action === "Convert to borrow market" &&
-                                  spendType === "UNSPENT"
+                                  (action === "Convert to borrow market" &&
+                                    spendType === "UNSPENT") ||
+                                  (action === "Spend Borrow" &&
+                                    spendType !== "UNSPENT")
                                 )
                                   return;
                                 return (
@@ -3354,6 +3569,21 @@ const YourBorrowModal = ({
                       </Box>
                     )}
                     {getContainer(currentAction)}
+                    {currentAction === "Select action" ? (
+                      <Button
+                        bg="#101216"
+                        color="#6E7681"
+                        size="sm"
+                        width="100%"
+                        mb="2rem"
+                        border="1px solid #2B2F35"
+                        _hover={{ bg: "#101216" }}
+                      >
+                        Select action
+                      </Button>
+                    ) : (
+                      ""
+                    )}
                     {currentAction == "Spend Borrow" ? (
                       currentDapp != "Select a dapp" &&
                       (currentPool != "Select a pool" ||
@@ -4444,7 +4674,6 @@ const YourBorrowModal = ({
                           </Tooltip>
                         </Text>
                         <Text color="#6E7681">$ {estrTokensMinted}</Text>
-                        
                       </Text>
                       <Text
                         color="#8B949E"
@@ -4601,14 +4830,25 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">                          {avgs?.find(
-                            (item: any) => item.loanId == currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim()
+                        <Text color="#6E7681">
+                          {" "}
+                          {avgs?.find(
+                            (item: any) =>
+                              item.loanId ==
+                              currentBorrowId2
+                                .slice(currentBorrowId2.indexOf("-") + 1)
+                                .trim()
                           )?.avg
                             ? avgs?.find(
-                                (item: any) => item.loanId == currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim()
+                                (item: any) =>
+                                  item.loanId ==
+                                  currentBorrowId2
+                                    .slice(currentBorrowId2.indexOf("-") + 1)
+                                    .trim()
                               )?.avg
                             : "3.2"}
-                          %</Text>
+                          %
+                        </Text>
                       </Text>
                       <Text
                         display="flex"
@@ -4642,14 +4882,25 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">                              {avgs?.find(
-                                (item: any) => item.loanId == currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim()
+                        <Text color="#6E7681">
+                          {" "}
+                          {avgs?.find(
+                            (item: any) =>
+                              item.loanId ==
+                              currentBorrowId2
+                                .slice(currentBorrowId2.indexOf("-") + 1)
+                                .trim()
+                          )?.loanHealth
+                            ? avgs?.find(
+                                (item: any) =>
+                                  item.loanId ==
+                                  currentBorrowId2
+                                    .slice(currentBorrowId2.indexOf("-") + 1)
+                                    .trim()
                               )?.loanHealth
-                                ? avgs?.find(
-                                    (item: any) => item.loanId == currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim()
-                                  )?.loanHealth
-                                : "2.5"}
-                              %</Text>
+                            : "2.5"}
+                          %
+                        </Text>
                       </Text>
                     </Card>
                     {inputCollateralAmount > 0 &&
