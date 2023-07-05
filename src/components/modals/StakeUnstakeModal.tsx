@@ -80,6 +80,8 @@ import Image from "next/image";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
+// import userTokensMinted from "@/Blockchain/scripts/Rewards";
+// import { getEstrTokens } from "@/Blockchain/scripts/Rewards";
 
 const StakeUnstakeModal = ({
   buttonText,
@@ -120,6 +122,23 @@ const StakeUnstakeModal = ({
     isSuccessStakeRequest,
     statusStakeRequest,
   } = useStakeRequest();
+
+  // const {
+  //   rToken1,
+  //   setRToken1,
+  //   rTokenAmount1,
+  //   setRTokenAmount1,
+  //   dataStakeRequest1,
+  //   errorStakeRequest1,
+  //   resetStakeRequest1,
+  //   writeStakeRequest1,
+  //   writeAsyncStakeRequest1,
+  //   isErrorStakeRequest1,
+  //   isIdleStakeRequest1,
+  //   isLoadingStakeRequest1,
+  //   isSuccessStakeRequest1,
+  //   statusStakeRequest1,
+  // }=userTokensMinted();
 
   const {
     unstakeRToken,
@@ -331,6 +350,19 @@ const StakeUnstakeModal = ({
     }
   };
 
+  // const hanldest=async()=>{
+  //   try{
+  //     const data=await writeAsyncStakeRequest1();
+  //     console.log(data,"data in est rtokens");
+  //   }catch(err){
+  //     console.log(err,"err in stakunstake");
+
+  //   }
+  // }
+  // useEffect(()=>{
+  //   hanldest();
+  // },[])
+
   const hanldeUnstakeTransaction = async () => {
     try {
       const unstake = await writeAsyncWithdrawStake();
@@ -502,6 +534,16 @@ const StakeUnstakeModal = ({
     (key) => modalDropdowns[key] === true
   );
   // console.log(activeModal);
+
+useEffect(()=>{
+
+})
+  // useEffect(()=>{
+  //   const fetchrTokens=async()=>{
+  //     const data=await getEstrTokens("rUSDT",30.0);
+  //   }
+  //   fetchrTokens();
+  // },[])
 
   useEffect(() => {
     setRTokenAmount(0);

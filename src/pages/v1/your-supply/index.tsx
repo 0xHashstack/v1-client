@@ -85,7 +85,7 @@ const YourSupply = () => {
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Total Supply
             </Text>
-            {!totalSupply ? (
+            {!totalSupply &&(totalSupply!=null) ? (
               <Skeleton
                 width="6rem"
                 height="1.9rem"
@@ -95,7 +95,7 @@ const YourSupply = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                ${numberFormatter(totalSupply)}
+                {totalSupply? `$ ${numberFormatter(totalSupply)}`:"-"}
               </Text>
             )}
           </VStack>
@@ -103,7 +103,7 @@ const YourSupply = () => {
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Net APR
             </Text>
-            {!netAPR ? (
+            {!netAPR &&(netAPR!=null) ? (
               <Skeleton
                 width="6rem"
                 height="1.9rem"
@@ -113,7 +113,7 @@ const YourSupply = () => {
               />
             ) : (
               <Text color="#e6edf3" fontSize="20px">
-                {netAPR}%
+                {netAPR ? `${netAPR} %`:"-"}
               </Text>
             )}
           </VStack>

@@ -67,7 +67,7 @@ import {
   setInputYourBorrowModalRepayAmount,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
-import { selectOraclePrices, selectProtocolStats, selectUserLoans } from "@/store/slices/readDataSlice";
+import { selectAprAndHealthFactor, selectOraclePrices, selectProtocolStats, selectUserLoans } from "@/store/slices/readDataSlice";
 import SliderTooltip from "../uiElements/sliders/sliderTooltip";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
@@ -164,36 +164,36 @@ const YourBorrowModal = ({
     // console.log(borrowAmount)
     // Rest of your code using the 'result' variable
   }, [currentBorrowId1]);
-  const [avgs, setAvgs] = useState<any>([]);
+  const avgs=useSelector(selectAprAndHealthFactor)
   const avgsData: any = [];
-  useEffect(() => {
-    const fetchAprs = async () => {
-      if (avgs?.length == 0) {
-        for (var i = 0; i < userLoans?.length; i++) {
-          const avg = await effectivAPRLoan(
-            userLoans[i],
-            reduxProtocolStats,
-            oraclePrices
-          );
-          const healthFactor = await getExistingLoanHealth(
-            userLoans[i]?.loanId
-          );
-          const data = {
-            loanId: userLoans[i]?.loanId,
-            avg: avg,
-            loanHealth: healthFactor,
-          };
-          // avgs.push(data)
-          avgsData.push(data);
-          // avgs.push()
-        }
-        //cc
-        setAvgs(avgsData);
-      }
-    };
-    if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
-    console.log("running");
-  }, [oraclePrices, reduxProtocolStats, userLoans]);
+  // useEffect(() => {
+  //   const fetchAprs = async () => {
+  //     if (avgs?.length == 0) {
+  //       for (var i = 0; i < userLoans?.length; i++) {
+  //         const avg = await effectivAPRLoan(
+  //           userLoans[i],
+  //           reduxProtocolStats,
+  //           oraclePrices
+  //         );
+  //         const healthFactor = await getExistingLoanHealth(
+  //           userLoans[i]?.loanId
+  //         );
+  //         const data = {
+  //           loanId: userLoans[i]?.loanId,
+  //           avg: avg,
+  //           loanHealth: healthFactor,
+  //         };
+  //         // avgs.push(data)
+  //         avgsData.push(data);
+  //         // avgs.push()
+  //       }
+  //       //cc
+  //       setAvgs(avgsData);
+  //     }
+  //   };
+  //   if (oraclePrices && reduxProtocolStats && userLoans) fetchAprs();
+  //   console.log("running");
+  // }, [oraclePrices, reduxProtocolStats, userLoans]);
   const {
     loanId,
     setLoanId,
@@ -3476,6 +3476,8 @@ const YourBorrowModal = ({
                             setCurrentTransactionStatus={
                               setCurrentTransactionStatus
                             }
+                            _disabled={{ bgColor: "white", color: "black" }}
+                            isDisabled={transactionStarted == true}
                           >
                             Repay borrow
                           </AnimatedButton>
@@ -4591,7 +4593,14 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">5.56%</Text>
+                        <Text color="#6E7681">                          {avgs?.find(
+                            (item: any) => item.loanId == currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim()
+                          )?.avg
+                            ? avgs?.find(
+                                (item: any) => item.loanId == currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim()
+                              )?.avg
+                            : "3.2"}
+                          %</Text>
                       </Text>
                       <Text
                         display="flex"
@@ -4625,7 +4634,14 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">1.10</Text>
+                        <Text color="#6E7681">                              {avgs?.find(
+                                (item: any) => item.loanId == currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim()
+                              )?.loanHealth
+                                ? avgs?.find(
+                                    (item: any) => item.loanId == currentBorrowId2.slice(currentBorrowId2.indexOf("-") + 1).trim()
+                                  )?.loanHealth
+                                : "2.5"}
+                              %</Text>
                       </Text>
                     </Card>
                     {inputCollateralAmount > 0 &&
