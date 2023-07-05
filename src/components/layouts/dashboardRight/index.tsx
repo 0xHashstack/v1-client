@@ -36,6 +36,7 @@ const DashboardRight = ({
   utilization,
   totalBorrows,
   borrowAPRs,
+  supplyAPRs,
   validRTokens,
 }: {
   width: string;
@@ -71,6 +72,7 @@ const DashboardRight = ({
 
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const [currentBorrowAPR, setCurrentBorrowAPR] = useState<number>();
+  const [currentSupplyAPR, setCurrentSupplyAPR] = useState<number>();
   const [currentBorrowMarketCoin, setCurrentBorrowMarketCoin] = useState("BTC");
 
   useEffect(() => {
@@ -312,6 +314,7 @@ const DashboardRight = ({
                     fontWeight="400"
                     onClick={() => {
                       setCurrentBorrowAPR(idx);
+                      setCurrentSupplyAPR(idx);
                       setCurrentBorrowMarketCoin(coin.name);
                     }}
                     // bgColor={"blue"}
@@ -352,12 +355,15 @@ const DashboardRight = ({
                     display="inline-block"
                     onClick={() => {
                       setCurrentBorrowAPR(idx);
+                      setCurrentSupplyAPR(idx);
                     }}
                   >
                     <TradeModal
                       coin={coin}
                       borrowAPRs={borrowAPRs}
                       currentBorrowAPR={currentBorrowAPR}
+                      supplyAPRs={supplyAPRs}
+                      currentSupplyAPR={currentSupplyAPR}
                       validRTokens={validRTokens}
                       currentBorrowMarketCoin={currentBorrowMarketCoin}
                     />
