@@ -435,8 +435,12 @@ const BorrowDashboard = ({
                             fontSize="14px"
                             fontWeight="500"
                             color="#F7BB5B"
+                            width="4.6rem"
                           >
-                            {borrow.loanAmountParsed}
+                            <Text textAlign="left">
+                              {borrow.loanAmountParsed}
+                              {/* 0.04534 */}
+                            </Text>
                           </Text>
                         </VStack>
                       </Box>
@@ -528,8 +532,16 @@ const BorrowDashboard = ({
                             {borrow.collateralMarket}
                           </Text>
                         </HStack>
-                        <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                          {borrow.collateralAmountParsed}
+                        <Text
+                          fontSize="14px"
+                          fontWeight="500"
+                          color="#F7BB5B"
+                          width="4.6rem"
+                        >
+                          <Text textAlign="left">
+                            {borrow.collateralAmountParsed}
+                            {/* 10,000 */}
+                          </Text>
                         </Text>
                       </VStack>
                     </Td>

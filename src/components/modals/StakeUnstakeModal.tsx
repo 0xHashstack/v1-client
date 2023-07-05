@@ -59,11 +59,12 @@ import useStakeRequest from "@/Blockchain/hooks/Writes/useStakerequest";
 import useWithdrawStake from "@/Blockchain/hooks/Writes/useWithdrawStake";
 import {
   selectActiveTransactions,
-  selectProtocolStats,
+  // selectProtocolStats,
   selectWalletBalance,
   setActiveTransactions,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
+import { selectProtocolStats } from "@/store/slices/readDataSlice";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import SuccessButton from "../uiElements/buttons/SuccessButton";
 import ErrorButton from "../uiElements/buttons/ErrorButton";

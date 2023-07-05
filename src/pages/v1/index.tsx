@@ -27,8 +27,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectWalletBalance,
   setAccount,
-  setTransactionRefresh,
+  // setTransactionRefresh,
 } from "@/store/slices/userAccountSlice";
+import { setTransactionRefresh } from "@/store/slices/readDataSlice";
 import Banner from "@/components/uiElements/loaders/Banner";
 import Banner2 from "@/components/uiElements/loaders/Banner2";
 import useTransactionRefresh from "@/hooks/useTransactionRefresh";
@@ -45,7 +46,11 @@ export default function Home() {
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
   const [render, setRender] = useState(true);
-  mixpanel.init("eb921da4a666a145e3b36930d7d984c2" || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init("eb921da4a666a145e3b36930d7d984c2" || "", {
+    debug: true,
+    track_pageview: true,
+    persistence: "localStorage",
+  });
   const [lastusedConnector, setLastusedConnector] = useState("");
   const [isWhiteListed, setIsWhiteListed] = useState(false);
   const [isWaitListed, setIsWaitListed] = useState(true);
@@ -127,11 +132,11 @@ export default function Home() {
       //   mixpanel.identify("13793");
       //   mixpanel.track('Signed Up')
       // }
-      mixpanel.identify(address)
-      mixpanel.track('Connect Wallet', {
-        'Wallet address': address,
-        'Wallet Connected':walletConnected
-      })
+      mixpanel.identify(address);
+      mixpanel.track("Connect Wallet", {
+        "Wallet address": address,
+        "Wallet Connected": walletConnected,
+      });
       if (!isWaitListed) {
         router.replace(waitlistHref);
       } else {

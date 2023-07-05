@@ -1094,7 +1094,7 @@ const YourBorrowModal = ({
                         />
                       </Box>
                       <Text>
-                        {/* {currentSplit?.[0] || (
+                        {currentSplit?.[0] || (
                           <Skeleton
                             width="2.3rem"
                             height=".85rem"
@@ -1102,8 +1102,7 @@ const YourBorrowModal = ({
                             endColor="#101216"
                             borderRadius="6px"
                           />
-                          
-                        )} */}
+                        )}
                       </Text>
                     </Box>
                     <Box display="flex" gap="2px">
@@ -1117,7 +1116,7 @@ const YourBorrowModal = ({
                         />
                       </Box>
                       <Text>
-                        {/* {currentSplit?.[1] || (
+                        {currentSplit?.[1] || (
                           <Skeleton
                             width="2.3rem"
                             height=".85rem"
@@ -1125,7 +1124,7 @@ const YourBorrowModal = ({
                             endColor="#101216"
                             borderRadius="6px"
                           />
-                        )} */}
+                        )}
                       </Text>
                     </Box>
                   </Box>
@@ -2280,6 +2279,11 @@ const YourBorrowModal = ({
                               boxShadow="dark-lg"
                             >
                               {actions.map((action, index) => {
+                                if (
+                                  action === "Convert to borrow market" &&
+                                  spendType === "UNSPENT"
+                                )
+                                  return;
                                 return (
                                   <Box
                                     key={index}
