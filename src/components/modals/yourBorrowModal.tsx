@@ -106,6 +106,7 @@ import UsdcToDai from "@/assets/icons/pools/usdcToDai";
 import Image from "next/image";
 import mixpanel from "mixpanel-browser";
 import WarningIcon from "@/assets/icons/coins/warningIcon";
+import { getrTokensMinted } from "@/Blockchain/scripts/Rewards";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -561,6 +562,13 @@ const YourBorrowModal = ({
   };
   // console.log(currentDapp)
   // console.log(currentPool.split('/')[0])
+  const [estrTokensMinted, setEstrTokensMinted] = useState<any>()
+  const spaceIndex = collateralBalance.indexOf(' ');
+
+
+
+
+
   const [depositTransHash, setDepositTransHash] = useState("");
 
   const [currentTransactionStatus, setCurrentTransactionStatus] = useState("");
@@ -1412,7 +1420,7 @@ const YourBorrowModal = ({
                 {currentBorrowMarketCoin1}
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
                   color="#8B949E"
@@ -1446,7 +1454,7 @@ const YourBorrowModal = ({
               >
                 1.23
               </Text>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
@@ -1621,7 +1629,7 @@ const YourBorrowModal = ({
                 {borrowAmount} {currentBorrowMarketCoin1}
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text color="#8B949E" fontSize="xs">
                   rTokens unlocked:{" "}
@@ -1645,7 +1653,7 @@ const YourBorrowModal = ({
               <Text color="#8B949E" fontSize="xs">
                 1.23
               </Text>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text color="#8B949E" fontSize="xs">
@@ -2035,6 +2043,7 @@ const YourBorrowModal = ({
       setSliderValue2(0);
       setRepayAmount(0);
       setTabValue(1);
+      setEstrTokensMinted(undefined);
       setCollateralTransactionStarted(false);
       setTransactionStarted(false);
       dispatch(resetModalDropdowns());
@@ -2119,6 +2128,14 @@ const YourBorrowModal = ({
     console.log("toMarketSplit", split);
     setCurrentSplit(split);
   };
+  useEffect(()=>{
+    const fetchEstrTokens=async()=>{
+      const data=await getrTokensMinted(collateralBalance.substring(spaceIndex + 1),inputCollateralAmount);
+      console.log(data,"data in your borrow");
+      setEstrTokensMinted(data);
+    }
+    fetchEstrTokens();
+  },[collateralBalance,inputCollateralAmount])
 
   return (
     <Box>
@@ -4359,9 +4376,6 @@ const YourBorrowModal = ({
                         <Text color="#6E7681">
                           {borrowAmount} {currentBorrowMarketCoin2}
                         </Text>
-                        <Text color="#6E7681">
-                          {borrowAmount} {currentBorrowMarketCoin2}
-                        </Text>
                       </Text>
                       <Text
                         display="flex"
@@ -4415,7 +4429,8 @@ const YourBorrowModal = ({
                             </Box>
                           </Tooltip>
                         </Text>
-                        <Text color="#6E7681">$ 10.91</Text>
+                        <Text color="#6E7681">$ {estrTokensMinted}</Text>
+                        
                       </Text>
                       <Text
                         color="#8B949E"

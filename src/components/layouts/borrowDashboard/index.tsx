@@ -467,13 +467,15 @@ const BorrowDashboard = ({
                               {borrow.loanMarket}
                             </Text>
                           </HStack>
+                          <HStack>
                           <Text
                             fontSize="14px"
                             fontWeight="500"
                             color="#F7BB5B"
                           >
-                            {borrow.loanAmountParsed}
+                            {borrow.loanAmountParsed?.toFixed(2)}
                           </Text>
+                          </HStack>
                         </VStack>
                       </Box>
                     </Td>
