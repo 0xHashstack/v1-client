@@ -1,6 +1,5 @@
 import { getUserLoans } from "@/Blockchain/scripts/Loans";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
-// import { selectTransactionRefresh } from "@/store/slices/userAccountSlice";
 import { selectTransactionRefresh } from "@/store/slices/readDataSlice";
 import { useAccount } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";

@@ -1,7 +1,5 @@
 import { getUserDeposits } from "@/Blockchain/scripts/Deposits";
-import {
-  selectUserDeposits,
-} from "@/store/slices/userAccountSlice";
+import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import { setUserDeposits } from "@/store/slices/readDataSlice";
 import { useAccount } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";

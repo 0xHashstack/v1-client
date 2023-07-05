@@ -68,7 +68,7 @@ const YourMetricsSupply = ({
     },
     legend: {
       position: 'top' as const,
-      horizontalAlign: "left",
+      horizontalAlign: "left" as const,
     },
     dataLabels: {
         enabled: false,
