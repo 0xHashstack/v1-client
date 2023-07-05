@@ -1131,7 +1131,7 @@ const YourBorrowModal = ({
                         />
                       </Box>
                       <Text>
-                        {currentSplit?.[0] || (
+                        {currentSplit?.[0]?.toString() || (
                           <Skeleton
                             width="2.3rem"
                             height=".85rem"
@@ -1153,7 +1153,7 @@ const YourBorrowModal = ({
                         />
                       </Box>
                       <Text>
-                        {currentSplit?.[1] || (
+                        {currentSplit?.[1].toString() || (
                           <Skeleton
                             width="2.3rem"
                             height=".85rem"

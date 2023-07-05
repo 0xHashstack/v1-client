@@ -33,6 +33,7 @@ import Banner from "@/components/uiElements/loaders/Banner";
 import Banner2 from "@/components/uiElements/loaders/Banner2";
 import useTransactionRefresh from "@/hooks/useTransactionRefresh";
 import mixpanel from "mixpanel-browser";
+import useDataLoader from "@/hooks/useDataLoader";
 // import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 
 const inter = Inter({ subsets: ["latin"] });

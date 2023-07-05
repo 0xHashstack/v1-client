@@ -63,6 +63,7 @@ import GetTokensModal from "@/components/modals/getTokens";
 import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import { Coins } from "../dashboardLeft";
 import mixpanel from "mixpanel-browser";
+import useDataLoader from "@/hooks/useDataLoader";
 const Navbar = ({ validRTokens }: any) => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);

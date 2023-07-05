@@ -390,7 +390,7 @@ const YourSupplyModal = ({
     dispatch(setTransactionStatus(""));
     setToastDisplayed(false);
     setDepositTransHash("");
-    setEstSupply();
+    setEstSupply(undefined);
     setCurrentTransactionStatus("");
   };
   const activeModal = Object.keys(modalDropdowns).find(
