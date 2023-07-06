@@ -199,28 +199,28 @@ const TradeModal = ({
       ? Number(
           BNtoNum(
             uint256.uint256ToBN(
-              walletBalances[coin.name]?.dataBalanceOf?.balance
+              walletBalances[coin?.name]?.dataBalanceOf?.balance
             ),
-            tokenDecimalsMap[coin.name]
+            tokenDecimalsMap[coin?.name]
           )
         )
       : 0
   );
   useEffect(() => {
     setwalletBalance(
-      walletBalances[coin.name]?.statusBalanceOf === "success"
+      walletBalances[coin?.name]?.statusBalanceOf === "success"
         ? Number(
             BNtoNum(
               uint256.uint256ToBN(
-                walletBalances[coin.name]?.dataBalanceOf?.balance
+                walletBalances[coin?.name]?.dataBalanceOf?.balance
               ),
-              tokenDecimalsMap[coin.name]
+              tokenDecimalsMap[coin?.name]
             )
           )
         : 0
     );
     // console.log("supply modal status wallet balance",walletBalances[coin.name]?.statusBalanceOf)
-  }, [walletBalances[coin.name]?.statusBalanceOf, coin]);
+  }, [walletBalances[coin?.name]?.statusBalanceOf, coin]);
   const dapps = [
     { name: "Jediswap", status: "enable" },
     { name: "mySwap", status: "enable" },
@@ -372,10 +372,6 @@ const TradeModal = ({
     coin ? coin.name : "BTC"
   );
   const [protocolStats, setProtocolStats] = useState<any>([]);
-  const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
-    protocolStats?.find((stat: any) => stat?.token == currentBorrowCoin)
-      ?.availableReserves
-  );
   const stats = useSelector(selectProtocolStats);
   const fetchProtocolStats = async () => {
     if (stats)
@@ -395,6 +391,10 @@ const TradeModal = ({
       console.log("borrow modal : error fetching protocolStats");
     }
   }, []);
+  const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
+    protocolStats?.find((stat: any) => stat?.token == currentBorrowCoin)
+      ?.availableReserves
+  );
   useEffect(() => {
     console.log("currentAvailableReserve", currentAvailableReserves);
   }, [currentAvailableReserves]);
@@ -438,10 +438,10 @@ const TradeModal = ({
     // setTransactionStarted(false);
     dispatch(resetModalDropdowns());
     setwalletBalance(
-      walletBalances[coin]?.statusBalanceOf === "success"
+      walletBalances[coin.name]?.statusBalanceOf === "success"
         ? Number(
             BNtoNum(
-              uint256.uint256ToBN(walletBalances[coin]?.dataBalanceOf?.balance),
+              uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance),
               tokenDecimalsMap[coin?.name]
             )
           )
