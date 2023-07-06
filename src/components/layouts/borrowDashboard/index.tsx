@@ -241,7 +241,7 @@ const BorrowDashboard = ({
   useEffect(() => {
     getSplit(
       [1111895402022106809, 0],
-      0x16d7a41e6b6a6e153cfe6ff16a6b51079f2f27da07f059337486f7fef29ce2f
+      "0x16d7a41e6b6a6e153cfe6ff16a6b51079f2f27da07f059337486f7fef29ce2f"
     );
   }, []);
 
