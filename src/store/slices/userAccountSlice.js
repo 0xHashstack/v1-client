@@ -193,6 +193,9 @@ export const userAccountSlice = createSlice({
     setAprsAndHealthCount(state,action){
       state.aprAndHealthFactorCount=state.transactionRefresh;
     },
+    setAccountReset(state,action){
+      return {...initialState};
+    },
 
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;
@@ -234,7 +237,8 @@ export const {
   setProtocolReservesCount,
   setAprsAndHealthCount,
   setUserUnspentLoans,
-  setTransactionStartedAndModalClosed
+  setTransactionStartedAndModalClosed,
+  setAccountReset
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;

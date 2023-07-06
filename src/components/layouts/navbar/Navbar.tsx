@@ -47,6 +47,7 @@ import {
   selectAccount,
   selectAccountAddress,
   selectLanguage,
+  setAccountReset,
   setAvgBorrowAPR,
   setAvgSupplyAPR,
   setLanguage,
@@ -666,6 +667,7 @@ const Navbar = ({ validRTokens }: any) => {
                       onClick={() => {
                         disconnect();
                         dispatch(resetState(null));
+                        dispatch(setAccountReset(null));
                         localStorage.setItem("lastUsedConnector", "");
                         // localStorage.setItem("account", "");
 
@@ -682,6 +684,8 @@ const Navbar = ({ validRTokens }: any) => {
                       border="1px solid #2B2F35"
                       onClick={() => {
                         dispatch(setNavDropdown(""));
+                        dispatch(resetState(null));
+                        dispatch(setAccountReset(null));
                         switchWallet();
                         // disconnect();
                         // router.push("./");
