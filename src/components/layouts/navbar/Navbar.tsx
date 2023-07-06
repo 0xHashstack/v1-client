@@ -64,6 +64,7 @@ import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import { Coins } from "../dashboardLeft";
 import mixpanel from "mixpanel-browser";
 import useDataLoader from "@/hooks/useDataLoader";
+import { setTransactionRefresh } from "@/store/slices/readDataSlice";
 const Navbar = ({ validRTokens }: any) => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
@@ -646,6 +647,7 @@ const Navbar = ({ validRTokens }: any) => {
                       onClick={() => {
                         dispatch(setNavDropdown(""));
                         disconnect();
+                        dispatch(setTransactionRefresh(""));
                         localStorage.setItem("lastUsedConnector", "");
                         // localStorage.setItem("account", "");
 
