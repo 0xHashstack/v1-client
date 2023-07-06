@@ -101,6 +101,7 @@ import {
   getLoanHealth_RTokenCollateral,
 } from "@/Blockchain/scripts/LoanHealth";
 import Image from "next/image";
+import { getUSDValue } from "@/Blockchain/scripts/l3interaction";
 const TradeModal = ({
   buttonText,
   coin,
@@ -724,6 +725,43 @@ const TradeModal = ({
   //   setCurrentSplit(split);
   // };
 
+  const [inputBorrowAmountUSD, setInputBorrowAmountUSD] = useState<any>(0);
+  const [inputCollateralAmountUSD, setInputCollateralAmountUSD] =
+    useState<any>(0);
+  useEffect(() => {
+    fetchParsedUSDValueBorrow();
+  }, [inputBorrowAmount, currentBorrowCoin]);
+
+  useEffect(() => {
+    fetchParsedUSDValueCollateral();
+  }, [collateralAmount, currentCollateralCoin]);
+
+  const fetchParsedUSDValueBorrow = async () => {
+    try {
+      const parsedBorrowAmount = await getUSDValue(
+        currentBorrowCoin,
+        inputBorrowAmount
+      );
+      console.log("got parsed usdt borrow", parsedBorrowAmount);
+      setInputBorrowAmountUSD(parsedBorrowAmount);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchParsedUSDValueCollateral = async () => {
+    try {
+      const parsedCollateralAmount = await getUSDValue(
+        currentCollateralCoin,
+        collateralAmount
+      );
+      console.log("got parsed usdt collateral", parsedCollateralAmount);
+      setInputCollateralAmountUSD(parsedCollateralAmount);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <Box>
       <Text
@@ -759,8 +797,8 @@ const TradeModal = ({
         isOpen={isOpen}
         onClose={() => {
           onClose();
-          if(transactionStarted){
-            dispatch(setTransactionStartedAndModalClosed(true))
+          if (transactionStarted) {
+            dispatch(setTransactionStartedAndModalClosed(true));
           }
           resetStates();
         }}
@@ -2474,31 +2512,87 @@ const TradeModal = ({
                       {/* 5.56% */}
                     </Text>
                   </Box>
-                  <Box display="flex" justifyContent="space-between" mb="1">
-                    <Box display="flex">
-                      <Text color="#6E7681" fontSize="xs">
-                        Effective apr:{" "}
-                      </Text>
-                      <Tooltip
-                        hasArrow
-                        placement="right"
-                        boxShadow="dark-lg"
-                        label="all the assets to the market"
-                        bg="#24292F"
-                        fontSize={"smaller"}
-                        fontWeight={"thin"}
-                        borderRadius={"lg"}
-                        padding={"2"}
+                  {collateralAmount > 0 && inputBorrowAmount > 0 && (
+                    <Text
+                      display="flex"
+                      justifyContent="space-between"
+                      fontSize="12px"
+                      mb="0.4rem"
+                    >
+                      <Text
+                        display="flex"
+                        alignItems="center"
+                        key={"effective apr"}
                       >
-                        <Box padding="0.25rem">
-                          <InfoIcon />
-                        </Box>
-                      </Tooltip>
-                    </Box>
-                    <Text color="#6E7681" fontSize="xs">
-                      5.56%
+                        <Text
+                          mr="0.2rem"
+                          font-style="normal"
+                          font-weight="400"
+                          font-size="14px"
+                          lineHeight="16px"
+                          color="#6A737D"
+                        >
+                          Effective apr:
+                        </Text>
+                        <Tooltip
+                          hasArrow
+                          placement="right"
+                          boxShadow="dark-lg"
+                          label="all the assets to the market"
+                          bg="#24292F"
+                          fontSize={"smaller"}
+                          fontWeight={"thin"}
+                          borderRadius={"lg"}
+                          padding={"2"}
+                        >
+                          <Box>
+                            <InfoIcon />
+                          </Box>
+                        </Tooltip>
+                      </Text>
+                      <Text
+                        font-style="normal"
+                        font-weight="400"
+                        font-size="14px"
+                        color="#6A737D"
+                      >
+                        {
+                          // protocolStats.length === 0 ||
+                          inputBorrowAmount === 0 ||
+                          collateralAmount === 0 ||
+                          !borrowAPRs[currentBorrowAPR] ? (
+                            <Box pt="2px">
+                              <Skeleton
+                                width="2.3rem"
+                                height=".85rem"
+                                startColor="#2B2F35"
+                                endColor="#101216"
+                                borderRadius="6px"
+                              />
+                            </Box>
+                          ) : (
+                            <Text>
+                              {/* 5.56% */}
+                              {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
+                              {inputBorrowAmountUSD *
+                                borrowAPRs[currentBorrowAPR] -
+                                (inputCollateralAmountUSD *
+                                  protocolStats?.find(
+                                    (stat: any) =>
+                                      stat?.token === currentCollateralCoin
+                                  )?.supplyRate) /
+                                  inputBorrowAmountUSD}
+                              {/* {
+                          protocolStats?.find(
+                            (stat: any) => stat?.token === currentCollateralCoin
+                          )?.supplyRate
+                        } */}
+                            </Text>
+                          )
+                        }
+                      </Text>
                     </Text>
-                  </Box>
+                  )}
                   {healthFactor ? (
                     <Box display="flex" justifyContent="space-between">
                       <Box display="flex">
