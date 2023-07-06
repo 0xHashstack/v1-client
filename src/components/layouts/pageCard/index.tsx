@@ -21,8 +21,14 @@ import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import useBalanceOf from "@/Blockchain/hooks/Reads/useBalanceOf";
 import useTransactionHandler from "@/hooks/useTransactionHandler";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import { AccountInterface } from "starknet";
 interface Props extends StackProps {
   children: ReactNode;
+}
+interface ExtendedAccountInterface extends AccountInterface {
+  provider?: {
+    chainId: string;
+  };
 }
 
 const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
@@ -30,6 +36,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   const [isLargerThan1280] = useMediaQuery("(min-width: 1248px)");
   const classes = [];
   const { account, address, status, isConnected } = useAccount();
+  const extendedAccount = account as ExtendedAccountInterface;
   const [isMounted, setIsMounted] = useState(false);
   const dispatch = useDispatch();
 
@@ -170,11 +177,13 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
           account?.chainId == "0x534e5f474f45524c49"
         );
       }else if(walletConnected=="argentX"){
-        return (
-          // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
-          // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-          account?.provider?.chainId == "0x534e5f474f45524c49"
-        );
+          // Your code here
+          return (
+            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+
+            extendedAccount.provider?.chainId === "0x534e5f474f45524c49"
+          );
       }
       // console.log("starknetAccount", account?.provider?.chainId);
     }
