@@ -458,7 +458,7 @@ const SupplyDashboard = ({
                         />
                       ) : (
                         protocolStats.find((stat: any) => {
-                          if (stat.token === supply?.rToken?.slice(1))
+                          if (stat?.token === supply?.rToken?.slice(1))
                             return stat.supplyRate;
                         }).exchangeRateRtokenToUnderlying + " %"
                       )}
