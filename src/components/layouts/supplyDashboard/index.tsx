@@ -428,6 +428,9 @@ const SupplyDashboard = ({
                             {supply?.rToken}
                           </Text>
                         </HStack>
+                        <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
+                          {numberFormatter(supply?.rTokenAmountParsed+supply?.rTokenStakedParsed+supply?.rTokenLockedParsed)}
+                        </Text>
                       </VStack>
                     </Box>
                   </Td>
