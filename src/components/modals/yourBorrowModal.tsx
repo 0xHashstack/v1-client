@@ -2400,8 +2400,8 @@ const YourBorrowModal = ({
         isOpen={isOpen}
         onClose={() => {
           resetStates();
-          if(transactionStarted || collateralTransactionStarted){
-            dispatch(setTransactionStartedAndModalClosed(true))
+          if (transactionStarted || collateralTransactionStarted) {
+            dispatch(setTransactionStartedAndModalClosed(true));
           }
           onClose();
         }}
@@ -2978,6 +2978,7 @@ const YourBorrowModal = ({
                                 value={repayAmount ? repayAmount : ""}
                                 isDisabled={
                                   currentAction === "Zero Repay" ||
+                                  currentAction === "Select action" ||
                                   transactionStarted == true
                                 }
                                 step={parseFloat(
@@ -3027,7 +3028,10 @@ const YourBorrowModal = ({
                                     )
                                   );
                                 }}
-                                isDisabled={transactionStarted == true}
+                                isDisabled={
+                                  transactionStarted == true ||
+                                  currentAction === "Select action"
+                                }
                                 _disabled={{ cursor: "pointer" }}
                               >
                                 MAX
@@ -3063,7 +3067,7 @@ const YourBorrowModal = ({
                                 >
                                   Wallet Balance: {walletBalance1}
                                   <Text color="#6E7781" ml="0.2rem">
-                                    {` ${currentSelectedCoin}`}
+                                    {` ${currentBorrowMarketCoin1.slice(1)}`}
                                   </Text>
                                 </Text>
                               </Text>
@@ -3080,7 +3084,7 @@ const YourBorrowModal = ({
                               >
                                 Wallet Balance: {walletBalance1}
                                 <Text color="#6E7781" ml="0.2rem">
-                                  {` ${currentSelectedCoin}`}
+                                  {` ${currentBorrowMarketCoin1.slice(1)}`}
                                 </Text>
                               </Text>
                             )}
@@ -3100,7 +3104,10 @@ const YourBorrowModal = ({
                                 );
                                 setRepayAmount(ans);
                               }}
-                              isDisabled={transactionStarted == true}
+                              isDisabled={
+                                transactionStarted == true ||
+                                currentAction === "Select action"
+                              }
                               _disabled={{ cursor: "pointer" }}
                               focusThumbOnChange={false}
                             >
@@ -3638,7 +3645,9 @@ const YourBorrowModal = ({
                                 Clicked: true,
                               }
                             );
-                            dispatch(setTransactionStartedAndModalClosed(false))
+                            dispatch(
+                              setTransactionStartedAndModalClosed(false)
+                            );
                             if (radioValue == "2") {
                               hanldeTrade();
                             } else {
@@ -3709,7 +3718,9 @@ const YourBorrowModal = ({
                             mixpanel.track("Repay Borrow Button Clicked", {
                               Clicked: true,
                             });
-                            dispatch(setTransactionStartedAndModalClosed(false))
+                            dispatch(
+                              setTransactionStartedAndModalClosed(false)
+                            );
                             if (transactionStarted == false) {
                               handleRepayBorrow();
                             }
@@ -3784,7 +3795,7 @@ const YourBorrowModal = ({
                               Clicked: true,
                             }
                           );
-                          dispatch(setTransactionStartedAndModalClosed(false))
+                          dispatch(setTransactionStartedAndModalClosed(false));
                           if (transactionStarted == false) {
                             handleRevertTransaction();
                           }
@@ -3844,7 +3855,9 @@ const YourBorrowModal = ({
                             mixpanel.track("Zero Repay Button Clicked", {
                               Clicked: true,
                             });
-                            dispatch(setTransactionStartedAndModalClosed(false))
+                            dispatch(
+                              setTransactionStartedAndModalClosed(false)
+                            );
                             if (transactionStarted == false) {
                               handleZeroRepay();
                             }
@@ -4954,7 +4967,7 @@ const YourBorrowModal = ({
                               Clicked: true,
                             }
                           );
-                          dispatch(setTransactionStartedAndModalClosed(false))
+                          dispatch(setTransactionStartedAndModalClosed(false));
                           if (collateralTransactionStarted == false) {
                             handleAddCollateral();
                           }
