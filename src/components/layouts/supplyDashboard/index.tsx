@@ -115,7 +115,7 @@ const SupplyDashboard = ({
   const { address } = useAccount();
 
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
-    useState("rBTC");
+    useState("BTC");
   const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
     useState("rBTC");
   const [supplyMarkets, setSupplyMarkets] = useState([]);
@@ -147,9 +147,27 @@ const SupplyDashboard = ({
         console.log("supply in supply dash: ", supply);
         if (!supply) return;
         let temp: any = [];
-        supply.map((currSupply: any) => {
-          if (currSupply.rTokenAmountParsed !== 0) temp.push(currSupply);
+        let indexes: any = [2, 3, 0, 1, 4];
+
+        indexes.map((index: number) => {
+          if (
+            supply?.[index].rTokenAmountParsed !== 0 ||
+            supply?.[index].rTokenFreeParsed !== 0 ||
+            supply?.[index].rTokenLockedParsed !== 0 ||
+            supply?.[index].rTokenStakedParsed !== 0
+          )
+            temp.push(supply[index]);
         });
+
+        // supply.map((currSupply: any) => {
+        //   if (
+        //     currSupply.rTokenAmountParsed !== 0 ||
+        //     currSupply.rTokenFreeParsed !== 0 ||
+        //     currSupply.rTokenLockedParsed !== 0 ||
+        //     currSupply.rTokenStakedParsed !== 0
+        //   )
+        //     temp.push(currSupply);
+        // });
         setSupplies(temp);
         if (avgs.length == 0) {
           for (var i = 0; i < supply?.length; i++) {
@@ -233,7 +251,7 @@ const SupplyDashboard = ({
   useEffect(() => {
     let temp: any = [];
     supplies.map((coin: any) => {
-      if (coin?.rTokenAmountParsed != 0) {
+      if (coin?.rTokenAmountParsed != 0 || coin?.rTokenStakedParsed !== 0) {
         temp.push(coin?.rToken);
       }
     });
@@ -241,7 +259,7 @@ const SupplyDashboard = ({
   }, [supplies]);
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
-  console.log(userDeposits?.length,"length supply");
+  // console.log(userDeposits?.length,"length supply");
   upper_bound = Math.min(userDeposits?.length - 1, upper_bound);
   // useEffect(() => {
   //   try {
@@ -411,7 +429,7 @@ const SupplyDashboard = ({
                           </Text>
                         </HStack>
                         <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                          {numberFormatter(supply?.rTokenAmountParsed)}
+                          {numberFormatter(supply?.rTokenAmountParsed+supply?.rTokenStakedParsed+supply?.rTokenLockedParsed)}
                         </Text>
                       </VStack>
                     </Box>
@@ -442,7 +460,10 @@ const SupplyDashboard = ({
                           borderRadius="6px"
                         />
                       ) : (
-                        protocolStats[idx]?.exchangeRateRtokenToUnderlying
+                        protocolStats.find((stat: any) => {
+                          if (stat.token === supply?.rToken?.slice(1))
+                            return stat.supplyRate;
+                        }).exchangeRateRtokenToUnderlying + " %"
                       )}
                     </Text>
                   </Td>
@@ -472,7 +493,11 @@ const SupplyDashboard = ({
                           borderRadius="6px"
                         />
                       ) : (
-                        protocolStats[idx]?.supplyRate + "%"
+                        // protocolStats[idx]?.supplyRate + "%"
+                        protocolStats.find((stat: any) => {
+                          if (stat.token === supply?.rToken?.slice(1))
+                            return stat.supplyRate;
+                        }).supplyRate + " %"
                       )}
                     </Box>
                   </Td>
@@ -502,7 +527,6 @@ const SupplyDashboard = ({
                       %{/* {supply?.token} */}
                     </Text>
                   </Td>
-
                   <Td
                     width={"12.5%"}
                     maxWidth={"3rem"}
@@ -527,12 +551,12 @@ const SupplyDashboard = ({
                       <HStack
                         // bgColor="red"
                         justifyContent="flex-start"
-                        display={
-                          supply?.rTokenStakedParsed > 0 ||
-                          supply?.rTokenFreeParsed > 0
-                            ? "flex"
-                            : "none"
-                        }
+                        // display={
+                        //   supply?.rTokenStakedParsed > 0 ||
+                        //   supply?.rTokenFreeParsed > 0
+                        //     ? "flex"
+                        //     : "none"
+                        // }
                         // mx={
                         //   supply?.rTokenStakedParsed <= 0 ||
                         //   supply?.rTokenFreeParsed <= 0
@@ -544,9 +568,9 @@ const SupplyDashboard = ({
                           onMouseEnter={() => handleStatusHover("0" + idx)}
                           onMouseLeave={() => handleStatusHoverLeave()}
                           _hover={{ cursor: "pointer" }}
-                          display={
-                            supply?.rTokenStakedParsed > 0 ? "flex" : "none"
-                          }
+                          // display={
+                          //   supply?.rTokenStakedParsed > 0 ? "flex" : "none"
+                          // }
                           // bgColor="red"
                           mr="16px"
                           pl={2}
@@ -577,9 +601,9 @@ const SupplyDashboard = ({
                           </Text>
                         </HStack>
                         <HStack
-                          display={
-                            supply?.rTokenFreeParsed > 0 ? "flex" : "none"
-                          }
+                          // display={
+                          //   supply?.rTokenFreeParsed > 0 ? "flex" : "none"
+                          // }
                           onMouseEnter={() => handleStatusHover("1" + idx)}
                           onMouseLeave={() => handleStatusHoverLeave()}
                           cursor="pointer"
@@ -610,15 +634,15 @@ const SupplyDashboard = ({
                         </HStack>
                       </HStack>
                       <HStack
-                        display={
-                          supply?.rTokenLockedParsed > 0 ? "flex" : "none"
-                        }
-                        // mx={
-                        //   supply?.rTokenStakedParsed <= 0 ||
-                        //   supply?.rTokenFreeParsed <= 0
-                        //     ? "30%"
-                        //     : "0"
-                        // }
+                      // display={
+                      //   supply?.rTokenLockedParsed > 0 ? "flex" : "none"
+                      // }
+                      // mx={
+                      //   supply?.rTokenStakedParsed <= 0 ||
+                      //   supply?.rTokenFreeParsed <= 0
+                      //     ? "30%"
+                      //     : "0"
+                      // }
                       >
                         <HStack
                           pl={2}
@@ -671,7 +695,7 @@ const SupplyDashboard = ({
                       fontWeight="400"
                       pr={2}
                       onClick={() => {
-                        setCurrentSelectedSupplyCoin(supply?.rToken);
+                        setCurrentSelectedSupplyCoin(supply?.token);
                         setcurrentSelectedWithdrawlCoin(supply?.rToken);
                       }}
                     >

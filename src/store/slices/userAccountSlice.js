@@ -31,6 +31,7 @@ const initialState = {
 
   toastTransactionStarted: false,
   transactionStarted: false,
+  transactionStartedAndModalClosed:false,
   refreshHooks: false,
 
   protocolReserves: {
@@ -150,6 +151,9 @@ export const userAccountSlice = createSlice({
     setRefreshHooks(state, action) {
       state.refreshHooks = action.payload;
     },
+    setTransactionStartedAndModalClosed(state,action){
+      state.transactionStartedAndModalClosed=action.payload;
+    },
     setActiveTransactions(state, action) {
       state.activeTransactions = action.payload;
     },
@@ -230,6 +234,7 @@ export const {
   setProtocolReservesCount,
   setAprsAndHealthCount,
   setUserUnspentLoans,
+  setTransactionStartedAndModalClosed
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -256,7 +261,8 @@ export const selectTransactionStatus = (state) =>
 //   state.user_account.currentTransactionStatus;
 export const selectAssetWalletBalance = (state) =>
   state.user_account.assetWalletBalance;
-
+export const selectTransactionStartedAndModalClosed=(state)=>
+  state.user_account.transactionStartedAndModalClosed;
 export const selectInputSupplyAmount = (state) =>
   state.user_account.inputSupplyAmount;
 export const selectCoinSelectedSupplyModal = (state) =>

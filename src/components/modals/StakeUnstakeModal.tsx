@@ -61,6 +61,7 @@ import {
   selectActiveTransactions,
   selectWalletBalance,
   setActiveTransactions,
+  setTransactionStartedAndModalClosed,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 import { selectProtocolStats } from "@/store/slices/readDataSlice";
@@ -637,6 +638,9 @@ useEffect(()=>{
         // onOverlayClick={() => setIsOpenCustom(false)}
         onClose={() => {
           onClose();
+          if(transactionStarted || unstakeTransactionStarted){
+            dispatch(setTransactionStartedAndModalClosed(true))
+          }
           if (setStakeHover) setStakeHover(false);
           resetStates();
         }}
@@ -1381,6 +1385,7 @@ useEffect(()=>{
                                     "Stake Clicked": true,
                                   }
                                 );
+                                dispatch(setTransactionStartedAndModalClosed(false))
                                 handleStakeTransaction();
                               }
                               setTransactionStarted(true);
@@ -2071,6 +2076,7 @@ useEffect(()=>{
                                   "Unstake Clicked": true,
                                 }
                               );
+                              dispatch(setTransactionStartedAndModalClosed(false))
                               hanldeUnstakeTransaction();
                             }
                             setUnstakeTransactionStarted(true);

@@ -40,6 +40,7 @@ import {
   selectAssetWalletBalance,
   selectActiveTransactions,
   setActiveTransactions,
+  setTransactionStartedAndModalClosed,
 } from "@/store/slices/userAccountSlice";
 
 import {
@@ -100,16 +101,6 @@ const BorrowModal = ({
   const [currentParsedInputBorrowAmount, setCurrentParsedInputBorrowAmount] =
     useState(0);
 
-  useEffect(() => {
-    fetchParsedUSDValue();
-  }, [inputBorrowAmount]);
-
-  const fetchParsedUSDValue = async () => {
-    try {
-      const parsedAmount = await getUSDValue("USDC", inputBorrowAmount);
-      console.log("got parsed usdt", parsedAmount);
-    } catch (error) {}
-  };
   const modalDropdowns = useSelector(selectModalDropDowns);
   // const walletBalances = useSelector(selectAssetWalletBalance);
   const [walletBalance, setwalletBalance] = useState(0);
@@ -264,6 +255,9 @@ const BorrowModal = ({
   const [currentBorrowCoin, setCurrentBorrowCoin] = useState(
     coin ? coin.name : "BTC"
   );
+  const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
+    coin ? coin.name : "BTC"
+  );
   const [protocolStats, setProtocolStats] = useState<any>([]);
   const protocolStatsRedux = useSelector(selectProtocolStats);
   const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
@@ -341,6 +335,42 @@ const BorrowModal = ({
     rToken,
     rTokenAmount,
   ]);
+
+  const [inputBorrowAmountUSD, setInputBorrowAmountUSD] = useState<any>(0);
+  const [inputCollateralAmountUSD, setInputCollateralAmountUSD] = useState<any>(0);
+  useEffect(() => {
+    fetchParsedUSDValueBorrow();
+  }, [inputBorrowAmount, currentBorrowCoin]);
+
+  useEffect(() => {
+    fetchParsedUSDValueCollateral();
+  }, [collateralAmount, currentCollateralCoin]);
+
+  const fetchParsedUSDValueBorrow = async () => {
+    try {
+      const parsedBorrowAmount = await getUSDValue(
+        currentBorrowCoin,
+        inputBorrowAmount
+      );
+      console.log("got parsed usdt borrow", parsedBorrowAmount);
+      setInputBorrowAmountUSD(parsedBorrowAmount);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchParsedUSDValueCollateral = async () => {
+    try {
+      const parsedCollateralAmount = await getUSDValue(
+        currentCollateralCoin,
+        collateralAmount
+      );
+      console.log("got parsed usdt collateral", parsedCollateralAmount);
+      setInputCollateralAmountUSD(parsedCollateralAmount);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     setCurrentAvailableReserves(
@@ -578,9 +608,6 @@ const BorrowModal = ({
   const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
   const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
-  const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
-    coin ? coin.name : "BTC"
-  );
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
@@ -633,6 +660,7 @@ const BorrowModal = ({
           onClose();
           resetStates();
           if (transactionStarted) {
+            dispatch(setTransactionStartedAndModalClosed(true));
             dispatch(setToastTransactionStarted(""));
           }
         }}
@@ -1800,7 +1828,6 @@ const BorrowModal = ({
                   font-size="14px"
                   color="#6A737D"
                 >
-                  {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
                   {
                     // protocolStats.length === 0 ||
                     inputBorrowAmount === 0 ||
@@ -1818,14 +1845,15 @@ const BorrowModal = ({
                     ) : (
                       <Text>
                         {/* 5.56% */}
-                        {/* {inputBorrowAmount * borrowAPRs[currentBorrowAPR] -
-                          (collateralAmount *
+                        {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
+                        {inputBorrowAmountUSD * borrowAPRs[currentBorrowAPR] -
+                          (inputCollateralAmountUSD *
                             protocolStats?.find(
                               (stat: any) =>
                                 stat?.token === currentCollateralCoin
                             )?.supplyRate) /
-                            inputBorrowAmount} */}
-                        <Box>{currentParsedInputBorrowAmount}</Box>
+                            inputBorrowAmountUSD}
+                        {/* <Box>{currentParsedInputBorrowAmount}</Box> */}
                       </Text>
                     )
                   }
@@ -1893,6 +1921,7 @@ const BorrowModal = ({
                   onClick={() => {
                     setTransactionStarted(true);
                     if (transactionStarted == false) {
+                      dispatch(setTransactionStartedAndModalClosed(false));
                       mixpanel.track("Borrow Market Button Clicked", {
                         "Borrow Clicked": true,
                       });
