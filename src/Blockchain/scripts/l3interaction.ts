@@ -3,11 +3,12 @@ import jediSwapAbi from "../abis/jedi_swap_abi.json";
 import pricerAbi from "../abis/pricer_abi.json";
 import mySwapAbi from "../abis/my_swap_abi.json";
 import {
+  diamondAddress,
   getProvider,
   getTokenFromAddress,
   l3DiamondAddress,
 } from "../stark-constants";
-import { tokenAddressMap } from "../utils/addressServices";
+import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
 import { NativeToken } from "../interfaces/interfaces";
 
@@ -25,15 +26,28 @@ export async function getUSDValue(market: string, amount: number) {
   console.log("get_asset_usd_value", market, amount);
   const provider = getProvider();
   try {
-    const l3Contract = new Contract(pricerAbi, l3DiamondAddress, provider);
-    const res = await l3Contract.call(
+    const pricerContract = new Contract(pricerAbi, diamondAddress, provider);
+    const res = await pricerContract.call(
       "get_asset_usd_value",
-      [tokenAddressMap["USDC"], [10000000, 10000000]],
+      [tokenAddressMap[market], [amount, 0]],
       {
         blockIdentifier: "pending",
       }
     );
-    console.log("estimated usd value: ", res);
+    console.log("tokendecimal", tokenDecimalsMap[market]);
+    console.log("res", res?.decimals?.words[0]);
+
+    console.log(
+      "estimated usd value: ",
+      parseAmount(
+        uint256.uint256ToBN(res?.usd_value).toString(),
+        tokenDecimalsMap[market] + res?.decimals?.words[0]
+      )
+    );
+    return parseAmount(
+      uint256.uint256ToBN(res?.usd_value).toString(),
+      tokenDecimalsMap[market] + res?.decimals?.words[0]
+    );
     // return [
     //   parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8),
     //   parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8),

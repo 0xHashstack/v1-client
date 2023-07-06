@@ -147,9 +147,27 @@ const SupplyDashboard = ({
         console.log("supply in supply dash: ", supply);
         if (!supply) return;
         let temp: any = [];
-        supply.map((currSupply: any) => {
-          if (currSupply?.rTokenAmountParsed !== 0 || currSupply?.rTokenStakedParsed!==0) temp.push(currSupply);
+        let indexes: any = [2, 3, 0, 1, 4];
+
+        indexes.map((index: number) => {
+          if (
+            supply?.[index].rTokenAmountParsed !== 0 ||
+            supply?.[index].rTokenFreeParsed !== 0 ||
+            supply?.[index].rTokenLockedParsed !== 0 ||
+            supply?.[index].rTokenStakedParsed !== 0
+          )
+            temp.push(supply[index]);
         });
+
+        // supply.map((currSupply: any) => {
+        //   if (
+        //     currSupply.rTokenAmountParsed !== 0 ||
+        //     currSupply.rTokenFreeParsed !== 0 ||
+        //     currSupply.rTokenLockedParsed !== 0 ||
+        //     currSupply.rTokenStakedParsed !== 0
+        //   )
+        //     temp.push(currSupply);
+        // });
         setSupplies(temp);
         if (avgs.length == 0) {
           for (var i = 0; i < supply?.length; i++) {
@@ -233,7 +251,7 @@ const SupplyDashboard = ({
   useEffect(() => {
     let temp: any = [];
     supplies.map((coin: any) => {
-      if (coin?.rTokenAmountParsed != 0 || coin?.rTokenStakedParsed !==0) {
+      if (coin?.rTokenAmountParsed != 0 || coin?.rTokenStakedParsed !== 0) {
         temp.push(coin?.rToken);
       }
     });
@@ -410,9 +428,6 @@ const SupplyDashboard = ({
                             {supply?.rToken}
                           </Text>
                         </HStack>
-                        <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                          {numberFormatter(supply?.rTokenAmountParsed+supply?.rTokenStakedParsed+supply?.rTokenLockedParsed)}
-                        </Text>
                       </VStack>
                     </Box>
                   </Td>
@@ -442,7 +457,10 @@ const SupplyDashboard = ({
                           borderRadius="6px"
                         />
                       ) : (
-                        protocolStats[idx]?.exchangeRateRtokenToUnderlying
+                        protocolStats.find((stat: any) => {
+                          if (stat.token === supply?.rToken?.slice(1))
+                            return stat.supplyRate;
+                        }).exchangeRateRtokenToUnderlying + " %"
                       )}
                     </Text>
                   </Td>
@@ -472,7 +490,11 @@ const SupplyDashboard = ({
                           borderRadius="6px"
                         />
                       ) : (
-                        protocolStats[idx]?.supplyRate + "%"
+                        // protocolStats[idx]?.supplyRate + "%"
+                        protocolStats.find((stat: any) => {
+                          if (stat.token === supply?.rToken?.slice(1))
+                            return stat.supplyRate;
+                        }).supplyRate + " %"
                       )}
                     </Box>
                   </Td>
@@ -502,7 +524,6 @@ const SupplyDashboard = ({
                       %{/* {supply?.token} */}
                     </Text>
                   </Td>
-
                   <Td
                     width={"12.5%"}
                     maxWidth={"3rem"}
@@ -610,15 +631,15 @@ const SupplyDashboard = ({
                         </HStack>
                       </HStack>
                       <HStack
-                        // display={
-                        //   supply?.rTokenLockedParsed > 0 ? "flex" : "none"
-                        // }
-                        // mx={
-                        //   supply?.rTokenStakedParsed <= 0 ||
-                        //   supply?.rTokenFreeParsed <= 0
-                        //     ? "30%"
-                        //     : "0"
-                        // }
+                      // display={
+                      //   supply?.rTokenLockedParsed > 0 ? "flex" : "none"
+                      // }
+                      // mx={
+                      //   supply?.rTokenStakedParsed <= 0 ||
+                      //   supply?.rTokenFreeParsed <= 0
+                      //     ? "30%"
+                      //     : "0"
+                      // }
                       >
                         <HStack
                           pl={2}
