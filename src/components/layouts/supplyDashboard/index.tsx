@@ -300,208 +300,219 @@ const SupplyDashboard = ({
       </Box>
     </>
   ) : upper_bound >= lower_bound && supplies?.length > 0 ? (
-    <TableContainer
-      bg="#101216"
-      border="1px"
-      borderColor="#2B2F35"
-      color="white"
-      borderRadius="md"
-      w={width}
-      display="flex"
-      justifyContent="flex-start"
-      alignItems="flex-start"
-      // bgColor={"yellow"}
-      // height={"100%"}
+    <Box
       height={"37rem"}
+      bg="#101216"
+      w={width}
+      border="1px"
+      borderRadius="md"
+      borderColor="#2B2F35"
       padding={"1rem 1.5rem"}
-      overflowX="hidden"
-      // m={0}
-      // mt={"3rem"}
-      // style={{ marginTop: "0.8rem" }}
     >
-      <Table variant="unstyled" width="100%" height="100%">
-        <Thead width={"100%"} height={"5rem"}>
-          <Tr width={"100%"} height="2rem">
-            {columnItems.map((val: any, idx1: any) => (
-              <Td
-                key={idx1}
-                width={"12.5%"}
-                // maxWidth={`${gap[idx1][idx2]}%`}
-                fontSize={"12px"}
-                fontWeight={400}
-                textAlign={
-                  idx1 == 0
-                    ? "left"
-                    : idx1 == columnItems.length - 1
-                    ? "right"
-                    : "center"
-                }
-                pl={idx1 == 0 ? 22 : 0}
-                pr={idx1 == columnItems.length - 1 ? 12 : 0}
-                // border="1px solid blue"
-              >
-                <Text
-                  whiteSpace="pre-wrap"
-                  overflowWrap="break-word"
-                  // bgColor={"red"}
-                  width={"100%"}
-                  height={"2rem"}
-                  // textAlign="center"
-                  color={"#BDBFC1"}
+      <TableContainer
+        color="white"
+        display="flex"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        // bgColor={"yellow"}
+        // height={"100%"}
+        overflowX="hidden"
+        mx="auto"
+        // m={0}
+        // mt={"3rem"}
+        // style={{ marginTop: "0.8rem" }}
+      >
+        <Table variant="unstyled" width="100%" height="100%">
+          <Thead width={"100%"} height={"5rem"}>
+            <Tr width={"100%"} height="2rem">
+              {columnItems.map((val: any, idx1: any) => (
+                <Td
+                  key={idx1}
+                  width={"12.5%"}
+                  // maxWidth={`${gap[idx1][idx2]}%`}
+                  fontSize={"12px"}
+                  fontWeight={400}
+                  textAlign={
+                    idx1 == 0
+                      ? "left"
+                      : idx1 == columnItems.length - 1
+                      ? "right"
+                      : "center"
+                  }
+                  pl={idx1 == 0 ? 22 : 0}
+                  pr={idx1 == columnItems.length - 1 ? 12 : 0}
+                  // border="1px solid blue"
                 >
-                  {val}
-                </Text>
-              </Td>
-            ))}
-          </Tr>
-        </Thead>
-        <Tbody
-          position="relative"
-          overflowX="hidden"
-          //   display="flex"
-          //   flexDirection="column"
-          //   gap={"1rem"}
-        >
-          {supplies
-            ?.slice(lower_bound, upper_bound + 1)
-            .map((supply: any, idx: number) => (
-              <>
-                <Tr
-                  key={idx}
-                  width={"100%"}
-                  height={"5.1rem"}
-                  // bgColor="blue"
-                  // borderBottom="1px solid #2b2f35"
-                  position="relative"
-                >
-                  <Td
-                    width={"12.5%"}
-                    // maxWidth={"3rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    overflow={"hidden"}
-                    // textAlign={"left"}
-                    pl={10}
+                  <Text
+                    whiteSpace="pre-wrap"
+                    overflowWrap="break-word"
+                    // bgColor={"red"}
+                    width={"100%"}
+                    height={"2rem"}
+                    // textAlign="center"
+                    color={"#BDBFC1"}
                   >
-                    <Box
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="flex-start"
-                      fontWeight="400"
+                    {val}
+                  </Text>
+                </Td>
+              ))}
+            </Tr>
+          </Thead>
+          <Tbody
+            position="relative"
+            overflowX="hidden"
+            //   display="flex"
+            //   flexDirection="column"
+            //   gap={"1rem"}
+          >
+            {supplies
+              ?.slice(lower_bound, upper_bound + 1)
+              .map((supply: any, idx: number) => (
+                <>
+                  <Tr
+                    key={idx}
+                    width={"100%"}
+                    height={"5.1rem"}
+                    // bgColor="blue"
+                    // borderBottom="1px solid #2b2f35"
+                    position="relative"
+                  >
+                    <Td
+                      width={"12.5%"}
+                      // maxWidth={"3rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      overflow={"hidden"}
+                      // textAlign={"left"}
+                      pl={10}
                     >
-                      <VStack
-                        // gap="3px"
+                      <Box
                         width="100%"
+                        height="100%"
                         display="flex"
-                        justifyContent="center"
-                        alignItems="flex-start"
-                        height="2.5rem"
+                        alignItems="center"
+                        justifyContent="flex-start"
+                        fontWeight="400"
                       >
-                        <HStack height="2rem" width="2rem" alignItems="center">
-                          <Image
-                            src={`/${supply?.rToken?.slice(1)}.svg`}
-                            alt="Picture of the author"
-                            width="32"
-                            height="32"
-                          />
-                          <Text fontSize="14px" fontWeight="400">
-                            {supply?.rToken}
+                        <VStack
+                          // gap="3px"
+                          width="100%"
+                          display="flex"
+                          justifyContent="center"
+                          alignItems="flex-start"
+                          height="2.5rem"
+                        >
+                          <HStack
+                            height="2rem"
+                            width="2rem"
+                            alignItems="center"
+                          >
+                            <Image
+                              src={`/${supply?.rToken?.slice(1)}.svg`}
+                              alt="Picture of the author"
+                              width="32"
+                              height="32"
+                            />
+                            <Text fontSize="14px" fontWeight="400">
+                              {supply?.rToken}
+                            </Text>
+                          </HStack>
+                          <Text
+                            fontSize="14px"
+                            fontWeight="500"
+                            color="#F7BB5B"
+                          >
+                            {numberFormatter(supply?.rTokenAmountParsed)}
                           </Text>
-                        </HStack>
-                        <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                          {numberFormatter(supply?.rTokenAmountParsed+supply?.rTokenStakedParsed)}
-                        </Text>
-                      </VStack>
-                    </Box>
-                  </Td>
-                  <Td
-                    width={"12.5%"}
-                    maxWidth={"3rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    overflow={"hidden"}
-                    textAlign={"center"}
-                  >
-                    <Text
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
+                        </VStack>
+                      </Box>
+                    </Td>
+                    <Td
+                      width={"12.5%"}
+                      maxWidth={"3rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      overflow={"hidden"}
+                      textAlign={"center"}
                     >
-                      {/* {checkGap(idx1, idx2)} */}
-                      {!protocolStats || !protocolStats[idx] ? (
-                        <Skeleton
-                          width="4rem"
-                          height="1.4rem"
-                          startColor="#101216"
-                          endColor="#2B2F35"
-                          borderRadius="6px"
-                        />
-                      ) : (
-                        protocolStats[idx]?.exchangeRateRtokenToUnderlying
-                      )}
-                    </Text>
-                  </Td>
-                  <Td
-                    width={"12.5%"}
-                    maxWidth={"3rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    overflow={"hidden"}
-                    textAlign={"center"}
-                  >
-                    <Box
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                      >
+                        {/* {checkGap(idx1, idx2)} */}
+                        {!protocolStats || !protocolStats[idx] ? (
+                          <Skeleton
+                            width="4rem"
+                            height="1.4rem"
+                            startColor="#101216"
+                            endColor="#2B2F35"
+                            borderRadius="6px"
+                          />
+                        ) : (
+                          protocolStats[idx]?.exchangeRateRtokenToUnderlying
+                        )}
+                      </Text>
+                    </Td>
+                    <Td
+                      width={"12.5%"}
+                      maxWidth={"3rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      overflow={"hidden"}
+                      textAlign={"center"}
                     >
-                      {/* {checkGap(idx1, idx2)} */}
-                      {!protocolStats || !protocolStats[idx] ? (
-                        <Skeleton
-                          width="4rem"
-                          height="1.4rem"
-                          startColor="#101216"
-                          endColor="#2B2F35"
-                          borderRadius="6px"
-                        />
-                      ) : (
-                        protocolStats[idx]?.supplyRate + "%"
-                      )}
-                    </Box>
-                  </Td>
-                  <Td
-                    width={"12.5%"}
-                    maxWidth={"3rem"}
-                    fontSize={"14px"}
-                    fontWeight={400}
-                    overflow={"hidden"}
-                    textAlign={"center"}
-                  >
-                    <Text
-                      width="100%"
-                      height="100%"
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      fontWeight="400"
+                      <Box
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                      >
+                        {/* {checkGap(idx1, idx2)} */}
+                        {!protocolStats || !protocolStats[idx] ? (
+                          <Skeleton
+                            width="4rem"
+                            height="1.4rem"
+                            startColor="#101216"
+                            endColor="#2B2F35"
+                            borderRadius="6px"
+                          />
+                        ) : (
+                          protocolStats[idx]?.supplyRate + "%"
+                        )}
+                      </Box>
+                    </Td>
+                    <Td
+                      width={"12.5%"}
+                      maxWidth={"3rem"}
+                      fontSize={"14px"}
+                      fontWeight={400}
+                      overflow={"hidden"}
+                      textAlign={"center"}
                     >
-                      {/* {checkGap(idx1, idx2)} */}
-                      {/* {(!avgs?.token==supply?.token) ? avgs.avg :  "2.00%"} */}
-                      {/* {avgs[2]} */}
-                      {
-                        avgs?.find((item: any) => item.token == supply?.token)
-                          ?.avg
-                      }{" "}
-                      %{/* {supply?.token} */}
-                    </Text>
-                  </Td>
+                      <Text
+                        width="100%"
+                        height="100%"
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                        fontWeight="400"
+                      >
+                        {/* {checkGap(idx1, idx2)} */}
+                        {/* {(!avgs?.token==supply?.token) ? avgs.avg :  "2.00%"} */}
+                        {/* {avgs[2]} */}
+                        {
+                          avgs?.find((item: any) => item.token == supply?.token)
+                            ?.avg
+                        }{" "}
+                        %{/* {supply?.token} */}
+                      </Text>
+                    </Td>
 
                   <Td
                     width={"12.5%"}
