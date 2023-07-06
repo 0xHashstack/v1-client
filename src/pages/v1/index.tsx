@@ -134,8 +134,8 @@ export default function Home() {
       //   mixpanel.identify("13793");
       //   mixpanel.track('Signed Up')
       // }
-      mixpanel.identify(address);
-      mixpanel.track("Connect Wallet", {
+      mixpanel?.identify(address);
+      mixpanel?.track("Connect Wallet", {
         "Wallet address": address,
         "Wallet Connected": walletConnected,
       });
