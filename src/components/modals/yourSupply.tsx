@@ -834,12 +834,12 @@ const YourSupplyModal = ({
                                     gap="1"
                                     pr="2"
                                     onClick={() => {
-                                      setCurrentSelectedSupplyCoin(coin);
+                                      setCurrentSelectedSupplyCoin(coin.substring(1));
                                       setSupplyAsset(coin);
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
-                                    {coin === currentSelectedSupplyCoin && (
+                                    {coin.substring(1) === currentSelectedSupplyCoin && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -851,13 +851,13 @@ const YourSupplyModal = ({
                                       w="full"
                                       display="flex"
                                       py="5px"
-                                      pl={`${coin === currentSelectedSupplyCoin
+                                      pl={`${coin.substring(1) === currentSelectedSupplyCoin
                                         ? "1"
                                         : "5"
                                         }`}
                                       pr="6px"
                                       gap="1"
-                                      bg={`${coin === currentSelectedSupplyCoin
+                                      bg={`${coin.substring(1) === currentSelectedSupplyCoin
                                         ? "#0C6AD9"
                                         : "inherit"
                                         }`}
@@ -865,8 +865,8 @@ const YourSupplyModal = ({
                                       justifyContent="space-between"
                                     >
                                       <Box display="flex">
-                                        <Box p="1">{getCoin(coin)}</Box>
-                                        <Text color="white">{coin}</Text>
+                                        <Box p="1">{getCoin(coin.substring(1))}</Box>
+                                        <Text color="white">{coin.substring(1)}</Text>
                                       </Box>
                                       <Box
                                         fontSize="9px"
@@ -878,10 +878,10 @@ const YourSupplyModal = ({
                                         {Number(
                                           BNtoNum(
                                             uint256.uint256ToBN(
-                                              walletBalances[coin]
+                                              walletBalances[coin.substring(1)]
                                                 ?.dataBalanceOf?.balance
                                             ),
-                                            tokenDecimalsMap[coin]
+                                            tokenDecimalsMap[coin.substring(1)]
                                           )
                                         )}
                                       </Box>
@@ -1293,7 +1293,7 @@ const YourSupplyModal = ({
                             {!protocolStats ||
                               protocolStats.length === 0 ||
                               !getBorrowAPR(
-                                currentSelectedSupplyCoin.slice(1)
+                                currentSelectedSupplyCoin
                               ) ? (
                               <Box pt="2px">
                                 <Skeleton
@@ -1305,7 +1305,7 @@ const YourSupplyModal = ({
                                 />
                               </Box>
                             ) : (
-                              getBorrowAPR(currentSelectedSupplyCoin.slice(1)) +
+                              getBorrowAPR(currentSelectedSupplyCoin) +
                               "%"
                             )}
 
