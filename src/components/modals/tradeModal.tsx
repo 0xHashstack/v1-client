@@ -390,7 +390,7 @@ const TradeModal = ({
     } catch (err: any) {
       console.log("borrow modal : error fetching protocolStats");
     }
-  }, []);
+  }, [stats]);
   const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
     protocolStats?.find((stat: any) => stat?.token == currentBorrowCoin)
       ?.availableReserves
