@@ -727,7 +727,7 @@ const BorrowDashboard = ({
                             <Text fontSize="14px" fontWeight="400">
                               {borrow.spendType !== "LIQUIDITY"
                                 ? "1.234/2.23"
-                                : "p"}
+                                : "1.234/2.23"}
                             </Text>
                           </HStack>
                         </Box>

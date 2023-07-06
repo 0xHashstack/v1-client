@@ -41,12 +41,13 @@ export async function getUSDValue(market: string, amount: number) {
       "estimated usd value: ",
       parseAmount(
         uint256.uint256ToBN(res?.usd_value).toString(),
-        tokenDecimalsMap[market] + res?.decimals?.words[0]
+        res?.decimals?.words[0]
       )
     );
     return parseAmount(
       uint256.uint256ToBN(res?.usd_value).toString(),
-      tokenDecimalsMap[market] + res?.decimals?.words[0]
+      res?.decimals?.words[0]
+      // 8
     );
     // return [
     //   parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8),

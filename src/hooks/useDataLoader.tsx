@@ -89,7 +89,7 @@ const useDataLoader = () => {
     if (oraclePricesCount < transactionRefresh) {
       fetchOraclePrices();
     }
-  }, []);
+  }, [transactionRefresh]);
 
   useEffect(() => {
     try {
@@ -191,7 +191,7 @@ const useDataLoader = () => {
     if(aprsAndHealthCount<transactionRefresh){
       fetchAprsAndHealth();
     }
-  },[userLoans,transactionRefresh,protocolStats,dataOraclePrices])
+  },[transactionRefresh])
 
 
   useEffect(() => {

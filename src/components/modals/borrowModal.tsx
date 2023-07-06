@@ -337,7 +337,8 @@ const BorrowModal = ({
   ]);
 
   const [inputBorrowAmountUSD, setInputBorrowAmountUSD] = useState<any>(0);
-  const [inputCollateralAmountUSD, setInputCollateralAmountUSD] = useState<any>(0);
+  const [inputCollateralAmountUSD, setInputCollateralAmountUSD] =
+    useState<any>(0);
   useEffect(() => {
     fetchParsedUSDValueBorrow();
   }, [inputBorrowAmount, currentBorrowCoin]);
@@ -1789,76 +1790,86 @@ const BorrowModal = ({
                   {/* 5.56% */}
                 </Text>
               </Text>
-              <Text
-                display="flex"
-                justifyContent="space-between"
-                fontSize="12px"
-                mb="0.4rem"
-              >
-                <Text display="flex" alignItems="center" key={"effective apr"}>
+              {collateralAmount > 0 && inputBorrowAmount > 0 && (
+                <Text
+                  display="flex"
+                  justifyContent="space-between"
+                  fontSize="12px"
+                  mb="0.4rem"
+                >
                   <Text
-                    mr="0.2rem"
+                    display="flex"
+                    alignItems="center"
+                    key={"effective apr"}
+                  >
+                    <Text
+                      mr="0.2rem"
+                      font-style="normal"
+                      font-weight="400"
+                      font-size="14px"
+                      lineHeight="16px"
+                      color="#6A737D"
+                    >
+                      Effective apr:
+                    </Text>
+                    <Tooltip
+                      hasArrow
+                      placement="right"
+                      boxShadow="dark-lg"
+                      label="all the assets to the market"
+                      bg="#24292F"
+                      fontSize={"smaller"}
+                      fontWeight={"thin"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                    >
+                      <Box>
+                        <InfoIcon />
+                      </Box>
+                    </Tooltip>
+                  </Text>
+                  <Text
                     font-style="normal"
                     font-weight="400"
                     font-size="14px"
-                    lineHeight="16px"
                     color="#6A737D"
                   >
-                    Effective apr:
+                    {
+                      // protocolStats.length === 0 ||
+                      inputBorrowAmount === 0 ||
+                      collateralAmount === 0 ||
+                      !borrowAPRs[currentBorrowAPR] ? (
+                        <Box pt="2px">
+                          <Skeleton
+                            width="2.3rem"
+                            height=".85rem"
+                            startColor="#2B2F35"
+                            endColor="#101216"
+                            borderRadius="6px"
+                          />
+                        </Box>
+                      ) : (
+                        <Text>
+                          {/* 5.56% */}
+                          {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
+                          {inputBorrowAmountUSD * borrowAPRs[currentBorrowAPR] -
+                            (inputCollateralAmountUSD *
+                              protocolStats?.find(
+                                (stat: any) =>
+                                  stat?.token === currentCollateralCoin
+                              )?.supplyRate) /
+                              inputBorrowAmountUSD}
+                          {/* {
+                          protocolStats?.find(
+                            (stat: any) => stat?.token === currentCollateralCoin
+                          )?.supplyRate
+                        } */}
+                        </Text>
+                      )
+                    }
                   </Text>
-                  <Tooltip
-                    hasArrow
-                    placement="right"
-                    boxShadow="dark-lg"
-                    label="all the assets to the market"
-                    bg="#24292F"
-                    fontSize={"smaller"}
-                    fontWeight={"thin"}
-                    borderRadius={"lg"}
-                    padding={"2"}
-                  >
-                    <Box>
-                      <InfoIcon />
-                    </Box>
-                  </Tooltip>
                 </Text>
-                <Text
-                  font-style="normal"
-                  font-weight="400"
-                  font-size="14px"
-                  color="#6A737D"
-                >
-                  {
-                    // protocolStats.length === 0 ||
-                    inputBorrowAmount === 0 ||
-                    collateralAmount === 0 ||
-                    !borrowAPRs[currentBorrowAPR] ? (
-                      <Box pt="2px">
-                        <Skeleton
-                          width="2.3rem"
-                          height=".85rem"
-                          startColor="#2B2F35"
-                          endColor="#101216"
-                          borderRadius="6px"
-                        />
-                      </Box>
-                    ) : (
-                      <Text>
-                        {/* 5.56% */}
-                        {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                        {inputBorrowAmountUSD * borrowAPRs[currentBorrowAPR] -
-                          (inputCollateralAmountUSD *
-                            protocolStats?.find(
-                              (stat: any) =>
-                                stat?.token === currentCollateralCoin
-                            )?.supplyRate) /
-                            inputBorrowAmountUSD}
-                        {/* <Box>{currentParsedInputBorrowAmount}</Box> */}
-                      </Text>
-                    )
-                  }
-                </Text>
-              </Text>
+              )}
               {healthFactor ? (
                 <Text
                   color="#8B949E"
