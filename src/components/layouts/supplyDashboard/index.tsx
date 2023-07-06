@@ -147,9 +147,27 @@ const SupplyDashboard = ({
         console.log("supply in supply dash: ", supply);
         if (!supply) return;
         let temp: any = [];
-        supply.map((currSupply: any) => {
-          if (currSupply.rTokenAmountParsed !== 0) temp.push(currSupply);
+        let indexes: any = [2, 3, 0, 1, 4];
+
+        indexes.map((index: number) => {
+          if (
+            supply?.[index].rTokenAmountParsed !== 0 ||
+            supply?.[index].rTokenFreeParsed !== 0 ||
+            supply?.[index].rTokenLockedParsed !== 0 ||
+            supply?.[index].rTokenStakedParsed !== 0
+          )
+            temp.push(supply[index]);
         });
+
+        // supply.map((currSupply: any) => {
+        //   if (
+        //     currSupply.rTokenAmountParsed !== 0 ||
+        //     currSupply.rTokenFreeParsed !== 0 ||
+        //     currSupply.rTokenLockedParsed !== 0 ||
+        //     currSupply.rTokenStakedParsed !== 0
+        //   )
+        //     temp.push(currSupply);
+        // });
         setSupplies(temp);
         if (avgs.length == 0) {
           for (var i = 0; i < supply?.length; i++) {
@@ -452,7 +470,10 @@ const SupplyDashboard = ({
                             borderRadius="6px"
                           />
                         ) : (
-                          protocolStats[idx]?.exchangeRateRtokenToUnderlying
+                          protocolStats.find((stat: any) => {
+                            if (stat.token === supply?.rToken?.slice(1))
+                              return stat.supplyRate;
+                          }).exchangeRateRtokenToUnderlying + " %"
                         )}
                       </Text>
                     </Td>
@@ -482,7 +503,11 @@ const SupplyDashboard = ({
                             borderRadius="6px"
                           />
                         ) : (
-                          protocolStats[idx]?.supplyRate + "%"
+                          // protocolStats[idx]?.supplyRate + "%"
+                          protocolStats.find((stat: any) => {
+                            if (stat.token === supply?.rToken?.slice(1))
+                              return stat.supplyRate;
+                          }).supplyRate + " %"
                         )}
                       </Box>
                     </Td>

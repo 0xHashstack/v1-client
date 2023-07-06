@@ -36,9 +36,7 @@ function parseDeposits(deposits: any): IDeposit[] {
     let deposit: IDeposit = {
       tokenAddress,
       token,
-      rTokenAddress:
-        getTokenFromAddress(tokenAddress)?.rToken ||
-        "",
+      rTokenAddress: getTokenFromAddress(tokenAddress)?.rToken || "",
       rToken: getRTokenFromAddress(
         getTokenFromAddress(number.toHex(depositData?.asset_addr))?.rToken || ""
       )?.name as RToken,
@@ -68,16 +66,20 @@ export async function getUserDeposits(account: string) {
     metricsContractAddress,
     provider
   );
-  if(!account) return;
-  console.log("supplies callling with:", account, "on address: ", metricsContractAddress);
+  if (!account) return;
+  console.log(
+    "supplies callling with:",
+    account,
+    "on address: ",
+    metricsContractAddress
+  );
   try {
     const res = await metricsContract.call("get_user_deposits", [account], {
       blockIdentifier: "pending",
     });
     console.log("supplies res: ", res);
     return parseDeposits(res?.deposits);
-  }
-  catch (error) {
+  } catch (error) {
     console.error("supplies fails: ", error);
   }
 }
