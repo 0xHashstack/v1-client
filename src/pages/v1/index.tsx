@@ -112,9 +112,11 @@ export default function Home() {
     if (walletConnected == "braavos") {
       disconnect();
       connect(connectors[0]);
+      dispatch(setTransactionRefresh(""))
     } else if (walletConnected == "argentX") {
       disconnect();
       connect(connectors[1]);
+      dispatch(setTransactionRefresh(""))
     }
     if (!hasVisited) {
       // Set a local storage item to indicate the user has visited

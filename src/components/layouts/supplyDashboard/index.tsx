@@ -148,7 +148,7 @@ const SupplyDashboard = ({
         if (!supply) return;
         let temp: any = [];
         supply.map((currSupply: any) => {
-          if (currSupply.rTokenAmountParsed !== 0) temp.push(currSupply);
+          if (currSupply?.rTokenAmountParsed !== 0 || currSupply?.rTokenStakedParsed!==0) temp.push(currSupply);
         });
         setSupplies(temp);
         if (avgs.length == 0) {
@@ -233,7 +233,7 @@ const SupplyDashboard = ({
   useEffect(() => {
     let temp: any = [];
     supplies.map((coin: any) => {
-      if (coin?.rTokenAmountParsed != 0) {
+      if (coin?.rTokenAmountParsed != 0 || coin?.rTokenStakedParsed !==0) {
         temp.push(coin?.rToken);
       }
     });
@@ -241,7 +241,7 @@ const SupplyDashboard = ({
   }, [supplies]);
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
-  console.log(userDeposits?.length,"length supply");
+  // console.log(userDeposits?.length,"length supply");
   upper_bound = Math.min(userDeposits?.length - 1, upper_bound);
   // useEffect(() => {
   //   try {
@@ -411,7 +411,7 @@ const SupplyDashboard = ({
                           </Text>
                         </HStack>
                         <Text fontSize="14px" fontWeight="500" color="#F7BB5B">
-                          {numberFormatter(supply?.rTokenAmountParsed)}
+                          {numberFormatter(supply?.rTokenAmountParsed+supply?.rTokenStakedParsed)}
                         </Text>
                       </VStack>
                     </Box>
@@ -577,9 +577,9 @@ const SupplyDashboard = ({
                           </Text>
                         </HStack>
                         <HStack
-                          display={
-                            supply?.rTokenFreeParsed > 0 ? "flex" : "none"
-                          }
+                          // display={
+                          //   supply?.rTokenFreeParsed > 0 ? "flex" : "none"
+                          // }
                           onMouseEnter={() => handleStatusHover("1" + idx)}
                           onMouseLeave={() => handleStatusHoverLeave()}
                           cursor="pointer"
@@ -610,9 +610,9 @@ const SupplyDashboard = ({
                         </HStack>
                       </HStack>
                       <HStack
-                        display={
-                          supply?.rTokenLockedParsed > 0 ? "flex" : "none"
-                        }
+                        // display={
+                        //   supply?.rTokenLockedParsed > 0 ? "flex" : "none"
+                        // }
                         // mx={
                         //   supply?.rTokenStakedParsed <= 0 ||
                         //   supply?.rTokenFreeParsed <= 0

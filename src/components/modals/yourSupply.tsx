@@ -92,6 +92,7 @@ import {
 import CopyToClipboard from "react-copy-to-clipboard";
 import mixpanel from "mixpanel-browser";
 import { getSupplyunlocked } from "@/Blockchain/scripts/Rewards";
+import { selectUserDeposits } from "@/store/slices/readDataSlice";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
@@ -135,6 +136,8 @@ const YourSupplyModal = ({
     rETH: useBalanceOf(tokenAddressMap["rETH"] || ""),
     rDAI: useBalanceOf(tokenAddressMap["rDAI"] || ""),
   };
+  const userDeposit = useSelector(selectUserDeposits);
+  // console.log(userDeposit,"user deposit your supply")
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
       ? Number(
@@ -147,18 +150,11 @@ const YourSupplyModal = ({
       )
       : 0
   );
+  // console.log(currentSelectedWithdrawlCoin)
   const [withdrawWalletBalance, setWithdrawWalletBalance] = useState(
-    walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf === "success"
-      ? Number(
-        BNtoNum(
-          uint256.uint256ToBN(
-            walletBalances[currentSelectedWithdrawlCoin]?.dataBalanceOf
-              ?.balance
-          ),
-          tokenDecimalsMap[currentSelectedWithdrawlCoin]
-        )
-      )
-      : 0
+    userDeposit?.find(
+      (item: any) => item.rToken == currentSelectedWithdrawlCoin
+    )?.rTokenFreeParsed
   );
 
   useEffect(() => {
@@ -182,22 +178,12 @@ const YourSupplyModal = ({
   ]);
   useEffect(() => {
     setWithdrawWalletBalance(
-      walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf ===
-        "success"
-        ? Number(
-          BNtoNum(
-            uint256.uint256ToBN(
-              walletBalances[currentSelectedWithdrawlCoin]?.dataBalanceOf
-                ?.balance
-            ),
-            tokenDecimalsMap[currentSelectedWithdrawlCoin]
-          )
-        )
-        : 0
+      userDeposit?.find(
+        (item: any) => item.rToken == currentSelectedWithdrawlCoin
+      )?.rTokenFreeParsed
     );
     // console.log("supply modal status wallet balance",walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf)
   }, [
-    walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf,
     currentSelectedWithdrawlCoin,
   ]);
 
@@ -693,7 +679,7 @@ const YourSupplyModal = ({
         isOpen={isOpen}
         onClose={() => {
           onClose();
-          if(transactionStarted || withdrawTransactionStarted){
+          if (transactionStarted || withdrawTransactionStarted) {
             dispatch(setTransactionStartedAndModalClosed(true))
           }
           resetStates();
@@ -866,14 +852,14 @@ const YourSupplyModal = ({
                                       display="flex"
                                       py="5px"
                                       pl={`${coin === currentSelectedSupplyCoin
-                                          ? "1"
-                                          : "5"
+                                        ? "1"
+                                        : "5"
                                         }`}
                                       pr="6px"
                                       gap="1"
                                       bg={`${coin === currentSelectedSupplyCoin
-                                          ? "#0C6AD9"
-                                          : "inherit"
+                                        ? "#0C6AD9"
+                                        : "inherit"
                                         }`}
                                       borderRadius="md"
                                       justifyContent="space-between"
@@ -939,13 +925,13 @@ const YourSupplyModal = ({
                           width="100%"
                           color="white"
                           border={`${inputSupplyAmount > walletBalance
+                            ? "1px solid #CF222E"
+                            : inputSupplyAmount < 0
                               ? "1px solid #CF222E"
-                              : inputSupplyAmount < 0
-                                ? "1px solid #CF222E"
-                                : inputSupplyAmount > 0 &&
-                                  inputSupplyAmount <= walletBalance
-                                  ? "1px solid #1A7F37"
-                                  : "1px solid #2B2F35 "
+                              : inputSupplyAmount > 0 &&
+                                inputSupplyAmount <= walletBalance
+                                ? "1px solid #1A7F37"
+                                : "1px solid #2B2F35 "
                             }`}
                           borderRadius="6px"
                           display="flex"
@@ -968,12 +954,12 @@ const YourSupplyModal = ({
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedSupplyCoin}`}
                               color={`${inputSupplyAmount > walletBalance
+                                ? "#CF222E"
+                                : inputSupplyAmount < 0
                                   ? "#CF222E"
-                                  : inputSupplyAmount < 0
-                                    ? "#CF222E"
-                                    : inputSupplyAmount == 0
-                                      ? "white"
-                                      : "#1A7F37"
+                                  : inputSupplyAmount == 0
+                                    ? "white"
+                                    : "#1A7F37"
                                 }`}
                               border="0px"
                               _disabled={{ color: "#1A7F37" }}
@@ -1507,14 +1493,14 @@ const YourSupplyModal = ({
                                       display="flex"
                                       py="5px"
                                       pl={`${coin === currentSelectedWithdrawlCoin
-                                          ? "1"
-                                          : "5"
+                                        ? "1"
+                                        : "5"
                                         }`}
                                       pr="6px"
                                       gap="1"
                                       bg={`${coin === currentSelectedWithdrawlCoin
-                                          ? "#0C6AD9"
-                                          : "inherit"
+                                        ? "#0C6AD9"
+                                        : "inherit"
                                         }`}
                                       borderRadius="md"
                                       justifyContent="space-between"
@@ -1530,15 +1516,9 @@ const YourSupplyModal = ({
                                         fontWeight="thin"
                                       >
                                         Wallet Balance:{" "}
-                                        {Number(
-                                          BNtoNum(
-                                            uint256.uint256ToBN(
-                                              walletBalances[coin]
-                                                ?.dataBalanceOf?.balance
-                                            ),
-                                            tokenDecimalsMap[coin]
-                                          )
-                                        )}
+                                        {userDeposit?.find(
+                                          (item: any) => item.rToken == coin
+                                        )?.rTokenFreeParsed}
                                       </Box>
                                     </Box>
                                   </Box>
@@ -1580,15 +1560,15 @@ const YourSupplyModal = ({
                           width="100%"
                           color="white"
                           border={`${inputWithdrawlAmount > walletBalance
+                            ? "1px solid #CF222E"
+                            : inputWithdrawlAmount < 0
                               ? "1px solid #CF222E"
                               : inputWithdrawlAmount < 0
                                 ? "1px solid #CF222E"
-                                : inputWithdrawlAmount < 0
-                                  ? "1px solid #CF222E"
-                                  : inputWithdrawlAmount > 0 &&
-                                    inputWithdrawlAmount <= walletBalance
-                                    ? "1px solid #1A7F37"
-                                    : "1px solid #2B2F35 "
+                                : inputWithdrawlAmount > 0 &&
+                                  inputWithdrawlAmount <= walletBalance
+                                  ? "1px solid #1A7F37"
+                                  : "1px solid #2B2F35 "
                             }`}
                           borderRadius="6px"
                           display="flex"
@@ -1613,12 +1593,12 @@ const YourSupplyModal = ({
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedWithdrawlCoin}`}
                               color={`${inputWithdrawlAmount > walletBalance
+                                ? "#CF222E"
+                                : inputWithdrawlAmount < 0
                                   ? "#CF222E"
-                                  : inputWithdrawlAmount < 0
-                                    ? "#CF222E"
-                                    : inputWithdrawlAmount == 0
-                                      ? "white"
-                                      : "#1A7F37"
+                                  : inputWithdrawlAmount == 0
+                                    ? "white"
+                                    : "#1A7F37"
                                 }`}
                               _disabled={{ color: "#1A7F37" }}
                               border="0px"
@@ -1675,7 +1655,7 @@ const YourSupplyModal = ({
                               display="flex"
                               justifyContent="flex-end"
                             >
-                              Wallet Balance: {walletBalance}
+                              Wallet Balance: {withdrawWalletBalance}
                               <Text color="#6E7781" ml="0.2rem">
                                 {` ${currentSelectedWithdrawlCoin}`}
                               </Text>
