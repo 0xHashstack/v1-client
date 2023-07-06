@@ -527,12 +527,12 @@ const SupplyDashboard = ({
                       <HStack
                         // bgColor="red"
                         justifyContent="flex-start"
-                        display={
-                          supply?.rTokenStakedParsed > 0 ||
-                          supply?.rTokenFreeParsed > 0
-                            ? "flex"
-                            : "none"
-                        }
+                        // display={
+                        //   supply?.rTokenStakedParsed > 0 ||
+                        //   supply?.rTokenFreeParsed > 0
+                        //     ? "flex"
+                        //     : "none"
+                        // }
                         // mx={
                         //   supply?.rTokenStakedParsed <= 0 ||
                         //   supply?.rTokenFreeParsed <= 0
@@ -544,9 +544,9 @@ const SupplyDashboard = ({
                           onMouseEnter={() => handleStatusHover("0" + idx)}
                           onMouseLeave={() => handleStatusHoverLeave()}
                           _hover={{ cursor: "pointer" }}
-                          display={
-                            supply?.rTokenStakedParsed > 0 ? "flex" : "none"
-                          }
+                          // display={
+                          //   supply?.rTokenStakedParsed > 0 ? "flex" : "none"
+                          // }
                           // bgColor="red"
                           mr="16px"
                           pl={2}
