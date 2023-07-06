@@ -336,8 +336,8 @@ const BorrowModal = ({
     rTokenAmount,
   ]);
 
-  const [inputBorrowAmountUSD, setInputBorrowAmountUSD] = useState(0);
-  const [inputCollateralAmountUSD, setInputCollateralAmountUSD] = useState(0);
+  const [inputBorrowAmountUSD, setInputBorrowAmountUSD] = useState<any>(0);
+  const [inputCollateralAmountUSD, setInputCollateralAmountUSD] = useState<any>(0);
   useEffect(() => {
     fetchParsedUSDValueBorrow();
   }, [inputBorrowAmount, currentBorrowCoin]);
