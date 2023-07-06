@@ -162,12 +162,21 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   }, []);
   useEffect(() => {
     function isCorrectNetwork() {
-      console.log("starknetAccount", account);
-      return (
-        // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
-        // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
-        account?.chainId == "0x534e5f474f45524c49"
-      );
+      const walletConnected = localStorage.getItem("lastUsedConnector");
+      if(walletConnected=="braavos"){
+        return (
+          // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+          // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+          account?.chainId == "0x534e5f474f45524c49"
+        );
+      }else if(walletConnected=="argentX"){
+        return (
+          // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+          // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+          account?.provider?.chainId == "0x534e5f474f45524c49"
+        );
+      }
+      // console.log("starknetAccount", account?.provider?.chainId);
     }
     if (account && !isCorrectNetwork()) {
       setRender(false);

@@ -2384,7 +2384,7 @@ const YourBorrowModal = ({
         collateralBalance.substring(spaceIndex + 1),
         inputCollateralAmount
       );
-      console.log(data, "data in your borrow");
+      // console.log(data, "data in your borrow");
       setEstrTokensMinted(data);
     };
     fetchEstrTokens();
