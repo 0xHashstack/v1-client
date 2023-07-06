@@ -4285,7 +4285,7 @@ const YourBorrowModal = ({
                                         py="5px"
                                         px={`${
                                           coin === currentTokenSelected
-                                            ? "1"
+                                            ? "2"
                                             : "5"
                                         }`}
                                         gap="1"
