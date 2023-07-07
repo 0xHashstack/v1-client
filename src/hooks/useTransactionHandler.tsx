@@ -74,7 +74,6 @@ const useTransactionHandler = () => {
                 position: toast.POSITION.BOTTOM_RIGHT,
               }
             );
-            dispatch(setTransactionRefresh(""));
           }
           toastHash.push(transaction_hxh);
           toastHash.push(activeTransactions[idx]?.transaction_hash);

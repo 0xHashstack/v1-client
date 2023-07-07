@@ -31,7 +31,7 @@ const initialState = {
 
   toastTransactionStarted: false,
   transactionStarted: false,
-  transactionStartedAndModalClosed:false,
+  transactionStartedAndModalClosed: false,
   refreshHooks: false,
 
   protocolReserves: {
@@ -49,7 +49,7 @@ const initialState = {
   userLoansCount: -1,
   oraclePricesCount: -1,
   userInfoCount: -1,
-  aprAndHealthFactorCount:-1,
+  aprAndHealthFactorCount: -1,
 
   // walletBalance: {
   //   BTC: 0,
@@ -151,8 +151,8 @@ export const userAccountSlice = createSlice({
     setRefreshHooks(state, action) {
       state.refreshHooks = action.payload;
     },
-    setTransactionStartedAndModalClosed(state,action){
-      state.transactionStartedAndModalClosed=action.payload;
+    setTransactionStartedAndModalClosed(state, action) {
+      state.transactionStartedAndModalClosed = action.payload;
     },
     setActiveTransactions(state, action) {
       state.activeTransactions = action.payload;
@@ -182,7 +182,7 @@ export const userAccountSlice = createSlice({
     },
     setUserDepositsCount(state, action) {
       state.userDepositsCount = state.transactionRefresh;
-      // const count = state.userDepositsCount + 1;
+      // const count = state.userDepositsCount + 1; 
       // return { ...state, userDepositsCount: count };
     },
     setUserLoansCount(state, action) {
@@ -190,11 +190,11 @@ export const userAccountSlice = createSlice({
       // const count = state.userLoansCount + 1;
       // return { ...state, userLoansCount: count };
     },
-    setAprsAndHealthCount(state,action){
-      state.aprAndHealthFactorCount=state.transactionRefresh;
+    setAprsAndHealthCount(state, action) {
+      state.aprAndHealthFactorCount = state.transactionRefresh;
     },
-    setAccountReset(state,action){
-      return {...initialState};
+    setAccountReset(state, action) {
+      return { ...initialState };
     },
 
     // setWalletBalance(state, action) {
@@ -238,7 +238,7 @@ export const {
   setAprsAndHealthCount,
   setUserUnspentLoans,
   setTransactionStartedAndModalClosed,
-  setAccountReset
+  setAccountReset,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -265,7 +265,7 @@ export const selectTransactionStatus = (state) =>
 //   state.user_account.currentTransactionStatus;
 export const selectAssetWalletBalance = (state) =>
   state.user_account.assetWalletBalance;
-export const selectTransactionStartedAndModalClosed=(state)=>
+export const selectTransactionStartedAndModalClosed = (state) =>
   state.user_account.transactionStartedAndModalClosed;
 export const selectInputSupplyAmount = (state) =>
   state.user_account.inputSupplyAmount;
@@ -304,7 +304,8 @@ export const selectUserLoansCount = (state) =>
 export const selectOraclePricesCount = (state) =>
   state.user_account.oraclePricesCount;
 export const selectUserInfoCount = (state) => state.user_account.userInfoCount;
-export const selectAprsAndHealthCount=(state)=>state.user_account.aprAndHealthFactorCount;
+export const selectAprsAndHealthCount = (state) =>
+  state.user_account.aprAndHealthFactorCount;
 export const selectUserUnspentLoans = (state) =>
   state.user_account.userUnspentLoans;
 // export const select=(state)=> state.user_account.
