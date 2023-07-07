@@ -1,12 +1,14 @@
 import { Contract, number, uint256 } from "starknet";
 import jediSwapAbi from "../abis/jedi_swap_abi.json";
+import pricerAbi from "../abis/pricer_abi.json";
 import mySwapAbi from "../abis/my_swap_abi.json";
 import {
+  diamondAddress,
   getProvider,
   getTokenFromAddress,
   l3DiamondAddress,
 } from "../stark-constants";
-import { tokenAddressMap } from "../utils/addressServices";
+import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
 import { NativeToken } from "../interfaces/interfaces";
 
@@ -19,6 +21,42 @@ type LiquiditySplit = {
   tokenBAddress: string;
   tokenB: NativeToken;
 };
+
+export async function getUSDValue(market: string, amount: number) {
+  console.log("get_asset_usd_value", market, amount);
+  const provider = getProvider();
+  try {
+    const pricerContract = new Contract(pricerAbi, diamondAddress, provider);
+    const res = await pricerContract.call(
+      "get_asset_usd_value",
+      [tokenAddressMap[market], [amount, 0]],
+      {
+        blockIdentifier: "pending",
+      }
+    );
+    console.log("tokendecimal", tokenDecimalsMap[market]);
+    console.log("res", res?.decimals?.words[0]);
+
+    console.log(
+      "estimated usd value: ",
+      parseAmount(
+        uint256.uint256ToBN(res?.usd_value).toString(),
+        res?.decimals?.words[0]
+      )
+    );
+    return parseAmount(
+      uint256.uint256ToBN(res?.usd_value).toString(),
+      res?.decimals?.words[0]
+      // 8
+    );
+    // return [
+    //   parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8),
+    //   parseAmount(uint256.uint256ToBN(res?.amountB).toString(), 8),
+    // ];
+  } catch (error) {
+    console.log("error in getting usd value: ", error);
+  }
+}
 
 // before interaction
 export async function getJediEstimateLiquiditySplit(

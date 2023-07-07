@@ -47,6 +47,9 @@ import {
   selectAccount,
   selectAccountAddress,
   selectLanguage,
+  setAccountReset,
+  setAvgBorrowAPR,
+  setAvgSupplyAPR,
   setLanguage,
 } from "@/store/slices/userAccountSlice";
 import {
@@ -63,6 +66,8 @@ import GetTokensModal from "@/components/modals/getTokens";
 import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import { Coins } from "../dashboardLeft";
 import mixpanel from "mixpanel-browser";
+import useDataLoader from "@/hooks/useDataLoader";
+import { resetState, setAprAndHealthFactor, setNetAPR, setNetWorth, setOraclePrices, setProtocolStats, setTransactionRefresh, setUserDeposits, setUserLoans, setYourBorrow, setYourSupply } from "@/store/slices/readDataSlice";
 const Navbar = ({ validRTokens }: any) => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
@@ -153,6 +158,23 @@ const Navbar = ({ validRTokens }: any) => {
       connect(connectors[0]);
     }
   };
+
+  const resetStates=()=>{
+    dispatch(setNavDropdown(""));
+    dispatch(setTransactionRefresh(""));
+    dispatch(setUserDeposits(null));
+    dispatch(setProtocolStats(null));
+    dispatch(setAprAndHealthFactor(null));
+    dispatch(setUserLoans(null));
+    dispatch(setOraclePrices(null));
+    dispatch(setProtocolStats(null));
+    dispatch(setNetAPR(null));
+    dispatch(setNetWorth(null));
+    dispatch(setYourBorrow(null));
+    dispatch(setYourSupply(null));
+    dispatch(setAvgBorrowAPR(null));
+    dispatch(setAvgSupplyAPR(null));
+  }
 
   return (
     <HStack
@@ -643,8 +665,9 @@ const Navbar = ({ validRTokens }: any) => {
                       borderRadius="6px"
                       border="1px solid #2B2F35"
                       onClick={() => {
-                        dispatch(setNavDropdown(""));
                         disconnect();
+                        dispatch(resetState(null));
+                        dispatch(setAccountReset(null));
                         localStorage.setItem("lastUsedConnector", "");
                         // localStorage.setItem("account", "");
 
@@ -661,6 +684,8 @@ const Navbar = ({ validRTokens }: any) => {
                       border="1px solid #2B2F35"
                       onClick={() => {
                         dispatch(setNavDropdown(""));
+                        dispatch(resetState(null));
+                        dispatch(setAccountReset(null));
                         switchWallet();
                         // disconnect();
                         // router.push("./");

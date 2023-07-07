@@ -46,6 +46,7 @@ import {
   setToastTransactionStarted,
   selectActiveTransactions,
   setActiveTransactions,
+  setTransactionStartedAndModalClosed,
   // selectTransactionStarted,
   // setTransactionStarted,
   // selectCurrentTransactionStatus,
@@ -525,6 +526,7 @@ const SupplyModal = ({
       mixpanel.track('Supply Market Status',{
         'Status':"Failure"
     })
+    
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
@@ -697,6 +699,9 @@ const SupplyModal = ({
           isOpen={isOpen}
           onClose={() => {
             onClose();
+            if(transactionStarted){
+              dispatch(setTransactionStartedAndModalClosed(true))
+            }
             resetStates();
             // if (transactionStarted) dispatch(setToastTransactionStarted(true));
             // if (setIsOpenCustom) setIsOpenCustom(false);
@@ -1404,6 +1409,7 @@ const SupplyModal = ({
                       setTransactionStarted(true);
                       if (transactionStarted === false) {
                         handleTransaction();
+                        dispatch(setTransactionStartedAndModalClosed(false))
                         mixpanel.track('Supply Market Clicked Button',{
                           'Supply Clicked':true
                         })

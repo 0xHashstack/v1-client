@@ -33,6 +33,7 @@ import Banner from "@/components/uiElements/loaders/Banner";
 import Banner2 from "@/components/uiElements/loaders/Banner2";
 import useTransactionRefresh from "@/hooks/useTransactionRefresh";
 import mixpanel from "mixpanel-browser";
+import useDataLoader from "@/hooks/useDataLoader";
 // import AnimatedButton from "@/components/uiElements/buttons/AnimationButton";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -45,7 +46,11 @@ export default function Home() {
   const { available, disconnect, connect, connectors, refresh } =
     useConnectors();
   const [render, setRender] = useState(true);
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
+    debug: true,
+    track_pageview: true,
+    persistence: "localStorage",
+  });
   const [lastusedConnector, setLastusedConnector] = useState("");
   const [isWhiteListed, setIsWhiteListed] = useState(false);
   const [isWaitListed, setIsWaitListed] = useState(true);
@@ -107,9 +112,11 @@ export default function Home() {
     if (walletConnected == "braavos") {
       disconnect();
       connect(connectors[0]);
+      dispatch(setTransactionRefresh(""))
     } else if (walletConnected == "argentX") {
       disconnect();
       connect(connectors[1]);
+      dispatch(setTransactionRefresh(""))
     }
     if (!hasVisited) {
       // Set a local storage item to indicate the user has visited
@@ -127,11 +134,11 @@ export default function Home() {
       //   mixpanel.identify("13793");
       //   mixpanel.track('Signed Up')
       // }
-      mixpanel.identify(address)
-      mixpanel.track('Connect Wallet', {
-        'Wallet address': address,
-        'Wallet Connected':walletConnected
-      })
+      mixpanel?.identify(address);
+      mixpanel?.track("Connect Wallet", {
+        "Wallet address": address,
+        "Wallet Connected": walletConnected,
+      });
       if (!isWaitListed) {
         router.replace(waitlistHref);
       } else {

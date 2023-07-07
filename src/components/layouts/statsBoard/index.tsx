@@ -20,10 +20,13 @@ const StatsBoard = () => {
   //   avgAssetUtilisation: null, // weighted avg of all the utilisations of markets
   // });
   const protocolReserves = useSelector(selectProtocolReserves);
-  const netWorth=useSelector(selectNetWorth);
-  const yourSupply=useSelector(selectYourSupply);
-  const yourBorrow= useSelector(selectYourBorrow);
-  const netAPR= useSelector(selectNetAPR);
+  const netWorth=useSelector(selectNetWorth) ;
+  const yourSupply=useSelector(selectYourSupply) ;
+  const yourBorrow= useSelector(selectYourBorrow) ;
+  const netAPR= useSelector(selectNetAPR) ;
+  // const netWorth= datanetWorth? datanetWorth:"-";
+  // console.log(netWorth,"net worth")
+  
   // const [userStats, setUserStats] = useState({
   //   netWorth: netWorth,// current values of loans - total borrow + total supply
   //   yourSupply: yourSupply, // usd terms

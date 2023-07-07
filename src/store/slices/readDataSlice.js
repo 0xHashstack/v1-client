@@ -96,6 +96,9 @@ export const readDataSlice = createSlice({
     setCurrentNetwork(state, action) {
       state.currentNetwork = action.payload;
     },
+    resetState(state, action) {
+      return { ...initialState };
+    },
 
     extraReducers: {
       [HYDRATE]: (state, action) => {
@@ -130,6 +133,7 @@ export const {
   setUserLoansCount,
   setBlock,
   setCurrentNetwork,
+  resetState
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
