@@ -154,27 +154,13 @@ const Navbar = ({ validRTokens }: any) => {
     // console.log(connector);
     if (connector?.options?.id == "braavos") {
       connect(connectors[1]);
+      router.push("/v1/market");
     } else {
       connect(connectors[0]);
+      router.push("/v1/market");
     }
   };
 
-  const resetStates=()=>{
-    dispatch(setNavDropdown(""));
-    dispatch(setTransactionRefresh(""));
-    dispatch(setUserDeposits(null));
-    dispatch(setProtocolStats(null));
-    dispatch(setAprAndHealthFactor(null));
-    dispatch(setUserLoans(null));
-    dispatch(setOraclePrices(null));
-    dispatch(setProtocolStats(null));
-    dispatch(setNetAPR(null));
-    dispatch(setNetWorth(null));
-    dispatch(setYourBorrow(null));
-    dispatch(setYourSupply(null));
-    dispatch(setAvgBorrowAPR(null));
-    dispatch(setAvgSupplyAPR(null));
-  }
 
   return (
     <HStack

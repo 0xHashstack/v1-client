@@ -67,7 +67,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   //     router.events.off("routeChangeComplete", handleRouteChangeComplete);
   //   };
   // }, [handleRouteChange, router.events]);
-  // connect(connectors[0])
+// connect(connectors[0])
   // console.log(connectors)
 
   // useEffect(() => {

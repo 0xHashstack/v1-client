@@ -1205,7 +1205,7 @@ const YourSupplyModal = ({
                         mt="1rem"
                         p="1rem"
                         border="1px solid #2B2F35"
-                        mb="0.5rem"
+                        mb="1rem"
                       >
                         <Text
                           display="flex"
