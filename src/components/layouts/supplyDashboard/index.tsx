@@ -477,7 +477,7 @@ const SupplyDashboard = ({
                           protocolStats.find((stat: any) => {
                             if (stat?.token === supply?.rToken?.slice(1))
                               return stat.supplyRate;
-                          }).exchangeRateRtokenToUnderlying + " %"
+                          })?.exchangeRateRtokenToUnderlying + " %"
                         )}
                       </Text>
                     </Td>
@@ -511,7 +511,7 @@ const SupplyDashboard = ({
                           protocolStats.find((stat: any) => {
                             if (stat?.token === supply?.rToken?.slice(1))
                               return stat.supplyRate;
-                          }).supplyRate + " %"
+                          })?.supplyRate + " %"
                         )}
                       </Box>
                     </Td>
@@ -560,6 +560,7 @@ const SupplyDashboard = ({
                         // bgColor={"blue"}
                         margin="0 auto"
                         gap={2}
+                        pl="1.1rem"
                       >
                         {/* {checkGap(idx1, idx2)} */}
                         <HStack
