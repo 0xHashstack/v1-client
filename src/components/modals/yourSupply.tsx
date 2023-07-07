@@ -72,6 +72,7 @@ import {
   selectAssetWalletBalance,
   selectActiveTransactions,
   setActiveTransactions,
+  setTransactionStartedAndModalClosed,
 } from "@/store/slices/userAccountSlice";
 import SmallErrorIcon from "@/assets/icons/smallErrorIcon";
 import AnimatedButton from "../uiElements/buttons/AnimationButton";
@@ -90,11 +91,15 @@ import {
 } from "@/Blockchain/utils/addressServices";
 import CopyToClipboard from "react-copy-to-clipboard";
 import mixpanel from "mixpanel-browser";
+import { getSupplyunlocked } from "@/Blockchain/scripts/Rewards";
+import { selectUserDeposits } from "@/store/slices/readDataSlice";
+import BlueInfoIcon from "@/assets/icons/blueinfoicon";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
   currentSelectedWithdrawlCoin,
   setcurrentSelectedWithdrawlCoin,
+  currentActionMarket,
   coins,
   protocolStats,
 }: any) => {
@@ -133,6 +138,8 @@ const YourSupplyModal = ({
     rETH: useBalanceOf(tokenAddressMap["rETH"] || ""),
     rDAI: useBalanceOf(tokenAddressMap["rDAI"] || ""),
   };
+  const userDeposit = useSelector(selectUserDeposits);
+  // console.log(userDeposit,"user deposit your supply")
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[currentSelectedSupplyCoin]?.statusBalanceOf === "success"
       ? Number(
@@ -145,18 +152,11 @@ const YourSupplyModal = ({
         )
       : 0
   );
+  // console.log(currentSelectedWithdrawlCoin)
   const [withdrawWalletBalance, setWithdrawWalletBalance] = useState(
-    walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf === "success"
-      ? Number(
-          BNtoNum(
-            uint256.uint256ToBN(
-              walletBalances[currentSelectedWithdrawlCoin]?.dataBalanceOf
-                ?.balance
-            ),
-            tokenDecimalsMap[currentSelectedWithdrawlCoin]
-          )
-        )
-      : 0
+    userDeposit?.find(
+      (item: any) => item.rToken == currentSelectedWithdrawlCoin
+    )?.rTokenFreeParsed
   );
 
   useEffect(() => {
@@ -180,24 +180,13 @@ const YourSupplyModal = ({
   ]);
   useEffect(() => {
     setWithdrawWalletBalance(
-      walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf ===
-        "success"
-        ? Number(
-            BNtoNum(
-              uint256.uint256ToBN(
-                walletBalances[currentSelectedWithdrawlCoin]?.dataBalanceOf
-                  ?.balance
-              ),
-              tokenDecimalsMap[currentSelectedWithdrawlCoin]
-            )
-          )
-        : 0
+      userDeposit?.find(
+        (item: any) => item.rToken == currentSelectedWithdrawlCoin
+      )?.rTokenFreeParsed
     );
     // console.log("supply modal status wallet balance",walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf)
-  }, [
-    walletBalances[currentSelectedWithdrawlCoin]?.statusBalanceOf,
-    currentSelectedWithdrawlCoin,
-  ]);
+  }, [currentSelectedWithdrawlCoin]);
+
   const [ischecked, setIsChecked] = useState(true);
   const [withdrawTransactionStarted, setWithdrawTransactionStarted] =
     useState(false);
@@ -306,7 +295,11 @@ const YourSupplyModal = ({
         break;
     }
   };
-  mixpanel.init("eb921da4a666a145e3b36930d7d984c2" || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
+    debug: true,
+    track_pageview: true,
+    persistence: "localStorage",
+  });
   const handleChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
     var percentage = (newValue * 100) / walletBalance;
@@ -349,6 +342,25 @@ const YourSupplyModal = ({
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
+
+  const [estSupply, setEstSupply] = useState<any>();
+  useEffect(() => {
+    const fetchSupplyUnlocked = async () => {
+      try {
+        if (currentSelectedWithdrawlCoin && inputWithdrawlAmount > 0) {
+          const data = await getSupplyunlocked(
+            currentSelectedWithdrawlCoin,
+            inputWithdrawlAmount
+          );
+          console.log(data, "data in your supply");
+          setEstSupply(data);
+        }
+      } catch (err) {
+        console.log(err, "err in you supply");
+      }
+    };
+    fetchSupplyUnlocked();
+  }, [currentSelectedWithdrawlCoin, inputWithdrawlAmount]);
   // const coins = ["BTC", "USDT", "USDC", "ETH", "DAI"];
   // const walletBalance = useSelector(selectWalletBalance);
   // const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
@@ -372,6 +384,7 @@ const YourSupplyModal = ({
     dispatch(setTransactionStatus(""));
     setToastDisplayed(false);
     setDepositTransHash("");
+    setEstSupply(undefined);
     setCurrentTransactionStatus("");
   };
   const activeModal = Object.keys(modalDropdowns).find(
@@ -479,11 +492,11 @@ const YourSupplyModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
-        mixpanel.track('Withdraw Supply Status',{
-          "Status":"Success",
-          "Token Selected":asset,
-          "Token Amount":inputWithdrawlAmount
-        })
+        mixpanel.track("Withdraw Supply Status", {
+          Status: "Success",
+          "Token Selected": asset,
+          "Token Amount": inputWithdrawlAmount,
+        });
 
         dispatch(setActiveTransactions(activeTransactions));
       }
@@ -494,9 +507,9 @@ const YourSupplyModal = ({
     } catch (err: any) {
       console.log("withraw", err);
       dispatch(setTransactionStatus("failed"));
-      mixpanel.track('Withdraw Supply Status',{
-        "Status":"Failure"
-      })
+      mixpanel.track("Withdraw Supply Status", {
+        Status: "Failure",
+      });
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -515,9 +528,9 @@ const YourSupplyModal = ({
   const handleAddSupply = async () => {
     try {
       if (ischecked) {
-        mixpanel.track('Add Supply and Stake selected',{
-          "Clicked":true
-        })
+        mixpanel.track("Add Supply and Stake selected", {
+          Clicked: true,
+        });
         const addSupplyAndStake = await writeAsyncDepositStake();
         console.log(addSupplyAndStake);
         setDepositTransHash(addSupplyAndStake?.transaction_hash);
@@ -550,11 +563,11 @@ const YourSupplyModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track('Add Supply and Stake Your Supply Status',{
-            "Status":"Success",
-            "Token Selected":supplyAsset,
-            "Token Amount":depositAmount
-          })
+          mixpanel.track("Add Supply and Stake Your Supply Status", {
+            Status: "Success",
+            "Token Selected": supplyAsset,
+            "Token Amount": depositAmount,
+          });
 
           dispatch(setActiveTransactions(activeTransactions));
         }
@@ -592,11 +605,11 @@ const YourSupplyModal = ({
           };
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
-          mixpanel.track('Add Supply Your Supply Status',{
-            "Status":"Success",
-            "Token Selected":supplyAsset,
-            "Token Amount":depositAmount
-          })
+          mixpanel.track("Add Supply Your Supply Status", {
+            Status: "Success",
+            "Token Selected": supplyAsset,
+            "Token Amount": depositAmount,
+          });
 
           dispatch(setActiveTransactions(activeTransactions));
         }
@@ -606,9 +619,9 @@ const YourSupplyModal = ({
     } catch (err) {
       console.log("Unable to add supply ", err);
       dispatch(setTransactionStatus("failed"));
-      mixpanel.track('Add Supply Your Supply Status',{
-        "Status":"Failure"
-      })
+      mixpanel.track("Add Supply Your Supply Status", {
+        Status: "Failure",
+      });
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -673,6 +686,9 @@ const YourSupplyModal = ({
         isOpen={isOpen}
         onClose={() => {
           onClose();
+          if (transactionStarted || withdrawTransactionStarted) {
+            dispatch(setTransactionStartedAndModalClosed(true));
+          }
           resetStates();
         }}
         isCentered
@@ -825,12 +841,15 @@ const YourSupplyModal = ({
                                     gap="1"
                                     pr="2"
                                     onClick={() => {
-                                      setCurrentSelectedSupplyCoin(coin);
+                                      setCurrentSelectedSupplyCoin(
+                                        coin.substring(1)
+                                      );
                                       setSupplyAsset(coin);
                                       // dispatch(setCoinSelectedSupplyModal(coin))
                                     }}
                                   >
-                                    {coin === currentSelectedSupplyCoin && (
+                                    {coin.substring(1) ===
+                                      currentSelectedSupplyCoin && (
                                       <Box
                                         w="3px"
                                         h="28px"
@@ -843,14 +862,16 @@ const YourSupplyModal = ({
                                       display="flex"
                                       py="5px"
                                       pl={`${
-                                        coin === currentSelectedSupplyCoin
+                                        coin.substring(1) ===
+                                        currentSelectedSupplyCoin
                                           ? "1"
                                           : "5"
                                       }`}
                                       pr="6px"
                                       gap="1"
                                       bg={`${
-                                        coin === currentSelectedSupplyCoin
+                                        coin.substring(1) ===
+                                        currentSelectedSupplyCoin
                                           ? "#0C6AD9"
                                           : "inherit"
                                       }`}
@@ -858,8 +879,12 @@ const YourSupplyModal = ({
                                       justifyContent="space-between"
                                     >
                                       <Box display="flex">
-                                        <Box p="1">{getCoin(coin)}</Box>
-                                        <Text color="white">{coin}</Text>
+                                        <Box p="1">
+                                          {getCoin(coin.substring(1))}
+                                        </Box>
+                                        <Text color="white">
+                                          {coin.substring(1)}
+                                        </Text>
                                       </Box>
                                       <Box
                                         fontSize="9px"
@@ -871,10 +896,10 @@ const YourSupplyModal = ({
                                         {Number(
                                           BNtoNum(
                                             uint256.uint256ToBN(
-                                              walletBalances[coin]
+                                              walletBalances[coin.substring(1)]
                                                 ?.dataBalanceOf?.balance
                                             ),
-                                            tokenDecimalsMap[coin]
+                                            tokenDecimalsMap[coin.substring(1)]
                                           )
                                         )}
                                       </Box>
@@ -1287,9 +1312,7 @@ const YourSupplyModal = ({
                           <Text color="#6E7681">
                             {!protocolStats ||
                             protocolStats.length === 0 ||
-                            !getBorrowAPR(
-                              currentSelectedSupplyCoin.slice(1)
-                            ) ? (
+                            !getBorrowAPR(currentSelectedSupplyCoin) ? (
                               <Box pt="2px">
                                 <Skeleton
                                   width="2.3rem"
@@ -1300,22 +1323,72 @@ const YourSupplyModal = ({
                                 />
                               </Box>
                             ) : (
-                              getBorrowAPR(currentSelectedSupplyCoin.slice(1)) +
-                              "%"
+                              getBorrowAPR(currentSelectedSupplyCoin) + "%"
                             )}
 
                             {/* 7.75% */}
                           </Text>
                         </Text>
                       </Card>
+                      {currentActionMarket.slice(1) !==
+                        currentSelectedSupplyCoin && (
+                        <Box
+                          // display="flex"
+                          // justifyContent="left"
+                          w="100%"
+                          // pb="2rem"
+                          // height="64px"
+                          display="flex"
+                          alignItems="center"
+                          mt="2rem"
+                          mb="1rem"
+                        >
+                          <Box
+                            display="flex"
+                            bg="#0C425C"
+                            color="white"
+                            fontSize="12px"
+                            p="4"
+                            border="1px solid rgba(84, 174, 255, 0.4)"
+                            fontStyle="normal"
+                            fontWeight="400"
+                            lineHeight="18px"
+                            borderRadius="6px"
+                            // textAlign="center"
+                          >
+                            <Box pr="3" mt="0.5" cursor="pointer">
+                              <BlueInfoIcon />
+                            </Box>
+                            You have changed your market from{" "}
+                            {currentActionMarket.slice(1)} to{" "}
+                            {currentSelectedSupplyCoin}. your supplied{" "}
+                            {currentSelectedSupplyCoin} will be added in{" "}
+                            {currentSelectedSupplyCoin} market.
+                            {/* <Box
+                                py="1"
+                                pl="4"
+                                cursor="pointer"
+                                // onClick={handleClick}
+                              >
+                                <TableClose />
+                              </Box> */}
+                          </Box>
+                        </Box>
+                      )}
                       {inputSupplyAmount > 0 &&
                       inputSupplyAmount <= walletBalance ? (
                         <Box
                           onClick={() => {
                             setTransactionStarted(true);
-                            mixpanel.track('Add Supply Button Clicked Your Supply',{
-                              "Clicked":true,
-                            })
+                            mixpanel.track(
+                              "Add Supply Button Clicked Your Supply",
+                              {
+                                Clicked: true,
+                              }
+                            );
+                            dispatch(
+                              setTransactionStartedAndModalClosed(false)
+                            );
                             handleAddSupply();
                           }}
                         >
@@ -1326,7 +1399,7 @@ const YourSupplyModal = ({
                             color="#8B949E"
                             size="sm"
                             width="100%"
-                            mt="1.5rem"
+                            // mt="1.5rem"
                             mb="1.5rem"
                             border="1px solid #8B949E"
                             labelSuccessArray={[
@@ -1368,7 +1441,7 @@ const YourSupplyModal = ({
                           color="#6E7681"
                           size="sm"
                           width="100%"
-                          mt="1.5rem"
+                          // mt="1.5rem"
                           mb="1.5rem"
                           border="1px solid #2B2F35"
                           _hover={{ bg: "#101216" }}
@@ -1512,15 +1585,11 @@ const YourSupplyModal = ({
                                         fontWeight="thin"
                                       >
                                         Wallet Balance:{" "}
-                                        {Number(
-                                          BNtoNum(
-                                            uint256.uint256ToBN(
-                                              walletBalances[coin]
-                                                ?.dataBalanceOf?.balance
-                                            ),
-                                            tokenDecimalsMap[coin]
-                                          )
-                                        )}
+                                        {
+                                          userDeposit?.find(
+                                            (item: any) => item.rToken == coin
+                                          )?.rTokenFreeParsed
+                                        }
                                       </Box>
                                     </Box>
                                   </Box>
@@ -1659,7 +1728,7 @@ const YourSupplyModal = ({
                               display="flex"
                               justifyContent="flex-end"
                             >
-                              Wallet Balance: {walletBalance}
+                              Wallet Balance: {withdrawWalletBalance}
                               <Text color="#6E7781" ml="0.2rem">
                                 {` ${currentSelectedWithdrawlCoin}`}
                               </Text>
@@ -1830,9 +1899,20 @@ const YourSupplyModal = ({
                               </Box>
                             </Tooltip>
                           </Text>
-                          <Text color="#6E7681">$ 10.91</Text>
+                          {!estSupply ? (
+                            <Skeleton
+                              width="3rem"
+                              height="1rem"
+                              startColor="#2B2F35"
+                              endColor="#101216"
+                              borderRadius="6px"
+                              ml={2}
+                            />
+                          ) : (
+                            <Text color="#6E7681">$ {estSupply}</Text>
+                          )}
                         </Text>
-                        <Text
+                        {/* <Text
                           color="#8B949E"
                           display="flex"
                           justifyContent="space-between"
@@ -1930,7 +2010,7 @@ const YourSupplyModal = ({
                             </Tooltip>
                           </Text>
                           <Text color="#6E7681">1.240 rETH</Text>
-                        </Text>
+                        </Text> */}
                         <Text
                           display="flex"
                           justifyContent="space-between"
@@ -2009,9 +2089,15 @@ const YourSupplyModal = ({
                           onClick={() => {
                             setWithdrawTransactionStarted(true);
                             if (withdrawTransactionStarted == false) {
-                              mixpanel.track('Withdraw Button Clicked your supply',{
-                                "Clicked":true,
-                              })
+                              mixpanel.track(
+                                "Withdraw Button Clicked your supply",
+                                {
+                                  Clicked: true,
+                                }
+                              );
+                              dispatch(
+                                setTransactionStartedAndModalClosed(false)
+                              );
                               handleWithdrawSupply();
                             }
                           }}

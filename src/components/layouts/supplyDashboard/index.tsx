@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import {
   Table,
   Thead,
@@ -115,11 +115,11 @@ const SupplyDashboard = ({
   const { address } = useAccount();
 
   const [currentSelectedSupplyCoin, setCurrentSelectedSupplyCoin] =
-    useState("rBTC");
+    useState("BTC");
   const [currentSelectedWithdrawlCoin, setcurrentSelectedWithdrawlCoin] =
     useState("rBTC");
   const [supplyMarkets, setSupplyMarkets] = useState([]);
-
+  const [currentActionMarket, setCurrentActionMarket] = useState("rBTC");
   const [statusHoverIndex, setStatusHoverIndex] = useState("-1");
 
   const [supplies, setSupplies] = useState<IDeposit[]>([]);
@@ -146,13 +146,29 @@ const SupplyDashboard = ({
 
         console.log("supply in supply dash: ", supply);
         if (!supply) return;
-        setSupplies([
-          supply?.[2],
-          supply?.[3],
-          supply?.[0],
-          supply?.[1],
-          supply?.[4],
-        ]);
+        let temp: any = [];
+        let indexes: any = [2, 3, 0, 1, 4];
+
+        indexes.map((index: number) => {
+          if (
+            supply?.[index].rTokenAmountParsed !== 0 ||
+            supply?.[index].rTokenFreeParsed !== 0 ||
+            supply?.[index].rTokenLockedParsed !== 0 ||
+            supply?.[index].rTokenStakedParsed !== 0
+          )
+            temp.push(supply[index]);
+        });
+
+        // supply.map((currSupply: any) => {
+        //   if (
+        //     currSupply.rTokenAmountParsed !== 0 ||
+        //     currSupply.rTokenFreeParsed !== 0 ||
+        //     currSupply.rTokenLockedParsed !== 0 ||
+        //     currSupply.rTokenStakedParsed !== 0
+        //   )
+        //     temp.push(currSupply);
+        // });
+        setSupplies(temp);
         if (avgs.length == 0) {
           for (var i = 0; i < supply?.length; i++) {
             const avg = await effectiveAprDeposit(
@@ -235,7 +251,7 @@ const SupplyDashboard = ({
   useEffect(() => {
     let temp: any = [];
     supplies.map((coin: any) => {
-      if (coin?.rTokenAmountParsed != 0) {
+      if (coin?.rTokenAmountParsed != 0 || coin?.rTokenStakedParsed !== 0) {
         temp.push(coin?.rToken);
       }
     });
@@ -243,6 +259,7 @@ const SupplyDashboard = ({
   }, [supplies]);
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
+  // console.log(userDeposits?.length,"length supply");
   upper_bound = Math.min(userDeposits?.length - 1, upper_bound);
   // useEffect(() => {
   //   try {
@@ -301,77 +318,78 @@ const SupplyDashboard = ({
       </Box>
     </>
   ) : upper_bound >= lower_bound && supplies?.length > 0 ? (
-    <TableContainer
+    <Box
+      height={"37rem"}
+      w={width}
       bg="#101216"
       border="1px"
       borderColor="#2B2F35"
       color="white"
       borderRadius="md"
-      w={width}
-      display="flex"
-      justifyContent="flex-start"
-      alignItems="flex-start"
-      // bgColor={"yellow"}
-      // height={"100%"}
-      height={"37rem"}
-      padding={"1rem 1.5rem"}
-      overflowX="hidden"
-      // m={0}
-      // mt={"3rem"}
-      // style={{ marginTop: "0.8rem" }}
     >
-      <Table variant="unstyled" width="100%" height="100%">
-        <Thead width={"100%"} height={"5rem"}>
-          <Tr width={"100%"} height="2rem">
-            {columnItems.map((val: any, idx1: any) => (
-              <Td
-                key={idx1}
-                width={"12.5%"}
-                // maxWidth={`${gap[idx1][idx2]}%`}
-                fontSize={"12px"}
-                fontWeight={400}
-                textAlign={
-                  idx1 == 0
-                    ? "left"
-                    : idx1 == columnItems.length - 1
-                    ? "right"
-                    : "center"
-                }
-                pl={idx1 == 0 ? 22 : 0}
-                pr={idx1 == columnItems.length - 1 ? 12 : 0}
-                // border="1px solid blue"
-              >
-                <Text
-                  whiteSpace="pre-wrap"
-                  overflowWrap="break-word"
-                  // bgColor={"red"}
-                  width={"100%"}
-                  height={"2rem"}
-                  // textAlign="center"
-                  color={"#BDBFC1"}
+      <TableContainer
+        display="flex"
+        justifyContent="flex-start"
+        alignItems="flex-start"
+        // bgColor={"yellow"}
+        // height={"100%"}
+        padding={"1rem 1.5rem"}
+        overflowX="hidden"
+        // m={0}
+        // mt={"3rem"}
+        // style={{ marginTop: "0.8rem" }}
+      >
+        <Table variant="unstyled" width="100%" height="100%">
+          <Thead width={"100%"} height={"5rem"}>
+            <Tr width={"100%"} height="2rem">
+              {columnItems.map((val: any, idx1: any) => (
+                <Td
+                  key={idx1}
+                  width={"12.5%"}
+                  // maxWidth={`${gap[idx1][idx2]}%`}
+                  fontSize={"12px"}
+                  fontWeight={400}
+                  textAlign={
+                    idx1 == 0
+                      ? "left"
+                      : idx1 == columnItems.length - 1
+                      ? "right"
+                      : "center"
+                  }
+                  pl={idx1 == 0 ? 22 : 0}
+                  pr={idx1 == columnItems.length - 1 ? 12 : 0}
+                  // border="1px solid blue"
                 >
-                  {val}
-                </Text>
-              </Td>
-            ))}
-          </Tr>
-        </Thead>
-        <Tbody
-          position="relative"
-          overflowX="hidden"
-          //   display="flex"
-          //   flexDirection="column"
-          //   gap={"1rem"}
-        >
-          {supplies?.slice(lower_bound, upper_bound + 1).map(
-            (supply: any, idx: number) =>
-              supply &&
-              supply?.rTokenAmountParsed && (
+                  <Text
+                    whiteSpace="pre-wrap"
+                    overflowWrap="break-word"
+                    // bgColor={"red"}
+                    width={"100%"}
+                    height={"2rem"}
+                    // textAlign="center"
+                    color={"#BDBFC1"}
+                  >
+                    {val}
+                  </Text>
+                </Td>
+              ))}
+            </Tr>
+          </Thead>
+          <Tbody
+            position="relative"
+            overflowX="hidden"
+            //   display="flex"
+            //   flexDirection="column"
+            //   gap={"1rem"}
+          >
+            {supplies
+              ?.slice(lower_bound, upper_bound + 1)
+              .map((supply: any, idx: number) => (
                 <>
                   <Tr
                     key={idx}
                     width={"100%"}
-                    height={"5.1rem"}
+                    height={"5.2rem"}
                     // bgColor="blue"
                     // borderBottom="1px solid #2b2f35"
                     position="relative"
@@ -421,7 +439,11 @@ const SupplyDashboard = ({
                             fontWeight="500"
                             color="#F7BB5B"
                           >
-                            {numberFormatter(supply?.rTokenAmountParsed)}
+                            {numberFormatter(
+                              supply?.rTokenAmountParsed +
+                                supply?.rTokenStakedParsed +
+                                supply?.rTokenLockedParsed
+                            )}
                           </Text>
                         </VStack>
                       </Box>
@@ -452,7 +474,10 @@ const SupplyDashboard = ({
                             borderRadius="6px"
                           />
                         ) : (
-                          protocolStats[idx]?.exchangeRateRtokenToUnderlying
+                          protocolStats.find((stat: any) => {
+                            if (stat?.token === supply?.rToken?.slice(1))
+                              return stat.supplyRate;
+                          }).exchangeRateRtokenToUnderlying + " %"
                         )}
                       </Text>
                     </Td>
@@ -482,7 +507,11 @@ const SupplyDashboard = ({
                             borderRadius="6px"
                           />
                         ) : (
-                          protocolStats[idx]?.supplyRate + "%"
+                          // protocolStats[idx]?.supplyRate + "%"
+                          protocolStats.find((stat: any) => {
+                            if (stat?.token === supply?.rToken?.slice(1))
+                              return stat.supplyRate;
+                          }).supplyRate + " %"
                         )}
                       </Box>
                     </Td>
@@ -512,7 +541,6 @@ const SupplyDashboard = ({
                         %{/* {supply?.token} */}
                       </Text>
                     </Td>
-
                     <Td
                       width={"12.5%"}
                       maxWidth={"3rem"}
@@ -537,12 +565,12 @@ const SupplyDashboard = ({
                         <HStack
                           // bgColor="red"
                           justifyContent="flex-start"
-                          display={
-                            supply?.rTokenStakedParsed > 0 ||
-                            supply?.rTokenFreeParsed > 0
-                              ? "flex"
-                              : "none"
-                          }
+                          // display={
+                          //   supply?.rTokenStakedParsed > 0 ||
+                          //   supply?.rTokenFreeParsed > 0
+                          //     ? "flex"
+                          //     : "none"
+                          // }
                           // mx={
                           //   supply?.rTokenStakedParsed <= 0 ||
                           //   supply?.rTokenFreeParsed <= 0
@@ -554,9 +582,9 @@ const SupplyDashboard = ({
                             onMouseEnter={() => handleStatusHover("0" + idx)}
                             onMouseLeave={() => handleStatusHoverLeave()}
                             _hover={{ cursor: "pointer" }}
-                            display={
-                              supply?.rTokenStakedParsed > 0 ? "flex" : "none"
-                            }
+                            // display={
+                            //   supply?.rTokenStakedParsed > 0 ? "flex" : "none"
+                            // }
                             // bgColor="red"
                             mr="16px"
                             pl={2}
@@ -587,9 +615,9 @@ const SupplyDashboard = ({
                             </Text>
                           </HStack>
                           <HStack
-                            display={
-                              supply?.rTokenFreeParsed > 0 ? "flex" : "none"
-                            }
+                            // display={
+                            //   supply?.rTokenFreeParsed > 0 ? "flex" : "none"
+                            // }
                             onMouseEnter={() => handleStatusHover("1" + idx)}
                             onMouseLeave={() => handleStatusHoverLeave()}
                             cursor="pointer"
@@ -620,15 +648,15 @@ const SupplyDashboard = ({
                           </HStack>
                         </HStack>
                         <HStack
-                          display={
-                            supply?.rTokenLockedParsed > 0 ? "flex" : "none"
-                          }
-                          // mx={
-                          //   supply?.rTokenStakedParsed <= 0 ||
-                          //   supply?.rTokenFreeParsed <= 0
-                          //     ? "30%"
-                          //     : "0"
-                          // }
+                        // display={
+                        //   supply?.rTokenLockedParsed > 0 ? "flex" : "none"
+                        // }
+                        // mx={
+                        //   supply?.rTokenStakedParsed <= 0 ||
+                        //   supply?.rTokenFreeParsed <= 0
+                        //     ? "30%"
+                        //     : "0"
+                        // }
                         >
                           <HStack
                             pl={2}
@@ -681,8 +709,9 @@ const SupplyDashboard = ({
                         fontWeight="400"
                         pr={2}
                         onClick={() => {
-                          setCurrentSelectedSupplyCoin(supply?.rToken);
+                          setCurrentSelectedSupplyCoin(supply?.token);
                           setcurrentSelectedWithdrawlCoin(supply?.rToken);
+                          setCurrentActionMarket(supply?.rToken);
                         }}
                       >
                         <YourSupplyModal
@@ -696,6 +725,7 @@ const SupplyDashboard = ({
                           setcurrentSelectedWithdrawlCoin={
                             setcurrentSelectedWithdrawlCoin
                           }
+                          currentActionMarket={currentActionMarket}
                           coins={supplyMarkets}
                           protocolStats={protocolStats}
                         />
@@ -714,23 +744,23 @@ const SupplyDashboard = ({
                     }}
                   />
                 </>
-              )
-          )}
-          {(() => {
-            const rows = [];
-            for (
-              let i: number = 0;
-              // i < 6 - (upper_bound - lower_bound + 1);
-              i < 0;
-              i++
-            ) {
-              rows.push(<Tr height="4rem"></Tr>);
-            }
-            return rows;
-          })()}
-        </Tbody>
-      </Table>
-    </TableContainer>
+              ))}
+            {(() => {
+              const rows = [];
+              for (
+                let i: number = 0;
+                // i < 6 - (upper_bound - lower_bound + 1);
+                i < 0;
+                i++
+              ) {
+                rows.push(<Tr height="4rem"></Tr>);
+              }
+              return rows;
+            })()}
+          </Tbody>
+        </Table>
+      </TableContainer>
+    </Box>
   ) : (
     <>
       <Box

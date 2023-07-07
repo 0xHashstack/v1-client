@@ -54,8 +54,9 @@ import {
   setTransactionStatus,
   selectActiveTransactions,
   setActiveTransactions,
+  setTransactionStartedAndModalClosed,
 } from "@/store/slices/userAccountSlice";
-import { selectUserLoans } from "@/store/slices/readDataSlice";
+import { selectAprAndHealthFactor, selectUserLoans } from "@/store/slices/readDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
@@ -138,6 +139,7 @@ const LiquidityProvisionModal = ({
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
 
   let activeTransactions = useSelector(selectActiveTransactions);
+  const avgs=useSelector(selectAprAndHealthFactor)
 
   // console.log(userLoans)
   // console.log(currentId.slice(currentId.indexOf("-") + 1).trim())
@@ -229,7 +231,7 @@ const LiquidityProvisionModal = ({
     "USDT/DAI",
     "USDC/DAI",
   ];
-  mixpanel.init("eb921da4a666a145e3b36930d7d984c2" || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
 
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {
@@ -548,6 +550,9 @@ const LiquidityProvisionModal = ({
           isOpen={isOpen}
           onClose={() => {
             onClose();
+            if(transactionStarted){
+              dispatch(setTransactionStartedAndModalClosed(true))
+            }
             resetStates();
           }}
           isCentered
@@ -1235,7 +1240,14 @@ const LiquidityProvisionModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    5.56%
+                                            {avgs?.find(
+                            (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
+                          )?.avg
+                            ? avgs?.find(
+                                (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
+                              )?.avg
+                            : "3.2"}
+                          %
                   </Text>
                 </Box>
                 <Box display="flex" justifyContent="space-between">
@@ -1270,7 +1282,14 @@ const LiquidityProvisionModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                    1.10
+                                                                {avgs?.find(
+                            (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
+                          )?.avg
+                            ? avgs?.find(
+                                (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
+                              )?.loanHealth
+                            : "2.5"}
+                          %
                   </Text>
                 </Box>
               </Box>
@@ -1282,6 +1301,7 @@ const LiquidityProvisionModal = ({
                       mixpanel.track('Liquidity Button Clicked Spend Borrow',{
                         'Clicked':true
                       })
+                      dispatch(setTransactionStartedAndModalClosed(false))
                       handleLiquidity();
                     }
                   }}

@@ -15,16 +15,21 @@ import {
 } from "@/Blockchain/utils/addressServices";
 import { ILoan, Token } from "@/Blockchain/interfaces/interfaces";
 import mixpanel from "mixpanel-browser";
-
+import { setTransactionStatus } from "@/store/slices/userAccountSlice";
+import CopyToClipboard from "react-copy-to-clipboard";
+import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+import { Text } from "@chakra-ui/react";
 const useRepay = (loanParam: any) => {
   const [repayAmount, setRepayAmount] = useState<number>(0);
   const [loan, setLoan] = useState<ILoan>(loanParam);
   const [allowanceVal, setAllowance] = useState(0);
   // console.log(repayAmount, "loan here", loanParam);
-  mixpanel.init("eb921da4a666a145e3b36930d7d984c2" || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY|| "", { debug: true, track_pageview: true, persistence: 'localStorage' });
 
   const [transApprove, setTransApprove] = useState("");
   const [transRepayHash, setTransRepayHash] = useState("");
+  const dispatch=useDispatch();
   const [transSelfLiquidateHash, setIsSelfLiquidateHash] = useState("");
 
   // const repayTransactionReceipt = useWaitForTransaction({
@@ -134,17 +139,30 @@ const useRepay = (loanParam: any) => {
         desc: "Copy the Transaction Hash",
         textToCopy: val.transaction_hash,
       };
-    } catch (err) {
+    } catch (err:any) {
       console.log(err, "err repay");
+      dispatch(setTransactionStatus("failed"));
+      const toastContent = (
+        <div>
+          Transaction failed{" "}
+          <CopyToClipboard text={err}>
+            <Text as="u">copy error!</Text>
+          </CopyToClipboard>
+        </div>
+      );
+      toast.error(toastContent, {
+        position: toast.POSITION.BOTTOM_RIGHT,
+        autoClose: false,
+      });
       mixpanel.track('Repay Borrow Status',{
         "Status":"Failure"
       })
-      const toastParamValue = {
-        success: false,
-        heading: "Repay Transaction Failed",
-        desc: "Copy the error",
-        textToCopy: err,
-      };
+      // const toastParamValue = {
+      //   success: false,
+      //   heading: "Repay Transaction Failed",
+      //   desc: "Copy the error",
+      //   textToCopy: err,
+      // };
       return;
     }
   };
@@ -171,3 +189,4 @@ const useRepay = (loanParam: any) => {
 };
 
 export default useRepay;
+

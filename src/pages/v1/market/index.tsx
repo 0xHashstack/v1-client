@@ -40,6 +40,9 @@ import "react-toastify/dist/ReactToastify.css";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import useDataLoader from "@/hooks/useDataLoader";
+import { getSupplyunlocked, getrTokensMinted } from "@/Blockchain/scripts/Rewards";
+import { uint256 } from "starknet";
+import { BNtoNum, parseAmount } from "@/Blockchain/utils/utils";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function Market() {
@@ -54,6 +57,18 @@ export default function Market() {
     useConnectors();
   const { address, account } = useAccount();
   const [render, setRender] = useState(true);
+  // useEffect(()=>{
+  //   const fetchToken=async()=>{
+  //     const data=await getrTokensMinted("rUSDT",30.0);
+  //     // console.log(parseAmount(uint256.uint256ToBN));
+  //   }
+  //   const fetchSupply=async()=>{
+  //     const data=await getSupplyunlocked("rUSDT",30.0);
+
+  //   }
+  //   fetchSupply()
+  //   fetchToken();
+  // },[])
   useDataLoader();
   // console.log(account.address)
   // const { dataBalanceOf, errorBalanceOf, isFetchingBalanceOf, refetchBalanceOf, statusBalanceOf }=useBalanceOf("0x049D36570D4e46f48e99674bd3fcc84644DdD6b96F7C741B1562B82f9e004dC7");

@@ -6,6 +6,7 @@ const initialState = {
   protocolStats: null,
   oraclePrices: null,
   userLoans: null,
+  aprAndHealthFactor:null,
 
   protocolReserves: {
     totalReserves: null,
@@ -48,6 +49,9 @@ export const readDataSlice = createSlice({
     },
     setProtocolReserves(state, action) {
       return { ...state, protocolReserves: action.payload };
+    },
+    setAprAndHealthFactor(state,action){
+        state.aprAndHealthFactor=action.payload;
     },
     setNetWorth(state, action) {
       state.netWorth = action.payload;
@@ -92,6 +96,9 @@ export const readDataSlice = createSlice({
     setCurrentNetwork(state, action) {
       state.currentNetwork = action.payload;
     },
+    resetState(state, action) {
+      return { ...initialState };
+    },
 
     extraReducers: {
       [HYDRATE]: (state, action) => {
@@ -111,6 +118,7 @@ export const {
   setOraclePrices,
   setReserves,
   setProtocolReserves,
+  setAprAndHealthFactor,
   setNetWorth,
   setYourSupply,
   setYourBorrow,
@@ -125,13 +133,14 @@ export const {
   setUserLoansCount,
   setBlock,
   setCurrentNetwork,
+  resetState
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
 export const selectProtocolStats = (state) => state.read_data.protocolStats;
 export const selectOraclePrices = (state) => state.read_data.oraclePrices;
 export const selectUserLoans = (state) => state.read_data.userLoans;
-
+export const selectAprAndHealthFactor=(state)=>state.read_data.aprAndHealthFactor;
 export const selectProtocolReserves = (state) =>
   state.read_data.protocolReserves;
 export const selectYourSupply = (state) => state.read_data.yourSupply;

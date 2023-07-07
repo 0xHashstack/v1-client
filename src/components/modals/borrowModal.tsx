@@ -40,9 +40,13 @@ import {
   selectAssetWalletBalance,
   selectActiveTransactions,
   setActiveTransactions,
+  setTransactionStartedAndModalClosed,
 } from "@/store/slices/userAccountSlice";
 
-import { selectProtocolStats,selectOraclePrices } from "@/store/slices/readDataSlice";
+import {
+  selectProtocolStats,
+  selectOraclePrices,
+} from "@/store/slices/readDataSlice";
 import {
   setModalDropdown,
   selectModalDropDowns,
@@ -73,12 +77,18 @@ import CopyToClipboard from "react-copy-to-clipboard";
 import { NativeToken, RToken } from "@/Blockchain/interfaces/interfaces";
 import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import mixpanel from "mixpanel-browser";
-import { getLoanHealth_NativeCollateral, getLoanHealth_RTokenCollateral } from "@/Blockchain/scripts/LoanHealth";
+import {
+  getLoanHealth_NativeCollateral,
+  getLoanHealth_RTokenCollateral,
+} from "@/Blockchain/scripts/LoanHealth";
+import { getUSDValue } from "@/Blockchain/scripts/l3interaction";
 const BorrowModal = ({
   buttonText,
   coin,
-  // borrowAPRs,
+  borrowAPRs,
   currentBorrowAPR,
+  supplyAPRs,
+  currentSupplyAPR,
   validRTokens,
   ...restProps
 }: any) => {
@@ -88,6 +98,9 @@ const BorrowModal = ({
   const dispatch = useDispatch();
   const [inputCollateralAmount, setinputCollateralAmount] = useState(0);
   const [inputBorrowAmount, setinputBorrowAmount] = useState(0);
+  const [currentParsedInputBorrowAmount, setCurrentParsedInputBorrowAmount] =
+    useState(0);
+
   const modalDropdowns = useSelector(selectModalDropDowns);
   // const walletBalances = useSelector(selectAssetWalletBalance);
   const [walletBalance, setwalletBalance] = useState(0);
@@ -106,7 +119,11 @@ const BorrowModal = ({
     ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
-  mixpanel.init("eb921da4a666a145e3b36930d7d984c2" || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
+    debug: true,
+    track_pageview: true,
+    persistence: "localStorage",
+  });
 
   useEffect(() => {
     setwalletBalance(
@@ -161,7 +178,7 @@ const BorrowModal = ({
     isLoadingLoanRequest,
     statusLoanRequest,
   } = useLoanRequest();
- 
+
   useEffect(() => {
     setMarket(coin ? coin.name : "BTC");
     setRToken(coin ? coin.name : "rBTC");
@@ -238,6 +255,9 @@ const BorrowModal = ({
   const [currentBorrowCoin, setCurrentBorrowCoin] = useState(
     coin ? coin.name : "BTC"
   );
+  const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
+    coin ? coin.name : "BTC"
+  );
   const [protocolStats, setProtocolStats] = useState<any>([]);
   const protocolStatsRedux = useSelector(selectProtocolStats);
   const [currentAvailableReserves, setCurrentAvailableReserves] = useState(
@@ -267,30 +287,91 @@ const BorrowModal = ({
   useEffect(() => {
     console.log("currentAvailableReserve", currentAvailableReserves);
   }, [currentAvailableReserves]);
-  const oraclePrices=useSelector(selectOraclePrices)
-  const marketInfo=useSelector(selectProtocolStats)
-  const [healthFactor, setHealthFactor] = useState<number>()
-  useEffect(()=>{
-    try{
-      const fetchHealthFactor=async()=>{
-        if(tokenTypeSelected=="Native"){
-          if(amount>0 && market &&collateralAmount>0 &&collateralMarket){
-            const data=await getLoanHealth_NativeCollateral(amount,market,collateralAmount,collateralMarket,oraclePrices);
+  const oraclePrices = useSelector(selectOraclePrices);
+  const marketInfo = useSelector(selectProtocolStats);
+  const [healthFactor, setHealthFactor] = useState<number>();
+  useEffect(() => {
+    try {
+      const fetchHealthFactor = async () => {
+        if (tokenTypeSelected == "Native") {
+          if (
+            amount > 0 &&
+            market &&
+            collateralAmount > 0 &&
+            collateralMarket
+          ) {
+            const data = await getLoanHealth_NativeCollateral(
+              amount,
+              market,
+              collateralAmount,
+              collateralMarket,
+              oraclePrices
+            );
+            setHealthFactor(data);
+          }
+        } else if (tokenTypeSelected == "rToken") {
+          if (amount > 0 && market && rTokenAmount > 0 && rToken) {
+            const data = await getLoanHealth_RTokenCollateral(
+              amount,
+              market,
+              rTokenAmount,
+              rToken,
+              oraclePrices,
+              marketInfo
+            );
             setHealthFactor(data);
           }
         }
-        else if(tokenTypeSelected=="rToken"){
-          if(amount>0 && market && rTokenAmount>0 &&rToken){
-            const data=await getLoanHealth_RTokenCollateral(amount,market,rTokenAmount,rToken,oraclePrices,marketInfo);
-            setHealthFactor(data);
-          }
-        }
-      }
+      };
       fetchHealthFactor();
-    }catch(err){
+    } catch (err) {
       console.log(err);
     }
-  },[amount,collateralAmount,collateralMarket,market,rToken,rTokenAmount])
+  }, [
+    amount,
+    collateralAmount,
+    collateralMarket,
+    market,
+    rToken,
+    rTokenAmount,
+  ]);
+
+  const [inputBorrowAmountUSD, setInputBorrowAmountUSD] = useState<any>(0);
+  const [inputCollateralAmountUSD, setInputCollateralAmountUSD] =
+    useState<any>(0);
+  useEffect(() => {
+    fetchParsedUSDValueBorrow();
+  }, [inputBorrowAmount, currentBorrowCoin]);
+
+  useEffect(() => {
+    fetchParsedUSDValueCollateral();
+  }, [collateralAmount, currentCollateralCoin]);
+
+  const fetchParsedUSDValueBorrow = async () => {
+    try {
+      const parsedBorrowAmount = await getUSDValue(
+        currentBorrowCoin,
+        inputBorrowAmount
+      );
+      console.log("got parsed usdt borrow", parsedBorrowAmount);
+      setInputBorrowAmountUSD(parsedBorrowAmount);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchParsedUSDValueCollateral = async () => {
+    try {
+      const parsedCollateralAmount = await getUSDValue(
+        currentCollateralCoin,
+        collateralAmount
+      );
+      console.log("got parsed usdt collateral", parsedCollateralAmount);
+      setInputCollateralAmountUSD(parsedCollateralAmount);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     setCurrentAvailableReserves(
@@ -333,11 +414,11 @@ const BorrowModal = ({
             toastId: toastid,
             setCurrentTransactionStatus: setCurrentTransactionStatus,
           };
-          mixpanel.track('Borrow Market Status',{
-            "Status":"Success",
-            "Borrow Amount":inputBorrowAmount,
-            "Borrow Token":currentBorrowCoin
-          })
+          mixpanel.track("Borrow Market Status", {
+            Status: "Success",
+            "Borrow Amount": inputBorrowAmount,
+            "Borrow Token": currentBorrowCoin,
+          });
           // addTransaction({ hash: deposit?.transaction_hash });
           activeTransactions?.push(trans_data);
 
@@ -383,13 +464,13 @@ const BorrowModal = ({
             dispatch(setActiveTransactions(activeTransactions));
           }
         }
-        mixpanel.track('Borrow Market Status',{
-          "Status":"Success",
-          "Collateral Amount":inputCollateralAmount,
-          "Collateral Market":currentCollateralCoin,
-          "Borrow Amount":inputBorrowAmount,
-          "Borrow Token":currentBorrowCoin
-        })
+        mixpanel.track("Borrow Market Status", {
+          Status: "Success",
+          "Collateral Amount": inputCollateralAmount,
+          "Collateral Market": currentCollateralCoin,
+          "Borrow Amount": inputBorrowAmount,
+          "Borrow Token": currentBorrowCoin,
+        });
         setIsLoanRequestHash(borrow?.transaction_hash);
         dispatch(setTransactionStatus("success"));
         setBorrowTransHash(borrow?.transaction_hash);
@@ -397,9 +478,9 @@ const BorrowModal = ({
     } catch (err: any) {
       dispatch(setTransactionStatus("failed"));
       console.log("handle borrow", err);
-      mixpanel.track('Borrow Market Status',{
-        "Status":"Failure"
-      })
+      mixpanel.track("Borrow Market Status", {
+        Status: "Failure",
+      });
       const toastContent = (
         <div>
           Transaction failed{" "}
@@ -481,7 +562,7 @@ const BorrowModal = ({
   const handleDropdownClick = (dropdownName: any) => {
     dispatch(setModalDropdown(dropdownName));
   };
- 
+
   const handleChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
     // newValue = Math.round((newValue * 1000_000) / 1000_000);
@@ -528,9 +609,6 @@ const BorrowModal = ({
   const moreOptions = ["Liquidations", "Dummy1", "Dummy2", "Dummy3"];
   const coins: NativeToken[] = ["BTC", "USDT", "USDC", "ETH", "DAI"];
 
-  const [currentCollateralCoin, setCurrentCollateralCoin] = useState(
-    coin ? coin.name : "BTC"
-  );
   const activeModal = Object.keys(modalDropdowns).find(
     (key) => modalDropdowns[key] === true
   );
@@ -545,11 +623,11 @@ const BorrowModal = ({
     setsliderValue2(0);
     setToastDisplayed(false);
     setTransactionStarted(false);
-    setHealthFactor(undefined)
+    setHealthFactor(undefined);
     dispatch(resetModalDropdowns());
     dispatch(setTransactionStatus(""));
     setCurrentTransactionStatus("");
-    setTokenTypeSelected("Native")
+    setTokenTypeSelected("Native");
     setBorrowTransHash("");
     // setDepositTransHash("")
   };
@@ -567,7 +645,7 @@ const BorrowModal = ({
   //   setCollateralMarket("DAI");
   //   setCollateralAmount("4000");
   // }, []);
-  const [tokenTypeSelected, setTokenTypeSelected] = useState("Native")
+  const [tokenTypeSelected, setTokenTypeSelected] = useState("Native");
 
   const rTokens: RToken[] = ["rBTC", "rUSDT", "rETH"];
   return (
@@ -583,6 +661,7 @@ const BorrowModal = ({
           onClose();
           resetStates();
           if (transactionStarted) {
+            dispatch(setTransactionStartedAndModalClosed(true));
             dispatch(setToastTransactionStarted(""));
           }
         }}
@@ -700,7 +779,7 @@ const BorrowModal = ({
                                 onClick={() => {
                                   setCurrentCollateralCoin(coin);
                                   setRToken(coin);
-                                  setTokenTypeSelected("rToken")
+                                  setTokenTypeSelected("rToken");
                                   setwalletBalance(amount);
                                   // dispatch(setCoinSelectedSupplyModal(coin))
                                 }}
@@ -774,7 +853,7 @@ const BorrowModal = ({
                             onClick={() => {
                               setCurrentCollateralCoin(coin);
                               setCollateralMarket(coin);
-                              setTokenTypeSelected("Native")
+                              setTokenTypeSelected("Native");
                               // setRToken(coin);
                               setwalletBalance(
                                 walletBalances[coin]?.statusBalanceOf ===
@@ -1695,10 +1774,8 @@ const BorrowModal = ({
                   font-size="14px"
                   color="#6A737D"
                 >
-                  {protocolStats?.find(
-                    (stat: any) => stat?.token == currentBorrowCoin
-                  )?.borrowRate || (
-                    <Box pt="1px">
+                  {!borrowAPRs || !borrowAPRs[currentBorrowAPR] ? (
+                    <Box pt="2px">
                       <Skeleton
                         width="2.3rem"
                         height=".85rem"
@@ -1707,99 +1784,142 @@ const BorrowModal = ({
                         borderRadius="6px"
                       />
                     </Box>
+                  ) : (
+                    borrowAPRs[currentBorrowAPR]
                   )}
                   {/* 5.56% */}
                 </Text>
               </Text>
-              <Text
-                display="flex"
-                justifyContent="space-between"
-                fontSize="12px"
-                mb="0.4rem"
-              >
-                <Text display="flex" alignItems="center" key={"effective apr"}>
-                  <Text
-                    mr="0.2rem"
-                    font-style="normal"
-                    font-weight="400"
-                    font-size="14px"
-                    lineHeight="16px"
-                    color="#6A737D"
-                  >
-                    Effective apr:
-                  </Text>
-                  <Tooltip
-                    hasArrow
-                    placement="right"
-                    boxShadow="dark-lg"
-                    label="all the assets to the market"
-                    bg="#24292F"
-                    fontSize={"smaller"}
-                    fontWeight={"thin"}
-                    borderRadius={"lg"}
-                    padding={"2"}
-                  >
-                    <Box>
-                      <InfoIcon />
-                    </Box>
-                  </Tooltip>
-                </Text>
+              {collateralAmount > 0 && inputBorrowAmount > 0 && (
                 <Text
-                  font-style="normal"
-                  font-weight="400"
-                  font-size="14px"
-                  color="#6A737D"
+                  display="flex"
+                  justifyContent="space-between"
+                  fontSize="12px"
+                  mb="0.4rem"
                 >
-                  5.56%
-                </Text>
-              </Text>
-              {healthFactor ?              <Text
-                color="#8B949E"
-                display="flex"
-                justifyContent="space-between"
-                fontSize="12px"
-              >
-                <Text display="flex" alignItems="center">
                   <Text
-                    mr="0.2rem"
+                    display="flex"
+                    alignItems="center"
+                    key={"effective apr"}
+                  >
+                    <Text
+                      mr="0.2rem"
+                      font-style="normal"
+                      font-weight="400"
+                      font-size="14px"
+                      lineHeight="16px"
+                      color="#6A737D"
+                    >
+                      Effective apr:
+                    </Text>
+                    <Tooltip
+                      hasArrow
+                      placement="right"
+                      boxShadow="dark-lg"
+                      label="all the assets to the market"
+                      bg="#24292F"
+                      fontSize={"smaller"}
+                      fontWeight={"thin"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                    >
+                      <Box>
+                        <InfoIcon />
+                      </Box>
+                    </Tooltip>
+                  </Text>
+                  <Text
                     font-style="normal"
                     font-weight="400"
                     font-size="14px"
                     color="#6A737D"
                   >
-                    Health Factor:
+                    {
+                      // protocolStats.length === 0 ||
+                      inputBorrowAmount === 0 ||
+                      collateralAmount === 0 ||
+                      !borrowAPRs[currentBorrowAPR] ? (
+                        <Box pt="2px">
+                          <Skeleton
+                            width="2.3rem"
+                            height=".85rem"
+                            startColor="#2B2F35"
+                            endColor="#101216"
+                            borderRadius="6px"
+                          />
+                        </Box>
+                      ) : (
+                        <Text>
+                          {/* 5.56% */}
+                          {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
+                          {inputBorrowAmountUSD * borrowAPRs[currentBorrowAPR] -
+                            (inputCollateralAmountUSD *
+                              protocolStats?.find(
+                                (stat: any) =>
+                                  stat?.token === currentCollateralCoin
+                              )?.supplyRate) /
+                              inputBorrowAmountUSD}
+                          {/* {
+                          protocolStats?.find(
+                            (stat: any) => stat?.token === currentCollateralCoin
+                          )?.supplyRate
+                        } */}
+                        </Text>
+                      )
+                    }
                   </Text>
-                  <Tooltip
-                    hasArrow
-                    placement="right"
-                    boxShadow="dark-lg"
-                    label="all the assets to the market"
-                    bg="#24292F"
-                    fontSize={"smaller"}
-                    fontWeight={"thin"}
-                    borderRadius={"lg"}
-                    padding={"2"}
-                  >
-                    <Box>
-                      <InfoIcon />
-                    </Box>
-                  </Tooltip>
                 </Text>
+              )}
+              {healthFactor ? (
                 <Text
-                  font-style="normal"
-                  font-weight="900"
-                  font-size="12px"
-                  color="#6A737D"
+                  color="#8B949E"
+                  display="flex"
+                  justifyContent="space-between"
+                  fontSize="12px"
                 >
-                  {healthFactor?.toFixed(2)}
+                  <Text display="flex" alignItems="center">
+                    <Text
+                      mr="0.2rem"
+                      font-style="normal"
+                      font-weight="400"
+                      font-size="14px"
+                      color="#6A737D"
+                    >
+                      Health Factor:
+                    </Text>
+                    <Tooltip
+                      hasArrow
+                      placement="right"
+                      boxShadow="dark-lg"
+                      label="all the assets to the market"
+                      bg="#24292F"
+                      fontSize={"smaller"}
+                      fontWeight={"thin"}
+                      borderRadius={"lg"}
+                      padding={"2"}
+                    >
+                      <Box>
+                        <InfoIcon />
+                      </Box>
+                    </Tooltip>
+                  </Text>
+                  <Text
+                    font-style="normal"
+                    font-weight="900"
+                    font-size="12px"
+                    color="#6A737D"
+                  >
+                    {healthFactor?.toFixed(2)}
+                  </Text>
                 </Text>
-              </Text>:""}
-
+              ) : (
+                ""
+              )}
             </Card>
 
-            {(tokenTypeSelected=="rToken"? rTokenAmount>0 :true)&&
-            (tokenTypeSelected=="Native" ? collateralAmount>0 :true) &&
-            amount>0 &&
+            {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
+            (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
+            amount > 0 &&
             // (currentCollateralCoin[0]=="r" ? rTokenAmount<=walletBalance :true) &&
             // (validRTokens.length>0 ? rTokenAmount <= walletBalance:true) &&
             amount <= walletBalance ? (
@@ -1812,9 +1932,10 @@ const BorrowModal = ({
                   onClick={() => {
                     setTransactionStarted(true);
                     if (transactionStarted == false) {
-                      mixpanel.track('Borrow Market Button Clicked',{
-                        'Borrow Clicked':true
-                    })
+                      dispatch(setTransactionStartedAndModalClosed(false));
+                      mixpanel.track("Borrow Market Button Clicked", {
+                        "Borrow Clicked": true,
+                      });
                       handleBorrow();
                     }
                   }}

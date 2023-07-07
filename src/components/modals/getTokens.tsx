@@ -57,6 +57,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   selectActiveTransactions,
   setActiveTransactions,
+  setTransactionStartedAndModalClosed,
   setTransactionStatus,
 } from "@/store/slices/userAccountSlice";
 import { toast } from "react-toastify";
@@ -127,7 +128,7 @@ const GetTokensModal = ({
   const dispatch = useDispatch();
   const {address}=useAccount();
   const [toastId, setToastId] = useState<any>();
-  mixpanel.init("eb921da4a666a145e3b36930d7d984c2" || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
 
   const handleGetToken = async (coin: any) => {
     try {
@@ -178,6 +179,7 @@ const GetTokensModal = ({
       mixpanel.track('Get Tokens Status',{
         "Status":"Failure"
       })
+      dispatch(setTransactionStartedAndModalClosed(true));
       const toastContent = (
         <div>
           Failed to mint TestToken :{coin + " "}
