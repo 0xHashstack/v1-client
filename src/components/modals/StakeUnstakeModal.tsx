@@ -536,9 +536,7 @@ const StakeUnstakeModal = ({
   );
   // console.log(activeModal);
 
-useEffect(()=>{
-
-})
+  useEffect(() => {});
   // useEffect(()=>{
   //   const fetchrTokens=async()=>{
   //     const data=await getEstrTokens("rUSDT",30.0);
@@ -638,8 +636,8 @@ useEffect(()=>{
         // onOverlayClick={() => setIsOpenCustom(false)}
         onClose={() => {
           onClose();
-          if(transactionStarted || unstakeTransactionStarted){
-            dispatch(setTransactionStartedAndModalClosed(true))
+          if (transactionStarted || unstakeTransactionStarted) {
+            dispatch(setTransactionStartedAndModalClosed(true));
           }
           if (setStakeHover) setStakeHover(false);
           resetStates();
@@ -1249,14 +1247,14 @@ useEffect(()=>{
                             </Tooltip>
                           </Text>
                           <Text color="#6E7681">
-                            {protocolStats.find(
+                            {protocolStats?.find(
                               (stat: any) =>
                                 stat.token ==
                                 (currentSelectedStakeCoin[0] == "r"
                                   ? currentSelectedStakeCoin.slice(1)
                                   : currentSelectedStakeCoin)
                             )?.stakingRate
-                              ? protocolStats.find(
+                              ? protocolStats?.find(
                                   (stat: any) =>
                                     stat.token ==
                                     (currentSelectedStakeCoin[0] == "r"
@@ -1397,7 +1395,9 @@ useEffect(()=>{
                                     "Stake Clicked": true,
                                   }
                                 );
-                                dispatch(setTransactionStartedAndModalClosed(false))
+                                dispatch(
+                                  setTransactionStartedAndModalClosed(false)
+                                );
                                 handleStakeTransaction();
                               }
                               setTransactionStarted(true);
@@ -2088,7 +2088,9 @@ useEffect(()=>{
                                   "Unstake Clicked": true,
                                 }
                               );
-                              dispatch(setTransactionStartedAndModalClosed(false))
+                              dispatch(
+                                setTransactionStartedAndModalClosed(false)
+                              );
                               hanldeUnstakeTransaction();
                             }
                             setUnstakeTransactionStarted(true);
