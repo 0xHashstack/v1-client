@@ -180,7 +180,11 @@ const SupplyModal = ({
 
   const dispatch = useDispatch();
   const modalDropdowns = useSelector(selectModalDropDowns);
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY|| "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
+    debug: true,
+    track_pageview: true,
+    persistence: "localStorage",
+  });
   // const walletBalances = useSelector(selectAssetWalletBalance);
   const [walletBalance, setwalletBalance] = useState(
     walletBalances[coin?.name]?.statusBalanceOf === "success"
@@ -420,9 +424,9 @@ const SupplyModal = ({
   const handleTransaction = async () => {
     try {
       if (ischecked) {
-        mixpanel.track('Action Selected',{
-          "Action":"Deposit and Stake"
-        })
+        mixpanel.track("Action Selected", {
+          Action: "Deposit and Stake",
+        });
         const depositStake = await writeAsyncDepositStake();
         if (depositStake?.transaction_hash) {
           console.log("trans transaction hash created");
@@ -457,19 +461,19 @@ const SupplyModal = ({
 
           dispatch(setActiveTransactions(activeTransactions));
         }
-        mixpanel.track('Supply Market Status',{
-          "Status":"Success Deposit and Stake",
-          "Token":currentSelectedCoin,
-          "TokenAmount":inputAmount
-        })
+        mixpanel.track("Supply Market Status", {
+          Status: "Success Deposit and Stake",
+          Token: currentSelectedCoin,
+          TokenAmount: inputAmount,
+        });
         setDepositTransHash(depositStake?.transaction_hash);
         dispatch(setTransactionStatus("success"));
         // console.log("Status transaction", deposit);
         console.log(isSuccessDeposit, "success ?");
       } else {
-        mixpanel.track('Action Selected',{
-          "Action":"Deposit"
-        })
+        mixpanel.track("Action Selected", {
+          Action: "Deposit",
+        });
         const deposit = await writeAsyncDeposit();
         if (deposit?.transaction_hash) {
           console.log(
@@ -509,11 +513,11 @@ const SupplyModal = ({
         }
         // const deposit = await writeAsyncDepositStake();
         console.log("Supply Modal - deposit ", deposit);
-        mixpanel.track('Supply Market Status',{
-          "Status":"Success",
-          "Token":currentSelectedCoin,
-          "TokenAmount":inputAmount
-        })
+        mixpanel.track("Supply Market Status", {
+          Status: "Success",
+          Token: currentSelectedCoin,
+          TokenAmount: inputAmount,
+        });
         setDepositTransHash(deposit?.transaction_hash);
         // if (recieptData?.data?.status == "ACCEPTED_ON_L2") {
         // }
@@ -523,10 +527,10 @@ const SupplyModal = ({
       }
     } catch (err: any) {
       // setTransactionFailed(true);
-      mixpanel.track('Supply Market Status',{
-        'Status':"Failure"
-    })
-    
+      mixpanel.track("Supply Market Status", {
+        Status: "Failure",
+      });
+
       dispatch(setTransactionStatus("failed"));
       const toastContent = (
         <div>
@@ -699,8 +703,8 @@ const SupplyModal = ({
           isOpen={isOpen}
           onClose={() => {
             onClose();
-            if(transactionStarted){
-              dispatch(setTransactionStartedAndModalClosed(true))
+            if (transactionStarted) {
+              dispatch(setTransactionStartedAndModalClosed(true));
             }
             resetStates();
             // if (transactionStarted) dispatch(setToastTransactionStarted(true));
@@ -1117,12 +1121,12 @@ const SupplyModal = ({
                       setSliderValue(val);
                       var ans = (val / 100) * walletBalance;
                       // console.log(ans);
-                      if(val==100){
-                        setDepositAmount(walletBalance)
-                        setinputAmount(walletBalance)
-                      }else{
+                      if (val == 100) {
+                        setDepositAmount(walletBalance);
+                        setinputAmount(walletBalance);
+                      } else {
                         ans = Math.round(ans * 100) / 100;
-                        
+
                         // console.log(ans)
                         // dispatch(setInputSupplyAmount(ans));
                         setDepositAmount(ans);
@@ -1409,10 +1413,10 @@ const SupplyModal = ({
                       setTransactionStarted(true);
                       if (transactionStarted === false) {
                         handleTransaction();
-                        dispatch(setTransactionStartedAndModalClosed(false))
-                        mixpanel.track('Supply Market Clicked Button',{
-                          'Supply Clicked':true
-                        })
+                        dispatch(setTransactionStartedAndModalClosed(false));
+                        mixpanel.track("Supply Market Clicked Button", {
+                          "Supply Clicked": true,
+                        });
                       }
                       // handleTransaction();
                       // dataDeposit();
