@@ -536,9 +536,7 @@ const StakeUnstakeModal = ({
   );
   // console.log(activeModal);
 
-useEffect(()=>{
-
-})
+  useEffect(() => {});
   // useEffect(()=>{
   //   const fetchrTokens=async()=>{
   //     const data=await getEstrTokens("rUSDT",30.0);
@@ -638,8 +636,8 @@ useEffect(()=>{
         // onOverlayClick={() => setIsOpenCustom(false)}
         onClose={() => {
           onClose();
-          if(transactionStarted || unstakeTransactionStarted){
-            dispatch(setTransactionStartedAndModalClosed(true))
+          if (transactionStarted || unstakeTransactionStarted) {
+            dispatch(setTransactionStartedAndModalClosed(true));
           }
           if (setStakeHover) setStakeHover(false);
           resetStates();
@@ -1249,11 +1247,23 @@ useEffect(()=>{
                             </Tooltip>
                           </Text>
                           <Text color="#6E7681">
-                            {/* {protocolStats?.find(
+                            {protocolStats?.find(
                               (stat: any) =>
-                                stat.token == currentSelectedStakeCoin
-                            )?.staking_rate || "23"} */}
-                            {protocolStats?.[0]?.stakingRate ? (
+                                stat.token ==
+                                (currentSelectedStakeCoin[0] == "r"
+                                  ? currentSelectedStakeCoin.slice(1)
+                                  : currentSelectedStakeCoin)
+                            )?.stakingRate
+                              ? protocolStats?.find(
+                                  (stat: any) =>
+                                    stat.token ==
+                                    (currentSelectedStakeCoin[0] == "r"
+                                      ? currentSelectedStakeCoin.slice(1)
+                                      : currentSelectedStakeCoin)
+                                )?.stakingRate
+                              : "1.2"}
+                            %
+                            {/* {protocolStats?.[0]?.stakingRate ? (
                               protocolStats?.[0]?.stakingRate
                             ) : (
                               <Skeleton
@@ -1263,7 +1273,7 @@ useEffect(()=>{
                                 endColor="#2B2F35"
                                 borderRadius="6px"
                               />
-                            )}
+                            )} */}
                           </Text>
                         </Text>
                         <Text
@@ -1385,7 +1395,9 @@ useEffect(()=>{
                                     "Stake Clicked": true,
                                   }
                                 );
-                                dispatch(setTransactionStartedAndModalClosed(false))
+                                dispatch(
+                                  setTransactionStartedAndModalClosed(false)
+                                );
                                 handleStakeTransaction();
                               }
                               setTransactionStarted(true);
@@ -2076,7 +2088,9 @@ useEffect(()=>{
                                   "Unstake Clicked": true,
                                 }
                               );
-                              dispatch(setTransactionStartedAndModalClosed(false))
+                              dispatch(
+                                setTransactionStartedAndModalClosed(false)
+                              );
                               hanldeUnstakeTransaction();
                             }
                             setUnstakeTransactionStarted(true);
