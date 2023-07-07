@@ -112,11 +112,11 @@ export default function Home() {
     if (walletConnected == "braavos") {
       disconnect();
       connect(connectors[0]);
-      dispatch(setTransactionRefresh(""))
+      // dispatch(setTransactionRefresh("reset"));
     } else if (walletConnected == "argentX") {
       disconnect();
       connect(connectors[1]);
-      dispatch(setTransactionRefresh(""))
+      // dispatch(setTransactionRefresh("reset"));
     }
     if (!hasVisited) {
       // Set a local storage item to indicate the user has visited
@@ -227,7 +227,7 @@ export default function Home() {
               // onClick={() => router.push("/market")}
               onClick={() => {
                 connect(connectors[0]);
-                dispatch(setTransactionRefresh(""));
+                dispatch(setTransactionRefresh("reset"));
                 localStorage.setItem("lastUsedConnector", "braavos");
               }}
             >
@@ -284,7 +284,7 @@ export default function Home() {
               cursor="pointer"
               onClick={() => {
                 connect(connectors[1]);
-                dispatch(setTransactionRefresh(""));
+                dispatch(setTransactionRefresh("reset"));
                 localStorage.setItem("lastUsedConnector", "argentX");
               }}
             >

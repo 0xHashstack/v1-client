@@ -67,7 +67,19 @@ import StakeUnstakeModal from "@/components/modals/StakeUnstakeModal";
 import { Coins } from "../dashboardLeft";
 import mixpanel from "mixpanel-browser";
 import useDataLoader from "@/hooks/useDataLoader";
-import { resetState, setAprAndHealthFactor, setNetAPR, setNetWorth, setOraclePrices, setProtocolStats, setTransactionRefresh, setUserDeposits, setUserLoans, setYourBorrow, setYourSupply } from "@/store/slices/readDataSlice";
+import {
+  resetState,
+  setAprAndHealthFactor,
+  setNetAPR,
+  setNetWorth,
+  setOraclePrices,
+  setProtocolStats,
+  setTransactionRefresh,
+  setUserDeposits,
+  setUserLoans,
+  setYourBorrow,
+  setYourSupply,
+} from "@/store/slices/readDataSlice";
 const Navbar = ({ validRTokens }: any) => {
   const dispatch = useDispatch();
   const navDropdowns = useSelector(selectNavDropdowns);
@@ -107,7 +119,11 @@ const Navbar = ({ validRTokens }: any) => {
 
   const router = useRouter();
   const { pathname } = router;
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
+    debug: true,
+    track_pageview: true,
+    persistence: "localStorage",
+  });
   const ref1 = useRef<HTMLDivElement>(null);
   const ref2 = useRef<HTMLDivElement>(null);
 
@@ -154,13 +170,18 @@ const Navbar = ({ validRTokens }: any) => {
     // console.log(connector);
     if (connector?.options?.id == "braavos") {
       connect(connectors[1]);
+      dispatch(resetState(null));
+      dispatch(setAccountReset(null));
+      localStorage.setItem("lastUsedConnector", "argentX");
       router.push("/v1/market");
     } else {
-      connect(connectors[0]);
+        connect(connectors[0]);
+      dispatch(resetState(null));
+      dispatch(setAccountReset(null));
+      localStorage.setItem("lastUsedConnector", "braavos");
       router.push("/v1/market");
     }
   };
-
 
   return (
     <HStack
@@ -312,10 +333,10 @@ const Navbar = ({ validRTokens }: any) => {
           }}
           onMouseEnter={() => setStakeHover(true)}
           onMouseLeave={() => setStakeHover(false)}
-          onClick={()=>{
-            mixpanel.track('Stake Button Clicked Navbar',{
-              "Clicked":true,
-            })
+          onClick={() => {
+            mixpanel.track("Stake Button Clicked Navbar", {
+              Clicked: true,
+            });
           }}
         >
           {/* <Box
@@ -670,8 +691,6 @@ const Navbar = ({ validRTokens }: any) => {
                       border="1px solid #2B2F35"
                       onClick={() => {
                         dispatch(setNavDropdown(""));
-                        dispatch(resetState(null));
-                        dispatch(setAccountReset(null));
                         switchWallet();
                         // disconnect();
                         // router.push("./");

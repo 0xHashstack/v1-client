@@ -33,11 +33,33 @@ import {
   setUserLoansCount,
   setUserUnspentLoans,
 } from "@/store/slices/userAccountSlice";
-import { setOraclePrices,selectOraclePrices,selectTransactionRefresh, selectProtocolReserves,setProtocolReserves, setAprAndHealthFactor, selectAprAndHealthFactor } from "@/store/slices/readDataSlice";
-import { setProtocolStats,selectProtocolStats,setNetWorth,setNetAPR,selectNetAPR, selectNetWorth,setYourBorrow,selectYourBorrow ,setYourSupply,selectYourSupply} from "@/store/slices/readDataSlice";
+import {
+  setOraclePrices,
+  selectOraclePrices,
+  selectTransactionRefresh,
+  selectProtocolReserves,
+  setProtocolReserves,
+  setAprAndHealthFactor,
+  selectAprAndHealthFactor,
+} from "@/store/slices/readDataSlice";
+import {
+  setProtocolStats,
+  selectProtocolStats,
+  setNetWorth,
+  setNetAPR,
+  selectNetAPR,
+  selectNetWorth,
+  setYourBorrow,
+  selectYourBorrow,
+  setYourSupply,
+  selectYourSupply,
+} from "@/store/slices/readDataSlice";
 
-import { setUserDeposits,selectUserDeposits } from "@/store/slices/readDataSlice";
-import { setUserLoans,selectUserLoans } from "@/store/slices/readDataSlice";
+import {
+  setUserDeposits,
+  selectUserDeposits,
+} from "@/store/slices/readDataSlice";
+import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
 import { useAccount } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
@@ -48,7 +70,7 @@ const useDataLoader = () => {
   const dataDeposit = useSelector(selectUserDeposits);
   const protocolStats = useSelector(selectProtocolStats);
   const dataOraclePrices = useSelector(selectOraclePrices);
-  const aprsAndHealth=useSelector(selectAprAndHealthFactor);
+  const aprsAndHealth = useSelector(selectAprAndHealthFactor);
   //  const dataMarket=useSelector(selectProtocolStats);
   const yourSupply = useSelector(selectYourSupply);
   const userLoans = useSelector(selectUserLoans);
@@ -62,11 +84,11 @@ const useDataLoader = () => {
   const userLoansCount = useSelector(selectUserLoansCount);
   const oraclePricesCount = useSelector(selectOraclePricesCount);
   const userInfoCount = useSelector(selectUserInfoCount);
-  const aprsAndHealthCount=useSelector(selectAprsAndHealthCount);
+  const aprsAndHealthCount = useSelector(selectAprsAndHealthCount);
   const transactionRefresh = useSelector(selectTransactionRefresh);
-  
+
   const dispatch = useDispatch();
-  const Data:any=[];
+  const Data: any = [];
   const [avgs, setAvgs] = useState<any>([]);
   const avgsData: any = [];
   console.log("address",address);
@@ -154,10 +176,15 @@ const useDataLoader = () => {
     }
   }, [address, transactionRefresh]);
 
-  useEffect(()=>{
-    const fetchAprsAndHealth=async()=>{
-      try{
-        if(dataOraclePrices?.length>0 &&userLoans?.length>0 &&protocolStats?.length>0){
+  useEffect(() => {
+    const fetchAprsAndHealth = async () => {
+      try {
+        if (
+          dataOraclePrices &&
+          userLoans &&
+          protocolStats &&
+          aprsAndHealthCount < transactionRefresh
+        ) {
           for (var i = 0; i < userLoans?.length; i++) {
             const avg = await effectivAPRLoan(
               userLoans[i],
@@ -167,7 +194,7 @@ const useDataLoader = () => {
             const healthFactor = await getExistingLoanHealth(
               userLoans[i]?.loanId
             );
-            
+
             const data = {
               loanId: userLoans[i]?.loanId,
               avg: avg,
@@ -182,18 +209,16 @@ const useDataLoader = () => {
           // console.log(avgsData,"avgs in Data")
           setAvgs(avgsData);
           dispatch(setAprAndHealthFactor(avgsData));
-          dispatch(setAprsAndHealthCount(""))
+          dispatch(setAprsAndHealthCount(""));
         }
-      }catch(err){
-        console.log(err,"err in aprs and health factor")
+      } catch (err) {
+        console.log(err, "err in aprs and health factor");
       }
-
-    }
-    if(aprsAndHealthCount<transactionRefresh){
+    };
+    if (aprsAndHealthCount < transactionRefresh) {
       fetchAprsAndHealth();
     }
-  },[transactionRefresh])
-
+  }, [dataOraclePrices, userLoans, protocolStats, transactionRefresh]);
 
   useEffect(() => {
     const fetchUserLoans = async () => {
@@ -241,7 +266,7 @@ const useDataLoader = () => {
         console.log(dataOraclePrices, "dataOraclePrices is here");
         console.log(userLoans, "userLoans is here");
         console.log(protocolStats, "protocolStats is here");
-        console.log(aprsAndHealth,"aprs and health is here");
+        console.log(aprsAndHealth, "aprs and health is here");
         if (
           dataDeposit &&
           protocolStats &&
@@ -328,7 +353,7 @@ const useDataLoader = () => {
     userLoansCount,
     oraclePricesCount,
     userInfoCount,
-    aprsAndHealthCount
+    aprsAndHealthCount,
   ]);
 };
 

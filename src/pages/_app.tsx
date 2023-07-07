@@ -5,6 +5,7 @@ import { Provider } from "react-redux";
 import { store } from "../store/store";
 import Head from "next/head";
 import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { loadSpace } from "@usersnap/browser";
 
 import {
   StarknetConfig,
@@ -40,12 +41,17 @@ const theme = extendTheme({
 });
 import { UserbackProvider } from "@userback/react";
 import Layout from "@/components/layouts/toasts";
+import spaceApiKey from "@/utils/constants/keys";
 
 export default function App({ Component, pageProps }: AppProps) {
   const connectors = [
     new InjectedConnector({ options: { id: "braavos" } }),
     new InjectedConnector({ options: { id: "argentX" } }),
   ];
+
+  loadSpace(spaceApiKey).then((api) => {
+    api.init();
+  });
 
   return (
     <>
@@ -60,17 +66,17 @@ export default function App({ Component, pageProps }: AppProps) {
         />
         <link rel="shortcut icon" href="/favicon-32x32.png" />
       </Head>
-      <UserbackProvider token="40819|82170|7psZPgjKcXKcsTMMf4vd5lRh9">
-        <ChakraProvider theme={theme}>
-          <StarknetProvider autoConnect={true} connectors={connectors}>
-            <Provider store={store}>
-              <Layout>
-                <Component {...pageProps} />
-              </Layout>
-            </Provider>
-          </StarknetProvider>
-        </ChakraProvider>
-      </UserbackProvider>
+      {/* <UserbackProvider token="40956|82606|h64VyoLnOnFyGHlNFmApltBdf"> */}
+      <ChakraProvider theme={theme}>
+        <StarknetProvider autoConnect={true} connectors={connectors}>
+          <Provider store={store}>
+            <Layout>
+              <Component {...pageProps} />
+            </Layout>
+          </Provider>
+        </StarknetProvider>
+      </ChakraProvider>
+      {/* </UserbackProvider> */}
     </>
   );
 }

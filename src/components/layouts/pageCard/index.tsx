@@ -3,16 +3,22 @@ import { Box, Stack, StackProps, Text, useMediaQuery } from "@chakra-ui/react";
 import React, { ReactNode, useCallback, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import {
-  useAccount,
-  useConnectors,
-} from "@starknet-react/core";
+import { useAccount, useConnectors } from "@starknet-react/core";
 import {
   selectToastTransactionStarted,
   selectActiveTransactions,
 } from "@/store/slices/userAccountSlice";
-import { selectUserDeposits,selectProtocolStats,selectOraclePrices,selectProtocolReserves,selectNetWorth } from "@/store/slices/readDataSlice";
-import { selectUserLoans,selectYourSupply } from "@/store/slices/readDataSlice";
+import {
+  selectUserDeposits,
+  selectProtocolStats,
+  selectOraclePrices,
+  selectProtocolReserves,
+  selectNetWorth,
+} from "@/store/slices/readDataSlice";
+import {
+  selectUserLoans,
+  selectYourSupply,
+} from "@/store/slices/readDataSlice";
 import { useRouter } from "next/router";
 import Footer from "../footer";
 
@@ -87,6 +93,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     }
     if (!account) {
       if (walletConnected == "braavos") {
+        console.log("change", account);
         disconnect();
         connect(connectors[0]);
       } else if (walletConnected == "argentX") {
@@ -94,7 +101,7 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
         connect(connectors[1]);
       }
     }
-  }, []);
+  }, [account]);
   const [UserLoans, setuserLoans] = useState<ILoan[] | null>([]);
   // useEffect(() => {
   //   const loan = async () => {
@@ -170,20 +177,20 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
   useEffect(() => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");
-      if(walletConnected=="braavos"){
+      if (walletConnected == "braavos") {
         return (
           // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
           // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
           account?.chainId == "0x534e5f474f45524c49"
         );
-      }else if(walletConnected=="argentX"){
-          // Your code here
-          return (
-            // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
-            // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
+      } else if (walletConnected == "argentX") {
+        // Your code here
+        return (
+          // account?.baseUrl?.includes("https://alpha4.starknet.io") ||
+          // account?.provider?.baseUrl?.includes("https://alpha4.starknet.io")
 
-            extendedAccount.provider?.chainId === "0x534e5f474f45524c49"
-          );
+          extendedAccount.provider?.chainId === "0x534e5f474f45524c49"
+        );
       }
       // console.log("starknetAccount", account?.provider?.chainId);
     }
