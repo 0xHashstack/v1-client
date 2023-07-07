@@ -59,7 +59,6 @@ import useStakeRequest from "@/Blockchain/hooks/Writes/useStakerequest";
 import useWithdrawStake from "@/Blockchain/hooks/Writes/useWithdrawStake";
 import {
   selectActiveTransactions,
-  selectProtocolStats,
   selectWalletBalance,
   setActiveTransactions,
   setTransactionStatus,
@@ -80,6 +79,7 @@ import Image from "next/image";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
+import { selectProtocolStats } from "@/store/slices/readDataSlice";
 
 const StakeUnstakeModal = ({
   buttonText,
@@ -1203,11 +1203,23 @@ const StakeUnstakeModal = ({
                             </Tooltip>
                           </Text>
                           <Text color="#6E7681">
-                            {/* {protocolStats?.find(
+                            {protocolStats.find(
                               (stat: any) =>
-                                stat.token == currentSelectedStakeCoin
-                            )?.staking_rate || "23"} */}
-                            {protocolStats?.[0]?.stakingRate ? (
+                                stat.token ==
+                                (currentSelectedStakeCoin[0] == "r"
+                                  ? currentSelectedStakeCoin.slice(1)
+                                  : currentSelectedStakeCoin)
+                            )?.stakingRate
+                              ? protocolStats.find(
+                                  (stat: any) =>
+                                    stat.token ==
+                                    (currentSelectedStakeCoin[0] == "r"
+                                      ? currentSelectedStakeCoin.slice(1)
+                                      : currentSelectedStakeCoin)
+                                )?.stakingRate
+                              : "1.2"}
+                            %
+                            {/* {protocolStats?.[0]?.stakingRate ? (
                               protocolStats?.[0]?.stakingRate
                             ) : (
                               <Skeleton
@@ -1217,7 +1229,7 @@ const StakeUnstakeModal = ({
                                 endColor="#2B2F35"
                                 borderRadius="6px"
                               />
-                            )}
+                            )} */}
                           </Text>
                         </Text>
                         <Text
