@@ -33,7 +33,12 @@ import {
   selectUserUnspentLoans,
   setCurrentPage,
 } from "@/store/slices/userAccountSlice";
-import { selectUserLoans,selectProtocolStats,selectOraclePrices, selectAprAndHealthFactor } from "@/store/slices/readDataSlice";
+import {
+  selectUserLoans,
+  selectProtocolStats,
+  selectOraclePrices,
+  selectAprAndHealthFactor,
+} from "@/store/slices/readDataSlice";
 import HazardIcon from "@/assets/icons/hazardIcon";
 import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
 import TableYagiLogoDull from "./tableIcons/yagiLogoDull";
@@ -183,7 +188,7 @@ const SpendTable = () => {
   // const avgsData: any = [];
   const oraclePrices = useSelector(selectOraclePrices);
   const reduxProtocolStats = useSelector(selectProtocolStats);
-  const avgs=useSelector(selectAprAndHealthFactor)
+  const avgs = useSelector(selectAprAndHealthFactor);
 
   // useEffect(() => {
   //   const fetchAprs = async () => {
@@ -305,7 +310,7 @@ const SpendTable = () => {
           </Box>
         </Box>
       )}
-      {loading &&userLoans?.length>0 ? (
+      {loading && userLoans?.length > 0 ? (
         <Box
           border="1px"
           borderColor="#2B2F35"
@@ -435,7 +440,11 @@ const SpendTable = () => {
                               color="#E6EDF3"
                               textAlign="left"
                             >
-                              BORROW ID {borrow.loanId}
+                              {`Borrow ID${
+                                borrow.loanId < 10
+                                  ? "0" + borrow.loanId
+                                  : borrow.loanId
+                              }`}{" "}
                             </Text>
                           </Box>
                         </Td>

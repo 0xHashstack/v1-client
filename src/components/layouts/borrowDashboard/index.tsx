@@ -240,8 +240,8 @@ const BorrowDashboard = ({
 
   useEffect(() => {
     getSplit(
-      [1111895402022106809, 0],
-      "0x16d7a41e6b6a6e153cfe6ff16a6b51079f2f27da07f059337486f7fef29ce2f"
+      ["468857759897", "0"],
+      "0x62b1cd273ce4c7967988776fad2a7bbcb21e2b544a111cb48487315810f7f51"
     );
   }, []);
 
