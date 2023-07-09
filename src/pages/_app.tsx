@@ -50,7 +50,11 @@ export default function App({ Component, pageProps }: AppProps) {
   ];
 
   loadSpace(spaceApiKey).then((api) => {
-    api.init();
+    const feedback = localStorage.getItem("feedback");
+    if (feedback != "true") {
+      api.init();
+      localStorage.setItem("feedback", "true");
+    }
   });
 
   return (

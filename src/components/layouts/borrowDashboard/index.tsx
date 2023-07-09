@@ -25,6 +25,7 @@ import { getProtocolStats } from "@/Blockchain/scripts/protocolStats";
 import { useSelector } from "react-redux";
 import {
   selectAprAndHealthFactor,
+  selectEffectiveApr,
   selectOraclePrices,
   selectProtocolStats,
   selectUserLoans,
@@ -143,7 +144,6 @@ const BorrowDashboard = ({
   currentPagination,
   Coins,
   columnItems,
-  Borrows,
 }: // userLoans,
 {
   width: string;
@@ -157,6 +157,7 @@ const BorrowDashboard = ({
   // rowItems: any;
 }) => {
   // console.log(Borrows, "Borrow loans in borrow dashboard");
+  const Borrows = useSelector(selectUserLoans);
   let lower_bound = 6 * (currentPagination - 1);
   let upper_bound = lower_bound + 5;
   upper_bound = Math.min(Borrows ? Borrows.length - 1 : 0, upper_bound);
@@ -171,7 +172,8 @@ const BorrowDashboard = ({
     useState("BTC");
   const [collateralBalance, setCollateralBalance] = useState("123 eth");
   const [currentSpendStatus, setCurrentSpendStatus] = useState("");
-  const avgs = useSelector(selectAprAndHealthFactor);
+  // const avgs = useSelector(selectAprAndHealthFactor);
+  const avgs = useSelector(selectEffectiveApr);
   const avgsData: any = [];
   useEffect(() => {
     let temp1: any = [];
@@ -196,9 +198,9 @@ const BorrowDashboard = ({
   }, [Borrows]);
   const [loading, setLoading] = useState(true);
   // const loadingTimeout = useTimeout(() => setLoading(false), 1800);
-  const userLoans = useSelector(selectUserLoans);
-  const reduxProtocolStats = useSelector(selectProtocolStats);
-  const oraclePrices = useSelector(selectOraclePrices);
+
+  // const reduxProtocolStats = useSelector(selectProtocolStats);
+  // const oraclePrices = useSelector(selectOraclePrices);
 
   // useEffect(() => {
   //   const fetchAprs = async () => {
@@ -246,7 +248,8 @@ const BorrowDashboard = ({
   }, []);
 
   useEffect(() => {
-    if (Borrows) {
+    console.log("Borrows here - ", Borrows);
+    if (Borrows || Borrows?.length > 0) {
       setLoading(false);
     }
   }, [Borrows]);
@@ -298,7 +301,7 @@ const BorrowDashboard = ({
   };
 
   // console.log("Borrows", loading, Borrows);
-  return loading && userLoans?.length > 0 ? (
+  return loading ? (
     <>
       <Box
         display="flex"

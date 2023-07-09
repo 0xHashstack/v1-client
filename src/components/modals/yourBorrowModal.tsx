@@ -70,6 +70,8 @@ import {
 } from "@/store/slices/userAccountSlice";
 import {
   selectAprAndHealthFactor,
+  selectEffectiveApr,
+  selectHealthFactor,
   selectOraclePrices,
   selectProtocolStats,
   selectUserLoans,
@@ -171,7 +173,9 @@ const YourBorrowModal = ({
     // console.log(borrowAmount)
     // Rest of your code using the 'result' variable
   }, [currentBorrowId1]);
-  const avgs = useSelector(selectAprAndHealthFactor);
+  // const avgs = useSelector(selectAprAndHealthFactor);
+  const avgs = useSelector(selectEffectiveApr);
+  const avgsLoneHealth = useSelector(selectHealthFactor);
   const avgsData: any = [];
   // useEffect(() => {
   //   const fetchAprs = async () => {
@@ -1414,14 +1418,14 @@ const YourBorrowModal = ({
                 fontWeight="400"
                 fontStyle="normal"
               >
-                {avgs?.find(
+                {avgsLoneHealth?.find(
                   (item: any) =>
                     item.loanId ==
                     currentBorrowId1
                       .slice(currentBorrowId1.indexOf("-") + 1)
                       .trim()
                 )?.loanHealth
-                  ? avgs?.find(
+                  ? avgsLoneHealth?.find(
                       (item: any) =>
                         item.loanId ==
                         currentBorrowId1
@@ -4937,14 +4941,14 @@ const YourBorrowModal = ({
                         </Text>
                         <Text color="#6E7681">
                           {" "}
-                          {avgs?.find(
+                          {avgsLoneHealth?.find(
                             (item: any) =>
                               item.loanId ==
                               currentBorrowId2
                                 .slice(currentBorrowId2.indexOf("-") + 1)
                                 .trim()
                           )?.loanHealth
-                            ? avgs?.find(
+                            ? avgsLoneHealth?.find(
                                 (item: any) =>
                                   item.loanId ==
                                   currentBorrowId2

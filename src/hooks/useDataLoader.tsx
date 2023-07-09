@@ -15,7 +15,9 @@ import {
   getTotalSupply,
 } from "@/Blockchain/scripts/userStats";
 import {
+  selectAprCount,
   selectAprsAndHealthCount,
+  selectHealthFactorCount,
   selectOraclePricesCount,
   selectProtocolStatsCount,
   selectUserDepositsCount,
@@ -41,6 +43,10 @@ import {
   setProtocolReserves,
   setAprAndHealthFactor,
   selectAprAndHealthFactor,
+  selectEffectiveApr,
+  selectHealthFactor,
+  setEffectiveAPR,
+  setHealthFactor,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -61,7 +67,7 @@ import {
 } from "@/store/slices/readDataSlice";
 import { setUserLoans, selectUserLoans } from "@/store/slices/readDataSlice";
 import { useAccount } from "@starknet-react/core";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 const useDataLoader = () => {
@@ -86,6 +92,11 @@ const useDataLoader = () => {
   const userInfoCount = useSelector(selectUserInfoCount);
   const aprsAndHealthCount = useSelector(selectAprsAndHealthCount);
   const transactionRefresh = useSelector(selectTransactionRefresh);
+  const oraclePrices = useSelector(selectOraclePrices);
+  const effectiveApr = useSelector(selectEffectiveApr);
+  const effectiveAprCount = useSelector(selectAprCount);
+  const healthFactor = useSelector(selectHealthFactor);
+  const healthFactorCount = useSelector(selectHealthFactorCount);
 
   const dispatch = useDispatch();
   const Data: any = [];
@@ -95,21 +106,21 @@ const useDataLoader = () => {
   //   console.log("switched to market");
   // }, []);
   useEffect(() => {
-    const fetchOraclePrices = async () => {
-      console.log("oracle prices - transactionRefresh called");
-      try {
+    try {
+      const fetchOraclePrices = async () => {
+        console.log("oracle prices - transactionRefresh called");
         let data = await getOraclePrices();
         if (data) {
           dispatch(setOraclePrices(data));
         }
         dispatch(setOraclePricesCount(""));
         console.log("oracle prices - transactionRefresh done ", data);
-      } catch (err) {
-        console.log(err);
+      };
+      if (oraclePricesCount < transactionRefresh) {
+        fetchOraclePrices();
       }
-    };
-    if (oraclePricesCount < transactionRefresh) {
-      fetchOraclePrices();
+    } catch (err) {
+      console.log("oracle prices - transactionRefresh error ", err);
     }
   }, [transactionRefresh]);
 
@@ -138,49 +149,109 @@ const useDataLoader = () => {
   }, [transactionRefresh]);
 
   useEffect(() => {
-    const fetchProtocolStats = async () => {
-      console.log("protocol stats called - transactionRefresh");
-      try {
+    try {
+      const fetchProtocolStats = async () => {
+        console.log("protocol stats called - transactionRefresh");
         const dataStats = await getProtocolStats();
+        console.log("protocol stats - transactionRefresh done", dataStats);
+        if (!dataStats) {
+          return;
+        }
         // console.log(dataStats,"data market in pagecard")
         dispatch(setProtocolStats(dataStats));
         dispatch(setProtocolStatsCount(""));
-        console.log("protocol stats - transactionRefresh done", dataStats);
-      } catch (err) {
-        console.log(err);
+      };
+      if (protocolStatsCount < transactionRefresh) {
+        fetchProtocolStats();
       }
-    };
-    if (protocolStatsCount < transactionRefresh) {
-      fetchProtocolStats();
+    } catch (err) {
+      console.log("protocol stats - transactionRefresh error ", err);
     }
   }, [transactionRefresh]);
 
   useEffect(() => {
-    const fetchUserDeposits = async () => {
-      if (!address) {
-        return;
+    try {
+      const fetchUserDeposits = async () => {
+        if (!address) {
+          return;
+        }
+        console.log("user deposits called - transactionRefresh");
+        const data = await getUserDeposits(address);
+        console.log("user deposits - transactionRefresh done", data);
+        if (!data) {
+          return;
+        }
+        // console.log(data,"data deposit useffect")
+        // console.log(data.length,"data length")
+        if (data) {
+          dispatch(setUserDeposits(data));
+          dispatch(setUserDepositsCount(""));
+        }
+      };
+      if (userDepositsCount < transactionRefresh) {
+        fetchUserDeposits();
       }
-      console.log("user deposits called - transactionRefresh");
-      const data = await getUserDeposits(address);
-      console.log("user deposits - transactionRefresh done", data);
-      // console.log(data,"data deposit useffect")
-      // console.log(data.length,"data length")
-      if (data) {
-        dispatch(setUserDeposits(data));
-      }
-      dispatch(setUserDepositsCount(""));
-    };
-    if (userDepositsCount < transactionRefresh) {
-      fetchUserDeposits();
+    } catch (err) {
+      console.log("user deposits - transactionRefresh error", err);
     }
   }, [address, transactionRefresh]);
+
+  useEffect(() => {
+    try {
+      const fetchEffectiveApr = async () => {
+        const promises = userLoans?.map((val: any) => {
+          return effectivAPRLoan(val, protocolStats, dataOraclePrices);
+        });
+        Promise.all([...promises]).then((val: any) => {
+          console.log("fetchEffectiveApr ", val);
+          const avgs = val.map((avg: any, idx: number) => {
+            return { avg: avg, loanId: val[idx]?.loanId };
+          });
+          dispatch(setEffectiveAPR(avgs));
+        });
+      };
+      if (
+        dataOraclePrices &&
+        userLoans?.length > 0 &&
+        protocolStats &&
+        effectiveAprCount < transactionRefresh
+      ) {
+        fetchEffectiveApr();
+      }
+    } catch (err) {
+      console.log("fetchEffectiveApr ", err);
+    }
+  }, [userLoans, protocolStats, oraclePrices, transactionRefresh]);
+
+  useEffect(() => {
+    try {
+      const fetchHealthFactor = async () => {
+        console.log("fetchHealthFactor - transactionRefresh called");
+        const promises = userLoans?.map((val: any) => {
+          return getExistingLoanHealth(val?.loanId);
+        });
+        Promise.all([...promises]).then((val: any) => {
+          const avgs = val.map((loneHealth: any, idx: number) => {
+            return { loanHealth: loneHealth, loanId: val[idx]?.loanId };
+          });
+          console.log("fetchHealthFactor - transactionRefresh done", avgs);
+          dispatch(setHealthFactor(avgs));
+        });
+      };
+      if (userLoans?.length > 0 && healthFactorCount < transactionRefresh) {
+        fetchHealthFactor();
+      }
+    } catch (err) {
+      console.log("fetchHealthFactor ", err);
+    }
+  }, [userLoans, transactionRefresh]);
 
   useEffect(() => {
     const fetchAprsAndHealth = async () => {
       try {
         if (
           dataOraclePrices &&
-          userLoans &&
+          userLoans?.length > 0 &&
           protocolStats &&
           aprsAndHealthCount < transactionRefresh
         ) {
@@ -220,35 +291,42 @@ const useDataLoader = () => {
   }, [dataOraclePrices, userLoans, protocolStats, transactionRefresh]);
 
   useEffect(() => {
-    const fetchUserLoans = async () => {
-      console.log("user loans called - transactionRefresh");
-      if (!address) {
-        return;
-      }
-      const userLoans = await getUserLoans(address);
-      if (userLoans && userLoans?.length > 0) {
-        dispatch(
-          setUserLoans(
-            userLoans?.filter(
-              (loan) => loan.loanAmountParsed && loan.loanAmountParsed > 0
-            )
-          )
-        );
-        dispatch(
-          setUserUnspentLoans(
-            userLoans
-              ?.filter(
+    try {
+      const fetchUserLoans = async () => {
+        console.log("user loans called - transactionRefresh");
+        if (!address) {
+          return;
+        }
+        const userLoans = await getUserLoans(address);
+        console.log("user loans called - transactionRefresh done ", userLoans);
+        if (!userLoans) {
+          return;
+        }
+        if (userLoans) {
+          dispatch(
+            setUserLoans(
+              userLoans?.filter(
                 (loan) => loan.loanAmountParsed && loan.loanAmountParsed > 0
               )
-              .filter((borrow: ILoan) => borrow.spendType === "UNSPENT")
-          )
-        );
+            )
+          );
+          dispatch(
+            setUserUnspentLoans(
+              userLoans
+                ?.filter(
+                  (loan) => loan.loanAmountParsed && loan.loanAmountParsed > 0
+                )
+                .filter((borrow: ILoan) => borrow.spendType === "UNSPENT")
+            )
+          );
+        }
+        dispatch(setUserLoansCount(""));
+      };
+      if (userLoansCount < transactionRefresh) {
+        fetchUserLoans();
       }
-      dispatch(setUserLoansCount(""));
-      console.log("user loans called - transactionRefresh done ", userLoans);
-    };
-    if (userLoansCount < transactionRefresh) {
-      fetchUserLoans();
+    } catch (err) {
+      console.log("user loans called - transactionRefresh error ", err);
     }
   }, [address, transactionRefresh]);
 
@@ -342,7 +420,9 @@ const useDataLoader = () => {
       userLoansCount,
       oraclePricesCount,
       userInfoCount,
-      aprsAndHealthCount
+      aprsAndHealthCount,
+      effectiveAprCount,
+      healthFactorCount
     );
   }, [
     transactionRefresh,
@@ -353,6 +433,8 @@ const useDataLoader = () => {
     oraclePricesCount,
     userInfoCount,
     aprsAndHealthCount,
+    effectiveAprCount,
+    healthFactorCount,
   ]);
 };
 

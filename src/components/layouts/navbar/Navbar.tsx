@@ -175,7 +175,7 @@ const Navbar = ({ validRTokens }: any) => {
       localStorage.setItem("lastUsedConnector", "argentX");
       router.push("/v1/market");
     } else {
-        connect(connectors[0]);
+      connect(connectors[0]);
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
       localStorage.setItem("lastUsedConnector", "braavos");

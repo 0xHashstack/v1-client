@@ -38,6 +38,8 @@ import {
   selectProtocolStats,
   selectOraclePrices,
   selectAprAndHealthFactor,
+  selectEffectiveApr,
+  selectHealthFactor,
 } from "@/store/slices/readDataSlice";
 import HazardIcon from "@/assets/icons/hazardIcon";
 import LiquidityProvisionModal from "@/components/modals/LiquidityProvision";
@@ -188,7 +190,9 @@ const SpendTable = () => {
   // const avgsData: any = [];
   const oraclePrices = useSelector(selectOraclePrices);
   const reduxProtocolStats = useSelector(selectProtocolStats);
-  const avgs = useSelector(selectAprAndHealthFactor);
+  // const avgs = useSelector(selectAprAndHealthFactor);
+  const avgs = useSelector(selectEffectiveApr);
+  const avgsLoneHealth = useSelector(selectHealthFactor);
 
   // useEffect(() => {
   //   const fetchAprs = async () => {
@@ -529,10 +533,10 @@ const SpendTable = () => {
                               color="#E6EDF3"
                               textAlign="right"
                             >
-                              {avgs?.find(
+                              {avgsLoneHealth?.find(
                                 (item: any) => item.loanId == borrow?.loanId
                               )?.loanHealth
-                                ? avgs?.find(
+                                ? avgsLoneHealth?.find(
                                     (item: any) => item.loanId == borrow?.loanId
                                   )?.loanHealth
                                 : "2.5"}
