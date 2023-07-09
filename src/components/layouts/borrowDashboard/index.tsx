@@ -231,21 +231,21 @@ const BorrowDashboard = ({
   //   console.log("running");
   // }, [oraclePrices, reduxProtocolStats, userLoans]);
 
-  const getSplit = async (liquidity: any, pairAddress: any) => {
-    const currentSplit = await getJediEstimatedLiqALiqBfromLp(
-      liquidity,
-      pairAddress
-    );
-    console.log("liquidity split - ", currentSplit);
-    return "Pending";
-  };
+  // const getSplit = async (liquidity: any, pairAddress: any) => {
+  //   const currentSplit = await getJediEstimatedLiqALiqBfromLp(
+  //     liquidity,
+  //     pairAddress
+  //   );
+  //   console.log("liquidity split - ", currentSplit);
+  //   return "Pending";
+  // };
 
-  useEffect(() => {
-    getSplit(
-      ["468857759897", "0"],
-      "0x62b1cd273ce4c7967988776fad2a7bbcb21e2b544a111cb48487315810f7f51"
-    );
-  }, []);
+  // useEffect(() => {
+  //   getSplit(
+  //     ["468857759897", "0"],
+  //     "0x62b1cd273ce4c7967988776fad2a7bbcb21e2b544a111cb48487315810f7f51"
+  //   );
+  // }, []);
 
   useEffect(() => {
     console.log("Borrows here - ", Borrows);
