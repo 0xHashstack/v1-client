@@ -2,22 +2,26 @@ import { Box, Button } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import ApexCharts from "react-apexcharts";
 import SupplyAprChart from "./SupplyApr";
+import { useSelector } from "react-redux";
+import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import numberFormatter from "@/utils/functions/numberFormatter";
 
 const SupplyChart = () => {
   // const [selectedOption, setSelectedOption] = useState("1week");
   const [supplyAPRChartPeriod, setSupplyAPRChartPeriod] = useState(0);
+  const btcData = useSelector(selectHourlyBTCData);
   const [chartData, setChartData] = useState([
     {
       name: "Series 1",
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
   ]);
-  const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
+  const [xAxisCategories, setXAxisCategories] = useState([new Date().getTime()]);
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
       // Simulating API call or data update
-      const { newData, newCategories } = await fetchDataBasedOnOption(
+      const { newData, newCategories } =  fetchDataBasedOnOption(
         supplyAPRChartPeriod
       );
       setChartData(newData);
@@ -28,7 +32,7 @@ const SupplyChart = () => {
   }, [supplyAPRChartPeriod]);
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
-  const fetchDataBasedOnOption = async (option: number) => {
+  const fetchDataBasedOnOption =  (option: number) => {
     // Simulating API call or data update based on option
     // Replace this with your actual implementation
     let newData: any = [];
@@ -39,7 +43,7 @@ const SupplyChart = () => {
         newData = [
           {
             name: "Series 1",
-            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+            data:   [30000, 40000, 35000, 50000, 49000, 60000, 80000],
           },
         ];
         newCategories = [
@@ -153,14 +157,14 @@ const SupplyChart = () => {
           colors: ["#000000"],
         },
         formatter: function (val: any) {
-          return val / 1000 + "k"; // Display the data value as the label
+          return numberFormatter(val); // Display the data value as the label
         },
       },
-
       xaxis: {
+        type: "datetime", // Set x-axis type to datetime
         labels: {
           style: {
-            colors: "#6E7681", // Set the color of the labels
+            colors: "#6E7681",
             fontSize: "12px",
             fontWeight: "400",
           },
@@ -175,11 +179,12 @@ const SupplyChart = () => {
       },
       yaxis: {
         labels: {
-          formatter: function (value: any) {
-            return value / 1000 + "k";
-          },
+          formatter:
+          function (value: any) {
+                return numberFormatter(value);
+              },
           style: {
-            colors: "#6E7681", // Set the color of the labels
+            colors: "#6E7681",
             fontSize: "12px",
             fontWeight: "400",
           },
@@ -188,10 +193,10 @@ const SupplyChart = () => {
       },
       plotOptions: {
         bar: {
-          opacity: 1, // Set the opacity to 1 for fully opaque bars
-          columnWidth: "70%", // Adjust the column width for better spacing between bars
+          opacity: 1,
+          columnWidth: "70%",
           colors: {
-            backgroundBarOpacity: 1, // Set the opacity of the background bar
+            backgroundBarOpacity: 1,
           },
         },
       },
@@ -199,7 +204,7 @@ const SupplyChart = () => {
       grid: {
         borderColor: "#2B2F35",
         padding: {
-          bottom: 10, // Add bottom padding to prevent overlap with x-axis labels
+          bottom: 10,
         },
       },
       annotations: {
@@ -238,9 +243,10 @@ const SupplyChart = () => {
         colors: ["#fff"],
       },
       xaxis: {
+        type: "datetime" as const, // Set x-axis type to datetime
         labels: {
           style: {
-            colors: "#6E7681", // Set the color of the labels
+            colors: "#6E7681",
             fontSize: "12px",
             fontWeight: "400",
           },

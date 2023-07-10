@@ -158,6 +158,7 @@ const LiquidityProviderChart = () => {
       },
 
       xaxis: {
+        type:"datetime",
         labels: {
           style: {
             colors: "#6E7681", // Set the color of the labels

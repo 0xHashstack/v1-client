@@ -158,6 +158,7 @@ const BorrowChart = () => {
       },
 
       xaxis: {
+        type:"datetime" as const,
         labels: {
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -238,9 +239,10 @@ const BorrowChart = () => {
         colors: ["#fff"],
       },
       xaxis: {
+        type: "datetime" as const, // Set x-axis type to datetime
         labels: {
           style: {
-            colors: "#6E7681", // Set the color of the labels
+            colors: "#6E7681",
             fontSize: "12px",
             fontWeight: "400",
           },
