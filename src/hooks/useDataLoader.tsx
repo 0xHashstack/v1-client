@@ -104,6 +104,7 @@ const useDataLoader = () => {
   const Data: any = [];
   const [avgs, setAvgs] = useState<any>([]);
   const avgsData: any = [];
+  console.log("address",address);
   // useEffect(() => {
   //   console.log("switched to market");
   // }, []);

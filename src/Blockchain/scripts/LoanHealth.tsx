@@ -38,8 +38,8 @@ export async function getLoanHealth_NativeCollateral(
   let loanMarketAddress = tokenAddressMap[loanMarket];
   let collateralMarketAddress = tokenAddressMap[collateralMarket];
 
-  const oraclePriceLoanMarket = oraclePrices.find(oraclePrice => oraclePrice.address === loanMarketAddress);
-  const oraclePriceCollateralMarket = oraclePrices.find(oraclePrice => oraclePrice.address === collateralMarketAddress);
+  const oraclePriceLoanMarket = oraclePrices?.find(oraclePrice => oraclePrice.address === loanMarketAddress);
+  const oraclePriceCollateralMarket = oraclePrices?.find(oraclePrice => oraclePrice.address === collateralMarketAddress);
 
   if(oraclePriceCollateralMarket && oraclePriceLoanMarket) {
     const loanAmountUsd = loanAmount * oraclePriceLoanMarket?.price;

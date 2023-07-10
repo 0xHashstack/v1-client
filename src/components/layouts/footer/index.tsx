@@ -1,17 +1,30 @@
 import { Box, HStack, Skeleton, Text } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
-import React, { useEffect } from "react";
-import { ProviderInterface } from "starknet";
+import React, { useEffect, useState } from "react";
+import { AccountInterface, ProviderInterface } from "starknet";
 import { useAccount, useBlockNumber } from "@starknet-react/core";
 import { useDispatch, useSelector } from "react-redux";
 
 import { setBlock,selectBlock,setCurrentNetwork,selectCurrentNetwork } from "@/store/slices/readDataSlice";
+interface ExtendedAccountInterface extends AccountInterface {
+  provider?: {
+    chainId: string;
+  };
+}
 const Footer = () => {
-  const { account } = useAccount();
+  const { account,connector } = useAccount();
   const { data: block } = useBlockNumber({
     refetchInterval: 10000,
   });
+  const extendedAccount = account as ExtendedAccountInterface;
+  // const [walletConnected, setwalletConnected] = useState<any>()
+  // useEffect(()=>{
+  //   const walletConnected=localStorage.getItem('lastUsedConnector');
+  //   setwalletConnected(walletConnected);
+  // },[account])
+  
+  
   const currentBlock = useSelector(selectBlock);
   const currentChainId = useSelector(selectCurrentNetwork);
   const dispatch = useDispatch();
@@ -20,11 +33,19 @@ const Footer = () => {
       dispatch(setBlock(block));
     }
   }, [block]);
+  // console.log(extendedAccount?.provider?.chainId,"footer")
+  // console.log(walletConnected);
   useEffect(() => {
-    if (account && account?.chainId && account?.chainId != currentChainId) {
-      dispatch(setCurrentNetwork(account?.chainId));
+    if(connector?.options?.id == "braavos"){
+      if (account && account?.chainId && account?.chainId != currentChainId) {
+        dispatch(setCurrentNetwork(account?.chainId));
+      }
+    }else if(connector?.options?.id == "argentX"){
+      if(extendedAccount && extendedAccount?.provider?.chainId && extendedAccount.provider?.chainId!=currentChainId){
+        dispatch(setCurrentNetwork(extendedAccount?.provider?.chainId));
+      }
     }
-  }, [account?.chainId]);
+  }, [account?.chainId,extendedAccount?.provider?.chainId]);
   return (
     <HStack
       zIndex="14"
