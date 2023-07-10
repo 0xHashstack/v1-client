@@ -11,12 +11,14 @@ import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
 const TrialChart = ({ series, formatter, color, categories }: any) => {
   const [selectedOption, setSelectedOption] = useState<any>("1week");
   const [chartData, setChartData] = useState(series);
-  const [xAxisCategories, setXAxisCategories] = useState([new Date().getTime()]);
-  const [supplyAmountData, setSupplyAmountData] = useState<any>([])
-  const [dates, setDates] = useState<any>([])
-  const btcData=useSelector(selectHourlyBTCData)
-  console.log(btcData)
-   
+  const [xAxisCategories, setXAxisCategories] = useState([
+    new Date().getTime(),
+  ]);
+  const [supplyAmountData, setSupplyAmountData] = useState<any>([]);
+  const [dates, setDates] = useState<any>([]);
+  const btcData = useSelector(selectHourlyBTCData);
+  console.log(btcData);
+
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
@@ -31,42 +33,42 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
     fetchData();
   }, [selectedOption]);
 
-//   useEffect(()=>{
-//     const fetchMetricsData=async()=>{
-//         const response = await axios.get('http://18.143.34.55:3010/api/metrics/tvl/daily/DAI');   
-//         const amounts:any=[];  
-//         const dates:any=[];
-//         const supplyRates:any=[];
-//         const borrowRates:any=[];
-//             for(var i=0;i<response?.data?.length;i++){
-//                 amounts?.push(response?.data[i].supplyAmount)
-//                 const dateObj = new Date(response?.data[i].Datetime)
-//                 dates?.push(dateObj.getTime());
-//                 supplyRates?.push(response?.data[i].supplyRate)
-//                 borrowRates?.push(response?.data[i].borrowRate)
-//             }
-//             setDates(dates);
-//             setSupplyAmountData(amounts);
-//             setbtcData({
-//                 dates:dates,
-//                 supplyAmounts:amounts,
-//                 supplyRates:supplyRates,
-//                 borrowRates:borrowRates
-//             })
-//         console.log(response.data,"data trial chart");
-//     }
-//     fetchMetricsData();
-//   },[])
-  console.log(dates,"dates")
-  console.log(supplyAmountData,"amounts")
-  console.log(btcData,"btc data")
-//   console.log(new Date("2022-01-01").getTime(),"trial chart data")
+  //   useEffect(()=>{
+  //     const fetchMetricsData=async()=>{
+  //         const response = await axios.get('http://18.143.34.55:3010/api/metrics/tvl/daily/DAI');
+  //         const amounts:any=[];
+  //         const dates:any=[];
+  //         const supplyRates:any=[];
+  //         const borrowRates:any=[];
+  //             for(var i=0;i<response?.data?.length;i++){
+  //                 amounts?.push(response?.data[i].supplyAmount)
+  //                 const dateObj = new Date(response?.data[i].Datetime)
+  //                 dates?.push(dateObj.getTime());
+  //                 supplyRates?.push(response?.data[i].supplyRate)
+  //                 borrowRates?.push(response?.data[i].borrowRate)
+  //             }
+  //             setDates(dates);
+  //             setSupplyAmountData(amounts);
+  //             setbtcData({
+  //                 dates:dates,
+  //                 supplyAmounts:amounts,
+  //                 supplyRates:supplyRates,
+  //                 borrowRates:borrowRates
+  //             })
+  //         console.log(response.data,"data trial chart");
+  //     }
+  //     fetchMetricsData();
+  //   },[])
+  console.log(dates, "dates");
+  console.log(supplyAmountData, "amounts");
+  console.log(btcData, "btc data");
+  //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: string) => {
     // Simulating API call or data update based on option
     // Replace this with your actual implementation
-    let newData:any = [];
-    let newCategories:any = [];
+    let newData: any = [];
+    let newCategories: any = [];
 
     switch (option) {
       case "1week":
@@ -76,13 +78,18 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
             data: btcData?.supplyAmounts,
           },
         ];
-        newCategories =btcData?.dates;
+        newCategories = btcData?.dates;
         break;
       case "1month":
         newData = [
           {
             name: "Series 1",
-            data: [40000, 38000, 42000, 39000, 44000, 41000, 43000, 39000, 44000, 41000, 43000, 39000, 44000, 41000, 43000, 39000, 44000, 41000, 43000, 43000, 39000, 44000, 41000, 43000, 43000, 39000, 44000, 41000, 43000,43000],
+            data: [
+              40000, 38000, 42000, 39000, 44000, 41000, 43000, 39000, 44000,
+              41000, 43000, 39000, 44000, 41000, 43000, 39000, 44000, 41000,
+              43000, 43000, 39000, 44000, 41000, 43000, 43000, 39000, 44000,
+              41000, 43000, 43000,
+            ],
           },
         ];
         newCategories = [
@@ -141,17 +148,20 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
         newData = [
           {
             name: "Series 1",
-            data: [60000, 58000, 62000, 59000, 63000, 60000, 62000, 59000, 63000, 60000, 62000,70000],
+            data: [
+              60000, 58000, 62000, 59000, 63000, 60000, 62000, 59000, 63000,
+              60000, 62000, 70000,
+            ],
           },
         ];
-        
+
         newCategories = [
-            new Date("2022-01-01").getTime(),
-            new Date("2022-02-01").getTime(),
-            new Date("2022-03-01").getTime(),
-            new Date("2022-04-01").getTime(),
-            new Date("2022-05-01").getTime(),
-            new Date("2022-06-01").getTime(),
+          new Date("2022-01-01").getTime(),
+          new Date("2022-02-01").getTime(),
+          new Date("2022-03-01").getTime(),
+          new Date("2022-04-01").getTime(),
+          new Date("2022-05-01").getTime(),
+          new Date("2022-06-01").getTime(),
           new Date("2022-07-01").getTime(),
           new Date("2022-08-01").getTime(),
           new Date("2022-09-01").getTime(),
@@ -209,7 +219,7 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
       },
       yaxis: {
         labels: {
-            formatter: formatter
+          formatter: formatter
             ? formatter
             : function (value: any) {
                 return numberFormatter(value);
@@ -265,12 +275,12 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
         <option value="1year">1 Year</option>
       </Select>
       <ApexCharts
-    options={splineChartData.options}
-    series={splineChartData.series}
-    type="bar"
-    height={350}
-  />
-        </Box>
-  )
-}
+        options={splineChartData.options}
+        series={splineChartData.series}
+        type="bar"
+        height={350}
+      />
+    </Box>
+  );
+};
 export default TrialChart;
