@@ -42,18 +42,18 @@ const theme = extendTheme({
 import { UserbackProvider } from "@userback/react";
 import Layout from "@/components/layouts/toasts";
 import spaceApiKey from "@/utils/constants/keys";
+import { useState } from "react";
 
 export default function App({ Component, pageProps }: AppProps) {
   const connectors = [
     new InjectedConnector({ options: { id: "braavos" } }),
     new InjectedConnector({ options: { id: "argentX" } }),
   ];
-
+  const [feedback, setFeedback] = useState(false);
   loadSpace(spaceApiKey).then((api) => {
-    const feedback = localStorage.getItem("feedback");
-    if (feedback != "true") {
+    if (!feedback) {
       api.init();
-      localStorage.setItem("feedback", "true");
+      setFeedback(true);
     }
   });
 
