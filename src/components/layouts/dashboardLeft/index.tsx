@@ -286,14 +286,17 @@ const DashboardLeft = ({
                         {coin.name}
                       </Text>
                       {assetBalance[coin.name]?.statusBalanceOf != "success" ? (
-                        <Skeleton
-                          width="3rem"
-                          height="0.8rem"
-                          startColor="#101216"
-                          endColor="#2B2F35"
-                          borderRadius="6px"
-                          mt="4px"
-                        />
+                        // <Skeleton
+                        //   width="3rem"
+                        //   height="0.8rem"
+                        //   startColor="#101216"
+                        //   endColor="#2B2F35"
+                        //   borderRadius="6px"
+                        //   mt="4px"
+                        // />
+                        <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
+                          Wallet Bal. -
+                        </Text>
                       ) : (
                         <Text fontSize="9px" fontWeight="400" color="#8C8C8C">
                           Wallet Bal. {/* {numberFormatter( */}

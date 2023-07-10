@@ -253,7 +253,7 @@ const BorrowDashboard = ({
     if (Borrows || Borrows?.length > 0) {
       setLoading(false);
     }
-  }, [Borrows,userLoans]);
+  }, [Borrows]);
 
   const [borrowAPRs, setBorrowAPRs] = useState<(number | undefined)[]>([]);
 

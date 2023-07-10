@@ -6,7 +6,8 @@ import {
   IUserStats,
 } from "../interfaces/interfaces";
 import metricsAbi from "../abis/metrics_abi.json";
-import borrowTokenAbi from "../abis/dToken_abi.json";
+// import borrowTokenAbi from "../abis/dToken_abi.json";
+import borrowTokenAbi from "../abi_new/dToken_abi.json";
 import {
   getProvider,
   getRTokenFromAddress,
@@ -16,7 +17,7 @@ import {
 import { parseAmount, weiToEtherNumber } from "../utils/utils";
 import { OraclePrice, getOraclePrices } from "./getOraclePrices";
 
-// function parseUserStats(
+// function parseUserStats( 
 //   userStatsData: any,
 // ): IUserStats {
 //   let userStats: IUserStats = {
