@@ -43,7 +43,12 @@ import {
   setActiveTransactions,
   setTransactionStartedAndModalClosed,
 } from "@/store/slices/userAccountSlice";
-import { selectAprAndHealthFactor, selectUserLoans } from "@/store/slices/readDataSlice";
+import {
+  selectAprAndHealthFactor,
+  selectEffectiveApr,
+  selectHealthFactor,
+  selectUserLoans,
+} from "@/store/slices/readDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
@@ -222,7 +227,9 @@ const SwapModal = ({
     track_pageview: true,
     persistence: "localStorage",
   });
-  const avgs=useSelector(selectAprAndHealthFactor)
+  // const avgs=useSelector(selectAprAndHealthFactor)
+  const avgs = useSelector(selectEffectiveApr);
+  const avgsLoneHealth = useSelector(selectHealthFactor);
   const handleSwap = async () => {
     try {
       const swap = await writeAsyncJediSwap_swap();
@@ -417,8 +424,8 @@ const SwapModal = ({
         isOpen={isOpen}
         onClose={() => {
           onClose();
-          if(transactionStarted){
-            dispatch(setTransactionStartedAndModalClosed(true))
+          if (transactionStarted) {
+            dispatch(setTransactionStartedAndModalClosed(true));
           }
           resetStates();
         }}
@@ -1040,14 +1047,22 @@ const SwapModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                                            {avgs?.find(
-                            (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
-                          )?.avg
-                            ? avgs?.find(
-                                (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
-                              )?.avg
-                            : "3.2"}
-                          %
+                  {avgs?.find(
+                    (item: any) =>
+                      item.loanId ==
+                      currentBorrowId
+                        .slice(currentBorrowId?.indexOf("-") + 1)
+                        ?.trim()
+                  )?.avg
+                    ? avgs?.find(
+                        (item: any) =>
+                          item.loanId ==
+                          currentBorrowId
+                            .slice(currentBorrowId?.indexOf("-") + 1)
+                            ?.trim()
+                      )?.avg
+                    : "3.2"}
+                  %
                 </Text>
               </Box>
               <Box display="flex" justifyContent="space-between">
@@ -1082,14 +1097,22 @@ const SwapModal = ({
                   fontWeight="400"
                   fontStyle="normal"
                 >
-                                                                {avgs?.find(
-                            (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
-                          )?.avg
-                            ? avgs?.find(
-                                (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
-                              )?.loanHealth
-                            : "2.5"}
-                          %
+                  {avgsLoneHealth?.find(
+                    (item: any) =>
+                      item.loanId ==
+                      currentBorrowId
+                        .slice(currentBorrowId?.indexOf("-") + 1)
+                        ?.trim()
+                  )?.loanHealth
+                    ? avgsLoneHealth?.find(
+                        (item: any) =>
+                          item.loanId ==
+                          currentBorrowId
+                            .slice(currentBorrowId?.indexOf("-") + 1)
+                            ?.trim()
+                      )?.loanHealth
+                    : "2.5"}
+                  %
                 </Text>
               </Box>
             </Box>

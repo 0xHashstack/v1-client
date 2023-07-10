@@ -37,6 +37,8 @@ const initialState = {
   userInfoCount: -1,
   block: null,
   currentNetwork: null,
+  effectiveAPR: null,
+  healthFactor: null,
 };
 
 export const readDataSlice = createSlice({
@@ -122,6 +124,12 @@ export const readDataSlice = createSlice({
     resetState(state, action) {
       return { ...initialState };
     },
+    setEffectiveAPR(state, action) {
+      state.effectiveAPR = action.payload;
+    },
+    setHealthFactor(state, action) {
+      state.healthFactor = action.payload;
+    },
 
     extraReducers: {
       [HYDRATE]: (state, action) => {
@@ -162,6 +170,8 @@ export const {
   setHourlyUSDCData,
   setHourlyUSDTData,
   resetState,
+  setEffectiveAPR,
+  setHealthFactor,
 } = readDataSlice.actions;
 
 export const selectUserDeposits = (state) => state.read_data.userDeposits;
@@ -192,6 +202,8 @@ export const selectOraclePricesCount = (state) =>
 export const selectUserInfoCount = (state) => state.read_data.userInfoCount;
 export const selectBlock = (state) => state.read_data.block;
 export const selectCurrentNetwork = (state) => state.read_data.currentNetwork;
+export const selectEffectiveApr = (state) => state.read_data.effectiveAPR;
+export const selectHealthFactor = (state) => state.read_data.healthFactor;
 export const selectHourlyBTCData=(state)=>state.read_data.hourlyBTCData;
 export const selectHourlyETHData=(state)=>state.read_data.hourlyETHData;
 export const selectHourlyUSDTData=(state)=>state.read_data.hourlyUSDTData;

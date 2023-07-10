@@ -49,9 +49,13 @@ export default function App({ Component, pageProps }: AppProps) {
     new InjectedConnector({ options: { id: "argentX" } }),
   ];
 
-  // loadSpace(spaceApiKey).then((api) => {
-  //   api.init();
-  // });
+  loadSpace(spaceApiKey).then((api) => {
+    const feedback = localStorage.getItem("feedback");
+    if (feedback != "true") {
+      api.init();
+      localStorage.setItem("feedback", "true");
+    }
+  });
 
   return (
     <>

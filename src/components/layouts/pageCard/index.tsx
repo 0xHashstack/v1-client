@@ -99,6 +99,10 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
       } else if (walletConnected == "argentX") {
         disconnect();
         connect(connectors[1]);
+      } else {
+        disconnect();
+        connect(connectors[0]);
+        localStorage.setItem("lastUsedConnector", "braavos");
       }
     }
   }, [account]);
@@ -159,21 +163,21 @@ const PageCard: React.FC<Props> = ({ children, className, ...rest }) => {
     DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
   };
 
-  useEffect(() => {
-    const walletConnected = localStorage.getItem("lastUsedConnector");
-    if (walletConnected == "") {
-      router.push("/");
-    }
-    if (account) {
-      if (walletConnected == "braavos") {
-        disconnect();
-        connect(connectors[0]);
-      } else if (walletConnected == "argentX") {
-        disconnect();
-        connect(connectors[1]);
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   const walletConnected = localStorage.getItem("lastUsedConnector");
+  //   if (walletConnected == "") {
+  //     router.push("/");
+  //   }
+  //   if (account) {
+  //     if (walletConnected == "braavos") {
+  //       disconnect();
+  //       connect(connectors[0]);
+  //     } else if (walletConnected == "argentX") {
+  //       disconnect();
+  //       connect(connectors[1]);
+  //     }
+  //   }
+  // }, []);
   useEffect(() => {
     function isCorrectNetwork() {
       const walletConnected = localStorage.getItem("lastUsedConnector");

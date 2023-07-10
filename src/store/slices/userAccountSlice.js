@@ -50,6 +50,8 @@ const initialState = {
   oraclePricesCount: -1,
   userInfoCount: -1,
   aprAndHealthFactorCount: -1,
+  aprCount: -1,
+  healthFactorCount: -1,
   hourlyDataCount:-1,
 
   // walletBalance: {
@@ -183,7 +185,7 @@ export const userAccountSlice = createSlice({
     },
     setUserDepositsCount(state, action) {
       state.userDepositsCount = state.transactionRefresh;
-      // const count = state.userDepositsCount + 1; 
+      // const count = state.userDepositsCount + 1;
       // return { ...state, userDepositsCount: count };
     },
     setUserLoansCount(state, action) {
@@ -201,6 +203,12 @@ export const userAccountSlice = createSlice({
       return { ...initialState };
     },
 
+    setAprCount(state, action) {
+      state.aprCount = state.transactionRefresh;
+    },
+    setHealthFactorCount(state, action) {
+      state.healthFactorCount = state.transactionRefresh;
+    },
     // setWalletBalance(state, action) {
     //   state.walletBalance = action.payload;
     // },
@@ -244,6 +252,8 @@ export const {
   setUserUnspentLoans,
   setTransactionStartedAndModalClosed,
   setAccountReset,
+  setAprCount,
+  setHealthFactorCount,
 } = userAccountSlice.actions;
 export const selectAccount = (state) => state.user_account.account;
 export const { setInputSupplyAmount } = userAccountSlice.actions;
@@ -315,5 +325,8 @@ export const selectHourlyDataCount=(state)=>
   state.user_account.hourlyDataCount;
 export const selectUserUnspentLoans = (state) =>
   state.user_account.userUnspentLoans;
+export const selectAprCount = (state) => state.user_account.aprCount;
+export const selectHealthFactorCount = (state) =>
+  state.user_account.healthFactorCount;
 // export const select=(state)=> state.user_account.
 export default userAccountSlice.reducer;

@@ -23,7 +23,13 @@ import {
   selectAvgBorrowAPR,
   selectAvgSupplyAPR,
 } from "@/store/slices/userAccountSlice";
-import { selectProtocolReserves,selectProtocolStats,selectNetAPR, selectYourSupply,selectYourBorrow } from "@/store/slices/readDataSlice";
+import {
+  selectProtocolReserves,
+  selectProtocolStats,
+  selectNetAPR,
+  selectYourSupply,
+  selectYourBorrow,
+} from "@/store/slices/readDataSlice";
 import numberFormatter from "@/utils/functions/numberFormatter";
 import useDataLoader from "@/hooks/useDataLoader";
 const YourMetrics = () => {
@@ -34,18 +40,18 @@ const YourMetrics = () => {
     useConnectors();
   const { account: _account } = useAccount();
   useDataLoader();
-  useEffect(() => {
-    if (!_account) {
-      const walletConnected = localStorage.getItem("lastUsedConnector");
-      if (walletConnected == "braavos") {
-        disconnect();
-        connect(connectors[0]);
-      } else if (walletConnected == "argentx") {
-        disconnect();
-        connect(connectors[0]);
-      }
-  }
-  }, []);
+  // useEffect(() => {
+  //   if (!_account) {
+  //     const walletConnected = localStorage.getItem("lastUsedConnector");
+  //     if (walletConnected == "braavos") {
+  //       disconnect();
+  //       connect(connectors[0]);
+  //     } else if (walletConnected == "argentx") {
+  //       disconnect();
+  //       connect(connectors[0]);
+  //     }
+  // }
+  // }, []);
   const [protocolStats, setProtocolStats] = useState<any>([]);
   const totalSupply = useSelector(selectYourSupply);
   const netAPR = useSelector(selectNetAPR);

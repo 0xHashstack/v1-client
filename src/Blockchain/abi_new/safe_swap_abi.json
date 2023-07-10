@@ -1,0 +1,190 @@
+[
+    {
+        "members": [
+            {
+                "name": "low",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "high",
+                "offset": 1,
+                "type": "felt"
+            }
+        ],
+        "name": "Uint256",
+        "size": 2,
+        "type": "struct"
+    },
+    {
+        "members": [
+            {
+                "name": "tokenA",
+                "offset": 0,
+                "type": "felt"
+            },
+            {
+                "name": "tokenB",
+                "offset": 1,
+                "type": "felt"
+            },
+            {
+                "name": "pool",
+                "offset": 2,
+                "type": "felt"
+            }
+        ],
+        "name": "SupportedPool",
+        "size": 3,
+        "type": "struct"
+    },
+    {
+        "data": [
+            {
+                "name": "previousOwner",
+                "type": "felt"
+            },
+            {
+                "name": "newOwner",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "OwnershipTransferred",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Paused",
+        "type": "event"
+    },
+    {
+        "data": [
+            {
+                "name": "account",
+                "type": "felt"
+            }
+        ],
+        "keys": [],
+        "name": "Unpaused",
+        "type": "event"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset_from",
+                "type": "felt"
+            },
+            {
+                "name": "asset_to",
+                "type": "felt"
+            },
+            {
+                "name": "amount_in",
+                "type": "Uint256"
+            }
+        ],
+        "name": "get_min_amount_out",
+        "outputs": [
+            {
+                "name": "amount_out",
+                "type": "Uint256"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "pause_safe_swap",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "unpause_safe_swap",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "get_supported_pools_myswap",
+        "outputs": [
+            {
+                "name": "pools_len",
+                "type": "felt"
+            },
+            {
+                "name": "pools",
+                "type": "SupportedPool*"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    },
+    {
+        "inputs": [],
+        "name": "update_myswap_pool_info",
+        "outputs": [],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "asset_from",
+                "type": "felt"
+            },
+            {
+                "name": "asset_to",
+                "type": "felt"
+            },
+            {
+                "name": "amount_in",
+                "type": "Uint256"
+            },
+            {
+                "name": "from_account",
+                "type": "felt"
+            },
+            {
+                "name": "to_account",
+                "type": "felt"
+            }
+        ],
+        "name": "efficient_swap",
+        "outputs": [
+            {
+                "name": "amount_out",
+                "type": "Uint256"
+            }
+        ],
+        "type": "function"
+    },
+    {
+        "inputs": [
+            {
+                "name": "lp_address",
+                "type": "felt"
+            }
+        ],
+        "name": "get_myswap_pair",
+        "outputs": [
+            {
+                "name": "token0",
+                "type": "felt"
+            },
+            {
+                "name": "token1",
+                "type": "felt"
+            }
+        ],
+        "stateMutability": "view",
+        "type": "function"
+    }
+]

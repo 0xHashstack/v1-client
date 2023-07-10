@@ -56,7 +56,11 @@ import {
   setActiveTransactions,
   setTransactionStartedAndModalClosed,
 } from "@/store/slices/userAccountSlice";
-import { selectAprAndHealthFactor, selectUserLoans } from "@/store/slices/readDataSlice";
+import {
+  selectAprAndHealthFactor,
+  selectHealthFactor,
+  selectUserLoans,
+} from "@/store/slices/readDataSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setModalDropdown,
@@ -139,7 +143,8 @@ const LiquidityProvisionModal = ({
   const [borrowAmount, setBorrowAmount] = useState(BorrowBalance);
 
   let activeTransactions = useSelector(selectActiveTransactions);
-  const avgs=useSelector(selectAprAndHealthFactor)
+  // const avgs=useSelector(selectAprAndHealthFactor)
+  const avgs = useSelector(selectHealthFactor);
 
   // console.log(userLoans)
   // console.log(currentId.slice(currentId.indexOf("-") + 1).trim())
@@ -231,7 +236,11 @@ const LiquidityProvisionModal = ({
     "USDT/DAI",
     "USDC/DAI",
   ];
-  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", { debug: true, track_pageview: true, persistence: 'localStorage' });
+  mixpanel.init(process.env.NEXT_PUBLIC_MIXPANEL_KEY || "", {
+    debug: true,
+    track_pageview: true,
+    persistence: "localStorage",
+  });
 
   //This Function handles the modalDropDowns
   const handleDropdownClick = (dropdownName: any) => {
@@ -332,12 +341,12 @@ const LiquidityProvisionModal = ({
         };
         // addTransaction({ hash: deposit?.transaction_hash });
         activeTransactions?.push(trans_data);
-        mixpanel.track('Liquidity Spend Borrow Status',{
-          "Status":"Success",
-          "PoolSelected":currentPool,
-          "BorrowId":currentBorrowId,
-          "BorrowedMarket":currentBorrowMarketCoin
-        })
+        mixpanel.track("Liquidity Spend Borrow Status", {
+          Status: "Success",
+          PoolSelected: currentPool,
+          BorrowId: currentBorrowId,
+          BorrowedMarket: currentBorrowMarketCoin,
+        });
 
         dispatch(setActiveTransactions(activeTransactions));
       }
@@ -355,9 +364,9 @@ const LiquidityProvisionModal = ({
           </CopyToClipboard>
         </div>
       );
-      mixpanel.track('Liquidity Spend Borrow Status',{
-        "Status":"Failure",
-      })
+      mixpanel.track("Liquidity Spend Borrow Status", {
+        Status: "Failure",
+      });
       toast.error(toastContent, {
         position: toast.POSITION.BOTTOM_RIGHT,
         autoClose: false,
@@ -492,10 +501,10 @@ const LiquidityProvisionModal = ({
             if (selectedDapp == "") {
               // console.log("hi");
             } else {
-              mixpanel.track('Liquidity Modal Selected',{
-                'Clicked':true,
-                'Dapp Selected':currentSwap
-              })
+              mixpanel.track("Liquidity Modal Selected", {
+                Clicked: true,
+                "Dapp Selected": currentSwap,
+              });
               onOpen();
             }
           }}
@@ -511,10 +520,10 @@ const LiquidityProvisionModal = ({
               // console.log("hi");
             } else {
               onOpen();
-              mixpanel.track('Liquidity Modal Selected',{
-                'Clicked':true,
-                'Dapp Selected':currentSwap
-              })
+              mixpanel.track("Liquidity Modal Selected", {
+                Clicked: true,
+                "Dapp Selected": currentSwap,
+              });
             }
           }}
         >
@@ -529,10 +538,10 @@ const LiquidityProvisionModal = ({
               // console.log("hi");
             } else {
               onOpen();
-              mixpanel.track('Liquidity Modal Selected',{
-                'Clicked':true,
-                'Dapp Selected':currentSwap
-              })
+              mixpanel.track("Liquidity Modal Selected", {
+                Clicked: true,
+                "Dapp Selected": currentSwap,
+              });
             }
           }}
         >
@@ -550,8 +559,8 @@ const LiquidityProvisionModal = ({
           isOpen={isOpen}
           onClose={() => {
             onClose();
-            if(transactionStarted){
-              dispatch(setTransactionStartedAndModalClosed(true))
+            if (transactionStarted) {
+              dispatch(setTransactionStartedAndModalClosed(true));
             }
             resetStates();
           }}
@@ -1240,14 +1249,22 @@ const LiquidityProvisionModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                                            {avgs?.find(
-                            (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
-                          )?.avg
-                            ? avgs?.find(
-                                (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
-                              )?.avg
-                            : "3.2"}
-                          %
+                    {avgs?.find(
+                      (item: any) =>
+                        item.loanId ==
+                        currentBorrowId
+                          .slice(currentBorrowId?.indexOf("-") + 1)
+                          ?.trim()
+                    )?.avg
+                      ? avgs?.find(
+                          (item: any) =>
+                            item.loanId ==
+                            currentBorrowId
+                              .slice(currentBorrowId?.indexOf("-") + 1)
+                              ?.trim()
+                        )?.avg
+                      : "3.2"}
+                    %
                   </Text>
                 </Box>
                 <Box display="flex" justifyContent="space-between">
@@ -1282,14 +1299,22 @@ const LiquidityProvisionModal = ({
                     fontWeight="400"
                     fontStyle="normal"
                   >
-                                                                {avgs?.find(
-                            (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
-                          )?.avg
-                            ? avgs?.find(
-                                (item: any) => item.loanId == currentBorrowId.slice(currentBorrowId?.indexOf("-") + 1)?.trim()
-                              )?.loanHealth
-                            : "2.5"}
-                          %
+                    {avgs?.find(
+                      (item: any) =>
+                        item.loanId ==
+                        currentBorrowId
+                          .slice(currentBorrowId?.indexOf("-") + 1)
+                          ?.trim()
+                    )?.avg
+                      ? avgs?.find(
+                          (item: any) =>
+                            item.loanId ==
+                            currentBorrowId
+                              .slice(currentBorrowId?.indexOf("-") + 1)
+                              ?.trim()
+                        )?.loanHealth
+                      : "2.5"}
+                    %
                   </Text>
                 </Box>
               </Box>
@@ -1298,10 +1323,10 @@ const LiquidityProvisionModal = ({
                   onClick={() => {
                     setTransactionStarted(true);
                     if (transactionStarted == false) {
-                      mixpanel.track('Liquidity Button Clicked Spend Borrow',{
-                        'Clicked':true
-                      })
-                      dispatch(setTransactionStartedAndModalClosed(false))
+                      mixpanel.track("Liquidity Button Clicked Spend Borrow", {
+                        Clicked: true,
+                      });
+                      dispatch(setTransactionStartedAndModalClosed(false));
                       handleLiquidity();
                     }
                   }}
