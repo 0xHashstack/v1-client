@@ -1930,10 +1930,11 @@ const BorrowModal = ({
 
             {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
               (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
-              amount > 0 &&
+              amount > 0 
               // (currentCollateralCoin[0]=="r" ? rTokenAmount<=walletBalance :true) &&
               // (validRTokens.length>0 ? rTokenAmount <= walletBalance:true) &&
-              inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD ? (
+              // inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD ? (
+                ?(
               buttonId == 1 ? (
                 <SuccessButton successText="Borrow successful." />
               ) : buttonId == 2 ? (

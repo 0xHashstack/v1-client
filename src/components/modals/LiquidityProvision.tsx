@@ -311,48 +311,93 @@ const LiquidityProvisionModal = ({
 
   const handleLiquidity = async () => {
     try {
-      const liquidity = await writeAsyncJediSwap_addLiquidity();
-      if (liquidity?.transaction_hash) {
-        console.log("toast here");
-        const toastid = toast.info(
-          // `Please wait your transaction is running in background`,
-          `Transaction pending`,
-          {
-            position: toast.POSITION.BOTTOM_RIGHT,
-            autoClose: false,
+      if(currentSwap=="Jediswap"){
+        const liquidity = await writeAsyncJediSwap_addLiquidity();
+        if (liquidity?.transaction_hash) {
+          console.log("toast here");
+          const toastid = toast.info(
+            // `Please wait your transaction is running in background`,
+            `Transaction pending`,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
           }
-        );
-        setToastId(toastid);
-        if (!activeTransactions) {
-          activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
-        } else if (
-          Object.isFrozen(activeTransactions) ||
-          Object.isSealed(activeTransactions)
-        ) {
-          // Check if activeTransactions is frozen or sealed
-          activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          const trans_data = {
+            transaction_hash: liquidity?.transaction_hash.toString(),
+            // message: `You have successfully Liquidated for Loan ID : ${liquidityLoanId}`,
+            message: `Transaction successful`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+          mixpanel.track("Liquidity Spend Borrow Status", {
+            Status: "Success",
+            PoolSelected: currentPool,
+            BorrowId: currentBorrowId,
+            BorrowedMarket: currentBorrowMarketCoin,
+          });
+  
+          dispatch(setActiveTransactions(activeTransactions));
         }
-        const trans_data = {
-          transaction_hash: liquidity?.transaction_hash.toString(),
-          // message: `You have successfully Liquidated for Loan ID : ${liquidityLoanId}`,
-          message: `Transaction successful`,
-          toastId: toastid,
-          setCurrentTransactionStatus: setCurrentTransactionStatus,
-        };
-        // addTransaction({ hash: deposit?.transaction_hash });
-        activeTransactions?.push(trans_data);
-        mixpanel.track("Liquidity Spend Borrow Status", {
-          Status: "Success",
-          PoolSelected: currentPool,
-          BorrowId: currentBorrowId,
-          BorrowedMarket: currentBorrowMarketCoin,
-        });
-
-        dispatch(setActiveTransactions(activeTransactions));
+        console.log(liquidity);
+        setDepositTransHash(liquidity?.transaction_hash);
+        dispatch(setTransactionStatus("success"));
+      }else if(currentSwap=="Myswap"){
+        const liquidity = await writeAsyncmySwap_addLiquidity();
+        if (liquidity?.transaction_hash) {
+          console.log("toast here");
+          const toastid = toast.info(
+            // `Please wait your transaction is running in background`,
+            `Transaction pending`,
+            {
+              position: toast.POSITION.BOTTOM_RIGHT,
+              autoClose: false,
+            }
+          );
+          setToastId(toastid);
+          if (!activeTransactions) {
+            activeTransactions = []; // Initialize activeTransactions as an empty array if it's not defined
+          } else if (
+            Object.isFrozen(activeTransactions) ||
+            Object.isSealed(activeTransactions)
+          ) {
+            // Check if activeTransactions is frozen or sealed
+            activeTransactions = activeTransactions.slice(); // Create a shallow copy of the frozen/sealed array
+          }
+          const trans_data = {
+            transaction_hash: liquidity?.transaction_hash.toString(),
+            // message: `You have successfully Liquidated for Loan ID : ${liquidityLoanId}`,
+            message: `Transaction successful`,
+            toastId: toastid,
+            setCurrentTransactionStatus: setCurrentTransactionStatus,
+          };
+          // addTransaction({ hash: deposit?.transaction_hash });
+          activeTransactions?.push(trans_data);
+          mixpanel.track("Liquidity Spend Borrow Status", {
+            Status: "Success",
+            PoolSelected: currentPool,
+            BorrowId: currentBorrowId,
+            BorrowedMarket: currentBorrowMarketCoin,
+          });
+  
+          dispatch(setActiveTransactions(activeTransactions));
+        }
+        console.log(liquidity);
+        setDepositTransHash(liquidity?.transaction_hash);
+        dispatch(setTransactionStatus("success"));
       }
-      console.log(liquidity);
-      setDepositTransHash(liquidity?.transaction_hash);
-      dispatch(setTransactionStatus("success"));
     } catch (err: any) {
       console.log(err);
       dispatch(setTransactionStatus("failed"));
@@ -505,12 +550,12 @@ const LiquidityProvisionModal = ({
                 Clicked: true,
                 "Dapp Selected": currentSwap,
               });
-              onOpen();
+              // onOpen();
             }
           }}
         >
           <Box onClick={() => setCurrentSwap("Yagi")}>
-            {selectedDapp != "" ? <TableYagiLogo /> : <TableYagiLogoDull />}
+             <TableYagiLogoDull />
           </Box>
         </Box>
         <Box
