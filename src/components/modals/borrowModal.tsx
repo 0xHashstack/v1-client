@@ -566,6 +566,8 @@ const BorrowModal = ({
   const handleChange = (newValue: any) => {
     if (newValue > 9_000_000_000) return;
     // newValue = Math.round((newValue * 1000_000) / 1000_000);
+    // const =parseFloat(newValue)
+    // console.log(typeof a,"new val")
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
     if (percentage > 100) {
@@ -585,6 +587,7 @@ const BorrowModal = ({
       // dispatch((newValue));
     }
   };
+
   const handleBorrowChange = (newValue: any) => {
     var percentage = (newValue * 100) / walletBalance;
     percentage = Math.max(0, percentage);
@@ -629,6 +632,8 @@ const BorrowModal = ({
     setCurrentTransactionStatus("");
     setTokenTypeSelected("Native");
     setBorrowTransHash("");
+    setInputCollateralAmountUSD(0);
+    setInputBorrowAmountUSD(0);
     // setDepositTransHash("")
   };
   useEffect(() => {
@@ -646,6 +651,7 @@ const BorrowModal = ({
   //   setCollateralAmount("4000");
   // }, []);
   const [tokenTypeSelected, setTokenTypeSelected] = useState("Native");
+  console.log( amount <5*inputCollateralAmountUSD,typeof collateralAmount,collateralAmount,"amount")
 
   const rTokens: RToken[] = ["rBTC", "rUSDT", "rETH"];
   return (
@@ -1018,7 +1024,7 @@ const BorrowModal = ({
                     MAX
                   </Button>
                 </Box>
-                {rTokenAmount > walletBalance || rTokenAmount < 0 ? (
+                {rTokenAmount > walletBalance || rTokenAmount < 0  ? (
                   <Text
                     display="flex"
                     justifyContent="space-between"
@@ -1035,8 +1041,8 @@ const BorrowModal = ({
                       </Text>
                       <Text ml="0.3rem">
                         {rTokenAmount > walletBalance
-                          ? "Amount exceeds balance"
-                          : "Invalid Input"}
+                          ? "Amount exceeds balance" 
+                          : "Invalid"}
                       </Text>
                     </Text>
                     <Text
@@ -1431,13 +1437,13 @@ const BorrowModal = ({
                   width="100%"
                   color="white"
                   border={`${
-                    amount > currentAvailableReserves
+                    inputCollateralAmountUSD && inputBorrowAmountUSD > 5 *inputCollateralAmountUSD
                       ? "1px solid #CF222E"
-                      : amount < 0
+                      : inputBorrowAmountUSD < 0
                       ? "1px solid #CF222E"
                       : isNaN(amount)
                       ? "1px solid #CF222E"
-                      : amount > 0 && amount <= currentAvailableReserves
+                      : amount > 0 
                       ? "1px solid #1A7F37"
                       : "1px solid #2B2F35 "
                   }`}
@@ -1460,13 +1466,13 @@ const BorrowModal = ({
                     <NumberInputField
                       placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
                       color={`${
-                        amount > currentAvailableReserves
+                        inputCollateralAmountUSD && inputBorrowAmountUSD > 5*inputCollateralAmountUSD
                           ? "#CF222E"
                           : isNaN(amount)
                           ? "#CF222E"
-                          : amount < 0
+                          : inputBorrowAmountUSD < 0
                           ? "#CF222E"
-                          : amount == 0
+                          : inputBorrowAmountUSD == 0
                           ? "white"
                           : "#1A7F37"
                       }`}
@@ -1489,14 +1495,14 @@ const BorrowModal = ({
                     color="#0969DA"
                     _hover={{ bg: "#101216" }}
                     onClick={() => {
-                      setAmount(currentAvailableReserves);
-                      setinputBorrowAmount(currentAvailableReserves);
+                      setAmount(5*inputCollateralAmountUSD);
+                      setinputBorrowAmount(5*inputCollateralAmountUSD);
                       setsliderValue2(100);
-                      dispatch(
-                        setInputBorrowModalBorrowAmount(
-                          currentAvailableReserves
-                        )
-                      );
+                      // dispatch(
+                      //   setInputBorrowModalBorrowAmount(
+                      //     5*inputCollateralAmountUSD
+                      //   )
+                      // );
                     }}
                     isDisabled={
                       transactionStarted == true || protocolStats.length === 0
@@ -1506,7 +1512,7 @@ const BorrowModal = ({
                     MAX
                   </Button>
                 </Box>
-                {amount > currentAvailableReserves || amount < 0 ? (
+                {amount > currentAvailableReserves ||  (amount>0 && inputCollateralAmountUSD&& inputBorrowAmountUSD>5*inputCollateralAmountUSD) ? (
                   <Box
                     display="flex"
                     justifyContent="space-between"
@@ -1524,7 +1530,7 @@ const BorrowModal = ({
                       <Text ml="0.3rem">
                         {amount > currentAvailableReserves
                           ? "Amount exceeds balance"
-                          : "Invalid Input"}
+                          : inputBorrowAmountUSD>5*inputCollateralAmountUSD ? "Not Permissible CDR":""}
                       </Text>
                     </Text>
                     <Box
@@ -1922,7 +1928,7 @@ const BorrowModal = ({
             amount > 0 &&
             // (currentCollateralCoin[0]=="r" ? rTokenAmount<=walletBalance :true) &&
             // (validRTokens.length>0 ? rTokenAmount <= walletBalance:true) &&
-            amount <= walletBalance ? (
+            inputBorrowAmountUSD <= 5*inputCollateralAmountUSD ? (
               buttonId == 1 ? (
                 <SuccessButton successText="Borrow successful." />
               ) : buttonId == 2 ? (

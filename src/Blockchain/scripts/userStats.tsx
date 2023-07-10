@@ -153,7 +153,7 @@ export async function effectivAPRLoan(loan: ILoan, marketInfos: IMarketInfo[], o
   }
 }
 
-export async function effectiveAprDeposit(deposit: IDeposit, marketInfos: IMarketInfo[]) {
+export async  function effectiveAprDeposit(deposit: IDeposit, marketInfos: IMarketInfo[]) {
   const marketInfo = marketInfos.find(marketInfo => marketInfo.tokenAddress === deposit.tokenAddress);
   if (marketInfo) {
     let rTokenInterest = deposit.rTokenAmountParsed * marketInfo.supplyRate;

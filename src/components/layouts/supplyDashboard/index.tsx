@@ -171,10 +171,11 @@ const SupplyDashboard = ({
         setSupplies(temp);
         if (avgs.length == 0) {
           for (var i = 0; i < supply?.length; i++) {
-            const avg = await effectiveAprDeposit(
+            const avg =await  effectiveAprDeposit(
               supply[i],
               reduxProtocolStats
             );
+            console.log(avg,"avg in supply dash")
             const data = {
               token: supply[i].token,
               avg: avg?.toFixed(2),
@@ -193,7 +194,7 @@ const SupplyDashboard = ({
       }
     };
     getSupply();
-  }, [userDeposits]);
+  }, [userDeposits,reduxProtocolStats]);
   // useEffect(()=>{
   //   const fetchEffectiveApr=async()=>{
   //     try{
@@ -534,11 +535,17 @@ const SupplyDashboard = ({
                         {/* {checkGap(idx1, idx2)} */}
                         {/* {(!avgs?.token==supply?.token) ? avgs.avg :  "2.00%"} */}
                         {/* {avgs[2]} */}
-                        {
-                          avgs?.find((item: any) => item.token == supply?.token)
+                        {/* { avgs.length>0? <Skeleton
+                            width="4rem"
+                            height="1.4rem"
+                            startColor="#101216"
+                            endColor="#2B2F35"
+                            borderRadius="6px"
+                          />: */}
+                          {avgs?.find((item: any) => item.token == supply?.token)
                             ?.avg
-                        }{" "}
-                        %{/* {supply?.token} */}
+                        }{" "}%
+                  {/* {supply?.token} */}
                       </Text>
                     </Td>
                     <Td

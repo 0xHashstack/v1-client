@@ -6,6 +6,7 @@ import SupplyAprChart from "../charts/SupplyApr";
 import BorrowAprChart from "../charts/BorrowApr";
 import YourMetricsSupply from "./YourMetricsSupply";
 import YourMetricsBorrow from "./YourMetricsBorrow";
+import TrialChart from "./TrialChart";
 const YourMetricsSupplyBorrow = ({ currentMarketCoin }: any) => {
   const series1: any = {
     BTC: [
@@ -137,6 +138,10 @@ const YourMetricsSupplyBorrow = ({ currentMarketCoin }: any) => {
         <YourMetricsSupply
           color={"#61a6a5"}
           series={series1[currentMarketCoin]}
+        />
+        <TrialChart
+                  color={"#61a6a5"}
+                  series={series1[currentMarketCoin]}
         />
       </Box>
       <Box display="flex" flexDirection="column" gap="8px" width="100%">
