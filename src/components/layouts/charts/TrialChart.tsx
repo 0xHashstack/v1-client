@@ -2,13 +2,22 @@ import React, { useState, useEffect } from "react";
 import dynamic from "next/dynamic";
 import { Box, Select } from "@chakra-ui/react";
 import ApexCharts from "react-apexcharts";
-
+import axios from "axios";
+import numberFormatter from "@/utils/functions/numberFormatter";
+import { useSelector } from "react-redux";
+import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
 // const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const TrialChart = ({ series, formatter, color, categories }: any) => {
   const [selectedOption, setSelectedOption] = useState("1week");
   const [chartData, setChartData] = useState(series);
-  const [xAxisCategories, setXAxisCategories] = useState(categories);
+  const [xAxisCategories, setXAxisCategories] = useState([
+    new Date().getTime(),
+  ]);
+  const [supplyAmountData, setSupplyAmountData] = useState<any>([]);
+  const [dates, setDates] = useState<any>([]);
+  const btcData = useSelector(selectHourlyBTCData);
+  console.log(btcData);
 
   useEffect(() => {
     // Fetch data based on selected option
@@ -23,6 +32,36 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
 
     fetchData();
   }, [selectedOption]);
+
+  //   useEffect(()=>{
+  //     const fetchMetricsData=async()=>{
+  //         const response = await axios.get('http://18.143.34.55:3010/api/metrics/tvl/daily/DAI');
+  //         const amounts:any=[];
+  //         const dates:any=[];
+  //         const supplyRates:any=[];
+  //         const borrowRates:any=[];
+  //             for(var i=0;i<response?.data?.length;i++){
+  //                 amounts?.push(response?.data[i].supplyAmount)
+  //                 const dateObj = new Date(response?.data[i].Datetime)
+  //                 dates?.push(dateObj.getTime());
+  //                 supplyRates?.push(response?.data[i].supplyRate)
+  //                 borrowRates?.push(response?.data[i].borrowRate)
+  //             }
+  //             setDates(dates);
+  //             setSupplyAmountData(amounts);
+  //             setbtcData({
+  //                 dates:dates,
+  //                 supplyAmounts:amounts,
+  //                 supplyRates:supplyRates,
+  //                 borrowRates:borrowRates
+  //             })
+  //         console.log(response.data,"data trial chart");
+  //     }
+  //     fetchMetricsData();
+  //   },[])
+  console.log(dates, "dates");
+  console.log(supplyAmountData, "amounts");
+  console.log(btcData, "btc data");
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: string) => {
@@ -36,18 +75,10 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
         newData = [
           {
             name: "Series 1",
-            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+            data: btcData?.supplyAmounts,
           },
         ];
-        newCategories = [
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
-        ];
+        newCategories = btcData?.dates;
         break;
       case "1month":
         newData = [
@@ -56,7 +87,8 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
             data: [
               40000, 38000, 42000, 39000, 44000, 41000, 43000, 39000, 44000,
               41000, 43000, 39000, 44000, 41000, 43000, 39000, 44000, 41000,
-              43000,
+              43000, 43000, 39000, 44000, 41000, 43000, 43000, 39000, 44000,
+              41000, 43000, 43000,
             ],
           },
         ];
@@ -81,6 +113,16 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
           new Date("2023-06-18").getTime(),
           new Date("2023-06-19").getTime(),
           new Date("2023-06-20").getTime(),
+          new Date("2023-06-21").getTime(),
+          new Date("2023-06-22").getTime(),
+          new Date("2023-06-23").getTime(),
+          new Date("2023-06-24").getTime(),
+          new Date("2023-06-25").getTime(),
+          new Date("2023-06-26").getTime(),
+          new Date("2023-06-27").getTime(),
+          new Date("2023-06-28").getTime(),
+          new Date("2023-06-29").getTime(),
+          new Date("2023-06-30").getTime(),
         ];
         break;
       case "6months":
@@ -155,7 +197,7 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
           colors: ["#000000"],
         },
         formatter: function (val: any) {
-          return val / 1000 + "k"; // Display the data value as the label
+          return numberFormatter(val); // Display the data value as the label
         },
       },
       xaxis: {
@@ -180,7 +222,7 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
           formatter: formatter
             ? formatter
             : function (value: any) {
-                return value / 1000 + "k";
+                return numberFormatter(value);
               },
           style: {
             colors: "#6E7681",

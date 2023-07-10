@@ -24,6 +24,7 @@ const SpendBorrow = () => {
   useDataLoader();
   const totalBorrow = useSelector(selectYourBorrow);
   const netAPR = useSelector(selectNetAPR);
+  console.log(totalBorrow,"total borrow spend borrow")
   console.log(netAPR,"netapr in spend borrow")
   return (
     <PageCard pt="6.5rem">

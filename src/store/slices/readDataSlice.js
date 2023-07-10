@@ -7,7 +7,14 @@ const initialState = {
   oraclePrices: null,
   userLoans: null,
   aprAndHealthFactor: null,
-  
+  hourlyBTCData:{
+    
+  },
+  hourlyETHData:null,
+  hourlyUSDTData:null,
+  hourlyUSDCData:null,
+  hourlyDAIData:null,
+
 
   protocolReserves: {
     totalReserves: null,
@@ -97,6 +104,21 @@ export const readDataSlice = createSlice({
     setCurrentNetwork(state, action) {
       state.currentNetwork = action.payload;
     },
+    setHourlyBTCData(state,action){
+      state.hourlyBTCData=action.payload;
+    },
+    setHourlyETHData(state,action){
+      state.hourlyETHData=action.payload;
+    },
+    setHourlyUSDTData(state,action){
+      state.hourlyUSDTData=action.payload;
+    },
+    setHourlyUSDCData(state,action){
+      state.hourlyUSDCData=action.payload;
+    },
+    setHourlyDAIData(state,action){
+      state.hourlyDAIData=action.payload
+    },
     resetState(state, action) {
       return { ...initialState };
     },
@@ -134,6 +156,11 @@ export const {
   setUserLoansCount,
   setBlock,
   setCurrentNetwork,
+  setHourlyBTCData,
+  setHourlyDAIData,
+  setHourlyETHData,
+  setHourlyUSDCData,
+  setHourlyUSDTData,
   resetState,
 } = readDataSlice.actions;
 
@@ -165,5 +192,9 @@ export const selectOraclePricesCount = (state) =>
 export const selectUserInfoCount = (state) => state.read_data.userInfoCount;
 export const selectBlock = (state) => state.read_data.block;
 export const selectCurrentNetwork = (state) => state.read_data.currentNetwork;
-
+export const selectHourlyBTCData=(state)=>state.read_data.hourlyBTCData;
+export const selectHourlyETHData=(state)=>state.read_data.hourlyETHData;
+export const selectHourlyUSDTData=(state)=>state.read_data.hourlyUSDTData;
+export const selectHourlyUSDCData=(state)=>state.read_data.hourlyUSDCData;
+export const selectHourlyDAIData=(state)=>state.read_data.hourlyDAIData;
 export default readDataSlice.reducer;
