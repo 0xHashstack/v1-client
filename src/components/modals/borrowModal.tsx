@@ -657,7 +657,7 @@ const BorrowModal = ({
   // }, []);
   const [tokenTypeSelected, setTokenTypeSelected] = useState("Native");
   // console.log(amount < 5 * inputCollateralAmountUSD, typeof collateralAmount, collateralAmount, "amount")
-
+  console.log(inputBorrowAmountUSD, inputCollateralAmountUSD, "coins");
   const rTokens: RToken[] = ["rBTC", "rUSDT", "rETH"];
   return (
     <Box>
@@ -1950,6 +1950,9 @@ const BorrowModal = ({
             {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
             (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
             amount > 0 ? (
+              // (currentCollateralCoin[0]=="r" ? rTokenAmount<=walletBalance :true) &&
+              // (validRTokens.length>0 ? rTokenAmount <= walletBalance:true) &&
+              // inputBorrowAmountUSD <= 5 * inputCollateralAmountUSD ? (
               buttonId == 1 ? (
                 <SuccessButton successText="Borrow successful." />
               ) : buttonId == 2 ? (

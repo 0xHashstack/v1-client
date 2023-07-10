@@ -81,6 +81,7 @@ import Image from "next/image";
 import { BNtoNum } from "@/Blockchain/utils/utils";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
+import { getEstrTokens } from "@/Blockchain/scripts/Rewards";
 // import userTokensMinted from "@/Blockchain/scripts/Rewards";
 // import { getEstrTokens } from "@/Blockchain/scripts/Rewards";
 
@@ -565,6 +566,13 @@ const StakeUnstakeModal = ({
   // useEffect(() => {
   //   console.log("protocolStats", protocolStats);
   // }, [protocolStats]);
+  useEffect(()=>{
+    const fetchestrTokens=async()=>{
+      const data=await getEstrTokens("rUSDT",20.0);
+      console.log(data,"stake");
+    }
+    fetchestrTokens();
+  },[])
 
   return (
     <Box>

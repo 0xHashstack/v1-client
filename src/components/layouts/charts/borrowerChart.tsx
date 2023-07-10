@@ -158,6 +158,7 @@ const BorrowerChart = () => {
       },
 
       xaxis: {
+        type:"datetime"as const,
         labels: {
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -216,7 +217,7 @@ const BorrowerChart = () => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" gap="8px" width="100%">
+    <Box display="flex" flexDirection="column" gap="8px" width="50%">
       <Box
         display="flex"
         flexDirection="column"

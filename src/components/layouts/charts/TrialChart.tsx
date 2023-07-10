@@ -9,10 +9,10 @@ import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
 // const ApexCharts = dynamic(() => import("react-apexcharts"), { ssr: false });
 
 const TrialChart = ({ series, formatter, color, categories }: any) => {
-  const [selectedOption, setSelectedOption] = useState("1week");
+  const [selectedOption, setSelectedOption] = useState<any>("1week");
   const [chartData, setChartData] = useState(series);
   const [xAxisCategories, setXAxisCategories] = useState([
-    new Date().getTime(),
+    new Date().getTime()
   ]);
   const [supplyAmountData, setSupplyAmountData] = useState<any>([]);
   const [dates, setDates] = useState<any>([]);

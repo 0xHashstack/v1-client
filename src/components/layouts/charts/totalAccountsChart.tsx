@@ -158,6 +158,7 @@ const TotalAccountsChart = () => {
       },
 
       xaxis: {
+        type: "datetime" as const,
         labels: {
           style: {
             colors: "#6E7681", // Set the color of the labels
