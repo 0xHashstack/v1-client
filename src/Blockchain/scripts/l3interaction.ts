@@ -69,11 +69,18 @@ export async function getUSDValue(market: string, amount: number) {
 
 // before interaction
 export async function getJediEstimateLiquiditySplit(
-  loanId: string,
+  loanMarket: string,
+  currentAmount: string,
   tokenA: string,
   tokenB: string
 ) {
-  console.log("getJediEstimateLiquiditySplit", tokenA, loanId, tokenB);
+  console.log(
+    "getJediEstimateLiquiditySplit",
+    loanMarket,
+    currentAmount,
+    tokenA,
+    tokenB
+  );
   let tokenAAddress = tokenAddressMap[tokenA];
   let tokenBAddress = tokenAddressMap[tokenB];
   const provider = getProvider();
@@ -83,10 +90,10 @@ export async function getJediEstimateLiquiditySplit(
       "get_jedi_estimate_liquidity_split",
       // [loanId, tokenAAddress, tokenBAddress],
       [
-        tokenAddressMap["ETH"],
-        [etherToWeiBN(99, "USDT").toString(), 0],
-        tokenAddressMap["ETH"],
-        tokenAddressMap["USDT"],
+        tokenAddressMap[loanMarket],
+        [currentAmount, 0],
+        tokenAddressMap[tokenA],
+        tokenAddressMap[tokenB],
       ],
       {
         blockIdentifier: "pending",
@@ -94,7 +101,7 @@ export async function getJediEstimateLiquiditySplit(
     );
     console.log(
       "estimated liquidity split for loanId: ",
-      loanId,
+
       " is: ",
       res,
       " for tokenA: ",
@@ -113,11 +120,18 @@ export async function getJediEstimateLiquiditySplit(
 
 // before interaction
 export async function getJediEstimatedLpAmountOut(
-  loanId: string,
+  loanMarket: string,
+  currentAmount: string,
   tokenA: string,
   tokenB: string
 ) {
-  console.log("getJediEstimatedLpAmountOut", tokenA, loanId, tokenB);
+  console.log(
+    "getJediEstimatedLpAmountOut",
+    loanMarket,
+    currentAmount,
+    tokenA,
+    tokenB
+  );
   let tokenAAddress = tokenAddressMap[tokenA];
   let tokenBAddress = tokenAddressMap[tokenB];
   const provider = getProvider();
@@ -127,10 +141,10 @@ export async function getJediEstimatedLpAmountOut(
       "get_jedi_estimated_lp_amount_out",
       // [loanId, tokenAAddress, tokenBAddress],
       [
-        tokenAddressMap["ETH"],
-        [etherToWeiBN(99, "USDT").toString(), 0],
-        tokenAddressMap["ETH"],
-        tokenAddressMap["USDT"],
+        tokenAddressMap[loanMarket],
+        [currentAmount, 0],
+        tokenAddressMap[tokenA],
+        tokenAddressMap[tokenB],
       ],
       {
         blockIdentifier: "pending",
@@ -138,7 +152,6 @@ export async function getJediEstimatedLpAmountOut(
     );
     console.log(
       "estimated lp amount out for loanId: ",
-      loanId,
       " is: ",
       parseAmount(uint256.uint256ToBN(res?.lp_amount_out))
     );
@@ -156,19 +169,23 @@ export async function getJediEstimatedLiqALiqBfromLp(
 ) {
   // currentMarketAmount, currentMarketAddress
   const provider = getProvider();
+  console.log("get_jedi_estimated_liqA_liqB_from_lp", [
+    [liquidity, 0],
+    pairAddress,
+  ]);
+
   try {
     const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
     const res = await l3Contract.call(
       "get_jedi_estimated_liqA_liqB_from_lp",
       // [liquidity, pairAddress],
-      [
-        [etherToWeiBN(liquidity, pairAddress).toString(), 0],
-        tokenAddressMap[pairAddress],
-      ],
+      [[liquidity, 0], pairAddress],
       {
         blockIdentifier: "pending",
       }
     );
+    console.log("res jedi", res);
+
     return {
       amountA: parseAmount(uint256.uint256ToBN(res?.amountA).toString(), 8),
       tokenAAddress: res?.token0,
