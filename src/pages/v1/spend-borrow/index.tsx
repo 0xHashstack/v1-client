@@ -54,19 +54,19 @@ const SpendBorrow = () => {
             <Text color="#6e7681" fontSize="14px" alignItems="center">
               Total Borrow asset
             </Text>
-            {!totalBorrow &&(totalBorrow!=null) ? (
-              <Skeleton
-                width="6rem"
-                height="1.9rem"
-                startColor="#101216"
-                endColor="#2B2F35"
-                borderRadius="6px"
-              />
-            ) : (
-              <Text color="#e6edf3" fontSize="20px">
-                {totalBorrow? `$ ${numberFormatter(totalBorrow)}`:"-"}
-              </Text>
-            )}
+            {!totalBorrow && (totalBorrow !== null) ? (
+  <Skeleton
+    width="6rem"
+    height="1.9rem"
+    startColor="#101216"
+    endColor="#2B2F35"
+    borderRadius="6px"
+  />
+) : (
+  <Text color="#e6edf3" fontSize="20px">
+    {totalBorrow !== null ? `$ ${numberFormatter(totalBorrow)}` : "-"}
+  </Text>
+)}
             {/* <Text color="#e6edf3" fontSize="20px">
               ${numberFormatter(totalBorrow)}
             </Text> */}

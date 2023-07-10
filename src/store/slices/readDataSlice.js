@@ -7,6 +7,7 @@ const initialState = {
   oraclePrices: null,
   userLoans: null,
   aprAndHealthFactor: null,
+  
 
   protocolReserves: {
     totalReserves: null,

@@ -49,9 +49,9 @@ export default function App({ Component, pageProps }: AppProps) {
     new InjectedConnector({ options: { id: "argentX" } }),
   ];
 
-  loadSpace(spaceApiKey).then((api) => {
-    api.init();
-  });
+  // loadSpace(spaceApiKey).then((api) => {
+  //   api.init();
+  // });
 
   return (
     <>

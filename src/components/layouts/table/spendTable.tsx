@@ -310,7 +310,7 @@ const SpendTable = () => {
           </Box>
         </Box>
       )}
-      {loading && userLoans?.length > 0 ? (
+      {loading  ? (
         <Box
           border="1px"
           borderColor="#2B2F35"
