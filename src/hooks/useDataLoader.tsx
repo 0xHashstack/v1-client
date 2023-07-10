@@ -16,6 +16,7 @@ import {
 } from "@/Blockchain/scripts/userStats";
 import {
   selectAprsAndHealthCount,
+  selectHourlyDataCount,
   selectOraclePricesCount,
   selectProtocolStatsCount,
   selectUserDepositsCount,
@@ -25,6 +26,7 @@ import {
   setAprsAndHealthCount,
   setAvgBorrowAPR,
   setAvgSupplyAPR,
+  setHourlyDataCount,
   setOraclePricesCount,
   setProtocolReservesCount,
   setProtocolStatsCount,
@@ -41,6 +43,8 @@ import {
   setProtocolReserves,
   setAprAndHealthFactor,
   selectAprAndHealthFactor,
+  selectHourlyBTCData,
+  setHourlyBTCData,
 } from "@/store/slices/readDataSlice";
 import {
   setProtocolStats,
@@ -64,6 +68,7 @@ import { useAccount } from "@starknet-react/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
+import axios from "axios";
 const useDataLoader = () => {
   const { address } = useAccount();
   const protocolReserves = useSelector(selectProtocolReserves);
@@ -85,16 +90,60 @@ const useDataLoader = () => {
   const oraclePricesCount = useSelector(selectOraclePricesCount);
   const userInfoCount = useSelector(selectUserInfoCount);
   const aprsAndHealthCount = useSelector(selectAprsAndHealthCount);
+  const hourlyDataCount=useSelector(selectHourlyDataCount);
   const transactionRefresh = useSelector(selectTransactionRefresh);
+  const hourlyBTCData=useSelector(selectHourlyBTCData);
 
   const dispatch = useDispatch();
   const Data: any = [];
   const [avgs, setAvgs] = useState<any>([]);
+  const [btcData,setBtcData]=useState<any>();
   const avgsData: any = [];
   console.log("address",address);
   // useEffect(() => {
   //   console.log("switched to market");
   // }, []);
+  useEffect(()=>{
+    const fetchHourlyBTCData=async()=>{
+      try{
+        console.log("HIII")
+
+        const response = await axios.get('http://18.143.34.55:3010/api/metrics/tvl/daily/DAI'); 
+        if(response?.data){
+          const amounts:any=[];  
+          const dates:any=[];
+          const supplyRates:any=[];
+          const borrowRates:any=[];
+              for(var i=0;i<response?.data?.length;i++){
+                  amounts?.push(response?.data[i].supplyAmount)
+                  const dateObj = new Date(response?.data[i].Datetime)
+                  dates?.push(dateObj.getTime());
+                  supplyRates?.push(response?.data[i].supplyRate)
+                  borrowRates?.push(response?.data[i].borrowRate)
+              }
+              // console.log(dates,"Dates")
+              setBtcData({
+                  dates:dates,
+                  supplyAmounts:amounts,
+                  supplyRates:supplyRates,
+                  borrowRates:borrowRates
+              })
+              if(btcData){
+                console.log(btcData,"Data gone")
+                dispatch(setHourlyBTCData(btcData))
+                dispatch(setHourlyDataCount(""))
+              }
+              console.log(response?.data,"Data response")
+              console.log(btcData,"data in BTC");
+        }  
+      }catch(err){
+        console.log(err,"err in hourly data")
+      }
+    }
+    if(hourlyDataCount<transactionRefresh){
+      fetchHourlyBTCData();
+    }
+  },[transactionRefresh])
   useEffect(() => {
     const fetchOraclePrices = async () => {
       console.log("oracle prices - transactionRefresh called");
@@ -302,6 +351,7 @@ const useDataLoader = () => {
             protocolStats
           );
           const dataTotalBorrow = dataBorrow?.totalBorrow;
+          console.log(dataBorrow,"data data borrow")
           dispatch(setYourBorrow(dataTotalBorrow));
           console.log(dataDeposit, "data deposit pagecard");
           const data = getTotalSupply(dataDeposit, dataOraclePrices);
@@ -324,7 +374,7 @@ const useDataLoader = () => {
         fetchUserSupply();
       }
     } catch (err) {
-      console.log(err);
+      console.log(err,"error in user info");
     }
   }, [
     dataDeposit,
@@ -343,7 +393,8 @@ const useDataLoader = () => {
       userLoansCount,
       oraclePricesCount,
       userInfoCount,
-      aprsAndHealthCount
+      aprsAndHealthCount,
+      hourlyDataCount
     );
   }, [
     transactionRefresh,
@@ -354,6 +405,7 @@ const useDataLoader = () => {
     oraclePricesCount,
     userInfoCount,
     aprsAndHealthCount,
+    hourlyDataCount
   ]);
 };
 

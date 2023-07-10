@@ -91,6 +91,7 @@ import CopyToClipboard from "react-copy-to-clipboard";
 // import { useFetchToastStatus } from "../layouts/toasts";
 import TransactionFees from "../../../TransactionFees.json";
 import mixpanel from "mixpanel-browser";
+import numberFormatter from "@/utils/functions/numberFormatter";
 // import useFetchToastStatus from "../layouts/toasts/transactionStatus";
 const SupplyModal = ({
   buttonText,
@@ -922,13 +923,13 @@ const SupplyModal = ({
                                 fontWeight="thin"
                               >
                                 Wallet Balance:{" "}
-                                {Number(
+                                {numberFormatter(Number(
                                   BNtoNum(
                                     uint256.uint256ToBN(
                                       assetBalance[coin]?.dataBalanceOf?.balance
                                     ),
                                     tokenDecimalsMap[coin]
-                                  )
+                                  ))
                                 )}
                               </Box>
                             </Box>
@@ -1075,8 +1076,8 @@ const SupplyModal = ({
                     >
                       Wallet Balance:{" "}
                       {walletBalance.toFixed(5).replace(/\.?0+$/, "").length > 5
-                        ? walletBalance.toFixed(2)
-                        : walletBalance}
+                        ? numberFormatter(walletBalance)
+                        : numberFormatter(walletBalance)}
                       <Text color="#6E7781" ml="0.2rem">
                         {` ${currentSelectedCoin}`}
                       </Text>
@@ -1095,8 +1096,8 @@ const SupplyModal = ({
                   >
                     Wallet Balance:{" "}
                     {walletBalance.toFixed(5).replace(/\.?0+$/, "").length > 5
-                      ? walletBalance.toFixed(2)
-                      : walletBalance}
+                      ? numberFormatter(walletBalance)
+                      : numberFormatter(walletBalance)}
                     <Text color="#6E7781" ml="0.2rem">
                       {` ${currentSelectedCoin}`}
                     </Text>
