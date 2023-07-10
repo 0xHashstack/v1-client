@@ -429,9 +429,10 @@ const TradeModal = ({
     setLoanAmount(0);
     setCurrentDapp("Select a dapp");
     setCurrentPool("Select a pool");
-    setCurrentCollateralCoin(coin.name);
-    setCollateralMarket(coin.name);
-    setCurrentBorrowCoin(coin.name);
+    setCurrentCollateralCoin(coin?.name);
+    setCollateralMarket(coin?.name);
+    setCurrentBorrowCoin(coin?.name);
+    setLoanMarket(coin?.name);
     setCurrentPoolCoin("Select a pool");
     setRadioValue("1");
     setHealthFactor(undefined);
@@ -442,7 +443,9 @@ const TradeModal = ({
       walletBalances[coin.name]?.statusBalanceOf === "success"
         ? Number(
             BNtoNum(
-              uint256.uint256ToBN(walletBalances[coin.name]?.dataBalanceOf?.balance),
+              uint256.uint256ToBN(
+                walletBalances[coin.name]?.dataBalanceOf?.balance
+              ),
               tokenDecimalsMap[coin?.name]
             )
           )
@@ -1558,7 +1561,7 @@ const TradeModal = ({
                           className="dropdown-container"
                           boxShadow="dark-lg"
                         >
-                          {coins.map((coin: string, index: number) => {
+                          {coins.map((coin: NativeToken, index: number) => {
                             return (
                               <Box
                                 key={index}
@@ -1573,6 +1576,7 @@ const TradeModal = ({
                                   setCurrentAvailableReserves(
                                     protocolStats?.[index]?.availableReserves
                                   );
+                                  setLoanMarket(coin);
                                   // setMarket(coin);
                                   // setMarket(coin);
                                 }}
@@ -1659,7 +1663,8 @@ const TradeModal = ({
                       width="100%"
                       color="white"
                       border={`${
-                        inputCollateralAmountUSD && inputBorrowAmountUSD > 5*inputCollateralAmountUSD
+                        inputCollateralAmountUSD &&
+                        inputBorrowAmountUSD > 5 * inputCollateralAmountUSD
                           ? "1px solid #CF222E"
                           : inputBorrowAmountUSD < 0
                           ? "1px solid #CF222E"
@@ -1691,7 +1696,8 @@ const TradeModal = ({
                         <NumberInputField
                           placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
                           color={`${
-                            inputCollateralAmountUSD && inputBorrowAmountUSD > 5*inputCollateralAmountUSD
+                            inputCollateralAmountUSD &&
+                            inputBorrowAmountUSD > 5 * inputCollateralAmountUSD
                               ? "#CF222E"
                               : isNaN(inputBorrowAmount)
                               ? "#CF222E"
@@ -1720,14 +1726,14 @@ const TradeModal = ({
                         color="#0969DA"
                         _hover={{ bg: "#101216" }}
                         onClick={() => {
-                          if(inputCollateralAmountUSD){
-                            setinputBorrowAmount(5*inputCollateralAmountUSD);
-                            setLoanAmount(5*inputCollateralAmountUSD);
+                          if (inputCollateralAmountUSD) {
+                            setinputBorrowAmount(5 * inputCollateralAmountUSD);
+                            setLoanAmount(5 * inputCollateralAmountUSD);
                             setsliderValue2(100);
-                          }else{
+                          } else {
                             setinputBorrowAmount(currentAvailableReserves);
                             setLoanAmount(currentAvailableReserves);
-                            setsliderValue2(100)
+                            setsliderValue2(100);
                           }
                           dispatch(
                             setInputTradeModalBorrowAmount(
@@ -2632,7 +2638,7 @@ const TradeModal = ({
                 (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
                 inputBorrowAmount > 0 &&
                 currentDapp != "Select a dapp" &&
-                inputBorrowAmountUSD<5*inputCollateralAmountUSD &&
+                inputBorrowAmountUSD < 5 * inputCollateralAmountUSD &&
                 (currentPool != "Select a pool" ||
                   currentPoolCoin != "Select a pool") ? (
                   <Box

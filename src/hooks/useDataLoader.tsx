@@ -98,65 +98,68 @@ const useDataLoader = () => {
   const oraclePricesCount = useSelector(selectOraclePricesCount);
   const userInfoCount = useSelector(selectUserInfoCount);
   const aprsAndHealthCount = useSelector(selectAprsAndHealthCount);
-  const hourlyDataCount=useSelector(selectHourlyDataCount);
+  const hourlyDataCount = useSelector(selectHourlyDataCount);
   const transactionRefresh = useSelector(selectTransactionRefresh);
   const oraclePrices = useSelector(selectOraclePrices);
   const effectiveApr = useSelector(selectEffectiveApr);
   const effectiveAprCount = useSelector(selectAprCount);
   const healthFactor = useSelector(selectHealthFactor);
   const healthFactorCount = useSelector(selectHealthFactorCount);
-  const hourlyBTCData=useSelector(selectHourlyBTCData);
+  const hourlyBTCData = useSelector(selectHourlyBTCData);
 
   const dispatch = useDispatch();
   const Data: any = [];
   const [avgs, setAvgs] = useState<any>([]);
-  const [btcData,setBtcData]=useState<any>();
+  const [btcData, setBtcData] = useState<any>();
   const avgsData: any = [];
-  console.log("address",address);
+  console.log("address", address);
   // useEffect(() => {
   //   console.log("switched to market");
   // }, []);
-  useEffect(()=>{
-    const fetchHourlyBTCData=async()=>{
-      try{
-        console.log("HIII")
+  useEffect(() => {
+    const fetchHourlyBTCData = async () => {
+      try {
+        console.log("HIII");
 
-        const response = await axios.get('https://0508-119-82-106-42.in.ngrok.io'); 
-        if(response?.data){
-          const amounts:any=[];  
-          const dates:any=[];
-          const supplyRates:any=[];
-          const borrowRates:any=[];
-              for(var i=0;i<response?.data?.length;i++){
-                  amounts?.push(response?.data[i].supplyAmount)
-                  const dateObj = new Date(response?.data[i].Datetime)
-                  dates?.push(dateObj.getTime());
-                  supplyRates?.push(response?.data[i].supplyRate)
-                  borrowRates?.push(response?.data[i].borrowRate)
-              }
-              // console.log(dates,"Dates")
-              setBtcData({
-                  dates:dates,
-                  supplyAmounts:amounts,
-                  supplyRates:supplyRates,
-                  borrowRates:borrowRates
-              })
-              if(btcData){
-                console.log(btcData,"Data gone")
-                dispatch(setHourlyBTCData(btcData))
-                dispatch(setHourlyDataCount(""))
-              }
-              console.log(response?.data,"Data response")
-              console.log(btcData,"data in BTC");
-        }  
-      }catch(err){
-        console.log(err,"err in hourly data")
+        const response = await axios.get(
+          "https://4ccd-119-82-106-42.in.ngrok.io/api/metrics/tvl/daily/DAI"
+        );
+        console.log(response, "Data gone");
+        if (response?.data) {
+          const amounts: any = [];
+          const dates: any = [];
+          const supplyRates: any = [];
+          const borrowRates: any = [];
+          for (var i = 0; i < response?.data?.length; i++) {
+            amounts?.push(response?.data[i].supplyAmount);
+            const dateObj = new Date(response?.data[i].Datetime);
+            dates?.push(dateObj.getTime());
+            supplyRates?.push(response?.data[i].supplyRate);
+            borrowRates?.push(response?.data[i].borrowRate);
+          }
+          // console.log(dates,"Dates")
+          const data = {
+            dates: dates,
+            supplyAmounts: amounts,
+            supplyRates: supplyRates,
+            borrowRates: borrowRates,
+          };
+          setBtcData(data);
+          if (data) {
+            dispatch(setHourlyBTCData(data));
+            dispatch(setHourlyDataCount(""));
+          }
+          console.log(response?.data, "Data response");
+          console.log(btcData, "data in BTC");
+        }
+      } catch (err) {
+        console.log(err, "err in hourly data");
       }
-    }
-    if(hourlyDataCount<transactionRefresh){
+    };
+    if (hourlyDataCount < transactionRefresh) {
       fetchHourlyBTCData();
     }
-  },[transactionRefresh])
+  }, [transactionRefresh]);
   useEffect(() => {
     try {
       const fetchOraclePrices = async () => {
@@ -263,6 +266,7 @@ const useDataLoader = () => {
           dispatch(setEffectiveAPR(avgs));
           dispatch(setAprCount(""));
         });
+        // console.log("promises",promises)
       };
       if (
         dataOraclePrices &&
@@ -440,7 +444,7 @@ const useDataLoader = () => {
             protocolStats
           );
           const dataTotalBorrow = dataBorrow?.totalBorrow;
-          console.log(dataBorrow,"data data borrow")
+          console.log(dataBorrow, "data data borrow");
           dispatch(setYourBorrow(dataTotalBorrow));
           console.log(dataDeposit, "data deposit pagecard");
           const data = getTotalSupply(dataDeposit, dataOraclePrices);
@@ -463,7 +467,7 @@ const useDataLoader = () => {
         fetchUserSupply();
       }
     } catch (err) {
-      console.log(err,"error in user info");
+      console.log(err, "error in user info");
     }
   }, [
     dataDeposit,
@@ -498,7 +502,7 @@ const useDataLoader = () => {
     aprsAndHealthCount,
     effectiveAprCount,
     healthFactorCount,
-    hourlyDataCount
+    hourlyDataCount,
   ]);
 };
 
