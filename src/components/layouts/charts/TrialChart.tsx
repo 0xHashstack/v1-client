@@ -23,6 +23,7 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
 
     fetchData();
   }, [selectedOption]);
+//   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: string) => {
     // Simulating API call or data update based on option
@@ -104,6 +105,7 @@ const TrialChart = ({ series, formatter, color, categories }: any) => {
             data: [60000, 58000, 62000, 59000, 63000, 60000, 62000, 59000, 63000, 60000, 62000,70000],
           },
         ];
+        
         newCategories = [
             new Date("2022-01-01").getTime(),
             new Date("2022-02-01").getTime(),
