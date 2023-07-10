@@ -7,6 +7,8 @@ import BorrowAprChart from "../charts/BorrowApr";
 // import { Button } from "reactstrap";
 import SupplyAPRLiquidityProvider from "../charts/supplyAPRLiquitityProvider";
 import YourMetricsBorrow from "../charts/YourMetricsBorrow";
+import BorrowChart from "../charts/borrowChart";
+import BorrowerChart from "../charts/borrowerChart";
 const BorrowMetrics = ({ currentMarketCoin }: any) => {
   const series1: any = [
     [
@@ -66,113 +68,7 @@ const BorrowMetrics = ({ currentMarketCoin }: any) => {
 
   return (
     <Box display="flex" flexDir="column" gap="64px">
-      <Box display="flex" gap="30px">
-        <Box display="flex" flexDirection="column" gap="8px" width="100%">
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
-            height="72px"
-            border="1px solid #2B2F35"
-            color="#E6EDF3"
-            // padding="24px 24px 16px"
-            px="24px"
-            fontSize="20px"
-            fontStyle="normal"
-            fontWeight="600"
-            lineHeight="30px"
-            borderRadius="6px"
-          >
-            <Box
-              w="100%"
-              display="flex"
-              gap="2"
-              justifyContent="space-between"
-              my="auto"
-            >
-              <Box mt="auto">Borrow:</Box>
-              <Box display="flex" gap="2">
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={
-                    borrowChartPeriod === 0 ? "none" : "1px solid #2B2F35"
-                  }
-                  variant={borrowChartPeriod === 0 ? "solid" : "outline"}
-                  onClick={() => {
-                    setBorrowChartPeriod(0);
-                  }}
-                >
-                  1D
-                </Button>
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={
-                    borrowChartPeriod === 1 ? "none" : "1px solid #2B2F35"
-                  }
-                  variant={borrowChartPeriod === 1 ? "solid" : "outline"}
-                  onClick={() => {
-                    setBorrowChartPeriod(1);
-                  }}
-                >
-                  1M
-                </Button>
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={
-                    borrowChartPeriod === 2 ? "none" : "1px solid #2B2F35"
-                  }
-                  variant={borrowChartPeriod === 2 ? "solid" : "outline"}
-                  onClick={() => {
-                    setBorrowChartPeriod(2);
-                  }}
-                >
-                  3M
-                </Button>
-
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={
-                    borrowChartPeriod === 3 ? "none" : "1px solid #2B2F35"
-                  }
-                  variant={borrowChartPeriod === 3 ? "solid" : "outline"}
-                  onClick={() => {
-                    setBorrowChartPeriod(3);
-                  }}
-                >
-                  ALL
-                </Button>
-              </Box>
-            </Box>
-          </Box>
-          <AssetUtilizationChart
-            color={"#846ED4"}
-            series={series1[borrowChartPeriod]}
-          />
-        </Box>
-        <Box display="flex" flexDirection="column" gap="8px" width="100%">
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
-            height="72px"
-            border="1px solid #2B2F35"
-            color="#E6EDF3"
-            padding="24px 24px 16px"
-            fontSize="20px"
-            fontStyle="normal"
-            fontWeight="600"
-            lineHeight="30px"
-            borderRadius="6px"
-          >
-            Borrow APR:{" "}
-          </Box>
-          <BorrowAprChart color={"#2BA26F"} />
-        </Box>
-      </Box>
+      <BorrowChart />
       <Box display="flex" gap="30px">
         <Box display="flex" flexDirection="column" gap="8px" width="100%">
           <Box
@@ -196,92 +92,7 @@ const BorrowMetrics = ({ currentMarketCoin }: any) => {
             // series={series2[liquidityProviderChartPeriod]}
           />
         </Box>
-        <Box display="flex" flexDirection="column" gap="8px" width="100%">
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
-            height="72px"
-            border="1px solid #2B2F35"
-            color="#E6EDF3"
-            // padding="24px 24px 16px"
-            px="24px"
-            fontSize="20px"
-            fontStyle="normal"
-            fontWeight="600"
-            lineHeight="30px"
-            borderRadius="6px"
-          >
-            <Box
-              w="100%"
-              display="flex"
-              gap="2"
-              justifyContent="space-between"
-              my="auto"
-            >
-              <Box mt="auto">Borrower:</Box>
-              <Box display="flex" gap="2">
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={
-                    borrowerChartPeriod === 0 ? "none" : "1px solid #2B2F35"
-                  }
-                  variant={borrowerChartPeriod === 0 ? "solid" : "outline"}
-                  onClick={() => {
-                    setBorrowerChartPeriod(0);
-                  }}
-                >
-                  1D
-                </Button>
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={
-                    borrowerChartPeriod === 1 ? "none" : "1px solid #2B2F35"
-                  }
-                  variant={borrowerChartPeriod === 1 ? "solid" : "outline"}
-                  onClick={() => {
-                    setBorrowerChartPeriod(1);
-                  }}
-                >
-                  1M
-                </Button>
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={
-                    borrowerChartPeriod === 2 ? "none" : "1px solid #2B2F35"
-                  }
-                  variant={borrowerChartPeriod === 2 ? "solid" : "outline"}
-                  onClick={() => {
-                    setBorrowerChartPeriod(2);
-                  }}
-                >
-                  3M
-                </Button>
-
-                <Button
-                  color="#2B2F35"
-                  size="sm"
-                  border={
-                    borrowerChartPeriod === 3 ? "none" : "1px solid #2B2F35"
-                  }
-                  variant={borrowerChartPeriod === 3 ? "solid" : "outline"}
-                  onClick={() => {
-                    setBorrowerChartPeriod(3);
-                  }}
-                >
-                  ALL
-                </Button>
-              </Box>
-            </Box>
-          </Box>
-          <AssetUtilizationChart
-            color={"#2BA26F"}
-            series={series2[borrowerChartPeriod]}
-          />
-        </Box>
+        <BorrowerChart />
       </Box>
       <Box display="flex" gap="30px">
         <Box display="flex" flexDirection="column" gap="8px" width="50%">
