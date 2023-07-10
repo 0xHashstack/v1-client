@@ -1659,14 +1659,13 @@ const TradeModal = ({
                       width="100%"
                       color="white"
                       border={`${
-                        inputBorrowAmount > currentAvailableReserves
+                        inputCollateralAmountUSD && inputBorrowAmountUSD > 5*inputCollateralAmountUSD
                           ? "1px solid #CF222E"
-                          : inputBorrowAmount < 0
+                          : inputBorrowAmountUSD < 0
                           ? "1px solid #CF222E"
                           : isNaN(inputBorrowAmount)
                           ? "1px solid #CF222E"
-                          : inputBorrowAmount > 0 &&
-                            inputBorrowAmount <= currentAvailableReserves
+                          : inputBorrowAmount > 0
                           ? "1px solid #1A7F37"
                           : "1px solid #2B2F35 "
                       }`}
@@ -1692,7 +1691,7 @@ const TradeModal = ({
                         <NumberInputField
                           placeholder={`Minimum 0.01536 ${currentBorrowCoin}`}
                           color={`${
-                            inputBorrowAmount > currentAvailableReserves
+                            inputCollateralAmountUSD && inputBorrowAmountUSD > 5*inputCollateralAmountUSD
                               ? "#CF222E"
                               : isNaN(inputBorrowAmount)
                               ? "#CF222E"
@@ -1721,9 +1720,15 @@ const TradeModal = ({
                         color="#0969DA"
                         _hover={{ bg: "#101216" }}
                         onClick={() => {
-                          setinputBorrowAmount(currentAvailableReserves);
-                          setLoanAmount(currentAvailableReserves);
-                          setsliderValue2(100);
+                          if(inputCollateralAmountUSD){
+                            setinputBorrowAmount(5*inputCollateralAmountUSD);
+                            setLoanAmount(5*inputCollateralAmountUSD);
+                            setsliderValue2(100);
+                          }else{
+                            setinputBorrowAmount(currentAvailableReserves);
+                            setLoanAmount(currentAvailableReserves);
+                            setsliderValue2(100)
+                          }
                           dispatch(
                             setInputTradeModalBorrowAmount(
                               currentAvailableReserves
@@ -2627,6 +2632,7 @@ const TradeModal = ({
                 (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
                 inputBorrowAmount > 0 &&
                 currentDapp != "Select a dapp" &&
+                inputBorrowAmountUSD<5*inputCollateralAmountUSD &&
                 (currentPool != "Select a pool" ||
                   currentPoolCoin != "Select a pool") ? (
                   <Box

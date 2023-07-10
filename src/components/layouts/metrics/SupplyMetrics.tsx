@@ -91,7 +91,7 @@ const SupplyMetrics = ({ currentMarketCoin }: any) => {
               justifyContent="space-between"
               my="auto"
             >
-              
+              <Box mt="auto">Supply:</Box>
               <Box display="flex" gap="2">
                 <Button
                   color="#2B2F35"

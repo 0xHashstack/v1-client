@@ -52,6 +52,7 @@ const initialState = {
   aprAndHealthFactorCount: -1,
   aprCount: -1,
   healthFactorCount: -1,
+  hourlyDataCount:-1,
 
   // walletBalance: {
   //   BTC: 0,
@@ -195,6 +196,9 @@ export const userAccountSlice = createSlice({
     setAprsAndHealthCount(state, action) {
       state.aprAndHealthFactorCount = state.transactionRefresh;
     },
+    setHourlyDataCount(state,action){
+      state.hourlyDataCount=state.hourlyDataCount;
+    },
     setAccountReset(state, action) {
       return { ...initialState };
     },
@@ -244,6 +248,7 @@ export const {
   setProtocolStatsCount,
   setProtocolReservesCount,
   setAprsAndHealthCount,
+  setHourlyDataCount,
   setUserUnspentLoans,
   setTransactionStartedAndModalClosed,
   setAccountReset,
@@ -316,6 +321,8 @@ export const selectOraclePricesCount = (state) =>
 export const selectUserInfoCount = (state) => state.user_account.userInfoCount;
 export const selectAprsAndHealthCount = (state) =>
   state.user_account.aprAndHealthFactorCount;
+export const selectHourlyDataCount=(state)=>
+  state.user_account.hourlyDataCount;
 export const selectUserUnspentLoans = (state) =>
   state.user_account.userUnspentLoans;
 export const selectAprCount = (state) => state.user_account.aprCount;
