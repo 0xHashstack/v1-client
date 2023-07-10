@@ -23,7 +23,8 @@ type LiquiditySplit = {
 };
 
 export async function getUSDValue(market: string, amount: number) {
-  console.log("get_asset_usd_value", market, amount);
+  console.log("get_asset_usd_value", market, parseFloat(amount));
+  amount = parseFloat(amount);
   const provider = getProvider();
   try {
     const pricerContract = new Contract(pricerAbi, diamondAddress, provider);

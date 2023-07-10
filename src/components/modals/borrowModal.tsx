@@ -1195,46 +1195,6 @@ const BorrowModal = ({
                     <SliderThumb />
                   </Slider>
                 </Box>
-                {currentCollateralCoin && currentCollateralCoin[0] !== "r" && (
-                  <Box
-                    // display="flex"
-                    // justifyContent="left"
-                    w="100%"
-                    pb="4"
-                    height="64px"
-                    display="flex"
-                    alignItems="center"
-                    mt="1rem"
-                  >
-                    <Box
-                      display="flex"
-                      bg="#0C425C"
-                      color="white"
-                      fontSize="12px"
-                      p="4"
-                      border="1px solid rgba(84, 174, 255, 0.4)"
-                      fontStyle="normal"
-                      fontWeight="400"
-                      lineHeight="18px"
-                      borderRadius="6px"
-                      // textAlign="center"
-                    >
-                      <Box pr="3" mt="0.5" cursor="pointer">
-                        <BlueInfoIcon />
-                      </Box>
-                      You have selected native token as collateral which will be
-                      converted to rtokens 1rBTC = XXBTC
-                      {/* <Box
-                                py="1"
-                                pl="4"
-                                cursor="pointer"
-                                // onClick={handleClick}
-                              >
-                                <TableClose />
-                              </Box> */}
-                    </Box>
-                  </Box>
-                )}
                 {/* {currentCollateralCoin != "rBTC" &&
                   currentCollateralCoin != "rUSDT" && (
                     <Box display="flex" gap="2">
@@ -1923,6 +1883,48 @@ const BorrowModal = ({
               )}
             </Card>
 
+            {currentCollateralCoin && currentCollateralCoin[0] !== "r" && (
+              <Box
+                // display="flex"
+                // justifyContent="left"
+                w="100%"
+                // pb="4"
+                height="64px"
+                display="flex"
+                alignItems="center"
+                mt="2rem"
+                mb="1rem"
+              >
+                <Box
+                  display="flex"
+                  bg="#0C425C"
+                  color="white"
+                  fontSize="12px"
+                  p="4"
+                  border="1px solid rgba(84, 174, 255, 0.4)"
+                  fontStyle="normal"
+                  fontWeight="400"
+                  lineHeight="18px"
+                  borderRadius="6px"
+                  // textAlign="center"
+                >
+                  <Box pr="3" mt="0.5" cursor="pointer">
+                    <BlueInfoIcon />
+                  </Box>
+                  You have selected native token as collateral which will be
+                  converted to rtokens 1rBTC = XXBTC
+                  {/* <Box
+                                py="1"
+                                pl="4"
+                                cursor="pointer"
+                                // onClick={handleClick}
+                              >
+                                <TableClose />
+                              </Box> */}
+                </Box>
+              </Box>
+            )}
+
             {(tokenTypeSelected == "rToken" ? rTokenAmount > 0 : true) &&
             (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
             amount > 0 &&
@@ -1953,7 +1955,7 @@ const BorrowModal = ({
                     color="#8B949E"
                     size="sm"
                     width="100%"
-                    mt="1.5rem"
+                    // mt="1.5rem"
                     mb="1.5rem"
                     border="1px solid #8B949E"
                     labelSuccessArray={[
@@ -1988,7 +1990,7 @@ const BorrowModal = ({
                 color="#6E7681"
                 size="sm"
                 width="100%"
-                mt="1.5rem"
+                // mt="1.5rem"
                 mb="1.5rem"
                 border="1px solid #2B2F35"
                 _hover={{ bg: "#101216" }}
