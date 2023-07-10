@@ -40,18 +40,18 @@ const ProtocolMetrics = () => {
     useConnectors();
   const { account: _account } = useAccount();
   useDataLoader();
-  useEffect(() => {
-    if (!_account) {
-      const walletConnected = localStorage.getItem("lastUsedConnector");
-      if (walletConnected == "braavos") {
-        disconnect();
-        connect(connectors[0]);
-      } else if (walletConnected == "argentx") {
-        disconnect();
-        connect(connectors[0]);
-      }
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (!_account) {
+  //     const walletConnected = localStorage.getItem("lastUsedConnector");
+  //     if (walletConnected == "braavos") {
+  //       disconnect();
+  //       connect(connectors[0]);
+  //     } else if (walletConnected == "argentx") {
+  //       disconnect();
+  //       connect(connectors[0]);
+  //     }
+  //   }
+  // }, []);
   const [currentMetric, setCurrentMetric] = useState("Supply");
   const getMetric = () => {
     if (currentMetric === "Supply") return <SupplyMetrics />;

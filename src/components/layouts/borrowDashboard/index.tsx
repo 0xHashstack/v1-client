@@ -33,6 +33,7 @@ import {
 import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import { getJediEstimatedLiqALiqBfromLp } from "@/Blockchain/scripts/l3interaction";
+import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
 
 export interface ICoin {
   name: string;
@@ -261,6 +262,16 @@ const BorrowDashboard = ({
   useEffect(() => {
     fetchProtocolStats();
   }, [stats]);
+
+  useEffect(() => {
+    try {
+      const fetchJediEstimatedLiqALiqBfromLp = async () => {
+        const data = await getJediEstimatedLiqALiqBfromLp(0.95946, "USDC");
+        console.log("fetchJediEstimatedLiqALiqBfromLp ", data);
+      };
+      fetchJediEstimatedLiqALiqBfromLp();
+    } catch (err) {}
+  }, []);
 
   const fetchProtocolStats = async () => {
     try {
@@ -700,7 +711,49 @@ const BorrowDashboard = ({
                               // gap={0.5}
                               // bgColor={"blue"}
                             >
-                              <Box
+                              {borrow.spendType == "LIQUIDITY" ? (
+                                <>
+                                  <Box
+                                    display="flex"
+                                    gap={0.5}
+                                    minWidth={"16px"}
+                                  >
+                                    <Image
+                                      src={`/${borrow.underlyingMarket}.svg`}
+                                      alt="Picture of the author"
+                                      width="16"
+                                      height="16"
+                                    />
+                                  </Box>
+                                  <Box
+                                    display="flex"
+                                    gap={0.5}
+                                    minWidth={"16px"}
+                                  >
+                                    <Image
+                                      src={`/${borrow.underlyingMarket}.svg`}
+                                      alt="Picture of the author"
+                                      width="16"
+                                      height="16"
+                                    />
+                                  </Box>
+                                </>
+                              ) : (
+                                <Box
+                                  display="flex"
+                                  gap={0.5}
+                                  minWidth={"16px"}
+                                  // bgColor={"blue"}
+                                >
+                                  <Image
+                                    src={`/${borrow.currentLoanMarket}.svg`}
+                                    alt="Picture of the author"
+                                    width="16"
+                                    height="16"
+                                  />
+                                </Box>
+                              )}
+                              {/* <Box
                                 display="flex"
                                 gap={0.5}
                                 minWidth={"16px"}
@@ -720,12 +773,12 @@ const BorrowDashboard = ({
                                 // bgColor={"blue"}
                               >
                                 <Image
-                                  src={`/${borrow.underlyingMarket}.svg`}
+                                  src={`/${borrow.currentLoanMarket}.svg`}
                                   alt="Picture of the author"
                                   width="16"
                                   height="16"
                                 />
-                              </Box>
+                              </Box> */}
                             </Box>
                             <Text fontSize="14px" fontWeight="400">
                               {borrow.spendType !== "LIQUIDITY"

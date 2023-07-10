@@ -2335,13 +2335,13 @@ const YourBorrowModal = ({
     // if (!currentBorrowId1 || currentBorrowId1 == "") {
     //   return;
     // }
-    // console.log(
-    //   "toMarketSplitConsole",
-    //   currentBorrowId1.slice(5),
-    //   toMarketA,
-    //   toMarketB
-    //   // borrow
-    // );
+    console.log(
+      "toMarketSplitConsole",
+      currentBorrowId1.slice(5),
+      toMarketA,
+      toMarketB
+      // borrow
+    );
     // setCurrentLPTokenAmount(null);
     // setCurrentSplit(null);
     setCurrentLPTokenAmount(null);
@@ -2379,7 +2379,7 @@ const YourBorrowModal = ({
       // "ETH",
       // "USDT"
     );
-    console.log("toMarketSplit", split);
+    console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
     setCurrentSplit(split);
   };
   useEffect(() => {
@@ -2391,7 +2391,7 @@ const YourBorrowModal = ({
       // console.log(data, "data in your borrow");
       setEstrTokensMinted(data);
     };
-    fetchEstrTokens();
+    // fetchEstrTokens();
   }, [collateralBalance, inputCollateralAmount]);
 
   return (

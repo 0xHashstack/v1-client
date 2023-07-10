@@ -1,7 +1,10 @@
 import { Contract, number, uint256 } from "starknet";
-import jediSwapAbi from "../abis/jedi_swap_abi.json";
-import pricerAbi from "../abis/pricer_abi.json";
+// import jediSwapAbi from "../abis/jedi_swap_abi.json";
+// import pricerAbi from "../abis/pricer_abi.json";
 import mySwapAbi from "../abis/my_swap_abi.json";
+import jediSwapAbi from "../abi_new/l3_jedi_swap_abi.json";
+import pricerAbi from "../abi_new/pricer_abi.json";
+// import mySwapAbi from "../abi_new/my_swap_abi.json";
 import {
   diamondAddress,
   getProvider,
@@ -9,8 +12,8 @@ import {
   l3DiamondAddress,
 } from "../stark-constants";
 import { tokenAddressMap, tokenDecimalsMap } from "../utils/addressServices";
-import { parseAmount, weiToEtherNumber } from "../utils/utils";
-import { NativeToken } from "../interfaces/interfaces";
+import { etherToWeiBN, parseAmount, weiToEtherNumber } from "../utils/utils";
+import { NativeToken, Token } from "../interfaces/interfaces";
 
 type LiquiditySplit = {
   amountA: number;
@@ -23,26 +26,31 @@ type LiquiditySplit = {
 };
 
 export async function getUSDValue(market: string, amount: number) {
-  console.log("get_asset_usd_value", market, parseFloat(amount));
-  amount = parseFloat(amount);
+  console.log("amount = ", amount * Math.pow(10, tokenDecimalsMap[market]));
+  console.log("get_asset_usd_value", market, amount);
+  // amount = parseFloat(amount);
   const provider = getProvider();
   try {
     const pricerContract = new Contract(pricerAbi, diamondAddress, provider);
     const res = await pricerContract.call(
       "get_asset_usd_value",
-      [tokenAddressMap[market], [amount, 0]],
+      [
+        tokenAddressMap[market],
+        [amount * Math.pow(10, tokenDecimalsMap[market]), 0],
+      ],
       {
         blockIdentifier: "pending",
       }
     );
     console.log("tokendecimal", tokenDecimalsMap[market]);
-    console.log("res", res?.decimals?.words[0]);
+    // console.log("res", res?.decimals?.words[0]);
+    console.log("res", uint256.uint256ToBN(res?.usd_value).toString());
 
     console.log(
       "estimated usd value: ",
       parseAmount(
         uint256.uint256ToBN(res?.usd_value).toString(),
-        res?.decimals?.words[0]
+        res?.decimals?.words[0] + tokenDecimalsMap[market]
       )
     );
     return parseAmount(
@@ -65,7 +73,7 @@ export async function getJediEstimateLiquiditySplit(
   tokenA: string,
   tokenB: string
 ) {
-  console.log("getJediEstimatedLpAmountOut", tokenA, loanId, tokenB);
+  console.log("getJediEstimateLiquiditySplit", tokenA, loanId, tokenB);
   let tokenAAddress = tokenAddressMap[tokenA];
   let tokenBAddress = tokenAddressMap[tokenB];
   const provider = getProvider();
@@ -73,7 +81,13 @@ export async function getJediEstimateLiquiditySplit(
     const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
     const res = await l3Contract.call(
       "get_jedi_estimate_liquidity_split",
-      [loanId, tokenAAddress, tokenBAddress],
+      // [loanId, tokenAAddress, tokenBAddress],
+      [
+        tokenAddressMap["ETH"],
+        [etherToWeiBN(99, "USDT").toString(), 0],
+        tokenAddressMap["ETH"],
+        tokenAddressMap["USDT"],
+      ],
       {
         blockIdentifier: "pending",
       }
@@ -111,7 +125,13 @@ export async function getJediEstimatedLpAmountOut(
     const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
     const res = await l3Contract.call(
       "get_jedi_estimated_lp_amount_out",
-      [loanId, tokenAAddress, tokenBAddress],
+      // [loanId, tokenAAddress, tokenBAddress],
+      [
+        tokenAddressMap["ETH"],
+        [etherToWeiBN(99, "USDT").toString(), 0],
+        tokenAddressMap["ETH"],
+        tokenAddressMap["USDT"],
+      ],
       {
         blockIdentifier: "pending",
       }
@@ -131,8 +151,8 @@ export async function getJediEstimatedLpAmountOut(
 // after interaction, in borrow screen, after getting getUserLoans
 // liquidity is the currentAmount, pairAddress is the currentMarketAddress
 export async function getJediEstimatedLiqALiqBfromLp(
-  liquidity: string,
-  pairAddress: string
+  liquidity: number,
+  pairAddress: Token
 ) {
   // currentMarketAmount, currentMarketAddress
   const provider = getProvider();
@@ -140,7 +160,11 @@ export async function getJediEstimatedLiqALiqBfromLp(
     const l3Contract = new Contract(jediSwapAbi, l3DiamondAddress, provider);
     const res = await l3Contract.call(
       "get_jedi_estimated_liqA_liqB_from_lp",
-      [liquidity, pairAddress],
+      // [liquidity, pairAddress],
+      [
+        [etherToWeiBN(liquidity, pairAddress).toString(), 0],
+        tokenAddressMap[pairAddress],
+      ],
       {
         blockIdentifier: "pending",
       }

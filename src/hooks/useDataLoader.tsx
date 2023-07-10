@@ -24,9 +24,11 @@ import {
   selectUserInfoCount,
   selectUserLoansCount,
   selectprotocolReservesCount,
+  setAprCount,
   setAprsAndHealthCount,
   setAvgBorrowAPR,
   setAvgSupplyAPR,
+  setHealthFactorCount,
   setOraclePricesCount,
   setProtocolReservesCount,
   setProtocolStatsCount,
@@ -110,9 +112,10 @@ const useDataLoader = () => {
       const fetchOraclePrices = async () => {
         console.log("oracle prices - transactionRefresh called");
         let data = await getOraclePrices();
-        if (data) {
-          dispatch(setOraclePrices(data));
+        if (!data || data?.length < 5) {
+          return;
         }
+        dispatch(setOraclePrices(data));
         dispatch(setOraclePricesCount(""));
         console.log("oracle prices - transactionRefresh done ", data);
       };
@@ -154,7 +157,7 @@ const useDataLoader = () => {
         console.log("protocol stats called - transactionRefresh");
         const dataStats = await getProtocolStats();
         console.log("protocol stats - transactionRefresh done", dataStats);
-        if (!dataStats) {
+        if (!dataStats || dataStats?.length < 5) {
           return;
         }
         // console.log(dataStats,"data market in pagecard")
@@ -205,15 +208,17 @@ const useDataLoader = () => {
         Promise.all([...promises]).then((val: any) => {
           console.log("fetchEffectiveApr ", val);
           const avgs = val.map((avg: any, idx: number) => {
-            return { avg: avg, loanId: val[idx]?.loanId };
+            return { avg: avg, loanId: userLoans[idx]?.loanId };
           });
           dispatch(setEffectiveAPR(avgs));
+          dispatch(setAprCount(""));
         });
       };
       if (
         dataOraclePrices &&
         userLoans?.length > 0 &&
-        protocolStats &&
+        userLoansCount == transactionRefresh &&
+        protocolStatsCount == transactionRefresh &&
         effectiveAprCount < transactionRefresh
       ) {
         fetchEffectiveApr();
@@ -232,13 +237,18 @@ const useDataLoader = () => {
         });
         Promise.all([...promises]).then((val: any) => {
           const avgs = val.map((loneHealth: any, idx: number) => {
-            return { loanHealth: loneHealth, loanId: val[idx]?.loanId };
+            return { loanHealth: loneHealth, loanId: userLoans[idx]?.loanId };
           });
           console.log("fetchHealthFactor - transactionRefresh done", avgs);
           dispatch(setHealthFactor(avgs));
+          dispatch(setHealthFactorCount(""));
         });
       };
-      if (userLoans?.length > 0 && healthFactorCount < transactionRefresh) {
+      if (
+        userLoans?.length > 0 &&
+        userLoansCount == transactionRefresh &&
+        healthFactorCount < transactionRefresh
+      ) {
         fetchHealthFactor();
       }
     } catch (err) {
@@ -252,7 +262,8 @@ const useDataLoader = () => {
         if (
           dataOraclePrices &&
           userLoans?.length > 0 &&
-          protocolStats &&
+          userLoansCount == transactionRefresh &&
+          protocolStatsCount == transactionRefresh &&
           aprsAndHealthCount < transactionRefresh
         ) {
           for (var i = 0; i < userLoans?.length; i++) {
@@ -345,9 +356,9 @@ const useDataLoader = () => {
         console.log(protocolStats, "protocolStats is here");
         console.log(aprsAndHealth, "aprs and health is here");
         if (
-          dataDeposit &&
-          protocolStats &&
-          userLoans &&
+          userDepositsCount == transactionRefresh &&
+          protocolStatsCount == transactionRefresh &&
+          userLoansCount == transactionRefresh &&
           userInfoCount < transactionRefresh
         ) {
           console.log("user info called inside - transactionRefresh");

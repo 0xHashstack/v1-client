@@ -169,16 +169,16 @@ const Navbar = ({ validRTokens }: any) => {
     const walletConnected = localStorage.getItem("lastUsedConnector");
     // console.log(connector);
     if (connector?.options?.id == "braavos") {
+      localStorage.setItem("lastUsedConnector", "argentX");
       connect(connectors[1]);
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
-      localStorage.setItem("lastUsedConnector", "argentX");
       router.push("/v1/market");
     } else {
+      localStorage.setItem("lastUsedConnector", "braavos");
       connect(connectors[0]);
       dispatch(resetState(null));
       dispatch(setAccountReset(null));
-      localStorage.setItem("lastUsedConnector", "braavos");
       router.push("/v1/market");
     }
   };
