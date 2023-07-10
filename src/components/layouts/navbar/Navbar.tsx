@@ -166,7 +166,7 @@ const Navbar = ({ validRTokens }: any) => {
   });
 
   const switchWallet = () => {
-    const walletConnected = localStorage.getItem("lastUsedConnector");
+    // const walletConnected = localStorage.getItem("lastUsedConnector");
     // console.log(connector);
     if (connector?.options?.id == "braavos") {
       localStorage.setItem("lastUsedConnector", "argentX");
@@ -709,8 +709,8 @@ const Navbar = ({ validRTokens }: any) => {
                     border="1px solid #2B2F35"
                     onClick={() => {
                       // alert("hey");
-                      const walletConnected =
-                        localStorage.getItem("lastUsedConnector");
+                      // const walletConnected =
+                      //   localStorage.getItem("lastUsedConnector");
                       if (connector?.options?.id == "braavos") {
                         disconnect();
                         connect(connectors[1]);

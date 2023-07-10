@@ -658,7 +658,7 @@ const BorrowModal = ({
   // }, []);
   const [tokenTypeSelected, setTokenTypeSelected] = useState("Native");
   // console.log(amount < 5 * inputCollateralAmountUSD, typeof collateralAmount, collateralAmount, "amount")
-
+  console.log(inputBorrowAmountUSD,inputCollateralAmountUSD,"coins")
   const rTokens: RToken[] = ["rBTC", "rUSDT", "rETH"];
   return (
     <Box>

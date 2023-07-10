@@ -72,53 +72,15 @@ const SupplyMetrics = ({ currentMarketCoin }: any) => {
     <Box display="flex" flexDir="column" gap="64px">
       <SupplyChart />
       <Box display="flex" gap="30px">
-        <Box display="flex" flexDirection="column" gap="8px" width="100%">
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
-            height="72px"
-            border="1px solid #2B2F35"
-            color="#E6EDF3"
-            padding="24px 24px 16px"
-            fontSize="20px"
-            fontStyle="normal"
-            fontWeight="600"
-            lineHeight="30px"
-            borderRadius="6px"
-          >
-            Median Supply{" "}
-          </Box>
-          <AssetUtilizationChart
-            color={"#846ED4"}
-            // series={series2[liquidityProviderChartPeriod]}
-          />
-        </Box>
         <LiquidityProviderChart />
       </Box>
       <Box display="flex" gap="30px">
-        <Box display="flex" flexDirection="column" gap="8px" width="50%">
-          <Box
-            display="flex"
-            flexDirection="column"
-            alignItems="flex-start"
-            height="72px"
-            border="1px solid #2B2F35"
-            color="#E6EDF3"
-            padding="24px 24px 16px"
-            fontSize="20px"
-            fontStyle="normal"
-            fontWeight="600"
-            lineHeight="30px"
-            borderRadius="6px"
-          >
-            Median Supply By Market:{" "}
-          </Box>
+        {/* <Box display="flex" flexDirection="column" gap="8px" width="50%">
           <YourMetricsSupply
             color={"#846ED4"}
             // series={series2[liquidityProviderChartPeriod]}
           />
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );
