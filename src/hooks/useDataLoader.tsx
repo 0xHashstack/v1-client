@@ -119,9 +119,11 @@ const useDataLoader = () => {
   useEffect(()=>{
     const fetchHourlyBTCData=async()=>{
       try{
-        console.log("HIII")
+        // console.log("HIII")
 
-        const response = await axios.get('https://0508-119-82-106-42.in.ngrok.io'); 
+        const response = await axios.get('https://63bf-119-82-106-42.in.ngrok.io/api/metrics/tvl/daily/DAI'); 
+        console.log(response,"response data")
+        // const response2=axios.get('http://127.0.0.1:3010/api/metrics/tvl/hourly/DAI')
         if(response?.data){
           const amounts:any=[];  
           const dates:any=[];
@@ -129,8 +131,8 @@ const useDataLoader = () => {
           const borrowRates:any=[];
               for(var i=0;i<response?.data?.length;i++){
                   amounts?.push(response?.data[i].supplyAmount)
-                  const dateObj = new Date(response?.data[i].Datetime)
-                  dates?.push(dateObj.getTime());
+                  // const dateObj = new Date(response?.data[i].Datetime)
+                  dates?.push(response?.data[i].Datetime);
                   supplyRates?.push(response?.data[i].supplyRate)
                   borrowRates?.push(response?.data[i].borrowRate)
               }
@@ -156,7 +158,7 @@ const useDataLoader = () => {
     if(hourlyDataCount<transactionRefresh){
       fetchHourlyBTCData();
     }
-  },[transactionRefresh])
+  },[transactionRefresh,btcData])
   useEffect(() => {
     try {
       const fetchOraclePrices = async () => {
