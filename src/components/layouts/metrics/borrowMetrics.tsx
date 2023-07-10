@@ -70,7 +70,7 @@ const BorrowMetrics = ({ currentMarketCoin }: any) => {
     <Box display="flex" flexDir="column" gap="64px">
       <BorrowChart />
       <Box display="flex" gap="30px">
-        <Box display="flex" flexDirection="column" gap="8px" width="100%">
+        {/* <Box display="flex" flexDirection="column" gap="8px" width="100%">
           <Box
             display="flex"
             flexDirection="column"
@@ -91,11 +91,11 @@ const BorrowMetrics = ({ currentMarketCoin }: any) => {
             color={"#846ED4"}
             // series={series2[liquidityProviderChartPeriod]}
           />
-        </Box>
+        </Box> */}
         <BorrowerChart />
       </Box>
       <Box display="flex" gap="30px">
-        <Box display="flex" flexDirection="column" gap="8px" width="50%">
+        {/* <Box display="flex" flexDirection="column" gap="8px" width="50%">
           <Box
             display="flex"
             flexDirection="column"
@@ -116,7 +116,7 @@ const BorrowMetrics = ({ currentMarketCoin }: any) => {
             color={"#846ED4"}
             // series={series2[liquidityProviderChartPeriod]}
           />
-        </Box>
+        </Box> */}
       </Box>
     </Box>
   );

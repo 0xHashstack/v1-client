@@ -43,18 +43,10 @@ const SupplyChart = () => {
         newData = [
           {
             name: "Series 1",
-            data:   [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+            data:   btcData?.supplyAmounts,
           },
         ];
-        newCategories = [
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
-        ];
+        newCategories = btcData?.dates;
         break;
       case 1:
         newData = [
@@ -234,7 +226,7 @@ const SupplyChart = () => {
           colors: ["#000000"],
         },
         formatter: function (val: any) {
-          return val / 1000 + "k"; // Display the data value as the label
+          return numberFormatter(val); // Display the data value as the label
         },
         position: "top",
       },
@@ -262,7 +254,7 @@ const SupplyChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return value / 1000 + "k";
+            return numberFormatter(value);
           },
           style: {
             colors: "#6E7681", // Set the color of the labels

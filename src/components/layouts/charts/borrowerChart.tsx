@@ -217,7 +217,7 @@ const BorrowerChart = () => {
   };
 
   return (
-    <Box display="flex" flexDirection="column" gap="8px" width="100%">
+    <Box display="flex" flexDirection="column" gap="8px" width="50%">
       <Box
         display="flex"
         flexDirection="column"

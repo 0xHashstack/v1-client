@@ -72,7 +72,7 @@ export async function getUserDeposits(account: string) {
     "supplies callling with:",
     account,
     "on address: ",
-    metricsContractAddress
+    metricsContract
   );
   try {
     const res = await metricsContract.call("get_user_deposits", [account], {

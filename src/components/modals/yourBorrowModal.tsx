@@ -131,6 +131,8 @@ const YourBorrowModal = ({
   setCurrentBorrowMarketCoin2,
   collateralBalance,
   setCollateralBalance,
+  currentLoanAmount,
+  currentLoanMarket,
   borrowIds,
   buttonText,
   BorrowBalance,
@@ -2332,21 +2334,21 @@ const YourBorrowModal = ({
   >();
 
   useEffect(() => {
-    // if (!currentBorrowId1 || currentBorrowId1 == "") {
-    //   return;
-    // }
     console.log(
       "toMarketSplitConsole",
-      currentBorrowId1.slice(5),
+      currentLoanMarket,
+      currentLoanAmount,
       toMarketA,
       toMarketB
       // borrow
     );
-    // setCurrentLPTokenAmount(null);
-    // setCurrentSplit(null);
-    setCurrentLPTokenAmount(null);
     setCurrentSplit(null);
     fetchLiquiditySplit();
+  }, [toMarketA, currentBorrowId1, toMarketB]);
+
+  useEffect(() => {
+    setCurrentLPTokenAmount(null);
+    fetchLPAmount();
   }, [toMarketA, currentBorrowId1, toMarketB]);
 
   const fetchLiquiditySplit = async () => {
@@ -2359,19 +2361,10 @@ const YourBorrowModal = ({
       currentPool === "Select a pool"
     )
       return;
-    const lp_tokon = await getJediEstimatedLpAmountOut(
-      currentBorrowId1.slice(5),
-      toMarketA,
-      toMarketB
-      // "USDT",
-      // "99",
-      // "ETH",
-      // "USDT"
-    );
-    console.log("toMarketSplitLP", lp_tokon);
-    setCurrentLPTokenAmount(lp_tokon);
+
     const split = await getJediEstimateLiquiditySplit(
-      currentBorrowId1.slice(5),
+      currentLoanMarket,
+      currentLoanAmount,
       toMarketA,
       toMarketB
       // "USDT",
@@ -2382,6 +2375,31 @@ const YourBorrowModal = ({
     console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
     setCurrentSplit(split);
   };
+
+  const fetchLPAmount = async () => {
+    if (
+      spendType !== "UNSPENT" ||
+      !toMarketA ||
+      !toMarketB ||
+      !currentBorrowId1 ||
+      !currentBorrowId2 ||
+      currentPool === "Select a pool"
+    )
+      return;
+    const lp_tokon = await getJediEstimatedLpAmountOut(
+      currentLoanMarket,
+      currentLoanAmount,
+      toMarketA,
+      toMarketB
+      // "USDT",
+      // "99",
+      // "ETH",
+      // "USDT"
+    );
+    console.log("toMarketSplitLP", lp_tokon);
+    setCurrentLPTokenAmount(lp_tokon);
+  };
+
   useEffect(() => {
     const fetchEstrTokens = async () => {
       const data = await getrTokensMinted(

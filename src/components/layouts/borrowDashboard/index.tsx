@@ -34,6 +34,7 @@ import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import { getJediEstimatedLiqALiqBfromLp } from "@/Blockchain/scripts/l3interaction";
 import { tokenAddressMap } from "@/Blockchain/utils/addressServices";
+import numberFormatter from "@/utils/functions/numberFormatter";
 
 export interface ICoin {
   name: string;
@@ -173,6 +174,10 @@ const BorrowDashboard = ({
     useState("BTC");
   const [collateralBalance, setCollateralBalance] = useState("123 eth");
   const [currentSpendStatus, setCurrentSpendStatus] = useState("");
+  const [currentLoanAmount, setCurrentLoanAmount] = useState("");
+  const [currentLoanMarket, setCurrentLoanMarket] = useState("");
+  const [allSplit, setAllSplit] = useState([]);
+  const [currentSplitIndex, setCurrentSplitIndex] = useState(0);
   // const avgs = useSelector(selectAprAndHealthFactor);
   const avgs = useSelector(selectEffectiveApr);
   const avgsData: any = [];
@@ -232,21 +237,52 @@ const BorrowDashboard = ({
   //   console.log("running");
   // }, [oraclePrices, reduxProtocolStats, userLoans]);
 
-  const getSplit = async (liquidity: any, pairAddress: any) => {
-    const currentSplit = await getJediEstimatedLiqALiqBfromLp(
-      liquidity,
-      pairAddress
-    );
-    console.log("liquidity split - ", currentSplit);
-    return "Pending";
+  const getSplit = async () => {
+    let temp: any = [];
+    for (let i = 0; i < Borrows?.length; i++) {
+      if (Borrows[i].spendType === "LIQUIDITY") {
+        const data = await getJediEstimatedLiqALiqBfromLp(
+          parseInt(Borrows[i].currentLoanAmount),
+          Borrows[i].currentLoanMarketAddress
+        );
+        console.log(
+          "all split amount - ",
+          Borrows[i].currentLoanAmount,
+          "market - ",
+          Borrows[i].currentLoanMarketAddress,
+          " res -",
+          data
+        );
+
+        if (data) {
+          temp.push(data);
+        } else {
+          temp.push("empty");
+        }
+      } else {
+        temp.push("empty");
+      }
+    }
+    console.log("all splits", temp);
+    setAllSplit(temp);
+    // const currentSplit = await getJediEstimatedLiqALiqBfromLp(
+    //   liquidity,
+    //   pairAddress
+    // );
+    // console.log("liquidity split - ", currentSplit);
+    // return "Pending";
   };
 
+  // useEffect(() => {
+  //   getSplit(
+  //     468857759897,
+  //     "0x62b1cd273ce4c7967988776fad2a7bbcb21e2b544a111cb48487315810f7f51"
+  //   );
+  // }, []);
+
   useEffect(() => {
-    getSplit(
-      ["468857759897", "0"],
-      "0x62b1cd273ce4c7967988776fad2a7bbcb21e2b544a111cb48487315810f7f51"
-    );
-  }, []);
+    getSplit();
+  }, [Borrows]);
 
   useEffect(() => {
     console.log("Borrows here - ", Borrows);
@@ -263,15 +299,15 @@ const BorrowDashboard = ({
     fetchProtocolStats();
   }, [stats]);
 
-  useEffect(() => {
-    try {
-      const fetchJediEstimatedLiqALiqBfromLp = async () => {
-        const data = await getJediEstimatedLiqALiqBfromLp(0.95946, "USDC");
-        console.log("fetchJediEstimatedLiqALiqBfromLp ", data);
-      };
-      fetchJediEstimatedLiqALiqBfromLp();
-    } catch (err) {}
-  }, []);
+  // useEffect(() => {
+  //   try {
+  //     const fetchJediEstimatedLiqALiqBfromLp = async () => {
+  //       const data = await getJediEstimatedLiqALiqBfromLp(0.95946, "USDC");
+  //       console.log("fetchJediEstimatedLiqALiqBfromLp ", data);
+  //     };
+  //     fetchJediEstimatedLiqALiqBfromLp();
+  //   } catch (err) {}
+  // }, []);
 
   const fetchProtocolStats = async () => {
     try {
@@ -781,9 +817,13 @@ const BorrowDashboard = ({
                               </Box> */}
                             </Box>
                             <Text fontSize="14px" fontWeight="400">
-                              {borrow.spendType !== "LIQUIDITY"
+                              {borrow.spendType !== "LIQUIDITY" ||
+                              allSplit.length === 0 ||
+                              allSplit[idx] === "empty"
                                 ? "1.234/2.23"
-                                : "1.234/2.23"}
+                                : numberFormatter(allSplit[idx]?.amountA) +
+                                  "/" +
+                                  numberFormatter(allSplit[idx]?.amountB)}
                             </Text>
                           </HStack>
                         </Box>
@@ -839,6 +879,8 @@ const BorrowDashboard = ({
                               borrow.collateralMarket
                           );
                           setCurrentSpendStatus(borrow.spendType);
+                          setCurrentLoanAmount(borrow?.currentLoanAmount);
+                          setCurrentLoanMarket(borrow?.currentLoanMarket);
                         }}
                         // bgColor={"blue"}
                       >
@@ -858,6 +900,10 @@ const BorrowDashboard = ({
                           setCurrentBorrowMarketCoin2={
                             setCurrentBorrowMarketCoin2
                           }
+                          currentLoanAmount={currentLoanAmount}
+                          setCurrentLoanAmount={setCurrentLoanAmount}
+                          currentLoanMarket={currentLoanMarket}
+                          setCurrentLoanMarket={setCurrentLoanMarket}
                           collateralBalance={collateralBalance}
                           setCollateralBalance={setCollateralBalance}
                           loan={borrow}
