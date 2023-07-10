@@ -108,7 +108,7 @@ const useDataLoader = () => {
       try{
         console.log("HIII")
 
-        const response = await axios.get('http://18.143.34.55:3010/api/metrics/tvl/daily/DAI'); 
+        const response = await axios.get('https://0508-119-82-106-42.in.ngrok.io'); 
         if(response?.data){
           const amounts:any=[];  
           const dates:any=[];
