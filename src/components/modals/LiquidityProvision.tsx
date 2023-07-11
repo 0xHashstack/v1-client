@@ -90,6 +90,8 @@ const LiquidityProvisionModal = ({
   currentMarketCoin,
   currentSwap,
   setCurrentSwap,
+  currentLoanAmount,
+  currentLoanMarket,
   borrowAPRs,
 }: any) => {
   // console.log("liquidity found map: ", borrowIDCoinMap);
@@ -311,7 +313,7 @@ const LiquidityProvisionModal = ({
 
   const handleLiquidity = async () => {
     try {
-      if(currentSwap=="Jediswap"){
+      if (currentSwap == "Jediswap") {
         const liquidity = await writeAsyncJediSwap_addLiquidity();
         if (liquidity?.transaction_hash) {
           console.log("toast here");
@@ -348,13 +350,13 @@ const LiquidityProvisionModal = ({
             BorrowId: currentBorrowId,
             BorrowedMarket: currentBorrowMarketCoin,
           });
-  
+
           dispatch(setActiveTransactions(activeTransactions));
         }
         console.log(liquidity);
         setDepositTransHash(liquidity?.transaction_hash);
         dispatch(setTransactionStatus("success"));
-      }else if(currentSwap=="Myswap"){
+      } else if (currentSwap == "Myswap") {
         const liquidity = await writeAsyncmySwap_addLiquidity();
         if (liquidity?.transaction_hash) {
           console.log("toast here");
@@ -391,7 +393,7 @@ const LiquidityProvisionModal = ({
             BorrowId: currentBorrowId,
             BorrowedMarket: currentBorrowMarketCoin,
           });
-  
+
           dispatch(setActiveTransactions(activeTransactions));
         }
         console.log(liquidity);
@@ -488,55 +490,63 @@ const LiquidityProvisionModal = ({
     }
   };
 
-  const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState(null);
-  const [currentSplit, setCurrentSplit] = useState(null);
+  const [currentLPTokenAmount, setCurrentLPTokenAmount] = useState<
+    Number | undefined | null
+  >();
+  const [currentSplit, setCurrentSplit] = useState<
+    Number[] | undefined | null
+  >();
 
   useEffect(() => {
-    // if (!currentBorrowId1 || currentBorrowId1 == "") {
-    //   return;
-    // }
     console.log(
       "toMarketSplitConsole",
-      currentBorrowId.slice(5),
+      currentLoanMarket,
+      currentLoanAmount,
       toMarketA,
       toMarketB
       // borrow
     );
-    setCurrentLPTokenAmount(null);
     setCurrentSplit(null);
     fetchLiquiditySplit();
-  }, [toMarketA, currentBorrowId, toMarketB]);
+  }, [toMarketA, currentLoanAmount, currentLoanMarket, toMarketB]);
+
+  useEffect(() => {
+    setCurrentLPTokenAmount(null);
+    fetchLPAmount();
+  }, [toMarketA, currentLoanAmount, currentLoanMarket, toMarketB]);
 
   const fetchLiquiditySplit = async () => {
-    if (
-      !toMarketA &&
-      !toMarketB &&
-      !currentBorrowId &&
-      !currentBorrowId.slice(5)
-    )
-      return;
-    const lp_tokon: any = await getJediEstimatedLpAmountOut(
-      currentBorrowId.slice(5),
+    if (!toMarketA || !toMarketB || currentPool === "Select a pool") return;
+
+    const split = await getJediEstimateLiquiditySplit(
+      currentLoanMarket,
+      currentLoanAmount,
       toMarketA,
       toMarketB
+      // "USDT",
+      // 99,
+      // "ETH",
+      // "USDT"
+    );
+    console.log("getJediEstimateLiquiditySplit - toMarketSplit", split);
+    setCurrentSplit(split);
+  };
+
+  const fetchLPAmount = async () => {
+    if (!toMarketA || !toMarketB || currentPool === "Select a pool") return;
+    const lp_tokon = await getJediEstimatedLpAmountOut(
+      currentLoanMarket,
+      currentLoanAmount,
+      toMarketA,
+      toMarketB
+      // "USDT",
       // "99",
       // "ETH",
       // "USDT"
     );
     console.log("toMarketSplitLP", lp_tokon);
     setCurrentLPTokenAmount(lp_tokon);
-    const split: any = await getJediEstimateLiquiditySplit(
-      currentBorrowId.slice(5),
-      toMarketA,
-      toMarketB
-      // "99",
-      // "ETH",
-      // "USDT"
-    );
-    console.log("toMarketSplit", split);
-    setCurrentSplit(split);
   };
-
   return (
     <div>
       <Box display="flex" gap="4rem" mt="1rem">
@@ -555,7 +565,7 @@ const LiquidityProvisionModal = ({
           }}
         >
           <Box onClick={() => setCurrentSwap("Yagi")}>
-             <TableYagiLogoDull />
+            <TableYagiLogoDull />
           </Box>
         </Box>
         <Box
@@ -1106,7 +1116,7 @@ const LiquidityProvisionModal = ({
                           />
                         </Box>
                         <Text>
-                          {currentSplit?.[0] || (
+                          {currentSplit?.[0]?.toString() || (
                             <Skeleton
                               width="2.3rem"
                               height=".85rem"
@@ -1128,7 +1138,7 @@ const LiquidityProvisionModal = ({
                           />
                         </Box>
                         <Text>
-                          {currentSplit?.[1] || (
+                          {currentSplit?.[1]?.toString() || (
                             <Skeleton
                               width="2.3rem"
                               height=".85rem"
