@@ -149,11 +149,11 @@ const DashboardLeft = ({
     DAI: any;
   }
   const assetBalance: any = {
-    USDT: useBalanceOf(tokenAddressMap["USDT"] || ""),
-    USDC: useBalanceOf(tokenAddressMap["USDC"] || ""),
-    BTC: useBalanceOf(tokenAddressMap["BTC"] || ""),
-    ETH: useBalanceOf(tokenAddressMap["ETH"] || ""),
-    DAI: useBalanceOf(tokenAddressMap["DAI"] || ""),
+    USDT: useBalanceOf(tokenAddressMap["USDT"]),
+    USDC: useBalanceOf(tokenAddressMap["USDC"]),
+    BTC: useBalanceOf(tokenAddressMap["BTC"]),
+    ETH: useBalanceOf(tokenAddressMap["ETH"]),
+    DAI: useBalanceOf(tokenAddressMap["DAI"]),
   };
 
   useEffect(() => {
@@ -285,7 +285,7 @@ const DashboardLeft = ({
                       <Text fontSize="14px" fontWeight="400">
                         {coin.name}
                       </Text>
-                      {assetBalance[coin.name]?.statusBalanceOf != "success" ? (
+                      {!assetBalance[coin.name]?.dataBalanceOf ? (
                         // <Skeleton
                         //   width="3rem"
                         //   height="0.8rem"

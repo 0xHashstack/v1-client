@@ -17,6 +17,7 @@ import {
   Td,
   useTimeout,
   Spinner,
+  Skeleton,
 } from "@chakra-ui/react";
 import LatestSyncedBlock from "@/components/uiElements/latestSyncedBlock";
 import TableUsdtLogo from "./usdtLogo";
@@ -61,6 +62,7 @@ import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import AlertTrade from "@/assets/icons/alertTrade";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
+import numberFormatter from "@/utils/functions/numberFormatter";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -82,6 +84,7 @@ const SpendTable = () => {
   ];
   const { account, address, isConnected } = useAccount();
   const userLoans = useSelector(selectUserUnspentLoans);
+  // const userLoans = null;
   // const [userLoans, setUserLoans] = useState<any>(null);
   // let userLoansRedux = useSelector(selectUserLoans);
   // useEffect(() => {
@@ -196,6 +199,7 @@ const SpendTable = () => {
   // const avgs = useSelector(selectAprAndHealthFactor);
   const avgs = useSelector(selectEffectiveApr);
   const avgsLoneHealth = useSelector(selectHealthFactor);
+  const [ltv, setLtv] = useState<any>([]);
   useEffect(() => {
     console.log("avgsLoneHealth", avgsLoneHealth);
   }, [avgsLoneHealth]);
@@ -254,6 +258,35 @@ const SpendTable = () => {
   };
 
   useEffect(() => {
+    if (userLoans && oraclePrices) {
+      const ltv_ratio = [];
+      for (const loan of userLoans) {
+        const loan_ltv1 =
+          loan?.currentLoanAmountParsed *
+          oraclePrices?.find((val: any) => val?.name == loan?.underlyingMarket)
+            ?.price;
+        const loan_ltv2 =
+          loan?.collateralAmountParsed *
+          oraclePrices?.find(
+            (val: any) =>
+              val?.name ==
+              (loan?.collateralMarket[0] == "r"
+                ? loan?.collateralMarket.slice(1)
+                : loan?.collateralMarket)
+          )?.price;
+        ltv_ratio.push([
+          loan?.loanId,
+          // loan_ltv1,
+          // loan_ltv2,
+          loan_ltv1 / loan_ltv2,
+        ]);
+      }
+      setLtv(ltv_ratio);
+      console.log("spendtable ltv ", ltv);
+    }
+  }, [userLoans, oraclePrices]);
+
+  useEffect(() => {
     setCurrentBorrow(-1);
     setSelectedDapp("");
     setTabIndex(0);
@@ -277,6 +310,7 @@ const SpendTable = () => {
       setLoading(false);
     }
   }, [userLoans]);
+  const dummy_data = [1, 2, 3];
   return (
     <>
       {showWarning && (
@@ -320,30 +354,152 @@ const SpendTable = () => {
         </Box>
       )}
       {loading ? (
-        <Box
+        // <Box
+        //   border="1px"
+        //   borderColor="#2B2F35"
+        //   // py="6"
+        //   color="white"
+        //   borderRadius="md"
+        //   w="94%"
+        //   // px="3"
+        //   p="2rem 1rem 24px"
+        //   h="283px"
+        //   display="flex"
+        //   alignItems="center"
+        //   justifyContent="center"
+        //   flexDirection="column"
+        //   gap="4px"
+        // >
+        //   <Spinner
+        //     thickness="4px"
+        //     speed="0.65s"
+        //     emptyColor="gray.200"
+        //     color="#010409"
+        //     size="xl"
+        //   />
+        // </Box>
+        <TableContainer
+          //   bg="#101216"
           border="1px"
           borderColor="#2B2F35"
           // py="6"
           color="white"
+          h="283px"
           borderRadius="md"
           w="94%"
           // px="3"
           p="2rem 1rem 24px"
-          h="283px"
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          flexDirection="column"
-          gap="4px"
         >
-          <Spinner
-            thickness="4px"
-            speed="0.65s"
-            emptyColor="gray.200"
-            color="#010409"
-            size="xl"
-          />
-        </Box>
+          <Table variant="unstyled">
+            {/* <TableCaption>Imperial to metric conversion factors</TableCaption> */}
+            <Thead width={"100%"}>
+              <Tr width={"100%"} height="2rem">
+                {columnItems.map((val: any, idx1: any) => (
+                  <Td
+                    key={idx1}
+                    width={"12.5%"}
+                    fontSize={"12px"}
+                    fontWeight={400}
+                    p={0}
+                    // bgColor="red"
+                  >
+                    <Text
+                      whiteSpace="pre-wrap"
+                      overflowWrap="break-word"
+                      width={"100%"}
+                      height={"2rem"}
+                      fontSize="12px"
+                      textAlign={
+                        idx1 == 0
+                          ? "left"
+                          : idx1 == columnItems.length - 1
+                          ? "right"
+                          : "center"
+                      }
+                      pl={idx1 == 0 ? "3rem" : 0}
+                      pr={idx1 == columnItems.length - 1 ? 35 : 0}
+                      color={"#BDBFC1"}
+                    >
+                      {val}
+                    </Text>
+                  </Td>
+                ))}
+              </Tr>
+            </Thead>
+
+            <Tbody bg="inherit" position="relative">
+              {dummy_data.map((val: any, index: number) => {
+                return (
+                  <>
+                    <Tr position="relative" height="4rem" cursor="pointer">
+                      <Td textAlign="center">
+                        <Skeleton
+                          height="2rem"
+                          // position="absolute"
+                          width="4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      </Td>
+                      <td>
+                        <Skeleton
+                          height="3rem"
+                          // position="absolute"
+                          width="4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      </td>
+                      <td>
+                        <Skeleton
+                          height="3rem"
+                          // position="absolute"
+                          width="4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      </td>
+                      <td>
+                        <Skeleton
+                          height="3rem"
+                          // position="absolute"
+                          width="4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      </td>
+                      <td>
+                        <Skeleton
+                          height="3rem"
+                          // position="absolute"
+                          width="4rem"
+                          startColor="#101216"
+                          endColor="#2B2F35"
+                          borderRadius="6px"
+                        />
+                      </td>
+                    </Tr>
+                  </>
+                );
+              })}
+              {(() => {
+                const rows2 = [];
+                for (
+                  let i: number = 0;
+                  i < 3 - (upper_bound - lower_bound + 1);
+                  i++
+                ) {
+                  rows2.push(<Tr height="4rem"></Tr>);
+                }
+                return rows2;
+              })()}
+            </Tbody>
+          </Table>
+        </TableContainer>
       ) : upper_bound >= lower_bound && userLoans?.length > 0 ? (
         <TableContainer
           //   bg="#101216"
@@ -397,7 +553,7 @@ const SpendTable = () => {
             <Tbody bg="inherit" position="relative">
               {userLoans
                 .slice(lower_bound, upper_bound + 1)
-                .map((borrow: any) => {
+                .map((borrow: any, index: number) => {
                   return (
                     <>
                       <Tr
@@ -518,7 +674,13 @@ const SpendTable = () => {
                               lineHeight="22px"
                               color="#E6EDF3"
                             >
-                              3.63
+                              {oraclePrices
+                                ? ltv
+                                    ?.find(
+                                      (val: any) => val?.[0] == borrow?.loanId
+                                    )?.[1]
+                                    ?.toFixed(5)
+                                : "-"}
                             </Text>
                           </Box>
                         </Td>

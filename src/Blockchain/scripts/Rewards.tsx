@@ -86,17 +86,18 @@ export async function getEstrTokens(rToken: any, amount: any) {
             provider
         )
         // const parsedAmount=etherToWeiBN(amount,rToken).toString();
-        // console.log(parseAmount,"amount in staking")
+        console.log(amount,"stake amount")
         console.log(stakingContract, "staking contract")
         const parsedAmount = etherToWeiBN(amount, rToken).toString();
+        console.log(parsedAmount,"amount in staking")
         const res = await stakingContract.call("preview_redeem", [tokenAddressMap[rToken], [parsedAmount, 0]], {
             blockIdentifier: "pending",
         });
         const data = parseAmount(
-            uint256.uint256ToBN(res?.rToken_amount_to_withdraw).toString(),
-            tokenDecimalsMap[rToken]
+            uint256.uint256ToBN(res?.rToken_amount_to_withdraw).toString()
+            // tokenDecimalsMap[rToken]
         );
-        console.log(res, "call in stake");
+        console.log(data, "call in stake");
         return 24;
     } catch (err) {
         console.log(err, "err in est rtokens staking")

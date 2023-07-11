@@ -94,6 +94,7 @@ import mixpanel from "mixpanel-browser";
 import { getSupplyunlocked } from "@/Blockchain/scripts/Rewards";
 import { selectUserDeposits } from "@/store/slices/readDataSlice";
 import BlueInfoIcon from "@/assets/icons/blueinfoicon";
+import numberFormatter from "@/utils/functions/numberFormatter";
 const YourSupplyModal = ({
   currentSelectedSupplyCoin,
   setCurrentSelectedSupplyCoin,
@@ -153,7 +154,7 @@ const YourSupplyModal = ({
       : 0
   );
   // console.log(currentSelectedWithdrawlCoin)
-  const [withdrawWalletBalance, setWithdrawWalletBalance] = useState(
+  const [withdrawWalletBalance, setWithdrawWalletBalance] = useState<any>(
     userDeposit?.find(
       (item: any) => item.rToken == currentSelectedWithdrawlCoin
     )?.rTokenFreeParsed
@@ -1631,14 +1632,14 @@ const YourSupplyModal = ({
                           width="100%"
                           color="white"
                           border={`${
-                            inputWithdrawlAmount > walletBalance
+                            inputWithdrawlAmount > withdrawWalletBalance?.toFixed(2)
                               ? "1px solid #CF222E"
                               : inputWithdrawlAmount < 0
                               ? "1px solid #CF222E"
                               : inputWithdrawlAmount < 0
                               ? "1px solid #CF222E"
                               : inputWithdrawlAmount > 0 &&
-                                inputWithdrawlAmount <= walletBalance
+                                inputWithdrawlAmount <= withdrawWalletBalance?.toFixed(2)
                               ? "1px solid #1A7F37"
                               : "1px solid #2B2F35 "
                           }`}
@@ -1665,7 +1666,7 @@ const YourSupplyModal = ({
                             <NumberInputField
                               placeholder={`Minimum 0.01536 ${currentSelectedWithdrawlCoin}`}
                               color={`${
-                                inputWithdrawlAmount > walletBalance
+                                inputWithdrawlAmount >  withdrawWalletBalance?.toFixed(2)
                                   ? "#CF222E"
                                   : inputWithdrawlAmount < 0
                                   ? "#CF222E"
@@ -1692,7 +1693,7 @@ const YourSupplyModal = ({
                             color="#0969DA"
                             _hover={{ bg: "#101216" }}
                             onClick={() => {
-                              setinputWithdrawlAmount(walletBalance);
+                              setinputWithdrawlAmount(withdrawWalletBalance);
                               setSliderValue2(100);
                             }}
                             isDisabled={withdrawTransactionStarted == true}
@@ -1718,7 +1719,7 @@ const YourSupplyModal = ({
                                 <SmallErrorIcon />{" "}
                               </Text>
                               <Text ml="0.3rem">
-                                {inputWithdrawlAmount > walletBalance
+                                {inputWithdrawlAmount > withdrawWalletBalance
                                   ? "Amount exceeds ballance"
                                   : "Invalid Input"}
                               </Text>
@@ -1758,7 +1759,7 @@ const YourSupplyModal = ({
                             value={sliderValue2}
                             onChange={(val) => {
                               setSliderValue2(val);
-                              var ans = (val / 100) * walletBalance;
+                              var ans = (val / 100) * withdrawWalletBalance;
                               ans = Math.round(ans * 100) / 100;
                               // dispatch(setInputSupplyAmount(ans))
                               setinputWithdrawlAmount(ans);

@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
 import ApexCharts from "react-apexcharts";
+import { useSelector } from "react-redux";
+import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import numberFormatter from "@/utils/functions/numberFormatter";
 
 const BorrowChart = () => {
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
@@ -13,6 +16,7 @@ const BorrowChart = () => {
     },
   ]);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
+  const btcData=useSelector(selectHourlyBTCData)
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
@@ -36,20 +40,23 @@ const BorrowChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        newData = [
+        btcData?.borrowAmounts ? newData = [
           {
             name: "Series 1",
-            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+            data: btcData?.borrowAmounts,
           },
+        ]:newData=[
+          {
+            name:"Series 1",
+            data:[20000,40000, 38000, 42000, 39000, 44000]
+          }
         ];
-        newCategories = [
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
+        btcData?.dates ? newCategories = btcData?.dates:newCategories=[
+          new Date("2023-06-01").getTime(),
+          new Date("2023-06-02").getTime(),
+          new Date("2023-06-03").getTime(),
+          new Date("2023-06-04").getTime(),
+          new Date("2023-06-05").getTime()
         ];
         break;
       case 1:
@@ -153,12 +160,12 @@ const BorrowChart = () => {
           colors: ["#000000"],
         },
         formatter: function (val: any) {
-          return val / 1000 + "k"; // Display the data value as the label
+          return numberFormatter(val); // Display the data value as the label
         },
       },
 
       xaxis: {
-        type: "datetime",
+        type: "datetime" as const,
         labels: {
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -177,7 +184,7 @@ const BorrowChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return value / 1000 + "k";
+            return numberFormatter(value);
           },
           style: {
             colors: "#6E7681", // Set the color of the labels

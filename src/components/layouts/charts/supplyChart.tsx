@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
 import ApexCharts from "react-apexcharts";
+import { useSelector } from "react-redux";
+import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import numberFormatter from "@/utils/functions/numberFormatter";
 
 const SupplyChart = () => {
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
@@ -26,6 +29,8 @@ const SupplyChart = () => {
 
     fetchData();
   }, [liquidityProviderChartPeriod]);
+  const btcData=useSelector(selectHourlyBTCData)
+  console.log(btcData?.supplyAmounts,"data protocol")
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
@@ -36,20 +41,24 @@ const SupplyChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        newData = [
+        btcData?.supplyAmounts ? newData = [
           {
             name: "Series 1",
-            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+            data: btcData?.supplyAmounts,
           },
+        ]:newData=[
+          {
+            name:"Series 1",
+            data:[20000,40000, 38000, 42000, 39000, 44000]
+          }
         ];
-        newCategories = [
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
+        btcData?.dates ?
+        newCategories = btcData?.dates : newCategories=[
+          new Date("2023-06-01").getTime(),
+          new Date("2023-06-02").getTime(),
+          new Date("2023-06-03").getTime(),
+          new Date("2023-06-04").getTime(),
+          new Date("2023-06-05").getTime()
         ];
         break;
       case 1:
@@ -153,15 +162,14 @@ const SupplyChart = () => {
           colors: ["#000000"],
         },
         formatter: function (val: any) {
-          return val / 1000 + "k"; // Display the data value as the label
+          return numberFormatter(val); // Display the data value as the label
         },
       },
-
       xaxis: {
-        type: "datetime",
+        type: "datetime" as const, // Set x-axis type to datetime
         labels: {
           style: {
-            colors: "#6E7681", // Set the color of the labels
+            colors: "#6E7681",
             fontSize: "12px",
             fontWeight: "400",
           },
@@ -176,11 +184,12 @@ const SupplyChart = () => {
       },
       yaxis: {
         labels: {
-          formatter: function (value: any) {
-            return value / 1000 + "k";
-          },
+          formatter:
+          function (value: any) {
+                return numberFormatter(value);
+              },
           style: {
-            colors: "#6E7681", // Set the color of the labels
+            colors: "#6E7681",
             fontSize: "12px",
             fontWeight: "400",
           },
@@ -189,10 +198,10 @@ const SupplyChart = () => {
       },
       plotOptions: {
         bar: {
-          opacity: 1, // Set the opacity to 1 for fully opaque bars
-          columnWidth: "70%", // Adjust the column width for better spacing between bars
+          opacity: 1,
+          columnWidth: "70%",
           colors: {
-            backgroundBarOpacity: 1, // Set the opacity of the background bar
+            backgroundBarOpacity: 1,
           },
         },
       },
@@ -200,7 +209,7 @@ const SupplyChart = () => {
       grid: {
         borderColor: "#2B2F35",
         padding: {
-          bottom: 10, // Add bottom padding to prevent overlap with x-axis labels
+          bottom: 10,
         },
       },
       annotations: {

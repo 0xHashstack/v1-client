@@ -116,6 +116,7 @@ import mixpanel from "mixpanel-browser";
 import WarningIcon from "@/assets/icons/coins/warningIcon";
 import { getrTokensMinted } from "@/Blockchain/scripts/Rewards";
 import { NativeToken } from "@/Blockchain/interfaces/interfaces";
+import numberFormatter from "@/utils/functions/numberFormatter";
 
 const YourBorrowModal = ({
   borrowIDCoinMap,
@@ -1129,7 +1130,7 @@ const YourBorrowModal = ({
                       />
                     </Box>
                   ) : (
-                    "$" + currentLPTokenAmount
+                    "$" + numberFormatter(currentLPTokenAmount)
                   )}
                   {/* $ 10.91 */}
                 </Text>
@@ -1183,7 +1184,7 @@ const YourBorrowModal = ({
                         />
                       </Box>
                       <Text>
-                        {currentSplit?.[0]?.toString() || (
+                        {numberFormatter(currentSplit?.[0]?.toString()) || (
                           <Skeleton
                             width="2.3rem"
                             height=".85rem"
@@ -1205,7 +1206,7 @@ const YourBorrowModal = ({
                         />
                       </Box>
                       <Text>
-                        {currentSplit?.[1].toString() || (
+                        {numberFormatter(currentSplit?.[1].toString()) || (
                           <Skeleton
                             width="2.3rem"
                             height=".85rem"
@@ -1522,7 +1523,7 @@ const YourBorrowModal = ({
                 1.23
               </Text>
             </Box> */}
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
                   color="#8B949E"
@@ -1556,7 +1557,7 @@ const YourBorrowModal = ({
               >
                 5.56%
               </Text>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
@@ -1721,7 +1722,7 @@ const YourBorrowModal = ({
                 1.23
               </Text>
             </Box> */}
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text color="#8B949E" fontSize="xs">
                   Est collateral value:{" "}
@@ -1745,7 +1746,7 @@ const YourBorrowModal = ({
               <Text color="#8B949E" fontSize="xs">
                 5.56%
               </Text>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text color="#8B949E" fontSize="xs">
@@ -1810,7 +1811,7 @@ const YourBorrowModal = ({
             mt="1.5rem"
             mb="1.5rem"
           >
-            <Box display="flex" justifyContent="space-between" mb="0.2rem">
+            {/* <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
                   color="#6A737D"
@@ -1857,7 +1858,7 @@ const YourBorrowModal = ({
                   <Text>1.23</Text>
                 </Box>
               </Box>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between" mb="0.2rem">
               <Box display="flex">
                 <Text
@@ -2012,7 +2013,7 @@ const YourBorrowModal = ({
                 1.23
               </Text>
             </Box>
-            <Box display="flex" justifyContent="space-between">
+            {/* <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
                   color="#8B949E"
@@ -2046,7 +2047,7 @@ const YourBorrowModal = ({
               >
                 5.56%
               </Text>
-            </Box>
+            </Box> */}
             <Box display="flex" justifyContent="space-between">
               <Box display="flex">
                 <Text
@@ -2406,7 +2407,7 @@ const YourBorrowModal = ({
         collateralBalance.substring(spaceIndex + 1),
         inputCollateralAmount
       );
-      console.log(data,"data in your borrow for est")
+      console.log(data, "data in your borrow for est");
       // console.log(data, "data in your borrow");
       setEstrTokensMinted(data);
     };
@@ -3668,13 +3669,15 @@ const YourBorrowModal = ({
                                 Clicked: true,
                               }
                             );
-                            dispatch(
-                              setTransactionStartedAndModalClosed(false)
-                            );
-                            if (radioValue == "2") {
-                              hanldeTrade();
-                            } else {
-                              hanldeLiquidation();
+                            if(transactionStarted==false){                              
+                              dispatch(
+                                setTransactionStartedAndModalClosed(false)
+                              );
+                              if (radioValue == "2") {
+                                hanldeTrade();
+                              } else {
+                                hanldeLiquidation();
+                              }
                             }
                           }}
                         >
