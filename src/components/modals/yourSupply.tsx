@@ -1640,7 +1640,7 @@ const YourSupplyModal = ({
                               ? "1px solid #CF222E"
                               : inputWithdrawlAmount > 0 &&
                                 inputWithdrawlAmount <= withdrawWalletBalance?.toFixed(2)
-                              ? "1px solid #1A7F37"
+                            ? "1px solid #1A7F37"
                               : "1px solid #2B2F35 "
                           }`}
                           borderRadius="6px"
