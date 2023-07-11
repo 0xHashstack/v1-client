@@ -51,11 +51,11 @@ const Stats = ({
                   endColor="#2B2F35"
                   borderRadius="6px"
                 />
-              ) : header[idx] === "Net APR" ||
-                header[idx] === "Avg. asset utilization" ? (
+              ) : header[idx] == "Net APR" ||
+                header[idx] == "Avg. asset utillization" ? (
                 <Box color="#e6edf3" fontSize="20px">
                   {value !== null ? (
-                    `${value} %`
+                    `${value}%`
                   ) : (
                     <Skeleton
                       width="6rem"

@@ -91,7 +91,7 @@ export async function getJediEstimateLiquiditySplit(
       // [loanId, tokenAAddress, tokenBAddress],
       [
         tokenAddressMap[loanMarket],
-        [currentAmount, 0],
+        [Number(currentAmount), 0],
         tokenAddressMap[tokenA],
         tokenAddressMap[tokenB],
       ],
@@ -142,7 +142,7 @@ export async function getJediEstimatedLpAmountOut(
       // [loanId, tokenAAddress, tokenBAddress],
       [
         tokenAddressMap[loanMarket],
-        [currentAmount, 0],
+        [Number(currentAmount), 0],
         tokenAddressMap[tokenA],
         tokenAddressMap[tokenB],
       ],

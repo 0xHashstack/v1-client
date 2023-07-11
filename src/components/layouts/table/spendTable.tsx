@@ -61,6 +61,7 @@ import { ILoan } from "@/Blockchain/interfaces/interfaces";
 import AlertTrade from "@/assets/icons/alertTrade";
 import { getExistingLoanHealth } from "@/Blockchain/scripts/LoanHealth";
 import { effectivAPRLoan } from "@/Blockchain/scripts/userStats";
+import numberFormatter from "@/utils/functions/numberFormatter";
 const SpendTable = () => {
   const [showWarning, setShowWarning] = useState(true);
   const [currentBorrow, setCurrentBorrow] = useState(-1);
@@ -193,6 +194,7 @@ const SpendTable = () => {
   // const avgs = useSelector(selectAprAndHealthFactor);
   const avgs = useSelector(selectEffectiveApr);
   const avgsLoneHealth = useSelector(selectHealthFactor);
+  const [ltv, setLtv] = useState<any>([]);
   useEffect(() => {
     console.log("avgsLoneHealth", avgsLoneHealth);
   }, [avgsLoneHealth]);
@@ -249,6 +251,31 @@ const SpendTable = () => {
       console.log("error on getting protocol stats");
     }
   };
+
+  useEffect(() => {
+    if (userLoans && oraclePrices) {
+      console.log("spendtable ltv ", userLoans);
+      const ltv_ratio = [];
+      for (const loan of userLoans) {
+        const loan_ltv1 =
+          loan?.currentLoanAmountParsed *
+          oraclePrices?.find((val: any) => val?.name == loan?.underlyingMarket)
+            ?.price;
+        const loan_ltv2 =
+          loan?.collateralAmountParsed *
+          oraclePrices?.find(
+            (val: any) =>
+              val?.name ==
+              (loan?.collateralMarket[0] == "r"
+                ? loan?.collateralMarket.slice(1)
+                : loan?.collateralMarket)
+          )?.price;
+        ltv_ratio.push([loan?.loanId, loan_ltv1 / loan_ltv2]);
+      }
+      setLtv(ltv_ratio);
+      console.log("spendtable ltv ", ltv);
+    }
+  }, [userLoans, oraclePrices]);
 
   useEffect(() => {
     setCurrentBorrow(-1);
@@ -316,7 +343,7 @@ const SpendTable = () => {
           </Box>
         </Box>
       )}
-      {loading  ? (
+      {loading ? (
         <Box
           border="1px"
           borderColor="#2B2F35"
@@ -394,7 +421,7 @@ const SpendTable = () => {
             <Tbody bg="inherit" position="relative">
               {userLoans
                 .slice(lower_bound, upper_bound + 1)
-                .map((borrow: any) => {
+                .map((borrow: any, index: number) => {
                   return (
                     <>
                       <Tr
@@ -513,7 +540,13 @@ const SpendTable = () => {
                               lineHeight="22px"
                               color="#E6EDF3"
                             >
-                              3.63
+                              {oraclePrices
+                                ? numberFormatter(
+                                    ltv?.find(
+                                      (val: any) => val?.[0] == borrow?.loanId
+                                    )?.[1]
+                                  )
+                                : "-"}
                             </Text>
                           </Box>
                         </Td>
