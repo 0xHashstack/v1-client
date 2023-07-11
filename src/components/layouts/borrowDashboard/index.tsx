@@ -832,7 +832,7 @@ const BorrowDashboard = ({
                               </Box> */}
                             </Box>
                             <Text fontSize="14px" fontWeight="400">
-                              {borrow.spendType !== "LIQUIDITY"
+                              {borrow.spendType == "LIQUIDITY"
                                 ? allSplit.length === 0 ||
                                   allSplit[idx] === "empty"
                                   ? "-"
