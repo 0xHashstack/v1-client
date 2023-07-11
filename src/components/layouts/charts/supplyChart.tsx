@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
 import ApexCharts from "react-apexcharts";
+import { useSelector } from "react-redux";
+import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import numberFormatter from "@/utils/functions/numberFormatter";
 
 const SupplyChart = () => {
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
@@ -26,6 +29,8 @@ const SupplyChart = () => {
 
     fetchData();
   }, [liquidityProviderChartPeriod]);
+  const btcData=useSelector(selectHourlyBTCData)
+  console.log(btcData?.supplyAmounts,"data protocol")
   //   console.log(new Date("2022-01-01").getTime(),"trial chart data")
 
   const fetchDataBasedOnOption = async (option: number) => {
@@ -39,7 +44,7 @@ const SupplyChart = () => {
         btcData?.supplyAmounts ? newData = [
           {
             name: "Series 1",
-            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+            data: btcData?.supplyAmounts,
           },
         ]:newData=[
           {
@@ -205,53 +210,6 @@ const SupplyChart = () => {
         borderColor: "#2B2F35",
         padding: {
           bottom: 10,
-        },
-      },
-
-      xaxis: {
-        type: "datetime",
-        labels: {
-          style: {
-            colors: "#6E7681", // Set the color of the labels
-            fontSize: "12px",
-            fontWeight: "400",
-          },
-        },
-        axisTicks: {
-          show: false,
-        },
-        axisBorder: {
-          color: "grey",
-        },
-        categories: xAxisCategories,
-      },
-      yaxis: {
-        labels: {
-          formatter: function (value: any) {
-            return value / 1000 + "k";
-          },
-          style: {
-            colors: "#6E7681", // Set the color of the labels
-            fontSize: "12px",
-            fontWeight: "400",
-          },
-        },
-        min: 0,
-      },
-      plotOptions: {
-        bar: {
-          opacity: 1, // Set the opacity to 1 for fully opaque bars
-          columnWidth: "70%", // Adjust the column width for better spacing between bars
-          colors: {
-            backgroundBarOpacity: 1, // Set the opacity of the background bar
-          },
-        },
-      },
-      colors: ["#846ED4"],
-      grid: {
-        borderColor: "#2B2F35",
-        padding: {
-          bottom: 10, // Add bottom padding to prevent overlap with x-axis labels
         },
       },
       annotations: {

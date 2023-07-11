@@ -3,6 +3,8 @@ import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
 import ApexCharts from "react-apexcharts";
 import numberFormatter from "@/utils/functions/numberFormatter";
+import { useSelector } from "react-redux";
+import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
 
 const BorrowAPRChart = () => {
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
@@ -14,6 +16,7 @@ const BorrowAPRChart = () => {
     },
   ]);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
+  const btcData=useSelector(selectHourlyBTCData);
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
@@ -37,13 +40,18 @@ const BorrowAPRChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        newData = [
+        btcData?.borrowRates ? newData = [
           {
             name: "Series 1",
-            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+            data: btcData?.borrowRates,
           },
+        ]:newData=[
+          {
+            name:"Series 1",
+            data:[30000, 40000, 35000, 50000, 49000, 60000, 80000]
+          }
         ];
-        newCategories = [
+        btcData?.dates ? newCategories = btcData?.dates:newCategories=[
           new Date("2023-07-01").getTime(),
           new Date("2023-07-02").getTime(),
           new Date("2023-07-03").getTime(),

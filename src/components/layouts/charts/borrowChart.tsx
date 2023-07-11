@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
 import ApexCharts from "react-apexcharts";
+import { useSelector } from "react-redux";
+import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
+import numberFormatter from "@/utils/functions/numberFormatter";
 
 const BorrowChart = () => {
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
@@ -13,6 +16,7 @@ const BorrowChart = () => {
     },
   ]);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
+  const btcData=useSelector(selectHourlyBTCData)
   useEffect(() => {
     // Fetch data based on selected option
     const fetchData = async () => {
@@ -156,12 +160,12 @@ const BorrowChart = () => {
           colors: ["#000000"],
         },
         formatter: function (val: any) {
-          return val / 1000 + "k"; // Display the data value as the label
+          return numberFormatter(val); // Display the data value as the label
         },
       },
 
       xaxis: {
-        type: "datetime",
+        type: "datetime" as const,
         labels: {
           style: {
             colors: "#6E7681", // Set the color of the labels
@@ -180,7 +184,7 @@ const BorrowChart = () => {
       yaxis: {
         labels: {
           formatter: function (value: any) {
-            return value / 1000 + "k";
+            return numberFormatter(value);
           },
           style: {
             colors: "#6E7681", // Set the color of the labels

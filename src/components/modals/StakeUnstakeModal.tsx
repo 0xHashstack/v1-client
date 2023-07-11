@@ -568,7 +568,7 @@ const StakeUnstakeModal = ({
   // }, [protocolStats]);
   useEffect(()=>{
     const fetchestrTokens=async()=>{
-      const data=await getEstrTokens("rUSDT",20.0);
+      const data=await getEstrTokens("rUSDT",287780.0);
       console.log(data,"stake");
     }
     fetchestrTokens();
