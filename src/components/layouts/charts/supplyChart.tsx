@@ -153,7 +153,7 @@ const SupplyChart = () => {
         },
       },
       xaxis: {
-        type: "datetime", // Set x-axis type to datetime
+        type: "datetime" as const, // Set x-axis type to datetime
         labels: {
           style: {
             colors: "#6E7681",

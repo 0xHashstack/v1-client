@@ -121,7 +121,7 @@ const useDataLoader = () => {
       try{
         // console.log("HIII")
 
-        const response = await axios.get('https://63bf-119-82-106-42.in.ngrok.io/api/metrics/tvl/daily/DAI'); 
+        const response = await axios.get('http://18.143.34.55:3010/api/metrics/tvl/daily/DAI'); 
         console.log(response,"response data")
         // const response2=axios.get('http://127.0.0.1:3010/api/metrics/tvl/hourly/DAI')
         if(response?.data){
