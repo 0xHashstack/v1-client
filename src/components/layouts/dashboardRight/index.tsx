@@ -198,7 +198,7 @@ const DashboardRight = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      coinPrices[idx]?.price
+                      numberFormatter(coinPrices[idx]?.price)
                     )}
                   </Box>
                 </Td>
@@ -260,7 +260,7 @@ const DashboardRight = ({
                         borderRadius="6px"
                       />
                     ) : (
-                      utilization[idx] + "%"
+                      numberFormatter(utilization[idx]) + "%"
                     )}
                   </Box>
                 </Td>

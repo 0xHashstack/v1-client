@@ -442,13 +442,13 @@ const BorrowDashboard = ({
                   height={"2rem"}
                   fontSize="12px"
                   textAlign={
-                    idx1 == 0
+                    idx1 == 0 || idx1 == 1
                       ? "left"
-                      : idx1 == columnItems.length - 1
+                      : idx1 == columnItems?.length - 1
                       ? "right"
                       : "center"
                   }
-                  pl={idx1 == 0 ? 2 : 0}
+                  pl={idx1 == 0 ? 2 : idx1 == 1 ? "24%  " : 0}
                   pr={idx1 == columnItems.length - 1 ? 5 : 0}
                   color={"#BDBFC1"}
                 >
@@ -501,9 +501,9 @@ const BorrowDashboard = ({
                       >
                         {/* {checkGap(idx1, idx2)} */}
                         {`Borrow ID${
-                          borrow.loanId < 10
-                            ? "0" + borrow.loanId
-                            : borrow.loanId
+                          borrow?.loanId < 10
+                            ? "0" + borrow?.loanId
+                            : borrow?.loanId
                         }`}{" "}
                       </Text>
                     </Td>
@@ -518,6 +518,7 @@ const BorrowDashboard = ({
                     >
                       <Box
                         width="100%"
+                        pl="20%"
                         height="100%"
                         display="flex"
                         alignItems="center"
@@ -531,19 +532,21 @@ const BorrowDashboard = ({
                           width="100%"
                           display="flex"
                           justifyContent="center"
-                          alignItems="center"
+                          alignItems="flex-start"
                           height="2.5rem"
                           // bgColor="red"
+                          // p={2}
                         >
                           <HStack
                             height="2rem"
                             width="2rem"
                             alignItems="center"
                             justifyContent="center"
+                            pl={4}
                           >
                             <Image
                               // src={`./BTC.svg`}
-                              src={`/${borrow.loanMarket.slice(1)}.svg`}
+                              src={`/${borrow?.loanMarket.slice(1)}.svg`}
                               alt="Picture of the author"
                               width="32"
                               height="32"
@@ -553,7 +556,7 @@ const BorrowDashboard = ({
                               fontWeight="400"
                               color="#E6EDF3"
                             >
-                              {borrow.loanMarket}
+                              {borrow?.loanMarket}
                             </Text>
                           </HStack>
                           <HStack>
@@ -564,7 +567,7 @@ const BorrowDashboard = ({
                               width="4.6rem"
                             >
                               <Text textAlign="left">
-                                {borrow.loanAmountParsed}
+                                {numberFormatter(borrow?.loanAmountParsed)}
                                 {/* 0.04534 */}
                               </Text>
                             </Text>
@@ -601,7 +604,9 @@ const BorrowDashboard = ({
                             borderRadius="6px"
                           />
                         ) : (
-                          getBorrowAPR(borrow.loanMarket.slice(1)) + "%"
+                          numberFormatter(
+                            getBorrowAPR(borrow?.loanMarket.slice(1))
+                          ) + "%"
                         )}
                       </Text>
                     </Td>
@@ -645,7 +650,7 @@ const BorrowDashboard = ({
                         // gap="3px"
                         width="100%"
                         display="flex"
-                        justifyContent="center"
+                        // justifyContent="flex-start"
                         alignItems="center"
                         height="2.5rem"
                         // bgColor="red"
@@ -657,13 +662,13 @@ const BorrowDashboard = ({
                           justifyContent="center"
                         >
                           <Image
-                            src={`/${borrow.collateralMarket.slice(1)}.svg`}
+                            src={`/${borrow?.collateralMarket.slice(1)}.svg`}
                             alt="Picture of the author"
                             width="32"
                             height="32"
                           />
                           <Text fontSize="14px" fontWeight="400">
-                            {borrow.collateralMarket}
+                            {borrow?.collateralMarket}
                           </Text>
                         </HStack>
                         <Text
@@ -672,8 +677,8 @@ const BorrowDashboard = ({
                           color="#F7BB5B"
                           width="4.6rem"
                         >
-                          <Text textAlign="left">
-                            {borrow.collateralAmountParsed}
+                          <Text>
+                            {numberFormatter(borrow?.collateralAmountParsed)}
                             {/* 10,000 */}
                           </Text>
                         </Text>
@@ -861,6 +866,7 @@ const BorrowDashboard = ({
                         display="flex"
                         alignItems="center"
                         justifyContent="center"
+                        // pl="45%"
                         fontWeight="400"
                         // bgColor={"blue"}
                       >
