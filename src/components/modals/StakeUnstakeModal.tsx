@@ -454,6 +454,11 @@ const StakeUnstakeModal = ({
     var percentage =
       (newValue * 100) / unstakeWalletBalance;
     percentage = Math.max(0, percentage);
+    if(unstakeWalletBalance==0){
+      setSliderValue2(0);
+      setInputUnstakeAmount(0);
+      setRTokenToWithdraw(0);
+    }
     if (percentage > 100) {
       setSliderValue2(100);
       setRTokenToWithdraw(newValue);
