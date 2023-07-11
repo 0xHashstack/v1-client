@@ -38,6 +38,7 @@ const DashboardRight = ({
   borrowAPRs,
   supplyAPRs,
   validRTokens,
+  protocolStats,
 }: {
   width: string;
   oraclePrices: any;
@@ -46,6 +47,7 @@ const DashboardRight = ({
   borrowAPRs: any;
   validRTokens: any;
   supplyAPRs: any;
+  protocolStats: any;
   // gap: string;
   // columnItems: Array<Array<string>>;
   // rowItems: any;
@@ -336,6 +338,7 @@ const DashboardRight = ({
                       currentBorrowAPR={currentBorrowAPR}
                       validRTokens={validRTokens}
                       currentBorrowMarketCoin={currentBorrowMarketCoin}
+                      protocolStats={protocolStats}
                     />
                   </Box>
                 </Td>

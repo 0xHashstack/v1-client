@@ -379,7 +379,7 @@ const BorrowModal = ({
 
   useEffect(() => {
     fetchParsedUSDValueCollateral();
-  }, [collateralAmount, currentCollateralCoin]);
+  }, [collateralAmount, currentCollateralCoin, rToken, rTokenAmount]);
 
   // useEffect(() => {
   //   console.log("borrow got oracle", oraclePrices);
@@ -416,20 +416,50 @@ const BorrowModal = ({
         return;
       }
 
-      const parsedBorrowAmount =
-        oraclePrices.find((curr: any) => curr.name === currentCollateralCoin)
-          ?.price * collateralAmount;
-      // const parsedBorrowAmount = await getUSDValue(
-      //   currentBorrowCoin,
-      //   inputBorrowAmount
-      // );
-      console.log(
-        "got parsed usdt collateral",
-        parsedBorrowAmount,
-        " max should be",
-        5 * parsedBorrowAmount
-      );
-      setInputCollateralAmountUSD(parsedBorrowAmount);
+      if (tokenTypeSelected === "Native") {
+        const parsedBorrowAmount =
+          oraclePrices.find((curr: any) => curr.name === currentCollateralCoin)
+            ?.price * collateralAmount;
+        // const parsedBorrowAmount = await getUSDValue(
+        //   currentBorrowCoin,
+        //   inputBorrowAmount
+        // );
+        console.log(
+          "got parsed usdt collateral",
+          parsedBorrowAmount,
+          " max should be",
+          5 * parsedBorrowAmount
+        );
+        setInputCollateralAmountUSD(parsedBorrowAmount);
+      } else if (tokenTypeSelected === "rToken") {
+        console.log(
+          "rToken parsing",
+          rToken,
+          rTokenAmount,
+          oraclePrices.find((curr: any) => curr.name === rToken.slice(1))
+            ?.price,
+          protocolStats.find((curr: any) => curr.token === rToken.slice(1))
+            ?.exchangeRateRtokenToUnderlying
+        );
+
+        const parsedBorrowAmount =
+          oraclePrices.find((curr: any) => curr.name === rToken.slice(1))
+            ?.price *
+          rTokenAmount *
+          protocolStats.find((curr: any) => curr.token === rToken.slice(1))
+            ?.exchangeRateRtokenToUnderlying;
+        // const parsedBorrowAmount = await getUSDValue(
+        //   currentBorrowCoin,
+        //   inputBorrowAmount
+        // );
+        console.log(
+          "got parsed usdt collateral",
+          parsedBorrowAmount,
+          " max should be",
+          5 * parsedBorrowAmount
+        );
+        setInputCollateralAmountUSD(parsedBorrowAmount);
+      }
     } catch (error) {
       console.log(error);
     }
@@ -1880,7 +1910,7 @@ const BorrowModal = ({
                     font-size="14px"
                     color="#6A737D"
                   >
-                    {
+                    {tokenTypeSelected === "Native" ? (
                       // protocolStats.length === 0 ||
                       inputBorrowAmount === 0 ||
                       collateralAmount === 0 ||
@@ -1898,16 +1928,16 @@ const BorrowModal = ({
                         <Text>
                           {/* 5.56% */}
                           {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
-                          {numberFormatter(
-                            inputBorrowAmountUSD *
-                              borrowAPRs[currentBorrowAPR] -
-                              (inputCollateralAmountUSD *
-                                protocolStats?.find(
-                                  (stat: any) =>
-                                    stat?.token === currentCollateralCoin
-                                )?.supplyRate) /
-                                inputBorrowAmountUSD
-                          )}
+                          {inputBorrowAmountUSD *
+                            protocolStats?.find(
+                              (stat: any) => stat?.token === currentBorrowCoin
+                            )?.borrowRate -
+                            (inputCollateralAmountUSD *
+                              protocolStats?.find(
+                                (stat: any) =>
+                                  stat?.token === currentCollateralCoin
+                              )?.supplyRate) /
+                              inputBorrowAmountUSD}
                           {/* {
                           protocolStats?.find(
                             (stat: any) => stat?.token === currentCollateralCoin
@@ -1915,7 +1945,39 @@ const BorrowModal = ({
                         } */}
                         </Text>
                       )
-                    }
+                    ) : // protocolStats.length === 0 ||
+                    rTokenAmount === 0 ||
+                      inputBorrowAmount === 0 ||
+                      !borrowAPRs[currentBorrowAPR] ? (
+                      <Box pt="2px">
+                        <Skeleton
+                          width="2.3rem"
+                          height=".85rem"
+                          startColor="#2B2F35"
+                          endColor="#101216"
+                          borderRadius="6px"
+                        />
+                      </Box>
+                    ) : (
+                      <Text>
+                        {/* 5.56% */}
+                        {/* loan_usd_value * loan_apr - collateral_usd_value * collateral_apr) / loan_usd_value */}
+                        {inputBorrowAmountUSD *
+                          protocolStats?.find(
+                            (stat: any) => stat?.token === currentBorrowCoin
+                          )?.borrowRate -
+                          (inputCollateralAmountUSD *
+                            protocolStats?.find(
+                              (stat: any) => stat?.token === rToken.slice(1)
+                            )?.supplyRate) /
+                            inputBorrowAmountUSD}
+                        {/* {
+                            protocolStats?.find(
+                              (stat: any) => stat?.token === currentCollateralCoin
+                            )?.supplyRate
+                          } */}
+                      </Text>
+                    )}
                   </Text>
                 </Text>
               )}

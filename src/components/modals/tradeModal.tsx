@@ -2731,7 +2731,6 @@ const TradeModal = ({
                 (tokenTypeSelected == "Native" ? collateralAmount > 0 : true) &&
                 inputBorrowAmount > 0 &&
                 currentDapp != "Select a dapp" &&
-                inputBorrowAmountUSD < 5 * inputCollateralAmountUSD &&
                 (currentPool != "Select a pool" ||
                   currentPoolCoin != "Select a pool") ? (
                   <Box
