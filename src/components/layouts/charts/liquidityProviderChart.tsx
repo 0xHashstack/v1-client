@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import AssetUtilizationChart from "./AssetUtilization";
 import { Box, Button } from "@chakra-ui/react";
 import ApexCharts from "react-apexcharts";
+import { useSelector } from "react-redux";
+import { selectHourlyBTCData } from "@/store/slices/readDataSlice";
 
 const LiquidityProviderChart = () => {
   const [liquidityProviderChartPeriod, setLiquidityProviderChartPeriod] =
@@ -12,6 +14,7 @@ const LiquidityProviderChart = () => {
       data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
     },
   ]);
+  const btcData=useSelector(selectHourlyBTCData);
   const [xAxisCategories, setXAxisCategories] = useState([1, 2, 3, 4, 5, 6, 7]);
   useEffect(() => {
     // Fetch data based on selected option
@@ -36,20 +39,24 @@ const LiquidityProviderChart = () => {
 
     switch (liquidityProviderChartPeriod) {
       case 0:
-        newData = [
+        btcData?.supplyCounts ?   newData = [
           {
             name: "Series 1",
-            data: [30000, 40000, 35000, 50000, 49000, 60000, 80000],
+            data: btcData?.supplyCounts,
           },
+        ]:newData=[
+          {
+            name:"Series 1",
+            data:[20000,40000, 38000, 42000, 39000, 44000]
+          }
         ];
-        newCategories = [
-          new Date("2023-07-01").getTime(),
-          new Date("2023-07-02").getTime(),
-          new Date("2023-07-03").getTime(),
-          new Date("2023-07-04").getTime(),
-          new Date("2023-07-05").getTime(),
-          new Date("2023-07-06").getTime(),
-          new Date("2023-07-07").getTime(),
+        btcData?.dates ? 
+        newCategories = btcData?.dates : newCategories=[
+          new Date("2023-06-01").getTime(),
+          new Date("2023-06-02").getTime(),
+          new Date("2023-06-03").getTime(),
+          new Date("2023-06-04").getTime(),
+          new Date("2023-06-05").getTime()
         ];
         break;
       case 1:

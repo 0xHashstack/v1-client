@@ -40,13 +40,24 @@ const BorrowChart = () => {
 
     switch (supplyAPRChartPeriod) {
       case 0:
-        newData = [
+        btcData?.borrowAmounts ? newData = [
           {
             name: "Series 1",
-            data: btcData?.supplyAmounts,
+            data: btcData?.borrowAmounts,
           },
+        ]:newData=[
+          {
+            name:"Series 1",
+            data:[20000,40000, 38000, 42000, 39000, 44000]
+          }
         ];
-        newCategories = btcData?.dates;
+        btcData?.dates ? newCategories = btcData?.dates:newCategories=[
+          new Date("2023-06-01").getTime(),
+          new Date("2023-06-02").getTime(),
+          new Date("2023-06-03").getTime(),
+          new Date("2023-06-04").getTime(),
+          new Date("2023-06-05").getTime()
+        ];
         break;
       case 1:
         newData = [
