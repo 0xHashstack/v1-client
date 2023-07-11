@@ -82,7 +82,7 @@ export async function getEstrTokens(rToken: any, amount: any) {
         const provider = getProvider();
         const stakingContract = new Contract(
             stakingAbi,
-            "0x73e84ffcc178373b80cf2109d0e9beb93da9710d32a93a45eeeada957c133bd",
+            "0x386d428081fcae8d28cfdc1ff913fd6cd5da3c93d54060fb20687e8791c12e0",
             provider
         )
         // const parsedAmount=etherToWeiBN(amount,rToken).toString();
@@ -94,11 +94,11 @@ export async function getEstrTokens(rToken: any, amount: any) {
             blockIdentifier: "pending",
         });
         const data = parseAmount(
-            uint256.uint256ToBN(res?.rToken_amount_to_withdraw).toString()
-            // tokenDecimalsMap[rToken]
+            uint256.uint256ToBN(res?.rToken_amount_to_withdraw).toString(),
+            tokenDecimalsMap[rToken]
         );
         console.log(data, "call in stake");
-        return 24;
+        return data;
     } catch (err) {
         console.log(err, "err in est rtokens staking")
     }

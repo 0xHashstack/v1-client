@@ -139,10 +139,10 @@ const YourMetricsSupplyBorrow = ({ currentMarketCoin }: any) => {
           color={"#61a6a5"}
           series={series1[currentMarketCoin]}
         />
-        <TrialChart
+        {/* <TrialChart
                   color={"#61a6a5"}
                   series={series1[currentMarketCoin]}
-        />
+        /> */}
       </Box>
       <Box display="flex" flexDirection="column" gap="8px" width="100%">
         <Box

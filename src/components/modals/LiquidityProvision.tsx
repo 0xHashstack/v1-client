@@ -1407,6 +1407,8 @@ const LiquidityProvisionModal = ({
                         successText={"Spend successful."}
                       />,
                     ]}
+                    _disabled={{ bgColor: "white", color: "black" }}
+                    isDisabled={transactionStarted==true}
                     labelErrorArray={[
                       <ErrorButton
                         errorText="Transaction failed"
